@@ -219,10 +219,12 @@ func _unreadable() -> Dictionary:
 ## one fold serve every body that arrives at the same place.
 func observe_place(location_id: StringName) -> Dictionary:
 	if not _reconciler.is_valid():
-		return {"ok": false, "reason": "no_reconciler"}
+		_reconciled = {"ok": false, "reason": "no_reconciler"}
+		return _reconciled
 	var answered: Variant = _reconciler.call(location_id)
 	if not answered is Dictionary:
-		return {"ok": false, "reason": "reconciler_returned_nothing"}
+		_reconciled = {"ok": false, "reason": "reconciler_returned_nothing"}
+		return _reconciled
 	var out: Dictionary = (answered as Dictionary).duplicate()
 	# **The seam's own `ok` is READ, not trusted.** A reconciler that answered without
 	# one has said nothing about whether it folded, and a place reporting a clean zero
@@ -230,7 +232,13 @@ func observe_place(location_id: StringName) -> Dictionary:
 	# an absent verdict is `false` and is NAMED, rather than read as a fold that happened.
 	out["ok"] = bool(out.get("ok", false))
 	out["reason"] = String(out.get("reason", ""))
-	return out
+	# **Kept, not just returned.** `summary()` and the arrival answer both read
+	# `_reconciled`, so a method that computed the fold and dropped it left every reader
+	# reporting the initial `not_reconciled` — the wiring looked present and the place
+	# still read as never folded. The stored answer is the whole point of holding it: "a
+	# place that reconciled and a place whose fold is unwired must not answer alike".
+	_reconciled = out.duplicate(true)
+	return _reconciled
 
 
 ## Drop the answer with the place, and the place itself with it. The stage calls this from

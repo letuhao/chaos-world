@@ -243,8 +243,8 @@ func test_named_aim_uses_the_authored_meridian_and_nothing_else() -> void:
 	)
 	assert_almost_eq(
 		float(absent["penetration"]),
-		maxf(float(absent["gross"]) - float(absent["resistance"]), float(absent["floor"])),
-		"and it is the same gross, less its tissue-only resistance, floored"
+		_expected_penetration(absent),
+		"and it is the same gross, mitigated by the tissue-only armour, floored"
 	)
 	assert_eq(
 		float(_parts(attacker, target, BodyLocation.MODE_NAMED, &"not_a_meridian")["total"]),
@@ -310,7 +310,7 @@ func test_broad_hits_every_unlocked_meridian_at_the_sweep_multiplier() -> void:
 	)
 	assert_almost_eq(
 		float(walled["penetration"]),
-		maxf(gross - float(walled["resistance"]), float(walled["floor"])),
+		_expected_penetration(walled),
 		"so a walled body's sweep is floored, not deleted"
 	)
 	# ## What "a sweep is COVERAGE, not a critical blow" actually means arithmetically
@@ -489,15 +489,17 @@ func test_a_body_with_no_meridians_is_ungated_and_still_takes_the_hit() -> void:
 		"and the ladder contributes nothing: no channel was struck"
 	)
 	# A body with no meridians has no LOCATION MULTIPLIER to apply, so `subtotal` is a
-	# sum over zero sites. What lands is the flat subtraction at the neutral `1.0`: the
-	# gross, less the armour above, floored. Asserted as its own arithmetic rather than
-	# as "tissue alone subtracted", so the number is derived from the actor's live reads
-	# and cannot drift with a `DEFENSE_PHYSICAL` rebalance.
+	# sum over zero sites. What lands is ADR 0200's ratio at the neutral `1.0`: the gross,
+	# mitigated by the armour above (which is `0.0` here), floored. Asserted through the
+	# shared derivation rather than as "tissue alone subtracted", so the number comes from
+	# the mechanism's own published terms and cannot drift with a `DEFENSE_PHYSICAL`
+	# rebalance.
 	var gross := float(parts["magnitude"]) * attack_of(attacker)
+	assert_almost_eq(float(parts["gross"]), gross, "the gross is the magnitude x the attack stat")
 	assert_almost_eq(
 		float(parts["total"]),
-		maxf(gross - float(parts["resistance"]), gross * _tuning.min_penetration_ratio),
-		"and the strike is still a landed hit: the flat subtraction, at the neutral 1.0"
+		_expected_penetration(parts),
+		"and the strike is still a landed hit: the ratio at the neutral 1.0"
 	)
 	assert_eq(float(parts["total"]) > 0.0, true, "and it is not a refusal")
 	assert_eq(is_finite(float(parts["total"])), true, "finite")

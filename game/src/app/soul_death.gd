@@ -43,6 +43,22 @@ extends RefCounted
 ##    initial body, so a birth-path grant would claim a death that never happened.
 ##    `DestinyApi.earn_fate` and nothing else; an arrival is a receipt, not a claim
 ##    (ADR 0159).
+## 7. **A CAUSE, and the rule that is new here** (ADR 0258 §5). Step 2 is now two causes rather
+##    than one: the soul pays the same authored cost whether a wound fell it or the lifespan
+##    did, so everything from step 2 onward is untouched and there is no second end-of-life
+##    path. The cause is PUBLISHED (`cause`) on every branch rather than inferred from `reason`
+##    — `reason` already carries at least four unrelated values across these branches, so a
+##    consumer reading it to learn why a body ended is already inferring, and ADR 0190's rule
+##    ("every key present on both branches") applies to the new key exactly as it does to the
+##    old ones.
+##
+## ## Why `is_dead` below answers for age too, and why that is the whole wiring
+##
+## `poll_death` asks `is_dead` and nothing else, so an aged body at full health would never be
+## resolved by the shipped path — the exact "tested, built and unwired" defect DEF-0109 records.
+## Making the ONE predicate that says "this body no longer stands" also say it for age is the
+## change that makes the cause live, and it costs no edit to any caller: the composition root's
+## poll keeps asking the same question and gets a new answer.
 
 ## The authored base cost of a death before difficulty scales it. A constant here and not on
 ## the arrival, because a death costs what it costs regardless of which arrival is next.
@@ -115,30 +131,85 @@ func _init(mint_body: Callable = Callable(), rebind: Callable = Callable()) -> v
 
 ## Resolve a death for `actor`. The ONE entry point; every other method here is its step.
 ##
-## Returns `{ok, reason, died, guardian, damage, soul, arrival, body_id, incarnated, fact,
-## fact_count, marks, ungranted_marks}`. `ok` is true whenever a death was resolved — a death
-## the player survived via a guardian is a resolved death, not a refusal — and `reason` names
-## what happened so a screen can say it without inferring an outcome from a message. `marks`
-## are the fate ids this death's arrival authored and `ungranted_marks` the ones not held
-## afterwards (ADR 0190); both are ADDITIVE keys, because the rest of the verdict is consumed
-## by `SoulLedgerPanel.DEATH_TEXT` and the `last_death` envelope and renaming or removing one
-## of those is a UI break.
+## Returns `{ok, reason, cause, died, guardian, damage, soul, arrival, body_id, incarnated,
+## fact, fact_count, marks, ungranted_marks}`. `ok` is true whenever a death was resolved — a
+## death the player survived via a guardian is a resolved death, not a refusal — and `reason`
+## names what happened so a screen can say it without inferring an outcome from a message.
 ##
-## **A guardian death is not a death.** It returns early, ABOVE the fact write, because the
-## body never fell: the item was spent and the player keeps the body they had. Counting it
-## would make "how many times has this soul died" answer higher than the number of bodies
-## the world buried, and the quest step asking that question is the reason the fact exists.
+## ## `cause` is the NEW key, and it is ADDITIVE exactly like `marks` (ADR 0190)
+##
+## It is [constant SoulAge.CAUSE_DEATH] on every wound and [constant SoulAge.CAUSE_AGE] when
+## the lifespan ended the body, and it is PRESENT on all four branches including `_refuse` —
+## present, not conditional, because a consumer reading a verdict must never have to ask which
+## branch produced it. The existing keys are untouched and a consumer that does not know the key
+## reads the same dictionary it read before.
+##
+## ## The age cause answers `died`, `damage` and `fact` as follows, and each is a DECISION
+##
+##   - `died` is `true`: a body the lifespan reached has ended. This is a death with a cause,
+##     which is the whole of ADR 0258 §5.
+##   - `damage` is the AUTHORED cost, not `0`. The brief offered "0 — the body simply expired";
+##    rejected, because `damage` already has one meaning on this verdict (integrity the soul
+##    lost) and a second reading here would make the key branch-dependent, which is exactly the
+##    hole ADR 0190's full-key-set rule exists to close. An age death that reported `damage: 0`
+##    would also print through `SoulLedgerPanel`'s "Cost %d integrity" with a cost of zero —
+##    a lie told by the panel's own template. Same number, same `_scaled_cost`, same clamp.
+##   - `fact` is [constant FACT_ID] and it SHARES the count with a wound death, deliberately.
+##    The counting question ADR 0130 mandates is "how many times has this soul's body ended",
+##    and a body that reached the end of its authored life ended. The question that must NOT
+##    hear about it — "how many times did this hero fall in battle" — is a DIFFERENT fact, and
+##    the right answer for it is that no such fact exists yet. Inventing a second id here would
+##    put a new id in the ledger with no quest reading it and no content declaring it, which is
+##    the ADR 0137 shape (a fact with no demand) rather than an answer.
+##   - `soul` is the damaged ledger, `incarnated`/`body_id`/`arrival`/`marks` behave exactly as
+##    they do on the wound branch, because it is the SAME downstream path.
+##
+## ## The GUARDIAN takes precedence, and that is a DECISION rather than an accident
+##
+## Read the guardian branch first and it needs no argument about ordering — it is already
+## first, and an age check placed above it would spend nothing. The question is whether the
+## two causes may BOTH apply, and they may not.
+##
+## **A guardian PREVENTS an age death, and the argument is ADR 0130's own.** A guardian is an
+## ordinary consumable carrying the `guardian` tag, spent through the all-or-nothing `items`
+## verb, whose entire authored effect is to stand in for a body that would otherwise have been
+## lost. There is no narrower reading of "the body fell and a guardian kept it" that covers a
+## combat wound but not a lifespan. It is the player buying one more body, at the authored price
+## of the item, and the item's authored restoration is what makes the spend succeed at all. The
+## other reading — a guardian saves a body from a killer but not from time — has no support
+## anywhere in the ADRs, invents a category of harm the content cannot express, and leaves the
+## player holding a dead-on-arrival item the one time its use is thematically guaranteed.
+##
+## So age is checked AFTER the guardian has declined, and a soul holding one is rescued from the
+## lifespan exactly as it is from a blade. `_heal` restoring health is then the whole of what
+## the rescue is: an aged body that gets its lifespan back is a younger body with a young soul,
+## because age lives on the BODY (ADR 0258 §2) and the body was never swapped.
+##
+## ## THE ORDER IS THE WHOLE THING, and it is why this cannot be a second resolver
+##
+## guardian -> age -> pay -> gate -> re-body. An age check placed ABOVE the guardian would
+## expire a hero who is holding the item that exists to prevent exactly that; one placed after
+## the gate would let the run end without saying why. [method resolve] is the only path and
+## `is_dead` is the only predicate, so there is no arrangement of the tree in which an age
+## death skips the guardian, the fact write or the marks window.
+##
+## ## A REFUSAL IS NEVER SILENT
+##
+## `SoulAge.read` answers a named reason for every missing seam and expires nobody, so a tree
+## without ADR 0258 §2's field and without a wired clock behaves EXACTLY as it does today.
 func resolve(actor: Actor, base_cost: int = BASE_DEATH_COST) -> Dictionary:
 	if actor == null:
 		return _refuse("no_actor")
 	var guardian := SoulApi.spend_guardian(actor)
 	if bool(guardian.get("ok", false)):
 		# A guardian costs the ITEM and nothing else. Integrity is untouched and the incarnation
-		# does not advance, because the body that just fell is the body the player keeps.
+		# does not advance, because the body that just fell is the body the player keeps — and
+		# the lifespan is inside that clause, for the reason the docblock gives.
 		_heal(actor)
 		return {
 			"ok": true,
 			"reason": "guardian_spent",
+			"cause": SoulAge.CAUSE_DEATH,
 			"died": false,
 			"guardian": String(guardian.get("def_id", "")),
 			"damage": 0,
@@ -154,10 +225,15 @@ func resolve(actor: Actor, base_cost: int = BASE_DEATH_COST) -> Dictionary:
 			"marks": [] as Array[StringName],
 			"ungranted_marks": [] as Array[StringName],
 		}
+	# No guardian. THE AGE CAUSE SITS HERE — above the soul's damage and below nothing, so it
+	# cannot re-body a hero who was rescued, and above the gate, so an out-of-bodies age death
+	# is still named rather than arriving as a silent `soul_spent`.
+	var aged := SoulAge.answer_for(actor)
+	var cause := SoulAge.CAUSE_AGE if bool(aged.get("expired", false)) else SoulAge.CAUSE_DEATH
 	# No guardian: the soul pays. Difficulty supplies the FRACTION; this class supplies the
 	# amount, which is why a difficulty row can never decide how much a death costs.
 	var cost := _scaled_cost(actor, base_cost)
-	var damaged := SoulApi.damage(actor, cost, "death")
+	var damaged := SoulApi.damage(actor, cost, String(cause))
 	var arrival := SoulApi.next_arrival(actor)
 	var verdict := SoulApi.verdict(actor)
 	if not bool(verdict.get("ok", false)):
@@ -165,10 +241,13 @@ func resolve(actor: Actor, base_cost: int = BASE_DEATH_COST) -> Dictionary:
 		# its damage — a run that ended is still a run that happened, so it IS a death and it IS
 		# recorded. Nothing re-embodies, but a soul that ran out of lives died on the last body
 		# it had, and a quest asking how many deaths a soul has earned must hear about it.
+		# An age death arrives here too, and it is the SAME event with a different cause: the
+		# lifespan is named on the verdict, and the world hears about the run ending either way.
 		var spent := _record_death(actor)
 		return {
 			"ok": true,
 			"reason": "soul_spent",
+			"cause": cause,
 			"died": true,
 			"guardian": "",
 			"damage": int(damaged.get("applied", 0)),
@@ -184,11 +263,35 @@ func resolve(actor: Actor, base_cost: int = BASE_DEATH_COST) -> Dictionary:
 			"marks": [] as Array[StringName],
 			"ungranted_marks": [] as Array[StringName],
 		}
-	return _rebody(actor, arrival, damaged)
+	return _rebody(actor, arrival, damaged, cause)
 
 
 ## Record that this soul died, ONCE, into the world fact ledger (ADR 0130 §Decision). Returns
 ## the ledger's count for [constant FACT_ID] afterwards.
+##
+## ## ONE FACT FOR BOTH CAUSES, and the question that decides it
+##
+## `WorldFact.count(actor, FACT_ID)` answers "how many bodies has this soul ended", and that
+## is the question ADR 0130's quest gate asks. A body that reached the lifespan ended, so it is
+## counted; the count is the union and neither cause is visible inside it. That is correct for
+## the question this fact was minted for and it is honest about its own limit — `fact_count`
+## alone cannot tell a reader WHICH cause ended a body, and the answer to that is on `cause`,
+## which is why `cause` is a key on the verdict rather than something read back off the count.
+##
+## ## Why a SEPARATE id was rejected
+##
+## The alternative — a second code-owned id for age — would be strictly worse for every consumer
+## and no better for any: a quest that must now ask BOTH ids to learn the number it asked for,
+## two rows in a ledger ADR 0113 calls "the world's memory" for one event, and a new id reaching
+## `gate_reach`'s census with no authored `.tres` demanding it (ADR 0137: a fact with no demand
+## is a content defect). Splitting it would also make the FIRST writer of each id the only place
+## the split exists, which is how two producers of "a soul died" drift apart.
+##
+## ## `age` and `death` are both spellings of the same soul trail reason
+##
+## `SoulState._append` stores this string on the bounded damage trail, so an age death is
+## findable in the soul's own history by cause name. It is the third string the trail carries
+## (`test`, `first`, `death`) and none of them is parsed by anything in the tree.
 ##
 ## ## Why this is not a bare [code]WorldFact.record[/code]
 ##
@@ -305,15 +408,39 @@ static func _note_carried_from(to: Actor, from: Actor) -> void:
 	to.set_module_data(CARRIED_FROM_KEY, {CARRIED_FROM_FIELD: String(from.id)})
 
 
-## Whether `actor` is currently dead, read as `health <= 0.0`.
+## Whether `actor`'s body has ended — read as `health <= 0.0` OR as a lifespan reached
+## (ADR 0258 §5).
 ##
 ## The predicate the poll asks, kept here so the ONE definition of "dead" lives beside the ONE
 ## rule that acts on it. Nothing else in the tree should re-derive it.
+##
+## ## WHY AGE IS IN HERE AND NOT IN `resolve`, and the cost that follows
+##
+## `resolve` is never called for a body nobody believes is dead: `poll_death` asks this and
+## returns `{}` on `false`, and `FightLoop._decide`'s "would un-ring a death" argument is written
+## against this exact predicate. An aged body sitting at full health answers `false` here, so
+## the shipped path never asks `resolve` and the age cause is built, tested and unwired — the
+## DEF-0109 defect verbatim. Hence the OR, and hence the cost: **this is a call into
+## `SoulAge.read` on every poll of every body**, which reads two fields and does two integer
+## divisions. That is bounded and cheap; what it buys is that a cause cannot exist without the
+## poll being able to reach it.
+##
+## ## A MISSING SEAM READS FALSE, and this is the one place that matters most
+##
+## `SoulAge.read` answers `expired: false` with a named reason for every missing field or
+## unwired clock, so the OR's second term is `false` on any tree that has not landed ADR 0258
+## §2 and a wired `world_time`. The `age_years < 0.0` early return below exists so that is
+## true on the FIRST term too: a body with no age field answers `false` from `is_dead` itself
+## rather than falling through to a read that would have to report the same refusal twice. The
+## sentinel is negative on purpose — `0.0` would read as "born today", which is a different
+## claim, so nothing here compares against zero.
 func is_dead(actor: Actor) -> bool:
 	if actor == null:
 		return false
+	if SoulAge.age_years(actor) < 0.0:
+		return false
 	var pool := actor.resource(&"health")
-	return pool != null and pool.current <= 0.0
+	return (pool != null and pool.current <= 0.0) or SoulAge.has_expired(actor)
 
 
 ## Restore `actor` to full health, spent through `change` so the pool's `changed` signal still
@@ -363,13 +490,20 @@ func _scaled_cost(actor: Actor, base_cost: int) -> int:
 ## holds — two Actors with one id, which is a world where the second is invisible because every
 ## ledger and roster is keyed by it. So the count is computed here, from the ledger this method
 ## is already reading, and handed over: the mint cannot be out of step with the soul.
-func _rebody(actor: Actor, arrival: StringName, damaged: Dictionary) -> Dictionary:
+##
+## `cause` is THROWN rather than read from the actor, because it is a fact about the resolve
+## that is calling this method and not a property any body carries — the age field lives on the
+## BODY and the falling body is about to be replaced by one that has never been old.
+func _rebody(
+	actor: Actor, arrival: StringName, damaged: Dictionary, cause: StringName = SoulAge.CAUSE_DEATH
+) -> Dictionary:
 	var ledger := SoulApi.state()
 	var next_incarnation := int(ledger.get("incarnation", 0)) + 1
 	if not _mint_body.is_valid():
 		return {
 			"ok": false,
 			"reason": "no_body_mint",
+			"cause": cause,
 			"died": true,
 			"guardian": "",
 			"damage": int(damaged.get("applied", 0)),
@@ -393,6 +527,7 @@ func _rebody(actor: Actor, arrival: StringName, damaged: Dictionary) -> Dictiona
 		return {
 			"ok": false,
 			"reason": String(minted.get("reason", "body_mint_failed")),
+			"cause": cause,
 			"died": true,
 			"guardian": "",
 			"damage": int(damaged.get("applied", 0)),
@@ -455,6 +590,7 @@ func _rebody(actor: Actor, arrival: StringName, damaged: Dictionary) -> Dictiona
 	return {
 		"ok": bool(reborn.get("ok", false)),
 		"reason": String(reborn.get("reason", "")),
+		"cause": cause,
 		"died": true,
 		"guardian": "",
 		"damage": int(damaged.get("applied", 0)),
@@ -472,10 +608,14 @@ func _rebody(actor: Actor, arrival: StringName, damaged: Dictionary) -> Dictiona
 	}
 
 
+## The refusal. Every key is here, including [constant SoulAge.CAUSE_DEATH] as the cause: a
+## `null` actor has no body and therefore no lifespan, so `death` is the honest answer rather
+## than an empty string a consumer would have to special-case.
 func _refuse(reason: String) -> Dictionary:
 	return {
 		"ok": false,
 		"reason": reason,
+		"cause": SoulAge.CAUSE_DEATH,
 		"died": false,
 		"guardian": "",
 		"damage": 0,

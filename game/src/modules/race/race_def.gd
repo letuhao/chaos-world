@@ -54,6 +54,22 @@ const BASELINE_TAG := &"baseline"
 @export var realm_ceiling: int = 0
 ## Total authored lifespan in days.
 @export var lifespan: float = 36500.0
+## How old a body of this species is the moment it is born, in years (ADR 0258 §2).
+##
+## ## Why a species authors this and not `Actor.STARTING_AGE_YEARS`
+##
+## Age is a BODY fact, and "a reborn body starts at the authored starting age for its
+## SPECIES" is the sentence that makes that true — so the number is CONTENT an author tunes
+## per race, beside the other body-plan facts. A long-gestating species born ready to walk
+## and a slow-maturing one born helpless are different bodies, and the age bands are read
+## against the lifespan, so a starting age is what decides where in the first band a hero
+## begins.
+##
+## ## Zero is a legal value and means "born this instant"
+##
+## `AgeBandTable.FIRST_ASH` enters at exactly `0.0`, so zero is the youngest band rather
+## than a missing value — there is no state this can author that reads as elderly.
+@export var starting_age_years: float = 0.0
 
 # --- Grants ------------------------------------------------------------------
 

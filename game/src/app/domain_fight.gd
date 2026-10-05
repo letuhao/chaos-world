@@ -321,12 +321,22 @@ static func _door_of(hero: Actor, opponent_id: Variant) -> String:
 ## band stayed at `kill_count 0` while the door that body stood in was exactly the door the
 ## hero had cleared. Nothing about that answer was true and everything about it was safe.
 ##
-## So the question is asked of the DOOR: exactly one rostered body may stand in a room
-## this band has an open door on, carry this name, and be a door's occupant. A door claimed
-## by two bodies under one name, or by a name no door body carries, still resolves to `""` —
-## crediting a kill to a living antagonist is worse than recording none, so ambiguity is
-## still REFUSED rather than guessed, and the caller still takes the `not_a_boss` branch
-## it already has (ADR 0229's honest answer for a body this band does not own).
+## So the question is asked of the DOOR: exactly one rostered body may stand in the room
+## this band's ledger currently has OPEN, carry this name, and be that door's occupant —
+## which is the sentence that was WRITTEN here and never IMPLEMENTED: the code counted
+## every door body under the name and then demanded exactly one, so on the shipped
+## `stormwrack_reach` it counted four and refused all four (measured: `_door_of` answered
+## `""` on every strike, `band.kill_count` stayed `0`, and the door the hero had just
+## cleared was refused as `not_a_boss`). The OPEN door is the disambiguator, because a band
+## is a queue — [method _open_door_room] names it and `DomainRun.record_kill` refuses
+## anything else as `door_closed`, so the filter can only remove bodies the module would
+## have refused anyway.
+##
+## A door claimed by two bodies under one name, or by a name no door body carries, still
+## resolves to `""` — crediting a kill to a living antagonist is worse than recording none,
+## so ambiguity is still REFUSED rather than guessed, and the caller still takes the
+## `not_a_boss` branch it already has (ADR 0229's honest answer for a body this band does
+## not own).
 ##
 ## ## And a door's occupant is not always a `boss`-tagged body
 ##
@@ -342,6 +352,7 @@ static func _placed_boss(hero: Actor, opponent_id: Variant) -> String:
 	var wanted := String(opponent_id)
 	if wanted == "":
 		return ""
+	var open_room := _open_door_room(hero)
 	var found: Actor = null
 	var matched := 0
 	for inhabitant in DomainBoot.placed_inhabitants():
@@ -353,11 +364,43 @@ static func _placed_boss(hero: Actor, opponent_id: Variant) -> String:
 		if not DomainSpawner.has_role(actor, DomainRoles.BOSS):
 			if not DomainSpawner.is_hostile(actor):
 				continue
+		# **The OPEN door is the half that disambiguates a name the spawner shares.**
+		# Four `flame_dragon` stand in four `ash_heart#n` doors, so the species id alone
+		# names four bodies and refusing them all refused every door the shipped content
+		# authors (measured: `_door_of` answered `""` for a hero who had just cleared the
+		# door that body stood in). A band is a queue — exactly one door is open at a time
+		# (`DomainRun.open_boss`), and only a kill of THAT door can be credited, so the
+		# open door's room is the one fact the id cannot supply. Bodies in any other door
+		# are still counted so a door this band has already opened cannot absorb a second
+		# kill; a second body in the OPEN door is still REFUSED rather than guessed, because
+		# crediting a kill to a living antagonist is worse than recording none.
+		if open_room != "" and String(DomainSpawner.room_of(actor)) != open_room:
+			continue
 		matched += 1
 		found = actor
 	if matched != 1 or found == null:
 		return ""
 	return _door_id(hero, found)
+
+
+## The ROOM half of the one door this band's ledger currently has open, or `""`.
+##
+## ## Why the ledger, and not a re-derivation
+##
+## `DomainRun.open_boss` is the stored index, not a scan for "the first undefeated"
+## (`domain_run.gd:166-174`): the door is a STATE and re-deriving it would eventually
+## disagree with the kill ledger that is the only thing allowed to move it. So this reads
+## the same word the band publishes and never a second rule about which door is next.
+##
+## `""` outside a run, for an abandoned band, and once the band is cleared — every one of
+## which the module already answers through the same verb, so this cannot invent an answer.
+static func _open_door_room(hero: Actor) -> String:
+	var band := DomainRunApi.band(hero)
+	var open_door := String(band.get("open_boss", ""))
+	var slash := open_door.rfind("/")
+	if slash < 0:
+		return ""
+	return open_door.substr(slash + 1)
 
 
 ## Whether `actor` stands in a room `hero`'s band has a door on — the ROOM half of a door

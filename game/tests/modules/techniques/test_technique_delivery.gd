@@ -117,6 +117,23 @@ func _stock(actor: Actor, def: ItemDef) -> void:
 # --- The gap this file exists to close ---------------------------------------
 
 
+## The facade's published methods, read from its own script.
+##
+## `TechniquesApi.new()` is the wrong door: every method on it is `static`, so
+## instantiating yields a bare `RefCounted` whose script is NOT the api, and
+## `get_script_method_list()` then returns nothing — every cap assertion below
+## failed on an EMPTY list rather than on a count. Read the class's own script.
+func _published_methods() -> Array[String]:
+	var script: Script = load("res://src/modules/techniques/api.gd")
+	var out: Array[String] = []
+	for method in script.get_script_method_list():
+		var method_name := String(method.get("name", ""))
+		if method_name.begins_with("_") or out.has(method_name):
+			continue
+		out.append(method_name)
+	return out
+
+
 func test_using_a_real_technique_item_produces_a_codex_entry() -> void:
 	var actor := _hero()
 	var technique_id := _fresh_id("learn")
@@ -385,14 +402,8 @@ func test_the_delivery_seam_cost_the_facade_nothing() -> void:
 	# value `&"technique_delivery"` was read by nothing in `res://src` and could not
 	# be — the seam travels as a `ProjectSettings` Callable under
 	# `TechniqueDelivery.SETTING`, never as that string.
-	var script: Script = TechniquesApi.new().get_script()
-	var published: Array[String] = []
-	for method in script.get_script_method_list():
-		var method_name := String(method.get("name", ""))
-		if method_name.begins_with("_") or published.has(method_name):
-			continue
-		published.append(method_name)
-	assert_eq(published.size(), 12, "still exactly twelve public methods")
+	var published := _published_methods()
+	assert_eq(
 	# The seam must be absent from the METHOD list, which is what "reached as a
 	# named type rather than published on the facade" means.
 	assert_eq(published.has("DELIVERY"), false, "the seam is not a facade method")

@@ -305,3 +305,71 @@ func _walled(points: float, state: StringName = MeridianState.OPEN) -> Actor:
 ## suite can hand the ledger an exact fraction of a threshold and land on it.
 func _severity_for(actor: Actor, share: float) -> float:
 	return share * _integrity_maximum(actor)
+
+
+## The tissue weighting ADR 0070's formula adds to `D` exactly once:
+## `tissue = tissue_scale * (sum of stat x archetype weight) / divisor`, for the HEAVIEST
+## archetype weight in `CombatTuning.tissue_weights` — found the same way
+## `BodyDamage._weights_of` ranks, so the two cannot disagree about which archetype a body
+## is described by, and a balance pass that re-weights the archetypes moves this with it
+## rather than stranding a literal here.
+##
+## It lives on the FIXTURE rather than in `test_body_damage.gd` because ADR 0200 turned
+## "the ladder's own contribution to `D`" into something two suites have to subtract: this
+## file measures the ladder (`D - tissue`) and `test_body_damage.gd` measures the whole of
+## `D`. Two copies of the weighting would be two chances for them to disagree, and a
+## disagreement there is a disagreement about what armour IS.
+func _tissue_expectation(target: Actor) -> float:
+	var heaviest := 0.0
+	var heaviest_total := 0.0
+	for key in _tuning.tissue_weights.keys():
+		var row: Array = _tuning.tissue_weights[key]
+		var sum := 0.0
+		for value in row:
+			sum += absf(float(value))
+		if sum > heaviest_total:
+			heaviest_total = sum
+			heaviest = sum / maxf(1.0, float(row.size()))
+	var total := 0.0
+	for index in _tuning.tissue_stat_ids.size():
+		total += target.stats.derived(StringName(_tuning.tissue_stat_ids[index])) * heaviest
+	return _tuning.tissue_scale * total / _tuning.tissue_stat_divisor
+
+
+## The penetration ADR 0200's ratio produces, re-derived from the mechanism's OWN
+## published primitives rather than pasted as a literal.
+##
+## ## Why this helper exists at all
+##
+## Before ADR 0200 the identity every body suite asserted was
+## `maxf(gross - resistance, gross * min_penetration_ratio)` — a subtraction of hit points
+## off a blow. `body_damage.gd` replaced it with
+## `maxf(gross * (1 - mitigation_ceiling * D_eff / (K + D_eff)), gross * min_penetration_ratio)`
+## and a FOUR-TERM identity replaced the two-term one, so every suite that re-derived the
+## old shape had to be rewritten. One shared derivation is the same discipline this file
+## already applies to the actor arithmetic: the alternative is four copies of the ratio in
+## four files, which drift and which a reader then has to reconcile against
+## `body_damage.gd`'s own docblock.
+##
+## It reads `defense_effective`, `divisor_k`, `mitigation_rate` and `floor` off the row
+## under test rather than off the tuning, so a copy of the tuning with one field replaced
+## (which several suites build) is priced by ITS OWN numbers and not by the shipped ones.
+func _expected_penetration(parts: Dictionary) -> float:
+	var gross := float(parts["gross"])
+	return maxf(gross * (1.0 - float(parts["mitigation_rate"])), float(parts["floor"]))
+
+
+## The mitigation rate ADR 0200's ratio produces for one armour figure and one gross,
+## recomputed from the tuning rather than from the row. Used where a suite has to DERIVE an
+## expectation instead of reading one — the whole point of the derivation is that it does
+## not trust the number it is checking.
+func _expected_mitigation_rate(defence: float, gross: float, tuning: CombatTuning) -> float:
+	var ceiling := clampf(tuning.mitigation_ceiling, 0.0, 1.0)
+	if ceiling <= 0.0:
+		return 0.0
+	var k := maxf(0.0, tuning.defense_divisor_k * gross)
+	var denominator := k + absf(defence)
+	if denominator <= 0.0:
+		return 0.0
+	var share := absf(defence) / denominator if defence >= 0.0 else 2.0 - k / denominator
+	return ceiling * share

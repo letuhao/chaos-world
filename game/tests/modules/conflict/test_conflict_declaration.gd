@@ -366,8 +366,13 @@ func test_the_whole_ledger_is_json_safe() -> void:
 
 
 func test_events_are_a_singleton_reachable_from_the_facade() -> void:
-	assert_ne(ConflictApi.events(), null, "the contract is reachable")
-	assert_eq(ConflictApi.events() == ConflictApi.events(), true, "and it is one instance")
+	var first := ConflictApi.events()
+	assert_ne(first, null, "the contract is reachable")
+	# Two separate calls, compared by IDENTITY. Written as
+	# `events() == events()` the assertion is `x == x`, which holds for every value
+	# including null — so it proved nothing and could not fail.
+	var second := ConflictApi.events()
+	assert_eq(first.get_instance_id() == second.get_instance_id(), true, "and it is one instance")
 
 
 func test_a_refusal_announces_the_rule_it_names() -> void:

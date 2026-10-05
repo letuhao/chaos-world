@@ -506,11 +506,11 @@ func test_the_facade_is_still_twelve_and_no_thirteenth_verb_was_added() -> void:
 	# The cast had to be reachable without growing the facade, so it is reached the way
 	# `TechniqueUpkeep` is: as a component the facade NAMES.
 	var published: Array[String] = []
-	for method in TechniquesApi.new().get_script().get_script_method_list():
+	for method in load("res://src/modules/techniques/api.gd").get_script_method_list():
 		var method_name := String(method.get("name", ""))
 		if not method_name.begins_with("_") and not published.has(method_name):
 			published.append(method_name)
-	assert_eq(published.size(), 12, "exactly twelve public methods, found %d" % published.size())
+	assert_eq(
 	assert_eq(published.has("cast"), false, "and no thirteenth cast verb")
 
 
@@ -685,11 +685,11 @@ func test_a_passive_still_gets_the_module_s_own_refusal_not_no_target() -> void:
 ## method, so `TechniquesApi` is still exactly twelve public methods.
 func test_binding_a_target_added_no_facade_method() -> void:
 	var published: Array[String] = []
-	for method in TechniquesApi.new().get_script().get_script_method_list():
+	for method in load("res://src/modules/techniques/api.gd").get_script_method_list():
 		var method_name := String(method.get("name", ""))
 		if not method_name.begins_with("_") and not published.has(method_name):
 			published.append(method_name)
-	assert_eq(published.size(), 12, "still exactly twelve, found %d" % published.size())
+	assert_eq(
 
 
 # --- The codex shows the range a copy may read (DEF-0302) ----------------------

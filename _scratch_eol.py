@@ -1,0 +1,6 @@
+d = open('_npc_head_dump.txt', 'rb').read()
+print('head crlf', d.count(b'\r\n'), 'lf', d.count(b'\n'), 'len', len(d))
+w = open('game/src/contracts/npc_events.gd', 'rb').read()
+print('work crlf', w.count(b'\r\n'), 'lf', w.count(b'\n'), 'len', len(w))
+print('head tail', repr(d[-40:]))
+print('work tail', repr(w[-40:]))

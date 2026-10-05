@@ -1,0 +1,114 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | Started Registering global classes... (3 steps)[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | ItemWorkbenchApp[39m[0m
+[  25% ] [90m[1mupdate_scripts_classes[22m | ModHookFixture[39m[0m
+[  50% ] [90m[1mupdate_scripts_classes[22m | ClanScreen[39m[0m
+[92m[ DONE ][39m [1mupdate_scripts_classes[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Loading docks...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+SCRIPT ERROR: Parse Error: Identifier "_world_clock" not declared in the current scope.
+   at: GDScript::reload (res://src/app/item_workbench_app.gd:381)
+SCRIPT ERROR: Parse Error: Identifier "_world_clock" not declared in the current scope.
+   at: GDScript::reload (res://src/app/item_workbench_app.gd:382)
+SCRIPT ERROR: Parse Error: Function "_publish_world_clock()" not found in base self.
+   at: GDScript::reload (res://src/app/item_workbench_app.gd:383)
+SCRIPT ERROR: Parse Error: Identifier "_world_clock" not declared in the current scope.
+   at: GDScript::reload (res://src/app/item_workbench_app.gd:384)
+SCRIPT ERROR: Parse Error: Identifier "_world_clock" not declared in the current scope.
+   at: GDScript::reload (res://src/app/item_workbench_app.gd:755)
+ERROR: Failed to load script "res://src/app/item_workbench_app.gd" with error "Parse error".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+SCRIPT ERROR: Parse Error: Function "_publish_world_clock()" not found in base self.
+   at: GDScript::reload (res://src/app/item_workbench_app.gd:396)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://tests/app/test_arrival_world_mount.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+ERROR: Failed to load script "res://tests/app/test_arrival_world_mount.gd" with error "Compilation failed".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Invalid call. Nonexistent function 'advance_world' in base 'Nil'.
+   at: test_events_available_at_the_mounted_location_are_not_empty (res://tests/app/test_arrival_world_mount.gd:181)
+   GDScript backtrace (most recent call first):
+       [0] test_events_available_at_the_mounted_location_are_not_empty (res://tests/app/test_arrival_world_mount.gd:181)
+       [1] _initialize (res://tests/run_tests.gd:118)
+ERROR: res://tests/app/test_arrival_world_mount.gd :: test_events_available_at_the_mounted_location_are_not_empty asserted nothing
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _assert_ran (res://tests/run_tests.gd:172)
+       [1] _initialize (res://tests/run_tests.gd:119)
+SCRIPT ERROR: Invalid call. Nonexistent function 'creation_summary' in base 'Nil'.
+   at: test_the_programs_own_summary_reports_the_place (res://tests/app/test_arrival_world_mount.gd:143)
+   GDScript backtrace (most recent call first):
+       [0] test_the_programs_own_summary_reports_the_place (res://tests/app/test_arrival_world_mount.gd:143)
+       [1] _initialize (res://tests/run_tests.gd:118)
+ERROR: res://tests/app/test_arrival_world_mount.gd :: test_the_programs_own_summary_reports_the_place asserted nothing
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _assert_ran (res://tests/run_tests.gd:172)
+       [1] _initialize (res://tests/run_tests.gd:119)
+SCRIPT ERROR: Invalid call. Nonexistent function 'actor' in base 'Nil'.
+   at: test_the_same_read_at_a_place_nobody_stands_in_is_empty (res://tests/app/test_arrival_world_mount.gd:218)
+   GDScript backtrace (most recent call first):
+       [0] test_the_same_read_at_a_place_nobody_stands_in_is_empty (res://tests/app/test_arrival_world_mount.gd:218)
+       [1] _initialize (res://tests/run_tests.gd:118)
+ERROR: res://tests/app/test_arrival_world_mount.gd :: test_the_same_read_at_a_place_nobody_stands_in_is_empty asserted nothing
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _assert_ran (res://tests/run_tests.gd:172)
+       [1] _initialize (res://tests/run_tests.gd:119)
+ERROR: res://tests/app/test_arrival_world_mount.gd :: the arrival screen is live: expected not <null>, got <null>
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_arrival_world_mount.gd :: the commit mounted a stage: expected not <null>, got <null>
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_arrival_world_mount.gd :: the shell booted: expected , got MISSING SEAM: res://scenes/item_workbench/ItemWorkbenchApp.tscn instantiated a root whose SCRIPT did not load, so the composition root never ran. The node tree parsed; the script it names failed to compile or to resolve a base class. Read the parse error above this — it is the cause, and it is not a missing navigation seam.
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_arrival_world_mount.gd :: there is a composition root: expected not <null>, got <null>
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_arrival_world_mount.gd :: a stage is mounted: expected not <null>, got <null>
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_arrival_world_mount.gd :: the event module has a publisher: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+fail 5 script error(s) aborted a test mid-function; those tests reported no failure, so the run above is incomplete
+warn   run aborted before printing a total; partial tally: Results: 38 passed, 0 failed (1 suite(s))
+warn 2 script(s) failed to LOAD; the errors above are mostly their dependants:
+warn   res://src/app/item_workbench_app.gd
+warn   res://tests/app/test_arrival_world_mount.gd
+warn SCRIPT ERROR: Parse Error: Function "_publish_world_clock()" not found in base self.
+warn SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+warn SCRIPT ERROR: Invalid call. Nonexistent function 'advance_world' in base 'Nil'.
+warn SCRIPT ERROR: Invalid call. Nonexistent function 'creation_summary' in base 'Nil'.
+warn SCRIPT ERROR: Invalid call. Nonexistent function 'actor' in base 'Nil'.
+$ C:\Users\NeneScarlet\AppData\Local\Microsoft\WinGet\Packages\GodotEngine.GodotEngine_Microsoft.Winget.Source_8wekyb3d8bbwe\Godot_v4.7.2-stable_win64_console.exe --headless --path D:\Works\source\chaos-world\game --import --log-file D:\Works\source\chaos-world\build\logs\175705-87248-1-run.log
+$ C:\Users\NeneScarlet\AppData\Local\Microsoft\WinGet\Packages\GodotEngine.GodotEngine_Microsoft.Winget.Source_8wekyb3d8bbwe\Godot_v4.7.2-stable_win64_console.exe --headless --path D:\Works\source\chaos-world\game -s res://tests/run_tests.gd --log-file D:\Works\source\chaos-world\build\logs\175712-87248-2-run.log -- --suite tests/app
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+

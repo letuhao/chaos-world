@@ -719,9 +719,11 @@ func test_the_one_named_period_ratio_copy_is_the_only_one_this_file_knows_of() -
 		"and the line the scan resolved really carries the ratio: %s" % ssot
 	)
 	assert_eq(
-		sites.has("res://src/app/world_pulse.gd:88"),
+		_read_declaring("res://src/app/world_pulse.gd", &"PERIOD_SECONDS").contains(
+			"TimeLadder.PERIOD_SECONDS"
+		),
 		true,
-		"and world_pulse.gd:88 is the reader's name for it"
+		"and world_pulse reads the SSOT by name, wherever that line now sits"
 	)
 	assert_eq(
 		sites.has("res://src/modules/save/save_clock.gd:34"),
@@ -866,6 +868,22 @@ func _read_line(path: String, line_no: String) -> String:
 	if index < 0 or index >= lines.size():
 		return ""
 	return String(lines[index]).strip_edges()
+
+
+## The line in `path` that DECLARES `name`, found by the name rather than by a line
+## number.
+##
+## **A pinned line number is a trip-wire on everything above it.** `world_pulse.gd`'s
+## `PERIOD_SECONDS` reader was asserted at `:88` and went red the moment a peer added a
+## docstring above it — with no clock behaviour changed, which is the same failure
+## `test_time_ladder_single_source.gd`'s census hit and had fixed for itself. Resolving
+## by name is what makes the assertion about the DECLARATION.
+func _read_declaring(path: String, name: StringName) -> String:
+	for raw in FileAccess.get_file_as_string(path).split("\n"):
+		var line := String(raw).strip_edges()
+		if line.begins_with("const %s " % name) or line.begins_with("const %s :=" % name):
+			return line
+	return ""
 
 
 ## The `match`/`elif` arms in the ladder's own conversion path, counted as TEXT. Asserted

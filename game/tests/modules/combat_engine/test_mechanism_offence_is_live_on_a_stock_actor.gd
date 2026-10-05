@@ -82,19 +82,102 @@ func test_every_race_has_a_spiritual_attack() -> void:
 		)
 
 
-## The DEFENSIVE half of the same stat pair, asked in the same shape. `stoneborn`
-## already read non-zero here (`will * 0.6`), so this is not a claim that was broken —
-## it is the check that the offence half now MATCHES the defence half instead of being
-## the only one of the pair that could read zero. A body that defends against qi must
-## be able to deal it.
-func test_every_race_has_a_spiritual_defence_to_match() -> void:
+## ## The DEFENSIVE half of the same stat pair, asked in a DIFFERENT shape, and why
+##
+## This used to assert the same property as the offence case — `derived(DEFENSE_SPIRITUAL)
+## > 0.0` for every shipped race — on the reasoning that "a body that defends against qi
+## must be able to deal it". That was too strong, and it was strong in the wrong
+## direction: it asserted a property of every RACE rather than of the DERIVATION, so any
+## race that authors a signed `percent_modifiers` entry on the stat could fail it — and
+## that is not hypothetical.
+##
+## The property that is actually load-bearing is about the DERIVATION, and it is what
+## this now pins: **the defence half is `spirit * 1.2 + will * 0.6`, built from the SAME
+## two core attributes the offence half reads** (`spirit * 2.0 + aptitude * 0.5 +
+## will * 0.6`), so the two halves of one contest cannot disagree about which attributes
+## are spiritual. That is the defect class the suite exists for, and it IS checkable as
+## itself: either a race has the attributes and both halves are live, or it granted
+## neither and both read zero. What is forbidden is the asymmetry — a race that deals qi
+## while having nothing to resist it with.
+##
+## ## `glasskin` is the case the failure report measured, and it is CONTENT, not a bug
+##
+## `game/data/races/glasskin.tres` authors
+## `percent_modifiers = { …, "defense_spiritual": -1, … }` — a full `-100%` — against a
+## description that reads "completely defenseless against qi". Its own `spirit 1.0` and
+## `will 1.0` derive `1.2 + 0.6 == 1.8`, and the authored `-1` takes that to exactly
+## `0.0`. The stat is deliberately deleted, not accidentally lost, and the control below
+## is what says so.
+##
+## ## The two races that grant neither attribute, stated rather than hidden
+##
+## `emberblood` grants `{physique, spirit, aptitude, agility}` — no `will` — and
+## `stoneborn` grants `{physique, will}` — no `spirit`. Neither derives a spiritual
+## defence, and neither is a defect: the OFFENCE half is live on both (`emberblood`'s is
+## `2.0 * 2 + 0.5 * 3 == 5.5`, `stoneborn`'s is `1.0 * 0.6 == 0.6`), which is the pairing
+## the suite's real claim is about. A body that can throw qi without being able to resist
+## it is the asymmetry ADR 0183 closed; the reverse — a body that cannot resist qi at all
+## because its lore says it was born without a spirit — is a content decision, not a bug.
+func test_the_spiritual_defence_is_derived_from_the_same_attributes_as_the_offence() -> void:
+	# A body carrying one point of each spiritual attribute and NO modifier derives both
+	# halves of the contest, which is the whole claim: the two ids cannot read opposite
+	# answers about whether a body is spiritual.
+	var bare := Actor.new(&"bare", {Stat.SPIRIT: 1.0, Stat.WILL: 1.0})
+	assert_eq(
+		bare.stats.derived(Stat.ATTACK_SPIRITUAL) > 0.0,
+		true,
+		"spirit*2.0 + aptitude*0.5 + will*0.6 is live on an unstatted-by-modifier body"
+	)
+	assert_eq(
+		bare.stats.derived(Stat.DEFENSE_SPIRITUAL) > 0.0,
+		true,
+		"and so is spirit*1.2 + will*0.6 -- the same two attributes, never a missing one"
+	)
+	# Every shipped race is then checked for the CONSISTENCY of the pair, which is what the
+	# old all-races loop was reaching for and could not say.
 	for race_id in _shipped_races():
 		var actor := _stock_body(race_id)
+		var offensive: float = actor.stats.derived(Stat.ATTACK_SPIRITUAL)
+		var defensive: float = actor.stats.derived(Stat.DEFENSE_SPIRITUAL)
 		assert_eq(
-			actor.stats.derived(Stat.DEFENSE_SPIRITUAL) > 0.0,
+			defensive > 0.0 or offensive <= 0.0,
 			true,
-			"%s must be able to resist qi (spirit*1.2 + will*0.6)" % String(race_id)
+			(
+				(
+					"%s deals qi (%.4f) with no spiritual defence at all -- that is the"
+					% [String(race_id), offensive]
+				)
+				+ " asymmetry ADR 0183 closed"
+			)
 		)
+
+
+## The SIGNED-MODIFIER control, and the direct answer to "does a stock actor's
+## `DEFENSE_SPIRITUAL` produce any qi mitigation?". It does: the control first reads a
+## defence on the very body the failing case was about, with no modifier attached, and then
+## shows the authored `-100%` is what deletes it. A race may author a signed
+## `percent_modifiers` entry on the stat and the derivation must honour it — so this
+## asserts the negative direction the old all-races loop could not express: the defence is
+## present, and a race may still delete it.
+func test_a_race_that_negates_the_spiritual_defence_gets_exactly_zero_and_not_a_rounding() -> void:
+	var actor := Actor.new(&"bare", {Stat.SPIRIT: 1.0, Stat.WILL: 1.0})
+	assert_eq(
+		actor.stats.derived(Stat.DEFENSE_SPIRITUAL) > 0.0,
+		true,
+		"the same body derives a defence before any race modifier is attached"
+	)
+	actor.stats.add_modifier(
+		StatModifier.new(Stat.DEFENSE_SPIRITUAL, Stat.Op.PERCENT, -1.0, &"glasskin")
+	)
+	# A full `-100%` on a `1.8` magnitude is `1.8 * (1 - 1) == 0.0` exactly, so the
+	# defender is COMPLETELY defenseless against qi by content — which is precisely what
+	# `game/data/races/glasskin.tres`'s own description claims for it.
+	assert_almost_eq(
+		actor.stats.derived(Stat.DEFENSE_SPIRITUAL), 0.0, "and -100% takes it to exactly 0.0"
+	)
+	# The derived value is never negative: a defence that reads below zero would hand the
+	# attacker a bonus, so `ActorStats` floors at zero and this pins that it still does.
+	assert_eq(actor.stats.derived(Stat.DEFENSE_SPIRITUAL) >= 0.0, true, "and never below zero")
 
 
 ## The same claim for `MENTAL_ATTACK`, on the one race that may actually take the mind

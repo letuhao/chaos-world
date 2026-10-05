@@ -31,6 +31,11 @@ closed_paths = Array[StringName]([])
 ; further: altered is not ascendant.
 realm_ceiling = 9
 lifespan = 30000.0
+# The altered frame: an emberblood body with a longer reach than the parent it came from.
+# Its starting age is the emberblood one, because that is still the body it is — ADR 0258 §2
+# asks for the SPECIES' age, and the touch changed what the frame may become, not when it
+# was born.
+starting_age_years = 1.0
 base_attributes = {"physique": 2.0, "spirit": 1.0, "aptitude": 1.0, "comprehension": 1.0, "agility": 1.0, "will": 2.0, "fortune": 1.0}
 percent_modifiers = {"cultivation_rate": -0.05, "qi_regen": 0.05, "breakthrough_chance": 0.05}
 affinities = {"fire": 4.0, "wood": 1.0}

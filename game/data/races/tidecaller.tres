@@ -16,6 +16,8 @@ offspring_variance = 0.15
 closed_paths = Array[StringName]([&"body_cultivation"])
 realm_ceiling = 0
 lifespan = 58400.0
+# The longest-lived body in the tree, and the one that takes longest to arrive. ADR 0258 §2.
+starting_age_years = 5.0
 ; The attributes this body does not specialise in are the plain mortal 1.0 that
 ; `commonborn` writes for all seven, except where this body says otherwise below.
 ; Physique is AUTHORED rather than left out because an omitted grant is a grant of 0.0 —

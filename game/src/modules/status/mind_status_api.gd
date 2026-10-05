@@ -163,7 +163,7 @@ static func project(
 	var def := MindStatusCatalog.instance().definition(status_id)
 	if def == null or def.role != MindVocabulary.ROLE_EXPRESSION:
 		return {"ok": false, "reason": String(REFUSED_UNKNOWN), "id": String(status_id)}
-	var parts := MindExpression.breakdown(def, target, rng)
+	var parts := MindExpression.breakdown(def, target, rng, attacker)
 	earn_mastery(attacker, def, 1.0)
 	if not bool(parts.get("pool_bound", false)):
 		return {
@@ -209,7 +209,7 @@ static func preview(attacker: Actor, target: Actor, status_id: StringName) -> Di
 			"ok": true,
 			"id": String(def.id),
 			"class": String(def.role),
-			"breakdown": MindExpression.breakdown(def, target, null),
+			"breakdown": MindExpression.breakdown(def, target, null, attacker),
 		}
 	return {"ok": false, "reason": String(REFUSED_UNKNOWN), "id": String(def.id)}
 

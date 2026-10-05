@@ -47,11 +47,29 @@ func ensure_entry(npc_id: StringName, def_id: StringName) -> NpcRosterEntry:
 	return created
 
 
+## The ids this ledger holds, in a DETERMINISTIC order.
+##
+## ## The sort is by the id's TEXT, and it has to be
+##
+## `out.sort()` sorted an `Array[StringName]`, and Godot compares `StringName` by its
+## internal pointer-derived id — not by the string it holds. So the order was a property of
+## which ids happened to intern first in the process, and it CHANGED between runs: two
+## suites loaded in one order got `[drifter, smith_bearcutter]` and the same two loaded in
+## another got `[smith_bearcutter, drifter]`, and `test_npc_content.gd`'s three ordering
+## assertions went red on a run where they had been green on the previous one.
+##
+## Every consumer of this list wants a roster a player can read — a save round trip, a diff,
+## a "who have I met" screen — and a list whose order moves between two runs of the same
+## world is not that. Sorting the TEXTS and re-interning is one named call, and it makes the
+## order a property of the ids rather than of the session.
 func npc_ids() -> Array[StringName]:
-	var out: Array[StringName] = []
+	var texts: Array[String] = []
 	for key in _entries.keys():
-		out.append(StringName(key))
-	out.sort()
+		texts.append(String(key))
+	texts.sort()
+	var out: Array[StringName] = []
+	for text in texts:
+		out.append(StringName(text))
 	return out
 
 

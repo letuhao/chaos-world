@@ -1,0 +1,52 @@
+SCRIPT ERROR: Parse Error: Static function "shared()" not found in base "NpcEvents".
+   at: GDScript::reload (res://src/modules/social/api.gd:142)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/modules/sect/api.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/app/actor_factory.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://tests/modules/elements/test_element_stat_publication.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+ERROR: Failed to load script "res://tests/modules/elements/test_element_stat_publication.gd" with error "Compilation failed".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Invalid call. Nonexistent function 'attach' in base 'GDScript'.
+   at: spawn_npc (res://src/app/actor_factory.gd:419)
+   GDScript backtrace (most recent call first):
+       [0] spawn_npc (res://src/app/actor_factory.gd:419)
+       [1] test_an_npc_minted_by_the_factory_carries_the_element_provider (res://tests/modules/elements/test_element_wiring.gd:356)
+       [2] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'set_affinity' in base 'Nil'.
+   at: test_an_npc_minted_by_the_factory_carries_the_element_provider (res://tests/modules/elements/test_element_wiring.gd:358)
+   GDScript backtrace (most recent call first):
+       [0] test_an_npc_minted_by_the_factory_carries_the_element_provider (res://tests/modules/elements/test_element_wiring.gd:358)
+       [1] _initialize (res://tests/run_tests.gd:118)
+ERROR: res://tests/modules/elements/test_element_wiring.gd :: the npc constructor still mints an actor: expected not <null>, got <null>
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+fail 6 script error(s) aborted a test mid-function; those tests reported no failure, so the run above is incomplete
+warn 4 script(s) failed to LOAD; the errors above are mostly their dependants:
+warn   res://src/modules/social/api.gd
+warn   res://src/modules/sect/api.gd
+warn   res://src/app/actor_factory.gd
+warn   res://tests/modules/elements/test_element_stat_publication.gd
+warn SCRIPT ERROR: Parse Error: Static function "shared()" not found in base "NpcEvents".
+warn SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+warn SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+warn SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+warn SCRIPT ERROR: Invalid call. Nonexistent function 'attach' in base 'GDScript'.
+warn SCRIPT ERROR: Invalid call. Nonexistent function 'set_affinity' in base 'Nil'.
+$ C:\Users\NeneScarlet\AppData\Local\Microsoft\WinGet\Packages\GodotEngine.GodotEngine_Microsoft.Winget.Source_8wekyb3d8bbwe\Godot_v4.7.2-stable_win64_console.exe --headless --path D:\Works\source\chaos-world\game -s res://tests/run_tests.gd --log-file D:\Works\source\chaos-world\build\logs\172711-13784-1-run.log -- --suite tests/modules/elements
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Floors: 0 of 42 test(s) ran under a declared expect_assertions() floor; the rest are covered only by the SCRIPT ERROR scan in tools/test.py, which catches an abort without naming the test
+Results: 265 passed, 1 failed (6 suite(s))

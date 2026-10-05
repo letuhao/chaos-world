@@ -1,0 +1,76 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Loading docks...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+ERROR: Can't free a RefCounted object.
+   at: callp (core/object/object.cpp:781)
+   GDScript backtrace (most recent call first):
+       [0] test_a_dead_reader_is_neutral_rather_than_a_crash (res://tests/modules/market/test_market_favour.gd:186)
+       [1] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Attempted to free a RefCounted object.
+   at: test_a_dead_reader_is_neutral_rather_than_a_crash (res://tests/modules/market/test_market_favour.gd:186)
+   GDScript backtrace (most recent call first):
+       [0] test_a_dead_reader_is_neutral_rather_than_a_crash (res://tests/modules/market/test_market_favour.gd:186)
+       [1] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent 'float' constructor.
+   at: factor (res://src/modules/market/market_favour.gd:101)
+   GDScript backtrace (most recent call first):
+       [0] factor (res://src/modules/market/market_favour.gd:101)
+       [1] quote (res://src/modules/market/market_transfer.gd:73)
+       [2] price (res://src/modules/market/market_transfer.gd:128)
+       [3] test_a_reader_answering_the_wrong_shape_is_neutral (res://tests/modules/market/test_market_favour.gd:167)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid access to property or key 'coins' on a base object of type 'Dictionary'.
+   at: test_a_regarded_buyer_pays_under_and_a_disliked_one_pays_over (res://tests/modules/market/test_market_favour.gd:236)
+   GDScript backtrace (most recent call first):
+       [0] test_a_regarded_buyer_pays_under_and_a_disliked_one_pays_over (res://tests/modules/market/test_market_favour.gd:236)
+       [1] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid access to property or key 'coins' on a base object of type 'Dictionary'.
+   at: test_no_reader_leaves_todays_price_byte_identical (res://tests/modules/market/test_market_favour.gd:76)
+   GDScript backtrace (most recent call first):
+       [0] test_no_reader_leaves_todays_price_byte_identical (res://tests/modules/market/test_market_favour.gd:76)
+       [1] _initialize (res://tests/run_tests.gd:118)
+ERROR: res://tests/modules/market/test_market_favour.gd :: setup: it is live while it exists: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/market/test_market_favour.gd :: a reader answering <null> leaves the price exactly neutral: expected 40, got 1
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/market/test_market_favour.gd :: a liked buyer is charged 69, under the neutral 60: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/market/test_market_favour.gd :: and a disliked one is charged 51, over the neutral 60: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+fail 4 script error(s) aborted a test mid-function; those tests reported no failure, so the run above is incomplete
+warn SCRIPT ERROR: Attempted to free a RefCounted object.
+warn SCRIPT ERROR: Invalid call. Nonexistent 'float' constructor.
+warn SCRIPT ERROR: Invalid access to property or key 'coins' on a base object of type 'Dictionary'.
+warn SCRIPT ERROR: Invalid access to property or key 'coins' on a base object of type 'Dictionary'.
+$ C:\Users\NeneScarlet\AppData\Local\Microsoft\WinGet\Packages\GodotEngine.GodotEngine_Microsoft.Winget.Source_8wekyb3d8bbwe\Godot_v4.7.2-stable_win64_console.exe --headless --path D:\Works\source\chaos-world\game --import --log-file D:\Works\source\chaos-world\build\logs\155256-78436-1-run.log
+$ C:\Users\NeneScarlet\AppData\Local\Microsoft\WinGet\Packages\GodotEngine.GodotEngine_Microsoft.Winget.Source_8wekyb3d8bbwe\Godot_v4.7.2-stable_win64_console.exe --headless --path D:\Works\source\chaos-world\game -s res://tests/run_tests.gd --log-file D:\Works\source\chaos-world\build\logs\155308-78436-2-run.log -- --suite market
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PROBE defs with fixed trade_value: 913 ; of those, roll a trade_value within 40 seeds: 231 { "misc": 231 }
+  SAMPLE currency: ["id=A25_divine_assayoffice_capias rarity=legendary roll_spec={ \"count\": 4, \"contexts\": [\"base\"] } rolls_tv=false", "id=A25_divine_assayoffice_mandamus rarity=legendary roll_spec={ \"count\": 4, \"contexts\": [\"base\"] } rolls_tv=false"]
+  SAMPLE key: ["id=A26_immortal_auditroll_account rarity=legendary roll_spec={ \"count\": 4, \"contexts\": [\"base\"] } rolls_tv=false", "id=A26_immortal_auditroll_bookkeeper rarity=legendary roll_spec={ \"count\": 4, \"contexts\": [\"base\"] } rolls_tv=false"]
+  SAMPLE misc: ["id=A28_immortal_assayer_commemorative rarity=legendary roll_spec={ \"count\": 4, \"contexts\": [\"base\", \"prefix\"] } rolls_tv=true", "id=A28_immortal_assayer_emeritus rarity=legendary roll_spec={ \"count\": 4, \"contexts\": [\"base\", \"prefix\"] } rolls_tv=true"]
+  SAMPLE quest: ["id=A29_divine_coroner_caption rarity=legendary roll_spec={ \"count\": 4, \"contexts\": [\"base\"] } rolls_tv=false", "id=A29_divine_coroner_indictment rarity=legendary roll_spec={ \"count\": 4, \"contexts\": [\"base\"] } rolls_tv=false"]
+Floors: 0 of 108 test(s) ran under a declared expect_assertions() floor; the rest are covered only by the SCRIPT ERROR scan in tools/test.py, which catches an abort without naming the test
+Results: 869 passed, 4 failed (9 suite(s))

@@ -22,6 +22,20 @@ const ALL: Array[StringName] = [MAJOR, STORY, MINOR, TRANSIENT]
 ## so adding a tier can never silently change which existing npcs are remembered.
 const TRACKED: Array[StringName] = [MAJOR, STORY]
 
+## ## The tiers the ALIVE LAYER composes on interaction rather than authoring (ADR 0253).
+##
+## **`minor` is here and `transient` deliberately is not.** A minor npc must arrive already
+## plausible — a name, a manner, one opinion consistent with the place they are standing
+## in and their tier — so it composes from the place's voice. A transient npc is pure
+## population: it gets the generic body and nothing else, which is the cheapest honest
+## answer there is and costs one constant rather than a compose.
+##
+## **This is a NAMED SET rather than `tier == MINOR`**, for the reason ADR 0092 line 18
+## gives: the tier is data, and a mechanism never compares one. The question this set
+## answers is authored content's — "for which tiers is a composition the right answer" —
+## so adding a fifth tier that composes is one row here and no edit to a mechanism.
+const COMPOSED: Array[StringName] = [MINOR]
+
 ## What an author gets for free: a named face that neither remembers nor is remembered.
 const DEFAULT := MINOR
 

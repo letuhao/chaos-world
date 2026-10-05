@@ -222,6 +222,294 @@ def _reachable_code_writer_is_repeatable() -> None:
         )
 
 
+def _supply_against(src: Path) -> dict:
+    """Run `code_owned_supply` over a fixture tree instead of the repository.
+
+    Both roots are redirected: `SRC_DIR` decides which files are read and `GAME_DIR` is
+    what each hit is reported relative to, so patching only one leaves the walk resolving
+    paths outside the real tree and raises rather than reporting.
+
+    The caller-graph cache is dropped too. It is keyed on the roots, so a fixture would miss
+    automatically - but the key is built from `str(Path)`, and clearing it here means a
+    fixture can never read a graph the repository filled, which is a test reading the wrong
+    tree wearing the costume of coverage.
+    """
+    supply: dict = {}
+    original = gate_reach.SRC_DIR, gate_reach.GAME_DIR
+    gate_reach.SRC_DIR, gate_reach.GAME_DIR = src, src.parent
+    gate_reach._CALLER_GRAPH_CACHE.clear()
+    try:
+        gate_reach.code_owned_supply(supply)
+    finally:
+        gate_reach.SRC_DIR, gate_reach.GAME_DIR = original
+        gate_reach._CALLER_GRAPH_CACHE.clear()
+    return supply
+
+
+# --- BL-0899: a DECLARATION is not evidence of its own reachability (ADR 0226) ---
+#
+# The writer module, the writer verb, and a SIBLING verb that production genuinely does
+# drive. `ClanApi.summary` here is the whole defect in miniature: it is a real, live,
+# outside-module caller of the module, and it has nothing to do with the heir registration.
+# A module-granularity reachability test reads it as proof the writer is driven.
+
+_WRITER_MODULE = """
+class_name FixtureFacts
+extends RefCounted
+
+const FACT := &"heir_registered"
+
+
+static func record_heir(actor: Actor) -> Dictionary:
+	return WorldFact.record(actor, FACT, 1)
+"""
+
+# A sibling verb in the SAME module that production really does call. This is the decoy:
+# `ClanApi.summary` / `ClanApi.attach` is exactly this shape in the shipped clan module, and
+# it is what made the old test answer True.
+_SIBLING_MODULE = """
+class_name FixtureApi
+extends RefCounted
+
+
+static func summary(actor: Actor) -> Dictionary:
+	return {"clan": ""}
+
+
+static func record_oath(actor: Actor) -> Dictionary:
+	return FixtureFacts.record_heir(actor)
+"""
+
+# A driver that calls the SIBLING only. Production reaches `FixtureApi.summary`, which is
+# internal wiring, and the writer behind it stays driven by nothing outside the module.
+_SIBLING_DRIVER = """
+class_name FixtureScreen
+extends Control
+
+
+func _ready() -> void:
+	var codex := FixtureApi.summary(null)
+	print(codex)
+"""
+
+
+@case("gate_reach: a writer whose only caller is a SIBLING verb in its own module is UNREACHABLE")
+def _sibling_caller_does_not_drive_the_writer() -> None:
+    """The false green, reproduced in miniature, and it is BL-0899's exact shape.
+
+    `ClanFacts.record_heir_registered` shipped with `ClanHeir.register` inside
+    `modules/clan/` and `ClanApi.attach` outside it. The old test asked whether the MODULE
+    was driven, `ClanApi.attach` said yes, and a fact three authored quests gate on was
+    graded `repeatable` with `check` reporting `findings: 0`.
+
+    ADR 0226 is the rule this asserts: a declaration is never evidence of its own
+    reachability. The writer's reachability is a fact about the WRITER's callers, and
+    `FixtureApi.summary` is not one of them.
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        src = Path(raw) / "src"
+        write(src / "modules" / "fixture" / "fixture_facts.gd", _WRITER_MODULE)
+        write(src / "modules" / "fixture" / "fixture_api.gd", _SIBLING_MODULE)
+        write(src / "ui" / "screens" / "fixture_screen.gd", _SIBLING_DRIVER)
+
+        supply = _supply_against(src)
+        row = supply.get("heir_registered")
+        expect(row is not None, "the code-owned writer was not counted at all")
+        expect(
+            not row.repeatable,
+            "a writer whose only production caller chain runs through its own module was "
+            "marked repeatable, so a need:1 gate read satisfiable by a verb nothing outside "
+            "the module can reach - this is the false green BL-0899 shipped",
+        )
+        expect(
+            row.unbacked_sites,
+            "the undriven writer was not recorded, so `judge` cannot grade it unbacked_in_play "
+            "and would report no finding at all",
+        )
+        expect(
+            row.total == 0,
+            f"an undriven writer still contributed {row.total} to the in-play ceiling, so a "
+            "need:1 gate passed `need <= total` and the finding never fired - that arithmetic "
+            "is precisely how BL-0899 reported findings: 0",
+        )
+
+
+@case("gate_reach: a writer a PRODUCTION caller really reaches is REACHABLE")
+def _production_caller_makes_the_writer_reachable() -> None:
+    """The INC-0012 half, and it is the half a loosened guard breaks first.
+
+    INC-0012's census reported four shipped event triggers as permanently dead because it
+    could not see a producer four hops away. A guard that reports every writer unreachable
+    would satisfy the sibling case above perfectly and be useless: it sends an agent to
+    author a producer that already runs. This fixture is the reachable side of the same
+    pairing, so a mutation that breaks either direction turns one of the two red.
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        src = Path(raw) / "src"
+        write(src / "modules" / "fixture" / "fixture_facts.gd", _WRITER_MODULE)
+        write(src / "modules" / "fixture" / "fixture_api.gd", _SIBLING_MODULE)
+        write(src / "ui" / "screens" / "fixture_screen.gd", _SIBLING_DRIVER)
+        # The one line BL-0899's fix asks for: a caller OUTSIDE modules/fixture/ that drives
+        # the writer's own verb.
+        write(
+            src / "app" / "resolver.gd",
+            "class_name FixtureResolver\nextends RefCounted\n\n\n"
+            "static func drive(actor: Actor) -> Dictionary:\n"
+            "\treturn FixtureApi.record_oath(actor)\n",
+        )
+
+        supply = _supply_against(src)
+        row = supply.get("heir_registered")
+        expect(row is not None, "the code-owned writer was not counted at all")
+        expect(
+            row.repeatable,
+            "a writer an outside-module production caller drives was still capped at one "
+            "occurrence, so a need:3 gate reads dead while the game plainly discharges three "
+            "- that is INC-0012 again, in the other direction",
+        )
+        expect(
+            not row.unbacked_sites,
+            f"a reachable writer was also recorded as undriven: {row.unbacked_sites}",
+        )
+
+
+@case("gate_reach: a TEST-only caller does not make a writer reachable")
+def _test_only_caller_is_not_production() -> None:
+    """ADR 0188: a published verb is kept by a caller that is NOT a test.
+
+    Without the test-class exclusion the whole reachability walk would grade a writer
+    reachable because `game/tests/modules/clan/test_clan_heir_registry_seam.gd` calls
+    `ClanRegistry.commit`, and `tests/` is exactly where the three dead quests were proven
+    finishable. A green test is not a player.
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        src = Path(raw) / "src"
+        write(src / "modules" / "fixture" / "fixture_facts.gd", _WRITER_MODULE)
+        write(src / "modules" / "fixture" / "fixture_api.gd", _SIBLING_MODULE)
+        write(src / "ui" / "screens" / "fixture_screen.gd", _SIBLING_DRIVER)
+        write(
+            src.parent / "tests" / "test_fixture.gd",
+            "extends TestCase\n\n\nfunc it() -> void:\n\tFixtureApi.record_oath(null)\n",
+        )
+
+        supply = _supply_against(src)
+        row = supply.get("heir_registered")
+        expect(row is not None, "the code-owned writer was not counted at all")
+        expect(
+            not row.repeatable,
+            "a writer whose only outside caller is under game/tests was marked repeatable, so "
+            "a green test counted as a player - ADR 0188 says the caller that keeps a verb is "
+            "one that is not a test",
+        )
+
+
+@case("gate_reach: a writer in the COMPOSITION ROOT is engine-driven, not caller-driven")
+def _composition_root_writer_is_reachable() -> None:
+    """The latent INC-0012 false red, found by running it, not by reading.
+
+    `src/app/` is where Godot mounts the scene, so `character_creation_flow.gd`,
+    `item_workbench_app.gd` and `soul_death.gd` are driven by the ENGINE's lifecycle and no
+    class calls them. Asking for an outside-module caller graded `character_created`,
+    `child_born` and `soul_died` as undriven - real producers, and a false red the moment an
+    author writes a gate on any of them. Those three produced no finding today only because
+    no gate demands them yet, which is the part that makes a latent false red dangerous.
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        src = Path(raw) / "src"
+        write(
+            src / "app" / "creation_flow.gd",
+            "class_name FixtureCreationFlow\nextends RefCounted\n\n"
+            'const FACT := &"character_created"\n\n\n'
+            "static func build(actor: Actor) -> Dictionary:\n"
+            "\treturn WorldFact.record(actor, FACT, 1)\n",
+        )
+
+        supply = _supply_against(src)
+        row = supply.get("character_created")
+        expect(row is not None, "the composition-root writer was not counted at all")
+        expect(
+            row.repeatable,
+            "a writer in src/app/ was graded undriven because no class calls it, but the "
+            "engine mounts it - that grades a real producer dead and is INC-0012 arriving "
+            "through the new door",
+        )
+
+
+@case("gate_reach: `unbacked_in_play` and `unbacked_demand` are DIFFERENT grades")
+def _the_two_unbacked_grades_are_distinct() -> None:
+    """The reporting requirement, and the one that keeps an agent from deleting a writer.
+
+    `unbacked_demand` says no producer exists and the fix is to author one.
+    `unbacked_in_play` says a producer EXISTS and the fix is a caller. Sending an agent to
+    the wrong one either authors a duplicate producer or deletes a working writer, which is
+    the failure INC-0012 recorded - a false red that sends someone to author a producer that
+    already exists.
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        src = Path(raw) / "src"
+        write(src / "modules" / "fixture" / "fixture_facts.gd", _WRITER_MODULE)
+        write(src / "modules" / "fixture" / "fixture_api.gd", _SIBLING_MODULE)
+        write(src / "ui" / "screens" / "fixture_screen.gd", _SIBLING_DRIVER)
+
+        supply = _supply_against(src)
+        undriven = gate_reach.judge(
+            supply,
+            [gate_reach.Demand("heir_registered", 1, "f.tres:step", 1, "quest step", True)],
+            [],
+        )
+        expect(
+            [f.code for f in undriven] == ["unbacked_in_play"],
+            f"a gate on a fact whose writer exists but is undriven was graded "
+            f"{[f.code for f in undriven]!r}; it must be `unbacked_in_play`, never "
+            "`unbacked_demand`, because the two have different fixes",
+        )
+        expect(
+            "clan" not in undriven[0].note and "author a producer" not in undriven[0].note,
+            f"the unbacked_in_play note does not distinguish itself from unbacked_demand: "
+            f"{undriven[0].note!r}. A note that reads the same sends the reader to the wrong fix",
+        )
+
+        nothing = gate_reach.judge(
+            {},
+            [gate_reach.Demand("never_produced", 1, "f.tres:step", 1, "quest step", True)],
+            [],
+        )
+        expect(
+            [f.code for f in nothing] == ["unbacked_demand"],
+            f"a gate on a fact with NO writer at all was graded {[f.code for f in nothing]!r}; "
+            "it must stay `unbacked_demand` - conflating the two is how a real producer gets "
+            "deleted (INC-0012)",
+        )
+
+
+@case("gate_reach: the composition-root rule does not widen for a MODULE writer")
+def _module_writer_is_not_exempt_from_a_caller() -> None:
+    """The counterweight, because the composition-root rule is a widening.
+
+    If `src/app/` being engine-driven were generalised - if ANY module directory were treated
+    as an entry - the very first case would go green again and the guard would ship the false
+    green it was written to remove. This is the case that tells "exempt the composition root"
+    apart from "exempt everything".
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        src = Path(raw) / "src"
+        write(src / "modules" / "fixture" / "fixture_facts.gd", _WRITER_MODULE)
+        write(
+            src / "app" / "boot.gd",
+            "class_name FixtureBoot\nextends Node\n\n\nfunc _ready() -> void:\n\tprint(1)\n",
+        )
+
+        supply = _supply_against(src)
+        row = supply.get("heir_registered")
+        expect(row is not None, "the code-owned writer was not counted at all")
+        expect(
+            not row.repeatable,
+            "a modules/ writer was marked reachable merely because an unrelated file lives in "
+            "src/app/, so the composition-root exemption widened into a general one and the "
+            "false green came back through the new door",
+        )
+
+
 @case("map_theme: a shipped theme with no authored prose FAILS the check")
 def _shipped_theme_without_prose_fails() -> None:
     with tempfile.TemporaryDirectory() as raw:
@@ -4894,6 +5182,10 @@ def _sync_verify_reports_a_false_claim() -> None:
     import tools.character_bundle_sync as sync
 
     catalog = sync.unique_characters.readable_catalog()
+    expect(
+        bool(catalog),
+        "the unique-character catalog read as empty, so there is nothing for this guard to police",
+    )
     ghost = {
         "id": "selftest-ghost",
         "published_as": {
@@ -4923,12 +5215,37 @@ def _sync_verify_reports_a_false_claim() -> None:
         any("not on disk" in defect for defect in defects),
         f"verify named the claim but not WHY it is false; it reported {joined!r}",
     )
-    # And the real catalog still reports its own 18, so the guard is live and not merely reachable.
-    real_defects, _real_advisories = sync.verify(set())
+    # Liveness against the REAL catalog, built the way the CLI builds it. The first version of this
+    # case passed `verify(set())`, which vouches for nothing, so every authored portrait became an
+    # "unvouched-for" defect and the assertion passed without ever testing the false-claim guard. It
+    # also asserted the live catalog still reported its own 18, which became FALSE the moment
+    # `unique_characters unpublish` emptied them - so it would have gone red for the right reason
+    # only by accident. Derive `published` from the resources on disk, the way
+    # `character_bundle_sync verify` does, and assert the specific thing: no FALSE CLAIM survives.
+    import re as _re
+
+    published = {
+        found.group(1)
+        for found in (
+            _re.search(
+                r'^id = &"([^"]+)"',
+                path.read_text(encoding="utf-8", errors="replace"),
+                _re.MULTILINE,
+            )
+            for path in sorted(sync.PORTRAIT_ROOT.glob("*.tres"))
+        )
+        if found is not None
+    }
     expect(
-        bool(real_defects),
-        f"verify reported no defect against the live catalog; it found {len(catalog)} records and "
-        "the guard is measuring nothing",
+        bool(published),
+        "no PortraitDef resources were found on disk, so this case cannot prove the guard is live",
+    )
+    real_defects, _real_advisories = sync.verify(published)
+    false_claims = [d for d in real_defects if "published_as" in d or "not on disk" in d]
+    expect(
+        not false_claims,
+        f"{len(false_claims)} false published_as claim(s) survive against the live catalog: "
+        f"{false_claims[:3]!r}. DEF-0293 is closed, so a claim here has no file behind it.",
     )
 
 

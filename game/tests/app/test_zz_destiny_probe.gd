@@ -18,8 +18,11 @@ func test_zz_probe_catalog_first_read() -> void:
 			print("PROBE %s -> NULL" % id)
 		else:
 			print("PROBE %s -> id=%s group=%s" % [id, def.id, def.group])
-	print("PROBE DESTINY_ROOT=%s scan=%s" % [
-		FateCatalog.DESTINIES_ROOT, str(ContentScan.files_under(FateCatalog.DESTINIES_ROOT))
-	])
+	print(
+		(
+			"PROBE DESTINY_ROOT=%s scan=%s"
+			% [FateCatalog.DESTINIES_ROOT, str(ContentScan.files_under(FateCatalog.DESTINIES_ROOT))]
+		)
+	)
 	print("PROBE dir_exists=%s" % DirAccess.dir_exists_absolute("res://data/destiny/destinies"))
 	assert_eq(ids.size() > 0, true, "the catalog ships at least one destiny")

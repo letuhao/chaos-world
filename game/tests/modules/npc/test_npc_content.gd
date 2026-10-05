@@ -45,8 +45,10 @@ const GATE_KEEPER := &"gate_keeper_bo"
 ## **This list is a census, and authoring an NPC means editing it.** That is the
 ## point: a new `.tres` under `cast/` that nobody declared here fails this test, so
 ## the cast cannot grow silently. `elder_qin` arrived with the brotherhood oath
-## (BL-0745) as the WITNESS to another elder's pact.
+## (BL-0745) as the WITNESS to another elder's pact, and `courting_elder_bo` with the
+## pursuit seed as an authored suitor.
 const SHIPPED_TEXT_ORDER := [
+	"courting_elder_bo",
 	"drifter",
 	"elder_qin",
 	"elder_wei",

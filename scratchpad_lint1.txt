@@ -1,0 +1,115 @@
+F401 [*] `argparse` imported but unused
+  --> tools\adr_cite.py:43:8
+   |
+41 | from __future__ import annotations
+42 |
+43 | import argparse
+   |        ^^^^^^^^
+44 | import json
+45 | import re
+   |
+help: Remove unused import: `argparse`
+   |
+42 |
+   - import argparse
+43 | import json
+   |
+
+F401 [*] `argparse` imported but unused
+  --> tools\adr_cite_selftest.py:30:8
+   |
+28 | from __future__ import annotations
+29 |
+30 | import argparse
+   |        ^^^^^^^^
+31 | import contextlib
+32 | import io
+   |
+help: Remove unused import: `argparse`
+   |
+29 |
+   - import argparse
+30 | import contextlib
+   |
+
+E501 Line too long (104 > 100)
+   --> tools\adr_cite_selftest.py:117:101
+    |
+116 | @case(
+117 |     "adr-cite: a correct citation stays GREEN, so the red cases are not a checker that fails everything"
+    |                                                                                                     ^^^^
+118 | )
+119 | def _correct_citation_passes() -> None:
+    |
+
+E501 Line too long (104 > 100)
+   --> tools\arch\rules.py:296:101
+    |
+295 | def load_families() -> dict[str, dict]:
+296 |     """The content-family declaration (ADR 0184): family -> {data_dir, def_class, module, path?, root?}.
+    |                                                                                                     ^^^^
+297 |
+298 |     Read, never hand-edited into a second copy: the gates that walk the content roots
+    |
+
+F821 Undefined name `vitality`
+   --> tools\data.py:678:35
+    |
+676 |     raw_vitality = re.findall(r'"vitality":\s*(-?[\d.]+)', text)
+677 |     return [
+678 |         (boss_id, table_id, float(vitality[index]) if index < len(raw_vitality) else None)
+    |                                   ^^^^^^^^
+679 |         for index, (boss_id, table_id) in enumerate(zip(boss_ids, table_ids, strict=False), start=0)
+680 |     ]
+    |
+
+Found 5 errors.
+[*] 2 fixable with the `--fix` option.
+D:\Works\source\chaos-world\game\src\app\item_workbench_app.gd:1390: Error: Max allowed file lines num (1000) exceeded (max-file-lines)
+D:\Works\source\chaos-world\game\src\app\item_workbench_body.gd:1032: Error: Max allowed file lines num (1000) exceeded (max-file-lines)
+D:\Works\source\chaos-world\game\src\app\kinship_app.gd:286: Error: unused function argument 'rng' (unused-argument)
+D:\Works\source\chaos-world\game\src\app\npc_boot.gd:136: Error: unused function argument 'tier' (unused-argument)
+D:\Works\source\chaos-world\game\src\core\actor.gd:1: Error: "Class global scope" has more than 20 public methods (functions) (max-public-methods)
+D:\Works\source\chaos-world\game\src\core\world_clock.gd:129: Error: Definition out of order in global scope (class-definitions-order)
+D:\Works\source\chaos-world\game\src\modules\combat_engine\mind_damage.gd:1141: Error: Max allowed file lines num (1000) exceeded (max-file-lines)
+D:\Works\source\chaos-world\game\src\modules\combat_engine\mind_damage.gd:687: Error: Definition out of order in global scope (class-definitions-order)
+D:\Works\source\chaos-world\game\src\modules\domain\domain_fixtures.gd:1058: Error: Max allowed file lines num (1000) exceeded (max-file-lines)
+D:\Works\source\chaos-world\game\src\modules\domain\domain_generator.gd:1019: Error: Max allowed file lines num (1000) exceeded (max-file-lines)
+D:\Works\source\chaos-world\game\src\modules\npc\npc_aliveness.gd:264: Error: unused function argument 'player' (unused-argument)
+D:\Works\source\chaos-world\game\src\modules\npc\npc_def.gd:105: Error: Definition out of order in global scope (class-definitions-order)
+D:\Works\source\chaos-world\game\src\modules\npc\npc_def.gd:110: Error: Definition out of order in global scope (class-definitions-order)
+D:\Works\source\chaos-world\game\src\modules\npc\npc_def.gd:124: Error: Definition out of order in global scope (class-definitions-order)
+D:\Works\source\chaos-world\game\src\modules\npc\npc_read_model.gd:224: Error: Definition out of order in global scope (class-definitions-order)
+D:\Works\source\chaos-world\game\src\modules\npc\npc_read_model.gd:229: Error: Definition out of order in global scope (class-definitions-order)
+D:\Works\source\chaos-world\game\src\modules\npc\npc_read_model.gd:234: Error: Definition out of order in global scope (class-definitions-order)
+D:\Works\source\chaos-world\game\src\modules\npc\npc_read_model.gd:235: Error: Definition out of order in global scope (class-definitions-order)
+D:\Works\source\chaos-world\game\src\modules\npc\npc_read_model.gd:236: Error: Definition out of order in global scope (class-definitions-order)
+D:\Works\source\chaos-world\game\src\modules\social\pursuit_claim.gd:77: Error: unused function argument 'npc_key' (unused-argument)
+D:\Works\source\chaos-world\game\src\modules\social\pursuit_stance.gd:151: Error: Definition out of order in global scope (class-definitions-order)
+D:\Works\source\chaos-world\game\src\modules\social\pursuit_stance.gd:239: Error: Definition out of order in global scope (class-definitions-order)
+D:\Works\source\chaos-world\game\src\modules\social\social_attraction_seed.gd:235: Error: Definition out of order in global scope (class-definitions-order)
+D:\Works\source\chaos-world\game\src\modules\social\social_attraction_seed.gd:236: Error: Definition out of order in global scope (class-definitions-order)
+D:\Works\source\chaos-world\game\src\modules\social\social_attraction_seed.gd:237: Error: Definition out of order in global scope (class-definitions-order)
+D:\Works\source\chaos-world\game\src\ui\screens\custody_screen.gd:1: Error: "Class global scope" has more than 20 public methods (functions) (max-public-methods)
+D:\Works\source\chaos-world\game\src\ui\screens\custody_screen.gd:1032: Error: Max allowed file lines num (1000) exceeded (max-file-lines)
+D:\Works\source\chaos-world\game\src\ui\screens\domain_explore.gd:1214: Error: Max allowed file lines num (1000) exceeded (max-file-lines)
+Failure: 28 problems found
+D:\Works\source\chaos-world\game\tests\core\test_zzr_probe2.gd:5: Error: Max allowed line length (100) exceeded (max-line-length)
+D:\Works\source\chaos-world\game\tests\core\test_zzr_probe3.gd:6: Error: Max allowed line length (100) exceeded (max-line-length)
+D:\Works\source\chaos-world\game\tests\core\test_zzr_probe4.gd:5: Error: Max allowed line length (100) exceeded (max-line-length)
+D:\Works\source\chaos-world\game\tests\modules\combat_engine\test_qi_damage.gd:1219: Error: Max allowed file lines num (1000) exceeded (max-file-lines)
+D:\Works\source\chaos-world\game\tests\modules\destiny\destiny_reach_walker.gd:1144: Error: Max allowed file lines num (1000) exceeded (max-file-lines)
+D:\Works\source\chaos-world\game\tests\modules\destiny\test_destiny_earn_sources_cultivation.gd:674: Error: Definition out of order in global scope (class-definitions-order)
+D:\Works\source\chaos-world\game\tests\modules\destiny\test_destiny_earn_sources_cultivation.gd:675: Error: Definition out of order in global scope (class-definitions-order)
+D:\Works\source\chaos-world\game\tests\modules\destiny\test_destiny_earn_sources_cultivation.gd:676: Error: Definition out of order in global scope (class-definitions-order)
+D:\Works\source\chaos-world\game\tests\modules\destiny\test_destiny_earn_sources_cultivation.gd:680: Error: Definition out of order in global scope (class-definitions-order)
+D:\Works\source\chaos-world\game\tests\modules\forage\test_gather_reachability_corpus.gd:188: Error: Definition out of order in global scope (class-definitions-order)
+D:\Works\source\chaos-world\game\tests\modules\npc\test_npc_alive.gd:661: Error: Definition out of order in global scope (class-definitions-order)
+D:\Works\source\chaos-world\game\tests\modules\social\test_pursuit.gd:763: Error: Definition out of order in global scope (class-definitions-order)
+D:\Works\source\chaos-world\game\tests\modules\status\test_mind_status_no_lock.gd:1032: Error: Max allowed file lines num (1000) exceeded (max-file-lines)
+D:\Works\source\chaos-world\game\tests\modules\techniques\test_technique_marginalia.gd:1111: Error: Max allowed file lines num (1000) exceeded (max-file-lines)
+D:\Works\source\chaos-world\game\tests\ui\test_domain_explore.gd:1184: Error: Max allowed file lines num (1000) exceeded (max-file-lines)
+D:\Works\source\chaos-world\game\tests\ui\test_technique_screens.gd:699: Error: duplicated loading of "res://src/modules/techniques/api.gd" (duplicated-load)
+Failure: 16 problems found
+$ D:\Works\source\chaos-world\.venv\Scripts\ruff.EXE check tools
+$ D:\Works\source\chaos-world\.venv\Scripts\gdlint.EXE D:\Works\source\chaos-world\game\src

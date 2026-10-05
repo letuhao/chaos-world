@@ -1,0 +1,170 @@
+warning: in the working copy of 'game/src/ui/screens/clan_screen.gd', CRLF will be replaced by LF the next time Git touches it
+diff --git a/game/src/ui/screens/clan_screen.gd b/game/src/ui/screens/clan_screen.gd
+index 98bb27230..9270625a5 100644
+--- a/game/src/ui/screens/clan_screen.gd
++++ b/game/src/ui/screens/clan_screen.gd
+@@ -81,6 +81,16 @@ extends UiScreen
+ ## name. The screen asks it, renders the refusal verbatim, and only enables the press when
+ ## it says yes. It never re-derives a house's policy from the rank list.
+ ##
++## ## ## The PICK, and why it had to be given a gesture of its own
++##
++## `act_join` acts on `_selected_clan`, and a hero belonging to no house has none. So the
++## join is only pressable once something PICKS a house — and the first version of this page
++## had no way to: `select_clan` existed and was called by tests, but no panel, no widget
++## and no key ever called it, which left `can_join()` permanently false and the `join`
++## control permanently disabled. The verb had been wired and the gesture that arms it had
++## not. [method _step] plus [method on_stack_input] are that gesture, copied from
++## `SectScreen`'s `offered_ids` / `_step` / `on_stack_input` rather than invented.
++##
+ ## Contract: `summary()` is the testable surface, primitives only, `{}` with no actor.
+ 
+ ## The one action this page publishes. Declared as a constant so the order a test reads is
+@@ -308,13 +318,27 @@ func selected_clan() -> String:
+ 
+ 
+ ## Whether a hero may ask to be admitted to a house from here right now. **Only** an
+-## actor and a house being picked gate the control: whether this hero is ADMITTED is the
+-## module's refusal to name (`ClanApi.admission_unmet`), not a reason to grey out a
+-## button — a hero turned away should be told WHICH lineage a house wants by pressing,
+-## not by a control that silently does nothing. The same argument `sect_screen` makes
+-## about `already_sworn`.
++## actor, a house being picked, and NOT already belonging to a house gate the control:
++## whether this hero is ADMITTED is the module's refusal to name
++## (`ClanApi.admission_unmet`), not a reason to grey out a button — a hero turned away
++## should be told WHICH lineage a house wants by pressing, not by a control that
++## silently does nothing. The same argument `sect_screen` makes about `already_sworn`.
++##
++## ## WHY MEMBERSHIP IS A CONJUNCT, and what it was costing
++##
++## `ClanApi.join` is not a no-op for somebody who already belongs to a house: it writes
++## `ClanState.with_membership` and then **overwrites `rank` with the house's own
++## `entry_rank`** (`modules/clan/api.gd:150`). So offering the join to a member is not a
++## redundant button, it is a **DEMOTION** — one extra press on the page's primary verb
++## silently moved a registered `heir` back down to `outer`, which is the exact
++## "the POSITION moved: expected heir, got outer" this page failed with, and a page that
++## fails that way can fail it again on any second press.
++##
++## The way out of a house is [method act_leave], on this same page, so nothing is
++## unreachable by refusing the second admission: leaving and rejoining are two acts in
++## order, and the roster a member needs is the roster they left.
+ func can_join() -> bool:
+-	return _actor != null and _selected_clan != ""
++	return _actor != null and _selected_clan != "" and not can_leave()
+ 
+ 
+ ## Whether a hero may walk out of their house from here.
+@@ -391,21 +415,106 @@ func _accept() -> bool:
+ 
+ ## The verb a bare `ui_accept` runs, or `&""` when none is live.
+ ##
+-## **Join first, then leave, then the register.** A hero who belongs to no house has
+-## nothing to register in and nothing to leave, so `join` is the only candidate they can
+-## reach — which is what makes this page the owner of the admission moment rather than a
+-## page that happens to also admit people. A member gets `leave` and, once the seam's gate
+-## agrees, `register`.
++## ## Join, then the REGISTER, then leave — and why the register outranks the door
++##
++## A hero who belongs to no house has nothing to register in and nothing to leave, so
++## `join` is the only candidate they can reach — which is what makes this page the owner
++## of the admission moment rather than a page that happens to also admit people.
++##
++## Once they are a member the page's primary verb must be the **appointment**, not the
++## exit. The seam's `available` gate says a press could mean something, and the whole
++## point of the page (ADR 0239) is that a press IS how a house enters somebody in its
++## register; if `leave` held primary then a bare `ui_accept` on a member's page would
++## walk them out of their house, the register would be unreachable by the keyboard at
++## all, and the one verb four authored quests watch would be a button a player has to
++## know to find. `leave` remains a published, always-live action on this same page — it
++## is a choice, not the default.
+ func _primary_action() -> StringName:
+ 	if can_join():
+ 		return ACTION_JOIN
+-	if can_leave():
+-		return ACTION_LEAVE
+ 	if _actor != null and register_seam_bound() and bool(_available().get("ok", false)):
+ 		return ACTION_REGISTER
++	if can_leave():
++		return ACTION_LEAVE
+ 	return &""
+ 
+ 
++## The clan ids this page is offering to enter, in canonical order. The CATALOG, read
++## off the facade's own `summary()["clans"]` — the same dict [method select_clan]
++## validates against and the same one `act_join`'s pick is drawn from, so what a player
++## can cycle through is exactly what the page can name. A member is offered the whole
++## catalog too, because leaving and rejoining are two acts in order and the roster a
++## member needs is the roster they left.
++func offered_ids() -> Array:
++	_bind_nodes()
++	var clans := _codex.get("clans", {}) as Dictionary
++	var ids: Array[String] = []
++	for key in clans.keys():
++		ids.append(String(key))
++	ids.sort()
++	return ids
++
++
++## Move the pick `step` entries along the offered list, wrapping. Declines (returns
++## false) when there is nothing to pick, so `ui_down` on an empty catalog is not
++## consumed and the player's `ui_cancel` is left for `ScreenStack`.
++##
++## **This is what makes the join pressable by a PLAYER rather than only by a test.**
++## `act_join` re-runs the module's gate and is the sole production caller of
++## `ClanApi.join`, but it acts on `_selected_clan`, and before this method NOTHING in
++## `game/src` ever called [method select_clan] — no panel, no widget, no key. So
++## `can_join()` was permanently false, the `join` control was permanently disabled, and
++## the only way to reach the membership every authored `household_heir_registered` quest
++## needs was a test calling `select_clan` itself. The verb existed; the gesture that
++## arms it did not.
++##
++## ## Why a key cycle and not a roster widget
++##
++## This page has no roster scene of its own, and one it grew would be a SECOND house
++## list beside the catalog the facade already publishes — the exact duplication
++## [method offered_ids] refuses. `SectScreen` publishes `offered_ids` + `_step` +
++## `on_stack_input` for exactly this page's sibling problem, and this is that same
++## three-piece shape rather than a new one.
++func _step(step: int) -> bool:
++	var ids := offered_ids()
++	if ids.is_empty():
++		return false
++	var index := ids.find(_selected_clan)
++	# Nothing is picked: `down` lands on the FIRST entry and `up` on the LAST, which is
++	# what those two lines mean. Seeding the index and THEN adding `step` would skip an
++	# entry at both ends — `SectScreen._step` does exactly that (`index = 0 if step > 0`
++	# then `posmod(index + step, …)` makes the first `down` land on the second house), so
++	# the two pages would disagree about where the first keypress goes. Noted rather than
++	# changed there: `sect_screen.gd` is not this slice's file.
++	var next := 0 if step > 0 else ids.size() - 1
++	if index >= 0:
++		next = posmod(index + step, ids.size())
++	_selected_clan = String(ids[next])
++	_render()
++	return true
++
++
++## `ui_accept` runs the page's primary verb; `ui_up` / `ui_down` walk the pick.
++##
++## The guards are merged into one clause on purpose rather than stacked, for the reason
++## `SectScreen.on_stack_input` gives: a screen that declines an unbound or cancelled
++## event by DECLARING it declined is exactly the contract `ScreenStack` relies on, and
++## one decision says it once. `ui_cancel` is excluded so the stack still pops.
++func on_stack_input(event: InputEvent) -> bool:
++	_bind_nodes()
++	if _actor == null or event == null or not _bound:
++		return false
++	if not event.is_pressed() or event.is_echo() or event.is_action_pressed(&"ui_cancel"):
++		return false
++	if event.is_action_pressed(&"ui_accept"):
++		return _accept()
++	if event.is_action_pressed(&"ui_down"):
++		return _step(1)
++	if event.is_action_pressed(&"ui_up"):
++		return _step(-1)
++	return false
++
++
+ # --- Internals ---------------------------------------------------------------
+ 
+ 

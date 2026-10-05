@@ -482,21 +482,39 @@ func _enter(hero: Actor) -> Dictionary:
 ## resolves to the body that was actually fought rather than to whichever sorted first.
 func _enter_with(hero: Actor, doors: int, world: Node) -> Dictionary:
 	var run := _enter(hero)
-	var rooms := _boss_rooms(hero)
-	if rooms.is_empty():
+	# The band's OWN list — the doors, in the order `DomainRun.record_kill` opens them. Read
+	# off the run rather than re-derived from the map, so the fixture cannot disagree with the
+	# ledger about which rooms are doors (see [method _boss_rooms], which answers that
+	# question and whose answer is deliberately no longer used to pick a body).
+	var band: Dictionary = DomainRunApi.band(hero)
+	if band.get("bosses", []).is_empty():
 		return run
 	# Realize the run's OWN map FIRST, so the bodies below are drawn beside the
 	# catalogue's by the same `DomainWorld.place_inhabitants` that drew those — real
 	# placed creatures, not a second kind of thing the fight rules cannot see.
 	DomainBoot.realize_world(world, hero)
 	var roster: Array[Actor] = []
-	# `0` is "the whole band": the band's own `band_size`, read off the run rather than
-	# hardcoded, so a template that authors a different number of doors is still cleared.
-	var wanted := doors if doors > 0 else int(DomainRunApi.band(hero).get("band_size", 0))
+	# **Every door the run holds, walking a LIST rather than an INDEX.** The band's list is
+	# the only place the ORDER lives: `DomainRun.record_kill` opens door `n + 1` on the kill of
+	# door `n` (`domain_run.gd:215-217`) and refuses anything else `door_closed`, so a body has
+	# to be bound to the n-th DOOR or its kill is refused on an out-of-order band.
+	#
+	# The earlier version walked `rooms[index % rooms.size()]` — its own `_boss_rooms` list —
+	# and that is the suite's third measured defect. `rooms` was 4 long on the shipped
+	# `stormwrack_reach` while the run's band is 5 doors, so `tide_vault#14` — whose authored
+	# `roster_band: boss` makes it a door — was skipped by `index % rooms.size()` and no body
+	# stood in it. `lineup[3]` was then `ash_heart#3` again and its kill was refused
+	# `already_dead`; the chain stopped at `remaining: 2`, `tide_vault#14` stayed open forever,
+	# and the four assertions that read "the band is cleared" were measuring that arithmetic
+	# rather than the band. Every `_kill_boss` recorded only the three distinct `ash_heart`
+	# doors it actually placed, as `DomainFight._door_of`'s own docblock predicted.
+	var wanted := doors if doors > 0 else int(band.get("band_size", 0))
+	var boss_list: Array = band.get("bosses", [])
 	for index in range(wanted):
 		# A DIFFERENT boss room per body, so the band has N doors and a kill resolves to
 		# the body actually fought rather than to whichever one sorted first.
-		var room_id := String(rooms[index % rooms.size()])
+		var door := String(boss_list[index]) if index < boss_list.size() else ""
+		var room_id := door.substr(door.rfind("/") + 1)
 		# **The rostered body that owns this door.** `DomainFight._placed_boss` answers
 		# "which band entry does this fallen body belong to" by matching a SPECIES id
 		# against the roster, so the roster is the whole question — a body outside it has
@@ -589,6 +607,17 @@ func _survivable_health(actor: Actor) -> float:
 
 ## The run's own boss rooms, in the map's canonical order. Bounded by the map's authored
 ## rooms, so the walk has no bound this suite grows.
+##
+## **It no longer PICKS a body** — [method _enter_with] walks the band's OWN `bosses` array
+## instead. That is the suite's third measured defect and it lived here: this list was four
+## long on the shipped `stormwrack_reach` while the run's band holds five doors, because
+## `DomainApi._room_is_a_boss_door` (`api.gd:467`) admits a room EITHER shape names and this
+## walk re-implements that rule by hand. The two answers disagreed — `tide_vault#14` is a
+## `roster_band: boss` room whose spawn ref authors `role: miniboss`, and the hand-rolled walk
+## never placed a body in it — and a fixture that picks doors from its own list can silently
+## bind a body to door `n-1` when the ledger is holding door `n`, which `record_kill` then
+## refuses `already_dead`. A question two places answer differently is one too many, so the
+## doors are read off the ledger and this remains only the answer to "which rooms are doors".
 ##
 ## **The SAME rule `DomainApi._room_is_a_boss_door` reads**, and it is spelled out here
 ## rather than reached into because `api.gd` keeps it private behind the twelve-method
@@ -762,7 +791,49 @@ func _kill_boss(hero: Actor, placed: Actor) -> int:
 	while blows < MAX_BLOWS and _health_of(placed) > 0.0:
 		DomainFight.strike(hero, fight, FightLoop.BASE_BLOW_INTERVAL, SEED)
 		blows += 1
+	_walk_out_whole(hero)
 	return blows
+
+
+## Carry the hero out of one door at FULL vitality before the next one is pressed.
+##
+## ## Why a band-clearing case owes this, and what it is NOT
+##
+## A band is N fights. This fixture kills the first three inside two presses each and walks
+## with `170.0 -> 118.8 -> 67.5 -> 16.3`, so the hero reaches door four on its last pool, and
+## a real boss's blow is spent as `share * defender_pool.maximum` (`duel_hit.gd:82`) — an
+## absolute number off the hero's OWN maximum, not a percentage of what is left. A body on a
+## few points therefore takes a full-size hit, and on the fourth door the hero's own zero
+## crossing fires first: `FightLoop._decide` returns `hero_lost`,
+## `DomainFight.record_verdict` takes its loss branch (`domain_fight.gd:130`) and
+## `DomainRunApi.abandon_band` wipes `open_index` AND `kills`
+## (`domain_run.gd:253-262`). The band was then `abandoned`, `open_boss` `""`, and the four
+## "the band is cleared" assertions were measuring the hero's stamina rather than the run.
+##
+## ## The rule this asserts, in ADR 0236's own words
+##
+## "**The loser is walked out whole** ... `FightLoop` carries no wound forward. A boss fight
+## is not a wound that persists — **this is a disclosed thinness, not a rule**". So the hero
+## starting a fight is not state a door fight leaves behind, and a fixture that walks into the
+## next door still carrying the last one's damage is measuring stamina. Every assertion in the
+## clearing cases is about which door is open; none is about attrition, and the case that DOES
+## care about a loss keeps its own loop
+## ([method test_a_press_the_hero_cannot_win_loses_the_run_and_it_is_observable]).
+##
+## ## Not a production repair, and deliberately so
+##
+## `CombatExchange._record_defeat` performs exactly this restore for the boss-encounter path
+## (`exchange.gd:655-659`) and the `FightLoop` path has none — a disclosed gap in ADR 0236, in
+## `app/`, which this task does not own. So this fixture models the rule its own docblock
+## names rather than inventing a production verb for it.
+##
+## `change`, not an assignment to `current`, for the reason `exchange.gd:656` gives: the
+## pool's `changed` signal still fires and every stat cache watching it invalidates.
+func _walk_out_whole(hero: Actor) -> void:
+	var pool := hero.resource(&"health") as ResourcePool
+	if pool == null or pool.current >= pool.maximum:
+		return
+	pool.change(pool.maximum - pool.current)
 
 
 ## The band door `actor` stands in, in the spelling `DomainApi._open_band` mints. Built

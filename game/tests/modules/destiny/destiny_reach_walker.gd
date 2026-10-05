@@ -86,7 +86,8 @@ const UNREACHED_TAG := "unreached:fixpoint"
 
 ## How many periods of world history this walk assumes have already passed.
 ##
-## MEASURED, not chosen, and it cannot drift: `test_the_walk_reads_every_fact_the_authored_content_reads`
+## MEASURED, not chosen, and it cannot drift:
+## `test_the_walk_reads_every_fact_the_authored_content_reads`
 ## asserts this equals [constant WorldAmbient.ROSTER]'s length, so a roster edit that
 ## outgrows this number turns the suite red rather than quietly narrowing the walk.
 ## Four is what that length is today — one ambient fact per period, first due at

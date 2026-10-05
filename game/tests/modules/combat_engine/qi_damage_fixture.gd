@@ -28,15 +28,22 @@ func setup() -> void:
 
 
 ## The parts for one case at a chosen elemental share and a chosen number of points of
-## authored elemental RESISTANCE.
+## authored elemental DEFENSE.
 ##
-## `resistance_points` is resistance in the ATTACKER's element, because that is where
-## `QiDamage._resistance_of` reads it: `clampf(element_defense_<attacker_element> /
-## resist_divisor - penetration, 0, resist_cap)`. `defender_element` is a SEPARATE axis and
-## is carried explicitly on `DEFENDER_ELEMENT_KEY` rather than left to the dominance walk,
-## because the two answers were previously conflated into one affinity slot and every
-## resistance case in this subsystem was silently measuring a defender who resisted
-## nothing.
+## `resistance_points` is elemental defense in the ATTACKER's element, because that is
+## where `QiDamage._defense_of` reads it. ADR 0200 changed what that number MEANS: it used
+## to feed `clampf(element_defense_<e> / resist_divisor - penetration, 0, resist_cap)`, a
+## PERCENT capped at `resist_cap`, and it now feeds
+## `D = element_defense_<e> / resist_divisor` -- a MAGNITUDE, which is what
+## `mitigation_ceiling * D / (K + D)` is built from. The parameter name is left alone so the
+## call sites across both qi suites read the same way; the docblock is where the rename is
+## recorded, because a renamed parameter would have churned every call site for no
+## mechanical gain.
+##
+## `defender_element` is a SEPARATE axis and is carried explicitly on `DEFENDER_ELEMENT_KEY`
+## rather than left to the dominance walk, because the two answers were previously
+## conflated into one affinity slot and every resistance case in this subsystem was
+## silently measuring a defender who resisted nothing.
 func _parts(
 	element: StringName, defender_element: StringName, share: float, resistance_points: float
 ) -> Dictionary:

@@ -20,7 +20,8 @@ extends TestCase
 ## `TechniqueReadModel.inspect` tomorrow and this whole file stayed green while the
 ## codex quietly published an empty shortfall forever.
 ##
-## So the seam is now asserted where the rule lives: `test_the_codex_row_carries_the_shortfall_techniques_api_inspect_published`
+## So the seam is now asserted where the rule lives:
+## `test_the_codex_row_carries_the_shortfall_techniques_api_inspect_published`
 ## drives the REAL screen against a REAL short hero and reads the shortfall back off
 ## the row, then compares it to `TechniquesApi.inspect`'s own. Nothing in that test
 ## writes a shortfall, so nothing in it can go green without the module publishing

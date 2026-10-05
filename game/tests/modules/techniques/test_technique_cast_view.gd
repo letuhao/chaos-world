@@ -579,12 +579,18 @@ func test_an_empty_outcome_is_total_for_every_legal_call_shape() -> void:
 func test_the_facade_is_still_twelve_public_methods() -> void:
 	# The readback cost no verb. The constant below is what names it, exactly as
 	# `CASTING_COMPONENT` names the casting table and `DELIVERY` names the seam.
+	#
+	# `TechniquesApi.new()` is the wrong door — every method on it is `static`, so
+	# instantiating yields a bare `RefCounted` whose script is not the api and whose
+	# method list is empty, which made this assert on an EMPTY list rather than on a
+	# count. Read the class's own script.
+	var script: Script = load("res://src/modules/techniques/api.gd")
 	var published: Array[String] = []
-	for method in TechniquesApi.new().get_script().get_script_method_list():
+	for method in script.get_script_method_list():
 		var method_name := String(method.get("name", ""))
 		if not method_name.begins_with("_") and not published.has(method_name):
 			published.append(method_name)
-	assert_eq(published.size(), 12, "exactly twelve public methods, found %d" % published.size())
+	assert_eq(
 	for verb in ["cast", "cast_view", "damage", "resolve", "outcome"]:
 		assert_eq(published.has(verb), false, "and no '%s' verb" % verb)
 	assert_eq(String(TechniquesApi.CAST_VIEW), "technique_cast_view", "the id is spelled once")

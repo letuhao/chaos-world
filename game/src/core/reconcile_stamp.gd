@@ -185,6 +185,17 @@ static func fold_all(
 	for magnitude in wanted:
 		if magnitude.is_empty() or not crossed.has(magnitude):
 			continue
+		# **A MAX, and it has to stay one.** `fold_all` is public and is called directly,
+		# with an ABSOLUTE crossed map, by most of this file's suite — so `maxi` is its
+		# contract: a magnitude is stored at the highest count it has ever been seen at,
+		# and no ordering of folds can lower it (ADR 0113). Making this additive was tried
+		# and it is wrong for that caller: a direct `fold_all` of the same month twice
+		# would read as two months ("one month folded: expected 1, got 2").
+		#
+		# Accumulation across VISITS therefore does not belong here. It lives in
+		# `WorldReconcile.observe`, which subtracts what the place already folded (see
+		# `newly_folded`) and hands a DELTA — and a delta against a max is exactly what
+		# makes the second arrival's date advance without any write ever going down.
 		entry[magnitude] = maxi(entry.get(magnitude, 0), _fold(crossed[magnitude]))
 	rows[String(location_id)] = entry
 	return out
@@ -231,6 +242,62 @@ static func knows_place(stamps: Dictionary, location_id: StringName) -> bool:
 ## what a date PRINTS and never what a stamp means.
 static func folded_periods(stamps: Dictionary, location_id: StringName) -> int:
 	return folded(stamps, location_id, TimeLadder.BASE)
+
+
+## ## There is deliberately NO "newly crossed" filter, and this is where it was removed
+##
+## An earlier revision of `WorldReconcile.observe` routed the raw ladder division through
+## a `newly_crossed(stamps, location_id, crossed)` that dropped every magnitude this
+## place already held, and read `elapsed_periods` off the survivors. **Measured, it was
+## wrong twice over, and the reason is that the filter conflated two different questions.**
+##
+## 1. It made `crossed` a function of the PLACE rather than of the span, and a filter
+##    that returns `{}` for an unchanged total cannot answer "this total crosses no second
+##    month" with a `0` — it answers with an ABSENT key, and a caller reading a default
+##    (`crossed.get(&"month", -1)`) gets `-1`. The zero entries are the answer; filtering
+##    them out is what made `test_a_re_observed_place_does_not_pay_a_second_bucket` red.
+## 2. `elapsed_periods` taken from the BASE bucket of that filtered map is wrong whenever
+##    the place has folded a LARGER span than the one in hand: a place folded at 360
+##    handed a 12-period span reported zero newly elapsed, while the same place handed
+##    8760 after folding 4380 reported all 8760 instead of the 4380 that actually elapsed.
+##
+## **[method fold_all]'s `maxi` IS the idempotency, per BUCKET and by itself.** The write
+## path needs no filter: `maxi(existing, crossed)` already refuses to replay a bucket a
+## place holds, so "a place returning to scope is FOLDED, never replayed" (ADR 0170) is
+## enforced where the write happens rather than by pre-filtering its input. Adding a
+## filter on top bought nothing and cost the two answers above — and a pre-filter is the
+## more dangerous shape, because it makes the WRITER depend on a READ of what was already
+## stored, so a stale or hand-edited stamp changes what gets written.
+
+
+## What `absolute` adds for `location_id` that this place has not folded YET, keyed by
+## magnitude, with the zeros PRESENT.
+##
+## **A subtraction on the READ, never on the write.** [method fold_all] stores
+## `maxi(existing, crossed)` per magnitude, so the write path already refuses to replay a
+## bucket; this exists because the ANSWER a caller reads is a different question from the
+## one the writer answers. `magnitudes_crossed` is the absolute division and says "1 month"
+## for a re-read of a one-month total — true of the span, false of the visit.
+## `test_a_re_observed_place_does_not_pay_a_second_bucket` pins the visit reading, so a
+## magnitude the place already holds answers `0` here rather than repeating itself.
+##
+## The zeros are load-bearing rather than filler: that test reads
+## `crossed.get(&"month", -1)` and expects `0`, so an ABSENT key would answer `-1` and a
+## missing bucket would read as an unknown one to every consumer — the same reason
+## `TimeLadder.magnitudes_crossed` emits its own zeros (`core/time_ladder.gd:196-198`).
+##
+## A place folded nothing yet gets every magnitude whole, which is the ADR 0173 (c)
+## property: a first arrival folds the WHOLE span, because a filter gated on "have I been
+## here" is the deadlock that ADR names.
+static func newly_folded(
+	stamps: Dictionary, location_id: StringName, absolute: Dictionary
+) -> Dictionary:
+	var fresh: Dictionary = {}
+	for magnitude in absolute.keys():
+		var name := StringName(str(magnitude))
+		var count := int(absolute[magnitude])
+		fresh[name] = maxi(0, count - folded(stamps, location_id, name))
+	return fresh
 
 
 ## One place as primitives only, for a screen or a headless drive that wants this place

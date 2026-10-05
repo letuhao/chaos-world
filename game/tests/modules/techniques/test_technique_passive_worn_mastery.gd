@@ -97,6 +97,23 @@ func _power(rung: int, def: TechniqueDef) -> float:
 # --- THE assertion: a passive's rung exceeds 0 ----------------------------------
 
 
+## The facade's published methods, read from its own script.
+##
+## `TechniquesApi.new()` is the wrong door: every method on it is `static`, so
+## instantiating yields a bare `RefCounted` whose script is NOT the api, and
+## `get_script_method_list()` then returns nothing — every cap assertion below
+## failed on an EMPTY list rather than on a count. Read the class's own script.
+func _published_methods() -> Array[String]:
+	var script: Script = load("res://src/modules/techniques/api.gd")
+	var out: Array[String] = []
+	for method in script.get_script_method_list():
+		var method_name := String(method.get("name", ""))
+		if method_name.begins_with("_") or out.has(method_name):
+			continue
+		out.append(method_name)
+	return out
+
+
 func test_wearing_a_passive_raises_its_rung_past_zero() -> void:
 	var actor := _hero()
 	var def := _worn_passive(actor)
@@ -443,14 +460,8 @@ func test_the_published_ladder_names_the_verb_that_climbs_it() -> void:
 ## the write go through methods that already existed and production already reaches,
 ## so ADR 0204's facade-constant census has nothing new to find here.
 func test_the_facade_still_publishes_exactly_twelve_methods() -> void:
-	var script: Script = TechniquesApi.new().get_script()
-	var published: Array[String] = []
-	for method in script.get_script_method_list():
-		var method_name := String(method.get("name", ""))
-		if method_name.begins_with("_") or published.has(method_name):
-			continue
-		published.append(method_name)
-	assert_eq(published.size(), 12, "exactly twelve public methods, found %d" % published.size())
+	var published := _published_methods()
+	assert_eq(
 	for name in ["settle_upkeep", "raise_mastery"]:
 		assert_eq(published.has(name), true, "'%s' is the verb that carried it" % name)
 

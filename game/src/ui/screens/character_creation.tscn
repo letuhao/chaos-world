@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://src/ui/screens/character_creation.gd" id="1"]
 [ext_resource type="PackedScene" path="res://src/ui/panels/creation_branch_row.tscn" id="2"]
 [ext_resource type="Theme" path="res://src/ui/theme/chaos_world_theme.tres" id="3"]
+[ext_resource type="PackedScene" path="res://src/ui/panels/portrait_picker.tscn" id="4"]
 
 [node name="CharacterCreation" type="Control"]
 anchors_preset = 15
@@ -33,6 +34,11 @@ layout_mode = 2
 theme_type_variation = &"SectionTitle"
 text = "How you arrive"
 
+[node name="FaceTitle" type="Label" parent="Layout"]
+layout_mode = 2
+theme_type_variation = &"SectionTitle"
+text = "Your face"
+
 [node name="Scroll" type="ScrollContainer" parent="Layout"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -51,6 +57,10 @@ unique_name_in_owner = true
 [node name="Branch1" parent="Layout/Scroll/Arrivals/Branches" instance=ExtResource("2")]
 
 [node name="Branch2" parent="Layout/Scroll/Arrivals/Branches" instance=ExtResource("2")]
+
+[node name="PortraitPicker" parent="Layout" instance=ExtResource("4")]
+unique_name_in_owner = true
+layout_mode = 2
 
 [node name="Actions" type="HBoxContainer" parent="Layout"]
 layout_mode = 2

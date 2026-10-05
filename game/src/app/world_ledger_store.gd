@@ -73,6 +73,13 @@ const _KEY_CONTAINERS := {
 	# `WorldPolityLedger.CONTAINERS` by `tests/core/test_world_polity_ledger.gd` — a routing
 	# table, not a normalizer, for exactly the reason the paragraph above gives.
 	"polity": ["institutions", "debts"],
+	# ADR 0259. `world_time` is the world's own period count, for the same reason `polity`
+	# is here: `core/world_clock.gd` may not name this store and this store may not name that
+	# file, so the container table is AUTHORED here and asserted equal to
+	# `WorldClock.CONTAINERS` by `tests/core/test_world_clock.gd`. ONE container, because the
+	# clock stores periods and nothing else — a `years` or `seconds` container would be a
+	# ratio living in the save format (ADR 0259 clause 4).
+	"world_time": ["periods"],
 }
 
 ## The one envelope key this view reads and writes. Fixed at construction, never a field a

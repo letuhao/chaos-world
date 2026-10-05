@@ -182,7 +182,10 @@ func test_the_floor_route_is_published_and_bound_to_a_key() -> void:
 		assert_ne(
 			ScreenRoutes.action_of(other),
 			action,
-			"no other route shares this route's input action, or a keyboard player would reach the wrong screen"
+			(
+				"no other route shares this route's input action, "
+				+ "or a keyboard player would reach the wrong screen"
+			)
 		)
 
 

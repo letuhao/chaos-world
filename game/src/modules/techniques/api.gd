@@ -355,19 +355,6 @@ static func inspect(actor: Actor, def_or_id) -> Dictionary:
 	)
 
 
-## The actor's versioned technique payload, exactly as core persists it:
-## `StringName` def ids and mastery rungs, never a serialized definition
-## (ADR 0056), so a designer retuning a technique cannot rewrite every save.
-##
-## The twelfth public method and the one that closes the cap: `TechniquesApi` is at
-## `MAX_FACADE_PUBLIC_METHODS` and publishes twelve (ADR 0056), so this is the only
-## way a caller outside the module reads the payload in the shape `core` writes it.
-static func technique_state(actor: Actor) -> Dictionary:
-	if actor == null:
-		return TechniqueCodex.empty()
-	return codex(actor).to_dict()
-
-
 # --- Internals -------------------------------------------------------------
 
 

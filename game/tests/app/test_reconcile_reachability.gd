@@ -256,7 +256,10 @@ func test_arriving_at_a_place_ages_that_place() -> void:
 	assert_eq(
 		int(folded.get("total_periods_folded", 0)),
 		coarse_span(),
-		"and it folded the WHOLE span the world had moved. A reconcile that truncates to a cap reports nothing the player can see (ADR 0170)"
+		(
+			"and it folded the WHOLE span the world had moved. A reconcile that truncates "
+			+ "to a cap reports nothing the player can see (ADR 0170)"
+		)
 	)
 
 
@@ -606,7 +609,10 @@ func test_a_retired_worlds_history_is_rewritten_without_un_recording_anything() 
 	assert_eq(
 		retired.get("deferred", []) as Array,
 		["rebuilt_realm_founded"],
-		"while NAMING the later occurrence as not-yet, so a reader can tell it from one that never existed"
+		(
+			"while NAMING the later occurrence as not-yet, so a reader can tell it from "
+			+ "one that never existed"
+		)
 	)
 	# THE MONOTONE HALF, asserted on the ledger itself rather than on the overlay.
 	assert_eq(
@@ -728,14 +734,20 @@ func _code_only(source: String) -> String:
 				continue
 			if quote == "" and (character == '"' or character == "'"):
 				quote = character
+				out += character
 				at += 1
 				continue
 			if quote != "":
 				if character == "\\":
-					at += 2
+					out += character
+					at += 1
+					if at < line.length():
+						out += line[at]
+						at += 1
 					continue
 				if character == quote:
 					quote = ""
+				out += character
 				at += 1
 				continue
 			if character == "#":

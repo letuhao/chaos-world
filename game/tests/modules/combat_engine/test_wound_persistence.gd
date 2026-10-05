@@ -47,7 +47,11 @@ func test_wound_severity_and_necrosis_survive_the_actor_round_trip() -> void:
 	assert_eq(ledger.is_necrotic(&"lung"), true, "the setup really did necrose lung")
 
 	var payload := target.to_dict()
-	assert_eq(int(payload["version"]), 5, "the payload declares schema v5")
+	assert_eq(
+		int(payload["version"]),
+		Actor.SCHEMA_VERSION,
+		"the payload declares the CURRENT schema version"
+	)
 	assert_eq(payload.has("body_wounds"), true, "and it carries the wounds slot")
 
 	var restored_actor := Actor.from_dict(payload)

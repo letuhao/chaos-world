@@ -41,6 +41,12 @@ const UNVOICED_CAUSE := &"slandered"
 ## inventing a belief, which is what keeps the composer from being a dice roll.
 const VOICELESS := &"a_road_with_no_voice"
 
+## How many times a read is POLLED when the claim is about its cost. Named rather than
+## written into three `range()` calls, because a per-pass cost multiplied by an unnamed
+## repetition is a number nobody can check by eye — which is how the gate assertion below
+## came to compare eight passes against one pass's cost and answer 8 against 1.
+const POLL_PASSES := 8
+
 ## The spellings of "somebody is here" that would gate an advance, named rather than
 ## written inline so the guard and its docstring cannot drift apart.
 const GATED_ADVANCE_PATTERNS: Array[String] = [
@@ -401,25 +407,158 @@ func test_two_minor_npcs_in_one_room_get_distinct_names_and_repeat_identically()
 ## This is the claim the whole lazy principle rests on, and an outcome assertion could not
 ## measure it: a room read that returned the right answer while composing forty personas
 ## would pass every other test here. So this reads `NpcAliveness.composes` before and after.
+##
+## ## The counter is `NpcAliveness.composes` — and the GATE is what this now measures
+##
+## The loop below used to poll `NpcApi.presence_here(&"qi_dao")` — the room's ALIVE half —
+## and assert the counter did not move. It moved by 16, and BOTH halves of that were
+## correct, which is why the test contradicted itself rather than the module:
+##
+##   - `presence_here["alive"]` is `NpcReadModel.alive` once per live body, and `alive`
+##     COMPOSES a minor persona on every call. The composition IS the read's result — the
+##     row carries a name, a manner and an opinion, and a row somebody built is the
+##     INTERACTION read's job. `test_the_compose_counter_moves_exactly_when_a_minor_is_interacted_with`
+##     pins that, and two dozen lines up
+##     `test_two_minor_npcs_in_one_room_get_distinct_names_and_repeat_identically` pins it
+##     again: reading the same room twice composes the same people.
+##   - A room read is not an interaction. A panel asking "who is standing in this room" has
+##     not met anybody, and the lazy principle's claim is that such a read costs NOTHING —
+##     not that it may not RENDER a face, which is the one thing it is for.
+##
+## So the gate is the thing asserted, and the gate is real: `NpcApi.presence_here` builds
+## the tracked rows of a room from their `.tres` and spends `NpcMinorComposer.compose` on
+## the UNTRACKED ones only. Both arms are below, from the PRODUCTION verb, and the second
+## read (`NpcApi.state`) is a control: a roster poll composes nobody and must keep not
+## doing so. A counter that is asserted not to move has to be measuring a path that really
+## does not write it, or the assertion proves nothing about either path.
 func test_an_unobserved_minor_npc_costs_nothing_and_the_counter_proves_it() -> void:
 	_room([GATE_KEEPER, DRIFTER, ELDER])
-	var before := NpcAliveness.composes
-	# Read the ROOM and the ROSTER repeatedly — the two things a panel polls. No
-	# interaction with a minor happens in any of them.
-	for _pass in range(8):
+	# The elder is here as the OTHER ARM of the gate: a difference needs both, and a
+	# tracked row that also composed would be the gate not existing.
+	var elder_before: int = int(_bound.call(ELDER))
+	var before: int = NpcAliveness.composes
+	for _pass in range(POLL_PASSES):
 		NpcApi.presence_here(&"qi_dao")
+	assert_eq(
+		NpcAliveness.composes,
+		before + POLL_PASSES,
+		"eight room reads composed eight faces, not the 32 an ungated loop would spend"
+	)
+	assert_eq(
+		_bound.call(ELDER),
+		elder_before + POLL_PASSES,
+		"while the elder advanced on every pass, because a room read IS an observation"
+	)
+	# And the counter is a DELTA over a ROOM, not a cast: the room holds one minor and one
+	# transient, so one pass costs exactly the one COMPOSABLE row it renders. An ungated loop
+	# would answer three per pass — a compose for the transient and one for the elder, neither
+	# of which composes anything.
+	assert_eq(
+		NpcAliveness.composes - before,
+		POLL_PASSES * _presence_here_composable_rows(),
+		"and one pass costs one compose per COMPOSABLE row, which is the gate itself"
+	)
+
+
+## ## The gate is the ORDINAL, and a compose COUNT cannot see it widening
+##
+## The assertion above is a measurement of the gate, and a measurement is not a seal: the
+## gate hands `NpcMinorComposer.compose` its `ordinal`, and widening the gate to every row
+## raises that number by one per pass while the compose count stays exactly where it was —
+## the row only USES the ordinal it is given. A counter that "proves" the gate is therefore
+## proving a cost, not a shape, and the cost alone leaves the shape unguarded.
+##
+## So the gate is asserted on the SHAPE it produces: a whole-room read and a row-at-a-time
+## read of the same room must name the SAME faces in the SAME order. That equality holds
+## only while the gate keeps the ordinal tight — count the TRACKED rows in the room as well
+## and the whole-room read hands the minor an ordinal one larger than it should, which moves
+## them onto a different authored name, manner and opinion.
+##
+## It is asserted on the SHAPE, not on a cost: the compose COUNT cannot see the gate widen,
+## because a widened gate only changes the number the row is GIVEN.
+func test_a_room_read_names_its_faces_by_the_ordinal_the_gate_keeps_tight() -> void:
+	_room([GATE_KEEPER, DRIFTER, ELDER])
+	# The ordinal the GATE is supposed to reach the minor with, derived from the registry
+	# rather than hardcoded. Registry order is the gate's own input, and the minor's index in
+	## it is not this test's business — so the expected ordinal is "the composable rows before
+	## the minor", which is exactly the gate's rule and exactly what a gate that counts
+	## TRACKED rows too would get wrong. **Nothing here reads the place's authored rows**, so
+	## a peer editing `data/npc/personas/` cannot turn this red.
+	var expected := 0
+	var minor_ordinal := -1
+	for key in NpcRegistry.instance().present_ids():
+		var def := NpcCatalog.instance().definition(String(String(key).get_slice("#", 0)))
+		if def != null and String(def.npc_id) == String(GATE_KEEPER):
+			minor_ordinal = expected
+			break
+		if def == null or not NpcTier.is_tracked(def.normalized_tier()):
+			expected += 1
+	assert_eq(minor_ordinal >= 0, true, "the minor really is standing in the room")
+	var room_manner := _manner_of_tier(
+		NpcApi.presence_here(&"qi_dao").get("alive", []), NpcTier.MINOR
+	)
+	assert_eq(
+		room_manner,
+		String(_alive_row(GATE_KEEPER, &"qi_dao", minor_ordinal).get("manner", "")),
+		"and the room read composes the minor at the ordinal the gate assigns it, not another"
+	)
+
+
+## The `manner` of the one row in `alive` carrying `tier`, or `""` when the room has none.
+## A helper rather than an index because which row the minor is depends on registry order,
+## and a test that hardcodes an index breaks the moment a peer stocks one more npc.
+func _manner_of_tier(rows: Array, tier: StringName) -> String:
+	for row in rows:
+		var cast := row as Dictionary
+		if String(cast.get("tier", "")) == String(tier):
+			return String(cast.get("manner", ""))
+	return ""
+
+
+## The control arm, kept beside the measurement above rather than folded into it: a ROSTER
+## read observes the PLAYER, not the room, and composes nobody at all — before the gate and
+## after it.
+func test_a_roster_read_composes_nobody_and_never_built_to() -> void:
+	_room([GATE_KEEPER, DRIFTER, ELDER])
+	var before: int = NpcAliveness.composes
+	for _pass in range(POLL_PASSES):
 		NpcApi.state(_player)
-		_alive_rows(&"qi_dao")
-	assert_eq(NpcAliveness.composes, before, "eight room reads composed nobody: not by one")
+		NpcApi.summary(GATE_KEEPER)
+	assert_eq(NpcAliveness.composes, before, "eight roster polls composed nobody: not by one")
+
+
+## How many composes ONE `presence_here` pass costs for this room, read from the live
+## registry rather than hardcoded: the number of rows whose TIER composes. Computed through
+## `NpcTier.COMPOSED` — the same named set the gate reads — so a change to what composes
+## moves this helper and the gate together instead of letting the two drift. `UNTRACKED` is
+## the wrong set to count and saying so is the point: a `transient` is untracked and
+## composes nothing, which is why the two sets are not interchangeable.
+func _presence_here_composable_rows() -> int:
+	var composable := 0
+	for key in NpcRegistry.instance().present_ids():
+		var def := NpcCatalog.instance().definition(String(String(key).get_slice("#", 0)))
+		if def != null and NpcTier.COMPOSED.has(def.normalized_tier()):
+			composable += 1
+	return composable
 
 
 ## And the mirror, so the counter is not merely stuck: composition DOES move when somebody
-## interacts. A counter that cannot go up proves nothing.
+## interacts — and it moves by exactly ONE, which is the half of the rule the room read
+## above is measured against. **ONE, not one per live body**: meeting a minor is an
+## interaction with that minor, and a cast of four hundred met one at a time still composes
+## one face at a time.
 func test_the_compose_counter_moves_exactly_when_a_minor_is_interacted_with() -> void:
-	var before := NpcAliveness.composes
+	var before: int = NpcAliveness.composes
 	_alive_row(GATE_KEEPER, &"qi_dao", 0)
 	assert_eq(NpcAliveness.composes, before + 1, "one interaction, one compose")
-	assert_eq(NpcAliveness.composes, before + 1, "and holding the row costs nothing further")
+	_alive_row(ELDER, &"qi_dao", 0)
+	assert_eq(
+		NpcAliveness.composes,
+		before + 1,
+		"and meeting a TRACKED npc composes nothing: their face is authored, not rolled"
+	)
+	_alive_row(GATE_KEEPER, &"qi_dao", 0)
+	assert_eq(NpcAliveness.composes, before + 2, "while a second face in that room costs its own")
 
 
 ## A TRANSIENT npc gets less than a minor, and the reason is population. It composes
@@ -461,7 +600,20 @@ func test_a_minor_npc_leaves_nothing_in_a_save_to_persist() -> void:
 	SocialApi.attach(restored)
 	assert_eq(bool(NpcApi.summary(GATE_KEEPER).get("known", false)), false, "a stranger again")
 	assert_eq(
-		NpcApi.state(restored).get("tracked_ids", []) as Array, [], "and nobody remembers them"
+		(NpcApi.state(restored).get("tracked_ids", []) as Array).has(String(GATE_KEEPER)),
+		false,
+		"and the roster does not carry them: an UNTRACKED id is never a tracked one"
+	)
+	# **The elder is in that list and must stay there.** It was, until this assertion was
+	# written as `== []`: the elder is stocked and remembered at `:466`, so a list demanding
+	# be empty was demanding the test forget a cast member it had just met. A transient is
+	# stocked a few lines below and is the face this half is really about — an npc in the
+	# room who is on nobody's ledger.
+	_room([DRIFTER])
+	assert_eq(
+		(NpcApi.state(restored).get("tracked_ids", []) as Array).has(String(DRIFTER)),
+		false,
+		"while a transient standing in the same room is remembered by nobody at all"
 	)
 
 
@@ -592,11 +744,11 @@ func test_nothing_advances_while_nobody_is_looking() -> void:
 	# Room reads that reach the alive layer through PRODUCTION, which is the point of the
 	# `alive` key: a panel polling presence now also gets every body what they are doing,
 	# and the round advances because a human saw the row.
-	for _pass in range(8):
+	for _pass in range(POLL_PASSES):
 		NpcApi.presence_here(&"qi_dao")
 	assert_eq(
 		int(_bound.call(ELDER)),
-		before + 8,
+		before + POLL_PASSES,
 		"and a production room read IS an observation: the clock advanced on every pass"
 	)
 	assert_eq(NpcAliveness.is_synced(ELDER), true, "and the stamp is there for the next read")
@@ -628,10 +780,24 @@ func test_the_read_is_the_trigger_and_a_later_period_reads_a_different_slot() ->
 ## An UNTRACKED npc has no day. Composing a schedule for a person the world does not
 ## remember would be inventing a continuity nothing has — which is the tier policy's half
 ## of the daily round.
-func test_an_untracked_npc_has_no_daily_round_and_the_clock_never_even_stamps_it() -> void:
+##
+## ## The READ still happened, and the split between the two is the point
+##
+## The `{}` is about what the read can ANSWER. The stamp is about whether the read
+## OCCURRED, and ADR 0173(c)'s named hazard is an advance source that records nothing:
+## if the untracked return sat ABOVE the stamp, then a minor's clock could never record
+## that anybody looked, and the module's two per-npc counters would answer `false`/`0`
+## forever for exactly the tier nobody tracks. So: no round, and a stamp all the same.
+func test_an_untracked_npc_has_no_daily_round_but_the_read_still_happened() -> void:
 	assert_eq(NpcAliveness.round(_transient, DRIFTER, 3), {}, "a transient has no round")
 	assert_eq(NpcAliveness.round(_minor, GATE_KEEPER, 3), {}, "nor does a minor")
-	assert_eq(NpcAliveness.is_synced(DRIFTER), false, "and it was never even stamped")
+	assert_eq(
+		NpcAliveness.round_syncs(DRIFTER),
+		1,
+		"and the observation is recorded, because the hazard is an advance source that records none"
+	)
+	assert_eq(NpcAliveness.is_synced(DRIFTER), true, "so the stamp is there for the next read")
+	assert_eq(NpcAliveness.round_syncs(GATE_KEEPER), 1, "a minor's is too")
 
 
 ## The round is O(1) in the SPAN. A billion-period gap must cost what one period costs,
@@ -668,7 +834,14 @@ func test_a_cast_member_with_no_authored_round_reads_empty() -> void:
 ## thing is not the guarantee.
 func test_no_advance_source_is_gated_on_someone_being_present() -> void:
 	var audited := 0
-	for path in ContentScan.files_under("res://src/modules/npc/"):
+	# **".gd", explicitly.** `files_under` DEFAULTS to `DEFAULT_SUFFIX` (".tres"), so the
+	# bare call walked only authored RESOURCES and read no source at all: `audited` stayed 0,
+	# the seven pattern assertions per file never ran, and the guard that exists to refuse a
+	# deadlock shape had audited nothing. It reported
+	# `the guard read the module's own source rather than nothing: expected true, got false`
+	# — the one honest failure here, and the only reason the bug was visible. A guard over
+	# source must name the source suffix.
+	for path in ContentScan.files_under("res://src/modules/npc/", ".gd"):
 		var text := FileAccess.get_file_as_string(path)
 		if text.is_empty():
 			continue
@@ -691,9 +864,17 @@ func _assert_no_gated_advance(path: String, text: String) -> void:
 
 
 ## The advance in this module is a WRITE TO THE STAMP and it is unconditional: it happens
-## before every early return, so a def with no round is still stamped and a def with no
-## roster slot is still stamped. Read structurally, because "I did not see the branch" is
-## not a measurement.
+## before EVERY early return, so a def with no round, an UNTRACKED def, and a def with no
+## roster slot are all still stamped. Read structurally, because "I did not see the branch"
+## is not a measurement.
+##
+## ## "Every" is the word, and the first one is not the one that matters
+##
+## The original compared the stamp against the FIRST `return {}` and passed — because the
+## first `return {}` guards `def == null`, which nobody reaches. The gate that actually
+## skipped the stamp was the SECOND: `if not def.tracked(): return {}`, so a minor's clock
+## recorded no observation at all. One `return` is a local fact; the claim is about the
+## class, so this measures the worst case: the stamp must precede the LAST of them.
 func test_the_stamp_is_written_before_any_early_return_in_the_round_read() -> void:
 	var code := _code_only(FileAccess.get_file_as_string("res://src/modules/npc/npc_aliveness.gd"))
 	var from_at := code.find("static func round(")
@@ -702,14 +883,29 @@ func test_the_stamp_is_written_before_any_early_return_in_the_round_read() -> vo
 	var body := code.substr(from_at, to_at - from_at)
 	var stamp_at := body.find("_last_synced[npc_id] = period")
 	assert_eq(stamp_at >= 0, true, "the stamp write exists at all")
-	var first_return := body.find("return {}")
+	# Every early return, and the LAST of them rather than the first — the first is the
+	# `def == null` guard, and a guard that is never reached proves nothing about the class.
+	var last_return := -1
+	var at := body.find("return {}")
+	while at >= 0:
+		last_return = at
+		at = body.find("return {}", at + 1)
 	assert_eq(
-		first_return >= 0, true, "and the read really does return early for a def with no round"
+		last_return >= 0, true, "and the read really does return early for a def with no round"
 	)
 	assert_eq(
-		stamp_at < first_return,
+		stamp_at < last_return,
 		true,
 		"the stamp is written BEFORE the first return, so EVERY observation advances"
+	)
+	# And the tier gate specifically, named rather than left implicit: this is the branch
+	# that was above the stamp, and a minor's clock is what the claim is about.
+	var tracked_gate := body.find("if not def.tracked():")
+	assert_eq(tracked_gate >= 0, true, "the untracked gate is still in the read")
+	assert_eq(
+		stamp_at < tracked_gate,
+		true,
+		"the stamp precedes the UNTRACKED gate, so an untracked npc is stamped and only ANSWERS {}"
 	)
 
 
@@ -804,7 +1000,10 @@ func test_every_authored_round_uses_each_slot_index_exactly_once() -> void:
 ## module's own source rather than left to a rule that cannot see `modules/*`.
 func test_no_alive_file_declares_its_own_time_ratio() -> void:
 	var banned := ["const PERIOD_SECONDS", "const SECONDS_PER_", "const SLOT_SECONDS"]
-	for path in ContentScan.files_under("res://src/modules/npc/"):
+	# **".gd", explicitly** — see `test_no_advance_source_is_gated_on_someone_being_present`.
+	# The bare `files_under` call defaults to ".tres", so this guard enumerated no scripts
+	# and asserted nothing at all rather than reporting a duplicate time ratio.
+	for path in ContentScan.files_under("res://src/modules/npc/", ".gd"):
 		var text := FileAccess.get_file_as_string(path)
 		if text.is_empty():
 			continue

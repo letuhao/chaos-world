@@ -17,7 +17,7 @@ payload = {
 "counterpart_id": &"mind_conviction",
 "beat": 1.5,
 "steepness": 0.4,
-"harm": 0.18,
+"harm": 0.16,
 "floor_resist": 0.4,
 "headroom": 0.3,
 "duration": 4.0,

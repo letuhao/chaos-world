@@ -132,21 +132,29 @@ func _row(realm_index: int) -> Dictionary:
 	}
 
 
-## A qi hit: one element against a defender whose authored resistance is HALF the
-## shipped `resist_cap`, so the elemental term survives and the fraction is a
-## real number rather than a tautological zero.
+## A qi hit: one element against a defender whose authored elemental DEFENSE is one
+## divisor's worth, so the mitigation is a real number rather than a tautological
+## zero and the elemental term survives.
 ##
 ## The magnitude is S1's OUTPUT for the same reason the body row's is: `QiDamage` reads
 ## `ctx.magnitude` for both of its shares, so handing it the bare authored `100.0` fed
 ## the mechanism a PRE-GATE figure and skipped the rate this file's other column pays.
 ## `RealmRate` is the spine's stage, so the gated number is read through the spine's own
 ## `base_damage` rather than re-multiplied here. The rate is a sub-2x factor that cancels
-## out of the qi/body ratio either way, so this closes no gap on its own — it makes the
-## two rows differ by exactly ONE thing, which is the two attack stats.
+## out of the qi/body ratio either way — it makes the two rows differ by exactly ONE thing,
+## which is the two attack stats.
+##
+## The row publishes ADR 0200's FOUR TERMS rather than the single deleted `resistance`
+## percent, because that is what the ratio is built from and a panel has to be able to see
+## which of them moved: `defense` is `D`, `defense_effective` is `D` after the bounded
+## reciprocal on penetration, `divisor_k` is `K` (which rides the ATTACKER) and
+## `mitigation_rate` is the unclamped curve output `m`.
 func _qi_hit(realm_id: StringName) -> Dictionary:
-	var resistance := _tuning.resist_cap * 0.5
+	# ADR 0200: the elemental defense is a MAGNITUDE on the divisor's scale, not a share of
+	# a removed `resist_cap`. This is a defended target, which is all this comparison needs.
+	var defense_points: float = _tuning.resist_divisor
 	var attacker: Actor = _qi._attacker(ATTACKING_ELEMENT)
-	var target: Actor = _qi._defender(ATTACKING_ELEMENT, resistance)
+	var target: Actor = _qi._defender(ATTACKING_ELEMENT, defense_points)
 	_stand_at(attacker, PathState.QI, realm_id)
 	_stand_at(target, PathState.QI, realm_id)
 	var technique: TechniqueDef = _qi._technique(ATTACKING_ELEMENT, _tuning.default_element_share)
@@ -169,7 +177,10 @@ func _qi_hit(realm_id: StringName) -> Dictionary:
 		"s5": mitigated.amount,
 		"fraction": 0.0 if subtotal <= 0.0 else float(parts["elemental_term"]) / subtotal,
 		"mitigation": float(parts["mitigation"]),
-		"resistance": float(parts["resistance"]),
+		"defense": float(parts["defense"]),
+		"defense_effective": float(parts["defense_effective"]),
+		"divisor_k": float(parts["divisor_k"]),
+		"mitigation_rate": float(parts["mitigation_rate"]),
 		"pool": _pool_of(target),
 	}
 

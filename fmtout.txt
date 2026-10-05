@@ -1,0 +1,9 @@
+92 files already formatted
+would reformat D:\Works\source\chaos-world\game\src\modules\domain\domain_fixture_levers.gd
+would reformat D:\Works\source\chaos-world\game\tests\core\test_zzr_probe2.gd
+would reformat D:\Works\source\chaos-world\game\tests\core\test_zzr_probe3.gd
+would reformat D:\Works\source\chaos-world\game\tests\modules\custody\test_custody_term_is_never_a_valuation.gd
+would reformat D:\Works\source\chaos-world\game\tests\modules\qi_cultivation\test_zzz_scratch_probe.gd
+5 files would be reformatted, 1252 files would be left unchanged.
+$ D:\Works\source\chaos-world\.venv\Scripts\ruff.EXE format D:\Works\source\chaos-world\tools --check
+$ D:\Works\source\chaos-world\.venv\Scripts\gdformat.EXE D:\Works\source\chaos-world\game --check

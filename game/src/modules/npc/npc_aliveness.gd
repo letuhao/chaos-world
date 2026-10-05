@@ -103,10 +103,24 @@ static var gossip_deliveries: int = 0
 static func round(def: NpcDef, npc_id: StringName, period: int) -> Dictionary:
 	if def == null or period < 0:
 		return {}
-	if not def.tracked():
-		# A minor npc has no authored day to be somewhere-else in. Composing one would be
-		# inventing a schedule for a person the world does not remember.
-		return {}
+	# ## THE STAMP COMES FIRST — and it is the one order ADR 0173(c) settles
+	#
+	# It used to sit at `:116`, BELOW the untracked return at `:107`, so a minor or a
+	# transient was never stamped at all. That reads as harmless and is the opposite: a
+	# gated advance source. The stamp is this module's ENTIRE notion of "this observation
+	# happened", so the one class of npc the early return exempt was the one class whose
+	# clock could never record an observation — and the second observer would compute a
+	# span against a `-1` floor rather than against the last real reading.
+	#
+	# ADR 0173(c) names the hazard for exactly this: *a clock whose every trigger is gated
+	# on an observer freezes silently.* The `tracked()` test is not an observer, it is a
+	# CONTENT question ("does this individual have an authored day?"), and the tier policy
+	# above already says an untracked npc has no round **to return** — never that it has no
+	# clock. So the stamp is written for every npc that reaches the function at all, and the
+	# early return decides only what the read ANSWERS. `round_syncs(id)` and `is_synced(id)`
+	# are then flat counters per npc, and a room of four hundred unobserved minors costs
+	# nothing because nothing calls this function for them.
+	#
 	# `_last_synced` is an untyped Dictionary, so `.get()` answers Variant and a `:=`
 	# would infer Variant — which this project treats as a hard error. Annotate both.
 	var last: int = int(_last_synced.get(npc_id, -1))
@@ -117,6 +131,11 @@ static func round(def: NpcDef, npc_id: StringName, period: int) -> Dictionary:
 	_round_syncs[npc_id] = int(_round_syncs.get(npc_id, 0)) + 1
 	if span < 0:
 		span = 0
+	if not def.tracked():
+		# A minor npc has no authored day to be somewhere-else in, and a transient has no
+		# person to have one — but both are still OBSERVED above, and this return is about
+		# what the read can ANSWER, not about whether it happened.
+		return {}
 	var clamped := mini(span, MAX_SYNC_SPAN_PERIODS)
 	var slot := def.round_slot_of(period)
 	if slot == null:

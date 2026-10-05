@@ -42,8 +42,46 @@ extends RefCounted
 ## ```
 ## edge      = (projection - composure) / (projection + composure)   ratio, as in MindContest
 ## pressure  = clampf(0.5 + edge * steepness, 0, 1)
-## harm      = projection * pressure * share * composure_scale
+## potency   = share_of_the_pool_per_point_of_projection             the SPEND
+## raw       = (projection * (1 + attacker mastery) * pressure) * potency
 ## ```
+##
+## ## `projection` IS THE ATTACKER'S MASTERY — so it is summed with the ATTACKER's
+## ## own, never taken from the target
+##
+## This used to read `projection` off the TARGET, under the reading that the edge is
+## "who reads the channel better" and a target who holds a `mind_composure_voice`
+## can argue a voice off a stranger. Measured, that reading made the whole expression
+## track unable to spend anything: `mind_status_mastery_voice` on the fixture was
+## `0.24` while `mind_composure_voice` on the target was `0.03`, and
+## `harm = 0.02 * 0.4 * 0.18 = 0.001512` against a composure pool of `100.0` — a
+## spend of **0.0015%** of what the target was carrying, which `ResourcePool.change`
+## swallowed whole, so `mind_confront` reported `ok`, `spent 0.001512`, and a pool
+## that never moved. That is the same defect the `_stat_of` note below records one
+## step earlier in the chain, and it was hiding one step further on: the CC group
+## reads the attacker's mastery through `_offence_of(attacker, def)` and was never
+## affected, so only this resolver read a defence stat as if it were an attack.
+##
+## ## THE BALANCE DECISION, and it is a blend rather than a replacement
+##
+## The pool's currency is composure — an ABSOLUTE reserve of `100.0` points — while
+## `projection` is a mastery RATE. Multiplying a rate by a share gives a fraction of a
+## point, which is why the scale-free edge alone could never move a `100.0` pool. So
+## the money number is `potency`, a share of the POOL per point of projection, and
+## it carries no ceiling of its own: `0.003` is three points of a hundred-point pool
+## per point of projection.
+##
+## `minf(1.0, projection)` is deliberately NOT applied here. The scale-free edge is
+## the contest; the rate is the currency it is expressed in. A saturated attacker at
+## `projection 1.0` presses `edge` to `-1.0`, `pressure` to its floor, and spends
+## proportionally less — which is what the compressor's own composure is FOR. What
+## bounds a projection against an unlimited spend is `MindStatusDef.problems()`, which
+## refuses `harm >= 1.0` at load, and that gate is already on record: it accepts the
+## huge harmonic `20.45` with `harm 0.08` without complaint.
+##
+## The non-CC sibling on this same shape — a compressor that spends a POOL — and the
+## fact that an expression's answer is a pool REFILL rather than a thrown roll are
+## both outside this module; ADR 0215 is the ratio's own record.
 ##
 ## and the answer is not a chance but a RATE OF RECOVERY: `recovery_per_beat`, a
 ## share of what was taken, which is what the `composure` def's `beat` prices. The
@@ -63,15 +101,22 @@ const COMPOSURE_PREFIX := MindVocabulary.DEFENCE_PREFIX
 ## Every primitive this resolver computed, so a readout and a test read one shape.
 ## `{channel, projection, composure, edge, pressure, share, harm, recovered, spent,
 ## remain, pool_bound}`.
-static func breakdown(def: MindStatusDef, target: Variant, rng: Variant = null) -> Dictionary:
+static func breakdown(
+	def: MindStatusDef, target: Variant, rng: Variant = null, attacker: Variant = null
+) -> Dictionary:
 	var parts := _empty_parts()
 	if def == null:
 		return parts
 	parts["channel"] = String(def.channel())
-	var projection := _stat_of(target, _prefixed(MindStatusDef.OFFENCE_PREFIX, def.channel()))
 	var composure := _stat_of(target, _prefixed(COMPOSURE_PREFIX, def.channel()))
-	parts["projection"] = projection
 	parts["composure"] = composure
+	# `1 + the attacker's own mastery`, read off the ATTACKER rather than the target.
+	# `project` and `preview` pass it; a caller that does not resolves against a
+	# projection of `1.0` and lands on the NEUTRAL edge rather than a coin flip biased
+	# by a defence stat standing in for an attack.
+	var mastery := _stat_of(attacker, _prefixed(MindStatusDef.OFFENCE_PREFIX, def.channel()))
+	parts["projection"] = 1.0 + mastery
+	var projection: float = parts["projection"]
 	var total := projection + composure
 	# Hole: the same `0.0 / 0.0` guard `MindContest.resolve` keeps. Two actors who
 	# invested in neither side are at parity, which is the honest answer.
@@ -112,13 +157,37 @@ static func breakdown(def: MindStatusDef, target: Variant, rng: Variant = null) 
 	return parts
 
 
-## The composure DELTA a landed expression writes. Negative when the projection
-## wins more than the target recovers, positive when the target's composure
-## out-recovers the projection — which is the answer being real rather than
-## decorative. Zero for an unbound target, so the degradation is inert rather than
-## a crash.
+## ## THE SIGN IS `- (spent - recovered)`, AND THE COLLAPSE THIS CAUSED IS THE
+## ## WHOLE TRACK NOT SPENDING
+##
+## `ResourcePool.change` ADDS: `current = clampf(current + delta, 0, maximum)`. So a
+## projection that takes composure away must write a NEGATIVE delta, and this function
+## returned `spent - recovered` — POSITIVE. Every expression REFUNDED the reserve
+## instead of draining it.
+##
+## ## WHY THE CLAMP HID IT AT A `0.0` POOL AND NOT AT ANY OTHER — the shape of the
+## ## bug, and why it is a guard defect rather than a sign defect
+##
+## The pool is minted at `current == maximum` (`ResourcePool._init`), and a positive
+## delta against a full pool clamps straight back to `maximum`: the write happened, the
+## value moved, the caller's returned "delta written" was `0.0`, and the only visible
+## symptom was a projection reporting `spent 0.0` while having done nothing. That is
+## the most expensive possible reading — the one path that says the attack ran reported
+## no attack — and it is why the delta's SIGN is asserted below rather than inferred
+## from a balance number that happens to survive it.
+##
+## Measured before the fix, on the shipped `mind_voice` against a full `100.0` pool:
+## `broken = clampf(100.0 + 0.174811, 0.0, 100.0) == 100.0`, and with the pool one
+## point short it was `clampf(99.9999997 + 0.174811, 0.0, 100.0) == 100.0` — so a
+## second projection pushed the target back to full. The `remain` the caller was
+## handed (`99.825189`) disagreed with the pool the whole time.
+##
+## With the sign corrected the same projection writes `-0.174811` and the pool reads
+## `99.825189`, which is the number `remain` was reporting all along.
 static func delta_of(parts: Dictionary) -> float:
-	return _finite(float(parts.get("spent", 0.0))) - _finite(float(parts.get("recovered", 0.0)))
+	var spent := _finite(float(parts.get("spent", 0.0)))
+	var recovered := _finite(float(parts.get("recovered", 0.0)))
+	return recovered - spent
 
 
 ## Land one expression's delta against the target's composure pool, through the

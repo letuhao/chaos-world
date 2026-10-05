@@ -17,11 +17,25 @@ maxi(1, roundi(base_worth * RARITY_WEIGHT[rarity] * RealmRate.factor(realm)))
 them a price already spans about 7x without this tool contributing anything.
 
 So the only question `base_worth` has to answer is **"what kind of thing is
-this?"** — and rarity is already a multiplier in the formula, so folding rarity
-into the worth as well would square a term the formula owns. The ladder
-therefore scales by **category alone**, flat across realms. See
-`CATEGORY_WORTH`'s docstring for why a realm term here would be ADR 0050's
+this, and at what tier"** — and rarity is already a multiplier in the formula, so
+folding rarity into the worth as well would square a term the formula owns. The
+ladder therefore scales by **category and grade**, flat across rarity and realm.
+See `CATEGORY_FLOOR`'s docstring for why a realm term here would be ADR 0050's
 failure.
+
+## What a worth may be READ from: fixed only, never rolled
+
+`trade_value` is ROLLABLE. The catalog registers it with `"contexts":
+["base", "prefix", "postfix"]` and it is a live member of every `property:*` roll
+pool, so on a def whose own `roll_spec` names a context the rarity policy actually
+chooses, the generator can realize a ROLLED worth. A rolled worth is an `rng`
+draw: `EconomyValuation.base_worth_of` refuses it, and `has_rolled_worth` makes
+`EconomyExchange` and `MarketApi` refuse to SETTLE the item at all. Authoring a
+price onto such a def would turn a priced item into an unsellable one.
+
+So this tool writes a worth **only onto a def that cannot roll one** — see
+`ROLLABLE_CONTEXTS` for the exact, measured test — and reports every def it
+refused rather than quietly skipping it.
 
 ## Realm-invariance is the property being preserved
 
@@ -42,9 +56,13 @@ is the machine check that it stays that way.
 - **Only a file with no existing `trade_value` is written.** An authored number
   a designer chose is never overwritten, so the tool is idempotent by
   construction and a re-run reports zero.
+- **Only a def that cannot roll a worth is written.** A `prefix`/`postfix` in its
+  `roll_spec` is a refusal, counted and named, because a rolled worth makes the
+  item unsettleable and a price nobody can pay is not a price.
 - **Dry-run by default.** Writing requires the `apply` action.
 - **Deterministic.** No `random`, no clock, no directory-order dependence: files
-  are visited in sorted order and the ladder is a pure function of one category.
+  are visited in sorted order and the ladder is a pure function of one item's
+  `(category, grade)`.
 - **Scope is explicit.** `--roots` names content roots, `--categories` names
   categories, and an unknown category is refused rather than defaulted.
 """
@@ -59,34 +77,43 @@ from .common import ToolError, fail, info, ok
 
 # --- The ladder --------------------------------------------------------------
 
-## One base worth per item CATEGORY, in coins of the numéraire.
+## One base worth per item CATEGORY **and grade tier**.
 ##
-## These are the numbers. They span 130x across the eight categories, which is
-## the whole budget a worth ladder gets: the formula's own rarity term is 4x and
-## its realm term is under 2x, so the category term stays a *distinguishing* term
+## These are the numbers. They span 21x across the four categories, which is the
+## whole budget a worth ladder gets: the formula's own rarity term is 4x and its
+## realm term is under 2x, so the category term stays a *distinguishing* term
 ## rather than the dominant one, and no category's worth reads as a power
 ## statement.
 ##
-## The ordering is "what does obtaining this cost", not "how strong is it",
-## because a price is a cost and never a magnitude (ADR 0094):
+## ## Why the ladder has a GRADE axis and not a rarity or realm axis
+##
+## `grade` is the item's authored tier placement (`mortal` -> `divine`), and it is
+## the one tier field every def in the corpus carries. It is a ladder ON THE ITEM,
+## not a lookup into another table, so authoring from it does not become the
+## forbidden "derive a worth from rarity, realm, or another table".
+##
+## The two axes that are NOT folded in are exactly the two ADR 0094's formula
+## already owns as multipliers:
+##
+##   rarity -> `RARITY_WEIGHT` 1.0 / 1.6 / 2.6 / 4.0
+##   realm  -> `RealmRate.factor` `1.02^ordinal`, under 2x over thirty realms
+##
+## Squaring either into the authored term would mean a legendary item's price is
+## decided by rarity twice. So within a grade the worth is FLAT, and grade only
+## says *what tier of thing this is*.
+##
+## ## The ordering is "what does obtaining this cost", not "how strong is it",
+## ## because a price is a cost and never a magnitude (ADR 0094):
 ##
 ##   currency     2 — a note or a token. The cheapest thing that exists, and the
 ##                  reason every other category is priced above it.
-##   material     6 — a reagent or a hide. Gathered or grown: the bottom of the
-##                  goods range, and the input to nearly every recipe.
-##   key         12 — a document that opens something. Priced for what it
-##                  admits, not for the door.
-##   misc        18 — an object with no use of its own, carried because someone
-##                  wanted it. Deliberately above `material`: no yield sets it.
-##   quest       34 — a delivered consequence. Scales with what completing it
+##   key          5 — a document that opens something. Priced for what it admits,
+##                  not for the door.
+##   misc         8 — an object with no use of its own, carried because someone
+##                  wanted it. Deliberately above `currency`: no yield sets it.
+##   quest       10 — a delivered consequence. Scales with what completing it
 ##                  cost, and it is never sold back — a shop's `buys` list is
 ##                  where that refusal is expressed (ADR 0100).
-##   consumable  85 — a prepared dose: the crafting work plus the reagent, so it
-##                  is the first category above the reagent line.
-##   technique  150 — an instruction. Nothing else in the corpus produces one.
-##   equipment   260 — a finished implement, the output of the longest craft
-##                  chain. Highest, and the ladder's full span stays 130x rather
-##                  than the 551x an actor ladder would give.
 ##
 ## ## Why there is deliberately NO realm term here
 ##
@@ -97,44 +124,98 @@ from .common import ToolError, fail, info, ok
 ## `realm_power_table.tres` (1.0 -> 551x). ADR 0094's whole argument is that a
 ## deep actor accumulates a larger pile, not a larger price, and that holds only
 ## if the authored input is flat across realms.
-CATEGORY_WORTH: dict[str, float] = {
+GRADE_ORDER: tuple[str, ...] = ("mortal", "spirit", "earth", "heaven", "immortal", "divine")
+
+#: How each rung moves along its category's own rung. Every category uses the same
+#: SHAPE, so an editor retunes a category by moving one number rather than
+#: re-deriving six: the rungs are 1x, 1.6x, 2.1x, 2.7x, 3.4x, 4.2x of the
+#: category's own floor. Those multipliers are deliberately close to (and under)
+#: the formula's own 4x rarity span, so the grade axis never out-shouts it.
+GRADE_MULTIPLIER: dict[str, float] = {
+    "mortal": 1.0,
+    "spirit": 1.6,
+    "earth": 2.1,
+    "heaven": 2.7,
+    "immortal": 3.4,
+    "divine": 4.2,
+}
+
+## Each category's FLOOR rung, i.e. what its `mortal` item is worth. The other
+## five grades follow from `GRADE_MULTIPLIER`.
+CATEGORY_FLOOR: dict[str, float] = {
     "currency": 2.0,
-    "material": 6.0,
-    "key": 12.0,
-    "misc": 18.0,
-    "quest": 34.0,
-    "consumable": 85.0,
-    "technique": 150.0,
-    "equipment": 260.0,
+    "key": 5.0,
+    "misc": 8.0,
+    "quest": 10.0,
+}
+
+CATEGORY_WORTH: dict[str, float] = {
+    category: {grade: floor * GRADE_MULTIPLIER[grade] for grade in GRADE_ORDER}
+    for category, floor in CATEGORY_FLOOR.items()
+}
+
+## ## `base` is the context that makes a rolled worth POSSIBLE, and nothing else
+##
+## `ItemGenerator.roll` intersects the rarity policy's contexts with the def's own
+## `roll_spec.contexts`:
+##
+##     chosen = ItemRarity.contexts(def.rarity) & def.roll_spec.contexts
+##
+## and `ItemRarity.POLICY` names only `prefix` and `postfix` for all four rarities
+## (common -> [prefix]; magic/rare/legendary -> [prefix, postfix]). **`base` is
+## never a chosen context.** So a def whose `roll_spec` names only `base` chooses
+## nothing at all, `roll()` returns early, and `trade_value` cannot reach its
+## `rolled` channel no matter the seed.
+##
+## That is the whole rule, and it is the same distinction `economy_valuation.gd`
+## draws: `base_worth_of` reads `fixed_modifiers` and `has_rolled_worth` refuses
+## anything in `rolled`. A def that names `prefix` or `postfix` has `trade_value`
+## live in its `property:<context>` pool, so it CAN realize a rolled worth — and
+## `EconomyExchange._plan` then refuses to settle the item by name
+## (`no_settlement`), which would make an authored price into an unsellable one.
+##
+## Measured, not assumed: over all 680 already-priced defs, exactly the 231 `misc`
+## defs (whose `roll_spec` is `{base, prefix}`) realize a rolled worth within 40
+## seeds, and no `currency`/`key` def (`roll_spec` `{base}`) ever does.
+ROLLABLE_CONTEXTS: frozenset[str] = frozenset({"prefix", "postfix"})
+
+## `ItemRarity.POLICY`'s contexts, mirrored from `item_rarity.gd`. `base` is
+## absent because the runtime never chooses it — that absence IS the rule.
+RARITY_CONTEXTS: dict[str, frozenset[str]] = {
+    "common": frozenset({"prefix"}),
+    "magic": frozenset({"prefix", "postfix"}),
+    "rare": frozenset({"prefix", "postfix"}),
+    "legendary": frozenset({"prefix", "postfix"}),
 }
 
 ## Content roots the wave may touch, relative to the data root.
 DEFAULT_ROOTS: tuple[str, ...] = ("items",)
 
-## The shipped wave.
+## ## The shipped wave, and what the census left
 ##
-## These two are chosen on a measured fact, not taste. `trade_value`'s catalog
-## record declares `categories: ["currency"]`, and `activations_for` derives the
-## only channels it may be authored on as `{"property"}`. `CATEGORY_ACTIVATION`
-## maps `key`, `currency`, `quest` and `misc` to `property`, and `material`,
-## `consumable`, `technique` and `equipment` to `crafted`/`equipped`/`learned`.
-## Authoring `trade_value` on a material — the obvious slice, and the one this
-## wave was originally scoped to — is therefore counted as a MISACTIVATED option
-## by `data distribution`. Measured, not assumed: one such row moves that count
-## from 3631 to 3632. The wave is scoped to categories the option may legally
-## carry, and the tool refuses a category outside `CATEGORY_WORTH` rather than
-## writing a row the gate will flag.
+## The measured census (not the DEF-0128 title, which says 221/7945 and was stale
+## by three waves) is **680 of 8060** defs carrying a fixed `trade_value`:
+## `currency` 221, `key` 228, `misc` 231, and **`quest` 0 of 233**. `quest` is
+## therefore the whole remaining honest slice, and it is legal on both counts:
 ##
-## `key` + `misc` is 459 files, which is the wave a designer can review as one
-## change and lands inside the 300..600 budget the wave was given. `quest` is
-## deliberately NOT in the default: it is legal and would take the wave to 692,
-## and a second wave is a smaller diff on a branch other agents are writing to.
-## Name it explicitly with `--categories quest` when that wave is taken.
+##   - `trade_value`'s catalog record declares `categories: ["currency"]` and
+##     `activations_for` derives the only channel it may be authored on as
+##     `{"property"}`. `CATEGORY_ACTIVATION` maps `key`, `currency`, `quest` and
+##     `misc` to `property`, and `material`, `consumable`, `technique` and
+##     `equipment` to `crafted`/`consumed`/`equipped`/`learned`. Authoring
+##     `trade_value` on a material — the obvious slice — is a MISACTIVATED row by
+##     `data distribution`. So the ~7000 `material`/`consumable`/`equipment`/
+##     `technique` defs are NOT authorable, and saying otherwise would be fiction.
+##   - every `quest` def declares `roll_spec.contexts == ["base"]`, and `base` is
+##     never a context `ItemRarity.POLICY` chooses, so a `quest` item can never
+##     realize a ROLLED worth (see `ROLLABLE_CONTEXTS`).
 ##
-## `currency` is excluded because all 221 of its defs already ship an authored
-## worth, and an authored number is never overwritten: naming it would cost a
-## full scan to change nothing.
-DEFAULT_CATEGORY_WAVE: tuple[str, ...] = ("key", "misc")
+## `key` stays in the default because 2 of its 230 defs are still unpriced (they
+## are the only stragglers), and `currency`/`misc` are excluded because an
+## authored number is never overwritten: naming them costs a full scan to change
+## nothing. `misc` would in any case be refused outright — all 231 of its defs
+## name `prefix`, so every one of them can roll a worth.
+DEFAULT_CATEGORY_WAVE: tuple[str, ...] = ("key", "quest")
 
 # --- File shapes -------------------------------------------------------------
 #
@@ -217,10 +298,11 @@ def run(args) -> int:
     items = records.get("item", {})
 
     plan: dict[Path, float] = {}
-    by_rarity: Counter[str] = Counter()
+    by_grade: Counter[tuple[str, str]] = Counter()
     already: Counter[str] = Counter()
     clamped = 0
     unpriceable: list[str] = []
+    rollable: list[str] = []
     for item_id, item in sorted(items.items()):
         category = item["scalars"].get("category", "")
         if not _in_scope(item, roots, categories):
@@ -230,7 +312,20 @@ def run(args) -> int:
             # no-op without needing a marker of "did I already write this".
             already[category] += 1
             continue
-        worth = CATEGORY_WORTH[category]
+        if can_roll_a_worth(item):
+            # A def that can realize a ROLLED trade_value: writing a fixed worth
+            # onto it does not make it priced, it makes it UNSETTLEABLE, because
+            # `EconomyExchange._plan` and `MarketApi.list_lot` both refuse an
+            # instance whose `has_rolled_worth` is true. Reported, never written.
+            rollable.append(f"{item_id} ({category}): {item.get('roll_spec', {})}")
+            continue
+        worth = _worth_for(item)
+        if worth is None:
+            unpriceable.append(
+                f"{item_id} ({category}): grade "
+                f"'{item['scalars'].get('grade', '')}' is not on the ladder"
+            )
+            continue
         realm = item["scalars"].get("realm", "")
         rarity = item["scalars"].get("rarity", "")
         problem = _out_of_band(worth, realm, rarity)
@@ -249,7 +344,7 @@ def run(args) -> int:
                 continue
             clamped += 1
         plan[root / item["path"]] = worth
-        by_rarity[rarity] += 1
+        by_grade[(category, item["scalars"].get("grade", ""))] += 1
 
     ordered = sorted(plan)
     if limit:
@@ -275,22 +370,29 @@ def run(args) -> int:
         f"{verb} a base worth into {touched} item file(s) of {len(plan)} planned under "
         f"{'/'.join(roots)} [{', '.join(categories)}]"
     )
-    info(f"  {'category':12s} {'worth':>9s} {'priced':>7s} {'skipped':>8s}")
+    info(f"  {'category':12s} {'floor':>9s} " + " ".join(f"{g[:4]:>6s}" for g in GRADE_ORDER))
     for category in sorted(categories):
+        cells = " ".join(f"{CATEGORY_WORTH[category][grade]:6.1f}" for grade in GRADE_ORDER)
+        info(f"  {category:12s} {CATEGORY_FLOOR[category]:9.2f} {cells}")
+    info(f"  {'category/grade':20s} {'worth':>9s} {'priced':>7s}")
+    for category, grade in sorted(by_grade):
         info(
-            f"  {category:12s} {CATEGORY_WORTH[category]:9.2f} "
-            f"{sum(1 for w in plan.values() if w == CATEGORY_WORTH[category]):7d} "
-            f"{already[category]:8d}"
+            f"  {category + '/' + grade:20s} {CATEGORY_WORTH[category][grade]:9.2f} "
+            f"{by_grade[(category, grade)]:7d}"
         )
-    info(f"  {'rarity':12s} {'':>9s} {'priced':>7s}")
-    for rarity, count in sorted(by_rarity.items()):
-        info(f"  {rarity:12s} {'':>9s} {count:7d}")
     info(f"  left alone: {sum(already.values())} item(s) already carry an authored worth")
     if clamped:
         info(
-            f"  repriced into their option window: {clamped} item(s) whose category worth "
+            f"  repriced into their option window: {clamped} item(s) whose rung "
             "sits outside the generator's magnitude band at their own (realm, rarity)"
         )
+    if rollable:
+        info(
+            f"  refused: {len(rollable)} item(s) name a rollable context, so a ROLLED "
+            "worth is reachable on them and a fixed worth would make them unsettleable"
+        )
+        for line in rollable[:6]:
+            info(f"    {line}")
     if unpriceable:
         fail(f"{len(unpriceable)} item(s) have no magnitude window to price against")
         for line in unpriceable[:6]:
@@ -301,6 +403,50 @@ def run(args) -> int:
     else:
         ok(f"worth ladder plan is complete (dry run; {coins:,.2f} coins would be authored)")
     return 0
+
+
+def can_roll_a_worth(item: dict) -> bool:
+    """True when `ItemGenerator.roll` can realize a ROLLED `trade_value` on `item`.
+
+    The one place in this file that reads an item's `roll_spec`, and it reads it
+    for the refusal rather than for the write. `ItemGenerator.roll` intersects the
+    rarity policy's contexts with the def's own:
+
+        chosen = ItemRarity.contexts(def.rarity) & def.roll_spec.contexts
+
+    `ItemRarity.POLICY` names only `prefix` (common) and `prefix`/`postfix`
+    (magic, rare, legendary) — **`base` is never chosen** — so a def whose
+    `roll_spec` names only `base` chooses nothing, `roll()` returns early, and no
+    seed can put a `trade_value` in `rolled`.
+
+    A `prefix` or `postfix` in the spec means the option is live in that def's
+    `property:<context>` pool. `trade_value`'s record lists all three contexts, so
+    it is live there too, and it carries weight 3.0 out of a 15.0 family — it is
+    a real candidate, not a formality. Measured: all 231 already-priced `misc`
+    defs realize one within 40 seeds and no `currency`/`key` def does.
+    """
+    spec = item.get("roll_spec") or {}
+    if not spec:
+        # No roll channel at all: `ItemGenerator.roll` returns [] before it reads
+        # a context, so nothing can roll.
+        return False
+    chosen = RARITY_CONTEXTS.get(item["scalars"].get("rarity", ""), {"prefix"}) & set(
+        spec.get("contexts") or []
+    )
+    return bool(chosen & ROLLABLE_CONTEXTS)
+
+
+def _worth_for(item: dict) -> float | None:
+    """The ladder rung for one item: its category's worth at its own grade.
+
+    Two inputs, both read off the item itself — never off a lookup into another
+    table, and never off its rarity or realm, which ADR 0094's formula already
+    owns as multipliers.
+    """
+    rungs = CATEGORY_WORTH.get(item["scalars"].get("category", ""))
+    if rungs is None:
+        return None
+    return rungs.get(item["scalars"].get("grade", ""))
 
 
 # --- Ladder helpers ----------------------------------------------------------
@@ -315,8 +461,28 @@ def _csv(value: str | None, fallback: tuple[str, ...]) -> tuple[str, ...]:
 
 
 def no_realm_term_in_the_ladder() -> bool:
-    """The ladder is realm-blind, stated as a check rather than a promise."""
-    return True
+    """The ladder is realm-blind AND rarity-blind, stated as a check.
+
+    Not a promise: the rung table is built from two constants that have no realm
+    and no rarity in them, and a rung can only exist for a grade in `GRADE_ORDER`.
+    A realm term added later — a `realm_scale` multiplier, a per-realm dict — would
+    have to name a realm somewhere in this module, so the assertion below is the
+    cheap machine check that the table did not grow one.
+    """
+    rungs = [rung for rungs in CATEGORY_WORTH.values() for rung in rungs.values()]
+    if not rungs:
+        return False
+    # Every rung must be a constant multiple of its category floor, and no rung may
+    # depend on anything but the grade: the table has exactly len(GRADE_ORDER)
+    # entries per category and the same six for each.
+    for category, rungs_for_category in CATEGORY_WORTH.items():
+        if set(rungs_for_category) != set(GRADE_ORDER):
+            return False
+        floor = CATEGORY_FLOOR[category]
+        for grade, rung in rungs_for_category.items():
+            if rung != floor * GRADE_MULTIPLIER[grade]:
+                return False
+    return all(rung > 0.0 for rung in rungs)
 
 
 def _out_of_band(worth: float, realm: str, rarity: str) -> str | None:
@@ -369,27 +535,30 @@ def clamp_to_window(worth: float, low: float, high: float) -> float:
     is still fixed and authored, and `EconomyValuation.has_rolled_worth` still
     refuses a rolled one. The clamp exists because the option's authored window is
     a *generator* window (`[1, 10] * realm_scale * (1 + r * 0.25)`), which is flat
-    across every category at a given `(realm, rarity)`. A single ladder number
-    therefore cannot be legal everywhere: at `nascent_soul`/common the window is
-    `[1.3, 13.0]`, so a `misc` worth of 18 is out of band and the window is what
-    caps it, not the design.
+    across every category at a given `(realm, rarity)`. No ladder number can be
+    legal everywhere: at `qi_refining`/common the window is `[1.00, 10.00]`, so a
+    `quest` `divine` rung of 42 is out of band, and the window is what caps it, not
+    the design.
 
-    Clamped to a ladder VALUE, not an arbitrary point in the interval: an
-    authored worth must be a number a designer can retune by editing one constant,
-    so the result is drawn from `CATEGORY_WORTH` itself rather than from the
-    window edge. The ladder's own ordering is preserved where the window allows,
-    and where it does not, the item takes the ladder's `currency` line — the one
-    worth every option window contains.
+    Clamped to a ladder VALUE, not an arbitrary point in the interval: an authored
+    worth must be a number a designer can retune by editing one constant, so the
+    result is drawn from `CATEGORY_WORTH` itself rather than from the window edge.
+    The candidate pool is EVERY rung of EVERY category, so a clamp can step down
+    the grade axis or across the category axis and still land on a number some
+    designer's hand wrote.
     """
     if low <= worth <= high:
         return worth
-    ladder = sorted(CATEGORY_WORTH.values())
+    ladder = sorted({rung for rungs in CATEGORY_WORTH.values() for rung in rungs.values()})
     inside = [value for value in ladder if low <= value <= high]
     if inside:
-        # The nearest ladder value inside the window: a category that has to be
+        # The nearest ladder value inside the window: a rung that has to be
         # repriced is repriced to a number that is still a rung of the ladder.
         return min(inside, key=lambda value: (abs(value - worth), value))
-    return max(ladder, key=lambda value: value) if worth > high else min(ladder)
+    # No rung fits at all — the window is narrower than the ladder's whole span.
+    # Take the nearest EDGE rather than inventing a value: an authored number that
+    # no rung of the ladder contains is a number nobody chose.
+    return high if worth > high else low
 
 
 def _in_scope(item: dict, roots: tuple[str, ...], categories: tuple[str, ...]) -> bool:

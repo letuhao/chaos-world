@@ -88,7 +88,7 @@ func partition(rooms: Array, authored: Array, routes: Array, layout: Array) -> D
 		var room_id := String(room.get("room_id", ""))
 		if room_id.is_empty() or remembered_ids.has(room_id):
 			continue
-		if not _one_corridor_from(room_id, remembered_ids, routes):
+		if not is_one_corridor_from(room_id, remembered_ids, routes):
 			continue
 		# A frontier room needs a rect to be an outline, and a room the layout does not
 		# hold has none. Inventing one would be the second map ADR 0206 rules out.
@@ -238,7 +238,12 @@ func count_frontier_doors(frontier: Array, routes: Array) -> int:
 ## Whether `room_id` is joined to a remembered room by a route. `routes[].from` /
 ## `routes[].to` are the module's own mutual-confirmed pairs, so the seam is made of the
 ## payload's own corridors and no graph is built here.
-static func _one_corridor_from(room_id: String, remembered_ids: Dictionary, routes: Array) -> bool:
+##
+## Public because [DomainMapView] asked the same question of its own routes before this
+## split existed, and `partition` is the one place that asks it now.
+static func is_one_corridor_from(
+	room_id: String, remembered_ids: Dictionary, routes: Array
+) -> bool:
 	for entry in routes:
 		var route := entry as Dictionary
 		var from_id := String(route.get("from", ""))

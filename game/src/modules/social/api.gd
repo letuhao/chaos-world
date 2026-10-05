@@ -92,6 +92,29 @@ static func social_state(actor: Actor) -> SocialState:
 static func apply_cause(
 	actor: Actor, partner_id: StringName, cause_id: StringName, scale: float = 1.0
 ) -> Dictionary:
+	return _apply(actor, partner_id, cause_id, scale, false)
+
+
+## ## The alignment-aware twin of `apply_cause` (ADR 0253)
+##
+## Identical, plus two things: the act moves the ACTOR's alignment axes, and the bond
+## move is scaled by the band those axes put the actor in.
+##
+## **It is a separate verb rather than a flag on `apply_cause` on purpose.** The four
+## production call sites (`sect/api.gd:820`, `nation/api.gd:664`,
+## `fertility/seduction.gd:137`, `app/auction_standing.gd:221`) keep the un-swayed path
+## byte for byte, so adding alignment cannot retroactively change how a sect membership
+## or an auction result reads — and whichever agent wires the NPC side chooses to swing
+## it, deliberately, rather than discovering it changed under them.
+static func apply_cause_aligned(
+	actor: Actor, partner_id: StringName, cause_id: StringName, scale: float = 1.0
+) -> Dictionary:
+	return _apply(actor, partner_id, cause_id, scale, true)
+
+
+static func _apply(
+	actor: Actor, partner_id: StringName, cause_id: StringName, scale: float, aligned: bool
+) -> Dictionary:
 	if actor == null or partner_id == &"":
 		return {"ok": false, "reason": "no_partner"}
 	var cause := SocialCauseCatalog.instance().cause_definition(cause_id)
@@ -100,7 +123,15 @@ static func apply_cause(
 	var state := social_state(actor)
 	if state == null:
 		return {"ok": false, "reason": "no_social_state"}
-	state.ensure_bond(partner_id).apply(cause, scale)
+	if aligned:
+		# Alignment first, so the band this act puts the actor in is the band that
+		# sways it. Recording after would let a cruelty land at the previous band's rate.
+		SocialAlignment.record(state.alignment_axes(), cause_id, scale)
+		SocialAlignmentTrack.apply_swayed(
+			state.ensure_bond(partner_id), cause, state.alignment_axes().band()
+		)
+	else:
+		state.ensure_bond(partner_id).apply(cause, scale)
 	_persist(state, actor)
 	# The announcement, after the flush, so a subscriber that answers by reading the save
 	# payload reads the cause already in it. The signal's own signature is
@@ -172,6 +203,37 @@ static func reputation(actor: Actor) -> float:
 	if actor == null:
 		return 0.0
 	return actor.stats.derived(SocialStats.REPUTATION)
+
+
+## ## The alignment read model (ADR 0253) — the facade's twelfth method
+##
+## `{justice, mercy, dominion, band, corrupt, goodwill_rate, hatred_rate, seen_count}`,
+## primitives only, `{}` for no actor — the contract a panel tests instead of pixels.
+##
+## ## Why the two rate columns ship in the same call as the three axes
+##
+## A UI needs both and neither alone tells it what to draw: "dominion 6.4" is a number
+## with no register, while "corrupt, goodwill ×0.5, hatred ×2.0" is the sentence. It is
+## also the reason this is one verb and not two — and the reason it is the one I spent
+## the last of the facade's cap on rather than a per-NPC reaction hook, which would have
+## been the wrong 12th method to buy (ADR 0253's DOS2 section).
+##
+## **`band` is the whole moral content and it is the same band for every NPC.** There is
+## deliberately no argument here for who is asking: a panel renders the player's own
+## standing, and an NPC's reaction is reached through `apply_cause_aligned` on the pair.
+static func alignment(actor: Actor) -> Dictionary:
+	if actor == null:
+		return {}
+	var axes := social_state(actor)
+	if axes == null:
+		return {}
+	var snapshot := axes.alignment_axes().snapshot()
+	if snapshot.is_empty():
+		return {}
+	var verdict := SocialAlignmentTrack.verdict(snapshot["band"] as StringName)
+	snapshot["goodwill_rate"] = verdict["goodwill_rate"]
+	snapshot["hatred_rate"] = verdict["hatred_rate"]
+	return snapshot
 
 
 ## The whole read model for a social panel: the three stats, every bond, and the standing

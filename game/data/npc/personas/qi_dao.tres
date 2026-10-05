@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="NpcPlaceVoice" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://src/modules/npc/npc_place_voice.gd" id="1_voice"]
+[ext_resource type="Script" path="res://src/modules/npc/npc_opinion_def.gd" id="2_opinion"]
+[ext_resource type="Script" path="res://src/modules/npc/npc_tell_def.gd" id="3_tell"]
+
+; ## What ONE PLACE sounds like (ADR 0253).
+;
+; ## This is the file that makes "composed on interaction" worth anything: a minor npc
+; ## standing at the Qi Dao gate inherits a name, a manner AND a belief that is TRUE OF THIS
+; ## ROOM, because the room authored them. One file per PLACE — not one per npc — so the
+; ## content cost is proportional to the world and not to the cast.
+;
+; ## The opinion a minor holds about the sect that runs the gate. Narrowed to the
+; ## untracked tiers, so a composed drifter has a plausible view and a composed gatekeeper
+; ## does not: **the tier question is answered by the author, not by a branch in a
+; ## mechanism** (ADR 0067).
+[sub_resource type="Resource" id="Opinion_sect"]
+script = ExtResource("2_opinion")
+subject_id = &"qi_dao"
+stance = &"distrust"
+prose = "the sect counts your hours and calls the ledger a virtue"
+opinion_seed = 0
+plausible_tiers = Array[String](["minor"])
+
+; ## The body a minor at this gate wears. Authored for the untracked tiers, for the same
+; ## reason: a gatekeeper's body on approach is a DIFFERENT authored body, and it belongs
+; ## to the cast member who has one rather than to a place.
+[sub_resource type="Resource" id="Tell_gate"]
+script = ExtResource("3_tell")
+trigger = &"new_face"
+matches = &""
+verb = &"looks_at_your_hands"
+body = "looks at your hands first, and only then at your face"
+consequence = &"watches"
+priority = 0
+plausible_tiers = Array[String](["minor"])
+
+[resource]
+script = ExtResource("1_voice")
+location_id = &"qi_dao"
+names = Array[String](["the woman sweeping", "the boy on the steps", "the man mending the hinge", "the girl carrying water"])
+manners = Array[String](["counts something under her breath", "stands where he can see the road", "watches the hinge instead of you", "does not stop walking but slows"])
+activities = Array[String](["sweeping the same stone over and over", "waiting for a name to be called", "mending a hinge that does not need it", "carrying water that is not needed"])
+opinions = Array[NpcOpinionDef]([SubResource("Opinion_sect")])
+tells = Array[NpcTellDef]([SubResource("Tell_gate")])
+power_scale = 18.0

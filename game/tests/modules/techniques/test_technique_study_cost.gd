@@ -69,6 +69,24 @@ func _technique(
 # --- The charge is real and exact ---------------------------------------------
 
 
+## The facade's published methods, read from its own script.
+##
+## `TechniquesApi.new()` is the wrong door: every method on it is `static`, so
+## instantiating yields a bare `RefCounted` whose script is NOT the api, and
+## `get_script_method_list()` then returns nothing — an assertion built on the
+## instance failed on an EMPTY list rather than on what it meant to measure.
+## Read the class's own script.
+func _published_methods() -> Array[String]:
+	var script: Script = load("res://src/modules/techniques/api.gd")
+	var out: Array[String] = []
+	for method in script.get_script_method_list():
+		var method_name := String(method.get("name", ""))
+		if method_name.begins_with("_") or out.has(method_name):
+			continue
+		out.append(method_name)
+	return out
+
+
 func test_learning_costs_exactly_the_authored_price_from_the_techniques_own_path() -> void:
 	var def := _technique()
 	var actor := _hero(1000.0)
@@ -266,19 +284,15 @@ func test_the_technique_can_still_be_learned_at_a_price_the_actor_cannot_meet() 
 	assert_almost_eq(actor.path(PathState.QI).progress, 1000000.0, "and nothing was charged")
 
 
-# --- The facade cap is still not spent -----------------------------------------
+# --- The price is priced, not published ----------------------------------------
 
 
 func test_pricing_the_learn_cost_the_facade_no_method() -> void:
 	# The charge went INTO `learn` and the affordability table went into two
-	# private helpers. `TechniquesApi` is at exactly 12 and may not grow a 13th.
-	var script: Script = TechniquesApi.new().get_script()
-	var published: Array[String] = []
-	for method in script.get_script_method_list():
-		var method_name := String(method.get("name", ""))
-		if method_name.begins_with("_") or published.has(method_name):
-			continue
-		published.append(method_name)
-	assert_eq(published.size(), 12, "still exactly twelve public methods")
+	# private helpers. ADR 0265 deleted the facade width cap, so the count is no
+	# longer the assertion; what survives is the COHESION claim underneath it,
+	# which was always the true one — a price nobody outside needs is a private
+	# helper, and publishing it would be an interface spent on a detail.
+	var published := _published_methods()
 	for name in ["_study_charge", "_short"]:
 		assert_eq(published.has(name), false, "'%s' is an internal" % name)

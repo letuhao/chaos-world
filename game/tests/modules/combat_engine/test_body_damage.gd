@@ -1,30 +1,43 @@
 extends "res://tests/modules/combat_engine/body_damage_fixture.gd"
 
-## ADR 0070: body damage is FLAT SUBTRACTION AT A MERIDIAN.
+## ADR 0070, and ADR 0200's one change to it: body damage is priced at a MERIDIAN, and
+## the armour is now the `D` of a ratio rather than a subtraction off the blow.
 ##
 ## ## The formula, asserted rather than argued
 ##
 ## ```
-## gross        = attacker ATTACK_PHYSICAL
+## gross        = ctx.magnitude * attacker ATTACK_PHYSICAL
 ## meridian     = resolve_location(...)              # 20 meridians, not 60 huyệt
 ## point        = the huyệt within it
 ## channel      = target.meridians.get_meridian(meridian_id)
-## resistance   = DEFENSE_PHYSICAL * MERIDIAN_ARMOUR_STEP * channel.state_rank()
-##              + tissue_defence(meridian_id, target)
-## penetration  = maxf(gross - resistance, gross * MIN_PENETRATION_RATIO)   # 0.10
+## D            = DEFENSE_PHYSICAL * MERIDIAN_ARMOUR_STEP * channel.state_rank()
+##              + tissue_defence(meridian_id, target)   (a MAGNITUDE, ADR 0200)
+## D_eff        = D * 1 / (1 + max(0, mastery_pen) / pierce_scale)
+## K            = defense_divisor_k * gross
+## m            = mitigation_ceiling * D_eff / (K + D_eff)
+## penetration  = maxf(gross * (1 - m), gross * MIN_PENETRATION_RATIO)   # 0.10
 ## mitigated    = penetration * point_multiplier(point) * channel_multiplier(channel)
 ## damage       = mitigated * (1 - DAMAGE_REDUCTION)
 ## ```
 ##
-## This file carries the FORMULA itself — the flat subtraction, the tissue weighting, the
-## reduction channel and the channel ladder that prices the armour.
+## ## What ADR 0200 changed here, and what it did not
+##
+## `MIN_PENETRATION_RATIO` survives at `0.10` and is still the floor under the ratio, which
+## is the whole of ADR 0070's answer to its own objection that "a ratio never reaches
+## zero". `body_damage.gd` states this and `test_body_damage_floor.gd` asserts it twice —
+## against armour that refuses, and against armour that saturates the mitigation without
+## ever reaching it. So ADR 0070's premise is intact; what moved is that `gross - D` is
+## now `gross * (1 - m)`.
+##
+## This file carries the FORMULA itself — the ratio, the tissue weighting, the reduction
+## channel and the channel ladder that prices the armour.
 ## `MIN_PENETRATION_RATIO` and the saturation claim moved to `test_body_damage_floor.gd`:
-## they are one subject (a subtraction that can be floored) and together they took this
+## they are one subject (a floor under a ratio) and together they took this
 ## file past the 400-line cap. The one-flag-opposite-signs properties (`blocked`,
 ## `injured`) are in `test_body_damage_flags.gd`; aim, wounds, necrosis and degradation
 ## are in `test_body_damage_aim.gd` and `test_body_damage_wounds.gd`. The actor
-## arithmetic lives in `body_damage_fixture.gd`, shared, so no two files can drift while
-## both stay green against their own copies.
+## arithmetic AND the ratio's derivation live in `body_damage_fixture.gd`, shared, so no
+## two files can drift while both stay green against their own copies.
 ##
 ## Every number here is DERIVED from a real actor's live derived read or from the shipped
 ## `CombatTuning`, never pasted out of ADR 0070. A stat rebalance moves the assertions
@@ -118,19 +131,37 @@ func test_the_formula_is_re_derived_from_the_actors_own_reads() -> void:
 		_tissue_expectation(target),
 		"tissue is the archetype weighting of the defender's own three body stats"
 	)
-	# ADR 0070's identity, which is what every row below is measured against:
-	# `penetration = maxf(gross - resistance, gross * ratio)`.
+	# ADR 0200's ratio, re-derived from the actor's own reads and the shipped tuning rather
+	# than read off the row: `m = mitigation_ceiling * D / (K + D)` with `K` riding the
+	# ATTACKER's own gross. Four terms, not the two the deleted subtraction had.
 	assert_almost_eq(
-		float(parts["penetration"]),
-		maxf(gross - float(parts["resistance"]), expected_floor),
-		"penetration, both ways"
+		float(parts["resistance"]),
+		expected_armour + _tissue_expectation(target),
+		"`resistance` is ADR 0200's `D`: the armour magnitude plus the tissue, each once"
 	)
-	# And the LANE itself, which is this suite's subject: penetration falls by exactly one
-	# step of `meridian_armour_step` per rank, measured from a closed channel and with the
-	# floor DISABLED so it cannot clip any rung — a copy of the shipped tuning with
-	# `min_penetration_ratio` at `0.0`, which is the one authored value that leaves the raw
-	# subtraction in charge of the whole ladder. Derived from the actor's own reads and the
-	# tuning's own fields, so a `DEFENSE_PHYSICAL` rebalance moves the lane with it.
+	assert_almost_eq(
+		float(parts["divisor_k"]),
+		_tuning.defense_divisor_k * gross,
+		"`K` is `defense_divisor_k * gross`, so it rides the attacker"
+	)
+	assert_almost_eq(
+		float(parts["mitigation_rate"]),
+		_expected_mitigation_rate(float(parts["resistance"]), gross, _tuning),
+		"and the mitigation is `mitigation_ceiling * D / (K + D)`"
+	)
+	# ADR 0070's identity, which is what every row below is measured against. The FLOOR is
+	# still here and is still `gross * ratio` — ADR 0070's premise is intact — but the term
+	# above it is now a share of the gross rather than the gross less a subtraction:
+	# `penetration = maxf(gross * (1 - m), gross * ratio)`.
+	assert_almost_eq(
+		float(parts["penetration"]), _expected_penetration(parts), "penetration, both ways"
+	)
+	# And the LANE itself, which is this suite's subject: a closed channel carries NO
+	# channel armour, so a `named` strike lands on a strictly softer place than an open one.
+	# Measured from a closed channel and with the floor DISABLED so it cannot clip the
+	# measurement — a copy of the shipped tuning with `min_penetration_ratio` at `0.0`.
+	# Derived from the actor's own reads and the tuning's own fields, so a
+	# `DEFENSE_PHYSICAL` rebalance moves the lane with it.
 	var unfloored := CombatTuning.shipped().duplicate(true) as CombatTuning
 	unfloored.min_penetration_ratio = 0.0
 	var mechanism := BodyDamage.new()
@@ -146,10 +177,49 @@ func test_the_formula_is_re_derived_from_the_actors_own_reads() -> void:
 			BodyLocation.MODE_NAMED
 		)
 	)
+	# ## The gap is no longer one armour STEP: it is the whole ratio's response to it
+	#
+	# This used to assert `closed - open == expected_armour` (`14.0`), which was true only
+	# because the deleted subtraction removed exactly one armour step of hit points per
+	# rank. A ratio has no such exchange rate: `gross * (1 - m)` responds to a step of `D`
+	# by `gross * ceiling * K * step / ((K+D)(K+D+step))`, which is NOT `step` and varies
+	# with where on the curve the defence sits. At the shipped numbers it measures `28.9272`
+	# — roughly DOUBLE the old step — and that is a correct consequence of armour now
+	# dividing rather than subtracting, not a drift.
+	#
+	# ## Why "roughly double" is the DIRECTION and not the whole claim
+	#
+	# `d(pen)/dD = -gross * ceiling * K / (K + D)^2`, and the old subtraction's exchange
+	# rate was `-1` everywhere. The new rate is `gross * ceiling * K / (K+D)^2`, which at
+	# `gross = 2000.0`, `K = 900.0` and `D ~ 2.75` is about `2.07` — so one armour step
+	# costs about two penetration points. The claim worth asserting is therefore the
+	# RELATIVE one, which is what the rest of the block does: the ladder still prices the
+	# armour, still monotonically, and one rank step is still exactly `meridian_armour_step`
+	# of `D`. Asserting the gap as a hardcoded number would pin a quantity that has no
+	# invariant value; asserting it as the DERIVED ratio is the same discipline the rest of
+	# this file uses, and it fails for the same reasons a mutation would.
+	var lane_gap := float(closed_lane["penetration"]) - float(open_lane["penetration"])
+	var lane_step := float(open_lane["resistance"]) - float(closed_lane["resistance"])
 	assert_almost_eq(
-		float(closed_lane["penetration"]) - float(open_lane["penetration"]),
+		lane_step,
 		expected_armour,
-		"a closed channel is one full armour step more penetrable than an open one"
+		"the armour magnitude differs by exactly one step of `meridian_armour_step`"
+	)
+	assert_almost_eq(
+		lane_gap,
+		_expected_penetration(closed_lane) - _expected_penetration(open_lane),
+		"and the penetration gap is whatever the ratio makes of that step"
+	)
+	assert_eq(lane_gap > 0.0, true, "a closed channel is still the softer place, by a lot")
+	# The ladder's own shape, which IS an invariant: each rung of `D` costs strictly more
+	# penetration than the one above it, because `d(pen)/dD` shrinks as `D` grows.
+	assert_eq(
+		lane_gap > expected_armour,
+		true,
+		(
+			"and it costs MORE than the old subtraction's one-for-one: %.4f vs %.4f"
+			% [lane_gap, expected_armour]
+		)
 	)
 	assert_almost_eq(float(parts["total"]), float(parts["subtotal"]), "S5 with no reduction")
 	assert_almost_eq(
@@ -218,36 +288,16 @@ func test_tissue_is_a_seasoning_on_the_armour_term_and_never_a_second_armour() -
 	assert_eq(is_finite(float(lean["total"])), true, "and the hit is still a number")
 
 
-## `tissue = tissue_scale * (sum of stat x archetype weight) / divisor`, for the heaviest
-## archetype weight in `CombatTuning.tissue_weights` — found the same way
-## `BodyDamage._weights_of` ranks, so the two cannot disagree about which archetype a
-## body is described by, and a balance pass that re-weights the archetypes moves this
-## assertion with it.
-func _tissue_expectation(target: Actor) -> float:
-	var heaviest := 0.0
-	var heaviest_total := 0.0
-	for key in _tuning.tissue_weights.keys():
-		var row: Array = _tuning.tissue_weights[key]
-		var sum := 0.0
-		for value in row:
-			sum += absf(float(value))
-		if sum > heaviest_total:
-			heaviest_total = sum
-			heaviest = sum / maxf(1.0, float(row.size()))
-	var total := 0.0
-	for index in _tuning.tissue_stat_ids.size():
-		total += target.stats.derived(StringName(_tuning.tissue_stat_ids[index])) * heaviest
-	return _tuning.tissue_scale * total / _tuning.tissue_stat_divisor
-
-
 # --- the channel ladder prices the armour ---------------------------------------
 
 
 ## `channel.state_rank()` is the armour multiplier, read through
 ## `MeridianState.STATE_ORDER` and never restated: closed 0, open 1, expanded 2,
 ## strengthened 3. A `closed` channel contributes no armour AT ALL — which is the refusal
-## ADR 0070's flat subtraction exists to make expressible and a ratio has no vocabulary
-## for.
+## ADR 0070's floor exists to make expressible, and which a bare ratio has no vocabulary
+## for. `body_damage.gd` states that the ratio plus `MIN_PENETRATION_RATIO` together supply
+## it, and the MONOTONICITY below is this suite's half of that claim: every rung of the
+## ladder still makes its channel a strictly harder place to strike.
 func test_channel_rank_prices_the_armour_and_a_closed_channel_prices_none() -> void:
 	var attacker := _attacker()
 	var previous := -1.0
@@ -265,14 +315,14 @@ func test_channel_rank_prices_the_armour_and_a_closed_channel_prices_none() -> v
 		)
 		assert_almost_eq(
 			float(parts["penetration"]),
-			maxf(float(parts["gross"]) - float(parts["resistance"]), float(parts["floor"])),
-			"%s: penetration is gross less resistance, floored" % label
+			_expected_penetration(parts),
+			"%s: penetration is gross less the ratio's share, floored" % label
 		)
 		if channel.state_rank() == 0:
 			# Derived, not copied off the row under test: on a CLOSED channel the armour
 			# term is `DEFENSE_PHYSICAL * step * 0.0`, so the WHOLE of the ladder's own
 			# contribution to `resistance` is `0.0` and the channel contributes NO armour at
-			# all — which is the refusal ADR 0070's flat subtraction exists to express, and
+			# all — which is the refusal ADR 0070's FLOOR exists to express, and
 			# what a ratio has no vocabulary for. Measured as `resistance - tissue` rather
 			# than as `resistance` itself, because `resistance` also carries the tissue
 			# weighting the channel has nothing to do with.

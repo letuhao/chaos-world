@@ -753,7 +753,81 @@ func _decide(outcome: String, result: Dictionary) -> Dictionary:
 	# different model must not silently retire a quest gate.
 	if outcome == OUTCOME_HERO_WON:
 		CombatFacts.record_duel_won(_hero)
+	# ## Carried out, not killed: THE HERO is walked out whole (ADR 0236 §4)
+	#
+	# The disclosed thinness ADR 0236 names, closed. A boss fight is not a wound that
+	# persists: the fight is decided, the hero walks out at full vitality, and the NEXT door
+	# of a band is fought from a full body. Measured before this line existed: a hero
+	# clearing a band went `170 -> 118.8 -> 67.5 -> 16.3 -> 0` across four doors and DIED on
+	# door four, because a boss blow is spent as `share * defender_pool.maximum`
+	# (`duel_hit.gd:82`) — an absolute number off the hero's own maximum, not a percentage of
+	# what is left — so a wounded body takes a full-size hit and the walk never improves.
+	# `DomainFight.record_verdict`'s loss branch then called `abandon_band`, wiping
+	# `open_index` and `kills`: a player clearing a band of bosses died by attrition, which
+	# is not what ADR 0236 decided.
+	#
+	# ## Why HERE, and not in `CombatExchange`, `DomainFight`, or the caller
+	#
+	# `_decide` is the layer that SPENT the pool and the layer that already decided the
+	# verdict, and it is the only one of the three that EVERY caller reaches:
+	# `DomainFight`'s `engage`/`strike` and `ItemWorkbenchFight`'s fight page both press the
+	# same `FightLoop.exchange`. A restore in `DomainFight` would be unreachable from the
+	# fight page — the same defect ADR 0228 names about `PlayerAdapter.attack`, where a fix
+	# in one caller leaves the other path unwired. A restore in `CombatExchange` is the
+	# duplicate ADR 0236 forbids: `exchange.gd:655-659` already carries it for the
+	# boss-encounter path, and two copies of a rule that can disagree about WHO is carried
+	# out is the failure mode this repo's ADRs repeatedly name.
+	#
+	# ## Why a WIN, and why a LOSS IS NOT TOUCHED
+	#
+	# The rule is scoped to the hero WALKING OUT of a fight it WON, which is the case the
+	# measurement named and the case a band is made of. A loss is a different thing and is
+	# **deliberately not restored here**:
+	#
+	# 1. **It would un-ring a death.** `SoulDeath.is_dead` (`soul_death.gd:312`) polls
+	#    `health <= 0.0` every frame and `item_workbench_play.poll_death` is armed on it, so
+	#    a loss that healed the body in the same call would resolve no death at all — ADR
+	#    0130's re-embodiment, the guardian spend and the `soul_died` fact would all stop
+	#    firing, silently, for the player.
+	# 2. **It would silently change observed behaviour that is asserted.**
+	#    `test_domain_run_chain.gd`'s `hero_lost` case presses until `_health_of(hero) ==
+	#    0.0`; a restore mid-loop makes that loop unable to terminate on its own condition
+	#    and changes what a defeat means to a screen.
+	#
+	# So the loss half of ADR 0236 §4's "the loser is walked out whole" is the question this
+	# task leaves OPEN rather than settles by fiat, and it is recorded in the ADR that
+	# accompanies this change: on the `FightLoop` path the loser is NOT carried out, because
+	# that path's loser is the PLAYER and the player's death is a `soul` resolution, not a
+	# carry-out. `exchange.gd:655-659` carries out the loser of an ENCOUNTER, whose loss is a
+	# run that stops; those are two different losers and ADR 0236's sentence was written
+	# about the second.
+	if outcome == OUTCOME_HERO_WON:
+		_walk_out_whole(_hero)
 	return result
+
+
+## Restore `actor` to full health, spent through `change` so the pool's `changed` signal
+## still fires and every stat cache watching it invalidates. Assigning `current` would
+## leave a screen showing a stale actor's numbers — the reason `exchange.gd:656` spends it
+## the same way.
+##
+## The reference implementation this matches is `CombatExchange._record_defeat`
+## (`exchange.gd:655-659`): the same pool, the same full-to-maximum value, the same
+## `change(maximum - current)` spend. It reads `ResourcePool` through the loop's existing
+## `_health_pool` (which attaches core resources if a body has none, exactly as
+## `CombatExchange._health` does), so the two restores cannot disagree about which pool is
+## being carried out or how far it is carried.
+##
+## The guard is the pool's own bounds, not a bare spend: a hero already whole spends
+## nothing, so a decided fight that found the hero untouched does not emit a second
+## no-op `changed` edge for every listener to re-read.
+func _walk_out_whole(actor: Actor) -> void:
+	if actor == null:
+		return
+	var pool := _health_pool(actor)
+	if pool == null or pool.current >= pool.maximum:
+		return
+	pool.change(pool.maximum - pool.current)
 
 
 ## One refusal in the shape [method exchange] returns, so a caller branches on `ok` and

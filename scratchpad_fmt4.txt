@@ -1,0 +1,11 @@
+93 files left unchanged
+reformatted D:\Works\source\chaos-world\game\src\app\item_workbench_body.gd
+reformatted D:\Works\source\chaos-world\game\src\app\soul_age.gd
+reformatted D:\Works\source\chaos-world\game\src\app\soul_death.gd
+reformatted D:\Works\source\chaos-world\game\src\core\age_band_table.gd
+reformatted D:\Works\source\chaos-world\game\tests\_scratch_mind_probe.gd
+reformatted D:\Works\source\chaos-world\game\tests\app\test_soul_age_death.gd
+reformatted D:\Works\source\chaos-world\game\tests\modules\combat_engine\test_mechanism_offence_is_live_on_a_stock_actor.gd
+7 files reformatted, 1284 files left unchanged.
+$ D:\Works\source\chaos-world\.venv\Scripts\ruff.EXE format D:\Works\source\chaos-world\tools
+$ D:\Works\source\chaos-world\.venv\Scripts\gdformat.EXE D:\Works\source\chaos-world\game

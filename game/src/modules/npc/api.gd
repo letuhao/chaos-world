@@ -159,6 +159,25 @@ static func spawn(
 		return null
 	var player := _player()
 	var entry: NpcRosterEntry = null
+	# ## `npc_tracked` fires BELOW, once the body is live, and THIS flag is why (BL-0799)
+	#
+	# It used to be emitted here — a roster ADDITION published before the body existed. A
+	# subscriber that asked `NpcApi.resident()` for the npc it had just been told about found
+	# no live actor, took `resident`'s mint-a-fresh-body branch, and called `spawn()`
+	# **re-entrantly, inside this call**. The inner call passed the `existing == null` test
+	# (the entry exists now), minted a second `Actor` and published it under a second
+	# instance key; this call then published its own. So every TRACKED spawn stood up **two**
+	# bodies for one individual.
+	#
+	# The visible damage was a room holding one npc more than it was stocked with, and a
+	# `despawn` that released one instance and left the other live — so `summary` kept
+	# answering `Present` for somebody who had walked out of the room. Four suites failed on
+	# exactly that, and no count in any of them was a stale fixture: the room really did hold
+	# a body nobody asked for.
+	#
+	# The flag carries the ONE fact the signal exists for — a genuine roster addition — across
+	# the reorder, so it still fires once and only on a first meeting.
+	var first_meeting := false
 	if def.tracked() and player != null:
 		var state := _roster(player)
 		var existing := state.entry(npc_id)
@@ -172,7 +191,7 @@ static func spawn(
 		if existing == null:
 			entry.tier = def.normalized_tier()
 			entry.stage_id = def.starting_stage_id()
-			events().npc_tracked.emit(String(npc_id), entry.tier)
+			first_meeting = true
 	var actor: Actor = _minter.call(def, role)
 	if actor == null:
 		return null
@@ -200,6 +219,15 @@ static func spawn(
 		# own truth, and holding both would let a save carry two copies that disagree.
 		entry.payload = {}
 		_persist(_roster(player), player)
+	# ## LAST, and after `set_present` above, because a subscriber must be able to ask
+	# ## `NpcApi.resident()` for the npc it has just been told about and get THAT body back.
+	#
+	# `NpcLedger.tracked` records the addition and `NpcBoot._seed_first_impression` seeds a
+	# first impression (ADR 0256); the second of those reads the body, so publishing the
+	# signal first is the defect this placement removes. The `first_meeting` guard is what
+	# keeps it a roster ADDITION: re-spawning somebody already known writes no row.
+	if first_meeting:
+		events().npc_tracked.emit(String(npc_id), entry.tier)
 	return actor
 
 
@@ -458,14 +486,99 @@ static func _live_key_of(def_id: StringName) -> StringName:
 ##
 ## Presence is deliberately NOT a filter on the capturable half: a player has to be able to
 ## walk to a capturable individual they have not met yet. The caller decides which it offers.
-static func presence_here(location_id: StringName = &"") -> Dictionary:
+##
+## ## `alive` rides this read rather than taking a verb of its own
+##
+## Until this, the whole alive layer (ADR 0253) — the daily round, the incident memory,
+## the authored opinion, the reaction tell, and the gated warmth of ADR 0264 — reached
+## production through **nothing**: `NpcReadModel.alive` had no caller in `game/src`, so a
+## shipped build drew a roster with no bodies and no gates, which is precisely the orphan
+## read this program accumulated nine of. One more public verb was refused for the same
+## reason `capturable` became a key two lines above: the roster is ONE read, and a caller
+## that needed "who is here" and "what are they doing" should not have to ask twice and
+## correlate them. `alive` is the second half of the same answer, on every row.
+##
+## ## Why it costs nothing for a def that authors no gate
+##
+## `NpcAliveness.round` is `O(1)` against a stored stamp, `memory` and `opinions` are
+## bounded by their own named caps, and `NpcGates.evaluate` returns on an empty
+## `social_gate` **without calling the reader at all**. So a room of four hundred un-gated
+## untracked bodies costs one generic body each, which is what `alive` already published.
+static func presence_here(location_id: StringName = &"", period: int = 0) -> Dictionary:
 	var keys := NpcRegistry.instance().present_ids()
 	var summaries: Array = []
+	var alive: Array = []
+	# The face index among the rows of THIS call that may compose. Scoped to the call
+	# rather than to the process, so a second read of the same room re-derives the same
+	# faces instead of handing every visit a new set of names.
+	var minor_ordinal := 0
 	for key in keys:
 		summaries.append(summary(key))
+		# ## The alive half filters on the LIVE PLACE, and the registry is its authority
+		#
+		# `NpcReadModel.presence` filters on a `location_id` KEY each row carries. An alive
+		# row carries no such key — its identity is the registry's own `drifter#3` instance
+		# key, not a place — so filtering it that way would answer a question nobody asked
+		# with a default. `NpcRegistry.location_of` is the same authority the summary rows
+		# are built from (BL-0715), so the two halves cannot disagree about whose room this
+		# is, and an empty `location_id` still means "everywhere".
+		if location_id != &"" and NpcRegistry.instance().location_of(key) != location_id:
+			continue
+		alive.append(_presence_here_alive(key, period, location_id, minor_ordinal))
+		# ## THE COMPOSITION GATE — and it is the GATE, not the filter above (ADR 0253)
+		#
+		# The `location_id` this row was built for is the PLACE its face has to be plausible
+		# in (`NpcMinorComposer._voice` is a file lookup BY that id), and it is not optional:
+		# the filter above drops a row whose live place is not this room, so a key that
+		# REACHED this line is either in this room or the caller asked for everywhere, where
+		# the registry's own place is still the honest answer. Passing `&""` here instead is
+		# what made a composed opinion EMPTY: no location, no voice file, and the constant
+		# fallback — a "minor" who held `no opinion of you, and says so` in a room whose voice
+		# authors a view on the page.
+		#
+		# ## Why only UNTRACKED keys are counted, and why the counter is the gate
+		#
+		# A tracked key is AUTHORED — a `.tres` round, opinion, recall and tell — and costs no
+		# compose, so a loop that read every row through the composer would pay a `.tres` load
+		# per TRACKED npc per poll to obtain the identical row. This map is therefore the gate:
+		# the only rows that may reach `NpcMinorComposer.compose` are the untracked ones, and
+		# the only ones that CAN reach it are counted. `minor_ordinal` is that counter and
+		# nothing else — it is the caller's index among the COMPOSABLE rows of THIS call, which
+		# is what makes two minors met in one room two people and a second read the same two.
+		#
+		# Bounded by construction: it grows by one per untracked row, and `NpcRegistry`
+		# holds a bounded live room, so nothing here is a loop over an open-ended list.
+		var def_id := _def_id_of(key)
+		var row_def := NpcCatalog.instance().definition(def_id)
+		# A def the catalog does not ship is treated as UNTRACKED, which is the safe
+		# direction and agrees with `NpcReadModel.alive`: a null def normalizes to `minor`
+		# there, so it composes. Counting it here is what keeps the ordinal and the row in
+		# step rather than handing two minors in one room the same face.
+		if row_def == null or not NpcTier.is_tracked(row_def.normalized_tier()):
+			minor_ordinal += 1
 	var out := NpcReadModel.presence(location_id, keys, summaries)
 	out["capturable"] = NpcCaptureTerms.capturable()
+	out["alive"] = alive
 	return out
+
+
+## The alive row for one LIVE registry key. Private because it is the interior of
+## `presence_here` and not a question a caller can hold half of: the key is an INSTANCE key
+## (`drifter#3`), which is the registry's own spelling, so naming it would publish an
+## addressing scheme a panel has no way to construct.
+##
+## `place` and `ordinal` are what make a composed face a PERSON and not a constant: the
+## place is the room whose authored voice supplies the name, the manner and the opinion,
+## and the ordinal is this face's index among the rows of the room. `presence_here` is the
+## only caller, and it passes both; a caller that had to supply them itself could hold one
+## npc's face and a panel would have to guess the other.
+static func _presence_here_alive(
+	instance_key: StringName, period: int, place: StringName, ordinal: int
+) -> Dictionary:
+	var def_id := _def_id_of(instance_key)
+	return NpcReadModel.alive(
+		NpcCatalog.instance().definition(def_id), _player(), def_id, period, place, ordinal
+	)
 
 
 ## What a panel should read for presence. Retirement outranks being live: an elder who

@@ -1,4 +1,4 @@
-extends "res://tests/core/time_ladder_ssot_base.gd"
+extends TestCase
 
 ## ADR 0173: THE CLOCK IS ONE SINGLE SOURCE OF TRUTH -- and this is the guard that makes
 ## the migration it decided impossible to undo quietly.
@@ -143,7 +143,20 @@ const PERIOD_COUNT_TOKENS := ["_PERIODS"]
 const UNIT_TURN_SUFFIX := "_TURN"
 const NON_CADENCE_TOKENS := ["TICK", "INTERVAL", "HELD"]
 const UI_ROOT := "res://src/ui/"
-const AUTHORED_FALLBACKS := {"res://src/modules/domain/environment_field.gd": ["TICK_INTERVAL"]}
+const AUTHORED_FALLBACKS := {
+	# A hazard cadence falling back to authored `.tres` content — see the census row.
+	"res://src/modules/domain/environment_field.gd": ["TICK_INTERVAL"],
+	# A COMBAT blow interval, spelled as a forward because a static const may not be
+	# initialised from another class's constant at parse time on this engine
+	# (`domain_boot.gd:31-34` says so, and `test_domain_run_boss.gd` proves the two agree).
+	# ADR 0173:63 keeps combat on the turn tier, off the world clock, so a round's cadence
+	# is not a magnitude of world time and cannot drift from `core/time_ladder.gd`.
+	"res://src/app/domain_boot.gd": ["NEUTRAL_BLOW_INTERVAL"],
+	# A TEST's own stimulus: `settle_upkeep` with no delta charges immediately, so the
+	# interval must be non-zero for the frame-delta cases to read. It measures the
+	# caller's patience, not the world's pace, and it lives in a test rather than in src.
+	"res://tests/modules/techniques/test_technique_passive_worn_mastery.gd": ["INTERVAL"],
+}
 
 ## The wall-clock read the named exception is about. Spelled without the trailing `*` so
 ## one token covers `get_ticks_msec`, `get_ticks_usec` and the rest.
@@ -195,14 +208,29 @@ const EXPECTED_NON_CLOCK := {
 	# authored one (`env_scourge.tres`). Both are a `.tres` edit by ADR 0090, so neither
 	# is the clock and neither could drift from it: the file it would have to agree with is
 	# the one being read. A cadence the WORLD runs on never sits in that shape.
-	"res://src/modules/techniques/technique_upkeep.gd": ["26|MIN_INTERVAL"],
+	"res://src/modules/techniques/technique_upkeep.gd": ["26|MIN_INTERVAL", "66|RUNG_PERIODS"],
 	"res://src/modules/domain/environment_field.gd": ["326|TICK_INTERVAL"],
+	# `_PERIODS` in a SCREEN or a TEST is the CALLER'S OWN COUNT of the SSOT's unit — a
+	# ui_driver drive length, a walker's budget, a test's stimulus — never a second
+	# definition of how long a period is. The distinction is the whole reason `ui/` may
+	# not read the clock at all (`ui/panels/world_pulse_reader.gd:23`) yet still has to
+	# say "advance N periods": a count of the unit is not a ratio, and only a ratio can
+	# drift from `core/time_ladder.gd`. These rows exist so the census stays a record of
+	# classified shapes rather than an allowance list that grows by silence.
+	"res://src/ui/screens/auction_screen.gd": ["115|LIST_PERIODS", "121|SETTLE_PERIODS"],
+	"res://src/ui/screens/custody_screen.gd": ["137|SETTLE_PERIODS"],
+	"res://src/ui/screens/floor_screen.gd": ["86|SETTLE_PERIODS", "90|NO_DECAY_PERIODS"],
+	"res://src/ui/screens/forage_screen.gd": ["92|GATHER_PERIODS"],
+	"res://tests/modules/destiny/destiny_reach_walker.gd": ["98|WORLD_PERIODS"],
+	"res://tests/modules/npc/test_npc_alive.gd": ["34|SLOT_PERIODS"],
 	# The COMBAT turn tier. Pregnancy resolves inside one period with the world frozen
 	# (ADR 0173:63), so this is a turn-tier value and the `_TURN` says so.
 	"res://src/app/status_loop.gd": ["67|SECONDS_PER_GESTATION_DAY_TURN"],
-	# A UI presentation step: one button press advances a fixture's telegraph by two
-	# seconds so the whole armed/spent ledger is reachable from a button.
-	"res://src/ui/screens/domain_explore.gd": ["168|ARM_TICK"],
+	# Declined by `AUTHORED_FALLBACKS`, recorded here so the census stays a census: a
+	# shape classified as a NON-duplicate belongs in this table too, or a fallback added
+	# above would waive a name without anyone recording that it had been waived.
+	"res://src/app/domain_boot.gd": ["35|NEUTRAL_BLOW_INTERVAL"],
+	"res://tests/modules/techniques/test_technique_passive_worn_mastery.gd": ["54|INTERVAL"],
 }
 
 
@@ -448,8 +476,9 @@ func _is_clock_duplicate(path: String, declared: String) -> bool:
 		# read is backwards: `_PERIODS` says "how many periods", not "how many per period".
 		elif _has_token(tokens, "_PERIODS"):
 			duplicate = false
-		# 4. An authored fallback, declined BY NAME because a bare span token is a genuine
-		# cadence shape everywhere else — see `AUTHORED_FALLBACKS`.
+		# 4. An authored fallback, or a cadence the TURN TIER owns, declined BY NAME —
+		# a bare span token is a genuine cadence shape everywhere else, so naming is what
+		# keeps this from waiving `environment_field.gd`'s hazard cadence too.
 		elif _is_authored_fallback(path, declared):
 			duplicate = false
 		# 5. A presentation step in `ui/`, which may not read the world clock at all.

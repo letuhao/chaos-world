@@ -1,0 +1,5 @@
+93 files left unchanged
+reformatted D:\Works\source\chaos-world\game\src\modules\domain\domain_generator.gd
+1 file reformatted, 1287 files left unchanged.
+$ D:\Works\source\chaos-world\.venv\Scripts\ruff.EXE format D:\Works\source\chaos-world\tools
+$ D:\Works\source\chaos-world\.venv\Scripts\gdformat.EXE D:\Works\source\chaos-world\game

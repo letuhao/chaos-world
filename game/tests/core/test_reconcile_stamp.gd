@@ -108,7 +108,19 @@ func test_repeated_observations_never_silently_read_zero() -> void:
 	assert_eq(int(second["elapsed_periods"]), 0, "the second look of the same span folded nothing")
 	# A further, DIFFERENT span is what a session actually does next, and it must be
 	# non-zero: a place that froze would read zero here too.
-	var third := WorldReconcile.observe(second["stamps"], SPIRIT_PEAKS, 1)
+	#
+	# **The span is now a DIFFERENT one, and it had to be made so.** This case previously
+	# handed `observe` the same literal `1` a third time and demanded `1` back, which is
+	# not a weaker assertion but an IMPOSSIBLE one: `observe` is a pure function of
+	# `(stamps, location_id, span_periods)`, and lines 107-108 pin `1 -> 0` for exactly the
+	# triple line 111 then asks to answer `1`. No implementation satisfies both, so the
+	# case could only ever have been green against a function that reads hidden state.
+	# The comment ABOVE this one already said "a further, DIFFERENT span"; the code now
+	# does what the comment says. Offering `span + 1` is what a session actually does
+	# between two looks, and it is what makes the freeze hazard measurable: a place frozen
+	# forever answers `0` here, and an implementation that wrongly zeroed every later read
+	# answers `0` here too.
+	var third := WorldReconcile.observe(second["stamps"] as Dictionary, SPIRIT_PEAKS, 1 + 1)
 	assert_eq(
 		int(third["elapsed_periods"]), 1, "and a later span is still read, not zeroed forever"
 	)
@@ -180,12 +192,12 @@ func test_a_stamp_is_per_magnitude_as_well_as_per_place() -> void:
 	)
 
 
-## A place folded at month 1, then handed a span of DAYS, crosses no month and pays no
-## second month. This is the "a place returning to scope is FOLDED, never replayed" rule
-## (ADR 0170) and the reason the stamp stores a fold count rather than a period watermark.
+## A place folded at month 1, handed the SAME total again, crosses no second month and
+## pays no second month. This is the "a place returning to scope is FOLDED, never
+## replayed" rule (ADR 0170) and the reason the stamp stores a fold count rather than a
+## period watermark.
 func test_a_re_observed_place_does_not_pay_a_second_bucket() -> void:
 	var month := TimeLadder.ratio_for(&"month")
-	var day := TimeLadder.ratio_for(&"day")
 	var stamps: Dictionary = WorldReconcile.observe(_empty_stamps(), MORTAL_PLAINS, month)["stamps"]
 	var again := WorldReconcile.observe(stamps, MORTAL_PLAINS, month)
 	assert_eq(int(again["crossed"].get(&"month", -1)), 0, "the same span crosses no second month")
@@ -195,8 +207,34 @@ func test_a_re_observed_place_does_not_pay_a_second_bucket() -> void:
 		"and the month fold is still one, not two"
 	)
 	assert_eq(int(again["elapsed_periods"]), 0, "a re-observation of a folded span is a no-op")
-	var later := WorldReconcile.observe(again["stamps"], MORTAL_PLAINS, day)
-	assert_eq(int(later["elapsed_periods"]), day, "and a genuinely new span still elapses in full")
+	# ## And a genuinely LONGER span still elapses, by exactly the difference
+	#
+	# **The span is now a LARGER one, and it had to be made so.** This case previously
+	# handed `observe` a DAY span after folding a MONTH and demanded the day back "in
+	# full", which cannot hold alongside the assertion two lines above it: this place has
+	# folded 360 periods, a 12-period total is not beyond it, and "pays what this visit
+	# added" — the rule `test_re_entering_a_place_pays_only_for_what_elapsed_since` pins
+	# through the production chain, where an arrival after the world doubles pays 4380 and
+	# NOT the 8760 it has accumulated — reads zero here. Two cases in two suites cannot
+	# both be right about whether a re-observation pays a span it already folded, and the
+	# player-facing one is the one kept.
+	#
+	# **What the property actually needs is that a later span is NOT zeroed forever**, and
+	# a doubled total measures it more sharply than a day ever could: the elapsed is
+	# `2 * month - month`, a strictly positive number that a frozen world and a
+	# zero-everything-forever bug both fail, while a re-read of the SAME total still pays
+	# zero one line above.
+	var later := WorldReconcile.observe(again["stamps"] as Dictionary, MORTAL_PLAINS, month * 2)
+	assert_eq(
+		int(later["elapsed_periods"]),
+		month,
+		"and a genuinely new span still elapses, by exactly what it added"
+	)
+	assert_eq(
+		ReconcileStamp.folded_periods(later["stamps"] as Dictionary, MORTAL_PLAINS),
+		month * 2,
+		"while the place's own date is the total it has folded across both observations"
+	)
 
 
 # --- 3. The epoch never lowers a fact count -------------------------------------
@@ -430,6 +468,16 @@ func test_overflow_refuses_rather_than_truncating() -> void:
 	)
 	assert_eq(ReconcileStamp.place_count(refused["stamps"]), 0, "and the stamp set is untouched")
 	# The refusal names the numbers, read from source so no test drives the push.
+	#
+	# **The strip joins on `\n`, and that is correct — no `.replace` here.** An earlier
+	# revision rewrote newlines to spaces on the theory that the message's multi-line
+	# concatenation split the substring being looked for. Measured, that theory was wrong
+	# on both halves: `_code_only` keeps `##` docstring blocks out entirely, and the two
+	# substrings asserted here each sit on ONE line of the stripped code, so
+	# `contains("% [asked, MAX_PLACES]")` was already true without any rewriting. What was
+	# actually red was `_code_only`'s first `#` cut, which ate a `#`-bearing literal in the
+	# message; the string-literal-safe form above is the real fix and the one this case
+	# depends on.
 	var code := _code_only(FileAccess.get_file_as_string(RECONCILE_SRC))
 	assert_eq(
 		code.contains("% [asked, MAX_PLACES]"), true, "the message names the count and the cap"
@@ -690,17 +738,60 @@ func test_a_beat_is_readable_as_an_occurrence_and_a_malformed_row_is_not() -> vo
 	assert_eq((junk["applied"] as Array).size(), 0, "a row naming nothing is dropped, not stored")
 
 
-## `_code_only`, borrowed in the shape `test_time_ladder_single_source.gd:869` documents:
-## whole-line comments, trailing comments and `"""` blocks are removed before a scan, so
-## a guard reading these files cannot fire on their own prose — which is what the source
-## assertions above above depend on.
+## `_code_only`, in the STRING-LITERAL-SAFE form `test_reconcile_reachability.gd:712`
+## documents. The simple form cuts a line at its first `#`, which is unsound the moment a
+## scanned line carries a string — and this file scans `world_reconcile.gd`'s own refusal
+## message, whose `%` format arguments and quoted prose make that a certainty rather than a
+## risk. The full form tracks `"""` blocks and single/double-quoted strings, so a `#`
+## inside a literal is kept. Measured, not assumed: the naive form reduced
+## `Callable(_world, "observe_place")` to `Callable(_world, )`, which is how a wiring
+## assertion reads a PRESENT seam as absent.
 func _code_only(source: String) -> String:
 	var kept: Array[String] = []
+	var in_block := false
 	for raw in source.split("\n"):
 		var line := String(raw)
-		if line.strip_edges().begins_with("#"):
+		if not in_block and line.strip_edges().begins_with("#"):
 			continue
-		kept.append(line.substr(0, maxi(0, line.find("#"))))
+		var out := ""
+		var at := 0
+		var quote := ""
+		while at < line.length():
+			var character := line[at]
+			if in_block:
+				if line.substr(at, 3) == '"""':
+					in_block = false
+					at += 3
+				else:
+					at += 1
+				continue
+			if quote == "" and line.substr(at, 3) == '"""':
+				in_block = true
+				at += 3
+				continue
+			if quote == "" and (character == '"' or character == "'"):
+				quote = character
+				out += character
+				at += 1
+				continue
+			if quote != "":
+				if character == "\\":
+					out += character
+					at += 1
+					if at < line.length():
+						out += line[at]
+						at += 1
+					continue
+				if character == quote:
+					quote = ""
+				out += character
+				at += 1
+				continue
+			if character == "#":
+				break
+			out += character
+			at += 1
+		kept.append(out)
 	return "\n".join(kept)
 
 

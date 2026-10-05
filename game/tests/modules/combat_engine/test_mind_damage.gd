@@ -264,8 +264,13 @@ func test_the_spine_carries_the_two_stage_proposal() -> void:
 ## asserted with `>=` -- not a second factor the erosion is divided by.
 func test_the_defence_floor_is_structural_at_any_defense() -> void:
 	var lands := MindDamage.defense_floor(_tuning)
+	# ADR 0200 deleted `MENTAL_DEFENSE_CAP`. The floor is no longer `1 - cap` (a share of
+	# a removed percent); it is `1 - mitigation_ceiling`, because the ceiling is the share
+	# of a mind strike that mitigation may ever remove and the floor is what always lands.
+	# This is a correction: the property asserted is the same one — a mind strike always
+	# lands SOME share — expressed against the field that now carries it.
 	assert_almost_eq(
-		lands, 1.0 - _tuning.mental_defense_cap, "the published floor is 1 - MENTAL_DEFENSE_CAP"
+		lands, 1.0 - _tuning.mitigation_ceiling, "the published floor is 1 - mitigation_ceiling"
 	)
 	assert_almost_eq(
 		MindDamage.defense_floor(), lands, "and the same when the tuning is resolved by default"
@@ -314,16 +319,45 @@ func test_the_defence_floor_is_structural_at_any_defense() -> void:
 	# failures of a saturating contest that is working exactly as specified.
 	for defense in [1000.0, 1.0e9]:
 		var parts := _parts(MindDamage.Kind.DISRUPT, attacker, _defender(0.0, defense))
-		assert_almost_eq(
-			float(parts["mitigation"]),
-			_tuning.mental_defense_cap,
-			"defense %s saturates into the cap" % str(defense),
-			1e-4
+		# ADR 0200 deleted `MENTAL_DEFENSE_CAP`. The curve now APPROACHES
+		# `mitigation_ceiling` asymptotically rather than clamping onto it, so a dominating
+		# `d` reads strictly BELOW the ceiling and gets closer the larger `d` gets. That
+		# difference is the point: the old assertion demanded equality with a cap, which is
+		# the very shape the ADR removes.
+		var mitigation := float(parts["mitigation"])
+		assert_eq(
+			mitigation < _tuning.mitigation_ceiling,
+			true,
+			"defense %s saturates toward the ceiling without ever reaching it" % str(defense),
 		)
 		assert_almost_eq(
 			float(parts["total"]),
-			float(parts["erosion"]) * lands,
-			"and a capped defense lands exactly the floor"
+			float(parts["erosion"]) * (1.0 - mitigation),
+			"and a saturated defense lands at most the floor, never below it"
+		)
+		# And that it really is below, because "at most the floor" as a one-sided claim is
+		# satisfied by the unmitigated `1.0` too. The old assertion demanded EXACT
+		# equality with the floor, which was a demand about a deleted CONSTANT: the curve
+		# approaches `mitigation_ceiling` and never reaches it, so at a finite `D` the
+		# floor is a bound rather than a wall. What is asserted in its place is the
+		# property the constant used to carry -- a defense deep enough to be saturated
+		# leaves the strike PAST the floor -- with the direction the curve really has.
+		#
+		# Strictly `>` and not `>=`: at `defense = 1.0e9` the curve puts the landed share at
+		# `0.05 + 1.71e-8`, which rounds to the floor exactly in float64. `>=` would be the
+		# only assertion that passes at that row AND at `defense = 0.0`, where the whole
+		# strike lands, so it would prove nothing; the strict form is the one that holds
+		# across the whole sweep and fails the moment the defence stops being applied at all.
+		assert_eq(
+			float(parts["total"]) > float(parts["erosion"]) * lands,
+			true,
+			(
+				(
+					"defense %s is strictly PAST the floor without ever reaching it: %s of "
+					+ "erosion lands where the floor is %s"
+				)
+				% [str(defense), str(float(parts["total"]) / float(parts["erosion"])), str(lands)]
+			)
 		)
 
 
@@ -409,9 +443,48 @@ func test_obscure_reads_illusion_resistance_and_disrupt_does_not() -> void:
 
 	var obscure := _parts(MindDamage.Kind.OBSCURE, attacker, illusionist)
 	var disrupt := _parts(MindDamage.Kind.DISRUPT, attacker, illusionist)
-	# OBSCURE takes the maxf against ILLUSION_RESISTANCE, so it is mitigated by it.
+	# And the mitigation is the CURVE, not a ceiling: ADR 0200 deleted
+	# `ILLUSION_RESISTANCE_CAP` along with `MENTAL_DEFENSE_CAP`, so this asserts the ratio
+	# rather than the `0.8` that is no longer a mitigation anywhere. The two halves of
+	# `_defense_of`'s `maxf` are MAGNITUDES, and `ILLUSION_MAGNITUDE_SCALE` is the one
+	# documented conversion that makes them comparable — see the constant's docblock for
+	# why dividing by `resist_divisor` alone read `0.00042203465127` and made the stat
+	# inert. Everything here is DERIVED from the tuning's own numbers, so a balance pass
+	# moves the expectation with the code.
+	var defense := MindDamage.ILLUSION_MAGNITUDE_SCALE * 0.8
+	var divisor_k := _tuning.defense_divisor_k * float(obscure["base"])
+	var expected_mitigation := _tuning.mitigation_ceiling * defense / (divisor_k + defense)
 	assert_almost_eq(
-		float(obscure["mitigation"]), 0.8, "OBSCURE is mitigated by illusion_resistance"
+		float(obscure["defense"]),
+		defense,
+		"OBSCURE's D is the illusion half at last, in K's own magnitude space"
+	)
+	assert_almost_eq(
+		float(obscure["divisor_k"]), divisor_k, "and K rides this mechanism's own offense"
+	)
+	assert_almost_eq(
+		float(obscure["mitigation"]),
+		expected_mitigation,
+		"OBSCURE is mitigated by illusion_resistance through the ratio"
+	)
+	# NON-TRIVIAL, which is the whole claim and the thing the old literal `0.8` could not
+	# distinguish. A mitigation of zero would satisfy every ordering assertion below and
+	# still mean the stat does nothing, so the size is asserted against a stated floor.
+	assert_eq(
+		float(obscure["mitigation"]) >= 0.1,
+		true,
+		(
+			(
+				"and it is a REAL mitigation, not a rounding artefact of a mis-scaled stat "
+				+ "(measured %f against the D/K the tuning produces)"
+			)
+			% float(obscure["mitigation"])
+		)
+	)
+	assert_eq(
+		float(obscure["mitigation"]) < _tuning.mitigation_ceiling,
+		true,
+		"and still strictly below the ceiling, because the curve approaches it and never reaches it"
 	)
 	# DISRUPT never reads ILLUSION_RESISTANCE -- it is flat 0.0 against that stat.
 	assert_almost_eq(

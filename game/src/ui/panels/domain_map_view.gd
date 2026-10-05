@@ -93,35 +93,16 @@ const SEVERITY_INK := {
 ##   nested      — puzzle: something must be solved (not: how hard).
 ##   chevron     — elite_guard: something is guarded (not: by how much).
 ##   boss_ring   — boss: the run's climax (not: that it can be beaten now).
-const MARKER_GLYPHS := {
-	"refuge": "open_circle",
-	"treasure": "diamond",
-	"puzzle": "nested",
-	"elite_guard": "chevron",
-	"boss": "boss_ring",
-}
-
-## `DomainMinimap.POI_BY_TAG`'s own keys, restated verbatim as strings. A UI file may not
-## name a domain type, so the check "every glyph has an authored tag" is written against
-## this table — and a test asserts the two agree rather than either being believed.
-const POI_BY_TAG := {
-	"boss_worthy": "boss",
-	"elite_guard": "elite_guard",
-	"puzzle_formation": "puzzle",
-	"refuge": "refuge",
-	"treasure_keyed": "treasure",
-}
-
-## One legend row per glyph, keyed by the same tag string. A shape a player cannot
-## decode is a lie about discoverability, so the legend is part of the promise, not an
-## optional extra. Rendered as MARKDOWN BBCode so the panel owns no number formatting.
-const LEGEND_ROWS := [
-	{"tag": "refuge", "glyph": "open_circle", "promise": "somewhere safe to stand"},
-	{"tag": "treasure", "glyph": "diamond", "promise": "something is here to open"},
-	{"tag": "puzzle", "glyph": "nested", "promise": "something must be solved"},
-	{"tag": "elite_guard", "glyph": "chevron", "promise": "something is guarded"},
-	{"tag": "boss", "glyph": "boss_ring", "promise": "the run's climax"},
-]
+##
+## Aliased to [DomainMapPresentation]'s tables rather than restated: two copies of a closed
+## vocabulary is two vocabularies, and this file's draw calls and its `summary()` publish
+## must read the same one the partition reads.
+const MARKER_GLYPHS := DomainMapPresentation.MARKER_GLYPHS
+const POI_BY_TAG := DomainMapPresentation.POI_BY_TAG
+const LEGEND_ROWS := DomainMapPresentation.LEGEND_ROWS
+const TIER_PLAIN := DomainMapPresentation.TIER_PLAIN
+## How many frontier outlines are drawn before the cap bites (ADR 0207).
+const MAX_FRONTIER_ROOMS := DomainMapPresentation.MAX_FRONTIER_ROOMS
 
 ## ── Geometry metrics, named so art can retune them without reading the drawing ──
 
@@ -135,8 +116,6 @@ const ROOM_INSET_TILES := 1.0
 const DEFAULT_CORRIDOR_TILES := 1.0
 ## Marker radius, in tiles. One tile, so a marker reads at a glance beside a room.
 const MARKER_RADIUS_TILES := 1.5
-## How many frontier outlines are drawn before the cap bites (ADR 0207).
-const MAX_FRONTIER_ROOMS := 8
 
 ## The layer order, back to front. Declared so `summary()` and a reader can see which
 ## layer reads which payload key: each layer is one key and nothing else.
@@ -146,10 +125,6 @@ const LAYERS := ["corridors", "room_fills", "room_outlines", "zones", "markers",
 ## because an empty legend reads as "this map has no markers" and the truth is that
 ## this panel is not connected to anything.
 const LEGEND_UNWIRED_TEXT := "The floor plan is not wired to a domain."
-
-## The tier a room carries when it promises nothing, spelled out so the chip test is a
-## comparison and not a substring match on a name that could change.
-const TIER_PLAIN := "room"
 
 ## Outline width, in pixels. Named because art owns it, and a number in a draw call is
 ## a number a reader cannot retune.
@@ -209,6 +184,10 @@ var _frontier_truncated: bool = false
 var _legend_label: Label = null
 var _bound_nodes: bool = false
 var _chip_font_cache: Font = null
+## The fog partition and the marker vocabulary as pure data (ADR 0206's split), so this
+## node stays the CANVAS and the arithmetic over a published payload lives beside it.
+## Stateless, so one shared instance answers every partition.
+var _presentation: DomainMapPresentation = DomainMapPresentation.new()
 
 
 func _ready() -> void:
@@ -371,74 +350,14 @@ func kind_of(summary: Dictionary) -> String:
 # ── the three fog bands (ADR 0207) ───────────────────────────────────────────
 
 
-## The remembered band, the capped frontier, and the count of rooms fog withheld.
-##
-## **The remembered band is the MODULE's**, never this file's judgement: it is exactly
-## the rooms the payload's `rooms[]` carries, which `DomainMinimap._rooms` already
-## filtered to the discovered set. The frontier is PRESENTATION, computed here because
-## `DomainMinimap` must not widen itself to emit one (ADR 0207). Its `rect` is READ from
-## the payload's `layout`, never invented, which is what keeps ADR 0206's "no geometry of
-## its own" true.
-##
-## Bounded by construction: the candidate list is walked once by `for`, and the cap is
-## SNAPPATCHED before the loop below — the body appends to `frontier`, so a bound read
-## off `frontier` would rise in lockstep and never terminate.
 func _fog_bands() -> Dictionary:
-	var remembered: Array = []
-	var remembered_ids := {}
-	for entry in _rooms:
-		var room := entry as Dictionary
-		var room_id := String(room.get("room_id", ""))
-		if room_id.is_empty():
-			continue
-		remembered.append(room)
-		remembered_ids[room_id] = true
-	var candidates: Array = []
-	for entry in _authored:
-		var room := entry as Dictionary
-		var room_id := String(room.get("room_id", ""))
-		if room_id.is_empty() or remembered_ids.has(room_id):
-			continue
-		# One corridor away: a route whose other end is remembered. `routes[].from` /
-		# `routes[].to` are the module's own mutual-confirmed pairs, so the seam is made
-		# of the payload's own corridors and no graph is built here.
-		if not _one_corridor_from(room_id, remembered_ids):
-			continue
-		# A frontier room needs a rect to be an outline. A room the layout does not hold
-		# has none, and inventing one would be the second map ADR 0206 rules out.
-		if not _layout_rect(room_id).is_empty():
-			candidates.append(room)
-	candidates.sort_custom(_by_room_id)
-	var frontier: Array = []
-	var index := 0
-	var budget := mini(candidates.size(), MAX_FRONTIER_ROOMS)
-	while index < budget:
-		frontier.append(candidates[index])
-		index += 1
-	# Hidden is EVERYTHING the two bands did not take, computed from the authored count
-	# rather than by walking a third list — so the partition is total by arithmetic and a
-	# test can assert it without trusting the order of a filter.
-	var hidden := _authored_room_count() - remembered.size() - frontier.size()
-	return {
-		"remembered": remembered,
-		"frontier": frontier,
-		"hidden": maxi(0, hidden),
-		"truncated": candidates.size() > MAX_FRONTIER_ROOMS,
-	}
+	return _presentation.partition(_rooms, _authored, _routes, _layout)
 
 
 ## Whether `room_id` is joined to a remembered room by a route. Two bounded walks over
 ## arrays the module published; no map is built and no edge is written.
 func _one_corridor_from(room_id: String, remembered_ids: Dictionary) -> bool:
-	for entry in _routes:
-		var route := entry as Dictionary
-		var from_id := String(route.get("from", ""))
-		var to_id := String(route.get("to", ""))
-		if from_id == room_id and remembered_ids.has(to_id):
-			return true
-		if to_id == room_id and remembered_ids.has(from_id):
-			return true
-	return false
+	return _presentation.is_one_corridor_from(room_id, remembered_ids, _routes)
 
 
 ## Every room the RUN authored, for the frontier and the `hidden_rooms` arithmetic.
@@ -474,11 +393,7 @@ func _authored_room_count() -> int:
 ## points. The layer and this count read the SAME test, so `wires` cannot disagree with
 ## the pixels.
 func _count_drawable_routes() -> int:
-	var count := 0
-	for entry in _routes:
-		if _array_of((entry as Dictionary).get("points", [])).size() >= 2:
-			count += 1
-	return count
+	return _presentation.count_routes(_routes)
 
 
 ## Remembered rooms with a four-number rect: exactly what both room layers draw.
@@ -492,50 +407,25 @@ func _count_drawable_frontier() -> int:
 
 
 func _count_rooms_with_rect(rooms: Array) -> int:
-	var count := 0
-	for entry in rooms:
-		if _array_of((entry as Dictionary).get("rect", [])).size() == 4:
-			count += 1
-	return count
+	return _presentation.count_with_rect(rooms)
 
 
 ## Zones with a four-number bounds box: the hatch layer's own test.
 func _count_drawable_zones() -> int:
-	var count := 0
-	for entry in _zones:
-		if _array_of((entry as Dictionary).get("bounds", [])).size() == 4:
-			count += 1
-	return count
+	return _presentation.count_zones(_zones)
 
 
 ## Markers the marker layer will draw: a tag `POI_BY_TAG` names, a two-number anchor, and
 ## a REMEMBERED room. The remembered test is what makes "never on a frontier room"
 ## (ADR 0208) a property of the drawing rather than a promise in a comment.
 func _count_drawable_markers() -> int:
-	var remembered_ids := _remembered_ids()
-	var count := 0
-	for entry in _pois:
-		var poi := entry as Dictionary
-		var tag := String(poi.get("tag", ""))
-		if MARKER_GLYPHS.get(POI_BY_TAG.get(tag, ""), "") == "":
-			continue
-		if not remembered_ids.has(String(poi.get("room_id", ""))):
-			continue
-		if _array_of(poi.get("anchor", [])).size() == 2:
-			count += 1
-	return count
+	return _presentation.count_markers(_pois, _remembered_ids())
 
 
 ## Corridor mouths on the seam: the cost of a frontier room, and the one affordance fog
 ## never withholds (ADR 0207).
 func _count_frontier_doors() -> int:
-	var count := 0
-	for entry in _frontier:
-		var room_id := String((entry as Dictionary).get("room_id", ""))
-		for route in _routes:
-			if _route_touches(route as Dictionary, room_id):
-				count += 1
-	return count
+	return _presentation.count_frontier_doors(_frontier, _routes)
 
 
 # ── the draw ─────────────────────────────────────────────────────────────────
@@ -1040,34 +930,17 @@ func _marker_kinds() -> Array[String]:
 ## glyph: this list is text, and `marker_kinds` is shape, and the two are separate keys
 ## for exactly that reason.
 func _tier_chips() -> Array[String]:
-	var out: Array[String] = []
-	for entry in _remembered:
-		var tier := String((entry as Dictionary).get("tier", ""))
-		if tier.is_empty() or tier == TIER_PLAIN:
-			continue
-		if not out.has(tier):
-			out.append(tier)
-	out.sort()
-	return out
+	return _presentation.tier_chips_in(_remembered)
 
 
 func _legend_rows() -> Array[Dictionary]:
-	var tags := marker_tags()
-	var out: Array[Dictionary] = []
-	for row in LEGEND_ROWS:
-		if tags.has(String(row["tag"])):
-			out.append((row as Dictionary).duplicate(true))
-	return out
+	return _presentation.legend_for(_pois)
 
 
 ## Every tag `POI_BY_TAG` names, sorted. Published so a test can assert the closed
 ## vocabulary against the module's own without naming a module type.
 func _known_tags() -> Array[String]:
-	var out: Array[String] = []
-	for tag in POI_BY_TAG.keys():
-		out.append(String(tag))
-	out.sort()
-	return out
+	return _presentation.known_tags()
 
 
 ## A stable digest of the layout this node drew. `"room@x,y,w,h"` rows joined by `;`,

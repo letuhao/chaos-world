@@ -85,14 +85,27 @@ const REASON_EMPTY_LOCATION := "empty_location"
 ## A primitives-only report, and every key is always present so a caller never reads a
 ## missing field as a zero:
 ## - `location_id`, `span_periods`, `stamped_before` (was there a stamp at all?)
-## - `elapsed_periods` — the span, minus whatever was already folded. **NON-ZERO on a
-##   never-visited place for any non-zero span**, which is the deadlock guard.
-## - `crossed` — `{magnitude: whole count}` for the magnitudes a place's whole elapsed
-##   time has reached, which is a function of the TOTAL folded and not of this span: a
-##   place folded at month 1 reading a 10-period span already reports one month, so
-##   "pay what this span bought" is [method ReconcileStamp.fold_all]'s comparison against
-##   the existing row, not a subtraction here.
-## - `advanced` — whether anything moved, so a caller can tell a no-op read from a fold.
+## - `crossed` and `elapsed_periods` answer DIFFERENT questions, and the pair is the
+##   whole contract
+##
+## - `crossed` — `{magnitude: whole count}` for EVERY authored magnitude the total has
+##   reached, zeros included. A function of `span_periods` ALONE: this place's state is
+##   not consulted, because the question is about the world clock rather than about this
+##   place. A zero is a real answer ("this total crosses no second month"), and a caller
+##   that could not tell a zero from a bucket nobody authored would have to treat every
+##   missing key as an error.
+## - `elapsed_periods` — what THIS visit newly contributed: the total minus what this
+##   place had already folded, clamped at zero. **A re-read of an unchanged total pays
+##   nothing** ("a place returning to scope is FOLDED, never replayed", ADR 0170), and a
+##   total shorter than what this place folded pays nothing rather than a negative.
+## - `advanced` — whether `elapsed_periods` is non-zero, so a caller can tell a no-op read
+##   from a fold. It is deliberately NOT `not crossed.is_empty()`: with the raw map that
+##   would be true for every non-zero span including a pure re-read, which is exactly the
+##   "every read looks like a successful read" silence the ADR 0173 (c) hazard names.
+##
+## The stamp itself stays a MAX per magnitude ([method ReconcileStamp.fold_all]), so no
+## ordering of these two arithmetic paths can lower a place — the subtraction above is a
+## READ of the difference, never a write that moves a count down (ADR 0113).
 ##
 ## `offered` is left to the consumer: a reconcile READS the ledger's count for a place
 ## and never rewrites it (ADR 0170), and one bucket per magnitude crossed is handed to
@@ -102,26 +115,51 @@ static func observe(stamps: Dictionary, location_id: StringName, span_periods: i
 	var span := maxi(0, span_periods)
 	var stamped_before := ReconcileStamp.knows_place(stamps, location_id)
 	var was := ReconcileStamp.folded_periods(stamps, location_id)
-	# **Only the UNFOLDED remainder crosses.** A second observation of a span this place
-	# has already folded must be a no-op — "a place returning to scope is FOLDED, never
-	# replayed" (ADR 0170), and a stamp that stores a fold count rather than a period
-	# watermark exists precisely so this subtraction is possible. Dividing the raw span
-	# again on every visit made a place re-cross the same month on its second look, which
-	# is the replay this rule refuses, and it is what made
-	# `test_a_re_observed_place_does_not_pay_a_second_bucket` red.
+	# `span_periods` is the TOTAL the world has moved, so the two answers here are about
+	# DIFFERENT things and must not be conflated.
+	#
+	# `crossed` is the RAW ladder division of the total: every authored magnitude, whole
+	# count, ZEROES INCLUDED. It answers "what has this place's whole elapsed time
+	# reached", which is a function of the total alone and not of the place — the place is
+	# NOT consulted for it. The zero entries are load-bearing rather than filler: a caller
+	# asking "did this span cross a second month?" must get `0` and not `null`, because a
+	# missing key reads as an unknown bucket to every consumer
+	# (`TimeLadder.magnitudes_crossed` emits them for the same reason,
+	# `core/time_ladder.gd:207`).
+	#
+	# `elapsed_periods` is the only newly-elapsed figure, and it is what a player is owed:
+	# "a place returning to scope is FOLDED, never replayed" (ADR 0170). Two arrivals at a
+	# one-year total pay 4380 then 0, and an arrival after the world doubles pays exactly
+	# the NEW 4380 — which `test_reconcile_reachability.gd` pins through the production
+	# chain. The clamp is load-bearing for the same reason: a span SHORTER than what this
+	# place already folded (a stale or replayed read) owes nothing, never a negative.
+	#
+	# Neither figure is a subtraction on the WRITE path. `ReconcileStamp.fold_all` is the
+	# only writer and it is a MAX per magnitude, so no ordering of observations can lower
+	# a place — the ADR 0113 property `test_an_early_observation_does_not_move_a_later_one_backwards`
+	# pins survives any change to this arithmetic.
 	#
 	# Advance FIRST, unconditionally, before any read of the place's state is returned.
 	# There is no presence check in front of this line and there may never be one.
-	var outstanding := maxi(0, span - was)
-	var crossed := TimeLadder.magnitudes_crossed(outstanding)
-	var out := ReconcileStamp.fold_all(stamps, location_id, crossed)
+	#
+	# The WRITE takes the ABSOLUTE division and `fold_all` maxima it, so a place's date
+	# is the highest count the world has ever reached and no fold can lower it (ADR 0113).
+	# The two ANSWERS are about this VISIT: `crossed` is what the visit newly folded
+	# (`ReconcileStamp.newly_folded`, zeros present so a caller reads `0` and not a
+	# missing key) and `elapsed_periods` is the periods it added. Reporting the absolute
+	# map for a re-read would say "1 month" about a visit that folded none, which is
+	# exactly the silence ADR 0173 (c) names.
+	var absolute := TimeLadder.magnitudes_crossed(span)
+	var out := ReconcileStamp.fold_all(stamps, location_id, absolute)
+	var crossed := ReconcileStamp.newly_folded(stamps, location_id, absolute)
+	var elapsed := maxi(0, span - was)
 	return {
 		"location_id": String(location_id),
 		"span_periods": span,
 		"stamped_before": stamped_before,
-		"elapsed_periods": outstanding,
+		"elapsed_periods": elapsed,
 		"crossed": crossed,
-		"advanced": ReconcileStamp.folded_periods(out, location_id) > was,
+		"advanced": elapsed > 0,
 		"stamps": out,
 	}
 

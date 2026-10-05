@@ -33,13 +33,43 @@ const QI_REGEN := &"qi_regen"
 const STAMINA_REGEN := &"stamina_regen"
 const ATTACK_PHYSICAL := &"attack_physical"
 const ATTACK_SPIRITUAL := &"attack_spiritual"
+## ADR 0215. `minf(0.75, …)` is DELETED (ADR 0200) and the stat is now an UNBOUNDED
+## MAGNITUDE: a rate contest is `crit_chance / (crit_chance + crit_resist)`, so this half
+## needs no ceiling and a stronger attacker moves `p` toward 1 asymptotically rather than
+## arriving. The `0.05 + …` constant term survives as a non-zero BASELINE, not as a
+## fraction — which is why the id is no longer a `RATE_STATS` member and a FLAT on it is
+## legal authored content.
 const CRIT_CHANCE := &"crit_chance"
 const CRIT_DAMAGE := &"crit_damage"
+## ADR 0215. The DEFENCE half of the crit contest, and the id that did not exist before
+## it: `crit_resist` is the answer to `crit_chance`, and AGENTS.md's yin-yang rule makes a
+## half without a counterpart a DEFECT rather than a pending item — so it ships in the
+## same change as the half it answers. Unbounded magnitude, published by
+## `core/actor_stats.gd`; the contest lives in `CombatSpine.crit_chance`.
+const CRIT_RESIST := &"crit_resist"
+## ADR 0215. What a resisted crit costs the defender instead of becoming: a MULTIPLIER
+## with a `1.0` baseline (nothing resisted), so it is the mind/crit-damage answer to
+## [constant CRIT_RESIST] — the pair that keeps "you cannot crit me" from being a free
+## immunity. `0.5` means a crit against this defender lands at half. A FLAT is therefore
+## still a content error on it and it REMAINS a `RATE_STATS` member.
+const CRIT_RESIST_DAMAGE := &"crit_resist_damage"
 const PENETRATION := &"penetration"
 const ATTACK_SPEED := &"attack_speed"
 const DEFENSE_PHYSICAL := &"defense_physical"
 const DEFENSE_SPIRITUAL := &"defense_spiritual"
+## ADR 0200 deleted `minf(0.6, …)` and ADR 0215 makes it the DEFENCE half of
+## `accuracy / (accuracy + evasion)`: an unbounded magnitude, so a higher-realm actor does
+## not become unmissable and two actors of equal investment contest evenly at every depth.
 const EVASION := &"evasion"
+## ADR 0215. The OFFENCE half of the hit contest, and the id that did not exist before it.
+## `AGENTS.md`'s yin-yang rule names the pair `accuracy` with `evasion`, and combat already
+## owned an `accuracy` — but it was a SUBTRACTION off the defender's evasion
+## (`evasion - accuracy`, read on `rate_scale`), which is the absolute difference ADR 0215
+## exists to remove. This is core's spelling of that same id so the contest has two halves
+## declared by the layer both can reach; `CombatStats.ACCURACY` is the module's restatement
+## of it and `tests/modules/combat_engine/test_rate_ratio_contest.gd` asserts the two are
+## one string rather than two vocabularies.
+const ACCURACY := &"accuracy"
 const DAMAGE_REDUCTION := &"damage_reduction"
 const POISE := &"poise"
 ## ADR 0200: `status_resistance` was a PERCENT capped at `0.8` and renamed to this
@@ -103,9 +133,27 @@ const QI_COST_REDUCTION := &"qi_cost_reduction"
 const CONCEPTION_CHANCE := &"conception_chance"
 const DUAL_CULTIVATION_RATE := &"dual_cultivation_rate"
 const GESTATION_SPEED := &"gestation_speed"
+## ADR 0215. `minf(0.8, mental_clarity * 0.004 + will * 0.002)` is DELETED. The stat is
+## unchanged in meaning — it is the defence half ADR 0071 gave `OBSCURE` and nothing else —
+## but it is now an unbounded MAGNITUDE, so an illusion-resistance build keeps buying
+## mitigation past the point where the cap made it stop dead. Not a `RATE_STATS` member
+## any more, which is what makes a FLAT on it legal authored content.
 const ILLUSION_RESISTANCE := &"illusion_resistance"
 const MATERNAL_RESILIENCE := &"maternal_resilience"
+## ADR 0215. RENAMED from `mind_avoidance` (ADR 0071's id) because the contest it belongs
+## to now has a name for both halves: `mind_clarity` attacks and `mind_veil` hides. The
+## old id is declared below as a RETIRED spelling so a stale reference fails to COMPILE
+## rather than reading `0.0` off an unbacked stat.
+const MIND_VEIL := &"mind_veil"
+## ADR 0215. The OFFENCE half of the mind crit roll, and the id that did not exist before
+## it — `minf(0.75, …)` is gone, so this is an unbounded magnitude contested against
+## [constant MIND_VEIL] by `mind_damage.gd:_focus_of`. Ships in the same change as its
+## counterpart: a half alone is a defect, not a pending item.
+const MIND_CLARITY := &"mind_clarity"
+## Retired by ADR 0215 in favour of [constant MIND_VEIL]. See the note on
+## [constant STATUS_RESISTANCE] for why the old id is kept declared.
 const MIND_AVOIDANCE := &"mind_avoidance"
+## Retired by ADR 0215 in favour of [constant MIND_CLARITY]. See [constant MIND_AVOIDANCE].
 const MIND_FOCUS_CHANCE := &"mind_focus_chance"
 const TECHNIQUE_COST_REDUCTION := &"technique_cost_reduction"
 const TECHNIQUE_POWER := &"technique_power"
@@ -164,21 +212,29 @@ const MIND_CONTROL_RATES := [
 ## Shape proof, one line each — a cap under `1.0`, or a `1.0 +`/`1.0 *` term that
 ## makes `1.0` mean no change:
 ##   conception_chance        fertility/provider.gd:18    clampf(0.05 + fertility*0.02, 0.0, 0.95)
+##   crit_resist_damage       core/actor_stats.gd         1.0 + composure * 0.002   (ADR 0215)
 ##   dual_cultivation_rate    dual_cultivation/provider.gd:31
 ##     (1.0 + aptitude * 0.02) * (1.0 - deviation * 0.5)
 ##   gestation_speed          fertility/provider.gd:19    1.0 + (physique+spirit+aptitude)*0.01
-##   illusion_resistance      mind_cultivation/provider.gd:63 minf(0.8, clarity*0.004 + will*0.002)
 ##   maternal_resilience      fertility/provider.gd:23    clampf((physique+will)*0.01, 0.0, 0.8)
-##   mind_avoidance           mind_cultivation/provider.gd:62 minf(0.6, perception*0.002 + aw*0.05)
-##   mind_focus_chance        mind_cultivation/provider.gd:61
-##     minf(0.75, 0.05 + perception * 0.003 + awareness_ratio * 0.1)
 ##   technique_cost_reduction qi_cultivation/provider.gd:31 clampf(qi_control*0.002, 0.0, 0.5)
 ##   technique_power          qi_cultivation/provider.gd:32 (1.0 + qi_affinity*0.05) * factor
 ##
-## Each of the nine is also AUTHORABLE — an option or a fate names it as a modifier
+## Each of these is also AUTHORABLE — an option or a fate names it as a modifier
 ## target — which is what makes an unregistered one a defect rather than a tidiness
 ## gap: that is the whole reachability argument, and the registration test asserts it
 ## rather than trusting this paragraph.
+##
+## ## ADR 0215 moved THREE of them out, and the removed shapes are the proof
+##
+## `illusion_resistance` was `minf(0.8, …)`, `mind_avoidance` was `minf(0.6, …)` and
+## `mind_focus_chance` was `minf(0.75, …)` — every one of them rate-shaped by rule (a),
+## every one of them a half of a CONTEST, and every one of them a cap whose only effect
+## was to stop the defender's half growing. With the `minf` deleted they are
+## `mental_clarity * 0.004 + will * 0.002` and friends: attribute-scaled with no constant
+## term, which is the shape a MAGNITUDE has. That is why they are gone from this list and
+## why `test_rate_stats_registration.gd` — which reads the source rather than this
+## paragraph — passes on its own.
 ##
 ## The two that declare `unit: "rate"` and are still magnitudes, so a FLAT on them
 ## is LEGAL content and registering them would refuse good work:
@@ -269,6 +325,28 @@ const MIND_CONTROL_RATES := [
 ## rate-shaped, and with the `minf` gone none of the three is any more. That test is the
 ## gate ADR 0200 names for this list and it is updated in the same change.
 ##
+## ## ADR 0215 removed TWO MORE, and this time the SCOPE is what moved
+##
+## `ILLUSION_RESISTANCE`, `MIND_AVOIDANCE` (now `MIND_VEIL`) and `MIND_FOCUS_CHANCE` (now
+## `MIND_CLARITY`) lose their entries for ADR 0200's reason: `minf(0.8, …)`,
+## `minf(0.6, …)` and `minf(0.75, …)` are gone, so all three are unbounded MAGNITUDES and a
+## FLAT on them is an authored number rather than 1000%.
+##
+## **That is the second half of ADR 0215 and it is the load-bearing half.** ADR 0200 left
+## those three capped on purpose — "a cap on a mitigation or defense axis DIES, a cap on a
+## RATE axis STAYS" — and ADR 0215 is the decision that says that rule was applied to the
+## wrong question for a CONTEST. A rate contest is `offense / (offense + defense)`; the cap
+## was not protecting an axis from runaway stacking, it was bounding a half of a ratio, and
+## a half that cannot grow past 0.75 is a defender whose ceiling loses by construction as
+## the ladder rises. The three caps ADR 0200 deliberately KEPT on this axis (`ATTACK_SPEED`
+## 2.5, `COOLDOWN_REDUCTION` 0.4, `QI_COST_REDUCTION` 0.5) stay for the reason they were
+## written for, and the difference is the difference ADR 0215 names: they bound DEGENERATE
+## STACKING on an axis nothing contests, and no contest reads them.
+##
+## `CRIT_RESIST_DAMAGE` is the one id ADR 0215 ADDS to this list, and it is here for the
+## ordinary reason: a `1.0`-baseline multiplier is a rate whatever else it is, so `+10`
+## means 1000% and must stay refused.
+##
 ## ## What STAYS, and the rule that decides it
 ##
 ## `ATTACK_SPEED` (2.5), `COOLDOWN_REDUCTION` (0.4) and `QI_COST_REDUCTION` (0.5) keep
@@ -286,14 +364,12 @@ const RATE_STATS := [
 	COOLDOWN_REDUCTION,
 	CONCEPTION_CHANCE,
 	CRIT_DAMAGE,
+	CRIT_RESIST_DAMAGE,
 	CULTIVATION_RATE,
 	DUAL_CULTIVATION_RATE,
 	GESTATION_SPEED,
-	ILLUSION_RESISTANCE,
 	INSIGHT_GAIN,
 	MATERNAL_RESILIENCE,
-	MIND_AVOIDANCE,
-	MIND_FOCUS_CHANCE,
 	QI_COST_REDUCTION,
 	TECHNIQUE_COST_REDUCTION,
 	TECHNIQUE_POWER,

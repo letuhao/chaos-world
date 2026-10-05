@@ -112,3 +112,30 @@ There is nothing to configure and no new seam. **The absence of a price IS the d
   captive `ItemDef` plus a price (this is the change that would make both suites RED, and
   the change the ADR forbids); storing the negotiated amount on the claim (a coin count on a
   custody row is a balance, and ADR 0139's numéraire is inventory-held).
+
+## The mutation record
+
+Both suites were mutation-proven on `--suite custody`, baseline
+`Results: 616 passed, 0 failed (5 suite(s))`.
+
+| # | Injected | Result |
+|---|----------|--------|
+| A | `capture` mints an inventory stack for the subject | `Results: 614 passed, 2 failed (5 suite(s))` |
+| A | reverted | `Results: 616 passed, 0 failed (5 suite(s))` |
+| B | `settle_term` writes a running `worth` onto the term | `Results: 616 passed, 0 failed (5 suite(s))` — **GREEN, and that is the finding** |
+| B' | `normalize`'s closed literal carries a `worth` key | `Results: 611 passed, 5 failed (5 suite(s))` |
+| B' | reverted | `Results: 616 passed, 0 failed (5 suite(s))` |
+
+**Mutation B stayed green and it is the most useful result here.** Every read path in the
+module normalizes: `CustodyApi.state` and `CustodyApi._state` both wrap the answer in
+`CustodyState.normalize`, and `CustodyWorldLedger.read_ledger` normalizes on read as well as
+on write. So an injected key is dropped **structurally** before any caller sees it — the
+suite cannot observe it, and the guarantee is real but enforced by a *second* layer.
+
+The lesson recorded for whoever strengthens this: **the closed literal in `normalize` is
+the load-bearing layer, not the arithmetic in `settle_term`.** Mutating B' proves it,
+because only B' makes the injected key survive to the reader. A defence-in-depth guarantee
+whose *inner* layer is untested is a guarantee with one untested wall in it, not two.
+
+All five mutations were reverted; `git diff` on `game/src/modules/custody/` afterwards is
+byte-identical to how this pass found it.

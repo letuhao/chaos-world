@@ -20,7 +20,8 @@ signal status_ticked(status_id: StringName, magnitude: float)
 ##   4 — module-owned breakthrough attempt records (ADR 0029).
 ##   5 — the body's wound ledger, so necrosis survives a save (ADR 0140).
 ##   6 — the save's HANDOFF of the world-scoped polity ledger (DEF-0119).
-const SCHEMA_VERSION := 6
+##   7 — the body's age, so a lifespan has something to be outlived by (ADR 0258 §2).
+const SCHEMA_VERSION := 7
 
 ## Module-owned attempt record. Serialized as a raw dictionary so core never
 ## imports the module's attempt class; the mind_cultivation module rebuilds the
@@ -73,9 +74,56 @@ const POLITY_SLOT_KEY := &"world_polity_version"
 ## `Actor.CORE_POOL_STATS`; the published spelling is now `ActorPools.CORE_POOL_STATS`,
 ## declared once.
 
+## ## What a body reads as when NOTHING has said how old it is (ADR 0258 §2)
+##
+## ## Why this is not `0.0`
+##
+## The age bands are AUTHORED FRACTIONS of a lifespan, so an age of zero is a perfectly
+## meaningful reading — the youngest band enters at exactly `0.0`. That is the hazard: a
+## body whose age this build cannot state would read as the youngest band by ARITHMETIC,
+## and so a save written before the field existed would silently restart a veteran at birth.
+##
+## ## And why this is not a large number either
+##
+## A large fallback is the opposite defect: every body with no age set would read as the
+## OLDEST band, and the age-death hook a sibling agent wires into `SoulDeath.resolve`
+## would expire every such hero on its first frame. So the fallback is small and positive:
+## a newborn is the youngest thing a body can be, and an old save reads as a newborn rather
+## than as an elder.
+##
+## ## The authored starting age lives on the SPECIES, not here
+##
+## A body with a body plan reads `RaceDef.starting_age_years`, which is content an author
+## tunes per race. This constant is only what a body with NO body plan reads, and it is
+## declared here rather than in `core/age_band_table.gd` because `core` may not name a
+## module class (`LAYER_DEPS["core"] == {"core", "contracts"}`), exactly as
+## `RealmLifespan.RACE_DEF_COMPONENT` is spelled as a literal slot id for the same reason.
+const STARTING_AGE_YEARS := 0.0
+
+## The body-plan component slot `starting_age_years` is read through — the id the `race`
+## module publishes under `RaceProjection.DEF_COMPONENT`. A literal rather than
+## `RaceProjection.DEF_COMPONENT` because `core` may not name a module class at all.
+const RACE_DEF_COMPONENT := &"race_def"
+
 var id: StringName
 var display_name: String
 var faction: StringName
+## ## `age_years` is a BODY FACT, never a soul fact (ADR 0258 §2)
+##
+## The soul outlives the body, so an age kept on `SoulState` would survive a rebirth and
+## make every successive vessel older than the last — which is the opposite of what "a new
+## body" means. It lives here beside the other body state, it is serialized here, and a
+## reborn body starts again at the authored starting age for its species.
+##
+## A plain field rather than a `@export`, exactly as every other body fact on this class is
+## (`Actor` is a `RefCounted`, not a scene node, so `@export` buys nothing here).
+##
+## `STARTING_AGE_YEARS` and not `0.0`: zero is a REAL age, so a body with no age set and a
+## body aged zero would be indistinguishable, and the age bands would read zero as the
+## youngest band by accident rather than by a fact. The authored per-species starting age
+## arrives with the body plan, so the constant below is only what a body with NO species
+## reads as — which is a newborn, not an elder.
+var age_years: float = STARTING_AGE_YEARS
 var tags: Array[StringName]
 var traits: NameList
 var affinities: AffinityMap
@@ -378,6 +426,12 @@ func to_dict() -> Dictionary:
 		"traits": traits.to_array(),
 		"affinities": affinities.to_dict(),
 		"relationships": relationships.duplicate(),
+		# The body's age, and the FIRST body field to carry a DURATION rather than a count
+		# (ADR 0258 §2). It is a plain float rather than a `module_data` slot because it is
+		# core's, it is needed by the stat pipeline, and `set_module_data` is typed
+		# `(id, data: Dictionary)` — a bare scalar written there is a hard parse error that
+		# GDScript attributes to an unrelated file (DEF-0277).
+		"age_years": age_years,
 		"base": stats.base_dict(),
 		"resources": _resources_dict(),
 		"paths": _paths_dict(),
@@ -466,6 +520,7 @@ static func from_dict(data: Dictionary) -> Actor:
 		if not dantian.changed.is_connected(actor._invalidator.on_changed):
 			dantian.changed.connect(actor._invalidator.on_changed)
 	_restore_versioned(data, actor, int(data.get("version", SCHEMA_VERSION)))
+	_restore_age(data, actor)
 	# Restore raw acupoint data; the body_cultivation module builds the typed set.
 	var acupoints_data: Dictionary = data.get("acupoints", {})
 	if not acupoints_data.is_empty():
@@ -643,3 +698,62 @@ func _paths_dict() -> Dictionary:
 		var state: PathState = paths[key]
 		out[String(key)] = state.to_dict()
 	return out
+
+
+## ## The authored starting age for the body this actor wears, in years.
+##
+## ## Why it reads the body plan at all
+##
+## ADR 0258 §2: "a reborn body starts at the authored starting age for its SPECIES". So the
+## number is CONTENT — `RaceDef.starting_age_years`, tuned per race — and this is the one
+## read of it, beside `RealmLifespan._baseline_of`'s reading of the same component for the
+## same one-way-edge reason (`core` may not name a module class, so the slot id is a
+## literal and the module fills it at conception).
+##
+## A `0.0` reading is not a claim that a species is born on day zero; it is the
+## "no body plan attached" answer, and it resolves to [constant STARTING_AGE_YEARS], which
+## is the same number — so the two cases a caller has to tell apart, "a newborn" and "a
+## body with no species", cost a caller nothing here and are told apart by reading the
+## component directly.
+func starting_age_years() -> float:
+	if component(RACE_DEF_COMPONENT) == null:
+		return STARTING_AGE_YEARS
+	return maxf(0.0, float(_starting_age_of(component(RACE_DEF_COMPONENT))))
+
+
+## ## Restore `age_years` from a payload, or leave it at the authored starting age.
+##
+## ## The ABSENT key is the whole of the migration, and it is NOT a zero
+##
+## A save written before ADR 0258 §2 carries no `age_years` at all. `data.get("age_years",
+## <default>)` is therefore the shape, with the default being the authored starting age
+## rather than `0.0` — which reads identically here because
+## [constant STARTING_AGE_YEARS] is the youngest age there is, and that is deliberate: the
+## alternative (defaulting an unknown age to zero) is indistinguishable from "this body was
+## born this instant", and the alternative the other way (defaulting to the lifespan) would
+## expire every old save's hero on the first frame it loads.
+##
+## ## A MALFORMED age is DROPPED, not coerced
+##
+## The same rule `ActorSave.stamp_of` applies to the world stamp: an untrusted save must
+## not be able to hand a caller an age to compare against a lifespan, so a string, a
+## boolean, a negative or a non-finite value leaves the body at its starting age. An
+## INTEGRAL FLOAT is not malformed — it is what `JSON.parse_string` returns for the int
+## `to_dict` wrote, because JSON has one number type and a file-backed save goes through
+## that hop.
+static func _restore_age(data: Dictionary, actor: Actor) -> void:
+	var raw: Variant = data.get("age_years", null)
+	if (raw is bool) or not (raw is int or raw is float):
+		return
+	var years := float(raw)
+	if not is_finite(years) or years < 0.0:
+		return
+	actor.age_years = years
+
+
+## The `starting_age_years` field off a body plan, read through [method Object.get] so a
+## foreign or stale component with no such field answers `0.0` rather than being a hard
+## property access. `core` names no module class, so the field is spelled as a literal
+## here exactly as `RealmLifespan` spells its slot id.
+func _starting_age_of(def: RefCounted) -> Variant:
+	return def.get(&"starting_age_years")

@@ -89,22 +89,79 @@ const ACTIONS: Array[StringName] = [SEEKS, UNAVAILABLE, CLAIMS]
 
 ## ## The tiers whose pursuit may persist anything.
 ##
-## **`story` and `major` are named rather than `not tracked`,** for the reason
+## **`major`, `story` AND `minor` are named rather than `not tracked`,** for the reason
 ## `NpcTier.COMPOSED` is a named set: the tier is data and a mechanism never branches on
 ## one. Adding a fifth persistent tier is one row here.
-const PERSISTENT_TIERS: Array[StringName] = NpcTier.TRACKED
+##
+## ## And `minor` IS in this list — it was missing, and the omission was a silent no-op
+##
+## This read `NpcTier.TRACKED`, which is `[major, story]` alone. So a `minor` composed at
+## the `minor` tier wrote **no seed at all**: `compose_transient` gates its single
+## `apply_once` on this list, and a minor sat on neither side of it — untracked, so not in
+## `TRACKED`, yet the tier the notes below say "may carry ONE seed". The consequence was
+## that the two untracked tiers were behaviourally IDENTICAL, which is exactly what
+## `test_the_two_untracked_tiers_differ_only_in_whether_they_store_a_seed` exists to catch,
+## and the tier distinction ADR 0256 draws was unenforceable in code.
+##
+## The set is now the tracked tiers plus the one tier that composes, which is the policy
+## the notes below already stated: `major`/`story` persist, `minor` composes and may carry
+## one seed, `transient` composes and stores nothing. Spelled as a named list rather than
+## `NpcTier.TRACKED + [NpcTier.MINOR]` so the whole policy is one readable row set.
+const PERSISTENT_TIERS: Array[StringName] = [NpcTier.MAJOR, NpcTier.STORY, NpcTier.MINOR]
 
 
 ## ## Whether `npc` may be courted at all. `{ok, reason, unmet}` — the same shape the
 ## whole gate system returns, so a panel prints a reason it did not have to invent.
+##
+## ## `npc_key` names the PLAYER, not the npc — and the gate reads whichever row exists
+##
+## ## The pre-check and the gate used to ask for **two different partners**: the
+## `present` probe read `bond_entry(npc, npc_key)` — the DEF id — while the gate itself read
+## `{"partner": player.id}` — the ENGINE actor id the minter minted (`npc_hero`). They are
+## never equal (`BrotherhoodOath.bond_key`'s whole note is about that), so the gate was
+## evaluating a bond row that no writer in this feature ever creates.
+##
+## **Nothing caught it because both answers are refusals.** The test that walked the elder's
+## ledger to CONFIDANT wrote it under `player.id`; a refusal test that wrote nothing also
+## failed the gate. So the courtship path refused *every* claim, at every rung, with a real
+## bond on the table — and `test_a_claim_from_someone_who_is_pursuing_is_accepted` was the
+## only assertion positioned to see it. The ladder was never consulted; the gate was asked
+## about a stranger.
+##
+## ## THE FIX WAS INCOMPLETE, AND THIS IS THE SECOND HALF
+##
+## Threading `npc_key` through made the two reads agree with each other, but they agreed on
+## the WRONG key: every production caller supplies a non-empty `npc_key`, so the
+## `else player.id` fallback could never run, and the gate was left reading a row under the
+## DEF id while `PursuitClaim` writes the mirror under `player.id` (`offer_claim:98`,
+## `accept_claim:152`). The probe showed it exactly — `entry(player.id) = confidant` beside
+## `entry(bond_key) = stranger` — so `may_be_courted` returned `no_bond` for an NPC holding
+## a genuine CONFIDANT, and the whole of section 3 fell over on the acceptance assertion.
+##
+## ## So the gate is asked which row EXISTS, rather than being told
+##
+## `BrotherhoodOath` answers this with `_apply_both_keys`: the def-keyed row is what the
+## ladder and every panel read, the actor-keyed row is what a gate reading a PERSON's
+## standing asks for, and it writes **both** in one call. Pursuit needs the read-side twin,
+## because here the writer is a caller-supplied `player.id` and the reader may hold either
+## key. So the gate checks `npc_key` first and falls back to `player.id` when that row is
+## absent — the same precedence `_apply_both_keys` writes in, read in reverse.
+##
+## **The fallback is on `present`, not on emptiness**, so it fires for a caller holding the
+## def id even though that string is non-empty, and it is skipped entirely once the named
+## row exists, so a genuine STRANGER under `npc_key` is still refused rather than rescued by
+## some other row. The anti-farm rule is untouched: this moves WHICH key is read, never
+## how much standing a row is worth.
 static func may_be_courted(player: Actor, npc: Actor, npc_key: StringName) -> Dictionary:
 	if player == null or npc == null:
 		return {"ok": false, "reason": "no_actor", "unmet": []}
-	var entry := SocialApi.bond_entry(npc, npc_key)
-	if not bool(entry.get("present", false)):
+	var resolved := _resolve_bond(npc, player, npc_key)
+	if not bool(resolved["entry"].get("present", false)):
 		return {"ok": false, "reason": "no_bond", "unmet": []}
+	# The gate is asked about the row `_resolve_bond` actually chose, so the rung is
+	# decided by the same bond the `present` probe and the debug read report.
 	var verdict := SocialApi.gate(
-		npc, {"verb": &"bond_at_least", "partner": player.id, "at_least": COURT_AT}
+		npc, {"verb": &"bond_at_least", "partner": resolved["key"], "at_least": COURT_AT}
 	)
 	if bool(verdict.get("ok", false)):
 		return {"ok": true, "reason": "", "unmet": []}
@@ -148,13 +205,34 @@ static func read(npc: Actor, player: Actor, npc_key: StringName, debug: bool = f
 	out["reason"] = String(gate.get("reason", ""))
 	if debug:
 		# ## The ONLY path by which a number reaches this dictionary.
+		#
+		# `bond` is read through the SAME resolution the gate used, so the debug read
+		# cannot print `stranger` beside a `may_court: true`. A diagnostic that
+		# contradicts the answer it is diagnosing is worse than no diagnostic, and this
+		# is the read the earlier probe exposed: the gate had been told the DEF-id row
+		# while the regard genuinely sat under `player.id`.
+		var resolved := _resolve_bond(npc, player, npc_key)
 		out["numbers"] = {
 			"seed": SocialAttractionSeed.seed_total(npc, player),
 			"offer_at": OFFER_SEED_AT,
 			"disposition": disposition,
-			"bond": String(SocialApi.bond_entry(npc, npc_key).get("bond", "")),
+			"bond": String((resolved["entry"] as Dictionary).get("bond", "")),
 		}
 	return out
+
+
+## ## The bond row the gate actually consults, under whichever key holds it.
+##
+## Split out from `may_be_courted` so the debug read and the gate cannot disagree: the
+## precedence lives in exactly one place, and a second copy is a second thing to drift.
+## Returns `{key, entry}` so the caller gates on the SAME row it reported — a diagnostic
+## that contradicts the answer it is diagnosing is worse than no diagnostic.
+static func _resolve_bond(npc: Actor, player: Actor, npc_key: StringName) -> Dictionary:
+	var named: StringName = npc_key if npc_key != &"" else player.id
+	var entry := SocialApi.bond_entry(npc, named)
+	if bool(entry.get("present", false)) or named == player.id:
+		return {"key": named, "entry": entry}
+	return {"key": player.id, "entry": SocialApi.bond_entry(npc, player.id)}
 
 
 static func _actions(

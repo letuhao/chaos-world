@@ -1,0 +1,1410 @@
+diff --git a/game/data/items/key/ash_arena_formation_key.tres b/game/data/items/key/ash_arena_formation_key.tres
+index c585b261d..adae038d8 100644
+--- a/game/data/items/key/ash_arena_formation_key.tres
++++ b/game/data/items/key/ash_arena_formation_key.tres
+@@ -17,0 +18 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10.5},
+diff --git a/game/data/items/key/ash_furnace_key.tres b/game/data/items/key/ash_furnace_key.tres
+index b185fd374..d83f3a1e7 100644
+--- a/game/data/items/key/ash_furnace_key.tres
++++ b/game/data/items/key/ash_furnace_key.tres
+@@ -18,0 +19 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 5},
+diff --git a/game/data/items/quest/A29_divine_coroner_caption.tres b/game/data/items/quest/A29_divine_coroner_caption.tres
+index 7edd88da1..91006e37b 100644
+--- a/game/data/items/quest/A29_divine_coroner_caption.tres
++++ b/game/data/items/quest/A29_divine_coroner_caption.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/A29_divine_coroner_indictment.tres b/game/data/items/quest/A29_divine_coroner_indictment.tres
+index f1ee345fd..0e98a97ca 100644
+--- a/game/data/items/quest/A29_divine_coroner_indictment.tres
++++ b/game/data/items/quest/A29_divine_coroner_indictment.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/A29_divine_coroner_parole.tres b/game/data/items/quest/A29_divine_coroner_parole.tres
+index d0880c933..0533cd524 100644
+--- a/game/data/items/quest/A29_divine_coroner_parole.tres
++++ b/game/data/items/quest/A29_divine_coroner_parole.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/A29_divine_coroner_reprieve.tres b/game/data/items/quest/A29_divine_coroner_reprieve.tres
+index adcde49b9..2dfd85039 100644
+--- a/game/data/items/quest/A29_divine_coroner_reprieve.tres
++++ b/game/data/items/quest/A29_divine_coroner_reprieve.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/A29_divine_justicery_caption.tres b/game/data/items/quest/A29_divine_justicery_caption.tres
+index 13cdef741..9ee59d761 100644
+--- a/game/data/items/quest/A29_divine_justicery_caption.tres
++++ b/game/data/items/quest/A29_divine_justicery_caption.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/A29_divine_justicery_indictment.tres b/game/data/items/quest/A29_divine_justicery_indictment.tres
+index 0788f93cf..3250fd681 100644
+--- a/game/data/items/quest/A29_divine_justicery_indictment.tres
++++ b/game/data/items/quest/A29_divine_justicery_indictment.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/A29_divine_justicery_parole.tres b/game/data/items/quest/A29_divine_justicery_parole.tres
+index 3278e22bb..78cb90deb 100644
+--- a/game/data/items/quest/A29_divine_justicery_parole.tres
++++ b/game/data/items/quest/A29_divine_justicery_parole.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/A29_divine_justicery_reprieve.tres b/game/data/items/quest/A29_divine_justicery_reprieve.tres
+index 08f99c278..f67cf7ad9 100644
+--- a/game/data/items/quest/A29_divine_justicery_reprieve.tres
++++ b/game/data/items/quest/A29_divine_justicery_reprieve.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/A29_divine_shirecourt_caption.tres b/game/data/items/quest/A29_divine_shirecourt_caption.tres
+index e317be45a..e45126b9c 100644
+--- a/game/data/items/quest/A29_divine_shirecourt_caption.tres
++++ b/game/data/items/quest/A29_divine_shirecourt_caption.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/A29_divine_shirecourt_indictment.tres b/game/data/items/quest/A29_divine_shirecourt_indictment.tres
+index 40994a752..fa20a28b6 100644
+--- a/game/data/items/quest/A29_divine_shirecourt_indictment.tres
++++ b/game/data/items/quest/A29_divine_shirecourt_indictment.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/A29_divine_shirecourt_parole.tres b/game/data/items/quest/A29_divine_shirecourt_parole.tres
+index 901e764b6..822ff446a 100644
+--- a/game/data/items/quest/A29_divine_shirecourt_parole.tres
++++ b/game/data/items/quest/A29_divine_shirecourt_parole.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/A29_divine_shirecourt_reprieve.tres b/game/data/items/quest/A29_divine_shirecourt_reprieve.tres
+index 3d273ec3d..0c1d60e07 100644
+--- a/game/data/items/quest/A29_divine_shirecourt_reprieve.tres
++++ b/game/data/items/quest/A29_divine_shirecourt_reprieve.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/A30_immortal_aromatic_fumette.tres b/game/data/items/quest/A30_immortal_aromatic_fumette.tres
+index d49db7148..b2332fcc7 100644
+--- a/game/data/items/quest/A30_immortal_aromatic_fumette.tres
++++ b/game/data/items/quest/A30_immortal_aromatic_fumette.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/A30_immortal_aromatic_pastille.tres b/game/data/items/quest/A30_immortal_aromatic_pastille.tres
+index 7cac6982b..1685462b2 100644
+--- a/game/data/items/quest/A30_immortal_aromatic_pastille.tres
++++ b/game/data/items/quest/A30_immortal_aromatic_pastille.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/A30_immortal_censerhouse_attar.tres b/game/data/items/quest/A30_immortal_censerhouse_attar.tres
+index f86f8e56e..7771554b8 100644
+--- a/game/data/items/quest/A30_immortal_censerhouse_attar.tres
++++ b/game/data/items/quest/A30_immortal_censerhouse_attar.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/A30_immortal_censerhouse_daggery.tres b/game/data/items/quest/A30_immortal_censerhouse_daggery.tres
+index f54ed4555..158cf856a 100644
+--- a/game/data/items/quest/A30_immortal_censerhouse_daggery.tres
++++ b/game/data/items/quest/A30_immortal_censerhouse_daggery.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/A30_immortal_censerhouse_fumette.tres b/game/data/items/quest/A30_immortal_censerhouse_fumette.tres
+index d6fd7ed34..f1f00a249 100644
+--- a/game/data/items/quest/A30_immortal_censerhouse_fumette.tres
++++ b/game/data/items/quest/A30_immortal_censerhouse_fumette.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/A30_immortal_censerhouse_orris.tres b/game/data/items/quest/A30_immortal_censerhouse_orris.tres
+index f375a20fa..07e5c5941 100644
+--- a/game/data/items/quest/A30_immortal_censerhouse_orris.tres
++++ b/game/data/items/quest/A30_immortal_censerhouse_orris.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/A30_immortal_censerhouse_pastille.tres b/game/data/items/quest/A30_immortal_censerhouse_pastille.tres
+index 0bb27c235..442fdfc4f 100644
+--- a/game/data/items/quest/A30_immortal_censerhouse_pastille.tres
++++ b/game/data/items/quest/A30_immortal_censerhouse_pastille.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/A30_immortal_distillery_attar.tres b/game/data/items/quest/A30_immortal_distillery_attar.tres
+index 909eb1d36..b5fcbed72 100644
+--- a/game/data/items/quest/A30_immortal_distillery_attar.tres
++++ b/game/data/items/quest/A30_immortal_distillery_attar.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/A30_immortal_distillery_daggery.tres b/game/data/items/quest/A30_immortal_distillery_daggery.tres
+index 5b0df7416..0a1e3ba82 100644
+--- a/game/data/items/quest/A30_immortal_distillery_daggery.tres
++++ b/game/data/items/quest/A30_immortal_distillery_daggery.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/A30_immortal_distillery_fumette.tres b/game/data/items/quest/A30_immortal_distillery_fumette.tres
+index e8b62221c..f976e6cbe 100644
+--- a/game/data/items/quest/A30_immortal_distillery_fumette.tres
++++ b/game/data/items/quest/A30_immortal_distillery_fumette.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/A30_immortal_distillery_orris.tres b/game/data/items/quest/A30_immortal_distillery_orris.tres
+index f42738a85..a52ce0598 100644
+--- a/game/data/items/quest/A30_immortal_distillery_orris.tres
++++ b/game/data/items/quest/A30_immortal_distillery_orris.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/A30_immortal_distillery_pastille.tres b/game/data/items/quest/A30_immortal_distillery_pastille.tres
+index 1b682773d..c5889aa48 100644
+--- a/game/data/items/quest/A30_immortal_distillery_pastille.tres
++++ b/game/data/items/quest/A30_immortal_distillery_pastille.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/R10_divine_marquee_notice.tres b/game/data/items/quest/R10_divine_marquee_notice.tres
+index 721697f18..8c45fe8b4 100644
+--- a/game/data/items/quest/R10_divine_marquee_notice.tres
++++ b/game/data/items/quest/R10_divine_marquee_notice.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/R10_earth_marquee_errand.tres b/game/data/items/quest/R10_earth_marquee_errand.tres
+index ab422d8b6..fb53d80ac 100644
+--- a/game/data/items/quest/R10_earth_marquee_errand.tres
++++ b/game/data/items/quest/R10_earth_marquee_errand.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 21},
+diff --git a/game/data/items/quest/R10_earth_marquee_request.tres b/game/data/items/quest/R10_earth_marquee_request.tres
+index 68f678de1..a0f356fba 100644
+--- a/game/data/items/quest/R10_earth_marquee_request.tres
++++ b/game/data/items/quest/R10_earth_marquee_request.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 21},
+diff --git a/game/data/items/quest/R10_heaven_marquee_petition.tres b/game/data/items/quest/R10_heaven_marquee_petition.tres
+index 9cd271383..3d759d2a5 100644
+--- a/game/data/items/quest/R10_heaven_marquee_petition.tres
++++ b/game/data/items/quest/R10_heaven_marquee_petition.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 27},
+diff --git a/game/data/items/quest/R10_heaven_marquee_plea.tres b/game/data/items/quest/R10_heaven_marquee_plea.tres
+index 573f8a01d..7c9061d2d 100644
+--- a/game/data/items/quest/R10_heaven_marquee_plea.tres
++++ b/game/data/items/quest/R10_heaven_marquee_plea.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 27},
+diff --git a/game/data/items/quest/R10_immortal_marquee_bulletin.tres b/game/data/items/quest/R10_immortal_marquee_bulletin.tres
+index e592b6085..0e9af0955 100644
+--- a/game/data/items/quest/R10_immortal_marquee_bulletin.tres
++++ b/game/data/items/quest/R10_immortal_marquee_bulletin.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/R10_mortal_marquee_chart.tres b/game/data/items/quest/R10_mortal_marquee_chart.tres
+index af41f8965..b13325014 100644
+--- a/game/data/items/quest/R10_mortal_marquee_chart.tres
++++ b/game/data/items/quest/R10_mortal_marquee_chart.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10},
+diff --git a/game/data/items/quest/R10_mortal_marquee_commission.tres b/game/data/items/quest/R10_mortal_marquee_commission.tres
+index 82f2bb051..f5af0f228 100644
+--- a/game/data/items/quest/R10_mortal_marquee_commission.tres
++++ b/game/data/items/quest/R10_mortal_marquee_commission.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10},
+diff --git a/game/data/items/quest/R10_mortal_marquee_handbill.tres b/game/data/items/quest/R10_mortal_marquee_handbill.tres
+index 455337201..4c28cef23 100644
+--- a/game/data/items/quest/R10_mortal_marquee_handbill.tres
++++ b/game/data/items/quest/R10_mortal_marquee_handbill.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10},
+diff --git a/game/data/items/quest/R10_mortal_marquee_hint.tres b/game/data/items/quest/R10_mortal_marquee_hint.tres
+index 287c99def..17a481857 100644
+--- a/game/data/items/quest/R10_mortal_marquee_hint.tres
++++ b/game/data/items/quest/R10_mortal_marquee_hint.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10},
+diff --git a/game/data/items/quest/R10_spirit_marquee_directive.tres b/game/data/items/quest/R10_spirit_marquee_directive.tres
+index ec3c7cc3c..554b32c9e 100644
+--- a/game/data/items/quest/R10_spirit_marquee_directive.tres
++++ b/game/data/items/quest/R10_spirit_marquee_directive.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/R10_spirit_marquee_instruction.tres b/game/data/items/quest/R10_spirit_marquee_instruction.tres
+index 8c69272e4..1ed51cf19 100644
+--- a/game/data/items/quest/R10_spirit_marquee_instruction.tres
++++ b/game/data/items/quest/R10_spirit_marquee_instruction.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/R10_spirit_marquee_itinerary.tres b/game/data/items/quest/R10_spirit_marquee_itinerary.tres
+index b6c1096f0..768bffcfa 100644
+--- a/game/data/items/quest/R10_spirit_marquee_itinerary.tres
++++ b/game/data/items/quest/R10_spirit_marquee_itinerary.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/R10_spirit_marquee_text.tres b/game/data/items/quest/R10_spirit_marquee_text.tres
+index 37cdd2c48..6ec3725a2 100644
+--- a/game/data/items/quest/R10_spirit_marquee_text.tres
++++ b/game/data/items/quest/R10_spirit_marquee_text.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/R11_divine_mastic_contract.tres b/game/data/items/quest/R11_divine_mastic_contract.tres
+index f017109d5..5d111cad8 100644
+--- a/game/data/items/quest/R11_divine_mastic_contract.tres
++++ b/game/data/items/quest/R11_divine_mastic_contract.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/R11_earth_mastic_handbill.tres b/game/data/items/quest/R11_earth_mastic_handbill.tres
+index 27096e92c..c221d45dc 100644
+--- a/game/data/items/quest/R11_earth_mastic_handbill.tres
++++ b/game/data/items/quest/R11_earth_mastic_handbill.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 21},
+diff --git a/game/data/items/quest/R11_earth_mastic_notice.tres b/game/data/items/quest/R11_earth_mastic_notice.tres
+index 4ed5e8a5c..05e791b31 100644
+--- a/game/data/items/quest/R11_earth_mastic_notice.tres
++++ b/game/data/items/quest/R11_earth_mastic_notice.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 21},
+diff --git a/game/data/items/quest/R11_heaven_mastic_chart.tres b/game/data/items/quest/R11_heaven_mastic_chart.tres
+index ae91c1638..706c23b2e 100644
+--- a/game/data/items/quest/R11_heaven_mastic_chart.tres
++++ b/game/data/items/quest/R11_heaven_mastic_chart.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 27},
+diff --git a/game/data/items/quest/R11_heaven_mastic_itinerary.tres b/game/data/items/quest/R11_heaven_mastic_itinerary.tres
+index 94737cf96..4665d5292 100644
+--- a/game/data/items/quest/R11_heaven_mastic_itinerary.tres
++++ b/game/data/items/quest/R11_heaven_mastic_itinerary.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 27},
+diff --git a/game/data/items/quest/R11_immortal_mastic_text.tres b/game/data/items/quest/R11_immortal_mastic_text.tres
+index 179b4fc49..5772bf830 100644
+--- a/game/data/items/quest/R11_immortal_mastic_text.tres
++++ b/game/data/items/quest/R11_immortal_mastic_text.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/R11_mortal_mastic_clue.tres b/game/data/items/quest/R11_mortal_mastic_clue.tres
+index 2cab997a6..a737b8c8a 100644
+--- a/game/data/items/quest/R11_mortal_mastic_clue.tres
++++ b/game/data/items/quest/R11_mortal_mastic_clue.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10},
+diff --git a/game/data/items/quest/R11_mortal_mastic_plea.tres b/game/data/items/quest/R11_mortal_mastic_plea.tres
+index ecd68ccd2..edf7eb78b 100644
+--- a/game/data/items/quest/R11_mortal_mastic_plea.tres
++++ b/game/data/items/quest/R11_mortal_mastic_plea.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10},
+diff --git a/game/data/items/quest/R11_mortal_mastic_request.tres b/game/data/items/quest/R11_mortal_mastic_request.tres
+index 49a1fe2a9..3dd4282d9 100644
+--- a/game/data/items/quest/R11_mortal_mastic_request.tres
++++ b/game/data/items/quest/R11_mortal_mastic_request.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10},
+diff --git a/game/data/items/quest/R11_mortal_mastic_riddle.tres b/game/data/items/quest/R11_mortal_mastic_riddle.tres
+index aaa335b49..fc38b3d6d 100644
+--- a/game/data/items/quest/R11_mortal_mastic_riddle.tres
++++ b/game/data/items/quest/R11_mortal_mastic_riddle.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10},
+diff --git a/game/data/items/quest/R11_spirit_mastic_bulletin.tres b/game/data/items/quest/R11_spirit_mastic_bulletin.tres
+index 3e50a7622..8011ddff4 100644
+--- a/game/data/items/quest/R11_spirit_mastic_bulletin.tres
++++ b/game/data/items/quest/R11_spirit_mastic_bulletin.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/R11_spirit_mastic_order.tres b/game/data/items/quest/R11_spirit_mastic_order.tres
+index 744aedcc1..cf8f9a8dd 100644
+--- a/game/data/items/quest/R11_spirit_mastic_order.tres
++++ b/game/data/items/quest/R11_spirit_mastic_order.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/R11_spirit_mastic_petition.tres b/game/data/items/quest/R11_spirit_mastic_petition.tres
+index 5ea8ea21f..1d8c8e7e5 100644
+--- a/game/data/items/quest/R11_spirit_mastic_petition.tres
++++ b/game/data/items/quest/R11_spirit_mastic_petition.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/R11_spirit_mastic_summons.tres b/game/data/items/quest/R11_spirit_mastic_summons.tres
+index 5e5cd3d3d..574de3652 100644
+--- a/game/data/items/quest/R11_spirit_mastic_summons.tres
++++ b/game/data/items/quest/R11_spirit_mastic_summons.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/R12_divine_meridian_message.tres b/game/data/items/quest/R12_divine_meridian_message.tres
+index 4f47e82b9..2b8774c99 100644
+--- a/game/data/items/quest/R12_divine_meridian_message.tres
++++ b/game/data/items/quest/R12_divine_meridian_message.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/R12_earth_meridian_clue.tres b/game/data/items/quest/R12_earth_meridian_clue.tres
+index db011c433..0ac47fe10 100644
+--- a/game/data/items/quest/R12_earth_meridian_clue.tres
++++ b/game/data/items/quest/R12_earth_meridian_clue.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 21},
+diff --git a/game/data/items/quest/R12_earth_meridian_contract.tres b/game/data/items/quest/R12_earth_meridian_contract.tres
+index f94d941e4..cf4f9ac14 100644
+--- a/game/data/items/quest/R12_earth_meridian_contract.tres
++++ b/game/data/items/quest/R12_earth_meridian_contract.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 21},
+diff --git a/game/data/items/quest/R12_heaven_meridian_order.tres b/game/data/items/quest/R12_heaven_meridian_order.tres
+index 2652be41a..fa4036e78 100644
+--- a/game/data/items/quest/R12_heaven_meridian_order.tres
++++ b/game/data/items/quest/R12_heaven_meridian_order.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 27},
+diff --git a/game/data/items/quest/R12_heaven_meridian_riddle.tres b/game/data/items/quest/R12_heaven_meridian_riddle.tres
+index c6a317db9..44ddf43b4 100644
+--- a/game/data/items/quest/R12_heaven_meridian_riddle.tres
++++ b/game/data/items/quest/R12_heaven_meridian_riddle.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 27},
+diff --git a/game/data/items/quest/R12_immortal_meridian_summons.tres b/game/data/items/quest/R12_immortal_meridian_summons.tres
+index f3a341ab2..5145be6df 100644
+--- a/game/data/items/quest/R12_immortal_meridian_summons.tres
++++ b/game/data/items/quest/R12_immortal_meridian_summons.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/R12_mortal_meridian_chart.tres b/game/data/items/quest/R12_mortal_meridian_chart.tres
+index b69666d54..e414fd8da 100644
+--- a/game/data/items/quest/R12_mortal_meridian_chart.tres
++++ b/game/data/items/quest/R12_mortal_meridian_chart.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10},
+diff --git a/game/data/items/quest/R12_mortal_meridian_commission.tres b/game/data/items/quest/R12_mortal_meridian_commission.tres
+index 85dc9186f..05732d96f 100644
+--- a/game/data/items/quest/R12_mortal_meridian_commission.tres
++++ b/game/data/items/quest/R12_mortal_meridian_commission.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10},
+diff --git a/game/data/items/quest/R12_mortal_meridian_handbill.tres b/game/data/items/quest/R12_mortal_meridian_handbill.tres
+index 07acd8175..6f2be873b 100644
+--- a/game/data/items/quest/R12_mortal_meridian_handbill.tres
++++ b/game/data/items/quest/R12_mortal_meridian_handbill.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10},
+diff --git a/game/data/items/quest/R12_mortal_meridian_report.tres b/game/data/items/quest/R12_mortal_meridian_report.tres
+index 2ba0ad8a3..5c6b3178c 100644
+--- a/game/data/items/quest/R12_mortal_meridian_report.tres
++++ b/game/data/items/quest/R12_mortal_meridian_report.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10},
+diff --git a/game/data/items/quest/R12_spirit_meridian_directive.tres b/game/data/items/quest/R12_spirit_meridian_directive.tres
+index 678ca004c..a40fbbeb8 100644
+--- a/game/data/items/quest/R12_spirit_meridian_directive.tres
++++ b/game/data/items/quest/R12_spirit_meridian_directive.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/R12_spirit_meridian_hint.tres b/game/data/items/quest/R12_spirit_meridian_hint.tres
+index 0eb14918a..59f805e6a 100644
+--- a/game/data/items/quest/R12_spirit_meridian_hint.tres
++++ b/game/data/items/quest/R12_spirit_meridian_hint.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/R12_spirit_meridian_itinerary.tres b/game/data/items/quest/R12_spirit_meridian_itinerary.tres
+index 26a5a778d..b5cda54fc 100644
+--- a/game/data/items/quest/R12_spirit_meridian_itinerary.tres
++++ b/game/data/items/quest/R12_spirit_meridian_itinerary.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/R12_spirit_meridian_text.tres b/game/data/items/quest/R12_spirit_meridian_text.tres
+index 2beb7ad2a..21a1c4239 100644
+--- a/game/data/items/quest/R12_spirit_meridian_text.tres
++++ b/game/data/items/quest/R12_spirit_meridian_text.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/T7_divine_sallow_affidavit.tres b/game/data/items/quest/T7_divine_sallow_affidavit.tres
+index c2e04ed87..a445ad565 100644
+--- a/game/data/items/quest/T7_divine_sallow_affidavit.tres
++++ b/game/data/items/quest/T7_divine_sallow_affidavit.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/T7_earth_sallow_dossier.tres b/game/data/items/quest/T7_earth_sallow_dossier.tres
+index 00d7b7792..cd27a40e9 100644
+--- a/game/data/items/quest/T7_earth_sallow_dossier.tres
++++ b/game/data/items/quest/T7_earth_sallow_dossier.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 21},
+diff --git a/game/data/items/quest/T7_earth_sallow_manifest.tres b/game/data/items/quest/T7_earth_sallow_manifest.tres
+index a20d3bde4..d0f8d9370 100644
+--- a/game/data/items/quest/T7_earth_sallow_manifest.tres
++++ b/game/data/items/quest/T7_earth_sallow_manifest.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 21},
+diff --git a/game/data/items/quest/T7_heaven_sallow_alibi.tres b/game/data/items/quest/T7_heaven_sallow_alibi.tres
+index 6d3367128..4f2248dc2 100644
+--- a/game/data/items/quest/T7_heaven_sallow_alibi.tres
++++ b/game/data/items/quest/T7_heaven_sallow_alibi.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 27},
+diff --git a/game/data/items/quest/T7_heaven_sallow_casebook.tres b/game/data/items/quest/T7_heaven_sallow_casebook.tres
+index 0935da585..30465d925 100644
+--- a/game/data/items/quest/T7_heaven_sallow_casebook.tres
++++ b/game/data/items/quest/T7_heaven_sallow_casebook.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 27},
+diff --git a/game/data/items/quest/T7_immortal_sallow_testimony.tres b/game/data/items/quest/T7_immortal_sallow_testimony.tres
+index 084c06f8a..9b0f71559 100644
+--- a/game/data/items/quest/T7_immortal_sallow_testimony.tres
++++ b/game/data/items/quest/T7_immortal_sallow_testimony.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/T7_mortal_sallow_brief.tres b/game/data/items/quest/T7_mortal_sallow_brief.tres
+index cd8e2e8f1..7c377c51f 100644
+--- a/game/data/items/quest/T7_mortal_sallow_brief.tres
++++ b/game/data/items/quest/T7_mortal_sallow_brief.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10},
+diff --git a/game/data/items/quest/T7_mortal_sallow_deposition.tres b/game/data/items/quest/T7_mortal_sallow_deposition.tres
+index 6419c1e7f..3d7b83ab5 100644
+--- a/game/data/items/quest/T7_mortal_sallow_deposition.tres
++++ b/game/data/items/quest/T7_mortal_sallow_deposition.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10},
+diff --git a/game/data/items/quest/T7_mortal_sallow_proclamation.tres b/game/data/items/quest/T7_mortal_sallow_proclamation.tres
+index 369a538c0..8dc22d58d 100644
+--- a/game/data/items/quest/T7_mortal_sallow_proclamation.tres
++++ b/game/data/items/quest/T7_mortal_sallow_proclamation.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10},
+diff --git a/game/data/items/quest/T7_mortal_sallow_subpoena.tres b/game/data/items/quest/T7_mortal_sallow_subpoena.tres
+index 3e8d758ad..6f6847ea8 100644
+--- a/game/data/items/quest/T7_mortal_sallow_subpoena.tres
++++ b/game/data/items/quest/T7_mortal_sallow_subpoena.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10},
+diff --git a/game/data/items/quest/T7_spirit_sallow_circular.tres b/game/data/items/quest/T7_spirit_sallow_circular.tres
+index 067a9cf29..c07cf40ce 100644
+--- a/game/data/items/quest/T7_spirit_sallow_circular.tres
++++ b/game/data/items/quest/T7_spirit_sallow_circular.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/T7_spirit_sallow_gazette.tres b/game/data/items/quest/T7_spirit_sallow_gazette.tres
+index 29d5201d7..2519abf14 100644
+--- a/game/data/items/quest/T7_spirit_sallow_gazette.tres
++++ b/game/data/items/quest/T7_spirit_sallow_gazette.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/T7_spirit_sallow_injunction.tres b/game/data/items/quest/T7_spirit_sallow_injunction.tres
+index 37dfb786f..86183efab 100644
+--- a/game/data/items/quest/T7_spirit_sallow_injunction.tres
++++ b/game/data/items/quest/T7_spirit_sallow_injunction.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/T7_spirit_sallow_trail.tres b/game/data/items/quest/T7_spirit_sallow_trail.tres
+index 7f29eea37..6e5366b72 100644
+--- a/game/data/items/quest/T7_spirit_sallow_trail.tres
++++ b/game/data/items/quest/T7_spirit_sallow_trail.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/T8_divine_samphire_waypoint.tres b/game/data/items/quest/T8_divine_samphire_waypoint.tres
+index fa7570ff5..520ceae88 100644
+--- a/game/data/items/quest/T8_divine_samphire_waypoint.tres
++++ b/game/data/items/quest/T8_divine_samphire_waypoint.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/T8_earth_samphire_affidavit.tres b/game/data/items/quest/T8_earth_samphire_affidavit.tres
+index 446777fe8..6389b7167 100644
+--- a/game/data/items/quest/T8_earth_samphire_affidavit.tres
++++ b/game/data/items/quest/T8_earth_samphire_affidavit.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 21},
+diff --git a/game/data/items/quest/T8_earth_samphire_deposition.tres b/game/data/items/quest/T8_earth_samphire_deposition.tres
+index 1bee45f16..527052677 100644
+--- a/game/data/items/quest/T8_earth_samphire_deposition.tres
++++ b/game/data/items/quest/T8_earth_samphire_deposition.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 21},
+diff --git a/game/data/items/quest/T8_heaven_samphire_injunction.tres b/game/data/items/quest/T8_heaven_samphire_injunction.tres
+index 51ca3cbad..edc274e8f 100644
+--- a/game/data/items/quest/T8_heaven_samphire_injunction.tres
++++ b/game/data/items/quest/T8_heaven_samphire_injunction.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 27},
+diff --git a/game/data/items/quest/T8_heaven_samphire_subpoena.tres b/game/data/items/quest/T8_heaven_samphire_subpoena.tres
+index 850093c2b..1d1c4b605 100644
+--- a/game/data/items/quest/T8_heaven_samphire_subpoena.tres
++++ b/game/data/items/quest/T8_heaven_samphire_subpoena.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 27},
+diff --git a/game/data/items/quest/T8_immortal_samphire_trail.tres b/game/data/items/quest/T8_immortal_samphire_trail.tres
+index 83b19cc54..1bfb79c52 100644
+--- a/game/data/items/quest/T8_immortal_samphire_trail.tres
++++ b/game/data/items/quest/T8_immortal_samphire_trail.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/T8_mortal_samphire_brief.tres b/game/data/items/quest/T8_mortal_samphire_brief.tres
+index 85629eb2d..1d7ce5d69 100644
+--- a/game/data/items/quest/T8_mortal_samphire_brief.tres
++++ b/game/data/items/quest/T8_mortal_samphire_brief.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10},
+diff --git a/game/data/items/quest/T8_mortal_samphire_casebook.tres b/game/data/items/quest/T8_mortal_samphire_casebook.tres
+index c3357255e..164847a25 100644
+--- a/game/data/items/quest/T8_mortal_samphire_casebook.tres
++++ b/game/data/items/quest/T8_mortal_samphire_casebook.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10},
+diff --git a/game/data/items/quest/T8_mortal_samphire_dossier.tres b/game/data/items/quest/T8_mortal_samphire_dossier.tres
+index 4c08020f8..dc6c2ad68 100644
+--- a/game/data/items/quest/T8_mortal_samphire_dossier.tres
++++ b/game/data/items/quest/T8_mortal_samphire_dossier.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10},
+diff --git a/game/data/items/quest/T8_mortal_samphire_parcel.tres b/game/data/items/quest/T8_mortal_samphire_parcel.tres
+index 35e164c9d..70ffd7b1f 100644
+--- a/game/data/items/quest/T8_mortal_samphire_parcel.tres
++++ b/game/data/items/quest/T8_mortal_samphire_parcel.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10},
+diff --git a/game/data/items/quest/T8_spirit_samphire_alibi.tres b/game/data/items/quest/T8_spirit_samphire_alibi.tres
+index dfad478e7..b49e56fd9 100644
+--- a/game/data/items/quest/T8_spirit_samphire_alibi.tres
++++ b/game/data/items/quest/T8_spirit_samphire_alibi.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/T8_spirit_samphire_circular.tres b/game/data/items/quest/T8_spirit_samphire_circular.tres
+index b1d825c2c..784e17bc1 100644
+--- a/game/data/items/quest/T8_spirit_samphire_circular.tres
++++ b/game/data/items/quest/T8_spirit_samphire_circular.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/T8_spirit_samphire_proclamation.tres b/game/data/items/quest/T8_spirit_samphire_proclamation.tres
+index 0a75fd1c0..0efc5623e 100644
+--- a/game/data/items/quest/T8_spirit_samphire_proclamation.tres
++++ b/game/data/items/quest/T8_spirit_samphire_proclamation.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/T8_spirit_samphire_testimony.tres b/game/data/items/quest/T8_spirit_samphire_testimony.tres
+index d6910eede..3e371dcb4 100644
+--- a/game/data/items/quest/T8_spirit_samphire_testimony.tres
++++ b/game/data/items/quest/T8_spirit_samphire_testimony.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/V15_divine_anchorage_breve.tres b/game/data/items/quest/V15_divine_anchorage_breve.tres
+index d8f7df266..3bf806004 100644
+--- a/game/data/items/quest/V15_divine_anchorage_breve.tres
++++ b/game/data/items/quest/V15_divine_anchorage_breve.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/V15_divine_anchorage_dispensation.tres b/game/data/items/quest/V15_divine_anchorage_dispensation.tres
+index 6534ddf4b..a718df18f 100644
+--- a/game/data/items/quest/V15_divine_anchorage_dispensation.tres
++++ b/game/data/items/quest/V15_divine_anchorage_dispensation.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/V15_divine_anchorage_erse.tres b/game/data/items/quest/V15_divine_anchorage_erse.tres
+index 8800750b0..48b313dae 100644
+--- a/game/data/items/quest/V15_divine_anchorage_erse.tres
++++ b/game/data/items/quest/V15_divine_anchorage_erse.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/V15_divine_anchorage_mandate.tres b/game/data/items/quest/V15_divine_anchorage_mandate.tres
+index 5aba37f1e..1d791a05a 100644
+--- a/game/data/items/quest/V15_divine_anchorage_mandate.tres
++++ b/game/data/items/quest/V15_divine_anchorage_mandate.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/V15_heaven_anchorage_cadastre.tres b/game/data/items/quest/V15_heaven_anchorage_cadastre.tres
+index 7ecf16794..88d7f4175 100644
+--- a/game/data/items/quest/V15_heaven_anchorage_cadastre.tres
++++ b/game/data/items/quest/V15_heaven_anchorage_cadastre.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 27},
+diff --git a/game/data/items/quest/V15_heaven_anchorage_cartulary.tres b/game/data/items/quest/V15_heaven_anchorage_cartulary.tres
+index f34cb8c09..f10930df4 100644
+--- a/game/data/items/quest/V15_heaven_anchorage_cartulary.tres
++++ b/game/data/items/quest/V15_heaven_anchorage_cartulary.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 27},
+diff --git a/game/data/items/quest/V15_heaven_anchorage_erse.tres b/game/data/items/quest/V15_heaven_anchorage_erse.tres
+index 2de02eb9f..d3fc72133 100644
+--- a/game/data/items/quest/V15_heaven_anchorage_erse.tres
++++ b/game/data/items/quest/V15_heaven_anchorage_erse.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 27},
+diff --git a/game/data/items/quest/V15_heaven_anchorage_martyrology.tres b/game/data/items/quest/V15_heaven_anchorage_martyrology.tres
+index 09817cd83..6f9686184 100644
+--- a/game/data/items/quest/V15_heaven_anchorage_martyrology.tres
++++ b/game/data/items/quest/V15_heaven_anchorage_martyrology.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 27},
+diff --git a/game/data/items/quest/V15_immortal_anchorage_almoner.tres b/game/data/items/quest/V15_immortal_anchorage_almoner.tres
+index 5de26cfca..8da2ddee2 100644
+--- a/game/data/items/quest/V15_immortal_anchorage_almoner.tres
++++ b/game/data/items/quest/V15_immortal_anchorage_almoner.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/V15_immortal_anchorage_erse.tres b/game/data/items/quest/V15_immortal_anchorage_erse.tres
+index fe286b8f2..e97e5aa32 100644
+--- a/game/data/items/quest/V15_immortal_anchorage_erse.tres
++++ b/game/data/items/quest/V15_immortal_anchorage_erse.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/V15_immortal_anchorage_obituary.tres b/game/data/items/quest/V15_immortal_anchorage_obituary.tres
+index 4c4b8b66e..2a3bc31cc 100644
+--- a/game/data/items/quest/V15_immortal_anchorage_obituary.tres
++++ b/game/data/items/quest/V15_immortal_anchorage_obituary.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/V15_immortal_anchorage_rescript.tres b/game/data/items/quest/V15_immortal_anchorage_rescript.tres
+index 0ea3ac911..972647181 100644
+--- a/game/data/items/quest/V15_immortal_anchorage_rescript.tres
++++ b/game/data/items/quest/V15_immortal_anchorage_rescript.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/V16_earth_annulus_breve.tres b/game/data/items/quest/V16_earth_annulus_breve.tres
+index e1689665e..6413dbbf7 100644
+--- a/game/data/items/quest/V16_earth_annulus_breve.tres
++++ b/game/data/items/quest/V16_earth_annulus_breve.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 21},
+diff --git a/game/data/items/quest/V16_earth_annulus_dispensation.tres b/game/data/items/quest/V16_earth_annulus_dispensation.tres
+index 06fa2f7c7..3985f68a3 100644
+--- a/game/data/items/quest/V16_earth_annulus_dispensation.tres
++++ b/game/data/items/quest/V16_earth_annulus_dispensation.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 21},
+diff --git a/game/data/items/quest/V16_earth_annulus_erse.tres b/game/data/items/quest/V16_earth_annulus_erse.tres
+index a0c671d58..7ce349788 100644
+--- a/game/data/items/quest/V16_earth_annulus_erse.tres
++++ b/game/data/items/quest/V16_earth_annulus_erse.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 21},
+diff --git a/game/data/items/quest/V16_earth_annulus_mandate.tres b/game/data/items/quest/V16_earth_annulus_mandate.tres
+index 7dd205149..09f65cbc2 100644
+--- a/game/data/items/quest/V16_earth_annulus_mandate.tres
++++ b/game/data/items/quest/V16_earth_annulus_mandate.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 21},
+diff --git a/game/data/items/quest/V16_mortal_annulus_cadastre.tres b/game/data/items/quest/V16_mortal_annulus_cadastre.tres
+index 4d7d280df..2b3830978 100644
+--- a/game/data/items/quest/V16_mortal_annulus_cadastre.tres
++++ b/game/data/items/quest/V16_mortal_annulus_cadastre.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10},
+diff --git a/game/data/items/quest/V16_mortal_annulus_cartulary.tres b/game/data/items/quest/V16_mortal_annulus_cartulary.tres
+index e888fdec7..bd5b4ad1b 100644
+--- a/game/data/items/quest/V16_mortal_annulus_cartulary.tres
++++ b/game/data/items/quest/V16_mortal_annulus_cartulary.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10},
+diff --git a/game/data/items/quest/V16_mortal_annulus_erse.tres b/game/data/items/quest/V16_mortal_annulus_erse.tres
+index 88ce076bb..5a7055570 100644
+--- a/game/data/items/quest/V16_mortal_annulus_erse.tres
++++ b/game/data/items/quest/V16_mortal_annulus_erse.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10},
+diff --git a/game/data/items/quest/V16_mortal_annulus_martyrology.tres b/game/data/items/quest/V16_mortal_annulus_martyrology.tres
+index e2b4527fc..a90700cfb 100644
+--- a/game/data/items/quest/V16_mortal_annulus_martyrology.tres
++++ b/game/data/items/quest/V16_mortal_annulus_martyrology.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10},
+diff --git a/game/data/items/quest/V16_spirit_annulus_almoner.tres b/game/data/items/quest/V16_spirit_annulus_almoner.tres
+index 79e0c9a1c..0cdba92a6 100644
+--- a/game/data/items/quest/V16_spirit_annulus_almoner.tres
++++ b/game/data/items/quest/V16_spirit_annulus_almoner.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/V16_spirit_annulus_erse.tres b/game/data/items/quest/V16_spirit_annulus_erse.tres
+index 6d10ac406..fd3e36144 100644
+--- a/game/data/items/quest/V16_spirit_annulus_erse.tres
++++ b/game/data/items/quest/V16_spirit_annulus_erse.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/V16_spirit_annulus_obituary.tres b/game/data/items/quest/V16_spirit_annulus_obituary.tres
+index 82a5e9896..b64851b0b 100644
+--- a/game/data/items/quest/V16_spirit_annulus_obituary.tres
++++ b/game/data/items/quest/V16_spirit_annulus_obituary.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/V16_spirit_annulus_rescript.tres b/game/data/items/quest/V16_spirit_annulus_rescript.tres
+index 2d42aedc4..ce76e5ebe 100644
+--- a/game/data/items/quest/V16_spirit_annulus_rescript.tres
++++ b/game/data/items/quest/V16_spirit_annulus_rescript.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/X18_divine_beadle_acquittance.tres b/game/data/items/quest/X18_divine_beadle_acquittance.tres
+index d30541ca6..33ca1f3ef 100644
+--- a/game/data/items/quest/X18_divine_beadle_acquittance.tres
++++ b/game/data/items/quest/X18_divine_beadle_acquittance.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/X18_divine_beadle_appeal.tres b/game/data/items/quest/X18_divine_beadle_appeal.tres
+index 6ea62d0db..8dee8487b 100644
+--- a/game/data/items/quest/X18_divine_beadle_appeal.tres
++++ b/game/data/items/quest/X18_divine_beadle_appeal.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/X18_divine_beadle_caveat.tres b/game/data/items/quest/X18_divine_beadle_caveat.tres
+index fe85bf386..5c596f567 100644
+--- a/game/data/items/quest/X18_divine_beadle_caveat.tres
++++ b/game/data/items/quest/X18_divine_beadle_caveat.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/X18_divine_beadle_chattels.tres b/game/data/items/quest/X18_divine_beadle_chattels.tres
+index 594f0a7e0..d49230481 100644
+--- a/game/data/items/quest/X18_divine_beadle_chattels.tres
++++ b/game/data/items/quest/X18_divine_beadle_chattels.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/X18_divine_beadle_endorsement.tres b/game/data/items/quest/X18_divine_beadle_endorsement.tres
+index 52bd5504d..3bcb54d12 100644
+--- a/game/data/items/quest/X18_divine_beadle_endorsement.tres
++++ b/game/data/items/quest/X18_divine_beadle_endorsement.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/X18_divine_beadle_fixtures.tres b/game/data/items/quest/X18_divine_beadle_fixtures.tres
+index 2bb307982..f262c20c3 100644
+--- a/game/data/items/quest/X18_divine_beadle_fixtures.tres
++++ b/game/data/items/quest/X18_divine_beadle_fixtures.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/X18_divine_beadle_indentum.tres b/game/data/items/quest/X18_divine_beadle_indentum.tres
+index eec7ccc16..d0d6c7c9e 100644
+--- a/game/data/items/quest/X18_divine_beadle_indentum.tres
++++ b/game/data/items/quest/X18_divine_beadle_indentum.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/X18_divine_beadle_manorial.tres b/game/data/items/quest/X18_divine_beadle_manorial.tres
+index 218dfb3d8..0a35c2383 100644
+--- a/game/data/items/quest/X18_divine_beadle_manorial.tres
++++ b/game/data/items/quest/X18_divine_beadle_manorial.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/X18_divine_beadle_ratification.tres b/game/data/items/quest/X18_divine_beadle_ratification.tres
+index 7ae9366c9..c7cdd81d7 100644
+--- a/game/data/items/quest/X18_divine_beadle_ratification.tres
++++ b/game/data/items/quest/X18_divine_beadle_ratification.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/X18_divine_beadle_review.tres b/game/data/items/quest/X18_divine_beadle_review.tres
+index 97b5b2f45..d0d48402b 100644
+--- a/game/data/items/quest/X18_divine_beadle_review.tres
++++ b/game/data/items/quest/X18_divine_beadle_review.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/X18_divine_beadle_stipulation.tres b/game/data/items/quest/X18_divine_beadle_stipulation.tres
+index 3fc07711d..62e989ec4 100644
+--- a/game/data/items/quest/X18_divine_beadle_stipulation.tres
++++ b/game/data/items/quest/X18_divine_beadle_stipulation.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/X18_divine_beadle_testimonial.tres b/game/data/items/quest/X18_divine_beadle_testimonial.tres
+index b4e4ee1cf..6a6308bc5 100644
+--- a/game/data/items/quest/X18_divine_beadle_testimonial.tres
++++ b/game/data/items/quest/X18_divine_beadle_testimonial.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/X20_immortal_burgess_assignment.tres b/game/data/items/quest/X20_immortal_burgess_assignment.tres
+index 2beb5fa11..89e12ad58 100644
+--- a/game/data/items/quest/X20_immortal_burgess_assignment.tres
++++ b/game/data/items/quest/X20_immortal_burgess_assignment.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/X20_immortal_burgess_delegation.tres b/game/data/items/quest/X20_immortal_burgess_delegation.tres
+index fc7b4e655..3a71f4557 100644
+--- a/game/data/items/quest/X20_immortal_burgess_delegation.tres
++++ b/game/data/items/quest/X20_immortal_burgess_delegation.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/X20_immortal_burgess_determinable.tres b/game/data/items/quest/X20_immortal_burgess_determinable.tres
+index 151cc65ac..917e17389 100644
+--- a/game/data/items/quest/X20_immortal_burgess_determinable.tres
++++ b/game/data/items/quest/X20_immortal_burgess_determinable.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/X20_immortal_burgess_fee.tres b/game/data/items/quest/X20_immortal_burgess_fee.tres
+index a628e0e59..85676d842 100644
+--- a/game/data/items/quest/X20_immortal_burgess_fee.tres
++++ b/game/data/items/quest/X20_immortal_burgess_fee.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/X20_immortal_burgess_hypothec.tres b/game/data/items/quest/X20_immortal_burgess_hypothec.tres
+index 0223c1695..db743150f 100644
+--- a/game/data/items/quest/X20_immortal_burgess_hypothec.tres
++++ b/game/data/items/quest/X20_immortal_burgess_hypothec.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/X20_immortal_burgess_lien.tres b/game/data/items/quest/X20_immortal_burgess_lien.tres
+index 760afcd06..adf11e6e5 100644
+--- a/game/data/items/quest/X20_immortal_burgess_lien.tres
++++ b/game/data/items/quest/X20_immortal_burgess_lien.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/X20_immortal_burgess_mortgage.tres b/game/data/items/quest/X20_immortal_burgess_mortgage.tres
+index 4cdb9bfc7..00c7b38ca 100644
+--- a/game/data/items/quest/X20_immortal_burgess_mortgage.tres
++++ b/game/data/items/quest/X20_immortal_burgess_mortgage.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/X20_immortal_burgess_novation.tres b/game/data/items/quest/X20_immortal_burgess_novation.tres
+index 21897e8aa..70b7ff34f 100644
+--- a/game/data/items/quest/X20_immortal_burgess_novation.tres
++++ b/game/data/items/quest/X20_immortal_burgess_novation.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/X20_immortal_burgess_relictum.tres b/game/data/items/quest/X20_immortal_burgess_relictum.tres
+index 3f7b4c450..d37eb3b38 100644
+--- a/game/data/items/quest/X20_immortal_burgess_relictum.tres
++++ b/game/data/items/quest/X20_immortal_burgess_relictum.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/X20_immortal_burgess_replevin.tres b/game/data/items/quest/X20_immortal_burgess_replevin.tres
+index 049481115..d0a160fbc 100644
+--- a/game/data/items/quest/X20_immortal_burgess_replevin.tres
++++ b/game/data/items/quest/X20_immortal_burgess_replevin.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/X20_immortal_burgess_setoff.tres b/game/data/items/quest/X20_immortal_burgess_setoff.tres
+index 6a5688a2e..20346b0b5 100644
+--- a/game/data/items/quest/X20_immortal_burgess_setoff.tres
++++ b/game/data/items/quest/X20_immortal_burgess_setoff.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/X20_immortal_burgess_simple.tres b/game/data/items/quest/X20_immortal_burgess_simple.tres
+index 407b960f7..c1112475d 100644
+--- a/game/data/items/quest/X20_immortal_burgess_simple.tres
++++ b/game/data/items/quest/X20_immortal_burgess_simple.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/Y21_divine_prefecture_bdellium.tres b/game/data/items/quest/Y21_divine_prefecture_bdellium.tres
+index 57a8b163b..f4a6d480e 100644
+--- a/game/data/items/quest/Y21_divine_prefecture_bdellium.tres
++++ b/game/data/items/quest/Y21_divine_prefecture_bdellium.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Y21_divine_prefecture_benzoin.tres b/game/data/items/quest/Y21_divine_prefecture_benzoin.tres
+index 03a9aa4eb..94613096a 100644
+--- a/game/data/items/quest/Y21_divine_prefecture_benzoin.tres
++++ b/game/data/items/quest/Y21_divine_prefecture_benzoin.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Y21_divine_prefecture_fumigation.tres b/game/data/items/quest/Y21_divine_prefecture_fumigation.tres
+index 44a24442a..dae46485a 100644
+--- a/game/data/items/quest/Y21_divine_prefecture_fumigation.tres
++++ b/game/data/items/quest/Y21_divine_prefecture_fumigation.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Y21_divine_prefecture_labdanum.tres b/game/data/items/quest/Y21_divine_prefecture_labdanum.tres
+index 619ed89ea..48696d10c 100644
+--- a/game/data/items/quest/Y21_divine_prefecture_labdanum.tres
++++ b/game/data/items/quest/Y21_divine_prefecture_labdanum.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Y21_divine_prefecture_musc.tres b/game/data/items/quest/Y21_divine_prefecture_musc.tres
+index 32c6e21d8..4e9938c24 100644
+--- a/game/data/items/quest/Y21_divine_prefecture_musc.tres
++++ b/game/data/items/quest/Y21_divine_prefecture_musc.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Y21_divine_prefecture_myrrh.tres b/game/data/items/quest/Y21_divine_prefecture_myrrh.tres
+index 7c339850b..25d27b1c7 100644
+--- a/game/data/items/quest/Y21_divine_prefecture_myrrh.tres
++++ b/game/data/items/quest/Y21_divine_prefecture_myrrh.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Y21_divine_prefecture_opobalsamum.tres b/game/data/items/quest/Y21_divine_prefecture_opobalsamum.tres
+index bcee1b3f7..13bfbdbb4 100644
+--- a/game/data/items/quest/Y21_divine_prefecture_opobalsamum.tres
++++ b/game/data/items/quest/Y21_divine_prefecture_opobalsamum.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Y21_divine_prefecture_storax.tres b/game/data/items/quest/Y21_divine_prefecture_storax.tres
+index b55b01c6d..5365f2131 100644
+--- a/game/data/items/quest/Y21_divine_prefecture_storax.tres
++++ b/game/data/items/quest/Y21_divine_prefecture_storax.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Y21_divine_rectory_benzoin.tres b/game/data/items/quest/Y21_divine_rectory_benzoin.tres
+index 11784baa9..b8e938c84 100644
+--- a/game/data/items/quest/Y21_divine_rectory_benzoin.tres
++++ b/game/data/items/quest/Y21_divine_rectory_benzoin.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Y21_divine_rectory_fumigation.tres b/game/data/items/quest/Y21_divine_rectory_fumigation.tres
+index 74e69afd7..9a7c20383 100644
+--- a/game/data/items/quest/Y21_divine_rectory_fumigation.tres
++++ b/game/data/items/quest/Y21_divine_rectory_fumigation.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Y21_divine_rectory_musc.tres b/game/data/items/quest/Y21_divine_rectory_musc.tres
+index 800236099..6de10ef61 100644
+--- a/game/data/items/quest/Y21_divine_rectory_musc.tres
++++ b/game/data/items/quest/Y21_divine_rectory_musc.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Y21_divine_rectory_myrrh.tres b/game/data/items/quest/Y21_divine_rectory_myrrh.tres
+index cc5d6edc8..445e755e9 100644
+--- a/game/data/items/quest/Y21_divine_rectory_myrrh.tres
++++ b/game/data/items/quest/Y21_divine_rectory_myrrh.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Z28_divine_ballive_pleading.tres b/game/data/items/quest/Z28_divine_ballive_pleading.tres
+index 94205f224..7527d9307 100644
+--- a/game/data/items/quest/Z28_divine_ballive_pleading.tres
++++ b/game/data/items/quest/Z28_divine_ballive_pleading.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Z28_divine_ballive_statement.tres b/game/data/items/quest/Z28_divine_ballive_statement.tres
+index 458792a59..7ae458681 100644
+--- a/game/data/items/quest/Z28_divine_ballive_statement.tres
++++ b/game/data/items/quest/Z28_divine_ballive_statement.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Z28_divine_ballive_sworn.tres b/game/data/items/quest/Z28_divine_ballive_sworn.tres
+index 8be5908b8..b2f5d3b5d 100644
+--- a/game/data/items/quest/Z28_divine_ballive_sworn.tres
++++ b/game/data/items/quest/Z28_divine_ballive_sworn.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Z28_divine_borough_pleading.tres b/game/data/items/quest/Z28_divine_borough_pleading.tres
+index ac2e6e55f..0a7685e8f 100644
+--- a/game/data/items/quest/Z28_divine_borough_pleading.tres
++++ b/game/data/items/quest/Z28_divine_borough_pleading.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Z28_divine_borough_statement.tres b/game/data/items/quest/Z28_divine_borough_statement.tres
+index 87ed1d40e..d60fb02bd 100644
+--- a/game/data/items/quest/Z28_divine_borough_statement.tres
++++ b/game/data/items/quest/Z28_divine_borough_statement.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Z28_divine_borough_sworn.tres b/game/data/items/quest/Z28_divine_borough_sworn.tres
+index 33c92edfb..4333e1556 100644
+--- a/game/data/items/quest/Z28_divine_borough_sworn.tres
++++ b/game/data/items/quest/Z28_divine_borough_sworn.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Z28_divine_cantry_pleading.tres b/game/data/items/quest/Z28_divine_cantry_pleading.tres
+index 5864d09ea..bddbae7e5 100644
+--- a/game/data/items/quest/Z28_divine_cantry_pleading.tres
++++ b/game/data/items/quest/Z28_divine_cantry_pleading.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Z28_divine_cantry_statement.tres b/game/data/items/quest/Z28_divine_cantry_statement.tres
+index d1107906b..21e7dceea 100644
+--- a/game/data/items/quest/Z28_divine_cantry_statement.tres
++++ b/game/data/items/quest/Z28_divine_cantry_statement.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Z28_divine_cantry_sworn.tres b/game/data/items/quest/Z28_divine_cantry_sworn.tres
+index 002f9db67..4833f9148 100644
+--- a/game/data/items/quest/Z28_divine_cantry_sworn.tres
++++ b/game/data/items/quest/Z28_divine_cantry_sworn.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Z28_divine_chapterry_pleading.tres b/game/data/items/quest/Z28_divine_chapterry_pleading.tres
+index 77f6cc0ae..5d7d1fcf9 100644
+--- a/game/data/items/quest/Z28_divine_chapterry_pleading.tres
++++ b/game/data/items/quest/Z28_divine_chapterry_pleading.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Z28_divine_chapterry_statement.tres b/game/data/items/quest/Z28_divine_chapterry_statement.tres
+index 4c02f148c..fccb7a897 100644
+--- a/game/data/items/quest/Z28_divine_chapterry_statement.tres
++++ b/game/data/items/quest/Z28_divine_chapterry_statement.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Z28_divine_chapterry_sworn.tres b/game/data/items/quest/Z28_divine_chapterry_sworn.tres
+index a183708dc..1b21427e2 100644
+--- a/game/data/items/quest/Z28_divine_chapterry_sworn.tres
++++ b/game/data/items/quest/Z28_divine_chapterry_sworn.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Z31_immortal_contiguous_ciborium.tres b/game/data/items/quest/Z31_immortal_contiguous_ciborium.tres
+index c96e9aaa8..9f7f1eda2 100644
+--- a/game/data/items/quest/Z31_immortal_contiguous_ciborium.tres
++++ b/game/data/items/quest/Z31_immortal_contiguous_ciborium.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/Z31_immortal_contiguous_pyx.tres b/game/data/items/quest/Z31_immortal_contiguous_pyx.tres
+index f5a0803b7..35cb76baf 100644
+--- a/game/data/items/quest/Z31_immortal_contiguous_pyx.tres
++++ b/game/data/items/quest/Z31_immortal_contiguous_pyx.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/Z31_immortal_contiguous_shrine.tres b/game/data/items/quest/Z31_immortal_contiguous_shrine.tres
+index 68829223c..1c7a53471 100644
+--- a/game/data/items/quest/Z31_immortal_contiguous_shrine.tres
++++ b/game/data/items/quest/Z31_immortal_contiguous_shrine.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/Z31_immortal_contiguous_urn.tres b/game/data/items/quest/Z31_immortal_contiguous_urn.tres
+index 2c92b80b6..c3290ed1c 100644
+--- a/game/data/items/quest/Z31_immortal_contiguous_urn.tres
++++ b/game/data/items/quest/Z31_immortal_contiguous_urn.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/Z31_immortal_convent_ciborium.tres b/game/data/items/quest/Z31_immortal_convent_ciborium.tres
+index a4527cb31..adebfd856 100644
+--- a/game/data/items/quest/Z31_immortal_convent_ciborium.tres
++++ b/game/data/items/quest/Z31_immortal_convent_ciborium.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/Z31_immortal_convent_pyx.tres b/game/data/items/quest/Z31_immortal_convent_pyx.tres
+index e24f65732..2b71b429d 100644
+--- a/game/data/items/quest/Z31_immortal_convent_pyx.tres
++++ b/game/data/items/quest/Z31_immortal_convent_pyx.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/Z31_immortal_convent_shrine.tres b/game/data/items/quest/Z31_immortal_convent_shrine.tres
+index c7ed82ba8..3680d214a 100644
+--- a/game/data/items/quest/Z31_immortal_convent_shrine.tres
++++ b/game/data/items/quest/Z31_immortal_convent_shrine.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/Z31_immortal_convent_urn.tres b/game/data/items/quest/Z31_immortal_convent_urn.tres
+index 8b72de437..819b476c5 100644
+--- a/game/data/items/quest/Z31_immortal_convent_urn.tres
++++ b/game/data/items/quest/Z31_immortal_convent_urn.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/Z31_immortal_courtyard_ciborium.tres b/game/data/items/quest/Z31_immortal_courtyard_ciborium.tres
+index f414fe4d1..ff0eb1111 100644
+--- a/game/data/items/quest/Z31_immortal_courtyard_ciborium.tres
++++ b/game/data/items/quest/Z31_immortal_courtyard_ciborium.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/Z31_immortal_courtyard_pyx.tres b/game/data/items/quest/Z31_immortal_courtyard_pyx.tres
+index 4353f8c4d..5576f3c14 100644
+--- a/game/data/items/quest/Z31_immortal_courtyard_pyx.tres
++++ b/game/data/items/quest/Z31_immortal_courtyard_pyx.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/Z31_immortal_courtyard_shrine.tres b/game/data/items/quest/Z31_immortal_courtyard_shrine.tres
+index 765948631..fcf83d1c3 100644
+--- a/game/data/items/quest/Z31_immortal_courtyard_shrine.tres
++++ b/game/data/items/quest/Z31_immortal_courtyard_shrine.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/Z31_immortal_courtyard_urn.tres b/game/data/items/quest/Z31_immortal_courtyard_urn.tres
+index 7663db03f..f674ed868 100644
+--- a/game/data/items/quest/Z31_immortal_courtyard_urn.tres
++++ b/game/data/items/quest/Z31_immortal_courtyard_urn.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/Z32_divine_deanery_citole.tres b/game/data/items/quest/Z32_divine_deanery_citole.tres
+index 8ddfbff84..5b45e8af4 100644
+--- a/game/data/items/quest/Z32_divine_deanery_citole.tres
++++ b/game/data/items/quest/Z32_divine_deanery_citole.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Z32_divine_deanery_crwth.tres b/game/data/items/quest/Z32_divine_deanery_crwth.tres
+index 0f5b20a32..a26fdf447 100644
+--- a/game/data/items/quest/Z32_divine_deanery_crwth.tres
++++ b/game/data/items/quest/Z32_divine_deanery_crwth.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Z32_divine_deanery_psalmonium.tres b/game/data/items/quest/Z32_divine_deanery_psalmonium.tres
+index c8616ff81..d38f40d94 100644
+--- a/game/data/items/quest/Z32_divine_deanery_psalmonium.tres
++++ b/game/data/items/quest/Z32_divine_deanery_psalmonium.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Z32_divine_deanery_rebec.tres b/game/data/items/quest/Z32_divine_deanery_rebec.tres
+index 7a0fa3a0e..8f0d45e79 100644
+--- a/game/data/items/quest/Z32_divine_deanery_rebec.tres
++++ b/game/data/items/quest/Z32_divine_deanery_rebec.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Z32_divine_deanery_sackbut.tres b/game/data/items/quest/Z32_divine_deanery_sackbut.tres
+index e949ff1c5..ff86c219a 100644
+--- a/game/data/items/quest/Z32_divine_deanery_sackbut.tres
++++ b/game/data/items/quest/Z32_divine_deanery_sackbut.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Z32_divine_deanery_shawm.tres b/game/data/items/quest/Z32_divine_deanery_shawm.tres
+index a22373242..60b219463 100644
+--- a/game/data/items/quest/Z32_divine_deanery_shawm.tres
++++ b/game/data/items/quest/Z32_divine_deanery_shawm.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Z32_divine_deanery_vielle.tres b/game/data/items/quest/Z32_divine_deanery_vielle.tres
+index 78bc0f3b3..b2b9803d7 100644
+--- a/game/data/items/quest/Z32_divine_deanery_vielle.tres
++++ b/game/data/items/quest/Z32_divine_deanery_vielle.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Z32_divine_demesne_citole.tres b/game/data/items/quest/Z32_divine_demesne_citole.tres
+index f21cf32da..9fc4733c2 100644
+--- a/game/data/items/quest/Z32_divine_demesne_citole.tres
++++ b/game/data/items/quest/Z32_divine_demesne_citole.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Z32_divine_demesne_crwth.tres b/game/data/items/quest/Z32_divine_demesne_crwth.tres
+index 40e6b5ea0..7e70f3d44 100644
+--- a/game/data/items/quest/Z32_divine_demesne_crwth.tres
++++ b/game/data/items/quest/Z32_divine_demesne_crwth.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Z32_divine_demesne_psalmonium.tres b/game/data/items/quest/Z32_divine_demesne_psalmonium.tres
+index 2586752f4..75700f1dd 100644
+--- a/game/data/items/quest/Z32_divine_demesne_psalmonium.tres
++++ b/game/data/items/quest/Z32_divine_demesne_psalmonium.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Z32_divine_demesne_rebec.tres b/game/data/items/quest/Z32_divine_demesne_rebec.tres
+index ff189e263..747cf3ecd 100644
+--- a/game/data/items/quest/Z32_divine_demesne_rebec.tres
++++ b/game/data/items/quest/Z32_divine_demesne_rebec.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/Z32_divine_demesne_vielle.tres b/game/data/items/quest/Z32_divine_demesne_vielle.tres
+index beac66a99..92b292998 100644
+--- a/game/data/items/quest/Z32_divine_demesne_vielle.tres
++++ b/game/data/items/quest/Z32_divine_demesne_vielle.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/bounty_bear_mark.tres b/game/data/items/quest/bounty_bear_mark.tres
+index 148cc472d..11f82c071 100644
+--- a/game/data/items/quest/bounty_bear_mark.tres
++++ b/game/data/items/quest/bounty_bear_mark.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 27},
+diff --git a/game/data/items/quest/bounty_dragon_mark.tres b/game/data/items/quest/bounty_dragon_mark.tres
+index b691abaa2..b5c608b06 100644
+--- a/game/data/items/quest/bounty_dragon_mark.tres
++++ b/game/data/items/quest/bounty_dragon_mark.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/bounty_emperor_mark.tres b/game/data/items/quest/bounty_emperor_mark.tres
+index 3fa955c74..6d97efebf 100644
+--- a/game/data/items/quest/bounty_emperor_mark.tres
++++ b/game/data/items/quest/bounty_emperor_mark.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/bounty_golem_mark.tres b/game/data/items/quest/bounty_golem_mark.tres
+index 94fef3f51..d3cafc8be 100644
+--- a/game/data/items/quest/bounty_golem_mark.tres
++++ b/game/data/items/quest/bounty_golem_mark.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 21},
+diff --git a/game/data/items/quest/bounty_hawk_mark.tres b/game/data/items/quest/bounty_hawk_mark.tres
+index b85b43079..6ae748114 100644
+--- a/game/data/items/quest/bounty_hawk_mark.tres
++++ b/game/data/items/quest/bounty_hawk_mark.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 21},
+diff --git a/game/data/items/quest/bounty_hermit_mark.tres b/game/data/items/quest/bounty_hermit_mark.tres
+index 835f9d848..e5a9a5cd5 100644
+--- a/game/data/items/quest/bounty_hermit_mark.tres
++++ b/game/data/items/quest/bounty_hermit_mark.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 27},
+diff --git a/game/data/items/quest/bounty_kraken_mark.tres b/game/data/items/quest/bounty_kraken_mark.tres
+index 1b381393e..47bc0f5ae 100644
+--- a/game/data/items/quest/bounty_kraken_mark.tres
++++ b/game/data/items/quest/bounty_kraken_mark.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/bounty_leviathan_mark.tres b/game/data/items/quest/bounty_leviathan_mark.tres
+index bccd0b1e7..994433cc7 100644
+--- a/game/data/items/quest/bounty_leviathan_mark.tres
++++ b/game/data/items/quest/bounty_leviathan_mark.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/bounty_mantaray_mark.tres b/game/data/items/quest/bounty_mantaray_mark.tres
+index 3a4496ea2..887f21da2 100644
+--- a/game/data/items/quest/bounty_mantaray_mark.tres
++++ b/game/data/items/quest/bounty_mantaray_mark.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 27},
+diff --git a/game/data/items/quest/bounty_scorpion_mark.tres b/game/data/items/quest/bounty_scorpion_mark.tres
+index eba9ca8ad..bce323789 100644
+--- a/game/data/items/quest/bounty_scorpion_mark.tres
++++ b/game/data/items/quest/bounty_scorpion_mark.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/bounty_serpent_mark.tres b/game/data/items/quest/bounty_serpent_mark.tres
+index 966943fa1..505de63c7 100644
+--- a/game/data/items/quest/bounty_serpent_mark.tres
++++ b/game/data/items/quest/bounty_serpent_mark.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/bounty_wolf_mark.tres b/game/data/items/quest/bounty_wolf_mark.tres
+index 9279c54f5..1a3ed6721 100644
+--- a/game/data/items/quest/bounty_wolf_mark.tres
++++ b/game/data/items/quest/bounty_wolf_mark.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10},
+diff --git a/game/data/items/quest/quest_ancient_map.tres b/game/data/items/quest/quest_ancient_map.tres
+index 12b3db39c..37855026b 100644
+--- a/game/data/items/quest/quest_ancient_map.tres
++++ b/game/data/items/quest/quest_ancient_map.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 21},
+diff --git a/game/data/items/quest/quest_beast_fang.tres b/game/data/items/quest/quest_beast_fang.tres
+index ab47b680c..86bf31988 100644
+--- a/game/data/items/quest/quest_beast_fang.tres
++++ b/game/data/items/quest/quest_beast_fang.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/quest_cultivation_manual.tres b/game/data/items/quest/quest_cultivation_manual.tres
+index 9fe88b999..2ff6233ea 100644
+--- a/game/data/items/quest/quest_cultivation_manual.tres
++++ b/game/data/items/quest/quest_cultivation_manual.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 27},
+diff --git a/game/data/items/quest/quest_herb_sachet.tres b/game/data/items/quest/quest_herb_sachet.tres
+index ab9a2f3fc..f885e9475 100644
+--- a/game/data/items/quest/quest_herb_sachet.tres
++++ b/game/data/items/quest/quest_herb_sachet.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/quest_immortal_relic.tres b/game/data/items/quest/quest_immortal_relic.tres
+index a74977373..03cbb7005 100644
+--- a/game/data/items/quest/quest_immortal_relic.tres
++++ b/game/data/items/quest/quest_immortal_relic.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/quest_iron_token.tres b/game/data/items/quest/quest_iron_token.tres
+index c36291091..9fa92fdc7 100644
+--- a/game/data/items/quest/quest_iron_token.tres
++++ b/game/data/items/quest/quest_iron_token.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10},
+diff --git a/game/data/items/quest/quest_sealed_letter.tres b/game/data/items/quest/quest_sealed_letter.tres
+index ae389d798..d7ebddb23 100644
+--- a/game/data/items/quest/quest_sealed_letter.tres
++++ b/game/data/items/quest/quest_sealed_letter.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10},
+diff --git a/game/data/items/quest/quest_spirit_stone_shard.tres b/game/data/items/quest/quest_spirit_stone_shard.tres
+index 5b23b872d..3d04b76cd 100644
+--- a/game/data/items/quest/quest_spirit_stone_shard.tres
++++ b/game/data/items/quest/quest_spirit_stone_shard.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 27},
+diff --git a/game/data/items/quest/relic_ancestral_mask.tres b/game/data/items/quest/relic_ancestral_mask.tres
+index 3023ad309..6a361fcbf 100644
+--- a/game/data/items/quest/relic_ancestral_mask.tres
++++ b/game/data/items/quest/relic_ancestral_mask.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/relic_ashen_codex.tres b/game/data/items/quest/relic_ashen_codex.tres
+index 99b52e3fa..818d6874d 100644
+--- a/game/data/items/quest/relic_ashen_codex.tres
++++ b/game/data/items/quest/relic_ashen_codex.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 27},
+diff --git a/game/data/items/quest/relic_broken_seal.tres b/game/data/items/quest/relic_broken_seal.tres
+index 61df2d40d..4b49481ca 100644
+--- a/game/data/items/quest/relic_broken_seal.tres
++++ b/game/data/items/quest/relic_broken_seal.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10},
+diff --git a/game/data/items/quest/relic_chaos_sigil.tres b/game/data/items/quest/relic_chaos_sigil.tres
+index 2aa309f9d..e78947056 100644
+--- a/game/data/items/quest/relic_chaos_sigil.tres
++++ b/game/data/items/quest/relic_chaos_sigil.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/relic_crimson_key.tres b/game/data/items/quest/relic_crimson_key.tres
+index 8a7e46861..e846d7bf7 100644
+--- a/game/data/items/quest/relic_crimson_key.tres
++++ b/game/data/items/quest/relic_crimson_key.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 21},
+diff --git a/game/data/items/quest/relic_divine_loom.tres b/game/data/items/quest/relic_divine_loom.tres
+index 02b911913..0f7b5296c 100644
+--- a/game/data/items/quest/relic_divine_loom.tres
++++ b/game/data/items/quest/relic_divine_loom.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/relic_hollow_crown.tres b/game/data/items/quest/relic_hollow_crown.tres
+index 4117f4518..c8ed8c89f 100644
+--- a/game/data/items/quest/relic_hollow_crown.tres
++++ b/game/data/items/quest/relic_hollow_crown.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 21},
+diff --git a/game/data/items/quest/relic_immortal_astrolabe.tres b/game/data/items/quest/relic_immortal_astrolabe.tres
+index b333e81cf..178b16851 100644
+--- a/game/data/items/quest/relic_immortal_astrolabe.tres
++++ b/game/data/items/quest/relic_immortal_astrolabe.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/relic_lost_letter.tres b/game/data/items/quest/relic_lost_letter.tres
+index c98f220da..85b2bf5bf 100644
+--- a/game/data/items/quest/relic_lost_letter.tres
++++ b/game/data/items/quest/relic_lost_letter.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10},
+diff --git a/game/data/items/quest/relic_storm_lens.tres b/game/data/items/quest/relic_storm_lens.tres
+index 26f04030e..ff2d44839 100644
+--- a/game/data/items/quest/relic_storm_lens.tres
++++ b/game/data/items/quest/relic_storm_lens.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 27},
+diff --git a/game/data/items/quest/relic_sunken_bell.tres b/game/data/items/quest/relic_sunken_bell.tres
+index ab52b0171..996f73fd4 100644
+--- a/game/data/items/quest/relic_sunken_bell.tres
++++ b/game/data/items/quest/relic_sunken_bell.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/relic_void_compass.tres b/game/data/items/quest/relic_void_compass.tres
+index 7767fd4ad..4736d4218 100644
+--- a/game/data/items/quest/relic_void_compass.tres
++++ b/game/data/items/quest/relic_void_compass.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/votive_divine_instrument.tres b/game/data/items/quest/votive_divine_instrument.tres
+index 310ce9f24..38980c117 100644
+--- a/game/data/items/quest/votive_divine_instrument.tres
++++ b/game/data/items/quest/votive_divine_instrument.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/votive_divine_relic.tres b/game/data/items/quest/votive_divine_relic.tres
+index 7b3f52f1c..dce64f638 100644
+--- a/game/data/items/quest/votive_divine_relic.tres
++++ b/game/data/items/quest/votive_divine_relic.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 42},
+diff --git a/game/data/items/quest/votive_earth_instrument.tres b/game/data/items/quest/votive_earth_instrument.tres
+index 7480e3a1f..2d07d95bb 100644
+--- a/game/data/items/quest/votive_earth_instrument.tres
++++ b/game/data/items/quest/votive_earth_instrument.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 21},
+diff --git a/game/data/items/quest/votive_earth_relic.tres b/game/data/items/quest/votive_earth_relic.tres
+index 9fb9e4b6f..c0f7f3510 100644
+--- a/game/data/items/quest/votive_earth_relic.tres
++++ b/game/data/items/quest/votive_earth_relic.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 21},
+diff --git a/game/data/items/quest/votive_heaven_instrument.tres b/game/data/items/quest/votive_heaven_instrument.tres
+index e8e2f744f..5b703263d 100644
+--- a/game/data/items/quest/votive_heaven_instrument.tres
++++ b/game/data/items/quest/votive_heaven_instrument.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 27},
+diff --git a/game/data/items/quest/votive_heaven_relic.tres b/game/data/items/quest/votive_heaven_relic.tres
+index f56eb0988..759fd61ad 100644
+--- a/game/data/items/quest/votive_heaven_relic.tres
++++ b/game/data/items/quest/votive_heaven_relic.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 27},
+diff --git a/game/data/items/quest/votive_immortal_instrument.tres b/game/data/items/quest/votive_immortal_instrument.tres
+index 6d0e60b3b..158ad4ca9 100644
+--- a/game/data/items/quest/votive_immortal_instrument.tres
++++ b/game/data/items/quest/votive_immortal_instrument.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},
+diff --git a/game/data/items/quest/votive_mortal_instrument.tres b/game/data/items/quest/votive_mortal_instrument.tres
+index dccceae22..df8587c07 100644
+--- a/game/data/items/quest/votive_mortal_instrument.tres
++++ b/game/data/items/quest/votive_mortal_instrument.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 10},
+diff --git a/game/data/items/quest/votive_spirit_instrument.tres b/game/data/items/quest/votive_spirit_instrument.tres
+index 7925eb5a0..3f3e81d16 100644
+--- a/game/data/items/quest/votive_spirit_instrument.tres
++++ b/game/data/items/quest/votive_spirit_instrument.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/votive_spirit_relic.tres b/game/data/items/quest/votive_spirit_relic.tres
+index 836fe450d..2a790e7da 100644
+--- a/game/data/items/quest/votive_spirit_relic.tres
++++ b/game/data/items/quest/votive_spirit_relic.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 16},
+diff --git a/game/data/items/quest/votive_void_relic.tres b/game/data/items/quest/votive_void_relic.tres
+index d5d82da37..ca0d5d430 100644
+--- a/game/data/items/quest/votive_void_relic.tres
++++ b/game/data/items/quest/votive_void_relic.tres
+@@ -13,0 +14 @@ fixed_modifiers = Array[Dictionary]([
++	{"option_id": &"trade_value", "value": 34},

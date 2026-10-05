@@ -140,15 +140,38 @@ func test_no_combat_id_is_a_core_stat_id() -> void:
 # --- the spine reads them -------------------------------------------------------
 
 
-func test_the_spine_reads_a_parry_rate_only_through_the_linear_contest() -> void:
-	# End to end: a defender who invests in `parry.rate` parries through the band roll,
-	# and the reading is linear-from-zero, so a quarter of the scale is a quarter chance.
+## ## ADR 0215. End to end: a defender who invests in `parry.rate` parries through the
+## band roll, and the reading is a RATIO of two magnitudes.
+##
+## The fixture is rebuilt on the ratio's scale. It used to author `rate_scale * 0.25`
+## (a PERMILLE rate, `250.0`) against nothing and read a quarter — which under
+## `offense / (offense + resist)` is `250 / (250 + 0) == 1.0`, because the resist half was
+## zero and the ratio read certainty. To read a quarter the fixture must author BOTH
+## halves: `parry.break` is the DEFENCE half of the parry contest (`CombatStats.CONTESTS`
+## pairs `PARRY_RATE` with `PARRY_BREAK`), so the defender's parry must stand against its
+## own break investment at `1 : 3`.
+func test_the_spine_reads_a_parry_rate_only_through_the_ratio_contest() -> void:
 	var target := CombatTestKit.actor(&"target")
-	target.stats.add_modifier(
-		CombatStats.rate_modifier(CombatStats.PARRY_RATE, _tuning.rate_scale * 0.25, &"test")
+	target.stats.add_modifier(CombatStats.rate_modifier(CombatStats.PARRY_RATE, 1.0, &"test"))
+	target.stats.add_modifier(CombatStats.rate_modifier(CombatStats.PARRY_BREAK, 3.0, &"test"))
+	# `CombatBand.rate_of` is the defender-only read: it contests the actor's own rate
+	# against `0.0`, which reads `1.0 / (1.0 + 0.0) == 1.0`. That is correct — an actor
+	# who has invested nothing in the matching half contests nothing against — so the
+	# QUARTER reading has to be asked through [method CombatStats.contest_of], which is
+	# the two-actor form of the same formula.
+	var rate := CombatStats.contest_of(
+		CombatStats.PARRY_RATE, target, CombatStats.PARRY_BREAK, target
 	)
-	var rate := CombatBand.rate_of(CombatStats.PARRY_RATE, target, _tuning)
-	assert_almost_eq(rate, 0.25, "a quarter of the scale parries a quarter of the time")
+	assert_almost_eq(rate, 1.0 / 4.0, "1 : 3 parries a quarter of the time, by ratio not by scale")
+	# And the counter-reading is the mirror of it, so the fixture cannot be satisfied by a
+	# formula that just returns the offence half: `3 : 1` is three quarters.
+	assert_almost_eq(
+		CombatStats.contest_of(CombatStats.PARRY_BREAK, target, CombatStats.PARRY_RATE, target),
+		3.0 / 4.0,
+		"and 3 : 1 is three quarters, so the two halves cannot be transposed"
+	)
+	# End to end through the band roll: a quarter rate parries a quarter of the draws,
+	# because the band compares one draw against the rate and nothing else scales it.
 	var parried := 0
 	var index := 0
 	while index < 1000:
@@ -160,7 +183,11 @@ func test_the_spine_reads_a_parry_rate_only_through_the_linear_contest() -> void
 		):
 			parried += 1
 		index += 1
-	assert_eq(parried, 250, "250 of 1000 draws, exactly the authored rate")
+	# The count is a COUNT off the sweep, not the rate restated: the roll parries when
+	# `r >= 1 - p`, so `p == 0.25` parries the draws from `0.75` up and the assertion
+	# follows from the shape. `rate_scale` is no longer read by the roll at all, so
+	# authoring a permille rate here can only ever read `1.0` again.
+	assert_eq(parried, 250, "250 of 1000 draws parried, off the 1 : 3 ratio's quarter")
 
 
 func test_an_unstatted_defender_parries_and_blocks_nothing() -> void:

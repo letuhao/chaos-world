@@ -17,7 +17,7 @@ payload = {
 "counterpart_id": &"mind_clarity",
 "beat": 1.0,
 "steepness": 0.45,
-"harm": 0.22,
+"harm": 0.2,
 "floor_resist": 0.45,
 "headroom": 0.35,
 "duration": 3.0,

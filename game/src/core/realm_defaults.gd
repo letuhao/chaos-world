@@ -1,8 +1,10 @@
 class_name RealmDefaults
 extends RefCounted
 
-## The shared 30-realm ladder: 9 Mortal, 9 Spirit, 9 Immortal, 3 Transcendent
-## (ADR 0005). Append-only; adding a realm is data.
+## The shared realm ladder: 9 Mortal, 9 Spirit, 9 Immortal, 3 Transcendent
+## (ADR 0005). Append-only, and appending is `register_realms` below rather than an
+## edit to the authored rows — see the note there for why the rows live in this
+## file's text.
 
 const MORTAL := 1
 const SPIRIT := 2
@@ -24,11 +26,69 @@ const LIFESPAN := preload("res://src/core/realm_lifespan_table.tres")
 
 static var _ladder: RealmLadder
 
+## Realms appended to the AUTHORED base by `register_realms`: a mod's, or content's.
+## An array rather than a single realm so one call can extend the ladder by as many
+## realms as the caller needs. Empty in the shipped game.
+static var _extensions: Array[RealmDef] = []
+
 
 static func ladder() -> RealmLadder:
 	if _ladder == null:
 		_ladder = RealmLadder.new(_all())
 	return _ladder
+
+
+## Append realms to the shared ladder without editing the authored rows. This is what
+## makes the ladder DATA rather than a code literal: a realm is added by handing over
+## a `RealmDef`, not by inserting a `_make(...)` call into `_all()`.
+##
+## The authored rows deliberately stay in THIS file's source text, because four Python
+## tools parse them as text — `tools/realm_power.py` (`REALM_LINE`),
+## `tools/cultivation/seed.py`, `tools/cultivation/seed_systems.py` and
+## `tools/item_migrate.py`. Relocating them to a `.tres` is the textbook "make it data"
+## move and it would leave all four looking at an empty ladder, so the extensibility
+## had to come from a seam instead. That is the honest trade: the ladder is extensible
+## and single-authored, and the row location is a tooling contract rather than an
+## accident.
+##
+## The built ladder is DROPPED so the next `ladder()` rebuilds, and the rebuild reads
+## `RealmDef.power` by ID for the appended realms exactly as it does for the authored
+## ones. A cached ladder that ignored a later append is the stale-cache shape the note
+## in `_all()` below already cost one field.
+##
+## A realm already on the ladder is not appended twice: the ladder is keyed by ID, so
+## a duplicate would shadow the first and `index_of` would answer for the wrong one.
+## A realm with no ID is refused for the same reason — a keyed table cannot hold a
+## keyless row. Returns the IDs actually accepted, so a caller that has to undo the
+## call (a mod unloading) knows what to undo.
+static func register_realms(realms: Array[RealmDef]) -> Array[StringName]:
+	var accepted: Array[StringName] = []
+	for realm in realms:
+		var id := realm.id
+		if String(id) == "":
+			continue
+		_extensions.append(realm)
+		accepted.append(id)
+	_ladder = null
+	return accepted
+
+
+## Drop realms a caller previously registered, for a mod unloading. Authored realms are
+## never in `_extensions`, so this cannot remove one. Returns the IDs actually removed.
+static func unregister_realms(realm_ids: Array[StringName]) -> Array[StringName]:
+	var removed: Array[StringName] = []
+	# The bound is the `_extensions.size()` SNAPSHOT the `range` is built from, taken
+	# before the loop; the body erases from `_extensions` as it walks, so a condition
+	# that re-read the live size would shrink in lockstep with the index and skip
+	# entries (INC-0002). Walking backwards keeps every unremoved entry's index valid
+	# after an erase.
+	for index in range(_extensions.size() - 1, -1, -1):
+		var entry := _extensions[index]
+		if realm_ids.has(entry.id):
+			removed.append(entry.id)
+			_extensions.remove_at(index)
+	_ladder = null
+	return removed
 
 
 static func _all() -> Array[RealmDef]:
@@ -64,6 +124,12 @@ static func _all() -> Array[RealmDef]:
 		_make(&"dao_ancestor", "Dao Ancestor", TRANSCENDENT),
 		_make(&"primordial_origin", "Primordial Origin", TRANSCENDENT),
 	]
+	# Registered realms are appended AFTER the authored rows and BEFORE the power pass,
+	# so an extension is powered by the same keyed lookup as an authored one. Assembling
+	# after the power pass would leave it on the neutral 1.0 default.
+	for realm in _extensions:
+		if not _carries(realms, realm.id):
+			realms.append(realm)
 	# `RealmDef.power` is AUTHORED, loaded from `POWER` above, and that is load-bearing
 	# in three directions.
 	#
@@ -83,6 +149,16 @@ static func _all() -> Array[RealmDef]:
 	for realm in realms:
 		realm.power = POWER.power_for(realm.id)
 	return realms
+
+
+## Whether the ladder as assembled so far already carries `id`. Bounded by the
+## container it walks, appends nothing, and returns on the first hit — so no pass
+## grows the collection it is being tested against (INC-0002).
+static func _carries(realms: Array[RealmDef], id: StringName) -> bool:
+	for realm in realms:
+		if realm.id == id:
+			return true
+	return false
 
 
 static func _make(id: StringName, display_name: String, tier: int) -> RealmDef:

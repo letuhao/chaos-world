@@ -63,8 +63,68 @@ func _install_defaults() -> void:
 	_add(&"slandered", {"standing": -4.0, "trust": -0.12, "tags": [&"harm"]})
 	_add_intimacy()
 	_add_oath()
+	_add_court()
 	_add_auction()
+	_add_moral()
 	_install_institutional()
+
+
+## ## The courtship vocabulary: the claim, its mirror, its refusal, and the pledge (ADR 0256)
+##
+## Four causes, and **every one of them is `kind: court` — which is the entire anti-farm
+## argument for this feature.**
+##
+## The reference research flagged that the genre treats pursuit as a thing gifts gate.
+## Ours cannot, and this tag is why. `SocialBondClass.FRIEND_DISTINCT_CAUSES` counts
+## distinct KINDS of act, so a pair whose entire history is courtship — claimed,
+## answered, declined, pledged, claimed again — still tops out at an ACQUAINTANCE however
+## large the total. **Six identical courtship acts cannot reach a friendship, let alone a
+## relationship**, and the `tests/modules/social/test_pursuit.gd` guard is six of the
+## worst case with `promotes_to` absent.
+##
+## ## None of the four names a class
+##
+## `shared_brotherhood` is the only shipped cause allowed to carry `promotes_to`, and
+## courtship is a DIFFERENT bond from brotherhood. `answered_the_court` is therefore not
+## a second route to the top of the ladder — it is a fact, and the ladder reads the axes.
+##
+## ## The magnitudes are smaller than the oath's, and that is the argument
+##
+## `refused_the_oath` is −4.0/−0.15. `refused_the_court` is **−3.0/−0.1** because being
+## declined is a bad afternoon while a refused oath is a broken word. Still a third of
+## `FRIEND_AT`, so refusal is felt; still one kind, so refusing nothing is farmed.
+##
+## `answered_the_court` is deliberately modest (+2.0) for the same reason the whole
+## feature is: **courtship must not out-earn deeds.** A answered courtship is worth less
+## than being saved from death, because the player earns the first by being wanted and the
+## second by being good. If that ever inverts, the ladder is being priced by desirability.
+func _add_court() -> void:
+	_add(
+		&"answered_the_court",
+		{
+			"standing": 2.0,
+			"trust": 0.08,
+			"persistent": true,
+			"kind": &"court",
+			"tags": [&"court", &"deed"],
+		}
+	)
+	_add(
+		&"refused_the_court",
+		{
+			"standing": -3.0,
+			"trust": -0.1,
+			"kind": &"court",
+			"tags": [&"court", &"harm"],
+		}
+	)
+	# The mirror: what the claimer's OWN ledger records when the player says yes. Not
+	# `promotes_to`, exactly like `accepted_the_oath` is not allowed to invent a rung of
+	# its own — the promise a player makes is recorded as a fact and the ladder decides.
+	_add(
+		&"pledged_themselves",
+		{"standing": 2.0, "trust": 0.08, "kind": &"court", "tags": [&"court", &"deed"]}
+	)
 
 
 ## ## The auction causes: three acts at a sale, authored so `app/` has something to apply
@@ -124,6 +184,86 @@ func _add_auction() -> void:
 			"trust": -0.1,
 			"kind": &"market",
 			"tags": [&"market", &"auction", &"harm"],
+		}
+	)
+
+
+## ## The moral causes: the five acts that had no vocabulary at all (ADR 0253)
+##
+## Every cause above is an act one actor did to another **who could answer back** — a
+## merchant, a rival, a suitor, an institution. None of them is expressible as a moral
+## position, so the alignment matrix had nothing to read for the four acts a cultivation
+## world actually judges, and all four are here:
+##
+##   - `cruel_to_the_powerless` — cruelty where the victim cannot refuse it. **The
+##     load-bearing one**, and the only cause that moves DOMINION on its own, so it is
+##     also the only act that can make a player corrupt by repetition.
+##   - `betrayed_a_supplicant` — betrayal of someone who came to YOU, rather than of a
+##     sworn oath. Distinct from `betrayed_oath` because the oath has its own kind and
+##     its own anti-farm bucket, and giving both one kind would let a broken promise to a
+##     supplicant count as the same kind of act as a broken brotherhood.
+##   - `sheltered_a_supplicant` — the counterweight, and a PAIR with the first: an
+##     advantage with no counterpart is a bug (AGENTS.md's yin-yang rule). Sheltering
+##     someone is the only shipped way to move DOMINION *negative*.
+##   - `kept_a_guest_safe` — hospitality kept under a roof that could have been robbed.
+##   - `refused_himself_the_cup` — the player's own discipline: a temptation declined.
+##     The only shipped cause with **zero standing**, so it is a null bond change: what
+##     it moves is the player's MERCY, which is what makes a hermit's restraint
+##     readable to the world without inventing a partner to reward it.
+##
+## ## Magnitudes are sized against the ladder, exactly like every other row
+##
+## `cruel_to_the_powerless` is -7.0: worse than `robbed` (-6.0) and better than
+## `attacked_unprovoked` (-8.0) against a person, because an unprovoked attack is
+## personal while this is contempt — and because the moral matrix, not the bond, is
+## where the repeat cost lands. These are all `kind: cruel` / `kind: mercy` /
+## `kind: discipline` buckets the anti-farm rule counts, so a campaign of one of them
+## cannot climb the positive ladder on its own.
+func _add_moral() -> void:
+	_add(
+		&"cruel_to_the_powerless",
+		{
+			"standing": -7.0,
+			"trust": -0.2,
+			"kind": &"cruel",
+			"tags": [&"cruel", &"harm", &"deed"],
+		}
+	)
+	_add(
+		&"betrayed_a_supplicant",
+		{
+			"standing": -9.0,
+			"trust": -0.3,
+			"kind": &"cruel",
+			"tags": [&"cruel", &"harm", &"deed"],
+		}
+	)
+	_add(
+		&"sheltered_a_supplicant",
+		{
+			"standing": 4.0,
+			"trust": 0.12,
+			"persistent": true,
+			"kind": &"mercy",
+			"tags": [&"mercy", &"deed"],
+		}
+	)
+	_add(
+		&"kept_a_guest_safe",
+		{
+			"standing": 3.0,
+			"trust": 0.1,
+			"persistent": true,
+			"kind": &"mercy",
+			"tags": [&"mercy", &"deed", &"oath"],
+		}
+	)
+	_add(
+		&"refused_himself_the_cup",
+		{
+			"standing": 0.0,
+			"kind": &"discipline",
+			"tags": [&"discipline", &"deed"],
 		}
 	)
 

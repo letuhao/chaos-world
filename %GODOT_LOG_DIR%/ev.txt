@@ -1,0 +1,544 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Loading docks...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+SCRIPT ERROR: Parse Error: Could not resolve class "ItemWorkbenchFight".
+   at: GDScript::reload (res://src/app/item_workbench_app.gd:1)
+SCRIPT ERROR: Parse Error: Could not resolve class "DomainBoot", because of a parser error.
+   at: GDScript::reload (res://src/app/item_workbench_app.gd:925)
+SCRIPT ERROR: Parse Error: Could not resolve class "DomainBoot", because of a parser error.
+   at: GDScript::reload (res://src/app/item_workbench_app.gd:1166)
+ERROR: Failed to load script "res://src/app/item_workbench_app.gd" with error "Parse error".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+SCRIPT ERROR: Parse Error: Cannot call non-static function "_name()" from the static function "compose()".
+   at: GDScript::reload (res://src/modules/npc/npc_minor_composer.gd:91)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Cannot call non-static function "_manner()" from the static function "compose()".
+   at: GDScript::reload (res://src/modules/npc/npc_minor_composer.gd:92)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Cannot call non-static function "_activity()" from the static function "compose()".
+   at: GDScript::reload (res://src/modules/npc/npc_minor_composer.gd:93)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Cannot call non-static function "_opinion()" from the static function "compose()".
+   at: GDScript::reload (res://src/modules/npc/npc_minor_composer.gd:95)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Cannot call non-static function "_tell()" from the static function "compose()".
+   at: GDScript::reload (res://src/modules/npc/npc_minor_composer.gd:96)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Cannot infer the type of "span" variable because the value doesn't have a set type.
+   at: GDScript::reload (res://src/modules/npc/npc_aliveness.gd:111)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: The variable type is being inferred from a Variant value, so it will be typed as Variant. (Warning treated as error.)
+   at: GDScript::reload (res://src/modules/npc/npc_aliveness.gd:110)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/modules/npc/npc_read_model.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/modules/npc/api.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://tests/app/test_npc_event_subscribers.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+ERROR: Failed to load script "res://tests/app/test_npc_event_subscribers.gd" with error "Compilation failed".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+ERROR: Condition "!int_resources.has(id)" is true. Returning: ERR_INVALID_PARAMETER
+   at: _parse_sub_resource (scene/resources/resource_format_text.cpp:114)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: res://data/npc/cast/elder_wei.tres:128 - Parse Error: .
+   at: _printerr (scene/resources/resource_format_text.cpp:41)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Failed loading resource: res://data/npc/cast/elder_wei.tres.
+   at: _load (core/io/resource_loader.cpp:317)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+WARNING: NpcCatalog: skipped 'res://data/npc/cast/elder_wei.tres', which is not an NpcDef
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:99)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: NpcApi.spawn: catalog ships no npc 'elder_wei'
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] spawn (res://src/modules/npc/api.gd:158)
+       [1] test_a_retirement_reaches_the_subscriber_as_a_roster_membership_edge (res://tests/app/test_npc_event_subscribers.gd:298)
+       [2] _initialize (res://tests/run_tests.gd:118)
+ERROR: Condition "!int_resources.has(id)" is true. Returning: ERR_INVALID_PARAMETER
+   at: _parse_sub_resource (scene/resources/resource_format_text.cpp:114)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: res://data/npc/cast/elder_wei.tres:128 - Parse Error: .
+   at: _printerr (scene/resources/resource_format_text.cpp:41)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Failed loading resource: res://data/npc/cast/elder_wei.tres.
+   at: _load (core/io/resource_loader.cpp:317)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+WARNING: NpcCatalog: skipped 'res://data/npc/cast/elder_wei.tres', which is not an NpcDef
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:99)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Condition "!int_resources.has(id)" is true. Returning: ERR_INVALID_PARAMETER
+   at: _parse_sub_resource (scene/resources/resource_format_text.cpp:114)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: res://data/npc/cast/elder_wei.tres:128 - Parse Error: .
+   at: _printerr (scene/resources/resource_format_text.cpp:41)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Failed loading resource: res://data/npc/cast/elder_wei.tres.
+   at: _load (core/io/resource_loader.cpp:317)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+WARNING: NpcCatalog: skipped 'res://data/npc/cast/elder_wei.tres', which is not an NpcDef
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:99)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Condition "!int_resources.has(id)" is true. Returning: ERR_INVALID_PARAMETER
+   at: _parse_sub_resource (scene/resources/resource_format_text.cpp:114)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: res://data/npc/cast/elder_wei.tres:128 - Parse Error: .
+   at: _printerr (scene/resources/resource_format_text.cpp:41)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Failed loading resource: res://data/npc/cast/elder_wei.tres.
+   at: _load (core/io/resource_loader.cpp:317)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+WARNING: NpcCatalog: skipped 'res://data/npc/cast/elder_wei.tres', which is not an NpcDef
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:99)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Condition "!int_resources.has(id)" is true. Returning: ERR_INVALID_PARAMETER
+   at: _parse_sub_resource (scene/resources/resource_format_text.cpp:114)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: res://data/npc/cast/elder_wei.tres:128 - Parse Error: .
+   at: _printerr (scene/resources/resource_format_text.cpp:41)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Failed loading resource: res://data/npc/cast/elder_wei.tres.
+   at: _load (core/io/resource_loader.cpp:317)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+WARNING: NpcCatalog: skipped 'res://data/npc/cast/elder_wei.tres', which is not an NpcDef
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:99)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Condition "!int_resources.has(id)" is true. Returning: ERR_INVALID_PARAMETER
+   at: _parse_sub_resource (scene/resources/resource_format_text.cpp:114)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: res://data/npc/cast/elder_wei.tres:128 - Parse Error: .
+   at: _printerr (scene/resources/resource_format_text.cpp:41)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Failed loading resource: res://data/npc/cast/elder_wei.tres.
+   at: _load (core/io/resource_loader.cpp:317)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+WARNING: NpcCatalog: skipped 'res://data/npc/cast/elder_wei.tres', which is not an NpcDef
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:99)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: NpcApi.spawn: catalog ships no npc 'elder_wei'
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] spawn (res://src/modules/npc/api.gd:158)
+       [1] test_attaching_after_a_save_reports_the_roster_size_to_the_subscriber (res://tests/app/test_npc_event_subscribers.gd:178)
+       [2] _initialize (res://tests/run_tests.gd:118)
+ERROR: Condition "!int_resources.has(id)" is true. Returning: ERR_INVALID_PARAMETER
+   at: _parse_sub_resource (scene/resources/resource_format_text.cpp:114)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: res://data/npc/cast/elder_wei.tres:128 - Parse Error: .
+   at: _printerr (scene/resources/resource_format_text.cpp:41)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Failed loading resource: res://data/npc/cast/elder_wei.tres.
+   at: _load (core/io/resource_loader.cpp:317)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+WARNING: NpcCatalog: skipped 'res://data/npc/cast/elder_wei.tres', which is not an NpcDef
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:99)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Condition "!int_resources.has(id)" is true. Returning: ERR_INVALID_PARAMETER
+   at: _parse_sub_resource (scene/resources/resource_format_text.cpp:114)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: res://data/npc/cast/elder_wei.tres:128 - Parse Error: .
+   at: _printerr (scene/resources/resource_format_text.cpp:41)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Failed loading resource: res://data/npc/cast/elder_wei.tres.
+   at: _load (core/io/resource_loader.cpp:317)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+WARNING: NpcCatalog: skipped 'res://data/npc/cast/elder_wei.tres', which is not an NpcDef
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:99)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Condition "!int_resources.has(id)" is true. Returning: ERR_INVALID_PARAMETER
+   at: _parse_sub_resource (scene/resources/resource_format_text.cpp:114)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: res://data/npc/cast/elder_wei.tres:128 - Parse Error: .
+   at: _printerr (scene/resources/resource_format_text.cpp:41)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Failed loading resource: res://data/npc/cast/elder_wei.tres.
+   at: _load (core/io/resource_loader.cpp:317)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+WARNING: NpcCatalog: skipped 'res://data/npc/cast/elder_wei.tres', which is not an NpcDef
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:99)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Condition "!int_resources.has(id)" is true. Returning: ERR_INVALID_PARAMETER
+   at: _parse_sub_resource (scene/resources/resource_format_text.cpp:114)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: res://data/npc/cast/elder_wei.tres:128 - Parse Error: .
+   at: _printerr (scene/resources/resource_format_text.cpp:41)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Failed loading resource: res://data/npc/cast/elder_wei.tres.
+   at: _load (core/io/resource_loader.cpp:317)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+WARNING: NpcCatalog: skipped 'res://data/npc/cast/elder_wei.tres', which is not an NpcDef
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:99)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Condition "!int_resources.has(id)" is true. Returning: ERR_INVALID_PARAMETER
+   at: _parse_sub_resource (scene/resources/resource_format_text.cpp:114)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: res://data/npc/cast/elder_wei.tres:128 - Parse Error: .
+   at: _printerr (scene/resources/resource_format_text.cpp:41)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Failed loading resource: res://data/npc/cast/elder_wei.tres.
+   at: _load (core/io/resource_loader.cpp:317)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+WARNING: NpcCatalog: skipped 'res://data/npc/cast/elder_wei.tres', which is not an NpcDef
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:99)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Condition "!int_resources.has(id)" is true. Returning: ERR_INVALID_PARAMETER
+   at: _parse_sub_resource (scene/resources/resource_format_text.cpp:114)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: res://data/npc/cast/elder_wei.tres:128 - Parse Error: .
+   at: _printerr (scene/resources/resource_format_text.cpp:41)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Failed loading resource: res://data/npc/cast/elder_wei.tres.
+   at: _load (core/io/resource_loader.cpp:317)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+WARNING: NpcCatalog: skipped 'res://data/npc/cast/elder_wei.tres', which is not an NpcDef
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:99)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Condition "!int_resources.has(id)" is true. Returning: ERR_INVALID_PARAMETER
+   at: _parse_sub_resource (scene/resources/resource_format_text.cpp:114)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: res://data/npc/cast/elder_wei.tres:128 - Parse Error: .
+   at: _printerr (scene/resources/resource_format_text.cpp:41)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Failed loading resource: res://data/npc/cast/elder_wei.tres.
+   at: _load (core/io/resource_loader.cpp:317)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+WARNING: NpcCatalog: skipped 'res://data/npc/cast/elder_wei.tres', which is not an NpcDef
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:99)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Condition "!int_resources.has(id)" is true. Returning: ERR_INVALID_PARAMETER
+   at: _parse_sub_resource (scene/resources/resource_format_text.cpp:114)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: res://data/npc/cast/elder_wei.tres:128 - Parse Error: .
+   at: _printerr (scene/resources/resource_format_text.cpp:41)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Failed loading resource: res://data/npc/cast/elder_wei.tres.
+   at: _load (core/io/resource_loader.cpp:317)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+WARNING: NpcCatalog: skipped 'res://data/npc/cast/elder_wei.tres', which is not an NpcDef
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:99)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Condition "!int_resources.has(id)" is true. Returning: ERR_INVALID_PARAMETER
+   at: _parse_sub_resource (scene/resources/resource_format_text.cpp:114)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: res://data/npc/cast/elder_wei.tres:128 - Parse Error: .
+   at: _printerr (scene/resources/resource_format_text.cpp:41)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Failed loading resource: res://data/npc/cast/elder_wei.tres.
+   at: _load (core/io/resource_loader.cpp:317)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+WARNING: NpcCatalog: skipped 'res://data/npc/cast/elder_wei.tres', which is not an NpcDef
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:99)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Condition "!int_resources.has(id)" is true. Returning: ERR_INVALID_PARAMETER
+   at: _parse_sub_resource (scene/resources/resource_format_text.cpp:114)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: res://data/npc/cast/elder_wei.tres:128 - Parse Error: .
+   at: _printerr (scene/resources/resource_format_text.cpp:41)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Failed loading resource: res://data/npc/cast/elder_wei.tres.
+   at: _load (core/io/resource_loader.cpp:317)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+WARNING: NpcCatalog: skipped 'res://data/npc/cast/elder_wei.tres', which is not an NpcDef
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:99)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Condition "!int_resources.has(id)" is true. Returning: ERR_INVALID_PARAMETER
+   at: _parse_sub_resource (scene/resources/resource_format_text.cpp:114)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: res://data/npc/cast/elder_wei.tres:128 - Parse Error: .
+   at: _printerr (scene/resources/resource_format_text.cpp:41)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: Failed loading resource: res://data/npc/cast/elder_wei.tres.
+   at: _load (core/io/resource_loader.cpp:317)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:97)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+WARNING: NpcCatalog: skipped 'res://data/npc/cast/elder_wei.tres', which is not an NpcDef
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] load_authored (res://src/modules/npc/npc_catalog.gd:99)
+       [1] setup (res://tests/app/test_npc_event_subscribers.gd:56)
+       [2] _initialize (res://tests/run_tests.gd:93)
+ERROR: res://tests/app/test_npc_event_subscribers.gd :: the roster no longer contains him and the subscriber knows he left: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_npc_event_subscribers.gd :: the subscriber heard both restores and counts them: expected 2, got 1
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_npc_event_subscribers.gd :: and the envelope answers the same question in one call: expected 2, got 1
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: String formatting error: not all arguments converted during string formatting.
+   at: validated_evaluate (core/variant/variant_op.h:770)
+   GDScript backtrace (most recent call first):
+       [0] test_event_ids_are_ordered_by_string_value_and_not_by_load_order (res://tests/modules/event/test_event_catalog_invariants.gd:166)
+       [1] _initialize (res://tests/run_tests.gd:118)
+ERROR: String formatting error: not all arguments converted during string formatting.
+   at: validated_evaluate (core/variant/variant_op.h:770)
+   GDScript backtrace (most recent call first):
+       [0] test_the_order_is_the_string_order_not_the_order_defs_were_admitted_in (res://tests/modules/event/test_event_catalog_no_destruction.gd:191)
+       [1] _initialize (res://tests/run_tests.gd:118)
+ERROR: String formatting error: not all arguments converted during string formatting.
+   at: validated_evaluate (core/variant/variant_op.h:770)
+   GDScript backtrace (most recent call first):
+       [0] test_two_independent_reloads_of_one_tree_return_the_same_ids_in_the_same_order (res://tests/modules/event/test_event_catalog_no_destruction.gd:231)
+       [1] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+   at: test_a_conflict_event_delegates_resolution_to_the_nation_module (res://tests/modules/event/test_event_ledger.gd:63)
+   GDScript backtrace (most recent call first):
+       [0] test_a_conflict_event_delegates_resolution_to_the_nation_module (res://tests/modules/event/test_event_ledger.gd:63)
+       [1] _initialize (res://tests/run_tests.gd:118)
+fail 11 script error(s) aborted a test mid-function; those tests reported no failure, so the run above is incomplete
+warn 5 script(s) failed to LOAD; the errors above are mostly their dependants:
+warn   res://src/modules/npc/npc_minor_composer.gd
+warn   res://src/modules/npc/npc_aliveness.gd
+warn   res://src/modules/npc/npc_read_model.gd
+warn   res://src/modules/npc/api.gd
+warn   res://tests/app/test_npc_event_subscribers.gd
+warn SCRIPT ERROR: Parse Error: Cannot call non-static function "_name()" from the static function "compose()".
+warn SCRIPT ERROR: Parse Error: Cannot call non-static function "_manner()" from the static function "compose()".
+warn SCRIPT ERROR: Parse Error: Cannot call non-static function "_activity()" from the static function "compose()".
+warn SCRIPT ERROR: Parse Error: Cannot call non-static function "_opinion()" from the static function "compose()".
+warn SCRIPT ERROR: Parse Error: Cannot call non-static function "_tell()" from the static function "compose()".
+warn SCRIPT ERROR: Parse Error: Cannot infer the type of "span" variable because the value doesn't have a set type.
+warn SCRIPT ERROR: Parse Error: The variable type is being inferred from a Variant value, so it will be typed as Variant. (Warning treated as error.)
+warn SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+warn SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+warn SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+warn ... and 1 more
+$ C:\Users\NeneScarlet\AppData\Local\Microsoft\WinGet\Packages\GodotEngine.GodotEngine_Microsoft.Winget.Source_8wekyb3d8bbwe\Godot_v4.7.2-stable_win64_console.exe --headless --path D:\Works\source\chaos-world\game --import --log-file D:\Works\source\chaos-world\build\logs\171436-80708-1-run.log
+$ C:\Users\NeneScarlet\AppData\Local\Microsoft\WinGet\Packages\GodotEngine.GodotEngine_Microsoft.Winget.Source_8wekyb3d8bbwe\Godot_v4.7.2-stable_win64_console.exe --headless --path D:\Works\source\chaos-world\game -s res://tests/run_tests.gd --log-file D:\Works\source\chaos-world\build\logs\171442-80708-2-run.log -- --suite event
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Floors: 0 of 133 test(s) ran under a declared expect_assertions() floor; the rest are covered only by the SCRIPT ERROR scan in tools/test.py, which catches an abort without naming the test
+Results: 834 passed, 3 failed (15 suite(s))

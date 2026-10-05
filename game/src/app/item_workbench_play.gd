@@ -254,10 +254,25 @@ func world_summary() -> Dictionary:
 func poll_death() -> Dictionary:
 	if _death == null or _actor == null:
 		return {}
-	if _death_armed != String(_actor.id):
+	# ## Armed on a body that has ALREADY been watched once, never on a body whose first
+	# ## watch this is
+	#
+	# The once-rule used to arm HERE, on the first poll after an adoption: `_ready` and
+	# `adopt_actor` both set `_death_armed = ""`, so the first `poll_death` of every body
+	# only recorded the id and returned `{}`. The game survived it because `_process`
+	# polls every frame and arms on frame one; a caller that kills a body and polls ONCE
+	# got the arming frame instead of the death — `test_creation_play_wiring.gd::poll_death`
+	# and its `_rebody()` helper were exactly that caller, and 20 cases failed on it.
+	#
+	# So arming is keyed on the id having been WATCHED, not on it being the current one:
+	# the first poll of a body asks `is_dead` and fires on it. A poll that finds a live
+	# body re-arms, so the once-rule still holds and a guardian heal (which leaves the
+	# body standing) cannot make the same wound fire twice.
+	if _death_armed != String(_actor.id) and not _death_armed.is_empty():
 		_death_armed = String(_actor.id)
 		return {}
 	if not _death.is_dead(_actor):
+		_death_armed = String(_actor.id)
 		return {}
 	_last_death = _death.resolve(_actor)
 	# Re-arm whatever stands now, so a guardian death does not re-fire next frame and a rebirth

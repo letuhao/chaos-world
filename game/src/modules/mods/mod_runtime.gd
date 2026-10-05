@@ -17,7 +17,9 @@ extends RefCounted
 ##   modules: ModuleRegistry.order() — {ok, order, reason, detail}
 ##   screens: Array[{id, scene_path, label}]
 ##   attach_hooks: Array[{phase, callable}]
-##   subscriptions: Array[{event_bus, event_name, callable}]
+##   subscriptions: Array[{event_bus, event_name, callable, mod_id}] — `mod_id` is
+##     STAMPED from the context, not declared by the mod (ADR 0266): the composition
+##     root reports an unresolvable bus by naming the mod that asked for it.
 static func finalize(contexts: Array, registry: ModuleRegistry) -> Dictionary:
 	var content_roots := {}
 	var screens: Array[Dictionary] = []
@@ -60,6 +62,11 @@ static func finalize(contexts: Array, registry: ModuleRegistry) -> Dictionary:
 						"event_bus": String(row.get("event_bus", "")),
 						"event_name": String(row.get("event_name", "")),
 						"callable": row.get("callable", Callable()),
+						# Stamped here, not declared by the mod (ADR 0266): a subscription the
+						# composition root cannot resolve has to name the mod that asked for
+						# it, and `ctx` is the only place that knows which mod a row came from.
+						# Without it an unknown bus is skipped with no owner to report.
+						"mod_id": ctx.mod_id,
 					}
 				)
 			)

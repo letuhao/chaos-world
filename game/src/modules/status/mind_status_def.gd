@@ -232,13 +232,24 @@ func share_per_pulse() -> float:
 	return maxf(0.0, _float_of(payload.get(KEY_SHARE, 0.0)))
 
 
-## What ONE projection of this channel costs the target's composure, as a
-## multiplier on the projection stat. `0.0` for a `control`, and the number the
-## expression track is balanced on: it is in DATA because `MindExpression` is a
-## module that may not own a balance constant, and because the two channels must
-## be priced independently — one is a share of `will`, the other of
-## `mental_clarity`, and a single coefficient would have forced one to be read
-## against the wrong attribute.
+## What ONE projection of this channel costs the target's composure, as the share
+## of the `mind_composure` POOL that one point of projection takes. `0.0` for a
+## `control`, and the number the expression track is balanced on: it is in DATA
+## because `MindExpression` is a module that may not own a balance constant, and
+## because the two channels must be priced independently — one is a share of `will`,
+## the other of `mental_clarity`, and a single coefficient would have forced one to
+## be read against the wrong attribute.
+##
+## ## IT IS A SHARE OF THE POOL, NOT A SHARE OF A RATE — which is why it is not
+## ## `_share`-clamped and why the gate refuses it above `1.0`
+##
+## The composure pool is an ABSOLUTE reserve of `100.0` points while `projection` is a
+## mastery RATE, so the quantity that moves the pool has to be expressed in the
+## pool's own currency: this number is points-of-pool per point-of-projection. A value
+## above `1.0` would be a projection taking more than the whole reserve on every beat,
+## so `_share`'s `[0, 1]` clamp would hide exactly the authoring that matters and
+## `problems()` refuses it by name instead. `harm < 1.0` is the guarantee a projection
+## can never spend the entire pool through, whatever the attacker's mastery reaches.
 func harm() -> float:
 	return maxf(0.0, _float_of(payload.get(KEY_HARM, 0.0)))
 
@@ -535,6 +546,26 @@ func _pairing_problems() -> Array[String]:
 			(
 				"a composure must author a positive recovery, or the projection it answers "
 				+ "is a drain with no answer"
+			)
+		)
+	# ## `harm` is a POOL POTENCY, and a share is what it is bounded by
+	#
+	# `harm()` used to be read as a rate multiplied by a fraction, so it was clamped to
+	# `[0, 1]` by `_share`. It is neither of those things: it is the share of the
+	# target's `mind_composure` POOL that one point of projection costs, so a value
+	# above `1.0` is not a saturating attack — it is a projection that takes more than
+	# the whole reserve on every beat, which is the expression track's spelling of the
+	# perma-lock. `harm() <= 1.0` is the bound, checked here rather than clamped inside
+	# `harm()` so a `.tres` that misses it is a REFUSED load, matching `floor_resist`
+	# and `headroom` rather than a silently retuned number.
+	if role == ROLE_EXPRESSION and harm() > 1.0:
+		out.append(
+			(
+				("declares harm %.4f, which is a share of the composure POOL and may not " % harm())
+				+ (
+					"exceed 1.0: a projection that takes more than the whole reserve on every "
+					+ "beat is the expression track's perma-lock"
+				)
 			)
 		)
 	return out

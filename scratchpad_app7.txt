@@ -1,0 +1,785 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | Started Registering global classes... (2 steps)[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | ModHookFixture[39m[0m
+[  33% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[92m[ DONE ][39m [1mupdate_scripts_classes[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Loading docks...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+$ C:\Users\NeneScarlet\AppData\Local\Microsoft\WinGet\Packages\GodotEngine.GodotEngine_Microsoft.Winget.Source_8wekyb3d8bbwe\Godot_v4.7.2-stable_win64_console.exe --headless --path D:\Works\source\chaos-world\game --import --log-file D:\Works\source\chaos-world\build\logs\182543-65436-1-run.log
+$ C:\Users\NeneScarlet\AppData\Local\Microsoft\WinGet\Packages\GodotEngine.GodotEngine_Microsoft.Winget.Source_8wekyb3d8bbwe\Godot_v4.7.2-stable_win64_console.exe --headless --path D:\Works\source\chaos-world\game -s res://tests/run_tests.gd --log-file D:\Works\source\chaos-world\build\logs\182556-65436-2-run.log -- --suite tests/app
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+=== ADR 0165: AUTHORED CONTENT vs REALM POWER =========================
+realm power      qi_refining -> primordial_origin : 551.5x
+boss vitality    authored band        : 20.0x
+so the engine's absolute damage outruns the content by 28x
+=======================================================================
+=== ADR 0165: ACTOR-FACING DRIFT =====================================
+spine hits-to-kill: 10.0 at R1 -> 4.0 at R30  (0.40x)
+share hits-to-kill: 18.0 at R1 -> 17.0 at R30  (0.94x)
+--- AUTHORED BOSS VITALITY (share model, unchanged) ---
+engine qi vs a same-realm boss pool: 14.1 percent at R1 -> 2032 percent at R30
+one-press crossover: heaven_immortal (R19) at magnitude 4.3,
+                  transcendent (R27) at magnitude 0.5
+=======================================================================
+PROBE[cpw] catalog_id=-9223371718154778059 destiny_ids=5 fates=21 group_origin=[&"the_chosen_instrument", &"the_one_who_returned", &"the_one_who_stayed"] raw={ "the_chosen_instrument": (res://data/destiny/destinies/the_chosen_instrument.tres):<Resource#-9223371714832889265>, "the_oath_bound": (res://data/destiny/destinies/the_oath_bound.tres):<Resource#-9223371714681894320>, "the_one_who_returned": (res://data/destiny/destinies/the_one_who_returned.tres):<Resource#-9223371714530899375>, "the_one_who_stayed": (res://data/destiny/destinies/the_one_who_stayed.tres):<Resource#-9223371714379904430>, "the_severed": (res://data/destiny/destinies/the_severed.tres):<Resource#-9223371714228909485> } loaded=true
+PROBE[cpw] catalog_id=-9223371718154778059 destiny_ids=5 fates=21 group_origin=[&"the_chosen_instrument", &"the_one_who_returned", &"the_one_who_stayed"] raw={ "the_chosen_instrument": (res://data/destiny/destinies/the_chosen_instrument.tres):<Resource#-9223371714832889265>, "the_oath_bound": (res://data/destiny/destinies/the_oath_bound.tres):<Resource#-9223371714681894320>, "the_one_who_returned": (res://data/destiny/destinies/the_one_who_returned.tres):<Resource#-9223371714530899375>, "the_one_who_stayed": (res://data/destiny/destinies/the_one_who_stayed.tres):<Resource#-9223371714379904430>, "the_severed": (res://data/destiny/destinies/the_severed.tres):<Resource#-9223371714228909485> } loaded=true
+PROBE[cpw] catalog_id=-9223371718154778059 destiny_ids=5 fates=21 group_origin=[&"the_chosen_instrument", &"the_one_who_returned", &"the_one_who_stayed"] raw={ "the_chosen_instrument": (res://data/destiny/destinies/the_chosen_instrument.tres):<Resource#-9223371714832889265>, "the_oath_bound": (res://data/destiny/destinies/the_oath_bound.tres):<Resource#-9223371714681894320>, "the_one_who_returned": (res://data/destiny/destinies/the_one_who_returned.tres):<Resource#-9223371714530899375>, "the_one_who_stayed": (res://data/destiny/destinies/the_one_who_stayed.tres):<Resource#-9223371714379904430>, "the_severed": (res://data/destiny/destinies/the_severed.tres):<Resource#-9223371714228909485> } loaded=true
+PROBE[d] actor=player boot_error=
+PROBE[d] soul_state={ "version": 1, "integrity": 100, "integrity_max": 100, "lives": 3, "lives_max": 3, "incarnation": 0, "origin_id": "", "body_id": "", "difficulty_id": "", "origins": [], "damage": [], "repair": [] }
+PROBE[d] soul={ "integrity": 100, "integrity_max": 100, "lives": 3, "lives_max": 3, "incarnation": 0, "arrival": "", "body_id": "", "difficulty_id": "", "origins": [], "damage_count": 0, "repair_count": 0 }
+PROBE[d] verdict={ "ok": true, "reason": "", "unmet": [], "arrival": "the_walker_back_through_ash" }
+PROBE[d] guardian={ "ok": false, "reason": "no_guardian", "def_id": "" }
+PROBE[d] next_arrival=the_walker_back_through_ash
+PROBE[d] health cur=170.0 max=170.0
+PROBE[d] after kill health=0.0 is_dead=true
+PROBE[d] poll_death={ "ok": true, "reason": "", "died": true, "guardian": "", "damage": 20, "soul": { "integrity": 80, "integrity_max": 100, "lives": 2, "lives_max": 3, "incarnation": 1, "arrival": "the_walker_back_through_ash", "body_id": "player_incarnation_1", "difficulty_id": "", "origins": ["the_walker_back_through_ash"], "damage_count": 1, "repair_count": 0 }, "arrival": "the_walker_back_through_ash", "body_id": "player_incarnation_1", "incarnated": true, "fact": "soul_died", "fact_count": 1, "marks": [&"soul_marked_once"], "ungranted_marks": [] }
+PROBE[d] actor_after=player_incarnation_1
+PROBE[d] arrival_def=(res://data/soul/arrivals/the_one_who_was_carried_out.tres):<Resource#-9223371884886751339>
+PROBE destiny_ids.size=5 ids=[&"the_chosen_instrument", &"the_oath_bound", &"the_one_who_returned", &"the_one_who_stayed", &"the_severed"]
+PROBE fate_ids.size=21 ids=[&"ancestral_debt_unpaid", &"bound_name_called_once", &"debt_carried_forward", &"first_blood_duel", &"heaven_eye_circled_once", &"heaven_s_chosen_instrument", &"heaven_s_warning_unread", &"household_registered_as_heir", &"meridian_cut_at_the_shoulder", &"night_off_the_rotation", &"oath_breaker", &"oath_kept_under_witness", &"oath_of_the_empty_hand", &"one_hundredth_slain", &"reborn_in_a_lesser_vessel", &"remembered_by_the_mountain", &"soul_marked_once", &"soul_marked_thrice", &"soul_marked_twice", &"the_third_man_spared", &"vigil_broken_by_hand"]
+PROBE origins.size=3 ids=[&"the_chosen_instrument", &"the_one_who_returned", &"the_one_who_stayed"]
+PROBE the_chosen_instrument -> id=the_chosen_instrument group=origin
+PROBE the_oath_bound -> id=the_oath_bound group=
+PROBE the_one_who_returned -> id=the_one_who_returned group=origin
+PROBE the_one_who_stayed -> id=the_one_who_stayed group=origin
+PROBE the_severed -> id=the_severed group=
+PROBE DESTINY_ROOT=res://data/destiny/destinies scan=["res://data/destiny/destinies/the_chosen_instrument.tres", "res://data/destiny/destinies/the_oath_bound.tres", "res://data/destiny/destinies/the_one_who_returned.tres", "res://data/destiny/destinies/the_one_who_stayed.tres", "res://data/destiny/destinies/the_severed.tres"]
+PROBE dir_exists=true
+PROBE[before_mount] shared_id=-9223371718154778059 destiny_ids=5 fates=21 origins=[&"the_chosen_instrument", &"the_one_who_returned", &"the_one_who_stayed"]
+PROBE[before_mount] the_chosen_instrument group=origin visibility=revealed
+PROBE[before_mount] the_oath_bound group= visibility=revealed
+PROBE[before_mount] the_one_who_returned group=origin visibility=revealed
+PROBE[before_mount] the_one_who_stayed group=origin visibility=revealed
+PROBE[before_mount] the_severed group= visibility=hidden
+PROBE boot_error=
+PROBE[after_mount] shared_id=-9223371718154778059 destiny_ids=5 fates=21 origins=[&"the_chosen_instrument", &"the_one_who_returned", &"the_one_who_stayed"]
+PROBE[after_mount] the_chosen_instrument group=origin visibility=revealed
+PROBE[after_mount] the_oath_bound group= visibility=revealed
+PROBE[after_mount] the_one_who_returned group=origin visibility=revealed
+PROBE[after_mount] the_one_who_stayed group=origin visibility=revealed
+PROBE[after_mount] the_severed group= visibility=hidden
+PROBE[after_teardown] shared_id=-9223371718154778059 destiny_ids=5 fates=21 origins=[&"the_chosen_instrument", &"the_one_who_returned", &"the_one_who_stayed"]
+PROBE[after_teardown] the_chosen_instrument group=origin visibility=revealed
+PROBE[after_teardown] the_oath_bound group= visibility=revealed
+PROBE[after_teardown] the_one_who_returned group=origin visibility=revealed
+PROBE[after_teardown] the_one_who_stayed group=origin visibility=revealed
+PROBE[after_teardown] the_severed group= visibility=hidden
+PROBE[3] origin=the_chosen_instrument
+PROBE[3] ledger_after_earn={ "version": 1, "fates": { "soul_marked_once": { "source": "soul_arrival:the_walker_back_through_ash", "sequence": 1 } }, "destinies": {  }, "counters": {  }, "history": [{ "kind": "fate", "id": "soul_marked_once", "detail": "soul_arrival:the_walker_back_through_ash", "sequence": 2 }] }
+PROBE[3] has_destiny=false destinies=[]
+PROBE[3] def=the_chosen_instrument group=origin requires_fates=[&"reborn_in_a_lesser_vessel"] requires_destinies=[]
+PROBE[3] earnable=false unmet=[{ "kind": &"fate", "id": "reborn_in_a_lesser_vessel", "required": true, "actual": false, "label": "Requires the fate \'reborn_in_a_lesser_vessel\'" }]
+Floors: 0 of 565 test(s) ran under a declared expect_assertions() floor; the rest are covered only by the SCRIPT ERROR scan in tools/test.py, which catches an abort without naming the test
+Results: 3894 passed, 114 failed (62 suite(s))
+ERROR: 40 RID allocations of type 'P11GodotBody2D' were leaked at exit.
+ERROR: 14 RID allocations of type 'PN18TextServerAdvanced22ShapedTextDataAdvancedE' were leaked at exit.
+ERROR: 1 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit.
+ERROR: res://tests/app/test_arrival_world_mount.gd :: EventApi.available is NON-EMPTY at immortal_court: : expected not 0, got 0
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_arrival_world_mount.gd :: and creation still DRAWS: a new hero is placed, not resumed from a save: expected random, got explicit
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_arrival_world_mount.gd :: the program reports a mounted body: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_arrival_world_mount.gd :: and names the place it stands in: expected not , got 
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_attach_pipeline_boot_wiring.gd :: the manifest hook fired with the actor when its phase ran: expected [&"player"], got []
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_auction_settlement.gd :: the bus is released after the suite: expected 0, got 1
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_beat_director.gd :: the quest sink claimed it: expected QuestBeatHandler, got 
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_beat_director.gd :: the crossing completion is reported by the director: expected ["t_director_road"], got []
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_beat_director.gd :: and the quest waits, because recording is not dispatching: expected [], got ["t_director_road"]
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: Object is locked and can't be freed.
+   at: callp (core/object/object.cpp:787)
+   GDScript backtrace (most recent call first):
+       [0] pop_to_root (res://src/ui/screens/screen_stack.gd:106)
+       [1] navigate_to (res://src/app/item_workbench_app.gd:847)
+       [2] _on_world_map_requested (res://src/app/item_workbench_app.gd:1361)
+       [3] act_world_map (res://src/ui/screens/body_cultivation_panel.gd:693)
+       [4] press (res://tests/ui/seam_harness.gd:321)
+       [5] test_the_body_screen_own_world_map_button_is_a_navigation_door (res://tests/app/test_body_cultivation_reachability.gd:232)
+       [6] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Attempted to free a locked object (calling or emitting).
+   at: ScreenStack.pop_to_root (res://src/ui/screens/screen_stack.gd:106)
+   GDScript backtrace (most recent call first):
+       [0] pop_to_root (res://src/ui/screens/screen_stack.gd:106)
+       [1] navigate_to (res://src/app/item_workbench_app.gd:847)
+       [2] _on_world_map_requested (res://src/app/item_workbench_app.gd:1361)
+       [3] act_world_map (res://src/ui/screens/body_cultivation_panel.gd:693)
+       [4] press (res://tests/ui/seam_harness.gd:321)
+       [5] test_the_body_screen_own_world_map_button_is_a_navigation_door (res://tests/app/test_body_cultivation_reachability.gd:232)
+       [6] _initialize (res://tests/run_tests.gd:118)
+ERROR: res://tests/app/test_brotherhood_oath.gd :: which is BrotherhoodOath — not a test, and not a facade nobody reaches: expected res://src/modules/social/social_brotherhood.gd, got res://src/app/brotherhood_oath_app.gd
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_brotherhood_oath.gd :: sworn: expected accepted, got refused
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_brotherhood_oath.gd :: and the promise is on the ledger exactly once: expected 1, got 0
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_cast_target_wiring.gd :: the row's button was a live control: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_cast_target_wiring.gd :: the press never reached the damage seam: the page was mounted unbound, so `act_cast` refused `no_target` above the pay and `activate` was never called: expected 1, got 0
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_cast_target_wiring.gd :: and it spent the caster's own qi: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_cast_target_wiring.gd :: so the cooldown started, which a refused `no_target` never does: expected false, got true
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_cast_target_wiring.gd :: and it counted as a use: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_cast_target_wiring.gd :: and the page is pointed at the body that replaced the old one: expected not <RefCounted#-9223370747357945457>, got <RefCounted#-9223370747357945457>
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_cast_target_wiring.gd :: a later encounter is aimed again: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_cast_target_wiring.gd :: still exactly twelve, found 11: expected 12, got 11
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_cast_target_wiring.gd :: the seam's descriptor landed: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_cast_target_wiring.gd :: and reports the health the foe lost: expected 18.0, got 0.0
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_cast_target_wiring.gd :: and it carries the engine's figure, not a zero: expected 18.0, got 0.0
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_cast_view_readback_reachable.gd :: still exactly twelve, found 11: expected 12, got 11
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+SCRIPT ERROR: Invalid access to property or key 'mental_defense_cap' on a base object of type 'Resource (CombatTuning)'.
+   at: test_the_obscuring_branch_is_exactly_a_maxf_against_the_saturating_term (res://tests/app/test_combat_boot_mind_kind.gd:239)
+   GDScript backtrace (most recent call first):
+       [0] test_the_obscuring_branch_is_exactly_a_maxf_against_the_saturating_term (res://tests/app/test_combat_boot_mind_kind.gd:239)
+       [1] _initialize (res://tests/run_tests.gd:118)
+ERROR: res://tests/app/test_combat_boot_mind_kind.gd :: a mind technique resolves at the share its own definition authored: expected 0.1, got 1.0
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_combat_boot_mind_kind.gd :: MISSING SEAM: both rows resolved at the same share, so a `.tres` authoring 0.1 and one authoring 1.0 were the same blow — MindDamage.SHARE_KEY was never written by any production caller: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_combat_boot_mind_kind.gd :: mind_still_water.tres resolves at the share it authors, not the tuning default: expected 0.1, got 1.0
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_combat_boot_status_producer.gd :: the status APPLIED: no_request: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_combat_boot_status_producer.gd :: naming the authored id: expected earth_quake, got 
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_combat_boot_status_producer.gd :: and the DEFENDER really carries it: the report is not the only witness: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_combat_boot_status_producer.gd :: the qi builder's context carries the request too: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_combat_boot_status_producer.gd :: REQUEST_KEY rides ctx.data after the shipped builder: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_combat_boot_status_producer.gd :: the first carries the catalogue's earth status: expected earth_quake, got 
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[StringName]".
+   at: mechanism_for_hit (res://src/app/combat_boot.gd:351)
+   GDScript backtrace (most recent call first):
+       [0] mechanism_for_hit (res://src/app/combat_boot.gd:351)
+       [1] test_a_shared_technique_takes_the_installed_one_and_a_dual_takes_its_first_path (res://tests/app/test_combat_reachability.gd:238)
+       [2] _initialize (res://tests/run_tests.gd:118)
+ERROR: res://tests/app/test_combat_reachability.gd :: mind never subtracts health directly: expected 0.0, got 1.0
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_combat_reachability.gd :: carrying turbulence to add to the sea: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_combat_reachability.gd :: and the clarity it costs: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_combat_reachability.gd :: and the defender's sea really did go turbulent: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_combat_reachability.gd :: paying clarity for it — so the erosion landed, not merely travelled: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_combat_reachability.gd :: a SHARED technique names no path and takes the installed mechanism: expected QiDamage, got 
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: String formatting error: not all arguments converted during string formatting.
+   at: validated_evaluate (core/variant/variant_op.h:770)
+   GDScript backtrace (most recent call first):
+       [0] test_authored_boss_vitality_does_not_track_the_realm_power_table (res://tests/app/test_combat_spine_routing.gd:512)
+       [1] _initialize (res://tests/run_tests.gd:118)
+ERROR: res://tests/app/test_conception_production_path.gd :: and it names the wiring gap, so a panel can tell it from a player outcome: expected no_resolver, got not_carried
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+SCRIPT ERROR: Invalid access to property or key 'claim_id' on a base object of type 'Dictionary'.
+   at: test_a_sect_may_take_a_captive_now_rather_than_refusing_no_resolver (res://tests/app/test_economy_boot.gd:239)
+   GDScript backtrace (most recent call first):
+       [0] test_a_sect_may_take_a_captive_now_rather_than_refusing_no_resolver (res://tests/app/test_economy_boot.gd:239)
+       [1] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid access to property or key 'claim_id' on a base object of type 'Dictionary'.
+   at: test_subject_refuses_for_a_released_claim (res://tests/app/test_economy_boot.gd:286)
+   GDScript backtrace (most recent call first):
+       [0] test_subject_refuses_for_a_released_claim (res://tests/app/test_economy_boot.gd:286)
+       [1] _initialize (res://tests/run_tests.gd:118)
+ERROR: res://tests/app/test_economy_boot.gd :: test_subject_refuses_for_a_released_claim asserted nothing
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _assert_ran (res://tests/run_tests.gd:172)
+       [1] _initialize (res://tests/run_tests.gd:119)
+SCRIPT ERROR: Invalid access to property or key 'claim_id' on a base object of type 'Dictionary'.
+   at: test_subject_refuses_when_no_minter_is_installed (res://tests/app/test_economy_boot.gd:299)
+   GDScript backtrace (most recent call first):
+       [0] test_subject_refuses_when_no_minter_is_installed (res://tests/app/test_economy_boot.gd:299)
+       [1] _initialize (res://tests/run_tests.gd:118)
+ERROR: res://tests/app/test_economy_boot.gd :: test_subject_refuses_when_no_minter_is_installed asserted nothing
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _assert_ran (res://tests/run_tests.gd:172)
+       [1] _initialize (res://tests/run_tests.gd:119)
+SCRIPT ERROR: Invalid access to property or key 'claim_id' on a base object of type 'Dictionary'.
+   at: test_the_minter_mints_a_live_body_for_a_held_claim (res://tests/app/test_economy_boot.gd:266)
+   GDScript backtrace (most recent call first):
+       [0] test_the_minter_mints_a_live_body_for_a_held_claim (res://tests/app/test_economy_boot.gd:266)
+       [1] _initialize (res://tests/run_tests.gd:118)
+ERROR: res://tests/app/test_economy_boot.gd :: test_the_minter_mints_a_live_body_for_a_held_claim asserted nothing
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _assert_ran (res://tests/run_tests.gd:172)
+       [1] _initialize (res://tests/run_tests.gd:119)
+ERROR: res://tests/app/test_economy_boot.gd :: a re-install installs a new world rather than keeping the old one: expected 0, got 1
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_economy_boot.gd :: a sect may take custody: already_captive: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_fight_walk_out_whole.gd :: the exchange spent the hero's own pool: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_fight_walk_out_whole.gd :: and the fight is still live to walk away from: expected , got hero_won
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_fight_walk_out_whole.gd :: the fight was lost outright: expected hero_lost, got hero_won
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_fight_walk_out_whole.gd :: the player is NOT carried out — the death seam still has a body: expected 0.0, got 1.0
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_fight_walk_out_whole.gd :: the loss is on the loser's own ledger, exactly as before: expected 1, got 0
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_fight_walk_out_whole.gd :: the fight is still live after one press: expected , got hero_won
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_fight_walk_out_whole.gd :: the verdict spent an edge `change` emits and an assignment to `current` does not: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+SCRIPT ERROR: Invalid type in function '_hunt_once' in base 'RefCounted (test_item_pipeline.gd)'. The Object-derived class of argument 2 (previously freed) is not a subclass of the expected argument class.
+   at: test_the_full_pipeline_walks_every_step_a_player_would (res://tests/app/test_item_pipeline.gd:456)
+   GDScript backtrace (most recent call first):
+       [0] test_the_full_pipeline_walks_every_step_a_player_would (res://tests/app/test_item_pipeline.gd:456)
+       [1] _initialize (res://tests/run_tests.gd:118)
+ERROR: res://tests/app/test_item_pipeline.gd :: and its reward is listed: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_item_pipeline.gd :: with drops the player has not claimed yet: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_item_pipeline.gd :: and the reward panel still lists every drop: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_item_pipeline.gd :: and the encounters moved to the claim ledger the screen counts: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: ScreenRegistry: duplicate screen id 'test_mod_screen' refused
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] register (res://src/ui/screen_registry.gd:26)
+       [1] register_from_contexts (res://src/ui/screen_registry.gd:66)
+       [2] _attach_body_modules (res://src/app/item_workbench_body.gd:337)
+       [3] test_screens_registered_from_contexts (res://tests/app/test_mod_gaps.gd:57)
+       [4] _initialize (res://tests/run_tests.gd:118)
+ERROR: res://tests/app/test_mutation_guards.gd :: extract/insert cycle 0 left the modifier count exactly where it was: expected 47, got 51
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_mutation_guards.gd :: and moved no derived stat, so the contribution applied once, not twice: expected { &"physique": 12.0, &"spirit": 8.0, &"aptitude": 6.0, &"comprehension": 0.0, &"agility": 0.0, &"will": 0.0, &"fortune": 0.0, &"max_health": 170.0, &"max_qi": 116.0, &"max_stamina": 112.0, &"health_regen": 1.2, &"qi_regen": 2.0, &"stamina_regen": 10.0, &"attack_physical": 24.0, &"attack_spiritual": 19.0, &"crit_chance": 0.05, &"crit_damage": 1.5, &"penetration": 4.0, &"attack_speed": 1.0, &"defense_physical": 28.0, &"defense_spiritual": 9.6, &"evasion": 0.0, &"poise": 13.1705554117339, &"status_defense": 0.0, &"move_speed": 100.0, &"cultivation_rate": 1.12, &"qi_absorption": 1.6, &"breakthrough_chance": 0.1, &"dao_heart": 0.0, &"insight_gain": 1.0, &"loot_bonus": 0.0, &"cooldown_reduction": 0.0, &"qi_cost_reduction": 0.006, &"damage_reduction": 0.03, &"element_power_metal": 0.0, &"element_defense_metal": 0.0, &"element_power_wood": 0.0, &"element_defense_wood": 0.0, &"element_power_water": 0.0, &"element_defense_water": 0.0, &"element_power_fire": 0.0, &"element_defense_fire": 0.0, &"element_power_earth": 0.0, &"element_defense_earth": 27.67, &"element_power_lightning": 0.0, &"element_defense_lightning": 0.0, &"element_power_ice": 0.0, &"element_defense_ice": 0.0, &"element_power_wind": 0.0, &"element_defense_wind": 0.0, &"element_power_light": 0.0, &"element_defense_light": 0.0, &"element_power_dark": 0.0, &"element_defense_dark": 0.0, &"element_crit_metal": 0.05, &"element_crit_resist_metal": 0.05, &"element_crit_wood": 0.05662, &"element_crit_resist_wood": 0.05, &"element_crit_water": 0.05, &"element_crit_resist_water": 0.05, &"element_crit_fire": 0.05, &"element_crit_resist_fire": 0.05, &"element_crit_earth": 0.05, &"element_crit_resist_earth": 0.05, &"element_crit_lightning": 0.05, &"element_crit_resist_lightning": 0.05, &"element_crit_ice": 0.05, &"element_crit_resist_ice": 0.05, &"element_crit_wind": 0.06682, &"element_crit_resist_wind": 0.05, &"element_crit_light": 0.05, &"element_crit_resist_light": 0.05, &"element_crit_dark": 0.05, &"element_crit_resist_dark": 0.05, &"element_crit_": 0.07344, &"element_crit_resist_": 0.05, &"element_mastery_wood": 3.31, &"element_mastery_wind": 8.41, &"carry_capacity": 0.0, &"regeneration": 0.0, &"body_cultivation_power": 0.0, &"acupoint_quality": 0.5, &"acupoint_count": 36.0, &"acupoint_blocked_count": 0.0, &"qi_regen_rate": 0.6, &"technique_cost_reduction": 0.0, &"technique_power": 1.0, &"flight_speed": 0.0, &"qi_sense_range": 0.0, &"dantian_capacity": 100.0, &"dantian_quality": 0.5, &"dantian_full": 1.0, &"mental_attack": 0.0, &"mental_defense": 0.0, &"spiritual_sense_range": 60.0, &"mind_focus_chance": 0.05, &"mind_avoidance": 0.0, &"illusion_resistance": 0.0, &"mind_technique_power": 0.0, &"sea_capacity": 100.0, &"mind_status_mastery_slow": 0.0, &"mind_composure_slow": 0.0, &"mind_status_mastery_cost": 0.0, &"mind_composure_cost": 0.0, &"mind_status_mastery_falsify": 0.0, &"mind_composure_falsify": 0.0, &"mind_status_mastery_invert": 0.0, &"mind_composure_invert": 0.0, &"mind_status_mastery_voice": 0.0, &"mind_composure_voice": 0.0, &"mind_status_mastery_intent": 0.0, &"mind_composure_intent": 0.0, &"bloodline_lineage_count": 0.0, &"bloodline_awakened_count": 0.0, &"bloodline_peak_purity": 0.0, &"bloodline_mean_purity": 0.0, &"bloodline_power": 0.0, &"allure": 0.0, &"seduction_resist": 10.0, &"essence_drain": 0.0, &"essence_capacity": 52.0, &"essence_regen": 1.2, &"purity": 1.0, &"yin_yang_balance": 0.0, &"deviation_risk": 0.0, &"dual_cultivation_rate": 1.12, &"qi_transfer_rate": 2.4, &"harmony": 0.0, &"succubus_dominion": 1.0, &"conception_chance": 0.05, &"gestation_speed": 1.26, &"parturition_safety": 0.82, &"offspring_quality": 1.0, &"multiple_birth_chance": 0.02, &"maternal_resilience": 0.12, &"recovery_rate": 1.12, &"social_reputation": 0.0, &"social_trust": 0.0, &"social_reach": 0.0 }, got { &"physique": 12.0, &"spirit": 8.0, &"aptitude": 6.0, &"comprehension": 0.0, &"agility": 0.0, &"will": 0.0, &"fortune": 0.0, &"max_health": 170.0, &"max_qi": 116.0, &"max_stamina": 112.0, &"health_regen": 1.2, &"qi_regen": 2.0, &"stamina_regen": 10.0, &"attack_physical": 43.8, &"attack_spiritual": 44.39, &"crit_chance": 0.05, &"crit_damage": 1.5, &"penetration": 4.0, &"attack_speed": 1.0, &"defense_physical": 28.0, &"defense_spiritual": 9.6, &"evasion": 0.0, &"poise": 13.1705554117339, &"status_defense": 0.0, &"move_speed": 100.0, &"cultivation_rate": 1.12, &"qi_absorption": 1.6, &"breakthrough_chance": 0.1, &"dao_heart": 0.0, &"insight_gain": 1.0, &"loot_bonus": 0.0, &"cooldown_reduction": 0.0, &"qi_cost_reduction": 0.006, &"damage_reduction": 0.03, &"element_power_metal": 25.44, &"element_defense_metal": 0.0, &"element_power_wood": 9.37, &"element_defense_wood": 0.0, &"element_power_water": 0.0, &"element_defense_water": 0.0, &"element_power_fire": 0.0, &"element_defense_fire": 0.0, &"element_power_earth": 0.0, &"element_defense_earth": 27.67, &"element_power_lightning": 0.0, &"element_defense_lightning": 0.0, &"element_power_ice": 0.0, &"element_defense_ice": 0.0, &"element_power_wind": 0.0, &"element_defense_wind": 0.0, &"element_power_light": 0.0, &"element_defense_light": 0.0, &"element_power_dark": 0.0, &"element_defense_dark": 0.0, &"element_crit_metal": 0.05, &"element_crit_resist_metal": 0.05, &"element_crit_wood": 0.05662, &"element_crit_resist_wood": 0.05, &"element_crit_water": 0.05, &"element_crit_resist_water": 0.05, &"element_crit_fire": 0.05, &"element_crit_resist_fire": 0.05, &"element_crit_earth": 0.05, &"element_crit_resist_earth": 0.05, &"element_crit_lightning": 0.05, &"element_crit_resist_lightning": 0.05, &"element_crit_ice": 0.05, &"element_crit_resist_ice": 0.05, &"element_crit_wind": 0.06682, &"element_crit_resist_wind": 0.05, &"element_crit_light": 0.05, &"element_crit_resist_light": 0.05, &"element_crit_dark": 0.05, &"element_crit_resist_dark": 0.05, &"element_crit_": 0.07344, &"element_crit_resist_": 0.05, &"element_mastery_wood": 3.31, &"element_mastery_wind": 8.41, &"carry_capacity": 0.0, &"regeneration": 0.0, &"body_cultivation_power": 0.0, &"acupoint_quality": 0.5, &"acupoint_count": 36.0, &"acupoint_blocked_count": 0.0, &"qi_regen_rate": 0.6, &"technique_cost_reduction": 0.0, &"technique_power": 1.0, &"flight_speed": 0.0, &"qi_sense_range": 0.0, &"dantian_capacity": 100.0, &"dantian_quality": 0.5, &"dantian_full": 1.0, &"mental_attack": 0.0, &"mental_defense": 0.0, &"spiritual_sense_range": 60.0, &"mind_focus_chance": 0.05, &"mind_avoidance": 0.0, &"illusion_resistance": 0.0, &"mind_technique_power": 0.0, &"sea_capacity": 100.0, &"mind_status_mastery_slow": 0.0, &"mind_composure_slow": 0.0, &"mind_status_mastery_cost": 0.0, &"mind_composure_cost": 0.0, &"mind_status_mastery_falsify": 0.0, &"mind_composure_falsify": 0.0, &"mind_status_mastery_invert": 0.0, &"mind_composure_invert": 0.0, &"mind_status_mastery_voice": 0.0, &"mind_composure_voice": 0.0, &"mind_status_mastery_intent": 0.0, &"mind_composure_intent": 0.0, &"bloodline_lineage_count": 0.0, &"bloodline_awakened_count": 0.0, &"bloodline_peak_purity": 0.0, &"bloodline_mean_purity": 0.0, &"bloodline_power": 0.0, &"allure": 0.0, &"seduction_resist": 10.0, &"essence_drain": 0.0, &"essence_capacity": 52.0, &"essence_regen": 1.2, &"purity": 1.0, &"yin_yang_balance": 0.0, &"deviation_risk": 0.0, &"dual_cultivation_rate": 1.12, &"qi_transfer_rate": 2.4, &"harmony": 0.0, &"succubus_dominion": 1.0, &"conception_chance": 0.05, &"gestation_speed": 1.26, &"parturition_safety": 0.82, &"offspring_quality": 1.0, &"multiple_birth_chance": 0.02, &"maternal_resilience": 0.12, &"recovery_rate": 1.12, &"social_reputation": 0.0, &"social_trust": 0.0, &"social_reach": 0.0 }
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_mutation_guards.gd :: extract/insert cycle 1 left the modifier count exactly where it was: expected 47, got 51
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_mutation_guards.gd :: and moved no derived stat, so the contribution applied once, not twice: expected { &"physique": 12.0, &"spirit": 8.0, &"aptitude": 6.0, &"comprehension": 0.0, &"agility": 0.0, &"will": 0.0, &"fortune": 0.0, &"max_health": 170.0, &"max_qi": 116.0, &"max_stamina": 112.0, &"health_regen": 1.2, &"qi_regen": 2.0, &"stamina_regen": 10.0, &"attack_physical": 24.0, &"attack_spiritual": 19.0, &"crit_chance": 0.05, &"crit_damage": 1.5, &"penetration": 4.0, &"attack_speed": 1.0, &"defense_physical": 28.0, &"defense_spiritual": 9.6, &"evasion": 0.0, &"poise": 13.1705554117339, &"status_defense": 0.0, &"move_speed": 100.0, &"cultivation_rate": 1.12, &"qi_absorption": 1.6, &"breakthrough_chance": 0.1, &"dao_heart": 0.0, &"insight_gain": 1.0, &"loot_bonus": 0.0, &"cooldown_reduction": 0.0, &"qi_cost_reduction": 0.006, &"damage_reduction": 0.03, &"element_power_metal": 0.0, &"element_defense_metal": 0.0, &"element_power_wood": 0.0, &"element_defense_wood": 0.0, &"element_power_water": 0.0, &"element_defense_water": 0.0, &"element_power_fire": 0.0, &"element_defense_fire": 0.0, &"element_power_earth": 0.0, &"element_defense_earth": 27.67, &"element_power_lightning": 0.0, &"element_defense_lightning": 0.0, &"element_power_ice": 0.0, &"element_defense_ice": 0.0, &"element_power_wind": 0.0, &"element_defense_wind": 0.0, &"element_power_light": 0.0, &"element_defense_light": 0.0, &"element_power_dark": 0.0, &"element_defense_dark": 0.0, &"element_crit_metal": 0.05, &"element_crit_resist_metal": 0.05, &"element_crit_wood": 0.05662, &"element_crit_resist_wood": 0.05, &"element_crit_water": 0.05, &"element_crit_resist_water": 0.05, &"element_crit_fire": 0.05, &"element_crit_resist_fire": 0.05, &"element_crit_earth": 0.05, &"element_crit_resist_earth": 0.05, &"element_crit_lightning": 0.05, &"element_crit_resist_lightning": 0.05, &"element_crit_ice": 0.05, &"element_crit_resist_ice": 0.05, &"element_crit_wind": 0.06682, &"element_crit_resist_wind": 0.05, &"element_crit_light": 0.05, &"element_crit_resist_light": 0.05, &"element_crit_dark": 0.05, &"element_crit_resist_dark": 0.05, &"element_crit_": 0.07344, &"element_crit_resist_": 0.05, &"element_mastery_wood": 3.31, &"element_mastery_wind": 8.41, &"carry_capacity": 0.0, &"regeneration": 0.0, &"body_cultivation_power": 0.0, &"acupoint_quality": 0.5, &"acupoint_count": 36.0, &"acupoint_blocked_count": 0.0, &"qi_regen_rate": 0.6, &"technique_cost_reduction": 0.0, &"technique_power": 1.0, &"flight_speed": 0.0, &"qi_sense_range": 0.0, &"dantian_capacity": 100.0, &"dantian_quality": 0.5, &"dantian_full": 1.0, &"mental_attack": 0.0, &"mental_defense": 0.0, &"spiritual_sense_range": 60.0, &"mind_focus_chance": 0.05, &"mind_avoidance": 0.0, &"illusion_resistance": 0.0, &"mind_technique_power": 0.0, &"sea_capacity": 100.0, &"mind_status_mastery_slow": 0.0, &"mind_composure_slow": 0.0, &"mind_status_mastery_cost": 0.0, &"mind_composure_cost": 0.0, &"mind_status_mastery_falsify": 0.0, &"mind_composure_falsify": 0.0, &"mind_status_mastery_invert": 0.0, &"mind_composure_invert": 0.0, &"mind_status_mastery_voice": 0.0, &"mind_composure_voice": 0.0, &"mind_status_mastery_intent": 0.0, &"mind_composure_intent": 0.0, &"bloodline_lineage_count": 0.0, &"bloodline_awakened_count": 0.0, &"bloodline_peak_purity": 0.0, &"bloodline_mean_purity": 0.0, &"bloodline_power": 0.0, &"allure": 0.0, &"seduction_resist": 10.0, &"essence_drain": 0.0, &"essence_capacity": 52.0, &"essence_regen": 1.2, &"purity": 1.0, &"yin_yang_balance": 0.0, &"deviation_risk": 0.0, &"dual_cultivation_rate": 1.12, &"qi_transfer_rate": 2.4, &"harmony": 0.0, &"succubus_dominion": 1.0, &"conception_chance": 0.05, &"gestation_speed": 1.26, &"parturition_safety": 0.82, &"offspring_quality": 1.0, &"multiple_birth_chance": 0.02, &"maternal_resilience": 0.12, &"recovery_rate": 1.12, &"social_reputation": 0.0, &"social_trust": 0.0, &"social_reach": 0.0 }, got { &"physique": 12.0, &"spirit": 8.0, &"aptitude": 6.0, &"comprehension": 0.0, &"agility": 0.0, &"will": 0.0, &"fortune": 0.0, &"max_health": 170.0, &"max_qi": 116.0, &"max_stamina": 112.0, &"health_regen": 1.2, &"qi_regen": 2.0, &"stamina_regen": 10.0, &"attack_physical": 43.8, &"attack_spiritual": 44.39, &"crit_chance": 0.05, &"crit_damage": 1.5, &"penetration": 4.0, &"attack_speed": 1.0, &"defense_physical": 28.0, &"defense_spiritual": 9.6, &"evasion": 0.0, &"poise": 13.1705554117339, &"status_defense": 0.0, &"move_speed": 100.0, &"cultivation_rate": 1.12, &"qi_absorption": 1.6, &"breakthrough_chance": 0.1, &"dao_heart": 0.0, &"insight_gain": 1.0, &"loot_bonus": 0.0, &"cooldown_reduction": 0.0, &"qi_cost_reduction": 0.006, &"damage_reduction": 0.03, &"element_power_metal": 25.44, &"element_defense_metal": 0.0, &"element_power_wood": 9.37, &"element_defense_wood": 0.0, &"element_power_water": 0.0, &"element_defense_water": 0.0, &"element_power_fire": 0.0, &"element_defense_fire": 0.0, &"element_power_earth": 0.0, &"element_defense_earth": 27.67, &"element_power_lightning": 0.0, &"element_defense_lightning": 0.0, &"element_power_ice": 0.0, &"element_defense_ice": 0.0, &"element_power_wind": 0.0, &"element_defense_wind": 0.0, &"element_power_light": 0.0, &"element_defense_light": 0.0, &"element_power_dark": 0.0, &"element_defense_dark": 0.0, &"element_crit_metal": 0.05, &"element_crit_resist_metal": 0.05, &"element_crit_wood": 0.05662, &"element_crit_resist_wood": 0.05, &"element_crit_water": 0.05, &"element_crit_resist_water": 0.05, &"element_crit_fire": 0.05, &"element_crit_resist_fire": 0.05, &"element_crit_earth": 0.05, &"element_crit_resist_earth": 0.05, &"element_crit_lightning": 0.05, &"element_crit_resist_lightning": 0.05, &"element_crit_ice": 0.05, &"element_crit_resist_ice": 0.05, &"element_crit_wind": 0.06682, &"element_crit_resist_wind": 0.05, &"element_crit_light": 0.05, &"element_crit_resist_light": 0.05, &"element_crit_dark": 0.05, &"element_crit_resist_dark": 0.05, &"element_crit_": 0.07344, &"element_crit_resist_": 0.05, &"element_mastery_wood": 3.31, &"element_mastery_wind": 8.41, &"carry_capacity": 0.0, &"regeneration": 0.0, &"body_cultivation_power": 0.0, &"acupoint_quality": 0.5, &"acupoint_count": 36.0, &"acupoint_blocked_count": 0.0, &"qi_regen_rate": 0.6, &"technique_cost_reduction": 0.0, &"technique_power": 1.0, &"flight_speed": 0.0, &"qi_sense_range": 0.0, &"dantian_capacity": 100.0, &"dantian_quality": 0.5, &"dantian_full": 1.0, &"mental_attack": 0.0, &"mental_defense": 0.0, &"spiritual_sense_range": 60.0, &"mind_focus_chance": 0.05, &"mind_avoidance": 0.0, &"illusion_resistance": 0.0, &"mind_technique_power": 0.0, &"sea_capacity": 100.0, &"mind_status_mastery_slow": 0.0, &"mind_composure_slow": 0.0, &"mind_status_mastery_cost": 0.0, &"mind_composure_cost": 0.0, &"mind_status_mastery_falsify": 0.0, &"mind_composure_falsify": 0.0, &"mind_status_mastery_invert": 0.0, &"mind_composure_invert": 0.0, &"mind_status_mastery_voice": 0.0, &"mind_composure_voice": 0.0, &"mind_status_mastery_intent": 0.0, &"mind_composure_intent": 0.0, &"bloodline_lineage_count": 0.0, &"bloodline_awakened_count": 0.0, &"bloodline_peak_purity": 0.0, &"bloodline_mean_purity": 0.0, &"bloodline_power": 0.0, &"allure": 0.0, &"seduction_resist": 10.0, &"essence_drain": 0.0, &"essence_capacity": 52.0, &"essence_regen": 1.2, &"purity": 1.0, &"yin_yang_balance": 0.0, &"deviation_risk": 0.0, &"dual_cultivation_rate": 1.12, &"qi_transfer_rate": 2.4, &"harmony": 0.0, &"succubus_dominion": 1.0, &"conception_chance": 0.05, &"gestation_speed": 1.26, &"parturition_safety": 0.82, &"offspring_quality": 1.0, &"multiple_birth_chance": 0.02, &"maternal_resilience": 0.12, &"recovery_rate": 1.12, &"social_reputation": 0.0, &"social_trust": 0.0, &"social_reach": 0.0 }
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_mutation_guards.gd :: extract/insert cycle 2 left the modifier count exactly where it was: expected 47, got 51
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_mutation_guards.gd :: and moved no derived stat, so the contribution applied once, not twice: expected { &"physique": 12.0, &"spirit": 8.0, &"aptitude": 6.0, &"comprehension": 0.0, &"agility": 0.0, &"will": 0.0, &"fortune": 0.0, &"max_health": 170.0, &"max_qi": 116.0, &"max_stamina": 112.0, &"health_regen": 1.2, &"qi_regen": 2.0, &"stamina_regen": 10.0, &"attack_physical": 24.0, &"attack_spiritual": 19.0, &"crit_chance": 0.05, &"crit_damage": 1.5, &"penetration": 4.0, &"attack_speed": 1.0, &"defense_physical": 28.0, &"defense_spiritual": 9.6, &"evasion": 0.0, &"poise": 13.1705554117339, &"status_defense": 0.0, &"move_speed": 100.0, &"cultivation_rate": 1.12, &"qi_absorption": 1.6, &"breakthrough_chance": 0.1, &"dao_heart": 0.0, &"insight_gain": 1.0, &"loot_bonus": 0.0, &"cooldown_reduction": 0.0, &"qi_cost_reduction": 0.006, &"damage_reduction": 0.03, &"element_power_metal": 0.0, &"element_defense_metal": 0.0, &"element_power_wood": 0.0, &"element_defense_wood": 0.0, &"element_power_water": 0.0, &"element_defense_water": 0.0, &"element_power_fire": 0.0, &"element_defense_fire": 0.0, &"element_power_earth": 0.0, &"element_defense_earth": 27.67, &"element_power_lightning": 0.0, &"element_defense_lightning": 0.0, &"element_power_ice": 0.0, &"element_defense_ice": 0.0, &"element_power_wind": 0.0, &"element_defense_wind": 0.0, &"element_power_light": 0.0, &"element_defense_light": 0.0, &"element_power_dark": 0.0, &"element_defense_dark": 0.0, &"element_crit_metal": 0.05, &"element_crit_resist_metal": 0.05, &"element_crit_wood": 0.05662, &"element_crit_resist_wood": 0.05, &"element_crit_water": 0.05, &"element_crit_resist_water": 0.05, &"element_crit_fire": 0.05, &"element_crit_resist_fire": 0.05, &"element_crit_earth": 0.05, &"element_crit_resist_earth": 0.05, &"element_crit_lightning": 0.05, &"element_crit_resist_lightning": 0.05, &"element_crit_ice": 0.05, &"element_crit_resist_ice": 0.05, &"element_crit_wind": 0.06682, &"element_crit_resist_wind": 0.05, &"element_crit_light": 0.05, &"element_crit_resist_light": 0.05, &"element_crit_dark": 0.05, &"element_crit_resist_dark": 0.05, &"element_crit_": 0.07344, &"element_crit_resist_": 0.05, &"element_mastery_wood": 3.31, &"element_mastery_wind": 8.41, &"carry_capacity": 0.0, &"regeneration": 0.0, &"body_cultivation_power": 0.0, &"acupoint_quality": 0.5, &"acupoint_count": 36.0, &"acupoint_blocked_count": 0.0, &"qi_regen_rate": 0.6, &"technique_cost_reduction": 0.0, &"technique_power": 1.0, &"flight_speed": 0.0, &"qi_sense_range": 0.0, &"dantian_capacity": 100.0, &"dantian_quality": 0.5, &"dantian_full": 1.0, &"mental_attack": 0.0, &"mental_defense": 0.0, &"spiritual_sense_range": 60.0, &"mind_focus_chance": 0.05, &"mind_avoidance": 0.0, &"illusion_resistance": 0.0, &"mind_technique_power": 0.0, &"sea_capacity": 100.0, &"mind_status_mastery_slow": 0.0, &"mind_composure_slow": 0.0, &"mind_status_mastery_cost": 0.0, &"mind_composure_cost": 0.0, &"mind_status_mastery_falsify": 0.0, &"mind_composure_falsify": 0.0, &"mind_status_mastery_invert": 0.0, &"mind_composure_invert": 0.0, &"mind_status_mastery_voice": 0.0, &"mind_composure_voice": 0.0, &"mind_status_mastery_intent": 0.0, &"mind_composure_intent": 0.0, &"bloodline_lineage_count": 0.0, &"bloodline_awakened_count": 0.0, &"bloodline_peak_purity": 0.0, &"bloodline_mean_purity": 0.0, &"bloodline_power": 0.0, &"allure": 0.0, &"seduction_resist": 10.0, &"essence_drain": 0.0, &"essence_capacity": 52.0, &"essence_regen": 1.2, &"purity": 1.0, &"yin_yang_balance": 0.0, &"deviation_risk": 0.0, &"dual_cultivation_rate": 1.12, &"qi_transfer_rate": 2.4, &"harmony": 0.0, &"succubus_dominion": 1.0, &"conception_chance": 0.05, &"gestation_speed": 1.26, &"parturition_safety": 0.82, &"offspring_quality": 1.0, &"multiple_birth_chance": 0.02, &"maternal_resilience": 0.12, &"recovery_rate": 1.12, &"social_reputation": 0.0, &"social_trust": 0.0, &"social_reach": 0.0 }, got { &"physique": 12.0, &"spirit": 8.0, &"aptitude": 6.0, &"comprehension": 0.0, &"agility": 0.0, &"will": 0.0, &"fortune": 0.0, &"max_health": 170.0, &"max_qi": 116.0, &"max_stamina": 112.0, &"health_regen": 1.2, &"qi_regen": 2.0, &"stamina_regen": 10.0, &"attack_physical": 43.8, &"attack_spiritual": 44.39, &"crit_chance": 0.05, &"crit_damage": 1.5, &"penetration": 4.0, &"attack_speed": 1.0, &"defense_physical": 28.0, &"defense_spiritual": 9.6, &"evasion": 0.0, &"poise": 13.1705554117339, &"status_defense": 0.0, &"move_speed": 100.0, &"cultivation_rate": 1.12, &"qi_absorption": 1.6, &"breakthrough_chance": 0.1, &"dao_heart": 0.0, &"insight_gain": 1.0, &"loot_bonus": 0.0, &"cooldown_reduction": 0.0, &"qi_cost_reduction": 0.006, &"damage_reduction": 0.03, &"element_power_metal": 25.44, &"element_defense_metal": 0.0, &"element_power_wood": 9.37, &"element_defense_wood": 0.0, &"element_power_water": 0.0, &"element_defense_water": 0.0, &"element_power_fire": 0.0, &"element_defense_fire": 0.0, &"element_power_earth": 0.0, &"element_defense_earth": 27.67, &"element_power_lightning": 0.0, &"element_defense_lightning": 0.0, &"element_power_ice": 0.0, &"element_defense_ice": 0.0, &"element_power_wind": 0.0, &"element_defense_wind": 0.0, &"element_power_light": 0.0, &"element_defense_light": 0.0, &"element_power_dark": 0.0, &"element_defense_dark": 0.0, &"element_crit_metal": 0.05, &"element_crit_resist_metal": 0.05, &"element_crit_wood": 0.05662, &"element_crit_resist_wood": 0.05, &"element_crit_water": 0.05, &"element_crit_resist_water": 0.05, &"element_crit_fire": 0.05, &"element_crit_resist_fire": 0.05, &"element_crit_earth": 0.05, &"element_crit_resist_earth": 0.05, &"element_crit_lightning": 0.05, &"element_crit_resist_lightning": 0.05, &"element_crit_ice": 0.05, &"element_crit_resist_ice": 0.05, &"element_crit_wind": 0.06682, &"element_crit_resist_wind": 0.05, &"element_crit_light": 0.05, &"element_crit_resist_light": 0.05, &"element_crit_dark": 0.05, &"element_crit_resist_dark": 0.05, &"element_crit_": 0.07344, &"element_crit_resist_": 0.05, &"element_mastery_wood": 3.31, &"element_mastery_wind": 8.41, &"carry_capacity": 0.0, &"regeneration": 0.0, &"body_cultivation_power": 0.0, &"acupoint_quality": 0.5, &"acupoint_count": 36.0, &"acupoint_blocked_count": 0.0, &"qi_regen_rate": 0.6, &"technique_cost_reduction": 0.0, &"technique_power": 1.0, &"flight_speed": 0.0, &"qi_sense_range": 0.0, &"dantian_capacity": 100.0, &"dantian_quality": 0.5, &"dantian_full": 1.0, &"mental_attack": 0.0, &"mental_defense": 0.0, &"spiritual_sense_range": 60.0, &"mind_focus_chance": 0.05, &"mind_avoidance": 0.0, &"illusion_resistance": 0.0, &"mind_technique_power": 0.0, &"sea_capacity": 100.0, &"mind_status_mastery_slow": 0.0, &"mind_composure_slow": 0.0, &"mind_status_mastery_cost": 0.0, &"mind_composure_cost": 0.0, &"mind_status_mastery_falsify": 0.0, &"mind_composure_falsify": 0.0, &"mind_status_mastery_invert": 0.0, &"mind_composure_invert": 0.0, &"mind_status_mastery_voice": 0.0, &"mind_composure_voice": 0.0, &"mind_status_mastery_intent": 0.0, &"mind_composure_intent": 0.0, &"bloodline_lineage_count": 0.0, &"bloodline_awakened_count": 0.0, &"bloodline_peak_purity": 0.0, &"bloodline_mean_purity": 0.0, &"bloodline_power": 0.0, &"allure": 0.0, &"seduction_resist": 10.0, &"essence_drain": 0.0, &"essence_capacity": 52.0, &"essence_regen": 1.2, &"purity": 1.0, &"yin_yang_balance": 0.0, &"deviation_risk": 0.0, &"dual_cultivation_rate": 1.12, &"qi_transfer_rate": 2.4, &"harmony": 0.0, &"succubus_dominion": 1.0, &"conception_chance": 0.05, &"gestation_speed": 1.26, &"parturition_safety": 0.82, &"offspring_quality": 1.0, &"multiple_birth_chance": 0.02, &"maternal_resilience": 0.12, &"recovery_rate": 1.12, &"social_reputation": 0.0, &"social_trust": 0.0, &"social_reach": 0.0 }
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_mutation_guards.gd :: extract/insert cycle 3 left the modifier count exactly where it was: expected 47, got 51
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_mutation_guards.gd :: and moved no derived stat, so the contribution applied once, not twice: expected { &"physique": 12.0, &"spirit": 8.0, &"aptitude": 6.0, &"comprehension": 0.0, &"agility": 0.0, &"will": 0.0, &"fortune": 0.0, &"max_health": 170.0, &"max_qi": 116.0, &"max_stamina": 112.0, &"health_regen": 1.2, &"qi_regen": 2.0, &"stamina_regen": 10.0, &"attack_physical": 24.0, &"attack_spiritual": 19.0, &"crit_chance": 0.05, &"crit_damage": 1.5, &"penetration": 4.0, &"attack_speed": 1.0, &"defense_physical": 28.0, &"defense_spiritual": 9.6, &"evasion": 0.0, &"poise": 13.1705554117339, &"status_defense": 0.0, &"move_speed": 100.0, &"cultivation_rate": 1.12, &"qi_absorption": 1.6, &"breakthrough_chance": 0.1, &"dao_heart": 0.0, &"insight_gain": 1.0, &"loot_bonus": 0.0, &"cooldown_reduction": 0.0, &"qi_cost_reduction": 0.006, &"damage_reduction": 0.03, &"element_power_metal": 0.0, &"element_defense_metal": 0.0, &"element_power_wood": 0.0, &"element_defense_wood": 0.0, &"element_power_water": 0.0, &"element_defense_water": 0.0, &"element_power_fire": 0.0, &"element_defense_fire": 0.0, &"element_power_earth": 0.0, &"element_defense_earth": 27.67, &"element_power_lightning": 0.0, &"element_defense_lightning": 0.0, &"element_power_ice": 0.0, &"element_defense_ice": 0.0, &"element_power_wind": 0.0, &"element_defense_wind": 0.0, &"element_power_light": 0.0, &"element_defense_light": 0.0, &"element_power_dark": 0.0, &"element_defense_dark": 0.0, &"element_crit_metal": 0.05, &"element_crit_resist_metal": 0.05, &"element_crit_wood": 0.05662, &"element_crit_resist_wood": 0.05, &"element_crit_water": 0.05, &"element_crit_resist_water": 0.05, &"element_crit_fire": 0.05, &"element_crit_resist_fire": 0.05, &"element_crit_earth": 0.05, &"element_crit_resist_earth": 0.05, &"element_crit_lightning": 0.05, &"element_crit_resist_lightning": 0.05, &"element_crit_ice": 0.05, &"element_crit_resist_ice": 0.05, &"element_crit_wind": 0.06682, &"element_crit_resist_wind": 0.05, &"element_crit_light": 0.05, &"element_crit_resist_light": 0.05, &"element_crit_dark": 0.05, &"element_crit_resist_dark": 0.05, &"element_crit_": 0.07344, &"element_crit_resist_": 0.05, &"element_mastery_wood": 3.31, &"element_mastery_wind": 8.41, &"carry_capacity": 0.0, &"regeneration": 0.0, &"body_cultivation_power": 0.0, &"acupoint_quality": 0.5, &"acupoint_count": 36.0, &"acupoint_blocked_count": 0.0, &"qi_regen_rate": 0.6, &"technique_cost_reduction": 0.0, &"technique_power": 1.0, &"flight_speed": 0.0, &"qi_sense_range": 0.0, &"dantian_capacity": 100.0, &"dantian_quality": 0.5, &"dantian_full": 1.0, &"mental_attack": 0.0, &"mental_defense": 0.0, &"spiritual_sense_range": 60.0, &"mind_focus_chance": 0.05, &"mind_avoidance": 0.0, &"illusion_resistance": 0.0, &"mind_technique_power": 0.0, &"sea_capacity": 100.0, &"mind_status_mastery_slow": 0.0, &"mind_composure_slow": 0.0, &"mind_status_mastery_cost": 0.0, &"mind_composure_cost": 0.0, &"mind_status_mastery_falsify": 0.0, &"mind_composure_falsify": 0.0, &"mind_status_mastery_invert": 0.0, &"mind_composure_invert": 0.0, &"mind_status_mastery_voice": 0.0, &"mind_composure_voice": 0.0, &"mind_status_mastery_intent": 0.0, &"mind_composure_intent": 0.0, &"bloodline_lineage_count": 0.0, &"bloodline_awakened_count": 0.0, &"bloodline_peak_purity": 0.0, &"bloodline_mean_purity": 0.0, &"bloodline_power": 0.0, &"allure": 0.0, &"seduction_resist": 10.0, &"essence_drain": 0.0, &"essence_capacity": 52.0, &"essence_regen": 1.2, &"purity": 1.0, &"yin_yang_balance": 0.0, &"deviation_risk": 0.0, &"dual_cultivation_rate": 1.12, &"qi_transfer_rate": 2.4, &"harmony": 0.0, &"succubus_dominion": 1.0, &"conception_chance": 0.05, &"gestation_speed": 1.26, &"parturition_safety": 0.82, &"offspring_quality": 1.0, &"multiple_birth_chance": 0.02, &"maternal_resilience": 0.12, &"recovery_rate": 1.12, &"social_reputation": 0.0, &"social_trust": 0.0, &"social_reach": 0.0 }, got { &"physique": 12.0, &"spirit": 8.0, &"aptitude": 6.0, &"comprehension": 0.0, &"agility": 0.0, &"will": 0.0, &"fortune": 0.0, &"max_health": 170.0, &"max_qi": 116.0, &"max_stamina": 112.0, &"health_regen": 1.2, &"qi_regen": 2.0, &"stamina_regen": 10.0, &"attack_physical": 43.8, &"attack_spiritual": 44.39, &"crit_chance": 0.05, &"crit_damage": 1.5, &"penetration": 4.0, &"attack_speed": 1.0, &"defense_physical": 28.0, &"defense_spiritual": 9.6, &"evasion": 0.0, &"poise": 13.1705554117339, &"status_defense": 0.0, &"move_speed": 100.0, &"cultivation_rate": 1.12, &"qi_absorption": 1.6, &"breakthrough_chance": 0.1, &"dao_heart": 0.0, &"insight_gain": 1.0, &"loot_bonus": 0.0, &"cooldown_reduction": 0.0, &"qi_cost_reduction": 0.006, &"damage_reduction": 0.03, &"element_power_metal": 25.44, &"element_defense_metal": 0.0, &"element_power_wood": 9.37, &"element_defense_wood": 0.0, &"element_power_water": 0.0, &"element_defense_water": 0.0, &"element_power_fire": 0.0, &"element_defense_fire": 0.0, &"element_power_earth": 0.0, &"element_defense_earth": 27.67, &"element_power_lightning": 0.0, &"element_defense_lightning": 0.0, &"element_power_ice": 0.0, &"element_defense_ice": 0.0, &"element_power_wind": 0.0, &"element_defense_wind": 0.0, &"element_power_light": 0.0, &"element_defense_light": 0.0, &"element_power_dark": 0.0, &"element_defense_dark": 0.0, &"element_crit_metal": 0.05, &"element_crit_resist_metal": 0.05, &"element_crit_wood": 0.05662, &"element_crit_resist_wood": 0.05, &"element_crit_water": 0.05, &"element_crit_resist_water": 0.05, &"element_crit_fire": 0.05, &"element_crit_resist_fire": 0.05, &"element_crit_earth": 0.05, &"element_crit_resist_earth": 0.05, &"element_crit_lightning": 0.05, &"element_crit_resist_lightning": 0.05, &"element_crit_ice": 0.05, &"element_crit_resist_ice": 0.05, &"element_crit_wind": 0.06682, &"element_crit_resist_wind": 0.05, &"element_crit_light": 0.05, &"element_crit_resist_light": 0.05, &"element_crit_dark": 0.05, &"element_crit_resist_dark": 0.05, &"element_crit_": 0.07344, &"element_crit_resist_": 0.05, &"element_mastery_wood": 3.31, &"element_mastery_wind": 8.41, &"carry_capacity": 0.0, &"regeneration": 0.0, &"body_cultivation_power": 0.0, &"acupoint_quality": 0.5, &"acupoint_count": 36.0, &"acupoint_blocked_count": 0.0, &"qi_regen_rate": 0.6, &"technique_cost_reduction": 0.0, &"technique_power": 1.0, &"flight_speed": 0.0, &"qi_sense_range": 0.0, &"dantian_capacity": 100.0, &"dantian_quality": 0.5, &"dantian_full": 1.0, &"mental_attack": 0.0, &"mental_defense": 0.0, &"spiritual_sense_range": 60.0, &"mind_focus_chance": 0.05, &"mind_avoidance": 0.0, &"illusion_resistance": 0.0, &"mind_technique_power": 0.0, &"sea_capacity": 100.0, &"mind_status_mastery_slow": 0.0, &"mind_composure_slow": 0.0, &"mind_status_mastery_cost": 0.0, &"mind_composure_cost": 0.0, &"mind_status_mastery_falsify": 0.0, &"mind_composure_falsify": 0.0, &"mind_status_mastery_invert": 0.0, &"mind_composure_invert": 0.0, &"mind_status_mastery_voice": 0.0, &"mind_composure_voice": 0.0, &"mind_status_mastery_intent": 0.0, &"mind_composure_intent": 0.0, &"bloodline_lineage_count": 0.0, &"bloodline_awakened_count": 0.0, &"bloodline_peak_purity": 0.0, &"bloodline_mean_purity": 0.0, &"bloodline_power": 0.0, &"allure": 0.0, &"seduction_resist": 10.0, &"essence_drain": 0.0, &"essence_capacity": 52.0, &"essence_regen": 1.2, &"purity": 1.0, &"yin_yang_balance": 0.0, &"deviation_risk": 0.0, &"dual_cultivation_rate": 1.12, &"qi_transfer_rate": 2.4, &"harmony": 0.0, &"succubus_dominion": 1.0, &"conception_chance": 0.05, &"gestation_speed": 1.26, &"parturition_safety": 0.82, &"offspring_quality": 1.0, &"multiple_birth_chance": 0.02, &"maternal_resilience": 0.12, &"recovery_rate": 1.12, &"social_reputation": 0.0, &"social_trust": 0.0, &"social_reach": 0.0 }
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_mutation_guards.gd :: the host owns a socket source: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_npc_boot.gd :: and the room holds both: expected 2, got 3
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: String formatting error: not all arguments converted during string formatting.
+   at: validated_evaluate (core/variant/variant_op.h:770)
+   GDScript backtrace (most recent call first):
+       [0] test_a_second_strike_raises_the_severity_on_the_same_channel (res://tests/app/test_readout_wound_ledger_wiring.gd:187)
+       [1] _initialize (res://tests/run_tests.gd:118)
+ERROR: Can't add child 'WorldStagePlayer' to '@Node2D@2950', already has a parent '@Node2D@2934'.
+   at: add_child (scene/main/node.cpp:1717)
+   GDScript backtrace (most recent call first):
+       [0] stand_in_the_tree (res://src/app/world_stage.gd:385)
+       [1] stand_restored_in_the_world (res://src/app/item_workbench_body.gd:546)
+       [2] _stand_restored_in_the_world (res://src/app/item_workbench_app.gd:592)
+       [3] restore_actor (res://src/app/item_workbench_app.gd:559)
+       [4] test_a_save_naming_a_place_no_content_backs_still_boots_and_is_refused_by_name (res://tests/app/test_restored_world_mount.gd:347)
+       [5] _initialize (res://tests/run_tests.gd:118)
+ERROR: TimeLadder: world_period_elapsed was offered 8 events over a span of 8 periods, and the event budget is 4. The span says what became possible; the budget says how much of it happens. Refusing rather than truncating (ADR 0173).
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] exceeds_budget (res://src/core/time_ladder.gd:315)
+       [1] _advance (res://src/app/world_pulse.gd:607)
+       [2] advance_periods (res://src/app/world_pulse.gd:379)
+       [3] advance_world (res://src/app/item_workbench_play.gd:102)
+       [4] test_an_exhausted_ladder_is_not_a_refused_restore (res://tests/app/test_restored_world_mount.gd:304)
+       [5] _initialize (res://tests/run_tests.gd:118)
+ERROR: Can't add child 'WorldStagePlayer' to '@Node2D@2983', already has a parent '@Node2D@2967'.
+   at: add_child (scene/main/node.cpp:1717)
+   GDScript backtrace (most recent call first):
+       [0] stand_in_the_tree (res://src/app/world_stage.gd:385)
+       [1] stand_restored_in_the_world (res://src/app/item_workbench_body.gd:546)
+       [2] _stand_restored_in_the_world (res://src/app/item_workbench_app.gd:592)
+       [3] restore_actor (res://src/app/item_workbench_app.gd:559)
+       [4] test_an_exhausted_ladder_is_not_a_refused_restore (res://tests/app/test_restored_world_mount.gd:305)
+       [5] _initialize (res://tests/run_tests.gd:118)
+ERROR: res://tests/app/test_restored_world_mount.gd :: and it is a different body from the first boot's, which was freed: expected not player, got player
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_retreat_costs_world_time.gd :: and the period beat reached the world's own monotone ledger, not only a counter: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_retreat_costs_world_time.gd :: the mounted hero is sworn to the fixture house, so an institution can act on them: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_retreat_costs_world_time.gd :: and the count is the authored division, read through ratio_for rather than a literal: expected 1, got 0
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_retreat_costs_world_time.gd :: a 4380-period span crosses one 'year' and the fold published { &"period": 68, &"day": 5, &"month": 0, &"year": 0, &"era": 0 }. WorldPulse._advance must fold the span into magnitudes_crossed on every advance.: expected 1, got 0
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_retreat_costs_world_time.gd :: and the base row is the span itself, so the two halves cannot disagree about how long this was: expected 4380, got 68
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_retreat_costs_world_time.gd :: the verb's own report and the fold's published reader agree on what was crossed: expected 0, got 1
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+SCRIPT ERROR: Parse Error: Cannot call non-static function "walk()" on the class "DomainSeedWalk" directly. Make an instance instead.
+   at: GDScript::reload (res://src/ui/screens/domain_explore.gd:664)
+   GDScript backtrace (most recent call first):
+       [0] _instantiate_route (res://src/app/item_workbench_app.gd:911)
+       [1] navigate_to (res://src/app/item_workbench_app.gd:850)
+       [2] navigate (res://tests/ui/seam_harness.gd:287)
+       [3] test_every_route_mounts_its_screen_and_makes_it_the_live_screen (res://tests/app/test_screen_reachability.gd:171)
+       [4] _initialize (res://tests/run_tests.gd:118)
+ERROR: Failed to load script "res://src/ui/screens/domain_explore.gd" with error "Parse error".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+   GDScript backtrace (most recent call first):
+       [0] _instantiate_route (res://src/app/item_workbench_app.gd:911)
+       [1] navigate_to (res://src/app/item_workbench_app.gd:850)
+       [2] navigate (res://tests/ui/seam_harness.gd:287)
+       [3] test_every_route_mounts_its_screen_and_makes_it_the_live_screen (res://tests/app/test_screen_reachability.gd:171)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'setup (via call)' in base 'PanelContainer'.
+   at: ItemWorkbenchApp._bind_route_screen (res://src/app/item_workbench_app.gd:997)
+   GDScript backtrace (most recent call first):
+       [0] _bind_route_screen (res://src/app/item_workbench_app.gd:997)
+       [1] _instantiate_route (res://src/app/item_workbench_app.gd:920)
+       [2] navigate_to (res://src/app/item_workbench_app.gd:850)
+       [3] navigate (res://tests/ui/seam_harness.gd:287)
+       [4] test_every_route_mounts_its_screen_and_makes_it_the_live_screen (res://tests/app/test_screen_reachability.gd:171)
+       [5] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'setup (via call)' in base 'PanelContainer'.
+   at: ItemWorkbenchApp._bind_route_screen (res://src/app/item_workbench_app.gd:997)
+   GDScript backtrace (most recent call first):
+       [0] _bind_route_screen (res://src/app/item_workbench_app.gd:997)
+       [1] _instantiate_route (res://src/app/item_workbench_app.gd:920)
+       [2] navigate_to (res://src/app/item_workbench_app.gd:850)
+       [3] navigate (res://tests/ui/seam_harness.gd:287)
+       [4] test_navigating_reports_the_route_it_is_on (res://tests/app/test_screen_reachability.gd:230)
+       [5] _initialize (res://tests/run_tests.gd:118)
+ERROR: res://tests/app/test_screen_reachability.gd :: route 'domain_explore' shows a screen bound to the app's own actor: expected <RefCounted#-9223350936133392049>, got <null>
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_status_clock.gd :: the composition root is the only thing that builds a status loop or ticks one: expected ["src/app/item_workbench_app.gd"], got ["src/app/item_workbench_app.gd", "src/app/item_workbench_fight.gd", "src/app/item_workbench_readout.gd"]
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_world_beat_chain.gd :: no whole period elapsed, so none was pulled: expected 0, got 26285
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_world_beat_chain.gd :: and no beat was offered: expected 0, got 1541
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_world_beat_chain.gd :: nothing elapsed, so nothing was offered: expected 0, got 1541
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_world_beat_chain.gd :: two whole periods are two occurrences: expected 2, got 1543
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_world_beat_chain.gd :: the WHOLE declared span moved — a clamp to 8 here is the silent truncation: expected 1000, got 27286
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_world_beat_chain.gd :: and the report says what MOVED, not what was asked: expected 1000, got 27286
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_world_beat_chain.gd :: a thousand periods cost 1798 beats, bounded by MAX_CHUNKS x EVENT_BUDGET (256): a per-period loop would be 1000: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_world_beat_chain.gd :: and strictly fewer beats than periods — the span says what became possible, the budget what happened: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_world_beat_chain.gd :: and the report says what MOVED, which is the clamped count, not the ask: expected 8, got 27286
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_world_beat_chain.gd :: exactly that many beats were offered, so the ledger matches the report: expected 8, got 1798
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_world_beat_chain.gd :: and nothing accrued: expected 0, got 1798
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_world_beat_chain.gd :: a thousand periods worth of seconds moved the world by nothing: expected 0, got 27286
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_world_beat_chain.gd :: and no beat was offered for any of it: expected 0, got 1798
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_world_beat_chain.gd :: nothing has elapsed yet: expected 0, got 1798
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_world_beat_chain.gd :: by exactly the one period the caller named: expected 1, got 27287
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_world_beat_chain.gd :: the beat was recorded exactly once: expected 1, got 1799
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_world_beat_chain.gd :: a sink claimed the period's beat: expected 1, got 0
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_world_beat_chain.gd :: and the period's own beat, once: expected 1, got 1800
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_world_beat_chain.gd :: the composition root opened it: expected 1, got 0
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_world_beat_chain.gd :: and the world's own period counter moved: expected 1, got 27290
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_world_beat_chain.gd :: and the two facts the module recorded for itself are COUNTED, not re-offered: `WorldFact.record` is monotone, so offering them again would write one occurrence twice: expected 2, got 0
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+SCRIPT ERROR: Invalid call. Nonexistent function 'act_commit (via call)' in base 'PanelContainer (ItemWorkbench)'.
+   at: _commit (res://tests/app/test_world_live_wiring.gd:365)
+   GDScript backtrace (most recent call first):
+       [0] _commit (res://tests/app/test_world_live_wiring.gd:365)
+       [1] test_a_press_accepts_nothing (res://tests/app/test_world_live_wiring.gd:137)
+       [2] _initialize (res://tests/run_tests.gd:118)
+ERROR: res://tests/app/test_world_live_wiring.gd :: test_a_press_accepts_nothing asserted nothing
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _assert_ran (res://tests/run_tests.gd:172)
+       [1] _initialize (res://tests/run_tests.gd:119)
+SCRIPT ERROR: Invalid call. Nonexistent function 'act_commit (via call)' in base 'PanelContainer (ItemWorkbench)'.
+   at: _commit (res://tests/app/test_world_live_wiring.gd:365)
+   GDScript backtrace (most recent call first):
+       [0] _commit (res://tests/app/test_world_live_wiring.gd:365)
+       [1] test_a_press_in_the_world_answers_something_other_than_no_handler (res://tests/app/test_world_live_wiring.gd:100)
+       [2] _initialize (res://tests/run_tests.gd:118)
+ERROR: res://tests/app/test_world_live_wiring.gd :: test_a_press_in_the_world_answers_something_other_than_no_handler asserted nothing
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _assert_ran (res://tests/run_tests.gd:172)
+       [1] _initialize (res://tests/run_tests.gd:119)
+SCRIPT ERROR: Invalid call. Nonexistent function 'act_commit (via call)' in base 'PanelContainer (ItemWorkbench)'.
+   at: _commit (res://tests/app/test_world_live_wiring.gd:365)
+   GDScript backtrace (most recent call first):
+       [0] _commit (res://tests/app/test_world_live_wiring.gd:365)
+       [1] test_every_routed_press_is_recorded_and_one_press_is_one_row (res://tests/app/test_world_live_wiring.gd:160)
+       [2] _initialize (res://tests/run_tests.gd:118)
+ERROR: res://tests/app/test_world_live_wiring.gd :: test_every_routed_press_is_recorded_and_one_press_is_one_row asserted nothing
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _assert_ran (res://tests/run_tests.gd:172)
+       [1] _initialize (res://tests/run_tests.gd:119)
+SCRIPT ERROR: Invalid call. Nonexistent function 'act_commit (via call)' in base 'PanelContainer (ItemWorkbench)'.
+   at: _commit (res://tests/app/test_world_live_wiring.gd:365)
+   GDScript backtrace (most recent call first):
+       [0] _commit (res://tests/app/test_world_live_wiring.gd:365)
+       [1] test_pressing_a_map_node_travels_the_hero (res://tests/app/test_world_live_wiring.gd:214)
+       [2] _initialize (res://tests/run_tests.gd:118)
+ERROR: res://tests/app/test_world_live_wiring.gd :: test_pressing_a_map_node_travels_the_hero asserted nothing
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _assert_ran (res://tests/run_tests.gd:172)
+       [1] _initialize (res://tests/run_tests.gd:119)
+SCRIPT ERROR: Invalid call. Nonexistent function 'act_commit (via call)' in base 'PanelContainer (ItemWorkbench)'.
+   at: _commit (res://tests/app/test_world_live_wiring.gd:365)
+   GDScript backtrace (most recent call first):
+       [0] _commit (res://tests/app/test_world_live_wiring.gd:365)
+       [1] test_the_body_is_remounted_rather_than_telecopied (res://tests/app/test_world_live_wiring.gd:288)
+       [2] _initialize (res://tests/run_tests.gd:118)
+ERROR: res://tests/app/test_world_live_wiring.gd :: test_the_body_is_remounted_rather_than_telecopied asserted nothing
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _assert_ran (res://tests/run_tests.gd:172)
+       [1] _initialize (res://tests/run_tests.gd:119)
+SCRIPT ERROR: Invalid call. Nonexistent function 'act_commit (via call)' in base 'PanelContainer (ItemWorkbench)'.
+   at: _commit (res://tests/app/test_world_live_wiring.gd:365)
+   GDScript backtrace (most recent call first):
+       [0] _commit (res://tests/app/test_world_live_wiring.gd:365)
+       [1] test_the_routed_press_log_is_bounded (res://tests/app/test_world_live_wiring.gd:189)
+       [2] _initialize (res://tests/run_tests.gd:118)
+ERROR: res://tests/app/test_world_live_wiring.gd :: test_the_routed_press_log_is_bounded asserted nothing
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _assert_ran (res://tests/run_tests.gd:172)
+       [1] _initialize (res://tests/run_tests.gd:119)
+SCRIPT ERROR: Invalid call. Nonexistent function 'act_commit (via call)' in base 'PanelContainer (ItemWorkbench)'.
+   at: _commit (res://tests/app/test_world_live_wiring.gd:365)
+   GDScript backtrace (most recent call first):
+       [0] _commit (res://tests/app/test_world_live_wiring.gd:365)
+       [1] test_travelling_tells_the_event_module_where_the_player_is (res://tests/app/test_world_live_wiring.gd:256)
+       [2] _initialize (res://tests/run_tests.gd:118)
+ERROR: res://tests/app/test_world_live_wiring.gd :: test_travelling_tells_the_event_module_where_the_player_is asserted nothing
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _assert_ran (res://tests/run_tests.gd:172)
+       [1] _initialize (res://tests/run_tests.gd:119)
+ERROR: res://tests/app/test_world_live_wiring.gd :: there is nothing to travel with: expected false, got true
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_world_live_wiring.gd :: and the refusal is named: expected no_mounted_stage, got 
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_world_live_wiring.gd :: and nothing was filed, because no press was ROUTED without an actor: expected {  }, got { "ok": false, "reason": "no_actor", "target": "quest_board", "location_id": "" }
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_world_pulse_open_budget.gd :: and the event BEHIND the refused candidate is the one that opened -- a refusal must not spend the pull's single open: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: the composition root did not offer the arrival screen: already_has_hero — a new player is sent straight to the workbench, so there is no arrival to commit
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] setup (res://tests/app/test_world_stage_arrival_mount.gd:62)
+       [1] _initialize (res://tests/run_tests.gd:93)
+ERROR: the composition root did not offer the arrival screen: already_has_hero — a new player is sent straight to the workbench, so there is no arrival to commit
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] setup (res://tests/app/test_world_stage_arrival_mount.gd:62)
+       [1] _initialize (res://tests/run_tests.gd:93)
+ERROR: the composition root did not offer the arrival screen: already_has_hero — a new player is sent straight to the workbench, so there is no arrival to commit
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] setup (res://tests/app/test_world_stage_arrival_mount.gd:62)
+       [1] _initialize (res://tests/run_tests.gd:93)
+ERROR: the composition root did not offer the arrival screen: already_has_hero — a new player is sent straight to the workbench, so there is no arrival to commit
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] setup (res://tests/app/test_world_stage_arrival_mount.gd:62)
+       [1] _initialize (res://tests/run_tests.gd:93)
+ERROR: res://tests/app/test_world_stage_arrival_mount.gd :: a live arrival screen is bound: expected not <null>, got <null>
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+PROBE frames=1431 row={ "actor_id": "player_offspring", "race": "commonborn", "faction": "", "parent_id": "player", "lineages": {  }, "sequence": 0 }
+PROBE   actor_id = player_offspring (String)
+PROBE   race = commonborn (String)
+PROBE   faction =  (String)
+PROBE   parent_id = player (String)
+PROBE   lineages = {  } (Dictionary)
+PROBE   sequence = 0 (int)
+PROBE key=player_offspring#0
+PROBE stage=3 offspring=1
+PROBE   child id='player_offspring' race='commonborn'
+PROBE     full purity snapshot={ "tideborn": 0.395 }
+ERROR: res://tests/app/test_zz_cpww_probe.gd :: the catalog ships at least one origin: expected not true, got true
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_zz_cpww_probe.gd :: the catalog ships at least one origin: expected not true, got true
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_zz_cpww_probe.gd :: the body that fell held a destiny: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_zz_cpww_probe.gd :: a reborn body is DESTINY-attached: the Fate screen's read is non-empty, not a wiped ledger: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_zz_cpww_probe.gd :: and the bond summary answers for it: expected not false, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/app/test_zz_cpww_probe.gd :: the catalog ships at least one origin: expected not true, got true
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+WARNING: 74 RIDs of type "CanvasItem" were leaked.
+   at: _free_rids (servers/rendering/renderer_canvas_cull.cpp:2735)
+WARNING: 47438 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 115 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+fail 18 script error(s) aborted a test mid-function; those tests reported no failure, so the run above is incomplete
+warn 1 script(s) failed to LOAD; the errors above are mostly their dependants:
+warn   res://src/ui/screens/domain_explore.gd
+warn SCRIPT ERROR: Attempted to free a locked object (calling or emitting).
+warn SCRIPT ERROR: Invalid access to property or key 'mental_defense_cap' on a base object of type 'Resource (CombatTuning)'.
+warn SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[StringName]".
+warn SCRIPT ERROR: Invalid access to property or key 'claim_id' on a base object of type 'Dictionary'.
+warn SCRIPT ERROR: Invalid access to property or key 'claim_id' on a base object of type 'Dictionary'.
+warn SCRIPT ERROR: Invalid access to property or key 'claim_id' on a base object of type 'Dictionary'.
+warn SCRIPT ERROR: Invalid access to property or key 'claim_id' on a base object of type 'Dictionary'.
+warn SCRIPT ERROR: Invalid type in function '_hunt_once' in base 'RefCounted (test_item_pipeline.gd)'. The Object-derived class of argument 2 (previously freed) is not a subclass of the expected argument class.
+warn SCRIPT ERROR: Parse Error: Cannot call non-static function "walk()" on the class "DomainSeedWalk" directly. Make an instance instead.
+warn SCRIPT ERROR: Invalid call. Nonexistent function 'setup (via call)' in base 'PanelContainer'.
+warn ... and 8 more

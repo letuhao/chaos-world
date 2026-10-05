@@ -32,8 +32,10 @@ extends TestCase
 ##   4. `attach` twice is one provider and one contribution while still rewriting the realm
 ##      half, which is the contract that lets ONE attach list serve a fresh build, a restore
 ##      and a body swap (the list the restore defect lived in);
-##   5. `element_defense_<e>` carries no realm multiplier while power does, which is WHY
-##      case 1's power key can survive without the provider and the resistance key cannot.
+##   5. BOTH `element_power_<e>` and `element_defense_<e>` carry the same realm
+##      multiplier — which is what makes ADR 0200's `D/(K+D)` realm-invariant, and what
+##      stops a realm-flat defense half from leaving the elemental share of a qi hit
+##      drifting down the ladder while the offense half rides it.
 
 
 ## A context built directly rather than borrowed from an `Actor`, so "what does the provider
@@ -243,24 +245,32 @@ func test_a_repeated_attach_still_rewrites_the_realm_multiplier() -> void:
 	)
 
 
-# --- 5. a defense magnitude is not yet realm-scaled ------------------------------
+# --- 5. both element halves are realm-scaled magnitudes -------------------------
 
 
-## ADR 0069's reason for splitting the two channels, restated under ADR 0200. Before it,
-## `element_resistance_<e>` was a RATE and took no realm multiplier because scaling a
-## defender's authored resistance by the realm power would make deep-realm qi immunity
-## automatic. ADR 0200 replaces that capped percent with `element_defense_<e>`, an
-## unbounded MAGNITUDE — but this assertion is UNCHANGED, and deliberately so: the id still
-## carries no realm multiplier today, and ADR 0200 lists "every resistance-like half moves
-## onto `RealmScaling.SCALED_STATS`" as a separate, still-open consequence rather than part
-## of the rename. Pinning the CURRENT behavior keeps that move honest: whoever puts the id
-## on the ladder has to come here and say so, rather than finding a test that already agreed.
+## ADR 0200's stated open consequence, LANDED. Before it, `element_resistance_<e>` was a
+## RATE and took no realm multiplier, because ADR 0069's reason was that a rate must never
+## track a magnitude (ADR 0050) and scaling a defender's authored mitigation by 551.46
+## would make deep-realm qi immunity automatic. ADR 0200 replaced that capped percent with
+## `element_defense_<e>`, an unbounded MAGNITUDE, which dissolves the objection: a
+## magnitude is exactly what the ladder SHOULD scale.
 ##
-## This is also the diagnostic for the restore defect. A realm multiplier alone is enough to
-## put `element_power_<e>` on the surface at `0.0`, which is exactly why the power half of
-## that failure looked healthy and the defense half did not — asserted here so the next
-## reader of a half-present element surface knows which half is load-bearing.
-func test_element_defense_carries_no_realm_multiplier_while_power_does() -> void:
+## This assertion was deliberately INVERTED rather than relaxed, because the old one was a
+## barrier marking a known defect: it pinned `element_defense_<e>` as realm-FLAT and said
+## in prose that whoever put it on the ladder "has to come here and say so, rather than
+## finding a test that already agreed". This is that coming here. The defect it was holding
+## the door shut on is measured in
+## `tests/modules/combat_engine/test_cross_mechanism_balance.gd`: with only the offense half
+## on the ladder the elemental fraction of a qi hit read `0.665043 / 0.694266 / 0.704604 /
+## 0.705803` over R1 / R10 / R20 / R30 — a spread of `0.04076025` against a claimed
+## invariance of `0.000001`, and the suite's own printed verdict was
+## `NOT CONSTANT -- FINDING`. `K = defense_divisor_k * element_power_<e>` grew 551.46x while
+## `D = element_defense_<e> / resist_divisor` stood still, so `D/(K+D)` fell toward `0.26`
+## and a deep-realm defender's authored mitigation became numerical noise.
+##
+## The property now asserted is the PAIR, not either half alone: both scale, and by the
+## SAME authored `realm.power`, because a half-scaled pair is exactly the asymmetry.
+func test_both_element_halves_take_the_realm_multiplier() -> void:
 	var ladder := RealmDefaults.ladder()
 	var realms := ladder.realms()
 	assert_eq(realms.is_empty(), false, "the ladder publishes realms to enrol on")
@@ -271,12 +281,24 @@ func test_element_defense_carries_no_realm_multiplier_while_power_does() -> void
 		true,
 		"the deepest realm must scale something, or this case proves nothing (%s)" % deepest.id
 	)
-	var actor := ActorFactory.build(&"rates", {Stat.WILL: 10.0})
+	var actor := ActorFactory.build(&"magnitudes", {Stat.WILL: 10.0})
 	actor.set_affinity(ElementStats.FIRE, 4.0)
 	var defense_before := actor.stats.derived(ElementStats.defense_id(ElementStats.FIRE))
 	var power_before := actor.stats.derived(ElementStats.power_id(ElementStats.FIRE))
 	assert_almost_eq(
 		power_before, 4.0, "a bare factory actor carries no realm multiplier yet", 1e-9
+	)
+	# Non-vacuous on the DEFENSE half specifically. `ElementProvider` contributes
+	# `affinity * 0.5 + will * 0.2`, so a `will` of 10.0 alone would put `2.0` here and a
+	# zero-multiplier assertion would pass on the provider term. This measures the real
+	# published figure and divides the ratio by it rather than assuming a magnitude.
+	assert_eq(
+		defense_before > 0.0,
+		true,
+		(
+			"element_defense_%s is a non-zero magnitude on this actor, or the ratio below is vacuous"
+			% ElementStats.FIRE
+		)
 	)
 
 	ActorFactory.with_qi_cultivation(actor, deepest.id)
@@ -289,13 +311,90 @@ func test_element_defense_carries_no_realm_multiplier_while_power_does() -> void
 	)
 	assert_almost_eq(
 		actor.stats.derived(ElementStats.defense_id(ElementStats.FIRE)),
-		defense_before,
+		defense_before * deepest.power,
 		(
 			(
-				"element_defense_%s is not on the realm ladder yet and takes none: scaling it "
-				+ "by %s is ADR 0200's separate open consequence, not this rename"
+				"element_defense_%s is a magnitude too and takes the SAME multiplier: "
+				+ "K = defense_divisor_k * element_power and D = element_defense / resist_divisor "
+				+ "only cancel while both ride the ladder (realm power %s)"
 			)
 			% [ElementStats.FIRE, deepest.power]
 		),
+		1e-6
+	)
+	# The PAIR is the claim, so assert the pair and not the two halves. If the defense half
+	# were ever quietly moved off the ladder again this is the line that says so, and it
+	# says so as a ratio of the two published magnitudes rather than as a pinned product.
+	var power_ratio := actor.stats.derived(ElementStats.power_id(ElementStats.FIRE)) / power_before
+	var defense_ratio := (
+		actor.stats.derived(ElementStats.defense_id(ElementStats.FIRE)) / defense_before
+	)
+	assert_almost_eq(
+		defense_ratio,
+		power_ratio,
+		"the two halves move by ONE factor, which is what makes D/(K+D) realm-invariant",
 		1e-9
+	)
+
+
+## The reset half of the same contract, and the one a breakthrough exercises: `RealmScaling`
+## clears the shared `realm` source tag WHOLESALE, so a body that breaks through without
+## re-running `apply_realm_modifiers` would keep answering with the realm it left on BOTH
+## halves. Asserted through the exact call order
+## `test_cross_mechanism_balance.gd::_stand_at` documents, because the danger is not the
+## multiplier — it is a stale one surviving on the defense half alone.
+func test_both_element_halves_are_rewritten_after_realm_scaling_clears_the_source() -> void:
+	var realms := RealmDefaults.ladder().realms()
+	var shallow := realms[0] as RealmDef
+	var deepest := realms[realms.size() - 1] as RealmDef
+	# The BARE magnitudes, read before any realm is enrolled: a bare factory actor has no
+	# path, so `apply_realm_modifiers` writes nothing and these are the provider's own
+	# figures. Non-vacuous for the same reason as the case above.
+	var bare := ActorFactory.build(&"bare", {Stat.WILL: 10.0})
+	bare.set_affinity(ElementStats.FIRE, 4.0)
+	var power_bare := bare.stats.derived(ElementStats.power_id(ElementStats.FIRE))
+	var defense_bare := bare.stats.derived(ElementStats.defense_id(ElementStats.FIRE))
+	assert_eq(defense_bare > 0.0, true, "the bare defense magnitude is non-zero to divide by")
+
+	var actor := ActorFactory.build(&"wiped", {Stat.WILL: 10.0})
+	actor.set_affinity(ElementStats.FIRE, 4.0)
+	actor.set_path(PathState.new(PathState.QI, shallow.id))
+	RealmScaling.apply(actor)
+	ElementsApi.apply_realm_modifiers(actor)
+	assert_almost_eq(
+		actor.stats.derived(ElementStats.defense_id(ElementStats.FIRE)),
+		defense_bare * shallow.power,
+		"the defense half carries the shallow realm's multiplier",
+		1e-6
+	)
+
+	# The breakthrough: `RealmScaling.apply` sweeps `realm`-sourced modifiers off BOTH
+	# halves, then the element module re-writes its own. Anything left behind here would be
+	# a stale MULT the defense half kept and the power half lost.
+	actor.set_path(PathState.new(PathState.QI, deepest.id))
+	RealmScaling.apply(actor)
+	assert_almost_eq(
+		actor.stats.derived(ElementStats.power_id(ElementStats.FIRE)),
+		power_bare,
+		"RealmScaling cleared the power half's multiplier rather than rewriting it",
+		1e-9
+	)
+	assert_almost_eq(
+		actor.stats.derived(ElementStats.defense_id(ElementStats.FIRE)),
+		defense_bare,
+		"and it cleared the DEFENSE half's multiplier too, which is what a single source tag means",
+		1e-9
+	)
+	ElementsApi.apply_realm_modifiers(actor)
+	assert_almost_eq(
+		actor.stats.derived(ElementStats.power_id(ElementStats.FIRE)),
+		power_bare * deepest.power,
+		"and the re-write restores the deepest realm on the power half",
+		1e-6
+	)
+	assert_almost_eq(
+		actor.stats.derived(ElementStats.defense_id(ElementStats.FIRE)),
+		defense_bare * deepest.power,
+		"and on the defense half too — neither is left holding a stale multiplier",
+		1e-6
 	)

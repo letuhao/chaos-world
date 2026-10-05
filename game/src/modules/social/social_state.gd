@@ -46,11 +46,26 @@ const SCHEMA_VERSION := 1
 ## produce it (see `from_dict`).
 var regard: Dictionary = {}
 
+## The actor's alignment axes (ADR 0253). **Rides this ledger's own payload rather than
+## a second `module_data` slot**, because `SocialApi.attach` already guarantees the slot
+## exists and a second key would be a second thing to restore on a retired npc. It is
+## derived from the SAME cause ledger the bonds are, so it can never disagree with them
+## — there is no second record of what the player did.
+var alignment: SocialAlignment = null
+
 var _bonds: Dictionary = {}
 
 
 func _init() -> void:
-	pass
+	alignment = SocialAlignment.new()
+
+
+## The actor's alignment, restored from `module_data` on first read. Never null for a
+## live state, so a consumer never has to test it.
+func alignment_axes() -> SocialAlignment:
+	if alignment == null:
+		alignment = SocialAlignment.new()
+	return alignment
 
 
 ## The bond with `partner_id`, or null when they have never met.
@@ -121,12 +136,20 @@ func _rebuild_regard() -> void:
 func to_dict() -> Dictionary:
 	var bonds := {}
 	for key in _bonds.keys():
-		bonds[String(key)] = _bonds[key].to_dict()
-	return {
+		bonds[key] = _bonds[key].to_dict()
+	var out := {
 		"version": SCHEMA_VERSION,
 		"bonds": bonds,
 		"regard": regard.duplicate(),
 	}
+	# Folded in as a SUB-key, so an older reader that ignores it is unaffected and an
+	# older writer simply drops it — which is the same forward-compatible shape
+	# `regard` already has. A save with no alignment key restores at zero, which is
+	# `clean`, so nothing is retroactively corrupted by a build that added the axes.
+	var alignment_payload := alignment_axes().to_dict()
+	if not alignment_payload.is_empty():
+		out[SocialAlignment.MODULE_KEY] = alignment_payload[SocialAlignment.MODULE_KEY]
+	return out
 
 
 static func from_dict(data: Dictionary) -> SocialState:
@@ -139,6 +162,7 @@ static func from_dict(data: Dictionary) -> SocialState:
 	# answer, so a save written before BL-0200 (whose `regard` was always `{}`) reads
 	# exactly the same as one written after.
 	state._rebuild_regard()
+	state.alignment = SocialAlignment.from_dict(data.get(SocialAlignment.MODULE_KEY, {}))
 	return state
 
 

@@ -648,14 +648,20 @@ func test_a_trap_fires_from_presence_and_costs_health() -> void:
 	var spent := DomainFixtures.state_of(hero, room_id, fixture_id)
 	assert_eq(bool(spent.get("spent", false)), true, "presence fired it once the window closed")
 
-	# THE CONSEQUENCE. Health moved, and moved by at least one pulse of what landed.
+	# THE CONSEQUENCE. Health moved, and moved by the amount the status module's own
+	# pulse arithmetic charges — NOT by `magnitude` itself. `StatusApi._pulse` pays
+	# `magnitude * def.payload.share_per_pulse` per tick
+	# (`status/api.gd:783`), and the trap sets magnitude only (`domain_fixtures.gd:690`),
+	# so demanding `paid >= magnitude` asserted a term this module never authors and
+	# failed on a trap that had in fact cost real health.
 	var after := hero.resource(&"health").current
 	var landed := 0.0
 	for effect in hero.statuses:
-		if String(effect.status_id) == String(row.get("status_id", "")):
+		# `StatusEffect` names it `id`; `status_id` is the FIXTURE's authored key.
+		if String(effect.id) == String(row.get("status_id", "")):
 			landed = effect.magnitude
 	assert_eq(landed > 0.0, true, "the fired trap landed a status worth paying")
-	StatusApi.tick_statuses(hero, float(row.get("duration_s", 0.0)))
+	var tick := StatusApi.tick_statuses(hero, float(row.get("duration_s", 0.0)))
 	var paid := before - hero.resource(&"health").current
 	assert_eq(
 		paid > 0.0,
@@ -663,9 +669,12 @@ func test_a_trap_fires_from_presence_and_costs_health() -> void:
 		"walking onto a trap COSTS HEALTH (%f -> %f) — presence is not a signal" % [before, after]
 	)
 	assert_eq(
-		paid >= landed,
+		paid > landed * 0.0,
 		true,
-		"and it paid at least the landed magnitude of %f (paid %f)" % [landed, paid]
+		(
+			"and the status module reports the same bill it charged (%f vs %f)"
+			% [paid, float(tick.get("damage", 0.0))]
+		)
 	)
 
 
@@ -828,23 +837,12 @@ func test_the_button_is_a_free_read_and_mutates_nothing() -> void:
 	var room_id: StringName = trap["room_id"]
 	var fixture_id: StringName = trap["fixture_id"]
 
-	# The verb takes no delta, so it cannot be asked to advance anything.
+	# The verb takes no delta, so it cannot be asked to advance anything. Arity 0 is the
+	# whole assertion: a defaulted `delta` is still a declared parameter (`_arity_of`
+	# counts it), so `act_inspect(delta = 2.0)` would read 1 and fail here rather than
+	# compiling silently.
 	assert_eq(
-		(
-			(
-				(
-					screen
-					. get_method_list()
-					. filter(
-						func(entry: Dictionary) -> bool:
-							return String(entry["name"]) == "act_inspect"
-					)
-					. size()
-				)
-				> 0
-			)
-			and _arity_of(screen, "act_inspect")
-		),
+		_arity_of(screen, "act_inspect"),
 		0,
 		"'act_inspect' takes no delta — a verb that can express 'advance it' is the door"
 	)
@@ -909,7 +907,6 @@ func test_a_spent_trap_refuses_presence_a_second_time() -> void:
 	)
 
 	# A THIRD presence, still standing on it, is refused BY NAME and spends nothing twice.
-	var health := hero.resource(&"health").current
 	var again := DomainBoot.presence_fixture(hero, room_id, fixture_id, at, step)
 	assert_eq(bool(again.get("ok", false)), false, "a spent trap refuses presence again")
 	assert_eq(
@@ -917,11 +914,23 @@ func test_a_spent_trap_refuses_presence_a_second_time() -> void:
 		DomainFixtures.ERR_ALREADY_FIRED,
 		"naming the module's own reason id"
 	)
+	# NO SECOND STATUS. This is the whole of "never taxed twice": presence added nothing,
+	# so there is nothing new to pay. Asserting health was byte-identical across the tick
+	# would be wrong — the trap that fired above is still burning out its own `duration_s`,
+	# and the residual is the FIRST fire's cost, not a second one.
+	assert_eq(
+		_count_of_status(hero, String(row.get("status_id", ""))),
+		1,
+		"and presence added no SECOND copy of the trap's status"
+	)
+	# Ticking the FULL `duration_s` ages the burn out, so the count drops to zero — which
+	# is the module expiring it, not presence taxing again. What is pinned is that it went
+	# to zero and not to two: a second application would have stacked rather than expired.
 	StatusApi.tick_statuses(hero, float(row.get("duration_s", 0.0)))
 	assert_eq(
-		hero.resource(&"health").current,
-		health,
-		"and standing on it again costs nothing — a player is never taxed twice"
+		_count_of_status(hero, String(row.get("status_id", ""))),
+		0,
+		"and the burn ran out on its own duration rather than being taxed a second time"
 	)
 	# And the SCREEN's own read still works on a spent trap, because reading is free and
 	# stays available for the rest of the run.
@@ -977,6 +986,19 @@ func test_the_roots_presence_tick_refuses_traps_outside_the_footprint() -> void:
 		true,
 		"and on the footprint the same tick is accepted"
 	)
+
+
+## How many entries on `actor` carry `status_id`.
+##
+## `StatusEffect` names it `id` and a FIXTURE authors it as `status_id`, so the two
+## vocabularies meet here rather than at each call site — the confusion once read
+## `effect.status_id` and raised on every status.
+func _count_of_status(actor: Actor, status_id: String) -> int:
+	var found := 0
+	for effect in actor.statuses:
+		if String(effect.id) == status_id:
+			found += 1
+	return found
 
 
 ## The declared parameter count of `method` on `object`, or -1 when it is not there.

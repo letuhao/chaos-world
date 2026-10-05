@@ -6,7 +6,7 @@ import re
 from pathlib import Path
 
 from ..common import GAME_DIR, SRC_DIR, TESTS_DIR, fail, ok, warn
-from . import facade_constants, rules
+from . import facade_constants, no_caller_verbs, rules
 
 SOURCE_SUFFIXES = (".gd", ".tscn", ".tres")
 RES_RE = re.compile(r'res://[^"\'\s)]+')
@@ -558,6 +558,23 @@ def run(args) -> int:
     # caller, and a pass that enumerated nothing is a FAILURE, not a pass.
     constants, constant_report = facade_constants.evaluate(SRC_DIR, TESTS_DIR)
     violations.extend(constants)
+    # A published facade VERB no production code calls (ADR 0188). BL-0907 found six
+    # such verbs across `quest` and `event` with no gate that could notice, two of
+    # them consequential: `EventApi.resolve` is the only caller of
+    # `NationApi.resolve_conflict` (DEF-0315) and `EventApi.events` is the module's
+    # bus, so nothing subscribes. The constant guard above cannot see this, and the
+    # boundary detector cannot either — a facade method is a legal declaration. The
+    # pass enumerates five caller shapes (qualified call, bare call, `Callable`
+    # seam, dispatch seam, `ui/` through the facade) because this repo wires every
+    # seam through an indirection, and INC-0012 is the incident for a census that
+    # reported a live trigger as dead.
+    verbs, verb_report = no_caller_verbs.evaluate(
+        SRC_DIR,
+        TESTS_DIR,
+        Path(__file__).resolve().parent / no_caller_verbs.ALLOWLIST_NAME,
+        Path(__file__).resolve().parents[1],
+    )
+    violations.extend(verbs)
     warnings = structural_warnings
     warnings.extend(resource_home_warnings(files))
     # The replacement for the deleted facade-width cap: fan-in, not width.
@@ -573,6 +590,8 @@ def run(args) -> int:
     ok(
         f"boundaries ok ({len(files)} files, {len(registry)} modules, "
         f"{constant_report.facades} facades / {len(constant_report.constants)} constants / "
-        f"{len(constant_report.gated)} gated seams)"
+        f"{len(constant_report.gated)} gated seams / "
+        f"{len(verb_report.published)} published verbs / "
+        f"{len(verb_report.caller_less())} caller-less with {len(verb_report.allowlist)} declared)"
     )
     return 0

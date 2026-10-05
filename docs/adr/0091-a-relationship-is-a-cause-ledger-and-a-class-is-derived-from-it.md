@@ -110,3 +110,50 @@ verb, which is where ADR 0091's "the mirror is the caller's transaction" said it
 
 **The distinct-KIND rule was not weakened to make this work.** `test_a_history_of_nothing_but_oaths_never_reaches_sworn`
 applies six oath causes — all `promotes_to: SWORN` — and the pair still reads `acquaintance`.
+
+### Append (2026-10-05, attraction and pursuit) — ADR 0256. Nothing above is edited.
+
+**Line 36's accepted cost — "`apply_cause` writes one direction only, the mirror is the
+caller's transaction" — was paid a second time, and is now a general case rather than one
+hardcoded act.**
+
+Before ADR 0256 the *entire* NPC→player direction was `BrotherhoodOath` writing
+`accepted_the_oath` to the npc's own ledger (`social_brotherhood.gd:53,232`). A grep of
+`game/src` for `romance|court|suitor|attract|betroth` found prose only, and `NpcDef`
+carried no gender, appearance or attractiveness field, so **no attraction concept existed
+anywhere in the tree.**
+
+- **The mirror is generalised.** `PursuitStance.note_disposition` is the single writer of
+  an NPC's disposition, and `PursuitLedger` carries the seed, the disposition and the claim
+  on the **NPC's own `module_data`**. It holds **no standing** — the regard axis already
+  lives on the `SocialState` bond and is already symmetric by type, so a second copy would
+  be this ADR's line-37 failure in new clothes.
+- **A first impression is SEEDED, not accumulated.** `SocialAttractionSeed` is a field that
+  is written once at meeting and never recomputed, which is the genre anchor's 初见好感
+  mechanic and the thing the owner's "he likes her because she is a beautiful fairy" needs.
+  It reads a **closed key list** (race/bloodline presence tags, clan **standing**, friendly
+  sect) and never standing, clothing, equipment or generation. Clan *wealth* is deliberately
+  absent: it is not a field in this repo, and putting a money number on why a person likes
+  somebody is the economy-gated-affinity trap this ADR's "a total is buyable" argument
+  exists to refuse.
+- **No facade grew.** `SocialApi` and `NpcApi` are both at
+  `rules.MAX_FACADE_PUBLIC_METHODS`, so the pursuit surface is four `social/` collaborators
+  reached from `app/pursuit_app.gd` — ADR 0196's `BrotherhoodOathApp` precedent, not a
+  thirteenth verb.
+- **The distinct-KIND rule still holds, and this is the anti-farm property.** All three
+  courtship causes carry `kind: court`, so six answered courtships are six acts of ONE kind
+  and top out at an `acquaintance` however large the total; **none names a class**, so
+  `shared_brotherhood` remains the only shipped cause carrying `promotes_to`. Pursuit is not
+  a gift-farming bypass and does not weaken the rule to exist.
+- **Refusal remains possible and remains costly**, following the BL-0745 resolution above:
+  the default outcome for an early ask, no RNG, one-shot, and charged as the authored
+  `refused_the_court` (−3.0 / −0.1) against the **player's** bond.
+- **Exclusivity is per-claimer and structural, not global.** `PursuitLedger.claims` is keyed
+  by player id, so one claimer holds one claim by construction; several NPCs may pursue the
+  player at once. Both are argued in ADR 0256, and the reasoning for not choosing the
+  global form is there rather than assumed here.
+- **What this does not settle.** Alignment still does not touch affinity — the reference
+  research named that as the genre anchor's best-documented shortcoming, and it is recorded
+  in the backlog rather than answered inside a feature that does not own the axis. A
+  player-facing pursuit panel is also still unbuilt; `ui/` is a pure consumer and
+  `PursuitApp` is the contract it would render against.

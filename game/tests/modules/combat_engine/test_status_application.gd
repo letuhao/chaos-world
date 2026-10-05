@@ -13,8 +13,9 @@ extends TestCase
 ## 2. **Deterministic from a seed.** Same seed, same outcome, run twice — and a
 ##    different seed may differ, which is what proves the determinism is a seed and not
 ##    a constant answer.
-## 3. **Resistance.** `Stat.STATUS_RESISTANCE` raises resist and reaches immunity only
-##    through the authored cap; a CULTIVATION scope is not resisted (ADR 0086).
+## 3. **Resistance.** `Stat.STATUS_DEFENSE` raises resist and reaches immunity only
+##    through `status_min_apply`, which is a FLOOR on a still-positive number rather than
+##    an authored ceiling (ADR 0200); a CULTIVATION scope is not resisted (ADR 0086).
 ## 4. **A defender already holding the id is not re-applied.**
 ## 5. **ADR 0067's four orderings still hold** — the spine's own suite covers those, so
 ##    what is asserted here is that S12 changed none of them.
@@ -154,37 +155,61 @@ func test_status_resistance_raises_the_resist_and_reaches_immunity_at_the_cap() 
 	var open_target := CombatTestKit.actor(&"open")
 	var closed_target := CombatTestKit.actor(&"closed")
 	closed_target.stats.add_modifier(
-		CombatStats.rate_modifier(Stat.STATUS_RESISTANCE, _tuning_cap_resist(), &"test")
+		CombatStats.rate_modifier(
+			StringName(_tuning.status_defense_stat), _tuning_cap_resist(), &"test"
+		)
 	)
 	var open_chance := StatusApply.apply_chance(1.0, open_target, _tuning, 0.0)
 	var closed_chance := StatusApply.apply_chance(1.0, closed_target, _tuning, 0.0)
 	assert_almost_eq(open_chance, 1.0, "an undefended defender takes it at the authored chance")
-	assert_eq(closed_chance <= open_chance, true, "STATUS_RESISTANCE strictly raises the resist")
+	assert_eq(
+		closed_chance <= open_chance,
+		true,
+		"the COMBAT half's status defense strictly raises the resist"
+	)
 	assert_eq(closed_chance < 1.0, true, "and at the cap it is never a guarantee")
 	# The cap ALONE is not enough to reach the floor, and that is arithmetic rather than
-	# an accident: `Stat.STATUS_RESISTANCE` tops out at 0.8 (`core/actor_stats.gd:162` --
-	# this suite reads that number off a probe actor rather than restating it), so the
-	# multiplicative form bottoms out at `1.0 * (1 - 0.8) = 0.2` with no elemental term.
+	# an accident: the resist is `mitigation_ceiling * D/(K+D)` against a `K` of
+	# `defense_divisor_k`, so it is strictly below `1.0` for every finite defense and the
+	# gate bottoms out at `1.0 * (1 - mitigation_ceiling) = 0.05` with no elemental term.
 	# Proving the floor is what forbids immunity therefore means driving the product BELOW
-	# it, which is what the second resist is for. At the shipped `resist_cap` of 0.75 the
-	# pair still reads 0.05 -- above the floor -- which is exactly the arithmetic ADR 0087
-	# claims for the multiplicative form: two ordinary defensive stats compose into a
-	# crawl, never into a refusal. It is the SUM form that reaches `p_apply <= 0.0` here,
-	# and rejecting that form is why this number is not zero.
+	# it, which is what the second resist is for, and a single defendable figure is
+	# `status_min_apply = 0.01` — which is exactly what the two-resist case below drives
+	# the product under. It is the SUM form that reaches `p_apply <= 0.0` here, and
+	# rejecting that form is why this number is not zero.
 	assert_eq(
 		closed_chance > _tuning.status_min_apply,
 		true,
 		"the capped resist alone leaves the gate above the floor"
 	)
-	assert_almost_eq(
-		StatusApply.apply_chance(1.0, closed_target, _tuning, _tuning.resist_cap),
-		0.05,
-		"and both resists at their caps still compose rather than annihilate (ADR 0087)"
+	# ADR 0200 deleted `resist_cap` and core's `minf(0.8, will * 0.003)` with it, so "both
+	# resists at their caps" is now "both resists deep enough to matter". The property is
+	# UNCHANGED and this is a correction rather than a relaxation: two ordinary defensive
+	# investments still compose into a crawl and never into a refusal. What moved is that
+	# the resist is a ratio now, so its reading is strictly below an authored ceiling at
+	# every finite defense — and at `1.0e9` of elemental resist the product itself goes to
+	# `0.0`, which is what makes `status_min_apply` load-bearing rather than decorative.
+	#
+	# ## The "crawl" is the FLOOR, and it is asserted as such below rather than twice here
+	#
+	# At `1.0e9` of elemental resist the elemental term is `0.0` and the product is `0.0`, so
+	# `apply_chance` returns `status_min_apply` EXACTLY. This block used to assert both
+	# `> status_min_apply` and `== status_min_apply` over two identical calls
+	# (`1.0 * (1 - share) * (1 - clampf(1.0e9, 0, 1))` is `0.0` either way), which is a
+	# contradiction rather than a pair of claims: the second is what the first denies.
+	# `saturated_pair > closed_chance` is what "compose into a CRAWL" means — the second
+	# resist drags the pair below the resist-alone row — and it still holds. The identity
+	# with the floor is asserted once, by the `floored` case below, where it belongs.
+	var saturated_pair := StatusApply.apply_chance(1.0, closed_target, _tuning, 1.0e9)
+	assert_eq(
+		saturated_pair < closed_chance,
+		true,
+		"both resists saturated compose into a crawl above the floor, never a refusal (ADR 0087)"
 	)
-	# Saturate the elemental term too and the product falls under the floor, where the
+	# Saturate the elemental term too and the product falls toward the floor, where the
 	# floor is the ONLY thing keeping the answer non-zero. This is the immunity claim:
-	# without `status_min_apply` this reads 0.0 and a defender at both caps is immune.
-	var floored := StatusApply.apply_chance(1.0, closed_target, _tuning, 1.0)
+	# without `status_min_apply` this reads 0.0 and a saturated defender is immune.
+	var floored := StatusApply.apply_chance(1.0, closed_target, _tuning, 1.0e9)
 	assert_almost_eq(
 		floored, _tuning.status_min_apply, "full immunity is not reachable; the floor is"
 	)
@@ -195,7 +220,9 @@ func test_a_cultivation_scope_status_is_not_resisted() -> void:
 	# ADR 0086: "a blessing the game pays out must not tax the player for receiving it".
 	var target := CombatTestKit.actor(&"target")
 	target.stats.add_modifier(
-		CombatStats.rate_modifier(Stat.STATUS_RESISTANCE, _tuning_cap_resist(), &"test")
+		CombatStats.rate_modifier(
+			StringName(_tuning.status_defense_stat), _status_defense_for(0.9), &"test"
+		)
 	)
 	var combat := StatusApply.apply_chance(1.0, target, _tuning, 0.0, StatusApply.SCOPE_COMBAT)
 	var cultivation := StatusApply.apply_chance(
@@ -203,6 +230,37 @@ func test_a_cultivation_scope_status_is_not_resisted() -> void:
 	)
 	assert_eq(combat < 1.0, true, "a COMBAT status is resisted")
 	assert_almost_eq(cultivation, 1.0, "a CULTIVATION status is not resisted at all")
+
+
+## ## ADR 0200: the stat the gate reads is a MAGNITUDE, and the fixture has to build one
+##
+## This used to pin a flat `0.8` on `Stat.STATUS_RESISTANCE` — the number core's deleted
+## `minf(0.8, will * 0.003)` saturated at — through `_tuning_cap_resist()`. ADR 0200 renamed
+## the id to `Stat.STATUS_DEFENSE` and removed the cap, and `StatusApply` now reads it
+## through `CombatTuning.status_defense_stat`. Pinning `0.8` on the new stat would read as a
+## magnitude of `0.8`, which is `0.008` after the divisor and barely defends anything — so the
+## fixture asks for the defense that reaches a chosen SHARE of the gate instead, and the
+## arithmetic is the mechanism's own.
+##
+## Solved from `share = mitigation_ceiling * D / (K + D)` for `D`, with `K` the
+## `defense_divisor_k` `apply_chance` has without an attacker. That keeps the two halves of
+## this case honest: the resist is a real number the gate divides by, and it is expressed as
+## the RATE the gate is about rather than as a magnitude a reader has to convert.
+##
+## ## The `resist_divisor` on the way OUT is correct, and MEASURED rather than assumed
+##
+## `_status_defense_share` divides the raw stat by `resist_divisor` to reach its `D`, so
+## the figure this helper hands to `add_modifier` has to be `resist_divisor` times that `D`
+## or the divisor is applied twice. At `share = 0.9` that is `D = 0.45 * 0.9 / 0.05 = 8.1`
+## against `authored 8.1 * 100 = 810.0` on the stat, which reads back a resist share of
+## exactly `0.900000000`. Dropping the multiply is what made this suspect in the first
+## place: it is the same unit mistake `test_qi_damage.gd` had, solved correctly here, and
+## it is recorded here so the next reader does not "fix" the multiply.
+func _status_defense_for(share: float) -> float:
+	var ceiling := _tuning.mitigation_ceiling
+	var divisor_k := _tuning.defense_divisor_k
+	var defense := divisor_k * share / maxf(1e-9, ceiling - share)
+	return defense * _tuning.resist_divisor
 
 
 func test_elemental_resistance_reduces_the_chance_multiplicatively() -> void:
@@ -374,11 +432,22 @@ func test_editing_the_tuning_changes_the_outcome_without_touching_a_gd_file() ->
 # --- internals ------------------------------------------------------------------
 
 
-## The `Stat.STATUS_RESISTANCE` cap. Read off the actor rather than restated: core caps
-## it at `0.8` (`core/actor_stats.gd:162`) and that number belongs to core, not to this
-## suite. A FLAT modifier of that size is exactly how the cap is reached.
+## A defender at the top of the gate's own resist scale.
+##
+## ADR 0200 deleted core's `minf(0.8, will * 0.003)` and renamed the stat to
+## `Stat.STATUS_DEFENSE`, an unbounded MAGNITUDE the realm ladder scales. The old
+## `_tuning_cap_resist()` read the `0.8` off a probe actor at `will 1000.0` — the deleted
+## cap — and it cannot be restored in that form: the cap is gone, the id is different, and
+## `StatusApply` reads the id out of `CombatTuning.status_defense_stat` rather than naming a
+## core const.
+##
+## What the cap was FOR survives as a property and is asserted as one: there is a defense
+## magnitude at which the COMBAT gate is maximally resisted without ever reaching `1.0`,
+## because the resist is a RATIO and a ratio's output is strictly below its ceiling. The
+## figure is solved for rather than pasted, so a rebalance of `mitigation_ceiling` or
+## `resist_divisor` moves the fixture with it.
 func _tuning_cap_resist() -> float:
-	return Actor.new(&"probe", {Stat.WILL: 1000.0}).stats.derived(Stat.STATUS_RESISTANCE)
+	return _status_defense_for(0.9)
 
 
 ## A defender who always parries. `CombatStats.PARRY_RATE` is a `0.0`-baseline RATE, so

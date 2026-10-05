@@ -69,10 +69,12 @@ const SEED_PATH_DIRS := ["body_cultivation", "qi_cultivation", "mind_cultivation
 const BUDGET_FIELD := "progress_required"
 
 
-## The rate is a gain at every one of the 30 realms. A flat or falling rate would
+## The rate is a gain at every realm on the ladder. A flat or falling rate would
 ## make a breakthrough worth less the deeper you were, which is how the deep
-## realms used to become free.
-func test_the_rate_rises_at_every_one_of_the_30_realms() -> void:
+## realms used to become free. The count is the LADDER's, not a literal: this suite
+## used to assert `30` here and in the work-budget walk below, so the first realm
+## anyone added turned two honest guards into no-ops at once.
+func test_the_rate_rises_at_every_realm_on_the_ladder() -> void:
 	var previous := 0.0
 	var counted := 0
 	for realm in RealmDefaults.ladder().realms():
@@ -80,7 +82,7 @@ func test_the_rate_rises_at_every_one_of_the_30_realms() -> void:
 		assert_eq(rate > previous, true, "rate rises at %s" % realm.id)
 		previous = rate
 		counted += 1
-	assert_eq(counted, 30, "the whole ladder was walked")
+	assert_eq(counted, RealmDefaults.ladder().size(), "the whole ladder was walked")
 
 
 ## R1 is the neutral rate: it is ordinal 0, so `RATE_STEP^0` is exactly 1.0. If it

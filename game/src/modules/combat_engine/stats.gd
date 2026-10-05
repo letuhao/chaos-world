@@ -37,8 +37,20 @@ extends RefCounted
 
 # --- Offensive vocabulary -----------------------------------------------------
 
-## Reduces the defender's `EVASION` for this attacker. Flat, because `EVASION` is a
-## rate and a rate is contested by subtraction, never by multiplication (ADR 0068).
+## ## ADR 0215. This is the OFFENCE HALF of the hit contest, and it is a MAGNITUDE
+##
+## It was documented as "reduces the defender's `EVASION` … contested by subtraction,
+## never by multiplication (ADR 0068)", and `CombatSpine.landed_chance` computed
+## `1 - (evasion - accuracy) / rate_scale`. That subtraction is the DEFECT ADR 0215
+## exists to remove: an absolute difference of the same quantity, against a constant
+## divisor, saturates as the ladder widens the gap. It is now
+## `accuracy / (accuracy + evasion)` — see [method CombatSpine.landed_chance].
+##
+## The id string is UNCHANGED, because the id was never the defect and renaming it
+## would have silently disowned every shipped `core_evasion`-style option that names it.
+## `Stat.ACCURACY` in `contracts/stat.gd` is the same string and
+## `tests/modules/combat_engine/test_rate_ratio_contest.gd` asserts they are one id
+## rather than two vocabularies.
 const ACCURACY := &"accuracy"
 ## How hard the attacker cuts the defender's elemental guard, as a RATE in the same
 ## `[0, 1]` space as `resist`, so it can be SUBTRACTED from a resistance before the clamp
@@ -78,16 +90,32 @@ const REFLECT_RESIST_DAMAGE := &"reflect.resist.damage"
 ## shield's contribution is `SHIELD_CAPACITY`; this is everything else.
 const ABSORPTION := &"absorption"
 ## Chance, contested against `ACCURACY` / `EVASION`, that an attack is parried (S2).
-## Carved out of the TOP of the would-have-been-a-hit region.
+## ADR 0215: the CONTEST is now `PARRY_RATE / (PARRY_RATE + PARRY_BREAK)` — a ratio of
+## two magnitudes. ADR 0068's `rate_scale` divisor on the `parry.rate` band is GONE, and
+## so is its reason ("a sigmoid returns 0.5 at parity"): the ratio returns `p` and not
+## `0.5`, because the ratio is `p` — `offense / (offense + defence)` IS the share, and at
+## parity that share is `0.5` by definition rather than by an accident of a curve.
+##
+## Carved out of the TOP of the would-have-been-a-hit region, and `PARRY_BREAK` is the
+## answer half — the ADR's yin-yang pair, which ADR 0068 read as "break side is the
+## attacker's, raise side is the defender's" but which it could not USE, because it had
+## no formula to put them in. This file is that formula.
 const PARRY_RATE := &"parry.rate"
 ## Scales `PARRY_RATE` without changing its sign: at zero it reads zero, so a
-## `strength`-only investment still parries 0% rather than a sigmoid's 0.5.
+## `strength`-only investment still parries 0% rather than a sigmoid's 0.5. ADR 0215 does
+## not change this: a `strength` is an AMPLIFIER on the magnitude, not a second contest.
 const PARRY_STRENGTH := &"parry.strength"
 ## What parrying costs the defender: `break` spends poise, `shred` spends the ability
-## to parry again. Both are read by the defensive response, not by the spine.
+## to parry again. ADR 0215 makes `PARRY_BREAK` the DEFENCE half of the parry contest
+## (the `break` side is the attacker's to apply, the `raise` side is the defender's to
+## invest in — the ownership rule is unchanged, the FORM is). `PARRY_SHRED` remains a
+## defensive RESPONSE read by no contest, for `CombatSpine._parry`'s reason: breaking the
+## parry costs the defender poise and re-reads, which has no business inside a band roll
+## that must stay one comparison.
 const PARRY_BREAK := &"parry.break"
 const PARRY_SHRED := &"parry.shred"
-## Block's twin of the four above. Same band, same contest, one vocabulary.
+## Block's twin of the four above. Same band, same contest, one vocabulary. ADR 0215:
+## `BLOCK_RATE / (BLOCK_RATE + BLOCK_BREAK)`.
 const BLOCK_RATE := &"block.rate"
 const BLOCK_STRENGTH := &"block.strength"
 const BLOCK_BREAK := &"block.break"
@@ -113,6 +141,24 @@ const SHIELD_REGEN := &"shield.regen"
 ## the incoming hit: a heal that reduced the damage would make the two orders the same
 ## order, and the four load-bearing orderings would stop being load-bearing.
 const LIFESTEAL := &"lifesteal"
+
+## ## ADR 0215. The CONTEST pairs, and why this is a derivation rather than a comment
+##
+## Every rate contest this module owns is `offense / (offense + defense)`, so each one
+## names its two halves here and [method contest] is the single place the formula lives.
+## A contest named only by its offence half is how `accuracy` came to be defined as a
+## SUBTRACTION off `evasion` in the first place, so the pair is data.
+##
+## `PARRY_BREAK` and `BLOCK_BREAK` MOVE from `DEFAULTS` into `RATE_DEFAULTS` in this
+## change, which is the mechanical consequence of ADR 0215 rather than a tidiness pass:
+## they stopped being "what parrying costs the defender" and became a half of a contest,
+## so they need a neutral reading of `0.0` that a caller can add to a derived stat the
+## way every other contest half is read.
+const CONTESTS: Dictionary = {
+	ACCURACY: &"evasion",
+	PARRY_RATE: PARRY_BREAK,
+	BLOCK_RATE: BLOCK_BREAK,
+}
 
 ## Every id this module owns, in the vocabulary order ADR 0068 lists them. Every id a
 ## content item, a technique or a mechanism may author.
@@ -141,17 +187,28 @@ const ALL_IDS: Array[StringName] = [
 	LIFESTEAL,
 ]
 
-## The rate-shaped ids: the combat-owned mirror of `Stat.RATE_STATS`, and the set the
-## ADR 0022 shape test walks. Every one has a `0.0` default and must be authored
-## `op: FLAT` with `unit: "rate"` — a `PERCENT` modifier on any of them is a silent
-## no-op, and `Stat.RATE_STATS` cannot catch it because these ids are not its members.
+## ## ADR 0215: what this list now means, and what stopped being true
+##
+## Membership used to be "a `[0, 1]` rate with a cap in its expression", which is why
+## `ACCURACY` was here: it was defined as a subtraction off a capped evasion, so it
+## behaved like a rate. It no longer is — it is an unbounded MAGNITUDE — so it leaves
+## this list for the same reason `Stat.CRIT_CHANCE` left `Stat.RATE_STATS` at ADR 0200:
+## a FLAT on a magnitude is an authored number, and refusing it would refuse good work.
+##
+## **`RATE_IDS` and `RATE_STATS` are different claims and the shape test is what keeps
+## them apart.** `test_no_combat_rate_id_is_in_core_rate_stats` still holds: combat-owned
+## ids are not core's members. What ADR 0215 changed is that combat's own claim is now
+## "this id is a magnitude half of a contest", and every id in the list below is read
+## through [method contest] or [method CombatBand.ratio].
 const RATE_IDS: Array[StringName] = [
 	ACCURACY,
 	ABSORPTION,
 	PENETRATION,
 	PARRY_RATE,
+	PARRY_BREAK,
 	PARRY_STRENGTH,
 	BLOCK_RATE,
+	BLOCK_BREAK,
 	BLOCK_STRENGTH,
 	REFLECT_RATE,
 	REFLECT_RESIST_RATE,
@@ -159,16 +216,18 @@ const RATE_IDS: Array[StringName] = [
 ]
 
 ## The defaults of the rate-shaped ids. Every entry is `0.0`, deliberately: an
-## unstatted actor contests nothing, so a linear-from-zero rate reads 0% and never a
-## sigmoid's unchosen 0.5 (ADR 0068). Nothing here is shipped balance — the values
-## arrive as `StatModifier`s; this is only the neutral reading.
+## unstatted actor contests nothing, so a contest half reads 0 and the ratio answers
+## `0.0` rather than a sigmoid's unchosen 0.5 (ADR 0068). Nothing here is shipped
+## balance — the values arrive as `StatModifier`s; this is only the neutral reading.
 const RATE_DEFAULTS: Dictionary = {
 	ACCURACY: 0.0,
 	ABSORPTION: 0.0,
 	PENETRATION: 0.0,
 	PARRY_RATE: 0.0,
+	PARRY_BREAK: 0.0,
 	PARRY_STRENGTH: 0.0,
 	BLOCK_RATE: 0.0,
+	BLOCK_BREAK: 0.0,
 	BLOCK_STRENGTH: 0.0,
 	REFLECT_RATE: 0.0,
 	REFLECT_RESIST_RATE: 0.0,
@@ -182,9 +241,7 @@ const DEFAULTS: Dictionary = {
 	AMPLIFICATION: 0.0,
 	REFLECT_DAMAGE: 1.0,
 	REFLECT_RESIST_DAMAGE: 1.0,
-	PARRY_BREAK: 0.0,
 	PARRY_SHRED: 0.0,
-	BLOCK_BREAK: 0.0,
 	BLOCK_SHRED: 0.0,
 	SHIELD_CAPACITY: 0.0,
 	SHIELD_TOUGHNESS: 1.0,
@@ -206,6 +263,68 @@ static func default_of(id: StringName) -> float:
 ## membership should be derived rather than restated by hand.
 static func is_rate(id: StringName) -> bool:
 	return RATE_DEFAULTS.has(id)
+
+
+## ADR 0215. `p = offense / (offense + defense)`, and the ONE place that shape is written
+## inside this module.
+##
+## The four properties the ADR names are all consequences of the denominator rather than
+## of any clamp, which is why there is nothing here to tune:
+##
+## - **It cannot saturate.** For every finite non-negative pair the result is strictly
+##   inside `(0, 1)`, so a stronger attacker moves it toward `1.0` and never arrives.
+## - **Doubling both halves changes nothing.** The ratio is homogeneous of degree zero,
+##   so a contest means the same thing at R3 and at R30.
+## - **At parity it is exactly `0.5`**, so a realm gap alone grants nothing.
+## - **No scale constant exists to retune.** ADR 0068's `rate_scale` is not a dial here;
+##   it is gone.
+##
+## ## Why `o + d == 0.0` reads `0.0` and is not a division by zero
+##
+## Two actors who have invested in neither half contest nothing, and `0.0` is the honest
+## answer for a share: neither can land, so neither lands. The alternative — `INF` — is
+## what a raw division returns, and it survives every `clampf`. `MindContest._finite`
+## makes the same call for the same reason.
+static func contest(offense: float, defense: float) -> float:
+	var o := maxf(0.0, offense if is_finite(offense) else 0.0)
+	var d := maxf(0.0, defense if is_finite(defense) else 0.0)
+	var total := o + d
+	if total <= 0.0:
+		return 0.0
+	return o / total
+
+
+## The id `offense_id` is contested against, or `&""` when it is not half of a contest.
+## Total on purpose: a caller asking about an id this module has never heard of gets an
+## answer rather than an error, which is what lets [method contest_of] degrade to `0.0`.
+static func counterpart_of(offense_id: StringName) -> StringName:
+	return CONTESTS.get(offense_id, &"")
+
+
+## [method contest] for two ACTORS rather than two numbers, so the contest halves are
+## read the same way everywhere: `CombatStats.default_of` folded in, then `derived`,
+## then the ratio. Never an absolute difference and never a difference against a scale.
+##
+## `null` on either side is `0.0`, so a half-built pair reads the neutral contest rather
+## than crashing a hit that has already committed to mutating both of them.
+static func contest_of(
+	offense_id: StringName, offense: Actor, defense_id: StringName, defense: Actor
+) -> float:
+	if defense_id == &"":
+		return 0.0
+	return contest(
+		default_of(offense_id) + derived_of(offense, offense_id),
+		default_of(defense_id) + derived_of(defense, defense_id)
+	)
+
+
+## The derived value of `id` on `actor`, or `0.0` for a null actor. The same total read
+## [method CombatBand.derived_of] performs, and duplicated rather than reached through it
+## so this file stays a pure vocabulary with no dependency on the band roll.
+static func derived_of(actor: Actor, id: StringName) -> float:
+	if actor == null or actor.stats == null:
+		return 0.0
+	return actor.stats.derived(id)
 
 
 ## A `StatModifier` of the only shape ADR 0068 permits for a rate id. The single place

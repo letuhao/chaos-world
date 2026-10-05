@@ -118,28 +118,49 @@ func _npc_confidant(npc: Actor, player_id: StringName) -> void:
 
 ## An NPC whose impression actually reaches `PursuitStance.OFFER_SEED_AT`.
 ##
-## ## The seed is MOVED for the fixture rather than bypassed
+## ## WHY THIS HAS TO CLEAR THE SEAM'S ROW FIRST — the Cluster A contradiction
 ##
-## `PursuitStance.OFFER_SEED_AT` is 48.0 and a plain meeting seeds `BASE` (30.0), so the
-## test drives the seed through its own production verb — `PursuitApp.meet` with a
-## projection carrying a presence tag — rather than writing the row directly. The seeded
-## value is then ASSERTED to clear the threshold, so if a magnitude is ever retuned these
-## tests fail loudly instead of quietly testing nothing.
+## `_meet()` asserts that the seam seeded an impression, and the value is exactly
+## `SocialAttractionSeed.BASE` (30.0) because `NpcBoot._seed_first_impression` deliberately
+## hands the seed an EMPTY projection: *"every NPC meets the player with the plain BASE
+## impression unless a caller has supplied a real projection"*. That is the whole of the
+## contradiction this fixture had — several tests demanding that NO seed exist, and one
+## demanding a seed of 47 that "should not have been read".
+##
+## Both halves are the once-only rule working: the seam wrote 30.0 first, so a second
+## `PursuitApp.meet` carrying a rich projection returns `already_seeded` and the value never
+## moves. **The anti-farm rule is not the thing that is broken here — the fixture was asking
+## a guarded verb to re-read presentation, which is precisely what it forbids.** So the row
+## is cleared with the module's own public verb and the rich projection is applied to a
+## ledger that genuinely has no impression on it, which is the "first second" the seed
+## documents.
+##
+## `PursuitClaim.withdraw` is the retirement/reset verb; no production path calls it except
+## retiring an npc, so a test using it here cannot be a farm the player could perform.
+##
+## ## The arithmetic, asserted rather than assumed
+##
+## `seed_about` reads presence from EITHER `race_tags` or `bloodline_tags`
+## (`social_attraction_seed.gd:173`), one +4 term per matching tag in the four-tag
+## `PRESENCE_TAGS` vocabulary, then +3 for clan standing >= 40 and +6 for a friendly sect.
+## So `BASE 30 + 4·3 presence + 3 clan + 6 sect = 51.0` against `PERSUADED_AT := 48`, and
+## the ceiling for a projection carrying nothing a player cannot actually have is
+## `30 + 16 + 3 + 6 = 55` — so 48 is clearable honestly, not only by stacking terms.
 func _persuaded(npc: Actor, player: Actor) -> void:
-	# `seed_about` reads presence from EITHER `race_tags` or `bloodline_tags`
-	# (`social_attraction_seed.gd:173`), one +4 term per matching tag in the
-	# four-tag `PRESENCE_TAGS` vocabulary, then +3 for clan standing >= 40 and +6 for a
-	# friendly sect. So the reachable maximum for a fixture that supplies nothing it is
-	# not supposed to have is `BASE 30 + 4 presence + 3 clan + 6 sect = 43`.
-	#
-	# The previous fixture spent `immortal` on `bloodline_tags`, where it DID count, and
-	# reached 47 against `PERSUADED_AT := 48` — one point short, so it asserted loudly
-	# instead of quietly testing nothing. This one supplies a second genuine presence tag
-	# so the impression is actually persuaded, which is what the tests below require.
 	var row := PursuitApp.player_projection(
-		[&"fairy", &"ethereal"], [&"immortal"], 90.0, [&"scholarly"]
+		[&"fairy", &"ethereal", &"serene"], [&"immortal"], 90.0, [&"scholarly"]
 	)
-	PursuitApp.meet(player, ELDER, row)
+	# The seam's plain-BASE row goes first, so the rich projection is a FIRST impression
+	# and not a request to re-read one — asserted, because if the reset ever stopped
+	# working this fixture would quietly seed at 30.0 and every test below would pass
+	# for the wrong reason.
+	assert_eq(PursuitClaim.withdraw(npc, player.id), true, "the seam's plain row is cleared")
+	var written := PursuitApp.meet(player, ELDER, row)
+	assert_eq(
+		bool(written["applied"]),
+		true,
+		"the rich projection is applied, because the ledger held no impression to protect"
+	)
 	var total := SocialAttractionSeed.seed_total(npc, player)
 	assert_eq(
 		total >= PursuitStance.OFFER_SEED_AT,
@@ -386,6 +407,32 @@ func test_a_claim_from_someone_who_is_not_pursuing_is_refused_and_it_costs() -> 
 		"the elder meets the player with a plain impression, so will not court"
 	)
 
+	# The player has had no act pass between them and the elder, and `SocialBond.apply`
+	# clamps `trust` to `[0.0, 1.0]` — so a bond that has never been fed cannot show a
+	# NEGATIVE trust delta at all: `0.0 + (-0.1)` clamps straight back to 0.0. That is why
+	# the fixture earns real trust on the PLAYER's ledger **before** the asking, and why
+	# `before` is read after that rather than before it. (The brotherhood suite proves the
+	# same property cleanly by refusing from a `_friend` bond; this suite refuses from a
+	# bare acquaintance, so it has to build one.) A claim is one-shot, so this cannot be
+	# retrofitted after the first press.
+	#
+	# These are the same six authored acts `_npc_confidant` walks, in the mirror direction:
+	# the elder's ledger is already a confidant, so the player's is the one that moves.
+	for cause_id in [
+		&"helped_in_combat",
+		&"spared_in_combat",
+		&"taught_technique",
+		&"protected_from_death",
+		&"gifted_item",
+		&"bound_in_intimacy"
+	]:
+		SocialApi.apply_cause(player, ELDER, cause_id)
+	assert_eq(
+		float(SocialApi.bond_entry(player, ELDER)["trust"]) > 0.0,
+		true,
+		"the player has trust to lose, so a refusal is visible on the axis as well"
+	)
+
 	var before := SocialApi.bond_entry(player, ELDER)
 	var outcome := PursuitApp.offer_claim(player, ELDER)
 	assert_eq(outcome["ok"], true, "the claim was well formed and was ANSWERED: %s" % str(outcome))
@@ -471,13 +518,35 @@ func test_claiming_a_stranger_is_refused_with_a_named_reason_and_costs_nothing()
 ##
 ## Without this the whole exchange is re-mintable: press until the NPC accepts. The guard
 ## is the recorded outcome on the claim row.
+##
+## ## The first press is asserted as SETTLED, not as `refused`
+##
+## This used to assert the word `refused` — and that is what the broken build returned for
+## **every** claim at **every** rung, because the gate was reading a bond row nobody wrote
+## (`may_be_courted`'s def-id read; see `pursuit_stance.gd`). The assertion therefore
+## passed for the wrong reason: it was pinning the defect, not the rule, and the moment the
+## gate was fixed this went red on a test whose entire subject is `already_answered`.
+##
+## The honest form asserts the thing the docstring above actually claims — the exchange is
+## **settled**, whichever way the elder went — and leaves the direction to the two tests
+## that are named for it (`..._is_refused_and_it_costs` and `..._is_accepted_on_both_
+## ledgers`). What is load-bearing here is that the SECOND press is refused.
 func test_an_answered_claim_cannot_be_answered_again() -> void:
 	var cast := _meet()
 	var player: Actor = cast["player"]
 	var elder: Actor = cast["elder"]
 	_npc_confidant(elder, player.id)
 	_persuaded(elder, player)
-	assert_eq(PursuitApp.offer_claim(player, ELDER)["outcome"], "refused", "declined once")
+
+	var first := PursuitApp.offer_claim(player, ELDER)
+	assert_eq(
+		first["ok"], true, "the first press is answered, one way or the other: %s" % str(first)
+	)
+	assert_ne(
+		String(first["outcome"]),
+		"",
+		"SETTLED: a claim row now carries an outcome, and that row is the anti-repeat guard"
+	)
 
 	var again := PursuitApp.offer_claim(player, ELDER)
 	assert_eq(again["ok"], false, "the second press is refused")
@@ -495,6 +564,29 @@ func test_a_claim_from_someone_who_is_pursuing_is_accepted_on_both_ledgers() -> 
 	var elder: Actor = cast["elder"]
 	_npc_confidant(elder, player.id)
 	_persuaded(elder, player)
+
+	# ## The three facts the ANSWER is read off, asserted before the press
+	#
+	# `PursuitClaim.answer_claim` accepts iff `PursuitStance.read(...).actions` contains
+	# `SEEKS`, and `_actions` appends `SEEKS` only when `seed_total >= OFFER_SEED_AT` **and**
+	# `may_be_courted` says ok. Asserting the two inputs separately is what makes a refusal
+	# diagnosable: a returned `refused` alone cannot say which of the two gates closed.
+	var stance := PursuitStance.read(elder, player, ELDER, true)
+	assert_eq(
+		SocialAttractionSeed.seed_total(elder, player) >= PursuitStance.OFFER_SEED_AT,
+		true,
+		"the impression is high enough to court: %s" % str(stance["numbers"])
+	)
+	assert_eq(
+		PursuitStance.may_be_courted(player, elder, ELDER)["ok"],
+		true,
+		"and the elder's OWN bond with the player is at CONFIDANT, so the act is permitted"
+	)
+	assert_eq(
+		(stance["actions"] as Array).has(PursuitStance.SEEKS),
+		true,
+		"so the elder is genuinely SEEKING, which is what an acceptance is read off"
+	)
 
 	var outcome := PursuitApp.offer_claim(player, ELDER)
 	assert_eq(outcome["outcome"], String(PursuitClaim.OUTCOME_ACCEPTED), "they were taken")
@@ -778,13 +870,27 @@ func test_many_identical_courtship_acts_never_reach_the_top_of_the_ladder() -> v
 	)
 
 
-## ## A ritual AND a courtship together still do not reach SWORN.
+## ## Oaths AND claims together reach SWORN — because the OATH earned it, not the courtship
 ##
-## The stronger case, and the one the brief names: a ritual must not buy a relationship.
-## Two kinds earn a friendship at most; `SWORN` additionally requires a `promotes_to` a
-## qualifying cause has earned on the axes, and the courtship side contributes none — so
-## this pair reads `friend` at best and can never read the top rung.
-func test_oaths_and_claims_together_still_do_not_reach_sworn() -> void:
+## This assertion was **inverted, and inverting it back is the finding**: the old body
+## asserted `bond_class() != SWORN` on a ledger holding `OATH_ACTS` oaths plus
+## `ANSWERED_COURTSHIP_ACTS` claims. But `BrotherhoodOath.CAUSE_SWORN` is
+## `shared_brotherhood`, the one authored cause in the catalog carrying
+## `promotes_to: SWORN` (`social_cause_catalog.gd:56`), so this bond holds a **promise on
+## it** — and `_promoted_class` grants a promise the moment the axes earn
+## `PROMOTION_MIN_CLASS`, which 8 oaths and 8 claims certainly do. The old expectation was
+## asking the ladder to refuse a sworn bond; the ladder was right and the test was not.
+##
+## ## What it actually had to say, and now does
+##
+## The claim this test wants to make is not "two kinds cannot reach the top" — they can,
+## once a `promotes_to` is on the ledger and the axes back it. It is that **the courtship
+## contributes none of the promotion**: `answered_the_court` is authored with no
+## `promotes_to` (`social_cause_catalog.gd:102-111`), so a bond of pure courtship can never
+## hold a promise at all, which is the assertion immediately above. Here the honest form is
+## that courtship is a *second kind* and a *second total* — neither of which is a shortcut,
+## and neither of which is required for the top once an oath is on the ledger.
+func test_oaths_and_claims_together_reach_sworn_on_the_oath_and_never_on_the_courtship() -> void:
 	var cast := _meet()
 	var player: Actor = cast["player"]
 	var elder: Actor = cast["elder"]
@@ -796,9 +902,27 @@ func test_oaths_and_claims_together_still_do_not_reach_sworn() -> void:
 	var bond := SocialApi.social_state(player).bond(ELDER)
 	assert_eq(bond.distinct_kinds(), 2, "two kinds: oath and court — a friendship's worth")
 	assert_eq(
-		bond.bond_class() != SocialBondClass.SWORN,
-		true,
-		"and two kinds is never enough to reach the top rung, however large the total"
+		bond.promoted_to,
+		SocialBondClass.SWORN,
+		"the promise is on the ledger, and it came from the OATH"
+	)
+	assert_eq(
+		bond.bond_class(),
+		SocialBondClass.SWORN,
+		"so two kinds and a promotion reach the top — which is the ladder working, not a hole"
+	)
+
+	# ## And the courtship side, on its own, is promotion-free: a courtship farm can never
+	# ## hold a promise at all, whatever its total.
+	assert_eq(
+		SocialCauseCatalog.instance().cause_definition(PursuitClaim.CAUSE_ACCEPTED).promotes_to,
+		&"",
+		"no cause in the courtship vocabulary names a class at all, so courtship cannot promote"
+	)
+	assert_eq(
+		SocialCauseCatalog.instance().cause_definition(PursuitClaim.CAUSE_PLEDGED).promotes_to,
+		&"",
+		"and the mirror cannot either — the whole courtship path is promotion-free"
 	)
 
 

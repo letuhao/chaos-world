@@ -358,18 +358,33 @@ static func elemental_resist(
 ## naming an element is still answered by that element's resistance. Gating both would
 ## make `STATUS_RESISTANCE` a status-tax instead of a piece of combat vocabulary.
 ##
-## `STATUS_RESISTANCE` is a RATE gated on `will` and capped at `0.8`
-## (`core/actor_stats.gd:162`), so a FLAT modifier is the only form that can move it —
-## `CombatStats.rate_modifier` builds exactly that shape, and the suite uses it.
+## ## The stat id is read from `tuning.status_defense_stat`, and that is the whole fix
 ##
-## ## The cap is reachable as a NUMBER, and not reachable as a `will` (DEF-0262)
+## This read `Stat.STATUS_RESISTANCE` directly, and ADR 0200 renamed the id:
+## `actor_stats.gd` now puts `will * 0.003` into `Stat.STATUS_DEFENSE` — a MAGNITUDE the
+## realm ladder scales — and leaves `status_resistance` carrying a provider's value that
+## nothing puts a `StatModifier` on. So the gate was reading a stat no defensive
+## investment could move. Measured on `test_status_application.gd`'s own fixtures, a target
+## at `_tuning_cap_resist()` (a flat `0.8`, which is what core's old formula saturated at)
+## read `derived(status_resistance) == 0.8` and `derived(status_defense) == 0.0`, so the
+## COMBAT gate answered `1.0 * (1 - 0.8) = 0.2` while a REAL `will`-scaled status defense
+## was contributing nothing at all: an actor with the strongest status defence the game can
+## author was strictly easier to hit with statuses than one with none.
 ##
-## `minf(0.8, will * 0.003)` needs `will >= 250`, and authored `base_will` tops out at
-## `52.9`, so no shipped build arrives there through the attribute. That is the stat's
-## shape and not a defect — `StatusDef.ZERO_BASELINE_STATS` and
-## `tests/modules/status/test_status_refusals.gd` both rest on it — but it does mean the
-## `0.2` floor this formula bottoms out at is reached through a FLAT, not through a
-## build. `tests/modules/combat_engine/test_status_application.gd` drives exactly that.
+## Read through DATA for the reason `mind_stat_prefix` is a string: `combat_engine` may not
+## name the core const the ladder maintains, and the shape the gate wants is "whatever the
+## defense magnitude is called today". `contracts/stat.gd` still declares both spellings, so
+## the stale reference compiled silently and read a wrong number rather than failing — which
+## is the failure this indirection exists to catch.
+##
+## The `0..1` clamp stays, and it is NOT a cap on the input: `status_defense` is unbounded,
+## and the read maps it through ADR 0200's own ratio against the attacker's own scale, which
+## is the same shape `QiDamage`, `BodyDamage` and `MindDamage` use. A floor authored for a
+## dimensionless `0.6` is not a floor for a magnitude that reaches `3.3`, so S12's immunity
+## question is genuinely OPEN and is deliberately left asserting only what holds today: the
+## gate is strictly below `1.0`, the two resists compose multiplicatively rather than
+## summing into immunity (ADR 0087), and `status_min_apply` is what forbids a `0.0` once the
+## magnitude does outrun the ratio.
 static func apply_chance(
 	gate: float,
 	target: Actor,
@@ -381,9 +396,50 @@ static func apply_chance(
 		return 0.0
 	var resist := 0.0
 	if scope == SCOPE_COMBAT:
-		resist = clampf(_finite(_stat(target, Stat.STATUS_RESISTANCE)), 0.0, 1.0)
+		resist = clampf(_status_defense_share(target, tuning), 0.0, 1.0)
 	var chance := _finite(gate) * (1.0 - resist) * (1.0 - clampf(_finite(elem_resist), 0.0, 1.0))
 	return clampf(chance, clampf(_finite(tuning.status_min_apply), 0.0, 1.0), 1.0)
+
+
+## ADR 0200's ratio for the COMBAT half of the status gate:
+## `share = mitigation_ceiling * D / (K + D)` with `D` the defender's `status_defense`
+## MAGNITUDE and `K = defense_divisor_k` the attacker's own scale.
+##
+## ## Why S12 needs a ratio at all, and what it costs
+##
+## `apply_chance` takes no `attacker`, so it cannot build the same `K` the three damage
+## mechanisms build from the attacker's own offense. `defense_divisor_k` alone is what is
+## available without growing a new parameter on a function six call sites use, and it is
+## a defensible substitute: it is the same authored constant, and the gate's contest is
+## between two defensive investments rather than between an offense and a defence.
+##
+## The honest cost is that the attacker's realm NO LONGER SCALES THIS GATE. `status_defense`
+## climbs `1.00 -> 551.46` with the ladder and `K` does not, so a deep-realm defender's
+## status immunity converges on `mitigation_ceiling` while at R1 the same build resists
+## almost nothing. **That is the same class of defect ADR 0200 was written to remove, in the
+## one place the fix did not reach**, and closing it properly needs a second decision I am
+## not making silently: either `apply_chance` grows an `attacker` parameter and every call
+## site passes one, or S12 reads the caller's already-resolved elemental resist as its `K`.
+## Either is a change to `CombatExchange` and `exchange.gd`, outside this file's seam.
+##
+## What is asserted today is the part that IS sound: the share is an unbounded magnitude
+## through a ratio, so it is strictly below the ceiling for every finite defense, the two
+## resists compose rather than annihilate, and `status_min_apply` forbids a hard `0.0`.
+## `tests/modules/combat_engine/test_status_application.gd` pins exactly those three.
+static func _status_defense_share(target: Actor, tuning: CombatTuning) -> float:
+	var divisor := _finite(tuning.resist_divisor)
+	if divisor <= 0.0:
+		return 0.0
+	var raw := maxf(0.0, _finite(_stat(target, StringName(tuning.status_defense_stat))))
+	var defense := raw / divisor
+	var ceiling := clampf(_finite(tuning.mitigation_ceiling), 0.0, 1.0)
+	if ceiling <= 0.0:
+		return 0.0
+	var divisor_k := maxf(0.0, _finite(tuning.defense_divisor_k))
+	var denominator := divisor_k + defense
+	if denominator <= 0.0:
+		return 0.0
+	return _finite(ceiling * defense / denominator)
 
 
 ## The potency of an applied status: `maxf(status_potency_floor, attacker

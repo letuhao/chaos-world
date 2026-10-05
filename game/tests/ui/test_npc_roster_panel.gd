@@ -157,7 +157,7 @@ func test_no_name_from_the_room_the_player_left_survives_the_move() -> void:
 	panel.show_room(NpcBoot.where_is(actor))
 	var after := _names(panel.summary())
 
-	assert_ne(before.is_empty(), false, "the stocked room named somebody to begin with")
+	assert_eq(before.is_empty(), false, "the stocked room named somebody to begin with")
 	for name in before:
 		assert_eq(
 			after.has(name),

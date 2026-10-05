@@ -6,7 +6,8 @@ extends TestCase
 ## 1. **No race leads every axis.** Measured here, from the `.tres` files, with no cap
 ##    and no score.
 ## 2. **Every race is genuinely refused somewhere.** Not measured here — read through
-##    the real gate in `test_race_content.gd::test_every_authored_race_is_genuinely_refused_somewhere`,
+##    the real gate in
+##    `test_race_content.gd::test_every_authored_race_is_genuinely_refused_somewhere`,
 ##    because a refusal is something the game does, not something a test infers.
 ##
 ## ## Why this exists even though `test_race_body_plan.gd` names the leaders

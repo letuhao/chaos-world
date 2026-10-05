@@ -174,4 +174,9 @@ static func settle_term(state: Dictionary, claim_id: StringName, periods: int) -
 		return {"ok": false, "reason": "term_exceeds", "periods_left": owed}
 	row["periods"] = owed - periods
 	state["claims"][String(claim_id)] = row
-	return {"ok": true, "reason": "", "settled": periods, "periods_left": row["periods"]}
+	return {
+		"ok": true,
+		"reason": "",
+		"settled": periods,
+		"periods_left": row["periods"],
+	}

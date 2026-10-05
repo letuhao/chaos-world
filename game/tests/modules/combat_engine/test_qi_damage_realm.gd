@@ -71,9 +71,28 @@ func test_the_element_fraction_is_realm_invariant() -> void:
 	assert_eq(fractions.size(), 2, "two realms measured")
 
 
+## ADR 0200: BOTH halves ride the ladder, and this file's own docblock said why it
+## would not.
+##
 ## `RealmScaling.SCALED_STATS` cannot hold a dynamic id, which is why the fix is a
-## modifier and not a list entry -- and why the resistance channel must stay OUT of it.
-func test_the_realm_modifier_covers_power_and_never_resistance() -> void:
+## modifier and not a list entry. The second half of that reasoning used to end here —
+## "and why the resistance channel must stay OUT of it" — on ADR 0069's rule that a rate
+## must never track a magnitude (ADR 0050).
+##
+## ADR 0200 replaced the capped percent with `element_defense_<e>`, an unbounded
+## MAGNITUDE, which dissolves that objection: a magnitude is exactly what the ladder should
+## scale. Leaving the defense half flat while the offense half rode `1.00 -> 551.46` was
+## the exact asymmetry the ADR exists to remove, and it was not theoretical — with only
+## the offense half scaled the element fraction of a qi hit measured `0.665043 / 0.694266 /
+## 0.704604 / 0.705803` over R1/R10/R20/R30 in `test_cross_mechanism_balance.gd`, a spread
+## of `0.04076025` against a claimed invariance of `0.000001`.
+##
+## So the claim below is now about the PAIR: both halves take the SAME authored
+## `realm.power`, and re-applying replaces rather than compounds. The cross-mechanism
+## suite is where realm-invariance is measured across four realms; this one pins the two
+## halves against each other at the id level, which is the mechanism the invariance rests
+## on and the thing a single-realm check would not catch.
+func test_the_realm_modifier_covers_both_power_and_defense() -> void:
 	var actor := Actor.new(&"mage", {Stat.SPIRIT: 5.0})
 	actor.set_path(PathState.new(PathState.QI, &"spirit_sea"))
 	RealmScaling.apply(actor)
@@ -84,31 +103,51 @@ func test_the_realm_modifier_covers_power_and_never_resistance() -> void:
 	# `attach` is REQUIRED, not decoration: `element_power_<e>` is contributed by
 	# `ElementProvider` and reads `0.0` on an actor nobody attached one to, so the realm
 	# MULT was being written onto a base of nothing. A realm modifier cannot make a stat
-	# exist. `attach` writes the provider AND the realm half, so the resistance baseline is
-	# read AFTER it -- otherwise the "unchanged" comparison below would be measuring the
-	# provider appearing rather than the realm multiplier being withheld.
+	# exist. `attach` writes the provider AND the realm half, so the defense baseline is
+	# read AFTER it -- otherwise the ratio below would be measuring the provider appearing
+	# rather than the realm multiplier being written.
 	ElementsApi.attach(actor, _rules)
+	var power := _power_of(&"spirit_sea")
 	var power_with_modifier := actor.stats.derived(ElementStats.power_id(ElementStats.FIRE))
-	var resist_after := actor.stats.derived(ElementStats.defense_id(ElementStats.FIRE))
+	# `ElementProvider` contributes `affinity * 0.5 + will * 0.2`. This actor was built
+	# with no `Stat.WILL`, so the provider's baseline for a fire affinity of 10.0 is `5.0`
+	# -- the affinity's own half. Read off the live contribution and divided by the bare
+	# figure rather than pasted, so a re-weighting of the provider formula moves this with
+	# the code instead of breaking it for the wrong reason.
+	var defense_baseline := 10.0 * 0.5
+	var defense_with_modifier := actor.stats.derived(ElementStats.defense_id(ElementStats.FIRE))
 	assert_almost_eq(
-		power_with_modifier,
-		10.0 * _power_of(&"spirit_sea"),
-		"element_power_fire took R11's authored power"
+		power_with_modifier, 10.0 * power, "element_power_fire took R11's authored power"
 	)
-	assert_almost_eq(resist_after, 5.0, "element_defense_fire is the affinity's own half")
+	assert_almost_eq(
+		defense_with_modifier,
+		defense_baseline * power,
+		(
+			"element_defense_fire is a MAGNITUDE and took the same authored power: "
+			+ "K rides element_power and D rides element_defense, so the ratio "
+			+ "D/(K+D) only stays put if both halves move"
+		)
+	)
+	assert_almost_eq(
+		defense_with_modifier / defense_baseline,
+		power_with_modifier / 10.0,
+		"the two halves moved by ONE factor, which is the whole invariant",
+		1e-9
+	)
 	# Re-applying replaces rather than stacks, which is what keeps a second breakthrough
-	# from compounding the multiplier -- and it touches the resistance channel not at all,
-	# which is the property this suite exists for.
+	# from compounding the multiplier -- on BOTH halves. A defense half that compounded
+	# while the power half replaced would leave the defender over-scaled by exactly one
+	# realm's power per breakthrough, which no single-realm measurement can see.
 	ElementsApi.apply_realm_modifiers(actor, _rules)
 	assert_almost_eq(
 		actor.stats.derived(ElementStats.power_id(ElementStats.FIRE)),
 		power_with_modifier,
-		"re-applying is idempotent"
+		"re-applying is idempotent on the power half"
 	)
 	assert_almost_eq(
 		actor.stats.derived(ElementStats.defense_id(ElementStats.FIRE)),
-		resist_after,
-		"element_defense_fire is not on the realm ladder and did NOT take the realm power"
+		defense_with_modifier,
+		"and on the defense half, which is the one that used to be left alone"
 	)
 
 

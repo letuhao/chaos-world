@@ -6,62 +6,53 @@ extends UiScreen
 ##
 ## ## The seam this screen is built around
 ##
-## It is a pure consumer, like every screen in this program, but the `domain` module is
-## not reachable the way `loot` or `world` are: `domain` is not in `rules.UI_MODULES`
-## and `app/` is a private unit, so this screen names no domain type at all — not
-## `DomainApi`, not `DomainMinimap`, not `DomainMap`. Everything arrives through
-## [DomainBridge], the `Callable` seam `DomainBoot.bridge()` fills, which is the same
-## shape ADR 0143 settled for loot and for the world clock. [method bind_bridge] is the
-## only way the gameplay side arrives, and a screen that has not been bound reports `{}`
-## rather than rendering a facade nobody installed.
+## A pure consumer, like every screen in this program, but the `domain` module is not
+## reachable the way `loot` or `world` are: it is not in `rules.UI_MODULES` and `app/` is
+## a private unit, so this screen names no domain type at all — not `DomainApi`, not
+## `DomainMinimap`, not `DomainMap`. Everything arrives through [DomainBridge], the
+## `Callable` seam `DomainBoot.bridge()` fills, the same shape ADR 0143 settled for loot
+## and the world clock. [method bind_bridge] is the only way the gameplay side arrives,
+## and an unbound screen reports `{}` rather than rendering a facade nobody installed.
 ##
 ## ## What it shows, and what it deliberately does not draw a second time
 ##
 ## The floor plan is [DomainMinimap]'s payload, handed over WHOLE: the same dictionary
-## the headless driver renders, so the screen and the probe cannot disagree about where
-## a room is or what it promises. Fog is `DomainApi.discovered` and is the module's to
-## decide, not this screen's. The room list, the population and the severe zones are all
-## read from that payload or from the facade's own reads, and the fixture verbs are the
-## module's, routed through the bridge.
-##
-## No shape is re-derived. The map's room count, the tier a room promises, the severity of
-## a zone and the population of a room all come out of the module's own read. The tier in
-## particular is the MINIMAP's, because ADR 0073 forbids deriving a promise from a room's
-## depth or size, and re-deriving it here would put exactly that forbidden heuristic back.
+## the headless driver renders, so the screen and the probe cannot disagree about where a
+## room is or what it promises. Fog is `DomainApi.discovered` and is the module's to decide.
+## No shape is re-derived — room count, tier, zone severity and population all come out of
+## the module's own read. The tier in particular is the MINIMAP's, because ADR 0073 forbids
+## deriving a promise from a room's depth or size, and re-deriving it here would put exactly
+## that forbidden heuristic back.
 ##
 ## ## Why it generates rather than only exploring
 ##
 ## A screen that could only look at a run somebody else started would be reachable and
-## useless: nothing in the shipped program ever entered a domain. So `Enter` calls the
-## one production entry point the module publishes, through the bridge, and that is what
-## makes the chain template -> map -> contract -> active run startable from a button.
+## useless: nothing in the shipped program ever entered a domain. So `Enter` calls the one
+## production entry point the module publishes, through the bridge, and that is what makes
+## the chain template -> map -> contract -> active run startable from a button.
 ##
 ## ## The tone rules, stated once
 ##
-## Every refusal repaints from the untouched actor and reports the reason the MODULE
-## gave, never one this file invented. A trap that has already fired, a treasure whose
-## key you do not carry, a room that is not in this map: each is named by the module's
-## own reason id and worded by [member DomainBridge.REASON_TEXT]. Nothing is swallowed,
-## and nothing silently truncates: a row that vanishes reads to a player as "the actor
-## does not have this", which is a different and wrong statement.
+## Every refusal repaints from the untouched actor and reports the reason the MODULE gave,
+## never one this file invented. Each is named by the module's own reason id and worded by
+## [member DomainBridge.REASON_TEXT]. Nothing is swallowed, and nothing silently truncates:
+## a row that vanishes reads to a player as "the actor does not have this", which is a
+## different and wrong statement.
 ##
 ## ## What is in [DomainExploreModel] and what is here
 ##
-## This file is the screen: the node tree, the six verbs, the gates that say why a verb
-## is refused, the outcomes, and `summary()`. What the place IS — the active run, the
-## room list, the selection, the fixtures, and every sentence the labels render — is
-## [DomainExploreModel]'s, because reading the world and painting it are two reasons to
-## change, and that is the split `world_pulse_reader.gd` already makes beside the world
-## map. The gates deliberately stayed here: a gate names its refusal in the PLAYER's
-## terms and reads [constant FIXTURE_VERB], which is the action row's own table, so a
-## gate is a decision about what this screen OFFERS rather than a read of the world.
+## This file is the screen: the node tree, the six verbs, the gates that say why a verb is
+## refused, the outcomes, and `summary()`. What the place IS is [DomainExploreModel]'s —
+## reading the world and painting it are two reasons to change, the split
+## `world_pulse_reader.gd` already makes. The gates deliberately stayed here: a gate names
+## its refusal in the PLAYER's terms and reads [constant FIXTURE_VERB], so a gate is a
+## decision about what this screen OFFERS rather than a read of the world.
 ##
 ## Contract: `summary()` is the testable surface, primitives only, and `{}` with no actor.
 
-## The seed `Enter` generates from, and the first of the bounded walk in
-## [method _enter_with_a_generating_seed]. A SEED and not a roll: two presses of one
-## button should be the same domain, or "what is in there" is unreadable between two
-## visits.
+## The seed `Enter` generates from, and the first of [DomainSeedWalk]'s bounded walk. A
+## SEED and not a roll: two presses of one button should be the same domain, or "what is
+## in there" is unreadable between two visits.
 ##
 ## It is `test_domain_content.gd`'s `CONTENT_SEED`, and that is the whole reason: the
 ## generator partitions a template's extent into leaves and REFUSES a map below the
@@ -76,27 +67,8 @@ extends UiScreen
 ## template authored after that suite ran — or one whose partition shifts under a
 ## generator change — can still land below its `min_rooms` here. Rather than let a
 ## button silently do nothing, `Enter` advances through a few derived seeds; see
-## [constant MAX_SEED_ATTEMPTS] for the bound and why the refusal is never swallowed.
+## [DomainSeedWalk] for the bound and why the refusal is never swallowed.
 const DEFAULT_SEED := 20261003
-
-## The one refusal a different SEED might answer. Held as a named constant because the
-## bounded walk branches on it and it must not become a bare string literal in the loop:
-## `DomainApi.ERR_GENERATION_REFUSED` is not nameable here (`domain` is not in
-## `rules.UI_MODULES`), so the id is carried instead, and it is worded by
-## [member DomainBridge.REASON_TEXT] like every other reason this screen reports.
-const GENERATION_REFUSED := "generation_refused"
-
-## How many derived seeds [method act_enter] will try before refusing.
-##
-## Small and named, never unbounded. The generator is REFUSAL-first by design
-## (`DomainGenerator.generate` returns null rather than a partial map), and a refusal
-## carries no verdict that a different seed would fare better — so a screen that kept
-## drawing seeds until one worked would turn a content defect into an unbounded loop,
-## which is exactly the shape `tests/arch_rules/test_no_unbounded_wait.gd` rules out.
-## Eight consecutive derived seeds is far more than the generator needs: the partition
-## refines on the same stream and adjacent seeds differ in a handful of rolls, so a
-## template that cannot produce its `min_rooms` once produces it almost immediately.
-const MAX_SEED_ATTEMPTS := 8
 
 ## The six actions this screen offers, in the order a player meets them. Declared as data
 ## so the button row, the summary and the enabled map cannot disagree about the set.
@@ -148,60 +120,16 @@ const ACTION_HANDLERS := {
 ## trap tells a player its footprint, its harm and its window; it costs nothing, so the
 ## floor is worth reading before it is worth crossing.
 ##
-## The values are the SEAM's action ids (`inspect_fixture` / `attempt_fixture` /
-## `claim_fixture`), not the shorter button ids the `ActionSet` row publishes, because
-## the only reader is [method _can_fixture] — and it is handed a bridge action. Holding
-## the button ids here instead made all three comparisons unequal, so every fixture verb
-## was gated off permanently: a trap could never be read, the armed/spent ledger was
-## unreachable, and a refusal reported a reason the player never caused
-## (`authors_no_status_id`, `unknown_node`, `missing_key` — each a gate that does not
-## exist). Two vocabularies, so two tables: [constant ACTION_IDS] is the button row's,
-## this one is the seam's.
-const FIXTURE_VERB := {
-	"trap": &"inspect_fixture",
-	"puzzle": &"attempt_fixture",
-	"treasure": &"claim_fixture",
-}
+## The table itself moved to [DomainFixtureGates] when this file hit its thousand-line
+## ceiling, and this screen holds no copy of it: two tables of "which verb acts on which
+## kind" would be two answers to one question. See that class for why the values are the
+## SEAM's action ids rather than the shorter button ids the action row publishes.
+const FIXTURE_VERB := DomainFixtureGates.FIXTURE_VERB
 
 ## The `RoomDef.kind` a settlement room carries. One string, in one place, for one kind —
 ## the same discipline `domain_settlement.gd` follows, and `ui/` may not name a domain
 ## type, so the kind is carried as a plain word rather than read off a class.
 const SETTLEMENT_KIND := "settlement"
-
-## Seconds one `presence` tick advances a trap's telegraph by. Small and stated: the
-## FIRST call always arms whatever this says, so the window is visible before the second
-## call crosses it. Never a clock read — the module keeps no clock (ADR 0089), and a
-## screen that invented one would be a second cadence for one status.
-##
-## ## Why the name survives a button it no longer serves
-##
-## This used to be how far one `Arm` PRESS advanced the telegraph, and the press is gone
-## (ADR 0211: the button is now a free `inspect`). It stays, under the name
-## `core/time_ladder_ssot_base.gd`'s census allowlists it by, because it is now the
-## per-frame step the COMPOSITION ROOT hands `presence` — the same authored trap windows
-## are crossable by one frame's worth of `delta`, and the value is still this screen's
-## contribution to how quickly a hero who is standing on a trap finds out. Renaming it
-## would leave a core census row naming a declaration that no longer exists, and editing
-## that core test to unpin it is not mine to do.
-const ARM_TICK := 2.0
-
-## What a fixture verb that SUCCEEDED did. The module's own reason ids are the whole
-## vocabulary — `advanced`, `wrong_node`, `claimed` — and each names the state it left
-## behind, so an acceptance that changed nothing is visibly different from one that paid
-## out.
-##
-## `telegraphing` and `fired` are NOT here: no verb on this screen produces them any
-## more. A trap is telegraphed by `presence`, which the composition root calls, and this
-## screen's trap verb is the free `inspect` that answers with an EMPTY reason. They stay
-## named because the fixture line still has to word a trap the player just triggered
-## elsewhere, and a wording this file invented would be a second account of the module's.
-const OUTCOME_TEXT := {
-	"telegraphing": "telegraphing — leave before the window closes",
-	"fired": "fired",
-	"advanced": "advanced",
-	"wrong_node": "wrong node — the sequence resets",
-	"claimed": "claimed",
-}
 
 ## What the place is. Held as ONE object rather than nine fields, so a refresh is a
 ## single re-read: a screen carrying a set of cached copies can paint a room list from
@@ -294,13 +222,10 @@ func _adopt_settlement_bridge() -> void:
 ## which is the point rather than a convenience — a surface bound after its first paint
 ## would otherwise show the state it had BEFORE the binding.
 ##
-## ## The panel is re-read on EVERY refresh, never cached
-##
-## The roster is a function of where the player is standing, and the player moves. A
-## panel that read once at bind time would show the room they left, which is the stale-
-## settlement defect DEF-0261 exists to end — reproduced one layer up. So [method
-## _refresh_roster] runs on every [method refresh] and asks the bridge about the room
-## the actor is in NOW.
+## The panel is re-read on EVERY refresh, never cached: the roster is a function of where
+## the player is standing, and the player moves. A panel that read once at bind time would
+## show the room they left, which is the stale-settlement defect DEF-0261 exists to end —
+## reproduced one layer up.
 func bind_roster(roster: NpcRosterBridge) -> void:
 	_bind_nodes()
 	_roster = roster
@@ -312,14 +237,12 @@ func bind_roster(roster: NpcRosterBridge) -> void:
 ## stack, or a test — carries a live roster without the binder having to know the roster
 ## exists.
 ##
-## ## Why the screen resolves its own bridge rather than waiting to be handed one
-##
-## Every other seam in this program is handed over in `_bind_route_screen`. This one
-## cannot be: that arm lives in `item_workbench_app.gd`, which is mid-refactor by another
-## agent and read-only here, so adding a `bind_roster` call there was not available. The
+## This one resolves its own bridge rather than waiting to be handed one. Every other
+## seam in this program is handed over in `_bind_route_screen`; that arm lives in
+## `item_workbench_app.gd`, which is mid-refactor by another agent and read-only here. The
 ## bridge's own `static var` (the `NpcApi.set_minter` idiom) makes the seam available to
-## whoever mounts the screen, which is strictly more robust: a screen bound by a route
-## AND a screen bound by a test both get the roster, and neither can end up half-wired.
+## whoever mounts the screen, which is strictly more robust: a screen bound by a route AND
+## a screen bound by a test both get the roster, and neither can end up half-wired.
 func _adopt_roster_bridge() -> void:
 	if _roster != null and _roster.wired():
 		return
@@ -448,9 +371,9 @@ func _refresh_view() -> void:
 	# which is the stale-settlement defect DEF-0261 exists to end, reproduced one layer up.
 	_refresh_map()
 	_refresh_settlement()
-	# The roster is a function of WHERE THE PLAYER IS, so it is re-read on every
-	# refresh rather than cached at bind time. Everything above is the domain's own run;
-	# this is the settlement outside it, and the player can walk between them at any time.
+	# The roster is a function of WHERE THE PLAYER IS, so it is re-read on every refresh
+	# rather than cached at bind time. Everything above is the domain's own run; this is
+	# the settlement outside it, and the player can walk between them at any time.
 	_refresh_roster()
 	# The telegraph is re-read on every refresh for the same reason and one more: a trap
 	# is telegraphed by PRESENCE, which the composition root calls on its own tick, so the
@@ -460,15 +383,11 @@ func _refresh_view() -> void:
 	_refresh_telegraph()
 
 
-## Re-read the SELECTED fixture's telegraph and hand it to the panel WHOLE.
-##
-## ## Why this is a re-read and not a cache of the last press
-##
-## `inspect` is free and mutates nothing, so it is safe to call on every refresh and its
-## answer is the truth right now rather than the truth when a button was last hit. That is
-## the whole reason this panel can show a telegraph that a press did not produce — the
-## player walked onto the trap, the composition root's tick armed it, and the next refresh
-## picks that up.
+## Re-read the SELECTED fixture's telegraph and hand it to the panel WHOLE. A re-read,
+## not a cache of the last press: `inspect` is free and mutates nothing, so it is safe to
+## call on every refresh and its answer is the truth right now. That is the whole reason
+## this panel can show a telegraph a press did not produce — the player walked onto the
+## trap, the composition root's tick armed it, and the next refresh picks that up.
 ##
 ## `{}` clears the panel whenever there is nothing to read, rather than leaving the last
 ## fixture's footprint standing next to a different selection.
@@ -484,32 +403,27 @@ func _refresh_telegraph() -> void:
 ## The module's own telegraph for the selected fixture, or `{}` when it will not answer.
 ##
 ## Routed through the bridge's `inspect_fixture` rather than a separate read verb, because
-## ADR 0211 made `inspect` and `telegraph` the same call by construction
-## (`domain_fixtures.gd:290`) — two ids for one read would be two things that could drift.
-## No `delta` is passed and none can be: there is no argument here that would advance a
-## window, which is what makes calling this from a repaint safe rather than a second
-## button in disguise.
+## ADR 0211 made `inspect` and `telegraph` the same call by construction — two ids for one
+## read would be two things that could drift. No `delta` is passed and none can be: there
+## is no argument here that would advance a window, which is what makes calling this from a
+## repaint safe rather than a second button in disguise.
 func _read_telegraph() -> Dictionary:
 	var seam := _bridge()
 	if seam == null or not seam.has(&"inspect_fixture"):
 		return {}
-	return seam.call_action(
-		&"inspect_fixture", [_actor, _selected_room_id(), _selected_fixture_id()]
-	)
+	var ids := [_actor, _selected_room_id(), _selected_fixture_id()]
+	return seam.call_action(&"inspect_fixture", ids)
 
 
 ## Hand the module's floor-plan payload to the view, WHOLE, plus the room the player is
 ## standing in.
 ##
-## ## Why the player room is the SELECTION, and why that is honest
-##
-## The module publishes no tracked current room and no intra-room position (ADR 0206
-## says so outright), and the facade is at its twelve-method cap, so there is nothing to
-## read that would be more true than this. After a `Visit` the selection IS the room the
-## actor walked into, so the marker lands where the player is standing; before one, the
-## selection is where they are LOOKING, which is the same room surface every other verb
-## on this screen acts through. It is named in `summary()` as `player_room`, so a reader
-## can see which room the mark follows rather than having to infer it.
+## The player room is the SELECTION, and that is honest: the module publishes no tracked
+## current room and no intra-room position (ADR 0206 says so outright), and the facade is at
+## its cap, so there is nothing to read that would be more true. After a `Visit` the
+## selection IS the room the actor walked into; before one it is the room they are LOOKING
+## at, which is the same room surface every other verb here acts through. It is named in
+## `summary()` as `player_room`, so a reader can see which room the mark follows.
 func _refresh_map() -> void:
 	if _map_view == null:
 		return
@@ -523,11 +437,8 @@ func _refresh_map() -> void:
 
 
 ## The room the player's mark follows, as a plain string for the view's one door. The
-## module publishes no tracked current room (ADR 0206 says so outright) and the facade
-## is at its cap, so the SELECTION is the honest stand-in: after a `Visit` it is the
-## room the actor walked into, and before one it is the room they are LOOKING at — the
-## same room surface every other verb here acts through. Named `player_room` in the
-## view's `summary()` so a reader sees which room the mark follows.
+## SELECTION is the honest stand-in — see [method _refresh_map] — and it is named
+## `player_room` in the view's `summary()` so a reader sees which room the mark follows.
 func _selected_room_id_for_map() -> String:
 	return String(_selection().get("room", ""))
 
@@ -702,10 +613,10 @@ func _bind_nodes() -> void:
 ## the shipped program at all.
 ##
 ## The seed is [constant DEFAULT_SEED] first and then a small, BOUNDED walk of derived
-## seeds — see [method _enter_with_a_generating_seed] for why a refused seed cannot
-## simply be retried forever. Two presses of this button still enter the SAME domain:
-## the walk is a pure function of the template, so it picks the same first success for
-## the same template every time.
+## seeds — see [DomainSeedWalk] for why a refused seed cannot simply be retried forever
+## and why the refusal is never swallowed. Two presses of this button still enter the
+## SAME domain: the walk is a pure function of the template, so it picks the same first
+## success for the same template every time.
 func act_enter() -> bool:
 	_bind_nodes()
 	if not _can_enter():
@@ -715,37 +626,9 @@ func act_enter() -> bool:
 	return _settle(entered, "Entered %s" % template_id)
 
 
-## `Enter` against the selected template, advancing the seed until the MODULE accepts
-## one, and returning the LAST answer either way so the caller still repaints from the
-## untouched actor.
-##
-## ## Why the seed has to move at all
-##
-## `DomainGenerator.generate` partitions a template's extent and REFUSES a partition
-## below the template's `min_rooms` — it pushes `produced N room(s), below its
-## min_rooms M` and returns null. `generate_and_enter` turns that into
-## `generation_refused`, so a template whose partition under this particular seed lands
-## short produces NO domain and the button does nothing a player can see. That is a
-## property of the SEED and the TEMPLATE together, not a defect in either: the same
-## template generates from a neighbouring seed. Pressing `Enter` should enter something,
-## so the screen advances rather than reporting a refusal the player can do nothing
-## about.
-##
-## ## Why this is not papering over it
-##
-## Three things stay true, and each of them is what the alternative lost:
-##
-##  - The attempt count is [constant MAX_SEED_ATTEMPTS] — a named, small cap. There is
-##    no loop that can be made unbounded by authoring a template nothing can satisfy.
-##  - The refusal is NEVER swallowed. A reason that is not a generation refusal is
-##    returned IMMEDIATELY, untouched, on the first attempt — so `no_such_template` and
-##    `invalid_contract` reach the player exactly as the module worded them.
-##  - If every attempt refuses for the generation reason, the LAST refusal is what gets
-##    returned, so the line names the module's own `generation_refused` rather than a
-##    wording this file invented.
-##
-## The seeds are `DEFAULT_SEED + attempt`, not a random roll: reproducible, and the same
-## template always resolves to the same domain.
+## The bounded seed walk, delegating to [DomainSeedWalk] and handing it this screen's own
+## `enter` seam action — which is the only reason the walk needs no bridge reference, and
+## the reason it can be driven by a test with one `Callable`.
 func _enter_with_a_generating_seed(template_id: StringName) -> Dictionary:
 	# Reached only through [method act_enter], which has already answered `_can_enter()`
 	# — so the seam is non-null by construction. Read through the accessor anyway, so a
@@ -753,20 +636,16 @@ func _enter_with_a_generating_seed(template_id: StringName) -> Dictionary:
 	var seam := _bridge()
 	if seam == null:
 		return {"ok": false, "reason": "no_inventory_bridge"}
-	var refusal: Dictionary = {}
-	for attempt in MAX_SEED_ATTEMPTS:
-		var answer := seam.call_action(&"enter", [_actor, template_id, DEFAULT_SEED + attempt])
-		if bool(answer.get("ok", false)):
-			return answer
-		refusal = answer
-		if String(answer.get("reason", "")) != GENERATION_REFUSED:
-			# Not something a different seed would change, so stop asking and report it.
-			return answer
-	# Every seed the bounded walk tried was refused for the same reason. The LAST refusal
-	# is returned rather than a fresh call, so the player is told the module's own
-	# `generation_refused` once and the walk costs `MAX_SEED_ATTEMPTS` generations, not
-	# `MAX_SEED_ATTEMPTS + 1`.
-	return refusal
+	return DomainSeedWalk.walk(
+		(
+			(func(who: Actor, which: StringName, seed: int) -> Dictionary:
+				return seam.call_action(&"enter", [who, which, seed]) as Dictionary)
+			as Callable
+		),
+		_actor,
+		template_id,
+		DEFAULT_SEED
+	)
 
 
 ## Leave the domain. The discovered set survives, so nothing the player found is lost.
@@ -927,15 +806,15 @@ func _can_visit() -> bool:
 
 
 func _can_inspect() -> bool:
-	return _can_fixture(&"inspect_fixture")
+	return _gates().can_act(&"inspect_fixture")
 
 
 func _can_attempt() -> bool:
-	return _can_fixture(&"attempt_fixture") and not _puzzle_nodes().is_empty()
+	return _gates().can_attempt()
 
 
 func _can_claim() -> bool:
-	return _can_fixture(&"claim_fixture")
+	return _gates().can_act(&"claim_fixture")
 
 
 ## Whether a run is active and the bridge can reach the verb at all.
@@ -943,17 +822,24 @@ func _live() -> bool:
 	return _actor != null and _bridge() != null and not _view().is_empty()
 
 
-## A fixture verb is offered when the room holds a fixture OF THE KIND THIS VERB acts
-## on, and the module can answer. Whether the module will ANSWER YES is its business: a
-## treasure whose key you lack must stay pressable, or the refusal — the thing that
-## teaches a player why the hoard is sealed — becomes unreachable.
-func _can_fixture(action: StringName) -> bool:
+## The gate set, pointed at the CURRENT state of this screen.
+##
+## Built fresh on each read and never cached, for the same reason the telegraph is re-read
+## every refresh: a cached gate answers about the moment it was minted, so a selection that
+## moved would leave a button enabled against a fixture that is no longer selected. The
+## object holds no widget and no bridge — only the four facts a decision needs — which is
+## what lets a screen ask a question without reaching past its own `_bind_nodes`.
+func _gates() -> DomainFixtureGates:
+	var gates := DomainFixtureGates.new()
 	var seam := _bridge()
-	if not _live() or seam == null or not seam.has(action):
-		return false
-	if _selected_fixture_id().is_empty():
-		return false
-	return FIXTURE_VERB.get(_fixture_kind(), &"") == action
+	gates.evaluate(
+		_live(),
+		(func(action: StringName) -> bool: return seam != null and seam.has(action)) as Callable,
+		_fixture_kind(),
+		_selected_fixture_id(),
+		_puzzle_nodes()
+	)
+	return gates
 
 
 func _enter_reason() -> String:
@@ -981,29 +867,20 @@ func _visit_reason() -> String:
 ## so the only reasons it can carry are "this seam is not wired" and "this fixture is
 ## not the one the verb reads".
 func _inspect_reason() -> String:
-	return _fixture_reason(&"inspect_fixture", "unknown_fixture")
+	return _gates().reason_for(&"inspect_fixture")
 
 
+## `authors_nothing_to_grant` is checked BEFORE the gate, and stays here rather than moving
+## with the rest: it is not a bridge fact but a fact about the AUTHORED nodes, so it reads
+## the selection directly. Everything after it is the gate's own answer.
 func _attempt_reason() -> String:
 	if _puzzle_nodes().is_empty():
 		return "authors_nothing_to_grant"
-	return _fixture_reason(&"attempt_fixture", "unknown_node")
+	return _gates().reason_for(&"attempt_fixture")
 
 
 func _claim_reason() -> String:
-	return _fixture_reason(&"claim_fixture", "missing_key")
-
-
-## Why a fixture verb is refused when it is refused by the SCREEN rather than by the
-## module. The fallback names what the authored content says about that fixture, which
-## is the gate a player is most likely to be standing at.
-func _fixture_reason(action: StringName, authored_reason: String) -> String:
-	if not _live():
-		return "no_map"
-	var seam := _bridge()
-	if seam == null or not seam.has(action):
-		return "no_inventory_bridge"
-	return authored_reason
+	return _gates().reason_for(&"claim_fixture")
 
 
 ## What each action is right now, and what the ActionSet row itself thinks. Both halves
@@ -1158,15 +1035,16 @@ func _settle(result: Dictionary, accepted: String) -> bool:
 ## ambiguous against two other fixtures in the same room — so the fixture line leads with
 ## which one it was about and carries the module's own reason id alongside the bridge's
 ## wording. The id is not decoration: it is the stable handle a driver and a test match
-## on, and a worded sentence alone would leave both of them pattern-matching prose.
+## on, and a worded sentence alone would leave both of them pattern-matching prose. The
+## composition itself is [DomainOutcome]'s.
 func _settle_fixture(result: Dictionary) -> bool:
 	var reason := String(result.get("reason", ""))
 	var accepted := bool(result.get("ok", false))
-	var text: String = _outcome_text(reason) if accepted else _reason_text(reason)
-	# Both lines carry the reason ID and the wording. The id is the stable handle a
-	# driver and a test match on; the wording is what a player reads. A line with only
-	# one of them fails half of every consumer.
-	_fixture_message = _fixture_sentence("%s — %s" % [reason, text])
+	_fixture_message = (
+		DomainOutcome.accepted(_selected_fixture_id(), reason)
+		if accepted
+		else DomainOutcome.refused(_selected_fixture_id(), reason, _reason_text(reason))
+	)
 	_fixture_tone = TONE_OK if accepted else TONE_ERROR
 	set_message(_fixture_message, _fixture_tone)
 	refresh()
@@ -1193,7 +1071,7 @@ func _settle_inspect(result: Dictionary) -> bool:
 		return _reject(String(result.get("reason", "unknown_fixture")))
 	if _telegraph != null:
 		_telegraph.show_telegraph(result)
-	_fixture_message = _fixture_sentence("read — nothing was touched")
+	_fixture_message = DomainOutcome.read(_selected_fixture_id())
 	_fixture_tone = TONE_OK
 	set_message(_fixture_message, _fixture_tone)
 	refresh()
@@ -1210,33 +1088,22 @@ func _settle_inspect(result: Dictionary) -> bool:
 ## can act on. With no fixture selected the line is the bare reason, which is honest —
 ## there was no fixture to be about.
 func _reject(reason: String) -> bool:
-	_fixture_message = _fixture_sentence(_reason_text(reason))
+	# Composed ONCE, by [DomainOutcome.refused]. Re-wrapping this here would prefix the
+	# fixture id a second time, so a repeated refusal read "ash_x: ash_x: ...".
+	var worded := _reason_text(reason)
+	_fixture_message = DomainOutcome.refused(_selected_fixture_id(), reason, worded)
 	_fixture_tone = TONE_ERROR
-	# Composed ONCE. Re-wrapping `_fixture_message` here would prefix the fixture id a
-	# second time, so a repeated refusal read "ash_x: ash_x: ...".
-	set_message(_fixture_sentence("Rejected: %s — %s" % [reason, _reason_text(reason)]), TONE_ERROR)
+	set_message(_fixture_message, _fixture_tone)
 	refresh()
 	return false
 
 
-## `<fixture>: <text>`, or `<text>` alone when no fixture is aimed at. The one place a
-## fixture outcome is worded, so the summary line and the message line can never name two
-## different fixtures for one press.
-func _fixture_sentence(text: String) -> String:
-	var fixture := _selected_fixture_id()
-	if fixture.is_empty():
-		return text
-	return "%s: %s" % [String(fixture), text]
-
-
+## The player-facing sentence for a reason id, as `DomainBridge.REASON_TEXT` words it.
+## Falls back to the id itself when no seam is bound — a reason this build has no wording
+## for must still be REPORTED rather than dropped.
 func _reason_text(reason: String) -> String:
 	var seam := _bridge()
 	return seam.reason_text(reason) if seam != null else reason
-
-
-func _outcome_text(reason: String) -> String:
-	var text := String(OUTCOME_TEXT.get(reason, reason))
-	return text if not text.is_empty() else "done"
 
 
 # ── Plumbing ─────────────────────────────────────────────────────────────────

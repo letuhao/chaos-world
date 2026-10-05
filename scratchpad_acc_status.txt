@@ -1,0 +1,2491 @@
+SCRIPT ERROR: Parse Error: Static function "shared()" not found in base "NpcEvents".
+   at: GDScript::reload (res://src/modules/social/api.gd:142)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/modules/sect/api.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/app/actor_factory.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://tests/modules/status/test_mind_status_no_lock.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+ERROR: Failed to load script "res://tests/modules/status/test_mind_status_no_lock.gd" with error "Compilation failed".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and it SPENT composure: 100.000000 -> 100.000000: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: so the counterparty's answer is a real refill, not a name: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: %s: the top of the sweep lands on the parity rate, as the ratio predicts: expected 0.775, got 0.76
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: %s: the top of the sweep lands on the parity rate, as the ratio predicts: expected 0.825, got 0.815
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: %s: the top of the sweep lands on the parity rate, as the ratio predicts: expected 0.75, got 0.73628571428571
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: %s: the top of the sweep lands on the parity rate, as the ratio predicts: expected 0.725, got 0.7075
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: mind_hush: a target who out-invests the attacker refuses the whole contest: expected 0.95, got 0.8275
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.87999999979, got 0.67000000021
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.87999999979, got 0.67000000021
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.87999999979, got 0.67000000021
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.87999999979, got 0.67000000021
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.87999999979, got 0.67000000021
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.87999999979, got 0.67000000021
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.87999999979, got 0.67000000021
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.87999999979, got 0.67000000021
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.87999999979, got 0.67000000021
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.87999999979, got 0.67000000021
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.87999999979, got 0.67000000021
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.87999999979, got 0.67000000021
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.87999999979, got 0.67000000021
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.87999999979, got 0.67000000021
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.87999999979, got 0.67000000021
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.87999999979, got 0.67000000021
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.87999999979, got 0.67000000021
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.87999999979, got 0.67000000021
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.87999999979, got 0.67000000021
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.87999999979, got 0.67000000021
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.87999999979, got 0.67000000021
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.87999999979, got 0.67000000021
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.87999999979, got 0.67000000021
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.87999999979, got 0.67000000021
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.87999999979, got 0.67000000021
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.87999999979, got 0.67000000021
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.87999999979, got 0.67000000021
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.87999999979, got 0.67000000021
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.87999999979, got 0.67000000021
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.87999999979, got 0.67000000021
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: mind_unmake: a target who out-invests the attacker refuses the whole contest: expected 0.95, got 0.86
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.89499999986, got 0.75500000014
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.89499999986, got 0.75500000014
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.89499999986, got 0.75500000014
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.89499999986, got 0.75500000014
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.89499999986, got 0.75500000014
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.89499999986, got 0.75500000014
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.89499999986, got 0.75500000014
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.89499999986, got 0.75500000014
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.89499999986, got 0.75500000014
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.89499999986, got 0.75500000014
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.89499999986, got 0.75500000014
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.89499999986, got 0.75500000014
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.89499999986, got 0.75500000014
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.89499999986, got 0.75500000014
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.89499999986, got 0.75500000014
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.89499999986, got 0.75500000014
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.89499999986, got 0.75500000014
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.89499999986, got 0.75500000014
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.89499999986, got 0.75500000014
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.89499999986, got 0.75500000014
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.89499999986, got 0.75500000014
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.89499999986, got 0.75500000014
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.89499999986, got 0.75500000014
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.89499999986, got 0.75500000014
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.89499999986, got 0.75500000014
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.89499999986, got 0.75500000014
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.89499999986, got 0.75500000014
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.89499999986, got 0.75500000014
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.89499999986, got 0.75500000014
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.89499999986, got 0.75500000014
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: mind_falsify: a target who out-invests the attacker refuses the whole contest: expected 0.9, got 0.798
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.845999999808, got 0.654000000192
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.845999999808, got 0.654000000192
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.845999999808, got 0.654000000192
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.845999999808, got 0.654000000192
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.845999999808, got 0.654000000192
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.845999999808, got 0.654000000192
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.845999999808, got 0.654000000192
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.845999999808, got 0.654000000192
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.845999999808, got 0.654000000192
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.845999999808, got 0.654000000192
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.845999999808, got 0.654000000192
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.845999999808, got 0.654000000192
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.845999999808, got 0.654000000192
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.845999999808, got 0.654000000192
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.845999999808, got 0.654000000192
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.845999999808, got 0.654000000192
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.845999999808, got 0.654000000192
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.845999999808, got 0.654000000192
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.845999999808, got 0.654000000192
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.845999999808, got 0.654000000192
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.845999999808, got 0.654000000192
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.845999999808, got 0.654000000192
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.845999999808, got 0.654000000192
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.845999999808, got 0.654000000192
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.845999999808, got 0.654000000192
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.845999999808, got 0.654000000192
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.845999999808, got 0.654000000192
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.845999999808, got 0.654000000192
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.845999999808, got 0.654000000192
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.845999999808, got 0.654000000192
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: mind_daze: a target who out-invests the attacker refuses the whole contest: expected 0.9, got 0.78625
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.847499999755, got 0.602500000245
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.847499999755, got 0.602500000245
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.847499999755, got 0.602500000245
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.847499999755, got 0.602500000245
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.847499999755, got 0.602500000245
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.847499999755, got 0.602500000245
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.847499999755, got 0.602500000245
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.847499999755, got 0.602500000245
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.847499999755, got 0.602500000245
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.847499999755, got 0.602500000245
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.847499999755, got 0.602500000245
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.847499999755, got 0.602500000245
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.847499999755, got 0.602500000245
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.847499999755, got 0.602500000245
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.847499999755, got 0.602500000245
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.847499999755, got 0.602500000245
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.847499999755, got 0.602500000245
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.847499999755, got 0.602500000245
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.847499999755, got 0.602500000245
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.847499999755, got 0.602500000245
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.847499999755, got 0.602500000245
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.847499999755, got 0.602500000245
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.847499999755, got 0.602500000245
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.847499999755, got 0.602500000245
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.847499999755, got 0.602500000245
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.847499999755, got 0.602500000245
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.847499999755, got 0.602500000245
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.847499999755, got 0.602500000245
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.847499999755, got 0.602500000245
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the refusal rate is the floor plus headroom, exactly as authored: expected 0.847499999755, got 0.602500000245
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: the naive 0.5 gate reproduces the 329% perma-lock this design was measured against: expected 3.29, got 2.645
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: the `1.5` reading divides the WHOLE multiple and lands a factor of two short: expected 3.29, got 2.09666666666667
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: and the exact re-fit of that same 1.5-multiple relationship reaches its full cost at a refusal rate of 0.0, which is the shape 3.29 was measured through: expected 1.5, got 2.5
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/status/test_mind_status_no_lock.gd :: the floor_resist term is what moved the lock: 0.7403x of the naive 2.6450x, at a worst parity refusal of 0.7250 (mind_daze) — over a quarter of it: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+SCRIPT ERROR: Parse Error: Static function "shared()" not found in base "NpcEvents".
+   at: GDScript::reload (res://src/modules/npc/api.gd:59)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/app/npc_boot.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/app/status_loop.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://tests/modules/status/test_status_cultivation_reach.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+ERROR: Failed to load script "res://tests/modules/status/test_status_cultivation_reach.gd" with error "Compilation failed".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] test_a_cultivation_blessing_persists_for_the_session (res://tests/modules/status/test_status_cultivation_reach.gd:210)
+       [3] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Parse Error: Cannot infer the type of "expected" variable because the value doesn't have a set type.
+   at: GDScript::reload (res://tests/modules/status/test_status_resistance_band.gd:137)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+ERROR: Failed to load script "res://tests/modules/status/test_status_resistance_band.gd" with error "Parse error".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+ERROR: res://tests/modules/status/test_status_resistance_band.gd :: failed to load suite
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:46)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burn_deals_damage_when_only_the_frame_driver_runs (res://tests/modules/status/test_status_tick.gd:70)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burn_deals_damage_when_only_the_frame_driver_runs (res://tests/modules/status/test_status_tick.gd:70)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burn_deals_damage_when_only_the_frame_driver_runs (res://tests/modules/status/test_status_tick.gd:70)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burn_deals_damage_when_only_the_frame_driver_runs (res://tests/modules/status/test_status_tick.gd:70)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burn_deals_damage_when_only_the_frame_driver_runs (res://tests/modules/status/test_status_tick.gd:70)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burn_deals_damage_when_only_the_frame_driver_runs (res://tests/modules/status/test_status_tick.gd:70)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burn_deals_damage_when_only_the_frame_driver_runs (res://tests/modules/status/test_status_tick.gd:70)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burn_deals_damage_when_only_the_frame_driver_runs (res://tests/modules/status/test_status_tick.gd:70)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burning_body_feeds_a_pyre_that_alone_does_nothing (res://tests/modules/status/test_status_tick.gd:194)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burning_body_feeds_a_pyre_that_alone_does_nothing (res://tests/modules/status/test_status_tick.gd:194)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burning_body_feeds_a_pyre_that_alone_does_nothing (res://tests/modules/status/test_status_tick.gd:194)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burning_body_feeds_a_pyre_that_alone_does_nothing (res://tests/modules/status/test_status_tick.gd:194)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burning_body_feeds_a_pyre_that_alone_does_nothing (res://tests/modules/status/test_status_tick.gd:194)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burning_body_feeds_a_pyre_that_alone_does_nothing (res://tests/modules/status/test_status_tick.gd:194)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burning_body_feeds_a_pyre_that_alone_does_nothing (res://tests/modules/status/test_status_tick.gd:194)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burning_body_feeds_a_pyre_that_alone_does_nothing (res://tests/modules/status/test_status_tick.gd:194)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burning_body_feeds_a_pyre_that_alone_does_nothing (res://tests/modules/status/test_status_tick.gd:202)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burning_body_feeds_a_pyre_that_alone_does_nothing (res://tests/modules/status/test_status_tick.gd:202)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burning_body_feeds_a_pyre_that_alone_does_nothing (res://tests/modules/status/test_status_tick.gd:202)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burning_body_feeds_a_pyre_that_alone_does_nothing (res://tests/modules/status/test_status_tick.gd:202)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burst_spends_itself_once_and_leaves_nothing_behind (res://tests/modules/status/test_status_tick.gd:180)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burst_spends_itself_once_and_leaves_nothing_behind (res://tests/modules/status/test_status_tick.gd:180)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burst_spends_itself_once_and_leaves_nothing_behind (res://tests/modules/status/test_status_tick.gd:180)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burst_spends_itself_once_and_leaves_nothing_behind (res://tests/modules/status/test_status_tick.gd:180)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burst_spends_itself_once_and_leaves_nothing_behind (res://tests/modules/status/test_status_tick.gd:180)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burst_spends_itself_once_and_leaves_nothing_behind (res://tests/modules/status/test_status_tick.gd:180)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burst_spends_itself_once_and_leaves_nothing_behind (res://tests/modules/status/test_status_tick.gd:180)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burst_spends_itself_once_and_leaves_nothing_behind (res://tests/modules/status/test_status_tick.gd:180)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burst_spends_itself_once_and_leaves_nothing_behind (res://tests/modules/status/test_status_tick.gd:180)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burst_spends_itself_once_and_leaves_nothing_behind (res://tests/modules/status/test_status_tick.gd:180)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burst_spends_itself_once_and_leaves_nothing_behind (res://tests/modules/status/test_status_tick.gd:180)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burst_spends_itself_once_and_leaves_nothing_behind (res://tests/modules/status/test_status_tick.gd:180)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burst_spends_itself_once_and_leaves_nothing_behind (res://tests/modules/status/test_status_tick.gd:180)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burst_spends_itself_once_and_leaves_nothing_behind (res://tests/modules/status/test_status_tick.gd:180)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burst_spends_itself_once_and_leaves_nothing_behind (res://tests/modules/status/test_status_tick.gd:180)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_burst_spends_itself_once_and_leaves_nothing_behind (res://tests/modules/status/test_status_tick.gd:180)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_permanent_cultivation_status_survives_ticking (res://tests/modules/status/test_status_tick.gd:134)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_expires_through_the_production_path_and_releases_its_modifiers (res://tests/modules/status/test_status_tick.gd:125)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_the_module_did_not_author_still_ages_through_the_same_tick (res://tests/modules/status/test_status_tick.gd:214)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_the_module_did_not_author_still_ages_through_the_same_tick (res://tests/modules/status/test_status_tick.gd:214)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_the_module_did_not_author_still_ages_through_the_same_tick (res://tests/modules/status/test_status_tick.gd:214)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_the_module_did_not_author_still_ages_through_the_same_tick (res://tests/modules/status/test_status_tick.gd:214)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_the_module_did_not_author_still_ages_through_the_same_tick (res://tests/modules/status/test_status_tick.gd:214)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_the_module_did_not_author_still_ages_through_the_same_tick (res://tests/modules/status/test_status_tick.gd:214)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_the_module_did_not_author_still_ages_through_the_same_tick (res://tests/modules/status/test_status_tick.gd:214)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_the_module_did_not_author_still_ages_through_the_same_tick (res://tests/modules/status/test_status_tick.gd:214)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_the_module_did_not_author_still_ages_through_the_same_tick (res://tests/modules/status/test_status_tick.gd:214)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_the_module_did_not_author_still_ages_through_the_same_tick (res://tests/modules/status/test_status_tick.gd:214)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_the_module_did_not_author_still_ages_through_the_same_tick (res://tests/modules/status/test_status_tick.gd:214)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_a_status_the_module_did_not_author_still_ages_through_the_same_tick (res://tests/modules/status/test_status_tick.gd:214)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_an_escalating_burn_grows_with_each_pulse (res://tests/modules/status/test_status_tick.gd:161)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_an_escalating_burn_grows_with_each_pulse (res://tests/modules/status/test_status_tick.gd:161)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_an_escalating_burn_grows_with_each_pulse (res://tests/modules/status/test_status_tick.gd:161)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_an_escalating_burn_grows_with_each_pulse (res://tests/modules/status/test_status_tick.gd:161)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_an_escalating_burn_grows_with_each_pulse (res://tests/modules/status/test_status_tick.gd:163)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_an_escalating_burn_grows_with_each_pulse (res://tests/modules/status/test_status_tick.gd:163)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_an_escalating_burn_grows_with_each_pulse (res://tests/modules/status/test_status_tick.gd:163)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_an_escalating_burn_grows_with_each_pulse (res://tests/modules/status/test_status_tick.gd:163)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_an_escalating_burn_grows_with_each_pulse (res://tests/modules/status/test_status_tick.gd:163)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_an_escalating_burn_grows_with_each_pulse (res://tests/modules/status/test_status_tick.gd:163)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_an_escalating_burn_grows_with_each_pulse (res://tests/modules/status/test_status_tick.gd:163)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_an_escalating_burn_grows_with_each_pulse (res://tests/modules/status/test_status_tick.gd:163)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_an_escalating_burn_grows_with_each_pulse (res://tests/modules/status/test_status_tick.gd:163)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_an_escalating_burn_grows_with_each_pulse (res://tests/modules/status/test_status_tick.gd:163)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_an_escalating_burn_grows_with_each_pulse (res://tests/modules/status/test_status_tick.gd:163)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_an_escalating_burn_grows_with_each_pulse (res://tests/modules/status/test_status_tick.gd:163)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_combat_exit_purges_combat_scope_and_leaves_cultivation_scope (res://tests/modules/status/test_status_tick.gd:149)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_combat_exit_purges_combat_scope_and_leaves_cultivation_scope (res://tests/modules/status/test_status_tick.gd:149)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_the_frame_driver_is_what_ticks_a_status (res://tests/modules/status/test_status_tick.gd:52)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_the_frame_driver_is_what_ticks_a_status (res://tests/modules/status/test_status_tick.gd:52)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_the_frame_driver_is_what_ticks_a_status (res://tests/modules/status/test_status_tick.gd:52)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+   at: tick (res://src/app/npc_boot.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] tick (res://src/app/npc_boot.gd:194)
+       [1] tick (res://src/app/status_loop.gd:185)
+       [2] _frames (res://tests/modules/status/test_status_tick.gd:43)
+       [3] test_the_frame_driver_is_what_ticks_a_status (res://tests/modules/status/test_status_tick.gd:52)
+       [4] _initialize (res://tests/run_tests.gd:118)
+fail 251 script error(s) aborted a test mid-function; those tests reported no failure, so the run above is incomplete
+warn 9 script(s) failed to LOAD; the errors above are mostly their dependants:
+warn   res://src/modules/social/api.gd
+warn   res://src/modules/sect/api.gd
+warn   res://src/app/actor_factory.gd
+warn   res://tests/modules/status/test_mind_status_no_lock.gd
+warn   res://src/modules/npc/api.gd
+warn   res://src/app/npc_boot.gd
+warn   res://src/app/status_loop.gd
+warn   res://tests/modules/status/test_status_cultivation_reach.gd
+warn   res://tests/modules/status/test_status_resistance_band.gd
+warn SCRIPT ERROR: Parse Error: Static function "shared()" not found in base "NpcEvents".
+warn SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+warn SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+warn SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+warn SCRIPT ERROR: Parse Error: Static function "shared()" not found in base "NpcEvents".
+warn SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+warn SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+warn SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+warn SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+warn SCRIPT ERROR: Invalid call. Nonexistent function 'social_state' in base 'GDScript'.
+warn ... and 241 more
+$ C:\Users\NeneScarlet\AppData\Local\Microsoft\WinGet\Packages\GodotEngine.GodotEngine_Microsoft.Winget.Source_8wekyb3d8bbwe\Godot_v4.7.2-stable_win64_console.exe --headless --path D:\Works\source\chaos-world\game -s res://tests/run_tests.gd --log-file D:\Works\source\chaos-world\build\logs\172824-89012-1-run.log -- --suite tests/modules/status
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Floors: 7 of 103 test(s) ran under a declared expect_assertions() floor; the rest are covered only by the SCRIPT ERROR scan in tools/test.py, which catches an abort without naming the test
+Results: 1931 passed, 135 failed (11 suite(s))

@@ -2,49 +2,38 @@ class_name DomainGenerator
 extends RefCounted
 
 ## Builds a `DomainMap` from an authored `DomainTemplateDef` and a seed (ADR 0072).
-##
-## ## Shape
-##
 ## A recursive binary space partition over the tile grid, a spanning tree over the
-## leaves, then proximity loop edges. Rooms are the leaves; a corridor is the
-## connection an edge implies, and a room's exits are derived from the edges that
-## touch it.
+## leaves, then proximity loop edges. Rooms are the leaves; a corridor is the connection
+## an edge implies, and a room's exits are derived from the edges that touch it.
 ##
 ## ## Geometry first, dice second
 ##
-## The split *structure* is mostly derived and almost never rolled:
+## The split *structure* is derived, never rolled: leaves in CANONICAL spatial order
+## (center.y, then center.x, then birth) with zero rng, so the fill order is a property of
+## the geometry and not of the draw order; entry / core / gate / arenas placed BY RULE off
+## that order and the tree's distances; corridor elbow order `abs(dx) >= abs(dy) ->
+## horizontal first`, not a coin flip, because an L has two shapes and one of them is
+## always the longer leg; an over-wide leaf count pruned by collapsing the LARGEST leaves,
+## largest-first, with no rng at all.
 ##
-## - leaves are put in CANONICAL spatial order (center.y, then center.x, then birth)
-##   with zero rng, which is what makes the fill order a property of the geometry
-##   rather than of the draw order;
-## - the entry, the core, the gate and the arenas are placed BY RULE off that order
-##   and the tree's distances — the entry is the leaf containing `entry_anchor`, the
-##   core is the leaf furthest from the entry, the gate is the entry's lowest-index
-##   neighbour;
-## - corridor elbow order is `abs(dx) >= abs(dy) -> horizontal first`, not a coin
-##   flip, because an L has two shapes and one of them is always the longer leg;
-## - an over-wide leaf count is pruned by collapsing the LARGEST leaves, largest-first,
-##   with no rng at all.
-##
-## What is left for the rng is exactly what is a judgement call: the split ratios, the
-## axis repeats, the shuffle of the room kit, and which proximity candidates become
-## loops. Everything else is a rule.
+## The rng is left exactly what is a judgement call: the split ratios, the axis repeats,
+## the shuffle of the room kit, and which proximity candidates become loops.
 ##
 ## ## Bounded everywhere
 ##
-## There is NO RETRY and NO UNBOUNDED LOOP in this file. Every walk is a `for` over a
-## canonically sorted list or is bounded by `max_depth`, the leaf count or the
-## candidate count. A generator that cannot converge does not spin — it `push_error`s
-## naming the template, the seed, the condition and the numbers, and returns `null`.
-## The repo has already paid for the alternative: an unbounded loop whose exit
-## condition was unreachable wrote ~10 GB of engine log before anyone noticed.
+## NO RETRY and NO UNBOUNDED LOOP. Every walk is a `for` over a canonically sorted list or
+## is bounded by `max_depth`, the leaf count or the candidate count. A generator that
+## cannot converge does not spin — it `push_error`s naming the template, the seed, the
+## condition and the numbers, and returns `null`. The repo has paid for the alternative:
+## an unbounded loop whose exit condition was unreachable wrote ~10 GB of engine log before
+## anyone noticed.
 
 ## Depth counted from the root cell. `max_depth` is checked BEFORE a cell is popped for
 ## splitting, so the recursion is bounded by construction and cannot loop.
 const ROOT_DEPTH := 0
 
-## A pruned map keeps at least this many rooms. Pruning down to a degenerate one-room
-## map would satisfy "fewer rooms" and fail the contract's connectivity spirit.
+## A pruned map keeps at least this many rooms. Pruning down to a degenerate one-room map
+## would satisfy "fewer rooms" and fail the contract's connectivity spirit.
 const PRUNE_MIN_LEAVES := 2
 
 ## Rooms at least this far from the entry, breadth-first, are arena candidates.
@@ -71,46 +60,31 @@ static func generate(template: DomainTemplateDef, seed_value: int) -> DomainMap:
 
 	var leaves := _partition(template, pools[DomainRng.STREAM_GRAPH])
 	if leaves.is_empty():
-		_fail(
-			template,
-			seed_value,
-			(
-				"produced no leaf from extent %s with min_leaf %d, margin %d, max_depth %d"
-				% [
-					_box(template.extent),
-					template.min_leaf,
-					template.margin,
-					template.max_depth,
-				]
-			)
-		)
+		var no_leaf := "produced no leaf from extent %s with min_leaf %d, margin %d, max_depth %d"
+		var numbers := [
+			_box(template.extent), template.min_leaf, template.margin, template.max_depth
+		]
+		_fail(template, seed_value, no_leaf % numbers)
 		return null
 	leaves = _canonical_order(leaves)
 	leaves = _prune_to(leaves, _prune_limit(leaves, template.max_rooms))
 	if leaves.size() < template.min_rooms:
-		_fail(
-			template,
-			seed_value,
-			(
-				(
-					"produced %d room(s), below its min_rooms %d, from extent %s, "
-					% [leaves.size(), template.min_rooms, _box(template.extent)]
-				)
-				+ "min_leaf %d, max_depth %d" % [template.min_leaf, template.max_depth]
-			)
+		var shortfall := (
+			"produced %d room(s), below its min_rooms %d, from extent %s, "
+			% [
+				leaves.size(),
+				template.min_rooms,
+				_box(template.extent),
+			]
 		)
+		var floor := "min_leaf %d, max_depth %d" % [template.min_leaf, template.max_depth]
+		_fail(template, seed_value, shortfall + floor)
 		return null
 
 	var tree := _spanning_tree(leaves)
 	if tree.is_empty():
-		_fail(
-			template,
-			seed_value,
-			(
-				"built no spanning tree over %d leaf/leaves; a one-room domain cannot be entered"
-				% leaves.size()
-			)
-		)
+		var no_tree := "built no spanning tree over %d leaf/leaves; a one-room domain cannot be entered"
+		_fail(template, seed_value, no_tree % leaves.size())
 		return null
 	var loops := _loop_edges(template, leaves, tree, pools[DomainRng.STREAM_GRAPH])
 
@@ -132,8 +106,8 @@ static func generate(template: DomainTemplateDef, seed_value: int) -> DomainMap:
 # ── BSP ───────────────────────────────────────────────────────────────────────
 
 
-## The root cell, inset from the extent by the margin. Null when the extent cannot
-## hold a single leaf, which the caller reports with the numbers.
+## The root cell, inset from the extent by the margin. Null when the extent cannot hold a
+## single leaf, which the caller reports with the numbers.
 static func _root_cell(template: DomainTemplateDef) -> DomainCell:
 	var width := template.extent.x - template.margin * 2
 	var height := template.extent.y - template.margin * 2
@@ -145,10 +119,9 @@ static func _root_cell(template: DomainTemplateDef) -> DomainCell:
 	return cell
 
 
-## Split until every leaf is legal or `max_depth` is reached.
-##
-## The walk is a stack, so the recursion is explicit: the stack can only ever hold as
-## many cells as the tree has produced, and the tree is bounded by `max_depth`.
+## Split until every leaf is legal or `max_depth` is reached. The walk is a stack, so
+## the recursion is explicit: the stack can only ever hold as many cells as the tree has
+## produced, and the tree is bounded by `max_depth`.
 static func _partition(
 	template: DomainTemplateDef, rng: RandomNumberGenerator
 ) -> Array[DomainCell]:
@@ -281,9 +254,9 @@ static func _canonical_order(leaves: Array[DomainCell]) -> Array[DomainCell]:
 # ── pruning ──────────────────────────────────────────────────────────────────
 
 
-## How many leaves survive pruning against `limit`. Pure arithmetic: no rng, no retry.
-## The walk is bounded by the leaf count on both axes and stops early the moment the
-## limit is met.
+## How many leaves survive pruning against `limit`. Pure arithmetic: no rng, no retry. The
+## walk is bounded by the leaf count on both axes and stops early the moment the limit is
+## met.
 static func _prune_limit(leaves: Array[DomainCell], limit: int) -> int:
 	if limit < PRUNE_MIN_LEAVES or leaves.size() <= limit:
 		return leaves.size()
@@ -303,7 +276,7 @@ static func _prune_limit(leaves: Array[DomainCell], limit: int) -> int:
 
 ## Index of the largest collapsible leaf. Ties go to the LOWER canonical index, so the
 ## collapse is a function of the geometry and not of a sort's stability. A leaf with no
-## parent (the root) is never collapsed, and an already-removed leaf is not in the list.
+## parent (the root) is never collapsed.
 static func _largest_collapsible(
 	collapsible: Array[DomainCell], reserved: Array[DomainCell]
 ) -> int:
@@ -320,8 +293,8 @@ static func _largest_collapsible(
 	return best
 
 
-## The leaves that survive pruning, in the SAME canonical order as the input, with a
-## leaf's `parent` back-reference cleared so a pruned parent cannot collapse a child.
+## The leaves that survive pruning, in the SAME canonical order as the input, with a leaf's
+## `parent` back-reference cleared so a pruned parent cannot collapse a child.
 static func _prune_to(leaves: Array[DomainCell], limit: int) -> Array[DomainCell]:
 	if limit >= leaves.size():
 		return leaves
@@ -339,10 +312,10 @@ static func _prune_to(leaves: Array[DomainCell], limit: int) -> Array[DomainCell
 # ── graph ────────────────────────────────────────────────────────────────────
 
 
-## A spanning tree over the leaves: the edge that costs least at each step, accepted
-## only if it joins two components (Prim over a complete graph). O(V^2) and bounded by
-## the leaf count; it always produces exactly `n - 1` edges for `n > 1`, because a
-## spanning tree exists on any complete graph. No retry, no spin.
+## A spanning tree over the leaves: the edge that costs least at each step, accepted only
+## if it joins two components (Prim over a complete graph). O(V^2) and bounded by the leaf
+## count; it always produces exactly `n - 1` edges for `n > 1`, because a spanning tree
+## exists on any complete graph. No retry, no spin.
 static func _spanning_tree(leaves: Array[DomainCell]) -> Array[DomainPair]:
 	var edges: Array[DomainPair] = []
 	var count := leaves.size()
@@ -402,9 +375,8 @@ static func _find(component: Array[int], index: int) -> int:
 	return value
 
 
-## Loop edges: pairs whose gap is within `loop_gap_tiles`, drawn without replacement.
-##
-## The candidate list is SORTED by gap then by canonical index, so the draw is over a
+## Loop edges: pairs whose gap is within `loop_gap_tiles`, drawn without replacement. The
+## candidate list is SORTED by gap then by canonical index, so the draw is over a
 ## deterministic list rather than over the order leaves happened to be visited in. The
 ## tree edges are excluded, so a loop is always an ADDITIONAL connection.
 static func _loop_edges(
@@ -532,8 +504,6 @@ static func _place_structural(
 	# The structural set every pin relocates PAST, resolved once here so the pin's kind
 	# and the pin's def cannot disagree about which leaf it lands on.
 	#
-	# Two rules this set must obey, both learned from a pin that vanished:
-	#
 	#   - NO DUPLICATES AND NO -1. `entry`, `core` and `gate` come from three different
 	#     searches and can coincide, and `_lowest_neighbour` can answer -1. A repeated or
 	#     negative index made `_free_leaf` read a taken-set that was not the set of
@@ -542,20 +512,17 @@ static func _place_structural(
 	#     CONTENT, and this module exists so content is not starved by a rule. Arenas are
 	#     the only discretionary kind here, so they are what gives way: when
 	#     `ember_grotto` seed 46 reserved all eight of its leaves, `_free_leaf` answered
-	#     -1 and the pin was dropped with no diagnostic at all -- which is the one
-	#     outcome the docstring below says must not happen. Budget the arenas against the
-	#     pin count so every pin has a leaf to land on, and hard structure
+	#     -1 and the pin was dropped with no diagnostic at all. Hard structure
 	#     (floor/core/gate) never yields, because geometry is the part a pin is
 	#     documented never to overrule.
-	#
-	#     An arena also consumes a DEAL, and a deal is a slot in the rest of the room kit
+	#   - AN ARENA ALSO CONSUMES A DEAL, and a deal is a slot in the rest of the room kit
 	#     (`_deal` -> `_dealt_pool`). Budgeting arenas against the leaves alone is what
 	#     let an arena crowd out authored content: at `ember_grotto` seed 13 five arenas
 	#     left four free leaves for a five-def kit, and `ash_chamber` could not be built
 	#     at all. The budget is therefore the kit's own requirement — one leaf per def
 	#     that no pin has already placed — with the pins' leaves added on top, never
-	#     subtracted: `ARENA_KIT_FLOOR` keeps a template with no pool at all (every leaf
-	#     a pin or a rule) placing exactly the arenas it has.
+	#     subtracted: `ARENA_KIT_FLOOR` keeps a template with no pool at all placing exactly
+	#     the arenas it has.
 	const ARENA_KIT_FLOOR := 0
 	var kit_leaves := maxi(ARENA_KIT_FLOOR, template.room_pool.size() - _pinned_def_count(template))
 	var reserved: Array = []
@@ -749,19 +716,18 @@ static func _realize(
 	# The pin's KIND travels with its def, resolved from the same reserved set, so a
 	# relocated settlement is not realized as whatever the rule put on that leaf.
 	var pinned_kinds := _pinned_kinds(template, leaves, placements[&"reserved"])
-	# Deal over what is LEFT of the kit. A pin's def stays in `template.room_pool` —
-	# `_pinned_defs` refuses a pin naming a def the pool does not carry — but a PIN
+	# Deal over what is LEFT of the kit. A pin's def stays in `template.room_pool` --
+	# `_pinned_defs` refuses a pin naming a def the pool does not carry -- but a PIN
 	# RESERVES that leaf's own def, so dealing it again as well filled a second room
-	# with the same room and left the kit's tail unbuilt. Measured before the fix:
-	# every one of `ember_grotto`'s 64 seeds dropped exactly one def, because its
-	# single pin sits at leaf 4 and the old `unfilled % pool_size` landed on that def
-	# exactly on the leaves after it. `flame_valley_depths` lost 18 of 64 seeds and
-	# `stormwrack_reach` 6.
+	# with the same room and left the kit's tail unbuilt. Measured before the fix: every
+	# one of `ember_grotto`'s 64 seeds dropped exactly one def, because its single pin
+	# sits at leaf 4 and the old `unfilled % pool_size` landed on that def exactly on the
+	# leaves after it. `flame_valley_depths` lost 18 of 64 seeds and `stormwrack_reach` 6.
 	var dealt_pool := _dealt_pool(template, rng, pinned)
-	# How many leaves the kit gets DEAL, as opposed to how many are filled by a rule
-	# or a pin. This, and not the room count, is what decides whether a kit this size
-	# is fully built — which is why the completeness guard measures it here instead
-	# of guessing a leaf budget from a template it does not own.
+	# How many leaves the kit gets DEAL, as opposed to how many are filled by a rule or a
+	# pin. This, and not the room count, is what decides whether a kit this size is fully
+	# built -- which is why the completeness guard measures it here instead of guessing a
+	# leaf budget from a template it does not own.
 	var deals := leaves.size() - pinned.size()
 	var entry := int(placements[&"entry"])
 	var map := DomainMap.new(template.extent, seed_value)
@@ -787,20 +753,18 @@ static func _realize(
 		# quietly missing a room an author declared mandatory. One `push_error` naming the
 		# template, the seed and both numbers, then null — never a retry, and never a map
 		# with a hole in it (AGENTS.md: a feature that cannot work fails out loud).
-		_fail(
-			template,
-			seed_value,
-			(
-				(
-					"requires_full_kit and can deal %d of its %d pool defs into %d free leaf/leaves "
-					% [deals, dealt_pool.size(), deals]
-				)
-				+ (
-					"(%d pin(s) took %d of them); it builds a domain missing authored rooms"
-					% [pinned.size(), pinned.size()]
-				)
-			)
+		var partial := (
+			"requires_full_kit and can deal %d of its %d pool defs into %d free leaf/leaves "
+			% [deals, dealt_pool.size(), deals]
 		)
+		var pinned_share := (
+			"(%d pin(s) took %d of them); it builds a domain missing authored rooms"
+			% [
+				pinned.size(),
+				pinned.size(),
+			]
+		)
+		_fail(template, seed_value, partial + pinned_share)
 		return null
 	return map
 
@@ -864,8 +828,7 @@ static func _guarantee_connected(
 ## it and left the kit's tail unbuilt: `ember_grotto` built `ash_camp` three times and
 ## dropped `ash_chamber` on every one of its 64 seeds, because its single pin sits at
 ## leaf 4 and the old `unfilled % pool_size` landed on `ash_chamber` exactly on the
-## leaves after it. Removing the def is what makes the kit DEALT to the remaining
-## leaves cover the defs a pin has not already placed.
+## leaves after it.
 static func _dealt_pool(
 	template: DomainTemplateDef, rng: RandomNumberGenerator, pinned: Dictionary
 ) -> Array[RoomDef]:
@@ -881,10 +844,8 @@ static func _dealt_pool(
 
 
 ## The dealt-pool entry for the `index`-th leaf, counted in the leaves a pin has not
-## already filled.
-##
-## The pool is dealt ROUND ROBIN over the leaves in canonical order: the first
-## unfilled leaf takes `dealt[0]`, the second `dealt[1]`, and the pool wraps. The
+## already filled. The pool is dealt ROUND ROBIN over the leaves in canonical order: the
+## first unfilled leaf takes `dealt[0]`, the second `dealt[1]`, and the pool wraps. The
 ## shuffle happened once, so this is a function of the canonical order and the shuffled
 ## kit, not of a second draw per leaf.
 ##
@@ -893,8 +854,7 @@ static func _dealt_pool(
 ## `index - mini(index, pinned_count)`, which subtracted the template's WHOLE pin count
 ## from every leaf: with 5 defs, 1 pin and 10 leaves the dealt entries ran `0 0 1 2 3`
 ## and `kit[4]` — the def the pin had already placed — was never dealt, while the
-## pinned def was dealt at `unfilled == 1`. Counting the pinned leaves that actually
-## precede `index` makes the round robin cover the pool's tail on any map of any size.
+## pinned def was dealt at `unfilled == 1`.
 static func _deal(index: int, pinned_indexes: Array, dealt_size: int) -> int:
 	if dealt_size <= 0:
 		return 0
@@ -931,17 +891,14 @@ static func _pinned_defs(
 		# template whose pin names a def outside its own pool is an authoring error the
 		# author has to see, so it is reported rather than silently honoured.
 		if not template.room_pool.has(pin.room_def):
-			_fail(
-				template,
-				-1,
-				(
-					(
-						"pins leaf %d to def '%s', which its room_pool does not contain; the pool is "
-						% [pin.leaf_index, String(pin.room_def.room_id)]
-					)
-					+ "the shared kit and a pin cannot add to it"
-				)
+			var smuggled := (
+				"pins leaf %d to def '%s', which its room_pool does not contain; "
+				% [
+					pin.leaf_index,
+					String(pin.room_def.room_id),
+				]
 			)
+			_fail(template, -1, smuggled + "the pool is the shared kit, a pin cannot add to it")
 			continue
 		var index := _free_leaf(pin.leaf_index, leaves.size(), taken.keys())
 		if index < 0:
@@ -983,8 +940,7 @@ static func _pinned_kinds(
 ## from the pool. A PINNED def keeps its pinned kind, because the pin is the authored
 ## decision and a relocation must not turn a settlement into an arena. A FILLED leaf
 ## takes the rule-placed kind, because that is what makes an entry a floor and a core a
-## core no matter which def the shuffle dealt there. The authored def's own kind is the
-## last resort for a def that declares none.
+## core no matter which def the shuffle dealt there.
 static func _materialize(
 	def: RoomDef, cell: DomainCell, kind: StringName, index: int, pinned_kind: StringName = &""
 ) -> RoomDef:
@@ -1003,34 +959,9 @@ static func _materialize(
 
 ## A deep copy of `def`. The generator never mutates an authored resource: the same def
 ## is placed again in the next map a seed builds, and a shared write would change both.
+## The body moved to [DomainRoomCopy] for this file's line ceiling; the rule is unchanged.
 static func _copy_def(def: RoomDef) -> RoomDef:
-	var room := RoomDef.new()
-	room.room_id = def.room_id
-	room.display_name = def.display_name
-	room.kind = def.kind
-	room.roster_band = def.roster_band
-	room.tags = def.tags.duplicate()
-	room.size = def.size
-	for ref in def.actor_spawn_refs:
-		room.actor_spawn_refs.append((ref as Dictionary).duplicate(true))
-	for fixture in def.fixtures:
-		room.fixtures.append((fixture as Dictionary).duplicate(true))
-	for zone in def.environment_zones:
-		room.environment_zones.append(_copy_zone(zone))
-	return room
-
-
-static func _copy_zone(zone: EnvironmentZoneDef) -> EnvironmentZoneDef:
-	var out := EnvironmentZoneDef.new()
-	out.zone_id = zone.zone_id
-	out.kind = zone.kind
-	out.intensity = zone.intensity
-	out.status_id = zone.status_id
-	out.stay_budget = zone.stay_budget
-	out.tags = zone.tags.duplicate()
-	out.mitigation_tags = zone.mitigation_tags.duplicate()
-	out.bounds = zone.bounds
-	return out
+	return DomainRoomCopy.room(def)
 
 
 static func _append_exit(room: RoomDef, target: StringName) -> void:
@@ -1046,12 +977,8 @@ static func _append_exit(room: RoomDef, target: StringName) -> void:
 ## The loud failure. One shape for every refusal, naming the template, the seed, the
 ## condition and the numbers — a message that cannot be acted on is noise.
 static func _fail(template: DomainTemplateDef, seed_value: int, condition: String) -> void:
-	push_error(
-		(
-			"DomainGenerator: template '%s' seed %d %s"
-			% [String(template.template_id), seed_value, condition]
-		)
-	)
+	var named := "DomainGenerator: template '%s' seed %d %s"
+	push_error(named % [String(template.template_id), seed_value, condition])
 
 
 static func _box(extent: Vector2i) -> String:

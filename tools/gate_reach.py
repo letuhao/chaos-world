@@ -716,13 +716,22 @@ REPEATABLE = -1  # "callable again", so no authored ceiling applies
 #: when wiring a seam, and ADR 0083's `app/` seams are written exactly that way.
 _CALL_EDGE = re.compile(r"\b([A-Z][A-Za-z0-9_]*)\s*\.\s*([a-z_][A-Za-z0-9_]*)\s*\(")
 
-#: How far the transitive caller walk may go before it is declared unresolved. Three hops is
-#: the depth ADR 0239's `clan` chain needed (`ui/clan_screen -> app/ClanRegistry.commit ->
+#: How far the transitive caller walk may go before it is declared unresolved. Four is the
+#: depth ADR 0239's `clan` chain needed (`ui/clan_screen._settle -> app/ClanRegistry.commit ->
 #: modules/clan/ClanHeir.register -> modules/clan/ClanFacts.record_heir_registered`) plus one
-#: for the entry frame. The bound exists so a mutual recursion between two classes cannot make
-#: the walk unbounded; it is a LIMIT on how deep the search goes, never a substitute for
-#: answering the question, and exceeding it is reported rather than assumed reachable.
-_CALL_DEPTH = 6
+#: for the entry frame, and the shipped `combat` chain is the same depth. The bound exists so
+#: mutual recursion between two classes cannot make the walk unbounded; it is a LIMIT on how
+#: deep the search goes, never a substitute for answering the question, and EXCEEDING it is
+#: reported unreachable rather than assumed reachable.
+_CALL_DEPTH = 5
+
+#: A `func` / `static func` header, so a call can be attributed to the method that makes it.
+#: Without this the walk cannot tell `FixtureApi.summary` from `FixtureApi.record_oath`, and a
+#: screen that calls only the FIRST would be read as driving the second. That is a false green
+#: arriving through a different door than the one BL-0899 came in through, and it was caught by
+#: the self-test rather than by reading: the chain has to follow the specific method, not the
+#: class.
+_METHOD_HEAD = re.compile(r"^\s*(?:static\s+)?func\s+([a-z_][A-Za-z0-9_]*)\s*\(")
 
 
 def _is_composition_root(module_dir: str) -> bool:
@@ -741,37 +750,94 @@ def _is_composition_root(module_dir: str) -> bool:
     return module_dir.strip("/").replace("\\", "/") in ("src/app", "app")
 
 
-def _caller_graph() -> dict[tuple[str, str], set[str]]:
-    """Which production files statically call each `class.method`.
+def _caller_graph() -> dict[tuple[str, str], set[tuple[str, str, str]]]:
+    """Which `(file, method)` body in production calls each `class.method`.
 
-    Built once per (GAME_DIR, SRC_DIR) pair and cached on the module, because it reads every
-    `.gd` under the game root and `code_owned_supply` asks the reachability question once per
-    writer site. The cache is KEYED on both roots rather than being a bare module global: the
-    self-test points `GAME_DIR`/`SRC_DIR` at a temp fixture, and a cache filled from the
-    repository would answer the fixture's question with the real tree's callers - a test that
-    reads the wrong tree is worse than no test, because it looks like coverage.
+    The value is a set of `(caller_file, caller_method, caller_dir)` triples. Two levels of
+    detail, and both were found by running the self-test rather than by reading:
+
+    - METHOD level, not class. A first version collected callers per CLASS and then expanded
+      to every verb the class owns, so a screen calling only `FixtureApi.summary` was read as
+      driving `FixtureApi.record_oath` as well. A caller's OTHER verbs are not evidence for
+      this one - the same reasoning as BL-0899, applied one level down.
+    - The caller's own METHOD, so the walk can keep going. Walking by class stops at the first
+      hop, which is right only when the caller is in another module and wrong whenever the
+      chain continues (ADR 0239's `clan_screen._settle -> ClanRegistry.commit`).
+
+    Comment lines are stripped before matching (ADR 0188: a guard reads code lines only), and
+    classes declared under `game/tests` are excluded entirely, because ADR 0188 keeps a verb by
+    a caller that is NOT a test and a green test is not a player.
     """
     global _CALLER_GRAPH_CACHE
     key = (str(GAME_DIR), str(SRC_DIR))
     if _CALLER_GRAPH_CACHE.get("__key__") == key:
         return dict(_CALLER_GRAPH_CACHE["graph"])  # type: ignore[index]
-    graph: dict[tuple[str, str], set[tuple[str, str]]] = {}
+    graph: dict[tuple[str, str], set[tuple[str, str, str]]] = {}
     test_classes = _test_classes()
     for path in sorted(_all_gd_files()):
+        relative = _relative(path)
+        if _file_is_test(relative):
+            continue
         text = _strip_comments(path.read_text(encoding="utf-8", errors="replace"))
-        own = _CLASS_NAME.search(text)
-        if own is None or own.group(1) in test_classes:
+        if _symbol(relative, text) in test_classes:
             continue
         # Posix-normalised for the same reason `_record_verb_is_reachable` normalises: this
         # value is compared against a normalised module dir, and a Windows-separator path can
         # never equal a posix one, so every outside-module test would silently pass.
-        caller_dir = str(path.relative_to(GAME_DIR).parent).replace("\\", "/").strip("/")
-        for cls, method in _CALL_EDGE.findall(text):
-            graph.setdefault((cls, method), set()).add((own.group(1), caller_dir))
+        caller_dir = str(Path(relative).parent).replace("\\", "/").strip("/")
+        for method, cls, called in _calls_by_method(text):
+            graph.setdefault((cls, called), set()).add((relative, method, caller_dir))
     _CALLER_GRAPH_CACHE.clear()
     _CALLER_GRAPH_CACHE["__key__"] = key
     _CALLER_GRAPH_CACHE["graph"] = graph
     return graph
+
+
+def _file_is_test(relative: str) -> bool:
+    """Is this `.gd` under `game/tests`? ADR 0188: a test is not a caller that keeps a verb."""
+    return relative.replace("\\", "/").startswith("tests/")
+
+
+def _symbol(relative: str, text: str = "") -> str:
+    """The name production code calls this file's functions by.
+
+    `class_name` when the file declares one, and the file's own path when it does not. The
+    fallback is load-bearing and was found by running the pre-existing "a REACHABLE code writer
+    has no ceiling" fixture: it drives the writer from `app/tick.gd`, which declares no class,
+    and a graph that skipped such files found NO caller at all - so a writer production plainly
+    drives read as undriven. That is INC-0012 in the other direction, caused by a guard that
+    only counted code following the naming convention.
+
+    The path is wrapped in a form no `class_name` can take, so it can never collide with a
+    real symbol.
+    """
+    if not text:
+        path = GAME_DIR / relative
+        if not path.is_file():
+            return ""
+        text = _strip_comments(path.read_text(encoding="utf-8", errors="replace"))
+    found = _CLASS_NAME.search(text)
+    return found.group(1) if found else f"<file {relative}>"
+
+
+def _calls_by_method(text: str) -> list[tuple[str, str, str]]:
+    """Every `(enclosing method, callee class, callee verb)` static call in `text`.
+
+    A call before any `func` header - a bare statement at file scope, or a `const` initialiser
+    calling another class - is attributed to `""`, which reads as the file's own top level.
+    `world_pulse.gd:157 const AMBIENT_FACTS := WorldAmbient.ROSTER` is the real example, and
+    the INC-0012 roster shape depends on it resolving.
+    """
+    out: list[tuple[str, str, str]] = []
+    method = ""
+    for line in text.split("\n"):
+        head = _METHOD_HEAD.match(line)
+        if head is not None:
+            method = head.group(1)
+            continue
+        for cls, called in _CALL_EDGE.findall(line):
+            out.append((method, cls, called))
+    return out
 
 
 _CALLER_GRAPH_CACHE: dict[str, object] = {}
@@ -885,44 +951,85 @@ def _record_verb_is_reachable(relative: str) -> bool:
     declaring = _declaring_class(relative)
     if _is_composition_root(normalised):
         return bool(verb or declaring)
-    return bool(verb and declaring and _verb_reachable(declaring, verb, _CALL_DEPTH, normalised))
+    return bool(verb and declaring and _verb_reachable(relative, normalised, _CALL_DEPTH))
 
 
-def _verb_reachable(cls: str, verb: str, depth: int, outside_module: str) -> bool:
-    """Whether `cls.verb` is called, transitively, by production code OUTSIDE `outside_module`.
+def _verb_reachable(relative: str, outside_module: str, depth: int) -> bool:
+    """Is the writer in `relative` called, transitively, by production code OUTSIDE its module.
 
-    "Reachable" here means: the transitive closure of PRODUCTION callers of `(cls, verb)`
-    contains at least one caller that lives in a different module directory. That caller is the
-    evidence production code drives this writer.
+    The walk is BACKWARD from the writer: every production `(file, method)` that calls
+    `(cls, verb)` is a caller, and the walk continues outward from each caller's OWN class and
+    method, up to `depth`. It answers True the moment a caller lives outside the writer's module
+    directory - that caller is the evidence production code drives this writer.
 
-    No "entry point" requirement, deliberately. I first terminated the walk at a caller that
-    nothing else calls (an engine entry), and it returned False for genuinely reachable writers
-    like `CombatFacts.record_duel_won`: its real chain runs `CombatDuelHit.resolve <- CombatApi
-    <- ...` through classes that are themselves called, because one shared utility (`RealmDefaults`)
-    is referenced by ~40 files and makes every node "called". With no clean roots in the static
-    GDScript call graph, requiring an entry would false-red every deep producer - the INC-0012
-    failure. So the honest, safe definition is the weaker one: SOME outside-module production
-    code can reach the verb. That is exactly the ADR 0226 question (a declaration is not
-    evidence of its own reachability) and it does not over-reach.
+    Three readings were tried and each produced a wrong answer, which is why they are named:
 
-    The depth bound keeps a mutual recursion finite. Exceeding it is NOT treated as reachable.
+    1. "Terminate at a caller nothing else calls" (an engine entry). False for real producers:
+       `CombatFacts.record_duel_won` runs through `CombatDuelHit.resolve <- CombatApi`, and one
+       shared utility referenced by ~40 files makes every node "called", so the walk never
+       terminated and every deep producer read dead. That is INC-0012 in the other direction.
+    2. "Any outside-module caller at all" (one hop). Too weak for a chain: it missed
+       `ClanRegistry.commit`, which IS outside `modules/clan/` and IS real production code -
+       but nothing calls IT, so the fact behind it is still unreachable in play.
+    3. "Any caller, then expand to every verb the caller's class owns" (one hop + class-wide
+       expansion). Reads `FixtureApi.summary`'s screen as driving `FixtureApi.record_oath`,
+       which is BL-0899's inference one level down.
+
+    This is the one that survives all three: the frontier is `(file, method, dir)` throughout,
+    so each step asks "who calls THIS method", and the outside-module test is applied to every
+    node the walk reaches rather than only to the first hop. That last part is what reading (2)
+    got wrong - `ClanRegistry.commit` IS outside `modules/clan/` and IS production code, but
+    nothing calls IT, so `household_heir_registered` is still unreachable in play and the
+    finding must fire on the CHAIN, not on the nearest hop.
+
+    Exceeding `depth` is NOT treated as reachable. A chain too long to resolve is unresolved,
+    and the census's whole purpose is to refuse to invent a supply figure.
     """
     graph = _caller_graph()
-    seen: set[str] = set()
-    frontier = {(cls, verb)}
-    for _ in range(depth):
-        nxt: set[tuple[str, str]] = set()
-        for node in frontier:
-            for caller, caller_dir in graph.get(node, set()):
-                if caller_dir != outside_module:
-                    return True
-                if caller in seen:
-                    continue
-                seen.add(caller)
-                nxt |= {(caller, m) for (t, m) in graph if t == caller}
-        if not nxt:
+    seen: set[tuple[str, str]] = set()
+    verb = _writer_verb(relative)
+    declaring = _declaring_class(relative)
+    if not verb or not declaring:
+        return False
+    # The frontier is `((file, method), dir)`: a production method that is ABOUT TO BE CHECKED
+    # for an outside-module caller, and then expanded outward. It starts as the writer's own
+    # verb, whose callers are the writer's callers.
+    #
+    # Carrying the callee identity is not optional. A first version kept only `(file, method)`
+    # and then asked "who calls a method of this file's CLASS", which found callers of
+    # `SectScreen.something` rather than of `SectApi.found` - so the walk stalled one hop in
+    # and reported `sect`'s genuinely-reachable producer dead. A chain has to know WHICH verb
+    # it is extending, or it is not a chain.
+    frontier: set[tuple[tuple[str, str], str]] = {
+        ((edge_file, edge_method), edge_dir)
+        for edge_file, edge_method, edge_dir in graph.get((declaring, verb), set())
+    }
+    for _hop in range(depth):
+        if not frontier:
             return False
-        frontier = sorted(nxt)
+        nxt: set[tuple[tuple[str, str], str]] = set()
+        for (file_rel, method), caller_dir in frontier:
+            if caller_dir != outside_module:
+                return True
+            own = _symbol(file_rel)
+            if own is None:
+                continue
+            # Who calls THIS EXACT METHOD? One lookup on `(own, method)` - not on every verb
+            # the class owns, and not on every verb the method happens to call.
+            #
+            # The second of those was the over-reach that turned BL-0899 green again:
+            # `ClanHeir.register`'s body calls `ClanCatalog.instance()`, `ClanCatalog.instance`
+            # has callers all over `game/src`, and following the call OUTWARD from the writer
+            # found that traffic and called the writer driven. Reachability of a verb is a fact
+            # about who CALLS it, never about what it happens to call. That is the same
+            # sentence as ADR 0226, read from the other end.
+            for edge_file, edge_method, edge_dir in graph.get((own, method), set()):
+                node = ((edge_file, edge_method), edge_dir)
+                if node in seen:
+                    continue
+                nxt.add(node)
+        seen |= frontier
+        frontier = nxt
     return False
 
 
@@ -1188,7 +1295,9 @@ def _report(
 def _check(args) -> int:
     supply, demands, unread, scanned = census()
     findings = judge(supply, demands, unread)
-    counts = {code: 0 for code in ("dead_gate", "unbacked_in_play", "unbacked_demand", "unread_gate")}
+    counts = {
+        code: 0 for code in ("dead_gate", "unbacked_in_play", "unbacked_demand", "unread_gate")
+    }
     for finding in findings:
         counts[finding.code] += 1
 

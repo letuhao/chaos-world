@@ -29,7 +29,22 @@ const FORMAT := "chaos-world.save"
 ## soul existed. `polity` is one for DEF-0119's reason, which is the same test with two subjects:
 ## an obligation between two institutions is true of no actor at all, so per-actor it would be a
 ## copy each actor could contradict.
-const WORLD_KEYS: Array[String] = ["holdings", "market", "custody", "soul", "anchor", "polity"]
+##
+## `world_time` is the SEVENTH for ADR 0259's reason, which is the same test with no
+## subject at all: a period count is true of the WORLD, not of whoever is carrying it, so
+## per-actor it would be a copy every body could contradict — and a player who quit and
+## returned would resume at period zero holding a full ledger. Nothing else about this file
+## changes: `build`, `SaveApi.publish_world` and `SaveApi._snapshot_world` all iterate this
+## one array, and `envelope_version` deliberately does NOT move for a new world key.
+const WORLD_KEYS: Array[String] = [
+	"holdings",
+	"market",
+	"custody",
+	"soul",
+	"anchor",
+	"polity",
+	"world_time",
+]
 
 
 ## The empty envelope, before anything is written into it.

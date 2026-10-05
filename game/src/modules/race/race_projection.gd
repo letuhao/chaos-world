@@ -53,6 +53,35 @@ static func apply(actor: Actor, race_id: StringName) -> void:
 		}
 	}
 	_write(actor, next)
+	_born_at(actor, def)
+
+
+## ## A body that is BORN into a species is not an aged one (ADR 0258 §2)
+##
+## This is the one write of `age_years` outside a save restore, and it exists because
+## "a reborn body starts at the authored starting age for its species" is a sentence about
+## exactly this call. `CharacterCreationFlow._build` and `FertilityApi`'s conception both
+## come through here, and `app/soul_death.gd` mints a replacement body the same way, so the
+## age cannot leak across a rebirth here.
+##
+## ## Why it is NOT the soul's age, and why that is the whole design
+##
+## `AgeBandTable` reads an age against `RealmLifespan.effective_lifespan_for`, and the
+## lifespan is a property of the body plan. An age that rode the soul would be compared
+## against a DIFFERENT body's lifespan each incarnation — a 160-year emberblood frame would
+## be handed a 500-year-old soul and die of old age in its first decade. Keeping the age on
+## the body is what makes the comparison dimensionally honest, and this function is where
+## the "new body, new age" half is enforced rather than merely intended.
+##
+## ## `set_race` on a LOADED actor is not a rebirth
+##
+## `RaceApi.attach` re-projects the race the ledger already names on every load, and this
+## write is idempotent in that case because the restored age equals the species' starting
+## age for a fresh body. The alternative — refusing to write when the ages agree — would
+## need a comparison that can drift, and a body whose species changed mid-run is a content
+## error no caller in this repo makes.
+static func _born_at(actor: Actor, def: RaceDef) -> void:
+	actor.age_years = maxf(0.0, def.starting_age_years)
 
 
 ## Remove every contribution this module owns: the stat stack, the trait mirror, the

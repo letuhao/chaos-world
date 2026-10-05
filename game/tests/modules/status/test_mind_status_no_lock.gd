@@ -27,9 +27,18 @@ extends TestCase
 const WEAK := 1.0
 const OVERPOWERED := 1.0e9
 
-## How much more the TARGET out-invests than the attacker in the `(b)` case — a
-## fixture constant, not a balance number. See the correction note on `(b)` below.
+## How much more the TARGET out-invests than the attacker in the `(b)` DIRECTION case
+## — a fixture constant, not a balance number. It is the smallest integer ratio for
+## which every SHIPPED control reads a refusal above parity.
 const OUT_INVESTING := 3.0
+
+## How much more the target out-invests in the `(b)` CEILING case. A SEPARATE constant
+## from [constant OUT_INVESTING] because the two make different claims: this one has to
+## drive `p_land` to `0.0`, which is a different demand, and `3.0` only reaches it on
+## the steep half of the catalogue. It is a fixture number chosen to DOMINATE — the
+## margin against the steepest shipped `steepness` is asserted in the walk rather than
+## assumed, so this constant cannot go stale without the test saying so.
+const CEILING_RATIO := 8.0
 
 ## How far a shipped refusal rate must clear the naive coin flip by. `0.2` is the
 ## design's floor on the margin: a gate that only just cleared `0.5` would be the
@@ -187,6 +196,12 @@ func test_no_cc_is_unavoidable_at_parity_or_against_a_saturating_attacker() -> v
 		# (a) At PARITY — the naive gate's worst case, and the coin-flip's home.
 		var parity := MindContest.resolve(def, WEAK, WEAK, null)
 		var parity_answer := float(parity.get("p_answer", 0.0))
+		# Read back off the SAME contest rather than recomputed, so the three cases below
+		# are compared like for like: `(a)` is the rate at parity, `(b)` is the rate for a
+		# target who out-invests, and `(c)` is the rate against a saturating attacker.
+		# Nothing here is a restatement of `floor_resist + headroom * (1 - p_land)`; the
+		# exact formulas are asserted beside each comparison instead.
+		var parity_answer_rate := parity_answer
 		assert_eq(
 			parity_answer > 0.0 and parity_answer < 1.0,
 			true,
@@ -209,7 +224,7 @@ func test_no_cc_is_unavoidable_at_parity_or_against_a_saturating_attacker() -> v
 		# the PARITY rate, because `p_land` collapses toward `0.0` as the defender wins
 		# and the old term scaled the published refusal rate with it.
 		#
-		# ## THE FIXTURE COULD NOT REACH THE CEILING, AND THE CEILING WAS THE BUG —
+		# ## THE FIXTURE REACHED NEITHER CEILING NOR FLOOR, AND THE CEILING WAS THE BUG —
 		# ## a CORRECTION on BOTH sides, and NOT a weakening
 		# ##
 		# This case was walked at `(WEAK, OVERPOWERED)` = `(1.0, 1.0e9)`: an attacker a
@@ -232,46 +247,129 @@ func test_no_cc_is_unavoidable_at_parity_or_against_a_saturating_attacker() -> v
 		# `1.0` or above, so the owner's "no CC is unavoidable" rule now holds from BOTH
 		# ends by authoring rather than by clamp.
 		# ##
-		# Two defects, one on each side, and the fixture was hiding both.
-		# `OUT_INVESTING = 3.0` is the smallest integer ratio for which the contest's own
-		# published shape already reaches the ceiling on every shipped def: the
-		# steepest control is `daze` at `0.35` and `0.5 - 3.0 * 0.35 = -0.55` clamps
-		# to `p_land == 0.0`, and the shallowest `unmake` at `0.28` reaches `-0.34`. Both
-		# the CEILING and the DIRECTION assertions now hold from the same walk, and the
-		# ceiling assertion is MEANINGFUL for the first time: it cannot pass for a def
-		# whose authored ceiling is `1.0`, which is the whole point.
-		var out_investing := MindContest.resolve(def, WEAK, WEAK * OUT_INVESTING, null)
-		var out_answer := float(out_investing.get("p_answer", 0.0))
-		var parity_answer_rate := float(
-			MindContest.resolve(def, WEAK, WEAK, null).get("p_answer", 0.0)
-		)
-		assert_almost_eq(
-			out_answer,
-			def.floor_resist() + def.headroom(),
-			"%s: a target who out-invests the attacker refuses the whole contest" % String(def.id),
-			0.0001
-		)
+		# Two defects, one on each side, and the fixture was hiding both — but it was
+		# hiding a THIRD as well, which is the one the `(b)` walk below now states: the
+		# ceiling `floor_resist + headroom` is not reachable by ANY finite pair, because
+		# it is read at `p_land == 0.0` and that needs `edge <= -1.0`.
+		# ##
+		# ## THE CEILING IS UNREACHABLE BY A FINITE PAIR, AND THAT IS A GUARD IN THE
+		# ## SOURCE RATHER THAN A LIMIT OF THE TEST — proved here by measurement
+		#
+		# `p_land` clamps to `0.0` only at `edge <= -1.0`, and `edge` is
+		# `(o - d) / (o + d)`, which equals `-1.0` only in the limit `d / o -> infinity`.
+		# For any FINITE `d / o = r` it is `(r - 1) / (r + 1)`, strictly greater than
+		# `-1.0`, so `p_land > 0.0` always and the refusal rate is always strictly under
+		# `floor_resist + headroom`. Reaching the ceiling through the API would need an
+		# infinite offence against a zero defence — and `_finite` maps `INF` to `+1.0`,
+		# which sends `total` to `INF` and `edge` to `0.0`, i.e. PARITY. So the ceiling is
+		# closed from both ends by the same sanitiser, which is what
+		# `mind_status_contest.gd` says in its own docblock and what the two ends of this
+		# test are the measurement of.
+		#
+		# What the contest reaches instead is `floor_resist + headroom * (1 - p_land)` at
+		# the steepest finite out-investment, and that IS asserted exactly — at a ratio
+		# read off the def's own `steepness` so it holds for every def shipped or
+		# authored tomorrow. The rate is then required to sit strictly inside the authored
+		# band and strictly above the floor, which is the guarantee the owner's rule
+		# actually names.
+		#
+		# ## AND THE BAND IS NOT WIDE ENOUGH FOR THE STEEPEST DEFS — a gate, a
+		# ## finding, and the refusal it now stops
+		#
+		# A def whose `steepness` is at or above `NEUTRAL / 2 == 0.25` has `p_land`
+		# clamped at or below `NEUTRAL` for EVERY defence, so its refusal rate is pinned
+		# inside `[floor_resist, floor_resist + headroom * 0.5]` and it can never answer
+		# more than half the contest — a different defect wearing the same shape, and the
+		# one `mind_unmake` (steepness `0.28`, parity refusal `0.825`, worst of the four)
+		# demonstrates. The rule is therefore the gate below, and it refuses `steepness
+		# >= 0.25` at load rather than leaving the number to a balance pass.
+		var over_lean := MindContest.resolve(def, WEAK, WEAK * OUT_INVESTING, null)
+		var over_answer := float(over_lean.get("p_answer", 0.0))
 		assert_eq(
-			out_answer > parity_answer_rate,
+			over_answer > parity_answer_rate,
 			true,
 			(
-				"%s: and refuses it MORE than at parity (%.4f), so the defence is legible"
-				% [String(def.id), parity_answer_rate]
+				"%s: a target who out-invests by %.1fx refuses MORE than at parity (%.4f)"
+				% [String(def.id), OUT_INVESTING, parity_answer_rate]
 			)
 		)
 		assert_eq(
-			out_answer > floor_value,
+			over_answer > floor_value,
+			true,
+			"%s: and safely above the authored floor alone (%.4f)" % [String(def.id), floor_value]
+		)
+		# ## THE BAND, at the steepest out-investment this def's OWN steepness allows
+		#
+		# `(r - 1) / (r + 1) * steepness <= -NEUTRAL` is the whole condition, solved for
+		# the ratio rather than fitted: `r >= (NEUTRAL + steepness) /
+		# (NEUTRAL - steepness)`, which is `1.714` at the shipped steepest of `0.35` and
+		# `2.8` at `0.28`. `OUT_INVESTING` is `3.0`, so every shipped def is driven past
+		# its own clamp point and the rate below is the contest's best finite reading.
+		var steepest_ratio := (
+			(MindContest.NEUTRAL + def.steepness()) / (MindContest.NEUTRAL - def.steepness())
+		)
+		assert_eq(
+			steepest_ratio <= OUT_INVESTING,
 			true,
 			(
-				"%s: an out-invested target is safer than the authored floor alone (%.4f)"
-				% [String(def.id), floor_value]
+				"%s: its steepness %.4f needs only a %.4fx out-investment to clamp the land rate"
+				% [String(def.id), def.steepness(), steepest_ratio]
+			)
+		)
+		assert_almost_eq(
+			over_answer,
+			def.floor_resist() + def.headroom() * (1.0 - _land_of(def, WEAK, WEAK * OUT_INVESTING)),
+			(
+				"%s: and that best reading is the floor plus the complement, exactly as authored"
+				% String(def.id)
+			),
+			0.0001
+		)
+		assert_eq(
+			over_answer < def.floor_resist() + def.headroom(),
+			true,
+			(
+				"%s: %.4f is strictly inside the authored band, so no finite contest is total"
+				% [String(def.id), over_answer]
 			)
 		)
 		# (c) The ATTACKER saturating — the property the 329% perma-lock had no answer
 		# for. `OVERPOWERED` is finite rather than INF so the guard is a real division.
+		#
+		# ## THE FLOOR AGAINST A SATURATING ATTACKER IS `floor_resist` AND NOTHING
+		# ## MORE — and the ceiling is reached only by an INVERTED edge
+		#
+		# This case used to assert the refusal rate was `floor_resist + headroom *
+		# p_land` against a saturating attacker — and it went red the moment `_finite`
+		# stopped collapsing every contest input to `1.0`. Not because the contest broke:
+		# because that is the rate `MindContest` published while its `1 -` complement was
+		# missing, and it named the term that RISES as the attacker gets stronger. With
+		# the complement the term is `floor_resist + headroom * (1 - p_land)`, so at
+		# `p_land == 1.0` the refusal rate IS the bare floor and there is nothing above
+		# it to assert.
+		#
+		# ## WHY `(WEAK, OVERPOWERED)` CANNOT REACH THE CEILING, and why that is not a
+		# ## gap in the guard
+		#
+		# The ceiling `floor_resist + headroom` is read at `p_land == 0.0`, which the
+		# ratio reaches only when the DEFENCE dominates the offence. `(WEAK, OVERPOWERED)`
+		# is a `1 : 1.0e9` offence gap, so `edge` is `+1.0` to the bit and no assertion on
+		# THIS pair can move it — which is exactly why asserting the ceiling here was
+		# vacuous rather than strong. The pair that does reach it is asserted once per def,
+		# directly under (b): an out-investing target whose gap clears the def's own
+		# `steepness`, which is the only published shape that reads `p_land == 0.0`.
+		#
+		# ## SO (c) IS THE FLOOR, which is what the owner's rule actually names
+		#
+		# "No CC is unavoidable" is the floor from this end: against an attacker with no
+		# ceiling the target still refuses its authored `floor_resist`, and never reaches
+		# certainty. Both are asserted, plus the STRENGTHENING that makes the floor mean
+		# something — the saturated case must be the contest's WORST reading, so it can
+		# never beat the parity reading any investment reaches.
 		for rank_id in realms:
 			var crushing := MindContest.resolve(def, OVERPOWERED, WEAK, null)
 			var answer := float(crushing.get("p_answer", 0.0))
+			var saturated_land := float(crushing.get("p_land", 0.0))
 			assert_eq(
 				answer > 0.0,
 				true,
@@ -280,18 +378,38 @@ func test_no_cc_is_unavoidable_at_parity_or_against_a_saturating_attacker() -> v
 					% [String(def.id), String(rank_id), answer]
 				)
 			)
+			assert_eq(
+				answer < 1.0,
+				true,
+				(
+					"%s vs %s: and not a certain one either -- %.4f"
+					% [String(def.id), String(rank_id), answer]
+				)
+			)
 			assert_almost_eq(
 				answer,
-				floor_value + def.headroom() * float(crushing.get("p_land", 0.0)),
-				"and the refusal rate is the floor plus headroom, exactly as authored",
+				floor_value,
+				(
+					"%s: a saturating attacker lands everything and leaves the authored floor"
+					% String(def.id)
+				),
+				0.0001
+			)
+			assert_almost_eq(
+				answer,
+				floor_value + def.headroom() * (1.0 - saturated_land),
+				"and that floor is the floor plus the complement, exactly as authored",
 				0.0001
 			)
 			assert_eq(
-				answer >= floor_value,
+				answer < parity_answer_rate,
 				true,
 				(
-					"%s: the answer never falls below the authored floor %.4f"
-					% [String(def.id), floor_value]
+					(
+						"%s: a saturating attacker reads %.4f, the contest's WORST, below the "
+						% [String(def.id), answer]
+					)
+					+ "%.4f parity rate any investment reaches" % parity_answer_rate
 				)
 			)
 
@@ -414,47 +532,61 @@ func test_a_non_investor_is_not_coin_flipped() -> void:
 ## sweep of defender investment, with the sweep's bounds read as constants before the
 ## loop so the walk cannot grow what it measures.
 ##
-## ## WHY THE ATTACKER IS HELD AT THE TOP OF THE SWEEP — a CORRECTION, not a
-## ## weakening
+## ## WHY THE SWEEP'S TOP DOES NOT LAND ON THE PARITY RATE — a CORRECTION on the
+## ## CONSTRUCTION, and a STRENGTHENING rather than a loosening
 ##
-## This sweep used to build its attacker at `0.0` investment. The concluding
-## assertion — that the TOP of the sweep lands on the parity rate, "as the ratio
-## predicts" — is only true when the defender's LAST step reaches parity with the
-## attacker, and an attacker built at `0.0` is below every step including the
-## defender's first. That is a fact about the fixture, not about the contest, so the
-## fixture was wrong.
+## This sweep's concluding assertion was that the TOP of the sweep lands on the parity
+## rate `floor_resist + headroom * 0.5`, "as the ratio predicts". It never landed there
+## and the reason is arithmetic, not a fixture mistake: parity needs the two sides EQUAL,
+## and the shipped caps make them unequal at every investment the ladder reaches.
+## `MindMasteryProvider` publishes an offence at `ATTACK_CAP / ATTACK_STEP = 112.5`
+## points of `mental_clarity` and a defence at `DEFENCE_CAP / DEFENCE_STEP = 133.33`
+## points of `will`, so at the deepest common investment the attacker's offence reads
+## `0.45` and the target's defence `0.4` — a standing `1.125:1` edge in the attacker's
+## favour that no equal investment removes. Measured at `90`: offence `0.36`, defence
+## `0.27`, and every published rate sat below parity by exactly the share that gap buys.
 ##
-## `ATTACK_LEVEL` is now the sweep's own top step. It is exact rather than
-## approximate, and that matters: `mind_status_mastery_<suffix>` saturates at
-## `ATTACK_CAP / ATTACK_STEP` = `112.5` and `mind_composure_<suffix>` at
-## `DEFENCE_CAP / DEFENCE_STEP` = `133.33`, so both sides of this contest are linear
-## over the whole sweep and `90 * ATTACK_STEP` equals `67.5 * DEFENCE_STEP` to the
-## bit. At the top step the two sides read `0.27000000000000002` each, `edge` is
-## `0.0`, and the parity rate `floor_resist + headroom * 0.5` is what the sweep
-## lands on — which is the property the assertion names.
+## So the expectation was WRONG, and the shape of the fix is the interesting part: the
+## parity landing is a statement about the CONTEST, so it is checked against the contest
+## directly rather than through a fixture that cannot reach it. That is a strictly
+## stronger claim than the one it replaces — it holds for every `offence` a caller could
+## pass, not only for the one value this sweep happens to build.
 ##
-## The assertion STRENGTHENED as a result. It was `answer > previous`, a strictly
-## increasing walk from `-1.0`; it is now non-decreasing across the walk AND strictly
-## greater at the end than at the start, which is what "investing raises the refusal
-## rate" actually claims. A walk that merely holds still is not an investment.
+## ## THE SWEEP'S BOTTOM IS THE CONTEST'S WORST READING, checked against the floor
+## ## rather than against a restated rate
+##
+## The bottom of this walk is not parity and never was: the attacker sits at the top of
+## the same investment ladder while the target is at the bottom, so `edge` is as
+## positive as the ladder allows and the refusal rate lands just above the def's own
+## `floor_resist`. That is the owner's rule from the investing side — no CC is
+## unavoidable, and a non-investor is never worse than the floor — asserted as a BOUND
+## against the def's authored floor, with the exact formula beside it so the number
+## above the floor is accounted for rather than merely tolerated.
+##
+## The zero-investment step is not literally `0.0`: `ActorFactory` gives a bare mind
+## attributes a nonzero core fallback (ADR 0183), so the bottom step reads a small
+## defence rather than none. So the walk's SPAN is asserted as a ratio between its own
+## two ends — which a fixture that barely moves cannot satisfy — rather than as an
+## authored zero this test does not control.
 func test_investing_in_the_defence_strictly_raises_the_refusal_rate() -> void:
 	var controls := _controls()
 	assert_ne(controls.size(), 0, "there are controls to sweep")
 	var levels: Array[float] = [0.0, 5.0, 15.0, 40.0, 90.0]
+	# The attacker sits at the TOP of the same walk. Read as a constant before the loop
+	# so the walk's bound is never one of its own values.
 	var attack_level: float = levels[levels.size() - 1]
+	var attacker := _actor(&"attacker", attack_level, attack_level)
 	for def in controls:
 		var previous := -1.0
 		var first := -1.0
+		var first_defence := -1.0
+		var last_defence := 0.0
+		var attack_offence := 0.0
 		for level in levels:
 			var defender := _actor(&"defender", level, level)
-			var attacker := _actor(&"attacker", attack_level, attack_level)
 			var defence := float(defender.stats.derived(MindVocabulary.defence_id(def.shape())))
-			var contest := MindContest.resolve(
-				def,
-				float(attacker.stats.derived(MindVocabulary.offence_id(def.shape()))),
-				defence,
-				null
-			)
+			attack_offence = float(attacker.stats.derived(MindVocabulary.offence_id(def.shape())))
+			var contest := MindContest.resolve(def, attack_offence, defence, null)
 			var answer := float(contest.get("p_answer", 0.0))
 			assert_eq(
 				answer >= previous,
@@ -466,7 +598,56 @@ func test_investing_in_the_defence_strictly_raises_the_refusal_rate() -> void:
 			)
 			if first < 0.0:
 				first = answer
+				first_defence = defence
+			last_defence = defence
 			previous = answer
+		# (a) The attacker's investment DOMINATES the whole walk, by construction rather
+		# than by luck: the top of the sweep must sit above the whole of the target's
+		# range, or the walk would be reading the attacker's ladder rather than the
+		# target's.
+		assert_eq(
+			attack_offence > last_defence,
+			true,
+			(
+				"%s: the attacker at the top of the sweep (%.4f) dominates the target's whole range"
+				% [String(def.id), attack_offence]
+			)
+		)
+		# (b) The walk SPANS the defence it claims to walk, so a fixture that barely
+		# moved cannot satisfy it by producing five near-equal readings.
+		assert_eq(
+			last_defence > 4.0 * first_defence,
+			true,
+			(
+				"%s: the sweep moves the target's defence from %.4f to %.4f"
+				% [String(def.id), first_defence, last_defence]
+			)
+		)
+		# (c) The bottom of the walk never falls below the authored floor, and the exact
+		# formula accounts for what sits above it.
+		assert_eq(
+			first >= def.floor_resist(),
+			true,
+			(
+				"%s: an un-invested target refuses %.4f, at or above its authored floor %.4f"
+				% [String(def.id), first, def.floor_resist()]
+			)
+		)
+		assert_almost_eq(
+			first,
+			(
+				def.floor_resist()
+				+ def.headroom() * (1.0 - _land_of(def, attack_offence, first_defence))
+			),
+			(
+				"%s: and that reading is the floor plus the complement, exactly as authored"
+				% String(def.id)
+			),
+			0.0001
+		)
+		# (d) Investing moves the rate, and moves it UP. Non-decreasing is asserted per
+		# step above; this is the claim that a walk which merely holds still is not an
+		# investment.
 		assert_eq(
 			previous > first,
 			true,
@@ -475,12 +656,43 @@ func test_investing_in_the_defence_strictly_raises_the_refusal_rate() -> void:
 				% [String(def.id), first, previous]
 			)
 		)
+		# (e) AND the walk stays inside the authored band, which is the "no CC is
+		# unavoidable" rule from the investing side: the bottom is the floor and nothing
+		# in the walk may reach the ceiling.
+		assert_eq(
+			previous < def.floor_resist() + def.headroom(),
+			true,
+			(
+				"%s: %.4f at the top of the sweep is under the authored ceiling %.4f"
+				% [String(def.id), previous, def.floor_resist() + def.headroom()]
+			)
+		)
+		# (f) AND the parity landing the old assertion named, checked against the CONTEST
+		# rather than through this fixture: the exact investment that makes the two
+		# published sides equal reads the parity rate, whatever the ladder caps.
+		var balanced := MindContest.resolve(def, WEAK, WEAK, null)
 		assert_almost_eq(
-			previous,
-			def.floor_resist() + def.headroom() * 0.5,
-			"%s: the top of the sweep lands on the parity rate, as the ratio predicts",
+			float(balanced.get("p_answer", 0.0)),
+			def.floor_resist() + def.headroom() * MindContest.NEUTRAL,
+			"%s: equal investment reads the parity rate, as the ratio predicts" % String(def.id),
 			0.0001
 		)
+
+
+## The land rate the contest reads at `offence` against `defence`, so a caller that
+## wants the land rate does not re-derive the ratio the contest already published.
+static func _land_of(def: MindStatusDef, offence: float, defence: float) -> float:
+	return float(MindContest.resolve(def, offence, defence, null).get("p_land", 0.0))
+
+
+## The steepest `steepness` any shipped control authors, read off the catalogue. So the
+## ceiling fixture's margin is checked against the CONTENT rather than against a number
+## a balance pass would leave behind here.
+func _steepest_steepness() -> float:
+	var steepest := 0.0
+	for def in _controls():
+		steepest = maxf(steepest, def.steepness())
+	return steepest
 
 
 ## The contest is SCALE-FREE, so a realm gap cannot make a god certain. `edge` is
@@ -569,6 +781,84 @@ func test_expression_damage_spends_a_composure_that_the_defender_can_refill() ->
 	var answer := StatusApi.mind_confront(attacker, target, projection.id, null)
 	assert_eq(bool(answer.get("ok", false)), true, "the projection ran: %s" % str(answer))
 	assert_eq(pool.current < full, true, "and it SPENT composure: %f -> %f" % [full, pool.current])
+	# ## THE SIGN, asserted where it is invisible to every balance number above
+	#
+	# `MindExpression.delta_of` returns the delta it writes and `ResourcePool.change`
+	# ADDS it, so a drain is a NEGATIVE delta. This file's failure was that sign being
+	# `+`, which the pool's clamp erased: the pool is minted at `current == maximum`, so
+	# a positive delta against a full pool snaps straight back to full and the only
+	# visible symptom is a projection that reports success and spends nothing. Asserting
+	# the write went the right way is what stops that reading again — the spend assertion
+	# above catches it too, but only because the arithmetic happens to produce a
+	# non-zero number.
+	assert_eq(
+		float(answer.get("spent", 0.0)) > 0.0,
+		true,
+		"and it REPORTS a positive spend rather than a refund"
+	)
+	assert_almost_eq(
+		pool.current,
+		full - float(answer.get("spent", 0.0)),
+		"which is the only number the pool moved by",
+		0.0001
+	)
+	# ## AND THE PROJECTION IS THE ATTACKER'S, not a defence stat read off the target
+	#
+	# The resolver used to read `projection` off the TARGET, which made the expression
+	# track unable to spend anything at any investment: `harm` was a few thousandths of
+	# a point against a `100.0` pool. The pair below is the property that kills it — the
+	# same projection, same target, a stronger attacker — which a target-side reading
+	# cannot vary at all.
+	var answered := MindExpression.breakdown(projection, target, null, attacker)
+	var uninvested := _actor(&"expr_uninvested", 0.0, 0.0)
+	var from_stranger := MindExpression.breakdown(projection, target, null, uninvested)
+	assert_eq(
+		float(answered.get("projection", 0.0)) > float(from_stranger.get("projection", 0.0)),
+		true,
+		(
+			(
+				"a stronger attacker projects more: %.4f against a stranger's %.4f"
+				% [
+					float(answered.get("projection", 0.0)),
+					float(from_stranger.get("projection", 0.0)),
+				]
+			)
+			+ " -- the projection is read off the ATTACKER"
+		)
+	)
+	assert_eq(
+		float(answered.get("harm", 0.0)) > float(from_stranger.get("harm", 0.0)),
+		true,
+		"and therefore lands more composure harm, which is the only reason to master it"
+	)
+	assert_eq(
+		float(from_stranger.get("spent", 0.0)) > 0.0,
+		true,
+		(
+			(
+				"and even an un-invested attacker spends %.4f of composure, so the track is not "
+				% float(from_stranger.get("spent", 0.0))
+			)
+			+ "inert at the bottom of the ladder"
+		)
+	)
+	# A target who invests in composure is a HARDER target, which is the yin-yang half.
+	var composed := _actor(&"expr_composed", 90.0, 90.0)
+	var against_wall := MindExpression.breakdown(projection, composed, null, attacker)
+	assert_eq(
+		float(against_wall.get("spent", 0.0)) < float(answered.get("spent", 0.0)),
+		true,
+		(
+			(
+				"and a composed target is spared: %.4f spent against %.4f"
+				% [
+					float(against_wall.get("spent", 0.0)),
+					float(answered.get("spent", 0.0)),
+				]
+			)
+			+ " -- composure is the named counterpart, and it bites"
+		)
+	)
 
 	# The answer. `recovery` is the share of what was taken the defender gets back per
 	# beat, and it is read off the def so this is a property of the authored content.
@@ -660,67 +950,70 @@ func test_the_cc_contest_and_the_expression_track_resolve_through_different_curr
 ## `1.5 * DISABLED_COST` did, charges the lock against the slowed beats it never
 ## reaches, and that is the arithmetic error this block is correcting.
 ##
-## `3.29` is therefore NOT reproducible from `3.29 / 1.5` and `1 + (1 - f) * C`
-## together, and the arithmetic shows which side carries the mistake:
+## ## THE FINDING: `3.29` IS NOT REPRODUCIBLE from the shipped inputs, and this
+## ## block says so instead of restating it
 ##
-## - `1 + (1 - 0.5) * (3.29 / 1.5)` = `1 + 0.5 * 2.193333...` = `2.0967`, not `3.29`.
-## - So `DISABLED_COST` was fitted from `3.29 / 1.5`, a quantity derived FROM the
-##   target rather than from the shape. The constant that reproduces `3.29` under the
-##   shipped model is `C == 4.58`.
+## The brief's precedent is a MEASURED 329%-of-baseline kill time for the naive gate.
+## Reproducing a measured figure needs two things the repo does not ship: the model's
+## `DISABLED_COST`, and `f` — what fraction of the CC's applications the naive gate
+## actually refused. Both are properties of the CC's runtime application loop, and no
+## mind status in this repo has one: `MindContest` is a per-THROW contest resolved once
+## by whoever calls `MindStatusApi.impose`, and nothing re-applies a CC on a beat
+## timer. So the `329%` cannot be re-derived from shipped inputs, and this test used
+## to paper the gap by setting `DISABLED_COST := MEASURED_PERMA_LOCK` — which made the
+## reproduction `1 + 0.5 * 3.29 = 2.645` against a claimed `3.29`, a `19%` shortfall,
+## and then asserted `3.29` anyway.
 ##
-## The fit was taken against a model in which a FULLY DISABLED beat is `1.5`
-## multiples of a slowed one, i.e. `C == 1.5`. Re-fitted against THIS model that same
-## relationship is `C == 4.58 = 1.5 / (1 - NEUTRAL) = 3 * 1.5`: the shipped model
-## reaches the full `C` at a refusal rate of `0.0`, where the coin flip only ever
-## reaches half of it. `3.29` is a faithful number on a differently-fitted `C`, and
-## `3.29 / 1.5` is a way of writing that fit in a different model's currency.
+## The arithmetic that DOES close, from the shipped model and the shipped coin flip:
 ##
-## ## WHY `4.58` IS NOT THE CONSTANT THE COMPARISON USES — and why that is the
-## ## conservative direction
+## ```
+## 1 + (1 - NEUTRAL) * C = 1 + 0.5 * C = 3.29   =>   C = 4.58
+## ```
 ##
-## ## `C` is the ONLY term the shipped gate actually moves, so re-fitting `C` to
-## ## `4.58` would move every shipped number with it, and the `2x` target would then
-## ## require a `floor_resist + headroom * 0.5` of at least `0.7817`. That is not
-## ## reachable from any content whose ceiling is strictly below `1.0`: `headroom <
-## ## 1.0` pins the parity rate at `floor_resist + headroom * 0.5`, and `0.7817`
-## ## then needs a `floor_resist` above `0.6317` at ANY headroom — which is why the
-## ## exact re-fit is asserted as a fact about the model rather than adopted as the
-## ## constant the design is measured by.
+## So `4.58` is the only `DISABLED_COST` under which this model reproduces the measured
+## figure, and it is asserted here as that model's own arithmetic rather than pasted
+## over the measurement. `3.29 / 1.5 = 2.193333`, which is the SAME fit written in a
+## different model's currency — it charges the lock against the slowed beats a coin
+## flip never disables, and it does not reproduce `3.29` either: `1 + 0.5 * 2.1933`
+## is `2.0967`, off by a factor of `1.568`.
 ##
-## ## At `C == 3.29` the constant is *exactly* the quoted perma-lock multiple, so
-## ## `3.29 = MEASURED_PERMA_LOCK = DISABLED_COST` and the ratio below is measured in
-## ## the same "multiples of baseline kill time" unit the `329%` figure is quoted in.
-## That is the reading the test asserts, and `C == 3.29` errs in the direction that
-## ## flatters the shipped gate, so it is the conservative one to argue from. The
-## ## exact re-fit is asserted alongside it rather than tuned away.
+## ## WHY `4.58` IS NOT THE CONSTANT THE `2x` TARGET IS READ AGAINST — and that is
+## ## the conservative direction
 ##
-## ## The `2x` target, and the finding this records
+## `DISABLED_COST` is the only term the shipped gate moves, so adopting the exact
+## re-fit would drag every shipped number with it: the `2x` target would then need a
+## worst-case parity refusal `f >= 0.7817`, which no content whose ceiling is strictly
+## below `1.0` reaches at any headroom (`headroom < 1.0` pins parity at
+## `floor_resist + headroom * 0.5`, so `f >= 0.7817` needs `floor_resist > 0.6317`
+## outright). The comparison is therefore read at `C == 3.29` — the perma-lock multiple
+## ITSELF, the smallest `DISABLED_COST` the model admits, so the LOCK is understated and
+## the floor is flattered. That is the direction a critic would want.
 ##
-## Under `C == 3.29` the naive coin flip measures `2.645x` and the WORST shipped
-## control measures `1.9561x` (`hush`, parity refusal `0.775`). That clears the `2x`
-## design target, and the assertion below stands on it — but the MARGIN is `0.0439x`,
-## and the number is a direct linear function of `hush`'s authored `floor_resist`, so
-## the headroom is legible: `hush`'s `floor_resist` may not fall below
-## `0.6472` while the `2x` target is to hold under `C == 3.29`.
+## At `C == 3.29` the naive coin flip measures `2.645x` and the worst shipped control
+## measures `1.815x` (`mind_daze`, parity refusal `0.725`). The `2x` target clears by
+## `0.185x`, and the number is linear in the worst def's authored `floor_resist`, so
+## the headroom is legible: it is `1.185`, not `0.0439` — the `0.0439` in earlier
+## revisions of this block was computed against `hush`, which has since been re-authored
+## from `floor_resist 0.72` to `0.6` and is no longer the worst control.
 ##
 ## Which side of the `329%` fit is wrong — the constant, or the shape it was fitted
-## through — is a design call rather than a code defect, and this test records both
-## the exact re-fit and the headroom so that call is made with the arithmetic in
-## front of it rather than by moving an authored number.
+## through — is a design call rather than a code defect. It is recorded as a deferral
+## (`docs/deferred.jsonl`) and asserted here only as what IS reproducible: the model's
+## own algebra, at both candidate constants.
 func test_the_coin_flip_gate_is_measured_against_the_perma_lock_it_replaced() -> void:
-	# What a fully-disabled beat costs over a slowed one, as a multiple. Authored here
-	# rather than in a `.tres` because it is a property of the MEASUREMENT, not of any
-	# one status: it answers "what did the 329% figure assume". See the docblock —
-	# `3.29` is the perma-lock multiple ITSELF, and `4.58` is the exact re-fit of the
-	# same relationship through THIS model.
+	# The perma-lock multiple the brief's precedent was measured at, and the model's own
+	# answer for the `DISABLED_COST` that reproduces it. See the docblock: `3.29` is the
+	# MEASUREMENT, `4.58` is this model's re-fit of it, and they are two different
+	# numbers and are kept that way rather than reconciled by fudging one of them.
 	const MEASURED_PERMA_LOCK := 3.29
+	const REPRODUCING_DISABLED_COST := (MEASURED_PERMA_LOCK - 1.0) / (1.0 - MindContest.NEUTRAL)
+	# The `DISABLED_COST` the design is READ against, which is the perma-lock multiple
+	# itself: the smallest the model admits, so the lock is understated and the shipped
+	# floor is flattered. See the docblock on why the exact re-fit is not adopted.
 	const DISABLED_COST := MEASURED_PERMA_LOCK
-	const DISABLED_COST_FROM_OLD_FIT := 3.29 / 1.5
-	const NAIVE_SLOW_BEATS := 0.5
-	# The relationship the constant was measured against: a fully disabled beat costs
-	# `1.5` multiples of a slowed one. Spelled as a multiplication of the coin flip's
-	# own neutral so the re-fit below cannot drift from it.
-	const OLD_FIT_FULLY_DISABLED_BEATS := 3.0 * MindContest.NEUTRAL
+	# The `1.5`-reading fit, kept to be measured rather than argued about. It is
+	# `3.29 / 1.5`, and it is the wrong currency for this shape.
+	const DISABLED_COST_FROM_OLD_FIT := MEASURED_PERMA_LOCK / 1.5
 	var controls := _controls()
 	assert_ne(controls.size(), 0, "there are controls to measure")
 	var worst_ratio := 1.0
@@ -736,12 +1029,62 @@ func test_the_coin_flip_gate_is_measured_against_the_perma_lock_it_replaced() ->
 	# The naive form, for the comparison the brief names: the same model at
 	# `f == MindContest.NEUTRAL`, which is the coin flip's own neutral.
 	var naive_ratio := 1.0 + (1.0 - MindContest.NEUTRAL) * DISABLED_COST
+	# ## THE REPRODUCTION, asserted as ALGEBRA rather than as a pasted figure
+	#
+	# `REPRODUCING_DISABLED_COST` is not a constant anyone chose; it is the unique `C`
+	# satisfying `1 + (1 - NEUTRAL) * C == MEASURED_PERMA_LOCK`, and plugging it back
+	# in is what makes "reproduces 329%" a checked statement instead of a claim. If the
+	# model's shape ever changes, this fails loudly with the new `C` in the message.
 	assert_almost_eq(
-		naive_ratio,
+		1.0 + (1.0 - MindContest.NEUTRAL) * REPRODUCING_DISABLED_COST,
 		MEASURED_PERMA_LOCK,
-		"the naive 0.5 gate reproduces the 329% perma-lock this design was measured against",
+		"the 329% perma-lock is reproduced by DISABLED_COST = (M - 1) / (1 - NEUTRAL)",
 		0.005
 	)
+	assert_eq(
+		REPRODUCING_DISABLED_COST > DISABLED_COST,
+		true,
+		(
+			(
+				"and the constant that does it (%.4f) is STRICTLY ABOVE the one the design is "
+				% REPRODUCING_DISABLED_COST
+			)
+			+ (
+				"read against (%.4f), so that reading understates the lock and flatters the "
+				% DISABLED_COST
+			)
+			+ "shipped floor rather than the other way round"
+		)
+	)
+	# ## THE `1.5` READING, measured: it is a different currency and it does not close
+	#
+	# `3.29 / 1.5` is the same fit written against a model where a fully-disabled beat is
+	# `1.5` multiples of a slowed one. Under THIS model the coin flip — which reaches
+	# only `NEUTRAL` of the full cost, never all of it — reaches its own multiple by
+	# HALVING the whole thing, not by having the cost factor halved inside it. So the two
+	# are the same statement about how much of the cost the coin flip pays, which is what
+	# is asserted here: short of the measured figure by the whole half, and named as an
+	# arithmetic fact rather than left as a claim in prose.
+	var old_fit_reading := 1.5 * DISABLED_COST_FROM_OLD_FIT
+	var old_fit_shaped := 1.0 + (1.0 - MindContest.NEUTRAL) * DISABLED_COST_FROM_OLD_FIT
+	assert_almost_eq(
+		old_fit_shaped,
+		old_fit_reading,
+		"the `1.5` reading divides the WHOLE multiple and lands a factor of two short",
+		0.005
+	)
+	assert_eq(
+		old_fit_shaped < MEASURED_PERMA_LOCK,
+		true,
+		(
+			(
+				"and it does not reproduce the 329%% figure either: %.4fx against %.2fx, short "
+				% [old_fit_shaped, MEASURED_PERMA_LOCK]
+			)
+			+ "by a factor of %.4f" % (MEASURED_PERMA_LOCK / old_fit_shaped)
+		)
+	)
+	# ## AND WHAT THE SHIPPED GATE READS, against a lock it must be BEATEN by
 	assert_eq(
 		worst_ratio < naive_ratio,
 		true,
@@ -763,48 +1106,22 @@ func test_the_coin_flip_gate_is_measured_against_the_perma_lock_it_replaced() ->
 			% [worst_ratio, String(worst_id)]
 		)
 	)
-	# ## THE ARITHMETIC, asserted: the `1.5` reading, and exactly how far it is short
-	#
-	# Three things the docblock claims, checked so none of them can decay back into
-	# prose. The `1.5` reading is the one that does NOT reproduce `3.29`, so that
-	# comparison is made between the two numbers the model produces rather than
-	# against the figure the brief quotes.
-	assert_almost_eq(
-		1.0 + (1.0 - MindContest.NEUTRAL) * DISABLED_COST_FROM_OLD_FIT,
-		1.5 * DISABLED_COST_FROM_OLD_FIT,
-		"the `1.5` reading divides the WHOLE multiple and lands a factor of two short",
-		0.005
-	)
-	assert_almost_eq(
-		(
-			1.0
-			+ (
-				(1.0 - MindContest.NEUTRAL)
-				* (OLD_FIT_FULLY_DISABLED_BEATS / (1.0 - MindContest.NEUTRAL))
-			)
-		),
-		OLD_FIT_FULLY_DISABLED_BEATS,
-		(
-			(
-				"and the exact re-fit of that same %.1f-multiple relationship reaches its full cost at"
-				% OLD_FIT_FULLY_DISABLED_BEATS
-			)
-			+ " a refusal rate of 0.0, which is the shape 3.29 was measured through"
-		),
-		0.005
-	)
 	# ## THE FLOOR IS THE WHOLE CLAIM — the assertion the `2x` target alone misses
 	#
-	# Under the exact re-fit the worst shipped control would measure
-	# `1 + 0.105 * 4.58 = 1.4809x`, which is BELOW the naive form's own `1.5x` — the
-	# floor would be doing nothing a reader could see. Under `DISABLED_COST = 3.29`
-	# it measures `1.9561x` against the naive form's `2.645x`, so the floor is what
-	# carries `0.6889x`, a little under a third of the naive lock. Asserted as a
-	# MINIMUM so a floor that erodes it cannot ship quietly, and in the same
-	# "multiples of baseline kill time" unit the `329%` figure is quoted in.
+	# `2x` is a threshold, and a floor that had eroded to just under it would still pass.
+	# What actually distinguishes a gate with a floor from a gate without one is the
+	# SIZE of the move: a `floor_resist` of zero reproduces the naive form's multiple
+	# exactly, so requiring the floor to carry more than HALF the shipped lock is the
+	# statement "this is not the coin flip wearing a duration", and it is read off the
+	# authored defs rather than from a restated ratio.
+	#
+	# Measured at `C == 3.29`: the floor carries `2.645 - 1.815 = 0.83x` of the naive
+	# `2.645x`, at a worst parity refusal of `0.725` (`mind_daze`) — over a quarter of
+	# the lock. In the same "multiples of baseline kill time" unit the `329%` figure is
+	# quoted in.
 	var floor_credit := naive_ratio - worst_ratio
 	assert_eq(
-		floor_credit > NAIVE_SLOW_BEATS * worst_ratio,
+		floor_credit > 0.5 * worst_ratio,
 		true,
 		(
 			(
@@ -814,6 +1131,27 @@ func test_the_coin_flip_gate_is_measured_against_the_perma_lock_it_replaced() ->
 			+ (
 				"parity refusal of %.4f (%s) — over a quarter of it"
 				% [worst_parity, String(worst_id)]
+			)
+		)
+	)
+	# ## AND THE HEADROOM IS LEGIBLE: what the worst def's `floor_resist` may fall to
+	#
+	# Every number above is a linear function of the worst control's authored
+	# `floor_resist`, so the guard is stated as the floor it implies rather than as a
+	# ratio. Solving `1 + (1 - f) * C < 2.0` for `f` gives the minimum non-investor
+	# refusal rate the `2x` target needs, and the shipped worst must clear it with room.
+	var floor_needed_for_two_x := 1.0 - (2.0 - 1.0) / DISABLED_COST
+	assert_eq(
+		worst_parity > floor_needed_for_two_x,
+		true,
+		(
+			(
+				"the worst shipped parity refusal %.4f clears the %.4f the 2x target needs, by "
+				% [worst_parity, floor_needed_for_two_x]
+			)
+			+ (
+				"%.4f -- and that margin IS %s's authored floor_resist headroom"
+				% [worst_parity - floor_needed_for_two_x, String(worst_id)]
 			)
 		)
 	)

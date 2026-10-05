@@ -55,8 +55,16 @@ var _header: Label = null
 var _footer: Label = null
 var _branch_box: VBoxContainer = null
 var _confirm_button: Button = null
+var _picker: PortraitPicker = null
 var _branch_rows: Array = []
 var _bound: bool = false
+## The face this hero is arriving with, or `""`.
+##
+## **`""` is an ANSWER, not an absence.** A hero with no chosen face resolves race,
+## then placeholder (ADR 0131), which is exactly what happens today — so the
+## control is optional and a creation can never fail because the catalogue is
+## empty or a fetch failed (ADR 0257 §5).
+var _chosen_portrait: StringName = &""
 ## The one door into gameplay this screen has: a `Callable` the composition root
 ## injects, exactly as `ItemWorkbenchApp._loot_bridge()` does for the loot screen.
 ##
@@ -129,12 +137,79 @@ func act_commit(origin_id: StringName) -> Dictionary:
 		# The creation layer now owns a hero, so this screen becomes a view OF it
 		# rather than a form. Reporting it through `UiScreen` is what keeps
 		# `summary()` honest: with an actor bound it renders the committed arrival.
-		setup(outcome.get("actor", null) as Actor)
+		var hero := outcome.get("actor", null) as Actor
+		setup(hero)
+		_record_face(hero)
 		set_message(COMMITTED_TEXT, COMMIT_OK)
 	else:
 		set_message(String(outcome.get("reason", "")), TONE_ERROR)
 	refresh()
 	return outcome
+
+
+## Record the face the player took, through the EXISTING verb and nothing else.
+##
+## ## Why this runs HERE and not inside the commit seam
+##
+## `ui/` reads `core/` — `soul_hearth_screen.gd:531` already calls
+## `PortraitResolver.resolve` directly — and `PortraitResolver.choose` is the one
+## place a chosen face is ever written (ADR 0257 §1). So the screen calls it on
+## the hero the seam returned, rather than a second persistence path and rather
+## than widening `CharacterCreationFlow.build`, which a dozen callers already
+## hold with one argument.
+##
+## ## Why it can never fail a creation
+##
+## **A hero with no chosen face records NOTHING**, so `resolve` answers race then
+## placeholder exactly as it did before this control existed. And a `choose` that
+## refuses — an id the catalogue lost between the offer and the press — is
+## REPORTED and never propagated, because a face is not a gate: a hero that cannot
+## be given a face still arrives (ADR 0257 §5).
+func _record_face(hero: Actor) -> Dictionary:
+	var answer := {"ok": true, "reason": "no_face_chosen", "portrait_id": ""}
+	if hero == null or _chosen_portrait.is_empty():
+		return answer
+	var outcome := PortraitResolver.choose(hero, _chosen_portrait)
+	answer = {
+		"ok": bool(outcome.get("ok", false)),
+		"reason": String(outcome.get("reason", "")),
+		"portrait_id": String(outcome.get("portrait_id", "")),
+	}
+	# A refusal must not leave the screen claiming a face the hero does not carry.
+	if not bool(outcome.get("ok", false)):
+		_chosen_portrait = &""
+	return answer
+
+
+## The face this hero is arriving with, or `""` — which resolves race, then
+## placeholder. A report, never a selection the caller can write directly.
+func chosen_portrait() -> StringName:
+	return _chosen_portrait
+
+
+## Take `portrait_id` as this hero's face, or nothing when it is `""`.
+##
+## ## Why this is a REQUEST and the write happens on COMMIT
+##
+## The face is not recorded here. `ui/` is a pure consumer and may hold no
+## gameplay actor, and this screen has no hero until the player answers the
+## arrival — so there is nothing to write to. The id is held, and
+## [method act_commit] hands it to the flow, which calls `PortraitResolver.choose`
+## once on the hero it just minted (ADR 0257 §1). One verb, one persistence path,
+## no second field.
+##
+## An id this screen's picker never offered is refused rather than stored, so the
+## control cannot become a way to write a face the catalogue cannot explain.
+func act_choose_face(portrait_id: StringName) -> bool:
+	_bind_nodes()
+	# An id this screen's picker never offered is refused rather than stored, so
+	# the control cannot become a way to write a face the catalogue cannot
+	# explain. `take` re-renders the row that just announced the press, which is
+	# what marks it Worn — and `take` does NOT emit, so this is not a re-entry.
+	if _picker == null or not _picker.take(portrait_id):
+		return false
+	_chosen_portrait = portrait_id
+	return true
 
 
 func _summary() -> Dictionary:
@@ -158,6 +233,15 @@ func _summary() -> Dictionary:
 		"branches": branches,
 		"branch_ids": _ids_of(branches),
 		"open_branch_ids": _open_ids_of(branches),
+		# ## What the picker publishes, and why it is NESTED rather than flattened
+		# ##
+		# `faces` is the picker's own `summary()`, so the screen's contract stays
+		# "each row's summary nested under its key" (AGENTS.md). Flattening
+		# `option_ids` to the top level would put a second copy of the list here that
+		# could disagree with the panel's — which is the drift ADR 0257 §1 forbids when
+		# it says one catalogue and one resolver serve every character.
+		"faces": _faces_summary(),
+		"chosen_portrait": String(_chosen_portrait),
 		"offers_fate_picker": false,
 		"granting_verbs": [],
 	}
@@ -237,12 +321,15 @@ func _bind_nodes() -> void:
 	_footer = get_node_or_null("%FooterLabel") as Label
 	_branch_box = get_node_or_null("Layout/Scroll/Arrivals/Branches") as VBoxContainer
 	_confirm_button = get_node_or_null("%ConfirmButton") as Button
+	_picker = get_node_or_null("%PortraitPicker") as PortraitPicker
 	_bound = _header != null and _branch_box != null
 	# Guarded, because `_bind_nodes` returns early on the second call but the button itself
 	# could still be re-resolved by a reparent, and an unguarded `connect` fires the handler
 	# once per press times however many times it was wired (AGENTS.md).
 	if _confirm_button != null and not _confirm_button.pressed.is_connected(_on_confirm_pressed):
 		_confirm_button.pressed.connect(_on_confirm_pressed)
+	if _picker != null and not _picker.chosen.is_connected(_on_face_chosen):
+		_picker.chosen.connect(_on_face_chosen)
 	if not _bound:
 		return
 	_branch_rows = _rows_in(_branch_box, BRANCH_SCENE, "Branch", BRANCH_ROWS)
@@ -301,6 +388,45 @@ func _feed() -> void:
 			view = (_candidates[index] as Dictionary).duplicate(true)
 		(row as CreationBranchRow).show_branch(view)
 		index += 1
+	_feed_faces()
+
+
+## Offer the faces for the arrival the keyboard is pointed at.
+##
+## ## Why the FOCUSED arrival, and not all three
+##
+## A hero arrives in ONE body, and the bodies differ per arrival — so offering one
+## list would either show faces the hero may not wear or blend three bodies into
+## one list. The focused row is the arrival this screen would commit, so its faces
+## are the faces that commit would accept.
+##
+## ## Why an unknown race is not an error
+##
+## With no race the picker publishes zero options and creation carries on. That is
+## the optional contract (ADR 0257 §5) implemented rather than asserted: the only
+## thing a body plan contributes here is a shorter list, never a refusal.
+func _feed_faces() -> void:
+	if _picker == null:
+		return
+	var race := ""
+	for row in _branch_rows:
+		if bool(row.call(&"can_commit")):
+			race = String((row.call(&"summary") as Dictionary).get("race", ""))
+			break
+	_picker.show_race(StringName(race), _chosen_portrait)
+
+
+## The picker's own summary, nested under `faces`. `{}` when there is no picker,
+## so a screen that failed to mount it reports its absence rather than a
+## fabricated empty list that would read as "this body has no faces".
+func _faces_summary() -> Dictionary:
+	if _picker == null:
+		return {}
+	return _picker.summary()
+
+
+func _on_face_chosen(portrait_id: StringName) -> void:
+	act_choose_face(portrait_id)
 
 
 # --- Reporting --------------------------------------------------------------

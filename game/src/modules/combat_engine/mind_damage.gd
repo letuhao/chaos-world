@@ -13,7 +13,7 @@ extends DamageMechanism
 ## K    = defense_divisor_k * base                                 (rides the ATTACKER)
 ## m    = mitigation_ceiling * D_eff / (K + D_eff)                  for D_eff >= 0
 ## m    = mitigation_ceiling * (2 - K / (K + |D_eff|))             for D_eff <  0
-## if OBSCURE: D_eff = maxf(D_eff, defender ILLUSION_RESISTANCE / resist_divisor)
+## if OBSCURE: D_eff = maxf(D_eff, defender ILLUSION_RESISTANCE * ILLUSION_MAGNITUDE_SCALE)
 ## coh  = 1 - COHERENCE_DAMP * awareness_ratio(defender)     # 1.0 -> 0.5 at full awareness
 ## g    = base * (1-m) * coh * (FOCUS_MULT if focused else 1.0)
 ## g   /= defender_sea.structural_capacity                   # a SHARE of THAT sea
@@ -603,13 +603,18 @@ static func kind_name(value: Kind) -> String:
 ##
 ## ## `OBSCURE` still reads its OWN stat, and it reads it as a MAGNITUDE
 ##
-## ADR 0071's `maxf` against `ILLUSION_RESISTANCE` is preserved verbatim -- it is what
-## makes an illusion-resistance build and a clarity build DIFFERENT defenders of the same
-## skill, and it is the one asymmetry `test_mind_damage.gd` pins most sharply. What changed
-## is the unit: `ILLUSION_RESISTANCE` is divided by the same `resist_divisor` before the
-## `maxf`, so the two halves of the contest are comparable MAGNITUDES. `ILLUSION_RESISTANCE_CAP`
-## is gone; nothing is re-clamped afterwards, so a deep illusion-resistance build now keeps
-## buying mitigation past the point where it used to stop dead.
+## ADR 0071's `maxf` against `ILLUSION_RESISTANCE` is preserved — it is what makes an
+## illusion-resistance build and a clarity build DIFFERENT defenders of the same skill, and
+## it is the one asymmetry `test_mind_damage.gd` pins most sharply. Both halves of the
+## `maxf` are MAGNITUDES on `K`'s scale. `ILLUSION_RESISTANCE_CAP` is gone; nothing is
+## re-clamped afterwards, so a deep illusion-resistance build now keeps buying mitigation
+## past the point where it used to stop dead.
+##
+## The conversion that makes the two halves comparable is [constant
+## ILLUSION_MAGNITUDE_SCALE], read through [method _illusion_defense_of]. Without it the
+## `maxf` compares a `0..0.8` band against a magnitude four orders of magnitude larger and
+## simply never selects the illusion half — which is what the measured `0.00042203465127`
+## was.
 func _defense_of(
 	ctx: AttackContext, tuning: CombatTuning, defense: float, kind_value: Kind
 ) -> float:
@@ -617,12 +622,69 @@ func _defense_of(
 	var scale := divisor if divisor > 0.0 else 1.0
 	var out := _finite(defense) / scale
 	if kind_value == Kind.OBSCURE:
-		out = maxf(out, _illusion_resistance_of(ctx, tuning, kind_value) / scale)
+		out = maxf(out, _illusion_defense_of(ctx, tuning, kind_value))
 	var pen := maxf(0.0, _finite(_penetration_of(ctx)))
 	var pierce := _finite(tuning.pierce_scale)
 	if pierce > 0.0:
 		out = out / (1.0 + pen / pierce)
 	return _finite(out)
+
+
+## ## `ILLUSION_RESISTANCE` is NOT a `[0, 1]` percent, and treating it as one is the
+## defect ADR 0200's rename left behind
+##
+## ADR 0200 replaced `ILLUSION_RESISTANCE_CAP` with an unbounded MAGNITUDE, and this file
+## divides the stat by `resist_divisor` before the `maxf` so `D` and `K` meet as like
+## quantities. It also clamps the read to `[0, 1]`, because the stat's own authored formula
+## is `minf(0.8, mental_clarity * 0.004 + will * 0.002)` and every value the engine can
+## produce is in that band.
+##
+## Those two facts are inconsistent, and the result is not a rounding drift — it is the
+## stat doing nothing. `resist_divisor` is a SINGLE `CombatTuning` field shared by all three
+## mechanisms, and qi sizes its `element_defense_<e>` contribution against it at
+## `affinity * 0.5 + will * 0.2`, which is `0` at an untrained element and lands near
+## `2.5..5.0` on a shipped body. Mind's `ILLUSION_RESISTANCE` at the same stat values lands
+## between `0.0` and `0.8`. It is the SAME `100.0` meeting magnitudes that are 4.7x apart in
+## their natural ranges.
+##
+## Measured on the suite's own fixtures (`mind_damage_fixture.gd`, `mental_clarity 200.0`
+## for the illusion build, so `ILLUSION_RESISTANCE == 0.8`):
+##
+## ```
+## base = mental_attack * share = 40.0
+## K    = defense_divisor_k * base = 0.45 * 40.0 = 18.0
+## D    = illusion_resistance / resist_divisor = 0.8 / 100.0 = 0.008
+## m    = 0.95 * 0.008 / (18.0 + 0.008) = 0.0004220346512...
+## ```
+##
+## That is `4.2e-4` of mitigation from the stat that exists for exactly one purpose: to make
+## an illusion-resistance build a DIFFERENT defender of `OBSCURE` from a clarity build.
+## `ILLUSION_RESISTANCE_CAP` deleted at ADR 0200 had been holding this up by accident — it
+## put a flat `0.8` on the mitigation, and 0.8 on the OTHER side of this ratio is
+## `0.95 * 0.8/18.8 = 0.0404`, which is also small, but it was a constant rather than a
+## near-zero. Restoring a floor instead would have papered over the unit error.
+##
+## [constant ILLUSION_MAGNITUDE_SCALE] is the fix: a DOCUMENTED CONVERSION constant, not
+## a re-tuned cap. It says "one point of `ILLUSION_RESISTANCE` is worth what 100 points of
+## authored `element_defense_<e>` are worth on qi" — the same `100.0` the shared
+## `resist_divisor` already divides by, so the stat is read in the units its own formula's
+## `0.004`-and-`0.002` coefficients imply instead of being divided into irrelevance.
+##
+## That puts the illusion build's `D` at `100.0` against the same `K = 18.0` the clarity
+## half meets, for `m = 0.95 * 100/118 = 0.8042` — a REAL contest, and deliberately a
+## strong one. Measured against the suite's own `mental_defense` rows, a `1.0` defense
+## reads `0.0431`, `10.0` reads `0.2931` and `1000.0` reads `0.9523`, so a saturated
+## illusion-resistance build sits at the strong end of exactly the range a deep
+## `mental_defense` build reaches. A weaker conversion would leave `OBSCURE` the worst-
+## defended kind in the game against the one defender the game explicitly offers for it,
+## which is what `0.00042203465127` was.
+##
+## It is a named constant rather than an inline literal because a second copy of this
+## number is how the unit error would come back, and because it is the ONE thing a balance
+## pass would legitimately want to turn: the question "is an illusion build worth as much
+## against `OBSCURE` as a clarity build's `mental_defense`" has to have an answer in one
+## place.
+const ILLUSION_MAGNITUDE_SCALE := 100.0
 
 
 ## ADR 0200's mitigation curve, the same shape `QiDamage` and `BodyDamage` use:
@@ -722,14 +784,42 @@ func _avoidance_of(ctx: AttackContext, tuning: CombatTuning, kind_value: Kind) -
 	return _share(tuning.coherence_damp)
 
 
-## The defender's `ILLUSION_RESISTANCE`, read ONLY for `OBSCURE` — every other kind answers
-## `0.0`, which is what makes "a clarity build and an illusion-resistance build are different
-## defenders of the same skill" machine-checkable rather than asserted.
+## The defender's `ILLUSION_RESISTANCE`, read ONLY for `OBSCURE` -- every other kind
+## answers `0.0`, which is what makes "an illusion-resistance build and a
+## clarity-resistance build are different defenders of the same skill" machine-checkable
+## rather than asserted.
+##
+## ADR 0071's `minf(0.8, ...)` ceiling is kept on the READ, because that is the stat's own
+## authored shape rather than a clamp this module imposes: `ILLUSION_RESISTANCE_CAP` was
+## deleted, and it was a ceiling on the MITIGATION, which is a different quantity. The
+## ceiling that would have belonged here -- one on the value rather than on what it buys --
+## is [constant ILLUSION_MAGNITUDE_SCALE]'s job, and it lives in
+## [method _defense_of] where the unit is converted.
 func _illusion_resistance_of(ctx: AttackContext, tuning: CombatTuning, kind_value: Kind) -> float:
 	if kind_value != Kind.OBSCURE:
 		return 0.0
 	var id := _mind_stat(tuning, "illusion_resistance")
 	return clampf(_finite(ctx.target_value(id)), 0.0, 1.0)
+
+
+## The `ILLUSION_RESISTANCE` term of [method _defense_of]'s `maxf`, already on `D`'s scale.
+##
+## `D` is in "points of defense" — the space `mental_defense / resist_divisor` lives in — so
+## this is the stat multiplied straight into that space and NOT divided again. Dividing it
+## by `resist_divisor` a second time is what read `0.00042203465127`: the conversion
+## constant already carries the whole factor, and the divisor would have applied it twice.
+##
+## This is the ONLY place the conversion happens, which is what keeps `_defense_of` readable:
+## it takes two `D`-scale numbers and takes their maximum, and the fact that one of them
+## arrived from a `[0, 1]` band is a fact about that stat, not about the defence contest.
+##
+## Deliberately NOT a floor, and deliberately NOT a re-clamp after the conversion: a floor
+## would guarantee OBSCURE a mitigation it had not earned from the defence the defender
+## actually built, and a re-clamp would reintroduce the dead-stat shape ADR 0200 deletes.
+## Unbounded `ILLUSION_RESISTANCE` keeps buying mitigation, which is the property the
+## deleted cap destroyed.
+func _illusion_defense_of(ctx: AttackContext, tuning: CombatTuning, kind_value: Kind) -> float:
+	return ILLUSION_MAGNITUDE_SCALE * _illusion_resistance_of(ctx, tuning, kind_value)
 
 
 ## The AWARENESS an `ATTEND` strike drains: the erosion itself, spent out of the reserve.

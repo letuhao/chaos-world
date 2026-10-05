@@ -165,6 +165,7 @@ static var _mercy_probe: Callable = Callable()
 ## the resolution and the learn; this file owns the CAUSE and the mirror.
 static var _teacher: Callable = Callable()
 
+
 ## Every cause id this component can apply, sorted. `app/SocialFavourApp` republishes it so
 ## a content audit reads the wired vocabulary from one place, and the suite pins every
 ## entry against the shipped catalog.
@@ -175,23 +176,29 @@ static func cause_ids() -> Array[StringName]:
 	out.sort()
 	return out
 
+
 static func install_key_resolver(resolver: Callable) -> void:
 	_key_resolver = resolver if _usable(resolver) else Callable()
+
 
 static func install_debt_reader(reader: Callable) -> void:
 	_debt_reader = reader if _usable(reader) else Callable()
 
+
 static func install_mercy_probe(probe: Callable) -> void:
 	_mercy_probe = probe if _usable(probe) else Callable()
 
+
 static func install_teacher(teacher: Callable) -> void:
 	_teacher = teacher if _usable(teacher) else Callable()
+
 
 ## `is_valid()` is false for a null callable AND for one naming an object that no longer
 ## exists, so a disjunction here would answer "installed" before anything was bound — the
 ## ONE-conjunct read `CombatMercy.installed` documents.
 static func _usable(candidate: Callable) -> bool:
 	return not candidate.is_null() and candidate.is_valid()
+
 
 static func seams_installed() -> Dictionary:
 	return {
@@ -200,6 +207,7 @@ static func seams_installed() -> Dictionary:
 		"mercy_probe": _usable(_mercy_probe),
 		"teacher": _usable(_teacher),
 	}
+
 
 ## The bond key `other` is written under. Degrades to `other.id` when nothing is bound;
 ## see the note on [member _key_resolver].
@@ -211,7 +219,9 @@ static func bond_key(other: Actor) -> StringName:
 	var resolved: Variant = _key_resolver.call(other)
 	return resolved if resolved is StringName else other.id
 
+
 # --- The verbs ----------------------------------------------------------------
+
 
 ## ## Give `rows` — `{def_id, quantity}` primitives — to `partner`.
 ##
@@ -246,6 +256,7 @@ static func give(player: Actor, partner: Actor, rows: Array) -> Dictionary:
 		return _refuse(String(moved.get("reason", R_NOT_CARRIED)))
 	return _settle(player, partner, CAUSE_GIFTED, {"price": int(priced["price"])})
 
+
 ## ## Settle a debt the partner is owed.
 ##
 ## **Gated on a RECORDED debt rather than freely repeatable**, and that gate is the
@@ -274,6 +285,7 @@ static func settle_debt(player: Actor, partner: Actor, debt_id: StringName = &"d
 	if owed <= 0:
 		return _refuse(R_NO_DEBT)
 	return _settle(player, partner, CAUSE_DEBT, {"owed": owed, "debt_id": String(debt_id)})
+
 
 ## ## Teach `partner` the technique the player carries the manual for.
 ##
@@ -320,6 +332,7 @@ static func teach(
 	return _settle(
 		player, partner, CAUSE_TAUGHT, {"manual": String(manual_id), "technique": outcome}
 	)
+
 
 ## ## Record that `player` fought beside `partner` — or let them walk.
 ##
@@ -389,6 +402,7 @@ static func fight_alongside(player: Actor, partner: Actor, spared: bool = false)
 		cause = CAUSE_SPARED
 	return _settle(player, partner, cause, {"spared": spared})
 
+
 ## Whether a player may act on `partner` right now, and what the ledger says about them. The
 ## read model a screen greys an affordance out against, so no verb refuses at the press.
 ## `{ok, reason, partner, standing, class, label, causes}` — deliberately carrying no `cost`
@@ -418,7 +432,9 @@ static func read(player: Actor, partner: Actor) -> Dictionary:
 		"causes": entry.get("causes", []),
 	}
 
+
 # --- internals ----------------------------------------------------------------
+
 
 ## ## The ONE place both ledgers are written.
 ##
@@ -511,6 +527,7 @@ static func _settle(
 		"detail": detail.duplicate(),
 	}
 
+
 ## The gate every verb shares: two actors, and they are not the same one. Checked FIRST in
 ## every verb, before a single price is quoted or an item counted.
 static func _gate(player: Actor, partner: Actor) -> Dictionary:
@@ -521,6 +538,7 @@ static func _gate(player: Actor, partner: Actor) -> Dictionary:
 	if partner == player:
 		return {"ok": false, "reason": R_SAME_ACTOR}
 	return {"ok": true, "reason": ""}
+
 
 ## ## Whether `player` has already fought beside `partner`, read off the CAUSE LEDGER.
 ##
@@ -549,12 +567,14 @@ static func _fought_alongside(player: Actor, partner: Actor) -> bool:
 		return true
 	return partner_key != player_key and _carries(partner, player_key)
 
+
 ## Whether `actor`'s bond with `other_id` carries `CAUSE_HELPED` at least once.
 static func _carries(actor: Actor, other_id: StringName) -> bool:
 	if actor == null or other_id == &"":
 		return false
 	var causes: Array = SocialApi.bond_entry(actor, other_id).get("causes", [])
 	return causes.has(String(CAUSE_HELPED))
+
 
 ## ## Price the goods through the ONE price path, before anything moves.
 ##
@@ -579,6 +599,7 @@ static func _price(player: Actor, rows: Array) -> Dictionary:
 		return {"ok": false, "reason": R_NOT_GIFTABLE}
 	return {"ok": true, "reason": "", "price": int(quoted.get("total", 0))}
 
+
 ## Whether `manual_id` names a technique MANUAL the player is carrying.
 ##
 ## ## The def is resolved through `Crafting.resolve`, not `Inventory.definition_of`
@@ -593,11 +614,12 @@ static func _price(player: Actor, rows: Array) -> Dictionary:
 ## bare reference out of `modules/*` that `BARE_REF_UNITS` cannot see. The category is
 ## compared against the wire string — the shape `TechniqueDelivery._field` uses for exactly
 ## this reason.
-static func _is_manual(player: Actor, manual_id: StringName) -> bool:
+static func _is_manual(_player: Actor, manual_id: StringName) -> bool:
 	var def: Variant = Crafting.resolve(manual_id)
 	if def == null:
 		return false
 	return StringName(def.get("category")) == MANUAL_CATEGORY
+
 
 static func _refuse(reason: String) -> Dictionary:
 	return {

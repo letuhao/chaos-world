@@ -83,6 +83,17 @@ static func _bound(candidate: Callable) -> bool:
 	return not candidate.is_null() and candidate.is_valid()
 
 
+## The live `Actor` `npc_id` names, or null when this process holds none.
+##
+## Published rather than left private so the verbs below and any sibling app verb resolve
+## a partner through the SAME two-step resolution — `NpcApi.resident` for a roster id, then
+## a scan of the ids this process minted for an ENGINE id. Both steps are load-bearing and
+## the second one is why `KinshipApp` may not answer this question for itself: a second
+## resolution would be a second thing to drift from the row the write path files.
+static func partner_of(npc_id: StringName) -> Actor:
+	return _partner(npc_id)
+
+
 ## Give `rows` — `{def_id, quantity}` primitives — to `npc_id`.
 ##
 ## `{ok, reason, cause, partner, standing_before, standing_after, partner_standing}`. A
@@ -260,7 +271,7 @@ static func default_mercy_probe() -> Callable:
 ## authored vocabularies is not a contract anyone reviewed, and an id no def claims still
 ## resolves to nothing and is still refused `unknown_technique` by name.
 static func teach_technique(
-	learner: Actor, manual_id: StringName, rng: RandomNumberGenerator = null
+	learner: Actor, manual_id: StringName, _rng: RandomNumberGenerator = null
 ) -> Dictionary:
 	var def := TechniqueCatalog.instance().delivers(manual_id)
 	if def == null:

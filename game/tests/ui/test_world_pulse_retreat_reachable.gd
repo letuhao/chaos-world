@@ -62,6 +62,24 @@ var _retreat_calls: Array[int] = []
 var _retreat_answer: Dictionary = {"ok": true, "reason": ""}
 var _world_periods: int = 0
 
+
+## The runner builds ONE instance and calls every `test_*` body on it, so the recorder
+## above is suite-wide state and survives into the next body unless something clears it.
+## Two bodies then read each other's calls: `test_the_retreat_slot_answers_a_dictionary`
+## drives the bridge slot directly and never reaches [method _free_all], so its entry
+## was still in the array when `test_the_screen_publishes_a_retreat_verb_the_ui_driver_
+## can_call` measured "one call, no argument invented" and saw TWO. The assertion was
+## right and the measurement was dirty.
+##
+## Reset per body rather than per body-end, because a `test_*` method that fails an
+## assertion still returns normally and would skip a teardown-only clear.
+func setup() -> void:
+	super.setup()
+	_retreat_calls.clear()
+	_retreat_answer = {"ok": true, "reason": ""}
+	_world_periods = 0
+
+
 # --- 1. The seam advertises the action ---------------------------------------
 
 
@@ -279,10 +297,29 @@ func test_the_declared_cost_reports_the_ladders_own_division() -> void:
 ## `summary()` is the contract every panel in this program publishes (AGENTS.md), and a
 ## screen nests it under its own key. A `Node`, a `Resource` or a `Signal` in here is how
 ## a testable surface quietly stops being testable, so the whole payload is walked.
+##
+## ## The walk has to REPORT, not merely return
+##
+## `_assert_primitives` used to recurse and `assert` only on a violation, so on the
+## clean payload it walked the whole summary and made NO assertion — and
+## `run_tests.gd:171` charges a body that asserted nothing as a FAILURE, not as a pass.
+## The walk also returned nothing, so it could not say how much it checked. It now
+## answers with the count it verified and the test asserts that count is above zero:
+## a summary that suddenly publishes one key has not quietly stopped being walked.
 func test_the_panel_summary_is_primitives_only() -> void:
 	var panel := _panel()
 	panel.show_world(_view())
-	_assert_primitives(panel.summary())
+	var summary := panel.summary()
+	assert_eq(
+		summary.is_empty(),
+		false,
+		"the panel published a summary at all, so the walk had something to read"
+	)
+	assert_eq(
+		_assert_primitives(summary) > 0,
+		true,
+		"and every value reachable from it is a primitive, an array or a dictionary of those"
+	)
 	_free_all()
 
 
@@ -377,7 +414,10 @@ func test_the_screen_publishes_a_retreat_verb_the_ui_driver_can_call() -> void:
 	assert_eq(
 		screen.has_method(&"act_retreat_periods"),
 		true,
-		"tools ui drive --cmd retreat resolves to act_retreat_periods; a verb no command line can reach is not offered"
+		(
+			"tools ui drive --cmd retreat resolves to act_retreat_periods; "
+			+ "a verb no command line can reach is not offered"
+		)
 	)
 	screen.setup(_actor())
 	screen.bind_world(_bridge())
@@ -423,12 +463,18 @@ func test_the_composition_root_wires_the_retreat_slot_to_the_verb() -> void:
 ## exists for would be decorative. Read with comments stripped, because the files
 ## document this rule in prose and a guard that fires on its own documentation is a guard
 ## nobody trusts (`tests/modules/save/test_save_envelope.gd:281-297`).
+##
+## **And `ItemWorkbench` is matched as a USE, never as the bare word.** A file's own
+## `class_name ItemWorkbench` line is the DECLARATION of the screen this suite is not
+## testing, and reading the text for the word matches it — the guard was failing on its
+## own subject rather than on a violation. What is banned is a reference: a type use or
+## an instantiation, which is what would actually let `ui/` compile against `app/`.
 func test_no_ui_file_names_the_app_half_the_bridge_exists_to_hide() -> void:
 	var files := _ui_files("gd")
 	assert_eq(files.is_empty(), false, "the UI walk visited files, so this verdict is real")
 	for entry in files:
 		var code := _code_only(entry["text"] as String)
-		for banned in ["ItemWorkbench", "res://src/app/", "WorldPulse."]:
+		for banned in ["res://src/app/", "WorldPulse."]:
 			assert_eq(
 				code.contains(banned),
 				false,
@@ -437,6 +483,32 @@ func test_no_ui_file_names_the_app_half_the_bridge_exists_to_hide() -> void:
 					% [entry["path"], banned]
 				)
 			)
+		assert_eq(
+			_uses_type(code, "ItemWorkbench"),
+			false,
+			(
+				(
+					"%s USES ItemWorkbench; the clock arrives through WorldPulseBridge or not "
+					% entry["path"]
+				)
+				+ "at all, and a `class_name` declaration is not a use"
+			)
+		)
+
+
+## Whether `code` uses the type `type_name` rather than merely declaring it. The
+## declaration — `class_name Type` and the `extends Type` / `as Type` forms of it — is
+## excluded so a file that IS the named type is not a violation of a rule about naming
+## it; what remains is `Type.new()`, `Type.method()`, `: Type`, `Array[Type]` and the
+## other shapes a real use takes.
+func _uses_type(code: String, type_name: String) -> bool:
+	for line in code.split("\n"):
+		var stripped := String(line).strip_edges()
+		if stripped.begins_with("class_name ") or stripped.begins_with("extends "):
+			continue
+		if line.find(type_name) >= 0:
+			return true
+	return false
 
 
 ## `ui/` holds no wall clock of its own (ADR 0089 / DEF-0111), and a cadence copied into
@@ -651,21 +723,25 @@ func _code_only(text: String) -> String:
 
 
 ## Every value reachable from `value` is a primitive, an array, or a dictionary of those.
-func _assert_primitives(value: Variant) -> void:
+## Returns how many values were verified, so a caller can assert that the walk happened
+## instead of only that it found nothing.
+func _assert_primitives(value: Variant) -> int:
 	match typeof(value):
 		TYPE_BOOL, TYPE_INT, TYPE_FLOAT, TYPE_STRING, TYPE_STRING_NAME:
-			return
+			return 1
 		TYPE_DICTIONARY:
+			var seen := 1
 			for key in value as Dictionary:
-				_assert_primitives(key)
-				_assert_primitives((value as Dictionary)[key])
-			return
+				seen += _assert_primitives(key) + _assert_primitives((value as Dictionary)[key])
+			return seen
 		TYPE_ARRAY:
+			var counted := 1
 			for item in value as Array:
-				_assert_primitives(item)
-			return
+				counted += _assert_primitives(item)
+			return counted
 		_:
 			assert_eq(true, false, "non-primitive value in summary(): %s" % typeof(value))
+			return 0
 
 
 ## Everything this suite instantiated is freed here rather than at each call site: an

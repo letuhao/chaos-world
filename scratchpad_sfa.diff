@@ -1,0 +1,14 @@
+warning: in the working copy of 'game/src/app/social_favour_app.gd', CRLF will be replaced by LF the next time Git touches it
+diff --git a/game/src/app/social_favour_app.gd b/game/src/app/social_favour_app.gd
+index e485d6aa2..d32d2b89d 100644
+--- a/game/src/app/social_favour_app.gd
++++ b/game/src/app/social_favour_app.gd
+@@ -260,7 +260,7 @@ static func default_mercy_probe() -> Callable:
+ ## authored vocabularies is not a contract anyone reviewed, and an id no def claims still
+ ## resolves to nothing and is still refused `unknown_technique` by name.
+ static func teach_technique(
+-	learner: Actor, manual_id: StringName, rng: RandomNumberGenerator = null
++	learner: Actor, manual_id: StringName, _rng: RandomNumberGenerator = null
+ ) -> Dictionary:
+ 	var def := TechniqueCatalog.instance().delivers(manual_id)
+ 	if def == null:

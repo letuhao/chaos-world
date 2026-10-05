@@ -96,6 +96,23 @@ func _passive(actor: Actor) -> TechniqueDef:
 # --- Attaching and reaching the action -----------------------------------------
 
 
+## The facade's published methods, read from its own script.
+##
+## `TechniquesApi.new()` is the wrong door: every method on it is `static`, so
+## instantiating yields a bare `RefCounted` whose script is NOT the api, and
+## `get_script_method_list()` then returns nothing — every cap assertion below
+## failed on an EMPTY list rather than on a count. Read the class's own script.
+func _published_methods() -> Array[String]:
+	var script: Script = load("res://src/modules/techniques/api.gd")
+	var out: Array[String] = []
+	for method in script.get_script_method_list():
+		var method_name := String(method.get("name", ""))
+		if method_name.begins_with("_") or out.has(method_name):
+			continue
+		out.append(method_name)
+	return out
+
+
 func test_attach_publishes_a_casting_component_the_facade_names() -> void:
 	var actor := _actor()
 	assert_ne(_casting(actor), null, "the casting table is attached")
@@ -112,13 +129,7 @@ func test_the_facade_still_exposes_exactly_twelve_public_methods() -> void:
 	# ADR 0056: the cap binds immediately, so the activation action had to go on the
 	# component. Read the facade's own declared surface rather than restating a
 	# number, so a future 13th method fails here rather than only at `tools arch`.
-	var script: Script = TechniquesApi.new().get_script()
-	var published: Array[String] = []
-	for method in script.get_script_method_list():
-		var method_name := String(method.get("name", ""))
-		if method_name.begins_with("_") or published.has(method_name):
-			continue
-		published.append(method_name)
+	var published := _published_methods()
 	# Presence pins the list, the ceiling pins the cap: both are needed, because an
 	# empty method list would otherwise satisfy the ceiling alone.
 	for name in [
@@ -133,10 +144,18 @@ func test_the_facade_still_exposes_exactly_twelve_public_methods() -> void:
 		"raise_mastery",
 		"summary",
 		"inspect",
-		"technique_state",
 	]:
 		assert_eq(published.has(name), true, "'%s' is still on the facade" % name)
-	assert_eq(published.size(), 12, "exactly twelve public methods, found %d" % published.size())
+	# `technique_state` is NOT on that list and must not return. It was a pure
+	# accessor over `codex(actor).to_dict()` with zero production callers
+	# (DEF-0303), so it was removed rather than left as the twelfth method holding
+	# the cap at a number.
+	assert_eq(
+		published.has("technique_state"),
+		false,
+		"'technique_state' is gone — it had no caller, and publishing it would have been an interface spent on nothing"
+	)
+	assert_eq(
 
 
 # --- Firing and refusing -------------------------------------------------------

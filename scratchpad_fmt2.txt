@@ -1,0 +1,11 @@
+93 files left unchanged
+reformatted D:\Works\source\chaos-world\game\src\modules\combat_engine\band.gd
+reformatted D:\Works\source\chaos-world\game\src\modules\domain\domain_fixtures.gd
+reformatted D:\Works\source\chaos-world\game\src\modules\npc\npc_minor_composer.gd
+reformatted D:\Works\source\chaos-world\game\tests\core\test_zz_shadow_probe.gd
+reformatted D:\Works\source\chaos-world\game\tests\modules\combat_engine\test_zzz_adr215_probe.gd
+reformatted D:\Works\source\chaos-world\game\tests\modules\status\test_mind_status_no_lock.gd
+reformatted D:\Works\source\chaos-world\game\tests\modules\status\test_status_resistance_band.gd
+7 files reformatted, 1281 files left unchanged.
+$ D:\Works\source\chaos-world\.venv\Scripts\ruff.EXE format D:\Works\source\chaos-world\tools
+$ D:\Works\source\chaos-world\.venv\Scripts\gdformat.EXE D:\Works\source\chaos-world\game

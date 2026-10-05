@@ -94,6 +94,96 @@ static func _install_event_seams() -> void:
 		events.bond_changed.connect(NpcLedger.bond)
 	if not events.presence_changed.is_connected(NpcLedger.presence):
 		events.presence_changed.connect(NpcLedger.presence)
+	# ## THE PURSUIT SEAM — where an NPC first forms an impression of the player (ADR 0256)
+	#
+	# `npc_tracked` fires from `NpcApi.spawn` with the def id and the authored tier, which
+	# is the one moment in the whole engine that is unambiguously "you two have met". That
+	# makes it the honest place to seed a first impression, and seeding it here rather than
+	# in a caller means **every** meeting path gets one, including `populate_room`.
+	#
+	# ## Why it seeds and does nothing else
+	#
+	# `PursuitApp.meet` is idempotent (`apply_once` refuses a second write), costs one
+	# bounded dictionary row, and **writes only to the npc's own ledger**. It cannot move
+	# the player's ledger and it cannot be re-triggered into a different answer, so this
+	# subscription cannot become a farm — the anti-farm rule is `apply_once`'s existence
+	# check, not a check here.
+	#
+	# ## And the tier is honoured at the seam, not deep in the module
+	#
+	# A `transient` is pure population: the seed row is written and forgotten with them,
+	# and nothing derived from it is ever published. That is the whole of the transient
+	# promise and keeping it at the seam means a new call site cannot forget it.
+	#
+	# `install` is idempotent and a load re-runs it, so this sits behind the same
+	# `is_connected` guard against the exact static Callable as every row above — a lambda
+	# would defeat the guard, because `is_connected` compares identity.
+	if not events.npc_tracked.is_connected(Callable(NpcBoot, "_seed_first_impression")):
+		events.npc_tracked.connect(Callable(NpcBoot, "_seed_first_impression"))
+	# ## THE SOCIAL GATE SEAM — where an NPC's warmth answers to `regard` (ADR 0264)
+	#
+	# `NpcGates.evaluate` takes `Callable(player: Actor, requirement: Dictionary) ->
+	# Dictionary`, and `SocialApi.gate` already *is* that signature — so this binds the static
+	# function itself rather than a lambda that forwards to it, the same rule (and the same
+	# shell crash) as `EventBeatWriter.set_tally_resolver` above.
+	#
+	# **Installed HERE, beside the other event seams, and UNCONDITIONALLY**: it binds no actor
+	# and reads nothing, so a beat arriving before a player is attached cannot half-install it.
+	# `install` is idempotent and `set_social_gate` stores a dead `Callable` as none, so
+	# re-running this is free and cannot stack two readers.
+	#
+	# ## Why a seam rather than a preload inside `npc/`
+	#
+	# `npc` already declares `social` in `registry.json`, so a direct call would pass
+	# `tools arch` — and would still be the wrong shape, because the def's authored gate is a
+	# requirement `npc/` must never interpret (ADR 0076's one-evaluator rule). The `Callable`
+	# keeps `NpcGates` to "pass a dictionary through and report the verdict", so the only
+	# answer to "is this gate satisfied" in the repo stays `SocialGate`.
+	NpcGates.set_social_gate(SocialApi.gate)
+
+
+## ## THE MEETING HANDLER. Narrow on purpose: it reads a tier and calls one verb.
+##
+## ## Why an empty projection, and why that is correct
+##
+## The seed is handed `{}`, so **every NPC meets the player with the plain `BASE`
+## impression** unless a caller has supplied a real projection via `PursuitApp.meet`. The
+## race/bloodline/clan/sect terms are therefore *available* but not *assumed*, and an NPC
+## never gains an impression advantage for a fact this handler cannot see. A richer
+## projection is a content decision a caller makes deliberately, not a default this seam
+## guesses at — and guessing would mean this file reaching into four modules' internals,
+## which is the dependency the facade rule exists to prevent.
+##
+## ## WHY THIS HANDLER CAN ASK FOR THE BODY, AND WHY `spawn`'s ORDER IS THE CONTRACT
+##
+## This handler runs from `npc_tracked`, and it needs the npc's `Actor` — the impression
+## is a component ON that body. `NpcApi.spawn` therefore emits that signal **after**
+## `NpcRegistry.set_present`, so `NpcApi.resident()` below finds the body this spawn just
+## stood up.
+##
+## ## It used to be emitted before, and that minted TWO bodies for one individual (BL-0799)
+##
+## The signal is a roster ADDITION, and it fired at `api.gd:175` — sixteen lines above the
+## `set_present` at `api.gd:191`. So at this instant the npc was on the roster and on no
+## roster-payload, but **not yet in the live table**. `resident()` took its
+## mint-a-fresh-body branch and called `spawn()` **re-entrantly, inside the outer
+## `spawn()`**: the inner call passed the `existing == null` test (the entry exists now),
+## minted a second `Actor` and published it under a second instance key, and the outer
+## call published its own.
+##
+## The damage was not cosmetic. A room held one npc **more** than it was stocked with, and
+## `despawn` released only one of the pair — so `summary` kept answering `Present` for
+## somebody who had walked out of the room. Four suites failed on exactly that. None of
+## their counts was a stale fixture: the room really did hold a body nobody asked for, and
+## the fix belongs in `spawn`, not in a test's expectation.
+static func _seed_first_impression(npc_id: String, _tier: StringName) -> void:
+	var player := NpcApi._current_player
+	if player == null:
+		return
+	var npc := NpcApi.resident(StringName(npc_id))
+	if npc == null:
+		return
+	PursuitApp.meet(player, StringName(npc_id), {})
 
 
 ## Install the constructor, read the authored cast, and bind the roster to `player`.
@@ -133,6 +223,27 @@ static func install(player: Actor) -> void:
 	# rest, so the direct Callable and the former wrapper were equivalent.
 	NpcApi.set_minter(ActorFactory.spawn_npc)
 	NpcApi.attach(player)
+	# ## The PERSONAL-Cause seam (ADR 0091, ADR 0108) — the OTHER half of the kinship path
+	#
+	# `SocialFavour`'s four seams (bond key, debt reader, mercy probe, teacher) had **no
+	# production caller**: grepping `SocialFavourApp.` outside `game/tests` returned only the
+	# definition file itself. Every personal-cause verb therefore ran on its unbound
+	# fallback, and `BrotherhoodOath.bond_key` — the resolution the whole mirror depends on —
+	# degraded to `actor.id`, filing every mirror under a row no gate, consent ledger or panel
+	# would ever read. `Seduction.REQUIRED_STANDING` is 6.0 read off a PERSONAL bond, so the
+	# lineage producer sat behind a floor nothing could clear (BL-0717 / BL-0751).
+	#
+	# **Installed HERE, beside the roster, because it is the one install that runs on a fresh
+	# boot, on a restore AND on a rebirth.** A route-bind would have covered one of the three
+	# and left a returning player with an unbound seam — the shape the DEF-0261 note above
+	# already names. `KinshipApp.install` delegates to `SocialFavourApp.install`, whose four
+	# seams each have a DEFAULT body over a facade `app/` may name, so the call needs no
+	# arguments and cannot half-bind.
+	#
+	# **Idempotent**, and AFTER `NpcApi.attach(player)` so `BrotherhoodOath.bond_key`'s prefix
+	# scan over `NpcRegistry` has a live roster to walk. Installing before the roster would
+	# bind a correct Callable whose first few calls still resolved nothing.
+	KinshipApp.install()
 
 
 ## Advance every social bond's decay by `delta` seconds. Called from the same tick that

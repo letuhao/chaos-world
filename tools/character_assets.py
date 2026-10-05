@@ -23,7 +23,7 @@ from pathlib import Path
 from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont
 
 from . import map_generate
-from .common import GAME_DIR, REPO_ROOT, ToolError, fail, ok
+from .common import GAME_DIR, REPO_ROOT, ToolError, fail, ok, warn
 from .godot import run_godot
 
 CHARACTER_ROOT = GAME_DIR / "assets" / "characters"
@@ -852,6 +852,10 @@ def _generate(records: list[dict], args) -> None:
             )
         )
     traits = dict(tag.split(":", 1) for tag in record["tags"])
+    if traits["disability"] == "limb-difference":
+        args.negative = ", ".join(
+            term for term in args.negative.split(", ") if term.casefold() != "missing limbs"
+        )
     if traits["age"] in {"child", "teen"}:
         args.negative = ", ".join(
             (
@@ -860,6 +864,10 @@ def _generate(records: list[dict], args) -> None:
                 "revealing clothing",
                 "sexualized styling",
                 "mature body proportions",
+                "bare shoulders",
+                "exposed shoulders",
+                "sleeveless clothing",
+                "shoulder cutouts",
                 "adult figures",
                 "adults in background",
                 "cropped people",
@@ -1379,7 +1387,7 @@ def _install(
         findings = _validate_image(asset_path, spec, f"{character_id} {slot}")
         if findings:
             raise ToolError("cannot approve invalid image: " + "; ".join(findings))
-        _import_character_asset()
+        _import_character_asset(output_path)
         if not import_path.is_file():
             raise ToolError(f"Godot did not create import metadata for {asset_path}")
         current_records = _load_index()
@@ -1423,7 +1431,7 @@ def _install(
     )
 
 
-def _import_character_asset() -> None:
+def _import_character_asset(image_path: Path) -> None:
     result = run_godot(
         ["--headless", "--editor", "--path", str(GAME_DIR), "--import", "--quit"],
         capture=True,
@@ -1431,6 +1439,37 @@ def _import_character_asset() -> None:
         tag="character-asset-import",
     )
     if result.returncode != 0:
+        import_path = image_path.with_suffix(image_path.suffix + ".import")
+        try:
+            metadata = import_path.read_text(encoding="utf-8")
+            source_file = re.search(r'^source_file="res://([^\"]+)"$', metadata, re.M)
+            cache_file = re.search(
+                r'^path="res://\.godot/imported/([^\"]+\.ctex)"$', metadata, re.M
+            )
+            cache_name = cache_file.group(1) if cache_file else ""
+            cache_path = GAME_DIR / ".godot" / "imported" / cache_name
+            cache_digests = cache_path.with_suffix(".md5").read_text(encoding="utf-8")
+            source_md5 = re.search(r'^source_md5="([0-9a-f]{32})"$', cache_digests, re.M)
+            dest_md5 = re.search(r'^dest_md5="([0-9a-f]{32})"$', cache_digests, re.M)
+            expected_source = image_path.relative_to(GAME_DIR).as_posix()
+            imported = (
+                source_file is not None
+                and source_file.group(1) == expected_source
+                and cache_file is not None
+                and cache_path.is_file()
+                and source_md5 is not None
+                and source_md5.group(1) == hashlib.md5(image_path.read_bytes()).hexdigest()
+                and dest_md5 is not None
+                and dest_md5.group(1) == hashlib.md5(cache_path.read_bytes()).hexdigest()
+            )
+        except OSError:
+            imported = False
+        if imported:
+            warn(
+                "Godot returned a nonzero exit after importing the current character PNG; "
+                "verified its source checksum and imported texture cache"
+            )
+            return
         diagnostic = "\n".join(filter(None, (result.stdout, result.stderr)))
         raise ToolError(
             "Godot could not import the generated character asset"

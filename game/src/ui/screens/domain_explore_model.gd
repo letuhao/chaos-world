@@ -1,9 +1,7 @@
 class_name DomainExploreModel
-extends RefCounted
+extends DomainExploreState
 
 ## The domain explore screen's STATE and every READ it makes of the domain module.
-##
-## ## Why this is not code in the screen
 ##
 ## [DomainExploreScreen] answers two questions a player can see: where am I standing, and
 ## what does this place hold. Both are the MODULE's to answer — through [DomainBridge],
@@ -14,14 +12,19 @@ extends RefCounted
 ## not that one. Same split `world_pulse_reader.gd` makes beside the world map, and
 ## `item_action_rules.gd` makes inside `ui/`.
 ##
+## ## What this file holds, and what [DomainExploreState] holds
+##
+## The read helpers and the selection bookkeeping live in the base class. Inheritance
+## keeps every public door below at the same name on the same object, so this split moves
+## code without moving a single call site: `DomainExploreScreen` cannot tell which half a
+## method came from, and no test can either.
+##
 ## ## What it deliberately does not hold
 ##
 ## The actor is PUSHED on every refresh rather than bound once, for the reason
 ## [method WorldPulseReader.view] takes one per call: the app mounts a screen before it
 ## hands that screen an actor, and the headless tests drive both orders. A bridge nobody
-## filled is "nothing to show", never a crash — every read here is guarded, because
-## `_ready()` runs long before `bind_bridge` has ever been called, so a screen the shell
-## has not wired yet reaches each of them.
+## filled is "nothing to show", never a crash.
 ##
 ## ## The gates stay on the screen
 ##
@@ -32,8 +35,8 @@ extends RefCounted
 ## together on [DomainExploreScreen] and this file answers only what is true.
 
 ## The fields a room row publishes, and the fields a zone row does. Named as data so a
-## row shape is declared once and [method _subset] can guarantee both are primitives
-## without either writer repeating the coercion.
+## row shape is declared once and [method DomainExploreState._subset] can guarantee both
+## are primitives without either writer repeating the coercion.
 const ROOM_KEYS := [
 	"room_id",
 	"kind",
@@ -51,27 +54,8 @@ const ZONE_KEYS := [
 	"mitigation_tags",
 ]
 
-var _bridge: DomainBridge = null
-## The authored catalogue, as the bridge answered it. Not restated from content: a screen
-## that invented a domain id would be a second source of truth about what is authored.
 var _templates: Array = []
 var _template_index: int = -1
-## The room being looked at and the fixture being acted on within it. Both are IDS and
-## never indices, so a run that regenerates cannot leave an action aimed at the wrong row.
-var _selected_room: StringName = &""
-var _selected_fixture: StringName = &""
-var _puzzle_node: StringName = &""
-## A room a caller NAMED that the module refused, held only until the next selection
-## moves. Set by [method select_room]'s refusal and read by the `Visit` gate: without it
-## a rejected selection silently fell back to the previous room and the verb walked
-## somewhere the caller never asked for. `{}` is "nothing pending" and it is the state
-## every other selection path leaves behind.
-var _pending_room: StringName = &""
-## The actor as of the last refresh, and the active run as the module last reported it, so
-## `summary()` answers with what the module said rather than re-asking three facades and
-## hoping they agree.
-var _actor: Actor = null
-var _view: Dictionary = {}
 
 
 ## Adopt the gameplay side. Safe to call again, and safe before any actor is bound: the
@@ -91,32 +75,6 @@ func refresh(actor: Actor) -> void:
 	_view = _read_active()
 	_templates = _read_templates()
 	_reconcile_selection()
-
-
-## The bridge the screen was handed, or null before `bind_bridge`. The gates and the
-## reason table read it through here, so no caller has to null-check it twice.
-func bridge() -> DomainBridge:
-	return _bridge
-
-
-## What the MODULE reports is active, or `{}` outside a run. `{}` is the repo's
-## does-not-exist vocabulary — not an error, and never a fabricated zeroed view.
-func active() -> Dictionary:
-	return _view
-
-
-## Where the player is looking, as plain strings: the room, the fixture within it, the
-## puzzle node, and the room a caller NAMED that the module refused. Four ids rather than
-## four accessors because they are always read together — a gate reads two of them, the
-## summary publishes three, and a selection that could be half-read is the drift the
-## screen's `_can_*` pair of checks exists to prevent.
-func selection() -> Dictionary:
-	return {
-		"room": String(_selected_room),
-		"fixture": String(_selected_fixture),
-		"node": String(_puzzle_node),
-		"pending": String(_pending_room),
-	}
 
 
 ## Everything this screen DISPLAYS about the domain, as primitives only. This is the
@@ -177,11 +135,6 @@ func template_id() -> String:
 	if _template_index < 0 or _template_index >= _templates.size():
 		return ""
 	return String((_templates[_template_index] as Dictionary).get("template_id", ""))
-
-
-## Which authored template the selector holds, so a repaint can repoint it without
-## re-emitting `item_selected`. Read with [method selection_indices] rather than on its
-## own: the four selectors repaint in one pass and must agree on one read.
 
 
 ## The authored catalogue as the four selectors' rows, presentation included. The DISPLAY
@@ -352,268 +305,23 @@ func keep_template(template_id: String) -> void:
 		_template_index = 0
 
 
-# ── Reads. Every one of them through the bridge, never a private copy ───────────
-
-
-## The room list, or `[]` outside a run AND before the seam is filled.
-##
-## ONE guarded call rather than a null check at each of its readers. `_ready()` runs
-## before `bind_bridge` has ever been called, so every refresh on a screen the shell has
-## not wired yet reaches this: a reader that dereferenced `_bridge` directly aborted the
-## whole refresh, and an unbound screen reported no rooms, no population and no fixtures
-## instead of reporting an empty domain.
-func _rooms() -> Array:
-	if _bridge == null or not _bridge.has(&"rooms"):
-		return []
-	return _bridge.call_list(&"rooms", [_actor])
-
-
-func _read_templates() -> Array:
-	if _bridge == null or not _bridge.has(&"list_templates"):
-		return []
-	return _bridge.call_list(&"list_templates")
-
-
-## What the MODULE reports is active, or `{}` outside a run.
-##
-## Unwraps the `active` key the seam publishes rather than storing the whole envelope:
-## the model's `_view` is the run itself, and every reader below — `summary()`'s counts,
-## `active()`, `_status_text()` — wants the run and not `{has_actor, templates, active}`.
-## Guarded like the reads beside it, because `_ready()` runs before `bind_bridge` has
-## ever been called and a screen the shell has not wired yet reaches this.
-##
-## This is the read the refactor renamed and then left calling as `_active()`, a
-## function that has never existed in this file: the parse error it raised made this
-## script register as a bare `GDScript` with no `new`, which is what left `_model` null
-## on every live screen and turned each refresh into `Nonexistent function ... in base
-## 'Nil'`. The name is `read_`-prefixed to sit beside `_read_templates`, its twin in
-## this same section.
-func _read_active() -> Dictionary:
-	if _bridge == null or not _bridge.has(&"read_active"):
-		return {}
-	var envelope := _bridge.call_action(&"read_active", [_actor])
-	return envelope.get("active", {}) as Dictionary
-
-
-## The floor plan, exactly as the module rendered it. `{}` outside a run, which the
-## text below words as "no floor plan" rather than as an empty map.
-func _minimap() -> Dictionary:
-	if _actor == null or _bridge == null or not _bridge.has(&"minimap"):
-		return {}
-	return _bridge.call_action(&"minimap", [_actor])
-
-
-## The floor plan as the DRAWING panel takes it. Same read as [method _minimap] and
-## deliberately its own door rather than a widened [method summary]: the view is handed
-## the payload WHOLE and reads the geometry itself, so nothing about the map's shape
-## passes through a second summariser on the way to the screen.
+## The floor plan as the DRAWING panel takes it. Same read as
+## [method DomainExploreState._minimap] and deliberately its own door rather than a
+## widened [method summary]: the view is handed the payload WHOLE and reads the geometry
+## itself, so nothing about the map's shape passes through a second summariser on the way
+## to the screen.
 func minimap() -> Dictionary:
 	return _minimap()
 
 
-## Every room the run AUTHORED, fog notwithstanding. The same list [method _rooms]
-## returns and the same list [method _authored_rooms] already wraps, published for the
-## map view because the payload's `rooms[]` is the DISCOVERED subset — the frontier seam
-## is computed against the rooms fog hid, and asking a fogged list for them makes the
-## seam permanently empty (ADR 0207).
+## Every room the run AUTHORED, fog notwithstanding. The same list
+## [method DomainExploreState._rooms] returns and the same list
+## [method DomainExploreState._authored_rooms] already wraps, published for the map view
+## because the payload's `rooms[]` is the DISCOVERED subset — the frontier seam is
+## computed against the rooms fog hid, and asking a fogged list for them makes the seam
+## permanently empty (ADR 0207).
 func authored_rooms() -> Array:
 	return _rooms()
-
-
-## The minimap's own room layer. `{}` has no `rooms` key, so the empty case is named
-## rather than indexed — an absent key and an empty map must not read alike.
-func _drawn_rooms(minimap: Dictionary) -> Array:
-	var rows: Variant = minimap.get("rooms", [])
-	return rows as Array if rows is Array else []
-
-
-## One row per DISCOVERED room, carrying the kind and the tier it PROMISES. The tier is
-## the minimap's own verdict and is passed through untouched.
-func _room_rows(minimap: Dictionary) -> Array:
-	var rows: Array = []
-	for row in _drawn_rooms(minimap):
-		var room := row as Dictionary
-		rows.append(_subset(room, ROOM_KEYS))
-	return rows
-
-
-## The severe zones, flattened with the room each sits in and the levers that reduce it.
-## Deliberately NOT fogged: routing AROUND a hazard needs seeing it before standing in it.
-func _zone_rows(minimap: Dictionary) -> Array:
-	var rows: Array = []
-	for entry in minimap.get("zones", []):
-		rows.append(_subset(entry as Dictionary, ZONE_KEYS))
-	return rows
-
-
-## `source` re-keyed down to `keys`, every value coerced to a primitive. The coercion is
-## the point, not a convenience: an authored fixture row carries `Vector2i` positions and
-## a `Rect2i` boundary, and a `summary()` holding either is a testable surface that
-## quietly stops being testable. `String()` and `int()` are the only two coercions used,
-## because a row in this program is strings, numbers, booleans and arrays.
-func _subset(source: Dictionary, keys: Array) -> Dictionary:
-	var out := {}
-	for key in keys:
-		var value: Variant = source.get(key, null)
-		if value is Array:
-			out[key] = _strings(value)
-		elif value is bool or value is int or value is float:
-			out[key] = value
-		else:
-			out[key] = String(value) if value != null else ""
-	return out
-
-
-func _strings(values: Variant) -> Array:
-	var out: Array = []
-	if not values is Array:
-		return out
-	for value in values as Array:
-		out.append(String(value))
-	return out
-
-
-## The population grouped by role, because "three mobs and a boss" is a roster and four
-## separate rows are not. Roles are TAGS on an actor and never classes (ADR 0074), so the
-## grouping is over a string and the module decided what is hostile.
-func _population_rows() -> Array:
-	var by_role: Dictionary = {}
-	for entry in _rooms():
-		for ref in (entry as Dictionary).get("actor_spawn_refs", []):
-			var row := ref as Dictionary
-			var role := String(row.get("role", ""))
-			if role.is_empty():
-				continue
-			by_role[role] = int(by_role.get(role, 0)) + maxi(1, int(row.get("count", 1)))
-	var rows: Array = []
-	for role in by_role.keys():
-		rows.append({"role": String(role), "count": int(by_role[role])})
-	rows.sort_custom(
-		func(a: Dictionary, b: Dictionary) -> bool: return String(a["role"]) < String(b["role"])
-	)
-	return rows
-
-
-## The fixtures the SELECTED room holds, from the facade's own room read.
-##
-## Scanned over EVERY room rather than stopping at the first miss, because the room list
-## is canonical by id and a selection may name any of them: a scan that stopped early
-## reported "this room holds no fixtures" for a room three rows further down.
-func _fixtures_of(room_id: StringName) -> Array:
-	var out: Array = []
-	if room_id.is_empty():
-		return out
-	for entry in _rooms():
-		var room := entry as Dictionary
-		if StringName(String(room.get("room_id", ""))) != room_id:
-			continue
-		for fixture in room.get("fixtures", []):
-			out.append(fixture as Dictionary)
-	return out
-
-
-## The selected fixture's authored row, or `{}`. Read for its STRINGS only: an authored
-## fixture carries `Vector2i` / `Rect2i` positions, and an engine type in a summary is
-## what makes a testable surface untestable.
-func _selected_fixture_row() -> Dictionary:
-	for fixture in _fixtures_of(_selected_room):
-		if StringName(String(fixture.get("fixture_id", ""))) == _selected_fixture:
-			return fixture
-	return {}
-
-
-## A formation's strikeable nodes, from the AUTHORED fixture. Empty for a trap or a
-## treasure, which is honest: neither has a node to strike.
-func _puzzle_nodes() -> Array[StringName]:
-	var out: Array[StringName] = []
-	for node in _selected_fixture_row().get("nodes", []):
-		out.append(StringName(String(node)))
-	return out
-
-
-## Every room the active run AUTHORED, fog notwithstanding. The room list is the
-## module's, unfiltered; filtering it by discovery here would leave a player able to
-## walk only through rooms they had already been in, which is not exploring.
-func _authored_rooms() -> Array:
-	return _rooms()
-
-
-## `{room_id: tier}` for the rooms the minimap has drawn. `{}` outside a run and for a
-## room the fog has not lifted, which is why the room row above falls back rather than
-## inventing a band of its own.
-func _drawn_tiers() -> Dictionary:
-	var out: Dictionary = {}
-	for row in _drawn_rooms(_minimap()):
-		var room := row as Dictionary
-		out[String(room.get("room_id", ""))] = String(room.get("tier", ""))
-	return out
-
-
-# ── Selection ────────────────────────────────────────────────────────────────
-
-
-## Keep the selection honest across a refresh. A run that regenerated, or a room left
-## behind, must not leave a stale id selected — an action aimed at one would refuse for a
-## reason the player never caused.
-##
-## Checked against the AUTHORED rooms for the same reason [method select_room] is: the
-## selection is where the player is LOOKING, which is a different question from where the
-## floor plan has drawn. Reconciling against the fogged set reset the selection to the
-## entry room on every refresh, so a player could not hold a look at an unfound room.
-func _reconcile_selection() -> void:
-	var authored := _authored_rooms()
-	if authored.is_empty():
-		_selected_room = &""
-		_selected_fixture = &""
-		_puzzle_node = &""
-		_pending_room = &""
-		return
-	if not _contains_room(authored, _selected_room):
-		_selected_room = StringName(String((authored[0] as Dictionary).get("room_id", "")))
-	_reconcile_fixture()
-	_reconcile_node()
-
-
-func _reconcile_fixture() -> void:
-	var fixtures := _fixtures_of(_selected_room)
-	if fixtures.is_empty():
-		_selected_fixture = &""
-		_puzzle_node = &""
-		return
-	if not _contains_fixture(fixtures, _selected_fixture):
-		_selected_fixture = StringName(String((fixtures[0] as Dictionary).get("fixture_id", "")))
-
-
-func _reconcile_node() -> void:
-	var nodes := _puzzle_nodes()
-	if nodes.is_empty():
-		_puzzle_node = &""
-		return
-	if not nodes.has(_puzzle_node):
-		_puzzle_node = nodes[0]
-
-
-func _contains_room(rows: Array, room_id: StringName) -> bool:
-	return _index_of_room(rows, room_id) >= 0
-
-
-func _contains_fixture(fixtures: Array, fixture_id: StringName) -> bool:
-	return _index_of_fixture(fixtures, fixture_id) >= 0
-
-
-func _index_of_room(rows: Array, room_id: StringName) -> int:
-	for index in rows.size():
-		if StringName(String((rows[index] as Dictionary).get("room_id", ""))) == room_id:
-			return index
-	return -1
-
-
-func _index_of_fixture(fixtures: Array, fixture_id: StringName) -> int:
-	for index in fixtures.size():
-		var id := StringName(String((fixtures[index] as Dictionary).get("fixture_id", "")))
-		if id == fixture_id:
-			return index
-	return -1
 
 
 # ── Wording. Every figure and every sentence lives here or in a child panel ────

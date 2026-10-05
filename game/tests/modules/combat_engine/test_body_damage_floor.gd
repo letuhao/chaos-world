@@ -4,20 +4,35 @@ extends "res://tests/modules/combat_engine/body_damage_fixture.gd"
 ##
 ## ## Why this file exists on its own
 ##
-## ADR 0070's two halves are ONE claim, not two: a flat subtraction that CAN be floored
-## is what makes "this point is not defended" and "enough armour cannot delete the
-## mechanic" expressible at the same time. Keeping them together in
-## `test_body_damage.gd` put that one claim in a file that also carried the tissue
-## weighting, the reduction channel and the whole formula re-derivation, and the file
-## went past the 400-line cap — which is the shape of a suite that has outgrown its own
-## subject. The floor has its own file now; the formula and the subtraction stay together
-## in `test_body_damage.gd`, which is where a reader looks for "what does a body hit
-## actually compute".
+## ADR 0070's two halves are ONE claim, not two: a ratio that CAN be floored is what makes
+## "enough armour cannot delete the mechanic" expressible at the same time as "every further
+## point of defence still pays". Keeping them together in `test_body_damage.gd` put that one
+## claim in a file that also carried the tissue weighting, the reduction channel and the
+## whole formula re-derivation, and the file went past the 400-line cap — which is the shape
+## of a suite that has outgrown its own subject. The floor has its own file now; the formula
+## and the ratio stay together in `test_body_damage.gd`, which is where a reader looks for
+## "what does a body hit actually compute".
 ##
-## Everything here is about the interaction of THREE numbers that only mean anything
-## together: the gross, the resistance and the floor. Every assertion re-derives the
-## other two and checks the third, so a mutant that broke any one of them fails on the
-## one test that pinned it.
+## ## ADR 0200: the floor SURVIVED the ratio, and this file is the proof
+##
+## `body_damage.gd` replaces ADR 0070's flat subtraction with
+## `gross * (1 - mitigation_ceiling * D/(K+D))`, which approaches zero without ever reaching
+## it. Every one of ADR 0070's four objections to a bare ratio is still true of that
+## shape, and the docblock answers them: three of them argue for a FLOOR rather than
+## against ratios, and the fourth — "defense is un-authorable under a ratio" — is a real
+## cost ADR 0200 pays and states plainly.
+##
+## So the claim here did not weaken; it changed form. The floor is still the mechanism's
+## only `0.0`, and this file still asserts the floor twice: once against armour that
+## saturates the mitigation, and once against armour that the ratio alone would answer.
+## The identity every assertion below is measured against is now
+## `penetration = maxf(gross * (1 - m), gross * ratio)`, derived by
+## `body_damage_fixture.gd`'s `_expected_penetration` so there is one copy of it.
+##
+## Everything here is about the interaction of FOUR numbers that only mean anything
+## together: the gross, the armour magnitude `D`, the attacker's `K` and the floor. Every
+## assertion re-derives the others and checks the one under test, so a mutant that broke
+## any one of them fails on the one test that pinned it.
 ##
 ## The actor arithmetic lives in `body_damage_fixture.gd` and so does `_walled`, because a
 ## "walled body" defined in two places is two definitions of armour.
@@ -60,18 +75,17 @@ func test_min_penetration_ratio_floors_and_the_multiplier_still_deals_damage() -
 		var parts := _parts(attacker, _walled(points), BodyLocation.MODE_NAMED, &"lung")
 		var site := _site_of(parts, &"lung")
 		var label := "armour %s" % str(points)
-		# `armour 0.0` is floored (`penetration == floor`) even though its raw subtraction
-		# still answers positively: the floor is `2.0` and the subtraction is `0.5`, so the
-		# floor wins without the subtraction ever going negative. That is a floor applied
-		# as written -- ADR 0070's `maxf(gross - resistance, gross * ratio)` does compare a
-		# small residual against a ratio of the GROSS, not only against zero -- and it is
-		# the row the "the raw subtraction is refused" assertion was wrong about, twice over:
-		# the floor claim held here while the refusal claim did not.
-		# `armour INF` is the other way round: `_finite` refuses a non-finite
-		# `DEFENSE_PHYSICAL` before it is scaled, so an infinite wall collapses to a
-		# partial resistance, the subtraction answers `14.5` and the floor never binds. A
-		# mutant that deleted `maxf` still fails every other row, and the exact identity
-		# below covers the rest.
+		# `armour 0.0` is floored because the RATIO already took almost all of the gross:
+		# the tissue term alone puts `m` at `0.95 * 2.75 / 902.75 = 0.00289`, so the
+		# un-mitigated share is `1994.2` and the floor of `200.0` never binds. That is the
+		# opposite of the pre-ADR-0200 regime, where the deleted subtraction left `0.5`
+		# against a floor of `2.0` and the floor bound at `armour 0.0`. Both are floors
+		# applied as written; which branch binds is a property of the curve, not of the
+		# `maxf`.
+		# `armour INF` is still the row this file exists for: `_finite` refuses a
+		# non-finite `DEFENSE_PHYSICAL` before it is scaled, so an infinite wall collapses
+		# to a partial resistance, the ratio answers a partial penetration and the floor
+		# never binds.
 		if is_equal_approx(float(parts["penetration"]), floor):
 			assert_almost_eq(float(parts["floor"]), floor, label + ": the floor holds")
 			assert_almost_eq(
@@ -83,18 +97,21 @@ func test_min_penetration_ratio_floors_and_the_multiplier_still_deals_damage() -
 		assert_eq(float(parts["total"]) > 0.0, true, label + ": and S5 is not empty either")
 		assert_eq(is_finite(float(parts["total"])), true, label + ": and it is a number")
 
-		# ADR 0070's own identity, and the assertion a mutant cannot get past: whatever the
-		# armour, `penetration` is exactly `maxf(gross - resistance, gross * ratio)`. It is
-		# unconditional and arithmetic, so it survives the `INF` row that no regime claim can
-		# cover, and it pins BOTH branches at once -- a `maxf` deleted outright fails it, and
-		# so does a `maxf` that got its arguments reversed.
-		var expected_penetration := maxf(0.0, gross - float(parts["resistance"]))
-		if floor > 0.0:
-			expected_penetration = maxf(expected_penetration, floor)
-		assert_eq(
+		# ADR 0200's identity, and the assertion a mutant cannot get past: whatever the
+		# armour, `penetration` is exactly `maxf(gross * (1 - m), gross * ratio)` with
+		# `m = mitigation_ceiling * D / (K + D)` and `K = defense_divisor_k * gross`. It is
+		# unconditional and arithmetic, so it survives the `INF` row that no regime claim
+		# can cover, and it pins BOTH branches at once — a `maxf` deleted outright fails it,
+		# and so does a `maxf` that got its arguments reversed.
+		assert_almost_eq(
+			float(parts["mitigation_rate"]),
+			_expected_mitigation_rate(float(parts["resistance"]), float(parts["gross"]), _tuning),
+			label + ": the mitigation is `ceiling * D / (K + D)`, re-derived from the tuning"
+		)
+		assert_almost_eq(
 			float(parts["penetration"]),
-			expected_penetration,
-			label + ": penetration IS maxf(gross - resistance, gross x ratio), never anything else"
+			_expected_penetration(parts),
+			label + ": penetration IS maxf(gross x (1 - m), gross x ratio), never anything else"
 		)
 		# `INF` is the row this file exists for and the regime claim cannot cover. `_finite`
 		# refuses a non-finite `DEFENSE_PHYSICAL` BEFORE it is scaled, so an infinite wall
@@ -175,7 +192,7 @@ func test_the_floor_is_a_number_the_location_multiplier_still_acts_on() -> void:
 ## an infinite penetration floor is `INF * gross`, a wall no amount of attack can cross,
 ## which is exactly the mechanic-deleting outcome ADR 0070 names the ratio to prevent.
 ## A floor nobody can cross is the one value for which "the mechanic is not deleted" is
-## false, so a non-finite ratio must read as "no floor" — leaving the raw subtraction to
+## false, so a non-finite ratio must read as "no floor" — leaving ADR 0200's RATIO to
 ## answer — and not as "an un-crossable wall".
 ##
 ## ## The "heavily armoured" body is `_walled(1.0e9)` on an OPEN channel, and both are the fix
@@ -221,16 +238,30 @@ func test_an_out_of_range_penetration_ratio_never_makes_armour_a_liability() -> 
 		assert_almost_eq(float(parts["floor"]), 0.0, label + ": no floor at all, not a wall")
 		assert_almost_eq(
 			float(parts["penetration"]),
-			maxf(0.0, float(parts["gross"]) - float(parts["resistance"])),
-			label + ": so the raw subtraction is what answers"
+			_expected_penetration(parts),
+			label + ": so the ratio is what answers"
 		)
 		assert_eq(is_finite(float(parts["total"])), true, label + ": and it is still a number")
 
 
 ## More defence never helps the attacker, and enough of it SATURATES at the floor
-## rather than vanishing — the legibility claim ADR 0070 makes in its reason (3) for
-## refusing Keepverse's `off*K/(K+def)`, under which the last row would be a small
-## positive number tending to zero and never arriving anywhere readable.
+## rather than vanishing.
+##
+## ## ADR 0200 changed what "saturates" means, and made this test STRONGER
+##
+## ADR 0070 made this the legibility claim for refusing Keepverse's `off*K/(K+def)`:
+## under a bare ratio the last row would be a small positive number tending to zero and
+## never arriving anywhere readable. The old floor gave a HARD plateau at
+## `gross * ratio`, so the ladder ended somewhere a designer could read it off.
+##
+## Under `gross * (1 - mitigation_ceiling * D/(K+D))` the curve itself now saturates — at
+## `gross * (1 - mitigation_ceiling)` — and `mitigation_ceiling` is `0.95`, so the ratio
+## alone bottoms out at `gross * 0.05 = 100.0`, which is HALF the shipped floor of `200.0`.
+## The floor therefore still binds, but only because the ceiling is above `0.9`: with the
+## ratio alone a wall would leave `100.0` standing, and with the floor alone a body could
+## still be worn down to `200.0`. Both halves are asserted below, and the second is the
+## claim ADR 0200's docblock makes — "MIN_PENETRATION_RATIO is load-bearing, and this is
+## where it is proved" — so it is worth asserting as arithmetic rather than as prose.
 func test_more_defence_hurts_monotonically_and_saturates_rather_than_vanishing() -> void:
 	var attacker := _attacker()
 	var last := INF
@@ -243,6 +274,12 @@ func test_more_defence_hurts_monotonically_and_saturates_rather_than_vanishing()
 		last = total
 	assert_eq(last > 0.0, true, "a HUGE defence does NOT drive the damage to zero")
 	var wall := _parts(attacker, _walled(1.0e12), BodyLocation.MODE_NAMED, &"lung")
+	# The floor, still the binding term, still `gross * ratio`.
+	assert_almost_eq(
+		float(wall["penetration"]),
+		float(wall["floor"]),
+		"and it SATURATES at the floor, not at an asymptote the ratio reaches on its own"
+	)
 	assert_almost_eq(
 		last,
 		(
@@ -250,31 +287,45 @@ func test_more_defence_hurts_monotonically_and_saturates_rather_than_vanishing()
 			* _tuning.min_penetration_ratio
 			* float(_site_of(wall, &"lung")["multiplier"])
 		),
-		"and it SATURATES at gross x ratio x the multiplier -- a ratio never could"
+		"which is gross x ratio x the multiplier"
+	)
+	# And the half that proves the floor is load-bearing rather than decorative: the ratio
+	# ALONE would leave strictly MORE standing. `m` is below the ceiling, so
+	# `gross * (1 - m) > gross * (1 - mitigation_ceiling) = gross * 0.05`, and the floor
+	# is `gross * 0.10` — which only binds because `0.05 < 0.10`.
+	var ratio_only := float(wall["gross"]) * (1.0 - _tuning.mitigation_ceiling)
+	assert_almost_eq(
+		ratio_only,
+		float(wall["gross"]) * 0.05,
+		"ADR 0200's ratio alone asymptotes at `1 - mitigation_ceiling` of the gross"
+	)
+	assert_eq(
+		float(wall["penetration"]) > ratio_only,
+		true,
+		"so the floor is strictly load-bearing: it takes the last 5% away too"
+	)
+	assert_eq(
+		float(wall["mitigation_rate"]) < _tuning.mitigation_ceiling,
+		true,
+		"and the mitigation never reaches the ceiling at any finite armour"
 	)
 
 
-## Each rung of `DEFENSE_PHYSICAL` costs exactly `meridian_armour_step *
-## state_rank` of armour PER POINT it added, until the floor takes the question away.
+## Each rung of `DEFENSE_PHYSICAL` moves the armour MAGNITUDE by exactly
+## `meridian_armour_step * state_rank` per point it added, and costs penetration through
+## ADR 0200's ratio rather than by a subtraction.
 ##
-## ## The step is measured on PENETRATION, and each rung against the rung below it
+## ## The old test measured the wrong thing for the right reason, and what that was
 ##
-## Three things were wrong with the original form, and the duplicate-tissue fix made all
-## three visible at once.
-##
-## (1) It differenced `total`, which is `penetration x` the struck huyệt's multiplier.
-## Every `_walled()` builds a FRESH actor, and a fresh `named` aim resolves whichever
-## huyệt the body happens to offer first, so differencing two `total` rows differences
-## two multipliers as well as the armour. (2) It differenced every row against the
-## `armour 0.0` row, which only worked while that origin was floored and could therefore
-## never be a measurement row — so the baseline was a floor-clipped number and the first
-## unfloored row was asked for a full step it had only half taken. (3) It took the
-## expected step from `defence_of(<an actor with no wall>)`, which is brief 0a's trap in
-## its purest form: `_armour` authors a FLAT modifier and a body-path defender carries a
-## `BodyProvider`, so `ActorStats` composes the provider's baseline with the modifier
-## stack (ADR 0026) and the derived stat does NOT move by the authored amount. A test
-## cannot assert "one point of defence" against a number that is not one point of
-## defence.
+## The original loop differenced `total`, which is `penetration x` the struck huyệt's
+## multiplier. Every `_walled()` builds a FRESH actor, and a fresh `named` aim resolves
+## whichever huyệt the body happens to offer first, so differencing two `total` rows
+## differences two multipliers as well as the armour. It also differenced every row against
+## the `armour 0.0` row, which could therefore never itself be a measurement row, and it
+## took the expected step from `defence_of(<an actor with no wall>)`, which is brief 0a's
+## trap in its purest form: `_armour` authors a FLAT modifier and a body-path defender
+## carries a `BodyProvider`, so `ActorStats` composes the provider's baseline with the
+## modifier stack (ADR 0026) and the derived stat does NOT move by the authored amount.
 ##
 ## None of the three was observable while the bug stood, because the doubled tissue put
 ## EVERY row of `0..8` inside the floor. The assertion body was DEAD CODE: the suite
@@ -282,52 +333,136 @@ func test_more_defence_hurts_monotonically_and_saturates_rather_than_vanishing()
 ## floor's grip, index `1` came out of the floored regime, and the latent fault surfaced
 ## as a failure rather than as a regression in the mechanism.
 ##
-## So the loop carries its own predecessor, measures PENETRATION (upstream of every
-## multiplier, so it is the ladder and only the ladder), differences the PUBLISHED
-## `defense_physical` between the rungs rather than assuming the authored amount, and
-## reads the regime off the rows instead of assuming it. `origin` is asserted against the
-## regime it is in. `armour_step` and `channel_rank` are read off the row under test, so
-## a rebalance of the `.tres` moves this with it.
-func test_each_point_of_defence_is_worth_one_armour_step_until_the_floor_binds() -> void:
+## ## ADR 0200: the LINEAR exchange rate is GONE, and the property is RESTATED, not dropped
+##
+## ## What the old assertion claimed, and why it cannot be kept
+##
+## It asserted `previous_penetration - penetration == step`, where `step` is
+## `DEFENSE_PHYSICAL_delta x meridian_armour_step x state_rank`. That is a claim of a
+## CONSTANT exchange rate: one point of armour costs one point of penetration, forever.
+## It was true of ADR 0070's subtraction (`gross - D`) and is **not a property any ratio
+## has**. Measured, the same loop now answers `1.4232`, `1.4210`, `1.4188` … — a rate
+## that is neither constant nor equal to the step, and one that SHRINKS as the defence
+## deepens. Keeping the assertion would mean pinning a number the formula does not
+## produce; loosening it to a range would mean asserting nothing.
+##
+## ## What replaces it: the LADDER and the CONVERGENCE, which ARE invariants
+##
+## Two properties survive a ratio intact, and both are stronger than the linear one:
+##
+## 1. **The ladder is exact.** Each point of `DEFENSE_PHYSICAL` is worth exactly
+##    `meridian_armour_step x state_rank` of `D`, measured on the PUBLISHED
+##    `defense_physical` and not on the authored amount, so the FLAT/provider composition
+##    cannot make the expectation wrong for the wrong reason. This is the lane
+##    `test_body_damage.gd` prices and it is unchanged by ADR 0200. It is a MARGINAL, so it
+##    is differenced against the origin's own measured `D` rather than against the tissue
+##    alone — see the note on `baseline` in the body for why that distinction is `14.0`.
+## 2. **The response converges and never vanishes.** The penetration a rung costs SHRINKS
+##    strictly with depth, which is the whole reason `mitigation_ceiling` is a multiplier
+##    rather than a clamp: the ladder does not go dead. And it never reaches zero at a
+##    finite `D`, so every point of defence still buys something.
+##
+## The third property — never below the floor — is what `MIN_PENETRATION_RATIO` is for and
+## is asserted by the two tests above; this one measures the ladder while the ratio is
+## still in charge, and `costs` says how many rungs it actually measured so a floor that
+## bound early cannot quietly reduce the claim to one row.
+func test_each_point_of_defence_moves_the_armour_magnitude_and_converges_on_the_curve() -> void:
 	var attacker := _attacker()
 	var state := MeridianState.OPEN
 	var origin := _parts(attacker, _walled(0.0, state), BodyLocation.MODE_NAMED, &"lung")
 	if float(origin["penetration"]) > float(origin["floor"]):
 		assert_almost_eq(
 			float(origin["penetration"]),
-			maxf(0.0, float(origin["gross"]) - float(origin["resistance"])),
-			"armour 0.0: unfloored, so the raw subtraction is what answers"
+			_expected_penetration(origin),
+			"armour 0.0: unfloored, so ADR 0200's ratio is what answers"
 		)
 	var previous_penetration := float(origin["penetration"])
 	var previous_total := float(origin["total"])
-	var previous_defence := float(origin["defense_physical"])
+	# ## ADR 0200: the baseline is a MEASUREMENT off the origin row, not the tissue term
+	#
+	# The assertion is about the ladder's MARGINAL, and a marginal is a difference — so it
+	# needs a baseline, and the baseline has to be the mechanism's OWN zero-armour row.
+	# `_walled(0.0, OPEN)` authors NO extra `DEFENSE_PHYSICAL`, which is not the same thing
+	# as no armour: `parts["defense_physical"]` reads `40.0`, because
+	# `BodyProvider.contribute` adds `(bone * 1.5 + vitality * 1.0) * shaped` on top of core's
+	# `physique * 1.5 = 15.0` (ADR 0026 makes a provider's contribution the BASELINE for
+	# whatever id it emits). So at the origin the ladder term is `40.0 * 0.35 * 1.0 = 14.0`
+	# and `D` is `14.0 + 2.75 = 16.75`.
+	#
+	# This loop used to subtract the TISSUE alone, which stranded that whole `14.0`: every
+	# row measured `14.0 + 0.7 * index` against an expectation of `0.7 * index` and failed by
+	# a constant. Neither side of that was a formula bug — the RATE was exactly right
+	# (`0.7 = 2 x 0.35 x 1` for two points of `DEFENSE_PHYSICAL`) and the constant is a real
+	# term of ADR 0070's formula, read correctly and priced once, which
+	# `test_body_damage.gd`'s `resistance - expected_armour` lane already asserts.
+	#
+	# So the baseline moves to the origin's own `D`. It is READ rather than derived, and
+	# `_tissue_expectation` stays in the loop as the independent cross-check it was written
+	# to be: it proves the baseline really is `tissue + the zero-rung ladder term`, so a
+	# future change to either cannot quietly move it without failing HERE.
+	var baseline := float(origin["resistance"])
+	var previous_cost := INF
+	var costs := 0
 	for index in range(1, 9):
-		var parts := _parts(
-			attacker, _walled(float(index), state), BodyLocation.MODE_NAMED, &"lung"
-		)
+		var target := _walled(float(index), state)
+		var parts := _parts(attacker, target, BodyLocation.MODE_NAMED, &"lung")
 		var penetration := float(parts["penetration"])
+		# (1) THE LADDER, exact. `armour_step` and `channel_rank` are read off the row under
+		# test and the delta is the PUBLISHED `defense_physical`, so a rebalance of the
+		# `.tres` moves this with it and `_armour`'s FLAT/provider composition cannot make
+		# the expectation wrong for the wrong reason.
+		var step := (
+			(float(parts["defense_physical"]) - float(origin["defense_physical"]))
+			* float(parts["armour_step"])
+			* float(parts["channel_rank"])
+		)
+		# `step` is ALREADY the whole ladder for this row: `defense_physical` above is
+		# measured from the ORIGIN row, so it carries every rung, not one. (Measured on the
+		# published stat, the ladder runs at `2 * 0.35 = 0.7` per authored point — a FLAT
+		# on `DEFENSE_PHYSICAL` moves the DERIVED read by twice its face value through the
+		# body provider's composition, which is exactly why this lane is measured on
+		# `parts["defense_physical"]` rather than on the number `_armour` was handed.)
+		assert_almost_eq(
+			float(parts["resistance"]) - baseline,
+			step,
+			"%d points of DEFENSE_PHYSICAL are worth exactly %f of armour magnitude" % [index, step]
+		)
+		# The independent cross-check, and the reason `baseline` is measured rather than
+		# re-derived: it holds the baseline to `tissue + the zero-rung ladder term` while the
+		# assertion above holds it to the origin's own row.
+		assert_almost_eq(
+			baseline,
+			(
+				_tissue_expectation(target)
+				+ (
+					float(origin["defense_physical"])
+					* float(origin["armour_step"])
+					* float(origin["channel_rank"])
+				)
+			),
+			"and the origin's armour really is the tissue plus the zero-rung ladder term"
+		)
 		if penetration > float(parts["floor"]):
-			# The armour term is `DEFENSE_PHYSICAL x meridian_armour_step x
-			# state_rank`, so the penetration drops by whatever ARMOUR the extra defence
-			# bought. The expectation therefore differences the PUBLISHED
-			# `defense_physical` between the rung below and this one and applies the
-			# shipped step to THAT. `_armour` authors a FLAT `index` and a body-path
-			# defender carries a `BodyProvider`, so `ActorStats` composes the provider's
-			# baseline with the modifier stack (ADR 0026) and the derived stat does not
-			# move by the authored amount — assuming it did was the original fault.
-			# `armour_step` and `channel_rank` are read off the row under test, so a
-			# rebalance of the `.tres` moves this with it.
-			var step := (
-				(float(parts["defense_physical"]) - previous_defence)
-				* float(parts["armour_step"])
-				* float(parts["channel_rank"])
+			# (2a) The response is still STRICTLY negative: a rung of defence costs penetration.
+			var cost := previous_penetration - penetration
+			assert_eq(
+				cost > 0.0,
+				true,
+				"%d points of DEFENSE_PHYSICAL costs penetration (%.9f)" % [index, cost]
 			)
-			assert_almost_eq(
-				previous_penetration - penetration,
-				step,
-				"%d points of DEFENSE_PHYSICAL removes exactly %f of penetration" % [index, step],
-				0.001
+			# (2b) And it SHRINKS with depth. This is the assertion the deleted cap made
+			# impossible: `d(pen)/dD = -gross * ceiling * K / (K + D)^2`, so the ladder gets
+			# progressively less effective WITHOUT ever reaching a dead stat.
+			assert_eq(
+				cost < previous_cost,
+				true,
+				(
+					"%d points cost less penetration than the rung below (%.9f < %.9f)"
+					% [index, cost, previous_cost]
+				)
 			)
+			previous_cost = cost
+			costs += 1
 		assert_eq(
 			float(parts["total"]) <= previous_total,
 			true,
@@ -335,7 +470,17 @@ func test_each_point_of_defence_is_worth_one_armour_step_until_the_floor_binds()
 		)
 		previous_penetration = penetration
 		previous_total = float(parts["total"])
-		previous_defence = float(parts["defense_physical"])
+	assert_eq(
+		costs >= 6,
+		true,
+		(
+			(
+				"and the ladder stayed in charge of the whole loop (%d rungs measured); a body that "
+				% costs
+			)
+			+ "floored at the first rung would have measured the floor, not the ladder"
+		)
+	)
 
 
 # --- helpers -------------------------------------------------------------------

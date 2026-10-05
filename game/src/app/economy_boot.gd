@@ -84,6 +84,7 @@ static func install(actor: Actor) -> Dictionary:
 			"resolver": false,
 			"minter": false,
 			"granter": false,
+			"favour": false,
 			"shops": false,
 			"standing": false,
 			"reason": "no_actor",
@@ -99,6 +100,7 @@ static func install(actor: Actor) -> Dictionary:
 	var resolver: bool = _install_resolver()
 	var minter: bool = _install_minter()
 	var granter: bool = _install_granter()
+	var favour: bool = _install_favour()
 	# **Content and the subscriber come last**, and both are `app/`-only for the same
 	# reason the resolver is here: neither `market` nor `social` may name the other, and
 	# `app/` is the one layer allowed to know both. `ShopCatalog` reads the five authored
@@ -110,19 +112,20 @@ static func install(actor: Actor) -> Dictionary:
 	var shops: bool = _install_shops()
 	var standing: bool = _install_standing(actor)
 	return {
-		"ok": store and resolver and minter and granter and shops and standing,
+		"ok": store and resolver and minter and granter and favour and shops and standing,
 		"bound": _BOUND,
 		"attached": ["economy", "market", "holdings", "custody"],
 		"store": store,
 		"resolver": resolver,
 		"minter": minter,
 		"granter": granter,
+		"favour": favour,
 		"shops": shops,
 		"standing": standing,
 		"reason":
 		(
 			""
-			if (store and resolver and minter and granter and shops and standing)
+			if (store and resolver and minter and granter and favour and shops and standing)
 			else "seam_not_installed"
 		),
 	}
@@ -253,6 +256,41 @@ static func _install_minter() -> bool:
 static func _install_granter() -> bool:
 	ForageApi.set_granter(ForageGranary.deliver)
 	return ForageApi.has_granter()
+
+
+## The reputation reader a shop's price answers to (ADR 0250) — the seventh seam, and the
+## first one that binds a module to something a *price* rather than to a ledger.
+##
+## ## Why this is here and not inside `market`
+##
+## `market` declares `["contracts", "core", "economy", "items"]` and no `social`, so naming
+## `SocialApi` from a shop's pricing would be an undeclared dependency the boundary checker
+## fails on. `app/` is the only layer allowed to know both, which is the same reason
+## `_install_standing` exists for the auction bus.
+##
+## ## The reader is the module's OWN published number, not a copy
+##
+## `SocialApi.reputation` reads `actor.stats.derived(SocialStats.REPUTATION)` — the mean of
+## the `standing` the social ledger already holds (ADR 0091). Passing the bound static
+## function hands the module the one number and keeps no second copy of it, exactly as
+## `OwnerResolver.resolve` is shared rather than duplicated into `holdings` and `custody`.
+##
+## ## And it is the AGGREGATED axis, not the merchant's own bond
+##
+## A counter's regard for one buyer is `bond_entry(buyer, merchant)["standing"]`, which is
+## 0 for a stranger and would make *every* first trade free. `reputation` is an authored
+## standing in `[-1, 1]` across the bonds the buyer already has, so a stranger reads 0 and
+## pays the shelf price — the neutral default — while someone the world thinks well of is
+## treated better *by this merchant and every other*, which is what reputation is.
+##
+## ## A bare static function, not a lambda
+##
+## Same reason as every other seam in this file: a typed lambda whose body calls another
+## script's static function killed the process with an access violation on the shell's first
+## frame, with nothing in the log.
+static func _install_favour() -> bool:
+	MarketFavour.set_reputation_reader(SocialApi.reputation)
+	return MarketFavour.has_reputation_reader()
 
 
 ## Read the authored shop content — the fifth seam, and the only one that is CONTENT.

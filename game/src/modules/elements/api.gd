@@ -33,7 +33,7 @@ static func default_rules() -> ElementRules:
 ## the difference between "elements matter at every realm" and "elements stopped
 ## mattering somewhere past Foundation Establishment".
 ##
-## ## `element_defense_<e>` deliberately gets NO modifier, STILL
+## ## `element_defense_<e>` now rides the ladder TOO, and that is ADR 0200 landing
 ##
 ## ADR 0069 gave this channel its realm-flatness because it was a RATE: a rate must never
 ## track a magnitude (ADR 0050), and scaling a defender's authored mitigation by 551.46
@@ -41,13 +41,20 @@ static func default_rules() -> ElementRules:
 ## with an unbounded defense MAGNITUDE — which dissolves the original objection rather than
 ## confirming it, since a magnitude is exactly what the ladder SHOULD scale.
 ##
-## It is nonetheless still realm-flat, because ADR 0200 lists moving the resistance-like
-## halves onto `RealmScaling.SCALED_STATS` as a separate open consequence and the
-## mitigation formula that replaces `RESIST_CAP` has not landed. Recorded here as a KNOWN
-## STALE RULE rather than left inherited: whoever implements the formula owns this line,
-## and `tests/modules/elements/test_element_stat_publication.gd::
-## test_element_defense_carries_no_realm_multiplier_while_power_does` pins the present
-## behavior so the move cannot happen silently.
+## It was left realm-flat anyway, as a KNOWN STALE RULE, because the mitigation formula
+## that replaces `RESIST_CAP` had not landed yet. It has. And leaving this half off the
+## ladder while the offense half rides it is the exact asymmetry ADR 0200 exists to
+## remove: `element_power_<e>` grew `1.00 -> 551.46` and `element_defense_<e>` did not,
+## so `D/(K+D)` fell toward `0.26` and the elemental fraction of a qi hit DRIFTED with the
+## realm. `test_cross_mechanism_balance.gd` measured it — `0.665043 -> 0.694266 ->
+## 0.704604 -> 0.705803`, a spread of `0.04076025` against a claimed invariance of
+## `0.000001`, and a `FINDING` verdict printed by the suite itself. Both halves now ride
+## the same `realm.power`, the ratio is a ratio of two realm-scaled magnitudes, and the
+## fraction is invariant to float precision.
+##
+## `RealmScaling.SCALED_STATS` is seven STATIC ids and these ids are built from the
+## element id at read time, so both halves stay out of that list for the reason
+## `element_power_<e>` always was — see [method apply_realm_modifiers].
 ##
 ## ## NOT IDEMPOTENT, and that is the ONE part worth being careful about
 ##
@@ -105,7 +112,8 @@ static func _has_provider(actor: Actor) -> bool:
 	return false
 
 
-## Write (or rewrite) the realm MULT on every `element_power_<e>` this rules set knows.
+## Write (or rewrite) the realm MULT on every `element_power_<e>` AND every
+## `element_defense_<e>` this rules set knows.
 ##
 ## Separate from [method attach] for two reasons. An actor's element set can change -- a
 ## cross-training unlock, a new tier's element arriving with a breakthrough -- and the
@@ -113,6 +121,12 @@ static func _has_provider(actor: Actor) -> bool:
 ## And it is the cheap, safe way to pick up a new realm after a breakthrough without a
 ## second `attach`, which is exactly what `RealmScaling.apply` does for the seven static
 ## ids.
+##
+## BOTH halves are written from ONE `realm.power`, which is the whole point: ADR 0200's
+## ratio is `m = mitigation_ceiling * D / (K + D)` with `K = defense_divisor_k *
+## element_power_<e>` riding the ATTACKER and `D = element_defense_<e> / resist_divisor`
+## riding the DEFENDER. Both terms have to move together or the mitigated FRACTION moves
+## with the realm, which is what `test_cross_mechanism_balance.gd` was measuring.
 static func apply_realm_modifiers(actor: Actor, rules: ElementRules = null) -> void:
 	if actor == null or actor.stats == null:
 		return
@@ -130,14 +144,53 @@ static func apply_realm_modifiers(actor: Actor, rules: ElementRules = null) -> v
 				ElementStats.power_id(element), Stat.Op.MULT, realm.power, RealmScaling.SOURCE
 			)
 		)
+		actor.stats.add_modifier(
+			StatModifier.new(
+				ElementStats.defense_id(element), Stat.Op.MULT, realm.power, RealmScaling.SOURCE
+			)
+		)
+	# ADR 0215. The per-element CRIT pair rides the SAME ladder as the power/defense
+	# pair, for the same reason and because a contest is a ratio of two numbers that must
+	# be the same KIND of number. Scaling only the offence half would make a deep-realm
+	# attacker certain to crit — which is exactly the saturation the ADR exists to
+	# remove, arrived at from the other direction.
+	for element in _owned_crit_elements(resolved):
+		actor.stats.add_modifier(
+			StatModifier.new(
+				ElementStats.crit_id(element), Stat.Op.MULT, realm.power, RealmScaling.SOURCE
+			)
+		)
+		actor.stats.add_modifier(
+			StatModifier.new(
+				ElementStats.crit_resist_id(element), Stat.Op.MULT, realm.power, RealmScaling.SOURCE
+			)
+		)
 
 
-## Take back only this module's element-power realm modifiers, and nothing else.
+## Every element id a crit channel is published for, plus the omni one when the rules
+## know it. The omni channel is not in `_rules.ids()`, so writing a modifier for it is
+## what stops a ladder step from leaving one actor's `element_crit` unscaled while every
+## other crit channel moved — the halves of ONE contest disagreeing by a factor of 551.
+static func _owned_crit_elements(resolved: ElementRules) -> Array[StringName]:
+	var out: Array[StringName] = []
+	for element in resolved.ids():
+		out.append(element)
+	if not out.has(ElementStats.OMNI):
+		out.append(ElementStats.OMNI)
+	return out
+
+
+## Take back only this module's element-power and element-defense realm modifiers, and
+## nothing else.
 ##
 ## Walks the stack itself rather than asking core for a prefix match, because core's verb
 ## is exact-source by design and `RealmScaling.SOURCE` is core's tag -- clearing it
 ## wholesale would take the seven scaled ids with it, which is a different module's
 ## business. A `(source, stat)` pair is the only thing removed.
+##
+## Both per-element ids are on the owned list, because ADR 0200 put them on the same
+## ladder. Leaving the defense half out would leave a stale `MULT` behind on every
+## breakthrough and the two halves would drift apart again by exactly one realm step.
 static func strip_realm_modifiers(actor: Actor, rules: ElementRules = null) -> void:
 	if actor == null or actor.stats == null:
 		return
@@ -145,6 +198,13 @@ static func strip_realm_modifiers(actor: Actor, rules: ElementRules = null) -> v
 	var owned: Array[StringName] = []
 	for element in resolved.ids():
 		owned.append(ElementStats.power_id(element))
+		owned.append(ElementStats.defense_id(element))
+	# ADR 0215: the crit pair is on the owned list for the same reason the other two
+	# halves are — leaving it out would leave a stale `MULT` behind on every breakthrough
+	# and the halves of the crit contest would drift apart again by one realm step.
+	for element in _owned_crit_elements(resolved):
+		owned.append(ElementStats.crit_id(element))
+		owned.append(ElementStats.crit_resist_id(element))
 	var kept: Array[StatModifier] = []
 	for modifier in actor.stats._modifiers:
 		var ours := modifier.source == RealmScaling.SOURCE and owned.has(modifier.stat)

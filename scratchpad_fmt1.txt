@@ -1,0 +1,13 @@
+93 files left unchanged
+reformatted D:\Works\source\chaos-world\game\src\app\domain_boot.gd
+reformatted D:\Works\source\chaos-world\game\src\app\kinship_app.gd
+reformatted D:\Works\source\chaos-world\game\src\app\world_pulse.gd
+reformatted D:\Works\source\chaos-world\game\src\core\world_clock.gd
+reformatted D:\Works\source\chaos-world\game\src\modules\status\mind_status_def.gd
+reformatted D:\Works\source\chaos-world\game\tests\app\test_conception_production_path.gd
+reformatted D:\Works\source\chaos-world\game\tests\modules\market\test_market_favour.gd
+reformatted D:\Works\source\chaos-world\game\tests\modules\status\test_mind_status_no_lock.gd
+reformatted D:\Works\source\chaos-world\game\tests\ui\test_clan_screen_press.gd
+9 files reformatted, 1273 files left unchanged.
+$ D:\Works\source\chaos-world\.venv\Scripts\ruff.EXE format D:\Works\source\chaos-world\tools
+$ D:\Works\source\chaos-world\.venv\Scripts\gdformat.EXE D:\Works\source\chaos-world\game

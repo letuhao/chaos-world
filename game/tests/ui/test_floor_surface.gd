@@ -272,7 +272,10 @@ func test_a_floor_with_no_location_names_no_location_rather_than_listing_everywh
 	assert_eq(
 		(screen.summary()["drop_ids"] as Array).size(),
 		0,
-		"and a drop lying in a DIFFERENT room is not listed: a defaulted location would be a floor that is everywhere"
+		(
+			"and a drop lying in a DIFFERENT room is not listed: "
+			+ "a defaulted location would be a floor that is everywhere"
+		)
 	)
 	var taken := screen.act_take(_only_drop_id_at(SHOP_LOCATION))
 	assert_eq(String(taken["reason"]), FloorScreen.NO_LOCATION, "and the refusal says so")

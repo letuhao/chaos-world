@@ -1,0 +1,9 @@
+SCRIPT ERROR: Parse Error: Identifier "_world_clock" not declared in the current scope.
+SCRIPT ERROR: Parse Error: Identifier "_world_clock" not declared in the current scope.
+SCRIPT ERROR: Parse Error: Function "_publish_world_clock()" not found in base self.
+SCRIPT ERROR: Parse Error: Identifier "_world_clock" not declared in the current scope.
+SCRIPT ERROR: Parse Error: Identifier "_world_clock" not declared in the current scope.
+SCRIPT ERROR: Parse Error: Function "_publish_world_clock()" not found in base self.
+warn   run aborted before printing a total; partial tally: Results: 38 passed, 0 failed (1 suite(s))
+warn 2 script(s) failed to LOAD; the errors above are mostly their dependants:
+warn SCRIPT ERROR: Parse Error: Function "_publish_world_clock()" not found in base self.

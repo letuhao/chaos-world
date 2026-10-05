@@ -22,6 +22,9 @@ closed_paths = Array[StringName]([&"mind_cultivation"])
 ; the fallback body from being the best body in the game.
 realm_ceiling = 8
 lifespan = 36500.0
+# The plain frame: nothing about its anatomy favours a path, and nothing about its
+# childhood is remarkable either. ADR 0258 §2.
+starting_age_years = 2.0
 base_attributes = {"physique": 1.0, "spirit": 1.0, "aptitude": 1.0, "comprehension": 1.0, "agility": 1.0, "will": 1.0, "fortune": 1.0}
 percent_modifiers = {"cultivation_rate": 0.02, "breakthrough_chance": 0.0}
 affinities = {"metal": 2.0, "wood": 2.0, "water": 2.0, "fire": 2.0, "earth": 2.0}

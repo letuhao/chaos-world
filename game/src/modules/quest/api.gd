@@ -30,6 +30,17 @@ extends RefCounted
 ## nothing (ADR 0061's precedent: a reward is decided in one place, and that
 ## place refuses the second decision).
 ##
+## ## It ANNOUNCES, on the one bus (ADR 0266)
+##
+## Every verb on this facade that changes a ledger publishes on `QuestEvents`:
+## acceptance and completion from the one place each is decided, and every refusal
+## from `_refuse`. Primitives only — ids, not `QuestDef` and not `Actor` — because
+## ADR 0114's sink payload and `DamageProposal.is_primitive_effect` both refuse to
+## carry content past a contract boundary. Before this bus existed the ONLY way a
+## registrable System could learn a quest finished was to poll `summary()`, which
+## fires the reward on screen-open rather than on completion and puts game logic in
+## the UI refresh path.
+##
 ## ## Gates are DATA (ADR 0065/0066)
 ##
 ## A requirement is a dictionary read through `DestinyApi.gate` — the six-verb
@@ -139,21 +150,23 @@ static func offered(actor: Actor) -> Array[Dictionary]:
 static func accept(actor: Actor, quest_id: StringName, source: String = "") -> Dictionary:
 	var def := QuestCatalog.instance().definition(quest_id)
 	if def == null:
-		return _refuse("unknown_quest")
+		return _refuse(actor, quest_id, "unknown_quest")
 	var ledger := _ledger(actor)
 	if QuestState.is_completed(ledger, quest_id):
-		return _refuse("already_completed")
+		return _refuse(actor, quest_id, "already_completed")
 	if QuestState.is_tracked(ledger, quest_id):
-		return _refuse("already_active")
+		return _refuse(actor, quest_id, "already_active")
 	var verdict := DestinyApi.gate(actor, def.requirement)
 	if not bool(verdict.get("ok", false)):
-		return _refuse("gate_unmet", verdict)
+		return _refuse(actor, quest_id, "gate_unmet", verdict)
 	if not QuestState.begin(ledger, quest_id, 0):
 		# `begin` is the once-guard's own authority. Reaching here would mean two
 		# readers of the same ledger disagreed, so the write is refused rather
 		# than forced.
-		return _refuse("already_active")
+		return _refuse(actor, quest_id, "already_active")
 	_persist(actor, ledger)
+	if actor != null:
+		QuestEvents.shared().quest_accepted.emit(String(actor.id), quest_id, source)
 	var out := {"ok": true, "reason": "", "unmet": []}
 	out["quest_id"] = String(quest_id)
 	out["source"] = source
@@ -240,15 +253,15 @@ static func advance(actor: Actor, source: String = "") -> Dictionary:
 static func complete(actor: Actor, quest_id: StringName) -> Dictionary:
 	var def := QuestCatalog.instance().definition(quest_id)
 	if def == null:
-		return _refuse("unknown_quest")
+		return _refuse(actor, quest_id, "unknown_quest")
 	var ledger := _ledger(actor)
 	if QuestState.is_completed(ledger, quest_id):
-		return _refuse("already_completed")
+		return _refuse(actor, quest_id, "already_completed")
 	if not QuestState.is_tracked(ledger, quest_id):
-		return _refuse("not_active")
+		return _refuse(actor, quest_id, "not_active")
 	var outstanding := _outstanding_steps(actor, def)
 	if not outstanding.is_empty():
-		return _refuse("steps_unmet", {"unmet": outstanding})
+		return _refuse(actor, quest_id, "steps_unmet", {"unmet": outstanding})
 	return _complete(actor, ledger, quest_id, def, "")
 
 
@@ -419,6 +432,11 @@ static func _required_steps_met(actor: Actor, def: QuestDef) -> bool:
 ## the quest is already completed, and this function pays nothing on that path.
 ## Ordering matters — the guard runs BEFORE any grant is paid, so a repeat call
 ## cannot pay even the grants that have no once-guard of their own.
+##
+## This is also the ONE place a completion is ANNOUNCED (ADR 0266), for the same
+## reason it is the one place it is decided: a second call site emitting would be a
+## second code path that could drift, and the guard above means the announcement
+## fires exactly when — and exactly once when — the payment happened.
 static func _complete(
 	actor: Actor, ledger: Dictionary, quest_id: StringName, def: QuestDef, source: String
 ) -> Dictionary:
@@ -429,6 +447,8 @@ static func _complete(
 	# leaves an audit trail naming the moment, not just the quest.
 	var payout := QuestGrants.pay(actor, def, quest_id)
 	_persist(actor, ledger)
+	if actor != null:
+		QuestEvents.shared().quest_completed.emit(String(actor.id), quest_id, source)
 	return {
 		"ok": true,
 		"reason": "",
@@ -455,7 +475,20 @@ static func _offered_ids(actor: Actor) -> Array[String]:
 ## `unmet` — a caller reading the documented reason got a word from another
 ## module's vocabulary instead. Detail (`unmet`) still crosses untouched, which
 ## is the whole point of passing the verdict through.
-static func _refuse(reason: String, extra: Dictionary = {}) -> Dictionary:
+##
+## ## It ANNOUNCES, and it is the ONLY place that can (ADR 0266)
+##
+## Every refusal on this facade is built here rather than at each call site, so the refusal
+## ANSWER and the refusal ANNOUNCEMENT cannot be two code paths that drift — the same argument
+## `ConflictApi._refuse` and `HoldingsApi._refuse` make for their own buses (DEF-0221). `actor`
+## and `quest_id` are parameters rather than read from module state precisely because the
+## identity a refusal announces is part of the refusal. A null actor announces nothing: there
+## was no owner to refuse anything, which is the same rule `BeatSink`'s null `context` follows.
+static func _refuse(
+	actor: Actor, quest_id: StringName, reason: String, extra: Dictionary = {}
+) -> Dictionary:
+	if actor != null:
+		QuestEvents.shared().quest_refused.emit(String(actor.id), quest_id, reason)
 	var out := {"ok": false, "reason": reason, "unmet": []}
 	for key in extra.keys():
 		var name := String(key)

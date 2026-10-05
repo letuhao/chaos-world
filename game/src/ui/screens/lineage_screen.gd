@@ -109,6 +109,13 @@ func _summary() -> Dictionary:
 	_bind_nodes()
 	if _actor == null:
 		return {}
+	# Fill BEFORE reporting. The row pools exist as soon as the scene is instantiated, but a
+	# headless caller has no live `VBoxContainer` for `_grow` to add into, so `_fill` never
+	# runs and every row is still blank. Reporting without filling therefore answers
+	# "this screen carries nothing" for a hero who carries a race and two lineages — and a
+	# caller cannot tell that apart from a genuinely empty hero. `_fill` is idempotent, so
+	# doing it here costs one extra pass on a mounted screen and fixes the headless one.
+	_fill()
 	var blood := _blood_summaries()
 	var body := _body_summaries()
 	var house := _house_summaries()
@@ -270,11 +277,15 @@ func _rows_in(box: VBoxContainer, scene_path: String, prefix: String, extra: int
 			continue
 		if row != null and row.has_method(&"show_house"):
 			out.append(row)
-	for index in range(extra):
-		var row := load(scene_path).instantiate() as Control
-		row.name = "%s%d" % [prefix, out.size()]
-		box.add_child(row)
-		out.append(row)
+	# Grow to `extra`, NOT by `extra`. The loop used to append `extra` rows on top of the
+	# ones the scene already declares, so a scene shipping `Blood0`/`Blood1` ended up with
+	# ten pooled rows where eight were asked for, and `_grow` would have added eight more.
+	# Every spare row is a live `Control` in the tree, so the waste is not free.
+	while out.size() < extra:
+		var grown := load(scene_path).instantiate() as Control
+		grown.name = "%s%d" % [prefix, out.size()]
+		box.add_child(grown)
+		out.append(grown)
 	return out
 
 
@@ -401,6 +412,8 @@ func _blood_summaries() -> Array:
 	return out
 
 
+## The one house row, nested under `house`. A hero who belongs to no house is the NORMAL
+## state and still renders a row saying so (ADR 0064), so this is one row even when empty.
 func _house_summaries() -> Array:
 	var out: Array = []
 	for row in _house_rows:

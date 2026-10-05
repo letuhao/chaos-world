@@ -1,0 +1,204 @@
+SCRIPT ERROR: Invalid access to property or key 'vitality' on a base object of type 'Dictionary'.
+   at: test_the_players_own_stats_decide_the_exchange_not_a_caller_constant (res://tests/modules/combat/test_combat_exchange.gd:208)
+   GDScript backtrace (most recent call first):
+       [0] test_the_players_own_stats_decide_the_exchange_not_a_caller_constant (res://tests/modules/combat/test_combat_exchange.gd:208)
+       [1] _initialize (res://tests/run_tests.gd:118)
+ERROR: res://tests/modules/combat/test_combat_exchange.gd :: the shallowest authored band is winnable by the same bare actor: expected boss_defeated, got player_lost
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/combat/test_combat_exchange.gd :: and nothing was lost doing it: expected 0, got 1
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/combat/test_combat_facts.gd :: exactly one file writes 'duels_won': expected 1, got 2
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/combat/test_combat_facts.gd :: exactly one file writes 'third_man_spared': expected 1, got 2
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+SCRIPT ERROR: Parse Error: Static function "shared()" not found in base "NpcEvents".
+   at: GDScript::reload (res://src/modules/social/api.gd:142)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/modules/sect/api.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/app/actor_factory.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://tests/modules/combat/test_combat_spare_wiring.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+ERROR: Failed to load script "res://tests/modules/combat/test_combat_spare_wiring.gd" with error "Compilation failed".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+WARNING: PlayerAdapter.interact: the mercy press was refused (already_spared)
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] interact (res://src/app/player_adapter.gd:174)
+       [1] test_the_press_is_refused_on_a_corpse_and_on_an_already_spared_opponent (res://tests/modules/combat/test_combat_spare_wiring.gd:174)
+       [2] _initialize (res://tests/run_tests.gd:118)
+ERROR: res://tests/modules/combat/test_combat_spare_wiring.gd :: a body already down is not somebody to be merciful towards: expected 1, got 2
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/combat_engine/test_body_damage_floor.gd :: ratio inf: so the raw subtraction is what answers: expected 1983.25, got 1965.28497409326
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/combat_engine/test_body_damage_floor.gd :: ratio nan: so the raw subtraction is what answers: expected 1983.25, got 1965.28497409326
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/combat_engine/test_body_damage_floor.gd :: armour 0.0: unfloored, so the raw subtraction is what answers: expected 1983.25, got 1965.28497409326
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/combat_engine/test_body_damage_floor.gd :: 1 points of DEFENSE_PHYSICAL removes exactly 0.700000 of penetration: expected 0.7, got 1.42318325997644
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/combat_engine/test_body_damage_floor.gd :: 2 points of DEFENSE_PHYSICAL removes exactly 0.700000 of penetration: expected 0.7, got 1.4210131825771
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/combat_engine/test_body_damage_floor.gd :: 3 points of DEFENSE_PHYSICAL removes exactly 0.700000 of penetration: expected 0.7, got 1.41884806481517
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/combat_engine/test_body_damage_floor.gd :: 4 points of DEFENSE_PHYSICAL removes exactly 0.700000 of penetration: expected 0.7, got 1.41668789158848
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/combat_engine/test_body_damage_floor.gd :: 5 points of DEFENSE_PHYSICAL removes exactly 0.700000 of penetration: expected 0.7, got 1.41453264785241
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/combat_engine/test_body_damage_floor.gd :: 6 points of DEFENSE_PHYSICAL removes exactly 0.700000 of penetration: expected 0.7, got 1.41238231861939
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/combat_engine/test_body_damage_floor.gd :: 7 points of DEFENSE_PHYSICAL removes exactly 0.700000 of penetration: expected 0.7, got 1.41023688895939
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/combat_engine/test_body_damage_floor.gd :: 8 points of DEFENSE_PHYSICAL removes exactly 0.700000 of penetration: expected 0.7, got 1.40809634399875
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/combat_engine/test_body_damage_floor.gd :: armour 0.0: penetration IS maxf(gross - resistance, gross x ratio), never anything else: expected 1983.25, got 1965.28497409326
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/combat_engine/test_body_damage_floor.gd :: armour 10.0: penetration IS maxf(gross - resistance, gross x ratio), never anything else: expected 1976.25, got 1951.150202977
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/combat_engine/test_body_damage_floor.gd :: armour 100.0: penetration IS maxf(gross - resistance, gross x ratio), never anything else: expected 1913.25, got 1832.96174309602
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/combat_engine/test_body_damage_floor.gd :: armour 1000.0: penetration IS maxf(gross - resistance, gross x ratio), never anything else: expected 1283.25, got 1157.67743930725
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/combat_engine/test_body_damage_floor.gd :: armour inf: penetration IS maxf(gross - resistance, gross x ratio), never anything else: expected 1997.25, got 1994.21212960399
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+SCRIPT ERROR: Parse Error: Cannot infer the type of "resistance_points" variable because the value doesn't have a set type.
+   at: GDScript::reload (res://tests/modules/combat_engine/test_qi_damage.gd:143)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+ERROR: Failed to load script "res://tests/modules/combat_engine/test_qi_damage.gd" with error "Parse error".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+ERROR: res://tests/modules/combat_engine/test_qi_damage.gd :: failed to load suite
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:46)
+SCRIPT ERROR: Invalid access to property or key 'resist_cap' on a base object of type 'Resource (CombatTuning)'.
+   at: test_status_resistance_raises_the_resist_and_reaches_immunity_at_the_cap (res://tests/modules/combat_engine/test_status_application.gd:179)
+   GDScript backtrace (most recent call first):
+       [0] test_status_resistance_raises_the_resist_and_reaches_immunity_at_the_cap (res://tests/modules/combat_engine/test_status_application.gd:179)
+       [1] _initialize (res://tests/run_tests.gd:118)
+ERROR: res://tests/modules/combat_engine/test_status_application.gd :: a COMBAT status is resisted: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/combat_engine/test_status_application.gd :: and at the cap it is never a guarantee: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/modules/combat_engine/test_wound_persistence.gd :: the payload declares schema v5: expected 5, got 6
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+WARNING: 16 RIDs of type "CanvasItem" were leaked.
+   at: _free_rids (servers/rendering/renderer_canvas_cull.cpp:2735)
+WARNING: 350 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 27 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+fail 7 script error(s) aborted a test mid-function; those tests reported no failure, so the run above is incomplete
+warn 5 script(s) failed to LOAD; the errors above are mostly their dependants:
+warn   res://src/modules/social/api.gd
+warn   res://src/modules/sect/api.gd
+warn   res://src/app/actor_factory.gd
+warn   res://tests/modules/combat/test_combat_spare_wiring.gd
+warn   res://tests/modules/combat_engine/test_qi_damage.gd
+warn SCRIPT ERROR: Invalid access to property or key 'vitality' on a base object of type 'Dictionary'.
+warn SCRIPT ERROR: Parse Error: Static function "shared()" not found in base "NpcEvents".
+warn SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+warn SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+warn SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+warn SCRIPT ERROR: Parse Error: Cannot infer the type of "resistance_points" variable because the value doesn't have a set type.
+warn SCRIPT ERROR: Invalid access to property or key 'resist_cap' on a base object of type 'Resource (CombatTuning)'.
+$ C:\Users\NeneScarlet\AppData\Local\Microsoft\WinGet\Packages\GodotEngine.GodotEngine_Microsoft.Winget.Source_8wekyb3d8bbwe\Godot_v4.7.2-stable_win64_console.exe --headless --path D:\Works\source\chaos-world\game -s res://tests/run_tests.gd --log-file D:\Works\source\chaos-world\build\logs\172652-92892-1-run.log -- --suite tests/modules/combat
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+=== CROSS-MECHANISM BALANCE ==========================================
+shipped tuning | matched attackers AND defenders | undefended targets | element=lightning vs water | aim=lung | QiDamage S5 vs BodyDamage S5 vs MindDamage erosion
+
+realm                        power       qi_dmg     body_dmg  mind_erosion   mind_eq_mag qi_elem_frac |     qi_s4 qi_s5==s4   body_s5  sea_hits rupture_hp_1s
+qi_refining                   1.00    1492.7273    2825.0972      0.400000       40.0000    0.665043 |       yes       yes 2825.0972    0.4000      0.0000
+spirit_sea                    3.70    7844.7752   14771.0061      0.139300       48.7552    0.665043 |       yes       yes 14771.0061    0.1393      0.0000
+golden_immortal              34.20  102991.9403  180287.8037      0.099046       59.4276    0.665043 |       yes       yes 180287.8037    0.0990      0.0000
+primordial_origin           551.46 2277454.1758 2140544.8435      0.086082       71.0174    0.665043 |       yes       yes 2140544.8435    0.0861      0.0000
+
+=== HITS (reference pool = qi defender's own health max = 150.00) ==========
+realm                         qi_hits    body_hits  mind_sea_hits      qi/body
+qi_refining                    0.1005       0.0531         2.5000       0.5284
+spirit_sea                     0.0191       0.0102         7.1787       0.5311
+golden_immortal                0.0015       0.0008        10.0963       0.5713
+primordial_origin              0.0001       0.0001        11.6169       1.0640
+
+=== SPREAD (measured, NOT asserted against any tolerance) ===============
+authored realm power R1->R30   :     551.46x   (RealmDef.power, realm_power_table.tres)
+qi damage       R1 -> R30      :    1525.70x   (qi_refining -> primordial_origin)
+body damage     R1 -> R30      :     757.69x
+qi elem fraction spread       : 0.0   (constant to 0.000001 => REALM-INVARIANT)
+qi/body ratio    R1 -> R30     :       0.53 -> 1.06
+=== AUTHORED VITALITY POOL (ADR 0133's open desync) ====================
+realms' vitality pool is authored 40.0 -> 800.0 (loot_*.tres, loot_route_elemental_transcendent_domain: 500/800), i.e. ~20x across 30 realms.
+one qi hit does 995.2% of that pool at R1 and 1518302.7839% at R30.
+
+=== WHY THE RATIO STILL DRIFTS (authored data, not arithmetic) ===========
+qi_refining              qi/body   0.5284 | body defence      16.7500 = stat    40.0000 + channel   0.3500 + tissue  2.7500
+spirit_sea               qi/body   0.5311 | body defence     114.0874 = stat   318.1070 + channel   0.3500 + tissue  2.7500
+golden_immortal          qi/body   0.5713 | body defence    6588.0298 = stat 18815.0850 + channel   0.3500 + tissue  2.7500
+primordial_origin        qi/body   1.0640 | body defence 1605139.3799 = stat 4586104.6568 + channel   0.3500 + tissue  2.7500
+
+mind share gradient: R1 share 0.4, R30 share 0.08610156074169, decay 0.21525390185423x
+Floors: 0 of 275 test(s) ran under a declared expect_assertions() floor; the rest are covered only by the SCRIPT ERROR scan in tools/test.py, which catches an abort without naming the test
+Results: 5912 passed, 25 failed (30 suite(s))
+ERROR: 8 RID allocations of type 'P11GodotBody2D' were leaked at exit.

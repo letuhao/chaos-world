@@ -178,7 +178,7 @@ var _restore_stage: WorldStage = null
 var _restore_body: PlayerAdapter = null
 
 ## Mod event subscriptions (ADR 0184). Each row is `{event_bus, event_name,
-## callable}`; `_wire_subscriptions` resolves the bus by class name and
+## callable, mod_id}`; `_wire_subscriptions` resolves the bus by class name and
 ## connects the callable to the signal, guarded by `is_connected`.
 var _mod_subscriptions: Array = []
 
@@ -187,6 +187,14 @@ var _mod_subscriptions: Array = []
 ## Gap 5). Cleared at the top of every `_wire_content_roots` call, so the array
 ## always reflects the most recent boot.
 var _unwired_families: Array[StringName] = []
+
+## Subscriptions whose bus name resolved to nothing, as `{mod_id, event_bus,
+## event_name}` — the event-side twin of `_unwired_families` (ADR 0266). A mod
+## subscription that cannot resolve is still SKIPPED rather than fatal, but it is
+## never silent: each row is `push_warning`-ed naming the bus and the mod, and
+## recorded here so the skip is assertable. Cleared at the top of every
+## `_wire_subscriptions` call for the same reason as `_unwired_families`.
+var _unresolved_buses: Array[Dictionary] = []
 
 # --- mount_and_attach ----------------------------------------------------
 ## Mount every module a hero carries, over an actor that already exists.
@@ -406,13 +414,30 @@ func _attach_mod_modules(pipeline: AttachPipeline, actor: Actor, modules: Dictio
 
 
 ## Wire mod event subscriptions onto the events buses (ADR 0184). Each
-## subscription is `{event_bus: String, event_name: String, callable:
-## Callable}`. The bus is resolved by class name — buses with a `shared()`
-## accessor (NpcEvents, AuctionEvents) use it; others get a fresh instance.
-## Connections are guarded by `is_connected` so a repeated boot never
+## subscription is `{event_bus: String, event_name: String, callable: Callable,
+## mod_id: String}`. The bus is resolved by class name — buses with a `shared()`
+## accessor (NpcEvents, AuctionEvents, QuestEvents) use it; others get a fresh
+## instance. Connections are guarded by `is_connected` so a repeated boot never
 ## double-connects (AGENTS.md).
+##
+## ## An unknown bus WARNS, and it stays a warning (ADR 0266)
+##
+## ADR 0242 decision 4 said an unknown bus "is skipped without crashing", which is
+## still the BEHAVIOUR: a mod with one bad subscription must not take a boot down
+## with it, and the tolerance is deliberate. What was missing is the other half of
+## ADR 0184 decision 8 — never skip SILENTLY. A bus name that resolves to nothing
+## means that mod's handler will never run, and until now nothing said so: a System
+## whose entire economy is one subscription failed invisibly while every other
+## subscription loaded cleanly.
+##
+## So each unresolvable bus is `push_warning`-ed NAMING both the bus and the mod
+## that asked for it (stamped onto the row by `ModRuntime.finalize`, which is the
+## only place that knows which mod a row came from), and recorded in
+## `_unresolved_buses` so the skip is observable from a test and not only from a log.
+## One row is one pass — the loop drains the array it was handed, so it terminates.
 func _wire_subscriptions(subscriptions: Array) -> void:
 	_mod_subscriptions = subscriptions
+	_unresolved_buses.clear()
 	for sub in subscriptions:
 		if not (sub is Dictionary):
 			continue
@@ -423,19 +448,47 @@ func _wire_subscriptions(subscriptions: Array) -> void:
 			continue
 		var bus := _resolve_events_bus(bus_name)
 		if bus == null:
+			(
+				_unresolved_buses
+				. append(
+					{
+						"mod_id": String(sub.get("mod_id", "")),
+						"event_bus": bus_name,
+						"event_name": String(event_name),
+					}
+				)
+			)
+			push_warning(
+				(
+					"ItemWorkbenchBody: mod '%s' subscribed to unknown events bus '%s' (signal '%s')"
+					% [String(sub.get("mod_id", "")), bus_name, String(event_name)]
+				)
+			)
 			continue
 		if not bus.is_connected(event_name, callable):
 			bus.connect(event_name, callable)
 
 
 ## Resolve an events bus by class name. Buses with a `shared()` accessor
-## (NpcEvents, AuctionEvents) and ConflictEvents (via `ConflictApi.events()`)
-## return the process-wide instance a subscriber must reach; others get a
-## fresh instance. Returns null for an unknown bus name.
+## (NpcEvents, AuctionEvents, QuestEvents) and ConflictEvents (via
+## `ConflictApi.events()`) return the process-wide instance a subscriber must
+## reach; others get a fresh instance. Returns null for an unknown bus name.
+##
+## ## A fresh instance is a DEAD subscription, and this map is where that is decided
+##
+## A bus handed out as `SomeEvents.new()` is a brand-new object per lookup: nothing
+## holds the one a subscriber connects to and nothing emits on it, so `is_connected`
+## reports the subscription connected FOREVER while no signal ever fires.
+## `QuestEvents` therefore takes `shared()` (ADR 0266) — a registrable System whose
+## whole economy is one quest subscription cannot afford a silent bus. The five
+## entries still returning `new()` carry that same defect and are recorded in the ADR
+## rather than fixed here: each needs its OWNING facade's accessor, which is a wider
+## slice than this one.
 func _resolve_events_bus(bus_name: String) -> RefCounted:
 	var factories := {
 		&"NpcEvents": func(): return NpcEvents.shared(),
 		&"AuctionEvents": func(): return AuctionEvents.shared(),
+		&"QuestEvents": func(): return QuestEvents.shared(),
 		&"ConflictEvents": func(): return ConflictApi.events(),
 		&"WorldEvents": func(): return WorldEvents.new(),
 		&"DestinyEvents": func(): return DestinyEvents.new(),

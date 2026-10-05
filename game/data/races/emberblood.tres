@@ -16,6 +16,10 @@ offspring_variance = 0.2
 closed_paths = Array[StringName]([&"mind_cultivation"])
 realm_ceiling = 0
 lifespan = 18250.0
+# Born ready: a short-lived frame whose gestation is the shortest in the tree (24 days).
+# ADR 0258 §2 — a reborn body starts at the AUTHORED starting age for its species, so this
+# is what decides where in the first age band a returning emberblood begins.
+starting_age_years = 1.0
 ; The attributes this body does not specialise in are the plain mortal 1.0 that
 ; `commonborn` writes for all seven, except where this body says otherwise below.
 ; Physique is AUTHORED rather than left out because an omitted grant is a grant of 0.0 —

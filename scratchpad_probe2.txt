@@ -1,0 +1,49 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | Started Registering global classes... (7 steps)[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | ModHookFixture[39m[0m
+[  12% ] [90m[1mupdate_scripts_classes[22m | NpcMinorComposer[39m[0m
+[  25% ] [90m[1mupdate_scripts_classes[22m | NpcReadModel[39m[0m
+[  37% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  50% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  62% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  75% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[92m[ DONE ][39m [1mupdate_scripts_classes[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Loading docks...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+SCRIPT ERROR: Parse Error: Could not resolve class "ItemWorkbenchFight".
+   at: GDScript::reload (res://src/app/item_workbench_app.gd:1)
+SCRIPT ERROR: Parse Error: Could not resolve class "DomainBoot", because of a parser error.
+   at: GDScript::reload (res://src/app/item_workbench_app.gd:925)
+SCRIPT ERROR: Parse Error: Could not resolve class "DomainBoot", because of a parser error.
+   at: GDScript::reload (res://src/app/item_workbench_app.gd:1166)
+ERROR: Failed to load script "res://src/app/item_workbench_app.gd" with error "Parse error".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+ERROR: res://tests/modules/combat_engine/test_zzz_probe2.gd :: test_probe_qi_defense_scale asserted nothing
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _assert_ran (res://tests/run_tests.gd:172)
+       [1] _initialize (res://tests/run_tests.gd:119)
+$ C:\Users\NeneScarlet\AppData\Local\Microsoft\WinGet\Packages\GodotEngine.GodotEngine_Microsoft.Winget.Source_8wekyb3d8bbwe\Godot_v4.7.2-stable_win64_console.exe --headless --path D:\Works\source\chaos-world\game --import --log-file D:\Works\source\chaos-world\build\logs\171224-46616-1-run.log
+$ C:\Users\NeneScarlet\AppData\Local\Microsoft\WinGet\Packages\GodotEngine.GodotEngine_Microsoft.Winget.Source_8wekyb3d8bbwe\Godot_v4.7.2-stable_win64_console.exe --headless --path D:\Works\source\chaos-world\game -s res://tests/run_tests.gd --log-file D:\Works\source\chaos-world\build\logs\171231-46616-2-run.log -- --suite tests/modules/combat_engine/test_zzz_probe2
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PROBE ceiling 0.950000000 | K 4.500000000 | threshold 0.333333333 | defense(authored pts) 1.282500000 | resist_divisor 100.000000000 | D_raw 0.012825000
+PROBE authored       1.282500 | D     0.012825 | K   4.5000 | rate 0.00269981 | mitigation 0.99730019 | t_e    1196.760233 | open t_e     800.0000 | rate>threshold true | mit<=ceiling false
+PROBE authored       0.012825 | D     0.000128 | K   4.5000 | rate 0.00002707 | mitigation 0.99997293 | t_e    1199.967511 | open t_e     800.0000 | rate>threshold true | mit<=ceiling false
+PROBE authored     128.250000 | D     1.282500 | K   4.5000 | rate 0.21070039 | mitigation 0.78929961 | t_e     947.159533 | open t_e     800.0000 | rate>threshold true | mit<=ceiling true
+Floors: 0 of 1 test(s) ran under a declared expect_assertions() floor; the rest are covered only by the SCRIPT ERROR scan in tools/test.py, which catches an abort without naming the test
+Results: 0 passed, 1 failed (1 suite(s))

@@ -68,7 +68,9 @@ const GENERATION_REFUSED := "generation_refused"
 ## actor, the template and the starting seed. Reaching it on the class rather than an
 ## instance is therefore both correct and the smaller change; the alternative (instantiate
 ## at the call site) would allocate a RefCounted per press for state that does not exist.
-static func walk(enter: Callable, actor: Actor, template_id: StringName, first_seed: int) -> Dictionary:
+static func walk(
+	enter: Callable, actor: Actor, template_id: StringName, first_seed: int
+) -> Dictionary:
 	if not enter.is_valid():
 		return {"ok": false, "reason": "no_inventory_bridge"}
 	var refusal: Dictionary = {}

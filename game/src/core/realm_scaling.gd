@@ -31,14 +31,20 @@ const SOURCE := &"realm"
 ## has always read through `CombatTuning`'s prefix rather than a renamed const landing here
 ## under them; the id STRING is what changed, and the const name records the new shape.
 ##
-## ## `element_defense_<e>` is NOT here, and cannot be
+## ## `element_power_<e>` and `element_defense_<e>` are NOT here, and cannot be
 ##
 ## The per-element ids are built from the element id at read time, so a static list cannot
-## hold them. `elements/api.gd:apply_realm_modifiers` writes that channel's realm `MULT`
-## itself, in the same shape and under this same `SOURCE`, which is why it also has to
-## re-write the half after every `RealmScaling.apply` (that call clears `SOURCE`
-## wholesale). That is the same arrangement `element_power_<e>` already had, and
-## `test_element_stat_publication.gd` pins both halves' behaviour.
+## hold them. `elements/api.gd:apply_realm_modifiers` writes BOTH halves' realm `MULT`
+## themselves, in the same shape and under this same `SOURCE`, which is why they also have
+## to re-write the halves after every `RealmScaling.apply` (that call clears `SOURCE`
+## wholesale). Both are written from ONE `realm.power` for the reason the whole module
+## exists: ADR 0200's mitigation ratio is `D / (K + D)` with `K` on the attacker's
+## `element_power_<e>` and `D` on the defender's `element_defense_<e>`, and with only the
+## offense half on the ladder the fraction of a qi hit that is elemental DRIFTED with the
+## realm — measured `0.665043 -> 0.705803` over the shipped ladder by
+## `tests/modules/combat_engine/test_cross_mechanism_balance.gd`, whose own printed verdict
+## was `NOT CONSTANT -- FINDING`. `tests/modules/elements/test_element_stat_publication.gd::
+## test_both_element_halves_take_the_realm_multiplier` pins the pair.
 ##
 ## ## What is deliberately NOT here
 ##

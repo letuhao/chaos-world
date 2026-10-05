@@ -60,6 +60,15 @@ const AWAKENED_PURITY := 0.9
 ## 0.42, so a hero carrying it above that bar is admissible.
 const HOUSE := &"saltledger"
 
+## The route is the only thing that makes this page reachable. `ScreenRoutes` is in
+## `app/` and was under active rewrite while this slice landed, so this suite states
+## the row it needs and skips it rather than failing — a skipped assertion is a
+## reported gap, whereas a red suite would name another agent's in-flight change.
+const ROUTE_REASON := (
+	"ScreenRoutes does not name a route for lineage_screen.tscn; app/ was being "
+	+ "rewritten concurrently, so the route entry is a one-line follow-up"
+)
+
 
 func _actor() -> Actor:
 	var actor := ActorFactory.build(&"lineage_reader")
@@ -181,27 +190,34 @@ func test_the_body_row_summary_is_nested_under_body() -> void:
 	screen.free()
 
 
-## ## `assert_ne(x, false)`, NOT `assert_ne(x, true)`
+## ## `assert_ne(x, true)`, NOT `assert_ne(x, false)`
 ##
 ## The framework's signature is `assert_ne(actual, unexpected)` — it passes when
-## `actual != unexpected` — so `assert_ne(x, false)` passes only when `x` is true and
-## `assert_ne(x, true)` passes only when `x` is FALSE. An `is_empty()` or
-## `== []` predicate therefore has to be written against the NEGATIVE one. Written
+## `actual != unexpected` — so `assert_ne(x, true)` passes only when `x` is false and
+## `assert_ne(x, false)` passes only when `x` is TRUE. An `is_empty()` or
+## `== []` predicate therefore has to be written against the POSITIVE one. Written
 ## the intuitive way round, this suite's body, house and snapshot assertions read as
 ## demanding an EMPTY list from a screen that had correctly rendered one — and the
-## screen was right every time.
+## screen was right every time. All three of this file's row-presence assertions
+## (body, house, row ids) are the corrected form, and `is_empty(), false` must appear
+## nowhere in this file.
 func test_a_row_is_reported_as_present_by_asking_for_its_absence() -> void:
 	# The idiom this file uses for presence, asserted so the sense cannot drift back.
-	assert_ne(false != false, true, "assert_ne(false, false) FAILS: the list was empty")
-	assert_ne([] != [], true, "assert_ne([], true) FAILS: the list was empty")
+	# REAL values, not constants: written as `false != false` and `[] != []` both
+	# sides were literals, so each assertion folded to a constant, could never fail,
+	# and never called `assert_ne` at all.
+	var empty_body: Array = []
+	var one_row: Array = [{}]
+	assert_eq(empty_body.is_empty(), true, "an EMPTY list is empty, which is the case to avoid")
+	assert_ne(one_row.is_empty(), true, "assert_ne(x.is_empty(), true) is the PRESENCE form")
 	# And the shape this file actually relies on, passing on a real body.
 	var screen := _screen()
 	screen.setup(_carrying())
 	var body: Array = screen.summary()["body"]
-	# "there IS a row" is `is_empty() == false`. `assert_ne(x, false)` states exactly that
+	# "there IS a row" is `is_empty() == false`. `assert_ne(x, true)` states exactly that
 	# and is the form used here on purpose: `assert_eq(x.is_empty(), false)` reads the same but
 	# this file has already been bitten by the inverse form once.
-	assert_ne(body.is_empty(), false, "assert_ne(size, false) passes when there IS a row")
+	assert_ne(body.is_empty(), true, "assert_ne(size, true) passes when there IS a row")
 	screen.free()
 
 
@@ -365,7 +381,7 @@ func test_a_hero_who_belongs_to_no_clan_is_told_so_rather_than_shown_nothing() -
 	assert_eq(String(view["clan_id"]), "", "with no house named")
 	assert_eq(int(view["standing"]), 0, "and no standing, which is absence rather than an error")
 	var house: Array = view["house"]
-	assert_ne(house.is_empty(), false, "the house ROW still renders")
+	assert_ne(house.is_empty(), true, "the house ROW still renders")
 	var row: Dictionary = house[0]
 	assert_eq(bool(row["is_member"]), false, "and it reports itself as no membership")
 	assert_ne(String(row["name_line"]), "", "with a sentence rather than an empty card")
@@ -494,20 +510,11 @@ func test_three_snapshots_render_the_page_with_no_actor() -> void:
 		RaceApi.summary(actor), BloodlineApi.summary(actor), ClanApi.summary(actor)
 	)
 	assert_eq(screen.summary(), {}, "with no actor bound the contract still says {}")
-	assert_ne(screen.row_ids().is_empty(), false, "but the rows were filled from the snapshots")
+	assert_ne(screen.row_ids().is_empty(), true, "but the rows were filled from the snapshots")
 	screen.free()
 
 
 # --- Reachability -----------------------------------------------------------
-
-## The route is the only thing that makes this page reachable. `ScreenRoutes` is in
-## `app/` and was under active rewrite while this slice landed, so this suite states
-## the row it needs and skips it rather than failing — a skipped assertion is a
-## reported gap, whereas a red suite would name another agent's in-flight change.
-const ROUTE_REASON := (
-	"ScreenRoutes does not name a route for lineage_screen.tscn; app/ was being "
-	+ "rewritten concurrently, so the route entry is a one-line follow-up"
-)
 
 
 func test_the_route_table_names_this_screen_so_a_player_can_open_it() -> void:

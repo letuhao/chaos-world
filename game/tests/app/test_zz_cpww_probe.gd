@@ -446,17 +446,15 @@ func _first_origin() -> StringName:
 	var ids := cat.destinies_in_group(&"origin")
 	print(
 		(
-			(
-				"PROBE[cpw] catalog_id=%d destiny_ids=%d fates=%d group_origin=%s raw=%s loaded=%s"
-				% [
-					cat.get_instance_id(),
-					cat.destiny_ids().size(),
-					cat.fate_ids().size(),
-					str(ids),
-					str(cat._destinies),
-					str(cat._loaded),
-				]
-			)
+			"PROBE[cpw] catalog_id=%d destiny_ids=%d fates=%d group_origin=%s raw=%s loaded=%s"
+			% [
+				cat.get_instance_id(),
+				cat.destiny_ids().size(),
+				cat.fate_ids().size(),
+				str(ids),
+				str(cat._destinies),
+				str(cat._loaded),
+			]
 		)
 	)
 	assert_ne(ids.size() > 0, true, "the catalog ships at least one origin")

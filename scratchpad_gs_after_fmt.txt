@@ -1,0 +1,304 @@
+ M docs/adr/0091-a-relationship-is-a-cause-ledger-and-a-class-is-derived-from-it.md
+ M docs/backlog.jsonl
+ M docs/claims.jsonl
+ M docs/deferred.jsonl
+ M docs/incidents.jsonl
+ M game/assets/characters/character-index.jsonl
+ M game/assets/map-asset-index.jsonl
+ M game/data/bosses/qi_body_integration_warden.tres
+ M game/data/bosses/qi_qi_refining_warden.tres
+ M game/data/npc/cast/elder_wei.tres
+ M game/src/app/domain_boot.gd
+ M game/src/app/domain_fight.gd
+ M game/src/app/economy_boot.gd
+ M game/src/app/fight_loop.gd
+ M game/src/app/item_workbench_app.gd
+ M game/src/app/item_workbench_play.gd
+ M game/src/app/npc_boot.gd
+ M game/src/app/social_favour_app.gd
+ M game/src/app/world_ledger_store.gd
+ M game/src/app/world_pulse.gd
+ M game/src/app/world_stage_reconcile.gd
+ M game/src/contracts/npc_events.gd
+ M game/src/contracts/stat.gd
+ M game/src/core/realm_scaling.gd
+ M game/src/core/reconcile_stamp.gd
+ M game/src/core/world_reconcile.gd
+ M game/src/data/mind_statuses/mind_intent.tres
+ M game/src/data/mind_statuses/mind_voice.tres
+ M game/src/modules/combat_engine/mind_damage.gd
+ M game/src/modules/combat_engine/status_apply.gd
+ M game/src/modules/custody/custody_state.gd
+ M game/src/modules/domain/domain_fixtures.gd
+ M game/src/modules/domain/domain_generator.gd
+ M game/src/modules/elements/api.gd
+ M game/src/modules/market/api.gd
+ M game/src/modules/market/market_transfer.gd
+ M game/src/modules/npc/npc_def.gd
+ M game/src/modules/npc/npc_read_model.gd
+ M game/src/modules/npc/npc_tier.gd
+ M game/src/modules/save/save_slot.gd
+ M game/src/modules/social/api.gd
+ M game/src/modules/social/social_cause_catalog.gd
+ M game/src/modules/social/social_favour.gd
+ M game/src/modules/social/social_state.gd
+ M game/src/modules/status/mind_expression.gd
+ M game/src/modules/status/mind_status_api.gd
+ M game/src/modules/status/mind_status_def.gd
+ M game/src/modules/techniques/api.gd
+ M game/src/ui/panels/domain_map_presentation.gd
+ M game/src/ui/panels/domain_map_view.gd
+ M game/src/ui/panels/world_pulse_panel.gd
+ M game/src/ui/screens/clan_screen.gd
+ M game/src/ui/screens/domain_explore.gd
+ M game/src/ui/screens/domain_explore_model.gd
+ M game/src/ui/screens/lineage_screen.gd
+ M game/src/ui/screens/world_map_screen.gd
+ M game/tests/app/test_reconcile_reachability.gd
+ M game/tests/app/test_zz_cpww_probe.gd
+ M game/tests/app/test_zz_death_probe.gd
+ M game/tests/app/test_zz_destiny_probe.gd
+ M game/tests/app/test_zz_mount_probe.gd
+ M game/tests/arch_rules/test_no_unbounded_wait.gd
+ M game/tests/core/test_reconcile_stamp.gd
+ M game/tests/core/test_time_ladder.gd
+ M game/tests/core/test_time_ladder_single_source.gd
+ M game/tests/core/time_ladder_ssot_base.gd
+ M game/tests/modules/combat_engine/body_damage_fixture.gd
+ M game/tests/modules/combat_engine/qi_damage_fixture.gd
+ M game/tests/modules/combat_engine/test_body_damage.gd
+ M game/tests/modules/combat_engine/test_body_damage_aim.gd
+ M game/tests/modules/combat_engine/test_body_damage_floor.gd
+ M game/tests/modules/combat_engine/test_cross_mechanism_balance.gd
+ M game/tests/modules/combat_engine/test_mind_damage.gd
+ M game/tests/modules/combat_engine/test_qi_damage.gd
+ M game/tests/modules/combat_engine/test_qi_damage_realm.gd
+ M game/tests/modules/combat_engine/test_status_application.gd
+ M game/tests/modules/combat_engine/test_wound_persistence.gd
+ M game/tests/modules/conflict/test_conflict_declaration.gd
+ M game/tests/modules/destiny/destiny_reach_walker.gd
+ M game/tests/modules/domain/test_domain_run_chain.gd
+ M game/tests/modules/elements/test_element_stat_publication.gd
+ M game/tests/modules/race/test_race_axis_partition.gd
+ M game/tests/modules/status/test_mind_status_no_lock.gd
+ M game/tests/modules/status/test_status_resistance_band.gd
+ M game/tests/modules/techniques/test_technique_active.gd
+ M game/tests/modules/techniques/test_technique_cast_view.gd
+ M game/tests/modules/techniques/test_technique_delivery.gd
+ M game/tests/modules/techniques/test_technique_passive_worn_mastery.gd
+ M game/tests/modules/techniques/test_technique_pipeline_content.gd
+ M game/tests/modules/techniques/test_technique_study_cost.gd
+ M game/tests/ui/test_domain_explore.gd
+ M game/tests/ui/test_floor_surface.gd
+ M game/tests/ui/test_floor_surface_contract.gd
+ M game/tests/ui/test_lineage_screen.gd
+ M game/tests/ui/test_npc_roster_panel.gd
+ M game/tests/ui/test_technique_screens.gd
+ M game/tests/ui/test_technique_study_price.gd
+ M game/tests/ui/test_world_pulse_retreat_reachable.gd
+ M tools/__main__.py
+ M tools/character_assets.py
+ M tools/gate_reach.py
+ M tools/selftest_cases.py
+ M tools/worth_rewrite.py
+?? %GODOT_LOG_DIR%/cl.txt
+?? %GODOT_LOG_DIR%/cl2.txt
+?? %GODOT_LOG_DIR%/clan.txt
+?? %GODOT_LOG_DIR%/clan2.txt
+?? %GODOT_LOG_DIR%/ev.txt
+?? %GODOT_LOG_DIR%/gr.txt
+?? %GODOT_LOG_DIR%/gr2.txt
+?? %GODOT_LOG_DIR%/gr3.txt
+?? %GODOT_LOG_DIR%/q.txt
+?? %GODOT_LOG_DIR%/q2.txt
+?? %GODOT_LOG_DIR%/q3.txt
+?? %GODOT_LOG_DIR%/qs.txt
+?? %GODOT_LOG_DIR%/wf.txt
+?? _npc_head_dump.txt
+?? _scratch_cmp.py
+?? _scratch_count.py
+?? _scratch_ctrl.py
+?? _scratch_eol.py
+?? _scratch_logs.py
+?? _scratch_logs2.py
+?? _scratch_measure.py
+?? _scratch_nl.py
+?? _scratch_nul.py
+?? _scratch_rm.py
+?? _scratch_watch.py
+?? defval.txt
+?? diffwave.txt
+?? docs/adr/0250-a-price-that-answers-to-who-is-buying.md
+?? docs/adr/0253-a-racedef-is-transcribed-from-its-lore-bible-species-entity-never-authored-twice.md
+?? docs/adr/0254-alignment-is-a-three-axis-matrix-scored-from-action-and-read-identically-by-every-npc.md
+?? docs/adr/0255-a-duty-discharges-on-the-world-s-own-tick-and-the-link-that-made-that-true-was-never-covered.md
+?? docs/adr/0256-a-first-impression-is-seeded-once-and-an-npc-s-own-ledger-holds-what-it-feels-toward-the-player.md
+?? fmtout.txt
+?? game/assets/world_map/dao_fracture/settlement_and_domain_prop/supply_crate.png
+?? game/assets/world_map/dao_fracture/settlement_and_domain_prop/supply_crate.png.import
+?? game/assets/world_map/ember_grotto/ground_tile/leaf_or_silt_litter.png.import
+?? game/assets/world_map/ember_grotto/terrain_transition/terrain_corner.png.import
+?? game/assets/world_map/flame_valley_depths/terrain_transition/slope_ramp.png.import
+?? game/assets/world_map/immortal_cloud_isles/terrain_transition/slope_ramp.png.import
+?? game/assets/world_map/mortal_greenwood/ground_tile/resource_bare_ground.png
+?? game/assets/world_map/mortal_greenwood/ground_tile/resource_bare_ground.png.import
+?? game/assets/world_map/spirit_ghostwood/settlement_and_domain_prop/cultivation_altar.png
+?? game/assets/world_map/spirit_ghostwood/settlement_and_domain_prop/cultivation_altar.png.import
+?? game/assets/world_map/stormwrack_reach/ground_tile/leaf_or_silt_litter.png.import
+?? game/assets/world_map/stormwrack_reach/terrain_transition/terrain_corner.png
+?? game/assets/world_map/stormwrack_reach/terrain_transition/terrain_corner.png.import
+?? game/assets/world_map/void_shoal/ground_tile/cracked_ground.png.import
+?? game/assets/world_map/void_shoal/terrain_transition/shore_edge.png.import
+?? game/data/npc/cast/courting_elder_bo.tres
+?? game/data/npc/personas/
+?? game/data/races/ashjackal.tres
+?? game/data/races/ashwalker.tres
+?? game/data/races/brinecaller.tres
+?? game/data/races/cairnborn.tres
+?? game/data/races/carrionfolk.tres
+?? game/data/races/cinderkin.tres
+?? game/data/races/deadlight.tres
+?? game/data/races/deepsalt.tres
+?? game/data/races/echoless.tres
+?? game/data/races/emberborn.tres
+?? game/data/races/emberhollow.tres
+?? game/data/races/glasskin.tres
+?? game/data/races/hearthborn.tres
+?? game/data/races/lanternfolk.tres
+?? game/data/races/longmarrow.tres
+?? game/data/races/longwinter.tres
+?? game/data/races/marshfolk.tres
+?? game/data/races/rootmarch.tres
+?? game/data/races/saltfolk.tres
+?? game/data/races/saltwrack.tres
+?? game/data/races/stonebound.tres
+?? game/data/races/thornhost.tres
+?? game/data/races/thornline.tres
+?? game/data/races/tideborn.tres
+?? game/data/races/tideculled.tres
+?? game/data/races/unwritten.tres
+?? game/data/races/vaultborn.tres
+?? game/data/races/voidborn.tres
+?? game/data/races/wake.tres
+?? game/src/app/domain_world_boot.gd
+?? game/src/app/domain_world_boot.gd.uid
+?? game/src/app/kinship_app.gd
+?? game/src/app/kinship_app.gd.uid
+?? game/src/app/pursuit_app.gd
+?? game/src/app/pursuit_app.gd.uid
+?? game/src/core/world_clock.gd
+?? game/src/core/world_clock.gd.uid
+?? game/src/modules/domain/domain_fixture_levers.gd
+?? game/src/modules/domain/domain_fixture_levers.gd.uid
+?? game/src/modules/domain/domain_room_copy.gd
+?? game/src/modules/domain/domain_room_copy.gd.uid
+?? game/src/modules/market/market_favour.gd
+?? game/src/modules/market/market_favour.gd.uid
+?? game/src/modules/npc/npc_aliveness.gd
+?? game/src/modules/npc/npc_aliveness.gd.uid
+?? game/src/modules/npc/npc_minor_composer.gd
+?? game/src/modules/npc/npc_minor_composer.gd.uid
+?? game/src/modules/npc/npc_opinion_def.gd
+?? game/src/modules/npc/npc_opinion_def.gd.uid
+?? game/src/modules/npc/npc_persona.gd
+?? game/src/modules/npc/npc_persona.gd.uid
+?? game/src/modules/npc/npc_place_voice.gd
+?? game/src/modules/npc/npc_place_voice.gd.uid
+?? game/src/modules/npc/npc_recall_def.gd
+?? game/src/modules/npc/npc_recall_def.gd.uid
+?? game/src/modules/npc/npc_round_def.gd
+?? game/src/modules/npc/npc_round_def.gd.uid
+?? game/src/modules/npc/npc_tell_def.gd
+?? game/src/modules/npc/npc_tell_def.gd.uid
+?? game/src/modules/social/pursuit_claim.gd
+?? game/src/modules/social/pursuit_claim.gd.uid
+?? game/src/modules/social/pursuit_ledger.gd
+?? game/src/modules/social/pursuit_ledger.gd.uid
+?? game/src/modules/social/pursuit_stance.gd
+?? game/src/modules/social/pursuit_stance.gd.uid
+?? game/src/modules/social/social_alignment.gd
+?? game/src/modules/social/social_alignment.gd.uid
+?? game/src/modules/social/social_alignment_matrix.gd
+?? game/src/modules/social/social_alignment_matrix.gd.uid
+?? game/src/modules/social/social_alignment_track.gd
+?? game/src/modules/social/social_alignment_track.gd.uid
+?? game/src/modules/social/social_attraction_seed.gd
+?? game/src/modules/social/social_attraction_seed.gd.uid
+?? game/src/ui/panels/domain_fixture_gates.gd
+?? game/src/ui/panels/domain_fixture_gates.gd.uid
+?? game/src/ui/panels/domain_outcome.gd
+?? game/src/ui/panels/domain_outcome.gd.uid
+?? game/src/ui/panels/domain_seed_walk.gd
+?? game/src/ui/panels/domain_seed_walk.gd.uid
+?? game/src/ui/screens/domain_explore_state.gd
+?? game/src/ui/screens/domain_explore_state.gd.uid
+?? game/tests/app/test_conception_production_path.gd
+?? game/tests/app/test_conception_production_path.gd.uid
+?? game/tests/app/test_fight_walk_out_whole.gd
+?? game/tests/app/test_fight_walk_out_whole.gd.uid
+?? game/tests/app/test_world_tick_discharges_obligation.gd
+?? game/tests/app/test_world_tick_discharges_obligation.gd.uid
+?? game/tests/app/test_zz_death_probe.gd.uid
+?? game/tests/app/test_zz_three_probe.gd
+?? game/tests/app/test_zz_three_probe.gd.uid
+?? game/tests/core/test_zzr_probe2.gd
+?? game/tests/core/test_zzr_probe2.gd.uid
+?? game/tests/core/test_zzr_probe3.gd
+?? game/tests/core/test_zzr_probe3.gd.uid
+?? game/tests/core/test_zzr_probe4.gd
+?? game/tests/core/test_zzr_probe4.gd.uid
+?? game/tests/core/test_zzr_probe_scenarios.gd
+?? game/tests/core/test_zzr_probe_scenarios.gd.uid
+?? game/tests/fixtures/mods/dlc_example/
+?? game/tests/modules/custody/test_custody_captive_is_never_tradeable.gd
+?? game/tests/modules/custody/test_custody_captive_is_never_tradeable.gd.uid
+?? game/tests/modules/custody/test_custody_term_is_never_a_valuation.gd
+?? game/tests/modules/custody/test_custody_term_is_never_a_valuation.gd.uid
+?? game/tests/modules/forage/test_gather_reachability_corpus.gd
+?? game/tests/modules/forage/test_gather_reachability_corpus.gd.uid
+?? game/tests/modules/market/test_market_favour.gd
+?? game/tests/modules/market/test_market_favour.gd.uid
+?? game/tests/modules/market/test_zz_probe_def0128.gd.uid
+?? game/tests/modules/mods/test_dlc_example.gd
+?? game/tests/modules/mods/test_dlc_example.gd.uid
+?? game/tests/modules/npc/test_npc_alive.gd
+?? game/tests/modules/npc/test_npc_alive.gd.uid
+?? game/tests/modules/qi_cultivation/test_zzz_scratch_probe.gd.uid
+?? game/tests/modules/social/test_pursuit.gd
+?? game/tests/modules/social/test_pursuit.gd.uid
+?? game/tests/modules/social/test_social_alignment_matrix.gd
+?? game/tests/modules/social/test_social_alignment_matrix.gd.uid
+?? game/tests/modules/status/test_zz_mind_probe.gd.uid
+?? game/tests/ui/test_clan_screen_press.gd
+?? game/tests/ui/test_clan_screen_press.gd.uid
+?? marketout.txt
+?? scratch_diag_stat.txt
+?? scratch_run.txt
+?? scratch_test_out.txt
+?? scratchpad_acc_body.txt
+?? scratchpad_acc_combat.txt
+?? scratchpad_acc_elem.txt
+?? scratchpad_acc_status.txt
+?? scratchpad_app1.txt
+?? scratchpad_app2.txt
+?? scratchpad_app3.txt
+?? scratchpad_app4.txt
+?? scratchpad_app4_sum.txt
+?? scratchpad_app_list.txt
+?? scratchpad_arch1.txt
+?? scratchpad_base_combat.txt
+?? scratchpad_base_elem.txt
+?? scratchpad_fmt1.txt
+?? scratchpad_gs_after_fmt.txt
+?? scratchpad_import.txt
+?? scratchpad_market1.txt
+?? scratchpad_probe.txt
+?? scratchpad_probe2.txt
+?? scratchpad_probe3.txt
+?? scratchpad_run1.txt
+?? scratchpad_run2.txt
+?? scratchpad_run3.txt
+?? scratchpad_run4.txt
+?? scratchpad_run5.txt
+?? scratchpad_sfa.diff
+?? tools/race_from_lore.py
