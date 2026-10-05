@@ -33,12 +33,15 @@ extends RefCounted
 
 const EVENTS_ROOT := "res://data/event/events"
 const EVENT_SCRIPT_CLASS := "EventDef"
+const EVENT_ID_FIELD := "id"
+const BASE_OWNER := "base"
 
 static var shared: EventCatalog = null
 
 ## Overlay stack for the event family (ADR 0184 §5). Empty means "not wired
-## yet": `_ensure_loaded` scans only the authored EVENTS_ROOT. When set, the
-## overlay roots are scanned AFTER the base root so mod content is visible.
+## yet": `_ensure_loaded` merges only the authored EVENTS_ROOT. When set, the
+## overlay roots merge AFTER the base root so mod content is visible, with the
+## declared-override collision policy CatalogOverlay enforces.
 static var _overlay_stack: Array = []
 
 var _events: Dictionary = {}
@@ -48,19 +51,35 @@ var _loaded: bool = false
 
 
 ## Set the family's overlay stack: ordered rows of `{dir, owner,
-## declared_overrides}`. Later rows overlay earlier ones.
+## declared_overrides, id_field}`. Later rows overlay earlier ones; an id
+## collision needs a declared override on the LATER root or the merge fails
+## loudly (ADR 0240).
 static func set_overlay_roots(stack: Array) -> void:
 	_overlay_stack = stack
 
 
-## The directories to scan: base root first, then overlay roots in order.
-func _scan_roots() -> Array[String]:
-	var out: Array[String] = [EVENTS_ROOT]
+## The merge stack: the base root as a base-owned row, then the overlay rows
+## in order. The base row carries the family's default id_field so the merge
+## reads the correct property even when an overlay row omits it.
+func _merge_stack() -> Array:
+	var stack: Array = [
+		{
+			"dir": EVENTS_ROOT,
+			"owner": BASE_OWNER,
+			"declared_overrides": [],
+			"id_field": EVENT_ID_FIELD
+		}
+	]
 	for row in _overlay_stack:
-		var dir := String(row.get("dir", ""))
-		if dir != "":
-			out.append(dir)
-	return out
+		stack.append(row)
+	return stack
+
+
+## Merge the family's overlay stack through CatalogOverlay (ADR 0184 §5).
+## Returns CatalogOverlay.merge's dictionary unchanged: `{ok, reason, detail,
+## merged, paths, owners}`.
+func _overlay_merge() -> Dictionary:
+	return CatalogOverlay.merge(_merge_stack(), EVENT_SCRIPT_CLASS, EVENT_ID_FIELD)
 
 
 static func instance() -> EventCatalog:
@@ -150,18 +169,14 @@ func _ensure_loaded() -> void:
 	if _loaded:
 		return
 	_loaded = true
-	for root in _scan_roots():
-		for path in _scan(root):
-			if not path.get_file().ends_with(".tres"):
-				continue
-			if not FileAccess.get_file_as_string(path).contains(
-				'script_class="%s"' % EVENT_SCRIPT_CLASS
-			):
-				continue
-			var def := load(path) as EventDef
-			if def == null or def.id == &"":
-				continue
-			_admit(def, path)
+	var merged := _overlay_merge()
+	if not bool(merged.get("ok", false)):
+		push_error("EventCatalog: %s" % String(merged.get("detail", "")))
+		return
+	for entry in merged["merged"]:
+		var def := load(String(entry["path"])) as EventDef
+		if def != null:
+			_admit(def, String(entry["path"]))
 
 
 ## Accept a def only if it is well-formed. `register` is the escape hatch for a
@@ -223,31 +238,5 @@ func _sorted_ids(ids: Array[StringName]) -> Array[StringName]:
 ## disagree about what is broken.
 func _sorted_keys(keys: Array) -> Array:
 	var out: Array = keys.duplicate()
-	out.sort()
-	return out
-
-
-## Every file under `root`, recursively, in sorted order. Iterative on purpose: a
-## recursive walk is a `while`-shaped wait, and `DirAccess` ordering is only
-## deterministic once the list is sorted.
-func _scan(root: String) -> Array[String]:
-	var out: Array[String] = []
-	var pending: Array[String] = [root]
-	while not pending.is_empty():
-		var current: String = pending.pop_back()
-		var dir := DirAccess.open(current)
-		if dir == null:
-			continue
-		dir.list_dir_begin()
-		var entry := dir.get_next()
-		while entry != "":
-			var path: String = current.path_join(entry)
-			if dir.current_is_dir():
-				if not entry.begins_with("."):
-					pending.append(path)
-			elif entry.ends_with(".tres"):
-				out.append(path)
-			entry = dir.get_next()
-		dir.list_dir_end()
 	out.sort()
 	return out

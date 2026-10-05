@@ -107,6 +107,44 @@ func test_attach_hooks_are_collected_with_callable() -> void:
 	assert_eq(out["attach_hooks"][1]["callable"], hook_b, "second hook callable preserved")
 
 
+func test_subscriptions_are_collected_in_load_order() -> void:
+	var registry := ModuleRegistry.new()
+	var sub_a := {
+		"event_bus": "NpcEvents",
+		"event_name": "npc_tracked",
+		"callable": Callable(self, "_noop"),
+	}
+	var sub_b := {
+		"event_bus": "AuctionEvents",
+		"event_name": "auction_closed",
+		"callable": Callable(self, "_noop"),
+	}
+	var a := _ctx("mod_a", registry)
+	a.subscribe(sub_a)
+	var b := _ctx("mod_b", registry)
+	b.subscribe(sub_b)
+	var out := ModRuntime.finalize([a, b], registry)
+	assert_eq(out["subscriptions"].size(), 2, "both subscriptions collected")
+	assert_eq(String(out["subscriptions"][0]["event_bus"]), "NpcEvents", "first subscription bus")
+	assert_eq(
+		String(out["subscriptions"][0]["event_name"]), "npc_tracked", "first subscription event"
+	)
+	assert_eq(out["subscriptions"][0]["callable"], sub_a["callable"], "first callable preserved")
+	assert_eq(
+		String(out["subscriptions"][1]["event_bus"]), "AuctionEvents", "second subscription bus"
+	)
+	assert_eq(
+		String(out["subscriptions"][1]["event_name"]), "auction_closed", "second subscription event"
+	)
+	assert_eq(out["subscriptions"][1]["callable"], sub_b["callable"], "second callable preserved")
+
+
+func test_finalize_on_no_contexts_returns_empty_subscriptions() -> void:
+	var registry := ModuleRegistry.new()
+	var out := ModRuntime.finalize([], registry)
+	assert_eq(out["subscriptions"].size(), 0, "no subscriptions from no contexts")
+
+
 func test_finalize_skips_a_null_context() -> void:
 	var registry := ModuleRegistry.new()
 	var a := _ctx("mod_a", registry)

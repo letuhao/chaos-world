@@ -12,15 +12,17 @@ extends RefCounted
 
 ## Aggregate `contexts` (in load order) into the runtime registrations.
 ## `registry` is the shared ModuleRegistry the contexts registered through.
-## Returns `{content_roots, modules, screens, attach_hooks}`:
+## Returns `{content_roots, modules, screens, attach_hooks, subscriptions}`:
 ##   content_roots: {family: Array[{dir, owner, declared_overrides}]}
 ##   modules: ModuleRegistry.order() — {ok, order, reason, detail}
 ##   screens: Array[{id, scene_path, label}]
 ##   attach_hooks: Array[{phase, callable}]
+##   subscriptions: Array[{event_bus, event_name, callable}]
 static func finalize(contexts: Array, registry: ModuleRegistry) -> Dictionary:
 	var content_roots := {}
 	var screens: Array[Dictionary] = []
 	var attach_hooks: Array[Dictionary] = []
+	var subscriptions: Array[Dictionary] = []
 	for ctx in contexts:
 		if ctx == null:
 			continue
@@ -50,10 +52,22 @@ static func finalize(contexts: Array, registry: ModuleRegistry) -> Dictionary:
 					}
 				)
 			)
+		for row in ctx.subscriptions:
+			(
+				subscriptions
+				. append(
+					{
+						"event_bus": String(row.get("event_bus", "")),
+						"event_name": String(row.get("event_name", "")),
+						"callable": row.get("callable", Callable()),
+					}
+				)
+			)
 	return {
 		"content_roots": content_roots,
 		"modules": registry.order(),
 		"screens": screens,
 		"attach_hooks": attach_hooks,
+		"subscriptions": subscriptions,
 		"registry": registry,
 	}

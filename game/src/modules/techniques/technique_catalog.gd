@@ -14,13 +14,15 @@ extends RefCounted
 
 const TECHNIQUES_ROOT := "res://data/techniques"
 const TECHNIQUE_SCRIPT_CLASS := "TechniqueDef"
+const TECHNIQUE_ID_FIELD := "id"
+const BASE_OWNER := "base"
 
 static var shared: TechniqueCatalog = null
 
 ## Overlay stack for the techniques family (ADR 0184 §5). Empty means "not
-## wired yet": `_ensure_loaded` scans only the authored TECHNIQUES_ROOT. When
-## set, the overlay roots are scanned AFTER the base root so mod content is
-## visible.
+## wired yet": `_ensure_loaded` merges only the authored TECHNIQUES_ROOT. When
+## set, the overlay roots merge AFTER the base root so mod content is visible,
+## with the declared-override collision policy CatalogOverlay enforces.
 static var _overlay_stack: Array = []
 
 var _definitions: Dictionary = {}
@@ -32,12 +34,15 @@ var _loaded: bool = false
 
 
 ## Set the family's overlay stack: ordered rows of `{dir, owner,
-## declared_overrides, id_field}`. Later rows overlay earlier ones.
+## declared_overrides, id_field}`. Later rows overlay earlier ones; an id
+## collision needs a declared override on the LATER root or the merge fails
+## loudly (ADR 0240).
 static func set_overlay_roots(stack: Array) -> void:
 	_overlay_stack = stack
 
 
 ## The directories to scan: base root first, then overlay roots in order.
+## Used by the lazy per-id load in `definition`, not by `_ensure_loaded`.
 func _scan_roots() -> Array[String]:
 	var out: Array[String] = [TECHNIQUES_ROOT]
 	for row in _overlay_stack:
@@ -45,6 +50,30 @@ func _scan_roots() -> Array[String]:
 		if dir != "":
 			out.append(dir)
 	return out
+
+
+## The merge stack: the base root as a base-owned row, then the overlay rows
+## in order. The base row carries the family's default id_field so the merge
+## reads the correct property even when an overlay row omits it.
+func _merge_stack() -> Array:
+	var stack: Array = [
+		{
+			"dir": TECHNIQUES_ROOT,
+			"owner": BASE_OWNER,
+			"declared_overrides": [],
+			"id_field": TECHNIQUE_ID_FIELD,
+		}
+	]
+	for row in _overlay_stack:
+		stack.append(row)
+	return stack
+
+
+## Merge the family's overlay stack through CatalogOverlay (ADR 0184 §5).
+## Returns CatalogOverlay.merge's dictionary unchanged: `{ok, reason, detail,
+## merged, paths, owners}`.
+func _overlay_merge() -> Dictionary:
+	return CatalogOverlay.merge(_merge_stack(), TECHNIQUE_SCRIPT_CLASS, TECHNIQUE_ID_FIELD)
 
 
 static func instance() -> TechniqueCatalog:
@@ -124,17 +153,14 @@ func _ensure_loaded() -> void:
 	if _loaded:
 		return
 	_loaded = true
-	for root in _scan_roots():
-		for path in ContentScan.files_under(root):
-			if not path.get_file().ends_with(".tres"):
-				continue
-			if not FileAccess.get_file_as_string(path).contains(
-				'script_class="%s"' % TECHNIQUE_SCRIPT_CLASS
-			):
-				continue
-			var def := load(path) as TechniqueDef
-			if def != null and def.id != &"":
-				_adopt(def)
+	var merged := _overlay_merge()
+	if not bool(merged.get("ok", false)):
+		push_error("TechniqueCatalog: %s" % String(merged.get("detail", "")))
+		return
+	for entry in merged["merged"]:
+		var def := load(String(entry["path"])) as TechniqueDef
+		if def != null and def.id != &"":
+			_adopt(def)
 
 
 ## Take one definition into BOTH maps. Every path into the catalog goes through here

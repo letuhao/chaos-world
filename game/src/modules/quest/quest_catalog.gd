@@ -15,12 +15,15 @@ extends RefCounted
 
 const QUESTS_ROOT := "res://data/quest/quests"
 const QUEST_SCRIPT_CLASS := "QuestDef"
+const QUEST_ID_FIELD := "id"
+const BASE_OWNER := "base"
 
 static var shared: QuestCatalog = null
 
 ## Overlay stack for the quest family (ADR 0184 §5). Empty means "not wired
-## yet": `_ensure_loaded` scans only the authored QUESTS_ROOT. When set, the
-## overlay roots are scanned AFTER the base root so mod content is visible.
+## yet": `_ensure_loaded` merges only the authored QUESTS_ROOT. When set, the
+## overlay roots merge AFTER the base root so mod content is visible, with the
+## declared-override collision policy CatalogOverlay enforces.
 static var _overlay_stack: Array = []
 
 var _defs: Dictionary = {}
@@ -28,19 +31,35 @@ var _loaded: bool = false
 
 
 ## Set the family's overlay stack: ordered rows of `{dir, owner,
-## declared_overrides}`. Later rows overlay earlier ones.
+## declared_overrides, id_field}`. Later rows overlay earlier ones; an id
+## collision needs a declared override on the LATER root or the merge fails
+## loudly (ADR 0240).
 static func set_overlay_roots(stack: Array) -> void:
 	_overlay_stack = stack
 
 
-## The directories to scan: base root first, then overlay roots in order.
-func _scan_roots() -> Array[String]:
-	var out: Array[String] = [QUESTS_ROOT]
+## The merge stack: the base root as a base-owned row, then the overlay rows
+## in order. The base row carries the family's default id_field so the merge
+## reads the correct property even when an overlay row omits it.
+func _merge_stack() -> Array:
+	var stack: Array = [
+		{
+			"dir": QUESTS_ROOT,
+			"owner": BASE_OWNER,
+			"declared_overrides": [],
+			"id_field": QUEST_ID_FIELD
+		}
+	]
 	for row in _overlay_stack:
-		var dir := String(row.get("dir", ""))
-		if dir != "":
-			out.append(dir)
-	return out
+		stack.append(row)
+	return stack
+
+
+## Merge the family's overlay stack through CatalogOverlay (ADR 0184 §5).
+## Returns CatalogOverlay.merge's dictionary unchanged: `{ok, reason, detail,
+## merged, paths, owners}`.
+func _overlay_merge() -> Dictionary:
+	return CatalogOverlay.merge(_merge_stack(), QUEST_SCRIPT_CLASS, QUEST_ID_FIELD)
 
 
 static func instance() -> QuestCatalog:
@@ -93,17 +112,14 @@ func _ensure_loaded() -> void:
 	if _loaded:
 		return
 	_loaded = true
-	for root in _scan_roots():
-		for path in _scan(root):
-			if not path.get_file().ends_with(".tres"):
-				continue
-			if not FileAccess.get_file_as_string(path).contains(
-				'script_class="%s"' % QUEST_SCRIPT_CLASS
-			):
-				continue
-			var def := load(path) as QuestDef
-			if def != null and def.id != &"":
-				_defs[String(def.id)] = def
+	var merged := _overlay_merge()
+	if not bool(merged.get("ok", false)):
+		push_error("QuestCatalog: %s" % String(merged.get("detail", "")))
+		return
+	for entry in merged["merged"]:
+		var def := load(String(entry["path"])) as QuestDef
+		if def != null and def.id != &"":
+			_defs[String(def.id)] = def
 
 
 ## Keys as StringNames ordered by their STRING value, not by `Array.sort()`: the
@@ -118,14 +134,3 @@ func _sorted_keys(source: Dictionary) -> Array[StringName]:
 	for key in strings:
 		out.append(StringName(key))
 	return out
-
-
-## Every `.tres`-eligible path under `root`. The directory listing is bounded by
-## what is on disk and each level is materialized into an `Array`, so the walk
-## has a `for` and a real size instead of an open-ended cursor.
-##
-## Delegates to `ContentScan`, which is the single depth-capped implementation
-## every catalog shares. The local recursion this replaced had no depth cap, so a
-## symlink loop would have recursed until the stack died.
-func _scan(root: String) -> Array[String]:
-	return ContentScan.files_under_unsorted(root)

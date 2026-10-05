@@ -42,12 +42,16 @@ extends RefCounted
 const CAST_ROOT := "res://data/npc/cast"
 ## The `script_class` a `.tres` must declare to be read as an individual.
 const NPC_SCRIPT_CLASS := "NpcDef"
+## The def property holding the npc id (ADR 0240).
+const NPC_ID_FIELD := "npc_id"
+const BASE_OWNER := "base"
 
 static var _shared: NpcCatalog = null
 
 ## Overlay stack for the npc family (ADR 0184 §5). Empty means "not wired
-## yet": `load_authored` scans only the authored CAST_ROOT. When set, the
-## overlay roots are scanned AFTER the base root so mod content is visible.
+## yet": `load_authored` merges only the authored CAST_ROOT. When set, the
+## overlay roots merge AFTER the base root so mod content is visible, with the
+## declared-override collision policy CatalogOverlay enforces.
 static var _overlay_stack: Array = []
 
 var _defs: Dictionary = {}
@@ -55,19 +59,30 @@ var _loaded: bool = false
 
 
 ## Set the family's overlay stack: ordered rows of `{dir, owner,
-## declared_overrides, id_field}`. Later rows overlay earlier ones.
+## declared_overrides, id_field}`. Later rows overlay earlier ones; an id
+## collision needs a declared override on the LATER root or the merge fails
+## loudly (ADR 0240).
 static func set_overlay_roots(stack: Array) -> void:
 	_overlay_stack = stack
 
 
-## The directories to scan: base root first, then overlay roots in order.
-func _scan_roots() -> Array[String]:
-	var out: Array[String] = [CAST_ROOT]
+## The merge stack: the base root as a base-owned row, then the overlay rows
+## in order. The base row carries the family's default id_field so the merge
+## reads the correct property even when an overlay row omits it.
+func _merge_stack() -> Array:
+	var stack: Array = [
+		{"dir": CAST_ROOT, "owner": BASE_OWNER, "declared_overrides": [], "id_field": NPC_ID_FIELD}
+	]
 	for row in _overlay_stack:
-		var dir := String(row.get("dir", ""))
-		if dir != "":
-			out.append(dir)
-	return out
+		stack.append(row)
+	return stack
+
+
+## Merge the family's overlay stack through CatalogOverlay (ADR 0184 §5).
+## Returns CatalogOverlay.merge's dictionary unchanged: `{ok, reason, detail,
+## merged, paths, owners}`.
+func _overlay_merge() -> Dictionary:
+	return CatalogOverlay.merge(_merge_stack(), NPC_SCRIPT_CLASS, NPC_ID_FIELD)
 
 
 static func instance() -> NpcCatalog:
@@ -86,21 +101,13 @@ func load_authored() -> int:
 	if _loaded:
 		return _defs.size()
 	_loaded = true
-	for root in _scan_roots():
-		for path in _scan(root):
-			if not path.get_file().ends_with(".tres"):
-				continue
-			if not FileAccess.get_file_as_string(path).contains(
-				'script_class="%s"' % NPC_SCRIPT_CLASS
-			):
-				continue
-			var def := load(path) as NpcDef
-			if def == null:
-				push_warning("NpcCatalog: skipped '%s', which is not an NpcDef" % path)
-				continue
-			if def.npc_id == &"":
-				push_warning("NpcCatalog: skipped '%s', which carries no npc_id" % path)
-				continue
+	var merged := _overlay_merge()
+	if not bool(merged.get("ok", false)):
+		push_error("NpcCatalog: %s" % String(merged.get("detail", "")))
+		return _defs.size()
+	for entry in merged["merged"]:
+		var def := load(String(entry["path"])) as NpcDef
+		if def != null and def.npc_id != &"":
 			_defs[String(def.npc_id)] = def
 	return _defs.size()
 
@@ -139,10 +146,3 @@ func has_definition(npc_id: StringName) -> bool:
 func reset() -> void:
 	_defs.clear()
 	_loaded = false
-
-
-## `ContentScan` is the ONE walker every catalog uses. A local `_scan` here would be
-## a second implementation with its own depth rule, which is exactly what
-## `tests/arch_rules/test_no_unbounded_wait.gd` cannot see through.
-func _scan(root: String) -> Array[String]:
-	return ContentScan.files_under(root)
