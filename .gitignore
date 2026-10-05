@@ -7,6 +7,16 @@ build/
 # Private generated character asset folders. Keep the catalog and tags at the parent path tracked.
 game/assets/characters/*/
 
+# ...except the committed FALLBACK faces. Every authored PortraitDef under
+# res://data/portraits/ is tracked and names a layer, and the art those layers point at is
+# untracked by the rule above — so on a clean clone every portrait is an empty box, including
+# the ones that resolve on the machine that generated them. These five are ~2 KB silhouettes,
+# not art: they exist so an authored resource never names a file the repository does not have
+# (ADR 0238). Real renders stay private and regenerable.
+!game/assets/characters/portraits/
+!game/assets/characters/portraits/*.png
+!game/assets/characters/portraits/*.png.import
+
 # Private content repo (unique characters + exclusive content, not shared)
 game/assets/characters/unique/
 
