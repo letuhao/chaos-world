@@ -1123,16 +1123,33 @@ func _bind_route_screen(route_id: StringName, screen: Control) -> void:
 			# arms up: `app/` is the one layer allowed to name the cast, the facade and the
 			# screen at once.
 			#
-			# ## And why it is a bare static reference rather than a lambda
+			# ## Why a closure here, when the seams above are bare static references
 			#
-			# `EconomyBoot._install_minter` and `NpcBoot` both document the same reason: a
-			# typed lambda whose body calls another script's static function killed the
-			# process with an access violation on the shell's first frame. `NpcApi.capturable`
-			# takes no argument and returns an Array, so it hands over verbatim.
+			# `EconomyBoot._install_minter` and `NpcBoot` both document why a typed lambda
+			# whose body calls another script's static function killed the process with an
+			# access violation on the shell's first frame. That is why the OTHER seams here
+			# hand over a bare static reference. This one is different: the screen wants a
+			# `Callable() -> Array`, and the value it needs is one KEY of a facade read rather
+			# than a whole facade verb — `NpcApi` already sits on the twelve-method cap, so
+			# the cast is published as `presence_here()["capturable"]`. There is no bare
+			# reference to hand over because there is no method to hand it over.
+			#
+			# `_capturable_cast()` is the seam-free equivalent and is what the binding hands
+			# over, so an unwired custody page says "nothing to capture" rather than crashing.
 			screen.call("setup", _actor)
-			screen.call("bind_capture_options", Callable(NpcApi, "capturable"))
+			screen.call("bind_capture_options", _capturable_cast)
 		_:
 			screen.call("setup", _actor)
+
+
+## The capturable half of the cast, for the custody screen's capture seam.
+##
+## A named method rather than a lambda inline at the call site, for the reason every other
+## seam in this file documents: a lambda whose body calls another script's static function
+## killed the process with an access violation on the shell's first frame. A named static
+## has no closure environment to get wrong.
+func _capturable_cast() -> Array:
+	return NpcApi.presence_here().get("capturable", []) as Array
 
 
 ## Free everything this root built that is not a node the stack owns. Idempotent, and

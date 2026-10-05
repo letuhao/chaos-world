@@ -530,19 +530,24 @@ func test_settling_the_term_is_all_or_nothing_from_the_screen_too() -> void:
 ## DEF-0310: `stage_capture` had no production caller, `_capture_subject` was never set, the
 ## capture control was permanently disabled, and every other case in this file stayed green.
 ## So this body deliberately uses **no fixture callable and no typed id**: it binds the REAL
-## producer callable the composition root installs (`Callable(NpcApi, "capturable")`), reads
-## the first subject off the page's OWN published list, and presses `Accept`.
+## producer callable the composition root installs (the capturable half of
+## `NpcApi.presence_here`), reads the first subject off the page's OWN published list, and
+## presses `Accept`.
 ##
 ## A fixture seam would prove a fixture agrees with itself — exactly the class of test that let
 ## a page whose primary verb could never fire survive an audit. This one fails the moment the
-## producer is removed, whether that means `NpcApi.capturable` answering nothing, the cast
-## authoring no capture term, or the root not installing the seam.
+## producer is removed, whether that means the cast answering nothing, the cast authoring no
+## capture term, or the root not installing the seam.
 func test_the_page_takes_a_subject_from_the_producer_and_the_ledger_says_so() -> void:
-	# The production read path for the cast: `NpcBoot.install` calls exactly this, so a
-	# suite must not depend on some other suite having walked the tree first.
+	# The production read path for the cast, the same call the composition root makes.
+	# `NpcApi` sits on the twelve-method cap, so the cast is a KEY of the one roster read
+	# rather than a thirteenth verb - a `Callable(NpcApi, "capturable")` here would be an
+	# invalid callable and this test would pass for the wrong reason.
 	NpcCatalog.instance().load_authored()
 	var screen := _bound()
-	screen.bind_capture_options(Callable(NpcApi, "capturable"))
+	screen.bind_capture_options(
+		func() -> Array: return NpcApi.presence_here().get("capturable", []) as Array
+	)
 
 	var listed := screen.summary()
 	assert_eq(
@@ -622,7 +627,9 @@ func test_with_no_producer_bound_the_page_offers_nothing_and_says_which() -> voi
 func test_unbinding_the_producer_withdraws_the_arming_it_published() -> void:
 	NpcCatalog.instance().load_authored()
 	var screen := _bound()
-	screen.bind_capture_options(Callable(NpcApi, "capturable"))
+	screen.bind_capture_options(
+		func() -> Array: return NpcApi.presence_here().get("capturable", []) as Array
+	)
 	assert_ne(int(screen.summary()["available_count"]), 0, "the cast offers something")
 
 	screen.bind_capture_options(Callable())

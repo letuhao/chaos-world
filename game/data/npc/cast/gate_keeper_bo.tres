@@ -35,3 +35,5 @@ realm_id = &"qi_refining"
 base = {"physique": 12.0, "will": 14.0}
 stages = Array[NpcStageDef]([SubResource("Stage_silent"), SubResource("Stage_watching")])
 initial_stage = &"silent"
+capture_term = &"custody"
+capture_periods = 6

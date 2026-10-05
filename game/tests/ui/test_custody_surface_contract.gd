@@ -609,9 +609,18 @@ func test_the_composition_root_binds_the_custody_route_through_its_one_seam() ->
 	# not a test. This one fails if the arm is deleted, renamed, or pointed at nothing.
 
 	assert_eq(
-		source.contains('screen.call("bind_capture_options", Callable(NpcApi, "capturable"))'),
+		source.contains('screen.call("bind_capture_options", _capturable_cast)'),
 		true,
-		"the root hands the page the capturable list, as a Callable over NpcApi.capturable"
+		(
+			"the root hands the page the capturable list, and the call is on a NAMED method - "
+			+ "an inline lambda calling another script's static is the access-violation shape "
+			+ "every other seam in this file documents"
+		)
+	)
+	assert_eq(
+		source.contains("func _capturable_cast() -> Array:"),
+		true,
+		"and that method exists, so the binding resolves to something"
 	)
 
 	assert_eq(
