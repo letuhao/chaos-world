@@ -254,11 +254,7 @@ func test_the_systemic_quest_is_never_offered_so_only_a_recorded_fact_can_finish
 		false,
 		"and it is NOT complete: the completion dispatch had already run for this fact"
 	)
-	assert_eq(
-		_active(actor).size(),
-		1,
-		"one arrival, and only the quest this fact was true for"
-	)
+	assert_eq(_active(actor).size(), 1, "one arrival, and only the quest this fact was true for")
 	assert_eq(
 		String(QuestApi.summary(actor)["quests"][String(QUEST)]["kind"]),
 		String(QuestDef.KIND_SYSTEMIC),
@@ -576,7 +572,12 @@ func test_the_bridge_is_not_installed_by_default_and_an_unbridged_fact_completes
 ## it changes it once. Removing it stops completions; reinstalling resumes them, and
 ## the once-guard is untouched — a fact already spent cannot pay a second grant.
 func test_the_install_is_idempotent_and_completion_is_still_decided_once() -> void:
-	expect_assertions(9)
+	# Seven, and counted deliberately: the body below makes exactly seven. A floor
+	# that overstates it reports "did not finish its body" for a test that ran to
+	# the end, which reads as a defect in the thing under test rather than in the
+	# count. The floor is worth keeping — it is the only thing that distinguishes an
+	# aborted body from a completed one, since an abort does NOT fail an assertion.
+	expect_assertions(7)
 	var actor := QuestFixtureCatalog.hero()
 	QuestProgram.new(actor).accept(QUEST)
 
