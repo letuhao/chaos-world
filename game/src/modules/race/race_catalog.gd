@@ -10,12 +10,15 @@ extends RefCounted
 
 const RACES_ROOT := "res://data/races"
 const RACE_SCRIPT_CLASS := "RaceDef"
+const RACE_ID_FIELD := "id"
+const BASE_OWNER := "base"
 
 static var shared: RaceCatalog = null
 
 ## Overlay stack for the race family (ADR 0184 §5). Empty means "not wired
-## yet": `_ensure_loaded` scans only the authored RACES_ROOT. When set, the
-## overlay roots are scanned AFTER the base root so mod content is visible.
+## yet": `_ensure_loaded` merges only the authored RACES_ROOT. When set, the
+## overlay roots merge AFTER the base root so mod content is visible, with the
+## declared-override collision policy CatalogOverlay enforces.
 static var _overlay_stack: Array = []
 
 var _races: Dictionary = {}
@@ -23,19 +26,35 @@ var _loaded: bool = false
 
 
 ## Set the family's overlay stack: ordered rows of `{dir, owner,
-## declared_overrides, id_field}`. Later rows overlay earlier ones.
+## declared_overrides, id_field}`. Later rows overlay earlier ones; an id
+## collision needs a declared override on the LATER root or the merge fails
+## loudly (ADR 0240).
 static func set_overlay_roots(stack: Array) -> void:
 	_overlay_stack = stack
 
 
-## The directories to scan: base root first, then overlay roots in order.
-func _scan_roots() -> Array[String]:
-	var out: Array[String] = [RACES_ROOT]
+## The merge stack: the base root as a base-owned row, then the overlay rows
+## in order. The base row carries the family's default id_field so the merge
+## reads the correct property even when an overlay row omits it.
+func _merge_stack() -> Array:
+	var stack: Array = [
+		{
+			"dir": RACES_ROOT,
+			"owner": BASE_OWNER,
+			"declared_overrides": [],
+			"id_field": RACE_ID_FIELD,
+		}
+	]
 	for row in _overlay_stack:
-		var dir := String(row.get("dir", ""))
-		if dir != "":
-			out.append(dir)
-	return out
+		stack.append(row)
+	return stack
+
+
+## Merge the family's overlay stack through CatalogOverlay (ADR 0184 §5).
+## Returns CatalogOverlay.merge's dictionary unchanged: `{ok, reason, detail,
+## merged, paths, owners}`.
+func _overlay_merge() -> Dictionary:
+	return CatalogOverlay.merge(_merge_stack(), RACE_SCRIPT_CLASS, RACE_ID_FIELD)
 
 
 static func instance() -> RaceCatalog:
@@ -82,18 +101,11 @@ func _ensure_loaded() -> void:
 	if _loaded:
 		return
 	_loaded = true
-	for root in _scan_roots():
-		for path in _scan(root):
-			if not path.get_file().ends_with(".tres"):
-				continue
-			if not FileAccess.get_file_as_string(path).contains(
-				'script_class="%s"' % RACE_SCRIPT_CLASS
-			):
-				continue
-			var def := load(path) as RaceDef
-			if def != null and def.id != &"":
-				_races[String(def.id)] = def
-
-
-func _scan(root: String) -> Array[String]:
-	return ContentScan.files_under(root)
+	var merged := _overlay_merge()
+	if not bool(merged.get("ok", false)):
+		push_error("RaceCatalog: %s" % String(merged.get("detail", "")))
+		return
+	for entry in merged["merged"]:
+		var def := load(String(entry["path"])) as RaceDef
+		if def != null and def.id != &"":
+			_races[String(def.id)] = def
