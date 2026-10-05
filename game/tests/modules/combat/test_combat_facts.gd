@@ -263,7 +263,15 @@ func test_no_duel_fact_is_named_outside_the_one_fact_file_or_the_fate_mapping() 
 			if not _names_in_code(path, fact):
 				continue
 			naming.append(path)
-			if FileAccess.get_file_as_string(path).contains("WorldFact.record"):
+			# **CODE lines only.** This read the file's RAW TEXT, so every `##` line
+			# counting as a writer made `destiny_projection.gd` a second writer of
+			# `duels_won` — its docstring discusses `WorldFact.record` in six places
+			# while calling it zero times, and the assertion read `expected 1, got 2`
+			# for both facts. It is the same defect this program has now paid for
+			# three times in three different guards (`split("#")[0]` in the combat
+			# earn-source census, the reach walker's `in [` test, and the arch
+			# span guard's SELF_EXEMPT): prose that DISCUSSES a call is not a call.
+			if _calls_in_code(path, "WorldFact.record"):
 				reaching += 1
 		naming.sort()
 		assert_eq(reaching, 1, "exactly one file writes '%s'" % String(fact))
@@ -299,9 +307,31 @@ func test_no_duel_fact_is_named_outside_the_one_fact_file_or_the_fate_mapping() 
 ## Whether `path` names `id` in a line of CODE. One line at a time with the comment half
 ## stripped, the way every other rule in `tests/arch_rules` reads source, so a file that
 ## merely DISCUSSES the id is not counted as naming it.
+##
+## The comment half is a WHOLE-LINE `##`, not everything after the first `#` on a line.
+## `line.split("#")[0]` keeps only the text before the first `#` ANYWHERE in the line,
+## so `duels_won = 1  # the counter for duels` reads as naming nothing while
+## `## duels_won` reads as naming it whenever the `#` happens to come first.
 func _names_in_code(path: String, id: StringName) -> bool:
 	for line in FileAccess.get_file_as_string(path).split("\n"):
-		if line.split("#")[0].contains(String(id)):
+		if line.strip_edges().begins_with("#"):
+			continue
+		if id in line:
+			return true
+	return false
+
+
+## Whether `path` CALLS `needle` in code, as opposed to discussing it.
+##
+## A stricter reader than `_names_in_code` on purpose, and the difference is the whole
+## point: `needle` here is a CALL (`WorldFact.record(`), so it requires the open paren
+## that makes it one. That alone separates `combat_facts.gd`, which calls it, from
+## `destiny_projection.gd`, whose prose names it six times and calls it never.
+func _calls_in_code(path: String, needle: String) -> bool:
+	for line in FileAccess.get_file_as_string(path).split("\n"):
+		if line.strip_edges().begins_with("#"):
+			continue
+		if line.contains("%s(" % needle):
 			return true
 	return false
 
