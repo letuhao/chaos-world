@@ -56,15 +56,44 @@ static func quote(
 	# `sell_price(u) * n`, NOT `sell_price(u * n)`. That is why the coins are taken from the
 	# one spread function rather than recomputed from `unit_price` here: a `sell_price(total)`
 	# would be a silently different shop for every quantity over one.
+	#
+	# ## The ONE call site of the buyer-dependent modifier (ADR 0250)
+	#
+	# The factor is read ONCE, before the row loop, and is `1.0` whenever no reader is
+	# bound — so with nothing installed every coin below is exactly what it was before
+	# this ADR, and the ~290 existing market assertions are the regression guard rather
+	# than something they have to be taught about.
+	#
+	# ## It is the COUNTER's regard, and the DIRECTION is the counterpart
+	#
+	# `shop_actor` is the party whose regard decides the rate: a merchant likes some
+	# customers and not others, and nobody prices a shop's regard of the player. Passing
+	# `player` when the shop is buying would mean the SHOP pays out on the buyer's
+	# reputation — a merchant pays a bigger cut to somebody it dislikes — which no
+	# merchant honours and which the reader cannot even reach.
+	#
+	# `shop_is_seller` is the SIGN, and it is load-bearing rather than cosmetic: with one
+	# sign in both directions a liked buyer pays MORE *and* is paid MORE for the same
+	# good, which is a strict best response with no counter-force. The test asserts both
+	# halves of the pair.
+	#
+	# ## And it scales the COIN COUNT, never the unit price
+	#
+	# The goods leg still travels at `EconomyValuation`'s own number, so
+	# `EconomyExchange`'s `received <= offered` guard is read in the same units it was
+	# written for and no leg can invert. Scaling `unit_price` instead would re-value the
+	# goods at ADR 0094's price AND re-value them again inside the exchange — two prices
+	# for one good, which is the ADR 0066 failure this module exists to not repeat.
+	var favour := MarketFavour.factor(shop_actor, shop_is_seller)
 	var coins := 0
 	var priced_rows: Array = []
 	for row in priced["rows"] as Array:
 		var unit := int(row["unit_price"])
 		var quantity := int(row["quantity"])
 		var row_coins := (
-			MarketSpread.sell_total(unit, quantity)
+			MarketFavour.coins(MarketSpread.sell_total(unit, quantity), favour)
 			if shop_is_seller
-			else MarketSpread.buy_total(unit, quantity)
+			else MarketFavour.coins(MarketSpread.buy_total(unit, quantity), favour)
 		)
 		coins += row_coins
 		(

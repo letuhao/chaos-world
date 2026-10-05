@@ -307,6 +307,12 @@ static func summary(actor: Actor) -> Dictionary:
 		"actor_id": String(actor.id),
 		"purse": EconomyApi.purse(actor),
 		"spread": MarketSpread.view(),
+		# The buyer-dependent modifier (ADR 0250). A READ KEY rather than a thirteenth
+		# public method, because this facade publishes exactly `rules.MAX_FACADE_PUBLIC_METHODS`
+		# verbs and one more fails `tools arch`. The seam itself is `MarketFavour`, named as a
+		# class rather than reached through here, for the same reason `AuctionEvents.shared()`
+		# is the auction's door instead of an `events()` accessor.
+		"favour": MarketFavour.view(),
 		"shops": (state["shops"] as Dictionary).keys(),
 		"shop_count": (state["shops"] as Dictionary).size(),
 		"shop_capacity": MAX_SHOPS,
