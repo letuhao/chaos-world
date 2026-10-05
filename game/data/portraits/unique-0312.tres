@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="PortraitDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/core/portrait_def.gd" id="1_portrait"]
+
+[resource]
+script = ExtResource("1_portrait")
+id = &"unique-0312"
+display_name = "Fenner Ostrel"
+race_id = &"emberblood"
+visual_traits = Array[StringName]([&"burden:the-reserve-is-the-body-and-a-body-cannot-be-topped-up", &"class:fastest-refiner-who-has-refined-nothing", &"constraint:his-gift-costs-nothing-and-his-path-costs-everything", &"gift:reads-intent-at-the-speed-of-a-struck-match", &"hazard:the-furnace-is-lit-by-the-first-gate-and-never-put-out", &"path:unaffiliated", &"role:the-one-who-says-do-not-go", &"standing:the-second-of-the-two-recorded-bodies"])
+layer_paths = Array[String](["res://assets/characters/portraits/emberblood.png"])
+palette_key = &""

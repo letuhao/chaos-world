@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="PortraitDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/core/portrait_def.gd" id="1_portrait"]
+
+[resource]
+script = ExtResource("1_portrait")
+id = &"unique-0227"
+display_name = "Sindra Fesk"
+race_id = &"tidecaller"
+visual_traits = Array[StringName]([&"burden:the-faith-keeps-no-record-of-who-was-seated", &"class:dissolved-with-the-office", &"gift:completes-an-observation-on-a-dry-floor", &"hazard:nothing-seated-in-her-ends-when-the-hour-ends", &"path:none", &"role:the-seated-count", &"standing:held-by-no-register-including-her-own", &"trait:arrives-empty-and-leaves-empty"])
+layer_paths = Array[String](["res://assets/characters/portraits/tidecaller.png"])
+palette_key = &""

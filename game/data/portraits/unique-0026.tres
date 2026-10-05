@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="PortraitDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/core/portrait_def.gd" id="1_portrait"]
+
+[resource]
+script = ExtResource("1_portrait")
+id = &"unique-0026"
+display_name = "Fenn Ardle"
+race_id = &"emberblood"
+visual_traits = Array[StringName]([&"burden:short-span", &"class:line-not-a-clan", &"gift:continuous-defensive-fire", &"hazard:cannot-bank-high", &"path:body-path", &"role:founding-line-member", &"standing:kept-pure-by-omission"])
+layer_paths = Array[String](["res://assets/characters/portraits/emberblood.png"])
+palette_key = &""

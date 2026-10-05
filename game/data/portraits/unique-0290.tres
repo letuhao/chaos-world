@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="PortraitDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/core/portrait_def.gd" id="1_portrait"]
+
+[resource]
+script = ExtResource("1_portrait")
+id = &"unique-0290"
+display_name = "Bearn Kolstad"
+race_id = &"stoneborn"
+visual_traits = Array[StringName]([&"burden:no-qualification-and-no-rate", &"class:finest-sounding-plate-the-builders-never-claimed", &"gift:hears-ground-vibration-better-than-anything-here", &"hazard:every-reading-he-closes-is-provisional", &"path:qi-path", &"role:the-closing-ear", &"standing:unclaimed-by-his-own-guild", &"witness:the-use-nobody-admits-to-owning"])
+layer_paths = Array[String](["res://assets/characters/portraits/stoneborn.png"])
+palette_key = &""
