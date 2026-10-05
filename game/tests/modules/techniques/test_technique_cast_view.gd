@@ -573,10 +573,10 @@ func test_an_empty_outcome_is_total_for_every_legal_call_shape() -> void:
 	assert_eq(TechniqueCastView.snapshot(null, null), {}, "a snapshot of nothing is {}")
 
 
-# --- The facade is still twelve, and this reached no new verb -------------------
+# --- The readback reached no new verb ------------------------------------------
 
 
-func test_the_facade_is_still_twelve_public_methods() -> void:
+func test_the_facade_publishes_no_cast_view_verb() -> void:
 	# The readback cost no verb. The constant below is what names it, exactly as
 	# `CASTING_COMPONENT` names the casting table and `DELIVERY` names the seam.
 	#
@@ -590,7 +590,6 @@ func test_the_facade_is_still_twelve_public_methods() -> void:
 		var method_name := String(method.get("name", ""))
 		if not method_name.begins_with("_") and not published.has(method_name):
 			published.append(method_name)
-	assert_eq(
 	for verb in ["cast", "cast_view", "damage", "resolve", "outcome"]:
 		assert_eq(published.has(verb), false, "and no '%s' verb" % verb)
 	assert_eq(String(TechniquesApi.CAST_VIEW), "technique_cast_view", "the id is spelled once")
@@ -612,4 +611,6 @@ func test_the_readback_writes_no_pool_of_its_own() -> void:
 		float(turn["remaining_health"]),
 		60.0,
 		"and the readback observed that rather than moving it again"
+	)
+t again"
 	)

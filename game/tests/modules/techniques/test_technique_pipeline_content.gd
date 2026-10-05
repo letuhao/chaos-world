@@ -553,12 +553,13 @@ func test_id_equality_still_resolves_so_an_agreeing_pair_needs_no_authoring() ->
 	)
 
 
-# --- The facade cap is still not spent ---------------------------------------
+# --- The mapping cost is priced, not published ---------------------------------
 
 
 func test_the_mapping_cost_the_facade_no_method() -> void:
 	# The mapping is a field on the def and an index on the catalog — neither is on
-	# `TechniquesApi`, which ADR 0056 pins at twelve.
+	# `TechniquesApi`, and ADR 0265 deleted the width cap that once made that the
+	# interesting claim. What holds without a ceiling is COHESION: a price nobody
+	# outside needs is a private helper, not an interface.
 	var published := _published_methods()
-	assert_eq(
 	assert_eq(published.has("delivers"), false, "the resolver is not a facade method")

@@ -125,13 +125,13 @@ func test_attach_publishes_a_casting_component_the_facade_names() -> void:
 	assert_ne(_casting(actor), null, "attach stays idempotent on the component it owns")
 
 
-func test_the_facade_still_exposes_exactly_twelve_public_methods() -> void:
-	# ADR 0056: the cap binds immediately, so the activation action had to go on the
-	# component. Read the facade's own declared surface rather than restating a
-	# number, so a future 13th method fails here rather than only at `tools arch`.
+func test_the_facade_publishes_no_activation_verb() -> void:
+	# ADR 0056: the activation action belongs on the component. Read the facade's own
+	# declared surface rather than restating a number, so this keeps measuring the seam
+	# long after the ceiling it once lived under is gone (ADR 0265 deleted the width cap).
 	var published := _published_methods()
-	# Presence pins the list, the ceiling pins the cap: both are needed, because an
-	# empty method list would otherwise satisfy the ceiling alone.
+	# An EMPTY list would satisfy a bare "no such verb" check on its own, so the verbs
+	# this seam depends on are pinned by presence first and only then denied by absence.
 	for name in [
 		"attach",
 		"codex",
@@ -148,14 +148,13 @@ func test_the_facade_still_exposes_exactly_twelve_public_methods() -> void:
 		assert_eq(published.has(name), true, "'%s' is still on the facade" % name)
 	# `technique_state` is NOT on that list and must not return. It was a pure
 	# accessor over `codex(actor).to_dict()` with zero production callers
-	# (DEF-0303), so it was removed rather than left as the twelfth method holding
-	# the cap at a number.
+	# (DEF-0303), so it was removed: an unreachable verb is an interface spent on
+	# nothing, whichever ceiling the facade happens to sit under.
 	assert_eq(
 		published.has("technique_state"),
 		false,
 		"'technique_state' is gone — it had no caller, and publishing it would have been an interface spent on nothing"
 	)
-	assert_eq(
 
 
 # --- Firing and refusing -------------------------------------------------------

@@ -459,9 +459,8 @@ func test_the_published_ladder_names_the_verb_that_climbs_it() -> void:
 ## The facade did not grow a thirteenth verb to carry any of this. Both the input and
 ## the write go through methods that already existed and production already reaches,
 ## so ADR 0204's facade-constant census has nothing new to find here.
-func test_the_facade_still_publishes_exactly_twelve_methods() -> void:
+func test_the_facade_publishes_the_upkeep_and_mastery_verbs() -> void:
 	var published := _published_methods()
-	assert_eq(
 	for name in ["settle_upkeep", "raise_mastery"]:
 		assert_eq(published.has(name), true, "'%s' is the verb that carried it" % name)
 

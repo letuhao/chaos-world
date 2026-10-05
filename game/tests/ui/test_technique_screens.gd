@@ -502,7 +502,7 @@ func test_casting_a_passive_is_refused_and_says_why() -> void:
 	)
 
 
-func test_the_facade_is_still_twelve_and_no_thirteenth_verb_was_added() -> void:
+func test_the_cast_reached_the_facade_no_further() -> void:
 	# The cast had to be reachable without growing the facade, so it is reached the way
 	# `TechniqueUpkeep` is: as a component the facade NAMES.
 	var published: Array[String] = []
@@ -510,8 +510,7 @@ func test_the_facade_is_still_twelve_and_no_thirteenth_verb_was_added() -> void:
 		var method_name := String(method.get("name", ""))
 		if not method_name.begins_with("_") and not published.has(method_name):
 			published.append(method_name)
-	assert_eq(
-	assert_eq(published.has("cast"), false, "and no thirteenth cast verb")
+	assert_eq(published.has("cast"), false, "and no per-verb cast verb on the facade")
 
 
 # --- The target is what makes the cast reach the resolver -------------------
@@ -681,15 +680,18 @@ func test_a_passive_still_gets_the_module_s_own_refusal_not_no_target() -> void:
 	)
 
 
-## The facade cap is untouched by a target seam: the target is an argument on a SCREEN
-## method, so `TechniquesApi` is still exactly twelve public methods.
+## The target seam is untouched by the facade: the target is an argument on a SCREEN
+## method, so a screen adding one needs no verb from `TechniquesApi` at all. ADR 0265
+## deleted the width cap that used to make "still exactly twelve" the claim here.
 func test_binding_a_target_added_no_facade_method() -> void:
 	var published: Array[String] = []
 	for method in load("res://src/modules/techniques/api.gd").get_script_method_list():
 		var method_name := String(method.get("name", ""))
 		if not method_name.begins_with("_") and not published.has(method_name):
 			published.append(method_name)
-	assert_eq(
+	assert_true(
+		published.size() > 0, "the facade really publishes something, so the count read nothing"
+	)
 
 
 # --- The codex shows the range a copy may read (DEF-0302) ----------------------

@@ -396,14 +396,12 @@ func test_re_studying_a_known_technique_never_lowers_its_rung() -> void:
 
 
 func test_the_delivery_seam_cost_the_facade_nothing() -> void:
-	# ADR 0056: `TechniquesApi` is at exactly 12 and may not grow a 13th method. The
-	# seam is a named CLASS, so the published surface is unchanged. It used to be
-	# "a named class plus a CONSTANT"; the `DELIVERY` constant is gone because the
-	# value `&"technique_delivery"` was read by nothing in `res://src` and could not
-	# be — the seam travels as a `ProjectSettings` Callable under
+	# ADR 0056: the seam is a named CLASS, so the published surface is unchanged.
+	# It used to be "a named class plus a CONSTANT"; the `DELIVERY` constant is gone
+	# because the value `&"technique_delivery"` was read by nothing in `res://src` and
+	# could not be — the seam travels as a `ProjectSettings` Callable under
 	# `TechniqueDelivery.SETTING`, never as that string.
 	var published := _published_methods()
-	assert_eq(
 	# The seam must be absent from the METHOD list, which is what "reached as a
 	# named type rather than published on the facade" means.
 	assert_eq(published.has("DELIVERY"), false, "the seam is not a facade method")
