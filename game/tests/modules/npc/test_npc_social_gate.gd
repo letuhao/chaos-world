@@ -342,13 +342,13 @@ func test_npc_gates_interprets_no_verb_and_hands_the_requirement_through_untouch
 func test_the_seam_has_exactly_one_production_reader_and_one_install() -> void:
 	var readers := 0
 	var installs := 0
-	var seen := 0
 	for path in ContentScan.files_under("res://src/", ".gd"):
 		var text := FileAccess.get_file_as_string(path)
 		if text.is_empty() or path.get_file() == "npc_gates.gd":
 			continue
-		seen += 1
-		var code := _code_only(text)
+		# `_code_of(TEXT)` — the scan already holds the file's contents. Passing them to the
+		# PATH-taking helper is what made this report an unbound seam on a bound one.
+		var code := _code_of(text)
 		if code.contains("NpcGates.evaluate("):
 			readers += 1
 			assert_eq(
@@ -361,8 +361,8 @@ func test_the_seam_has_exactly_one_production_reader_and_one_install() -> void:
 			assert_eq(
 				path.get_file(), "npc_boot.gd", "and the ONE install is at the composition root"
 			)
-	assert_eq(readers, 1, "exactly one production reader — an orphan gate is a dead verb (scanned %d)" % seen)
-	assert_eq(installs, 1, "and exactly one install, in app/ (scanned %d)" % seen)
+	assert_eq(readers, 1, "exactly one production reader — an orphan gate is a dead verb")
+	assert_eq(installs, 1, "and exactly one install, in app/")
 
 
 ## The reader must be bound by the COMPOSITION ROOT and by nothing else, and it must be
@@ -552,12 +552,32 @@ func _mint(def: NpcDef, role: StringName = NpcApi.ROLE_NPC) -> Actor:
 ## The shipped source with every comment removed. Asserting on prose would make a boundary
 ## check into a typo detector — and this file's own docstring NAMES every gate verb on
 ## purpose, which is exactly what the vocabulary guard must not fire on.
-func _code_only(path: String) -> String:
+##
+## ## Takes TEXT, not a path — and the two must not be confused again
+##
+## This is why the scan below passes `text` and the two single-file guards above pass
+## `"res://src/app/npc_boot.gd"`. It used to be one function that opened a path, and the
+## source scan handed it a file's whole contents as though they were a path:
+## `FileAccess.get_file_as_string(<647 files' worth of source>)` returns `""` for every
+## one of them, so the scan compared `""` against `NpcGates.evaluate(` 647 times and
+## correctly concluded that the repo contains no reader and no install. That is
+## `expected 1, got 0` on a gate that is bound — the exact "an orphan gate is a dead
+## verb" sentence, raised against a production tree that has the verb wired.
+##
+## The two entry points are now named for what they take, because a single function that
+## silently returns "" for half its call sites is how a source scan reports a healthy
+## seam as absent.
+static func _code_of(text: String) -> String:
 	var out: Array[String] = []
-	for line in FileAccess.get_file_as_string(path).split("\n"):
+	for line in text.split("\n"):
 		var trimmed := line.strip_edges()
 		if trimmed.begins_with("#"):
 			continue
 		var hash := line.find("#")
 		out.append(line.substr(0, hash) if hash >= 0 else line)
 	return "\n".join(out)
+
+
+## The comment-stripped source of one shipped file, by PATH.
+static func _code_only(path: String) -> String:
+	return _code_of(FileAccess.get_file_as_string(path))

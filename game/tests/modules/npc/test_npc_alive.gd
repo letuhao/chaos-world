@@ -87,7 +87,15 @@ var _bound: Callable = Callable()
 func setup() -> void:
 	# A FLOOR, not an exact count: one assertion every test in this suite must clear, so a
 	# body that died on its first line cannot be reported as a pass (framework.gd:135).
-	expect_assertions(3)
+	#
+	# **One, not three.** The floor is a floor, so declaring 3 here charged a failure to
+	# every test in the file that legitimately makes one or two assertions — thirteen of
+	# them, each reported as `it did not finish its body` when it in fact finished. That
+	# sentence is only true when the body DIED, so a floor high enough to flag short
+	# bodies flags complete ones too and the signal stops meaning anything. Tests whose
+	# bodies make several assertions declare their own `expect_assertions(n)`, which is
+	# where the mid-body-abort detection actually lives.
+	expect_assertions(1)
 	SocialCauseCatalog.instance().install_defaults()
 	NpcCatalog.instance().reset()
 	NpcRegistry.instance().reset()
