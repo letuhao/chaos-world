@@ -23,11 +23,62 @@ extends RefCounted
 const NODES_ROOT := "res://data/holdings/nodes"
 ## The `script_class` a `.tres` must declare to be read as a node.
 const NODE_SCRIPT_CLASS := "ResourceNodeDef"
+const BASE_OWNER := "base"
 
 static var _shared: ResourceNodeCatalog = null
 
+## The property a `ResourceNodeDef` is keyed by. NOT `id` — see `_merge_stack`.
+const NODE_ID_FIELD := "node_id"
+
+## Overlay stack for the holdings family (ADR 0184 §5). Empty means "not wired
+## yet": `_ensure_loaded` merges only the authored NODES_ROOT. When set, the
+## overlay roots merge AFTER the base root so mod content is visible, with the
+## declared-override collision policy CatalogOverlay enforces.
+static var _overlay_stack: Array = []
+
 var _defs: Dictionary = {}
 var _loaded: bool = false
+
+
+## Set the family's overlay stack: ordered rows of `{dir, owner,
+## declared_overrides, id_field}`. Later rows overlay earlier ones; an id
+## collision needs a declared override on the LATER root or the merge fails
+## loudly (ADR 0240).
+static func set_overlay_roots(stack: Array) -> void:
+	_overlay_stack = stack
+
+
+## The merge stack: the base root as a base-owned row, then the overlay rows
+## in order. The base row carries the family's default id_field so the merge
+## reads the correct property even when an overlay row omits it.
+##
+## ## `id_field` is `node_id`, NOT `id` (ADR 0240)
+##
+## `CatalogOverlay.merge` SKIPS any def whose id property reads null rather
+## than inventing one. A `ResourceNodeDef` has no `id` — the field is
+## `node_id` — so a merge on the default id_field read zero nodes and
+## published an empty catalog: sixteen authored nodes, none claimable, and
+## no error anywhere. A family whose def really is keyed `id` keeps working
+## unchanged, which is exactly why this passes every other catalog's test.
+func _merge_stack() -> Array:
+	var stack: Array = [
+		{
+			"dir": NODES_ROOT,
+			"owner": BASE_OWNER,
+			"declared_overrides": [],
+			"id_field": NODE_ID_FIELD,
+		}
+	]
+	for row in _overlay_stack:
+		stack.append(row)
+	return stack
+
+
+## Merge the family's overlay stack through CatalogOverlay (ADR 0184 §5).
+## Returns CatalogOverlay.merge's dictionary unchanged: `{ok, reason, detail,
+## merged, paths, owners}`.
+func _overlay_merge() -> Dictionary:
+	return CatalogOverlay.merge(_merge_stack(), NODE_SCRIPT_CLASS, NODE_ID_FIELD)
 
 
 static func instance() -> ResourceNodeCatalog:
@@ -115,14 +166,12 @@ func _ensure_loaded() -> void:
 	if _loaded:
 		return
 	_loaded = true
-	for path in _scan(NODES_ROOT):
-		if not path.get_file().ends_with(".tres"):
-			continue
-		if not FileAccess.get_file_as_string(path).contains(
-			'script_class="%s"' % NODE_SCRIPT_CLASS
-		):
-			continue
-		var def := load(path) as ResourceNodeDef
+	var merged := _overlay_merge()
+	if not bool(merged.get("ok", false)):
+		push_error("ResourceNodeCatalog: %s" % String(merged.get("detail", "")))
+		return
+	for entry in merged["merged"]:
+		var def := load(String(entry["path"])) as ResourceNodeDef
 		if def == null or def.node_id == &"":
 			continue
 		_defs[String(def.node_id)] = def

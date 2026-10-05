@@ -29,11 +29,63 @@ extends RefCounted
 const SHOPS_ROOT := "res://data/market/shops"
 ## The `script_class` a `.tres` must declare to be read as a shop.
 const SHOP_SCRIPT_CLASS := "ShopDef"
+## The property a `ShopDef` is keyed by. NOT `id` — see `_merge_stack`.
+const SHOP_ID_FIELD := "shop_id"
+const BASE_OWNER := "base"
 
 static var _shared: ShopCatalog = null
 
+## Overlay stack for the market_shops family (ADR 0184 §5). Empty means "not
+## wired yet": `_ensure_loaded` merges only the authored SHOPS_ROOT. When set,
+## the overlay roots merge AFTER the base root so mod content is visible, with
+## the declared-override collision policy CatalogOverlay enforces.
+static var _overlay_stack: Array = []
+
 var _shops: Dictionary = {}
 var _loaded: bool = false
+
+
+## Set the family's overlay stack: ordered rows of `{dir, owner,
+## declared_overrides, id_field}`. Later rows overlay earlier ones; an id
+## collision needs a declared override on the LATER root or the merge fails
+## loudly (ADR 0240).
+static func set_overlay_roots(stack: Array) -> void:
+	_overlay_stack = stack
+
+
+## The merge stack: the base root as a base-owned row, then the overlay rows
+## in order. The base row carries the family's default id_field so the merge
+## reads the correct property even when an overlay row omits it.
+##
+## ## `id_field` is `shop_id`, NOT `id` (ADR 0240)
+##
+## `CatalogOverlay.merge` defaults to `"id"`, and it SKIPS any def whose id
+## property reads null rather than inventing one. A `ShopDef` has no `id` —
+## the field is `shop_id` — so a merge rooted at the default id_field read
+## zero shops and `_ensure_loaded` published an empty catalog: five authored
+## shops, none reachable, with no error anywhere. That is the same silent
+## no-op class this module's own docstring warns about, reached by a
+## refactor that was correct for every family whose def really is keyed `id`.
+## The fix is the id field, not a fallback.
+func _merge_stack() -> Array:
+	var stack: Array = [
+		{
+			"dir": SHOPS_ROOT,
+			"owner": BASE_OWNER,
+			"declared_overrides": [],
+			"id_field": SHOP_ID_FIELD,
+		}
+	]
+	for row in _overlay_stack:
+		stack.append(row)
+	return stack
+
+
+## Merge the family's overlay stack through CatalogOverlay (ADR 0184 §5).
+## Returns CatalogOverlay.merge's dictionary unchanged: `{ok, reason, detail,
+## merged, paths, owners}`.
+func _overlay_merge() -> Dictionary:
+	return CatalogOverlay.merge(_merge_stack(), SHOP_SCRIPT_CLASS, SHOP_ID_FIELD)
 
 
 static func instance() -> ShopCatalog:
@@ -127,14 +179,12 @@ func _ensure_loaded() -> void:
 	if _loaded:
 		return
 	_loaded = true
-	for path in _scan(SHOPS_ROOT):
-		if not path.get_file().ends_with(".tres"):
-			continue
-		if not FileAccess.get_file_as_string(path).contains(
-			'script_class="%s"' % SHOP_SCRIPT_CLASS
-		):
-			continue
-		var def := load(path) as ShopDef
+	var merged := _overlay_merge()
+	if not bool(merged.get("ok", false)):
+		push_error("ShopCatalog: %s" % String(merged.get("detail", "")))
+		return
+	for entry in merged["merged"]:
+		var def := load(String(entry["path"])) as ShopDef
 		if def == null or def.shop_id == &"":
 			continue
 		_shops[String(def.shop_id)] = def

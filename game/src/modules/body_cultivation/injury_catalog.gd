@@ -21,18 +21,45 @@ extends RefCounted
 ## directory re-reads rather than answering with another folder's parts.
 
 const DATA_DIR := "res://data/body_cultivation/injuries"
+const BASE_OWNER := "base"
 
 static var _defs: Dictionary = {}
 static var _cached_dir: String = ""
+
+## Overlay stack for the body_injury_tuning family (ADR 0184 §5). Empty means
+## "not wired yet": `all` merges only the authored DATA_DIR. When set, the
+## overlay roots merge AFTER the base root so mod content is visible, with the
+## declared-override collision policy CatalogOverlay enforces.
+static var _overlay_stack: Array = []
+
+
+## Set the family's overlay stack: ordered rows of `{dir, owner,
+## declared_overrides, id_field}`. Later rows overlay earlier ones; an id
+## collision needs a declared override on the LATER root or the merge fails
+## loudly (ADR 0240).
+static func set_overlay_roots(stack: Array) -> void:
+	_overlay_stack = stack
+
+
+## The directories to scan: base root first, then overlay roots in order.
+static func _scan_roots() -> Array[String]:
+	var out: Array[String] = [DATA_DIR]
+	for row in _overlay_stack:
+		var dir := String(row.get("dir", ""))
+		if dir != "":
+			out.append(dir)
+	return out
 
 
 ## Every authored part, keyed by id. An empty dictionary when the directory is
 ## unreadable, which is a visibly empty system rather than a plausible one.
 static func all() -> Dictionary:
 	var cached := _defs
-	if not cached.is_empty() and _cached_dir == DATA_DIR:
+	if not cached.is_empty() and _cached_dir == DATA_DIR and _overlay_stack.is_empty():
 		return cached
-	_defs = _load(DATA_DIR)
+	_defs = {}
+	for root in _scan_roots():
+		_defs.merge(_load(root), true)
 	_cached_dir = DATA_DIR
 	return _defs
 

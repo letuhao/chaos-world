@@ -17,13 +17,60 @@ const NATIONS_ROOT := "res://data/nation"
 const NATION_SCRIPT_CLASS := "NationDef"
 const TERRITORY_SCRIPT_CLASS := "NationTerritoryDef"
 const TUNING_PATH := "res://src/modules/nation/nation_tuning.tres"
+const BASE_OWNER := "base"
 
 static var shared: NationCatalog = null
+
+## Overlay stack for the nations and nation_territories families (ADR 0184 §5).
+## Empty means "not wired yet": `_ensure_loaded` merges only the authored
+## NATIONS_ROOT. When set, the overlay roots merge AFTER the base root so mod
+## content is visible, with the declared-override collision policy CatalogOverlay
+## enforces.
+static var _overlay_stack: Array = []
 
 var _nations: Dictionary = {}
 var _territories: Dictionary = {}
 var _tuning: NationTuning = null
 var _loaded: bool = false
+
+
+## Set the family's overlay stack: ordered rows of `{dir, owner,
+## declared_overrides, id_field}`. Later rows overlay earlier ones; an id
+## collision needs a declared override on the LATER root or the merge fails
+## loudly (ADR 0240).
+static func set_overlay_roots(stack: Array) -> void:
+	_overlay_stack = stack
+
+
+## The merge stack: the base root as a base-owned row, then the overlay rows
+## in order. The base row carries the family's default id_field so the merge
+## reads the correct property even when an overlay row omits it.
+func _merge_stack() -> Array:
+	var stack: Array = [
+		{
+			"dir": NATIONS_ROOT,
+			"owner": BASE_OWNER,
+			"declared_overrides": [],
+			"id_field": "id",
+		}
+	]
+	for row in _overlay_stack:
+		stack.append(row)
+	return stack
+
+
+## Merge the family's overlay stack through CatalogOverlay (ADR 0184 §5).
+## Returns CatalogOverlay.merge's dictionary unchanged: `{ok, reason, detail,
+## merged, paths, owners}`.
+func _overlay_merge() -> Dictionary:
+	return CatalogOverlay.merge(_merge_stack(), NATION_SCRIPT_CLASS, "id")
+
+
+## Merge the territory half of the family's overlay stack. Territories share
+## the same root directory but a different script_class, so they need their own
+## merge pass.
+func _overlay_merge_territories() -> Dictionary:
+	return CatalogOverlay.merge(_merge_stack(), TERRITORY_SCRIPT_CLASS, "id")
 
 
 static func instance() -> NationCatalog:
@@ -129,18 +176,22 @@ func _ensure_loaded() -> void:
 	if _loaded:
 		return
 	_loaded = true
-	for path in _scan(NATIONS_ROOT):
-		if not path.get_file().ends_with(".tres"):
-			continue
-		var body := FileAccess.get_file_as_string(path)
-		if body.contains('script_class="%s"' % NATION_SCRIPT_CLASS):
-			var def := load(path) as NationDef
-			if def != null and def.id != &"":
-				_nations[String(def.id)] = def
-		elif body.contains('script_class="%s"' % TERRITORY_SCRIPT_CLASS):
-			var territory := load(path) as NationTerritoryDef
-			if territory != null and territory.id != &"":
-				_territories[String(territory.id)] = territory
+	var merged := _overlay_merge()
+	if not bool(merged.get("ok", false)):
+		push_error("NationCatalog: %s" % String(merged.get("detail", "")))
+		return
+	for entry in merged["merged"]:
+		var def := load(String(entry["path"])) as NationDef
+		if def != null and def.id != &"":
+			_nations[String(def.id)] = def
+	var merged_territories := _overlay_merge_territories()
+	if not bool(merged_territories.get("ok", false)):
+		push_error("NationCatalog: %s" % String(merged_territories.get("detail", "")))
+		return
+	for entry in merged_territories["merged"]:
+		var territory := load(String(entry["path"])) as NationTerritoryDef
+		if territory != null and territory.id != &"":
+			_territories[String(territory.id)] = territory
 
 
 func _scan(root: String) -> Array[String]:

@@ -28,8 +28,15 @@ const SETS_ROOT := "res://data/sets"
 const ITEMS_ROOT := "res://data/sets/items"
 const ROUTES_PATH := "res://data/sets/unique_routes.jsonl"
 const SET_SCRIPT_CLASS := "SetDef"
+const BASE_OWNER := "base"
 
 static var shared: SetCatalog = null
+
+## Overlay stack for the sets family (ADR 0184 §5). Empty means "not wired
+## yet": `_ensure_loaded` merges only the authored SETS_ROOT. When set, the
+## overlay roots merge AFTER the base root so mod content is visible, with the
+## declared-override collision policy CatalogOverlay enforces.
+static var _overlay_stack: Array = []
 
 var _sets: Dictionary = {}
 var _definitions: Dictionary = {}
@@ -39,6 +46,38 @@ var _definitions: Dictionary = {}
 var _tree_ids: Dictionary = {}
 var _routes: Dictionary = {}
 var _loaded: bool = false
+
+
+## Set the family's overlay stack: ordered rows of `{dir, owner,
+## declared_overrides, id_field}`. Later rows overlay earlier ones; an id
+## collision needs a declared override on the LATER root or the merge fails
+## loudly (ADR 0240).
+static func set_overlay_roots(stack: Array) -> void:
+	_overlay_stack = stack
+
+
+## The merge stack: the base root as a base-owned row, then the overlay rows
+## in order. The base row carries the family's default id_field so the merge
+## reads the correct property even when an overlay row omits it.
+func _merge_stack() -> Array:
+	var stack: Array = [
+		{
+			"dir": SETS_ROOT,
+			"owner": BASE_OWNER,
+			"declared_overrides": [],
+			"id_field": "id",
+		}
+	]
+	for row in _overlay_stack:
+		stack.append(row)
+	return stack
+
+
+## Merge the family's overlay stack through CatalogOverlay (ADR 0184 §5).
+## Returns CatalogOverlay.merge's dictionary unchanged: `{ok, reason, detail,
+## merged, paths, owners}`.
+func _overlay_merge() -> Dictionary:
+	return CatalogOverlay.merge(_merge_stack(), SET_SCRIPT_CLASS, "id")
 
 
 static func instance() -> SetCatalog:
@@ -173,13 +212,12 @@ func _ensure_loaded() -> void:
 
 
 func _load_sets() -> void:
-	for path in _scan(SETS_ROOT):
-		if not path.get_file().ends_with(".tres"):
-			continue
-		var text := FileAccess.get_file_as_string(path)
-		if not text.contains('script_class="%s"' % SET_SCRIPT_CLASS):
-			continue
-		var def := load(path) as SetDef
+	var merged := _overlay_merge()
+	if not bool(merged.get("ok", false)):
+		push_error("SetCatalog: %s" % String(merged.get("detail", "")))
+		return
+	for entry in merged["merged"]:
+		var def := load(String(entry["path"])) as SetDef
 		if def != null and def.id != &"":
 			_sets[String(def.id)] = def
 
