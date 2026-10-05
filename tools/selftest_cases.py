@@ -1065,6 +1065,25 @@ def _shot(slot: str, expression: str = "", pose: str = "standing, weight settled
     return shot
 
 
+def _fixture_member(slot: str, field: str, index: int) -> str:
+    """The value a set member takes in the complete-prompt-set fixture.
+
+    Deriving that fixture from `PROMPT_SLOTS` and `SET_SLOT_MINIMUMS` is what stops a new
+    SLOT from turning it red. It does not stop a new MEMBER FIELD whose completeness is
+    checked against a CLOSED VOCABULARY, which is what `daypart` is: the guard asks
+    `set(present) != set(DAYPARTS)`, so a synthetic `daypart 0` is not a daypart and no
+    number of them can ever satisfy the check. The fixture went red on exactly that.
+
+    So a member of a closed-vocabulary field has to use the vocabulary. Anything else keeps
+    the synthetic `field index` form, which is what distinguishes one member from another
+    for the open fields.
+    """
+    if field == "daypart":
+        vocabulary = tuple(unique_characters.DAYPARTS)
+        return vocabulary[index % len(vocabulary)]
+    return f"{field} {index}"
+
+
 def _complete_shots() -> list[dict]:
     """A shot list satisfying every required prompt, derived from the tool.
 
@@ -1083,7 +1102,7 @@ def _complete_shots() -> list[dict]:
         field = unique_characters.SET_SLOT_MEMBER_FIELD.get(slot, "expression")
         for index in range(needed):
             shot = _shot(slot, id=f"{slot}-{index}")
-            shot[field] = f"{field} {index}"
+            shot[field] = _fixture_member(slot, field, index)
             shots.append(shot)
     return shots
 
@@ -2298,7 +2317,8 @@ def _backfill_writes_one_shard() -> None:
             daily = [s for s in shots if s.get("slot") == Args.slot]
             expect(
                 len(daily) == 1,
-                f"{record['id']}: backfill wrote {len(daily)} {Args.slot} shots, expected exactly 1",
+                f"{record['id']}: backfill wrote {len(daily)} {Args.slot} shots, "
+                "expected exactly 1",
             )
             expect(
                 home in daily[0]["scene"] and faction in daily[0]["scene"],
