@@ -276,6 +276,18 @@ func _ready() -> void:
 	# occurrence — permanently, the ledger being monotone. `subscribe` refuses a
 	# duplicate, so a second boot of this root installs no second bridge.
 	QuestFactProjection.subscribe_to_fact_ledger()
+	# The third subscriber, and the door the last audit found unwired: a `systemic` or
+	# `emergent` quest is not OFFERED (`QuestApi.offered` skips every non-`authored`
+	# kind, and that filter is what `kind` means), so nothing ever ENTERED one and
+	# `what_the_rotation_cost`, `the_short_road` and `the_severed_calling` had no
+	# production door at all. They ARRIVE instead: when a fact they watch makes every
+	# required step true, the world accepts the quest itself, through the existing
+	# `QuestApi.accept` — no new facade verb, no board, no second copy of `advance`.
+	# Subscribed AFTER `QuestFactProjection` so an arrival is in the active set when
+	# that advance runs, and the quest completes on the SAME fact that made it
+	# enterable rather than waiting for another one. The test runner shares one
+	# process, so the test suite tears this one down in its own teardown.
+	QuestArrivalProjection.subscribe_to_fact_ledger()
 	# A newborn is minted through a Callable rather than built inline, because
 	# `fertility` may not name `app/` (BL-0280). Without this the child is a bare
 	# `Actor.new()` with no health pool, so it cannot be damaged or healed. Installed
