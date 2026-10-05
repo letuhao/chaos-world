@@ -285,6 +285,6 @@ static func _stamp_context(mod: Dictionary, registry: ModuleRegistry) -> Registr
 		ctx.add_attach_hook(hook["phase"], callable)
 	for screen in mod["screens"]:
 		ctx.register_screen(screen["id"], screen["scene"], screen["label"])
-	if not (mod["events"] as Array).is_empty():
-		ctx.subscribe(mod["events"])
+	for event in mod["events"]:
+		ctx.subscribe({"event_bus": "WorldEvents", "event_name": String(event), "callable": Callable()})
 	return ctx

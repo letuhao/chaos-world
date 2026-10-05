@@ -54,7 +54,17 @@ func test_the_five_seams_record_and_return_their_list() -> void:
 	)
 	assert_eq(ctx.add_attach_hook("economy", Callable()).size(), 1, "hook recorded")
 	assert_eq(ctx.register_screen("demo", "res://demo.tscn", "Demo").size(), 1, "screen recorded")
-	assert_eq(ctx.subscribe(["period"]).size(), 1, "subscription recorded")
+	assert_eq(
+		(
+			ctx
+			. subscribe(
+				{"event_bus": "WorldEvents", "event_name": "period", "callable": Callable()}
+			)
+			. size()
+		),
+		1,
+		"subscription recorded"
+	)
 	var rec := ctx.registrations()
 	assert_eq(rec["mod_id"], "demo", "mod id on the record")
 	assert_eq(String(rec["content_roots"]["items"][0]["dir"]), "res://data/items", "root row")
@@ -90,7 +100,7 @@ func test_the_loader_stamps_one_context_per_mod_in_order() -> void:
 	assert_eq(ctx.attach_hooks.size(), 1, "hook stamped (empty Callable until W3 binds it)")
 	assert_eq(ctx.screens.size(), 1, "screen stamped")
 	assert_eq(ctx.subscriptions.size(), 1, "subscription stamped")
-	assert_eq(ctx.subscriptions[0] is Array, true, "the declared events ride to the bus")
+	assert_eq(ctx.subscriptions[0] is Dictionary, true, "the declared events ride to the bus")
 
 
 func test_an_empty_loader_pass_returns_no_contexts() -> void:
