@@ -131,10 +131,18 @@ func effective_days(baseline_days: float, tier: int) -> float:
 ## merged by accident — the dimensionally-void conversion `days x (days per day)`
 ## belongs to the clock that owns both units (ADR 0173), never to either table.
 ## `tests/core/test_realm_lifespan_table.gd` refuses those reads in SOURCE.
-func effective_lifespan_for(actor: Actor) -> float:
+static func effective_lifespan_for(actor: Actor) -> float:
 	var realm := RealmScaling.highest_realm(actor)
 	var tier := RealmDefaults.MORTAL if realm == null else realm.tier
-	return effective_days(_baseline_of(actor), tier)
+	var baseline := 0.0
+	var def := actor.component(RACE_DEF_COMPONENT) as RaceDef
+	if def != null:
+		baseline = maxf(0.0, def.lifespan)
+	var bonus = actor.get(&"lifespan_bonus_days")
+	var bonus_days := 0.0
+	if (bonus is int or bonus is float) and not (bonus is bool):
+		bonus_days = maxf(0.0, float(bonus))
+	return maxf(0.0, baseline) * float(RealmDefaults.LIFESPAN.multipliers.get(tier, NEUTRAL)) + bonus_days
 
 
 ## The authored MORTAL-TIER BASELINE in days, or 0.0 when no body plan is attached.
@@ -154,3 +162,53 @@ func _baseline_of(actor: Actor) -> float:
 	if def == null:
 		return 0.0
 	return maxf(0.0, def.lifespan)
+
+
+## The elixir's lifespan bonus in days, or `0.0` when the body carries none.
+##
+## **A private read of the body fact, not a call into a module's facade.** The bonus
+## is a core field on `Actor` (`lifespan_bonus_days`), written by the items module
+## through the actor's own API. Core reads it directly for the same one-way-edge
+## reason `_baseline_of` reads the body plan: `core` may not name a module class,
+## and the field is core's own.
+func _bonus_of(actor: Actor) -> float:
+	if actor == null:
+		return 0.0
+	var bonus: Variant = actor.get(&"lifespan_bonus_days")
+	if (bonus is int or bonus is float) and not (bonus is bool):
+		return maxf(0.0, float(bonus))
+	return 0.0
+
+
+## Whether `actor`'s body has already reached the lifespan it was born with.
+##
+## The guard ADR 0270 §2 names: a lifespan-extending elixir has NO EFFECT on a body
+## already past its span. This is the one predicate that answers that question from
+## `core/`, so the items module does not have to re-derive the calendar or the age
+## read. `SoulAge.has_expired` is the richer answer (it names a reason for every
+## missing seam); this is the simpler one the item use path needs, and it refuses
+## `false` on every missing seam rather than inventing an answer.
+static func is_past_span(actor: Actor) -> bool:
+	if actor == null:
+		return false
+	var age_years: Variant = actor.get(&"age_years")
+	if not (age_years is float) or age_years < 0.0:
+		return false
+	var realm := RealmScaling.highest_realm(actor)
+	var tier := RealmDefaults.MORTAL if realm == null else realm.tier
+	var baseline := 0.0
+	var def := actor.component(RACE_DEF_COMPONENT) as RaceDef
+	if def != null:
+		baseline = maxf(0.0, def.lifespan)
+	var bonus: Variant = actor.get(&"lifespan_bonus_days")
+	var bonus_days := 0.0
+	if (bonus is int or bonus is float) and not (bonus is bool):
+		bonus_days = maxf(0.0, float(bonus))
+	var lifespan := maxf(0.0, baseline) * float(RealmDefaults.LIFESPAN.multipliers.get(tier, NEUTRAL)) + bonus_days
+	if lifespan <= 0.0:
+		return false
+	var year_ratio: int = TimeLadder.ratio_for(&"year")
+	var day_ratio: int = TimeLadder.ratio_for(&"day")
+	if year_ratio < 1 or day_ratio < 1:
+		return false
+	return (float(age_years) * float(year_ratio / day_ratio)) >= lifespan
