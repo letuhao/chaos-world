@@ -13,3 +13,4 @@ visibility = &"revealed"
 flat_modifiers = {"attack_physical": 9.0, "will": -2.0}
 counters = Array[StringName]([&"kills"])
 tags = Array[StringName]([])
+difficulty_events = [{"event_type": &"enemy_spawn", "magnitude": 0.6, "description": "The hundredth kill is a banner; challengers seek you out."}]

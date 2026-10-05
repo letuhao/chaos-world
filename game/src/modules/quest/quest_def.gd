@@ -53,6 +53,13 @@ const GRANT_KINDS: Array[StringName] = [GRANT_FATE, GRANT_DESTINY, GRANT_ITEM]
 ## The gate this quest opens behind, read through `DestinyApi.gate`. Empty = open.
 @export var requirement: Dictionary = {}
 
+## Fate gate (ADR 0398): a list of fate ids. When non-empty, the quest only
+## appears if the player holds ALL listed fates. This is a convenience over
+## `requirement` for the common case; it is checked alongside `requirement`
+## in `QuestApi.offered` and `QuestApi.accept`. Internally it is evaluated as
+## `{verb: "all_of", of: [{verb: "has_fate", id: f} for f in fate_gate]}`.
+@export var fate_gate: Array[StringName] = []
+
 @export var steps: Array[QuestStepDef] = []
 
 ## Rewards, each `{kind: StringName, id: StringName, amount: int}`. `amount`

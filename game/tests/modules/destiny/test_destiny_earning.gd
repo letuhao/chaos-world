@@ -104,13 +104,19 @@ func test_the_facade_exposes_no_removal_or_choice_verb_at_all() -> void:
 		[
 			"attach",
 			"destinies",
+			"difficulty_events",
+			"difficulty_modifier",
 			"earn_destiny",
 			"earn_fate",
+			"eligible_choices",
 			"events",
 			"fates",
 			"gate",
+			"has_choice",
 			"has_destiny",
 			"has_fate",
+			"probability_modifier",
+			"probability_modifiers",
 			"record",
 			"register_starter_pack",
 			"starter_pack",
@@ -119,7 +125,7 @@ func test_the_facade_exposes_no_removal_or_choice_verb_at_all() -> void:
 		],
 		(
 			"the facade is the earn-and-read surface ADR 0065 describes plus the starter"
-			+ " pack pair, and nothing else"
+			+ " pack pair, the difficulty event pair, and the fate choice pair, and nothing else"
 		)
 	)
 	# 2. No public name carries a removal or selection verb, in any position and

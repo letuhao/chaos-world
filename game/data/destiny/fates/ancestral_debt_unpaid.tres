@@ -12,3 +12,4 @@ tier = 1
 visibility = &"revealed"
 flat_modifiers = {"defense_spiritual": 5.0, "comprehension": 1.0}
 counters = Array[StringName]([&"oaths_broken"])
+difficulty_events = [{"event_type": &"enemy_spawn", "magnitude": 0.3, "description": "The clan sends collectors; they find you in crowded places."}]

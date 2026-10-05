@@ -13,3 +13,4 @@ visibility = &"revealed"
 percent_modifiers = {"move_speed": 0.05}
 counters = Array[StringName]([&"watch_turned"])
 tags = Array[StringName]([&"desertion"])
+difficulty_events = [{"event_type": &"enemy_spawn", "magnitude": 0.3, "description": "The roster remembers the gap; deserters are hunted."}]

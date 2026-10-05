@@ -115,9 +115,10 @@ func test_the_summary_always_carries_the_same_top_level_keys() -> void:
 				"fates",
 				"has_actor",
 				"hidden_destiny_count",
-				"hidden_fate_count"
+				"hidden_fate_count",
+				"dialog"
 			],
-			"the same nine keys whether or not there is an actor"
+			"the same ten keys whether or not there is an actor"
 		)
 
 

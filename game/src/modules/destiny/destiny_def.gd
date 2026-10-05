@@ -45,6 +45,12 @@ const TEASER := &"teaser"
 ## probability/rate stat id to a float shift, yin-yang paired.
 @export var probability_modifiers: Dictionary = {}
 
+## Unique character dialog for this destiny path (ADR 0398). Each entry is
+## `{dialog_id, text}`. This is the data model for per-destiny-path character
+## dialog; implementation is deferred until the destiny path feature is built.
+## The field is authored but not yet read by any system.
+@export var character_dialog: Array[Dictionary] = []
+
 
 func is_visible() -> bool:
 	return visibility != TEASER

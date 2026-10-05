@@ -13,3 +13,4 @@ visibility = &"revealed"
 flat_modifiers = {"attack_physical": 6.0, "agility": 2.0}
 counters = Array[StringName]([&"severances"])
 tags = Array[StringName]([&"severance"])
+difficulty_events = [{"event_type": &"combat_difficulty", "magnitude": 0.4, "description": "The cut is a challenge; those who answer it fight harder."}]

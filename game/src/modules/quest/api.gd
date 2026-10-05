@@ -131,7 +131,7 @@ static func offered(actor: Actor) -> Array[Dictionary]:
 			continue
 		if QuestState.is_tracked(ledger, quest_id):
 			continue
-		if not bool(DestinyApi.gate(actor, def.requirement).get("ok", false)):
+		if not bool(DestinyApi.gate(actor, _combined_requirement(def)).get("ok", false)):
 			continue
 		out.append(_quest_view(def))
 	return out
@@ -156,7 +156,7 @@ static func accept(actor: Actor, quest_id: StringName, source: String = "") -> D
 		return _refuse(actor, quest_id, "already_completed")
 	if QuestState.is_tracked(ledger, quest_id):
 		return _refuse(actor, quest_id, "already_active")
-	var verdict := DestinyApi.gate(actor, def.requirement)
+	var verdict := DestinyApi.gate(actor, _combined_requirement(def))
 	if not bool(verdict.get("ok", false)):
 		return _refuse(actor, quest_id, "gate_unmet", verdict)
 	if not QuestState.begin(ledger, quest_id, 0):
@@ -324,6 +324,25 @@ static func gates_for(actor: Actor, quest_id: StringName) -> Dictionary:
 
 
 # --- Internals -------------------------------------------------------------
+
+
+## The combined gate requirement for a quest: `requirement` + `fate_gate` (ADR
+## 0398). `fate_gate` is a list of fate ids evaluated as an `all_of` of
+## `has_fate` verbs. When both are present, they are combined with `all_of`.
+## When only one is present, it is returned as-is. When neither is present,
+## the result is an empty dictionary (ungated).
+static func _combined_requirement(def: QuestDef) -> Dictionary:
+	if def.fate_gate.is_empty():
+		return def.requirement
+	var fate_req: Dictionary = {
+		"verb": &"all_of",
+		"of": [],
+	}
+	for fate_id in def.fate_gate:
+		(fate_req["of"] as Array).append({"verb": &"has_fate", "id": fate_id})
+	if def.requirement.is_empty():
+		return fate_req
+	return {"verb": &"all_of", "of": [def.requirement, fate_req]}
 
 
 ## The actor's ledger, normalized, exactly as core persists it.

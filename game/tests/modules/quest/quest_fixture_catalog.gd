@@ -74,6 +74,13 @@ static func grant(kind: StringName, id: StringName, amount: int = 1) -> Dictiona
 	return {"kind": kind, "id": id, "amount": amount}
 
 
+## Attach a fate gate to a quest def built by `quest()`. Returns the same def
+## so the call chains: `QuestFixtureCatalog.quest(...).with_fate_gate([...])`.
+static func with_fate_gate(def: QuestDef, fate_ids: Array[StringName]) -> QuestDef:
+	def.fate_gate = fate_ids
+	return def
+
+
 ## Replace the module's catalog singleton for the span of one test.
 static func install(defs: Array[QuestDef] = []) -> void:
 	var catalog := QuestCatalog.new()

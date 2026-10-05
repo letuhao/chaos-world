@@ -65,6 +65,8 @@ static func earn_fate(actor: Actor, fate_id: StringName, source: String = "") ->
 	var def := FateCatalog.instance().fate_definition(fate_id)
 	if def == null:
 		return ledger
+	if not DestinyGate.fate_earnable(ledger, def):
+		return ledger
 	ledger["fates"][String(fate_id)] = {
 		"source": source,
 		"sequence": _next_sequence(ledger),
@@ -341,6 +343,19 @@ static func state(actor: Actor) -> Dictionary:
 	)
 
 
+## Every active difficulty event from all held fates (ADR 0404). Each entry is
+## `{fate_id, event_type, magnitude, description}`, primitives only.
+static func difficulty_events(actor: Actor) -> Array[Dictionary]:
+	return DifficultyEventEngine.active_events(actor)
+
+
+## The total difficulty modifier per event type, as a dictionary of
+## `event_type -> float` (ADR 0404). Only event types with a non-zero total
+## are included.
+static func difficulty_modifier(actor: Actor) -> Dictionary:
+	return DifficultyEventEngine.modifiers(actor)
+
+
 ## A read-only, primitive-only snapshot built for a codex UI: what the actor
 ## holds, and what exists but is still hidden. Held fates and destinies carry
 ## their full authored copy; hidden ones carry only a teaser and `held: false`.
@@ -392,6 +407,7 @@ static func summary(actor: Actor) -> Dictionary:
 			view["available"] = unmet.is_empty()
 			view["blocked_by"] = unmet
 		out["destinies"][String(destiny_id)] = view
+	out["dialog"] = _dialog_summary(actor)
 	return out
 
 
@@ -528,7 +544,38 @@ static func _fate_view(def: FateDef, held: bool) -> Dictionary:
 		# once the content is authored `revealed`.
 		"tags": _string_list(def.tags) if reveal else [],
 		"modifier_count": def.build_modifiers().size(),
+		# Synergy edges (ADR 0383). Published unconditionally: they are prerequisite
+		# hints, not spoilers — a player can see that a fate exists and what it needs
+		# without seeing its effect. Gated on `reveal` for hidden fates, same as tags.
+		"unlocks": _string_list(def.unlocks) if reveal else [],
+		"requires": _string_list(def.requires) if reveal else [],
+		"eligible_choices": _string_list(def.eligible_choices) if reveal else [],
 	}
+
+
+## The fate ids in `fate_id`'s choice group that the actor does not already hold,
+## canonically ordered (ADR 0389). A fate the actor holds is not eligible to be
+## offered. Empty when the fate is not part of a choice group or all choices
+## are already held.
+##
+## This is a READ, not a write: nothing is stored on the actor. The UI calls
+## this to decide whether to present a choice. The backend resolves the choice
+## through existing earn logic — the player picks one and `earn_fate` records it.
+static func eligible_choices(actor: Actor, fate_id: StringName) -> Array[StringName]:
+	if actor == null:
+		return []
+	var def := FateCatalog.instance().fate_definition(fate_id)
+	if def == null:
+		return []
+	var ledger := _ledger(actor)
+	return def.unheld_choices(ledger)
+
+
+## Whether the UI must present a choice for `fate_id`: multiple fates in the
+## choice group are eligible (ADR 0389). The choice is a UI presentation of
+## implicit eligibility, not a new earn path.
+static func has_choice(actor: Actor, fate_id: StringName) -> bool:
+	return eligible_choices(actor, fate_id).size() > 1
 
 
 ## A codex row for one destiny branch.
@@ -571,4 +618,15 @@ static func _string_list(values: Array[StringName]) -> Array:
 	var out: Array = []
 	for value in values:
 		out.append(String(value))
+	return out
+
+
+## Dialog generation summary (ADR 0398): every authored dialog assembled from
+## base text + fate-held modifiers. Folded into `summary()` because the facade
+## is at its twelve-method cap. Returns an array of
+## `{dialog_id, npc_id, base_text, final_text, modifiers_applied}`.
+static func _dialog_summary(actor: Actor) -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	for dialog_id in DialogCatalog.instance().dialog_ids():
+		out.append(DialogGenerator.generate(dialog_id, actor))
 	return out

@@ -14,3 +14,4 @@ flat_modifiers = {"attack_physical": 5.0}
 percent_modifiers = {"cooldown_reduction": 0.05}
 counters = Array[StringName]([&"watch_turned", &"duels_won"])
 tags = Array[StringName]([&"desertion", &"duel"])
+difficulty_events = [{"event_type": &"enemy_spawn", "magnitude": 0.4, "description": "The wall's dead remember your face; their kin come looking."}]

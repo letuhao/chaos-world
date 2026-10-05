@@ -13,3 +13,4 @@ visibility = &"revealed"
 flat_modifiers = {"defense_physical": 5.0, "poise": 8.0}
 counters = Array[StringName]([&"oaths_sworn"])
 tags = Array[StringName]([&"mercy", &"oath"])
+difficulty_events = [{"event_type": &"combat_difficulty", "magnitude": 0.25, "description": "The oath is tested; those who fight you fight harder."}]

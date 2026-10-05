@@ -85,10 +85,23 @@ const TAGS: Array[StringName] = [
 ## closes its members against each other forever — earn one and the rest are
 ## forfeit. A tag does the opposite: it is a question several fates may answer.
 @export var tags: Array[StringName] = []
+## Fates that become available when this fate is held (ADR 0383). A synergy is a
+## prerequisite edge, not a grant: holding this fate makes the listed fates earnable,
+## but each must still be earned through its own deed path. Must be consistent with
+## `requires` on the target fates: `A.unlocks` contains `B` iff `B.requires` contains `A`.
+@export var unlocks: Array[StringName] = []
+## Fates that must be held before this fate can be earned (ADR 0383). Empty means
+## no synergy prerequisite. The synergy graph must be acyclic.
+@export var requires: Array[StringName] = []
 
 
 func is_visible() -> bool:
 	return visibility != TEASER
+
+
+## Whether this fate participates in any synergy relationship.
+func has_synergy() -> bool:
+	return not unlocks.is_empty() or not requires.is_empty()
 
 
 ## The stat source id this fate contributes under. Namespaced so a re-projection
@@ -137,3 +150,72 @@ func build_probability_modifiers() -> Array[StatModifier]:
 ## Whether this fate contributes any probability modifier at all.
 func has_probability_modifiers() -> bool:
 	return not probability_modifiers.is_empty()
+
+
+## The fate ids that can be offered together with this one when its trigger fires
+## (ADR 0389). Empty means this fate is never part of a choice group. The choice
+## is a UI presentation of implicit eligibility: when multiple fates in this
+## list are eligible (their gate conditions are met and the actor does not hold
+## them), the UI presents them as a choice. The backend resolves it through
+## existing earn logic — the player picks one and `earn_fate` records it.
+##
+## The group is symmetric: if A lists B, then B lists A. The UI reads this list
+## from the fate whose trigger fired and presents all eligible fates in the group.
+@export var eligible_choices: Array[StringName] = []
+
+
+## Whether this fate is part of a choice group (ADR 0389).
+func has_eligible_choices() -> bool:
+	return not eligible_choices.is_empty()
+
+
+## The fate ids in `eligible_choices` that the actor does not already hold,
+## canonically ordered. A fate the actor holds is not eligible to be offered.
+func unheld_choices(ledger: Dictionary) -> Array[StringName]:
+	var out: Array[StringName] = []
+	for fate_id in eligible_choices:
+		if not DestinyState.has_fate(ledger, fate_id):
+			out.append(fate_id)
+	return out
+
+## Dialogue changes when this fate is held (ADR 0398). Maps a dialog_id to a
+## text override. When the player holds this fate, the dialog generator
+## replaces the base text for that dialog_id with the override. Empty means
+## this fate modifies no dialogue.
+@export var dialog_modifiers: Dictionary = {}
+
+
+## The difficulty events this fate triggers when earned (ADR 0404).
+##
+## Each event is a Dictionary with `event_type` (closed vocabulary), `magnitude`
+## (float), and `description` (player-facing text). Three event types:
+##   &"enemy_spawn"       — more enemies appear in the world
+##   &"social_difficulty" — NPCs harder to persuade, prices increase
+##   &"combat_difficulty" — enemies become stronger, new enemy types appear
+##
+## The yin-yang rule: every fate with positive stat modifiers MUST declare at
+## least one difficulty event. A fate with no modifiers needs no event.
+const DIFFICULTY_EVENT_TYPES: Array[StringName] = [
+	&"enemy_spawn",
+	&"social_difficulty",
+	&"combat_difficulty",
+]
+
+@export var difficulty_events: Array[Dictionary] = []
+
+
+## Whether this fate triggers any difficulty event at all.
+func has_difficulty_events() -> bool:
+	return not difficulty_events.is_empty()
+
+
+## The total difficulty modifier for `event_type` from this fate. 0.0 when
+## the fate declares no event of that type.
+func difficulty_modifier_for(event_type: StringName) -> float:
+	var total := 0.0
+	for event in difficulty_events:
+		if not (event is Dictionary):
+			continue
+		if StringName((event as Dictionary).get("event_type", &"")) == event_type:
+			total += float((event as Dictionary).get("magnitude", 0.0))
+	return total

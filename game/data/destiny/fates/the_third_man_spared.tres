@@ -15,3 +15,4 @@ flat_modifiers = {"will": 2.0}
 percent_modifiers = {"evasion": 0.03}
 counters = Array[StringName]([&"enemies_spared"])
 tags = Array[StringName]([&"mercy", &"duel"])
+difficulty_events = [{"event_type": &"enemy_spawn", "magnitude": 0.25, "description": "The spared man returns with allies; the hunt is not over."}]

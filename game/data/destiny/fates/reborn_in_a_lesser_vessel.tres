@@ -13,3 +13,4 @@ visibility = &"revealed"
 flat_modifiers = {"physique": 2.0, "will": 3.0}
 counters = Array[StringName]([&"breakthroughs"])
 tags = Array[StringName]([&"rebirth"])
+difficulty_events = [{"event_type": &"combat_difficulty", "magnitude": 0.35, "description": "The lesser vessel is a target; predators sense the discrepancy."}]

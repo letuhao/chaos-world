@@ -106,6 +106,10 @@ const ALLOWED := [
 	"DestinyApi.starter_pack(",
 	"DestinyApi.probability_modifier(",
 	"DestinyApi.probability_modifiers(",
+	"DestinyApi.difficulty_events(",
+	"DestinyApi.difficulty_modifier(",
+	"DestinyApi.eligible_choices(",
+	"DestinyApi.has_choice(",
 ]
 
 ## ## The verbs `ui/` may NEVER name
@@ -350,8 +354,8 @@ func test_the_codex_reaches_the_facade_through_reads_and_that_is_allowed() -> vo
 	# not regressing.
 	assert_eq(
 		_destiny_verbs(screen),
-		["events", "summary"],
-		"the codex reaches the facade through exactly these verbs today, and both are " + "reads"
+		["eligible_choices", "events", "summary"],
+		"the codex reaches the facade through exactly these verbs today, and all are " + "reads"
 	)
 
 
@@ -501,6 +505,10 @@ func test_the_allowed_and_forbidden_lists_are_disjoint_and_real() -> void:
 			"DestinyApi.starter_pack(",
 			"DestinyApi.probability_modifier(",
 			"DestinyApi.probability_modifiers(",
+			"DestinyApi.difficulty_events(",
+			"DestinyApi.difficulty_modifier(",
+			"DestinyApi.eligible_choices(",
+			"DestinyApi.has_choice(",
 		],
 		(
 			"and the allowed half is exactly the reads ADR 0134 §1 calls the save seam, the "
@@ -745,10 +753,11 @@ func test_a_tag_gate_adds_no_affordance_to_the_read_only_codex() -> void:
 	# be tempted to call, so this is the leg that says it still does not.
 	assert_eq(
 		_destiny_verbs(_read(CODEX_SCRIPTS[0])),
-		["events", "summary"],
+		["eligible_choices", "events", "summary"],
 		(
-			"the codex still reaches the facade through exactly `events` and `summary`; a `tagged` "
-			+ "gate is evaluated by the quest/event that owns it, never by a read-only screen"
+			"the codex still reaches the facade through exactly `eligible_choices`, `events` and "
+			+ "`summary`; a `tagged` gate is evaluated by the quest/event that owns it, never by a "
+			+ "read-only screen"
 		)
 	)
 	# And no filter state at all: the whole of `_summary()`'s keys, so a future

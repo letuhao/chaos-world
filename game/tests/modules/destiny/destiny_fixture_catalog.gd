@@ -36,6 +36,26 @@ static func flat_fate(fate_id: StringName, stat_id: StringName, value: float) ->
 	return def
 
 
+## A fate that grants a flat stat bonus AND triggers a difficulty event (ADR 0404).
+## The yin-yang pair: +power comes with +difficulty.
+static func fated_fate(
+	fate_id: StringName,
+	stat_id: StringName,
+	value: float,
+	event_type: StringName = &"enemy_spawn",
+	event_magnitude: float = 0.5
+) -> FateDef:
+	var def := flat_fate(fate_id, stat_id, value)
+	def.difficulty_events = [
+		{
+			"event_type": event_type,
+			"magnitude": event_magnitude,
+			"description": "The world pushes back.",
+		}
+	]
+	return def
+
+
 ## A fate with no modifiers at all: pure narrative, a gate target only.
 static func story_fate(fate_id: StringName) -> FateDef:
 	var def := FateDef.new()

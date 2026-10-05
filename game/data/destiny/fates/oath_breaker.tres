@@ -15,3 +15,4 @@ percent_modifiers = {"crit_chance": 0.03}
 probability_modifiers = {"crit_chance": 0.05, "breakthrough_chance": -0.02}
 counters = Array[StringName]([&"oaths_broken"])
 tags = Array[StringName]([&"oath"])
+difficulty_events = [{"event_type": &"enemy_spawn", "magnitude": 0.5, "description": "Oathbound enemies hunt you across the world."}]

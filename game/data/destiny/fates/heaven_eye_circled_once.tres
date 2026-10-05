@@ -12,3 +12,4 @@ tier = 1
 visibility = &"revealed"
 percent_modifiers = {"max_health": 0.05}
 counters = Array[StringName]([&"heaven_marks"])
+difficulty_events = [{"event_type": &"social_difficulty", "magnitude": 0.2, "description": "The circled eye is visible to those who know how to look; they are harder to persuade."}]

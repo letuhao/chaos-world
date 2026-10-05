@@ -13,3 +13,4 @@ visibility = &"revealed"
 flat_modifiers = {"attack_physical": 4.0, "agility": 1.0}
 counters = Array[StringName]([&"duels_won", &"kills"])
 tags = Array[StringName]([&"duel"])
+difficulty_events = [{"event_type": &"combat_difficulty", "magnitude": 0.2, "description": "Word of your duel spreads; stronger opponents seek you out."}]

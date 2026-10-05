@@ -14,3 +14,4 @@ percent_modifiers = {"cultivation_rate": 0.05, "breakthrough_chance": 0.02}
 probability_modifiers = {"loot_bonus": 0.5, "evasion": -0.03}
 counters = Array[StringName]([&"heaven_marks"])
 tags = Array[StringName]([])
+difficulty_events = [{"event_type": &"social_difficulty", "magnitude": 0.3, "description": "The mark draws attention from those who cannot be persuaded."}]

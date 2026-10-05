@@ -12,3 +12,4 @@ tier = 0
 visibility = &"revealed"
 percent_modifiers = {"will": 0.05}
 counters = Array[StringName]([&"oaths_sworn"])
+difficulty_events = [{"event_type": &"social_difficulty", "magnitude": 0.15, "description": "Witnesses talk; the sect's discipline makes others wary of you."}]

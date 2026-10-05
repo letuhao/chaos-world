@@ -12,3 +12,4 @@ tier = 1
 visibility = &"revealed"
 percent_modifiers = {"qi_regen": 0.08}
 counters = Array[StringName]([&"breakthroughs"])
+difficulty_events = [{"event_type": &"social_difficulty", "magnitude": 0.2, "description": "The mountain's name draws attention; those who know it are harder to persuade."}]
