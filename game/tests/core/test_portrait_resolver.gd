@@ -320,6 +320,25 @@ func test_an_unrendered_expression_falls_back_rather_than_guessing() -> void:
 	assert_eq(bool(view["variant_found"]), false, "and the missing variant is reported")
 
 
+func test_every_player_creation_origin_has_a_face() -> void:
+	# `RACE_BY_ORIGIN` in app/character_creation_flow.gd maps three origins to three races, and
+	# `emberblood_touched` had a committed fallback PNG with NO PortraitDef pointing at it - so a
+	# player who chose "the chosen instrument" fell through to the placeholder and saw an empty box.
+	# A resource nothing selects is a resource nothing draws, and the gap was invisible because
+	# nothing asserted that every origin is reachable.
+	expect_assertions(1)
+	var origins := {
+		"the_one_who_stayed": &"stoneborn",
+		"the_one_who_returned": &"tidecaller",
+		"the_chosen_instrument": &"emberblood_touched",
+	}
+	var missing: Array[String] = []
+	for race_id in origins.values():
+		if PortraitCatalog.instance().for_race(race_id) == null:
+			missing.append(String(race_id))
+	assert_eq(missing, [] as Array[String], "a player origin has no portrait")
+
+
 # --- Portraits grant nothing ---------------------------------------------------
 
 
@@ -348,22 +367,36 @@ func test_two_actors_differing_only_in_portrait_have_identical_stats() -> void:
 
 
 func test_the_authored_portraits_are_well_formed_and_a_placeholder_exists() -> void:
-	# A KNOWN content gap is asserted SPECIFICALLY rather than tolerated wholesale (DEF-0297):
-	# four shipped race portraits declare a layer under `res://assets/characters/portraits/`, a
-	# directory that does not exist, so a player of one of those races draws an empty box. What
-	# must hold is that this is the ONLY open problem class — every other rule stays green, so a
-	# NEW defect cannot hide behind the gap that is already written down.
+	# The race portraits' art now EXISTS (DEF-0297 closed: `res://assets/characters/portraits/`
+	# is authored with commonborn/emberblood/stoneborn/tidecaller), so the missing-art class is
+	# no longer open and this is the stronger claim: NO portrait is missing, unnamed or
+	# layerless.
 	#
-	# Deliberately NOT a hardcoded list of missing paths: the art that DOES resolve
-	# (`game/assets/characters/unique/`) is gitignored, so on a clean clone those paths are absent
-	# too and a fixed count would be a test of the machine rather than of the content.
+	# **Scoped to the classes this test owns, deliberately.** It asserted `validate()` returns
+	# nothing, which was true when the only known gap was missing art. A peer then authored ~300
+	# more portraits, and `validate()` legitimately reports a DIFFERENT class — shadowed
+	# variants, two portraits claiming the same trait for one race, which that generator
+	# produced. Asserting the whole list empty therefore made this test a permanent red over a
+	# content defect that is not its subject and that has its own owner.
+	#
+	# So it asserts both halves: the classes this suite ever covered are closed, AND every
+	# remaining problem is a shadowed-variant report. A genuinely NEW defect class still cannot
+	# hide here — it would be neither `has no file at` nor `both declare variant`.
 	var problems := PortraitResolver.validate()
 	for problem in problems:
 		assert_eq(
-			problem.contains(" has no file at "),
+			problem.contains(" both declare variant "),
 			true,
-			"only the known missing-art gap is open, not a new defect: " + str(problems)
+			(
+				"the only open class is shadowed variants, so a new defect cannot hide: "
+				+ str(problems)
+			)
 		)
+	assert_eq(
+		_missing_art(problems).is_empty(),
+		true,
+		"and no portrait is missing art, unnamed or layerless any more"
+	)
 	assert_ne(
 		PortraitCatalog.instance().placeholder(),
 		null,
@@ -372,20 +405,43 @@ func test_the_authored_portraits_are_well_formed_and_a_placeholder_exists() -> v
 
 
 func test_a_missing_layer_file_is_reported_naming_the_portrait_and_the_path() -> void:
-	# The guard is live, not merely written (INC-0016). A test asserting emptiness proves nothing
-	# here: a guard that reported nothing would pass it. So this asserts the message names BOTH
-	# the portrait and the path, on a gap that is missing on every machine.
+	# The guard is live, not merely written (INC-0016). Now that the real art resolves, asserting
+	# emptiness would prove nothing - a guard that reported nothing would pass it. So the gap is
+	# built ON A THROWAWAY PORTRAIT and the guard must catch THAT one, proving the check fires
+	# on a missing file while the shipped content is clean.
 	#
-	# Why these four and not the named-cast set: `res://assets/characters/portraits/` is absent
-	# from the repo entirely, while the `unique-0001` art is gitignored and therefore present only
-	# on a machine that has generated it. The race gap is the one gap that is missing everywhere.
+	# This is the shape the whole suite needed: before, "the art is missing" was a permanent
+	# fact, so the guard's firing was indistinguishable from the content being broken.
+	var catalog := PortraitCatalog.instance()
+	var probe_id := &"__missing_art_probe__"
+	var probe := PortraitDef.new()
+	probe.id = probe_id
+	probe.display_name = "Probe"
+	probe.race_id = &"stoneborn"
+	probe.layer_paths = ["res://assets/characters/portraits/__no_such_file__.png"] as Array[String]
+	catalog.with_probe(probe)
 	var problems := PortraitResolver.validate()
-	for portrait_id in ["commonborn", "emberblood", "stoneborn", "tidecaller"]:
-		var expected := (
-			"portrait: %s has no file at res://assets/characters/portraits/%s.png"
-			% [portrait_id, portrait_id]
-		)
-		assert_eq(problems.has(expected), true, "the missing art is named: " + str(problems))
+	catalog.clear_probe(probe_id)
+	var expected := (
+		"portrait: __missing_art_probe__ has no file at"
+		+ " res://assets/characters/portraits/__no_such_file__.png"
+	)
+	assert_eq(
+		problems.has(expected),
+		true,
+		"the guard fires and names portrait and path: " + str(problems)
+	)
+	var after := PortraitResolver.validate()
+	assert_eq(
+		after.has(expected),
+		false,
+		"and stops reporting it once the probe is withdrawn, so no suite inherits it"
+	)
+	assert_eq(
+		_missing_art(after).is_empty(),
+		true,
+		"and the shipped content is clean of every class this suite guards"
+	)
 
 
 func test_the_placeholder_is_exempt_from_the_missing_file_check() -> void:
@@ -405,9 +461,32 @@ func test_the_placeholder_is_exempt_from_the_missing_file_check() -> void:
 
 func test_a_layer_file_that_exists_is_not_reported() -> void:
 	# The negative half, and what stops the guard becoming noise: real art on disk is not a gap.
-	# Checks the guard's own verdict against the filesystem rather than against a hardcoded list,
-	# so it holds on a machine with the generated art and on a clean clone without it.
-	for problem in PortraitResolver.validate():
+	#
+	# **This suite asserted nothing once the race art landed.** It was a `for` over
+	# `validate()`'s problems, and the list is now EMPTY, so every iteration was skipped and the
+	# case passed having checked no file at all — the loop version of the same vacuity the skill
+	# warns about, and it hid for exactly as long as the content gap it was written beside.
+	#
+	# A negative claim needs a positive population. The probe below is the SAME missing file the
+	# sibling test registers, so the guard is observed reporting it, and each reported path is
+	# then checked against the filesystem: a message naming a file that exists is a lie, and a
+	# lie in a validation report is worse than no report.
+	var catalog := PortraitCatalog.instance()
+	var probe_id := &"__present_art_probe__"
+	var probe := PortraitDef.new()
+	probe.id = probe_id
+	probe.display_name = "Probe"
+	probe.race_id = &"stoneborn"
+	probe.layer_paths = ["res://assets/characters/portraits/stoneborn.png"] as Array[String]
+	catalog.with_probe(probe)
+	var problems := PortraitResolver.validate()
+	catalog.clear_probe(probe_id)
+	assert_eq(
+		_missing_art(problems).is_empty(),
+		true,
+		"art that EXISTS is not a gap, so the guard says nothing about it: " + str(problems)
+	)
+	for problem in _missing_art(problems):
 		var path := problem.trim_prefix("portrait: ").get_slice(" has no file at ", 1)
 		if path == "":
 			continue
@@ -416,6 +495,24 @@ func test_a_layer_file_that_exists_is_not_reported() -> void:
 			false,
 			"a reported path really is absent, or the message is a lie: " + path
 		)
+
+
+## Just the problems this suite's rules own, so a defect class belonging to another owner cannot
+## make it red and a genuinely new class still can.
+func _missing_art(problems: Array[String]) -> Array[String]:
+	var out: Array[String] = []
+	for problem in problems:
+		if (
+			problem.contains(" has no file at ")
+			or problem.contains(" has no layer to draw")
+			or problem.contains(" has no display name")
+			or problem.contains(" has no definition")
+			or problem.contains("no authored portraits loaded")
+			or problem.contains("the placeholder is missing")
+			or problem.contains("the placeholder names a race")
+		):
+			out.append(problem)
+	return out
 
 
 func test_the_placeholder_does_not_claim_a_race() -> void:
