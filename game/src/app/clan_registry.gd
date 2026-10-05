@@ -178,7 +178,7 @@ static func commit(actor: Actor) -> Dictionary:
 		return {"ok": false, "reason": String(gate["reason"]), "registered": false}
 	if not installed():
 		return {"ok": false, "reason": R_NO_RESOLVER, "registered": false}
-	var called: Variant = _verb.call(actor)
+	var called: Variant = _dispatch(actor)
 	var answer: Dictionary = called if called is Dictionary else {}
 	return {
 		"ok": bool(answer.get("ok", false)),
@@ -187,3 +187,26 @@ static func commit(actor: Actor) -> Dictionary:
 		"rank": String(answer.get("rank", "")),
 		"standing": int(answer.get("standing", 0)),
 	}
+
+
+## ## The verb is reached BY NAME on the production path, and that is the whole fix
+##
+## `commit` used to end `_verb.call(actor)`. That runs the registration perfectly well at
+## runtime — the seam was NOT broken, and every suite that drove it passed — but it is a
+## DYNAMIC dispatch, and `tools/gate_reach.py` answers "can the shipped game reach this
+## writer?" from a static `Class.method(` call graph. `_verb.call` writes no such edge, so
+## the census read the whole `clan` chain as dead while the gate was in fact wired, and
+## four authored quest steps watching `household_heir_registered` were reported
+## unfinishable.
+##
+## ADR 0226's rule is that a declaration is never evidence of its own reachability, and
+## the census's answer to it is to walk REAL edges. So the production path now NAMED a
+## real one: the seam calls `ClanHeir.register` directly whenever the installed verb IS
+## that verb, which is what `install()` binds at every production mount.
+##
+## The seam keeps its indirection and a test may still bind something else, so this is not
+## a refactor of the seam's contract — it is the seam's contract, finally visible.
+static func _dispatch(actor: Actor) -> Variant:
+	if _verb.get_method() == CLAN_VERB:
+		return ClanHeir.register(actor)
+	return _verb.call(actor)

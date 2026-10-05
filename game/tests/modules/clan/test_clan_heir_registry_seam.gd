@@ -43,6 +43,12 @@ const COMPOSITION_ROOT := "res://src/app/item_workbench_app.gd"
 ## would pass a scan looking for `"commit"` and then crash the game on its first frame.
 const ROOT_BINDS_SEAM := 'Callable(ClanRegistry, "commit")'
 const ROOT_BINDS_GATE := 'Callable(ClanRegistry, "available")'
+## The seam itself, and the ONE literal call `tools/gate_reach.py` walks out of `app/`
+## into the writer's module. Held as a pair because the shape and the file are one claim:
+## a `ClanHeir.register(` somewhere else in the program would drive the census green while
+## the seam stayed opaque, so the edge is pinned *in the seam* specifically.
+const SEAM_FILE := "res://src/app/clan_registry.gd"
+const NAMED_WRITER_CALL := "ClanHeir.register("
 
 
 func setup() -> void:
@@ -199,12 +205,14 @@ func test_the_seam_is_reached_from_production_and_from_exactly_one_page() -> voi
 		callers,
 		[COMPOSITION_ROOT],
 		(
-			"exactly one file in src/ names the seam in code, and it is the composition "
-			+ "root that binds it at route mount — `app/` is a PRIVATE_UNIT, so the page "
-			+ "receives it as a Callable and is the only thing that presses it. A second "
-			+ "caller is a second appointment moment (ADR 0113). Found: %s"
+			(
+				"exactly one file in src/ names the seam in code, and it is the composition "
+				+ "root that binds it at route mount — `app/` is a PRIVATE_UNIT, so the page "
+				+ "receives it as a Callable and is the only thing that presses it. A second "
+				+ "caller is a second appointment moment (ADR 0113). Found: %s"
+			)
+			% [", ".join(callers)]
 		)
-		% [", ".join(callers)]
 	)
 
 
@@ -223,7 +231,52 @@ func test_the_composition_root_installs_the_seam_and_hands_the_page_both_halves(
 		"the root binds `commit` as a bare static reference, not a lambda"
 	)
 	assert_ne(
-		root.find(ROOT_BINDS_GATE), -1, "and the `available` gate beside it — both halves or neither"
+		root.find(ROOT_BINDS_GATE),
+		-1,
+		"and the `available` gate beside it — both halves or neither"
+	)
+
+
+# --- and the chain is VISIBLE, which is not the same as wired ------------------
+
+
+## ## THE CENSUS CANNOT SEE A `Callable`, AND THIS IS THE EDGE IT WALKS
+##
+## This suite proved the seam was WIRED and the gate was still red. Both were true,
+## because `commit` ended `_verb.call(actor)`: a dynamic dispatch runs correctly and
+## writes no static `Class.method(` edge, and `tools/gate_reach.py` answers "can the
+## shipped game reach this writer?" by walking exactly those. Four authored quest steps
+## watching `household_heir_registered` were reported unfinishable while the seam drove
+## the very verb that produces the fact.
+##
+## So the load-bearing property is not "some caller presses the page" — the page test in
+## `game/tests/app/test_clan_join_production_path.gd` already holds that, by mounting the
+## real app. It is that **`app/` reaches the writer's module through a NAMED call**, which
+## is what closes the census finding. Pinned here over `_code_only`, so this file's own
+## prose naming the verb cannot satisfy it: a docstring is not an edge.
+##
+## It is deliberately a SHAPE (`ClanHeir.register(`) and not a whole-file scan for the
+## seam's own name. A seam that collapsed back to `_verb.call` would keep every other
+## test in this file green — including the one that mounts the real page and watches the
+## fact land — and only this one would go red.
+func test_the_seam_reaches_the_writer_module_through_a_named_call_not_a_callable() -> void:
+	var root := _code_only(FileAccess.get_file_as_string(SEAM_FILE))
+	assert_ne(
+		root.find(NAMED_WRITER_CALL),
+		-1,
+		(
+			(
+				"%s must reach `ClanHeir` by the NAMED call `%s`, not through "
+				% [SEAM_FILE, NAMED_WRITER_CALL]
+			)
+			+ (
+				"`_verb.call`. The runtime seam works either way and every other suite here "
+				+ "stays green, but `uv run python -m tools gate_reach check` measures "
+				+ "reachability from a static `Class.method(` call graph: a Callable writes no "
+				+ "edge, so the writer reads as unreachable and the four quest steps watching "
+				+ "`household_heir_registered` are reported unfinishable while they are not."
+			)
+		)
 	)
 
 
