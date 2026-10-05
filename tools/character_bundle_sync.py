@@ -399,6 +399,113 @@ def _shot_by_id(record: dict, shot_id: str) -> dict | None:
     return None
 
 
+def _fallback_layer(character_id: str) -> str | None:
+    """The committed fallback `res://` path for this character, or None when there is none.
+
+    A character's fallback is the one its RACE earned, because the fallback identifies the body
+    plan and not the individual (ADR 0238). Found by walking up the id's race: `unique-0001` has
+    no `RaceDef` at all, so there is nothing to fall back to and the caller must report it rather
+    than guess a neighbouring body plan's face.
+    """
+    record = next(
+        (
+            item
+            for item in unique_characters.readable_catalog()
+            if isinstance(item, dict) and item.get("id") == character_id
+        ),
+        None,
+    )
+    if record is None:
+        return None
+    race = bare_id(str((record.get("appearance") or {}).get("race", "")))
+    if race == "":
+        return None
+    candidate = GAME_DIR / "assets" / "characters" / "portraits" / f"{race}.png"
+    if not candidate.is_file():
+        return None
+    return f"res://assets/characters/portraits/{race}.png"
+
+
+def _fallback_def(record: dict, layer: str) -> str:
+    """A one-layer `PortraitDef` pointing at a committed fallback.
+
+    Carries the same trait assembly as [method build_def] so a fallback portrait is selectable and
+    describable exactly like a real one — a placeholder that cannot be addressed by a variant key
+    would be a second, quieter kind of special case.
+    """
+    character_id = str(record.get("id", ""))
+    display = str(record.get("name", character_id)).replace('"', "'")
+    traits, _notes = _visual_traits(record)
+    trait_text = ", ".join(f'&"{trait}"' for trait in sorted(set(traits)))
+    return "\n".join(
+        [
+            '[gd_resource type="Resource" script_class="PortraitDef" load_steps=2 format=3]',
+            "",
+            '[ext_resource type="Script" path="res://src/core/portrait_def.gd" id="1_portrait"]',
+            "",
+            "[resource]",
+            'script = ExtResource("1_portrait")',
+            f'id = &"{character_id}"',
+            f'display_name = "{display}"',
+            f'race_id = &"{bare_id(str((record.get("appearance") or {}).get("race", "")))}"',
+            f"visual_traits = Array[StringName]([{trait_text}])",
+            f'layer_paths = Array[String](["{layer}"])',
+            'palette_key = &""',
+            "",
+        ]
+    )
+
+
+def _visual_traits(record: dict) -> tuple[list[str], list[str]]:
+    """(traits, notes) for a published portrait — ONE value per variant axis.
+
+    Shared by [method build_def] and [method _fallback_def] because the rule is not a detail of one
+    of them: `PortraitDef.trait_value` returns the FIRST match on an axis, and ADR 0177 matches a
+    variant WHOLE, so two values on one axis let a single portrait answer for two variants it was
+    never drawn as. The first `_fallback_def` draft retyped the rule instead of calling this and
+    emitted `role:guild-surveyor` alongside `role:npc` — the exact ambiguity this exists to prevent,
+    reproduced by the second implementation of it.
+
+    An authored tag wins over an `identity` field on the same axis, because the tag is authored
+    content and `identity` is a different field. When they disagree the loser is NAMED rather than
+    dropped: `identity.role` is a role CLASS (`npc`) while a `role:` tag is usually a story role
+    (`calibrator`), so one axis can be carrying two vocabularies and the loser's meaning is
+    invisible to every later reader of the resource.
+    """
+    notes: list[str] = []
+    traits: list[str] = []
+    tags = record.get("tags") if isinstance(record.get("tags"), list) else []
+    seen_axis: dict[str, str] = {}
+    for tag in tags:
+        if not isinstance(tag, str) or ":" not in tag:
+            continue
+        axis, _, value = tag.partition(":")
+        if axis in seen_axis:
+            if seen_axis[axis] != value:
+                notes.append(
+                    f"tags carry two '{axis}' values ({seen_axis[axis]} and {value}); kept "
+                    f"'{seen_axis[axis]}', so the other is unreachable as a variant"
+                )
+            continue
+        seen_axis[axis] = value
+        traits.append(tag)
+    for axis in ("race", "path", "role"):
+        value = str((record.get("identity") or {}).get(axis, ""))
+        if value == "":
+            continue
+        bare = bare_id(value)
+        if axis not in seen_axis:
+            seen_axis[axis] = bare
+            traits.append(f"{axis}:{bare}")
+            continue
+        if seen_axis[axis] != bare:
+            notes.append(
+                f"axis '{axis}' has two vocabularies: tag '{seen_axis[axis]}' and identity "
+                f"'{bare}'; published the tag, so '{bare}' is not selectable as a variant"
+            )
+    return (traits, notes)
+
+
 def build_def(
     record: dict, races: set[str], layers: list[dict]
 ) -> tuple[str, list[str], list[str]]:
@@ -448,44 +555,7 @@ def build_def(
     if palette_key == "":
         notes.append("no authored palette:<key> tag, so palette_key stays empty")
 
-    visual_traits: list[str] = []
-    seen_axis: dict[str, str] = {}
-    for tag in tags:
-        if not isinstance(tag, str) or ":" not in tag:
-            continue
-        axis, _, value = tag.partition(":")
-        # ONE value per axis, first authored tag wins. Two values on one axis is not a richer trait
-        # set: `PortraitDef.trait_value` returns the first match, and ADR 0177 matches a variant
-        # WHOLE, so a second value on the same axis makes one portrait answer for two variants it
-        # was never drawn as — the exact substitution `declares_variant`'s docstring rules out.
-        if axis in seen_axis:
-            if seen_axis[axis] != value:
-                notes.append(
-                    f"tags carry two '{axis}' values ({seen_axis[axis]} and {value}); kept "
-                    f"'{seen_axis[axis]}', so the other is unreachable as a variant"
-                )
-            continue
-        seen_axis[axis] = value
-        visual_traits.append(tag)
-    for axis in ("race", "path", "role"):
-        value = str((record.get("identity") or {}).get(axis, ""))
-        if value == "":
-            continue
-        bare = bare_id(value)
-        if axis not in seen_axis:
-            seen_axis[axis] = bare
-            visual_traits.append(f"{axis}:{bare}")
-            continue
-        # A tag already spoke for this axis and `identity` disagrees. Named rather than dropped:
-        # `identity.role` is a role CLASS (`npc`) while a `role:` tag is usually a story role
-        # (`calibrator`), so one axis is carrying two vocabularies and the loser's meaning is
-        # invisible to every reader of the published resource.
-        if seen_axis[axis] != bare:
-            notes.append(
-                f"axis '{axis}' has two vocabularies: tag '{seen_axis[axis]}' and identity "
-                f"'{bare}'; published the tag, so '{bare}' is not selectable as a variant"
-            )
-
+    visual_traits, _trait_notes = _visual_traits(record)
     display = str(record.get("name", character_id)).replace('"', "'")
     traits = ", ".join(f'&"{trait}"' for trait in sorted(set(visual_traits)))
     quoted = ", ".join(f'"{path}"' for path in ordered)
@@ -757,6 +827,38 @@ def run(args) -> int:
     if action != "publish":
         fail(f"unknown action '{action}'")
         return 1
+
+    if body == "":
+        fallback = _fallback_layer(character_id)
+        if fallback is not None:
+            # No render on THIS machine, but a committed fallback exists (ADR 0238). Publishing it
+            # is what makes a clone without the private art draw a face instead of an empty box,
+            # and it is honest in both directions: the machine that HAS the art publishes the real
+            # render, this one publishes the placeholder, and the note says which happened.
+            info(
+                f"{character_id}: no render on this machine; publishing the committed fallback "
+                f"{fallback} instead of the private art"
+            )
+            body = _fallback_def(record, fallback)
+            for refusal in shot_refusals[:4]:
+                info(f"{character_id}: shot not available here: {refusal}")
+            if len(shot_refusals) > 4:
+                info(f"{character_id}: ...and {len(shot_refusals) - 4} more")
+        else:
+            for refusal in shot_refusals[:12]:
+                fail(f"{character_id}: {refusal}")
+            if len(shot_refusals) > 12:
+                fail(f"{character_id}: ...and {len(shot_refusals) - 12} more shot(s)")
+            fail(
+                f"{character_id} has nothing to publish and no committed fallback. A "
+                "PortraitDef with an empty layer_paths "
+                "fails PortraitResolver.validate() for anything but the placeholder, so writing "
+                "one would make the gate red rather than make the game work. Re-render the shots "
+                "above at their slot's install canvas, or run "
+                "`uv run python -m tools portrait_fallback write` to give this body plan a "
+                "placeholder."
+            )
+            return 1
 
     if body == "":
         for refusal in shot_refusals[:12]:
