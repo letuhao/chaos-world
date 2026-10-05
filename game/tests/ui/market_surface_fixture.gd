@@ -27,7 +27,6 @@ extends TestCase
 ##
 ## The player-facing half is `test_market_surface.gd`. The screen-contract and
 ## structural-pin half is `test_market_surface_contract.gd`.
-extends TestCase
 
 ## The shop and auction surfaces, end to end: a player stands at a market row, buys
 ## something off a stall's shelf, lists a lot and bids on one — and the goods and the

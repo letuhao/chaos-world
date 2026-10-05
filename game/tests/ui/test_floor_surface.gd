@@ -174,9 +174,14 @@ func test_the_settle_verb_destroys_an_entry_whose_decay_has_elapsed_and_keeps_th
 		{},
 		"and the destroyed entry is no longer a row on the page"
 	)
+	# Hero carried 5; the rotting drop took 2 and the one that never decays took 1, so 2
+	# remain in the bag. `2` is the figure that PROVES the claim: a settle that delivered
+	# the expired goods instead of destroying them would leave the bag at 4, and 4 is what
+	# this assertion was originally pinned to — the delivered number, sitting in the slot
+	# meant to exclude it.
 	assert_eq(
 		ItemsApi.inventory(hero).count(GOOD),
-		4,
+		2,
 		"and no goods came back to anyone: decay destroys rather than delivers"
 	)
 	assert_eq(
@@ -308,6 +313,18 @@ func test_the_pick_walks_the_shown_list_and_accept_takes_the_picked_drop() -> vo
 	assert_eq(screen.on_stack_input(down), true, "down picks the first drop")
 	var picked := String(screen.summary()["selected_drop"])
 	assert_ne(picked, "", "and something is picked")
+	# The quantity is read off THE PICKED ROW rather than pinned to a literal, because the
+	# row `ui_down` lands on is not the claim this test makes — the claim is that accept
+	# takes WHAT WAS PICKED. `_step` seeds `index = 0` and then adds `step`, so the first
+	# press from an unselected board lands on `ids[1]`; that is the shared body of all
+	# five screens (`market_screen.gd:539`, `auction_screen.gd:663`,
+	# `custody_screen.gd:928`, `forage_screen.gd:494`, `sect_screen.gd:820`), and pinning a
+	# literal here would pin THIS suite to an index the house convention does not promise.
+	# Reading the row the page says is picked asserts the same contract without that.
+	var picked_row := _row_for(screen, picked)
+	assert_ne(picked_row, {}, "the picked drop is a row the page is showing")
+	var picked_quantity := int(picked_row["quantity"])
+	assert_ne(picked_quantity, 0, "and it carries a quantity, so the rest is not vacuous")
 	var accept := InputEventAction.new()
 	accept.action = &"ui_accept"
 	accept.pressed = true
@@ -315,8 +332,15 @@ func test_the_pick_walks_the_shown_list_and_accept_takes_the_picked_drop() -> vo
 	assert_eq(bool(screen.summary()["last_ok"]), true, "and the take is published as primitives")
 	assert_eq(
 		int(screen.summary()["last_quantity"]),
-		1,
+		picked_quantity,
 		"naming the quantity that moved, so the page says how much came off the floor"
+	)
+	# And the goods are really in the bag — the outcome, not the verdict's echo of it. The
+	# hero carried 3 and dropped both lots, so the bag holds exactly what was picked.
+	assert_eq(
+		ItemsApi.inventory(hero).count(GOOD),
+		picked_quantity,
+		"and that quantity really arrived in the bag: accept takes the PICKED drop"
 	)
 	screen.free()
 

@@ -12,12 +12,17 @@ extends TestCase
 
 const FLOOR_SCENE := preload("res://src/ui/screens/floor_screen.tscn")
 const DROP_ROW_SCENE := preload("res://src/ui/panels/floor_drop_row.tscn")
+## The auction screen, because the floor suite also mounts the AUCTION arm to prove the
+## two screens share one market seam. Same constant `market_surface_fixture.gd` holds.
+const AUCTION_SCENE := preload("res://src/ui/screens/auction_screen.tscn")
 
 const FLOOR_SCRIPT_PATH := "res://src/ui/screens/floor_screen.gd"
 const DROP_ROW_SCRIPT_PATH := "res://src/ui/panels/floor_drop_row.gd"
+const AUCTION_SCRIPT_PATH := "res://src/ui/screens/auction_screen.gd"
 const ROOT_SCRIPT_PATH := "res://src/app/item_workbench_app.gd"
 
 const FLOOR_ROUTE := &"floor"
+const AUCTION_ROUTE := &"auction"
 
 ## The numéraire. A literal, because `EconomyValuation.numeraire_id()` is a FUNCTION
 ## and a `const` may not call one. The floor moves goods, not coins, so this is only

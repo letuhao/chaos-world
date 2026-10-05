@@ -198,12 +198,19 @@ func test_the_binding_arm_opens_the_floor_route_and_names_the_verbs() -> void:
 	var source := _code_only(ROOT_SCRIPT_PATH)
 	assert_ne(source.is_empty(), true, "the composition root's source is readable")
 	assert_eq(source.count("ROUTE_FLOOR:"), 1, "the root binds the floor route exactly once")
+	# Scoped to the floor's OWN arm, not the whole match: `ROUTE_MARKET` hands its screen a
+	# location through the very same `_market_location()` call (item_workbench_app.gd:1042),
+	# so a whole-file count sees two and reads as a floor that binds twice.
+	var arm := _arm_of(source, "ROUTE_FLOOR")
+	assert_ne(arm.is_empty(), true, "and that label opens an arm with code in it")
 	# The arm is the PLAIN default plus the location: every floor verb takes the bound
 	# actor and plain ids, so there is NO seam to inject and a Callable wrapping a facade
 	# call would be the ceremony this screen exists to avoid.
 	assert_eq(
-		source.count('"at_location", _market_location()'), 1, "and it hands the screen a location"
+		arm.count('"at_location", _market_location()'), 1, "and it hands the screen a location"
 	)
+	# This one stays on the WHOLE source, because it is a ban rather than a count: no route
+	# at all may reach a `bind_floor` seam.
 	assert_eq(
 		source.contains('screen.call("bind_floor"'),
 		false,
@@ -345,3 +352,36 @@ func test_the_floor_breaks_none_of_the_three_bans_the_ui_standard_states() -> vo
 					true,
 					"no formatted figure reaches a label in %s: %s%s" % [path, sink, format]
 				)
+
+
+# --- helpers on this suite ---------------------------------------------------
+
+
+## The one `match` arm opened by `label` in a composition root — its label line through
+## to the NEXT top-level `ROUTE_*:` label, whichever arm comes next.
+##
+## Read over CODE (`_code_only` has already stripped comments), because the root
+## documents every route at length in docstrings that name the seams too: slicing the raw
+## file would hand back whichever comment block happens to sit between two labels, and
+## the assertion would be reading prose about the wiring rather than the wiring.
+##
+## This exists because a whole-file count is NOT a per-arm count here: `ROUTE_MARKET` and
+## `ROUTE_FLOOR` both hand their screen a location through `_market_location()`, so the
+## honest invariant is "the floor's OWN arm wires the location exactly once", and only an
+## arm slice can say that.
+func _arm_of(source: String, label: String) -> String:
+	var lines := source.split("\n") as Array
+	var start := -1
+	for index in lines.size():
+		if (lines[index] as String).strip_edges().begins_with("%s:" % label):
+			start = index
+			break
+	if start < 0:
+		return ""
+	var stop := lines.size()
+	for index in range(start + 1, lines.size()):
+		var line := (lines[index] as String).strip_edges()
+		if line.begins_with("ROUTE_") and line.ends_with(":"):
+			stop = index
+			break
+	return "\n".join(lines.slice(start, stop) as Array)

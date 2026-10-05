@@ -60,6 +60,24 @@ static func events() -> NpcEvents:
 	return _events
 
 
+## Every capturable individual in the shipped cast, as primitives a custody page can render.
+##
+## ## Why this exists on the facade and not only in `NpcCaptureTerms`
+##
+## `item_workbench_app.gd` binds `Callable(NpcApi, "capturable")` as the custody screen's
+## capture seam, and **that callable did not resolve**: the method existed on
+## `NpcCaptureTerms` alone, so the binding silently produced a verb the screen refused, and
+## the page's primary action could never fire — ADR 0104 leaves capture conditions to the
+## caller, and the caller was calling nothing. A promise in a docstring with no method
+## behind it is the shape `NpcApi.forget`'s own note describes; this is the same defect,
+## caught before it shipped as "the capture button is broken".
+##
+## Presence is deliberately NOT a filter: a player has to be able to walk to a capturable
+## individual they have not met yet. The caller decides which of these it will offer.
+static func capturable() -> Array:
+	return NpcCaptureTerms.capturable()
+
+
 ## Drop the player's bond with a retired npc, so a dead minor does not haunt the ledger
 ## forever. `SocialApi.forget` is the verb that promises it and until this call site it had
 ## no production caller at all — the promise was in a docstring and nowhere else.
