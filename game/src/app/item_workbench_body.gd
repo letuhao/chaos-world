@@ -189,7 +189,7 @@ var _mod_subscriptions: Array = []
 var _unwired_families: Array[StringName] = []
 
 ## Subscriptions whose bus name resolved to nothing, as `{mod_id, event_bus,
-## event_name}` — the event-side twin of `_unwired_families` (ADR 0266). A mod
+## event_name}` — the event-side twin of `_unwired_families` (ADR 0269). A mod
 ## subscription that cannot resolve is still SKIPPED rather than fatal, but it is
 ## never silent: each row is `push_warning`-ed naming the bus and the mod, and
 ## recorded here so the skip is assertable. Cleared at the top of every
@@ -420,7 +420,7 @@ func _attach_mod_modules(pipeline: AttachPipeline, actor: Actor, modules: Dictio
 ## instance. Connections are guarded by `is_connected` so a repeated boot never
 ## double-connects (AGENTS.md).
 ##
-## ## An unknown bus WARNS, and it stays a warning (ADR 0266)
+## ## An unknown bus WARNS, and it stays a warning (ADR 0269)
 ##
 ## ADR 0242 decision 4 said an unknown bus "is skipped without crashing", which is
 ## still the BEHAVIOUR: a mod with one bad subscription must not take a boot down
@@ -479,7 +479,7 @@ func _wire_subscriptions(subscriptions: Array) -> void:
 ## A bus handed out as `SomeEvents.new()` is a brand-new object per lookup: nothing
 ## holds the one a subscriber connects to and nothing emits on it, so `is_connected`
 ## reports the subscription connected FOREVER while no signal ever fires.
-## `QuestEvents` therefore takes `shared()` (ADR 0266) — a registrable System whose
+## `QuestEvents` therefore takes `shared()` (ADR 0269) — a registrable System whose
 ## whole economy is one quest subscription cannot afford a silent bus. The five
 ## entries still returning `new()` carry that same defect and are recorded in the ADR
 ## rather than fixed here: each needs its OWNING facade's accessor, which is a wider

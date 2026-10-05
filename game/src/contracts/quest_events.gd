@@ -1,7 +1,7 @@
 class_name QuestEvents
 extends RefCounted
 
-## Signal contract for the `quest` module (ADR 0266, ADR 0093). Emitted by the module;
+## Signal contract for the `quest` module (ADR 0269, ADR 0093). Emitted by the module;
 ## consumed by any observer.
 ##
 ## Everything here announces a fact **already written to the ledger**: an acceptance, a paid

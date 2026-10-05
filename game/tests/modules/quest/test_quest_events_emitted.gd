@@ -1,6 +1,6 @@
 extends TestCase
 
-## ADR 0266: a quest completion is ANNOUNCED, so a registrable System can react to it
+## ADR 0269: a quest completion is ANNOUNCED, so a registrable System can react to it
 ## instead of polling.
 ##
 ## ## The defect this suite exists to end

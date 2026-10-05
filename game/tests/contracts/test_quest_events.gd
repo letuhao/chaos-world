@@ -1,6 +1,6 @@
 extends TestCase
 
-## ADR 0266: the `quest` bus. Three things about the CONTRACT itself, each of which a
+## ADR 0269: the `quest` bus. Three things about the CONTRACT itself, each of which a
 ## later edit could quietly break, so each is pinned here rather than in the module
 ## suite that only exercises one path through it.
 ##
@@ -110,7 +110,7 @@ func test_the_declared_shape_is_exactly_three_signals() -> void:
 ## and grants nothing. Three declared, three emitted, or this goes red at the name.
 func test_every_declared_signal_is_emitted_by_production_code() -> void:
 	var emitted := _emitting_sources()
-	assert_ne(emitted.is_empty(), false, "the walk found the producer directory at all")
+	assert_eq(emitted.is_empty(), false, "the walk found the producer directory at all")
 	for name in DECLARED:
 		assert_ne(
 			emitted.has(String(name)),
@@ -132,7 +132,7 @@ func test_every_declared_signal_is_emitted_by_production_code() -> void:
 ## could never satisfy this.
 func test_the_producer_is_the_module_that_owns_the_completion() -> void:
 	var producers := _emitting_files()
-	assert_ne(producers.is_empty(), false, "production code does emit on this contract")
+	assert_eq(producers.is_empty(), false, "production code does emit on this contract")
 	for path in producers:
 		assert_eq(
 			path.begins_with(PRODUCER_ROOT),
@@ -154,12 +154,20 @@ func test_the_producer_is_the_module_that_owns_the_completion() -> void:
 ## Comments are stripped first, so a docblock naming a signal cannot make a file look
 ## like a producer — the hazard the arch detector's raw-text scan runs into, and the
 ## reason three house docblocks are worded around their own literals.
+##
+## The two-part match is deliberate: the file must NAME this bus class, and the file must
+## EMIT the signal. A single substring cannot do both, because every publish goes through
+## `QuestEvents.shared()` — the text is `QuestEvents.shared().quest_completed.emit(`, so
+## `QuestEvents.quest_completed.emit(` never appears and a one-part match would report
+## zero producers for a contract that has three.
 func _emitting_files() -> Array[String]:
 	var found: Array[String] = []
 	for path in _gd_files(PRODUCER_ROOT, 0):
 		var code := _code_of(path)
+		if not code.contains("QuestEvents"):
+			continue
 		for name in DECLARED:
-			if code.contains("QuestEvents." + String(name) + ".emit("):
+			if code.contains("." + String(name) + ".emit("):
 				found.append(path)
 				break
 	return found
@@ -171,7 +179,7 @@ func _emitting_sources() -> Dictionary:
 	for path in _emitting_files():
 		var code := _code_of(path)
 		for name in DECLARED:
-			if code.contains("QuestEvents." + String(name) + ".emit("):
+			if code.contains("." + String(name) + ".emit("):
 				out[String(name)] = true
 	return out
 

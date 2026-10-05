@@ -30,7 +30,7 @@ extends RefCounted
 ## nothing (ADR 0061's precedent: a reward is decided in one place, and that
 ## place refuses the second decision).
 ##
-## ## It ANNOUNCES, on the one bus (ADR 0266)
+## ## It ANNOUNCES, on the one bus (ADR 0269)
 ##
 ## Every verb on this facade that changes a ledger publishes on `QuestEvents`:
 ## acceptance and completion from the one place each is decided, and every refusal
@@ -433,7 +433,7 @@ static func _required_steps_met(actor: Actor, def: QuestDef) -> bool:
 ## Ordering matters — the guard runs BEFORE any grant is paid, so a repeat call
 ## cannot pay even the grants that have no once-guard of their own.
 ##
-## This is also the ONE place a completion is ANNOUNCED (ADR 0266), for the same
+## This is also the ONE place a completion is ANNOUNCED (ADR 0269), for the same
 ## reason it is the one place it is decided: a second call site emitting would be a
 ## second code path that could drift, and the guard above means the announcement
 ## fires exactly when — and exactly once when — the payment happened.
@@ -476,7 +476,7 @@ static func _offered_ids(actor: Actor) -> Array[String]:
 ## module's vocabulary instead. Detail (`unmet`) still crosses untouched, which
 ## is the whole point of passing the verdict through.
 ##
-## ## It ANNOUNCES, and it is the ONLY place that can (ADR 0266)
+## ## It ANNOUNCES, and it is the ONLY place that can (ADR 0269)
 ##
 ## Every refusal on this facade is built here rather than at each call site, so the refusal
 ## ANSWER and the refusal ANNOUNCEMENT cannot be two code paths that drift — the same argument

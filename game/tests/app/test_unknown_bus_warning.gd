@@ -1,6 +1,6 @@
 extends TestCase
 
-## ADR 0266, the second half: an unknown events bus WARNS instead of vanishing.
+## ADR 0269, the second half: an unknown events bus WARNS instead of vanishing.
 ##
 ## ## The defect
 ##
@@ -83,7 +83,7 @@ func test_every_named_bus_resolves_to_the_class_it_is_named_for() -> void:
 		assert_ne(bus, null, "'%s' resolves to a bus" % bus_name)
 		if bus == null:
 			continue
-		var script := bus.get_script()
+		var script: Script = bus.get_script()
 		assert_ne(script, null, "'%s' resolves to a scripted object" % bus_name)
 		if script == null:
 			continue
@@ -205,8 +205,14 @@ func test_the_composition_root_warns_naming_the_bus_and_the_mod() -> void:
 	assert_ne(start, -1, "the wiring function is still there")
 	if start < 0:
 		return
-	var stop := body.find("\n\n\nfunc ", start)
-	var wiring := body.substr(start, stop - start if stop > start else 0)
+	# Bounded by the next TOP-LEVEL `func`, not by the two-blank-line separator: comment
+	# stripping turns this function's own docblock into a dozen BLANK lines, so the
+	# separator a gdformat'd file would show is not present in the stripped text.
+	var stop := body.find("\nfunc ", start)
+	assert_ne(stop, -1, "and there is a function after it to bound the slice")
+	if stop < 0:
+		return
+	var wiring := body.substr(start, stop - start)
 	assert_ne(wiring.find("push_warning("), -1, "the skip announces itself")
 	assert_ne(
 		wiring.find("unknown events bus"),
