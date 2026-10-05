@@ -21,5 +21,10 @@
 {"session": "close-three-gaps", "paths": ["game/src/modules/clan", "game/src/modules/items", "game/src/modules/sect", "game/src/app/screen_routes.gd", "tools/arch/registry.json", "game/src/ui/screens/clan_screen.gd", "game/src/ui/screens/clan_screen.tscn", "game/tests/modules/clan"], "heartbeat": "2026-10-05T02:22:58.565960+00:00"}
 {"session": "wave21-a", "paths": ["game/assets/characters/unique-index-wave21-a.jsonl", "game/assets/characters/unique-index-wave-21a.jsonl"], "heartbeat": "2026-10-05T03:29:48.208884+00:00"}
 {"session": "wave21-b", "paths": ["game/assets/characters/unique-index-wave21-b.jsonl", "game/assets/characters/unique-index-wave-21b.jsonl"], "heartbeat": "2026-10-05T03:29:58.309531+00:00"}
-{"session": "wave21-c", "paths": ["game/assets/characters/unique-index-wave21-c.jsonl"], "heartbeat": "2026-10-05T03:28:50.705968+00:00"}
-{"session": "wave21-d", "paths": ["game/assets/characters/unique-index-wave21-d.jsonl", "game/assets/characters/unique-index-wave-8.jsonl"], "heartbeat": "2026-10-05T03:28:51.985487+00:00"}
+{"session": "wave21-c", "paths": ["game/assets/characters/unique-index-wave21-c.jsonl", "game/assets/characters/unique-index-wave-21c.jsonl"], "heartbeat": "2026-10-05T03:37:42.422045+00:00"}
+{"session": "charcreate-coord", "paths": ["game/src/core/cultivation_gain.gd", "game/tests/modules/soul/test_soul_fate_across_rebirth.gd"], "heartbeat": "2026-10-05T03:41:18.393750+00:00"}
+{"session": "clock-split", "paths": ["game/src/app/world_stage_reconcile.gd"], "heartbeat": "2026-10-05T03:53:01.981905+00:00"}
+{"session": "wave22-a", "paths": ["game/assets/characters/unique-index-wave22-a.jsonl"], "heartbeat": "2026-10-05T03:58:03.811274+00:00"}
+{"session": "wave22-b", "paths": ["game/assets/characters/unique-index-wave22-b.jsonl", "game/assets/characters/unique-index-wave-22b.jsonl"], "heartbeat": "2026-10-05T03:59:43.439229+00:00"}
+{"session": "wave22-c", "paths": ["game/assets/characters/unique-index-wave22-c.jsonl", "game/assets/characters/unique-index-wave-22c.jsonl"], "heartbeat": "2026-10-05T03:59:29.473837+00:00"}
+{"session": "wave22-d", "paths": ["game/assets/characters/unique-index-wave22-d.jsonl", "game/assets/characters/unique-index-wave-9.jsonl"], "heartbeat": "2026-10-05T03:58:06.326641+00:00"}
