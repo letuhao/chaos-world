@@ -1,7 +1,8 @@
 class_name AuctionScreen
 extends UiScreen
 
-## The auction floor: see every lot, list one of your own, and bid on somebody's.
+## The auction floor: see every lot, list one of your own, bid on somebody's, and
+## close one.
 ##
 ## ## Why this screen exists at all
 ##
@@ -26,6 +27,11 @@ extends UiScreen
 ## So [method bind_auction] takes `Callable(bidder, lot_id, period) -> Dictionary`,
 ## which is `AuctionBids.bid`'s signature verbatim. **Unwired, a bid refuses
 ## `no_auction_seam` by name** rather than reporting a bid nobody placed.
+##
+## The SETTLEMENT is the same shape for the same reason, and there are two of its
+## arguments rather than one: `MarketApi.settle_lot` needs the `Actor` holding the
+## escrow AND a resolver turning a bidder's id back into a live wallet. See
+## [method bind_settlement], which is where both are handed over.
 ##
 ## The LIST is different and is called BY NAME. `MarketApi` is `market/api.gd` and
 ## `market` is declared in `rules.UI_MODULES`, so `MarketApi.list` is reachable from
@@ -72,11 +78,14 @@ const FOOTER_TEXT := (
 ## player sees.
 const ACTION_BID := &"bid"
 const ACTION_LIST := &"list"
+const ACTION_SETTLE := &"settle"
 
 ## The lot status words, published rather than spelled as literals, because the row
 ## panel branches on them and a screen that spelled `open` in three places would be
 ## three places to drift from `AuctionReadModel`.
 const STATUS_OPEN := "open"
+const STATUS_SOLD := "sold"
+const STATUS_UNSOLD := "unsold"
 
 ## The refusals this screen raises ITSELF, before a verb is called. Authored constants
 ## rather than prose, for the same reason the modules author their own: a panel renders
@@ -86,6 +95,11 @@ const NO_LOT_PICKED := "no_lot_picked"
 ## The bid seam is not bound, so the bid the player pressed cannot run. Distinct from
 ## every module refusal: the amount was named and there is nowhere to send it.
 const NO_AUCTION_SEAM := "no_auction_seam"
+## The bidder resolver is not bound, so the settlement the player pressed cannot run.
+## Distinct from `NO_AUCTION_SEAM` for the same reason `bid` is: the lot is priced, the
+## period was named, and the ONE thing missing is a way to reach the bidder — the
+## ledger names them by id alone and only `app/` holds live bodies.
+const NO_BIDDER_RESOLVER := "no_bidder_resolver"
 ## The hero escrowed nothing, so there is no instance to list. Distinct from
 ## `MarketApi.NO_PERIODS`: there is a hero here and a bag, and nothing in it that has
 ## an authored worth.
@@ -100,6 +114,12 @@ const NO_PERIODS := MarketApi.NO_PERIODS
 ## meant to hold the goods.
 const LIST_PERIODS := 3
 
+## The periods one press of the settle action closes a lot by. An authored step a
+## player chooses to advance, not a clock: nothing in this program owns time
+## (DEF-0111), so a defaulted period here would be an invented tick wearing a button's
+## clothes.
+const SETTLE_PERIODS := 3
+
 var _header: Label = null
 var _footer: Label = null
 var _lot_box: VBoxContainer = null
@@ -111,6 +131,14 @@ var _lot_rows: Array = []
 var _selected_lot: String = ""
 ## The bid verb, injected by the composition root. See the class note.
 var _bid: Callable = Callable()
+## The bidder resolver `MarketApi.settle_lot` walks its settlement with, injected by
+## the composition root. `Callable(bidder_id: String) -> Actor`.
+var _bidder_of: Callable = Callable()
+## The house actor settlement pays into. `MarketApi.settle_lot(winner_actor, ...)`
+## takes the shop or seller holding the escrow, and only `app/` knows which `Actor`
+## that is — a screen cannot mint one. Null until [method bind_settlement] supplies
+## it, and every settle refuses by name rather than reporting a sale nobody ran.
+var _house_actor: Actor = null
 ## The last verb's verdict, carried through verbatim. `{}` before any action, so a test
 ## reads "no action yet" rather than a refusal that never happened.
 var _last_result: Dictionary = {}
@@ -135,11 +163,47 @@ func bind_auction(bid: Callable) -> void:
 	_render()
 
 
-## Whether the bid seam is bound. Published by `summary()` so a probe can tell "this
-## screen cannot bid" from "this screen has nothing to bid on", which are different
-## sentences and both reachable.
+## ## The SETTLEMENT seam, and why both halves arrive as Callables
+##
+## `MarketApi.settle_lot(winner_actor, bidder_of, lot_id, periods)` is the verb that
+## closes a lot, and it is the one that shipped with **no caller outside a test** — so a
+## won lot stayed `open` forever and a page of bids could never end. It takes two
+## arguments a screen cannot produce:
+##
+##  - `winner_actor`, the shop or seller holding the ESCROW. `MarketApi.list` removed
+##    the instance from that actor's bag at list time, and only `app/` knows which
+##    `Actor` it was — `ShopCounter` mints the counters, `ActorFactory` mints actors,
+##    and `app` is the only entry in `rules.PRIVATE_UNITS`.
+##  - `bidder_of`, the RESOLVER. A lot records bids as a plain `actor_id` string —
+##    "a bid is a PROMISE and promises outlive the room" (ADR 0102) — so settlement has
+##    to turn an id back into a live wallet at the moment it pays. Only the composition
+##    root holds that registry (`AuctionStanding._body` is the shipped instance of
+##    exactly this resolution), so the resolver is handed over rather than rebuilt.
+##
+## So [method bind_settlement] takes `Callable(bidder_id: String) -> Actor` and the
+## `Actor` to pay, and **unwired the verb refuses `no_bidder_resolver` by name** rather
+## than reporting a settlement nobody ran.
+##
+## Safe to call again; the screen repaints from the facade either way.
+func bind_settlement(bidder_of: Callable, house_actor: Actor) -> void:
+	_bind_nodes()
+	_bidder_of = bidder_of
+	_house_actor = house_actor
+	_refresh_view()
+	_render()
+
+
+## Whether the bid seam is bound. Published by `summary()` so a probe can tell
+## "this screen cannot bid" from "this screen has nothing to bid on", which are
+## different sentences and both reachable.
 func auction_wired() -> bool:
 	return _bid.is_valid()
+
+
+## Whether settlement can run. Both halves of the seam, because a resolver with no
+## house has nobody to pay and a house with no resolver cannot reach the winner.
+func settlement_wired() -> bool:
+	return _bidder_of.is_valid() and _house_actor != null
 
 
 func _summary() -> Dictionary:
@@ -152,6 +216,7 @@ func _summary() -> Dictionary:
 		"actor": String(_actor.id),
 		"read_only": false,
 		"auction_wired": auction_wired(),
+		"settlement_wired": settlement_wired(),
 		# The one facade call this screen makes by bare name, for the purse and the
 		# world's lot tally. `market` is declared in `rules.UI_MODULES`, so this is
 		# exactly the reach `ForageScreen` has on `HoldingsApi`.
@@ -159,6 +224,7 @@ func _summary() -> Dictionary:
 		"lot_count": rows.size(),
 		"lot_ids": _lot_ids(rows),
 		"open_count": _count_where(rows, "open"),
+		"settled_count": _count_where(rows, "sold") + _count_where(rows, "unsold"),
 		"bidding_count": _count_where(rows, "can_bid"),
 		"mine_count": _count_where(rows, "mine"),
 		"selected_lot": _selected_lot,
@@ -175,6 +241,10 @@ func _summary() -> Dictionary:
 		"last_lot": String(_last_result.get("lot_id", "")),
 		"last_amount": int(_last_result.get("amount", 0)),
 		"last_required": int(_last_result.get("required", 0)),
+		# The settlement's OWN two sentences, because `sell` and `sell failed` differ by
+		# nothing a caller could otherwise read: both return `ok: true`.
+		"last_status": String(_last_result.get("status", "")),
+		"last_winner": String(_last_result.get("winner", "")),
 		"actions": _action_ids(),
 		"enabled": _enabled_actions(),
 		# Each row's own summary, nested under that row's key so a test reads the lot
@@ -230,6 +300,37 @@ func act_list(instance_id: String, periods: int = LIST_PERIODS) -> Dictionary:
 	if instance_id == "":
 		return _verdict(NO_INSTANCE)
 	return _settle(MarketApi.list(_actor, StringName(instance_id), periods))
+
+
+## Close the picked lot, or the lot named by `lot_id`, by `periods`, and pay the
+## outcome. Returns `MarketApi.settle_lot`'s verdict, which carries `status`,
+## `winner` and `amount` — so a caller learns whether the lot SOLD or went UNSOLD
+## rather than reading a bare `ok: true` that both share.
+##
+## ## The one verb that makes an auction an AUCTION
+##
+## `bid` makes a promise; this keeps it. A lot could be listed and bid on forever,
+## because `settle_lot` shipped with ADR 0102 and had no caller outside a test — so a
+## won lot stayed `open` and its escrow stayed in limbo. Both of this verb's extra
+## arguments arrive through [method bind_settlement] and for the same reason: the
+## module records bidders as ids, and only `app/` holds the live bodies and knows
+## which `Actor` holds the escrow.
+##
+## `periods` is this caller's, exactly as it is for `bid`'s `bid_period` (DEF-0111).
+## `MarketApi.settle_lot` refuses `lot_not_due` while `periods < closes_after`, so a
+## press too early is a NAMED refusal rather than a settlement nobody earned.
+func act_settle(lot_id: String = "", periods: int = SETTLE_PERIODS) -> Dictionary:
+	_bind_nodes()
+	var wanted := lot_id if lot_id != "" else _selected_lot
+	if _actor == null:
+		return _verdict(NO_ACTOR)
+	if wanted == "":
+		return _verdict(NO_LOT_PICKED)
+	if periods <= 0:
+		return _verdict(NO_PERIODS)
+	if not settlement_wired():
+		return _verdict(NO_BIDDER_RESOLVER)
+	return _settle(MarketApi.settle_lot(_house_actor, _bidder_of, StringName(wanted), periods))
 
 
 ## Pick the lot the verbs would act on. Returns false for an id this screen is not
@@ -464,6 +565,10 @@ func _render() -> void:
 ## where the verb refuses is the "looks alive and is dead" shape. `list` needs a hero
 ## holding an instance at all: `MarketApi.list` refuses `not_carried` for a bag with
 ## nothing escrowable in it, and the refusal is better rendered than pre-judged.
+## `settle` needs the settlement seam AND a picked lot that is still open, because
+## `MarketApi.settle_lot` refuses `lot_not_open` for a lot already closed and
+## `lot_not_due` for one whose window has not elapsed — so a control live there would
+## refuse on every press.
 func _publish_actions() -> void:
 	if _actions == null:
 		return
@@ -477,6 +582,7 @@ func _publish_actions() -> void:
 				{
 					ACTION_BID: "Bid on the picked lot",
 					ACTION_LIST: "List one of your goods for auction",
+					ACTION_SETTLE: "Close the picked lot and pay the winner",
 				},
 				"enabled": _enabled_actions(),
 				"primary": ACTION_BID if bool(picked.get("can_bid", false)) else ACTION_LIST,
@@ -488,10 +594,10 @@ func _publish_actions() -> void:
 ## The action ids, in the order the bar shows them. Read off the constants above so
 ## the order a test reads is the order the player sees.
 func _action_ids() -> Array:
-	return [String(ACTION_BID), String(ACTION_LIST)]
+	return [String(ACTION_BID), String(ACTION_LIST), String(ACTION_SETTLE)]
 
 
-## Which of the two is live right now.
+## Which of the three is live right now.
 func _enabled_actions() -> Dictionary:
 	var picked := _picked_view()
 	return {
@@ -504,6 +610,13 @@ func _enabled_actions() -> Dictionary:
 			and bool(picked.get("can_bid", false))
 		),
 		String(ACTION_LIST): _actor != null and not listable_instance_ids().is_empty(),
+		String(ACTION_SETTLE):
+		(
+			_actor != null
+			and settlement_wired()
+			and _selected_lot != ""
+			and bool(picked.get("open", false))
+		),
 	}
 
 
@@ -513,6 +626,7 @@ func _enabled_actions() -> Dictionary:
 ## `list` takes the hero's FIRST escrowable instance and
 ## [constant LIST_PERIODS] — the authored window — rather than a quantity a button
 ## author typed, so a retune of the window is one constant and not a search.
+## `settle` takes [constant SETTLE_PERIODS] for the same reason.
 func _on_action_requested(action: StringName) -> void:
 	match action:
 		ACTION_BID:
@@ -521,11 +635,18 @@ func _on_action_requested(action: StringName) -> void:
 			var instances := listable_instance_ids()
 			if not instances.is_empty():
 				act_list(String(instances[0]), LIST_PERIODS)
+		ACTION_SETTLE:
+			act_settle("", SETTLE_PERIODS)
 
 
 ## `ui_accept` on the screen: bid on the picked lot when it can be bid on, and decline
 ## otherwise. Declared in one place because two consumers (`on_stack_input` and the
 ## action bar) must agree on which verb a press means.
+##
+## **`ui_accept` does NOT settle**, and that is a deliberate half rather than a gap: a
+## single accept that bid when it could and settled when it could not would pay out an
+## auction on the same key that opens one. Settlement is a deliberate, separately
+## labelled action, and the bar is where a player commits to it.
 func _accept() -> bool:
 	if not auction_wired() or _selected_lot == "":
 		return false
