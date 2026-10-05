@@ -14339,11 +14339,12 @@
       "pivot": "bottom_center",
       "cv_validation": {
         "status": "passed",
-        "perspective": "strictly_overhead",
-        "lighting": "315_degrees",
-        "subcells_covered": 256,
+        "perspective": "45_degree_world_map_orthographic",
+        "palette": "dark_netherworld_gouache",
+        "rembg_engine": "ComfyUI RMBG-2.0",
+        "subcells_covered": 146,
         "total_subcells": 256,
-        "coverage_ratio": 1.0
+        "coverage_ratio": 0.57
       }
     },
     {
@@ -14480,11 +14481,12 @@
       "pivot": "center",
       "cv_validation": {
         "status": "passed",
-        "perspective": "strictly_overhead",
-        "lighting": "315_degrees",
-        "subcells_covered": 112,
+        "perspective": "45_degree_world_map_orthographic",
+        "palette": "dark_netherworld_gouache",
+        "rembg_engine": "ComfyUI RMBG-2.0",
+        "subcells_covered": 81,
         "total_subcells": 144,
-        "coverage_ratio": 0.778
+        "coverage_ratio": 0.562
       }
     },
     {
@@ -14745,7 +14747,19 @@
       "destructible": false,
       "material": "stone",
       "cultivation_element": "death",
-      "prompt_summary": "Top-down 45 degree jagged monolith cleaved by deep blade gouges, dripping intangible red mist, carved with ancient Asura blood characters."
+      "prompt_summary": "Top-down 45 degree jagged monolith cleaved by deep blade gouges, dripping intangible red mist, carved with ancient Asura blood characters.",
+      "runtime_path": "res://assets/packs/yin-jian/runtime/tu_la_slaughter_intent_stele.png",
+      "original_path": "assets/packs/yin-jian/original/tu_la_slaughter_intent_stele_original.jpg",
+      "pivot": "bottom_center",
+      "cv_validation": {
+        "status": "passed",
+        "perspective": "45_degree_world_map_orthographic",
+        "palette": "dark_netherworld_gouache",
+        "rembg_engine": "ComfyUI RMBG-2.0",
+        "subcells_covered": 23,
+        "total_subcells": 64,
+        "coverage_ratio": 0.359
+      }
     },
     {
       "id": "yin_jian.architecture_and_building.tu_la_blood_duel_arena",
@@ -14823,7 +14837,19 @@
       "destructible": false,
       "material": "fluid",
       "cultivation_element": "death",
-      "prompt_summary": "Top-down 45 degree sunken stone pool filled with thick viscous yellow-green corpse fluid, chained bronze coffins submerged halfway, sickly bubbles bursting."
+      "prompt_summary": "Top-down 45 degree sunken stone pool filled with thick viscous yellow-green corpse fluid, chained bronze coffins submerged halfway, sickly bubbles bursting.",
+      "runtime_path": "res://assets/packs/yin-jian/runtime/thi_toc_corpse_nurturing_pool.png",
+      "original_path": "assets/packs/yin-jian/original/thi_toc_corpse_nurturing_pool_original.jpg",
+      "pivot": "center",
+      "cv_validation": {
+        "status": "passed",
+        "perspective": "45_degree_world_map_orthographic",
+        "palette": "dark_netherworld_gouache",
+        "rembg_engine": "ComfyUI RMBG-2.0",
+        "subcells_covered": 204,
+        "total_subcells": 256,
+        "coverage_ratio": 0.797
+      }
     },
     {
       "id": "yin_jian.architecture_and_building.thi_toc_corpse_emperor_mausoleum",
@@ -15365,7 +15391,19 @@
       "destructible": false,
       "material": "jade",
       "cultivation_element": "fate",
-      "prompt_summary": "Top-down 45 degree monumental archway carved from translucent white immortal jade, an inner swirling vortex of kaleidoscopic fate light and spinning runes."
+      "prompt_summary": "Top-down 45 degree monumental archway carved from translucent white immortal jade, an inner swirling vortex of kaleidoscopic fate light and spinning runes.",
+      "runtime_path": "res://assets/packs/yin-jian/runtime/van_menh_gate_of_destiny.png",
+      "original_path": "assets/packs/yin-jian/original/van_menh_gate_of_destiny_original.jpg",
+      "pivot": "bottom_center",
+      "cv_validation": {
+        "status": "passed",
+        "perspective": "45_degree_world_map_orthographic",
+        "palette": "dark_netherworld_gouache",
+        "rembg_engine": "ComfyUI RMBG-2.0",
+        "subcells_covered": 135,
+        "total_subcells": 256,
+        "coverage_ratio": 0.527
+      }
     },
     {
       "id": "yin_jian.interactive_and_puzzle.van_menh_loom_of_fate",
