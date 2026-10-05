@@ -15,16 +15,14 @@ func test_the_board_is_readable_before_joining_and_priced_only_after() -> void:
 	)
 	var unjoined := DoctrineApi.price(subject, rule.system_id(), ROW_OPEN)
 	assert_eq(bool(unjoined["ok"]), false, "a quote for a System you are not in is not a price")
-	assert_eq(String(unjoined["reason"]), DoctrineRule.NOT_CLAIMED, "and it says which one it is")
+	assert_eq(str(unjoined["reason"]), DoctrineRule.NOT_CLAIMED, "and it says which one it is")
 	assert_eq(
 		bool(unjoined["affordable"]), false, "affordable means nothing for a System you are not in"
 	)
 	DoctrineApi.join(subject, rule.system_id())
 	var joined := DoctrineApi.price(subject, rule.system_id(), ROW_OPEN)
 	assert_eq(
-		String(joined["reason"]),
-		String(DoctrineRule.INSUFFICIENT),
-		"now it answers about the wallet"
+		str(joined["reason"]), String(DoctrineRule.INSUFFICIENT), "now it answers about the wallet"
 	)
 	assert_eq(int(joined["owned"]), 0, "and the row has not been bought")
 
@@ -63,6 +61,10 @@ func test_a_redeem_with_an_insufficient_balance_changes_nothing() -> void:
 	var rule := register(iron_bell())
 	var subject := joined_actor(rule)
 	farm(subject, rule, 1)
+	# Past the tier band and still short, because the band is checked FIRST: a broke actor
+	# and a locked actor are two different answers and this case has to isolate one of them.
+	seed_points(subject, rule, 10)
+	assert_eq(tier_of(subject, rule), 1, "the band is open")
 	var quoted := DoctrineApi.price(subject, rule.system_id(), ROW_SEALED)
 	assert_eq(
 		bool(quoted["affordable"]), false, "twenty insight is more than one occurrence banked"
@@ -70,7 +72,7 @@ func test_a_redeem_with_an_insufficient_balance_changes_nothing() -> void:
 	var answer := DoctrineApi.redeem(subject, rule.system_id(), ROW_SEALED)
 	assert_eq(bool(answer["ok"]), false, "so the press is refused")
 	assert_eq(
-		String(answer["reason"]), DoctrineRule.INSUFFICIENT, "with the reason a panel can compare"
+		str(answer["reason"]), DoctrineRule.INSUFFICIENT, "with the reason a panel can compare"
 	)
 	assert_eq(float(answer["spent"]), 0.0, "and nothing was charged")
 	assert_eq(balance_of(subject, rule), 1.0, "the balance is intact")
@@ -84,7 +86,7 @@ func test_a_row_above_the_counter_tier_is_locked_before_the_wallet_is_read() -> 
 	assert_eq(tier_of(subject, rule), 0, "five points is below the first band's ten")
 	var answer := DoctrineApi.redeem(subject, rule.system_id(), ROW_SEALED)
 	assert_eq(
-		String(answer["reason"]), DoctrineRule.TIER_LOCKED, "the band is the gate, not the purse"
+		str(answer["reason"]), DoctrineRule.TIER_LOCKED, "the band is the gate, not the purse"
 	)
 	assert_eq(balance_of(subject, rule), 5.0, "and a locked row costs nothing")
 
@@ -100,7 +102,7 @@ func test_a_non_repeatable_row_is_refused_the_second_time() -> void:
 	)
 	var again := DoctrineApi.redeem(subject, rule.system_id(), ROW_SEALED)
 	assert_eq(bool(again["ok"]), false, "a second press is refused")
-	assert_eq(String(again["reason"]), DoctrineRule.ALREADY_MAXED, "and the ledger says which")
+	assert_eq(str(again["reason"]), DoctrineRule.ALREADY_MAXED, "and the ledger says which")
 	var price_after := DoctrineApi.price(subject, rule.system_id(), ROW_SEALED)
 	assert_eq(int(price_after["owned"]), 1, "and the quote reports what is held")
 
@@ -126,7 +128,7 @@ func test_an_undeclared_pool_on_a_row_is_diagnosed_before_affordability() -> voi
 	rule.rows[1]["pool"] = &"insigt"
 	var answer := DoctrineApi.redeem(subject, rule.system_id(), ROW_SEALED)
 	assert_eq(
-		String(answer["reason"]),
+		str(answer["reason"]),
 		DoctrineRule.UNDECLARED_POOL,
 		"a defect is not a broke actor, and this row costs more than the wallet holds"
 	)
@@ -243,7 +245,7 @@ func test_summary_counts_systems_and_joins_and_publishes_the_pool_vocabulary() -
 	assert_eq(
 		str(summary["pools"]), str(["insight", "rage"]), "the declared pools ride the read model"
 	)
-	assert_eq(String(summary["actor_id"]), String(subject.id), "and the actor it is about")
+	assert_eq(str(summary["actor_id"]), String(subject.id), "and the actor it is about")
 
 
 func test_available_reports_every_system_and_whether_it_was_joined() -> void:
@@ -256,7 +258,7 @@ func test_available_reports_every_system_and_whether_it_was_joined() -> void:
 	assert_eq(bool(rows[1]["joined"]), false, "and the other does not")
 	assert_eq(int(rows[0]["row_count"]), 3, "with the row count it would offer")
 	assert_eq(
-		String(rows[0]["data_key"]), String(iron.data_key()), "and the key its state lives under"
+		str(rows[0]["data_key"]), String(iron.data_key()), "and the key its state lives under"
 	)
 	assert_eq(String(silent.display_name()), "Way of the Silent Bell", "and its name")
 

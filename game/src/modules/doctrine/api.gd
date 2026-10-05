@@ -108,7 +108,8 @@ static func available(actor: Actor) -> Array[Dictionary]:
 		var rule := DoctrineRegistry.find(id)
 		if rule == null:
 			continue
-		out.append(_system_view(actor, id, rule))
+		var view := _system_view(actor, id, rule, true)
+		out.append(view)
 	return out
 
 
@@ -180,18 +181,17 @@ static func earn(actor: Actor, event: Dictionary, system_id: StringName = &"") -
 				applied
 				. append(
 					{
-						"system_id": String(entry["system_id"]),
-						"pool": String(claim.get("pool", "")),
+						"system_id": str(entry["system_id"]),
+						"pool": str(claim.get("pool", "")),
 						"amount": float(claim["amount"]),
 					}
 				)
 			)
 		else:
-			declined.append(_declined(entry, String(claim.get("reason", DoctrineRule.NOT_CLAIMED))))
-	# The index rather than the row: `Dictionary` equality is reference identity, so
-	# comparing rows to find the winner would be comparing the only object the framework
-	# made by whether it is the same object, which is true of exactly one of them by
-	# construction and says nothing about the amounts.
+			declined.append(_declined(entry, str(claim.get("reason", DoctrineRule.NOT_CLAIMED))))
+	# The INDEX rather than the row: an index is compared with an int, and two claims that
+	# carry the same system_id and the same amount are otherwise indistinguishable to any
+	# equality test that does not go looking inside the amounts.
 	var winner_index := _largest(applied)
 	if winner_index < 0:
 		return _earn_answer(false, _first_reason(declined), [], declined, candidates.size())
@@ -201,7 +201,7 @@ static func earn(actor: Actor, event: Dictionary, system_id: StringName = &"") -
 				declined
 				. append(
 					{
-						"system_id": String(applied[index]["system_id"]),
+						"system_id": str(applied[index]["system_id"]),
 						"reason": DoctrineRule.NOT_CLAIMED,
 					}
 				)
@@ -215,7 +215,7 @@ static func earn(actor: Actor, event: Dictionary, system_id: StringName = &"") -
 		float(winner["amount"])
 	)
 	if not bool(booked["ok"]):
-		return _earn_answer(false, String(booked["reason"]), [], declined, candidates.size())
+		return _earn_answer(false, str(booked["reason"]), [], declined, candidates.size())
 	_store(actor, rule, booked["ledger"])
 	return _earn_answer(true, "", [winner], declined, candidates.size())
 
@@ -269,13 +269,15 @@ static func redeem(actor: Actor, system_id: StringName, row_id: StringName) -> D
 	var rule := _rule(system_id)
 	if actor == null or rule == null:
 		return {}
-	if not _is_joined(actor, rule):
-		return _redeem_answer(false, DoctrineRule.NOT_CLAIMED, row_id)
+	# The row is resolved BEFORE the opt-in, so a row this System does not sell reads as `{}`
+	# rather than as a refusal whether or not the actor has joined (ADR 0083).
 	var quoted := rule.price(actor, row_id)
 	if quoted.is_empty():
 		return {}
+	if not _is_joined(actor, rule):
+		return _redeem_answer(false, DoctrineRule.NOT_CLAIMED, row_id)
 	if not bool(quoted.get("ok", false)):
-		return _redeem_answer(false, String(quoted.get("reason", DoctrineRule.NOT_CLAIMED)), row_id)
+		return _redeem_answer(false, str(quoted.get("reason", DoctrineRule.NOT_CLAIMED)), row_id)
 	var answer := rule.redeem(actor, row_id)
 	if answer.is_empty():
 		return {}
@@ -293,7 +295,7 @@ static func redeem(actor: Actor, system_id: StringName, row_id: StringName) -> D
 	if bool(booked["ok"]):
 		_store(actor, rule, booked["ledger"])
 		return answer
-	return _redeem_answer(false, String(booked["reason"]), row_id)
+	return _redeem_answer(false, str(booked["reason"]), row_id)
 
 
 ## Every System's ledger exactly as core persists it, keyed by system id. The payload a save
@@ -326,7 +328,7 @@ static func summary(actor: Actor) -> Dictionary:
 		var rule := DoctrineRegistry.find(id)
 		if rule == null:
 			continue
-		var view := _system_view(actor, id, rule)
+		var view := _system_view(actor, id, rule, false)
 		if bool(view["joined"]):
 			joined_count += 1
 		systems[String(id)] = view
@@ -455,7 +457,7 @@ static func _earn_answer(
 
 
 static func _declined(entry: Dictionary, reason: String) -> Dictionary:
-	return {"system_id": String(entry["system_id"]), "reason": reason}
+	return {"system_id": str(entry["system_id"]), "reason": reason}
 
 
 ## The first named reason among the declines, or `NOT_CLAIMED` when none named one. A facade
@@ -463,7 +465,7 @@ static func _declined(entry: Dictionary, reason: String) -> Dictionary:
 ## `declined`.
 static func _first_reason(declined: Array[Dictionary]) -> String:
 	for row in declined:
-		var reason := String(row["reason"])
+		var reason := str(row["reason"])
 		if reason != "":
 			return reason
 	return DoctrineRule.NOT_CLAIMED

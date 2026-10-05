@@ -10,7 +10,7 @@ func test_an_earn_with_no_systems_applies_nothing() -> void:
 	var subject := actor()
 	var answer := DoctrineApi.earn(subject, {"kind": "defeat"})
 	assert_eq(bool(answer["ok"]), false, "nobody claimed the occurrence")
-	assert_eq(String(answer["reason"]), DoctrineRule.NOT_CLAIMED, "so the answer names why")
+	assert_eq(str(answer["reason"]), DoctrineRule.NOT_CLAIMED, "so the answer names why")
 	assert_eq((answer["applied"] as Array).size(), 0, "and nothing was applied")
 	assert_eq(int(answer["candidate_count"]), 0, "because there were no candidates")
 
@@ -29,7 +29,7 @@ func test_one_joined_system_earns_its_own_currency() -> void:
 	assert_eq(bool(answer["ok"]), true, "the System answered its own event")
 	assert_eq((answer["applied"] as Array).size(), 1, "and one claim landed")
 	assert_eq(balance_of(subject, rule), 3.0, "three occurrences, three insight")
-	assert_eq(String((answer["applied"][0] as Dictionary)["pool"]), "insight", "in its own pool")
+	assert_eq(str((answer["applied"][0] as Dictionary)["pool"]), "insight", "in its own pool")
 
 
 func test_an_unjoined_system_is_not_a_candidate() -> void:
@@ -48,7 +48,7 @@ func test_naming_one_system_restricts_the_question() -> void:
 	var answer := DoctrineApi.earn(subject, {"kind": "defeat"}, silent.system_id())
 	assert_eq(int(answer["candidate_count"]), 1, "only the named System was asked")
 	assert_eq(
-		String((answer["applied"][0] as Dictionary)["system_id"]),
+		str((answer["applied"][0] as Dictionary)["system_id"]),
 		String(SILENT_BELL),
 		"and it was the one asked"
 	)
@@ -65,7 +65,7 @@ func test_two_systems_answering_one_occurrence_are_arbitrated_by_the_larger_clai
 	assert_eq(int(answer["candidate_count"]), 2, "both Systems answered the same occurrence")
 	assert_eq((answer["applied"] as Array).size(), 1, "and exactly one was paid")
 	assert_eq(
-		String((answer["applied"][0] as Dictionary)["system_id"]),
+		str((answer["applied"][0] as Dictionary)["system_id"]),
 		String(SILENT_BELL),
 		"the larger claim takes the occurrence"
 	)
@@ -73,7 +73,7 @@ func test_two_systems_answering_one_occurrence_are_arbitrated_by_the_larger_clai
 	assert_eq(balance_of(subject, iron), 0.0, "and the smaller claim was not")
 	assert_eq((answer["declined"] as Array).size(), 1, "the loser is declined, not ignored")
 	assert_eq(
-		String((answer["declined"][0] as Dictionary)["system_id"]),
+		str((answer["declined"][0] as Dictionary)["system_id"]),
 		String(IRON_BELL),
 		"and it is named so a caller can say whose claim lost"
 	)
@@ -87,7 +87,7 @@ func test_an_equal_claim_is_won_by_registration_order() -> void:
 	DoctrineApi.join(subject, second.system_id())
 	var answer := DoctrineApi.earn(subject, {"kind": "defeat"})
 	assert_eq(
-		String((answer["applied"][0] as Dictionary)["system_id"]),
+		str((answer["applied"][0] as Dictionary)["system_id"]),
 		String(IRON_BELL),
 		"a tie is not a coin flip: the earliest registration takes it"
 	)
@@ -98,7 +98,7 @@ func test_an_event_no_system_claims_applies_nothing() -> void:
 	var subject := joined_actor(rule)
 	var answer := DoctrineApi.earn(subject, {"kind": "meditate"})
 	assert_eq(bool(answer["ok"]), false, "an unclaimed event pays nobody")
-	assert_eq(String(answer["reason"]), DoctrineRule.NOT_CLAIMED, "and says so")
+	assert_eq(str(answer["reason"]), DoctrineRule.NOT_CLAIMED, "and says so")
 	assert_eq((answer["declined"] as Array).size(), 1, "every candidate declined")
 	assert_eq(balance_of(subject, rule), 0.0, "and the balance did not move")
 
@@ -111,7 +111,7 @@ func test_a_proposal_naming_an_undeclared_pool_is_refused_and_writes_nothing() -
 	var before := balance_of(subject, rule)
 	var answer := DoctrineApi.earn(subject, {"kind": "defeat"})
 	assert_eq(bool(answer["ok"]), false, "a pool the System never declared is a content defect")
-	assert_eq(String(answer["reason"]), DoctrineRule.UNDECLARED_POOL, "and it is named as one")
+	assert_eq(str(answer["reason"]), DoctrineRule.UNDECLARED_POOL, "and it is named as one")
 	assert_eq(balance_of(subject, rule), before, "and no currency was invented for the typo")
 
 
@@ -142,16 +142,12 @@ func test_join_is_a_round_trip_and_a_second_join_is_already_maxed() -> void:
 	var subject := actor()
 	var first := DoctrineApi.join(subject, rule.system_id())
 	assert_eq(bool(first["ok"]), true, "the opt-in is accepted")
-	assert_eq(
-		String(first["data_key"]), String(rule.data_key()), "and it reports where it persists"
-	)
+	assert_eq(str(first["data_key"]), String(rule.data_key()), "and it reports where it persists")
 	assert_eq(_is_joined(subject, rule), true, "the ledger says so")
 	var again := DoctrineApi.join(subject, rule.system_id())
 	assert_eq(bool(again["ok"]), false, "joining twice is not free progress")
 	assert_eq(
-		String(again["reason"]),
-		DoctrineRule.ALREADY_MAXED,
-		"and it is already as joined as it gets"
+		str(again["reason"]), DoctrineRule.ALREADY_MAXED, "and it is already as joined as it gets"
 	)
 	var left := DoctrineApi.leave(subject, rule.system_id())
 	assert_eq(bool(left["ok"]), true, "and the opt-out is available")
@@ -168,7 +164,7 @@ func test_leaving_a_system_you_are_not_in_claims_nothing() -> void:
 	var subject := actor()
 	var answer := DoctrineApi.leave(subject, rule.system_id())
 	assert_eq(bool(answer["ok"]), false, "there is nothing to leave")
-	assert_eq(String(answer["reason"]), DoctrineRule.NOT_CLAIMED, "so nothing is claimed")
+	assert_eq(str(answer["reason"]), DoctrineRule.NOT_CLAIMED, "so nothing is claimed")
 
 
 func test_two_systems_keep_separate_ledgers() -> void:

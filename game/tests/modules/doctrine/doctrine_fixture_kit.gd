@@ -323,10 +323,14 @@ func joined_actor(rule: FakeSystem) -> Actor:
 
 ## Farm `times` occurrences of `rule`'s event through the SHIPPED verb, so a suite never
 ## credits a balance by writing the ledger itself.
+##
+## It NAMES the System, which is the whole point: the unnamed verb asks every joined System
+## and one occurrence pays exactly one of them, so farming one System's currency with it
+## would silently pay a rival instead.
 func farm(actor_value: Actor, rule: FakeSystem, times: int) -> Dictionary:
 	var last: Dictionary = {}
 	for _pass in maxi(0, times):
-		last = DoctrineApi.earn(actor_value, {"kind": String(rule.earn_kind)})
+		last = DoctrineApi.earn(actor_value, {"kind": String(rule.earn_kind)}, rule.system_id())
 	return last
 
 

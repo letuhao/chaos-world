@@ -29,7 +29,7 @@ func test_an_unnamed_system_is_refused_because_it_has_no_data_key() -> void:
 	rule.id = &""
 	var verdict := DoctrineApi.attach(rule)
 	assert_eq(bool(verdict["ok"]), false, "an unnamed System is not registrable")
-	assert_eq(String(verdict["reason"]), DoctrineRule.NOT_CLAIMED, "and it is refused by name")
+	assert_eq(str(verdict["reason"]), DoctrineRule.NOT_CLAIMED, "and it is refused by name")
 	assert_eq(DoctrineRegistry.count(), 0, "and nothing entered the registry")
 
 
@@ -53,7 +53,7 @@ func test_a_row_spending_an_undeclared_pool_is_refused() -> void:
 	rule.rows[0]["pool"] = &"insigt"
 	var verdict := DoctrineApi.attach(rule)
 	assert_eq(bool(verdict["ok"]), false, "a typo'd pool is a content defect, not a wallet")
-	assert_eq(String(verdict["reason"]), DoctrineRule.UNDECLARED_POOL, "and it is named as one")
+	assert_eq(str(verdict["reason"]), DoctrineRule.UNDECLARED_POOL, "and it is named as one")
 
 
 func test_a_declared_pool_no_row_spends_is_refused() -> void:
@@ -61,9 +61,9 @@ func test_a_declared_pool_no_row_spends_is_refused() -> void:
 	rule.pools = [INSIGHT, RAGE]
 	var verdict := DoctrineApi.attach(rule)
 	assert_eq(bool(verdict["ok"]), false, "a currency with no sink is an accumulating debt")
-	assert_eq(String(verdict["reason"]), DoctrineRule.UNDECLARED_POOL, "and it is named as one")
+	assert_eq(str(verdict["reason"]), DoctrineRule.UNDECLARED_POOL, "and it is named as one")
 	assert_eq(
-		String(verdict["detail"]).contains("rage"), true, "and the detail names the offending pool"
+		str(verdict["detail"]).contains("rage"), true, "and the detail names the offending pool"
 	)
 
 
@@ -73,7 +73,7 @@ func test_a_pool_core_reserves_is_refused() -> void:
 	rule.rows[0]["pool"] = &"health"
 	var verdict := DoctrineApi.attach(rule)
 	assert_eq(bool(verdict["ok"]), false, "a capped stat is not a currency")
-	assert_eq(String(verdict["reason"]), DoctrineRule.UNDECLARED_POOL, "and it is named as one")
+	assert_eq(str(verdict["reason"]), DoctrineRule.UNDECLARED_POOL, "and it is named as one")
 
 
 func test_a_pool_declared_twice_is_refused() -> void:
@@ -96,7 +96,7 @@ func test_a_row_that_can_never_be_bought_is_refused() -> void:
 	rule.rows[0]["max_count"] = 0
 	var verdict := DoctrineApi.attach(rule)
 	assert_eq(bool(verdict["ok"]), false, "not repeatable with no cap is permanently maxed")
-	assert_eq(String(verdict["reason"]), DoctrineRule.ALREADY_MAXED, "and it says so by that name")
+	assert_eq(str(verdict["reason"]), DoctrineRule.ALREADY_MAXED, "and it says so by that name")
 
 
 func test_a_negative_cost_is_refused() -> void:
@@ -170,11 +170,9 @@ func test_a_registered_system_reports_its_declaration() -> void:
 	var rule := register(iron_bell())
 	var rows := DoctrineApi.rules()
 	assert_eq(rows.size(), 1, "one System is one row")
-	assert_eq(String(rows[0]["system_id"]), String(IRON_BELL), "the id is the row's key")
-	assert_eq(
-		String(rows[0]["data_key"]), String(rule.data_key()), "and the save key rides with it"
-	)
-	assert_eq(String(rows[0]["pool_count"]), "1", "one currency is one pool")
+	assert_eq(str(rows[0]["system_id"]), String(IRON_BELL), "the id is the row's key")
+	assert_eq(str(rows[0]["data_key"]), String(rule.data_key()), "and the save key rides with it")
+	assert_eq(str(rows[0]["pool_count"]), "1", "one currency is one pool")
 
 
 func test_registration_order_is_what_ids_reports() -> void:
@@ -183,8 +181,8 @@ func test_registration_order_is_what_ids_reports() -> void:
 	register(empty_system(&"way_of_the_third"))
 	var ids := DoctrineRegistry.ids()
 	assert_eq(ids.size(), 3, "three Systems, three ids")
-	assert_eq(String(ids[0]), String(IRON_BELL), "the first is the first registered")
-	assert_eq(String(ids[1]), String(SILENT_BELL), "the second is the second registered")
-	assert_eq(String(ids[2]), "way_of_the_third", "and the third is the third")
+	assert_eq(str(ids[0]), String(IRON_BELL), "the first is the first registered")
+	assert_eq(str(ids[1]), String(SILENT_BELL), "the second is the second registered")
+	assert_eq(str(ids[2]), "way_of_the_third", "and the third is the third")
 	ids.append(&"way_of_the_injected")
 	assert_eq(DoctrineRegistry.count(), 3, "and the caller cannot write through the copy")
