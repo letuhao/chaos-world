@@ -202,9 +202,21 @@ Decouples visual sprite scale from physical contact collision:
 
 ---
 
-## 4. Verification & Audit Invariants
+## 4. Verification & Quality Invariants
 
-The data matrix is verified by running:
+Quality verification is divided between **Agent Computer Vision Inspection** and **Automated Mathematical Tool Verification**:
+
+### 4.1 Generating Agent Computer Vision Review Checklist
+The generating/reviewing agent must visually inspect every rendered sprite using multimodal vision to verify:
+1. **Single Subject**: Strictly one centered prop; no secondary objects, floating fragments, or frames.
+2. **Oblique Perspective**: Top-down $\sim 45^\circ$ angle matching the world-map camera standard (never flat side-view).
+3. **Lighting Vector**: Consistent upper-left ($315^\circ$) directional illumination and cast shadows.
+4. **Palette Adherence**: Color tones conform to the target environment without out-of-lore saturation.
+5. **Clean Contours**: No halo fringing, white borders, or green-screen matting artifacts.
+6. **Bottom Alignment**: Trunk or base cleanly anchors to the bottom margin for ground placement.
+
+### 4.2 Automated Mathematical Tool Invariants
+The data matrix and pixel geometry are mathematically audited by running:
 ```bash
 uv run python .agents/skills/map-asset-pipeline/scripts/audit.py
 ```
@@ -214,3 +226,4 @@ All assets must satisfy:
 3. **Bottom-Row Trunk Anchor**: Ground-contact props must never block rows above `rows - 1`.
 4. **Footprint Narrowing**: $100\%$ of single-stem trees must block $\le 1$ cell wide at $1.0\times$ scale.
 5. **Passable Archways**: Gates and arches with `core_ring` must maintain passable passage cells.
+6. **Contact Width Thresholds**: `subcell.py` checks that contact width is sufficient for the declared cell footprint.

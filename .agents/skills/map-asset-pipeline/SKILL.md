@@ -93,7 +93,28 @@ To avoid unnecessary AI generation costs for hundreds of bespoke broken assets:
 
 ---
 
-## 3. Tool Scripts & Pipelines
+## 3. Computer Vision & Visual Quality Verification
+
+Computer Vision checks are split deliberately between **Agent Multimodal Perception** (the generating agent who inspects visual semantics) and **Automated Tool Support** (deterministic pixel math and boundary auditing):
+
+### A. Agent Visual Inspection Role (Multimodal Review)
+The agent generating or reviewing renders must visually inspect generated assets using the following inspection criteria:
+1. **Single-Subject Isolation**: Confirm the cutout depicts strictly one prop centered in the frame. Reject renders with hallucinated secondary props, ground tiles, framing borders, or floating fragments.
+2. **Perspective Consistency**: Verify an orthographic top-down / oblique ($\sim 45^\circ$) projection matching the world map camera standard. Reject flat 2D side-views or 3D ground-level perspective.
+3. **Lighting & Shadow Direction**: Verify that primary highlights and directional cast shadows come consistently from the **upper-left ($315^\circ$)**.
+4. **Palette & Environmental Atmosphere**: Verify color harmony adheres to the environment's palette (e.g., emerald moss for Greenwood, scorched basalt/ember for Flame Valley, pale jade/silver for Immortal Cloud Isles). Reject out-of-gamut saturated or modern colors.
+5. **Silhouette & Contour Cleanliness**: Visually verify there are no white halos, green-screen fringes, or semi-transparent artifacts around the alpha boundary.
+6. **Ground Contact Anchor**: Verify the base/trunk reaches down to the bottom margin so that when installed with bottom-alignment, it rests naturally on ground tiles.
+
+### B. Automated Tool Support Role (Mathematical Backstop)
+The Python tools provide mathematical measurements and hard quality gates to back the agent's inspection:
+* `subcell.py`: Measures the physical horizontal ground contact width (`contact_px`) and flags **ART DEFECTS** when a trunk is too narrow ($< 16\text{px}$) for its declared footprint.
+* `derive.py`: Calculates whole-frame alpha histogram distribution (`frac_zero`) to mathematically detect failed background removal (white/opaque backgrounds).
+* `audit.py`: Mathematically asserts zero phantom occluders (no blocker with coverage $< \text{cov\_gate}$), canopy passability (canopy cells must not be solid blockers), and bottom-row trunk constraints.
+
+---
+
+## 4. Tool Scripts & Pipelines
 
 The skill bundle provides tested Python tools under `scripts/`:
 
@@ -123,7 +144,7 @@ uv run python .agents/skills/map-asset-pipeline/scripts/audit.py
 
 ---
 
-## 4. Main Toolchain Integration
+## 5. Main Toolchain Integration
 
 Map assets integrate with the root tools runner:
 ```bash
