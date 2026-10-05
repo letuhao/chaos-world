@@ -30,8 +30,8 @@ content gap becomes invisible.
 ## What it refuses
 
 - **A character with no installed shot.** A `PortraitDef` with an empty `layer_paths` fails
-  `PortraitResolver.validate()` (`:119`) for anything that is not the placeholder, so publishing one
-  makes the gate red rather than making the game work.
+  `PortraitResolver.validate()` (`:157`) for anything that is not the placeholder, so publishing
+  one makes the gate red rather than making the game work.
 - **A `palette_key` derived from prose.** `appearance.palette` is written prose ("Oiled brown
   leather, bleached undyed wool..."), and `portrait_def.gd:40-42` requires a theme KEY because "a
   literal colour in content is a second place to retune it". So the key is empty unless an authored
