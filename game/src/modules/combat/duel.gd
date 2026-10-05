@@ -121,7 +121,13 @@ static func record_defeat(duel: Dictionary, entry: Dictionary, actor: Actor = nu
 	duel["defeats"] = int(duel.get("defeats", 0)) + 1
 	duel["last_defeat"] = entry.duplicate(true)
 	if actor != null:
+		# VERIFY, matching `record_win` below. `earn_fate` answers the ledger, never a
+		# verdict, so this line reported success on an id the catalog does not ship.
 		DestinyApi.earn_fate(actor, FATE_FELL, EARN_SOURCE)
+		if not DestinyApi.has_fate(actor, FATE_FELL):
+			# Named rather than swallowed: a duel loss that pays nothing is a content
+			# defect, and the caller reads this dictionary.
+			return {"ok": false, "reason": "fate_not_granted", "fate": String(FATE_FELL)}
 	return _remember(duel, entry)
 
 

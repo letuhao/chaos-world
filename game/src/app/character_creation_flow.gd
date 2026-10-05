@@ -284,8 +284,16 @@ func grant_origin(actor: Actor, choice_id: StringName) -> Dictionary:
 		}
 	# The arrival supplies its own prerequisite fates FIRST: a destiny whose
 	# `requires_fates` names one of them can never be earned otherwise.
+	#
+	# VERIFY each one, per ADR 0134 §1a. This loop was the last unverified earn site
+	# in game/src (ADR 0252's census found it; the other eleven verify). It matters
+	# more here than elsewhere: these fates are what make the origin pickable at all,
+	# so a silently-unpaid one leaves `grant_origin` returning ok with a destiny whose
+	# own prerequisite was never granted, and the refusal below reports nothing.
 	for fate_id in ARRIVAL_FATES.get(choice_id, []) as Array:
 		DestinyApi.earn_fate(actor, fate_id, SOURCE)
+		if not DestinyApi.has_fate(actor, fate_id):
+			return _grant_refusal("fate_not_granted", _unmet_for(actor, choice_id))
 	# The single earn DEF-0109 asks for. Exclusive within `origin` for good, and
 	# it carries its authored `grants_fates` with it.
 	DestinyApi.earn_destiny(actor, choice_id, SOURCE)
