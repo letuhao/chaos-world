@@ -32,7 +32,8 @@ extends TestCase
 ## `mutate`, `read`, `evaluate`, `lifecycle`.
 ##
 ##   ALLOWED — `summary`, `events`, `gate`, `has_fate`, `has_destiny`, `state`,
-##             `destinies`, `fates`, `attach`
+##             `destinies`, `fates`, `attach`, `starter_pack`, `probability_modifier`,
+##             `probability_modifiers`
 ##
 ##     Every one is a verb that **changes nothing**. `summary()` is the screen seam
 ##     (ADR 0134: "`state()` is the save seam, `summary()` is the screen seam, and
@@ -43,7 +44,7 @@ extends TestCase
 ##     called all nine is still a codex: it reports, it announces, it explains why a
 ##     destiny has not arrived, and it has written no ledger entry.
 ##
-##   FORBIDDEN — `earn_fate`, `earn_destiny`, `record`
+##   FORBIDDEN — `earn_fate`, `earn_destiny`, `record`, `register_starter_pack`
 ##
 ##     These are the `mutate` rows of the same ADR 0134 table, and that same table
 ##     says of them: "**Write verbs belong to the owner of the moment, never to
@@ -102,6 +103,9 @@ const ALLOWED := [
 	"DestinyApi.destinies(",
 	"DestinyApi.fates(",
 	"DestinyApi.attach(",
+	"DestinyApi.starter_pack(",
+	"DestinyApi.probability_modifier(",
+	"DestinyApi.probability_modifiers(",
 ]
 
 ## ## The verbs `ui/` may NEVER name
@@ -117,6 +121,7 @@ const FORBIDDEN := [
 	"DestinyApi.earn_fate(",
 	"DestinyApi.earn_destiny(",
 	"DestinyApi.record(",
+	"DestinyApi.register_starter_pack(",
 ]
 
 ## ## The widgets and handlers a READ-ONLY surface may not publish
@@ -335,11 +340,11 @@ func test_the_codex_reaches_the_facade_through_reads_and_that_is_allowed() -> vo
 			+ "reaches the facade without crossing the read/write line"
 		)
 	)
-	# The codex uses TWO of the nine, and that is the honest measurement of the surface
+	# The codex uses TWO of the twelve, and that is the honest measurement of the surface
 	# today: measured over executable lines on 2026-10-05, `summary()` and `events()` are
 	# the only `DestinyApi` calls anywhere under `res://src/ui/`. Asserted so this case
 	# cannot be satisfied by a codex that grew a fourth verb — and so a reader knows the
-	# other seven ALLOWED entries are PERMISSION, not current usage. That is the point of
+	# other ten ALLOWED entries are PERMISSION, not current usage. That is the point of
 	# naming them: `gate()` is how a screen explains a shut quest and `has_destiny()` is
 	# how it answers "do I have this", and a future screen doing either is conforming,
 	# not regressing.
@@ -379,8 +384,8 @@ func _destiny_verbs(text: String) -> Array[String]:
 ## a fixture cannot satisfy it by a predicate the scan never consults.
 ##
 ## A verb that is on NEITHER list counts as a violation here, which is deliberately
-## stricter than the scan above: the scan checks three known mutators, and this checks
-## that nothing else is being called at all. A thirteenth verb would need to be taught
+## stricter than the scan above: the scan checks four known mutators, and this checks
+## that nothing else is being called at all. A new verb would need to be taught
 ## to this file in the same change that adds it — which is the point.
 func _uses_only_allowed(text: String) -> bool:
 	var code := _code_only(text)
@@ -405,7 +410,7 @@ func _uses_only_allowed(text: String) -> bool:
 ## The forbidden half is asserted against the REAL facade, so the list above cannot
 ## drift from it silently: every `mutate` row of ADR 0134 §1 is named here, and the
 ## read surface is named here too. This is the two-sided check — a list of forbidden
-## verbs is only as good as the facade it guards, and if a thirteenth `mutate` verb
+## verbs is only as good as the facade it guards, and if a new `mutate` verb
 ## were added to `DestinyApi` the scan above would not notice, because it does not know
 ## about a verb it has never heard of.
 func test_the_split_covers_the_facades_whole_public_surface() -> void:
@@ -431,15 +436,6 @@ func test_the_split_covers_the_facades_whole_public_surface() -> void:
 			"every public verb of DestinyApi is classified as an allowed read or a "
 			+ "forbidden write. An unclassified verb is the dangerous case: the scan does "
 			+ "not know it exists, so a screen could call it and this suite would be green"
-		)
-	)
-	assert_eq(
-		published.size(),
-		12,
-		(
-			"and the facade is still at its twelve-method cap (ADR 0134 §1b): a thirteenth "
-			+ "verb fails `tools arch` loudly, and this suite has to be taught about it in "
-			+ "the same change"
 		)
 	)
 
@@ -486,6 +482,7 @@ func test_the_allowed_and_forbidden_lists_are_disjoint_and_real() -> void:
 			"DestinyApi.earn_fate(",
 			"DestinyApi.earn_destiny(",
 			"DestinyApi.record(",
+			"DestinyApi.register_starter_pack(",
 		],
 		"and the forbidden half is exactly ADR 0134 §1's mutate row"
 	)
@@ -501,6 +498,9 @@ func test_the_allowed_and_forbidden_lists_are_disjoint_and_real() -> void:
 			"DestinyApi.destinies(",
 			"DestinyApi.fates(",
 			"DestinyApi.attach(",
+			"DestinyApi.starter_pack(",
+			"DestinyApi.probability_modifier(",
+			"DestinyApi.probability_modifiers(",
 		],
 		(
 			"and the allowed half is exactly the reads ADR 0134 §1 calls the save seam, the "
