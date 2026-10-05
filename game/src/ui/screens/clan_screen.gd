@@ -345,10 +345,10 @@ func act_register_heir() -> Dictionary:
 		return _verdict(NO_ACTOR)
 	if not register_seam_bound():
 		return _verdict(NO_REGISTER_SEAM)
-	_standing_before = String(ClanApi.standing_of(_actor))
+	_standing_before = str(ClanApi.standing_of(_actor))
 	var called: Variant = _register.call(_actor)
 	var answer: Dictionary = called if called is Dictionary else {}
-	_standing_after = String(ClanApi.standing_of(_actor))
+	_standing_after = str(ClanApi.standing_of(_actor))
 	return _settle(answer)
 
 

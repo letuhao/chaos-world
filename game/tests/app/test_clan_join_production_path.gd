@@ -86,7 +86,9 @@ func test_pressing_the_clan_page_admits_the_app_s_hero_to_a_house() -> void:
 	assert_eq(harness.bound_actor(live), hero, "bound to the app's own hero")
 
 	# The pick, through the page's own published catalog — never an id invented here.
-	assert_eq(bool(live.call(&"select_clan", String(HOUSE))), true, "the shipped house is selectable")
+	assert_eq(
+		bool(live.call(&"select_clan", String(HOUSE))), true, "the shipped house is selectable"
+	)
 	# The press, through the ActionSet the way a player's button press arrives.
 	assert_eq(harness.action(live, &"join"), true, "the join control is live and accepts a press")
 
@@ -100,11 +102,11 @@ func test_pressing_the_clan_page_admits_the_app_s_hero_to_a_house() -> void:
 	)
 	var def := ClanCatalog.instance().clan_definition(HOUSE)
 	assert_eq(
-		String(ClanApi.rank_of(hero)),
-		String(def.entry_rank()),
-		"at the house's own entry rung"
+		String(ClanApi.rank_of(hero)), String(def.entry_rank()), "at the house's own entry rung"
 	)
-	assert_eq(ClanApi.standing_of(hero), 0, "and at no standing — joining is not earning (ADR 0064)")
+	assert_eq(
+		ClanApi.standing_of(hero), 0, "and at no standing — joining is not earning (ADR 0064)"
+	)
 
 
 ## ## 2. And the join GATES, on something the game already models
@@ -206,11 +208,13 @@ func test_the_only_production_caller_of_the_join_is_this_screen_and_not_a_poller
 		callers,
 		[SCREEN_SCRIPT],
 		(
-			"exactly one file in src/ calls ClanApi.join, and it is the clan page — a "
-			+ "second caller would be a second admission moment (ADR 0113: the owner of the "
-			+ "moment writes, never a poller). Found: %s"
+			(
+				"exactly one file in src/ calls ClanApi.join, and it is the clan page — a "
+				+ "second caller would be a second admission moment (ADR 0113: the owner of the "
+				+ "moment writes, never a poller). Found: %s"
+			)
+			% [", ".join(callers)]
 		)
-		% [", ".join(callers)]
 	)
 
 
@@ -224,7 +228,7 @@ func test_the_page_publishes_the_module_s_own_admission_complaints_verbatim() ->
 	assert_eq(harness.boot_error, "", "the real app boots")
 	if harness.boot_error != "":
 		return
-	Carry(harness, HOUSE, BELOW_BAR_PURITY)
+	carry_lineage(harness, HOUSE, BELOW_BAR_PURITY)
 	harness.navigate(CLAN_ROUTE)
 	var live := harness.live_screen()
 	if live == null:
@@ -236,14 +240,14 @@ func test_the_page_publishes_the_module_s_own_admission_complaints_verbatim() ->
 	var unmet: Array = view["join_unmet"]
 	assert_ne(unmet.is_empty(), true, "the page reports the house's own complaint, not a bool")
 	assert_eq(
-		String(unmet[0]["kind"]),
-		String(ClanGate.KIND_PURITY),
-		"the authored KIND is the module's"
+		String(unmet[0]["kind"]), String(ClanGate.KIND_PURITY), "the authored KIND is the module's"
 	)
 	var def := ClanCatalog.instance().clan_definition(HOUSE)
-	assert_eq(String(unmet[0]["id"]), String(def.founding_bloodline), "against its own founding line")
 	assert_eq(
-		(view["join_unmet"] as Array),
+		String(unmet[0]["id"]), String(def.founding_bloodline), "against its own founding line"
+	)
+	assert_eq(
+		view["join_unmet"] as Array,
 		ClanApi.admission_unmet(harness.actor, HOUSE),
 		"and the list IS the facade's own gate, verbatim — no second authority here"
 	)

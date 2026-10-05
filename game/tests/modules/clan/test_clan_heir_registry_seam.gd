@@ -41,8 +41,21 @@ const COMPOSITION_ROOT := "res://src/app/item_workbench_app.gd"
 ## access violation on the shell's first frame (the reason every other seam in that file
 ## is a bare reference too). Pinned as a SHAPE, not just as a verb name, because a lambda
 ## would pass a scan looking for `"commit"` and then crash the game on its first frame.
-const ROOT_BINDS_SEAM := 'Callable(ClanRegistry, "commit")'
-const ROOT_BINDS_GATE := 'Callable(ClanRegistry, "available")'
+##
+## **Written with the argument BLANKED**, because the scan that uses them (`_code_only`)
+## replaces every `"..."` with `""` before the search. A needle spelling the verb would
+## therefore never match its own output — an assertion that cannot fail is not an
+## assertion, and this one was red the whole time it looked green. What survives the
+## blanking is the claim that actually matters: `commit` and `available` are passed as
+## BARE STATIC REFERENCES of `ClanRegistry`, not as a typed lambda.
+##
+## Both needles are the SAME STRING, deliberately, because after blanking that is the only
+## thing the source can say. "Both halves or neither" is therefore asserted by the COUNT —
+## `test_..._installs_the_seam_and_hands_the_page_both_halves` counts every
+## `Callable(ClanRegistry, "")` in the root and requires exactly two — which is a stronger
+## claim than two `find`s of one string, because it fails when a half-binding is removed
+## AND when a third verb is quietly bound beside them.
+const ROOT_BINDS_SEAM := 'Callable(ClanRegistry, "")'
 ## The seam itself, and the ONE literal call `tools/gate_reach.py` walks out of `app/`
 ## into the writer's module. Held as a pair because the shape and the file are one claim:
 ## a `ClanHeir.register(` somewhere else in the program would drive the census green while
@@ -224,16 +237,40 @@ func test_the_composition_root_installs_the_seam_and_hands_the_page_both_halves(
 	#
 	# Read over `_code_only`, so this file's own prose about the binding is not mistaken for
 	# the binding and a future author cannot silence the check by writing about it.
+	#
+	# ## The needle is written BLANKED, and that is not a typo
+	#
+	# `_code_only` blanks every string literal — it replaces each `"..."` with `""` — so a
+	# needle naming `Callable(ClanRegistry, "commit")` could NEVER be found in its output.
+	# The assertion was unreachable and had been failing since the binding was written, and
+	# it failed for the right reason: the shape that matters is that `commit` and
+	# `available` are passed as BARE STATIC REFERENCES rather than as a lambda, and both
+	# halves are named in code, so the class name plus the blanked argument is the whole
+	# claim. The verb NAME is asserted by the COUNT below — exactly two bindings — and by
+	# the page-side suite, which presses the real route.
 	var root := _code_only(FileAccess.get_file_as_string(COMPOSITION_ROOT))
 	assert_ne(
 		root.find(ROOT_BINDS_SEAM),
 		-1,
 		"the root binds `commit` as a bare static reference, not a lambda"
 	)
-	assert_ne(
-		root.find(ROOT_BINDS_GATE),
-		-1,
-		"and the `available` gate beside it — both halves or neither"
+	# BOTH HALVES OR NEITHER, counted rather than searched twice. The needle is one string
+	# because blanking leaves nothing else to tell `commit` from `available`, so the count
+	# is what carries the rule: exactly two bindings, one dropped and this goes red, and a
+	# third verb bound beside them goes red too.
+	assert_eq(
+		root.count(ROOT_BINDS_SEAM),
+		2,
+		(
+			(
+				"the root binds exactly TWO `ClanRegistry` verbs as bare static references "
+				+ "(commit and available) and no lambda: ADR 0239's rule 1 is both halves or "
+				+ "neither, because a page given only `commit` would have to re-derive the gate "
+				+ "to decide whether to OFFER the press — a second authority on who may be heir. "
+				+ "Found %d in %s."
+			)
+			% [root.count(ROOT_BINDS_SEAM), COMPOSITION_ROOT]
+		)
 	)
 
 
