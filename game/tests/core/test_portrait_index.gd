@@ -24,6 +24,17 @@ extends TestCase
 ## assertions passes on nothing. So: write once, re-point per test, and never delete.
 
 const FIXTURE := "user://test_portrait_index_fixture.jsonl"
+
+## The five race ids the game actually defines, read from `res://data/races`. Written out rather
+## than scanned so a test failure names WHICH race started matching, and so adding a sixth race is
+## a deliberate edit here rather than a silent behaviour change.
+const AUTHORED_RACE_IDS: Array[StringName] = [
+	&"commonborn",
+	&"emberblood",
+	&"emberblood_touched",
+	&"stoneborn",
+	&"tidecaller",
+]
 const MISSING := "res://assets/characters/portraits/no_such_file.png"
 ## A path that EXISTS, so "installed art on disk is not a gap" means something. It is not a PNG
 ## because `validate` only asks `FileAccess.file_exists`; the shipped portraits directory does not
@@ -131,6 +142,37 @@ func test_a_race_resolves_to_the_lowest_id_in_sorted_order() -> void:
 		PortraitIndex.instance().character_for_race(&"tidecaller"),
 		&"character-0000",
 		"lowest id, not first line"
+	)
+
+
+func test_no_generated_row_carries_an_authored_race_so_step_2b_is_unreachable() -> void:
+	# Step 2b of `PortraitResolver.resolve` asks this index for a generated face when no authored
+	# PortraitDef answers. It can never match: `character-index.jsonl` has 2000 rows and NOT ONE
+	# carries an authored race id — its `race:` tags are free text (race:human, race:plantkin,
+	# race:beastkin) while the game defines five (commonborn, emberblood, emberblood_touched,
+	# stoneborn, tidecaller). Measured, not inferred.
+	#
+	# Asserted so the branch cannot rot unnoticed. A step that can never fire is dead code that reads
+	# as a live fallback, and a reader of `resolve()` would reasonably believe a race with no
+	# authored `.tres` gets a generated face. It does not: it gets the placeholder. If the crowd
+	# generator is ever taught the authored race vocabulary this test FAILS, which is the point —
+	# it turns a silent no-op into a decision somebody has to make about step 2b.
+	var index := PortraitIndex.instance()
+	# The REAL index, not the fixture: this is a claim about the shipped corpus, and a fixture
+	# written by this suite would agree with anything. `set_index_root("")` restores the authored
+	# content root, then `invalidate` drops the latched read.
+	PortraitIndex.set_index_root("")
+	var authored := 0
+	for race_id in AUTHORED_RACE_IDS:
+		if index.character_for_race(race_id) != &"":
+			authored += 1
+	assert_eq(
+		authored,
+		0,
+		(
+			"a generated row now carries an authored race id, so step 2b can fire; decide whether to "
+			+ "keep the branch, and update DEF-0298"
+		)
 	)
 
 
