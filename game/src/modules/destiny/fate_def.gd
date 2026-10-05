@@ -54,6 +54,12 @@ const TAGS: Array[StringName] = [
 ## Applied on earn, as `StatModifier`s, exactly like an authored trait.
 @export var flat_modifiers: Dictionary = {}
 @export var percent_modifiers: Dictionary = {}
+## Probability modifiers this fate contributes (ADR 0274). Maps a
+## probability/rate stat id to a float shift. Unlike flat_modifiers (which
+## shift a magnitude), these shift a PROBABILITY — a 0..1 rate. The yin-yang
+## rule applies: every positive shift carries a negative counterpart authored
+## in the same fate.
+@export var probability_modifiers: Dictionary = {}
 ## Named counters this fate reads through the gate verb `counter`. Declaring
 ## them here keeps the gate answerable without a hardcoded id list in code.
 @export var counters: Array[StringName] = []
@@ -113,3 +119,21 @@ func build_modifiers() -> Array[StatModifier]:
 ## legitimate: it exists to gate story, and it applies nothing.
 func has_modifiers() -> bool:
 	return not flat_modifiers.is_empty() or not percent_modifiers.is_empty()
+
+
+## The probability modifiers this fate contributes (ADR 0274). Same
+## construction as build_modifiers(), but for rate/probability stats.
+func build_probability_modifiers() -> Array[StatModifier]:
+	var out: Array[StatModifier] = []
+	for key in probability_modifiers.keys():
+		out.append(
+			StatModifier.new(
+				StringName(key), Stat.Op.FLAT, float(probability_modifiers[key]), source_id()
+			)
+		)
+	return out
+
+
+## Whether this fate contributes any probability modifier at all.
+func has_probability_modifiers() -> bool:
+	return not probability_modifiers.is_empty()

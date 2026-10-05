@@ -11,5 +11,6 @@ category = &"heaven"
 tier = 2
 visibility = &"revealed"
 percent_modifiers = {"cultivation_rate": 0.05, "breakthrough_chance": 0.02}
+probability_modifiers = {"loot_bonus": 0.5, "evasion": -0.03}
 counters = Array[StringName]([&"heaven_marks"])
 tags = Array[StringName]([])

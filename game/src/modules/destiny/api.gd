@@ -257,6 +257,60 @@ static func fates(actor: Actor) -> Array[StringName]:
 	return DestinyState.fate_ids(_ledger(actor))
 
 
+## The total probability modifier for `probability_id` from all held fates
+## and destinies (ADR 0274). Returns 0.0 when no modifier is authored.
+##
+## This is a READ, not a write: nothing is stored on the actor's stat stack.
+## The modifier is computed on demand from the ledger, so it can never drift
+## from the ledger or double-count. Consumers (combat, loot, breakthrough)
+## call this when they need to know the total shift for a probability.
+static func probability_modifier(actor: Actor, probability_id: StringName) -> float:
+	if actor == null:
+		return 0.0
+	var total := 0.0
+	var ledger := _ledger(actor)
+	for fate_id in DestinyState.fate_ids(ledger):
+		var def := FateCatalog.instance().fate_definition(fate_id)
+		if def == null:
+			continue
+		for modifier in def.build_probability_modifiers():
+			if modifier.stat == probability_id:
+				total += modifier.value
+	for destiny_id in DestinyState.destiny_ids(ledger):
+		var def := FateCatalog.instance().destiny_definition(destiny_id)
+		if def == null:
+			continue
+		for key in def.probability_modifiers.keys():
+			if StringName(key) == probability_id:
+				total += float(def.probability_modifiers[key])
+	return total
+
+
+## All probability modifiers for `actor`, as a flat dictionary of
+## probability_id -> total shift (ADR 0274). Only probabilities with a
+## non-zero total are included.
+static func probability_modifiers(actor: Actor) -> Dictionary:
+	var out := {}
+	if actor == null:
+		return out
+	var ledger := _ledger(actor)
+	for fate_id in DestinyState.fate_ids(ledger):
+		var def := FateCatalog.instance().fate_definition(fate_id)
+		if def == null:
+			continue
+		for modifier in def.build_probability_modifiers():
+			var key := String(modifier.stat)
+			out[key] = float(out.get(key, 0.0)) + modifier.value
+	for destiny_id in DestinyState.destiny_ids(ledger):
+		var def := FateCatalog.instance().destiny_definition(destiny_id)
+		if def == null:
+			continue
+		for key in def.probability_modifiers.keys():
+			var k := String(key)
+			out[k] = float(out.get(k, 0.0)) + float(def.probability_modifiers[key])
+	return out
+
+
 ## Whether gated content may open for `actor`.
 ##
 ## `requirement` is authored data, never code. It is either an empty dictionary

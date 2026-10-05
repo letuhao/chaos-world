@@ -40,6 +40,10 @@ const TEASER := &"teaser"
 ## Pure-narrative gate target: authored IDs that may test `has_destiny` against
 ## this destiny. Lets story content be authored before the destiny exists.
 @export var gate_aliases: Array[StringName] = []
+## Probability modifiers this destiny contributes while held (ADR 0274).
+## Same shape and rules as FateDef.probability_modifiers: maps a
+## probability/rate stat id to a float shift, yin-yang paired.
+@export var probability_modifiers: Dictionary = {}
 
 
 func is_visible() -> bool:

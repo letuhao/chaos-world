@@ -13,3 +13,4 @@ tier = 2
 visibility = &"revealed"
 grants_fates = Array[StringName]([&"heaven_s_chosen_instrument", &"heaven_eye_circled_once"])
 requires_fates = Array[StringName]([&"reborn_in_a_lesser_vessel"])
+probability_modifiers = {"breakthrough_chance": 0.03, "crit_chance": -0.02}
