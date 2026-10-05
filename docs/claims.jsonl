@@ -19,7 +19,8 @@
 {"session": "py-domain-driver-0231", "paths": ["tools/domain.py", "game/tools/domain_driver.gd", "tools/arch/families.json", "tools/data.py", "docs/adr/0232-the-domain-driver-asserts-invariants-and-exits-non-zero-and-a-driver-that-only-prints-is-a-viewer.md", "docs/adr/0233-domain-content-is-audited-where-it-is-authored-by-a-second-root-the-data-audit-is-taught.md", "docs/adr/0234-the-domain-source-census-is-sound-and-the-blind-spot-is-in-the-loot-tier-reader-not-the-count.md"], "heartbeat": "2026-10-05T02:21:05.408572+00:00"}
 {"session": "close-three-gaps", "paths": ["game/src/modules/clan", "game/src/modules/items", "game/src/modules/sect", "game/src/app/screen_routes.gd", "tools/arch/registry.json", "game/src/ui/screens/clan_screen.gd", "game/src/ui/screens/clan_screen.tscn", "game/tests/modules/clan"], "heartbeat": "2026-10-05T02:22:58.565960+00:00"}
 {"session": "clock-split", "paths": ["game/src/app/world_stage_reconcile.gd"], "heartbeat": "2026-10-05T03:53:01.981905+00:00"}
-{"session": "wave-23a", "paths": ["game/assets/characters/unique-index-wave-23a.jsonl"], "heartbeat": "2026-10-05T06:14:53.012293+00:00"}
-{"session": "wave-23b", "paths": ["game/assets/characters/unique-index-wave-23b.jsonl"], "heartbeat": "2026-10-05T06:15:35.108195+00:00"}
-{"session": "wave-23d", "paths": ["game/assets/characters/unique-index-wave-23d.jsonl"], "heartbeat": "2026-10-05T06:16:57.954768+00:00"}
 {"session": "clock-retreat-fix", "paths": ["game/tests/ui/test_world_pulse_retreat_reachable.gd", "game/src/ui/screens/world_map_screen.gd", "game/src/ui/panels/world_pulse_panel.gd"], "heartbeat": "2026-10-05T06:39:19.731649+00:00"}
+{"session": "wave-24a", "paths": ["game/assets/characters/unique-index-wave-9.jsonl"], "heartbeat": "2026-10-05T07:08:45.629767+00:00"}
+{"session": "wave-24b", "paths": ["game/assets/characters/unique-index-wave-24b.jsonl"], "heartbeat": "2026-10-05T07:10:11.870567+00:00"}
+{"session": "wave-24c", "paths": ["game/assets/characters/unique-index-wave-24c.jsonl"], "heartbeat": "2026-10-05T07:10:59.665960+00:00"}
+{"session": "wave-24d", "paths": ["game/assets/characters/unique-index-wave-24d.jsonl"], "heartbeat": "2026-10-05T07:11:59.001291+00:00"}
