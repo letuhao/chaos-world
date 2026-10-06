@@ -196,6 +196,22 @@ func test_saves_opens_through_the_roots_own_door() -> void:
 	assert_eq(_opened.has("save"), true, "through the seam like every other menu page")
 
 
+func test_story_opens_the_quest_journal_where_storylines_are_carried() -> void:
+	var screen := _screen()
+	screen.setup(Actor.new())
+	_wired(screen)
+	assert_eq(screen.act_open(&"quest"), true, "Story opens")
+	assert_eq(_opened.has("quest"), true, "on the journal, which is where carried storylines live")
+
+
+func test_worlds_opens_the_world_map_where_worlds_are_chosen() -> void:
+	var screen := _screen()
+	screen.setup(Actor.new())
+	_wired(screen)
+	assert_eq(screen.act_open(&"world_map"), true, "Worlds opens")
+	assert_eq(_opened.has("world_map"), true, "on the map, which is where worlds are chosen")
+
+
 func test_the_nav_bar_hides_while_the_menu_owns_the_screen() -> void:
 	if SeamHarness.live != null:
 		SeamHarness.live.teardown()
