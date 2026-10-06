@@ -18,6 +18,8 @@ var _born: Array = []
 var _save_exists := false
 var _continued := false
 var _new_game_verdict := {}
+var _opened: Array = []
+var _quit_called := false
 
 
 func setup() -> void:
@@ -25,6 +27,8 @@ func setup() -> void:
 	_save_exists = false
 	_continued = false
 	_new_game_verdict = {}
+	_opened.clear()
+	_quit_called = false
 
 
 ## Everything this suite minted, freed. The stack frees its own screens, so
@@ -53,7 +57,9 @@ func _wired(screen: BootScreen) -> void:
 	screen.bind_menu(
 		Callable(self, "_stub_has_save"),
 		Callable(self, "_stub_continue"),
-		Callable(self, "_stub_new_game")
+		Callable(self, "_stub_new_game"),
+		Callable(self, "_stub_open"),
+		Callable(self, "_stub_quit")
 	)
 
 
@@ -69,6 +75,16 @@ func _stub_continue() -> bool:
 func _stub_new_game() -> Dictionary:
 	_new_game_verdict = {"ok": true, "reason": ""}
 	return _new_game_verdict.duplicate(true)
+
+
+func _stub_open(route_id: StringName) -> bool:
+	_opened.append(String(route_id))
+	return true
+
+
+func _stub_quit() -> Dictionary:
+	_quit_called = true
+	return {"ok": true, "reason": ""}
 
 
 # --- The route ---------------------------------------------------------------
@@ -142,7 +158,34 @@ func test_the_summary_names_what_the_player_can_do() -> void:
 	var view := screen.summary()
 	assert_eq(bool(view.get("has_save", false)), true, "a save is reported")
 	assert_eq(bool(view.get("can_continue", false)), true, "Continue is reported")
-	assert_eq(bool(view.get("can_new_game", false)), true, "and so is New Game")
+	assert_eq(bool(view.get("can_new_game", false)), true, "New Game is reported")
+	assert_eq(bool(view.get("can_open", false)), true, "and so are the menu pages")
+	assert_eq(bool(view.get("can_quit", false)), true, "and Quit")
+
+
+func test_menu_pages_open_through_the_roots_own_door() -> void:
+	var screen := _screen()
+	screen.setup(Actor.new())
+	_wired(screen)
+	assert_eq(screen.act_open(&"settings"), true, "Settings opens")
+	assert_eq(screen.act_open(&"credits"), true, "Credits opens")
+	assert_eq(_opened, ["settings", "credits"], "through the seam, not around it")
+
+
+func test_menu_pages_refuse_by_name_when_no_seam_is_bound() -> void:
+	var screen := _screen()
+	screen.setup(Actor.new())
+	assert_eq(screen.act_open(&"settings"), false, "no seam, no journey")
+	assert_eq(screen.act_quit().get("reason", ""), "no_quit_seam", "and Quit names it too")
+
+
+func test_quit_goes_through_the_root_which_owns_the_tree() -> void:
+	var screen := _screen()
+	screen.setup(Actor.new())
+	_wired(screen)
+	var verdict := screen.act_quit()
+	assert_eq(bool(verdict.get("ok", false)), true, "Quit is handed over")
+	assert_eq(_quit_called, true, "to the root, which is the only layer that may end the process")
 
 
 func test_the_nav_bar_hides_while_the_menu_owns_the_screen() -> void:

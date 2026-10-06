@@ -69,6 +69,9 @@ const ROUTE_BOOT := &"boot"
 ## The loading screen (ADR 0901). It owns the boot window while every route
 ## scene preloads, then releases to the menu or arrival.
 const ROUTE_LOADING := &"loading"
+## The settings page (menu slice): difficulty presets with the root's own
+## select seam.
+const ROUTE_SETTINGS := &"settings"
 const ROUTE_SET_BONUS := &"set_bonus"
 
 ## The soul and hearth page. `soul` and `save` are not (and for `save` must never be)
@@ -876,6 +879,21 @@ func _boot_new_game() -> Dictionary:
 	return open_creation()
 
 
+## Open another menu page from the boot menu. Settings and credits are plain
+## routes; anything else is refused by `navigate_to` itself, which names an
+## unknown route rather than opening it.
+func _boot_open(route_id: StringName) -> bool:
+	return navigate_to(route_id)
+
+
+## Quit the game. The root owns the tree, so the menu asks here instead of
+## quitting it — which is also what keeps a headless test alive: no suite
+## ever calls this, because calling it would end the runner.
+func _quit_game() -> Dictionary:
+	get_tree().quit()
+	return {"ok": true, "reason": ""}
+
+
 ## Every route scene, as plain paths. What the loading walk preloads: the
 ## screen may not read the route table itself (`ui/` never names `app/`), so
 ## the table is read once here and handed over as primitives.
@@ -1339,8 +1357,17 @@ func _bind_route_screen(route_id: StringName, screen: Control) -> void:
 				"bind_menu",
 				Callable(self, "_boot_has_save"),
 				Callable(self, "_boot_continue"),
-				Callable(self, "_boot_new_game")
+				Callable(self, "_boot_new_game"),
+				Callable(self, "_boot_open"),
+				Callable(self, "_quit_game")
 			)
+		ROUTE_SETTINGS:
+			# THE ARM THAT MAKES DIFFICULTY PRESSABLE OUTSIDE THE HEARTH.
+			# `DifficultyApi.views()` publishes preset rows "for a settings
+			# screen" and had no settings screen; the setter arrives as the
+			# root's own verb because `select` takes the bound actor.
+			screen.call("setup", _actor)
+			screen.call("bind_difficulty", Callable(self, "select_difficulty"))
 		ROUTE_LOADING:
 			# ADR 0901. The screen preloads every route scene; the art layers
 			# hang here so a missing file degrades plate by plate to the dark

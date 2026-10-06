@@ -408,6 +408,29 @@ const ROUTES: Array[Dictionary] = [
 		"root": false,
 	},
 	{
+		# The settings page (menu slice). Difficulty is the only setting with
+		# a module behind it; volume and display have nothing to press, so
+		# they are absent rather than decorative.
+		"id": &"settings",
+		"node": "SettingsScreen",
+		"label": "Settings",
+		"hint": "The difficulty this run is played under.",
+		"scene": "res://src/ui/screens/settings_screen.tscn",
+		"key": "u",
+		"root": false,
+	},
+	{
+		# The credits page (menu slice). Static authored lines; no module
+		# owns them, so no seam is injected and the arm is the plain default.
+		"id": &"credits",
+		"node": "CreditsScreen",
+		"label": "Credits",
+		"hint": "Who and what made this game.",
+		"scene": "res://src/ui/screens/credits_screen.tscn",
+		"key": "x",
+		"root": false,
+	},
+	{
 		# The loading screen (ADR 0901). It owns the boot window: wallpaper,
 		# weather, and an honest progress bar over the route preload. Last in
 		# tab order with the menu, so every feature route keeps its key.
