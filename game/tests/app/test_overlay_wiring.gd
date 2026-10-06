@@ -52,7 +52,9 @@ func test_remaining_families_have_overlay_methods() -> void:
 	]
 	for catalog_name in catalogs as Array[String]:
 		assert_eq(
-			ClassDB.class_exists(catalog_name), true, "Catalog class '%s' should exist" % catalog_name
+			ClassDB.class_exists(catalog_name),
+			true,
+			"Catalog class '%s' should exist" % catalog_name
 		)
 		if not ClassDB.class_exists(catalog_name):
 			continue
@@ -80,11 +82,26 @@ func test_wire_content_roots_has_match_arms() -> void:
 		return
 	var wiring := body.substr(start, stop - start)
 	for family in [
-		"item_options", "sects", "sect_doctrines", "fates", "destinies",
-		"institutions", "statuses", "soul_arrivals", "sets", "nations",
-		"nation_territories", "market_shops", "clans", "holdings",
-		"body_weapons", "body_material_arts", "body_injury_tuning",
-		"bloodlines", "anchors", "difficulty",
+		"item_options",
+		"sects",
+		"sect_doctrines",
+		"fates",
+		"destinies",
+		"institutions",
+		"statuses",
+		"soul_arrivals",
+		"sets",
+		"nations",
+		"nation_territories",
+		"market_shops",
+		"clans",
+		"holdings",
+		"body_weapons",
+		"body_material_arts",
+		"body_injury_tuning",
+		"bloodlines",
+		"anchors",
+		"difficulty",
 	]:
 		assert_ne(
 			wiring.find('&"%s":' % family),
@@ -142,7 +159,9 @@ func test_custom_bus_type_registered_and_resolved() -> void:
 	var custom_bus := RefCounted.new()
 	RegistrationContext.register_events_bus("MyCustomEvents", func(): return custom_bus)
 	assert_eq(
-		RegistrationContext.has_custom_bus("MyCustomEvents"), true, "custom bus should be registered"
+		RegistrationContext.has_custom_bus("MyCustomEvents"),
+		true,
+		"custom bus should be registered"
 	)
 	var resolved: RefCounted = _app.call("_resolve_events_bus", "MyCustomEvents")
 	assert_eq(resolved, custom_bus, "custom bus resolves to the factory's instance")
