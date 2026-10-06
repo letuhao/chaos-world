@@ -543,11 +543,12 @@ func _resolve_events_bus(bus_name: String) -> RefCounted:
 	# 2. Resolve by class name.
 	if not ClassDB.class_exists(bus_name):
 		return null
-	# Check for a static events() or shared() accessor.
+	# Check for a static events() or shared() accessor. `ClassDB` exposes no
+	# `class_call`: the static-call spelling is `class_call_static` (boot repair).
 	if ClassDB.class_has_method(bus_name, &"events"):
-		return ClassDB.class_call(bus_name, &"events")
+		return ClassDB.class_call_static(bus_name, &"events")
 	if ClassDB.class_has_method(bus_name, &"shared"):
-		return ClassDB.class_call(bus_name, &"shared")
+		return ClassDB.class_call_static(bus_name, &"shared")
 	# 3. Otherwise instantiate.
 	return ClassDB.instantiate(bus_name)
 
