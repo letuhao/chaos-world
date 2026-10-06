@@ -64,13 +64,12 @@ const PARRY_COST := 0.5
 ## Block's twin of `PARRY_COST`: a block is the cheaper, weaker response.
 const BLOCK_COST := 0.75
 
-## The component key S9 reads a shield through. Duck-typed on purpose: `shield.gd` was
-## deleted by ADR 0076 and is wave E's to write, so naming `Shield` here would make the
-## spine uncompilable until a later wave lands — and the spine is testable NOW, which is
-## the point of building it first. The contract is stated rather than typed: a component
-## under this key whose `absorb(amount: float) -> float` returns the overflow it did NOT
-## take. A real `Shield` binds with no edit here, and anything else in that slot absorbs
-## nothing rather than crashing the hit.
+## The component key S9 reads a shield through. Duck-typed on purpose: `combat_engine`
+## states the contract rather than naming the class, so a test double binds the same way
+## a real shield does (ADR 0879). The contract is `absorb(amount: float, penetration:
+## float) -> float`, returning the overflow it did NOT take; `CombatShield` (`shield.gd`)
+## is the shipped binding, and anything else in that slot absorbs nothing rather than
+## crashing the hit.
 const SHIELD_COMPONENT := &"Shield"
 
 
@@ -288,7 +287,7 @@ static func _spend(
 	attacker: Actor, target: Actor, tuning: CombatTuning, outcome: CombatOutcome, chain_depth: int
 ) -> CombatOutcome:
 	var spendable := outcome.amount * _refusal(attacker, target, tuning, outcome)
-	outcome.absorbed = _absorb(target, spendable)
+	outcome.absorbed = _absorb(target, spendable, _stat(attacker, CombatStats.SHIELD_PEN))
 	outcome.overflow = maxf(0.0, spendable - outcome.absorbed)
 	var health := target.resource(&"health") as ResourcePool
 	if health != null and outcome.overflow > 0.0:
@@ -310,35 +309,35 @@ static func _spend(
 ##
 ## ## Why this translates, instead of returning the shield's own number
 ##
-## `Shield.absorb(amount) -> overflow` answers what it did NOT take, but this function's
-## answer has to mean "the removed share", because `CombatOutcome.absorbed` documents THAT
-## and because an absent shield must be the same shape as a shield that took nothing.
-## Returning the shield's return value directly made ONE number carry TWO opposite meanings
-## depending on whether a component was bound: `0.0` meant "no shield" and "the shield took
-## it all" at the same time, so NO arrangement of the two assignments in `_spend` could be
-## right for both cases. Swapping them fixed every shielded case and broke every unshielded
-## one; subtracting once, HERE, is what makes the absent case read `0.0` for the only reason
-## it should. That ambiguity was DEF-0139.
+## `CombatShield.absorb(amount, penetration) -> overflow` answers what it did NOT take,
+## but this function's answer has to mean "the removed share", because
+## `CombatOutcome.absorbed` documents THAT and because an absent shield must be the same
+## shape as a shield that took nothing. Returning the shield's return value directly made
+## ONE number carry TWO opposite meanings depending on whether a component was bound:
+## `0.0` meant "no shield" and "the shield took it all" at the same time, so NO
+## arrangement of the two assignments in `_spend` could be right for both cases. Swapping
+## them fixed every shielded case and broke every unshielded one; subtracting once, HERE,
+## is what makes the absent case read `0.0` for the only reason it should. That ambiguity
+## was DEF-0139.
 ##
 ## The subtraction is clamped into `[0, spendable]`, so a hostile or buggy `absorb` that
 ## returns more than it was handed cannot hand S9 an `absorbed` larger than the blow, which
 ## would drive `overflow` negative and spend the refund as a heal through the one sign flip
 ## in `_spend`.
 ##
-## The component is duck-typed on purpose. `shield.gd` was deleted by ADR 0076 and is
-## wave E's to write, so naming `Shield` here would make the spine uncompilable until a
-## later wave lands — and the spine is testable NOW, which is the point of building it
-## first. The contract is therefore stated rather than typed: a component under
-## `SHIELD_COMPONENT` whose `absorb(amount: float) -> float` returns the overflow it
-## did NOT take. A real `Shield` binds to this with no edit here, and anything else in
-## that slot absorbs nothing rather than crashing the hit.
-static func _absorb(target: Actor, spendable: float) -> float:
+## The component is duck-typed on purpose, and ADR 0879 made the contract take the
+## attacker's cut: a component under `SHIELD_COMPONENT` whose
+## `absorb(amount: float, penetration: float) -> float` returns the overflow it did NOT
+## take. `CombatShield` (`shield.gd`) is the shipped binding and binds with no edit here;
+## a test double binds the same way, and anything else in that slot absorbs nothing
+## rather than crashing the hit.
+static func _absorb(target: Actor, spendable: float, penetration: float) -> float:
 	var shield := target.component(SHIELD_COMPONENT)
 	if shield == null or spendable <= 0.0:
 		return 0.0
 	if not shield.has_method(&"absorb"):
 		return 0.0
-	var overflow: Variant = shield.call(&"absorb", spendable)
+	var overflow: Variant = shield.call(&"absorb", spendable, penetration)
 	if not (overflow is float or overflow is int):
 		return 0.0
 	return clampf(spendable - float(overflow), 0.0, spendable)

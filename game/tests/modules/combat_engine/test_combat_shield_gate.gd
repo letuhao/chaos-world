@@ -2,7 +2,8 @@ extends TestCase
 
 ## S9, the shield gate (ADR 0067 S9, ADR 0068's post-shield reflect).
 ##
-## `Shield.absorb(amount) -> overflow`: it returns what it did NOT take. This suite pins
+## `CombatShield.absorb(amount, penetration) -> overflow`: it returns what it did NOT
+## take. This suite pins
 ## the gate's four cases and, because ADR 0068 makes reflect read the overflow, the
 ## fifth thing the gate has to get right — a fully absorbed hit must leave the overflow
 ## at exactly zero.
@@ -166,8 +167,9 @@ func _resolve(attacker: Actor, target: Actor, amount: float) -> CombatOutcome:
 	return CombatSpine.resolve_hit(attacker, target, CombatTestKit.technique(100.0), _tuning, null)
 
 
-## The shield the gate reads: `absorb(amount) -> overflow`, which is the ADR's shape.
-## Duck-typed in the spine, so this stands in for wave E's `Shield` with no shared type.
+## The shield the gate reads: `absorb(amount, penetration) -> overflow`, which is the
+## ADR 0879 shape. Duck-typed in the spine, so a double stands in for `CombatShield`
+## with no shared type.
 class _FakeShield:
 	extends RefCounted
 
@@ -176,7 +178,7 @@ class _FakeShield:
 	func _init(p_capacity: float) -> void:
 		capacity = p_capacity
 
-	func absorb(amount: float) -> float:
+	func absorb(amount: float, _penetration: float = 0.0) -> float:
 		var taken := minf(capacity, amount)
 		capacity -= taken
 		return amount - taken

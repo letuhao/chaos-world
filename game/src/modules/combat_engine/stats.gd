@@ -127,15 +127,20 @@ const BLOCK_SHRED := &"block.shred"
 
 # --- Shield channels ----------------------------------------------------------
 
-## How much the shield has left. Read-only input to S9 (ADR 0068).
+## The shield's authored ceiling, read by `CombatShield.refresh` (ADR 0879): the pool
+## S9 drains. `0.0` means no shield, which is why it is also the default.
 const SHIELD_CAPACITY := &"shield.capacity"
-## Multiplier on what the shield removes. Read-only input to S9.
+## Multiplier on the damage the pool is good for, folded as `1.0 + SHIELD_TOUGHNESS`
+## (`CombatShield.refresh`): at `2.0` a 30-point pool absorbs up to 60 points of one
+## blow, never more than the blow. A channel floors at zero, so this can only be RAISED
+## by authoring; the attacker's `SHIELD_PEN` is the weakening half.
 const SHIELD_TOUGHNESS := &"shield.toughness"
-## How much of the shield the attacker cuts before S9 runs.
+## The ATTACKER's cut, spent off the defender's pool before the blow lands: read by
+## `CombatSpine._absorb` and handed to `CombatShield.absorb` as its second argument.
 const SHIELD_PEN := &"shield.pen"
-## What the shield restores per second. NOT read by the spine: regen belongs to a
-## combat tick, not to one hit's resolution, and a regen inside a resolve would
-## reorder the stages it runs between.
+## What the pool restores per second, through `CombatShield.tick`. NOT read by the
+## spine: regen belongs to a combat tick, not to one hit's resolution, and a regen
+## inside a resolve would reorder the stages it runs between.
 const SHIELD_REGEN := &"shield.regen"
 
 # --- Leech --------------------------------------------------------------------

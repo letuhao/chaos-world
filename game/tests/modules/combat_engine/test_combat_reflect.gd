@@ -332,7 +332,7 @@ func _resolve(attacker: Actor, target: Actor, amount: float) -> CombatOutcome:
 	return CombatSpine.resolve_hit(attacker, target, CombatTestKit.technique(100.0), _tuning, null)
 
 
-## The shield the gate reads: `absorb(amount) -> overflow`.
+## The shield the gate reads: `absorb(amount, penetration) -> overflow`.
 class FakeShield:
 	extends RefCounted
 
@@ -341,7 +341,7 @@ class FakeShield:
 	func _init(p_capacity: float) -> void:
 		capacity = p_capacity
 
-	func absorb(amount: float) -> float:
+	func absorb(amount: float, _penetration: float = 0.0) -> float:
 		var taken := minf(capacity, amount)
 		capacity -= taken
 		return amount - taken
