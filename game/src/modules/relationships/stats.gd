@@ -1,7 +1,7 @@
 class_name RelationshipsStats
 extends RefCounted
 
-## Stat ids owned by the relationships module (ADR 0123).
+## Stat ids owned by the relationships module (ADR 0892).
 ##
 ## **Module-owned ids only.** The provider never emits a core id, because a provider's
 ## contribution replaces the baseline of the stat it names (ADR 0026).

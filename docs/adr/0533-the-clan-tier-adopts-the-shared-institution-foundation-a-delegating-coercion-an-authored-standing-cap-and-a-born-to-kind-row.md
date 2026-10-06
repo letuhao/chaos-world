@@ -9,12 +9,12 @@
   ADR 0399 (the sect tier on the generic founding path)
 - Extends: ADR 0399. Amends: nothing. Supersedes: nothing.
 - Resolves: the clan half of ADR 0271's "the sect migration is the next slice"
-- Note: first drafted as `0513`, whose number a concurrent session also took
-  (`0513-ten-grades-across-four-tiers-three-realms-per-grade.md` is theirs). This is the same
-  decision at a free number, which is what ADR 0271 did for `0266`. The tree carries a large
-  pre-existing set of such collisions — `new_adr` warns about them — and re-running until
-  the warning clears is the only race-free path, because the warning lists every number ever
-  taken rather than only the one just collided with.
+- Note: first drafted as `0513`, whose number a concurrent session also took with a
+  `ten-grades` stub (ADR 0337's runaway, since cleaned to one file). This is the same
+  decision at a free number, which is what ADR 0271 did for `0266`. The number collisions
+  this tree used to carry were repaired 2026-10-06 (DEF-0341): `new_adr` allocates from the
+  whole directory, and it now also refuses a title already on disk, so a repeated title
+  cannot take a second number.
 
 ## Context
 

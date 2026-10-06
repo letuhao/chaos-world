@@ -1,6 +1,6 @@
 extends TestCase
 
-## Tests for the Clan Building system (ADR 0126).
+## Tests for the Clan Building system (ADR 0895).
 ##
 ## Buildings grant infrastructure and recognition, never combat power (ADR 0064).
 ## Yin-yang: every advantage carries its counterpart (upkeep, overextension, decay).

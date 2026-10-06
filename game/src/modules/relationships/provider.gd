@@ -1,7 +1,7 @@
 class_name RelationshipsProvider
 extends StatProvider
 
-## Contributes this module's four relationship stats from the log on the actor (ADR 0123).
+## Contributes this module's four relationship stats from the log on the actor (ADR 0892).
 ##
 ## **Module-owned ids only.** It never emits a core id, because a provider's contribution
 ## replaces the baseline of the stat it names (ADR 0026).

@@ -1,6 +1,6 @@
 extends TestCase
 
-## Tests for the Collection module facade (ADR 0127).
+## Tests for the Collection module facade (ADR 0896).
 ##
 ## Collection is a read-only module that tracks collection progress and pays
 ## narrative rewards. These tests assert the facade contract: summary shape,

@@ -1,6 +1,6 @@
 extends TestCase
 
-## Tests for the heterosis mechanic (ADR 0125).
+## Tests for the heterosis mechanic (ADR 0894).
 ##
 ## Heterosis is a pair-level divergence term added to BloodlineState.inherit().
 ## The excess term 0.70 * m * D * (1−m) fires only when parents carry different

@@ -1,7 +1,7 @@
 class_name RelationshipEvents
 extends RefCounted
 
-## Typed event contract for the `relationships` module (ADR 0123). The observation half
+## Typed event contract for the `relationships` module (ADR 0892). The observation half
 ## of the seam: a consumer subscribes to these without the relationships module naming it.
 ##
 ## **Every signal here announces what already happened.** None is a request and none may

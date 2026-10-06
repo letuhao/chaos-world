@@ -49,7 +49,7 @@ static func apply(actor: Actor, ledger: Dictionary) -> void:
 		actor.traits.add(BloodlineState.trait_for(lineage_id))
 		var traits: Array[StringName] = [BloodlineState.trait_for(lineage_id)]
 		if def != null and def.is_awake(purity):
-			# ADR 0125's instability counterpart: the spike elevates purity past
+			# ADR 0894's instability counterpart: the spike elevates purity past
 			# the awaken gate, but the body struggles to stabilise foreign blood,
 			# so the lineage's own authored modifiers arrive discounted by the
 			# read-time factor -- never the gate itself, which stays binary. The

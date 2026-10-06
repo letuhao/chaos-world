@@ -1,7 +1,7 @@
 class_name EmotionalSignature
 extends RefCounted
 
-## A 7-axis emotion vector for one relationship (ADR 0123).
+## A 7-axis emotion vector for one relationship (ADR 0892).
 ##
 ## Each axis is an intensity in [0.0, 1.0]. The signature decays toward its baseline
 ## at 0.5% per day — output-bounded, so it can never push below baseline, only toward it.

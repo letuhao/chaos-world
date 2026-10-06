@@ -1,7 +1,7 @@
 class_name RelationshipType
 extends RefCounted
 
-## The type of a relationship between two actors (ADR 0123).
+## The type of a relationship between two actors (ADR 0892).
 ##
 ## **Ordered by commitment.** A relationship can move forward (NONE → FRIEND → ROMANTIC
 ## → SPOUSE) or backward, but it cannot skip steps. DC_PARTNER is orthogonal — it flags

@@ -3,7 +3,7 @@ extends UiScreen
 
 ## The relationship screen: partners, bond classes, emotional signatures, history.
 ## A pure consumer of the `collection` facade — it renders `CollectionApi.summary(actor)`
-## and names nothing else in the module (ADR 0127).
+## and names nothing else in the module (ADR 0896).
 ##
 ## The emotional signature is derived from the bond's axes by the collection module,
 ## never stored or computed here.

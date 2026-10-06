@@ -1,4 +1,4 @@
-# 0127 Collection is a read-only module that pays narrative rewards
+# 0896 Collection is a read-only module that pays narrative rewards
 
 - **Status**: accepted
 - **Supersedes**: none

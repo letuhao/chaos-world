@@ -1,7 +1,7 @@
 class_name RelationshipsApi
 extends RefCounted
 
-## Public facade for the `relationships` module (ADR 0123). Other modules may reference ONLY
+## Public facade for the `relationships` module (ADR 0892). Other modules may reference ONLY
 ## this file (`api.gd`).
 ##
 ## **Compositional, not a second bond.** This module reads `SocialBond`'s standing/trust/class

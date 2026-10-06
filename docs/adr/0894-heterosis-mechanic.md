@@ -1,4 +1,4 @@
-# 0125 Heterosis is a pair-level divergence term in bloodline inherit()
+# 0894 Heterosis is a pair-level divergence term in bloodline inherit()
 
 - **Status**: accepted
 - **Supersedes**: none

@@ -1,7 +1,7 @@
 class_name BuildingApi
 extends RefCounted
 
-## Public facade for the `clan_building` module (ADR 0126). Other modules may
+## Public facade for the `clan_building` module (ADR 0895). Other modules may
 ## reference ONLY this file (`api.gd`). Concrete implementations live beside
 ## this file and are wired in `app/`.
 ##

@@ -1,7 +1,7 @@
 class_name InteractionLog
 extends RefCounted
 
-## A bounded interaction history for one partner (ADR 0123).
+## A bounded interaction history for one partner (ADR 0892).
 ##
 ## **This is a log, not a ledger.** The oldest entry is evicted when full — eviction is
 ## safe because the aggregate `total_interactions` and `frequent_partner_tier` are stored

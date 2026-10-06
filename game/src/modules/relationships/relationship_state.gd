@@ -1,7 +1,7 @@
 class_name RelationshipState
 extends RefCounted
 
-## An actor's whole relationship log (ADR 0123).
+## An actor's whole relationship log (ADR 0892).
 ##
 ## **One log per actor.** Every partner the player has interacted with gets one entry.
 ## The log is stored in `actor.module_data[MODULE_KEY]`, never in a bespoke save slot.

@@ -1,6 +1,6 @@
 extends TestCase
 
-## Tests for the relationships module (ADR 0123).
+## Tests for the relationships module (ADR 0892).
 ##
 ## Relationships is a standalone module that tracks dual cultivation history and
 ## relationships as a log. Frequent partners increase relationship and can take advantages.

@@ -1,7 +1,7 @@
 class_name FrequentPartner
 extends RefCounted
 
-## Frequent partner advantage calculation (ADR 0123).
+## Frequent partner advantage calculation (ADR 0892).
 ##
 ## **Output-bounded.** Advantages multiply gains, never add flat stats. The cost is
 ## emotional energy divided among partners — maintaining N active relationships divides

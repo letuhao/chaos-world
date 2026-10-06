@@ -1,7 +1,7 @@
 class_name BuildingStats
 extends RefCounted
 
-## The `clan_building` module's own stat-id vocabulary (ADR 0126).
+## The `clan_building` module's own stat-id vocabulary (ADR 0895).
 ##
 ## Every id here is a bounded, non-combat SUMMARY. Buildings grant recognition
 ## and infrastructure, never combat power (ADR 0064).

@@ -1,4 +1,4 @@
-# 0124 Dual cultivation is a mind+body sub-path with three pillars
+# 0893 Dual cultivation is a mind+body sub-path with three pillars
 
 - **Status**: accepted
 - **Supersedes**: none

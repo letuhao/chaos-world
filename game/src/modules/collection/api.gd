@@ -1,7 +1,7 @@
 class_name CollectionApi
 extends RefCounted
 
-## Public facade for the `collection` module (ADR 0127). Other modules may reference
+## Public facade for the `collection` module (ADR 0896). Other modules may reference
 ## ONLY this file (`api.gd`).
 ##
 ## Collection is a read-only module that tracks collection progress across the program

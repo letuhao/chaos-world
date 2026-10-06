@@ -7,6 +7,7 @@ from datetime import date
 from pathlib import Path
 
 from .common import ADR_DIR, REPO_ROOT, ToolError, ok, warn
+from .selftest import Failure, case, expect
 
 ## The number an ADR file carries. Shared with the duplicate check in `tools check`
 ## so both agree on what counts as a number.
@@ -47,6 +48,23 @@ def _numbered(directory) -> dict[int, list[str]]:
 
 def _next_number(used: dict[int, list[str]]) -> int:
     return max(used, default=0) + 1
+
+
+def _slug_conflict(directory: Path, slug: str) -> Path | None:
+    """The existing ADR carrying `slug`, or none.
+
+    The number guard alone cannot stop a REPEATED title: a second `new_adr` for the same
+    decision scans, computes `max(used) + 1`, and writes a fresh file under a new number.
+    That is how 141 ten-grades ADRs accumulated (9 filled copies differing only in the
+    header, 132 empty stubs) before two bulk commits published them (DEF-0341). A title is
+    the decision's identity, so a second number for one title is the same ambiguity as two
+    files for one number.
+    """
+    for path in directory.glob("*.md"):
+        match = ADR_NUMBER_RE.match(path.name)
+        if match and _slugify(path.stem[match.end() :]) == slug:
+            return path
+    return None
 
 
 def _slugify(text: str) -> str:
@@ -95,6 +113,12 @@ def run(args) -> int:
         raise ToolError("ADR title is required")
     ADR_DIR.mkdir(parents=True, exist_ok=True)
     slug = _slugify(title) or "decision"
+    conflict = _slug_conflict(ADR_DIR, slug)
+    if conflict is not None:
+        raise ToolError(
+            f"an ADR with this title already exists: {_display(conflict)}; edit that one "
+            "instead of numbering the same decision twice"
+        )
     for _ in range(MAX_ALLOCATE_ATTEMPTS):
         used = _numbered(ADR_DIR)
         for number, names in sorted(used.items()):
@@ -126,3 +150,41 @@ def run(args) -> int:
         f"no free ADR number after {MAX_ALLOCATE_ATTEMPTS} attempts; another session is "
         "creating ADRs faster than one can be allocated"
     )
+
+
+@case(
+    "new_adr: a title already on disk is REFUSED, so a repeated title cannot spawn a second number"
+)
+def _case_a_repeated_title_is_refused() -> None:
+    """DEF-0341's cause, asserted rather than described.
+
+    The run is exercised end to end against a temporary ADR_DIR: the old behavior wrote
+    `0002-<same-slug>.md` next to `0001-<same-slug>.md` and reported success.
+    """
+    import tempfile
+    from types import SimpleNamespace
+
+    from . import new_adr as module
+
+    original = module.ADR_DIR
+    with tempfile.TemporaryDirectory() as tmp:
+        module.ADR_DIR = Path(tmp)
+        try:
+            (module.ADR_DIR / "0001-ten-grades-across-four-tiers.md").write_text(
+                "# 0001 t\n", encoding="utf-8"
+            )
+            try:
+                module.run(SimpleNamespace(title=["Ten", "grades", "across", "four", "tiers"]))
+            except ToolError as error:
+                expect("already exists" in str(error), f"names the existing file: {error}")
+            else:
+                raise Failure("a repeated title was numbered again instead of refused")
+            expect(len(list(module.ADR_DIR.glob("*.md"))) == 1, "and nothing new was written")
+            # The guard must not over-block: a DIFFERENT title still allocates.
+            module.run(SimpleNamespace(title=["A different decision"]))
+            expect(
+                (module.ADR_DIR / "0002-a-different-decision.md").exists(),
+                "a new title still allocates the next number",
+            )
+        finally:
+            module.ADR_DIR = original

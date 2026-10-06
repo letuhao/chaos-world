@@ -1,4 +1,4 @@
-# 0126 Clan building is a new module extending clan scaffolding
+# 0895 Clan building is a new module extending clan scaffolding
 
 - **Status**: accepted
 - **Supersedes**: none

@@ -1,7 +1,7 @@
 class_name RelationshipEntry
 extends RefCounted
 
-## One partner's relationship row (ADR 0123).
+## One partner's relationship row (ADR 0892).
 ##
 ## **Compositional, not a second bond.** This reads `SocialBond`'s standing/trust/class
 ## through the social facade but never writes them. It layers relationship-specific

@@ -46,11 +46,11 @@ const FLOOR := 0.15
 ## `FLOOR * (1 - RETENTION)`. Named for its role in the affine map rather than for the
 ## floor it produces, which is what the earlier draft got wrong.
 const BLEND_CONSTANT := 0.045
-## ADR 0125. The carrier floor: the purity a lineage settles at when the heterosis
+## ADR 0894. The carrier floor: the purity a lineage settles at when the heterosis
 ## spike has fully decayed but the lineage is still carried. Just under the common
 ## threshold, so a carrier is always dormant — the spike is the only way across.
 const OUTBREED_FLOOR := 0.417
-## ADR 0125. The instability counterpart: the lineage's own authored modifiers are
+## ADR 0894. The instability counterpart: the lineage's own authored modifiers are
 ## discounted by up to this at peak spike, derived at read time from the current
 ## purity's distance above the carrier floor.
 const INSTABILITY_MAX_DISCOUNT := 0.34
@@ -82,7 +82,7 @@ static func is_own_source(source: StringName) -> bool:
 ## than a formality. The result is clamped to `[0, 1]`, so no amount of pairing
 ## produces an unbounded super-bloodline.
 ##
-## ## ADR 0125: the heterosis excess rides on top, and only on divergence
+## ## ADR 0894: the heterosis excess rides on top, and only on divergence
 ##
 ## `divergence` is the pair's Jaccard distance over lineage-id sets, computed once
 ## per pairing in `BloodlineResolver.resolve` (`0.0` same family, `1.0` unrelated).
@@ -95,7 +95,7 @@ static func inherit(purity_a: float, purity_b: float, divergence: float = 0.0) -
 	return clampf(m * RETENTION + BLEND_CONSTANT + excess, 0.0, 1.0)
 
 
-## ADR 0125's instability counterpart: the factor the lineage's own authored
+## ADR 0894's instability counterpart: the factor the lineage's own authored
 ## modifiers are scaled by while a spike is active. Derived at read time from
 ## the current purity's distance above the carrier floor, so no ledger stores
 ## it and a restored save re-derives the same number: `1.0` at or below the

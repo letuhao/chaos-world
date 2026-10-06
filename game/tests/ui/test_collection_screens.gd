@@ -1,6 +1,6 @@
 extends TestCase
 
-## Tests for the Collection UI screens (ADR 0127).
+## Tests for the Collection UI screens (ADR 0896).
 ##
 ## These screens are pure consumers of the `collection` facade. They render
 ## `CollectionApi.summary(actor)` and expose `summary()` as the testable surface.

@@ -1,7 +1,7 @@
 class_name BuildingDef
 extends Resource
 
-## One authored building definition (ADR 0126).
+## One authored building definition (ADR 0895).
 ##
 ## A building is a clan infrastructure node that grants non-combat bonuses and
 ## unlocks verbs. It never directly modifies combat stats (ADR 0064's

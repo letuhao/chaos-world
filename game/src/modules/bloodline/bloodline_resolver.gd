@@ -31,7 +31,7 @@ extends RefCounted
 ## Purity can never leave `[0, 1]` and can never exceed `0.745` on a first generation,
 ## which is what keeps every authored threshold inside the reachable band.
 ##
-## ## ADR 0125: divergence is computed once per pairing, not per lineage
+## ## ADR 0894: divergence is computed once per pairing, not per lineage
 ##
 ## `D` is the Jaccard distance over the parents' lineage-id sets (`1 - |A AND B| /
 ## |A OR B|`): `0.0` same family, `1.0` unrelated. Symmetric, bounded, and reading
@@ -48,7 +48,7 @@ static func resolve(parent_a: Actor, parent_b: Actor) -> Dictionary:
 	return out
 
 
-## The pair's divergence for ADR 0125's excess term. `0.0` when neither parent
+## The pair's divergence for ADR 0894's excess term. `0.0` when neither parent
 ## carries anything (no union to differ over); otherwise one minus the overlap
 ## share. Bounded by the sets it walks; the body only reads, never writes.
 static func _divergence(parent_a: Actor, parent_b: Actor) -> float:
