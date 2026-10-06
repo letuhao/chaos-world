@@ -146,11 +146,11 @@ func test_the_anchor_holds_for_a_ladder_trial_at_every_realm_it_shapes() -> void
 		assert_almost_eq(
 			tier.vitality,
 			expect,
-			maxf(RELATIVE_TOLERANCE * expect, 0.05),
 			(
 				"%s tier %d is priced off its OWN realm's power, not a ladder position"
 				% [realm_id, tier.tier]
-			)
+			),
+			maxf(RELATIVE_TOLERANCE * expect, 0.05)
 		)
 		assert_eq(
 			htk >= HITS_TO_KILL * 0.9 and htk <= HITS_TO_KILL * 1.1,
@@ -194,8 +194,8 @@ func test_a_world_band_never_prices_a_fight_below_the_drop_label_it_borrowed() -
 			assert_almost_eq(
 				tier.vitality,
 				expect,
-				maxf(RELATIVE_TOLERANCE * expect, 0.05),
-				"%s is a world band floored at ladder rung %d" % [encounter_id, WORLD_FLOOR_INDEX]
+				"%s is a world band floored at ladder rung %d" % [encounter_id, WORLD_FLOOR_INDEX],
+				maxf(RELATIVE_TOLERANCE * expect, 0.05)
 			)
 			if _power(tier.realm) < floor_power:
 				floored += 1
@@ -215,13 +215,23 @@ func test_vitality_scales_with_the_ladder_rather_than_standing_flat() -> void:
 	# The defect this ADR fixes, asserted as a SPREAD. The old content spanned 40..800,
 	# i.e. 20x, against a ladder that spans 551x. A corpus whose bands still cluster in a
 	# narrow range is the old defect wearing a new number, and only a spread catches it.
+	# Its OWN floor, declared here: `floor_power` is local to
+	# `test_a_world_band_never_prices_a_fight_below_the_drop_label_it_borrowed`, so naming it
+	# in this function was an undeclared-identifier PARSE ERROR that stopped the whole file
+	# from compiling - which is why a run reported this suite as failing for reasons that had
+	# nothing to do with the assertion it makes.
+	var floor_power := _power(StringName(_ladder()[WORLD_FLOOR_INDEX]))
 	var seen: Dictionary = {}
 	for band in _bands():
-		seen[String((band["tier"] as LootTier).vitality)] = true
+		# `%s`, not `String(...)`: `LootTier.vitality` is a float and GDScript has no
+		# `String(float)` constructor, so the cast form is a PARSE ERROR that also strips the
+		# type off `seen` and makes every `:=` below it uninferable. A formatted string is
+		# the only key form that both compiles and keeps the distinct-value count honest.
+		seen["%s" % (band["tier"] as LootTier).vitality] = true
 	var values := seen.keys()
 	assert_eq(values.size() >= 20, true, "authored vitality takes many distinct values")
-	var low := values[0]
-	var high := values[0]
+	var low := float(values[0])
+	var high := float(values[0])
 	for value in values:
 		low = minf(low, float(value))
 		high = maxf(high, float(value))
@@ -259,14 +269,14 @@ func test_a_deep_band_is_a_bigger_pool_not_a_longer_pool() -> void:
 	assert_almost_eq(
 		tier.vitality,
 		gate.vitality * HARD_TIER_MULTIPLIER,
-		0.05,
-		"the deep band carries 1.6x the pool"
+		"the deep band carries 1.6x the pool",
+		0.05
 	)
 	assert_almost_eq(
 		tier.attack_for(boss),
 		gate.attack_for(boss) * HARD_TIER_MULTIPLIER,
-		0.05,
-		"and its boss hits 1.6x as hard, so the blow count does not simply rise"
+		"and its boss hits 1.6x as hard, so the blow count does not simply rise",
+		0.05
 	)
 
 
