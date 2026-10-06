@@ -1,6 +1,8 @@
 extends TestCase
 
-## ADR 0086: one instance per `(actor, status_id)`, and the three merge modes.
+## ADR 0086: the merge modes — one instance per `(actor, status_id)` for refresh,
+## stack and replace — plus the `coexist` instances ADR 0902 (P3) added, and the
+## handles that tell any two of them apart.
 ##
 ## Every case here is a sentence the ADR states, asserted rather than described.
 ## The two that matter most are the two that would be tempting to get subtly
@@ -199,6 +201,61 @@ func test_the_registry_holds_the_actors_own_array() -> void:
 	var actor := _watched()
 	actor.statuses.append(_levered(&"placed_by_hand", 5.0, 1.0))
 	assert_eq(actor.has_status(&"placed_by_hand"), true, "the registry sees a direct append")
+
+
+# --- coexistence and the aligned replace (ADR 0902, P3) -------------------------
+
+
+## `coexist` never matches: two applications of one id leave TWO independent
+## instances, each with its own minted handle, because that is what "independent"
+## means — and the handles are how a caller tells them apart.
+func test_coexist_appends_an_independent_instance_with_its_own_handle() -> void:
+	var actor := _watched()
+	var first := _levered(&"ember", 5.0, 3.0)
+	first.stacking = StatusEffect.Stacking.COEXIST
+	actor.add_status(first)
+	var second := _levered(&"ember", 5.0, 3.0)
+	second.stacking = StatusEffect.Stacking.COEXIST
+	actor.add_status(second)
+	assert_eq(actor.statuses.size(), 2, "two applications, two entries")
+	assert_ne(first.instance_id, second.instance_id, "and two distinct handles")
+	assert_eq(first.instance_id > 0 and second.instance_id > 0, true, "both minted")
+	assert_eq(actor.has_status(&"ember"), true, "the id is held")
+
+
+## The aligned replace (ADR 0902, P3) clears EVERY same-id instance: with `coexist`
+## in the vocabulary a same-id pair is legal, so "the held one" is no longer unique,
+## and a replace that swapped one entry would leave the sibling alive.
+func test_replace_clears_every_coexisting_instance_of_the_id() -> void:
+	var actor := _watched()
+	for _i in 2:
+		var ember := _levered(&"ember", 5.0, 3.0)
+		ember.stacking = StatusEffect.Stacking.COEXIST
+		actor.add_status(ember)
+	var incoming := _levered(&"ember", 9.0, 4.0)
+	incoming.stacking = StatusEffect.Stacking.REPLACE
+	var answer := actor.add_status(incoming)
+	assert_eq(_outcome(answer), StatusRegistry.REPLACED, "reported as replaced")
+	assert_eq(actor.statuses.size(), 1, "the sibling is gone, not merely unmounted")
+	assert_eq(actor.statuses[0], incoming, "and the incoming instance is the one that lives")
+
+
+## Refresh still matches ONE instance and leaves its coexist sibling alone: the two
+## modes are distinct answers, not one dedupe.
+func test_refresh_after_coexist_touches_one_instance_and_leaves_the_sibling() -> void:
+	var actor := _watched()
+	var first := _levered(&"ember", 5.0, 3.0)
+	first.stacking = StatusEffect.Stacking.COEXIST
+	actor.add_status(first)
+	var second := _levered(&"ember", 5.0, 3.0)
+	second.stacking = StatusEffect.Stacking.COEXIST
+	actor.add_status(second)
+	var refresh := _levered(&"ember", 30.0, 2.0)
+	refresh.stacking = StatusEffect.Stacking.REFRESH
+	actor.add_status(refresh)
+	assert_eq(actor.statuses.size(), 2, "refresh matched one, the sibling survives")
+	assert_almost_eq(first.remaining, 30.0, "the matched instance took the longer duration")
+	assert_almost_eq(second.remaining, 5.0, "and the sibling was not touched")
 
 
 # --- what the answer says ------------------------------------------------------

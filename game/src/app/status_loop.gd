@@ -91,6 +91,12 @@ var _collapse_held: float = 0.0
 
 func _init(actor: Actor = null) -> void:
 	_actor = actor
+	# ADR 0902 (P4): the fallback ICD flows from the shipped tuning into the status
+	# module, where the per-instance lockout clock lives. A value, not state:
+	# setting it twice is the same as once.
+	var combat_tuning := CombatEngineApi.tuning()
+	if combat_tuning != null:
+		StatusApi.set_icd_default(float(combat_tuning.status_icd_default))
 
 
 ## Adopt an actor after construction, for a caller that built the loop first. The

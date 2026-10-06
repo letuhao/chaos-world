@@ -180,6 +180,10 @@ const KEY_KIND := &"kind"
 ## ADR 0885: the immunity tags the applying status declares (`StatusDef.immunity_tags`).
 ## An absent or non-array key is no tags.
 const KEY_IMMUNITY_TAGS := &"immunity_tags"
+## ADR 0902 (P12): the applying status's authored grouping and categories. Both
+## join the RESIST channels and the immunity tag set; absent keys read empty.
+const KEY_FAMILY := &"family"
+const KEY_CATEGORIES := &"categories"
 const KEY_SCOPE := &"scope"
 const KEY_DURATION := &"duration"
 const KEY_POTENCY := &"potency"
@@ -341,6 +345,9 @@ static func resolve_roll(
 	# happens to name an element is still answered by fire resistance. The
 	# `status_defense` half is the COMBAT dial and is read inside `apply_chance` only
 	# when the scope is COMBAT (ADR 0086).
+	var family := _id_of(request.get(KEY_FAMILY, &""))
+	var categories_raw: Variant = request.get(KEY_CATEGORIES, [])
+	var category_list: Array = categories_raw if categories_raw is Array else []
 	var chance := apply_chance(
 		attacker,
 		target,
@@ -350,7 +357,9 @@ static func resolve_roll(
 		kind,
 		element,
 		resist,
-		_id_of(request.get(KEY_SCOPE, SCOPE_COMBAT))
+		_id_of(request.get(KEY_SCOPE, SCOPE_COMBAT)),
+		family,
+		category_list
 	)
 	# Saturated high consumes NO draw, matching `CombatBand.roll`; a closed chance reads
 	# the verdict without deriving a stream at all.
@@ -481,6 +490,7 @@ static func elemental_resist(
 ## resist  = status_defense share [combat only] + elemental_resist
 ##           + status.resist.<element> + status.resist.omni
 ##           + status.resist.<kind> + status.resist.<status_id>
+##           + status.resist.<family> + status.resist.<category...>  (ADR 0902, P12)
 ## p_apply = clampf(0.5 + (power - resist) / (2 * status_rate_scale), 0.0, 1.0)
 ## chance  = clampf(gate * p_apply, status_min_apply, 1.0)
 ## ```
@@ -538,12 +548,16 @@ static func apply_chance(
 	kind: StringName,
 	element: StringName,
 	elem_resist: float,
-	scope: StringName = SCOPE_COMBAT
+	scope: StringName = SCOPE_COMBAT,
+	family: StringName = &"",
+	categories: Array = []
 ) -> float:
 	if tuning == null or gate <= 0.0:
 		return 0.0
 	var power := _channel_total(attacker, tuning.status_power_prefix, status_id, kind, &"")
-	var resist := _channel_total(target, tuning.status_resist_prefix, status_id, kind, element)
+	var resist := _channel_total(
+		target, tuning.status_resist_prefix, status_id, kind, element, family, categories
+	)
 	resist += maxf(0.0, _finite(elem_resist))
 	if scope == SCOPE_COMBAT:
 		resist += clampf(_status_defense_share(target, tuning), 0.0, 1.0)
@@ -562,7 +576,13 @@ static func apply_chance(
 ## when each is known. An unauthored or absent prefix reads `0.0` for the whole side, and
 ## an unknown id reads `0.0` like every other absent stat on this path.
 static func _channel_total(
-	actor: Actor, prefix: String, status_id: StringName, kind: StringName, element: StringName
+	actor: Actor,
+	prefix: String,
+	status_id: StringName,
+	kind: StringName,
+	element: StringName,
+	family: StringName = &"",
+	categories: Array = []
 ) -> float:
 	if prefix == "" or actor == null or actor.stats == null:
 		return 0.0
@@ -573,6 +593,15 @@ static func _channel_total(
 		total += _stat(actor, StringName(prefix + String(status_id)))
 	if element != &"":
 		total += _stat(actor, StringName(prefix + String(element)))
+	# ADR 0902 (P12): the grouping terms. `family` is one id; each authored
+	# category is its own id. Both absent-cheap: an unchanneled id reads 0.0.
+	if family != &"":
+		total += _stat(actor, StringName(prefix + String(family)))
+	for category in categories:
+		if category is StringName or category is String:
+			var name := StringName(category)
+			if name != &"":
+				total += _stat(actor, StringName(prefix + String(name)))
 	return maxf(0.0, _finite(total))
 
 
@@ -747,12 +776,21 @@ static func _written(
 ## are dropped rather than crashing a hit that has already spent its damage.
 static func _tags_of(request: Dictionary) -> Array:
 	var raw: Variant = request.get(KEY_IMMUNITY_TAGS, [])
-	if not (raw is Array):
-		return []
 	var out: Array = []
-	for entry in raw:
-		if entry is StringName or entry is String:
-			out.append(StringName(entry))
+	if raw is Array:
+		for entry in raw:
+			if entry is StringName or entry is String:
+				out.append(StringName(entry))
+	# ADR 0902 (P12): the grouping is an immunity tag too — `status.immune.<family>`
+	# and `status.immune.<category>` refuse alongside the declared tags.
+	var family: Variant = request.get(KEY_FAMILY, &"")
+	if (family is StringName or family is String) and StringName(family) != &"":
+		out.append(StringName(family))
+	var categories: Variant = request.get(KEY_CATEGORIES, [])
+	if categories is Array:
+		for entry in categories:
+			if (entry is StringName or entry is String) and StringName(entry) != &"":
+				out.append(StringName(entry))
 	return out
 
 

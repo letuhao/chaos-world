@@ -607,7 +607,12 @@ func _pulse_runtime(status_id: StringName, magnitude: float) -> StatusRuntime:
 
 
 func _runtime_of(actor: Actor, status_id: StringName) -> StatusRuntime:
-	return StatusRuntime._runtimes(actor).get(String(status_id), null) as StatusRuntime
+	# The store is instance-keyed (ADR 0902, P3): find the live effect, then its record.
+	var store := StatusRuntime._runtimes(actor)
+	for status in actor.statuses:
+		if status.id == status_id:
+			return store.get(status.instance_id) as StatusRuntime
+	return null
 
 
 ## The gain and cap an actor's live amplifiers report, through the caller's own aggregator.

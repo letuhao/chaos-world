@@ -91,7 +91,7 @@ const KINDS: Array[StringName] = [
 	&"burst",
 ]
 const SCOPES: Array[StringName] = [&"combat", &"cultivation"]
-const STACKING: Array[StringName] = [&"refresh", &"stack", &"replace"]
+const STACKING: Array[StringName] = [&"refresh", &"stack", &"replace", &"coexist"]
 ## Where a status's magnitude comes from. A closed vocabulary, so a typo is an
 ## authoring error rather than a silently inert status.
 const MAGNITUDE_UNITS: Array[StringName] = [
@@ -210,6 +210,22 @@ const DURATION_FOREVER := -1.0
 ## `status.immuneReduction.<tag>` channels blunts both potency net factors. Empty means
 ## no tag answers it — the same default Keepverse ships on every status in its catalogue.
 @export var immunity_tags: Array[StringName] = []
+## The authored GROUPING a status belongs to (ADR 0902, P12): one family string
+## beside the element and the kind, never a replacement for either. Family and
+## categories both feed the resist channels and the immunity tags.
+@export var family: StringName = &""
+## The authored categories this status carries (ADR 0902, P12). Each joins the
+## resist channels (`status.resist.<category>`) and immunity resolution the same
+## way `family` does; an empty array means no category contribution.
+@export var categories: Array[StringName] = []
+## Whether this status is crowd control (ADR 0902, P2): one explicit flag beside
+## `kind = control`, so a CC immunity/family rule reads a fact rather than a
+## vocabulary guess.
+@export var crowd_control: bool = false
+## The re-application lockout in seconds (ADR 0902, P4): once this status lands,
+## another application of the same id within this window is REFUSED. `0.0`
+## defers to `CombatTuning.status_icd_default`; both `0.0` = no ICD.
+@export var icd: float = 0.0
 ## ADR 0897 (DEF-0344's family 6). The status's OWN base magnitude on the POTENCY path:
 ## `0.0` means NOT AUTHORED, and the shared `element_power_<e>` reuse decides — which is
 ## every shipped def today, so the default is byte-identical. The writers hand it to S12 in
@@ -300,6 +316,11 @@ func problems() -> Array[String]:
 		out.append("unknown scope '%s'; allowed: %s" % [String(scope), _names(SCOPES)])
 	if not STACKING.has(stacking):
 		out.append("unknown stacking '%s'; allowed: %s" % [String(stacking), _names(STACKING)])
+	if icd < 0.0:
+		out.append("icd must be >= 0.0; 0.0 defers to the tuning default")
+	for category in categories:
+		if category == &"":
+			out.append("categories carries an empty entry; drop it or name a real category")
 	if not MAGNITUDE_UNITS.has(magnitude_unit):
 		out.append(
 			(
@@ -325,6 +346,9 @@ func to_dict() -> Dictionary:
 	var levers: Array = []
 	for lever in mitigation_tags:
 		levers.append(String(lever))
+	var category_names: Array = []
+	for category in categories:
+		category_names.append(String(category))
 	var mods: Array = []
 	for entry in modifiers():
 		(
@@ -354,6 +378,10 @@ func to_dict() -> Dictionary:
 		"potency_base": potency_base,
 		"tick_interval": tick_interval,
 		"mitigation_tags": levers,
+		"family": String(family),
+		"categories": category_names,
+		"crowd_control": crowd_control,
+		"icd": icd,
 		"modifiers": mods,
 		"pool": String(payload.get("pool", "")),
 		"share_per_pulse": float(payload.get("share_per_pulse", 0.0)),

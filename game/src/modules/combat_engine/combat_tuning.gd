@@ -361,6 +361,10 @@ extends Resource
 ## consumes no draw, so a technique that applies nothing costs
 ## nothing (ADR 0068's "a fully-saturated roll is free", applied to S12).
 @export var status_min_apply: float = 0.0
+## ADR 0902 (P4): the fallback re-application lockout for a def that authors none.
+## `0.0` = no ICD. The composition root pushes this into `StatusApi.set_icd_default`,
+## because only the status module owns the per-instance clock the check reads.
+@export var status_icd_default: float = 0.0
 ## Coefficient from the attacker's `element_power_<e>` onto the applied status's
 ## potency. Potency REUSES that id rather than adding an `element_status_power_<e>`
 ## sibling (ADR 0088), so it inherits ADR 0069's realm-invariance fix with no new stat

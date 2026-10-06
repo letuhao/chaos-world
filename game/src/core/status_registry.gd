@@ -39,6 +39,8 @@ const OK := &"ok"
 const STATUS_ID := &"status_id"
 const OUTCOME := &"outcome"
 const STACKS := &"stacks"
+## The surviving instance handle an answer carries (ADR 0902, P3).
+const INSTANCE := &"instance_id"
 const REASON := &"reason"
 
 const REFUSE_NULL := &"status is null"
@@ -49,6 +51,10 @@ const REFUSE_NO_ID := &"status id is empty"
 ## and `EnvironmentField._status` reads it directly, so a second array here would
 ## go stale the moment either ran.
 var statuses: Array[StatusEffect] = []
+## The next per-actor instance handle `_mint` may hand out (ADR 0902, P3). Starts at
+## `1`: `0` is the "not yet minted" sentinel, so a by-hand placed effect (tests,
+## fixtures) can never be mistaken for a registry-minted instance.
+var _next_instance: int = 1
 
 
 func _init(p_statuses: Array[StatusEffect] = []) -> void:
@@ -58,21 +64,39 @@ func _init(p_statuses: Array[StatusEffect] = []) -> void:
 ## Apply `status`, merging it onto the instance that already carries that id.
 ## `actor` is read only for `mark_stats_dirty()`, so a merge invalidates derived
 ## stats exactly as an append does.
+##
+## ## The answer carries the SURVIVING instance handle (ADR 0902, P3)
+##
+## Refresh and stack mutate the held instance and discard the incoming object, so a
+## caller pairing its own resolution record against the applied status must be told
+## which instance actually lives. `instance_id` is that handle; it is minted here,
+## never by a caller.
 func apply(actor: Actor, status: StatusEffect) -> Dictionary:
 	if status == null:
-		return _answer(REFUSED, &"", 0, REFUSE_NULL)
+		return _answer(REFUSED, &"", 0, 0, REFUSE_NULL)
 	if status.id == &"":
-		return _answer(REFUSED, &"", 0, REFUSE_NO_ID)
-	var index := _index_of(status.id)
-	if index < 0:
+		return _answer(REFUSED, &"", 0, 0, REFUSE_NO_ID)
+	# `coexist` never matches: every application is its own independent instance
+	# (ADR 0902, P3), tagged with a fresh handle before it enters the list.
+	if status.stacking == StatusEffect.Stacking.COEXIST:
+		_mint(status)
 		statuses.append(status)
 		_dirty(actor)
 		status_added.emit(status.id)
-		return _answer(APPLIED, status.id, status.stacks, &"")
+		return _answer(APPLIED, status.id, status.stacks, status.instance_id, &"")
+	var index := _index_of(status.id)
+	if index < 0:
+		_mint(status)
+		statuses.append(status)
+		_dirty(actor)
+		status_added.emit(status.id)
+		return _answer(APPLIED, status.id, status.stacks, status.instance_id, &"")
 	var outcome := _merge(index, status)
 	_dirty(actor)
 	status_merged.emit(status.id, outcome, status.stacks)
-	return _answer(outcome, status.id, status.stacks, &"")
+	# Refresh/stack leave the held object in place; replace swaps the new one in.
+	var surviving := status if outcome == REPLACED else statuses[index]
+	return _answer(outcome, status.id, surviving.stacks, surviving.instance_id, &"")
 
 
 ## The live instance carrying `status_id`, or null. The read four call sites were
@@ -128,13 +152,14 @@ func tick(actor: Actor, delta: float) -> Dictionary:
 ## A cap is authored data, and a def that authors none should compound rather than
 ## resolve to zero — the silent clamp to nothing is the worse failure.
 ##
-## ## REPLACE swaps the instance rather than mutating it
+## ## REPLACE removes EVERY instance carrying the id, then appends
 ##
 ## Overwriting a held instance's fields in place would leave a `PregnancyStatus`
 ## holding a REPLACE status's numbers, i.e. a state machine wearing another
-## status's data. Handing the array the incoming object instead is the only merge
-## whose result is exactly what the caller applied — and it is still ONE instance
-## per `(actor, status_id)`, which is the invariant the array has to keep.
+## status's data. And since `coexist` (ADR 0902, P3) can leave several instances
+## of one id alive, "the held one" is no longer unique: the aligned rule clears
+## them all and appends the incoming object, so the result is exactly what was
+## applied.
 func _merge(index: int, status: StatusEffect) -> StringName:
 	var held := statuses[index]
 	match status.stacking:
@@ -152,12 +177,37 @@ func _merge(index: int, status: StatusEffect) -> StringName:
 			held.tick_interval = maxf(held.tick_interval, status.tick_interval)
 			return REFRESHED
 		_:
-			statuses[index] = status
+			_replace_all(status)
 			return REPLACED
 
 
 func _capped(magnitude: float, cap: float) -> float:
 	return magnitude if cap <= 0.0 else minf(magnitude, cap)
+
+
+## Remove every instance carrying `status`'s id — `coexist` can leave several —
+## and append the incoming object with a fresh handle. A bounded `for` over a
+## SNAPSHOT of the size, walking downward, so a removal can never skip an entry
+## and the bound cannot chase the deletions (INC-0002).
+func _replace_all(status: StatusEffect) -> void:
+	var count := statuses.size()
+	for offset in count:
+		var index := count - 1 - offset
+		if statuses[index].id == status.id:
+			statuses.remove_at(index)
+	_mint(status)
+	statuses.append(status)
+
+
+## Stamp `status` with the next free per-actor handle. Scans what is already held
+## so a handle minted in a previous session (restored through `from_dict`) can
+## never be reused — the scan is bounded by the list.
+func _mint(status: StatusEffect) -> void:
+	for held in statuses:
+		if held != null:
+			_next_instance = maxi(_next_instance, held.instance_id + 1)
+	status.instance_id = _next_instance
+	_next_instance += 1
 
 
 ## How many pulses `status` owes, draining its interval as it counts. The
@@ -189,12 +239,13 @@ func _dirty(actor: Actor) -> void:
 
 
 func _answer(
-	outcome: StringName, status_id: StringName, stacks: int, reason: StringName
+	outcome: StringName, status_id: StringName, stacks: int, instance: int, reason: StringName
 ) -> Dictionary:
 	return {
 		OK: outcome != REFUSED,
 		STATUS_ID: String(status_id),
 		OUTCOME: outcome,
 		STACKS: stacks,
+		INSTANCE: instance,
 		REASON: String(reason),
 	}

@@ -33,9 +33,12 @@ not renamed; the per-category resist cap is declined; the 12→15 re-key is out 
    now), a default-OFF tier-power knob, and the ICD default all live in `CombatTuning`/`combat_damage.tres`;
    the linear default reproduces today's parity-½ byte-identically; an authored-completeness guard test fails
    when a required key is not authored. No second tuning file (versioned JSON declined).
-6. **Refusals (P14).** `status_icd` and `useless_magnitude` join the closed reason vocabulary; the evaluation
-   order is immunity → ICD → potency floor → apply roll → useless magnitude (an unknown id is a lookup
-   failure, not a refusal). Existing reason strings never rename.
+6. **Refusals (P14).** `status_icd` and `useless_magnitude` join the closed reason vocabulary;
+   existing reason strings never rename. The order is LAYERED because the layers own different
+   facts: the combat gate refuses immunity → potency floor → apply roll (unchanged), and the
+   status module refuses `status_icd` BEFORE the effect lands — it is the only layer that owns
+   the per-instance lockout clock (P4). `useless_magnitude` refines the potency split (T8). An
+   unknown id is a lookup failure, not a refusal.
 7. **Mind tree (T7).** The mind defs (`res://src/data/mind_statuses` — their own roles, shapes, steepness,
    refresh-only stacking) are NOT gated by the new mechanisms: no family term, no status ICD, no counter
    store copy. Their lock guards stay as shipped; sharing is limited to pure helpers.

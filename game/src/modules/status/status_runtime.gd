@@ -45,6 +45,9 @@ var stacks: int = 1
 var tick_elapsed: float = 0.0
 var ticks_elapsed: int = 0
 var source: StringName = &""
+## Seconds since this instance last landed (ADR 0902, P4): the ICD clock the
+## module's re-application lockout reads. Advanced by [method StatusApi.tick_statuses].
+var icd_elapsed: float = 0.0
 
 
 static func _runtimes(actor: Actor) -> Dictionary:
@@ -81,6 +84,14 @@ static func forget(actor: Actor) -> void:
 
 static func source_for(status_id: StringName) -> StringName:
 	return StringName("%s%s" % [SOURCE_PREFIX, String(status_id)])
+
+
+## The modifier source of ONE coexisting instance (ADR 0902, P3):
+## `status:<id>#<n>`. A single-instance status keeps [method source_for]'s tag,
+## so every shipped pin on `status:<id>` holds; only `coexist` instances need
+## telling apart, because only they can share an id with a live sibling.
+static func source_for_instance(status_id: StringName, instance_id: int) -> StringName:
+	return StringName("%s%s#%d" % [SOURCE_PREFIX, String(status_id), instance_id])
 
 
 ## Magnitude for one pulse, after the def's escalation and after the amplifier
@@ -170,12 +181,14 @@ static func apply_modifiers(actor: Actor, runtime: StatusRuntime) -> void:
 	actor.mark_stats_dirty()
 
 
-## The whole contribution removed in full. This is what expiry calls, and it is the
-## reason a rebuild after an expiry can never leave an orphan modifier behind.
-static func clear_modifiers(actor: Actor, status_id: StringName) -> void:
-	if actor == null or status_id == &"":
+## The whole contribution removed in full, through the INSTANCE's own source tag
+## (ADR 0902, P3): a coexisting instance owns `status:<id>#<n>`, and a sweep that
+## guessed `status:<id>` would clear its live siblings too. This is what expiry
+## calls, and it is the reason a rebuild after an expiry leaves no orphan behind.
+static func clear_source(actor: Actor, source: StringName) -> void:
+	if actor == null or source == &"":
 		return
-	actor.stats.remove_modifiers_from(source_for(status_id))
+	actor.stats.remove_modifiers_from(source)
 	actor.mark_stats_dirty()
 
 

@@ -35,7 +35,8 @@ enum Scope {
 enum Stacking {
 	REFRESH,  ## keep the longer duration and the STRONGER magnitude.
 	STACK,  ## add magnitudes up to `magnitude_cap`.
-	REPLACE,  ## overwrite duration and magnitude outright.
+	REPLACE,  ## clear EVERY instance carrying this id, then take its place.
+	COEXIST,  ## a NEW independent instance; never matches an existing one (ADR 0902, P3).
 }
 
 ## The ops a status may carry into a `StatModifier`. `Stat.Op` is REFERENCED here,
@@ -84,6 +85,11 @@ var tick_elapsed: float = 0.0
 ## Who or what applied it. A tag, not a type: a status may be refreshed by
 ## anything, so no single source may be assumed.
 var source: StringName = &""
+
+## The per-actor handle `StatusRegistry` mints when this instance enters the actor's
+## list (ADR 0902, P3). Coexisting instances of one id are told apart by it, and the
+## status module pairs its own resolution records against it. `0` = not yet minted.
+var instance_id: int = 0
 
 ## The levers that reduce this status. REQUIRED and non-empty for anything
 ## authored as a hazard; empty is an authoring error (ADR 0075), and it is the ONE
@@ -155,6 +161,7 @@ func to_dict() -> Dictionary:
 		"magnitude": magnitude,
 		"magnitude_cap": magnitude_cap,
 		"stacks": stacks,
+		"instance_id": instance_id,
 		"remaining": remaining,
 		"tick_interval": tick_interval,
 		"tick_elapsed": tick_elapsed,
@@ -178,6 +185,7 @@ static func from_dict(data: Dictionary) -> StatusEffect:
 	status.magnitude = float(data.get("magnitude", 0.0))
 	status.magnitude_cap = float(data.get("magnitude_cap", 0.0))
 	status.stacks = maxi(1, int(data.get("stacks", 1)))
+	status.instance_id = int(data.get("instance_id", 0))
 	status.tick_interval = float(data.get("tick_interval", 0.0))
 	status.tick_elapsed = float(data.get("tick_elapsed", 0.0))
 	status.source = StringName(data.get("source", ""))
