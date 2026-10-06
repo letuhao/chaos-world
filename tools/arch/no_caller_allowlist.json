@@ -16,13 +16,12 @@
     "the decision that is waiting on it."
   ],
   "entries": {
+    "EventApi.events": {
+      "reason": "The signal bus has no shipped subscriber yet: production reads events through available()/summary(), and 21 test files subscribe in-test. The bus ANNOUNCES (nothing on it is a request), so an unconsumed bus is an unwired announcement rather than a dead verb — but it is unwired all the same. Recorded until a consumer ships; BL-0907 notes this verb needs one, so this entry must go the day one lands rather than move with it."
+    },
     "EventApi.resolve": {
       "reason": "DEF-0315. The only caller of NationApi.resolve_conflict, so the declared war_of_the_nine_fords standoff can never be settled and the river march never changes hands. ADR 0085 forbids making the political layer decide the winner, so no call site may be invented: no shipped moment produces a verdict.",
       "ticket": "DEF-0315"
-    },
-    "WorldSpawnApi.set_current": {
-      "reason": "A pure alias: `set_current` is `return selected(actor, location_id)` with no added behaviour, so keeping it publishes a second name for one verb. Production reaches the move through `WorldSpawnApi.selected` (app/world_stage.gd:473). ADR 0188 says a member that computes nothing no other published surface computes is DELETED; the repair is a one-line deletion in game/src and is filed, not made here.",
-      "ticket": "BL-0908"
     },
     "QuestApi.catalog": {
       "reason": "BL-0907. The authored quest catalog is read by the quest module's own `_known()` and published through `offered`/`summary`, which a screen calls. `catalog()` is the raw authored table with no player-facing consumer of its own shape, and quests now complete in production through `advance` (BL-0907), so this is harmless surface rather than a dead feature.",

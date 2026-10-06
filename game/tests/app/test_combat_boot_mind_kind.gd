@@ -80,8 +80,8 @@ const HERO_BASE := {
 ##
 ## `illusion_resistance` and `mental_defense` are BOTH derived from `mental_clarity` and
 ## `will`, and `mental_defense` grows roughly four times faster, so on any actor this
-## `HERO_BASE` describes the saturating term `d/(d+base)` is already above
-## `ILLUSION_RESISTANCE`. The `maxf` then cannot move — which is correct engine
+## `HERO_BASE` describes the plain `D` term already dominates the converted illusion
+## term. The `maxf` then cannot move — which is correct engine
 ## behaviour, and precisely why ADR 0071's "an illusion-resistance build and a clarity
 ## build are DIFFERENT defenders" needs a build that actually specialises.
 ##
@@ -209,51 +209,79 @@ func test_a_disrupt_technique_never_reads_illusion_resistance() -> void:
 	)
 
 
-## ## The two rows must be read on ONE non-saturating defender to differ
+## ## The two rows must be read on ONE specialised defender to differ
 ##
 ## ADR 0071 claims `OBSCURE` and `DISRUPT` are "different defenders of the same skill",
-## and that claim is a claim about `_mitigation_of`'s `maxf(rate, ILLUSION_RESISTANCE)`
-## against the saturating `d/(d+base)`. It is NOT a claim that `OBSCURE` always loses
-## more: `rate` is already `saturating` on any ordinary hero, and a `maxf` against a
-## SMALLER number cannot move it.
+## and that claim is a claim about `_defense_of`'s `maxf(D, illusion_defense)`: the
+## plain term against the converted illusion term, both magnitudes on `D`'s scale.
+## It is NOT a claim that `OBSCURE` always mitigates more: on any ordinary hero the
+## plain term already dominates and a `maxf` against a SMALLER number cannot move it
+## (which is correct engine behaviour, not a gap).
 ##
-## So this row builds the specialised defender the file already documents and measures
-## the engine's EXACT arithmetic rather than asserting a direction. The condition below
-## is still stated rather than assumed, because which case the fixture lands in is a
-## fact about its numbers and not a contract -- but the fixture is chosen so the first
-## arm is the one taken, and the second arm remains reachable if a retune to
-## `combat_damage.tres` ever removes the gap.
-func test_the_obscuring_branch_is_exactly_a_maxf_against_the_saturating_term() -> void:
+## So this row builds the specialised defender the file already documents -- plain
+## `D` pinned at `0.0` -- and measures the engine's EXACT arithmetic rather than
+## asserting a direction: each row's mitigation against ADR 0200's divisive curve
+## over its own `D` and the shared `K`, with no cap and no re-clamp anywhere.
+func test_the_obscuring_branch_is_exactly_a_maxf_against_the_own_defense() -> void:
 	var tuning := CombatEngineApi.tuning()
 	# ONE defender for BOTH rows, and a SPECIALISED one. `_pair_low_defense` pins the
-	# defender's `mental_defense` at `0.0`, which drops the saturating term to `0.0`
-	# and leaves `ILLUSION_RESISTANCE` as the only thing `maxf` can raise. Two rows on
-	# one defender differ by exactly one authored word, which is what makes the
-	# comparison below a fact about the KIND and not about two actors' numbers.
+	# defender's `mental_defense` at `0.0`, so the plain term is ~`0.0` and the only
+	# thing `maxf` can select is the illusion half. Two rows on one defender differ
+	# by exactly one authored word, which is what makes the comparison below a fact
+	# about the KIND and not about two actors' numbers.
 	var pair := _pair_low_defense()
 	var defend := _production_parts(DISRUPT, &"cap_probe", pair)
 	var obscure := _production_parts(OBSCURE, &"cap_probe_obscure", pair)
-	var defense := float(defend["mental_defense"])
-	var base := float(defend["base"])
-	var saturating := defense / (defense + base) if (defense + base) > 0.0 else 0.0
-	var cap := _share(tuning.mental_defense_cap)
-	# What the saturating term alone already refuses, before the branch runs.
-	var rate := minf(saturating, cap)
-	# `OBSCURE` is `maxf(minf(saturating, cap), ILLUSION_RESISTANCE)`, re-clamped to
-	# `ILLUSION_RESISTANCE_CAP`. That is hole 1 through hole 3 of `mind_damage.gd` and
-	# nothing else, so this row is the whole of what the branch does.
+	# The curve's ceiling, read off the shipped tuning rather than restated: a
+	# ceiling of `0.0` would make every mitigation below identically zero and this
+	# test would pass for that reason instead of for the branch.
+	var ceiling := clampf(float(tuning.mitigation_ceiling), 0.0, 1.0)
+	assert_eq(ceiling > 0.0, true, "the shipped ceiling is positive, so the curve can move")
+	# Same attacker, same (default) share: one `K` for both rows, so a difference in
+	# mitigation is a difference in `D` and nothing else.
+	assert_almost_eq(
+		float(obscure["divisor_k"]),
+		float(defend["divisor_k"]),
+		"one attacker and one share means one divisor_k for both rows"
+	)
+	# The branch selection itself, on the rows' own numbers: OBSCURE's `D` is the
+	# `maxf` of the plain term and the converted illusion term, and on this
+	# defender the plain term is ~`0.0` while the illusion term is not.
+	assert_eq(
+		float(obscure["illusion_resistance"]) > 0.0,
+		true,
+		"the specialised defender really does carry illusion resistance to select"
+	)
+	assert_eq(
+		float(defend["illusion_resistance"]),
+		0.0,
+		"while DISRUPT reads exactly none of it -- the asymmetry this file exists for"
+	)
+	assert_eq(
+		float(obscure["defense"]) > float(defend["defense"]),
+		true,
+		"so OBSCURE's D is above DISRUPT's: maxf selected the illusion half"
+	)
+	# The curve exactly, per row, from each row's own `D` and the shared `K`: the
+	# divisive `m = ceiling * D / (K + D)` the three mechanisms share (ADR 0200),
+	# with no cap and no re-clamp anywhere in it.
 	assert_almost_eq(
 		float(obscure["mitigation"]),
-		minf(
-			maxf(minf(saturating, cap), float(obscure["illusion_resistance"])),
-			_share(tuning.illusion_resistance_cap)
-		),
-		"OBSCURE mitigation is exactly maxf(saturating, ILLUSION_RESISTANCE)"
+		_curve(float(obscure["defense"]), float(obscure["divisor_k"]), ceiling),
+		"OBSCURE mitigation is exactly the curve over the maxf'd D"
 	)
 	assert_almost_eq(
 		float(defend["mitigation"]),
-		minf(saturating, cap),
-		"and DISRUPT is exactly the saturating term alone"
+		_curve(float(defend["defense"]), float(defend["divisor_k"]), ceiling),
+		"and DISRUPT is exactly the curve over the plain D"
+	)
+	# The user-visible consequence, unconditional on this fixture: the illusion
+	# half strictly raises the mitigation, which is what makes the two kinds
+	# different defenders' problems rather than two names for one number.
+	assert_eq(
+		float(obscure["mitigation"]) > float(defend["mitigation"]),
+		true,
+		"so the branch is strictly observable: OBSCURE mitigates more here"
 	)
 	# The read that DOES differ is the one the branch is for, and it is the stat the
 	# engine now consults for exactly one of the three kinds. This is the assertion that
@@ -263,37 +291,25 @@ func test_the_obscuring_branch_is_exactly_a_maxf_against_the_saturating_term() -
 		true,
 		"while the ILLUSION_RESISTANCE the branch READS is strictly higher"
 	)
-	# ## What decides observability is NOT `saturating < cap`
-	#
-	# `rate` is `minf(saturating, cap)` -- the value the saturating term ALONE produces.
-	# `maxf` can only raise it, so the branch is strictly observable exactly when
-	# `ILLUSION_RESISTANCE > rate`. Asking instead whether `saturating` is below the cap
-	# asks a different question: it holds on this hero (0.4603 < 0.6) and the `maxf` still
-	# could not move, because 0.4603 was already ABOVE the 0.17 the branch read. That
-	# guard was asserting a fact about the fixture's numbers while claiming to assert a
-	# fact about the engine, and it failed the moment the fixture specialised the
-	# defender it had always been given.
-	if float(obscure["illusion_resistance"]) > rate:
-		assert_eq(
-			float(obscure["mitigation"]) > float(defend["mitigation"]),
-			true,
-			"this defender does not saturate, so the branch is strictly observable"
-		)
-	else:
-		assert_almost_eq(
-			float(obscure["mitigation"]),
-			float(defend["mitigation"]),
-			"this defender saturates, so maxf cannot move it -- the honest reading"
-		)
 
 
 ## Internals
 
 
-## A rate read out of the shipped tuning and clamped into `[0, 1]`, so the cap above is
-## quoted from data rather than restated as a `0.6` a retune could invalidate.
-func _share(value: Variant) -> float:
-	return clampf(float(value), 0.0, 1.0) if (value is float or value is int) else 0.0
+## ADR 0200's divisive curve exactly as `MindDamage._mitigation_of` computes it:
+## `ceiling * D / (K + D)` for `D >= 0` (mirrored below it), `0.0` on a
+## non-positive denominator (hole 1). Stated here rather than called because the
+## mechanism's function is not on the facade; the two formulas agreeing is the
+## assertion, and a second call site would make agreement automatic.
+func _curve(defense: float, divisor_k: float, ceiling: float) -> float:
+	var magnitude := absf(defense)
+	var denominator := maxf(0.0, divisor_k) + magnitude
+	if denominator <= 0.0:
+		return 0.0
+	var share := (
+		magnitude / denominator if defense >= 0.0 else 2.0 - maxf(0.0, divisor_k) / denominator
+	)
+	return ceiling * share
 
 
 # --- the attend kind, and the reserve nothing was spending ---------------------

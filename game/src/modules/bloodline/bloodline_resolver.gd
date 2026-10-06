@@ -30,13 +30,48 @@ extends RefCounted
 ##
 ## Purity can never leave `[0, 1]` and can never exceed `0.745` on a first generation,
 ## which is what keeps every authored threshold inside the reachable band.
+##
+## ## ADR 0125: divergence is computed once per pairing, not per lineage
+##
+## `D` is the Jaccard distance over the parents' lineage-id sets (`1 - |A AND B| /
+## |A OR B|`): `0.0` same family, `1.0` unrelated. Symmetric, bounded, and reading
+## only the lineage sets the ledgers already carry, so no new authored data.
 static func resolve(parent_a: Actor, parent_b: Actor) -> Dictionary:
 	var out: Dictionary = {}
+	var divergence := _divergence(parent_a, parent_b)
 	for lineage_id in _union(parent_a, parent_b):
 		out[String(lineage_id)] = BloodlineState.inherit(
 			BloodlineGate.purity_of(parent_a, lineage_id),
-			BloodlineGate.purity_of(parent_b, lineage_id)
+			BloodlineGate.purity_of(parent_b, lineage_id),
+			divergence
 		)
+	return out
+
+
+## The pair's divergence for ADR 0125's excess term. `0.0` when neither parent
+## carries anything (no union to differ over); otherwise one minus the overlap
+## share. Bounded by the sets it walks; the body only reads, never writes.
+static func _divergence(parent_a: Actor, parent_b: Actor) -> float:
+	var a := _lineage_id_set(parent_a)
+	var b := _lineage_id_set(parent_b)
+	var union_size := a.size() + b.size()
+	if union_size == 0:
+		return 0.0
+	var intersection := 0
+	for lineage_id in a:
+		if b.has(lineage_id):
+			intersection += 1
+	var union := union_size - intersection
+	if union == 0:
+		return 0.0
+	return 1.0 - (float(intersection) / float(union))
+
+
+## Both parents' lineage ids as a set, so overlap is a lookup rather than a scan.
+static func _lineage_id_set(actor: Actor) -> Dictionary:
+	var out := {}
+	for lineage_id in BloodlineGate.lineage_ids(actor):
+		out[String(lineage_id)] = true
 	return out
 
 

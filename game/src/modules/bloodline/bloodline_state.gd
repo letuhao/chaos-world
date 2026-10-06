@@ -46,6 +46,14 @@ const FLOOR := 0.15
 ## `FLOOR * (1 - RETENTION)`. Named for its role in the affine map rather than for the
 ## floor it produces, which is what the earlier draft got wrong.
 const BLEND_CONSTANT := 0.045
+## ADR 0125. The carrier floor: the purity a lineage settles at when the heterosis
+## spike has fully decayed but the lineage is still carried. Just under the common
+## threshold, so a carrier is always dormant — the spike is the only way across.
+const OUTBREED_FLOOR := 0.417
+## ADR 0125. The instability counterpart: the lineage's own authored modifiers are
+## discounted by up to this at peak spike, derived at read time from the current
+## purity's distance above the carrier floor.
+const INSTABILITY_MAX_DISCOUNT := 0.34
 
 
 ## The stat source id one lineage contributes under.
@@ -73,8 +81,32 @@ static func is_own_source(source: StringName) -> bool:
 ## `0.395`, a viable carrier below `rare`), so who an actor beds is a decision rather
 ## than a formality. The result is clamped to `[0, 1]`, so no amount of pairing
 ## produces an unbounded super-bloodline.
-static func inherit(purity_a: float, purity_b: float) -> float:
-	return clampf(((purity_a + purity_b) * 0.5) * RETENTION + BLEND_CONSTANT, 0.0, 1.0)
+##
+## ## ADR 0125: the heterosis excess rides on top, and only on divergence
+##
+## `divergence` is the pair's Jaccard distance over lineage-id sets, computed once
+## per pairing in `BloodlineResolver.resolve` (`0.0` same family, `1.0` unrelated).
+## The excess `0.70 * m * divergence * (1.0 - m)` fires only above zero, so the
+## inbred fixed point is untouched: at `D == 0` this is the same affine map, and
+## the default `0.0` keeps every caller that does not compute divergence on it.
+static func inherit(purity_a: float, purity_b: float, divergence: float = 0.0) -> float:
+	var m := (purity_a + purity_b) * 0.5
+	var excess := 0.70 * m * divergence * (1.0 - m)
+	return clampf(m * RETENTION + BLEND_CONSTANT + excess, 0.0, 1.0)
+
+
+## ADR 0125's instability counterpart: the factor the lineage's own authored
+## modifiers are scaled by while a spike is active. Derived at read time from
+## the current purity's distance above the carrier floor, so no ledger stores
+## it and a restored save re-derives the same number: `1.0` at or below the
+## floor (no discount), down to `1.0 - INSTABILITY_MAX_DISCOUNT` at the
+## first-generation ceiling and past it.
+static func instability_discount(purity: float) -> float:
+	var span := first_generation_ceiling() - OUTBREED_FLOOR
+	if span <= 0.0:
+		return 1.0
+	var spike_remaining := clampf((purity - OUTBREED_FLOOR) / span, 0.0, 1.0)
+	return 1.0 - INSTABILITY_MAX_DISCOUNT * spike_remaining
 
 
 ## The one-generation ceiling for a lineage: `inherit(1.0, 1.0) == 0.745`. No content

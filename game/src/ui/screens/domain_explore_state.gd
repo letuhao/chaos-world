@@ -37,6 +37,28 @@ extends RefCounted
 ## what the module has DISCOVERED, so gating on it made an undiscovered room
 ## unselectable and the domain could only ever be one room deep (ADR 0207).
 
+## The fields a room row publishes, and the fields a zone row does. They live on
+## the BASE rather than on `DomainExploreModel` because `_subset` below is what
+## reads them, and a base cannot resolve a derived class's constants -- declaring
+## them on the model is what failed this file's parse with "not declared in the
+## current scope" (split repair). Inherited, so the model keeps the same doors.
+const ROOM_KEYS := [
+	"room_id",
+	"kind",
+	"tier",
+	"hostile",
+	"is_entry",
+	"is_core",
+]
+
+const ZONE_KEYS := [
+	"room_id",
+	"zone_id",
+	"kind",
+	"severity",
+	"mitigation_tags",
+]
+
 var _bridge: DomainBridge = null
 ## The actor as of the last refresh, and the active run as the module last reported it, so
 ## `summary()` answers with what the module said rather than re-asking three facades and

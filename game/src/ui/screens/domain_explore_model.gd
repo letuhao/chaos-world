@@ -34,26 +34,9 @@ extends DomainExploreState
 ## is a decision about what the screen offers, not a read of the world, so the two stay
 ## together on [DomainExploreScreen] and this file answers only what is true.
 
-## The fields a room row publishes, and the fields a zone row does. Named as data so a
-## row shape is declared once and [method DomainExploreState._subset] can guarantee both
-## are primitives without either writer repeating the coercion.
-const ROOM_KEYS := [
-	"room_id",
-	"kind",
-	"tier",
-	"hostile",
-	"is_entry",
-	"is_core",
-]
-
-const ZONE_KEYS := [
-	"room_id",
-	"zone_id",
-	"kind",
-	"severity",
-	"mitigation_tags",
-]
-
+## The fields a room row publishes, and the fields a zone row does, live on the
+## base (`DomainExploreState`, beside `_subset` which reads them) and are
+## inherited here -- declared once, on the side that can resolve them.
 var _templates: Array = []
 var _template_index: int = -1
 

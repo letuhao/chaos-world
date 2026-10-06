@@ -97,13 +97,6 @@ static func current(actor: Actor) -> Dictionary:
 	return WorldSpawnState.view(_state(actor))
 
 
-## Write the ledger's location row directly, bypassing a `locations()` lookup.
-## Still refuses an id the authored pool does not ship, for the same reason
-## `selected` does: a durable id that no `.tres` backs is a save nobody can mount.
-static func set_current(actor: Actor, location_id: StringName) -> Dictionary:
-	return selected(actor, location_id)
-
-
 ## The candidate pool as primitives, sorted by `location_id`. This is the
 ## ordering `random` draws over, exposed so a panel can render the same list the
 ## pick was taken from — a filter that showed a different set would be lying.

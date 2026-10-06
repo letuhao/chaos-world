@@ -38,17 +38,19 @@ tick_interval = 1.0
 # this game builds, so a FLAT is the right op; PERCENT would be legal but is not what this
 # says.
 mitigation_tags = Array[StringName]([&"affinity", &"gear", &"technique", &"pill"])
+# `modifiers` below carries no social-standing entry, deliberately. ONE of ADR 0258
+# §3's four axes is deliberately not a `StatModifier`: 'social standing and
+# recognition accumulate'. `social_reputation` is PROVIDER-contributed
+# (`social/social_provider.gd:41`) and ADR 0026 makes a provider's contribution the
+# BASELINE a modifier then scales once - so a FLAT authored on it would be silently
+# overwritten by every bond the hero forms and would be a lie the tree acts on. The
+# social half is carried by the BAND ITSELF: the status id is the named fact a
+# recognition rule reads, and `StatusApi.summary` publishes it under `age`, so the
+# axis is named rather than faked.
 payload = {
 "mechanic": &"regrowth",
 "text": "Comprehension with a shape to it. What was learned holds, and what is learned now arrives in a form that survives the next decade.",
-ONE of ADR 0258 §3's four axes is deliberately not a `StatModifier`: 'social standing
-and recognition accumulate'. `social_reputation` is PROVIDER-contributed
-(`social/social_provider.gd:41`) and ADR 0026 makes a provider's contribution the
-BASELINE a modifier then scales once - so a FLAT authored on it would be silently
-overwritten by every bond the hero forms and would be a lie the tree acts on. The social
-half is carried by the BAND ITSELF: the status id is the named fact a recognition rule
-reads, and `StatusApi.summary` publishes it under `age`, so the axis is named rather than
-faked."modifiers": [
+"modifiers": [
 {"stat": &"insight_gain", "op": &"percent", "value": 0.10},
 {"stat": &"dao_heart", "op": &"flat", "value": 2.0},
 {"stat": &"comprehension", "op": &"flat", "value": 2.0}

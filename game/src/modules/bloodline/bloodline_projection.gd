@@ -49,7 +49,15 @@ static func apply(actor: Actor, ledger: Dictionary) -> void:
 		actor.traits.add(BloodlineState.trait_for(lineage_id))
 		var traits: Array[StringName] = [BloodlineState.trait_for(lineage_id)]
 		if def != null and def.is_awake(purity):
+			# ADR 0125's instability counterpart: the spike elevates purity past
+			# the awaken gate, but the body struggles to stabilise foreign blood,
+			# so the lineage's own authored modifiers arrive discounted by the
+			# read-time factor -- never the gate itself, which stays binary. The
+			# builders mint fresh objects per call, so scaling here touches no
+			# shared state.
+			var discount := BloodlineState.instability_discount(purity)
 			for modifier in def.build_modifiers():
+				modifier.value = float(modifier.value) * discount
 				actor.stats.add_modifier(modifier)
 			for trait_id in def.traits:
 				var id := StringName(trait_id)

@@ -24,6 +24,7 @@ func _actor() -> Actor:
 
 # --- Summary shape --------------------------------------------------------------
 
+
 func test_summary_is_empty_without_an_actor() -> void:
 	assert_eq(CollectionApi.summary(null), {}, "no actor, no summary")
 
@@ -62,6 +63,7 @@ func test_summary_includes_pillars() -> void:
 
 
 # --- Tier claiming ---------------------------------------------------------------
+
 
 func test_claim_tier_refuses_unknown_tier() -> void:
 	var actor := _actor()
@@ -117,8 +119,9 @@ func test_claim_tier_refuses_already_claimed() -> void:
 
 # --- Heterosis --------------------------------------------------------------------
 
+
 func test_heterosis_status_is_empty_without_an_actor() -> void:
-	assert_eq(CollectionApi.heterosis_status(null)["has_heterosis"], false)
+	assert_eq(CollectionApi.heterosis_status(null).is_empty(), true, "no actor, no heterosis")
 
 
 func test_heterosis_derives_from_purity_snapshot() -> void:
@@ -131,6 +134,7 @@ func test_heterosis_derives_from_purity_snapshot() -> void:
 
 # --- History ----------------------------------------------------------------------
 
+
 func test_history_is_empty_without_an_actor() -> void:
 	assert_eq(CollectionApi.history(null), [], "no actor, no history")
 
@@ -142,6 +146,7 @@ func test_history_returns_array() -> void:
 
 
 # --- Emotional signature -----------------------------------------------------------
+
 
 func test_emotional_signature_is_derived_from_axes() -> void:
 	var actor := _actor()
@@ -165,6 +170,7 @@ func test_emotional_signature_is_derived_from_axes() -> void:
 
 
 # --- Record event ------------------------------------------------------------------
+
 
 func test_record_event_returns_summary() -> void:
 	var actor := _actor()

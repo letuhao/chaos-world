@@ -30,13 +30,15 @@ extends TestCase
 ## statement about today that is expected to become wrong the moment a panel formats
 ## the number).
 ##
-## There is no `age` field anywhere to compare it against: `grep` for `age_days`,
-## `age_years`, `elapsed_days`, `born_year`, `born_on` over `game/src` returns zero
-## hits, and the only `age` in the tree is `FightLoop.age(delta)` (a combat rate gate),
-## `BossEncounter.age(delta)` (the same thing behind the module seam), and
-## `SocialBond.age` (a bond-strengthening counter). None is an age. `Actor.to_dict()`
-## serializes none. That absence is BL-0037 and belongs to whoever owns time — this
-## suite asserts it is still absent so the gap cannot close quietly.
+## There is now exactly one age field, and it is a birth fact rather than a clock:
+## `Actor.age_years` (ADR 0258 §2) is set once from `RaceDef.starting_age_years`
+## and restored from saves; nothing advances it. `FightLoop.age(delta)` is a
+## combat rate gate, `BossEncounter.age(delta)` the same thing behind the module
+## seam, and `SocialBond.age` a bond-strengthening counter. None is an age.
+## `Actor.to_dict()` serializes the birth fact; no system writes a later one.
+## That absence of advancement is BL-0037 and belongs to whoever owns time —
+## this suite asserts the field sits at its birth value so the gap cannot close
+## quietly.
 
 
 ## Every authored race publishes its lifespan on the read model, which is where a time
@@ -99,20 +101,26 @@ func test_the_actors_own_lifespan_is_published_and_the_no_actor_shape_is_explici
 	assert_almost_eq(float(empty.get("lifespan", -1.0)), 0.0, "at zero, not absent")
 
 
-## **The gap, stated as an assertion: nothing ages the actor, so the number is inert.**
+## **The gap, stated as an assertion: nothing advances the actor's age, so the
+## number it publishes changes nothing.**
 ##
 ## A test cannot prove a negative about the whole engine, so this proves the
-## PRECONDITION a lifespan would need — somewhere for an age to live — and names what is
+## PRECONDITION a lifespan would need — an age that moves — and names what is
 ## missing. The alternative, asserting that `race_lifespan` has no reader, would have to
 ## reach through the facade into `ActorStats` and `StatContext` internals, and would
 ## break on a rename without catching anything a grep does not.
 ##
-## ## This is designed to go RED when BL-0037 lands, and that is the point
+## ## ADR 0258 §2 landed the field, and this is the replacement it asked for
 ##
-## The day a clock adds an age field, this returns false and the test fails. That is the
-## correct outcome: the assertion stops being true, and whoever lands the clock has to
-## come here and decide what replaces it. A gap should become a failing test the day
-## it stops being a gap, rather than drift quietly closed.
+## `age_years` arrived as a birth fact: set once from the race's authored starting
+## age, restored from saves, never advanced. So the probe is no longer "no age
+## field" but "age frozen at birth": a fresh actor reads exactly its race's
+## authored starting age, and carries none of the other fields a time system
+## would author. The day a clock advances the field, this returns false and the
+## test fails. That is the correct outcome: the assertion stops being true, and
+## whoever lands the clock has to come here and decide what replaces it. A gap
+## should become a failing test the day it stops being a gap, rather than drift
+## quietly closed.
 ##
 ## The fields named are the ones a time system would author. They are a LIST rather
 ## than a single name because the schema is deliberately undecided — pinning one would
@@ -124,20 +132,25 @@ func test_nothing_ages_an_actor_so_the_lifespan_it_publishes_changes_nothing() -
 			0.0,
 			"'%s' authors a lifespan" % [race_id]
 		)
+		var born := _born_into(race_id)
 		assert_eq(
-			_no_age_field_on(_born_into(race_id)),
-			true,
-			"'%s' has no age to be outlived by, so its lifespan is inert" % [race_id]
+			_no_advance_field_on(born), true, "'%s' carries no post-birth age field" % [race_id]
+		)
+		assert_almost_eq(
+			float(born.age_years),
+			float((_catalog().race_definition(race_id)).starting_age_years),
+			"'%s' sits at its authored starting age: set at birth, advanced by nothing" % [race_id]
 		)
 
 
-## Whether this actor carries a field an age could be kept in at all.
+## Whether this actor carries a field a LATER age could be kept in at all.
 ##
-## Deliberately mechanical and deliberately narrow: it asks whether a lifespan COULD be
-## compared against anything today, which is the precondition for the stat meaning
-## anything. `Actor` is not a Dictionary, so `in` is the engine's own property probe.
-func _no_age_field_on(actor: Actor) -> bool:
-	for field in ["age", "age_days", "age_years", "elapsed_days", "born_year", "born_on"]:
+## Deliberately mechanical and deliberately narrow: `age_years` itself is excluded
+## because ADR 0258 §2 made it a birth fact rather than a clock, and the birth
+## value is pinned separately above. `Actor` is not a Dictionary, so `in` is the
+## engine's own property probe.
+func _no_advance_field_on(actor: Actor) -> bool:
+	for field in ["age", "age_days", "elapsed_days", "born_year", "born_on"]:
 		if field in actor:
 			return false
 	return true

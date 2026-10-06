@@ -66,9 +66,20 @@ const RACE_DEF_COMPONENT := &"race_def"
 ## a ladder position, and a curve from it is what ADR 0042/0050 deleted.
 const AUTHORED_TIERS: Array[int] = [1, 2, 3, 4]
 
+## The mortal tier, as `RealmDefaults` writes it (`MORTAL := 1`). Named here
+## rather than read there: ANY `RealmDefaults` member access compiles that file,
+## whose `LIFESPAN` preload points back at this file's `.tres`, which is the
+## compile cycle that fails the parse with "Cyclic reference". An actor on no
+## known realm is a mortal body, and the mortal row is the neutral one by the
+## test's own pin, so the fallback and the baseline stay one number.
+const FALLBACK_TIER := 1
+
 ## The authored tier multiplier, keyed by `RealmDef.tier`. Loaded once by
-## `RealmDefaults.LIFESPAN` beside `POWER` — a plain preload on the other side,
-## so reading this file calls nothing here and there is no load cycle
+## `RealmDefaults.LIFESPAN` beside `POWER` — a plain preload on the other side.
+## The edge runs ONE way only: this file must never name `RealmDefaults` back,
+## or the `.gd -> RealmDefaults (preload .tres) -> script .gd` cycle fails the
+## parse. Singleton reads go through `_authored_table()` below, which resolves
+## the same `.tres` at runtime instead of at compile time
 ## (`time_ladder.gd:109-113` records why the two directions differ).
 @export var multipliers: Dictionary = {}
 
@@ -133,7 +144,7 @@ func effective_days(baseline_days: float, tier: int) -> float:
 ## `tests/core/test_realm_lifespan_table.gd` refuses those reads in SOURCE.
 static func effective_lifespan_for(actor: Actor) -> float:
 	var realm := RealmScaling.highest_realm(actor)
-	var tier := RealmDefaults.MORTAL if realm == null else realm.tier
+	var tier := FALLBACK_TIER if realm == null else realm.tier
 	var baseline := 0.0
 	var def := actor.component(RACE_DEF_COMPONENT) as RaceDef
 	if def != null:
@@ -142,7 +153,19 @@ static func effective_lifespan_for(actor: Actor) -> float:
 	var bonus_days := 0.0
 	if (bonus is int or bonus is float) and not (bonus is bool):
 		bonus_days = maxf(0.0, float(bonus))
-	return maxf(0.0, baseline) * float(RealmDefaults.LIFESPAN.multipliers.get(tier, NEUTRAL)) + bonus_days
+	return (
+		maxf(0.0, baseline) * float(_authored_table().multipliers.get(tier, NEUTRAL)) + bonus_days
+	)
+
+
+## The authored table behind the static reads: the same `.tres`
+## `RealmDefaults.LIFESPAN` preloads, resolved here with `load()` at runtime
+## rather than at compile time. `load()` returns the engine's cached resource,
+## so this is the same instance the preload publishes — one table, two doors,
+## and no cycle. (Cycle repair: naming `RealmDefaults` from this file closed a
+## `.gd -> RealmDefaults -> .tres -> .gd` loop the parser refuses.)
+static func _authored_table() -> RealmLifespan:
+	return load("res://src/core/realm_lifespan_table.tres") as RealmLifespan
 
 
 ## The authored MORTAL-TIER BASELINE in days, or 0.0 when no body plan is attached.
@@ -195,7 +218,7 @@ static func is_past_span(actor: Actor) -> bool:
 	if not (age_years is float) or age_years < 0.0:
 		return false
 	var realm := RealmScaling.highest_realm(actor)
-	var tier := RealmDefaults.MORTAL if realm == null else realm.tier
+	var tier := FALLBACK_TIER if realm == null else realm.tier
 	var baseline := 0.0
 	var def := actor.component(RACE_DEF_COMPONENT) as RaceDef
 	if def != null:
@@ -204,7 +227,9 @@ static func is_past_span(actor: Actor) -> bool:
 	var bonus_days := 0.0
 	if (bonus is int or bonus is float) and not (bonus is bool):
 		bonus_days = maxf(0.0, float(bonus))
-	var lifespan := maxf(0.0, baseline) * float(RealmDefaults.LIFESPAN.multipliers.get(tier, NEUTRAL)) + bonus_days
+	var lifespan := (
+		maxf(0.0, baseline) * float(_authored_table().multipliers.get(tier, NEUTRAL)) + bonus_days
+	)
 	if lifespan <= 0.0:
 		return false
 	var year_ratio: int = TimeLadder.ratio_for(&"year")

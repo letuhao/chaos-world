@@ -216,6 +216,13 @@ UI_MODULES: dict[str, list[str]] = {
     # a screen that can name a mechanism can reach anything else it likes through the
     # same import.
     "combat_engine": [],
+    # The collection surface (unlocks, history, heterosis readout). Four screens
+    # render `CollectionApi.summary` / `history` and nothing else: the read model
+    # is already primitives-only, so a screen adds no edge it would need.
+    # Granted with NO module dependency -- `collection` reads its siblings
+    # through its own facade, never through `ui/`, which is the same reason
+    # `race`, `quest` and `custody` carry none.
+    "collection": [],
 }
 
 # Dependencies granted to a newly scaffolded module.

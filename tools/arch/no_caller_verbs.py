@@ -523,7 +523,15 @@ def scan(
     test_names = _index(test_bodies)
     test_qualified = _qualified_index(test_bodies)
 
-    ambiguous = _ambiguous_verbs(report.published)
+    # Ambiguity is a property of the tree's whole vocabulary, not of the graded
+    # subset: `resolve` is declared by three facades, so a bare `resolve(` proves
+    # nothing even when only one of them is graded. Scoping the set to the
+    # published (graded) verbs made every namesake in the tree credit the one
+    # graded spelling -- thirty-six files credited `EventApi.resolve`, and the
+    # DEF-0315 allowlist entry could never stand while any `x.resolve(` existed
+    # anywhere. The graded set still decides what is REPORTED; this only decides
+    # what a bare call is allowed to prove.
+    ambiguous = _ambiguous_verbs(report.verbs)
     report.ambiguous = sorted(ambiguous)
     for verb in report.published:
         facade = Path(verb.facade)
@@ -1136,7 +1144,7 @@ def register_selftest_cases(case, expect, write) -> None:
         fixture cannot be tuned into agreement, so the fixture must not be what
         proves the scope.
         """
-        repo = Path(__file__).resolve().parents[3]
+        repo = Path(__file__).resolve().parents[2]
         allow = Path(__file__).resolve().parent / ALLOWLIST_NAME
         problems, report = evaluate(
             repo / "game" / "src",
@@ -1170,7 +1178,7 @@ def register_selftest_cases(case, expect, write) -> None:
         reader at the module alone, with no `tools/` to keep it, and it must report.
         If this ever passes silently the scope is vacuous and the gate is decorative.
         """
-        repo = Path(__file__).resolve().parents[3]
+        repo = Path(__file__).resolve().parents[2]
         problems, report = evaluate(
             repo / "game" / "src",
             repo / "game" / "tests",
@@ -1198,7 +1206,7 @@ def register_selftest_cases(case, expect, write) -> None:
         reader that cannot see that reports a shipped trigger as dead, which is
         INC-0012 verbatim, and sends an agent to author a caller that already exists.
         """
-        repo = Path(__file__).resolve().parents[3]
+        repo = Path(__file__).resolve().parents[2]
         _, report = evaluate(
             repo / "game" / "src",
             repo / "game" / "tests",
@@ -1232,7 +1240,7 @@ def register_selftest_cases(case, expect, write) -> None:
         deliberate read as live. `EventApi.resolve` must be caller-less on the real
         tree, and every seam it has must be empty.
         """
-        repo = Path(__file__).resolve().parents[3]
+        repo = Path(__file__).resolve().parents[2]
         _, report = evaluate(
             repo / "game" / "src",
             repo / "game" / "tests",

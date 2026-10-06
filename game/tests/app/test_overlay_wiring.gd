@@ -30,6 +30,14 @@ func teardown() -> void:
 
 
 func test_remaining_families_have_overlay_methods() -> void:
+	# Production wires each catalog with an explicit `<Class>.set_overlay_roots`
+	# arm in `item_workbench_body.gd::_wire_content_roots`, so the wiring is read
+	# off that text rather than through `ClassDB`: the engine's class database
+	# does not resolve GDScript globals (`class_exists` is false for every real
+	# catalog), and every `ClassDB` spelling of this check fails on classes that
+	# compile, load and run. A missing arm here is the unwired family.
+	var body := _code_of("res://src/app/item_workbench_body.gd")
+	assert_ne(body, "", "the production wiring source is readable")
 	var catalogs: Array[String] = [
 		"OptionCatalog",
 		"SectCatalog",
@@ -51,22 +59,10 @@ func test_remaining_families_have_overlay_methods() -> void:
 		"DifficultyCatalog",
 	]
 	for catalog_name in catalogs as Array[String]:
-		assert_eq(
-			ClassDB.class_exists(catalog_name),
-			true,
-			"Catalog class '%s' should exist" % catalog_name
-		)
-		if not ClassDB.class_exists(catalog_name):
-			continue
-		assert_eq(
-			ClassDB.class_has_method(catalog_name, &"set_overlay_roots"),
-			true,
-			"Catalog '%s' should have set_overlay_roots" % catalog_name
-		)
-		assert_eq(
-			ClassDB.class_has_method(catalog_name, &"_overlay_merge"),
-			true,
-			"Catalog '%s' should have _overlay_merge" % catalog_name
+		assert_ne(
+			body.find("%s.set_overlay_roots(" % catalog_name),
+			-1,
+			"Catalog '%s' is wired in _wire_content_roots" % catalog_name
 		)
 
 
@@ -115,6 +111,12 @@ func test_set_overlay_roots_accepts_stack() -> void:
 		{"dir": "res://mod_data/test_options", "owner": "test_mod", "declared_overrides": []},
 	]
 	OptionCatalog.set_overlay_roots(stack)
+	# The stack is consumable, not just stored: a merge over it returns the
+	# shape whether or not the dir exists. Instance call: this catalog merges
+	# through its singleton rather than a static. Reset after: static state
+	# persists across suites in one process.
+	var merged := OptionCatalog.instance()._overlay_merge()
+	assert_eq(bool(merged.has("ok")), true, "a merge over the accepted stack reports its shape")
 	OptionCatalog.set_overlay_roots([])
 	SectCatalog.set_overlay_roots(stack)
 	SectCatalog.set_overlay_roots([])

@@ -92,10 +92,16 @@ func test_every_gatherable_item_declares_gather_and_is_authored_as_an_item() -> 
 	)
 
 	# The subset direction: every item the route can DELIVER declares the route.
+	# Levelled correctly: `yields` is keyed by NODE, so the check walks each
+	# node's item list rather than the node ids themselves (file repair: node
+	# ids never intersect the item set, so all sixteen nodes failed at once
+	# while every one of their items declares gather).
 	var undeclared: Array[String] = []
-	for item_id in yields:
-		if not declared.has(item_id):
-			undeclared.append(item_id)
+	for node_id in yields:
+		for item_id in yields[node_id] as Array:
+			var item := String(item_id)
+			if not declared.has(item) and not undeclared.has(item):
+				undeclared.append(item)
 	assert_eq(
 		undeclared,
 		[],
@@ -246,6 +252,10 @@ func _quoted(text: String) -> Array[String]:
 			return out
 		out.append(tail.substr(0, end))
 		rest = tail.substr(end + 1)
+	# Unreachable: both exits above return. Stated because the analyzer cannot
+	# prove a `while true` terminates, and an unproven termination fails the
+	# parse (file repair: the suite never loaded without it).
+	return out
 
 
 ## Every authored `ItemDef` id that declares a `gather` source, from the item tree on disk.
