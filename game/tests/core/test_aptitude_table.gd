@@ -50,6 +50,33 @@ func test_the_status_channels_have_a_producer() -> void:
 		assert_eq(fed.has(channel), true, "%s is produced by the matrix" % String(channel))
 
 
+func test_the_status_contest_channels_do_not_ride_the_ladder() -> void:
+	# ADR 0891: the gate and the net factors read ONE fixed scale over the delta
+	# (`status_rate_scale`, `status_net_factor_scale`), so the delta must be share-space
+	# at every realm. Under MAGNITUDE the same shares read 0.05 at R1 and ~27 at R30 and
+	# the scales saturate — the gate stops being a contest down the ladder.
+	var table := _table()
+	for edge in table.to_edges():
+		if not String(edge.channel).begins_with("status."):
+			continue
+		assert_eq(edge.mode, AptitudeEdge.Mode.CONTEST, "%s is share-space" % String(edge.channel))
+
+
+func test_the_leech_answer_half_has_a_producer() -> void:
+	# ADR 0889's pairing half: `Recoil.leech` reads `leech_resist.<pool>` against the
+	# attacker's `lifesteal.<pool>` over `rate_scale`, so the ANSWER needs a producer or
+	# a defender could only answer with content points. Composure feeds all three pools,
+	# CONTEST — a fixed-scale contest reads share-space inputs (ADR 0891).
+	var fed := {}
+	for edge in _table().to_edges():
+		if edge.source == &"composure":
+			fed[edge.channel] = edge.mode
+	for pool in [&"health", &"qi", &"stamina"]:
+		var channel := StringName("leech_resist." + String(pool))
+		assert_eq(fed.has(channel), true, "%s is produced by the matrix" % String(channel))
+		assert_eq(fed[channel], AptitudeEdge.Mode.CONTEST, "%s is share-space" % String(channel))
+
+
 func test_a_magnitude_edge_never_targets_a_realm_scaled_channel() -> void:
 	# The realm MULT already scales these channels; a MAGNITUDE edge on top would apply
 	# the ladder TWICE (ADR 0882).

@@ -90,6 +90,26 @@ const FRACTION_EPSILON := 0.000001
 ## fails a mechanism that stops tracking the other.
 const MAX_QI_BODY_RATIO := 10.0
 
+# --- DEF-0344: the six placeholder families and their declared bands -------------
+#
+# Shipping a guess is fine; calling it balance is not. Each band is the ENVELOPE the
+# family's retune must stay inside — every bound names the degenerate state it must not
+# reach (an invisible coefficient, a saturated contest, an immunity). The report below
+# prints shipped-vs-band; moving a family WITHIN its band is the play-data retune
+# DEF-0344 still tracks, so crossing a bound is a FINDING rather than a number nobody
+# re-reads.
+const RATE_SCALE_BAND: Array[float] = [0.005, 0.05]
+const REFUSAL_CAP_BAND: Array[float] = [0.5, 0.99]
+const MATRIX_K_BAND: Array[float] = [0.001, 0.5]
+const MATRIX_GAMMA_BAND: Array[float] = [0.5, 2.0]
+const MATRIX_SPAN_BAND: Array[float] = [0.5, 2.0]
+const GRANT_ROW_RATIO_BAND: Array[float] = [0.5, 2.0]
+const GRANT_TECHNIQUE_RATIO_BAND: Array[float] = [0.1, 1.0]
+const STATUS_RATE_SCALE_BAND: Array[float] = [0.1, 1.0]
+const STATUS_NET_SCALE_BAND: Array[float] = [0.25, 4.0]
+const STATUS_NET_MIN_BAND: Array[float] = [0.0, 0.5]
+const STATUS_NET_MAX_BAND: Array[float] = [1.0, 10.0]
+
 var _qi: Variant = preload("res://tests/modules/combat_engine/qi_damage_fixture.gd").new()
 var _body: Variant = preload("res://tests/modules/combat_engine/body_damage_fixture.gd").new()
 var _mind: Variant = preload("res://tests/modules/combat_engine/mind_damage_fixture.gd").new()
@@ -424,6 +444,7 @@ func _print_table(rows: Array[Dictionary]) -> void:
 	_print_hits(rows)
 	_print_spread(rows)
 	_print_residual_drivers(rows)
+	_print_placeholder_families()
 
 
 ## Hits-to-kill against a REFERENCE pool: the qi defender's own health maximum,
@@ -600,3 +621,139 @@ func _print_residual_drivers(rows: Array[Dictionary]) -> void:
 ## Hits-to-kill, or a marked absence rather than an infinity.
 func _hits(value: float) -> float:
 	return -1.0 if not is_finite(value) or value <= 0.0 else value
+
+
+# --- DEF-0344: the six placeholder families -----------------------------------
+
+
+## What shipped, the band it must stay inside, and the verdict. The status-family
+## lines also MEASURE the realm-invariance ADR 0891 claims, because a fixed scale
+## over a delta is only readable while the delta means the same thing at every realm.
+func _print_placeholder_families() -> void:
+	var tuning := _tuning
+	if tuning == null:
+		return
+	var table := AptitudeTable.shipped()
+	var grant := AptitudeGrant.shipped()
+	print("=== PLACEHOLDER FAMILIES (unmeasured; DEF-0344) ========================")
+	print("%-26s %-34s %-22s %s" % ["family", "shipped", "band", "verdict"])
+	_placeholder_line("rate_scale", "%.6f" % tuning.rate_scale, RATE_SCALE_BAND, tuning.rate_scale)
+	_placeholder_line(
+		"refusal_cap", "%.6f" % tuning.refusal_cap, REFUSAL_CAP_BAND, tuning.refusal_cap
+	)
+	if table != null:
+		var edges := table.to_edges()
+		var k_lo := INF
+		var k_hi := -INF
+		for edge in edges:
+			k_lo = minf(k_lo, edge.k)
+			k_hi = maxf(k_hi, edge.k)
+		_placeholder_line(
+			"matrix k (min of %d)" % edges.size(), "k = %.6f" % k_lo, MATRIX_K_BAND, k_lo
+		)
+		_placeholder_line("matrix k (max)", "k = %.6f" % k_hi, MATRIX_K_BAND, k_hi)
+		_placeholder_line(
+			"matrix share_exponent",
+			"%.6f" % table.share_exponent,
+			MATRIX_GAMMA_BAND,
+			table.share_exponent
+		)
+		_placeholder_line(
+			"matrix contest_span", "%.6f" % table.contest_span, MATRIX_SPAN_BAND, table.contest_span
+		)
+	if grant != null:
+		var per_lo := INF
+		var per_hi := -INF
+		for row in grant.rows:
+			var per_realm := float(row.get("per_realm", 0.0))
+			per_lo = minf(per_lo, per_realm)
+			per_hi = maxf(per_hi, per_realm)
+		var row_ratio := per_hi / per_lo if per_lo > 0.0 else INF
+		_placeholder_line(
+			"grant per_realm max/min", "%.6f" % row_ratio, GRANT_ROW_RATIO_BAND, row_ratio
+		)
+		var technique_ratio := grant.technique_points / per_lo if per_lo > 0.0 else INF
+		_placeholder_line(
+			"grant technique/per_realm",
+			"%.6f" % technique_ratio,
+			GRANT_TECHNIQUE_RATIO_BAND,
+			technique_ratio
+		)
+	_placeholder_line(
+		"status_rate_scale",
+		"%.6f" % tuning.status_rate_scale,
+		STATUS_RATE_SCALE_BAND,
+		tuning.status_rate_scale
+	)
+	_placeholder_line(
+		"status_net_factor_scale",
+		"%.6f" % tuning.status_net_factor_scale,
+		STATUS_NET_SCALE_BAND,
+		tuning.status_net_factor_scale
+	)
+	_placeholder_line(
+		"status_min_net_factor",
+		"%.6f" % tuning.status_min_net_factor,
+		STATUS_NET_MIN_BAND,
+		tuning.status_min_net_factor
+	)
+	_placeholder_line(
+		"status_max_net_factor",
+		"%.6f" % tuning.status_max_net_factor,
+		STATUS_NET_MAX_BAND,
+		tuning.status_max_net_factor
+	)
+	_print_status_realm_invariance(table)
+	print(
+		(
+			"status potency BASE       : element_power<e> x %.2f (floor %.2f) -- a REUSE"
+			% [tuning.status_potency_scale, tuning.status_potency_floor]
+		)
+	)
+	print("                            an authored per-status base is DEF-0344's content wave")
+	print("")
+
+
+## One family's line: the shipped figure, its band, and `in` / `OUT -- FINDING`.
+func _placeholder_line(name: String, shipped: String, band: Array[float], value: float) -> void:
+	var verdict := "OUT -- FINDING"
+	if is_finite(value) and value >= band[0] and value <= band[1]:
+		verdict = "in"
+	print("%-26s %-34s %-22s %s" % [name, shipped, "[%.6f, %.6f]" % [band[0], band[1]], verdict])
+
+
+## ADR 0891: the status channels are share-space. This resolves ONE allocation through
+## the shipped matrix at the first and the last ladder and prints the gate delta both
+## times — the same number twice is the claim; two numbers is the finding.
+func _print_status_realm_invariance(table: AptitudeTable) -> void:
+	if table == null:
+		return
+	var realms := RealmDefaults.ladder().realms()
+	if realms.is_empty():
+		return
+	var first := float(realms[0].power)
+	var last := float(realms[realms.size() - 1].power)
+	var sample := {&"might": 1.0, &"ferocity": 1.0, &"composure": 1.0}
+	var at_first := AptitudeMatrix.resolve(
+		table.to_edges(), sample, table.share_exponent, table.contest_span, first
+	)
+	var at_last := AptitudeMatrix.resolve(
+		table.to_edges(), sample, table.share_exponent, table.contest_span, last
+	)
+	var delta_first := (
+		float(at_first.get(&"status.power.omni", 0.0))
+		- float(at_first.get(&"status.resist.omni", 0.0))
+	)
+	var delta_last := (
+		float(at_last.get(&"status.power.omni", 0.0))
+		- float(at_last.get(&"status.resist.omni", 0.0))
+	)
+	var verdict := (
+		"REALM-INVARIANT" if is_equal_approx(delta_first, delta_last) else "DRIFTS -- FINDING"
+	)
+	print(
+		(
+			"status gate delta (sample) : %.6f at R1 vs %.6f at last (ladder %.2f..%.2f) => %s"
+			% [delta_first, delta_last, first, last, verdict]
+		)
+	)
