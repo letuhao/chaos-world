@@ -7,11 +7,15 @@ extends TestCase
 ## flat constant, and nothing ever touched the player. Every assertion here is about the
 ## *exchange*, and the headline one is that a player can lose.
 ##
-## The two bands are chosen, not arbitrary: `EMBER` is the shallowest authored band
-## (100 vitality) and `DEEP` the deepest one an actor with no key can enter at all
-## (500 vitality, `key_reach = 0`). The gated `loot_storm_crypt_domain` is deliberately
-## not used — its `key_reach = 6` is ADR 0033's entry gate, and a test that carried a key
-## would be testing the gate.
+## The two bands are chosen, not arbitrary: `EMBER` tier 1 is a shallow keyless band and
+## `DEEP` (`elemental_transcendent_domain`) the deepest one an actor with no key can enter
+## at all (`key_reach = 0`). Both were RE-PRICED by the realm-scaled loot wave of
+## 2026-10-05 — `EMBER` authors `12843.8` vitality in `spirit_severing`, `DEEP`
+## `491793.8` in `transcendent` — so the control cases below assert WINNABILITY with the
+## actor a band is priced for, and a bare actor losing is the expected reading rather than
+## a forced one. The gated `loot_storm_crypt_domain` is deliberately not used — its
+## `key_reach = 6` is ADR 0033's entry gate, and a test that carried a key would be
+## testing the gate.
 
 const EMBER_DOMAIN := &"loot_ember_vault_domain"
 const EMBER_TIER := 1
@@ -101,17 +105,26 @@ func test_a_bare_actor_can_lose_a_fight_and_the_run_is_over() -> void:
 	)
 
 
-func test_a_bare_actor_wins_the_shallow_band_so_a_loss_is_not_a_forced_outcome() -> void:
-	# A model where every fight is lost is as vacuous as one where none is. The shallow
-	# band is the control: the same bare actor that loses the deep band must clear this.
-	var actor := _delver()
+## The control: a loss is not a forced outcome — the shallow band IS winnable.
+##
+## ## The bands are realm-scaled, and the control moved with them
+##
+## The 2026-10-05 loot wave re-priced every authored band off its own realm: `EMBER`
+## tier 1 authors `12843.8` vitality in `spirit_severing`, so the warden attacks for
+## `vitality * ATTACK_PER_VITALITY = 3210.95` — pinned at `CombatDamage.POWER_CEILING`
+## and, with its authored `penetration 2.0`, able to spend a bare pool in one exchange.
+## The actor a band clears for is the actor it is priced for, so the control uses the
+## same `_equipped` set the deep-band case uses, and the assertion is that the fight is
+## WINNABLE rather than free.
+func test_the_shallow_band_is_winnable_so_a_loss_is_not_a_forced_outcome() -> void:
+	var actor := _equipped()
 	if not _entered(actor, EMBER_DOMAIN, EMBER_TIER):
 		return
 	var fight := _fight(actor)
 	assert_eq(
 		String(fight["outcome"]),
 		CombatExchange.OUTCOME_BOSS_DEFEATED,
-		"the shallowest authored band is winnable by the same bare actor"
+		"the shallowest authored band is winnable, with the numbers it is priced for"
 	)
 	assert_eq(int(CombatExchange.duel(actor)["defeats"]), 0, "and nothing was lost doing it")
 
@@ -192,7 +205,12 @@ func test_gear_makes_the_same_fight_winnable_that_bare_fists_lose() -> void:
 func test_the_players_own_stats_decide_the_exchange_not_a_caller_constant() -> void:
 	# Two actors with different numbers, same boss, same seed: the exchange must differ,
 	# and it must differ on the damage, not only on the outcome.
-	var weak := _delver(4.0, 2.0)
+	# The weak side is the smallest actor that SURVIVES one answer from the band: the
+	# warden's authored `penetration 2.0` shaves mitigation, and a `4.0/2.0` pool is spent
+	# by the first exchange (`taken == health_max`), which would make the vitality compare
+	# below read a missing boss. `12.0/10.0` lives through the answer and still spends far
+	# less of the band than the strong actor.
+	var weak := _delver(12.0, 10.0)
 	if not _entered(weak, EMBER_DOMAIN, EMBER_TIER):
 		return
 	var weak_hit := CombatExchange.exchange(weak, SEED)

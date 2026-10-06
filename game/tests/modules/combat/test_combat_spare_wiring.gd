@@ -179,7 +179,14 @@ func test_the_press_is_refused_on_a_corpse_and_on_an_already_spared_opponent() -
 	)
 
 	var corpse := _fighter(&"corpse")
-	CombatBoot.duel_blow(hero, corpse, SEED)
+	# STAGE the body already down. A body falls in some earlier fight; it is not produced
+	# HERE, because the one swing this path can land is a bare one priced at `2.0` against
+	# a `170.0` pool (`CombatBoot.BARE_SWING_MAGNITUDE`), and a test that relied on one
+	# swing killing would be asserting a number this suite does not own. The press under
+	# test — a mercy on a corpse — then runs on the staged state and must write nothing.
+	var corpse_pool := corpse.resource(&"health") as ResourcePool
+	corpse_pool.change(-corpse_pool.maximum)
+	assert_almost_eq(corpse_pool.current, 0.0, "the corpse is staged at zero health")
 	var corpse_adapter := _in_a_fight(hero, _opponent_node(corpse))
 	corpse_adapter.interact()
 
