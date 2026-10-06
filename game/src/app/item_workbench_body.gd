@@ -384,6 +384,16 @@ func _wire_content_roots(content_roots: Dictionary) -> void:
 				TechniqueCatalog.set_overlay_roots(stack)
 			&"elements":
 				ElementCatalog.set_overlay_roots(stack)
+			&"item_options":
+				OptionCatalog.set_overlay_roots(stack)
+			&"sects":
+				SectCatalog.set_overlay_roots(stack)
+			&"sect_doctrines":
+				SectDoctrineCatalog.set_overlay_roots(stack)
+			&"fates":
+				FateCatalog.set_overlay_roots(stack)
+			&"destinies":
+				FateCatalog.set_overlay_roots(stack)
 			_:
 				# Family has no overlay-capable catalog — warn and record, never
 				# skip silently (audit Gap 5).
@@ -469,36 +479,34 @@ func _wire_subscriptions(subscriptions: Array) -> void:
 			bus.connect(event_name, callable)
 
 
-## Resolve an events bus by class name. Buses with a `shared()` accessor
-## (NpcEvents, AuctionEvents, QuestEvents) and ConflictEvents (via
-## `ConflictApi.events()`) return the process-wide instance a subscriber must
-## reach; others get a fresh instance. Returns null for an unknown bus name.
+## Resolve an events bus by class name. The factory is OPEN — no hardcoded
+## dict. Resolution order:
+##   1. Mod-registered custom buses (via `RegistrationContext.register_events_bus`)
+##   2. `ClassDB.class_exists(bus_name)` — if the class exists, check for a
+##      static `events()` or `shared()` accessor and call it; otherwise instantiate.
+##   3. Return null for an unknown bus name (the caller skips it).
 ##
-## ## A fresh instance is a DEAD subscription, and this map is where that is decided
+## ## A fresh instance is a DEAD subscription
 ##
 ## A bus handed out as `SomeEvents.new()` is a brand-new object per lookup: nothing
 ## holds the one a subscriber connects to and nothing emits on it, so `is_connected`
 ## reports the subscription connected FOREVER while no signal ever fires.
-## `QuestEvents` therefore takes `shared()` (ADR 0269) — a registrable System whose
-## whole economy is one quest subscription cannot afford a silent bus. The five
-## entries still returning `new()` carry that same defect and are recorded in the ADR
-## rather than fixed here: each needs its OWNING facade's accessor, which is a wider
-## slice than this one.
+## Buses with a `shared()` accessor (NpcEvents, AuctionEvents, QuestEvents) return
+## the process-wide instance a subscriber must reach.
 func _resolve_events_bus(bus_name: String) -> RefCounted:
-	var factories := {
-		&"NpcEvents": func(): return NpcEvents.shared(),
-		&"AuctionEvents": func(): return AuctionEvents.shared(),
-		&"QuestEvents": func(): return QuestEvents.shared(),
-		&"ConflictEvents": func(): return ConflictApi.events(),
-		&"WorldEvents": func(): return WorldEvents.new(),
-		&"DestinyEvents": func(): return DestinyEvents.new(),
-		&"NationEvents": func(): return NationEvents.new(),
-		&"SectEvents": func(): return SectEvents.new(),
-		&"HoldingsEvents": func(): return HoldingsEvents.new(),
-	}
-	if factories.has(bus_name):
-		return factories[bus_name].call()
-	return null
+	# 1. Mod-registered custom buses take priority.
+	if RegistrationContext.has_custom_bus(bus_name):
+		return RegistrationContext.get_custom_bus(bus_name).call()
+	# 2. Resolve by class name.
+	if not ClassDB.class_exists(bus_name):
+		return null
+	# Check for a static events() or shared() accessor.
+	if ClassDB.class_has_method(bus_name, &"events"):
+		return ClassDB.class_call(bus_name, &"events")
+	if ClassDB.class_has_method(bus_name, &"shared"):
+		return ClassDB.class_call(bus_name, &"shared")
+	# 3. Otherwise instantiate.
+	return ClassDB.instantiate(bus_name)
 
 
 # --- build_actor ---------------------------------------------------------

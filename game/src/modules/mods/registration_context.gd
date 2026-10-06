@@ -49,6 +49,11 @@ const DECLARATION_FILE := "stats.json"
 ## refusal against that set would treat a cross-mod collision as impossible.
 const DUPLICATE_RESOURCE := "duplicate_resource"
 
+## Mod-registered custom events buses (ADR 0184 §6). A mod that ships its own
+## events bus class registers it here so `_resolve_events_bus` can find it
+## without a hardcoded factory dict. The callable returns the bus instance.
+static var _custom_buses: Dictionary = {}
+
 ## Which mod this context belongs to. Set by the loader, read by the record.
 var mod_id: String = ""
 
@@ -185,6 +190,25 @@ func register_screen(id: String, scene: String, label: String) -> Array[Dictiona
 func subscribe(subscription: Dictionary) -> Array:
 	subscriptions.append(subscription)
 	return subscriptions
+
+
+## Register a custom events bus type (ADR 0184 §6). A mod that ships its own
+## events bus class registers it here so `_resolve_events_bus` can find it
+## without a hardcoded factory dict. The callable returns the bus instance
+## (e.g. `func(): return MyEvents.shared()`). Later registrations overwrite
+## earlier ones, so the last mod to register a name wins.
+static func register_events_bus(name: String, factory: Callable) -> void:
+	_custom_buses[name] = factory
+
+
+## Whether a custom events bus is registered under `name`.
+static func has_custom_bus(name: String) -> bool:
+	return _custom_buses.has(name)
+
+
+## The factory callable registered for `name`, or null when none is registered.
+static func get_custom_bus(name: String) -> Callable:
+	return _custom_buses.get(name, Callable())
 
 
 ## THE SIXTH SEAM (ADR 0275). Declare this mod's stat rows and the pools they

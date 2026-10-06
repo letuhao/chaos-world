@@ -1,0 +1,152 @@
+class_name TestOverlayWiring
+extends TestCase
+
+## Tests that the remaining 4 content families (item_options, sects,
+## sect_doctrines, fates) are wired into their catalogs via `set_overlay_roots`
+## (ADR 0184 §5, ADR 0240), and that the events bus factory is OPEN —
+## mod-registered custom bus types resolve dynamically (ADR 0242).
+
+var _harness: SeamHarness
+var _app: ItemWorkbenchApp
+var _saved_registrations: Dictionary = {}
+
+
+func setup() -> void:
+	_harness = SeamHarness.mount_new()
+	_app = _harness.app as ItemWorkbenchApp
+	_saved_registrations = ModBoot.active_registrations.duplicate(true)
+
+
+func teardown() -> void:
+	ModBoot.active_registrations = _saved_registrations
+	RegistrationContext._custom_buses.clear()
+	if _harness != null:
+		_harness.teardown()
+	_harness = null
+	_app = null
+
+
+# --- Remaining families wired -------------------------------------------------
+
+
+func test_remaining_families_have_overlay_methods() -> void:
+	var catalogs: Array[String] = [
+		"OptionCatalog",
+		"SectCatalog",
+		"SectDoctrineCatalog",
+		"FateCatalog",
+	]
+	for catalog_name in catalogs as Array[String]:
+		assert_eq(
+			ClassDB.class_exists(catalog_name), true, "Catalog class '%s' should exist" % catalog_name
+		)
+		if not ClassDB.class_exists(catalog_name):
+			continue
+		assert_eq(
+			ClassDB.class_has_method(catalog_name, &"set_overlay_roots"),
+			true,
+			"Catalog '%s' should have set_overlay_roots" % catalog_name
+		)
+		assert_eq(
+			ClassDB.class_has_method(catalog_name, &"_overlay_merge"),
+			true,
+			"Catalog '%s' should have _overlay_merge" % catalog_name
+		)
+
+
+func test_wire_content_roots_has_match_arms() -> void:
+	var body := _code_of("res://src/app/item_workbench_body.gd")
+	var start := body.find("func _wire_content_roots(")
+	assert_ne(start, -1, "the wiring function is still there")
+	if start < 0:
+		return
+	var stop := body.find("\nfunc ", start)
+	assert_ne(stop, -1, "and there is a function after it to bound the slice")
+	if stop < 0:
+		return
+	var wiring := body.substr(start, stop - start)
+	for family in ["item_options", "sects", "sect_doctrines", "fates"]:
+		assert_ne(
+			wiring.find('&"%s":' % family),
+			-1,
+			"_wire_content_roots should have a match arm for '%s'" % family
+		)
+
+
+func test_set_overlay_roots_accepts_stack() -> void:
+	var stack: Array = [
+		{"dir": "res://mod_data/test_options", "owner": "test_mod", "declared_overrides": []},
+	]
+	OptionCatalog.set_overlay_roots(stack)
+	OptionCatalog.set_overlay_roots([])
+	SectCatalog.set_overlay_roots(stack)
+	SectCatalog.set_overlay_roots([])
+	SectDoctrineCatalog.set_overlay_roots(stack)
+	SectDoctrineCatalog.set_overlay_roots([])
+	FateCatalog.set_overlay_roots(stack)
+	FateCatalog.set_overlay_roots([])
+
+
+# --- Events bus factory is OPEN ------------------------------------------------
+
+
+func test_custom_bus_type_registered_and_resolved() -> void:
+	var custom_bus := RefCounted.new()
+	RegistrationContext.register_events_bus("MyCustomEvents", func(): return custom_bus)
+	assert_eq(
+		RegistrationContext.has_custom_bus("MyCustomEvents"), true, "custom bus should be registered"
+	)
+	var resolved: RefCounted = _app.call("_resolve_events_bus", "MyCustomEvents")
+	assert_eq(resolved, custom_bus, "custom bus resolves to the factory's instance")
+	custom_bus.free()
+
+
+func test_custom_bus_takes_priority_over_classdb() -> void:
+	# Register a custom bus with the same name as a ClassDB class.
+	# The custom registration should win.
+	var custom_bus := RefCounted.new()
+	RegistrationContext.register_events_bus("NpcEvents", func(): return custom_bus)
+	var resolved: RefCounted = _app.call("_resolve_events_bus", "NpcEvents")
+	assert_eq(resolved, custom_bus, "custom bus takes priority over ClassDB resolution")
+	custom_bus.free()
+
+
+func test_unknown_bus_returns_null() -> void:
+	var resolved: RefCounted = _app.call("_resolve_events_bus", "TotallyUnknownBus")
+	assert_eq(resolved, null, "unknown bus name returns null")
+
+
+func test_classdb_bus_with_shared_resolves_to_shared() -> void:
+	# NpcEvents has a shared() accessor — it should resolve to the shared instance.
+	var resolved: RefCounted = _app.call("_resolve_events_bus", "NpcEvents")
+	assert_ne(resolved, null, "NpcEvents resolves to a bus")
+	assert_eq(resolved, NpcEvents.shared(), "NpcEvents resolves to the shared instance")
+
+
+func test_classdb_bus_without_accessor_instantiates() -> void:
+	# WorldEvents has no shared() or events() accessor — it should be instantiated.
+	var resolved: RefCounted = _app.call("_resolve_events_bus", "WorldEvents")
+	assert_ne(resolved, null, "WorldEvents resolves to a bus")
+	var script: Script = resolved.get_script()
+	assert_ne(script, null, "WorldEvents resolves to a scripted object")
+	assert_eq(
+		String(script.get_global_name()),
+		"WorldEvents",
+		"WorldEvents resolves to the contract of that name"
+	)
+
+
+# --- Helpers ------------------------------------------------------------------
+
+
+func _code_of(path: String) -> String:
+	var out := ""
+	for raw in FileAccess.get_file_as_string(path).split("\n"):
+		var line := String(raw)
+		if line.strip_edges().begins_with("#"):
+			continue
+		var hash_at := line.find("#")
+		if hash_at >= 0:
+			line = line.substr(0, hash_at)
+		out += line + "\n"
+	return out

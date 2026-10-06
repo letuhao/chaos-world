@@ -13,8 +13,16 @@ const FATES_ROOT := "res://data/destiny/fates"
 const DESTINIES_ROOT := "res://data/destiny/destinies"
 const FATE_SCRIPT_CLASS := "FateDef"
 const DESTINY_SCRIPT_CLASS := "DestinyDef"
+const FATE_ID_FIELD := "id"
+const BASE_OWNER := "base"
 
 static var shared: FateCatalog = null
+
+## Overlay stack for the fates family (ADR 0184 §5). Empty means "not wired
+## yet": `_ensure_loaded` merges only the authored roots. When set, the
+## overlay roots merge AFTER the base roots so mod content is visible, with
+## the declared-override collision policy CatalogOverlay enforces.
+static var _overlay_stack: Array = []
 
 var _fates: Dictionary = {}
 var _destinies: Dictionary = {}
@@ -25,6 +33,52 @@ static func instance() -> FateCatalog:
 	if shared == null:
 		shared = FateCatalog.new()
 	return shared
+
+
+## Set the family's overlay stack: ordered rows of `{dir, owner,
+## declared_overrides, id_field}`. Later rows overlay earlier ones; an id
+## collision needs a declared override on the LATER root or the merge fails
+## loudly (ADR 0240).
+static func set_overlay_roots(stack: Array) -> void:
+	_overlay_stack = stack
+
+
+## The merge stack for one root: the base root as a base-owned row, then the
+## overlay rows in order. The base row carries the family's default id_field
+## so the merge reads the correct property even when an overlay row omits it.
+func _merge_stack_for(base_root: String) -> Array:
+	var stack: Array = [
+		{
+			"dir": base_root,
+			"owner": BASE_OWNER,
+			"declared_overrides": [],
+			"id_field": FATE_ID_FIELD,
+		}
+	]
+	for row in _overlay_stack:
+		stack.append(row)
+	return stack
+
+
+## Merge the family's overlay stack through CatalogOverlay (ADR 0184 §5).
+## FateCatalog owns TWO roots (fates + destinies) with two script classes, so
+## the merge runs twice and the results are combined. Returns a dictionary
+## with `ok`, `reason`, `detail`, and the two merge results under `fates` and
+## `destinies`.
+func _overlay_merge() -> Dictionary:
+	var fates_merged := CatalogOverlay.merge(
+		_merge_stack_for(FATES_ROOT), FATE_SCRIPT_CLASS, FATE_ID_FIELD
+	)
+	var destinies_merged := CatalogOverlay.merge(
+		_merge_stack_for(DESTINIES_ROOT), DESTINY_SCRIPT_CLASS, FATE_ID_FIELD
+	)
+	return {
+		"ok": bool(fates_merged.get("ok", false)) and bool(destinies_merged.get("ok", false)),
+		"reason": "",
+		"detail": "",
+		"fates": fates_merged,
+		"destinies": destinies_merged,
+	}
 
 
 ## Every authored fate id, canonically ordered.
@@ -105,32 +159,18 @@ func _ensure_loaded() -> void:
 	if _loaded:
 		return
 	_loaded = true
-	_load_fates()
-	_load_destinies()
-
-
-func _load_fates() -> void:
-	for path in _scan(FATES_ROOT):
-		if not path.get_file().ends_with(".tres"):
-			continue
-		if not FileAccess.get_file_as_string(path).contains(
-			'script_class="%s"' % FATE_SCRIPT_CLASS
-		):
-			continue
-		var def := load(path) as FateDef
+	var merged := _overlay_merge()
+	if not bool(merged.get("ok", false)):
+		push_error("FateCatalog: %s" % String(merged.get("detail", "")))
+		return
+	var fates_merged: Dictionary = merged["fates"]
+	for entry in fates_merged["merged"]:
+		var def := load(String(entry["path"])) as FateDef
 		if def != null and def.id != &"":
 			_fates[String(def.id)] = def
-
-
-func _load_destinies() -> void:
-	for path in _scan(DESTINIES_ROOT):
-		if not path.get_file().ends_with(".tres"):
-			continue
-		if not FileAccess.get_file_as_string(path).contains(
-			'script_class="%s"' % DESTINY_SCRIPT_CLASS
-		):
-			continue
-		var def := load(path) as DestinyDef
+	var destinies_merged: Dictionary = merged["destinies"]
+	for entry in destinies_merged["merged"]:
+		var def := load(String(entry["path"])) as DestinyDef
 		if def != null and def.id != &"":
 			_destinies[String(def.id)] = def
 

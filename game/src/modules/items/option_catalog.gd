@@ -36,6 +36,13 @@ static var _scales_loaded: bool = false
 ## Shared instance: thousands of ItemDef resources share one parsed catalog.
 static var shared: OptionCatalog = null
 
+## Overlay stack for the item_options family (ADR 0184 §5). Empty means "not
+## wired yet": `_ensure_records` reads only the authored CATALOG_PATH. When
+## set, the overlay roots are scanned for `.jsonl` files whose records merge
+## AFTER the base records, with the declared-override collision policy
+## CatalogOverlay enforces.
+static var _overlay_stack: Array = []
+
 var _records: Dictionary = {}
 var _records_loaded: bool = false
 var _projection: Dictionary = {}
@@ -50,6 +57,86 @@ static func instance() -> OptionCatalog:
 	if shared == null:
 		shared = OptionCatalog.new()
 	return shared
+
+
+## Set the family's overlay stack: ordered rows of `{dir, owner,
+## declared_overrides, id_field}`. Later rows overlay earlier ones; an id
+## collision needs a declared override on the LATER root or the merge fails
+## loudly (ADR 0240).
+static func set_overlay_roots(stack: Array) -> void:
+	_overlay_stack = stack
+
+
+## The merge stack: the base root as a base-owned row, then the overlay rows
+## in order. The base row carries the family's default id_field so the merge
+## reads the correct property even when an overlay row omits it.
+func _merge_stack() -> Array:
+	var stack: Array = [
+		{
+			"dir": CATALOG_PATH,
+			"owner": "base",
+			"declared_overrides": [],
+			"id_field": "id",
+		}
+	]
+	for row in _overlay_stack:
+		stack.append(row)
+	return stack
+
+
+## Merge the family's overlay stack through CatalogOverlay (ADR 0184 §5).
+## OptionCatalog reads JSONL, not `.tres`, so the merge scans overlay
+## directories for `.jsonl` files and merges the records. Returns a
+## dictionary with `ok`, `reason`, `detail`, `merged`, `paths`, `owners`.
+func _overlay_merge() -> Dictionary:
+	var stack := _merge_stack()
+	var merged: Array[Dictionary] = []
+	var paths := {}
+	var owners := {}
+	for root in stack:
+		var dir := String(root.get("dir", ""))
+		var owner := String(root.get("owner", ""))
+		var declared := {}
+		for entry in root.get("declared_overrides", []):
+			declared[String(entry)] = true
+		var files := ContentScan.files_under(dir)
+		for path in files:
+			if not path.ends_with(".jsonl"):
+				continue
+			var json := JSON.new()
+			for line in FileAccess.get_file_as_string(path).split("\n"):
+				line = line.strip_edges()
+				if line.is_empty():
+					continue
+				if json.parse(line) != OK:
+					continue
+				var record: Dictionary = json.data
+				var id := String(record.get("id", ""))
+				if id.is_empty():
+					continue
+				if paths.has(id):
+					if declared.has(id):
+						var index := int(paths[id])
+						merged[index] = {"id": id, "path": path, "owner": owner}
+						paths[id] = path
+						owners[id] = owner
+					else:
+						return {
+							"ok": false,
+							"reason": "undeclared_override",
+							"detail":
+							"undeclared_override id=%s dir=%s owner=%s" % [id, dir, owner],
+							"merged": [],
+							"paths": {},
+							"owners": {},
+						}
+				else:
+					paths[id] = merged.size()
+					merged.append({"id": id, "path": path, "owner": owner})
+					owners[id] = owner
+	return {
+		"ok": true, "reason": "", "detail": "", "merged": merged, "paths": paths, "owners": owners
+	}
 
 
 ## Annotate resolved effects with the value window they could legally have taken
@@ -378,6 +465,24 @@ func _ensure_records() -> void:
 		if json.parse(line) == OK and json.data is Dictionary:
 			var record: Dictionary = json.data
 			_records[String(record.get("id", ""))] = record
+	# Overlay records merge AFTER base records, so a mod option with the same
+	# id replaces the base one (ADR 0184 §5). The merge is keyed by id, never
+	# by array position.
+	var merged := _overlay_merge()
+	if not bool(merged.get("ok", false)):
+		push_error("OptionCatalog: %s" % String(merged.get("detail", "")))
+		return
+	for entry in merged["merged"]:
+		var path := String(entry["path"])
+		if path == CATALOG_PATH:
+			continue
+		for line in FileAccess.get_file_as_string(path).split("\n"):
+			line = line.strip_edges()
+			if line.is_empty():
+				continue
+			if json.parse(line) == OK and json.data is Dictionary:
+				var record: Dictionary = json.data
+				_records[String(record.get("id", ""))] = record
 
 
 func _ensure_projection() -> void:
