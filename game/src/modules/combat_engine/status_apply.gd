@@ -163,6 +163,9 @@ const REFUSE_NO_RNG := &"no_rng"
 const REFUSE_RESISTED := &"resisted"
 const REFUSE_NO_POTENCY := &"no_potency"
 const REFUSE_UNWRITABLE := &"unwritable"
+## ADR 0885: the defender carries `status.immune.<tag>` at `>= 1.0` for a tag this status
+## declares. A hard refusal is its own reason, like every other refusal here.
+const REFUSE_IMMUNE := &"immune"
 
 ## The authored keys read off a `REQUEST_KEY` dictionary. Named here so the shape is
 ## stated once: a def that spells a key differently is unreadable, not silently absent,
@@ -173,6 +176,9 @@ const KEY_ELEMENT := &"element"
 ## ADR 0884: the status's own `kind` (`StatusDef.kind`), read for the per-category
 ## channel. An absent key reads `&""`, which simply skips that channel.
 const KEY_KIND := &"kind"
+## ADR 0885: the immunity tags the applying status declares (`StatusDef.immunity_tags`).
+## An absent or non-array key is no tags.
+const KEY_IMMUNITY_TAGS := &"immunity_tags"
 const KEY_SCOPE := &"scope"
 const KEY_DURATION := &"duration"
 const KEY_POTENCY := &"potency"
@@ -232,8 +238,43 @@ static func apply(
 		# answer that consults no randomness, and a `randf()` fallback would be exactly
 		# the silent guess ADR 0087 rejects.
 		return _refused(REFUSE_NO_RNG)
+	var tags := _tags_of(request)
+	# ADR 0885, the hard half of immunity: a defender whose `status.immune.<tag>` reaches
+	# `1.0` refuses the status outright, BEFORE the roll — the closed-gate discipline: a
+	# refusal that consumes no draw.
+	if tuning.status_immune_prefix != "":
+		for tag in tags:
+			var immune := _stat(target, StringName(tuning.status_immune_prefix + String(tag)))
+			if immune >= 1.0:
+				return _refused(REFUSE_IMMUNE, {REFUSE_IMMUNE: tag})
 	var element := _id_of(request.get(KEY_ELEMENT, &""))
+	var kind := _id_of(request.get(KEY_KIND, &""))
 	var resist := elemental_resist(attacker, target, tuning, element)
+	# ADR 0885: the potency split's two net factors, and the intensity floor BEFORE the
+	# roll (Keepverse §2.2: a status that would land at zero intensity does nothing, which
+	# is what "refused" means).
+	var intensity_net := _net_factor(
+		attacker,
+		target,
+		tuning,
+		status_id,
+		kind,
+		tuning.status_intensity_prefix,
+		tuning.status_intensity_reduction_prefix,
+		tags
+	)
+	var duration_net := _net_factor(
+		attacker,
+		target,
+		tuning,
+		status_id,
+		kind,
+		tuning.status_duration_prefix,
+		tuning.status_duration_reduction_prefix,
+		tags
+	)
+	if intensity_net <= _finite(tuning.status_min_net_factor):
+		return _refused(REFUSE_NO_POTENCY)
 	# `elem_resist` is the ELEMENTAL half and applies to every scope: it is a
 	# defender's build answering an element, not a combat-games dial, so a cultivation
 	# blessing that happens to name an element is still answered by fire resistance.
@@ -245,7 +286,7 @@ static func apply(
 		tuning,
 		gate,
 		status_id,
-		_id_of(request.get(KEY_KIND, &"")),
+		kind,
 		element,
 		resist,
 		_id_of(request.get(KEY_SCOPE, SCOPE_COMBAT))
@@ -255,7 +296,9 @@ static func apply(
 	# means the roll cannot change the answer.
 	if chance < 1.0 and not stream.randf() < chance:
 		return _refused(REFUSE_RESISTED)
-	return _written(attacker, target, tuning, request, status_id, resist, chance)
+	return _written(
+		attacker, target, tuning, request, status_id, resist, chance, intensity_net, duration_net
+	)
 
 
 ## Publish `result` on `outcome` by APPENDING it to the proposal's `effects[]`, which
@@ -595,13 +638,21 @@ static func _written(
 	request: Dictionary,
 	status_id: StringName,
 	resist: float,
-	chance: float
+	chance: float,
+	intensity_net: float = 1.0,
+	duration_net: float = 1.0
 ) -> Dictionary:
-	var potency := maxf(
-		_finite(_number(request.get(KEY_POTENCY, 0.0))),
-		potency_of(attacker, tuning, _id_of(request.get(KEY_ELEMENT, &"")))
+	# ADR 0885: the intensity factor scales the MAGNITUDE, the duration factor the TIME.
+	# Parity is `1.0` on both, so a request with no split channels authored writes the
+	# same status the pre-split code wrote — the copy is additive at its baseline.
+	var potency := (
+		maxf(
+			_finite(_number(request.get(KEY_POTENCY, 0.0))),
+			potency_of(attacker, tuning, _id_of(request.get(KEY_ELEMENT, &"")))
+		)
+		* maxf(0.0, _finite(intensity_net))
 	)
-	var effect := _status(status_id, request, potency, tuning)
+	var effect := _status(status_id, request, potency, tuning, duration_net)
 	if effect == null:
 		return _refused(REFUSE_UNWRITABLE)
 	var answer: Variant = target.call(&"add_status", effect)
@@ -619,10 +670,64 @@ static func _written(
 		&"chance": chance,
 		&"resist": resist,
 		&"potency": potency,
+		&"intensity_net": maxf(0.0, _finite(intensity_net)),
+		&"duration_net": maxf(0.0, _finite(duration_net)),
 	}
 
 
 # --- internals -----------------------------------------------------------------
+
+
+## The immunity tags off a request, or an empty list. A non-array key and non-name entries
+## are dropped rather than crashing a hit that has already spent its damage.
+static func _tags_of(request: Dictionary) -> Array:
+	var raw: Variant = request.get(KEY_IMMUNITY_TAGS, [])
+	if not (raw is Array):
+		return []
+	var out: Array = []
+	for entry in raw:
+		if entry is StringName or entry is String:
+			out.append(StringName(entry))
+	return out
+
+
+## ADR 0885's net factor for one potency axis: `clampf(1 + delta / scale, min, max)`, where
+## `delta` is the attacker's channel total minus the defender's `*Reduction` total, and
+## each declared tag's `status.immuneReduction.<tag>` multiplies `(1 - reduction)` in —
+## Keepverse's §6: a partial immunity blunts the status overall, never one axis
+## selectively. A non-positive scale reads parity, exactly like the gate's own.
+static func _net_factor(
+	attacker: Actor,
+	target: Actor,
+	tuning: CombatTuning,
+	status_id: StringName,
+	kind: StringName,
+	prefix: String,
+	reduction_prefix: String,
+	tags: Array
+) -> float:
+	if tuning == null:
+		return 1.0
+	var delta := _channel_total(attacker, prefix, status_id, kind, &"")
+	delta -= _channel_total(target, reduction_prefix, status_id, kind, &"")
+	var scale := _finite(tuning.status_net_factor_scale)
+	var net := 1.0
+	if scale > 0.0:
+		net = 1.0 + delta / scale
+	var low := _finite(tuning.status_min_net_factor)
+	var high := _finite(tuning.status_max_net_factor)
+	if high < low:
+		high = low
+	net = clampf(net, low, high)
+	if tuning.status_immune_reduction_prefix != "":
+		for tag in tags:
+			var reduction := clampf(
+				_stat(target, StringName(tuning.status_immune_reduction_prefix + String(tag))),
+				0.0,
+				1.0
+			)
+			net *= 1.0 - reduction
+	return maxf(0.0, net)
 
 
 ## The `REQUEST_KEY` dictionary off `ctx.data`, or `{}`. Read through `get()` and
@@ -676,11 +781,18 @@ static func _substream(
 ## Returns null only if `StatusEffect` cannot be constructed at all, which is a real
 ## breakage and is reported as one rather than swallowed.
 static func _status(
-	status_id: StringName, request: Dictionary, potency: float, tuning: CombatTuning
+	status_id: StringName,
+	request: Dictionary,
+	potency: float,
+	tuning: CombatTuning,
+	duration_net: float = 1.0
 ) -> RefCounted:
 	var duration := _finite(_number(request.get(KEY_DURATION, 0.0)))
 	if duration <= 0.0 and tuning != null:
 		duration = _finite(tuning.status_default_duration)
+	# ADR 0885: the duration factor scales the TIME; zero is still a constructible
+	# effect, because `StatusEffect` owns what a zero duration means.
+	duration *= maxf(0.0, _finite(duration_net))
 	var effect := StatusEffect.new(status_id, duration)
 	if effect == null:
 		return null

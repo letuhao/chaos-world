@@ -943,6 +943,7 @@ static func _stage_status_request(ctx: AttackContext, technique: Variant) -> voi
 				"id": status_id,
 				"element": element,
 				"kind": &"" if def == null else def.kind,
+				"immunity_tags": [] if def == null else def.immunity_tags,
 				"chance": gate,
 				"scope": StatusApply.SCOPE_COMBAT,
 			}

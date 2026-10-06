@@ -206,6 +206,11 @@ const DURATION_FOREVER := -1.0
 @export var magnitude_cap: float = 0.0
 @export var tick_interval: float = 1.0
 @export var mitigation_tags: Array[StringName] = []
+## ADR 0885. The immunity tags this status is answered by: a defender whose
+## `status.immune.<tag>` reaches `1.0` refuses it outright, and each of the defender's
+## `status.immuneReduction.<tag>` channels blunts both potency net factors. Empty means
+## no tag answers it — the same default Keepverse ships on every status in its catalogue.
+@export var immunity_tags: Array[StringName] = []
 @export var payload: Dictionary = {}
 
 

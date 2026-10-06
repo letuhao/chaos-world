@@ -272,6 +272,25 @@ extends Resource
 ## silently answering with the wrong number — which is the failure this indirection is
 ## guarding against, not enabling.
 @export var status_defense_stat: String = "status_defense"
+## ADR 0885. The FOUR potency-split prefixes, read through `StatusApply._channel_total`:
+## `status.intensity.` + `status.intensityReduction.` scale how HARD a status lands,
+## `status.duration.` + `status.durationReduction.` how LONG it lasts. Attacker terms and
+## defender terms, one flat delta each — Keepverse's Phase 2 split.
+@export var status_intensity_prefix: String = ""
+@export var status_intensity_reduction_prefix: String = ""
+@export var status_duration_prefix: String = ""
+@export var status_duration_reduction_prefix: String = ""
+## ADR 0885. The immunity tags: `status.immune.<tag>` at `>= 1.0` refuses the status
+## outright, and `status.immuneReduction.<tag>` (clamped `0..1`) blunts BOTH potency net
+## factors — Keepverse's §6 "partial immunity scales both axes".
+@export var status_immune_prefix: String = ""
+@export var status_immune_reduction_prefix: String = ""
+## ADR 0885. `net = clampf(1 + delta / status_net_factor_scale, min, max)`: parity reads
+## `1.0`, the clamps are OUTPUT bounds (ADR 0200's rule), and a non-positive scale reads
+## parity rather than dividing. Unmeasured placeholders; the balance pass owns the values.
+@export var status_net_factor_scale: float = 0.0
+@export var status_min_net_factor: float = 0.0
+@export var status_max_net_factor: float = 0.0
 ## ADR 0884. The authored prefixes of the status POWER/RESIST channels, read by S12's
 ## gate: `status.power.omni` + `status.power.<kind>` + `status.power.<status_id>` on the
 ## attacker, and the `status.resist.` counterparts (plus `status.resist.<element>`) on
