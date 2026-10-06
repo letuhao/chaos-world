@@ -13,6 +13,12 @@ var _provider_cache: Dictionary = {}
 var _provider_version: int = -1
 var _version: int = 0
 var _dirty: bool = true
+## The aptitude layer (ADR 0881/0882): points per aptitude id, resolved by
+## `AptitudeTable`'s matrix into flat contributions on the channels its edges name.
+## Separate from `_base` on purpose — an aptitude is a SOURCE, never a readable stat.
+var _aptitudes: Dictionary = {}
+## The ladder value `P(theta)` a MAGNITUDE edge scales by; pushed by `RealmScaling`.
+var _aptitude_ladder: float = 1.0
 
 
 func _init(base: Dictionary = {}) -> void:
@@ -37,6 +43,44 @@ func base_dict() -> Dictionary:
 
 func base_ref() -> Dictionary:
 	return _base
+
+
+## Set one aptitude's points. The store is deliberately a dumb dict: an id outside
+## `Aptitude.all_ids()` resolves nothing (the matrix's own share rule), and nothing here
+## is user-picked — the three majors' resolution writes these.
+func set_aptitude(id: StringName, points: float) -> void:
+	_aptitudes[id] = points
+	mark_dirty()
+
+
+## Replace the whole aptitude store, the shape `RealmScaling` and the majors use.
+func set_aptitudes(points: Dictionary) -> void:
+	_aptitudes = points.duplicate()
+	mark_dirty()
+
+
+func aptitude(id: StringName) -> float:
+	return float(_aptitudes.get(id, 0.0))
+
+
+func aptitude_points() -> Dictionary:
+	return _aptitudes.duplicate()
+
+
+## The ladder value a MAGNITUDE edge scales by: the actor's own realm power, PUSHED by
+## `RealmScaling.apply` — never computed here, because `ActorStats` does not know which
+## realm an actor stands in. `1.0` is the neutral, and a non-finite or non-positive value
+## reads as the neutral rather than poisoning every magnitude edge.
+func set_aptitude_ladder(value: float) -> void:
+	var ladder := value if is_finite(value) and value > 0.0 else 1.0
+	if is_equal_approx(ladder, _aptitude_ladder):
+		return
+	_aptitude_ladder = ladder
+	mark_dirty()
+
+
+func aptitude_ladder() -> float:
+	return _aptitude_ladder
 
 
 func set_context(context: StatContext) -> void:
@@ -131,6 +175,7 @@ func _ensure_providers() -> void:
 func _recompute() -> void:
 	_derived.clear()
 	var buckets := _buckets()
+	_fold_aptitudes(buckets)
 
 	for id in _base.keys():
 		_put(id, float(_base[id]), buckets)
@@ -317,6 +362,28 @@ func _recompute() -> void:
 	for id in buckets.keys():
 		if not _derived.has(id):
 			_put(id, 0.0, buckets)
+
+
+## ADR 0882. What an actor has BUILT, resolved by the matrix and injected as a FLAT
+## bucket BEFORE any `_put` runs, so the contribution enters the SAME
+## `(base + flat) * (1 + percent) * mult` formula every other source does — exactly
+## once, never double-stacked on a channel that also has an attribute formula.
+##
+## An actor with NO aptitudes resolves nothing AND loads nothing: every pre-aptitude
+## actor is byte-identical to the tree before this wire existed.
+func _fold_aptitudes(buckets: Dictionary) -> void:
+	if _aptitudes.is_empty():
+		return
+	var table := AptitudeTable.shipped()
+	if table == null:
+		return
+	var contributions := AptitudeMatrix.resolve(
+		table.to_edges(), _aptitudes, table.share_exponent, table.contest_span, _aptitude_ladder
+	)
+	for id in contributions.keys():
+		var b: Dictionary = buckets.get(id, {})
+		b["flat"] = float(b.get("flat", 0.0)) + float(contributions[id])
+		buckets[id] = b
 
 
 func _put(id: StringName, base_value: float, buckets: Dictionary) -> void:

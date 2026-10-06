@@ -1,0 +1,48 @@
+[gd_resource type="Resource" script_class="AptitudeTable" load_steps=2 format=3]
+
+; The seed aptitude matrix (ADR 0882). One row per edge:
+; {channel, source, k, mode}. CONTEST rows are ladder-free; MAGNITUDE rows read the
+; actor's ladder value (its realm power, pushed by RealmScaling) — and a MAGNITUDE row
+; must never target a RealmScaling.SCALED_STATS channel, which the ladder already
+; scales (tests/core/test_aptitude_table.gd refuses it).
+;
+; The coefficients are an INITIAL AUTHORED PASS, not balance: retune by editing here.
+
+[ext_resource type="Script" path="res://src/core/aptitude_table.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+edge_rows = Array[Dictionary]([
+{"channel": &"attack_physical", "source": &"might", "k": 0.4, "mode": "contest"},
+{"channel": &"attack_spiritual", "source": &"might", "k": 0.4, "mode": "contest"},
+{"channel": &"amplification", "source": &"might", "k": 0.2, "mode": "magnitude"},
+{"channel": &"defense_physical", "source": &"fortitude", "k": 0.4, "mode": "contest"},
+{"channel": &"defense_spiritual", "source": &"fortitude", "k": 0.4, "mode": "contest"},
+{"channel": &"absorption", "source": &"fortitude", "k": 0.2, "mode": "magnitude"},
+{"channel": &"damage_reduction", "source": &"fortitude", "k": 0.05, "mode": "magnitude"},
+{"channel": &"shield.capacity", "source": &"vigor", "k": 0.3, "mode": "magnitude"},
+{"channel": &"shield.regen", "source": &"vigor", "k": 0.02, "mode": "magnitude"},
+{"channel": &"shield.toughness", "source": &"vigor", "k": 0.05, "mode": "magnitude"},
+{"channel": &"parry.break", "source": &"onslaught", "k": 0.008, "mode": "contest"},
+{"channel": &"block.break", "source": &"onslaught", "k": 0.008, "mode": "contest"},
+{"channel": &"evasion", "source": &"agility", "k": 0.008, "mode": "contest"},
+{"channel": &"attack_speed", "source": &"agility", "k": 0.05, "mode": "contest"},
+{"channel": &"crit_resist", "source": &"composure", "k": 0.008, "mode": "contest"},
+{"channel": &"crit_resist_damage", "source": &"composure", "k": 0.05, "mode": "contest"},
+{"channel": &"penetration.rate", "source": &"pierce", "k": 0.2, "mode": "magnitude"},
+{"channel": &"shield.pen", "source": &"pierce", "k": 0.1, "mode": "magnitude"},
+{"channel": &"max_qi", "source": &"focus", "k": 0.3, "mode": "contest"},
+{"channel": &"qi_regen", "source": &"focus", "k": 0.05, "mode": "magnitude"},
+{"channel": &"qi_cost_reduction", "source": &"focus", "k": 0.02, "mode": "contest"},
+{"channel": &"parry.rate", "source": &"bulwark", "k": 0.006, "mode": "contest"},
+{"channel": &"block.rate", "source": &"bulwark", "k": 0.006, "mode": "contest"},
+{"channel": &"parry.strength", "source": &"bulwark", "k": 0.2, "mode": "contest"},
+{"channel": &"block.strength", "source": &"bulwark", "k": 0.2, "mode": "contest"},
+{"channel": &"reflect.rate", "source": &"retribution", "k": 0.006, "mode": "contest"},
+{"channel": &"reflect.damage", "source": &"retribution", "k": 0.05, "mode": "contest"},
+{"channel": &"accuracy", "source": &"precision", "k": 0.008, "mode": "contest"},
+{"channel": &"crit_chance", "source": &"ferocity", "k": 0.008, "mode": "contest"},
+{"channel": &"crit_damage", "source": &"ferocity", "k": 0.1, "mode": "contest"},
+])
+share_exponent = 1.0
+contest_span = 1.0

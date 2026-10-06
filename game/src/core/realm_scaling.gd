@@ -71,8 +71,15 @@ static func apply(actor: Actor) -> void:
 	actor.stats.remove_modifiers_from(SOURCE)
 	var realm := highest_realm(actor)
 	if realm == null:
+		# ADR 0882: the aptitude ladder follows the same answer as the modifiers —
+		# no path, no realm, the neutral.
+		actor.stats.set_aptitude_ladder(1.0)
 		return
 	var power := realm.power
+	# ADR 0882: the ONE push of the aptitude ladder, and this function already runs at
+	# breakthrough (`core/breakthrough.gd`), which is one of the two stages the aptitude
+	# layer re-resolves at. A MAGNITUDE edge reads this; a CONTEST edge never does.
+	actor.stats.set_aptitude_ladder(power)
 	for id in SCALED_STATS:
 		actor.stats.add_modifier(StatModifier.new(id, Stat.Op.MULT, power, SOURCE))
 
