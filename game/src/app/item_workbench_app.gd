@@ -72,6 +72,8 @@ const ROUTE_LOADING := &"loading"
 ## The settings page (menu slice): difficulty presets with the root's own
 ## select seam.
 const ROUTE_SETTINGS := &"settings"
+## The save menu (saves slice): every journey with load and erase verbs.
+const ROUTE_SAVE := &"save"
 const ROUTE_SET_BONUS := &"set_bonus"
 
 ## The soul and hearth page. `soul` and `save` are not (and for `save` must never be)
@@ -534,8 +536,8 @@ func _world_store() -> SaveStore:
 ## Returns `{ok, reason, recovered, generation}`. **A corrupt primary recovers the backup
 ## silently** — the player has no backup choice to make, so a dialog reporting an error they
 ## cannot act on would be noise — while `recovered` and `reason` stay observable to a probe.
-func restore_actor() -> Dictionary:
-	var restored := SaveApi.restore()
+func restore_actor(slot: StringName = &"") -> Dictionary:
+	var restored := SaveApi.restore(slot)
 	if not bool(restored.get("ok", false)):
 		# A new game, not an error. The caller builds a fresh hero and the shell plays on.
 		return {
@@ -807,6 +809,17 @@ func adopt_actor(body: Actor) -> void:
 	_actor = body
 	# The ONE attach list, shared verbatim with the fresh build and the restore.
 	_attach_body_modules(body)
+	_rebind_live_body(body)
+
+
+## Point every loop, fold, seam, program and screen at `body`, which already
+## carries its modules. Split out of `adopt_actor` so loading a journey reuses
+## the identical rebind instead of growing a second one: two rebinds is how a
+## future binding gets forgotten in one of them, which is the failure the
+## method above exists to prevent. The attach list stays OUT — a rebirth mounts
+## fresh modules while a load keeps the payload `restore_actor` mounted, and
+## sharing that half would empty a loaded hero's bag.
+func _rebind_live_body(body: Actor) -> void:
 	_status_loop = StatusLoop.new(body)
 	# Through `adopt_world`, not a bare assignment: the fresh fold's total starts at zero,
 	# and the autosave's `_periods_seen` must reset with it or the first
@@ -892,6 +905,51 @@ func _boot_open(route_id: StringName) -> bool:
 func _quit_game() -> Dictionary:
 	get_tree().quit()
 	return {"ok": true, "reason": ""}
+
+
+## Every journey with its state, for the save menu. One row per roster slot:
+## the module's summary plus whether it is the live one. Read-only; loading
+## and erasing are the verbs below.
+func list_slots() -> Array:
+	var out: Array = []
+	for slot in SaveApi.slots():
+		var row := SaveApi.slot_summary(StringName(slot))
+		row["is_live"] = StringName(slot) == SaveApi.live_slot()
+		out.append(row)
+	return out
+
+
+## Load `slot`: make its journey live and stand its hero where the save says.
+## Mirrors the restored half of `_ready` — publish that slot's world, rebuild
+## its body with the same attach list, adopt it into the creation program so
+## the menu answers about the right hero, and go home. Refuses an unknown
+## slot and an empty one by name before moving anything.
+func load_slot(slot: StringName) -> Dictionary:
+	if not SavePaths.is_slot(slot):
+		return {"ok": false, "reason": "unknown_slot", "slot": String(slot)}
+	if not SaveApi.exists(slot):
+		return {"ok": false, "reason": "empty_slot", "slot": String(slot)}
+	var set := SaveApi.set_live_slot(slot)
+	if not bool(set.get("ok", false)):
+		return {"ok": false, "reason": String(set.get("reason", "")), "slot": String(slot)}
+	var published := SaveApi.publish_world(slot)
+	if not bool(published.get("ok", false)):
+		return {"ok": false, "reason": String(published.get("reason", "")), "slot": String(slot)}
+	var outcome := restore_actor(slot)
+	if not bool(outcome.get("ok", false)):
+		return {"ok": false, "reason": String(outcome.get("reason", "")), "slot": String(slot)}
+	_recovered_from_save = true
+	if _creation != null:
+		_creation.adopt(_actor)
+	_rebind_live_body(_actor)
+	navigate_to(ScreenRoutes.ROOT_ID)
+	return {"ok": true, "reason": "", "slot": String(slot)}
+
+
+## Forget `slot`'s files. The module refuses unknown slots and the live
+## journey; this forwards its verdict verbatim.
+func erase_slot(slot: StringName) -> Dictionary:
+	return SaveApi.erase(slot)
 
 
 ## Every route scene, as plain paths. What the loading walk preloads: the
@@ -1368,6 +1426,19 @@ func _bind_route_screen(route_id: StringName, screen: Control) -> void:
 			# root's own verb because `select` takes the bound actor.
 			screen.call("setup", _actor)
 			screen.call("bind_difficulty", Callable(self, "select_difficulty"))
+		ROUTE_SAVE:
+			# THE ARM THAT MAKES JOURNEYS LOADABLE AND FORGETTABLE (ADR 0903).
+			# `ui/` may not name the `save` module, so list, load and erase
+			# all arrive as Callables off this root. A screen mounted without
+			# this arm refuses every press by name instead of calling into
+			# void Callables.
+			screen.call("setup", _actor)
+			screen.call(
+				"bind_save",
+				Callable(self, "list_slots"),
+				Callable(self, "load_slot"),
+				Callable(self, "erase_slot")
+			)
 		ROUTE_LOADING:
 			# ADR 0901. The screen preloads every route scene; the art layers
 			# hang here so a missing file degrades plate by plate to the dark

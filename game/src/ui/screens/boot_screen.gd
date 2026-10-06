@@ -39,6 +39,7 @@ const NO_QUIT_SEAM := "no_quit_seam"
 var _status: Label = null
 var _continue_button: Button = null
 var _new_game_button: Button = null
+var _saves_button: Button = null
 var _settings_button: Button = null
 var _credits_button: Button = null
 var _quit_button: Button = null
@@ -209,6 +210,8 @@ func _render() -> void:
 		_continue_button.disabled = not can_continue()
 	if _new_game_button != null:
 		_new_game_button.disabled = not can_new_game()
+	if _saves_button != null:
+		_saves_button.disabled = not (_actor != null and _on_open.is_valid())
 	if _settings_button != null:
 		_settings_button.disabled = not (_actor != null and _on_open.is_valid())
 	if _credits_button != null:
@@ -222,6 +225,7 @@ func _bind_nodes() -> void:
 	_status = get_node_or_null("%StatusLabel") as Label
 	_continue_button = get_node_or_null("%ContinueButton") as Button
 	_new_game_button = get_node_or_null("%NewGameButton") as Button
+	_saves_button = get_node_or_null("%SavesButton") as Button
 	_settings_button = get_node_or_null("%SettingsButton") as Button
 	_credits_button = get_node_or_null("%CreditsButton") as Button
 	_quit_button = get_node_or_null("%QuitButton") as Button
@@ -229,6 +233,8 @@ func _bind_nodes() -> void:
 		_continue_button.pressed.connect(_on_continue_pressed)
 	if _new_game_button != null and not _new_game_button.pressed.is_connected(_on_new_game_pressed):
 		_new_game_button.pressed.connect(_on_new_game_pressed)
+	if _saves_button != null and not _saves_button.pressed.is_connected(_on_saves_pressed):
+		_saves_button.pressed.connect(_on_saves_pressed)
 	if _settings_button != null and not _settings_button.pressed.is_connected(_on_settings_pressed):
 		_settings_button.pressed.connect(_on_settings_pressed)
 	if _credits_button != null and not _credits_button.pressed.is_connected(_on_credits_pressed):
@@ -243,6 +249,10 @@ func _on_continue_pressed() -> void:
 
 func _on_new_game_pressed() -> void:
 	act_new_game()
+
+
+func _on_saves_pressed() -> void:
+	act_open(&"save")
 
 
 func _on_settings_pressed() -> void:

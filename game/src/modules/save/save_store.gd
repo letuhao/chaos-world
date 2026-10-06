@@ -69,12 +69,22 @@ func replace_world(world: Dictionary) -> void:
 # --- Disk -------------------------------------------------------------------
 
 
-## Write `envelope` as the next generation of the primary slot.
+## Write `envelope` as the next generation of `slot`.
 ##
 ## Returns `{ok, reason, generation}` where a failure NAMES itself rather than returning an
 ## empty reason: a swallowed failure here means the player loses an unbounded span and never
 ## learns, which is the failure this return shape exists to prevent.
-static func persist(envelope: Dictionary, generation: int) -> Dictionary:
+##
+## `slot` defaults to the primary paths, so every existing caller keeps its behavior. Each
+## slot rotates through its OWN files (ADR 0903): the previous primary of THAT slot becomes
+## its backup, and a crash mid-write costs that slot's current save, never another journey.
+static func persist(
+	envelope: Dictionary, generation: int, slot: StringName = &"primary"
+) -> Dictionary:
+	var paths := SavePaths.for_slot(slot)
+	var primary: String = paths["primary"]
+	var backup: String = paths["backup"]
+	var temp: String = paths["temp"]
 	# 1. The directory first, because a write into a missing directory fails on some platforms
 	# and succeeds silently losing the file on others.
 	if not DirAccess.dir_exists_absolute(SavePaths.DIR):
@@ -88,25 +98,35 @@ static func persist(envelope: Dictionary, generation: int) -> Dictionary:
 		return {"ok": false, "reason": "unserializable", "generation": generation}
 	# 3. Rotate. The previous primary becomes the backup, and the OLD backup is dropped — one
 	# deep, which is all the recovery path claims to be.
-	if FileAccess.file_exists(SavePaths.PRIMARY):
-		var rotated := DirAccess.rename_absolute(SavePaths.PRIMARY, SavePaths.BACKUP)
+	if FileAccess.file_exists(primary):
+		var rotated := DirAccess.rename_absolute(primary, backup)
 		if rotated != OK:
 			return {"ok": false, "reason": "rotate_failed", "generation": generation}
 	# 4. Write the temp file, closed before the rename. `store_string` without a close leaves the
 	# bytes in a buffer, and a rename over an unflushed file promotes an empty save.
-	var file := FileAccess.open(SavePaths.TEMP, FileAccess.WRITE)
+	var file := FileAccess.open(temp, FileAccess.WRITE)
 	if file == null:
 		return {"ok": false, "reason": "no_temp", "generation": generation}
 	file.store_string(text)
 	file.flush()
 	file.close()
 	# 5. Promote. This is the only step that makes the new generation the live save.
-	var promoted := DirAccess.rename_absolute(SavePaths.TEMP, SavePaths.PRIMARY)
+	var promoted := DirAccess.rename_absolute(temp, primary)
 	if promoted != OK:
 		# No retry, and the temp file is left where it is: a half-recovered write is how one bad
 		# write becomes two. The backup still holds a complete generation, and `restore` reads it.
 		return {"ok": false, "reason": "rename_failed", "generation": generation}
 	return {"ok": true, "reason": "", "generation": generation}
+
+
+## The parsed envelope of `slot` with backup fallback, or `{}` when neither reads.
+## The temp file is never read, in any slot.
+static func read_envelope(slot: StringName = &"primary") -> Dictionary:
+	var paths := SavePaths.for_slot(slot)
+	var primary := _read(String(paths["primary"]))
+	if not primary.is_empty():
+		return primary
+	return _read(String(paths["backup"]))
 
 
 ## Read the live slot, falling back to the backup when the primary cannot be read.
@@ -115,42 +135,54 @@ static func persist(envelope: Dictionary, generation: int) -> Dictionary:
 ## reporting an error they cannot act on would be noise; `item_state_store.gd` sets the same
 ## precedent, that an unreadable file reads as recoverable rather than as an error. The caller
 ## still learns: `recovered` is true and `reason` names what happened.
-static func restore() -> Dictionary:
-	var primary := _read(SavePaths.PRIMARY)
-	if not primary.is_empty():
-		return {"ok": true, "envelope": primary, "recovered": false, "reason": ""}
-	var backup := _read(SavePaths.BACKUP)
-	if not backup.is_empty():
+static func restore(slot: StringName = &"primary") -> Dictionary:
+	var envelope := read_envelope(slot)
+	if envelope.is_empty():
+		return {
+			"ok": false,
+			"envelope": {},
+			"recovered": false,
+			"reason": "no_readable_save",
+		}
+	var paths := SavePaths.for_slot(slot)
+	if _read(String(paths["primary"])).is_empty():
 		return {
 			"ok": true,
-			"envelope": backup,
+			"envelope": envelope,
 			"recovered": true,
 			"reason": "primary_unreadable",
 		}
-	return {
-		"ok": false,
-		"envelope": {},
-		"recovered": false,
-		"reason": "no_readable_save",
-	}
+	return {"ok": true, "envelope": envelope, "recovered": false, "reason": ""}
 
 
-## Whether the primary slot holds a readable save. What a new-game flow asks, instead of
-## listing slots — there is nothing to choose.
-static func exists() -> bool:
-	return not _read(SavePaths.PRIMARY).is_empty()
+## Whether `slot` holds a readable save.
+static func exists(slot: StringName = &"primary") -> bool:
+	return not read_envelope(slot).is_empty()
 
 
 ## The envelope version currently on disk, or 0 when there is none.
-static func envelope_version() -> int:
-	var envelope := _read(SavePaths.PRIMARY)
-	return int(envelope.get("envelope_version", 0))
+static func envelope_version(slot: StringName = &"primary") -> int:
+	return int(read_envelope(slot).get("envelope_version", 0))
 
 
 ## The generation currently on disk, or 0.
-static func generation() -> int:
-	var envelope := _read(SavePaths.PRIMARY)
-	return int(envelope.get("generation", 0))
+static func generation(slot: StringName = &"primary") -> int:
+	return int(read_envelope(slot).get("generation", 0))
+
+
+## Forget a slot: delete its primary, backup and temp files. Returns whether
+## anything was removed, so erasing an empty slot reads as a no-op rather
+## than as a failure.
+static func erase(slot: StringName) -> Dictionary:
+	var paths := SavePaths.for_slot(slot)
+	var removed := false
+	for key in ["primary", "backup", "temp"]:
+		var path := String(paths[key])
+		if FileAccess.file_exists(path):
+			if DirAccess.remove_absolute(path) != OK:
+				return {"ok": false, "reason": "erase_failed", "slot": String(slot)}
+			removed = true
+	return {"ok": true, "reason": "", "slot": String(slot), "erased": removed}
 
 
 ## The parsed envelope at `path`, or `{}` when it is missing or unreadable.

@@ -188,6 +188,14 @@ func test_quit_goes_through_the_root_which_owns_the_tree() -> void:
 	assert_eq(_quit_called, true, "to the root, which is the only layer that may end the process")
 
 
+func test_saves_opens_through_the_roots_own_door() -> void:
+	var screen := _screen()
+	screen.setup(Actor.new())
+	_wired(screen)
+	assert_eq(screen.act_open(&"save"), true, "Saves opens")
+	assert_eq(_opened.has("save"), true, "through the seam like every other menu page")
+
+
 func test_the_nav_bar_hides_while_the_menu_owns_the_screen() -> void:
 	if SeamHarness.live != null:
 		SeamHarness.live.teardown()

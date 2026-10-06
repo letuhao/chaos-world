@@ -431,6 +431,18 @@ const ROUTES: Array[Dictionary] = [
 		"root": false,
 	},
 	{
+		# The save menu (saves slice, ADR 0903). Every journey with load and
+		# erase verbs, all arriving as Callables off the root because `ui/`
+		# may not name the `save` module.
+		"id": &"save",
+		"node": "SaveScreen",
+		"label": "Saves",
+		"hint": "Every journey, and the state it is in.",
+		"scene": "res://src/ui/screens/save_screen.tscn",
+		"key": "w",
+		"root": false,
+	},
+	{
 		# The loading screen (ADR 0901). It owns the boot window: wallpaper,
 		# weather, and an honest progress bar over the route preload. Last in
 		# tab order with the menu, so every feature route keeps its key.

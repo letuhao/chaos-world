@@ -23,9 +23,9 @@ extends TestCase
 const SOURCE_FILE_FLOOR := 200
 
 ## The census needs a floor of its own, so "no offenders" cannot be reported over an empty
-## population. Deliberately ONE below the measured four: the file scan has a 200-file floor for
-## "the walk covers the tree" and this has a 4-read floor for "the walk found the slot".
-const BACKUP_READER_FLOOR := 3
+## population. ONE below the measured reads: the file scan has a 200-file floor for
+## "the walk covers the tree" and this has a 2-read floor for "the walk found the slot".
+const BACKUP_READER_FLOOR := 2
 
 ## `save/store.gd`'s own private recovery, the one admissible content read. Compared by full
 ## `res://` path rather than by `get_file()`, so a second `save_store.gd` elsewhere in the
@@ -465,11 +465,15 @@ func test_no_shipped_caller_can_name_the_backup_slot() -> void:
 				)
 			)
 	# The census must FIND the readers, or "classified every reader legally" is an empty list.
-	# Measured 2026-10-05: four code sites name the backup in res://src — save_store.gd:92
-	# (rotation write), save_store.gd:122 (private fallback), api.gd:171 (exists probe) and
-	# app/world_ledger_store.gd:343 (exists probe). The floor is ONE below that, so a reader
-	# that stops existing is caught rather than silently shrinking the population the verdict
-	# is read against.
+	# Measured 2026-10-07: two code sites name the backup literally in res://src —
+	# api.gd (`backup_present` probe) and app/world_ledger_store.gd (exists probe).
+	# Two more readers exist but resolve per-slot through `SavePaths.for_slot`
+	# rather than naming the literal: save_store.gd's rotation write and its
+	# private fallback (ADR 0903). They did not become unnecessary; they moved
+	# behind the resolver, which this literal needle cannot see. The floor is
+	# ONE below the literal population, so a reader that stops existing is
+	# caught rather than silently shrinking the population the verdict is read
+	# against.
 	assert_eq(
 		read.size() >= BACKUP_READER_FLOOR,
 		true,

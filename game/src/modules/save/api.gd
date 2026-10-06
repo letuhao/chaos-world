@@ -38,6 +38,9 @@ const WORLD_KEYS := SaveSlot.WORLD_KEYS
 ## The slot every shipped caller names. The backup exists in `SaveStore` and is reachable only
 ## by its own private recovery path.
 const SLOT := &"primary"
+## Every slot the menu may list (ADR 0903). Fixed: no slot id ever comes from
+## player text, so path traversal is impossible by construction.
+const SLOTS: Array[StringName] = [&"primary", &"first", &"second", &"third"]
 
 ## The composition root's clock. Installed rather than created here so the ONE existing frame
 ## driver schedules saves and this module adds no `_process` of its own — a fourth driver fails
@@ -49,6 +52,33 @@ static var clock: SaveClock = SaveClock.new()
 ## store is skipped rather than fabricated.
 static var _stores: Dictionary = {}
 
+## The journey the autosave is currently writing. Installed by the composition
+## root when the player loads another slot; every verb below defaults to it,
+## so all existing callers keep writing primary without naming it. Static like
+## the installed stores, and reset to primary in suite teardown for the same
+## reason: a slot set by one suite is read by the next.
+static var _live_slot: StringName = &"primary"
+
+
+## Point the autosave and every defaulted verb at `slot`. Refuses an unknown
+## slot by name rather than writing somewhere nothing reads back.
+static func set_live_slot(slot: StringName) -> Dictionary:
+	if not SavePaths.is_slot(slot):
+		return {"ok": false, "reason": "unknown_slot", "slot": String(slot)}
+	_live_slot = slot
+	return {"ok": true, "reason": "", "slot": String(slot)}
+
+
+## The journey currently live.
+static func live_slot() -> StringName:
+	return _live_slot
+
+
+## Resolve an explicit slot against the live one. Empty means "whoever is
+## live", so callers that never heard of slots keep their behavior exactly.
+static func _effective(slot: StringName) -> StringName:
+	return slot if slot != &"" else _live_slot
+
 
 ## Write the current world as the next generation of the live slot.
 ##
@@ -56,7 +86,8 @@ static var _stores: Dictionary = {}
 ## world must never become a file. Returns `{ok, reason, generation}` where `reason` names a
 ## failure rather than being empty, because a swallowed failure here loses an unbounded span of
 ## play invisibly.
-static func persist(actor: Actor, difficulty_id: String = "") -> Dictionary:
+static func persist(actor: Actor, difficulty_id: String = "", slot: StringName = &"") -> Dictionary:
+	var target := _effective(slot)
 	var world := _snapshot_world()
 	var payload := actor.to_dict() if actor != null else {}
 	# ## The v6 stamp is written HERE, at the one place that knows both halves.
@@ -68,9 +99,9 @@ static func persist(actor: Actor, difficulty_id: String = "") -> Dictionary:
 	if actor != null and actor.polity_version() < 0:
 		actor.set_polity_version(WorldPolityLedger.SCHEMA_VERSION)
 		payload = actor.to_dict()
-	var generation := SaveStore.generation() + 1
+	var generation := SaveStore.generation(target) + 1
 	var envelope := SaveSlot.build(payload, world, difficulty_id, generation)
-	var outcome := SaveStore.persist(envelope, generation)
+	var outcome := SaveStore.persist(envelope, generation, target)
 	if bool(outcome["ok"]):
 		clock.record_saved()
 	return outcome
@@ -82,14 +113,53 @@ static func persist(actor: Actor, difficulty_id: String = "") -> Dictionary:
 ## choice to make, so a modal reporting an error they cannot act on would be noise. The caller
 ## still learns — `recovered` is true and `reason` is `primary_unreadable` — and the condition
 ## is asserted in a test rather than shown in a screen.
-static func restore() -> Dictionary:
-	return SaveStore.restore()
+static func restore(slot: StringName = &"") -> Dictionary:
+	return SaveStore.restore(_effective(slot))
 
 
-## Whether a readable live save exists. What a new-game flow asks; there is nothing to choose,
-## so there is no slot list to ask for.
-static func exists() -> bool:
-	return SaveStore.exists()
+## Whether a readable save exists in the effective slot. What a new-game flow
+## asks; the menu lists slots separately through `slot_summary`.
+static func exists(slot: StringName = &"") -> bool:
+	return SaveStore.exists(_effective(slot))
+
+
+## Every slot the menu may list, in display order. The roster is fixed (ADR
+## 0903): no slot id ever comes from player text.
+static func slots() -> Array:
+	var out: Array = []
+	for slot in SavePaths.SLOTS:
+		out.append(String(slot))
+	return out
+
+
+## One slot described without restoring it: `{slot, exists, generation,
+## difficulty, actor_id, display_name}`. A slot list that restored every
+## journey to describe it would be a load screen wearing a menu's clothes.
+static func slot_summary(slot: StringName) -> Dictionary:
+	if not SavePaths.is_slot(slot):
+		return {"slot": String(slot), "exists": false, "reason": "unknown_slot"}
+	var envelope := SaveStore.read_envelope(slot)
+	if envelope.is_empty():
+		return {"slot": String(slot), "exists": false, "generation": 0}
+	var actor := envelope.get("actor", {}) as Dictionary
+	return {
+		"slot": String(slot),
+		"exists": true,
+		"generation": int(envelope.get("generation", 0)),
+		"difficulty": String(envelope.get("difficulty", "")),
+		"actor_id": String(actor.get("id", "")),
+		"display_name": String(actor.get("display_name", "")),
+	}
+
+
+## Forget a slot's files. Refuses an unknown slot and the live journey by
+## name: a menu that deletes what is being played is refused, not crashed on.
+static func erase(slot: StringName) -> Dictionary:
+	if not SavePaths.is_slot(slot):
+		return {"ok": false, "reason": "unknown_slot", "slot": String(slot)}
+	if slot == _live_slot:
+		return {"ok": false, "reason": "live_erase_refused", "slot": String(slot)}
+	return SaveStore.erase(slot)
 
 
 ## Install `store` — any object with `read_ledger()` / `write_ledger(ledger)` — into `key`.
@@ -125,8 +195,8 @@ static func store_for(key: String) -> RefCounted:
 ##
 ## A key with no store installed is skipped and named, not invented: writing a world into
 ## nothing is how a ledger is believed saved and is not.
-static func publish_world() -> Dictionary:
-	var live := _live_envelope()
+static func publish_world(slot: StringName = &"") -> Dictionary:
+	var live := _live_envelope(slot)
 	if live.is_empty():
 		return {"ok": false, "reason": "no_readable_save", "restored": []}
 	# The ONE migration step, run on the way IN. A save this build may not touch is
@@ -199,7 +269,7 @@ static func _snapshot_world() -> Dictionary:
 	return world
 
 
-## The live envelope, or `{}` when there is no readable save.
-static func _live_envelope() -> Dictionary:
-	var restored := SaveStore.restore()
+## The effective slot's envelope, or `{}` when there is no readable save.
+static func _live_envelope(slot: StringName = &"") -> Dictionary:
+	var restored := SaveStore.restore(_effective(slot))
 	return restored.get("envelope", {}) as Dictionary

@@ -57,13 +57,20 @@ text = "Continue"
 unique_name_in_owner = true
 layout_mode = 2
 focus_neighbor_top = NodePath("../ContinueButton")
-focus_neighbor_bottom = NodePath("../SettingsButton")
+focus_neighbor_bottom = NodePath("../SavesButton")
 text = "New Game"
+
+[node name="SavesButton" type="Button" parent="Center/Menu"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_neighbor_top = NodePath("../NewGameButton")
+focus_neighbor_bottom = NodePath("../SettingsButton")
+text = "Saves"
 
 [node name="SettingsButton" type="Button" parent="Center/Menu"]
 unique_name_in_owner = true
 layout_mode = 2
-focus_neighbor_top = NodePath("../NewGameButton")
+focus_neighbor_top = NodePath("../SavesButton")
 focus_neighbor_bottom = NodePath("../CreditsButton")
 text = "Settings"
 

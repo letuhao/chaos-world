@@ -1,0 +1,50 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://src/ui/screens/save_screen.gd" id="1"]
+[ext_resource type="Theme" path="res://src/ui/theme/chaos_world_theme.tres" id="2"]
+[ext_resource type="PackedScene" path="res://src/ui/panels/save_slot_row.tscn" id="3"]
+
+[node name="SaveScreen" type="Control"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2")
+script = ExtResource("1")
+
+[node name="Layout" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Layout"]
+layout_mode = 2
+theme_type_variation = &"ScreenTitle"
+text = "Journeys"
+
+[node name="HeaderLabel" type="Label" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"SectionTitle"
+text = "Every journey, and the state it is in."
+
+[node name="SlotRows" type="VBoxContainer" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Slot0" parent="Layout/SlotRows" instance=ExtResource("3")]
+layout_mode = 2
+
+[node name="Slot1" parent="Layout/SlotRows" instance=ExtResource("3")]
+layout_mode = 2
+
+[node name="Slot2" parent="Layout/SlotRows" instance=ExtResource("3")]
+layout_mode = 2
+
+[node name="Slot3" parent="Layout/SlotRows" instance=ExtResource("3")]
+layout_mode = 2
+
+[node name="FooterLabel" type="Label" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MetaLabel"
+text = ""
