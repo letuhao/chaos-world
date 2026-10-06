@@ -24,24 +24,16 @@ extends RefCounted
 ## which is the shape `CombatProbability.RollSuccess` uses for a `p <= 0` or
 ## `p >= 1` chance, and is why a fully-saturated roll is free.
 ##
-## ## Rates are a RATIO of two magnitudes (ADR 0215)
+## ## Rates are a FLAT DELTA (ADR 0877)
 ##
-## `rate = offense / (offense + resist)`. ADR 0068 wrote
-## `clampf(maxf(0.0, rate - resist) / rate_scale, 0.0, 1.0)` here and refused a sigmoid
-## for one reason: "a sigmoid returns 0.5 at parity, so an actor with ZERO parry stat
-## would parry half the time — a default nobody chose". **The ratio answers that objection
-## by construction**: at parity `o == d` and `o / (o + d) == 0.5`, and that `0.5` is not
-## a curve's midpoint imposed on an unchosen default — it is the definition of two equal
-## shares. A parity that means `0.5` is the property ADR 0215 exists to buy; the shape
-## that forbade it forbade the right thing for the wrong reason.
-##
-## The absolute difference is what ADR 0215 deletes. Against a constant divisor it
-## saturates: once the gap exceeds a few multiples of `rate_scale` every roll is a
-## certainty, and a R30 cultivator against a R3 one lands every hit, crits every hit and
-## applies every status, because nothing in the formula can say "faster than the eye".
-##
-## `0 / (0 + 0)` is `0.0` rather than `NaN`, for [method CombatStats.contest]'s reason:
-## two actors who have invested in neither half contest nothing, and neither lands.
+## `rate = clampf(maxf(0.0, rate - resist) / rate_scale, 0.0, 1.0)` — Keepverse's
+## `RateFromZero`, via [method CombatStats.rate_from_zero]. Equal halves cancel to
+## exactly `0.0`: a defender who matches an attack answers it completely, which is the
+## owner's yin-yang rule and the reason ADR 0877 reverses ADR 0215's ratio. NEITHER half
+## is capped — `1e10` against `1e10` reads `0.0` at any magnitude — and the `[0, 1]` is
+## on the OUTPUT only, because a probability is arithmetic rather than a progression
+## ceiling. A defender who falls behind by `rate_scale` is certain to be hit, dodged,
+## parried or critted; a defender who leads is a wall. That is the intended reading.
 
 ## ## No division in the roll itself
 ##
@@ -96,13 +88,11 @@ func is_clean() -> bool:
 
 ## The three bands from one draw.
 ##
-## `tuning` is read for `avoidance_band_cap` and `rate_scale` only. `p_hit` arrives
-## already resolved by the caller, because the landed-probability contest is between
-## two actors who both intend to act (`accuracy` vs `EVASION`) and that contest has a
-## legitimate sigmoid form this file deliberately does not own. `p_parry` and
-## `p_block` are LINEAR-from-zero rates and arrive already resolved for the same
-## reason: they are read-with-zero-not-means-nothing rates, and `rate()` below is the
-## one place that shape is written.
+## `tuning` is read for `avoidance_band_cap` only. `p_hit`, `p_parry` and `p_block`
+## arrive already resolved by the caller: they are the same flat-delta trigger shape
+## [method CombatStats.rate_from_zero] writes in ONE place, and `rate()` below is the
+## actor-level read of that same formula. No sigmoid is used anywhere here, so an
+## empty band is genuinely a no-op rather than an unchosen `0.5`.
 ##
 ## A null `rng` saturates high: a caller that passes none has declared the roll is not
 ## random, and every attack lands. That keeps the null case a total function instead of
@@ -161,67 +151,26 @@ static func roll(
 	return band
 
 
-## A rate contest, as a RATIO of two magnitudes: `offense / (offense + resist)`
-## (ADR 0215).
+## A rate contest, as the flat delta [method CombatStats.rate_from_zero] defines
+## (ADR 0877): `clampf(maxf(0.0, rate_value - resist) / tuning.rate_scale, 0, 1)`.
 ##
-## ## Why the argument order stayed and the FORM did not
+## ## The call order: the RAISE half first, the SUPPRESS half second
 ##
-## The caller passes the DEFENDER's rate first and the ATTACKER's resist second, which is
-## `CombatBand.rate_of`'s and `CombatRecoil.bounce`'s existing order and it is preserved so
-## no call site has to be read twice to find a transposed argument. What changed is that
-## `resist` is now the OTHER HALF OF THE SAME QUANTITY — a magnitude the rival invests in —
-## rather than a subtraction term. That is a rename of meaning, not a rename of position,
-## so every existing call site's ARGUMENTS are still in the right order.
+## The caller passes the half that RAISES the outcome first and the half that SUPPRESSES
+## it second, which is `CombatBand.rate_of`'s and `CombatRecoil.bounce`'s existing order
+## and it is preserved so no call site has to be read twice to find a transposed
+## argument. For hit, crit and penetration the raise half is the ATTACKER's; for parry,
+## block and reflect it is the DEFENDER's — the pairs AGENTS.md inverts — so the order
+## is about raise/suppress and never about attacker/defender.
 ##
-## ## The demoted sigmoid, and the rule that keeps it demoted
-##
-## Where a designer wants a contest more decisive than the ratio's plain reading,
-## `sigmoid(k * (offense - resist) / (offense + resist))` is available and
-## [method decisive] implements it. **`k` is the only dial and it is a NUMBER IN DATA**;
-## what may never come back is the bare `sigmoid(scale * (offense - resist))`, whose
-## `scale` divides nothing and therefore saturates. The difference is the denominator:
-## `(o - d) / (o + d)` is scale-free, `(o - d)` is not.
-##
-## A null `tuning` saturates high for the same reason a null `rng` does: the caller has
-## supplied nothing, and a silent `0.5` would be the one value nobody chose.
+## A null `tuning` answers `0.0`: without a scale there is no exchange rate, and this
+## module's degenerate default is meant to be VISIBLY broken rather than a certainty
+## nobody chose — the same read [method CombatStats.rate_from_zero] gives a
+## non-positive scale.
 static func rate(rate_value: float, resist: float, tuning: CombatTuning = null) -> float:
 	if tuning == null:
-		return 1.0
-	return CombatStats.contest(rate_value, resist)
-
-
-## The demoted sigmoid, available and NOT the default: `sigmoid(k * (o - d) / (o + d))`.
-##
-## `k` is read from [member CombatTuning.contest_steepness] — DATA, never a literal here —
-## and `0.0` is the degenerate default meaning "no steepness chosen", which reads as the
-## plain ratio rather than as a curve. That is what makes the default shipping shape the
-## ratio and the decisive shape an explicit, authored opt-in.
-##
-## ## Why this is NOT what [method rate] does, stated as the ADR's own rule
-##
-## ADR 0215: "The sigmoid is not deleted, it is **demoted**: where a designer wants a
-## decisive contest that approaches the ratio's reading, `sigmoid(k · (offense - defense) /
-## (offense + defense))` is available, and the `· (o + d)` denominator is what keeps it
-## scale-free. A bare sigmoid over `(o - d)` is the defect this exists to remove and must
-## not be reintroduced."
-##
-## Nothing in production reads this yet — `test_a_bare_sigmoid_over_a_difference_is_not
-## _reachable` is the guard that keeps it that way until a `.tres` asks for it.
-static func decisive(rate_value: float, resist: float, tuning: CombatTuning) -> float:
-	var o := maxf(0.0, rate_value if is_finite(rate_value) else 0.0)
-	var d := maxf(0.0, resist if is_finite(resist) else 0.0)
-	var total := o + d
-	if total <= 0.0 or tuning == null:
 		return 0.0
-	var k := _finite(tuning.contest_steepness)
-	if k <= 0.0:
-		return o / total
-	# `e = (o - d) / (o + d)` is strictly inside `(-1, 1)`, so `sigmoid(k * e)` is strictly
-	# inside `(0, 1)` too: the decisive form inherits the plain ratio's non-saturation
-	# rather than giving it up for decisiveness.
-	var edge := (o - d) / total
-	var exponent := clampf(-k * edge, -60.0, 60.0)
-	return 1.0 / (1.0 + exp(exponent))
+	return CombatStats.rate_from_zero(rate_value, resist, tuning.rate_scale)
 
 
 ## [method rate] with `CombatStats`'s neutral default folded in, so a caller that never
@@ -230,10 +179,6 @@ static func decisive(rate_value: float, resist: float, tuning: CombatTuning) -> 
 ## contests nothing" a property of the table instead of of every call site.
 static func rate_of(id: StringName, actor: Actor, tuning: CombatTuning) -> float:
 	return rate(CombatStats.default_of(id) + derived_of(actor, id), 0.0, tuning)
-
-
-static func _finite(value: float) -> float:
-	return value if is_finite(value) else 0.0
 
 
 ## The derived value of `id` on `actor`, or 0.0 for a null actor or a null stat table.

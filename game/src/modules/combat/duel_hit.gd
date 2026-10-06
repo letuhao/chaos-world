@@ -182,7 +182,11 @@ static func _offense(actor: Actor) -> Dictionary:
 		"attack":
 		actor.stats.derived(Stat.ATTACK_PHYSICAL) + actor.stats.derived(Stat.ATTACK_SPIRITUAL),
 		"crit_chance": actor.stats.derived(Stat.CRIT_CHANCE),
-		"crit_damage": actor.stats.derived(Stat.CRIT_DAMAGE),
+		# ADR 0877: the STAT is now the crit BONUS magnitude. This model's profiles were
+		# tuned on a `1.5 +` crit multiplier, so this boundary PRESERVES that reference
+		# (`1.5 + bonus`, byte-identical to the old `1.5 + comprehension * 0.004`) until
+		# the exchange converts to the flat pair, which is its own lane's change.
+		"crit_damage": 1.5 + actor.stats.derived(Stat.CRIT_DAMAGE),
 		"penetration": actor.stats.derived(Stat.PENETRATION),
 	}
 

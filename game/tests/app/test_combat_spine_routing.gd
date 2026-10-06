@@ -210,10 +210,10 @@ func test_a_miss_never_invokes_the_seam_and_spends_nothing() -> void:
 	CombatBoot.install(attacker)
 	var recorder := RecordingMechanism.new()
 	CombatEngineApi.bind_mechanism(attacker, recorder)
-	# S2's band roll with `Stat.EVASION` saturated: core caps EVASION at 0.6 and
-	# `CombatSpine.landed_chance` divides by `rate_scale` 1000, so 0.6 is 0.0006 of
-	# the roll — not enough to force a miss. The forced case is driven through the
-	# spine's own refusal instead: a defender already at zero health.
+	# S2's band roll is `clampf((accuracy - evasion) / rate_scale, 0, 1)` (ADR 0877); a
+	# saturated evasion would force the miss, but this test does not depend on the
+	# contest's balance at all — it drives the refusal through the spine's own check:
+	# a defender already at zero health.
 	var pool: ResourcePool = defender.resource(&"health")
 	pool.change(-pool.maximum)
 	var report := CombatBoot.strike(attacker, defender, SEED)

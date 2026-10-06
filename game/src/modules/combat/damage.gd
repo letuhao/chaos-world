@@ -73,8 +73,10 @@ static func resolve_hit(
 	if not evaded:
 		crit = roll < clampf(float(offense.get("crit_chance", 0.0)), 0.0, 1.0)
 		if crit:
-			# `crit_damage` is a multiplier with a 1.5 baseline, not a bonus, so it
-			# multiplies the share rather than adding to it.
+			# `crit_damage` is a MULTIPLIER (the identity is `1.0`), so it multiplies
+			# the share rather than adding to it. The actor builders bank the stat's
+			# bonus onto this model's `1.5 +` reference (ADR 0877); a boss profile
+			# authors the multiplier directly.
 			share = clampf(share * float(offense.get("crit_damage", 1.0)), MIN_SHARE, 1.0)
 	if evaded:
 		share = 0.0

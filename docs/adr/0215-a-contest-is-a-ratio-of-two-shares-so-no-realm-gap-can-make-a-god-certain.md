@@ -1,6 +1,6 @@
 # 0215 A contest is a ratio of two shares, so no realm gap can make a god certain
 
-- Status: Proposed
+- Status: Superseded by ADR 0877
 - Date: 2026-10-05
 
 ## Context

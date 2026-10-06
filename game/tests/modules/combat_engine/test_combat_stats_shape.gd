@@ -113,12 +113,19 @@ func test_no_combat_id_is_a_core_stat_id() -> void:
 	var core_ids := Stat.BASE_ATTRIBUTES + Stat.RATE_STATS
 	for id in CombatStats.ALL_IDS:
 		assert_eq(core_ids.has(id), false, "%s does not collide with core" % String(id))
+	# `ACCURACY` is the ONE deliberate exception to the probe below, and the exception IS
+	# the point: ADR 0215 declared the id in BOTH layers so the hit pair has two reachable
+	# spellings, and ADR 0877 made CORE derive it (`agility * 0.0015 + 0.005`). The probe
+	# asserts "no other owner reaches a combat id"; a shared id cannot satisfy it and must
+	# not, so the exception is named rather than the probe weakened.
 	var generous := {}
 	for id in Stat.BASE_ATTRIBUTES:
 		generous[id] = 100.0
 	var probe := Actor.new(&"probe", generous)
 	probe.add_resource(ResourcePool.new(&"health", 100.0))
 	for id in CombatStats.ALL_IDS:
+		if id == CombatStats.ACCURACY:
+			continue
 		assert_almost_eq(
 			probe.stats.derived(id),
 			0.0,
@@ -130,6 +137,13 @@ func test_no_combat_id_is_a_core_stat_id() -> void:
 				+ "means core or a provider already owns this string"
 			)
 		)
+	# The exception is LIVE, not inert, and the shared id is one string in both layers.
+	assert_ne(
+		probe.stats.derived(CombatStats.ACCURACY),
+		0.0,
+		"core derives the shared accuracy id (ADR 0877)"
+	)
+	assert_eq(CombatStats.ACCURACY, Stat.ACCURACY, "accuracy is one id in both layers")
 	# And the negative control, so the probe is falsifiable rather than vacuous: the same
 	# actor DOES derive a non-zero for core's own PENETRATION, which is precisely what the
 	# loop above is comparing against. A probe that read 0.0 for everything would otherwise
@@ -140,35 +154,48 @@ func test_no_combat_id_is_a_core_stat_id() -> void:
 # --- the spine reads them -------------------------------------------------------
 
 
-## ## ADR 0215. End to end: a defender who invests in `parry.rate` parries through the
-## band roll, and the reading is a RATIO of two magnitudes.
-##
-## The fixture is rebuilt on the ratio's scale. It used to author `rate_scale * 0.25`
-## (a PERMILLE rate, `250.0`) against nothing and read a quarter — which under
-## `offense / (offense + resist)` is `250 / (250 + 0) == 1.0`, because the resist half was
-## zero and the ratio read certainty. To read a quarter the fixture must author BOTH
-## halves: `parry.break` is the DEFENCE half of the parry contest (`CombatStats.CONTESTS`
-## pairs `PARRY_RATE` with `PARRY_BREAK`), so the defender's parry must stand against its
-## own break investment at `1 : 3`.
-func test_the_spine_reads_a_parry_rate_only_through_the_ratio_contest() -> void:
+## ## ADR 0877. The spine reads parry as a FLAT DELTA: the defender's `parry.rate`
+## against the ATTACKER's `parry.break`, zero at parity, and the suppress slot is the
+## break half — fixing the wiring that read the attacker's own `parry.rate`.
+func test_the_spine_reads_parry_as_a_flat_delta_over_the_break_half() -> void:
+	var scale := _tuning.rate_scale
 	var target := CombatTestKit.actor(&"target")
-	target.stats.add_modifier(CombatStats.rate_modifier(CombatStats.PARRY_RATE, 1.0, &"test"))
-	target.stats.add_modifier(CombatStats.rate_modifier(CombatStats.PARRY_BREAK, 3.0, &"test"))
-	# `CombatBand.rate_of` is the defender-only read: it contests the actor's own rate
-	# against `0.0`, which reads `1.0 / (1.0 + 0.0) == 1.0`. That is correct — an actor
-	# who has invested nothing in the matching half contests nothing against — so the
-	# QUARTER reading has to be asked through [method CombatStats.contest_of], which is
-	# the two-actor form of the same formula.
-	var rate := CombatStats.contest_of(
-		CombatStats.PARRY_RATE, target, CombatStats.PARRY_BREAK, target
+	target.stats.add_modifier(
+		CombatStats.rate_modifier(CombatStats.PARRY_RATE, scale * 0.25, &"test")
 	)
-	assert_almost_eq(rate, 1.0 / 4.0, "1 : 3 parries a quarter of the time, by ratio not by scale")
-	# And the counter-reading is the mirror of it, so the fixture cannot be satisfied by a
-	# formula that just returns the offence half: `3 : 1` is three quarters.
+	# A quarter of the scale of parry above no break reads a quarter.
 	assert_almost_eq(
-		CombatStats.contest_of(CombatStats.PARRY_BREAK, target, CombatStats.PARRY_RATE, target),
-		3.0 / 4.0,
-		"and 3 : 1 is three quarters, so the two halves cannot be transposed"
+		CombatStats.contest_of(
+			CombatStats.PARRY_RATE, target, CombatStats.PARRY_BREAK, target, scale
+		),
+		1.0 / 4.0,
+		"a quarter of the scale of advantage reads a quarter"
+	)
+	# The suppress half is `parry.break`: a break at or above the rate cancels the parry
+	# outright, which is the yin-yang parity the ADR buys.
+	var breaker := CombatTestKit.actor(&"breaker")
+	breaker.stats.add_modifier(
+		CombatStats.rate_modifier(CombatStats.PARRY_BREAK, scale * 0.75, &"test")
+	)
+	assert_almost_eq(
+		CombatStats.contest_of(
+			CombatStats.PARRY_RATE, target, CombatStats.PARRY_BREAK, breaker, scale
+		),
+		0.0,
+		"a break at or above the rate cancels the parry"
+	)
+	# And the attacker's OWN `parry.rate` is NOT the suppress half: the same investment
+	# in `parry.rate` leaves the parry standing, which is the wiring fix.
+	var mimic := CombatTestKit.actor(&"mimic")
+	mimic.stats.add_modifier(
+		CombatStats.rate_modifier(CombatStats.PARRY_RATE, scale * 0.75, &"test")
+	)
+	assert_almost_eq(
+		CombatStats.contest_of(
+			CombatStats.PARRY_RATE, target, CombatStats.PARRY_BREAK, mimic, scale
+		),
+		1.0 / 4.0,
+		"the attacker's own parry rate does not suppress -- only the break half does"
 	)
 	# End to end through the band roll: a quarter rate parries a quarter of the draws,
 	# because the band compares one draw against the rate and nothing else scales it.
@@ -178,16 +205,15 @@ func test_the_spine_reads_a_parry_rate_only_through_the_ratio_contest() -> void:
 		var value := float(index) / 1000.0
 		if (
 			CombatBand
-			. roll(_tuning, 1.0, rate, 0.0, CombatTestKit.CountingGenerator.new([value]))
+			. roll(_tuning, 1.0, 1.0 / 4.0, 0.0, CombatTestKit.CountingGenerator.new([value]))
 			. parried
 		):
 			parried += 1
 		index += 1
 	# The count is a COUNT off the sweep, not the rate restated: the roll parries when
 	# `r >= 1 - p`, so `p == 0.25` parries the draws from `0.75` up and the assertion
-	# follows from the shape. `rate_scale` is no longer read by the roll at all, so
-	# authoring a permille rate here can only ever read `1.0` again.
-	assert_eq(parried, 250, "250 of 1000 draws parried, off the 1 : 3 ratio's quarter")
+	# follows from the shape.
+	assert_eq(parried, 250, "250 of 1000 draws parried, off the quarter rate")
 
 
 func test_an_unstatted_defender_parries_and_blocks_nothing() -> void:

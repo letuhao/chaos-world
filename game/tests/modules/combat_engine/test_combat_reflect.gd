@@ -31,8 +31,8 @@ func test_the_bounce_is_read_from_the_overflow_and_not_from_the_amount() -> void
 	# A partial shield: the bounce is the share of what REACHED health, not of what the
 	# mechanism produced. 100 produced, 60 absorbed, 40 overflow.
 	#
-	# ADR 0215: the thorns reflect at magnitude `1.0` against an unstatted attacker's
-	# `0.0`, which is `1 / (1 + 0) == 1.0`, so a share of `1.0` returns the whole overflow.
+	# ADR 0877: the thorns' `reflect.rate` of `1.0` against a resister's `0.0` reads
+	# `min(1, 1.0 / rate_scale)` — certainty — so the share returns the whole overflow.
 	# The property under test is the OVERFLOW reading, not the rate — and it is asserted
 	# against the share the fixture authors, so a bounce that read `amount` (100.0) instead
 	# of `overflow` (40.0) still fails here.
@@ -52,10 +52,10 @@ func test_the_bounce_is_paid_to_the_attacker_and_not_only_recorded() -> void:
 	# only place in the suite that could have caught it — every other case read the field
 	# and never the attacker's health.
 	#
-	# ADR 0215: `1.0` against an unstatted `0.0` reads `1 / (1 + 0) == 1.0`, so the thorns
-	# return the WHOLE overflow. The assertion is written against the overflow's own value
-	# so the property — "the pool was charged exactly what the outcome records" — is what
-	# is under test and not the literal the old permille fixture happened to produce.
+	# ADR 0877: `1.0` against an unstatted `0.0` reads certainty, so the thorns return
+	# the WHOLE overflow. The assertion is written against the overflow's own value so the
+	# property — "the pool was charged exactly what the outcome records" — is what is under
+	# test and not a literal a balance pass could move.
 	var target := _thorns(1.0, 1.0)
 	var attacker := _attacker()
 	var before := attacker.resource(&"health").current
@@ -95,54 +95,39 @@ func test_the_bounce_rate_is_the_defenders_rate_alone_and_reads_one() -> void:
 	assert_almost_eq(outcome.reflected, 0.0, "a target that reflects nothing bounces nothing")
 
 
-## ## ADR 0215: the bounce's contest is a RATIO, so PARITY IS A HALF SHARE.
+## ## ADR 0877. The bounce's trigger is a FLAT DELTA, so PARITY REFUSES THE BOUNCE.
 ##
-## This test asserted `0.0` at parity — the reading of the old `(rate - resist) /
-## rate_scale`, which makes an equal contest mean NOTHING. Under `offense / (offense +
-## resist)` equal halves are two equal shares, so parity reads `0.5` and half the bounce
-## comes back. The assertion is inverted, not weakened: the bounce is still strictly less
-## than the full overflow, which is the property a ratio buys and a `0.0` also happened
-## to satisfy.
-func test_at_parity_the_bounce_is_refused_by_half_and_not_by_all() -> void:
+## It used to assert `0.5` at parity — the reading of ADR 0215's `offense / (offense +
+## resist)`, where equal halves are two equal shares. Under the flat delta equal halves
+## cancel to exactly `0.0`: a resister who matches the thorns' rate answers the bounce
+## completely, and one who beats it cannot be bounced on at all.
+func test_at_parity_the_bounce_is_refused_completely() -> void:
 	var target := _thorns(1.0, 1.0)
-	# The attacker invests `1.0` in `reflect.resist.rate` against the thorns' `1.0`:
-	# `1 / (1 + 1) == 0.5`, so exactly half of the 40.0 overflow comes back.
 	var outcome := _resolve(_resisting(1.0), target, 40.0)
-	assert_almost_eq(outcome.reflected, 20.0, "parity reads 0.5, so half the bounce survives")
-	# Strictly less than the whole: a contested bounce is a SHARE, never a certainty.
-	assert_eq(outcome.reflected < 40.0, true, "and it is still strictly under the overflow")
+	assert_almost_eq(outcome.reflected, 0.0, "parity cancels the bounce to zero")
+	assert_almost_eq(outcome.overflow, 40.0, "while the original hit still landed in full")
 
 
-## A resister BELOW parity leaves MORE than half, which is the direction the old shape
-## could not express: the old `(rate - resist)` saturating at `1.0` for any resist under
-## the rate, so "a resister who invested less than the thorns" and "a resister who
-## invested nothing at all" were the same answer. Under the ratio they are not.
-func test_a_resister_below_parity_leaves_more_than_half() -> void:
+## A resister under the rate keeps a proportional share: the delta over the scale IS the
+## trigger (ADR 0877), and the fixture authors exactly that.
+func test_a_resister_under_the_rate_reads_the_delta_over_the_scale() -> void:
 	var target := _thorns(1.0, 1.0)
-	# `1 : 0.5` is `1 / 1.5 == 2 / 3`, so two thirds of the 40.0 overflow comes back.
-	var outcome := _resolve(_resisting(0.5), target, 40.0)
-	assert_almost_eq(
-		outcome.reflected, 40.0 * 2.0 / 3.0, "1 : 0.5 is 2/3, not the old shape's saturated 1.0"
-	)
-	assert_eq(outcome.reflected > 20.0, true, "strictly more than parity's half")
+	# The attacker is a quarter of a `rate_scale` short of the thorns' rate.
+	var outcome := _resolve(_resisting(1.0 - _tuning.rate_scale * 0.25), target, 40.0)
+	assert_almost_eq(outcome.reflected, 40.0 * 0.25, "a quarter of the scale is a quarter")
 
 
-## A resister ABOVE parity leaves LESS than half and approaches, but never reaches, zero —
-## which is the property the old `0.0` got most wrong: a large defence used to be a WALL
-## that turned the bounce off entirely, and under the ratio it is a share that keeps being
-## paid at a declining rate no investment can zero out.
-func test_a_resister_above_parity_leaves_less_than_half_and_never_zero() -> void:
+## A resister ABOVE the rate is a WALL, and that is the property the ratio could not
+## express: under `o / (o + d)` a heavy defence still paid a declining share; under the
+## flat delta it pays nothing, because every point of defence cancels a point of offence.
+func test_a_resister_above_the_rate_refuses_the_bounce_entirely() -> void:
 	var target := _thorns(1.0, 1.0)
-	# `1 : 3` is `1 / 4 == 0.25`, so a quarter of the 40.0 overflow comes back.
-	var strong := _resolve(_resisting(3.0), target, 40.0)
-	assert_almost_eq(strong.reflected, 10.0, "1 : 3 is a quarter")
-	assert_eq(strong.reflected > 0.0, true, "and a heavy resist is a SHARE, not a wall")
-	# Monotone: every further point of resist moves the reading strictly down. Asserted
-	# against two authored pairs rather than a restated number, so a saturating or a
-	# zeroing formula fails here.
+	var strong := _resolve(_resisting(2.0), target, 40.0)
+	assert_almost_eq(strong.reflected, 0.0, "a lead is a wall")
+	# Monotone: more resist never raises the bounce, asserted off two pairs rather than a
+	# restated number so a raising formula fails here.
 	var steeper := _resolve(_resisting(7.0), target, 40.0)
-	assert_eq(steeper.reflected < strong.reflected, true, "more resist, strictly less bounce")
-	assert_eq(steeper.reflected > 0.0, true, "and still never zero")
+	assert_eq(steeper.reflected <= strong.reflected, true, "more resist, never more bounce")
 
 
 # --- the chain ------------------------------------------------------------------
@@ -151,8 +136,8 @@ func test_a_resister_above_parity_leaves_less_than_half_and_never_zero() -> void
 func test_self_reflection_is_never_an_infinite_bounce() -> void:
 	# Two actors who both thorn at an unopposed magnitude, with nothing to stop the
 	# exchange. The loop must terminate at the depth limit and must not exceed a bounded
-	# total. ADR 0215: the attacker's own `REFLECT_RATE` is a raw MAGNITUDE now, like the
-	# thorns', so both halves read `r / (r + 0) == 1.0` and every hop is a full tie.
+	# total. ADR 0877: the attacker's own `REFLECT_RATE` is a raw MAGNITUDE like the
+	# thorns', read against no resister, so every hop is a full tie.
 	var attacker := _attacker()
 	attacker.stats.add_modifier(CombatStats.rate_modifier(CombatStats.REFLECT_RATE, 1.0, &"test"))
 	attacker.stats.add_modifier(CombatStats.rate_modifier(CombatStats.REFLECT_DAMAGE, 1.0, &"test"))
@@ -198,10 +183,10 @@ func test_one_hop_short_of_the_limit_is_not_dropped() -> void:
 
 
 func test_a_reflect_stat_of_a_million_is_a_refusal_and_not_an_infinity() -> void:
-	# `reflect.damage` is a share, so a hostile value is clamped to `1.0`.
-	# `reflect.rate` is a MAGNITUDE, so a hostile value is not clamped at all — under
-	# ADR 0215 it reads `1e9 / (1e9 + 0) == 1.0` by arithmetic and the SHARE is what
-	# bounds the packet. Neither can divide by zero: `0 / (0 + 0)` is answered `0.0`.
+	# Neither half is capped at the INPUT: `reflect.damage` of `1e9` and a
+	# `reflect.rate` of `1.0` both read certainty by arithmetic (ADR 0877 — the clamp is
+	# on the OUTPUT), and the SHARE is what bounds the packet to a tie. Nothing divides: a
+	# non-positive delta or scale is answered `0.0`.
 	var target := _thorns(1.0, 1e9)
 	var outcome := _resolve(_attacker(), target, 40.0)
 	assert_eq(is_finite(outcome.reflected), true, "finite")
@@ -210,20 +195,18 @@ func test_a_reflect_stat_of_a_million_is_a_refusal_and_not_an_infinity() -> void
 
 # --- S11, leech -----------------------------------------------------------------
 #
-# ## ADR 0215: leech's rate is read through the SAME ratio as every other contest, and
-# ## `CombatRecoil.leech` is UNCONTESTED
+# ## ADR 0877: leech's rate is the same flat delta, and `CombatRecoil.leech` is UNCONTESTED
 #
-# `leech` calls `CombatBand.rate(_stat(attacker, LIFESTEAL), 0.0, tuning)` — the resister
+# `leech` calls `CombatStats.rate_from_zero(LIFESTEAL, 0.0, rate_scale)` — the resister
 # half is a literal `0.0`, because a heal the attacker takes off their own blow is opposed
-# by nothing. Under `offense / (offense + resist)` that is `L / (L + 0) == 1.0` for any
-# `L > 0.0`, so the fixture that used to author a permille `LIFESTEAL` (`rate_scale * 0.5
-# == 500.0`) against `0.0` and read "half" now reads CERTAINTY — which is the exact doubling
-# the failure report recorded (`20 -> 40`, `2.5 -> 5`).
+# by nothing. The share is therefore `min(1, LIFESTEAL / rate_scale)`: a real, tunable
+# share rather than the ratio's `L / (L + 0) == 1.0`, which made every non-zero
+# `LIFESTEAL` a certainty.
 #
 # There is no pair to author here: leech has ONE half. So the share is asserted as the
 # SHARE the mechanism resolves through its own public read, rather than as a restated
 # literal — which keeps the assertion exact (the pool was charged precisely that) while
-# letting a balance pass move the ratio without the ordering claim going stale.
+# letting a balance pass move the scale without the ordering claim going stale.
 
 
 ## The leech share `CombatRecoil` resolves for `attacker`, read off the same public
@@ -248,9 +231,9 @@ func test_leech_is_a_separate_packet_paid_after_the_health_write() -> void:
 	assert_almost_eq(
 		target.resource(&"health").current, target_before - 40.0, "40 spent on the target"
 	)
-	# ADR 0215: the ONE half leech has. `1.0 / (1.0 + 0.0) == 1.0`, so the whole of what
-	# was spent comes back — and the packet is a SEPARATE one, written after the damage,
-	# so the pool moved by exactly the leech and by nothing else.
+	# ADR 0877: the ONE half leech has, `min(1, 1.0 / rate_scale)` — here certainty — so
+	# the whole of what was spent comes back; and the packet is a SEPARATE one, written
+	# after the damage, so the pool moved by exactly the leech and by nothing else.
 	assert_almost_eq(outcome.lifesteal, 40.0, "one unopposed half leeches all of it")
 	assert_almost_eq(
 		attacker.resource(&"health").current,
@@ -299,8 +282,8 @@ func test_an_unstatted_attacker_leeches_nothing() -> void:
 	var outcome := CombatSpine.resolve_hit(
 		attacker, CombatTestKit.actor(&"target"), CombatTestKit.technique(100.0), _tuning, null
 	)
-	# `0 / (0 + 0)` is answered `0.0` rather than divided, so an actor who has invested in
-	# neither half leeches nothing — and never an unchosen default.
+	# A non-positive delta reads `0.0` rather than dividing (ADR 0877), so an actor who
+	# has invested nothing leeches nothing — and never an unchosen default.
 	assert_almost_eq(_leech_share_of(attacker), 0.0, "nothing invested contests nothing")
 	assert_almost_eq(outcome.lifesteal, 0.0, "so 0.0 lifesteal leeches 0.0")
 
@@ -314,20 +297,16 @@ func _attacker() -> Actor:
 	return attacker
 
 
-## ## ADR 0215. The bounce's RATE contest is a RATIO of two magnitudes.
+## ## ADR 0877. The bounce's RATE contest is a FLAT DELTA.
 ##
-## `_thorns` used to author a PERMILLE rate (`_tuning.rate_scale * rate`, a `1000`-scaled
-## magnitude) and the production read `(rate - resist) / rate_scale`, so a `_thorns(0.4, …)`
-## bounced 40% of the overflow. Under `offense / (offense + resist)` a PERMILLE magnitude
-## contested against a `0.0` resist reads `400 / (400 + 0) == 1.0`: the old fixtures read
-## as CERTAINTY, which is where the doubled numbers in the failure report came from.
-##
-## The parameter is therefore a raw MAGNITUDE now, and every fixture below authors the
-## matching half explicitly. `rate_scale` is not read by the bounce at all any more, so a
-## fixture written in permille can only ever read `1.0` again.
+## `rate` is a raw MAGNITUDE: the trigger is `clampf((rate - resist) / rate_scale, 0, 1)`,
+## so a thorns of `1.0` against a resister with no `reflect.resist.rate` reads certainty,
+## a resister at parity reads `0.0`, and a resister in between reads its share of the
+## scale. `share` is the reflector's `reflect.damage` magnitude, matched against the
+## resister's `reflect.resist.damage` at the UNIT scale.
 ##
 ## A target that reflects at magnitude `r` against a resister at magnitude `d` bounces
-## `r / (r + d)` of the overflow, times its share.
+## `min(1, max(0, (r - d) / rate_scale))` of the overflow, times its share.
 func _thorns(rate: float, share: float) -> Actor:
 	var target := CombatTestKit.actor(&"thorns")
 	target.stats.add_modifier(CombatStats.rate_modifier(CombatStats.REFLECT_RATE, rate, &"test"))

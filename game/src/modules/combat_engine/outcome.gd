@@ -33,7 +33,7 @@ extends RefCounted
 ## S1's base: the authored magnitude after the realm rate gate. Every stage reads
 ## THIS number, not the mechanism's output, so a mechanism cannot see a pre-gate value.
 var base: float = 0.0
-## S6's `amount *= Stat.CRIT_DAMAGE`. What the crit multiplies.
+## S6's crit multiplier, what `amount` is scaled by on a crit. What the crit multiplies.
 var amount: float = 0.0
 ## S9: what the shield removed. A fully absorbed hit has `absorbed == amount` and
 ## `overflow == 0.0`, which is exactly why it reflects nothing (ADR 0068).

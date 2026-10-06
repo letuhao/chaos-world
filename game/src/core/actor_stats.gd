@@ -177,14 +177,14 @@ func _recompute() -> void:
 	_put(Stat.ATTACK_SPIRITUAL, spirit * 2.0 + aptitude * 0.5 + will * 0.6, buckets)
 	# ADR 0200: `CRIT_CHANCE`'s `minf(0.75, …)` is DELETED. A cap on an INPUT is the defect
 	# the ADR exists to remove — 0.75 made crit a solved fraction past R3 — and the load
-	# bearing distinction is not "percent" but "which axis": this is a RATE contest, and
+	# bearing distinction is not "percent" but "which axis": this is a trigger, and
 	# AGENTS.md's rule is that a rate must never track a magnitude. It is deliberately NOT
-	# re-tuned here either: ADR 0215 decides what a rate contest reads, and this change
-	# must not collide with it. Until then the channel is simply unbounded, which is
-	# strictly better than a ceiling a player can reach.
-	# ADR 0215: the crit CHANCE contest is now `crit_chance / (crit_chance + crit_resist)`,
-	# so the baseline is 0.0 (like ACCURACY / EVASION) rather than a bare 0.05 — the
-	# contest ratio supplies the baseline, not a constant term.
+	# re-tuned here: ADR 0877 decides what a trigger reads (a flat delta over
+	# `rate_scale`), and the channel is simply unbounded, which is strictly better than a
+	# ceiling a player can reach.
+	# ADR 0877: the crit CHANCE trigger is `clampf((crit_chance - crit_resist) /
+	# rate_scale, 0, 1)`, so the baseline is 0.0 (like ACCURACY / EVASION) and equal
+	# totals read exactly zero rather than a midpoint.
 	_put(Stat.CRIT_CHANCE, fortune * 0.002 + agility * 0.0005, buckets)
 	# ADR 0215: the DEFENCE half of the crit-CHANCE contest. `CRIT_CHANCE` was published
 	# with no counterpart, so a player could invest in crit chance with no answer — the
@@ -192,18 +192,22 @@ func _recompute() -> void:
 	# CRIT_RESIST_DAMAGE below). Unbounded magnitude: a cap here would be the ADR 0200
 	# defect in a fourth uniform.
 	_put(Stat.CRIT_RESIST, will * 0.003, buckets)
-	_put(Stat.CRIT_DAMAGE, 1.5 + comprehension * 0.004, buckets)
+	# ADR 0877. The `1.5 +` baseline is DELETED: under the flat-delta rule the crit
+	# bonus is `1 + rate_from_zero(crit_damage, crit_resist_damage, rate_scale)`, so a
+	# constant multiplier term was a bonus no defender could ever contest — the free
+	# advantage the rule removes. Like `CRIT_RESIST_DAMAGE`, this is now a
+	# `0.0`-baseline MAGNITUDE, and a FLAT is the only modifier form that can move it.
+	_put(Stat.CRIT_DAMAGE, comprehension * 0.004, buckets)
 	# ADR 0215: the DEFENCE half of the CRIT-DAMAGE contest, and the half that did not
 	# exist. `CRIT_DAMAGE` was published here with no counterpart anywhere, so a player
 	# could buy crit size and had no way to resist it -- `AGENTS.md`'s yin-yang rule
 	# makes that a DEFECT rather than a pending item, and ADR 0215 names the id.
 	#
-	# ## Why it is a MAGNITUDE and not a `minf`-ed fraction, on CRIT_DAMAGE's own rule
-	# `CRIT_DAMAGE` carries a constant `1.5` term, and the `1.0`-baseline MULTIPLIER is
-	# what makes this stat a RATE regardless of its scale (`contracts/stat.gd:346`): `+10`
-	# means a crit lands ten times as hard, not "+10%". So this one is unbounded — a cap
-	# here would be the ADR 0200 defect in a third uniform, and the stat it answers must
-	# be able to grow against a 551x ladder.
+	# ## Why it is a MAGNITUDE and not a `minf`-ed fraction
+	# A cap here would be the ADR 0200 defect in a third uniform: the stat it answers
+	# (`CRIT_DAMAGE`, since ADR 0877 a flat bonus of `comprehension * 0.004`) must be
+	# able to grow against a 551x ladder, so this half is unbounded and a FLAT is the
+	# only modifier form that can move it.
 	#
 	# ## Why `will`, and why it is NOT on `RealmScaling.SCALED_STATS`
 	# The pair must be the SAME KIND of number on both sides, so the defence half reads
@@ -218,34 +222,30 @@ func _recompute() -> void:
 	#
 	# ## Why it is NOT realm-scaled, stated rather than assumed
 	# `CRIT_DAMAGE` is not on `SCALED_STATS` either, and the two halves must move
-	# TOGETHER or the contest is not a contest: scaling only one side would make a
-	# defender's answer to a deep-realm crit grow while the crit it answers did not, so
-	# `1.0 - crit_resist_damage` would climb past `0.0` on its own. Both are magnitudes in
-	# the attacker's own comprehension/will terms, and both ride the ladder the same way.
+	# TOGETHER or the pair is not a pair: scaling only one side would make a defender's
+	# answer to a deep-realm crit grow while the crit it answers did not, so the delta
+	# would fall on its own. Both are magnitudes in the attacker's own comprehension/will
+	# terms, and both ride the ladder the same way.
 	#
-	# `0.5` means a crit against this defender lands at half: the S6 multiplier is
-	# `crit_damage * (1 - CRIT_RESIST_DAMAGE)` floored at `0.0`, NOT a division, so a
-	# fully invested defender refusing every crit is a REACHABLE limit and not an
-	# asymptotic one -- which is deliberate, and is what keeps "you cannot crit me" from
-	# being a free immunity that the ladder can never beat.
+	# `0.5` means a crit against this defender keeps half its bonus: the S6 multiplier is
+	# `1 + rate_from_zero(crit_damage, crit_resist_damage, rate_scale)` (ADR 0877), so a
+	# defender who MATCHES the attacker cancels the bonus to zero and one who LEADS
+	# refuses it outright -- a REACHABLE limit rather than an asymptotic one, which is
+	# what keeps "you cannot crit me" from being a free immunity the ladder never beats.
 	#
 	# ## Why the baseline is `0.0` and not `1.0 +`, which was a total misreading of the same line
-	# This stat is a SHARE OF A CRIT RESISTED, read by `CombatSpine._crit_damage` as
-	# `crit_damage * (1 - CRIT_RESIST_DAMAGE)`. Under that reading `0.0` is "nothing
-	# resisted" and `1.0` is "every crit refused" -- which is exactly what the paragraph
-	# above says when it reads "`0.5` means a crit lands at half". Shipping `1.0 + will *
-	# 0.004` made the two halves of that sentence impossible: `1.0` already means "fully
-	# resisted", so `1.0 - 1.0` clamped at `0.0` and EVERY crit in the game was worth
-	# nothing on EVERY actor. Not a balance extreme -- a dead channel, invisible because a
-	# crit that does nothing still looks like a crit that was resisted.
+	# A `1.0` baseline reads as "every crit refused" under every shape this stat has ever
+	# had, so `1.0 + will * 0.004` meant the defender's half STARTED at the refusal
+	# point: every crit in the game was cancelled on every actor. Not a balance extreme --
+	# a dead channel, invisible because a crit that does nothing still looks like a crit
+	# that was resisted.
 	#
 	# A `1.0` baseline would have been right for a MULTIPLIER (`crit_damage * resist`), and
-	# that is the shape this was copied from -- `CRIT_DAMAGE`'s own `1.5 +`. The id has
-	# `RESIST` in its name and its consumer subtracts it; a multiplier and a share are not
+	# that is the shape this was copied from. A multiplier and a share are not
 	# interchangeable just because both are bounded in `[0, 1]`. `contracts/stat.gd` had to
-	# lose the id from `RATE_STATS` in the same change for the same reason: on a `0.0`
-	# baseline a PERCENT is the ADR 0022 no-op and a FLAT is the only form that can move
-	# it, which is precisely what membership in `RATE_STATS` forbids.
+	# lose the id from `RATE_STATS` for the same reason: on a `0.0` baseline a PERCENT is
+	# the ADR 0022 no-op and a FLAT is the only form that can move it, which is precisely
+	# what membership in `RATE_STATS` forbids.
 	#
 	# It is a MAGNITUDE, like `CRIT_RESIST` (the other half of the crit-CHANCE contest,
 	# `will * 0.003`, also absent from `RATE_STATS`) — the pair reads the same attribute for
@@ -262,6 +262,15 @@ func _recompute() -> void:
 	# are corrected in the same change rather than left asserting a number that no longer
 	# exists.
 	_put(Stat.EVASION, agility * 0.0015, buckets)
+	# ADR 0877. The OFFENCE half of the hit contest, DERIVED at last: it was declared
+	# and never published, so every attack carried `accuracy == 0.0` and — under the
+	# flat-delta rule — any defender with evasion at all was unhittable. The coefficient
+	# matches EVASION's on purpose; the trailing constant is the attack's BASE accuracy,
+	# so an equally-agile defender is hit half the time at the shipped `rate_scale`
+	# (`0.005 / 0.01`), and out-evading the base takes about 3.3 more agility than the
+	# attacker (`0.005 / 0.0015`), or authored accuracy content. Attribute-first so the
+	# registration scanner reads it as the MAGNITUDE it is, never a multiplier.
+	_put(Stat.ACCURACY, agility * 0.0015 + 0.005, buckets)
 	_put(Stat.POISE, physique * 0.5 + will * 0.5, buckets)
 	# ADR 0200: `STATUS_RESISTANCE` was `minf(0.8, will * 0.003)` and the cap needed
 	# `will >= 250` against an authored `base_will` topping out at 54.9 (DEF-0262) — so it

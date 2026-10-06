@@ -64,13 +64,14 @@ static func reflect(
 ## share is clamped into `[0, 1]`, so no state a caller can corrupt turns a thorn into a
 ## divide-by-zero, an infinite bounce or a negative heal.
 ##
-## ## The share carries its own answer, like S6's crit multiplier
+## ## The share is the same flat delta at the unit scale (ADR 0877)
 ##
-## `REFLECT_DAMAGE` is the bounce's size and `REFLECT_RESIST_DAMAGE` is the share
-## of it the resister turns aside: `damage * (1 - resist)` floored at `0.0`, the
-## same subtraction shape `CombatSpine._crit_damage` reads. An unauthored
-## resister answers `0.0`, so every existing bounce is byte-identical until
-## content authors the half.
+## Both halves are share magnitudes, so one share-point is the whole range:
+## `share = clampf(reflect_damage - reflect_resist_damage, 0, 1)`, through
+## [method CombatStats.rate_from_zero] with a `1.0` scale so the ONE formula still owns
+## the shape. Equal halves cancel, and a resister at or above the reflector's damage
+## refuses the bounce entirely — while the clamp keeps the packet from ever exceeding
+## the amount it returns (ADR 0068).
 static func bounce(reflector: Actor, resister: Actor, amount: float, tuning: CombatTuning) -> float:
 	var rate := CombatBand.rate(
 		_stat(reflector, CombatStats.REFLECT_RATE),
@@ -79,9 +80,12 @@ static func bounce(reflector: Actor, resister: Actor, amount: float, tuning: Com
 	)
 	if rate <= 0.0 or amount <= 0.0:
 		return 0.0
-	var magnitude := clampf(_stat(reflector, CombatStats.REFLECT_DAMAGE), 0.0, 1.0)
-	var resist := maxf(0.0, _stat(resister, CombatStats.REFLECT_RESIST_DAMAGE))
-	return rate * magnitude * maxf(0.0, 1.0 - resist) * amount
+	var share := CombatStats.rate_from_zero(
+		_stat(reflector, CombatStats.REFLECT_DAMAGE),
+		_stat(resister, CombatStats.REFLECT_RESIST_DAMAGE),
+		1.0
+	)
+	return rate * share * amount
 
 
 ## The other side of a bounce: a landed bounce IS a landed hit, so a defender who
@@ -115,7 +119,9 @@ static func _respect(
 ## what makes "leech pays for damage dealt" true rather than "leech pays for damage
 ## rolled".
 static func leech(attacker: Actor, tuning: CombatTuning, outcome: CombatOutcome) -> void:
-	var share := CombatBand.rate(_stat(attacker, CombatStats.LIFESTEAL), 0.0, tuning)
+	var share := CombatStats.rate_from_zero(
+		_stat(attacker, CombatStats.LIFESTEAL), 0.0, tuning.rate_scale
+	)
 	if share <= 0.0:
 		return
 	var pool := attacker.resource(tuning.lifesteal_pool) as ResourcePool

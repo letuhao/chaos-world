@@ -119,129 +119,117 @@ func test_an_unstatted_actor_parries_zero_percent_of_the_time() -> void:
 	assert_eq(parried, 0, "0 of 200 draws produced a parry")
 
 
-## ## ADR 0215. The rate contest is a RATIO of two magnitudes, not a permille against a
-## constant scale.
+## ## ADR 0877. The rate contest is a FLAT DELTA: `(rate - resist) / rate_scale`, clamped.
 ##
 ## ```
-## p = offense / (offense + resist)
+## p = clampf(maxf(0.0, rate - resist) / rate_scale, 0.0, 1.0)
 ## ```
 ##
-## This used to read `clampf(maxf(0.0, rate - resist) / rate_scale, 0.0, 1.0)`, and the
-## fixtures below used to be authored as PERMILLE rates divided by a constant `1000.0`:
-## `rate_scale * 0.25` for "a quarter". Under the ratio there is no scale constant to
-## divide by — the denominator is the OTHER HALF of the same quantity — so a fixture that
-## means "a quarter" is a PAIR: `offense : resist = 1 : 3`, because `1 / (1 + 3) == 0.25`.
-## Every number below is such a pair, and each one's arithmetic is written out beside it.
-func test_the_rate_is_a_ratio_of_two_magnitudes() -> void:
-	# Nothing invested on either side contests nothing: `0 / (0 + 0)` is answered `0.0`
-	# rather than divided, so two actors who have authored neither half neither lands.
-	assert_almost_eq(CombatBand.rate(0.0, 0.0, _tuning), 0.0, "zero against zero reads zero")
-	# `1 : 3` reads `1 / (1 + 3) == 0.25` and `1 : 1` reads `1 / (1 + 1) == 0.5`. Those are
-	# the same two fractions the old shape reached as `250 / 1000` and `500 / 1000`; the
-	# ratio reaches them with two MAGNITUDES and no scale constant at all.
-	assert_almost_eq(CombatBand.rate(1.0, 3.0, _tuning), 0.25, "1 : 3 reads 1 / 4")
-	assert_almost_eq(CombatBand.rate(1.0, 1.0, _tuning), 0.5, "1 : 1 reads 1 / 2")
-	# Not one-sided: the mirror of the first pair reads the other three quarters.
-	assert_almost_eq(CombatBand.rate(3.0, 1.0, _tuning), 0.75, "3 : 1 reads 3 / 4")
-	# Doubling BOTH halves changes nothing. That is the ratio's homogeneity of degree zero
-	# and it is the property the realm ladder rides: a contest means the same thing at R3
-	# and at R30, which is what a constant divisor could never say.
+## This is Keepverse's `RateFromZero`, restored over ADR 0215's ratio. Equal halves cancel
+## to exactly `0.0` — a defender who matches an attack answers it completely — and NEITHER
+## half is capped: `1e10` against `1e10` cancels at any magnitude. The fixtures below are
+## written in multiples of `_tuning.rate_scale`, so the arithmetic is readable off the
+## tuning rather than restated.
+func test_the_rate_is_the_delta_over_the_scale() -> void:
+	var scale := _tuning.rate_scale
+	assert_almost_eq(CombatBand.rate(0.0, 0.0, _tuning), 0.0, "nothing against nothing")
+	assert_almost_eq(CombatBand.rate(scale, scale, _tuning), 0.0, "parity cancels to zero")
 	assert_almost_eq(
-		CombatBand.rate(2.0, 6.0, _tuning),
-		CombatBand.rate(1.0, 3.0, _tuning),
-		"doubling both halves reads the same"
+		CombatBand.rate(scale * 0.25, 0.0, _tuning), 0.25, "a quarter of the scale reads a quarter"
 	)
-	# And it cannot saturate. `1000 : 1` is `1000 / 1001`, which is strictly inside
-	# `(0, 1)` however lopsided the pair: a stronger attacker moves the reading toward
-	# `1.0` and NEVER arrives, so "a god can never miss a mortal" needs no cap to hold.
+	# The delta is what counts, not either magnitude: raising both sides by the same
+	# amount leaves the reading unchanged.
+	assert_almost_eq(
+		CombatBand.rate(scale * 1.25, scale, _tuning),
+		CombatBand.rate(scale * 0.25, 0.0, _tuning),
+		"only the difference moves the reading"
+	)
+	# And an advantage of the full scale is certainty; more buys nothing MORE, which is
+	# the one bound the shape has, and it is on the output.
+	assert_almost_eq(CombatBand.rate(scale, 0.0, _tuning), 1.0, "the full scale is certainty")
+	assert_almost_eq(CombatBand.rate(scale * 1e6, 0.0, _tuning), 1.0, "and stays certainty")
+	# Monotone: every further point of advantage moves the reading strictly up until the
+	# clamp, so a formula that merely returned an argument fails here.
 	assert_eq(
-		CombatBand.rate(1000.0, 1.0, _tuning) < 1.0,
+		CombatBand.rate(scale * 0.75, 0.0, _tuning) > CombatBand.rate(scale * 0.5, 0.0, _tuning),
 		true,
-		"a thousand to one is still strictly below certainty"
+		"more advantage, strictly more trigger"
+	)
+	# A null tuning has no scale to exchange against, so the degenerate read is `0.0`
+	# rather than a certainty nobody chose; a `0.0` scale reads the same.
+	assert_almost_eq(CombatBand.rate(1.0, 0.0, null), 0.0, "no tuning, no exchange rate")
+	assert_almost_eq(
+		CombatBand.rate(1.0, 0.0, CombatTestKit.bare()), 0.0, "and a 0.0 scale reads zero"
 	)
 
 
-## ## The assertion ADR 0215 exists to buy, and the one this file used to INVERT.
+## ## ADR 0877. The owner's example, pinned: equal totals cancel at ANY magnitude.
 ##
-## The old shape was `(rate - resist) / rate_scale`, which reads `0.0` at parity, and this
-## file pinned that `0.0` by name. That zero was the defect: it is what makes a contest on
-## an absolute difference degenerate — equal halves contest NOTHING, so a naive CC sitting
-## on `(o - d)` is a perma-lock on a coin flip rather than a question. The ratio reads
-## `0.5` at parity by definition, because `o == d` and `o / (o + d)` IS two equal shares.
-func test_at_parity_the_contest_reads_exactly_one_half() -> void:
+## The ratio read `0.5` here, so a defender could never fully answer an attacker. The flat
+## delta reads `0.0`: `1e10` against `1e10` is nothing, and one full scale of excess over
+## it is certainty — the advantage is uncapped and the defender's answer is uncapped too.
+func test_equal_totals_cancel_at_any_magnitude() -> void:
+	var scale := _tuning.rate_scale
+	assert_almost_eq(CombatBand.rate(100.0, 100.0, _tuning), 0.0, "a matched contest is zero")
 	assert_almost_eq(
-		CombatBand.rate(100.0, 100.0, _tuning), 0.5, "parity reads exactly 0.5, never 0.0"
+		CombatBand.rate(1000.0, 1000.0, _tuning), 0.0, "and at ten times the magnitude"
 	)
-	# …and it is that same `0.5` at EVERY magnitude, so the reading cannot be bought up by
-	# a deeper realm. `100 : 100` and `1000 : 1000` are the same contest.
-	assert_almost_eq(CombatBand.rate(1000.0, 1000.0, _tuning), 0.5, "1000 : 1000 is 0.5 too")
 	assert_almost_eq(
-		CombatBand.rate(100.0, 100.0, _tuning),
-		CombatBand.rate(1000.0, 1000.0, _tuning),
-		"so a deeper realm moves a contested roll not at all"
+		CombatBand.rate(1e10, 1e10, _tuning),
+		0.0,
+		"and at `1e10` against `1e10` (the owner's example)"
+	)
+	assert_almost_eq(
+		CombatBand.rate(1e10 + scale, 1e10, _tuning),
+		1.0,
+		"one scale of excess is certainty at any magnitude"
 	)
 
 
-## ## The other half of the same inversion, restated in the argument order this API uses.
+## ## ADR 0877. A resister at or above the rate is a WALL, and that is the design.
 ##
-## The old `0.0` came from `(rate - resist) / rate_scale`: parity read nothing, and a
-## resist AT OR ABOVE the rate read nothing too — so a big defence was a WALL that turned
-## the contest off rather than a share that moved it.
+## This file used to assert the OPPOSITE — that a defender above parity still read a
+## non-zero share, because ADR 0215's ratio never reached zero. The owner's rule replaces
+## it: every point of defence cancels a point of offence, so a defender who leads cannot
+## be triggered on at all, and one who matches is cancelled exactly.
 ##
-## `CombatBand.rate(rate_value, resist, tuning)` puts the DEFENDER's rate first and the
-## RESISTER's second, so `rate_value / (rate_value + resist)` is the DEFENDER's share of
-## the contest. "The defender is above the resist" is therefore `resist < rate_value`:
-##
-## - defender above parity (`100 : 500`) reads `100 / 600 = 1/6`, strictly between `0.0`
-##   and `0.5` — and NOT `0.0`, which is the inversion. The `0.5` the old shape gave at
-##   parity is now the value an EQUAL contest gets, and a defender who is losing reads
-##   strictly under it.
-## - the resister is never `0.0` and never `1.0` for any finite pair.
-func test_a_defender_above_parity_reads_between_zero_and_one_half() -> void:
+## `CombatBand.rate(rate_value, resist, tuning)` still passes the RAISE half first and the
+## SUPPRESS half second. For hit, crit and penetration the raise half is the attacker's;
+## for parry, block and reflect it is the defender's — the order is raise/suppress, never
+## attacker/defender.
+func test_a_resister_at_or_above_the_rate_is_a_wall() -> void:
+	var scale := _tuning.rate_scale
+	assert_almost_eq(CombatBand.rate(scale, scale, _tuning), 0.0, "parity is the wall")
+	assert_almost_eq(CombatBand.rate(scale, scale * 5.0, _tuning), 0.0, "and a lead is still zero")
+	# Monotone: every further point the resister invests never RAISES the reading.
+	assert_eq(
+		(
+			CombatBand.rate(scale * 0.5, 0.0, _tuning)
+			> CombatBand.rate(scale * 0.5, scale * 0.25, _tuning)
+		),
+		true,
+		"investing in resist moves the reading down"
+	)
 	assert_almost_eq(
-		CombatBand.rate(100.0, 500.0, _tuning), 100.0 / 600.0, "100 : 500 reads 100 / 600"
-	)
-	assert_eq(
-		CombatBand.rate(100.0, 500.0, _tuning) > 0.0,
-		true,
-		"a resister above the rate still reads NON-ZERO -- the old shape's 0.0 is the defect"
-	)
-	assert_eq(
-		CombatBand.rate(100.0, 500.0, _tuning) < 0.5,
-		true,
-		"and strictly under the half an equal contest now reads"
-	)
-	assert_eq(
-		CombatBand.rate(100.0, 500.0, _tuning) < 1.0,
-		true,
-		"and strictly below certainty, which the old 0.0 also happened to satisfy"
-	)
-	# Monotone, so "above parity" is a property of the SHAPE rather than of one pair: every
-	# further point the resister invests moves the reading strictly down — toward, but never
-	# to, zero. A saturating or a zeroing formula fails here.
-	assert_eq(
-		CombatBand.rate(100.0, 500.0, _tuning) < CombatBand.rate(100.0, 100.0, _tuning),
-		true,
-		"investing more in resist moves the reading strictly down"
-	)
-	assert_eq(
-		CombatBand.rate(100.0, 5000.0, _tuning) > 0.0,
-		true,
-		"and 100 : 5000 is still a share, not a wall"
+		CombatBand.rate(scale * 0.5, scale * 0.25, _tuning), 0.25, "the difference is what remains"
 	)
 
 
 ## The MIRROR of the above, so the pair cannot be satisfied by a formula that merely
 ## returns one of its arguments: the same two magnitudes with the halves SWAPPED read the
-## complement, `5/6`. `resist` is the half that RESISTS and it is the DENOMINATOR, so
-## which side of `0.5` a reading lands on is exactly the claim under test.
-func test_swapping_the_two_halves_reads_the_complement() -> void:
+## opposite side of the difference, and the two orderings read ONE difference rather than
+## two complementary shares (ADR 0877).
+func test_swapping_the_two_halves_swaps_the_advantage() -> void:
+	var scale := _tuning.rate_scale
+	assert_almost_eq(CombatBand.rate(scale * 0.25, scale, _tuning), 0.0, "the loser reads zero")
 	assert_almost_eq(
-		CombatBand.rate(100.0, 500.0, _tuning) + CombatBand.rate(500.0, 100.0, _tuning),
-		1.0,
-		"the two orderings of one contest are complementary shares"
+		CombatBand.rate(scale * 1.25, scale, _tuning), 0.25, "the winner reads the difference"
 	)
-	assert_almost_eq(CombatBand.rate(500.0, 100.0, _tuning), 500.0 / 600.0, "500 : 100 is 5/6")
+	assert_almost_eq(
+		CombatBand.rate(scale * 1.25, scale, _tuning),
+		CombatBand.rate(scale * 0.25, 0.0, _tuning),
+		"and the two orderings read one difference, not two shares"
+	)
 
 
 # --- the cap -------------------------------------------------------------------

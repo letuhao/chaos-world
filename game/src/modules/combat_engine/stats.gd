@@ -22,7 +22,7 @@ extends RefCounted
 ## is hand-written over STATIC core ids, so these combat-owned ids are invisible to it
 ## and **must not be added to it** — ADR 0022's cheaper guard is to derive membership
 ## from the baselines. `RATE_IDS` is that derived membership for combat's own ids, and
-## `tests/modules/combat/test_combat_stats_shape.gd` is the SHAPE TEST ADR 0068
+## `tests/modules/combat_engine/test_combat_stats_shape.gd` is the SHAPE TEST ADR 0068
 ## requires: each one must have a zero-or-rate default and must be authored `op: FLAT`,
 ## `unit: "rate"`. Adding a rate-shaped id without that is the defect class, silent by
 ## construction.
@@ -37,24 +37,24 @@ extends RefCounted
 
 # --- Offensive vocabulary -----------------------------------------------------
 
-## ## ADR 0215. This is the OFFENCE HALF of the hit contest, and it is a MAGNITUDE
-##
-## It was documented as "reduces the defender's `EVASION` … contested by subtraction,
-## never by multiplication (ADR 0068)", and `CombatSpine.landed_chance` computed
-## `1 - (evasion - accuracy) / rate_scale`. That subtraction is the DEFECT ADR 0215
-## exists to remove: an absolute difference of the same quantity, against a constant
-## divisor, saturates as the ladder widens the gap. It is now
-## `accuracy / (accuracy + evasion)` — see [method CombatSpine.landed_chance].
+## ADR 0877. This is the OFFENCE HALF of the hit contest: the attacker must BEAT the
+## defender's `EVASION`, not merely out-share it —
+## `p_hit = clampf((accuracy - evasion) / rate_scale, 0, 1)`, which reads exactly `0.0`
+## at parity. The correction history is kept because every shape shipped: ADR 0068 made
+## it a subtraction against a divisor, ADR 0215 made it a RATIO (parity `0.5`), and ADR
+## 0877 reverses the ratio on the owner's yin-yang rule — a defender who matches the
+## attack cancels it to nothing, and a defender who beats it is a wall. Neither half is
+## capped; only the OUTPUT is a probability.
 ##
 ## The id string is UNCHANGED, because the id was never the defect and renaming it
 ## would have silently disowned every shipped `core_evasion`-style option that names it.
-## `Stat.ACCURACY` in `contracts/stat.gd` is the same string and
-## `tests/modules/combat_engine/test_rate_ratio_contest.gd` asserts they are one id
-## rather than two vocabularies.
+## `Stat.ACCURACY` in `contracts/stat.gd` is the same string, DERIVED by core since ADR
+## 0877, and `tests/modules/combat_engine/test_combat_stats_shape.gd` asserts they are
+## one id rather than two vocabularies.
 const ACCURACY := &"accuracy"
-## How hard the attacker cuts the defender's elemental guard, as a RATE in the same
-## `[0, 1]` space as `resist`, so it can be SUBTRACTED from a resistance before the clamp
-## (ADR 0069). A read-only input to a mechanism's `mitigate`, never a stage of the spine.
+## How hard the attacker cuts the defender's guard, as a flat MAGNITUDE on
+## `CombatTuning.pierce_scale`'s scale, ANSWERED by the defender's `ABSORPTION`
+## (ADR 0876). A read-only input to a mechanism's `mitigate`, never a stage of the spine.
 ##
 ## ## Why this is `penetration.rate` and NOT `Stat.PENETRATION`
 ##
@@ -78,14 +78,15 @@ const REFLECT_RATE := &"reflect.rate"
 ## Scales the bounced amount. The bounce carries no element payload, so it is neither
 ## re-mitigated nor able to crit (ADR 0068).
 const REFLECT_DAMAGE := &"reflect.damage"
-## How hard the defender blunts a bounce: the same rate contest as parry, at the same
-## rate scale, and terminal — a bounce that loses it does not bounce again.
+## How hard the resister blunts a bounce: the same flat-delta contest as parry (ADR
+## 0877), read by `CombatRecoil.bounce` as the trigger's suppress half, and terminal — a
+## bounce that loses it does not bounce again.
 const REFLECT_RESIST_RATE := &"reflect.resist.rate"
-## The DEFENCE half of the bounce multiplier: a SHARE of the bounced amount
-## resisted, read by `CombatRecoil.bounce` as `damage * (1 - resist)` floored at
-## `0.0` — the same subtraction shape as `Stat.CRIT_RESIST_DAMAGE` at S6, because
-## the two halves are again a multiplier and a share of it rather than two
-## attack rates. `0.0` resists nothing; `1.0` refuses the bounce outright.
+## The suppress half of the bounce MULTIPLIER. The pair is read at the UNIT scale (one
+## share-point is the whole range), so `share = clampf(reflect_damage -
+## reflect_resist_damage, 0, 1)` — a flat delta, equal halves cancel to `0.0`, and the
+## clamp is what keeps a bounce from ever exceeding the amount it returns (ADR 0068).
+## `0.0` resists nothing; a resister at or above the reflector's damage refuses outright.
 const REFLECT_RESIST_DAMAGE := &"reflect.resist.damage"
 
 # --- Defensive vocabulary -----------------------------------------------------
@@ -95,17 +96,13 @@ const REFLECT_RESIST_DAMAGE := &"reflect.resist.damage"
 ## value. Read wherever penetration is read — the three damage mechanisms and
 ## `StatusApply.elemental_resist` — through [method pierce], never beside it.
 const ABSORPTION := &"absorption"
-## Chance, contested against `ACCURACY` / `EVASION`, that an attack is parried (S2).
-## ADR 0215: the CONTEST is now `PARRY_RATE / (PARRY_RATE + PARRY_BREAK)` — a ratio of
-## two magnitudes. ADR 0068's `rate_scale` divisor on the `parry.rate` band is GONE, and
-## so is its reason ("a sigmoid returns 0.5 at parity"): the ratio returns `p` and not
-## `0.5`, because the ratio is `p` — `offense / (offense + defence)` IS the share, and at
-## parity that share is `0.5` by definition rather than by an accident of a curve.
-##
-## Carved out of the TOP of the would-have-been-a-hit region, and `PARRY_BREAK` is the
-## answer half — the ADR's yin-yang pair, which ADR 0068 read as "break side is the
-## attacker's, raise side is the defender's" but which it could not USE, because it had
-## no formula to put them in. This file is that formula.
+## The DEFENDER's half of the parry trigger (S2): `p_parry =
+## clampf((PARRY_RATE - PARRY_BREAK) / rate_scale, 0, 1)` — a flat delta, zero at parity
+## (ADR 0877). Carved out of the TOP of the would-have-been-a-hit region, and
+## `PARRY_BREAK` is the ATTACKER's suppress half: the yin-yang pair AGENTS.md names,
+## which ADR 0068 read as ownership but could not USE until it had a formula — ADR
+## 0215's ratio, and now the flat delta. The defender RAISES the trigger and the
+## attacker SUPPRESSES it; the ownership is the same, the form is not.
 const PARRY_RATE := &"parry.rate"
 ## Scales `PARRY_RATE` without changing its sign: at zero it reads zero, so a
 ## `strength`-only investment still parries 0% rather than a sigmoid's 0.5. ADR 0215 does
@@ -120,8 +117,8 @@ const PARRY_STRENGTH := &"parry.strength"
 ## that must stay one comparison.
 const PARRY_BREAK := &"parry.break"
 const PARRY_SHRED := &"parry.shred"
-## Block's twin of the four above. Same band, same contest, one vocabulary. ADR 0215:
-## `BLOCK_RATE / (BLOCK_RATE + BLOCK_BREAK)`.
+## Block's twin of the four above. Same band, same contest, one vocabulary (ADR 0877):
+## `p_block = clampf((BLOCK_RATE - BLOCK_BREAK) / rate_scale, 0, 1)`.
 const BLOCK_RATE := &"block.rate"
 const BLOCK_STRENGTH := &"block.strength"
 const BLOCK_BREAK := &"block.break"
@@ -148,12 +145,12 @@ const SHIELD_REGEN := &"shield.regen"
 ## order, and the four load-bearing orderings would stop being load-bearing.
 const LIFESTEAL := &"lifesteal"
 
-## ## ADR 0215. The CONTEST pairs, and why this is a derivation rather than a comment
+## ## ADR 0877. The CONTEST pairs, and why this is a derivation rather than a comment
 ##
-## Every rate contest this module owns is `offense / (offense + defense)`, so each one
-## names its two halves here and [method contest] is the single place the formula lives.
-## A contest named only by its offence half is how `accuracy` came to be defined as a
-## SUBTRACTION off `evasion` in the first place, so the pair is data.
+## Every trigger contest this module owns is a flat delta over `rate_scale`
+## ([method rate_from_zero]), so each one names its two halves here and the pair is
+## data: a contest named only by its offence half is how `accuracy` came to be defined
+## as a SUBTRACTION off `evasion` in the first place.
 ##
 ## `PARRY_BREAK` and `BLOCK_BREAK` MOVE from `DEFAULTS` into `RATE_DEFAULTS` in this
 ## change, which is the mechanical consequence of ADR 0215 rather than a tidiness pass:
@@ -203,9 +200,9 @@ const ALL_IDS: Array[StringName] = [
 ##
 ## **`RATE_IDS` and `RATE_STATS` are different claims and the shape test is what keeps
 ## them apart.** `test_no_combat_rate_id_is_in_core_rate_stats` still holds: combat-owned
-## ids are not core's members. What ADR 0215 changed is that combat's own claim is now
-## "this id is a magnitude half of a contest", and every id in the list below is read
-## through [method contest] or [method CombatBand.ratio].
+## ids are not core's members. Combat's own claim is "this id is a flat magnitude half
+## of a contest", and every id in the list below is read through [method rate_from_zero]
+## (the trigger pairs), as the magnitude half of an amount pair, or as a share.
 const RATE_IDS: Array[StringName] = [
 	ABSORPTION,
 	PENETRATION,
@@ -220,10 +217,11 @@ const RATE_IDS: Array[StringName] = [
 	LIFESTEAL,
 ]
 
-## The defaults of the rate-shaped ids. Every entry is `0.0`, deliberately: an
-## unstatted actor contests nothing, so a contest half reads 0 and the ratio answers
-## `0.0` rather than a sigmoid's unchosen 0.5 (ADR 0068). Nothing here is shipped
-## balance — the values arrive as `StatModifier`s; this is only the neutral reading.
+## The defaults of the rate-shaped ids. Every entry is `0.0`, deliberately: an unstatted
+## actor contests nothing, so a contest half reads 0 and the trigger reads `0.0` rather
+## than a midpoint or a sigmoid's unchosen 0.5 (ADR 0068, ADR 0877). Nothing here is
+## shipped balance — the values arrive as `StatModifier`s; this is only the neutral
+## reading.
 const RATE_DEFAULTS: Dictionary = {
 	ABSORPTION: 0.0,
 	PENETRATION: 0.0,
@@ -273,33 +271,36 @@ static func is_rate(id: StringName) -> bool:
 	return RATE_DEFAULTS.has(id)
 
 
-## ADR 0215. `p = offense / (offense + defense)`, and the ONE place that shape is written
-## inside this module.
+## ADR 0877. The ONE place the flat-delta trigger shape is written:
 ##
-## The four properties the ADR names are all consequences of the denominator rather than
-## of any clamp, which is why there is nothing here to tune:
+## ```
+## p = clampf(maxf(0.0, rate - resist) / scale, 0.0, 1.0)
+## ```
 ##
-## - **It cannot saturate.** For every finite non-negative pair the result is strictly
-##   inside `(0, 1)`, so a stronger attacker moves it toward `1.0` and never arrives.
-## - **Doubling both halves changes nothing.** The ratio is homogeneous of degree zero,
-##   so a contest means the same thing at R3 and at R30.
-## - **At parity it is exactly `0.5`**, so a realm gap alone grants nothing.
-## - **No scale constant exists to retune.** ADR 0068's `rate_scale` is not a dial here;
-##   it is gone.
+## This is Keepverse's `RateFromZero`, restored over ADR 0215's ratio. The owner's
+## yin-yang reading is the whole argument: two equal halves cancel to exactly `0.0`
+## (annihilation, not a coin flip), a defender above the rate is a wall, and NEITHER
+## input is capped — `1e10` against `1e10` reads `0.0` at any magnitude. The `[0, 1]`
+## on the output is probability arithmetic, not a progression ceiling: the advantage
+## keeps mattering against a defender who also stacks, which is why the clamp is never
+## the reason to stop investing.
 ##
-## ## Why `o + d == 0.0` reads `0.0` and is not a division by zero
+## ## Why a non-positive `delta` or `scale` reads `0.0` and never divides
 ##
-## Two actors who have invested in neither half contest nothing, and `0.0` is the honest
-## answer for a share: neither can land, so neither lands. The alternative — `INF` — is
-## what a raw division returns, and it survives every `clampf`. `MindContest._finite`
-## makes the same call for the same reason.
-static func contest(offense: float, defense: float) -> float:
-	var o := maxf(0.0, offense if is_finite(offense) else 0.0)
-	var d := maxf(0.0, defense if is_finite(defense) else 0.0)
-	var total := o + d
-	if total <= 0.0:
+## `delta <= 0.0` is the cancellation itself. A non-positive or non-finite `scale`
+## cannot say how much advantage is needed, and the honest answer for a rate with no
+## exchange rate is `0.0` rather than an `INF` that clamps to a certainty nobody chose
+## — the same call `QiDamage._resistance_of` makes for a zero divisor.
+static func rate_from_zero(rate_value: float, resist: float, scale: float) -> float:
+	var r := maxf(0.0, rate_value if is_finite(rate_value) else 0.0)
+	var d := maxf(0.0, resist if is_finite(resist) else 0.0)
+	var delta := maxf(0.0, r - d)
+	if delta <= 0.0:
 		return 0.0
-	return o / total
+	var s := scale if is_finite(scale) else 0.0
+	if s <= 0.0:
+		return 0.0
+	return minf(1.0, delta / s)
 
 
 ## The id `offense_id` is contested against, or `&""` when it is not half of a contest.
@@ -309,20 +310,23 @@ static func counterpart_of(offense_id: StringName) -> StringName:
 	return CONTESTS.get(offense_id, &"")
 
 
-## [method contest] for two ACTORS rather than two numbers, so the contest halves are
-## read the same way everywhere: `CombatStats.default_of` folded in, then `derived`,
-## then the ratio. Never an absolute difference and never a difference against a scale.
+## [method rate_from_zero] for two ACTORS rather than two numbers, so the contest halves
+## are read the same way everywhere: `CombatStats.default_of` folded in, then `derived`,
+## then the flat delta over `scale` (ADR 0877). The scale is the caller's
+## (`CombatTuning.rate_scale` in production) so a tuning edit moves every trigger
+## together and this file stays a pure vocabulary.
 ##
 ## `null` on either side is `0.0`, so a half-built pair reads the neutral contest rather
 ## than crashing a hit that has already committed to mutating both of them.
 static func contest_of(
-	offense_id: StringName, offense: Actor, defense_id: StringName, defense: Actor
+	offense_id: StringName, offense: Actor, defense_id: StringName, defense: Actor, scale: float
 ) -> float:
 	if defense_id == &"":
 		return 0.0
-	return contest(
+	return rate_from_zero(
 		default_of(offense_id) + derived_of(offense, offense_id),
-		default_of(defense_id) + derived_of(defense, defense_id)
+		default_of(defense_id) + derived_of(defense, defense_id),
+		scale
 	)
 
 

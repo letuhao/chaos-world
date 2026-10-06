@@ -817,8 +817,8 @@ def register_selftest_cases(case, expect, write) -> None:
             )
             expect(
                 not any("QuestApi.offered" in p for p in problems),
-                f"the second fixture verb was reported too, which means the case cannot tell "
-                "the two verbs apart: {problems!r}",
+                "the second fixture verb was reported too, which means the case cannot tell "
+                f"the two verbs apart: {problems!r}",
             )
 
     @case("no_caller_verbs: a TEST-only caller does not clear a verb")
@@ -868,7 +868,8 @@ def register_selftest_cases(case, expect, write) -> None:
 
     @case("no_caller_verbs: a ui/ screen IS a production caller")
     def _ui_caller_counts() -> None:
-        """`ui/` may reach a module ONLY through `api.gd`, so naming the facade IS the sanctioned path."""
+        """`ui/` may reach a module ONLY through `api.gd`, so naming the facade IS the
+        sanctioned path."""
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)
             _fixture(root, write, body=PUBLISHED)
@@ -999,8 +1000,9 @@ def register_selftest_cases(case, expect, write) -> None:
             problems, _ = evaluate(root / "src", root / "tests", allow)
             expect(
                 any("stale" in p for p in problems),
-                f"an entry whose verb has since found a caller was silently accepted: {problems!r}. "
-                "A list that cannot notice its own staleness stops being an exception",
+                f"an entry whose verb has since found a caller was silently accepted: "
+                f"{problems!r}. A list that cannot notice its own staleness stops being an "
+                "exception",
             )
 
     @case("no_caller_verbs: a tree with NO FACADES FAILS LOUDLY, never passes vacuously")
@@ -1086,7 +1088,8 @@ def register_selftest_cases(case, expect, write) -> None:
             guards = write(
                 root / "tools" / "data.py",
                 'ROUTES = [("quest", "res://src/modules/quest/api.gd", ["complete"], '
-                '["src/app/quest_program.gd"]), ("quest", "other", ["offered"], ["src/app/x.gd"])]\n',
+                '["src/app/quest_program.gd"]), ("quest", "other", ["offered"], '
+                '["src/app/x.gd"])]\n',
             )
             problems, report = evaluate(root / "src", root / "tests", None, guards)
             expect(
@@ -1227,7 +1230,8 @@ def register_selftest_cases(case, expect, write) -> None:
         )
 
     @case(
-        "no_caller_verbs: on the REAL tree, a verb named only in a COMMENT is NOT reported as called"
+        "no_caller_verbs: on the REAL tree, a verb named only in a COMMENT is NOT reported "
+        "as called"
     )
     def _real_tree_comment_is_not_a_caller() -> None:
         """The false-positive direction, on the real tree.
@@ -1256,7 +1260,8 @@ def register_selftest_cases(case, expect, write) -> None:
         )
         expect(
             not report.reached.get("EventApi.resolve"),
-            f"the real tree credits EventApi.resolve with {report.reached.get('EventApi.resolve')!r}. "
+            f"the real tree credits EventApi.resolve with "
+            f"{report.reached.get('EventApi.resolve')!r}. "
             "The only `resolve(` in item_workbench_body.gd is `Crafting.resolve(item_id)`, and the "
             "only `EventApi` on a code line is `EventApi.attach(a)` — two different calls",
         )

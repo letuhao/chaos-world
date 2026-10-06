@@ -33,19 +33,18 @@ const QI_REGEN := &"qi_regen"
 const STAMINA_REGEN := &"stamina_regen"
 const ATTACK_PHYSICAL := &"attack_physical"
 const ATTACK_SPIRITUAL := &"attack_spiritual"
-## ADR 0215. `minf(0.75, …)` is DELETED (ADR 0200) and the stat is now an UNBOUNDED
-## MAGNITUDE: a rate contest is `crit_chance / (crit_chance + crit_resist)`, so this half
-## needs no ceiling and a stronger attacker moves `p` toward 1 asymptotically rather than
-## arriving. The `0.05 + …` constant term survives as a non-zero BASELINE, not as a
-## fraction — which is why the id is no longer a `RATE_STATS` member and a FLAT on it is
-## legal authored content.
+## ADR 0877. `minf(0.75, …)` was deleted by ADR 0200 (and ADR 0215's ratio is itself
+## superseded): the stat is an UNBOUNDED MAGNITUDE and the trigger is
+## `clampf((crit_chance - crit_resist) / rate_scale, 0, 1)`, so equal halves cancel and
+## the attacker's excess is what buys the crit. It is not a `RATE_STATS` member and a
+## FLAT on it is legal authored content.
 const CRIT_CHANCE := &"crit_chance"
 const CRIT_DAMAGE := &"crit_damage"
 ## ADR 0215. The DEFENCE half of the crit contest, and the id that did not exist before
 ## it: `crit_resist` is the answer to `crit_chance`, and AGENTS.md's yin-yang rule makes a
 ## half without a counterpart a DEFECT rather than a pending item — so it ships in the
 ## same change as the half it answers. Unbounded magnitude, published by
-## `core/actor_stats.gd`; the contest lives in `CombatSpine.crit_chance`.
+## `core/actor_stats.gd`; the trigger lives in `CombatSpine._crit`.
 const CRIT_RESIST := &"crit_resist"
 ## ADR 0215. What a resisted crit costs the defender instead of becoming: a SHARE OF A
 ## CRIT RESISTED, so it is the mind/crit-damage answer to [constant CRIT_RESIST] — the pair
@@ -56,12 +55,11 @@ const CRIT_RESIST := &"crit_resist"
 ##
 ## Published by `core/actor_stats.gd` as `will * 0.004` — `will`, not a module's
 ## `composure`, because core has no composure attribute and the pair has to be the same
-## kind of number on both sides (`CRIT_DAMAGE` reads `comprehension`). The contest that
-## reads it is `CombatSpine._crit_damage`: `crit_damage * (1 - CRIT_RESIST_DAMAGE)`,
-## floored at `0.0`. Subtraction rather than ADR 0215's ratio is deliberate and is
-## argued at the call site — the two halves are a multiplier and a share of it, not two
-## attack rates, so there is no "share of a crit" for `offense / (offense + defense)` to
-## return.
+## kind of number on both sides (`CRIT_DAMAGE` reads `comprehension`). The trigger that
+## reads it is `CombatSpine._crit_damage`: `1 + rate_from_zero(crit_damage,
+## crit_resist_damage, rate_scale)` (ADR 0877) — a flat delta floored at `1.0`, so equal
+## halves mean the crit is cosmetic rather than a penalty and the excess buys up to a
+## doubling.
 ##
 ## ## The baseline is `0.0`, and the `1.0 +` that briefly shipped is why the shape test exists
 ## This is a `0.0`-baseline share: `0.0` resists nothing, `1.0` refuses the crit outright.
@@ -76,18 +74,18 @@ const PENETRATION := &"penetration"
 const ATTACK_SPEED := &"attack_speed"
 const DEFENSE_PHYSICAL := &"defense_physical"
 const DEFENSE_SPIRITUAL := &"defense_spiritual"
-## ADR 0200 deleted `minf(0.6, …)` and ADR 0215 makes it the DEFENCE half of
-## `accuracy / (accuracy + evasion)`: an unbounded magnitude, so a higher-realm actor does
-## not become unmissable and two actors of equal investment contest evenly at every depth.
+## ADR 0200 deleted `minf(0.6, …)`. ADR 0877 makes it the DEFENCE half of the hit
+## trigger: `p_hit = clampf((accuracy - evasion) / rate_scale, 0, 1)`, so equal totals
+## cancel to `0.0` and the stat is an unbounded magnitude either way — a dodging defender
+## raises it and an accurate attacker must beat it point for point.
 const EVASION := &"evasion"
-## ADR 0215. The OFFENCE half of the hit contest, and the id that did not exist before it.
-## `AGENTS.md`'s yin-yang rule names the pair `accuracy` with `evasion`, and combat already
-## owned an `accuracy` — but it was a SUBTRACTION off the defender's evasion
-## (`evasion - accuracy`, read on `rate_scale`), which is the absolute difference ADR 0215
-## exists to remove. This is core's spelling of that same id so the contest has two halves
-## declared by the layer both can reach; `CombatStats.ACCURACY` is the module's restatement
-## of it and `tests/modules/combat_engine/test_rate_ratio_contest.gd` asserts the two are
-## one string rather than two vocabularies.
+## ADR 0877. The OFFENCE half of the hit trigger, and DERIVED since ADR 0877
+## (`0.005 + agility * 0.0015`): the attacker must BEAT the defender's evasion for the
+## blow to land, and the base term is what makes an uninvested attack land at all.
+## This is core's spelling of the id so the contest has two halves declared by the layer
+## both can reach; `CombatStats.ACCURACY` is the module's restatement of it and
+## `tests/modules/combat_engine/test_combat_stats_shape.gd` asserts the two are one
+## string rather than two vocabularies.
 const ACCURACY := &"accuracy"
 const DAMAGE_REDUCTION := &"damage_reduction"
 const POISE := &"poise"
@@ -243,7 +241,9 @@ const MIND_CONTROL_RATES := [
 ## gap: that is the whole reachability argument, and the registration test asserts it
 ## rather than trusting this paragraph.
 ##
-## ## ADR 0215 moved THREE of them out, a follow-up moved a FOURTH, and the removed shapes are the proof
+## ## ADR 0215 moved THREE of them out and a follow-up moved a FOURTH
+##
+## The removed shapes are the proof:
 ##
 ## `illusion_resistance` was `minf(0.8, …)`, `mind_avoidance` was `minf(0.6, …)` and
 ## `mind_focus_chance` was `minf(0.75, …)` — every one of them rate-shaped by rule (a),
@@ -276,7 +276,7 @@ const MIND_CONTROL_RATES := [
 ## The module-owned ids at the top of this file are members too, on the shape test
 ## proved there; everything below this line is core's and is derived in
 ## core/actor_stats.gd from these scales:
-##   crit_damage 1.5, attack_speed 1.0 (cap 2.5), cultivation_rate 1.0,
+##   attack_speed 1.0 (cap 2.5), cultivation_rate 1.0,
 ##   insight_gain 1.0, breakthrough_chance 0.1,
 ##   cooldown_reduction (cap 0.4), qi_cost_reduction (cap 0.5), damage_reduction 0.0.
 ## ADR 0200 deleted `crit_chance`'s `0.75`, `evasion`'s `0.6` and `status_resistance`'s
@@ -288,7 +288,7 @@ const MIND_CONTROL_RATES := [
 ## Membership requires a baseline that is not identically zero: actor_stats.gd
 ## resolves a stat as `(base + flat) * (1 + percent)`, so PERCENT on an
 ## always-zero baseline is a no-op. Two baseline shapes qualify:
-##   constant term     - crit_damage/attack_speed/cultivation_rate/
+##   constant term     - attack_speed/cultivation_rate/
 ##                       insight_gain/breakthrough_chance are non-zero always.
 ##   attribute-gated   - cooldown_reduction/qi_cost_reduction are gated on an
 ##                       attribute, but the gate is OUT OF REACH: see the note below.
@@ -383,6 +383,14 @@ const MIND_CONTROL_RATES := [
 ## `tests/contracts/test_rate_stats_registration.gd` derives membership from the BASELINE
 ## EXPRESSION, so it is what makes the two halves unable to disagree again.
 ##
+## ## ADR 0877 removed `CRIT_DAMAGE`, the same journey one more time
+##
+## ADR 0877 drops its `1.5 +` baseline (`core/actor_stats.gd` publishes
+## `comprehension * 0.004`), so `CRIT_DAMAGE` is a `0.0`-baseline MAGNITUDE and a
+## PERCENT on it is the silent no-op — exactly the `CRIT_RESIST_DAMAGE` case above,
+## leaving on the same derivation test rather than on a hand edit. A FLAT is once again
+## the only form that can move it.
+##
 ## ## What STAYS, and the rule that decides it
 ##
 ## `ATTACK_SPEED` (2.5), `COOLDOWN_REDUCTION` (0.4) and `QI_COST_REDUCTION` (0.5) keep
@@ -399,7 +407,6 @@ const RATE_STATS := [
 	BREAKTHROUGH_CHANCE,
 	COOLDOWN_REDUCTION,
 	CONCEPTION_CHANCE,
-	CRIT_DAMAGE,
 	CULTIVATION_RATE,
 	DUAL_CULTIVATION_RATE,
 	GESTATION_SPEED,

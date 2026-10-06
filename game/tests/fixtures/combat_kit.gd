@@ -19,9 +19,9 @@ static func shipped() -> CombatTuning:
 
 
 ## Tuning with the spine's own defaults — every constant `0.0`. Deliberately degenerate,
-## and a suite that wants it says so: with `min_chip_abs = 0.0` and `rate_scale = 0.0`
-## every landed hit is zeroed and every contested rate saturates, so a number that comes
-## back non-zero under this tuning is the arithmetic, not the data.
+## and a suite that wants it says so: with `min_chip_abs = 0.0` every landed hit is
+## zeroed and with `rate_scale = 0.0` every trigger reads `0.0` (ADR 0877), so a number
+## that comes back non-zero under this tuning is the arithmetic, not the data.
 static func bare() -> CombatTuning:
 	return CombatTuning.new()
 
@@ -43,10 +43,10 @@ static func technique(magnitude: float = 100.0) -> TechniqueDef:
 	return def
 
 
-## A technique whose author guarantees no crit, so a suite that is not about S3 cannot be
-## surprised by one. `Stat.CRIT_CHANCE` is `minf(0.75, 0.05 + fortune * 0.002 + agility *
-## 0.0005)`, so an actor with no fortune and no agility still crits 5% of the time —
-## which is exactly why this exists.
+## An actor whose author guarantees no crit, so a suite that is not about S3 cannot be
+## surprised by one. `Stat.CRIT_CHANCE` is `fortune * 0.002 + agility * 0.0005`, so an
+## actor with no fortune and no agility reads `0.0` already; the FLAT below pins that
+## zero for any actor that does carry the attributes.
 static func quiet_actor(id: StringName = &"hero", health: float = 1000.0) -> Actor:
 	var subject := Actor.new(id, {Stat.PHYSIQUE: 10.0, Stat.COMPREHENSION: 10.0})
 	subject.add_resource(ResourcePool.new(&"health", health))

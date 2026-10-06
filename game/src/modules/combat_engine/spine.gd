@@ -151,7 +151,7 @@ static func resolve_hit(
 	if band.missed:
 		return outcome
 	# --- S3: a SECOND draw, clean hits only. A parried or blocked hit never crits. ---
-	var crit := band.is_clean() and _crit(attacker, target, rng)
+	var crit := band.is_clean() and _crit(attacker, target, tuning, rng)
 	outcome.crit = crit
 	# --- S4 / S5: the seam. Two virtuals, one shape, three implementations. ---
 	var ctx := _context(ctx_builder, attacker, target, technique, tuning, outcome.base, true, crit)
@@ -166,7 +166,7 @@ static func resolve_hit(
 	if not is_finite(amount):
 		amount = 0.0
 	if crit:
-		amount *= _crit_damage(attacker, target)
+		amount *= _crit_damage(attacker, target, tuning)
 	outcome.amount = maxf(0.0, amount)
 	# --- S7: one mitigation shape for all three paths, linear and floored at zero. ---
 	outcome.amount = maxf(
@@ -392,114 +392,95 @@ static func _scaled_core_reduction(target: Actor, tuning: CombatTuning) -> float
 	return clampf(_stat(target, Stat.DAMAGE_REDUCTION), 0.0, tuning.amp_scale)
 
 
-## S3's draw. The crit CHANCE contest: attacker's `Stat.CRIT_CHANCE` against the
-## defender's `Stat.CRIT_RESIST`, through [method CombatStats.contest_of] — the same
-## ratio shape as the hit, parry and block contests. ADR 0215 converted parry and
-## block but missed this one; the bare `rng.randf() < crit_chance` left the
-## defence half unread, so a player could invest in crit chance with no answer.
-static func _crit(attacker: Actor, target: Actor, rng: Variant) -> bool:
+## S3's draw. The crit CHANCE trigger: attacker's `Stat.CRIT_CHANCE` BEATS the
+## defender's `Stat.CRIT_RESIST` — `clampf((crit_chance - crit_resist) / rate_scale, 0, 1)`
+## through [method CombatStats.contest_of] (ADR 0877). Equal halves read `0.0`, so the
+## crit is something the attacker WINS rather than a midpoint nobody chose; the defence
+## half has been read since ADR 0215 and is untouched by the shape change.
+static func _crit(attacker: Actor, target: Actor, tuning: CombatTuning, rng: Variant) -> bool:
 	if rng == null:
 		return false
-	var p := CombatStats.contest_of(Stat.CRIT_CHANCE, attacker, Stat.CRIT_RESIST, target)
+	var p := CombatStats.contest_of(
+		Stat.CRIT_CHANCE, attacker, Stat.CRIT_RESIST, target, tuning.rate_scale
+	)
 	return rng.randf() < p
 
 
-## S2's `p_hit`: the landed chance, as the ratio contest
-## `accuracy / (accuracy + evasion)` through [method CombatStats.contest_of].
-## ADR 0215 converted parry and block to this shape but missed the hit contest —
-## the old `1 - (evasion - accuracy) / rate_scale` saturated as the ladder widened
-## the gap, so a high-agility defender drove `p_hit` to exactly `0.0`.
-## The landed probability for one attack, `p_hit` for the band roll. Public because a
-## preview must quote the exact chance a screen shows, and a caller reaching into the
-## spine's internals to get it would be a second, divergent copy of this line.
+## S2's `p_hit`: the landed chance, as the flat delta
+## `clampf((accuracy - evasion) / rate_scale, 0, 1)` through [method CombatStats.contest_of]
+## (ADR 0877). The landed probability for one attack, `p_hit` for the band roll. Public
+## because a preview must quote the exact chance a screen shows, and a caller reaching
+## into the spine's internals to get it would be a second, divergent copy of this line.
 ##
-## ## Why the contest is asked EVASION-first and complemented — DO NOT "simplify" this
+## ## Zero at parity is the design, and the base accuracy is what keeps combat playable
 ##
-## The hit contest is algebraically `accuracy / (accuracy + evasion)`, and writing it
-## that way round is the same ratio to any algebraist and a DIFFERENT FUNCTION here,
-## because the two differ on exactly one input: the zero-sum pair.
+## The owner's rule: a defender who MATCHES the attack cancels it completely, and one who
+## beats it cannot be hit at all. That is deliberately stricter than either earlier shape
+## — ADR 0068's subtraction and ADR 0215's ratio both let a matched defender be hit — and
+## it is why `Stat.ACCURACY` is DERIVED at last (`0.005 + agility * 0.0015`, ADR 0877):
+## every attack carries a base accuracy, so a defender meets it by investing EVASION
+## rather than by the accident of both halves reading `0.0`. A dodge build answers by
+## out-evading the base; an accuracy build answers the dodge build. Neither half is
+## capped, and only the output is a probability.
 ##
-## [method CombatStats.contest] answers `o + d == 0.0` with `0.0`, documented as "neither
-## half is invested, so neither side can win". That is the right answer for PARRY and
-## CRIT, where `0.0` means "nobody parries, nobody crits" — the neutral is the absence of
-## the event. **For the hit it is inverted.** There, `0.0` would mean "the attacker wins
-## nothing", i.e. every swing at every body that has not invested in dodging is a
-## guaranteed miss. But the attacker never has to EARN a hit: the neutral reading of a
-## body with no evasion and a swing with no accuracy is that the blow LANDS.
-##
-## So this reads the share the DEFENDER takes — `evasion / (evasion + accuracy)`, the
-## fraction of attacks dodging actually turns aside — and complements it. Identical to
-## the plain ratio at every non-degenerate input (homogeneous of degree zero, so both
-## spellings agree whenever the sum is positive), and correct at the one input where they
-## do not: `1.0 - 0.0 == 1.0` is a landed blow. That is why the whole spine is reachable
-## at all with stock actors — `CombatTestKit.actor()` has agility 0 and no accuracy, so
-## both halves read `0.0`.
-##
-## Written the other way round, this same function returned `p_hit == 0.0` for every
-## stock pair, and the consequence was not one wrong number but a spine that could not
-## resolve ANY hit: 13 assertions across four suites failed at S2's early return with
-## `0.0` where a landed amount was expected. A test-only workaround — bolting
-## `accuracy = 1000.0` onto six fixtures — would have made all 13 pass while leaving the
-## discontinuity live in shipped play: `0.001` accuracy would land every hit and exactly
-## `0.0` would land none.
-static func landed_chance(attacker: Actor, target: Actor, _tuning: CombatTuning) -> float:
-	return 1.0 - CombatStats.contest_of(Stat.EVASION, target, CombatStats.ACCURACY, attacker)
+## The complement-reading this function used to carry (`1 - evasion/(evasion + accuracy)`,
+## so that two stock actors with no stats landed) is DELETED with the ratio: under the
+## flat rule the two spellings differ at parity, and the parity `0.0` is the point
+## rather than a discontinuity to paper over.
+static func landed_chance(attacker: Actor, target: Actor, tuning: CombatTuning) -> float:
+	return CombatStats.contest_of(
+		CombatStats.ACCURACY, attacker, Stat.EVASION, target, tuning.rate_scale
+	)
 
 
-## S2's `p_parry`. Linear-from-zero, so an unstatted defender parries 0% and never a
-## sigmoid's unchosen 50% (ADR 0068). `PARRY_BREAK` and `PARRY_SHRED` are NOT read
-## here: breaking the parry costs the defender poise and re-reads, and shredding it
-## costs their ability to parry at all — both are a defensive RESPONSE to a landed
-## parry, which wave E owns and which has no business inside a band roll that must
-## stay one comparison.
+## S2's `p_parry`: the defender's `PARRY_RATE` beats the attacker's `PARRY_BREAK`
+## (ADR 0877). `PARRY_SHRED` is NOT read here: shredding a parry costs the defender
+## their ability to parry again — a defensive RESPONSE to a landed parry, which wave E
+## owns and which has no business inside a band roll that must stay one comparison.
+##
+## The second argument is `PARRY_BREAK` and fixing it here is part of the ADR: it read
+## the attacker's own `PARRY_RATE`, so the attacker's suppress half was dead and an
+## attacker's parry investment silently weakened the defender's parry.
 static func _parry(attacker: Actor, target: Actor, tuning: CombatTuning) -> float:
 	return CombatBand.rate(
-		_stat(target, CombatStats.PARRY_RATE), _stat(attacker, CombatStats.PARRY_RATE), tuning
+		_stat(target, CombatStats.PARRY_RATE), _stat(attacker, CombatStats.PARRY_BREAK), tuning
 	)
 
 
-## S2's `p_block`. Block's twin of [method _parry]: same contest, same scale, one
-## vocabulary. `PARRY_STRENGTH` / `BLOCK_STRENGTH` are the defender's amplifiers and are
-## NOT read by the spine — they scale the break and shred a response costs, not the
-## band itself, so no two of the four parry ids and the four block ids can disagree
-## about what parrying means.
+## S2's `p_block`. Block's twin of [method _parry]: same contest, same fixing of the
+## suppress argument to `BLOCK_BREAK`, one vocabulary (ADR 0877). `BLOCK_STRENGTH` is
+## the defender's amplifier and is NOT read by the spine — it scales what a block
+## removes, not the band itself, so no two of the four parry ids and the four block ids
+## can disagree about what blocking means.
 static func _block(attacker: Actor, target: Actor, tuning: CombatTuning) -> float:
 	return CombatBand.rate(
-		_stat(target, CombatStats.BLOCK_RATE), _stat(attacker, CombatStats.BLOCK_RATE), tuning
+		_stat(target, CombatStats.BLOCK_RATE), _stat(attacker, CombatStats.BLOCK_BREAK), tuning
 	)
 
 
-## S6's multiplier. `Stat.CRIT_DAMAGE` is a MULTIPLIER with a 1.5 baseline, not a
-## bonus, and it is read here exactly once: the CHANCE was resolved at S3, so a second
+## S6's multiplier: `1.0 + rate_from_zero(crit_damage, crit_resist_damage, rate_scale)`
+## (ADR 0877). It is read here exactly once: the CHANCE was resolved at S3, so a second
 ## `Stat.CRIT_CHANCE` read here would make the ladder a second crit dial.
 ##
-## ## ADR 0215. The two halves of the crit-DAMAGE contest, and why the second read is here
-## `Stat.CRIT_RESIST_DAMAGE` is the DEFENCE half and it was declared with no baseline
-## anywhere, so this line was the attacker half of a contest the defender had no side of:
-## a player could raise crit size and nothing could answer it, which `AGENTS.md`'s
-## yin-yang rule calls a defect rather than a pending item.
-##
-## ## Why SUBTRACTION and not a ratio, stated so it is not "fixed" later
-## Every OTHER contest in this module is `offense / (offense + defense)` — `landed_chance`
-## for the hit, `CombatBand.ratio` for parry and block. This one is not, and the reason
-## is that its two halves are not the same kind of number: `CRIT_DAMAGE` is a `1.0`-means-
-## no-change MULTIPLIER and `CRIT_RESIST_DAMAGE` is a share of it, not another attack
-## rate. There is no "share of a crit" for a ratio to return — the ratio answer to
-## `crit_resist` already exists and is a different pair (`CRIT_CHANCE` / `CRIT_RESIST`).
-## So the answer here is a REDUCTION of the multiplier, `1.0 - resist`, floored at `0.0`.
-##
-## ## Why the floor at `0.0` is the design and not an omission
-## A fully invested defender refusing every crit is a REACHABLE limit. `crit_resist_damage`
-## is unbounded, so no ladder makes it asymptotic — the alternative (a soft curve that
-## never reaches zero) is the ADR 0215 saturation failure in a fourth uniform, and it is
-## what makes "you cannot crit me" a free immunity instead of an investment.
+## ## Why the shape is `1 +` and not the delta itself
+## A crit that triggered must never be WEAKER than a normal hit, so the multiplier
+## FLOORS at `1.0`: equal halves mean the crit is cosmetic rather than a penalty, and
+## the attacker's excess buys up to a doubling (`rate_from_zero` saturates at `1.0`).
+## `Stat.CRIT_DAMAGE` therefore ships as the bonus MAGNITUDE `comprehension * 0.004`
+## and not a `1.5 +` multiplier (ADR 0877): the constant term was a bonus no defender
+## could ever contest, and its removal is what makes this pair a real pair.
 ##
 ## Both reads are TOTAL through [method _stat], so a half-built actor contests nothing
 ## rather than crashing a hit that has already committed to mutating both of them.
-static func _crit_damage(attacker: Actor, target: Actor) -> float:
-	var magnitude := maxf(0.0, _stat(attacker, Stat.CRIT_DAMAGE))
-	var resist := _stat(target, Stat.CRIT_RESIST_DAMAGE)
-	return magnitude * maxf(0.0, 1.0 - resist)
+static func _crit_damage(attacker: Actor, target: Actor, tuning: CombatTuning) -> float:
+	return (
+		1.0
+		+ CombatStats.rate_from_zero(
+			_stat(attacker, Stat.CRIT_DAMAGE),
+			_stat(target, Stat.CRIT_RESIST_DAMAGE),
+			tuning.rate_scale
+		)
+	)
 
 
 # --- context ------------------------------------------------------------------

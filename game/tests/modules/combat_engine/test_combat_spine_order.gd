@@ -33,19 +33,19 @@ func test_the_ladder_gate_scales_magnitude_and_never_the_landed_chance() -> void
 		CombatSpine.base_damage(strong, CombatTestKit.technique(100.0)),
 		"the ladder moves magnitude at all"
 	)
-	# Same number of band rolls for both, and neither attacker has any accuracy: the
-	# defender's `Stat.EVASION` is the only term in `p_hit`, and it does not read the
-	# attacker's realm. Asserted structurally — `_landed_chance` is private, so this
-	# pins the property through the roll it feeds rather than reaching past it.
-	#
-	# ZERO draws, not one: this defender is fully statted for nothing, so `p_hit` is
-	# saturated at 1.0 and there is no parry or block band left to consume a draw. That is
-	# the same rule `test_combat_band_roll.gd::test_a_saturated_landed_chance_consumes_no_draw`
-	# states, and this assertion used to demand the opposite — two suites, one contract.
+	# Neither attacker's realm enters `p_hit`: both halves of the trigger (`accuracy`,
+	# `EVASION`) are off `RealmScaling.SCALED_STATS`, so the landed chance cannot move
+	# with the ladder — the second dial the ordering forbids, realm-free under ADR 0877's
+	# flat delta exactly as under the ratio it replaced.
+	assert_almost_eq(
+		_p_hit(defender, weak), _p_hit(defender, strong), "landed chance is realm-free"
+	)
+	# The trigger is contested (a base accuracy of `0.005` against a zero evasion reads
+	# `0.5`), so the band spends its one draw rather than short-circuiting.
 	var generator := CombatTestKit.CountingGenerator.new([0.999])
 	CombatBand.roll(_tuning, _p_hit(defender, weak), 0.0, 0.0, generator)
-	assert_eq(generator.draws, 0, "a saturated hit with no bands spends no draw")
-	assert_eq(_p_hit(defender, weak), _p_hit(defender, strong), "landed chance is realm-free")
+	assert_eq(generator.draws, 1, "a contested p_hit spends its draw")
+	assert_eq(_p_hit(defender, weak) < 1.0, true, "and is not saturated")
 
 
 func test_the_mechanism_sees_the_ladder_gated_base_and_never_the_raw_magnitude() -> void:
@@ -154,29 +154,34 @@ func test_the_mechanism_never_sees_crit_as_an_input() -> void:
 	assert_almost_eq(
 		outcome.proposed_amount(), 40.0, "S4/S5 produced exactly what the mechanism returned"
 	)
-	# ADR 0215. The expected value is the WHOLE crit-damage contest, both halves read
-	# off the two actors rather than restated: `CRIT_DAMAGE * (1 - CRIT_RESIST_DAMAGE)`.
-	# It used to assert `40.0 * CRIT_DAMAGE` alone, which was correct when the offence
-	# half was the entire contest and wrong the moment `CRIT_RESIST_DAMAGE` had a
-	# baseline — and a stat that a stat is compared against changes the comparison.
-	# Nothing is weakened by this: the number is still derived, not pasted, so the
-	# assertion still fails if either actor's stat moves.
+	# ADR 0877. The expected value is the WHOLE crit-damage pair, both halves read off
+	# the two actors rather than restated: `1 + (crit_damage - crit_resist_damage) /
+	# rate_scale`. It used to assert `40.0 * CRIT_DAMAGE`, which was the multiplier era;
+	# now the stat is the BONUS and the multiplier is banked by the spine, and nothing is
+	# weakened by this: the number is still derived, not pasted, so the assertion still
+	# fails if either actor's stat moves.
 	var expected := (
 		40.0
-		* attacker.stats.derived(Stat.CRIT_DAMAGE)
-		* maxf(0.0, 1.0 - target.stats.derived(Stat.CRIT_RESIST_DAMAGE))
+		* (
+			1.0
+			+ CombatStats.rate_from_zero(
+				attacker.stats.derived(Stat.CRIT_DAMAGE),
+				target.stats.derived(Stat.CRIT_RESIST_DAMAGE),
+				_tuning.rate_scale
+			)
+		)
 	)
 	assert_almost_eq(
 		outcome.amount,
 		expected,
-		"S6 multiplied by CRIT_DAMAGE less the target's CRIT_RESIST_DAMAGE"
+		"S6 multiplied by 1 + the crit bonus over the target's crit resist"
 	)
 
 
 func test_crit_is_resolved_from_crit_chance_and_never_from_crit_damage() -> void:
-	# `Stat.CRIT_DAMAGE` has a 1.5 baseline on every actor, so a spine that read it as
-	# the CHANCE would crit 150% of the time. `crit` is false on a quiet attacker whose
-	# `Stat.CRIT_CHANCE` is 0.0 even though `CRIT_DAMAGE` is 1.5.
+	# `Stat.CRIT_DAMAGE` is the crit BONUS magnitude, not a chance: a spine that read it
+	# as the trigger would crit whenever the bonus is non-zero. `crit` is false on a
+	# quiet attacker whose `Stat.CRIT_CHANCE` is 0.0.
 	var mechanism := CombatTestKit.FixedMechanism.new()
 	mechanism.amount = 40.0
 	var attacker := CombatTestKit.quiet_actor(&"attacker")
@@ -260,11 +265,15 @@ func _always_low() -> CombatTestKit.CountingGenerator:
 	return CombatTestKit.CountingGenerator.new([0.0])
 
 
-## `Stat.EVASION` less `CombatStats.ACCURACY`, on `rate_scale`. Mirrors S2's `p_hit`
-## without reaching past the band roll, so this file asserts the property rather than
-## the private helper.
+## `(CombatStats.ACCURACY - Stat.EVASION) / rate_scale`, the flat delta ADR 0877
+## defines. Mirrors S2's `p_hit` without reaching past the band roll, so this file
+## asserts the property rather than the private helper.
 func _p_hit(defender: Actor, attacker: Actor) -> float:
-	var evasion := maxf(
-		0.0, defender.stats.derived(Stat.EVASION) - attacker.stats.derived(CombatStats.ACCURACY)
+	return clampf(
+		(
+			(attacker.stats.derived(CombatStats.ACCURACY) - defender.stats.derived(Stat.EVASION))
+			/ _tuning.rate_scale
+		),
+		0.0,
+		1.0
 	)
-	return clampf(1.0 - evasion / _tuning.rate_scale, 0.0, 1.0)

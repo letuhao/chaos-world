@@ -51,10 +51,12 @@ extends Resource
 ## is not a clamp: the outcome records that the chain ended, so nothing is silently
 ## rounded away.
 @export var chain_depth_limit: int = 0
-## The divisor of the linear-from-zero rate contest: `clampf(maxf(0, rate - resist) /
-## rate_scale, 0, 1)`. Linear, never sigmoid — a sigmoid returns 0.5 at parity, so an
-## actor with ZERO parry stat would parry half the time, a default nobody chose
-## (ADR 0068).
+## The divisor of the flat-delta rate contest: `clampf(maxf(0, rate - resist) /
+## rate_scale, 0, 1)` — the exchange rate between one point of advantage and one point
+## of trigger probability (ADR 0877; Keepverse's `RateFromZero`). Equal halves read
+## `0.0`, a gap of `rate_scale` reads certainty, and NEITHER input is capped: only the
+## probability OUTPUT is. Zero is the degenerate default and reads as "no exchange
+## rate", so every trigger answers `0.0` rather than dividing.
 @export var rate_scale: float = 0.0
 ## The divisor of the amplification/reduction factor at S7: `maxf(0, 1 + d /
 ## amp_scale)`, linear and floored at zero. See `CombatSpine.amp_factor` for why this is

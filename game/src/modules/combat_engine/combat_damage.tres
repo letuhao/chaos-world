@@ -8,7 +8,13 @@ min_chip_abs = 1.0
 min_chip_share = 0.01
 avoidance_band_cap = 0.95
 chain_depth_limit = 6
-rate_scale = 1000.0
+; ADR 0877. The flat-delta exchange rate: `p = clampf(maxf(0, rate - resist) /
+; rate_scale, 0, 1)`. `0.01` against the current magnitudes: the stock attack carries
+; `accuracy` 0.005 against a body with no evasion, and one agility point moves a contest
+; by `0.0015..0.002 / 0.01` = 15..20 percent. The old `1000.0` was the permille divisor
+; of a `[0, 1]`-space formula that no longer ships; at these magnitudes it would read
+; every trigger as `0.0`. Retuning a trigger is this one line.
+rate_scale = 0.01
 amp_scale = 10.0
 lifesteal_pool = &"health"
 default_element_share = 0.8

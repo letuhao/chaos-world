@@ -371,6 +371,10 @@ func test_the_status_result_rides_effects_and_the_outcome_gains_no_status_field(
 	var mechanism := CombatTestKit.FixedMechanism.new()
 	mechanism.amount = 25.0
 	var attacker := CombatTestKit.quiet_actor(&"attacker")
+	# ADR 0877: the hit trigger needs the attack to BEAT the defender's evasion, and this
+	# fixture only cares that a blow LANDED — so the attacker carries a saturated base
+	# accuracy, the determinism the old complement gave a `(0, 0)` pair.
+	attacker.stats.add_modifier(CombatStats.rate_modifier(CombatStats.ACCURACY, 1.0, &"test"))
 	MechanismSlot.bind(attacker, mechanism)
 	var target := CombatTestKit.actor(&"target")
 	var technique := CombatTestKit.technique(100.0)
