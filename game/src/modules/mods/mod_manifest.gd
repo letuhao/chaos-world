@@ -81,9 +81,7 @@ static func parse(text: String, source_path: String = "") -> Dictionary:
 	var update_url := ""
 	if raw.has("update_url"):
 		if typeof(raw["update_url"]) != TYPE_STRING:
-			return _fail(
-				"bad_update_url", "%s: 'update_url' must be a string" % source_path
-			)
+			return _fail("bad_update_url", "%s: 'update_url' must be a string" % source_path)
 		update_url = String(raw["update_url"])
 	var incompatible_with := _parse_string_array(
 		raw.get("incompatible_with", []), "incompatible_with", source_path
@@ -95,6 +93,15 @@ static func parse(text: String, source_path: String = "") -> Dictionary:
 	)
 	if not conflicts_with[0]:
 		return conflicts_with[1]
+	var config := _parse_config(raw.get("config", []), source_path)
+	if not config[0]:
+		return config[1]
+	var lifecycle_hooks := _parse_lifecycle_hooks(raw.get("lifecycle_hooks", []), source_path)
+	if not lifecycle_hooks[0]:
+		return lifecycle_hooks[1]
+	var def_patches := _parse_def_patches(raw.get("def_patches", []), source_path)
+	if not def_patches[0]:
+		return def_patches[1]
 	return {
 		"ok": true,
 		"reason": "",
@@ -118,6 +125,9 @@ static func parse(text: String, source_path: String = "") -> Dictionary:
 			"update_url": update_url,
 			"incompatible_with": incompatible_with[1],
 			"conflicts_with": conflicts_with[1],
+			"config": config[1],
+			"lifecycle_hooks": lifecycle_hooks[1],
+			"def_patches": def_patches[1],
 			"path": source_path,
 			"root": source_path.get_base_dir(),
 		},
@@ -255,8 +265,10 @@ static func _parse_integrations(value, source_path: String) -> Array:
 				false,
 				_fail(
 					"bad_integrations",
-					"%s: an 'integrations' entry needs string 'target_mod' and 'api_name'"
-					% source_path
+					(
+						"%s: an 'integrations' entry needs string 'target_mod' and 'api_name'"
+						% source_path
+					)
 				),
 			]
 		var row := {
@@ -272,8 +284,10 @@ static func _parse_integrations(value, source_path: String) -> Array:
 					false,
 					_fail(
 						"bad_integrations",
-						"%s: '%s.min_version' is not a dotted number"
-						% [source_path, String(entry["target_mod"])]
+						(
+							"%s: '%s.min_version' is not a dotted number"
+							% [source_path, String(entry["target_mod"])]
+						)
 					),
 				]
 			row["min_version"] = String(entry["min_version"])
@@ -414,5 +428,213 @@ static func _parse_screens(value, source_path: String) -> Array:
 				"scene": String(entry["scene"]),
 				"label": String(entry.get("label", ""))
 			}
+		)
+	return [true, out]
+
+
+## Valid config types for the config seam.
+const CONFIG_TYPES := ["int", "float", "bool", "string", "choice"]
+
+## Valid lifecycle hook events.
+const LIFECYCLE_EVENTS := [
+	"on_load",
+	"on_unload",
+	"on_enable",
+	"on_disable",
+	"on_update",
+	"on_save",
+	"on_load_save",
+]
+
+## Valid def patch operations.
+const DEF_PATCH_OPS := ["set", "add", "remove", "multiply", "add_number"]
+
+
+static func _parse_config(value, source_path: String) -> Array:
+	if typeof(value) != TYPE_ARRAY:
+		return [false, _fail("bad_config", "%s: 'config' must be an array" % source_path)]
+	var out: Array[Dictionary] = []
+	for entry in value:
+		if (
+			typeof(entry) != TYPE_DICTIONARY
+			or typeof(entry.get("key", null)) != TYPE_STRING
+			or String(entry["key"]).is_empty()
+		):
+			return [
+				false,
+				_fail(
+					"bad_config",
+					"%s: a 'config' entry needs a non-empty string 'key'" % source_path
+				),
+			]
+		var type := String(entry.get("type", ""))
+		if not CONFIG_TYPES.has(type):
+			return [
+				false,
+				_fail(
+					"bad_config",
+					(
+						"%s: '%s' has unknown type '%s', one of %s"
+						% [source_path, String(entry["key"]), type, ", ".join(CONFIG_TYPES)]
+					)
+				),
+			]
+		var row := {
+			"key": String(entry["key"]),
+			"label": String(entry.get("label", "")),
+			"type": type,
+			"default": entry.get("default", null),
+		}
+		if type == "int" or type == "float":
+			if (
+				entry.has("min")
+				and not _is_whole_number(entry["min"])
+				and typeof(entry["min"]) != TYPE_FLOAT
+			):
+				return [
+					false,
+					_fail(
+						"bad_config",
+						"%s: '%s.min' must be a number" % [source_path, String(entry["key"])]
+					),
+				]
+			if (
+				entry.has("max")
+				and not _is_whole_number(entry["max"])
+				and typeof(entry["max"]) != TYPE_FLOAT
+			):
+				return [
+					false,
+					_fail(
+						"bad_config",
+						"%s: '%s.max' must be a number" % [source_path, String(entry["key"])]
+					),
+				]
+			if entry.has("min"):
+				row["min"] = entry["min"]
+			if entry.has("max"):
+				row["max"] = entry["max"]
+		if type == "choice":
+			var choices: Variant = entry.get("choices", [])
+			if typeof(choices) != TYPE_ARRAY:
+				return [
+					false,
+					_fail(
+						"bad_config",
+						"%s: '%s.choices' must be an array" % [source_path, String(entry["key"])]
+					),
+				]
+			var choice_list: Array[String] = []
+			for choice in choices as Array:
+				if typeof(choice) != TYPE_STRING:
+					return [
+						false,
+						_fail(
+							"bad_config",
+							(
+								"%s: '%s.choices' entries must be strings"
+								% [source_path, String(entry["key"])]
+							)
+						),
+					]
+				choice_list.append(String(choice))
+			row["choices"] = choice_list
+		out.append(row)
+	return [true, out]
+
+
+static func _parse_lifecycle_hooks(value, source_path: String) -> Array:
+	if typeof(value) != TYPE_ARRAY:
+		return [
+			false,
+			_fail("bad_lifecycle_hooks", "%s: 'lifecycle_hooks' must be an array" % source_path)
+		]
+	var out: Array[Dictionary] = []
+	for entry in value:
+		if typeof(entry) != TYPE_DICTIONARY or typeof(entry.get("event", null)) != TYPE_STRING:
+			return [
+				false,
+				_fail(
+					"bad_lifecycle_hooks",
+					"%s: a 'lifecycle_hooks' entry needs a string 'event'" % source_path
+				),
+			]
+		var event := String(entry["event"])
+		if not LIFECYCLE_EVENTS.has(event):
+			return [
+				false,
+				_fail(
+					"bad_lifecycle_hooks",
+					(
+						"%s: unknown event '%s', one of %s"
+						% [source_path, event, ", ".join(LIFECYCLE_EVENTS)]
+					)
+				),
+			]
+		var row := {"event": event}
+		if entry.has("callable"):
+			if typeof(entry["callable"]) != TYPE_STRING or String(entry["callable"]).is_empty():
+				return [
+					false,
+					_fail(
+						"bad_lifecycle_hooks",
+						(
+							"%s: a 'lifecycle_hooks' 'callable' must be a non-empty string"
+							% source_path
+						)
+					),
+				]
+			row["callable"] = String(entry["callable"])
+		out.append(row)
+	return [true, out]
+
+
+static func _parse_def_patches(value, source_path: String) -> Array:
+	if typeof(value) != TYPE_ARRAY:
+		return [false, _fail("bad_def_patches", "%s: 'def_patches' must be an array" % source_path)]
+	var out: Array[Dictionary] = []
+	for entry in value:
+		if (
+			typeof(entry) != TYPE_DICTIONARY
+			or typeof(entry.get("family", null)) != TYPE_STRING
+			or String(entry["family"]).is_empty()
+			or typeof(entry.get("id", null)) != TYPE_STRING
+			or String(entry["id"]).is_empty()
+			or typeof(entry.get("field", null)) != TYPE_STRING
+			or String(entry["field"]).is_empty()
+		):
+			return [
+				false,
+				_fail(
+					"bad_def_patches",
+					(
+						"%s: a 'def_patches' entry needs non-empty string 'family', 'id', and 'field'"
+						% source_path
+					)
+				),
+			]
+		var op := String(entry.get("operation", "set"))
+		if not DEF_PATCH_OPS.has(op):
+			return [
+				false,
+				_fail(
+					"bad_def_patches",
+					(
+						"%s: '%s' has unknown operation '%s', one of %s"
+						% [source_path, String(entry["id"]), op, ", ".join(DEF_PATCH_OPS)]
+					)
+				),
+			]
+		(
+			out
+			. append(
+				{
+					"family": String(entry["family"]),
+					"id": String(entry["id"]),
+					"field": String(entry["field"]),
+					"value": entry.get("value", null),
+					"operation": op,
+				}
+			)
 		)
 	return [true, out]

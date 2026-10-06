@@ -88,7 +88,8 @@ func test_get_mod_api_returns_null_for_unregistered_name() -> void:
 	_write_mod("provider", _mod_json("provider", "1.0", 0))
 	_write_mod("consumer", _mod_json("consumer", "1.0", 0))
 	var out := ModsApi.load_order([_root])
-	var consumer_ctx: RegistrationContext = out["contexts"][1]
+	# Load order is alphabetical at same priority: consumer, then provider
+	var consumer_ctx: RegistrationContext = out["contexts"][0]
 	var resolved: Object = consumer_ctx.get_mod_api("provider", "no_such_api")
 	assert_eq(resolved, null, "null for unregistered api name")
 
@@ -105,7 +106,9 @@ func test_check_for_update_stub_returns_no_update() -> void:
 
 func test_integrations_manifest_field_parses() -> void:
 	var text := _mod_json(
-		"demo", "1.0", 0,
+		"demo",
+		"1.0",
+		0,
 		', "integrations": [{"target_mod": "other", "api_name": "data", "min_version": "1.2"}]'
 	)
 	var out := ModsApi.parse_manifest(text, "user://demo/mod.json")
@@ -126,9 +129,7 @@ func test_integrations_manifest_field_optional() -> void:
 
 
 func test_update_url_manifest_field_parses() -> void:
-	var text := _mod_json(
-		"demo", "1.0", 0, ', "update_url": "https://example.com/update"'
-	)
+	var text := _mod_json("demo", "1.0", 0, ', "update_url": "https://example.com/update"')
 	var out := ModsApi.parse_manifest(text, "user://demo/mod.json")
 	assert_eq(bool(out["ok"]), true, "parse succeeds")
 	assert_eq(String(out["manifest"]["update_url"]), "https://example.com/update", "url carried")

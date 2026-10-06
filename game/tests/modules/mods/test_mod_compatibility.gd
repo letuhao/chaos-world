@@ -59,48 +59,34 @@ func _mod_json(id: String, version: String, priority: int, extra: String = "") -
 
 func test_incompatible_mod_is_refused() -> void:
 	_write_mod("base", _mod_json("base", "1.0", 0))
-	_write_mod(
-		"broken",
-		_mod_json("broken", "1.0", 0, ', "incompatible_with": ["base"]')
-	)
+	_write_mod("broken", _mod_json("broken", "1.0", 0, ', "incompatible_with": ["base"]'))
 	var out := ModsApi.load_order([_root])
 	assert_eq(bool(out["ok"]), false, "load refused")
 	assert_eq(out["reason"], "incompatible_mod", "named error")
 
 
 func test_incompatible_mod_passes_when_target_absent() -> void:
-	_write_mod(
-		"lonely",
-		_mod_json("lonely", "1.0", 0, ', "incompatible_with": ["nonexistent"]')
-	)
+	_write_mod("lonely", _mod_json("lonely", "1.0", 0, ', "incompatible_with": ["nonexistent"]'))
 	var out := ModsApi.load_order([_root])
 	assert_eq(bool(out["ok"]), true, "load succeeds when target absent")
 
 
 func test_conflicting_mod_is_refused() -> void:
 	_write_mod("base", _mod_json("base", "1.0", 0))
-	_write_mod(
-		"clashing",
-		_mod_json("clashing", "1.0", 0, ', "conflicts_with": ["base"]')
-	)
+	_write_mod("clashing", _mod_json("clashing", "1.0", 0, ', "conflicts_with": ["base"]'))
 	var out := ModsApi.load_order([_root])
 	assert_eq(bool(out["ok"]), false, "load refused")
 	assert_eq(out["reason"], "conflicting_mod", "named error")
 
 
 func test_conflicting_mod_passes_when_target_absent() -> void:
-	_write_mod(
-		"lonely",
-		_mod_json("lonely", "1.0", 0, ', "conflicts_with": ["nonexistent"]')
-	)
+	_write_mod("lonely", _mod_json("lonely", "1.0", 0, ', "conflicts_with": ["nonexistent"]'))
 	var out := ModsApi.load_order([_root])
 	assert_eq(bool(out["ok"]), true, "load succeeds when target absent")
 
 
 func test_incompatible_with_manifest_field_parses() -> void:
-	var text := _mod_json(
-		"demo", "1.0", 0, ', "incompatible_with": ["a", "b"]'
-	)
+	var text := _mod_json("demo", "1.0", 0, ', "incompatible_with": ["a", "b"]')
 	var out := ModsApi.parse_manifest(text, "user://demo/mod.json")
 	assert_eq(bool(out["ok"]), true, "parse succeeds")
 	var m: Dictionary = out["manifest"]
@@ -110,9 +96,7 @@ func test_incompatible_with_manifest_field_parses() -> void:
 
 
 func test_conflicts_with_manifest_field_parses() -> void:
-	var text := _mod_json(
-		"demo", "1.0", 0, ', "conflicts_with": ["x"]'
-	)
+	var text := _mod_json("demo", "1.0", 0, ', "conflicts_with": ["x"]')
 	var out := ModsApi.parse_manifest(text, "user://demo/mod.json")
 	assert_eq(bool(out["ok"]), true, "parse succeeds")
 	var m: Dictionary = out["manifest"]

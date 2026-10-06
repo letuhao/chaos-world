@@ -105,6 +105,19 @@ var _registry: ModuleRegistry = null
 ## by the loader so one mod's context can resolve another mod's registered API.
 var _api_registry: Dictionary = {}
 
+## Config values loaded from disk, keyed by config key. Populated by the
+## loader before the mod's entry point runs.
+var _config_values: Dictionary = {}
+
+## Config schema from the manifest: Array of {key, label, type, default, ...}.
+var _config_schema: Array[Dictionary] = []
+
+## Lifecycle hooks registered through `add_lifecycle_hook`.
+var lifecycle_hooks: Array[Dictionary] = []
+
+## Def patches from the manifest, applied during catalog merge.
+var def_patches: Array[Dictionary] = []
+
 
 func _init(
 	id: String = "",
@@ -116,6 +129,8 @@ func _init(
 	_manifest = manifest
 	_registry = registry if registry != null else ModuleRegistry.new()
 	_api_registry = api_registry
+	_config_schema = manifest.get("config", [])
+	def_patches = manifest.get("def_patches", [])
 
 
 ## Declare one content family rooted at `dir` (e.g. items, recipes). The row
@@ -297,6 +312,74 @@ func check_for_update() -> Dictionary:
 	return {"has_update": false, "latest_version": "", "download_url": ""}
 
 
+## THE SEVENTH SEAM — mod configuration. Returns the config value for `key`,
+## or null when the key is not declared in the manifest's config schema.
+func get_config(key: String) -> Variant:
+	if not _config_schema.has(key):
+		return null
+	return _config_values.get(key, null)
+
+
+## Set a config value and persist to disk. The value is validated against
+## the manifest's config schema: an unknown key is refused, and a value that
+## does not match the declared type is refused.
+func set_config(key: String, value: Variant) -> Dictionary:
+	for entry in _config_schema:
+		if String(entry["key"]) == key:
+			var reason := _validate_config_value(entry, value)
+			if not reason.is_empty():
+				return {"ok": false, "reason": reason, "detail": ""}
+			_config_values[key] = value
+			return ModConfigStore.save(mod_id, _config_values)
+	return {"ok": false, "reason": "unknown_key", "detail": "'%s' is not in the config schema" % key}
+
+
+## THE EIGHTH SEAM — lifecycle hooks. Register a callable for an event.
+## Events: on_load, on_unload, on_enable, on_disable, on_update, on_save,
+## on_load_save.
+func add_lifecycle_hook(event: String, callable: Callable) -> Array[Dictionary]:
+	lifecycle_hooks.append({"event": event, "callable": callable})
+	return lifecycle_hooks
+
+
+## Validate a config value against its schema entry. Returns "" when valid,
+## or a named reason when invalid.
+func _validate_config_value(entry: Dictionary, value: Variant) -> String:
+	var type := String(entry["type"])
+	match type:
+		"int":
+			if typeof(value) != TYPE_INT:
+				return "not_int"
+			var min = entry.get("min", null)
+			if min != null and int(value) < int(min):
+				return "below_min"
+			var max = entry.get("max", null)
+			if max != null and int(value) > int(max):
+				return "above_max"
+		"float":
+			if typeof(value) != TYPE_FLOAT and typeof(value) != TYPE_INT:
+				return "not_float"
+			var min = entry.get("min", null)
+			if min != null and float(value) < float(min):
+				return "below_min"
+			var max = entry.get("max", null)
+			if max != null and float(value) > float(max):
+				return "above_max"
+		"bool":
+			if typeof(value) != TYPE_BOOL:
+				return "not_bool"
+		"string":
+			if typeof(value) != TYPE_STRING:
+				return "not_string"
+		"choice":
+			if typeof(value) != TYPE_STRING:
+				return "not_string"
+			var choices: Array = entry.get("choices", [])
+			if not choices.has(value):
+				return "not_in_choices"
+	return ""
+
+
 ## The pools this mod declared, in DECLARATION order. Hand this to a
 ## `CultivationPathDef.resource_ids` and `ensure_resources` mints the pool — which
 ## is what makes the vocabulary genuinely CLOSED rather than merely narrowed: an id
@@ -340,4 +423,7 @@ func registrations() -> Dictionary:
 		"update_url": _manifest.get("update_url", ""),
 		"incompatible_with": _manifest.get("incompatible_with", []),
 		"conflicts_with": _manifest.get("conflicts_with", []),
+		"config_schema": _config_schema,
+		"lifecycle_hooks": lifecycle_hooks,
+		"def_patches": def_patches,
 	}

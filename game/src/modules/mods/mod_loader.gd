@@ -280,21 +280,14 @@ static func _check_compatibility(mods: Array[Dictionary]) -> Dictionary:
 					"ok": false,
 					"reason": "incompatible_mod",
 					"detail":
-					(
-						"'%s' is incompatible with '%s', which is loaded"
-						% [mod["id"], other_id]
-					),
+					"'%s' is incompatible with '%s', which is loaded" % [mod["id"], other_id],
 				}
 		for other_id in mod["conflicts_with"]:
 			if by_id.has(other_id):
 				return {
 					"ok": false,
 					"reason": "conflicting_mod",
-					"detail":
-					(
-						"'%s' conflicts with '%s', which is loaded"
-						% [mod["id"], other_id]
-					),
+					"detail": "'%s' conflicts with '%s', which is loaded" % [mod["id"], other_id],
 				}
 	return {"ok": true}
 
@@ -305,10 +298,17 @@ static func _check_compatibility(mods: Array[Dictionary]) -> Dictionary:
 ## forwards into the one graph the boot orders from). Attach hooks carry an
 ## EMPTY Callable here: the manifest declares the phase, the mod's own entry
 ## point binds the real function in W3+.
+##
+## Config is loaded from disk BEFORE the mod's entry point runs, so a mod
+## reading its config during registration sees the persisted values.
 static func _stamp_context(
 	mod: Dictionary, registry: ModuleRegistry, api_registry: Dictionary = {}
 ) -> RegistrationContext:
 	var ctx := RegistrationContext.new(mod["id"], mod, registry, api_registry)
+	# Load config from disk before the mod's entry point runs.
+	var config_result := ModConfigStore.load(mod["id"], mod.get("config", []))
+	if bool(config_result.get("ok", false)):
+		ctx._config_values = config_result.get("values", {})
 	for row in mod["content_roots"]:
 		ctx.add_content_root(row["family"], row["dir"], row.get("id_field", "id"))
 	for module in mod["modules"]:
@@ -330,4 +330,9 @@ static func _stamp_context(
 		ctx.subscribe(
 			{"event_bus": "WorldEvents", "event_name": String(event), "callable": Callable()}
 		)
+	for hook in mod.get("lifecycle_hooks", []):
+		var callable := Callable()
+		if hook.has("callable"):
+			callable = _resolve_callable(String(hook["callable"]))
+		ctx.add_lifecycle_hook(hook["event"], callable)
 	return ctx
