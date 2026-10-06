@@ -45,26 +45,40 @@ const TRAIT_PREFIX := "clan:"
 ## Second `Actor.traits` mirror: the member's position, namespaced so it can never
 ## collide with the clan mirror or with a trait an unrelated module grants.
 const RANK_PREFIX := "clan_rank:"
+## The ceiling a clan standing is measured against when its def authors none, and the
+## value `InstitutionClaim`'s own `from_dict` defaults to.
+##
+## **A LITERAL, and the fourth in the tree — stated rather than hidden.**
+## `InstitutionClaim.from_dict`, `InstitutionLedger.read` and
+## `InstitutionFounding._standing_cap` each write the same `100` and `core/` publishes no
+## named constant for it, so there is nothing here to alias. Hand-writing a fifth would be
+## worse than naming this one: if `core/` ever publishes `DEFAULT_STANDING_CAP`, this and
+## those three become aliases of it in the same change. **`core/` is outside every module's
+## claim**, so that fix is not this slice's to make.
+const DEFAULT_STANDING_CAP := 100
 
 
 ## The stat source id one clan would contribute under.
 static func source_for(id: StringName) -> StringName:
-	return StringName("%s%s" % [SOURCE_PREFIX, id])
+	return InstitutionLedger.source_tagged(SOURCE_PREFIX, id)
 
 
 ## The `Actor.traits` mirror id one clan is reflected under.
 static func trait_for(id: StringName) -> StringName:
-	return StringName("%s%s" % [TRAIT_PREFIX, id])
+	return InstitutionLedger.source_tagged(TRAIT_PREFIX, id)
 
 
 ## The `Actor.traits` mirror id one position is reflected under.
 static func rank_trait_for(rank: StringName) -> StringName:
-	return StringName("%s%s" % [RANK_PREFIX, rank])
+	return InstitutionLedger.source_tagged(RANK_PREFIX, rank)
 
 
-## True when a stat modifier source belongs to this module.
+## True when a stat modifier source belongs to this module. **A delegate**: the SHAPE is
+## shared and the NAMESPACE is not — `InstitutionLedger.owns_source` takes the prefix as an
+## argument precisely so a `sect:` modifier can never satisfy a clan's strip half, which is
+## the bug the prefix exists to prevent (ADR 0271 decision 3).
 static func is_own_source(source: StringName) -> bool:
-	return String(source).begins_with(SOURCE_PREFIX)
+	return InstitutionLedger.owns_source(SOURCE_PREFIX, source)
 
 
 ## A known-clan filter for this module. `known_clans` comes from the catalog; an entry
@@ -146,10 +160,13 @@ static func _applied_corrupt(record: Dictionary) -> bool:
 
 
 ## Whether `value` is genuinely text — a `String` or a `StringName`. Paired with
-## `_text`, which answers the same question by converting; this one only asks, so
-## `normalize` can tell a corrupt field from an absent one.
+## `_text`, which CONVERTS the same question; this one only ASKS it, so `normalize` can
+## tell a corrupt field from an absent one. **A delegate, for the reason `_text` is one**:
+## `InstitutionLedger.is_text` is the ASK half and was written for exactly this caller, so
+## keeping a body here is the second copy the ratchet measures — the type test and the
+## fallback are two halves of ONE decision and are read together or not at all.
 static func _is_text(value: Variant) -> bool:
-	return value is String or value is StringName
+	return InstitutionLedger.is_text(value)
 
 
 ## The empty ledger: no clan, no position, no standing. The state a fresh actor is in
@@ -176,9 +193,72 @@ static func rank(ledger: Dictionary) -> StringName:
 
 ## The earned standing `ledger` records. Symmetric with obligations: it can rise and it
 ## can fall, and nothing in this module moves it on its own.
+##
+## **Not clamped into `ClanDef.standing_cap`, deliberately.** `SectState.standing` clamps
+## because a sect's ledger is a CLAIM and a claim's standing is bounded by its own cap
+## (`InstitutionClaim.move_standing` clamps the same way). A clan's ledger is not a claim
+## today — it is five keys on its own vocabulary — so clamping here would be a second,
+## unshared rule. Measured, not assumed: `test_clan_grants_no_power.gd` raises standing by
+## 10,000 and asserts `ClanStats.STANDING` reads 10000, and
+## `test_clan_standing_and_rank.gd` raises a member to 500 to publish them as sitting BELOW
+## what their standing reads as. A clamp would truncate both, and the second is ADR 0064's
+## politics: earning far past every published rung is a legitimate character, not a data
+## error. The cap bounds the RATIO ([method claim]), never this number.
 static func standing(ledger: Dictionary) -> int:
 	var value = ledger.get("standing", 0)
 	return int(value) if (value is float or value is int) else 0
+
+
+## The ceiling a claim built from `ledger` clamps against: the clan def's authored
+## `standing_cap`, REPAIRED to at least 1.
+##
+## **The repair is the point.** A cap that cannot be computed makes `normalized()` answer
+## `0.0` — `InstitutionClaim.normalized` returns 0 for `standing_cap <= 0` — which reads as
+## a member nobody respects. So a def authoring zero or a negative is floored here rather
+## than persisted, which is the same repair `InstitutionClaim.from_dict`,
+## `InstitutionLedger.read` and `SectState.normalize` all perform.
+##
+## A clan no def names falls back to `InstitutionClaim`'s own authored default rather than
+## to 0, for the same reason: **absence is not a broken cap**, it is a house this build no
+## longer ships, and it must still produce a computable ratio instead of a member who reads
+## as universally despised.
+static func standing_cap(clan_id: StringName) -> int:
+	if clan_id == &"":
+		return DEFAULT_STANDING_CAP
+	var def := ClanCatalog.instance().clan_definition(clan_id)
+	if def == null:
+		return DEFAULT_STANDING_CAP
+	return maxi(1, def.standing_cap)
+
+
+## `ledger` as the shared claim every institution speaks (ADR 0083): `rank` is the
+## position, `standing` the earned number, and the ceiling is this clan's own authored cap
+## rather than the shared default.
+##
+## **A DELEGATE to `InstitutionClaim.from_dict`, never a second shape.** One vocabulary
+## means `clan`, `sect` and `nation` answer "how does this read as a claim" the same way,
+## and a divergent copy is the ADR 0066 failure mode in a new place — the same reasoning
+## `SectState.claim` records. Two keys are translated rather than renamed in the save:
+## the ledger spells its position `rank` and its membership `clan`, and renaming either in
+## `normalize` would be a save-schema break for a read.
+##
+## `obligation` is carried as `{}` and that is the one honest difference from sect, not an
+## omission: a clan's `patronage` and `duty` are authored PROSE (`"A reduced stipend is
+## owed to a member the house can no longer call on."`), and `InstitutionLedger.
+## positive_lines` keeps only strictly positive INTEGERS — every one of those lines would be
+## dropped, so an `obligation` map here would persist empty and then read as "this member
+## owes nothing" on a house that publishes terms. Clan's terms become enforceable when the
+## social layer lands and they become period COUNTS; until then there is nothing to owe in
+## periods, and the map is deferred rather than faked.
+static func claim(ledger: Dictionary) -> InstitutionClaim:
+	var state := normalize(ledger)
+	var data := {
+		"position": String(rank(state)),
+		"standing": standing(state),
+		"standing_cap": standing_cap(clan_id(state)),
+		"obligation": {},
+	}
+	return InstitutionClaim.from_dict(data)
 
 
 ## Whether `ledger` records any membership at all.
@@ -250,25 +330,19 @@ static func applied(ledger: Dictionary) -> Dictionary:
 # --- Internals ---------------------------------------------------------------
 
 
-## The one text coercion in this module: `value` when it really is text (a `String` or
-## a `StringName`), otherwise `fallback`. **This is `sect_state.gd`'s `_text`, carried
-## over unchanged** (see `sect_state.gd:446-449` for why the raw cast is not safe on a
-## save payload).
+## `value` when it really is text (a `String` or a `StringName`), otherwise `fallback`.
+## **A DELEGATE, and the copy that used to live here is deleted** (ADR 0271 decision 3).
 ##
-## A `String(...)` CAST is the wrong tool here, and it is not a style preference.
-## `String(42.0)` raises at runtime in GDScript rather than yielding `"42.0"`, so a
-## corrupt save whose `clan` arrived as a number would abort the whole
-## `ClanApi.attach` — which is the exact opposite of the module's own documented rule
-## above, that a payload which cannot be read is diagnosed as empty. The reader would
-## get a script error and no actor at all instead of an unaffiliated actor, and the
-## failure would look like a crash in the composition root rather than a bad field in
-## one save slot. `str()` does not raise, but it would turn a corrupt field into a
-## plausible-looking id that the known-clan filter then has to reject by accident;
-## an explicit type test that falls back is refusal, not coincidence.
+## This file documented itself as "`sect_state.gd`'s `_text`, carried over unchanged", so
+## the pair was one rule written twice and kept in step by hand — the `RealmRate` shape
+## ADR 0066 exists to end. `InstitutionLedger.text` owns the coercion and the reasoning
+## (`String(42.0)` RAISES in GDScript rather than yielding `"42.0"`, so a raw cast on a
+## save payload aborts `attach` instead of reading a corrupt field as absent — the exact
+## opposite of the rule `normalize` above is written to enforce). Call sites still say
+## `_text` because this is the hot path of every attach; what matters is that there is
+## no body here that could drift.
 static func _text(value: Variant, fallback: String) -> String:
-	if value is String or value is StringName:
-		return String(value)
-	return fallback
+	return InstitutionLedger.text(value, fallback)
 
 
 ## The projection's record of what it last applied, read back so a rebuild can

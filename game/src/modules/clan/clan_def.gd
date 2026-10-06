@@ -8,6 +8,26 @@ extends Resource
 ## NOT `Actor.faction` (ADR 0047) — faction is the political alignment, clan is the
 ## family. The two answer different questions and are deliberately not unified.
 ##
+## ## `standing_cap` is the AUTHORED CEILING, and it is not the ladder's top
+##
+## `standing_bands` says what standing **publishes** — which rung that standing reads as.
+## `standing_cap` says what the house can **hold**. They are different statements and
+## keeping them apart is ADR 0064, not a duplication: the two readings can disagree, and
+## that disagreement is the politics (a member may stand far past every published rung and
+## still hold nothing, which is a legitimate character and not a data error).
+##
+## So `standing_cap` **does not clamp `ClanState.standing`**, and a member's earned number
+## is never silently truncated by a content field. What it bounds is the RATIO: it is the
+## `standing_cap` a claim built from this ledger carries, so
+## `InstitutionClaim.normalized()` is a computable ratio rather than a division against a
+## default this def never authored (the gap ADR 0083's one claim shape leaves otherwise).
+##
+## **The shipped default sits BELOW all three shipped top bands** — 100 against ironpact's
+## 120, saltledger's 150 and quiethouse's 160 — which is safe for exactly one reason: nothing
+## clamps. A house whose ladder reaches past the ceiling must author its own, and the `.tres`
+## edit that does it is named in `docs/deferred.jsonl` rather than guessed at here, because
+## a value above every ladder would be a constant no content justifies.
+##
 ## ## A clan grants recognition, never power
 ##
 ## **This Resource has no stat-granting field, and that is the design.** There is no
@@ -65,6 +85,12 @@ extends Resource
 ## a relationship rather than inferring it from shared tags.
 @export var rival_clans: Array[StringName] = []
 @export var tags: Array[StringName] = []
+
+## The ceiling an `InstitutionClaim` built from this house's ledger clamps against, and
+## the denominator of its `normalized()` ratio. **Never a clamp on `ClanState.standing`** —
+## see the class note, and `test_clan_migration.gd` for the shipped content this default
+## sits below.
+@export var standing_cap: int = 100
 
 # --- Admission ---------------------------------------------------------------
 

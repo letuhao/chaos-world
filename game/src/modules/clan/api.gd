@@ -102,9 +102,41 @@ static func attach(actor: Actor) -> void:
 		provider = ClanProvider.new()
 		actor.set_component(_PROVIDER_COMPONENT, provider)
 		actor.stats.add_provider(provider)
+	# ## The kind row is registered HERE, on attach, and not on some rarer verb
+	#
+	# `sect` registers lazily from `SectFounding.registry()`, which only `SectApi.found`
+	# reaches — so **a plain `join` there reads an unregistered kind** until somebody
+	# founds a sect. That is inherited, not designed: it works only because nothing in `sect`
+	# asks the registry outside founding yet, and it is one call site away from refusing a
+	# join `unknown_kind`. A clan has NO founding verb to hang it on, so the same trick would
+	# never register the row at all; `attach` is the seam instead, because it is the one
+	# verb EVERY actor reaches and a membership question asked before any `attach` is a
+	# question about an actor this module has never seen.
+	ClanFounding.registry()
 	var ledger := ClanState.normalize(actor.get_module_data(MODULE_KEY), _known_clans())
 	actor.set_module_data(MODULE_KEY, ledger)
 	ClanProjection.apply(actor, ledger)
+
+
+## May a clan be brought into being by an actor? **Always no, and that is a fact about the
+## kind rather than a missing feature.**
+##
+## `{ok: true, can_found: false, reason: ""}` for a registered `clan` and
+## `{ok: false, reason: "unknown_kind", can_found: false}` for one this boot never
+## registered — the honest difference between "this kind cannot be founded" (ADR 0083's
+## third state, here a settled `false`) and "there is no such kind" (its first). A bare
+## `false` would collapse two opposite actions into one, and a registry that defaulted a
+## missing kind to "yes" would let a profile invent an institution of a type nothing defines.
+##
+## Published because the capability READ is the only reason the registry row exists, and a
+## row nothing reads is the inert-vocabulary defect ADR 0076's catalog exists to prevent.
+static func can_found() -> Dictionary:
+	var found := ClanFounding.registry().has_capability(
+		ClanFounding.KIND, ClanFounding.CAP_IS_BORN_TO
+	)
+	if not bool(found["ok"]):
+		return {"ok": false, "reason": String(found["reason"]), "can_found": false}
+	return {"ok": true, "reason": "", "can_found": not bool(found["has"])}
 
 
 ## Admit `actor` to `clan_id` and project the membership. Returns the gate verdict

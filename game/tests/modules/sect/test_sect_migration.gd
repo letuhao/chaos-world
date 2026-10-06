@@ -101,10 +101,15 @@ const INSTITUTION_LEDGERS := [
 ## would have been a guard only another two sessions' work could satisfy, which is the "a
 ## gate nobody can clear gets deleted" shape INC-0017 names.
 ##
-## So the baseline is written down as a named number: a FOURTH copy fails, and each
-## consolidation lowers it by one. Lowering the constant is part of the change that removes
-## a copy, which is what stops the number going stale.
-const LEDGER_COERCION_BASELINE := 2
+## ## Lowered 2 -> 1 by the CLAN migration, and the constant travels with the change
+##
+## `ClanState._text` was the second of the two. It documented itself as "`sect_state.gd`'s
+## `_text`, carried over unchanged", so it was a copy by its own admission, and it is now a
+## delegate to `InstitutionLedger.text`. **One copy remains** — `world_polity_ledger.gd`,
+## which is in `core/` and outside that slice's claim — so this is a ratchet at ONE rather
+## than at zero: asserting zero would have been a guard only a `core/` session could clear,
+## which is the INC-0017 shape. The next consolidation lowers it again.
+const LEDGER_COERCION_BASELINE := 1
 
 var _born: Array = []
 
@@ -724,10 +729,16 @@ func test_the_text_coercion_copy_count_only_goes_down() -> void:
 			% [LEDGER_COERCION_BASELINE, ", ".join(holders)]
 		)
 	)
+	for delegated in [
+		"res://src/modules/sect/sect_state.gd", "res://src/modules/clan/clan_state.gd"
+	]:
+		assert_eq(holders.has(delegated), false, "and %s is no longer one of them" % delegated)
+	# The clan half is asserted as a VALUE too, so a delegating body that answered
+	# differently on a corrupt field would fail here rather than passing on the source scan.
 	assert_eq(
-		holders.has("res://src/modules/sect/sect_state.gd"),
-		false,
-		"and sect's is no longer one of them"
+		ClanState._text(42.0, "fallback"),
+		InstitutionLedger.text(42.0, "fallback"),
+		"and clan's answers exactly as the shared coercion does"
 	)
 	# The delegation itself, on both branches, so the case is not satisfied by the file
 	# being unreadable.
