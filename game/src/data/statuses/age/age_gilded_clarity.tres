@@ -5,46 +5,46 @@
 [resource]
 script = ExtResource("1_status")
 id = &"age_gilded_clarity"
-# # BUFF HALF, row 3 of 4: the comprehension / dao-heart floor ADR 0258 §3 names in one
-# # row. `comprehension` is a BASE ATTRIBUTE, which a `StatModifier` can only RAISE,
-# # so this is a floor a poor build cannot be argued below - not a reward a lucky one
-# # already had.
+; # BUFF HALF, row 3 of 4: the comprehension / dao-heart floor ADR 0258 §3 names in one
+; # row. `comprehension` is a BASE ATTRIBUTE, which a `StatModifier` can only RAISE,
+; # so this is a floor a poor build cannot be argued below - not a reward a lucky one
+; # already had.
 element = &""
-# AMBIENT, and deliberately so: an age band is inflicted by BEING THIS AGE, not by a landed
-# blow and not by standing in a hazard. `StatusDef.problems()` makes `element` mandatory
-# because every status in `res://data/statuses` rides one; naming a fire element here would
-# be a lie the shipped catalogue would act on, because `StatusApi.status_for_element` would
-# answer with this for every fire blow in the game.
-#
-# `mitigation_tags` below is still mandatory and still published: a status nothing answers
-# to is a flat tax (ADR 0090), and these are answered by `gear`/`pill`/`technique` exactly
-# as any other is. `ambient = true` waives EXACTLY ONE rule - the element - and no other.
+; AMBIENT, and deliberately so: an age band is inflicted by BEING THIS AGE, not by a landed
+; blow and not by standing in a hazard. `StatusDef.problems()` makes `element` mandatory
+; because every status in `res://data/statuses` rides one; naming a fire element here would
+; be a lie the shipped catalogue would act on, because `StatusApi.status_for_element` would
+; answer with this for every fire blow in the game.
+;
+; `mitigation_tags` below is still mandatory and still published: a status nothing answers
+; to is a flat tax (ADR 0090), and these are answered by `gear`/`pill`/`technique` exactly
+; as any other is. `ambient = true` waives EXACTLY ONE rule - the element - and no other.
 ambient = true
 on_landed_blow = false
 kind = &"stat_modifier"
 scope = &"cultivation"
-# PERMANENT and never expiring: an age band is a stage of a life, not an affliction with a
-# timer. A hero does not recover from being fifty. `StatusDef.DURATION_FOREVER`.
+; PERMANENT and never expiring: an age band is a stage of a life, not an affliction with a
+; timer. A hero does not recover from being fifty. `StatusDef.DURATION_FOREVER`.
 stacking = &"refresh"
 duration = -1.0
 magnitude_unit = &"stat_modifier"
 magnitude_cap = 1.0
 tick_interval = 1.0
-# # `comprehension` is a BASE ATTRIBUTE, which a `StatModifier` can only RAISE - so this is
-# a floor under a poor build rather than a reward a lucky one already had. `dao_heart`
-# resolves from `will` (`core/actor_stats.gd:210`) and has no zero baseline for any actor
-# this game builds, so a FLAT is the right op; PERCENT would be legal but is not what this
-# says.
+; # `comprehension` is a BASE ATTRIBUTE, which a `StatModifier` can only RAISE - so this is
+; a floor under a poor build rather than a reward a lucky one already had. `dao_heart`
+; resolves from `will` (`core/actor_stats.gd:210`) and has no zero baseline for any actor
+; this game builds, so a FLAT is the right op; PERCENT would be legal but is not what this
+; says.
 mitigation_tags = Array[StringName]([&"affinity", &"gear", &"technique", &"pill"])
-# `modifiers` below carries no social-standing entry, deliberately. ONE of ADR 0258
-# §3's four axes is deliberately not a `StatModifier`: 'social standing and
-# recognition accumulate'. `social_reputation` is PROVIDER-contributed
-# (`social/social_provider.gd:41`) and ADR 0026 makes a provider's contribution the
-# BASELINE a modifier then scales once - so a FLAT authored on it would be silently
-# overwritten by every bond the hero forms and would be a lie the tree acts on. The
-# social half is carried by the BAND ITSELF: the status id is the named fact a
-# recognition rule reads, and `StatusApi.summary` publishes it under `age`, so the
-# axis is named rather than faked.
+; `modifiers` below carries no social-standing entry, deliberately. ONE of ADR 0258
+; §3's four axes is deliberately not a `StatModifier`: 'social standing and
+; recognition accumulate'. `social_reputation` is PROVIDER-contributed
+; (`social/social_provider.gd:41`) and ADR 0026 makes a provider's contribution the
+; BASELINE a modifier then scales once - so a FLAT authored on it would be silently
+; overwritten by every bond the hero forms and would be a lie the tree acts on. The
+; social half is carried by the BAND ITSELF: the status id is the named fact a
+; recognition rule reads, and `StatusApi.summary` publishes it under `age`, so the
+; axis is named rather than faked.
 payload = {
 "mechanic": &"regrowth",
 "text": "The years have settled into a floor of understanding that no setback can argue below.",

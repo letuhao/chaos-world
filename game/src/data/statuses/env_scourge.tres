@@ -5,22 +5,22 @@
 [resource]
 script = ExtResource("1_status")
 id = &"env_scourge"
-# No `element`, deliberately, and `ambient = true` is the authored statement of why.
-# `StatusDef.problems()` made the element mandatory because every status in
-# `res://data/statuses/` is inflicted by an element-bearing blow and needs one to name.
-# This one is not: it is a PLACE, applied by standing in it, and a hazard is hostile to
-# whichever elements its ZONE names (`EnvironmentField.HOSTILE_ELEMENTS`), not to one of
-# its own. Naming `fire` here would be a lie the shipped catalogue would act on —
-# `StatusApi.status_for_element` would answer with it for every fire blow in the game.
-#
-# `ambient` makes `problems()` exempt this ONE rule and no other: the def still publishes
-# four mitigation levers, still resolves a real `health_share` channel, and still carries a
-# positive cadence, so `StatusDef.problems()` is now EMPTY on this file and the loader
-# admits it. It lives under `res://src/data/statuses` — the AMBIENT tree
-# (`StatusCatalog.AMBIENT_SOURCES_ROOT`) — rather than in `res://data/statuses`, whose
-# twenty ids are pinned by `tests/modules/status/test_status_catalogue.gd` and every one
-# of which is what a landed blow inflicts. `tools data audit` also scans `game/data`, so
-# authored content a module owns stays under that module's `src/data`.
+; No `element`, deliberately, and `ambient = true` is the authored statement of why.
+; `StatusDef.problems()` made the element mandatory because every status in
+; `res://data/statuses/` is inflicted by an element-bearing blow and needs one to name.
+; This one is not: it is a PLACE, applied by standing in it, and a hazard is hostile to
+; whichever elements its ZONE names (`EnvironmentField.HOSTILE_ELEMENTS`), not to one of
+; its own. Naming `fire` here would be a lie the shipped catalogue would act on —
+; `StatusApi.status_for_element` would answer with it for every fire blow in the game.
+;
+; `ambient` makes `problems()` exempt this ONE rule and no other: the def still publishes
+; four mitigation levers, still resolves a real `health_share` channel, and still carries a
+; positive cadence, so `StatusDef.problems()` is now EMPTY on this file and the loader
+; admits it. It lives under `res://src/data/statuses` — the AMBIENT tree
+; (`StatusCatalog.AMBIENT_SOURCES_ROOT`) — rather than in `res://data/statuses`, whose
+; twenty ids are pinned by `tests/modules/status/test_status_catalogue.gd` and every one
+; of which is what a landed blow inflicts. `tools data audit` also scans `game/data`, so
+; authored content a module owns stays under that module's `src/data`.
 element = &""
 ambient = true
 on_landed_blow = false
