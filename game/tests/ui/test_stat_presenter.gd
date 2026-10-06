@@ -193,3 +193,23 @@ func test_the_table_declares_a_non_negative_or_exact_precision_for_every_id() ->
 			true,
 			"%s has a usable precision (%d)" % [id, decimals]
 		)
+
+
+# --- the aptitude vocabulary (ADR 0890) ---------------------------------------
+
+
+## DEF-0349: "Aptitude" names the twelve-point SOURCE layer (`core/aptitude.gd`); the
+## stored attribute a sheet row printed under that word is shown as "Talent", so a player
+## cannot read the two layers as one number.
+func test_the_legacy_attribute_is_labelled_talent() -> void:
+	assert_eq(StatPresenter.label_for(&"aptitude"), "Talent", "the attribute yields the word")
+
+
+## The twelve aptitudes are drawn through `StatRow`'s `stat` key, so the sheet needs a
+## label for every one of them — a missing entry would print the raw id. `agility` is
+## already declared as the attribute's own label; that overlap is the roster's one shared
+## spelling, pinned in `tests/core/test_aptitude.gd`.
+func test_the_aptitude_ids_are_declared() -> void:
+	for id in Aptitude.all_ids():
+		assert_eq(StatPresenter.is_known(id), true, "%s reaches the sheet" % String(id))
+		assert_ne(StatPresenter.label_for(id), String(id), "%s has a label a player can read" % id)

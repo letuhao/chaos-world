@@ -204,6 +204,69 @@ func test_the_paths_line_is_written_for_a_player() -> void:
 	screen.free()
 
 
+# --- the aptitude section (ADR 0890) -------------------------------------------
+
+
+## DEF-0349: the sheet is the only surface the aptitude layer has. All twelve are
+## reported with the posture the build LEADS with, and every value is raw — the section
+## is a read of what a breakthrough resolved, not a second store.
+func test_the_aptitudes_are_reported_with_the_dominant_posture() -> void:
+	var screen := _screen()
+	var actor := _actor()
+	actor.stats.set_aptitudes({&"might": 8.0, &"fortitude": 2.0, &"vigor": 2.0})
+	screen.setup(actor)
+	var view: Dictionary = screen.summary().get("aptitudes", {})
+	assert_ne(view, {}, "the sheet reports the aptitude layer")
+	assert_eq(view.get("dominant", ""), "force", "force leads on these points")
+	var points: Dictionary = view.get("points", {})
+	assert_eq(points.size(), Aptitude.all_ids().size(), "every aptitude is reported, zero included")
+	assert_almost_eq(float(points.get("might", -1.0)), 8.0, "the points are the actor's own")
+	assert_almost_eq(float(points.get("composure", -1.0)), 0.0, "an unearned aptitude reads zero")
+	assert_almost_eq(float(view.get("total", -1.0)), 12.0, "the total sums what the build earned")
+	screen.free()
+
+
+## A tie resolves to NO posture — Keepverse's rule, and the reason the posture is a read
+## rather than a field: inventing a winner would assert a build identity nobody chose.
+func test_a_tie_in_the_aptitudes_reads_as_no_dominant_posture() -> void:
+	var screen := _screen()
+	var actor := _actor()
+	actor.stats.set_aptitudes({&"might": 3.0, &"agility": 3.0})
+	screen.setup(actor)
+	assert_eq(screen.summary().get("aptitudes", {}).get("dominant", ""), "", "a tie is none")
+	screen.free()
+
+
+func test_the_sheet_draws_a_row_per_aptitude_and_names_the_posture() -> void:
+	var screen := _screen()
+	var actor := _actor()
+	actor.stats.set_aptitudes({&"composure": 12.5})
+	screen.setup(actor)
+	var rows := _by_name(_screen_rows(screen))
+	for id in Aptitude.all_ids():
+		assert_eq(rows.has(StatPresenter.label_for(id)), true, "%s has a row" % String(id))
+	assert_eq(
+		rows.get("Composure", {}).get("text", ""),
+		"12.5",
+		"a fractional point is printed as held, not rounded"
+	)
+	var title := screen.get_node_or_null("%AptitudeTitle") as Label
+	assert_ne(title, null, "the section is titled")
+	assert_eq(title.text.contains("Finesse"), true, "the title names the dominant posture")
+	screen.free()
+
+
+## DEF-0349's other half: with the twelve on the sheet, the stored attribute cannot keep
+## reading "Aptitude" — that word names the source layer now. The row is still drawn; it
+## is drawn as Talent.
+func test_the_legacy_attribute_is_drawn_as_talent() -> void:
+	var screen := _screen()
+	screen.setup(_actor())
+	var rows := _by_name(_screen_rows(screen))
+	assert_eq(rows.has("Talent"), true, "the attribute row reads Talent")
+	screen.free()
+
+
 func _by_name(rows: Array) -> Dictionary:
 	var out: Dictionary = {}
 	for row in rows:

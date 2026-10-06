@@ -30,12 +30,28 @@ const PATH_LABELS: Dictionary = {
 	&"mind_cultivation": "Mind",
 }
 
+## The aptitude section (ADR 0890). The roster is structural — three postures of four
+## (`core/aptitude.gd`) — so the sheet declares one row per aptitude and the section
+## reads whatever the build resolved. Rows are looked up by the same `%` prefix pattern
+## the stat and pool rows use.
+const APTITUDE_ROW_PREFIX := "Apt"
+
+## The posture a player reads. Keys are the roster's own constants, so this map cannot
+## drift from `Aptitude`'s spelling; an id outside the map reads as "none".
+const POSTURE_LABELS: Dictionary = {
+	Aptitude.POSTURE_FORCE: "Force",
+	Aptitude.POSTURE_FINESSE: "Finesse",
+	Aptitude.POSTURE_BASTION: "Bastion",
+}
+
 var _vitals: VBoxContainer = null
 var _realm_label: Label = null
 var _paths_label: Label = null
 var _list: VBoxContainer = null
 var _pool_rows: Array[StatRow] = []
 var _stat_rows: Array[StatRow] = []
+var _aptitude_title: Label = null
+var _aptitude_rows: Array[StatRow] = []
 
 
 ## Everything this screen displays. Primitives only; `{}` with no actor.
@@ -52,6 +68,7 @@ func _summary() -> Dictionary:
 		"pools": pools,
 		"stats": stats,
 		"stat_keys": _stat_keys(stats),
+		"aptitudes": _aptitudes(),
 		"pool_count": pools.size(),
 		"vitals": _vitals_summary(),
 	}
@@ -64,6 +81,9 @@ func _refresh_view() -> void:
 		_realm_label.text = "Paths enrolled"
 	if _paths_label != null:
 		_paths_label.text = "Paths: %s" % _path_text() if live else ""
+	if _aptitude_title != null:
+		_aptitude_title.text = "Aptitudes (dominant: %s)" % _dominant_label()
+	_fill_aptitude_rows()
 	_fill_pool_rows()
 	_fill_stat_rows()
 
@@ -127,6 +147,62 @@ func _stat_keys(stats: Dictionary) -> Array:
 	return keys
 
 
+# --- The aptitude layer (ADR 0890) ------------------------------------------
+
+
+## The twelve aptitudes as raw points plus the posture the build LEADS with — Keepverse's
+## `DominantPosture` read, where a tie resolves to none. All twelve are reported, zero
+## included: the roster is structural (3 x 4), so a missing key would read as an aptitude
+## the game does not have rather than one this build has not earned.
+func _aptitudes() -> Dictionary:
+	if _actor == null:
+		return {"dominant": "", "points": {}, "total": 0.0}
+	var raw := _actor.stats.aptitude_points()
+	var points := {}
+	var total := 0.0
+	for id in Aptitude.all_ids():
+		var value := float(raw.get(id, 0.0))
+		points[String(id)] = value
+		total += maxf(0.0, value)
+	return {
+		"dominant": String(AptitudeGrant.dominant_posture(raw)),
+		"points": points,
+		"total": total,
+	}
+
+
+## The posture a player reads, or "none" when the build leads with no posture — the tie
+## case `AptitudeGrant.dominant_posture` refuses to break arbitrarily.
+func _dominant_label() -> String:
+	var dominant := StringName(_aptitudes().get("dominant", ""))
+	return String(POSTURE_LABELS.get(dominant, "none"))
+
+
+## One row per aptitude, in the roster's append-only order. Each row is a `stat` row so
+## `StatPresenter` owns its label; the precision is passed EXACT because the roster's one
+## shared id (`agility`) declares the ATTRIBUTE's whole-number precision in that table.
+func _fill_aptitude_rows() -> void:
+	var points: Dictionary = _aptitudes().get("points", {})
+	var ids := Aptitude.all_ids()
+	var index := 0
+	while index < _aptitude_rows.size():
+		var row := _aptitude_rows[index]
+		if index < ids.size() and not points.is_empty():
+			(
+				row
+				. set_state(
+					{
+						"stat": ids[index],
+						"current": float(points.get(String(ids[index]), 0.0)),
+						"decimals": StatPresenter.EXACT,
+					}
+				)
+			)
+		else:
+			row.set_state({})
+		index += 1
+
+
 # --- Plumbing ---------------------------------------------------------------
 
 
@@ -135,11 +211,13 @@ func _bind_nodes() -> void:
 		return
 	_realm_label = get_node_or_null("%RealmLabel") as Label
 	_paths_label = get_node_or_null("%PathsLabel") as Label
+	_aptitude_title = get_node_or_null("%AptitudeTitle") as Label
 	_list = get_node_or_null("Layout/Scroll/Stats") as VBoxContainer
 	if _list == null:
 		return
 	_pool_rows.clear()
 	_stat_rows.clear()
+	_aptitude_rows.clear()
 	for index in SCENE_ROWS:
 		var pool := _list.get_node_or_null(_row_name(POOL_ROW_PREFIX, index)) as StatRow
 		if pool != null:
@@ -147,6 +225,12 @@ func _bind_nodes() -> void:
 		var stat := _list.get_node_or_null(_row_name(STAT_ROW_PREFIX, index)) as StatRow
 		if stat != null:
 			_stat_rows.append(stat)
+	# One row per STRUCTURAL aptitude (3 postures x 4), so the loop is bounded by the
+	# roster itself rather than by a scene count that could drift from it.
+	for index in Aptitude.all_ids().size():
+		var apt := _list.get_node_or_null(_row_name(APTITUDE_ROW_PREFIX, index)) as StatRow
+		if apt != null:
+			_aptitude_rows.append(apt)
 
 
 ## The exact `%` unique name the scene declares for one row, e.g. `%Pool0Row`.
@@ -240,8 +324,14 @@ func _ensure_row_count(needed: int) -> void:
 
 func _vitals_summary() -> Dictionary:
 	var out := {}
-	for row in _pool_rows + _stat_rows:
+	for row in _pool_rows + _stat_rows + _aptitude_rows:
 		var view := row.summary()
-		if not view.is_empty():
-			out[String(view.get("name", ""))] = view
+		if view.is_empty():
+			continue
+		var key := String(view.get("name", ""))
+		# First writer wins: `agility` is deliberately both a stored attribute and an
+		# aptitude (ADR 0881), and both rows still draw — this map keeps the figure the
+		# sheet reported first rather than letting the aptitude row overwrite it.
+		if not out.has(key):
+			out[key] = view
 	return out

@@ -31,6 +31,47 @@ size_flags_vertical = 3
 [node name="Stats" type="VBoxContainer" parent="Layout/Scroll"]
 size_flags_horizontal = 3
 
+[node name="AptitudeTitle" type="Label" parent="Layout/Scroll/Stats"]
+unique_name_in_owner = true
+theme_type_variation = &"SectionTitle"
+text = "Aptitudes"
+
+[node name="Apt0Row" parent="Layout/Scroll/Stats" instance=ExtResource("2")]
+unique_name_in_owner = true
+
+[node name="Apt1Row" parent="Layout/Scroll/Stats" instance=ExtResource("2")]
+unique_name_in_owner = true
+
+[node name="Apt2Row" parent="Layout/Scroll/Stats" instance=ExtResource("2")]
+unique_name_in_owner = true
+
+[node name="Apt3Row" parent="Layout/Scroll/Stats" instance=ExtResource("2")]
+unique_name_in_owner = true
+
+[node name="Apt4Row" parent="Layout/Scroll/Stats" instance=ExtResource("2")]
+unique_name_in_owner = true
+
+[node name="Apt5Row" parent="Layout/Scroll/Stats" instance=ExtResource("2")]
+unique_name_in_owner = true
+
+[node name="Apt6Row" parent="Layout/Scroll/Stats" instance=ExtResource("2")]
+unique_name_in_owner = true
+
+[node name="Apt7Row" parent="Layout/Scroll/Stats" instance=ExtResource("2")]
+unique_name_in_owner = true
+
+[node name="Apt8Row" parent="Layout/Scroll/Stats" instance=ExtResource("2")]
+unique_name_in_owner = true
+
+[node name="Apt9Row" parent="Layout/Scroll/Stats" instance=ExtResource("2")]
+unique_name_in_owner = true
+
+[node name="Apt10Row" parent="Layout/Scroll/Stats" instance=ExtResource("2")]
+unique_name_in_owner = true
+
+[node name="Apt11Row" parent="Layout/Scroll/Stats" instance=ExtResource("2")]
+unique_name_in_owner = true
+
 [node name="Stat0Row" parent="Layout/Scroll/Stats" instance=ExtResource("2")]
 unique_name_in_owner = true
 

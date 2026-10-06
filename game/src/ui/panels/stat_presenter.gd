@@ -60,7 +60,9 @@ const TABLE: Dictionary = {
 	# --- base attributes -------------------------------------------------------
 	&"physique": ["Physique", 0],
 	&"spirit": ["Spirit", 0],
-	&"aptitude": ["Aptitude", 0],
+	# ADR 0890: "Aptitude" names the twelve-point SOURCE layer now, so this stored
+	# attribute reads as what it is — Talent.
+	&"aptitude": ["Talent", 0],
 	&"comprehension": ["Comprehension", 0],
 	&"agility": ["Agility", 0],
 	&"will": ["Will", 0],
@@ -165,6 +167,22 @@ const TABLE: Dictionary = {
 	&"leech_resist.qi": ["Leech resist qi", 3],
 	&"lifesteal.stamina": ["Leech stamina", 3],
 	&"leech_resist.stamina": ["Leech resist stamina", 3],
+	# --- the twelve aptitudes (ADR 0881/0890) ----------------------------------
+	# The SOURCE layer's ids. `agility` is ALREADY declared above: it is the one id the
+	# stored attribute and the roster deliberately share (`core/aptitude.gd`). Its entry
+	# keeps the attribute's precision 0 while the sheet prints an aptitude point EXACT,
+	# because a point can be fractional and the attribute cannot.
+	&"might": ["Might", EXACT],
+	&"fortitude": ["Fortitude", EXACT],
+	&"vigor": ["Vigor", EXACT],
+	&"onslaught": ["Onslaught", EXACT],
+	&"composure": ["Composure", EXACT],
+	&"pierce": ["Pierce", EXACT],
+	&"focus": ["Focus", EXACT],
+	&"bulwark": ["Bulwark", EXACT],
+	&"retribution": ["Retribution", EXACT],
+	&"precision": ["Precision", EXACT],
+	&"ferocity": ["Ferocity", EXACT],
 }
 
 
