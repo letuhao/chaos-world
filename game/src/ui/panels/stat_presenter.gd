@@ -79,8 +79,15 @@ const TABLE: Dictionary = {
 	&"attack_spiritual": ["Spiritual attack", 0],
 	# Fraction. 0.05 must never print as 0.
 	&"crit_chance": ["Crit chance", 3],
-	# Multiplier, not a fraction: 1.54 means x1.54.
-	&"crit_damage": ["Crit damage", 2],
+	# ADR 0877 made `crit_damage` a `0.0`-baseline MAGNITUDE in rate-space rather than the
+	# multiplier the old comment described, so the whole crit family prints at 3: one
+	# point of comprehension is 0.004 and must not round to "0.00".
+	&"crit_damage": ["Crit damage", 3],
+	# ADR 0215: the DEFENCE halves of the crit contest, presented beside their offence
+	# twins. `crit_resist` answers `crit_chance`, `crit_resist_damage` answers
+	# `crit_damage`; one point of will is 0.003.
+	&"crit_resist": ["Crit resist", 3],
+	&"crit_resist_damage": ["Crit resist damage", 3],
 	&"penetration": ["Penetration", 1],
 	# Multiplier: 1.0 means no change from base speed.
 	&"attack_speed": ["Attack speed", 2],
@@ -90,6 +97,10 @@ const TABLE: Dictionary = {
 	&"evasion": ["Evasion", 3],
 	&"poise": ["Poise", 0],
 	&"status_resistance": ["Status resistance", 3],
+	# ADR 0200: the will-derived MAGNITUDE the status gate actually reads (`will * 0.003`
+	# through the mitigation ratio); `status_resistance` above carries a provider's value
+	# that no stat id moves. Both are declared because both can print.
+	&"status_defense": ["Status defense", 3],
 	&"damage_reduction": ["Damage reduction", 3],
 	# --- pace and cost ---------------------------------------------------------
 	&"move_speed": ["Move speed", 0],
@@ -134,12 +145,12 @@ const TABLE: Dictionary = {
 	&"mental_attack": ["Mental attack", 0],
 	&"mental_defense": ["Mental defence", 0],
 	&"spiritual_sense_range": ["Spiritual sense range", 1],
-	# Renamed by ADR 0071 / BL-0114. The labels move with the ids on purpose: a stat
-	# called "Critical chance" that is read ONLY by the mind mechanism would tell a player
-	# their qi crits are 0.05 higher, which is exactly the misreading this table exists
-	# to prevent (see its module docblock).
-	&"mind_focus_chance": ["Mind focus chance", 3],
-	&"mind_avoidance": ["Mind avoidance", 3],
+	# Renamed by ADR 0215 (the stats were `mind_focus_chance`/`mind_avoidance`). The
+	# labels move with the ids on purpose: a stat called "Critical chance" that is read
+	# ONLY by the mind mechanism would tell a player their qi crits are 0.05 higher,
+	# which is exactly the misreading this table exists to prevent.
+	&"mind_clarity": ["Clarity", 3],
+	&"mind_veil": ["Veil", 3],
 	&"illusion_resistance": ["Illusion resistance", 3],
 	&"mind_technique_power": ["Mind technique power", 1],
 	&"comprehension_bonus": ["Comprehension bonus", 2],
@@ -149,6 +160,21 @@ const TABLE: Dictionary = {
 	&"sea_full": ["Sea full", 0],
 	&"mind_power": ["Mind power", 0],
 	&"awareness": ["Awareness", 0],
+	# The mind status contest (MindVocabulary): every control shape and expression channel
+	# has an OFFENCE half (`mind_status_mastery_*`) and a DEFENCE half
+	# (`mind_composure_*`). Rate-shaped, so 3 decimals like every other contest half.
+	&"mind_status_mastery_slow": ["Slow mastery", 3],
+	&"mind_status_mastery_cost": ["Cost mastery", 3],
+	&"mind_status_mastery_falsify": ["Falsify mastery", 3],
+	&"mind_status_mastery_invert": ["Invert mastery", 3],
+	&"mind_status_mastery_voice": ["Voice mastery", 3],
+	&"mind_status_mastery_intent": ["Intent mastery", 3],
+	&"mind_composure_slow": ["Slow composure", 3],
+	&"mind_composure_cost": ["Cost composure", 3],
+	&"mind_composure_falsify": ["Falsify composure", 3],
+	&"mind_composure_invert": ["Invert composure", 3],
+	&"mind_composure_voice": ["Voice composure", 3],
+	&"mind_composure_intent": ["Intent composure", 3],
 	# --- combat-owned rates ----------------------------------------------------
 	# These reach the sheet through the same "a modifier with no baseline is backed
 	# at 0.0" path `actor_stats.gd` documents, so they are listed here to be read

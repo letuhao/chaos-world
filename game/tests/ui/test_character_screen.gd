@@ -150,14 +150,18 @@ func test_the_resource_pools_reach_the_sheet_as_rows() -> void:
 
 
 ## The defect as a figure. `acupoint_quality` is 0.5 on a fresh R1 body actor and
-## used to read "1"; `crit_chance` is 0.05 and used to read "0", which told a player
-## they could never crit. A row that is present and wrong fails this.
-## `breakthrough_chance` is `0.1 + comprehension*0.01 + will*0.005` on this actor's
-## stats, so it reads 0.100 here. The 0.2 figure is `test_stat_presenter.gd`'s,
+## used to read "1"; `crit_chance` is `fortune * 0.002 + agility * 0.0005` since ADR
+## 0877 deleted the old `0.05` baseline (a contest half is 0.0-baseline), so this
+## fixture pins `fortune = 25.0` to keep the misreadable 0.05 -- it used to read "0",
+## which told a player they could never crit. A row that is present and wrong fails
+## this. `breakthrough_chance` is `0.1 + comprehension*0.01 + will*0.005` on this
+## actor's stats, so it reads 0.100 here. The 0.2 figure is `test_stat_presenter.gd`'s,
 ## which pins the format against a literal rather than against a derived actor.
 func test_fraction_stats_are_not_rounded_on_the_sheet() -> void:
 	var screen := _screen()
-	screen.setup(_actor())
+	var actor := _actor()
+	actor.stats.set_base(Stat.FORTUNE, 25.0)
+	screen.setup(actor)
 	var rows := _by_name(_screen_rows(screen))
 	assert_eq(
 		rows.get("Huyệt quality", {}).get("text", ""),

@@ -24,6 +24,8 @@ const FRACTION_IDS: Array[StringName] = [
 	&"cooldown_reduction",
 	&"crit_chance",
 	&"crit_damage",
+	&"crit_resist",
+	&"crit_resist_damage",
 	&"cultivation_rate",
 	&"dantian_quality",
 	&"damage_reduction",
@@ -75,7 +77,10 @@ func test_the_figures_that_were_wrong_are_now_right() -> void:
 	assert_eq(row.summary().get("text", ""), "0.200", "0.2 must not print as 0")
 	row.set_state({"stat": &"crit_chance", "current": 0.05})
 	assert_eq(row.summary().get("text", ""), "0.050", "0.05 must not print as 0")
-	row.set_state({"stat": &"crit_damage", "current": 1.54})
+	# `crit_damage` was the measured row, but ADR 0877 made it a rate-space magnitude
+	# (3 decimals now); `attack_speed` is the multiplier that still reads at 2, and the
+	# point is the same: 1.54 must not print as 2.
+	row.set_state({"stat": &"attack_speed", "current": 1.54})
 	assert_eq(row.summary().get("text", ""), "1.54", "1.54 must not print as 2")
 	row.free()
 
