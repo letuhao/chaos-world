@@ -27,7 +27,7 @@
     {"id": "mind_passion", "label": "Tam Hoa", "path": "mind", "principle": "phat"},
     {"id": "mind_stability", "label": "Dinh Tam", "path": "mind", "principle": "tang"},
     {"id": "mind_intent", "label": "Than Y", "path": "mind", "principle": "luyen"},
-    {"id": "mind_sense", "label": "Linh Giac", "path": "mind", "principle": "luu"},
+    {"id": "mind_sense", "label": "Linh Giac", "path": "mind", "principle": "luu"}
   ],
   "rows": [
     {"id": "physique", "layer": "L2", "status": "exists", "source": "innate"},
@@ -183,6 +183,6 @@
     {"id": "gestation_speed", "layer": "L0", "status": "exists", "principle": "sinh", "module": "fertility", "domain": "non_combat", "owners": {"body_growth": 0.62, "qi_renewal": 0.2533, "mind_soul": 0.1267}},
     {"id": "maternal_resilience", "layer": "L0", "status": "exists", "principle": "tang", "module": "fertility", "domain": "non_combat", "owners": {"body_foundation": 0.6, "qi_reservoir": 0.2, "mind_stability": 0.2}},
     {"id": "dual_cultivation_rate", "layer": "L5", "status": "exists", "source": "composite path (dual cultivation)"},
-    {"id": "status_resistance", "layer": "L0", "status": "legacy", "source": "nothing moves it; status_defense is the gate's read (ADR 0884)"},
+    {"id": "status_resistance", "layer": "L0", "status": "legacy", "source": "nothing moves it; status_defense is the gate's read (ADR 0884)"}
   ]
 }
