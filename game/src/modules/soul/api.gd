@@ -70,7 +70,14 @@ static func set_store(store: RefCounted) -> void:
 static func attach(actor: Actor) -> void:
 	if actor == null:
 		return
-	actor.set_module_data(MODULE_KEY, SoulState.normalize(_state()))
+	# The provider makes the soul block's three channels readable on this actor. Guarded for
+	# `FertilityApi.attach`'s reason: `ActorStats.add_provider` appends unguarded, so a second
+	# attach would stack a second provider and double every baseline.
+	if not _has_provider(actor):
+		actor.stats.add_provider(SoulProvider.new())
+	var ledger := SoulState.normalize(_state())
+	_sync_ceiling(actor, ledger)
+	actor.set_module_data(MODULE_KEY, ledger)
 
 
 ## The soul as it stands: `{integrity, integrity_max, lives, lives_max, incarnation,
@@ -112,6 +119,9 @@ static func repair(actor: Actor, amount: int, reason: String) -> Dictionary:
 	if actor == null:
 		return {"ok": false, "reason": "no_soul", "applied": 0, "soul": {}}
 	var ledger := _state()
+	# ADR 0899: a raised `soul_integrity` raises the ceiling BEFORE the room is computed, so
+	# one repair call can fill to the new ceiling rather than capping at the old one.
+	_sync_ceiling(actor, ledger)
 	var applied := SoulState.apply_repair(ledger, amount, reason)
 	_persist(actor, ledger)
 	return {
@@ -119,6 +129,44 @@ static func repair(actor: Actor, amount: int, reason: String) -> Dictionary:
 		"reason": "" if applied > 0 else "already_whole",
 		"applied": applied,
 		"soul": _public(ledger),
+	}
+
+
+## The anchor repair multiplier this actor's `soul_anchor` reads, or `1.0` when the stat is
+## absent or non-positive. The neutral is the SHIPPED amount: an actor with no soul provider
+## keeps today's repair byte-for-byte, and a zero can never silently forbid repair.
+static func anchor_factor(actor: Actor) -> float:
+	if actor == null or actor.stats == null:
+		return 1.0
+	var value := actor.stats.derived(SoulStats.SOUL_ANCHOR)
+	if not is_finite(value) or value <= 0.0:
+		return 1.0
+	return value
+
+
+## Recover `periods` whole periods of integrity WITHOUT an anchor, at the actor's
+## `soul_recovery` per period. Explicit periods and no clock, `AnchorApi.repair`'s contract
+## verbatim (DEF-0111): a recovery that accrued on its own would be a second source of truth
+## for when time passed. Refuses `no_recovery` until content authors a rate.
+static func recover(actor: Actor, periods: int) -> Dictionary:
+	if actor == null:
+		return {"ok": false, "reason": "no_soul", "restored": 0}
+	if periods <= 0:
+		return {"ok": false, "reason": "no_periods", "restored": 0}
+	var per_period := _recovery_per_period(actor)
+	if per_period <= 0.0:
+		return {"ok": false, "reason": "no_recovery", "restored": 0}
+	var amount := int(floor(per_period * float(periods)))
+	if amount <= 0:
+		return {"ok": false, "reason": "nothing_to_repair", "restored": 0}
+	var ledger := _state()
+	_sync_ceiling(actor, ledger)
+	var applied := SoulState.apply_repair(ledger, amount, "recovery")
+	_persist(actor, ledger)
+	return {
+		"ok": applied > 0,
+		"reason": "" if applied > 0 else "already_whole",
+		"restored": applied,
 	}
 
 
@@ -231,6 +279,34 @@ static func validate() -> Array[String]:
 
 
 # --- Internals -------------------------------------------------------------
+
+
+## Raise the stored ceiling to the actor's `soul_integrity` when the stat is above it. ONE WAY:
+## a stat that falls never lowers a ceiling already granted (ADR 0899). A missing stat reads
+## `0.0` and changes nothing, so every pre-stat caller keeps its authored `integrity_max`.
+static func _sync_ceiling(actor: Actor, ledger: Dictionary) -> void:
+	if actor == null or actor.stats == null:
+		return
+	var stat_max := int(maxf(0.0, actor.stats.derived(SoulStats.SOUL_INTEGRITY)))
+	if stat_max > int(ledger.get("integrity_max", 0)):
+		ledger["integrity_max"] = stat_max
+
+
+## The actor's `soul_recovery` per period, or `0.0` when the stat is absent or non-positive.
+static func _recovery_per_period(actor: Actor) -> float:
+	if actor == null or actor.stats == null:
+		return 0.0
+	var value := actor.stats.derived(SoulStats.SOUL_RECOVERY)
+	return value if is_finite(value) and value > 0.0 else 0.0
+
+
+## Mirrors `FertilityApi._has_provider`'s shape, for its reason: `add_provider` appends
+## unguarded, so a second attach would stack a second provider and double every baseline.
+static func _has_provider(actor: Actor) -> bool:
+	for entry in actor.stats._providers:
+		if entry.get_script() == SoulProvider:
+			return true
+	return false
 
 
 ## The ledger, from the store when one is installed and from the actor mirror otherwise. The

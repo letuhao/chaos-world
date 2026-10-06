@@ -155,7 +155,9 @@ static func repair(actor: Actor, periods: int) -> Dictionary:
 		return {"ok": false, "reason": "unknown_anchor", "restored": 0, "anchor_id": ""}
 	# Fractional repair per period, floored ONCE at the end: truncating per period would make a
 	# slow anchor repair nothing at all, which is a silent no-op a content audit cannot see.
-	var amount := int(floor(def.repair_per_period * float(periods)))
+	# ADR 0899: multiplied by the actor's `soul_anchor` INSIDE the same floor, so the shipped
+	# factor 1.0 restores exactly what it restored before the stat existed.
+	var amount := int(floor(def.repair_per_period * float(periods) * SoulApi.anchor_factor(actor)))
 	if amount <= 0:
 		return {
 			"ok": false,
