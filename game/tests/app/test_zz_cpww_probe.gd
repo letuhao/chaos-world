@@ -28,9 +28,9 @@ extends TestCase
 ## The route the arrival screen is mounted on. Read from the shipped program rather than
 ## restated, so a route rename cannot leave this suite asserting a route nothing serves.
 const FIRST_ORIGIN := &"the_one_who_stayed"
-## The home route a returning player boots onto. Read off the shipped table, because "the
-## arrival screen did not open" is only meaningful next to what did.
-const WORKBENCH := ScreenRoutes.ROOT_ID
+## The main menu a returning player boots onto (boot slice). Continue goes home,
+## New Game opens arrival — so "not arrival" now means the menu, not the home route.
+const BOOT := &"boot"
 
 var _harness: SeamHarness
 var _app: ItemWorkbenchApp
@@ -391,11 +391,13 @@ func test_a_boot_with_a_readable_save_does_not_open_the_arrival_screen() -> void
 	var app := harness.app as ItemWorkbenchApp
 	assert_eq(app.restored_from_save(), true, "the boot recovered from the save")
 	assert_eq(String(app.actor().id), saved_id, "and restored the body the save names")
-	# THE CLAIM: the arriving screen never opened.
+	# THE CLAIM: the arriving screen never opened. A returning player boots onto
+	# the main menu instead of straight home: Continue goes home, New Game
+	# opens arrival, and the player — not the root — picks the door.
 	assert_eq(
 		String(app.current_route()),
-		String(WORKBENCH),
-		"a returning player boots straight to the home route, not onto the arrival screen"
+		String(BOOT),
+		"a returning player boots onto the main menu, not onto the arrival screen"
 	)
 
 

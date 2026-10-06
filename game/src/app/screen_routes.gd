@@ -393,6 +393,20 @@ const ROUTES: Array[Dictionary] = [
 		"key": "s",
 		"root": false,
 	},
+	{
+		# The main menu (boot slice). The shell used to decide silently: a
+		# restored body went to the workbench, a fresh boot went to arrival,
+		# and a player who wanted the other door had no door. This is the
+		# door: Continue returns to the saved journey, New Game opens
+		# arrival. Last in tab order, so every feature route keeps its key.
+		"id": &"boot",
+		"node": "BootScreen",
+		"label": "Begin",
+		"hint": "Continue the saved journey, or begin anew.",
+		"scene": "res://src/ui/screens/boot_screen.tscn",
+		"key": "o",
+		"root": false,
+	},
 ]
 
 

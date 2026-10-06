@@ -61,6 +61,11 @@ const ROUTE_BODY := &"body_cultivation"
 const ROUTE_WORLD_MAP := &"world_map"
 const ROUTE_CRAFTING := &"crafting"
 const ROUTE_WORKBENCH := &"workbench"
+## The main menu (boot slice). Continue returns to the saved journey, New Game
+## opens arrival. Shown at boot for a returning player; a fresh boot still
+## opens arrival directly (that behavior is pinned by
+## `tests/app/test_creation_play_wiring.gd`).
+const ROUTE_BOOT := &"boot"
 const ROUTE_SET_BONUS := &"set_bonus"
 
 ## The soul and hearth page. `soul` and `save` are not (and for `save` must never be)
@@ -481,7 +486,13 @@ func _ready() -> void:
 	# title flow would call it, and none existed, so the door was only ever openable from a
 	# test. The condition is the hero, not the file: a new game gets the arrival screen, and a
 	# returning player boots straight to the workbench.
-	if not _creation.has_hero():
+	# A returning player boots onto the main menu: Continue goes home, New
+	# Game opens arrival. A fresh boot still opens arrival directly — that
+	# behavior is pinned by `tests/app/test_creation_play_wiring.gd`, and a
+	# menu with no save to continue from is a door to one room.
+	if _creation.has_hero():
+		navigate_to(ROUTE_BOOT)
+	else:
 		open_creation()
 
 
@@ -825,6 +836,22 @@ func adopt_actor(body: Actor) -> void:
 ## `_ready` is that caller.
 func open_creation() -> Dictionary:
 	return {} if _creation == null else _creation.open()
+
+
+## Whether a readable save exists. The boot menu's save seam: `ui/` may not
+## name `SaveApi`, so the screen asks this root instead (ADR 0143).
+func _boot_has_save() -> bool:
+	return SaveApi.exists()
+
+
+## Continue the saved journey: return to the home route.
+func _boot_continue() -> bool:
+	return navigate_to(ScreenRoutes.ROOT_ID)
+
+
+## Begin anew: open the arrival route.
+func _boot_new_game() -> Dictionary:
+	return open_creation()
 
 
 ## The creation program's own view of itself, so a probe can assert reachability without
@@ -1236,6 +1263,21 @@ func _bind_route_screen(route_id: StringName, screen: Control) -> void:
 			# over, so an unwired custody page says "nothing to capture" rather than crashing.
 			screen.call("setup", _actor)
 			screen.call("bind_capture_options", _capturable_cast)
+		ROUTE_BOOT:
+			# THE ARM THAT MAKES THE MAIN MENU PRESSABLE. `ui/` may not name
+			# the `save` module (ADR 0128), so whether a save exists arrives
+			# as a Callable off this root — the ADR 0143 seam, the same shape
+			# `ROUTE_SOUL_HEARTH` uses for its save read. The movements arrive
+			# the same way: home for Continue, arrival for New Game. A screen
+			# mounted without this arm refuses every press by name instead
+			# of calling into a void Callable.
+			screen.call("setup", _actor)
+			screen.call(
+				"bind_menu",
+				Callable(self, "_boot_has_save"),
+				Callable(self, "_boot_continue"),
+				Callable(self, "_boot_new_game")
+			)
 		_:
 			screen.call("setup", _actor)
 
