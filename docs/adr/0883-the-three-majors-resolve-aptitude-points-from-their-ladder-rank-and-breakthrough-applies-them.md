@@ -20,9 +20,15 @@
   `qi_cultivation -> finesse`, `mind_cultivation -> bastion`. A build's posture is
   therefore a READ (`AptitudeGrant.dominant_posture`, Keepverse's `DominantPosture`
   rule: ties resolve to NONE), never a stored field and never a pick.
-- A started path grants `(ladder_index + 1) * per_realm` points, split evenly across its
-  posture's four aptitudes. The budgets are DATA (`core/aptitude_grants.tres`), and only
-  their RATIOS matter — the matrix's share normalisation cancels absolute size.
+- A started path grants `realms_crossed * per_realm` points (`ladder_index`, NOT
+  `index + 1` — the first realm is where a path STARTS, not something a build did), split
+  evenly across its posture's four aptitudes. The budgets are DATA
+  (`core/aptitude_grants.tres`), and only their RATIOS matter — the matrix's share
+  normalisation cancels absolute size.
+- The `index + 1` spelling was REJECTED after one measured A/B: it paid out at the first
+  realm, so every fixture actor that merely held a path gained aptitude stats, and
+  `test_technique_delivery`'s exact `max_qi` assertions moved by `0.075` for an actor
+  that had done nothing. "Resolve from what they built" means the crossings count.
 - `AptitudeGrant.apply(actor)` REPLACES the store from the build. Replace, never merge:
   "resolve from what you built" means a stale value nobody built must not survive.
 - The hook is `Breakthrough.try_advance`, after `RealmScaling.apply` (so the ladder the

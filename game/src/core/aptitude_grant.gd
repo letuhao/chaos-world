@@ -3,8 +3,9 @@ extends Resource
 
 ## The aptitude GRANT table (ADR 0883): what an actor has BUILT resolves into aptitude
 ## points. One row per major — `{path, posture, per_realm}` — where a started path's
-## LADDER INDEX (1-based) times `per_realm` is split evenly across the posture's four
-## aptitudes.
+## REALMS CROSSED (`ladder_index`, not "index + 1": the first realm is where a path
+## starts, not something it built) times `per_realm` is split evenly across the posture's
+## four aptitudes.
 ##
 ## ## The three majors ARE the three postures
 ##
@@ -39,9 +40,11 @@ static func shipped() -> AptitudeGrant:
 
 
 ## Points per aptitude from the MAJORS alone: for every row whose path the actor has
-## started, `(ladder_index + 1) * per_realm` split across the row's posture. An unstarted
-## path, an unknown path, a rank off the ladder and a malformed row each grant NOTHING —
-## none of them is an error, because all four are states a build can legitimately be in.
+## started, `realms_crossed * per_realm` split across the row's posture — and a path that
+## has not crossed a realm yet grants NOTHING, because the first realm is where a path
+## starts rather than something a build did. An unstarted path, an unknown path, a rank
+## off the ladder and a malformed row each grant nothing here too — none of them is an
+## error, because all of them are states a build can legitimately be in.
 func resolve(actor: Actor) -> Dictionary:
 	var points := {}
 	if actor == null:
@@ -59,9 +62,9 @@ func resolve(actor: Actor) -> Dictionary:
 		if state == null or not state.is_started():
 			continue
 		var index := ladder.index_of(state.rank_id)
-		if index < 0:
+		if index <= 0:
 			continue
-		_split_into(points, posture, float(index + 1) * per_realm)
+		_split_into(points, posture, float(index) * per_realm)
 	return points
 
 

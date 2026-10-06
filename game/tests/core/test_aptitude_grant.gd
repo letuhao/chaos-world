@@ -39,18 +39,29 @@ func test_the_shipped_table_covers_the_three_majors_once_each() -> void:
 	assert_eq(postures.size(), 3, "one row per posture")
 
 
-func test_a_path_grants_its_ladder_index_times_the_budget_split_four_ways() -> void:
+func test_a_path_grants_its_crossed_realms_times_the_budget_split_four_ways() -> void:
 	var grant := _grant()
 	var row := _row_for(grant, PathState.BODY)
+	# The second realm of the ladder: ONE realm crossed, so one budget unit.
 	var realm := RealmDefaults.ladder().realms()[1].id
 	var points := grant.resolve(_actor_with(PathState.BODY, realm))
 	for id in Aptitude.in_posture(Aptitude.POSTURE_FORCE):
 		assert_almost_eq(
 			float(points[id]),
-			2.0 * float(row.get("per_realm", 0.0)) / float(Aptitude.PER_POSTURE),
+			1.0 * float(row.get("per_realm", 0.0)) / float(Aptitude.PER_POSTURE),
 			"%s takes its quarter" % String(id)
 		)
 	assert_eq(points.has(&"agility"), false, "another posture is untouched")
+
+
+func test_the_first_realm_is_where_a_path_starts_and_grants_nothing() -> void:
+	var grant := _grant()
+	var first := RealmDefaults.ladder().realms()[0].id
+	assert_eq(
+		grant.resolve(_actor_with(PathState.BODY, first)).is_empty(),
+		true,
+		"no breakthrough, no points"
+	)
 
 
 func test_an_unstarted_or_unknown_path_grants_nothing() -> void:

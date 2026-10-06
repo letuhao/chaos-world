@@ -117,6 +117,12 @@ static func attach(actor: Actor) -> void:
 		CASTING_COMPONENT, TechniqueCasting.new(actor.get_module_data(TechniqueCasting.STATE_KEY))
 	)
 	_commit(actor)
+	# ADR 0883: the module's half of the aptitude resolution. The subscription is guarded
+	# (a re-attach must not stack handlers) and the resolve runs once here, so a LOADED
+	# actor's technique points land back on top of whatever the save carried.
+	if not actor.path_advanced.is_connected(_on_path_advanced.bind(actor)):
+		actor.path_advanced.connect(_on_path_advanced.bind(actor))
+	resolve_aptitudes(actor)
 
 
 ## The actor's codex, attached on demand.
@@ -130,6 +136,43 @@ static func codex(actor: Actor) -> TechniqueCodex:
 static func slots(actor: Actor) -> TechniqueSlots:
 	attach(actor)
 	return actor.component(SLOTS_COMPONENT) as TechniqueSlots
+
+
+## ADR 0883, the technique half of the aptitude resolution. Idempotent by construction:
+## core's `AptitudeGrant.apply` REPLACES the store with the majors alone, then this adds
+## `technique_points` for EVERY learned row, split across the DOMINANT posture's four.
+## Every stage that changes the build calls this same verb — `learn` on success, `attach`
+## after a load/save round trip, and `path_advanced` because a breakthrough replaced the
+## store with majors only.
+##
+## Reads the codex COMPONENT, never `codex(actor)`: the on-demand accessor calls `attach`,
+## and `attach` calls this, so going through it would be the recursion this line avoids.
+static func resolve_aptitudes(actor: Actor) -> void:
+	if actor == null or actor.stats == null:
+		return
+	var grant := AptitudeGrant.shipped()
+	if grant == null:
+		return
+	grant.apply(actor)
+	var per_technique := grant.technique_points
+	if not is_finite(per_technique) or per_technique <= 0.0:
+		return
+	var codex_ref := actor.component(CODEX_COMPONENT) as TechniqueCodex
+	var learned := 0 if codex_ref == null else codex_ref.count()
+	if learned <= 0:
+		return
+	var points := actor.stats.aptitude_points()
+	var posture := AptitudeGrant.dominant_posture(points)
+	if posture == &"":
+		return
+	var each := float(learned) * per_technique / float(Aptitude.PER_POSTURE)
+	for id in Aptitude.in_posture(posture):
+		points[id] = float(points.get(id, 0.0)) + each
+	actor.stats.set_aptitudes(points)
+
+
+static func _on_path_advanced(_path_id: StringName, _rank_id: StringName, actor: Actor) -> void:
+	resolve_aptitudes(actor)
 
 
 ## Learn `def`, or refuse with the gameplay cause. Learning is permanent and is
@@ -203,6 +246,8 @@ static func learn(
 		margin = TechniqueMarginalia.draw(def, rng)
 	codex.learn(def.id, rung, margin)
 	_commit(actor)
+	# ADR 0883: LEARNING A TECHNIQUE is the second stage that re-resolves the build.
+	resolve_aptitudes(actor)
 	return {
 		"ok": true,
 		"id": String(def.id),
