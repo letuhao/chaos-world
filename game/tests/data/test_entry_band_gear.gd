@@ -9,7 +9,7 @@ extends TestCase
 ## ladder tier 1 and every other grade at 2 or more — so a hero built at R1 (`qi_refining`,
 ## tier 1) can wear grade-`mortal` gear and nothing else. `Equipment._meets_requirements`
 ## then refuses every higher grade outright. `tools data audit` measured the consequence:
-## of 331 entry-band tables, **320 carried no grade-mortal wearable item at all**, so on
+## of 331 entry-band tables, 320 carried no grade-mortal wearable item at all, so on
 ## any of those fights a starting hero could kill a boss and receive nothing equippable.
 ## The corpus was never short of gear: 267 grade-mortal wearable items existed and 263 of
 ## them were already inside the band's transitive closure. The defect was PLACEMENT —
@@ -62,6 +62,12 @@ const MORTAL_GEAR_PROBE := &"D4_mortal_fortune_charm"
 const PROBE_ENCOUNTER := &"loot_qi_qi_refining_domain"
 const PROBE_TABLE := &"loot_qi_qi_refining_guardian"
 const PROBE_BOSS := &"qi_qi_refining_guardian"
+## Floors for the spread guard, not the measured counts: a content wave that ADDS gear
+## must not fail a guard for growing the corpus. The corpus carries 267 grade-mortal
+## wearables over 8 ruled slots and the placement exposes all of them, so these sit well
+## under the measurement and still fail loudly if the band collapses onto one item.
+const MIN_DISTINCT_GEAR := 100
+const MIN_SLOTS_COVERED := 6
 
 
 func _content() -> LootContent:
@@ -149,17 +155,27 @@ func _entry_band_gear(
 	return found
 
 
-## Grade-mortal wearable, read from the AUTHORED slot table rather than a second list:
-## `ItemSlots.is_wearable` answers it from `game/data/items/equipment_slots.json`, and
-## `ItemGrade` answers the gate. A second copy of either vocabulary here is the ADR 0066
-## failure mode.
+## Grade-mortal WEARABLE EQUIPMENT, read from the AUTHORED rulings rather than a second
+## list: `ItemCategory` says the item is equipment, `ItemGrade` answers the tier gate, and
+## `ItemSlots` answers the slot vocabulary. A second copy of any of them here would be the
+## ADR 0066 failure mode.
+##
+## `is_ruled` is load-bearing and NOT decorative. `ItemSlots.is_wearable` is deliberately
+## permissive: it returns false only for a subtype the table lists under `unwearable`, so
+## an UNRULED subtype stays wearable. Without the `is_ruled` guard this predicate accepted
+## `trinket_iron_charm` — `category = misc`, `subcategory = charm`, `grade = mortal` — as
+## "wearable gear a starting hero can equip", which is exactly the BL-0346 shape the
+## permissive default creates. The mutation that found it swapped one entry-band table's
+## gear for that trinket and the suite stayed GREEN.
 func _is_wearable_mortal(entry: LootEntry, content: LootContent) -> bool:
 	if entry == null or entry.item_id == &"":
 		return false
 	var def := content.definition(entry.item_id)
 	if def == null:
 		return false
-	return def.grade == ItemGrade.MORTAL and ItemSlots.is_wearable(def.subcategory)
+	if def.category != ItemCategory.EQUIPMENT or def.grade != ItemGrade.MORTAL:
+		return false
+	return ItemSlots.is_ruled(def.subcategory) and ItemSlots.is_wearable(def.subcategory)
 
 
 ## ## THE INVARIANT. Every entry-band table PAYS gear a tier-1 hero can wear.
@@ -236,8 +252,9 @@ func test_resolving_an_entry_band_table_pays_the_guaranteed_mortal_gear() -> voi
 
 	var paid := 0
 	for plan in plans:
-		var def := content.definition(StringName(String(plan.get("def_id", ""))))
-		if def != null and def.grade == ItemGrade.MORTAL and ItemSlots.is_wearable(def.subcategory):
+		var paid_entry := LootEntry.new()
+		paid_entry.item_id = StringName(String(plan.get("def_id", "")))
+		if _is_wearable_mortal(paid_entry, content):
 			paid += 1
 	assert_eq(paid > 0, true, "the resolve pays gear a starting hero can wear")
 
@@ -246,14 +263,7 @@ func test_resolving_an_entry_band_table_pays_the_guaranteed_mortal_gear() -> voi
 ##
 ## Without this, both invariants above could be green on a band that pays ONE item
 ## forever, while the rest of the grade-mortal corpus sits unreachable — a band that
-## "pays gear" and a band that has real gear to give are different claims. The corpus
-## carries 267 grade-mortal wearables over 8 ruled slots, and the measured placement
-## exposes all 267 across all 8. Asserted as FLOORS rather than as the measured counts,
-## because a content wave that adds gear must not fail a guard for growing the corpus.
-const MIN_DISTINCT_GEAR := 100
-const MIN_SLOTS_COVERED := 6
-
-
+## "pays gear" and a band that has real gear to give are different claims.
 func test_the_entry_bands_guaranteed_gear_is_the_corpus_and_not_one_repeated_item() -> void:
 	var content := _content()
 	var probe := content.definition(MORTAL_GEAR_PROBE)
@@ -308,7 +318,10 @@ func test_the_walk_is_bounded_at_the_resolvers_own_nesting_ceiling() -> void:
 	# different to every other suite.
 	var looping := LootTableDef.new()
 	looping.id = &"probe_self_nesting_table"
-	looping.rolls = 0
+	# One draw, so the resolver actually PICKS the back edge and tries to expand it.
+	# With rolls = 0 nothing is drawn, the nesting is never expanded, and every assertion
+	# below passes without any guard being reached.
+	looping.rolls = 1
 	looping.allow_empty = false
 	var back := LootEntry.new()
 	back.id = &"probe_loop_back"
@@ -337,8 +350,21 @@ func test_the_walk_is_bounded_at_the_resolvers_own_nesting_ceiling() -> void:
 		"and the guarantee-only walk does too, so neither half can spin on a cycle"
 	)
 
-	# And the production resolver, through its own guard rather than this suite's: the
-	# depth ceiling is what stops IT, and it says so in a warning instead of hanging.
+	# And the production reachability walk, which carries its OWN chain guard rather than
+	# this suite's visited set. It recurses, so a table naming its own ancestor would
+	# never return without that guard.
+	assert_eq(
+		looping.reachable_item_ids(),
+		[],
+		"the production reachability walk also terminates on the cycle and finds nothing"
+	)
+
+	# What the RESOLVER does with the same table, asserted as far as it honestly can be,
+	# with the limit stated rather than papered over: `_expand` looks a nested table up
+	# through `LootContent.instance()`, so a cycle planted on a scratch index is
+	# unreachable BY the resolver too, and the only way to make it walk one is to seed the
+	# shared index every later suite reads. So the observable half is asserted instead --
+	# it names the nesting it could not resolve rather than dropping it silently.
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 20261005
 	var context := LootResolver.make_context(
@@ -349,10 +375,14 @@ func test_the_walk_is_bounded_at_the_resolvers_own_nesting_ceiling() -> void:
 	assert_eq(
 		cyclic_plans.size() <= LootResolver.MAX_PLANS_PER_RESOLVE,
 		true,
-		"the resolver stays inside its own plan ceiling on a cycle"
+		"the resolver stays inside its own plan ceiling on an unresolvable nesting"
 	)
+	var names_the_table := false
+	for warning in cyclic["warnings"]:
+		if String(warning).contains(LootResolver.WARN_UNKNOWN_NESTED):
+			names_the_table = true
 	assert_eq(
-		("\n".join(cyclic["warnings"])).contains(LootResolver.WARN_DEPTH),
+		names_the_table,
 		true,
-		"and reports the nesting depth it stopped at, rather than recursing forever"
+		"and names the nesting it could not resolve instead of dropping it silently"
 	)
