@@ -137,6 +137,10 @@ static func resolve_hit(
 	# than silently producing a zero three stages downstream — and so `outcome.base`
 	# is still observable for an unbound attacker.
 	var mechanism := MechanismSlot.of(attacker)
+	# ADR 0887: the build binds the pool — a target whose resolved `shield.capacity` is
+	# above zero carries a real `CombatShield` from here on; an unbuilt body grows nothing,
+	# and a bound test double is left untouched by `ensure`.
+	CombatShield.ensure(target)
 	# --- S2: one draw, three bands. Nothing below this line runs for a miss. ---
 	var band := CombatBand.roll(
 		tuning,

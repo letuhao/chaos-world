@@ -67,6 +67,23 @@ static func mechanism_of(actor: Actor) -> DamageMechanism:
 	return MechanismSlot.of(actor)
 
 
+## Bind `actor`'s shield from its BUILD, if the build grants one (ADR 0887): a resolved
+## `shield.capacity` above `0.0` — the aptitude matrix's vigor edges write it — means a
+## pool, and `0.0` means no shield. Idempotent, and `null` is an ordinary answer (a body
+## nobody built a shield into), not a failure.
+static func ensure_shield(actor: Actor) -> RefCounted:
+	return CombatShield.ensure(actor)
+
+
+## The frame's shield regen: refills the pool by its per-second rate, capped at the
+## authored ceiling. `delta` is the caller's, because time belongs to the composition
+## root's frame clock (ADR 0089). An actor with no shield refills nothing.
+static func tick_shields(actor: Actor, delta: float) -> void:
+	var shield := CombatShield.ensure(actor)
+	if shield is CombatShield:
+		(shield as CombatShield).tick(delta)
+
+
 ## Resolve one hit from `attacker` against `target` and apply it. This is the whole
 ## public surface of the engine: everything else is either tuning, binding, or a read.
 ##

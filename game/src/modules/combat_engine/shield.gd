@@ -50,6 +50,33 @@ static func attach(actor: Actor) -> CombatShield:
 	return shield
 
 
+## Bind this owner's shield the moment its BUILD resolves one (ADR 0887), and return it.
+##
+## The binding rule IS the build: a resolved `shield.capacity` above `0.0` means this body
+## has a pool (the aptitude matrix's vigor edges write it), and `0.0` — the default every
+## actor carries — means no shield at all, so an unbuilt body never grows a component it
+## did not earn. Idempotent, and a component already bound under the key is left
+## UNTOUCHED unless it is a real [CombatShield] (which is refreshed), so a test double
+## keeps behaving as the double it is.
+static func ensure(owner: Actor) -> RefCounted:
+	if owner == null or owner.stats == null:
+		return null
+	var existing: RefCounted = owner.component(CombatSpine.SHIELD_COMPONENT)
+	if existing != null:
+		if existing is CombatShield:
+			(existing as CombatShield).refresh(owner)
+		return existing
+	var capacity := (
+		CombatStats.default_of(CombatStats.SHIELD_CAPACITY)
+		+ owner.stats.derived(CombatStats.SHIELD_CAPACITY)
+	)
+	if not is_finite(capacity) or capacity <= 0.0:
+		return null
+	var shield := CombatShield.attach(owner)
+	owner.set_component(CombatSpine.SHIELD_COMPONENT, shield)
+	return shield
+
+
 ## Pull the four authored numbers off `owner` and clamp `current` down to a new ceiling.
 ## Idempotent, so a caller may refresh on every stat change rather than diffing them.
 func refresh(owner: Actor) -> void:

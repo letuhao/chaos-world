@@ -197,6 +197,9 @@ func tick(delta: float) -> Dictionary:
 func _tick_combat(step: float, result: Dictionary) -> void:
 	var wounds := CombatEngineApi.wounds_of(_actor)
 	result["wound_decay"] = BodyDamage.decay(wounds, step, CombatEngineApi.tuning())
+	# The shield's regen (ADR 0887): the build grants the pool and the spine binds it on
+	# first use; this clock is the only place the refill has a delta to spend.
+	CombatEngineApi.tick_shields(_actor, step)
 	# The sea is bound ONCE and handed to both mind ticks, so the two halves cannot
 	# disagree about which sea the frame was about.
 	var sea: Variant = MindCultivationApi.sea(_actor)
