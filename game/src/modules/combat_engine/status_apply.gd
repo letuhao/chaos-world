@@ -168,6 +168,11 @@ const REFUSE_UNWRITABLE := &"unwritable"
 ## declares. A hard refusal is its own reason, like every other refusal here.
 const REFUSE_IMMUNE := &"immune"
 
+## Refusal reasons that are the CALLER's decision rather than an answer a status got,
+## so [method _worth_reporting] keeps them out of the refused log (ADR 0902, P5): an
+## empty request, a closed gate and a missing generator are facts about nobody.
+const UNLOGGED_REFUSALS: Array[StringName] = [REFUSE_NO_REQUEST, REFUSE_NO_GATE, REFUSE_NO_RNG]
+
 ## The authored keys read off a `REQUEST_KEY` dictionary. Named here so the shape is
 ## stated once: a def that spells a key differently is unreadable, not silently absent,
 ## and an unreadable key reads the degenerate value every one of these has.
@@ -184,6 +189,11 @@ const KEY_IMMUNITY_TAGS := &"immunity_tags"
 ## join the RESIST channels and the immunity tag set; absent keys read empty.
 const KEY_FAMILY := &"family"
 const KEY_CATEGORIES := &"categories"
+
+## The application's own handle (ADR 0902, P5), carried onto the effect so a lifecycle
+## sweep can reach every instance one grant wrote. Optional: an empty id is the
+## shipped callers' shape.
+const KEY_GRANT := &"grant_id"
 const KEY_SCOPE := &"scope"
 const KEY_DURATION := &"duration"
 const KEY_POTENCY := &"potency"
@@ -236,6 +246,10 @@ static func apply(
 	if gate <= 0.0:
 		return _refused(REFUSE_NO_GATE)
 	if target == null or target.has_status(status_id):
+		# ADR 0902 (P5): a named status that was refused is a fact; a null target is
+		# the CALLER's gap — there is nobody the status failed to land on.
+		if target != null:
+			StatusEvents.note_resisted(target.id, status_id, REFUSE_ALREADY_HELD)
 		return _refused(REFUSE_ALREADY_HELD)
 	# Everything else — the immunity tags, the potency split, the intensity floor, the
 	# chance and the seeded roll — belongs to [method resolve_roll], the ONE owner the
@@ -247,8 +261,13 @@ static func apply(
 		var extra := {}
 		if detail != &"":
 			extra[reason] = detail
+		# ADR 0902 (P5): the defender's answer is logged; the caller's own missing
+		# gate or generator is not (there is no refused status to name).
+		if _worth_reporting(reason):
+			StatusEvents.note_resisted(target.id, status_id, reason, StringName(detail))
 		return _refused(reason, extra)
 	if not bool(resolved.get(&"open", false)):
+		StatusEvents.note_resisted(target.id, status_id, REFUSE_RESISTED)
 		return _refused(REFUSE_RESISTED)
 	return _written(target, tuning, request, resolved)
 
@@ -748,15 +767,38 @@ static func _written(
 		float(resolved.get(&"duration_net", 1.0))
 	)
 	if effect == null:
+		StatusEvents.note_resisted(
+			target.id, StringName(resolved.get(&"status_id", &"")), REFUSE_UNWRITABLE
+		)
 		return _refused(REFUSE_UNWRITABLE)
 	var answer: Variant = target.call(&"add_status", effect)
 	if not _accepted(answer):
+		# ADR 0902 (P5): the actor refused a status this stage had already cleared —
+		# a state bug rather than a balance decision, and one worth logging.
+		StatusEvents.note_resisted(
+			target.id,
+			StringName(resolved.get(&"status_id", &"")),
+			REFUSE_UNWRITABLE,
+			StringName(_reason_of(answer))
+		)
 		return _refused(
 			REFUSE_UNWRITABLE,
 			{
 				REFUSE_UNWRITABLE: StringName(_reason_of(answer)),
 			}
 		)
+	# ADR 0902 (P5): the handle `StatusRegistry` minted, read off the same answer every
+	# `Actor.add_status` shape agrees on (`INSTANCE`); 0 when a foreign shape cannot
+	# report one, because the applied FACT is still true.
+	var instance_id := 0
+	if answer is Dictionary:
+		instance_id = int((answer as Dictionary).get(StatusRegistry.INSTANCE, 0))
+	StatusEvents.note_applied(
+		target.id,
+		StringName(resolved.get(&"status_id", &"")),
+		instance_id,
+		_id_of(request.get(KEY_GRANT, &""))
+	)
 	return {
 		APPLIED: true,
 		REFUSED: &"",
@@ -905,6 +947,7 @@ static func _status(
 	_assign(effect, &"magnitude", maxf(0.0, potency))
 	_assign(effect, &"element", _id_of(request.get(KEY_ELEMENT, &"")))
 	_assign(effect, &"scope", _id_of(request.get(KEY_SCOPE, SCOPE_COMBAT)))
+	_assign(effect, &"grant_id", _id_of(request.get(KEY_GRANT, &"")))
 	return effect
 
 
@@ -953,6 +996,12 @@ static func _reason_of(answer: Variant) -> String:
 ## the two stages cannot spell the same stat two ways.
 static func _suffixed(prefix: String, element: StringName) -> StringName:
 	return StringName((prefix if prefix is String else "") + String(element))
+
+
+## Whether a refusal is about a STATUS rather than about the caller's request
+## (ADR 0902, P5): the refused log names what a player could see refused.
+static func _worth_reporting(reason: StringName) -> bool:
+	return not UNLOGGED_REFUSALS.has(reason)
 
 
 static func _refused(reason: StringName, extra: Dictionary = {}) -> Dictionary:

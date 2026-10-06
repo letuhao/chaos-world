@@ -49,6 +49,7 @@ func test_every_new_field_is_defaulted() -> void:
 	assert_almost_eq(status.tick_interval, 0.0, "no interval by default")
 	assert_almost_eq(status.tick_elapsed, 0.0, "no elapsed time by default")
 	assert_eq(status.source, &"", "no source by default")
+	assert_eq(status.grant_id, &"", "no grant by default (ADR 0902, P5)")
 	assert_eq(status.instance_id, 0, "no handle before the registry mints one (ADR 0902)")
 	assert_eq(status.mitigation_tags.size(), 0, "no levers by default")
 	assert_eq(status.payload.is_empty(), true, "no payload by default")

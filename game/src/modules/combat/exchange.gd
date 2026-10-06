@@ -364,7 +364,18 @@ static func _status_on_landing(
 	# documents: the boss is not an `Actor`, and a Dictionary contributes only
 	# `active.get("element")` to the salt, so the stream stays keyed to this encounter.
 	var resolved := StatusApply.resolve_roll(actor, actor, tuning, request, rng, active, hit_index)
-	if not bool(resolved.get(&"ready", false)) or not bool(resolved.get(&"open", false)):
+	if not bool(resolved.get(&"ready", false)):
+		# ADR 0902 (P5): the refused application is a fact the log keeps, in the same
+		# reason vocabulary the spine's S12 answers carry; the caller's own missing
+		# gate/generator stays out of it, exactly as `StatusApply` keeps it out.
+		var reason := StringName(resolved.get(StatusApply.REFUSED, &""))
+		if not StatusApply.UNLOGGED_REFUSALS.has(reason):
+			StatusEvents.note_resisted(
+				actor.id, status_id, reason, StringName(resolved.get(&"detail", &""))
+			)
+		return none
+	if not bool(resolved.get(&"open", false)):
+		StatusEvents.note_resisted(actor.id, status_id, StatusApply.REFUSE_RESISTED)
 		return none
 	_count_hit(actor)
 	var duration := -1.0

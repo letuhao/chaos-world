@@ -149,19 +149,31 @@ static func has_status(status_id: StringName) -> bool:
 ## Re-application follows ADR 0086's declared `Stacking`: `refresh` takes the longer
 ## duration and the stronger magnitude, `stack` adds into `magnitude_cap`, `replace`
 ## overwrites both. Returns the refusals by reason so a caller can report them.
+##
+## `grant_id` is the caller's own handle for this application (ADR 0902, P5): it rides
+## the effect so [method clear_grant] can reach every instance ONE grant wrote. Empty
+## is the shipped callers' shape, so a grant-less call reproduces the old numbers.
 static func apply(
-	actor: Actor, status_id: StringName, magnitude: float = 1.0, duration: float = -1.0
+	actor: Actor,
+	status_id: StringName,
+	magnitude: float = 1.0,
+	duration: float = -1.0,
+	grant_id: StringName = &""
 ) -> Dictionary:
 	if actor == null:
 		return {"ok": false, "reason": "no_actor"}
 	var def := StatusCatalog.instance().definition(status_id)
 	if def == null:
+		# ADR 0902 (P5): a REFUSED application is a fact worth naming, and there is a
+		# host here — somebody the unknown id failed to land on.
+		StatusEvents.note_resisted(actor.id, status_id, &"unknown_status")
 		return {"ok": false, "reason": "unknown_status", "id": String(status_id)}
 	var resolved := minf(maxf(magnitude, 0.0), def.magnitude_cap)
 	var life := def.duration if duration < 0.0 else duration
 	# ADR 0902 (P4): the lockout is checked BEFORE the effect lands, so a refused
 	# re-application leaves the live instance untouched.
 	if _icd_refusal(actor, def):
+		StatusEvents.note_resisted(actor.id, def.id, &"status_icd")
 		return {"ok": false, "reason": "status_icd", "id": String(def.id)}
 	# `Actor.add_status` is ADR 0086's apply path. Its return type is in flight (it
 	# answers `void` today and a result dict under the ADR), so the OUTCOME is
@@ -169,9 +181,12 @@ static func apply(
 	# legal in GDScript whether or not there is one, and `has_status` is the
 	# contract both shapes agree on. That also makes a refusal observable without
 	# a second code path per shape.
-	var answer := actor.add_status(_effect_for(def, resolved, life))
+	var answer := actor.add_status(_effect_for(def, resolved, life, grant_id))
 	var held := _effect_by_instance(actor, int(answer.get(StatusRegistry.INSTANCE, 0)))
 	if not bool(answer.get(&"ok", false)) or held == null:
+		StatusEvents.note_resisted(
+			actor.id, def.id, &"refused_by_actor", StringName(answer.get(&"reason", &""))
+		)
 		return {"ok": false, "reason": "refused_by_actor", "id": String(def.id)}
 	# The merge decided WHICH instance survives (ADR 0902, P3); the runtime binds
 	# to that instance, not to the id, so a `coexist` pair keeps two records.
@@ -182,9 +197,14 @@ static func apply(
 	# exactly once and leaves no modifier behind to be rebuilt later.
 	if bool(def.payload.get("spends_on_apply", false)):
 		_pulse(actor, runtime)
+	# ADR 0902 (P5): the completed fact, announced after the modifiers are on the
+	# actor — a subscriber reacting to it can never observe a half-written status.
+	StatusEvents.note_applied(actor.id, def.id, held.instance_id, grant_id)
 	return {
 		"ok": true,
 		"id": String(def.id),
+		"instance_id": held.instance_id,
+		"grant": String(grant_id),
 		"magnitude": resolved,
 		"duration": life,
 		"mechanic": String(def.mechanic()),
@@ -322,13 +342,19 @@ static func tick_statuses(actor: Actor, delta: float) -> Dictionary:
 ## hazard was refused here by name too, so the verb this scope claims to hold could not
 ## reach the only content that uses the scope, which is what made the hazard cost nothing.
 static func apply_cultivation(
-	actor: Actor, status_id: StringName, magnitude: float = 1.0, duration: float = -1.0
+	actor: Actor,
+	status_id: StringName,
+	magnitude: float = 1.0,
+	duration: float = -1.0,
+	grant_id: StringName = &""
 ) -> Dictionary:
 	if actor == null:
 		return {"ok": false, "reason": "no_actor"}
 	var def := StatusCatalog.instance().any_definition(status_id)
 	if def == null:
+		StatusEvents.note_resisted(actor.id, status_id, &"unknown_status")
 		return {"ok": false, "reason": "unknown_status", "id": String(status_id)}
+	# NOT logged: naming a COMBAT def here is a caller bug, not the defender's answer.
 	if def.is_combat_scope():
 		return {"ok": false, "reason": "not_cultivation_scope", "id": String(def.id)}
 	var resolved := minf(maxf(magnitude, 0.0), def.magnitude_cap)
@@ -336,19 +362,27 @@ static func apply_cultivation(
 	# ADR 0902 (P4): the lockout is checked BEFORE the effect lands, so a refused
 	# re-application leaves the live instance untouched.
 	if _icd_refusal(actor, def):
+		StatusEvents.note_resisted(actor.id, def.id, &"status_icd")
 		return {"ok": false, "reason": "status_icd", "id": String(def.id)}
-	var answer := actor.add_status(_effect_for(def, resolved, life))
+	var answer := actor.add_status(_effect_for(def, resolved, life, grant_id))
 	var held := _effect_by_instance(actor, int(answer.get(StatusRegistry.INSTANCE, 0)))
 	if not bool(answer.get(&"ok", false)) or held == null:
+		StatusEvents.note_resisted(
+			actor.id, def.id, &"refused_by_actor", StringName(answer.get(&"reason", &""))
+		)
 		return {"ok": false, "reason": "refused_by_actor", "id": String(def.id)}
 	# The merge decided WHICH instance survives (ADR 0902, P3); the runtime binds
 	# to that instance, not to the id, so a `coexist` pair keeps two records.
 	var runtime := _bind_runtime(actor, def, held)
 	StatusRuntime.apply_modifiers(actor, runtime)
 	_reconcile(actor)
+	# ADR 0902 (P5): the completed fact, in the same spelling as [method apply]'s.
+	StatusEvents.note_applied(actor.id, def.id, held.instance_id, grant_id)
 	return {
 		"ok": true,
 		"id": String(def.id),
+		"instance_id": held.instance_id,
+		"grant": String(grant_id),
 		"magnitude": resolved,
 		"duration": life,
 		"permanent": def.is_permanent(),
@@ -509,6 +543,80 @@ static func cleanse(actor: Actor, lever: StringName) -> Dictionary:
 	}
 
 
+## ## `clear_grant` — every instance ONE grant wrote (ADR 0902, P5)
+##
+## The Keepverse `ClearGrant` shape: a grant is an opaque caller-owned handle, and a
+## ladder that re-projects a stage withdraws its PREVIOUS grant before writing the
+## replacement so a stage change never stacks (their `StatusProjectionHost`). This is
+## that verb, scoped to the actor that holds the instances.
+##
+## ## Why the sweep is INSTANCE-keyed and not id-keyed
+##
+## `coexist` (P3) makes two live instances of one id legal, and the Keepverse model
+## withdraws them independently (`StatusDerivedModReader`: "two coexisting stacks of
+## the same status withdraw independently"). `_purge` removes by ID and would take a
+## sibling under another grant; this collects the matching INSTANCES and erases
+## exactly those.
+##
+## Only module-tracked instances are cleared: a status this module did not author
+## carries no runtime record, and reaching into it would be a purge of somebody
+## else's state (the same rule [method cleanse] documents).
+static func clear_grant(actor: Actor, grant_id: StringName) -> Dictionary:
+	if actor == null:
+		return {"ok": false, "grant": String(grant_id), "reason": "no_actor"}
+	if grant_id == &"":
+		return {"ok": false, "grant": "", "reason": "empty_grant"}
+	var store := _runtime(actor)
+	var cleared: Array[String] = []
+	var instances: Array[int] = []
+	for status in actor.statuses:
+		if status.grant_id != grant_id:
+			continue
+		if store.get(status.instance_id) == null:
+			continue
+		cleared.append(String(status.id))
+		instances.append(status.instance_id)
+	_purge_instances(actor, instances)
+	return {"ok": true, "grant": String(grant_id), "cleared": cleared, "count": cleared.size()}
+
+
+## ## `withdraw` — the host left (ADR 0902, P5)
+##
+## The Keepverse `WithdrawEntity(hostPtr)` shape: a host that dies or leaves mid-life
+## takes ITS instances with it, in every scope, because none of them has a host left
+## to act through. Distinct from [method clear_combat_scope] (a combat-exit fact) and
+## from [method cleanse] (one authored lever): this verb answers "this actor is gone",
+## which is why it neither filters by scope nor reads a tag.
+##
+## `StatusRuntime.forget` follows the sweep: the resolution table is per-actor state,
+## and a reused actor must not read a dead instance's magnitude or ICD clock.
+static func withdraw(actor: Actor) -> Dictionary:
+	if actor == null:
+		return {"ok": false, "reason": "no_actor"}
+	var store := _runtime(actor)
+	var cleared: Array[String] = []
+	var instances: Array[int] = []
+	for status in actor.statuses:
+		if store.get(status.instance_id) == null:
+			continue
+		cleared.append(String(status.id))
+		instances.append(status.instance_id)
+	_purge_instances(actor, instances)
+	StatusRuntime.forget(actor)
+	return {"ok": true, "cleared": cleared, "count": cleared.size()}
+
+
+## Remove the statuses carrying `instances`, in place, and let the same reconcile
+## every other purge runs release their records and modifiers. INSTANCE-keyed where
+## [method _purge] is id-keyed (ADR 0902, P3), because `coexist` siblings share an id.
+static func _purge_instances(actor: Actor, instances: Array[int]) -> void:
+	for index in range(actor.statuses.size() - 1, -1, -1):
+		if instances.has(actor.statuses[index].instance_id):
+			actor.statuses.remove_at(index)
+	_reconcile(actor)
+	actor.mark_stats_dirty()
+
+
 ## The element→status mapping of ADR 0105: the id whose def claims
 ## [member StatusDef.on_landed_blow] on `element`, or `&""` when nothing does.
 ##
@@ -548,6 +656,10 @@ static func status_for_element(element: StringName, chance: float = 1.0) -> Stri
 ## Primitives only, so a screen and a test read the same shape (AGENTS.md's
 ## testable contract). `{}` when there is no actor or no catalogue row to report.
 ##
+## Rows carry the instance handle, the grant and the def's shape fields (ADR 0902,
+## P5/P13), and the top-level `resisted` list is the bus's bounded refusal log — all
+## primitives, all readable with no actor.
+##
 ## `ids` is still the closed twenty and `count` its size, because that is the claim
 ## every consumer of this report is making. The ambient tree is reported beside it under
 ## `ambient_ids` / `ambient_count`, never folded in: a screen listing "every status this
@@ -562,6 +674,7 @@ static func summary(actor: Actor = null) -> Dictionary:
 		"ambient_ids": [],
 		"active": [],
 		"rejected": [],
+		"resisted": StatusEvents.shared().resisted_log(),
 	}
 	for status_id in ids:
 		(report["ids"] as Array).append(String(status_id))
@@ -581,11 +694,16 @@ static func summary(actor: Actor = null) -> Dictionary:
 				{
 					"id": String(status.id),
 					"known": runtime != null,
+					"instance_id": status.instance_id,
+					"grant": String(status.grant_id),
 					"remaining": status.remaining,
 					"permanent": status.is_permanent(),
 					"magnitude": 0.0 if runtime == null else runtime.magnitude,
 					"ticks_elapsed": 0 if runtime == null else runtime.ticks_elapsed,
 					"scope": "" if runtime == null else String(runtime.def.scope),
+					"family": "" if runtime == null else String(runtime.def.family),
+					"categories": [] if runtime == null else _strings_of(runtime.def.categories),
+					"crowd_control": false if runtime == null else runtime.def.crowd_control,
 				}
 			)
 		)
@@ -698,7 +816,9 @@ static func mind_confront(
 ## Each field is read through the def's own closed vocabulary rather than cast, because a
 ## def that names something outside it is refused at load (`StatusDef.problems`) and a
 ## bad cast here would be a second, quieter opinion about the same value.
-static func _effect_for(def: StatusDef, magnitude: float, life: float) -> StatusEffect:
+static func _effect_for(
+	def: StatusDef, magnitude: float, life: float, grant_id: StringName = &""
+) -> StatusEffect:
 	var effect := StatusEffect.new(def.id, life)
 	effect.magnitude = magnitude
 	effect.magnitude_cap = def.magnitude_cap
@@ -712,6 +832,9 @@ static func _effect_for(def: StatusDef, magnitude: float, life: float) -> Status
 	)
 	effect.stacking = _stacking_of(def.stacking)
 	effect.kind = _kind_of(def.kind)
+	# ADR 0902 (P5): the application's own handle, carried on the effect so a
+	# lifecycle sweep can find every instance ONE grant wrote.
+	effect.grant_id = grant_id
 	return effect
 
 
@@ -994,6 +1117,15 @@ static func _count_lost(before: Array[int], after: Array[int]) -> int:
 		if not after.has(instance):
 			lost += 1
 	return lost
+
+
+## `categories` as plain strings for the read model: the summary contract is
+## primitives only (ADR 0902, P13).
+static func _strings_of(values: Array[StringName]) -> Array[String]:
+	var out: Array[String] = []
+	for value in values:
+		out.append(String(value))
+	return out
 
 
 ## Drop the runtime records and modifiers of instances the actor no longer

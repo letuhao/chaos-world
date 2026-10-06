@@ -86,6 +86,12 @@ var tick_elapsed: float = 0.0
 ## anything, so no single source may be assumed.
 var source: StringName = &""
 
+## The grant this application was made under (ADR 0902, P5): an opaque caller-owned
+## handle, so a lifecycle verb can clear every instance ONE grant wrote without
+## knowing their ids first. Empty means "no grant", which is the shipped callers'
+## shape — a grant-less application is byte-identical to the pre-grant one.
+var grant_id: StringName = &""
+
 ## The per-actor handle `StatusRegistry` mints when this instance enters the actor's
 ## list (ADR 0902, P3). Coexisting instances of one id are told apart by it, and the
 ## status module pairs its own resolution records against it. `0` = not yet minted.
@@ -166,6 +172,7 @@ func to_dict() -> Dictionary:
 		"tick_interval": tick_interval,
 		"tick_elapsed": tick_elapsed,
 		"source": String(source),
+		"grant_id": String(grant_id),
 		"mitigation_tags": tags,
 		"payload": payload.duplicate(true),
 	}
@@ -189,6 +196,7 @@ static func from_dict(data: Dictionary) -> StatusEffect:
 	status.tick_interval = float(data.get("tick_interval", 0.0))
 	status.tick_elapsed = float(data.get("tick_elapsed", 0.0))
 	status.source = StringName(data.get("source", ""))
+	status.grant_id = StringName(data.get("grant_id", ""))
 	var payload = data.get("payload", {})
 	if payload is Dictionary:
 		status.payload = (payload as Dictionary).duplicate(true)
