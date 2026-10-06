@@ -407,6 +407,18 @@ const ROUTES: Array[Dictionary] = [
 		"key": "o",
 		"root": false,
 	},
+	{
+		# The loading screen (ADR 0901). It owns the boot window: wallpaper,
+		# weather, and an honest progress bar over the route preload. Last in
+		# tab order with the menu, so every feature route keeps its key.
+		"id": &"loading",
+		"node": "LoadingScreen",
+		"label": "Loading",
+		"hint": "Preparing every screen.",
+		"scene": "res://src/ui/screens/loading_screen.tscn",
+		"key": "z",
+		"root": false,
+	},
 ]
 
 

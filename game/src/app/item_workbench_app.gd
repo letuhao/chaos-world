@@ -66,6 +66,9 @@ const ROUTE_WORKBENCH := &"workbench"
 ## opens arrival directly (that behavior is pinned by
 ## `tests/app/test_creation_play_wiring.gd`).
 const ROUTE_BOOT := &"boot"
+## The loading screen (ADR 0901). It owns the boot window while every route
+## scene preloads, then releases to the menu or arrival.
+const ROUTE_LOADING := &"loading"
 const ROUTE_SET_BONUS := &"set_bonus"
 
 ## The soul and hearth page. `soul` and `save` are not (and for `save` must never be)
@@ -223,6 +226,10 @@ var _forge: SocketForgeProgram = null
 ## [method adopt_actor] — and a subclass assigning an inherited member is legal, so the
 ## field keeps its whole life across the split.
 var _route: StringName = &""
+## Whether the boot loading pass is still running. Guards `_finish_loading`
+## so a later manual visit to the loading route preloads (harmless, cached)
+## without hijacking the player back to the menu.
+var _loading_boot := false
 
 ## ## The world's persisted period count (ADR 0259) — ONE instance, this root's whole life.
 ##
@@ -481,19 +488,20 @@ func _ready() -> void:
 		return
 	if _nav != null and not _nav.route_requested.is_connected(_on_route_requested):
 		_nav.route_requested.connect(_on_route_requested)
-	# Boot OPENS creation only for a player with NO hero — neither created nor restored. This is
-	# the one production caller `open_creation` had: the docstring above it claimed a shipped
-	# title flow would call it, and none existed, so the door was only ever openable from a
-	# test. The condition is the hero, not the file: a new game gets the arrival screen, and a
-	# returning player boots straight to the workbench.
-	# A returning player boots onto the main menu: Continue goes home, New
-	# Game opens arrival. A fresh boot still opens arrival directly — that
-	# behavior is pinned by `tests/app/test_creation_play_wiring.gd`, and a
-	# menu with no save to continue from is a door to one room.
-	if _creation.has_hero():
-		navigate_to(ROUTE_BOOT)
-	else:
-		open_creation()
+	# ADR 0901: both doors now open THROUGH the loading screen, which preloads
+	# every route scene first. `_loading_boot` marks this pass so a later
+	# manual visit to the loading route preloads without hijacking the player.
+	# Headless runs never deliver a frame, so the steps drain inline there —
+	# without that, every harness boot would stall on the loading route and
+	# the pinned arrival behavior would go red for want of a frame. The
+	# release lands on the menu for a returning player and on arrival for a
+	# fresh boot, exactly as before.
+	_loading_boot = true
+	navigate_to(ROUTE_LOADING)
+	if DisplayServer.get_name() == "headless":
+		_drain_loading()
+	if DisplayServer.get_name() == "headless":
+		_drain_loading()
 
 
 ## The one world store this root installs into the soul and the anchors.
@@ -685,6 +693,22 @@ func _process(delta: float) -> void:
 	# action path with them (ADR 0179, `ItemWorkbenchPlay.advance_world`). Death keeps
 	# the frame because a death is an EVENT rather than a cadence.
 	poll_death()
+	tick_loading()
+
+
+## Advance the loading screen one step. Not a clock: it loads one route scene
+## and reads no delta, so the one-tick-caller rule (game time) does not apply.
+## Headless runs never reach this — suites drive `load_step()` directly — so
+## this is the live-only door, and a screen that is not loading is a no-op.
+func tick_loading() -> void:
+	if not _loading_boot:
+		return
+	var screen := _live_screen()
+	if screen == null or not screen.has_method("load_step"):
+		return
+	var step := screen.call("load_step") as Dictionary
+	if bool(step.get("done", false)):
+		_finish_loading()
 
 
 ## Give a newborn a home, or say out loud that it has none.
@@ -828,9 +852,7 @@ func adopt_actor(body: Actor) -> void:
 		_live_screen().setup(body)
 
 
-## Open character creation, and answer whether it opened.
-##
-## **Opens the nav route the table already names**, so there is one door rather than two
+## Open character creation, and answer whether it opened. **Opens the nav route the table already names**, so there is one door rather than two
 ## (ADR 0130). Boot calls this when no hero exists, which is why it is public with a production
 ## caller: `test_screen_reachability` fails a public mount nothing in `src/` calls, and
 ## `_ready` is that caller.
@@ -852,6 +874,47 @@ func _boot_continue() -> bool:
 ## Begin anew: open the arrival route.
 func _boot_new_game() -> Dictionary:
 	return open_creation()
+
+
+## Every route scene, as plain paths. What the loading walk preloads: the
+## screen may not read the route table itself (`ui/` never names `app/`), so
+## the table is read once here and handed over as primitives.
+func _route_scene_paths() -> Array:
+	var out: Array = []
+	for route in ScreenRoutes.all():
+		var path := String(route.get("scene", ""))
+		if not path.is_empty():
+			out.append(path)
+	return out
+
+
+## Release the boot window once loading completes. Guarded by `_loading_boot`
+## so a later manual visit to the loading route preloads without hijacking
+## the player: without the flag, pressing the Loading nav button mid-game
+## would end at the menu instead of staying where the player is.
+func _finish_loading() -> void:
+	if not _loading_boot:
+		return
+	_loading_boot = false
+	if _creation.has_hero():
+		navigate_to(ROUTE_BOOT)
+	else:
+		open_creation()
+
+
+## Drain every load step inline. Headless runs never deliver a frame, so the
+## per-frame tick below would stall every harness boot on the loading route
+## and the pinned arrival behavior would go red for want of a frame. Bounded
+## by the route count plus one; each step loads exactly one scene.
+func _drain_loading() -> void:
+	var screen := _live_screen()
+	if screen == null or not screen.has_method("load_step"):
+		return
+	for i in ScreenRoutes.all().size() + 1:
+		var step := screen.call("load_step") as Dictionary
+		if bool(step.get("done", false)):
+			break
+	_finish_loading()
 
 
 ## The creation program's own view of itself, so a probe can assert reachability without
@@ -1278,6 +1341,20 @@ func _bind_route_screen(route_id: StringName, screen: Control) -> void:
 				Callable(self, "_boot_continue"),
 				Callable(self, "_boot_new_game")
 			)
+		ROUTE_LOADING:
+			# ADR 0901. The screen preloads every route scene; the art layers
+			# hang here so a missing file degrades plate by plate to the dark
+			# fallback, never a crash. `begin_load` resets the walk; the steps
+			# are then driven by `tick_loading` on this root's frame, or
+			# drained inline below when no frame will ever come (headless).
+			screen.call("setup", _actor)
+			screen.call(
+				"set_layers",
+				"res://assets/loading/loading_wallpaper.png",
+				"res://assets/loading/fairy.png",
+				"res://assets/loading/sword.png"
+			)
+			screen.call("begin_load", _route_scene_paths())
 		_:
 			screen.call("setup", _actor)
 
