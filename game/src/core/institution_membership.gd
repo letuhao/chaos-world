@@ -273,13 +273,25 @@ static func join(
 		and not (office as InstitutionPositionDef).has_room(_holders(wanted, seat).size())
 	):
 		return InstitutionLedger.refuse(R_CAPACITY_FULL)
+	# ## The PROJECTION is asked BEFORE the claim is stored, and this is the ADR 0044 half
+	# the checks above do not cover
+	#
+	# A grant can be REFUSED — a kind the registry does not know, or an allowlist naming a
+	# stat this sheet cannot derive — and a refused grant writes nothing, so a join that
+	# committed first and projected after would leave the member enrolled in a house that
+	# recognises them not at all, with the refusal published nowhere. So the row is built, the
+	# projection is run against a claim that is not yet stored, and only a success commits.
+	# The projection is a pure function of `(allowlist, standing, tag, actor)`, so running it
+	# against the uncommitted row is the same work, not a dry run that has to be undone.
+	var row := _member_row(registry, def, office, seat)
+	var granted := _project(actor, registry, row)
+	if not bool(granted.get("ok", false)):
+		return granted
 	# Everything that can refuse has refused. Past this line the verb COMMITS, so there is
 	# no ordering in which a refusal follows a write (ADR 0044).
-	var row := _member_row(def, office, seat)
 	claims[wanted] = row
 	_write_claims(actor, claims)
 	_enrol(wanted, seat, String(actor.id))
-	var granted := _project(actor, registry, row)
 	return (
 		InstitutionLedger
 		. ok(
@@ -380,10 +392,17 @@ static func found(
 		return answer
 	var row: Dictionary = (answer["ledger"] as Dictionary).duplicate(true)
 	row.erase("roster")
+	# ## The projection runs BEFORE the claim is stored, for `join`'s reason
+	#
+	# A refused grant writes nothing, so committing first would leave a founder who PAID for
+	# a house and was then refused its recognition, with the refusal published nowhere and
+	# the founding price already drawn. The founding verb has committed its own half by this
+	# point — the price is drawn — which is why the projection is not merely checked here but
+	# is reported: a caller reads `granted` and knows whether the house recognised its founder.
+	var granted := _project(actor, registry, row)
 	claims[wanted] = row
 	_write_claims(actor, claims)
 	_enrol(wanted, InstitutionLedger.text(row.get("position", ""), ""), who)
-	var granted := _project(actor, registry, row)
 	return (
 		InstitutionLedger
 		. ok(
@@ -400,17 +419,29 @@ static func found(
 
 ## ## Move `actor`'s standing in one organization by `delta`, and re-project.
 ##
-## The ONLY writer of standing on this surface, and it writes nothing else: `InstitutionLedger
-## .move_standing` is handed the claim and never the office, so a promotion and a standing
-## move cannot reach each other through a shared field name (ADR 0064).
+## The ONLY writer of standing on this surface, and it writes nothing else:
+## `InstitutionLedger.move_standing` is handed the claim and never the office, so a promotion
+## and a standing move cannot reach each other through a shared field name (ADR 0064).
+##
+## `registry` is INJECTED, for the reason every other verb here does it — and for one this
+## verb made concrete. An earlier version reached for `InstitutionRegistry.instance()`, so a
+## caller driving its OWN registry had its recognition silently STRIPPED on every standing
+## move: the shared registry knew no kind, the rebuild read that as "this kind publishes no
+## offices", and the grant came off the sheet with nothing said. A global makes a verb's
+## answer depend on read order, which is exactly what `InstitutionRegistry` is an instance
+## rather than a static table to prevent.
 ##
 ## Standing can go UP and DOWN, because it is earned and a module that could only raise it
 ## would be a favour rather than a standing. A zero delta is refused by the ledger's own
 ## `non_positive` and writes nothing, and the applied amount is returned so a caller
 ## publishes how much of a requested change actually landed.
-static func move_standing(actor: Actor, institution_id: StringName, delta: int) -> Dictionary:
+static func move_standing(
+	registry: InstitutionRegistry, actor: Actor, institution_id: StringName, delta: int
+) -> Dictionary:
 	if actor == null:
 		return InstitutionLedger.refuse(R_NO_ACTOR)
+	if registry == null:
+		return InstitutionLedger.refuse(R_UNKNOWN_KIND)
 	var wanted := InstitutionLedger.text(institution_id, "")
 	var claims := _claims(actor)
 	if wanted == "" or not claims.has(wanted):
@@ -421,11 +452,7 @@ static func move_standing(actor: Actor, institution_id: StringName, delta: int) 
 	var row: Dictionary = (moved["ledger"] as Dictionary).duplicate(true)
 	claims[wanted] = row
 	_write_claims(actor, claims)
-	# `registry` is the SHARED one rather than a parameter, because a re-projection asks
-	# the registry whether this organization still publishes offices at all and the
-	# registry is the authority for that question — `InstitutionDef.declares` states why
-	# a def must not answer it about itself.
-	var granted := _project(actor, InstitutionRegistry.instance(), row)
+	var granted := _project(actor, registry, row)
 	return (
 		InstitutionLedger
 		. ok(
@@ -470,29 +497,41 @@ static func reproject(registry: InstitutionRegistry, actor: Actor) -> Dictionary
 
 ## ## Who holds each office of one organization, as the WORLD publishes it.
 ##
-## Every office the organization AUTHORS appears, with an empty holder list where nobody
-## holds it — because an unfilled authored office is a fact about the world and an office
-## missing from a published roster is not. `InstitutionCard` reads that as a VACANT seat,
-## and an office with no row at all as `holders not published`, which is the honest
-## difference between a vacancy somebody declared and one nobody told us about.
+## Every office the organization AUTHORS appears **once the world has published a roster for
+## it at all** — with an empty holder list where nobody holds it, because an unfilled
+## authored office is a fact about the world and a visible row (ADR 0084's vacancy design).
 ##
-## `{}` when the organization is unknown — ADR 0083's FIRST state, never a fabricated
-## empty roster, which would read as "nobody holds anything anywhere".
+## ## An organization that has published NOTHING publishes nothing at all
+##
+## The authored offices do not by themselves make a roster. The roster is process state (see
+## the class note), so a process that has just started knows only what the CONTENT authors,
+## not who is standing in it — and before the world has a row for the organization this
+## answers `{}`, which `InstitutionCard` renders as `holders not published` in its own
+## `unknown` tone. Seeding the rows from the def alone answered "nobody holds anything
+## anywhere" the instant the process restarted, and that is a claim about the world nobody
+## made — measured by this suite's own restart case, where it turned five authored offices
+## into declared vacancies.
+##
+## `{}` when the organization is unknown too — ADR 0083's FIRST state, never a fabricated
+## empty roster.
 static func roster_of(institution_id: StringName) -> Dictionary:
 	var wanted := InstitutionLedger.text(institution_id, "")
 	if wanted == "":
+		return {}
+	# The gate is the WORLD's row, not the def's offices: no row means nobody has published
+	# this organization's roster, which is a different fact from a published roster nobody is
+	# standing in.
+	if not _rosters.has(wanted):
 		return {}
 	var out: Dictionary = {}
 	var def := _definition(wanted)
 	if def != null:
 		for office in _sorted_keys(_office_ids(def)):
 			out[office] = [] as Array
-	var held: Variant = _rosters.get(wanted, {})
-	if not (held is Dictionary):
-		return out
+	var held: Dictionary = _rosters[wanted] as Dictionary
 	# A `for` over the SNAPSHOT of the world's sorted position ids, writing into `out` and
 	# never into the map being walked: the bound is the world's own office count.
-	for position_id in _sorted_keys(held as Dictionary):
+	for position_id in _sorted_keys(held):
 		out[position_id] = _holders(wanted, position_id)
 	return out
 
@@ -600,13 +639,17 @@ static func _entry_office(def: InstitutionDef, position_id: StringName) -> Dicti
 ##   - `founder_id` is empty, because they founded nothing.
 ##   - `treasury` is REMOVED. Founding is the only verb that opens a treasury, and a
 ##     joiner must not open the institution's books on the way in.
-static func _member_row(def: InstitutionDef, office: Variant, seat: String) -> Dictionary:
+##
+## `registry` is INJECTED for the reason `move_standing` documents: `write` consults it for
+## the `teaches` capability, so reaching for the shared one let a caller driving its own
+## registry get a joiner row whose fit axis was written by a registry that knows nothing.
+static func _member_row(
+	registry: InstitutionRegistry, def: InstitutionDef, office: Variant, seat: String
+) -> Dictionary:
 	var profile := def.founding_profile()
 	if office != null:
 		profile["office_obligation"] = (office as InstitutionPositionDef).obligation_lines()
-	var row := InstitutionFounding.write(
-		InstitutionRegistry.instance(), profile, "", InstitutionLedger.text(seat, "")
-	)
+	var row := InstitutionFounding.write(registry, profile, "", InstitutionLedger.text(seat, ""))
 	row["standing"] = 0
 	row["founder_id"] = ""
 	row.erase("roster")
@@ -618,18 +661,40 @@ static func _member_row(def: InstitutionDef, office: Variant, seat: String) -> D
 ##
 ## The tag is the INVERSION, so a contribution is exactly invertible even after the `.tres`
 ## that authored it is deleted — which is precisely when losing an office would otherwise
-## strand it. A kind that does not publish offices has no allowlist to project, so its
-## tag is stripped and nothing is written: an empty grant is ADR 0083's FIRST state and a
-## success, never a refusal.
+## strand it. A kind that does not publish offices has no allowlist to project, so its tag is
+## stripped and nothing is written: an empty grant is ADR 0083's FIRST state and a success,
+## never a refusal.
+##
+## ## The THREE answers are kept apart, and this is where they were once collapsed
+##
+## An UNKNOWN KIND is not a kind without offices. `has_capability` answers
+## `{ok: false, reason: "unknown_kind", has: false}` for a registry that has never heard of
+## the kind, which is the same `has: false` a registered kind-without-offices returns — and
+## reading that as the latter STRIPPED a live grant with nothing said, because a caller
+## driving its own registry reached a rebuild that read the shared one. So the two answers
+## are read separately: an unknown kind is a REFUSAL (`unknown_kind`, and a refusal writes
+## nothing, so the standing grant survives), and only a KNOWN kind that declares no offices
+## is the empty grant.
 static func _project(actor: Actor, registry: InstitutionRegistry, row: Dictionary) -> Dictionary:
 	var tag := source_tag(StringName(InstitutionLedger.text(row.get("institution", ""), "")))
 	if registry == null:
 		return InstitutionLedger.refuse(R_UNKNOWN_INSTITUTION)
 	var def := _definition(InstitutionLedger.text(row.get("institution", ""), ""))
-	if (
-		def == null
-		or not bool(registry.has_capability(def.kind, InstitutionRegistry.CAP_HAS_OFFICES)["has"])
-	):
+	# The DEFINITION is gone — the `.tres` was deleted or the family was never loaded. There
+	# is nothing to re-read an allowlist from, so the contribution is taken back rather than
+	# welded to whoever held it: the tag is the inversion, and the claim outranks the content.
+	if def == null:
+		InstitutionProjection.strip(actor, tag)
+		return InstitutionLedger.ok({"granted": {}})
+	var verdict := registry.has_capability(def.kind, InstitutionRegistry.CAP_HAS_OFFICES)
+	# ## An UNKNOWN KIND refuses, and refusing is NON-DESTRUCTIVE
+	#
+	# `InstitutionProjection.grant` validates before it strips for the same reason (ADR
+	# 0083's third state writes nothing): a member does not lose the recognition they already
+	# hold because a boot had not registered the kind this rebuild asked about.
+	if not bool(verdict["ok"]):
+		return InstitutionLedger.refuse(String(verdict["reason"]))
+	if not bool(verdict["has"]):
 		InstitutionProjection.strip(actor, tag)
 		return InstitutionLedger.ok({"granted": {}})
 	var read_out := InstitutionLedger.read(row)

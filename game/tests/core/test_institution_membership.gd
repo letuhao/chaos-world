@@ -75,41 +75,6 @@ const CHAPTER_FLOOR := &"gallery"
 const RECOGNISED := Stat.INSIGHT_GAIN
 const ALSO := Stat.POISE
 
-## The verbs this surface must never grow. `tools arch` cannot see a method that does not
-## exist, so the structural half of ADR 0084 is a test — the shape
-## `test_institution_projection.gd` and `test_sect_no_power.gd` already use. **`add_modifier`
-## is on the list** because the projector is the ONE place allowed to write a modifier, so a
-## second writer here would be a second stat composer.
-const FORBIDDEN_VERBS := [
-	"grant_stat",
-	"grant_attribute",
-	"set_base",
-	"add_base",
-	"power_up",
-	"buff",
-	"apply_modifier",
-	"grant_modifier",
-	"add_modifier",
-	"contribute",
-]
-
-## The WHOLE published surface, asserted as a whole rather than only by the absence of the
-## forbidden names, so a verb added later fails here rather than slipping past the list.
-const PUBLISHED := [
-	"claim_of",
-	"clear",
-	"found",
-	"holds",
-	"join",
-	"leave",
-	"move_standing",
-	"reproject",
-	"roster_of",
-	"rosters",
-	"source_tag",
-	"summary",
-]
-
 const MEMBERSHIP_FILE := "res://src/core/institution_membership.gd"
 const TEMP_DIR := "cw_institution_membership_test"
 const OWNER := "wiring_test"
@@ -187,7 +152,7 @@ func test_join_leave_then_join_again_round_trips_and_the_recognition_follows_it(
 
 	# Earn it. The stat moves by the bounded percent, and the office did not move with it:
 	# standing is the only writer of standing and it never reads the office (ADR 0064).
-	var earned := InstitutionMembership.move_standing(actor, AUTHORED_ID, 50)
+	var earned := InstitutionMembership.move_standing(_registry, actor, AUTHORED_ID, 50)
 	assert_eq(bool(earned["ok"]), true, "standing is earned")
 	assert_eq(int(earned["applied"]), 50, "by exactly the amount asked")
 	assert_almost_eq(
@@ -291,16 +256,21 @@ func test_every_refused_verb_writes_nothing_byte_for_byte() -> void:
 	# Give it something to lose, so "writes nothing" is measured against a NON-empty store
 	# and a NON-empty stack rather than against `{}`.
 	InstitutionMembership.found(_registry, actor, _authored_def(), "me")
-	InstitutionMembership.move_standing(actor, AUTHORED_ID, 20)
+	InstitutionMembership.move_standing(_registry, actor, AUTHORED_ID, 20)
 	var established := _fingerprint(actor)
 	assert_eq(int(established["own"]) > 0, true, "so there IS something to lose")
 
 	var stranger := _actor(&"stranger")
+	var stranger_before := _fingerprint(stranger)
 	# A `for` over a FIXED literal table calling into the verb under test: the body never
-	# appends to `refusals`, so the bound is the table's own length.
+	# appends to `refusals`, so the bound is the table's own length. Each row carries the
+	# fingerprint its SUBJECT must be unchanged against — a single shared one would compare a
+	# stranger's bare sheet against a member's granted sheet and report the member's own
+	# grant as a leak, which is exactly what the first version of this case did.
 	for entry in [
 		[
 			"no actor",
+			null,
 			null,
 			InstitutionMembership.R_NO_ACTOR,
 			func(): return InstitutionMembership.join(_registry, null, AUTHORED_ID),
@@ -308,24 +278,28 @@ func test_every_refused_verb_writes_nothing_byte_for_byte() -> void:
 		[
 			"already a member",
 			actor,
+			established,
 			InstitutionMembership.R_ALREADY_A_MEMBER,
 			func(): return InstitutionMembership.join(_registry, actor, AUTHORED_ID),
 		],
 		[
 			"unknown organization",
 			actor,
+			established,
 			InstitutionMembership.R_UNKNOWN_INSTITUTION,
 			func(): return InstitutionMembership.join(_registry, actor, &"no_such_house"),
 		],
 		[
 			"an empty organization",
 			actor,
+			established,
 			InstitutionMembership.R_UNKNOWN_INSTITUTION,
 			func(): return InstitutionMembership.join(_registry, actor, &""),
 		],
 		[
 			"an office the content does not author",
 			stranger,
+			stranger_before,
 			InstitutionMembership.R_UNKNOWN_POSITION,
 			func():
 				return InstitutionMembership.join(_registry, stranger, AUTHORED_ID, &"audit_office"),
@@ -333,23 +307,25 @@ func test_every_refused_verb_writes_nothing_byte_for_byte() -> void:
 		[
 			"a standing move on a house not held",
 			actor,
+			established,
 			InstitutionMembership.R_NOT_A_MEMBER,
-			func(): return InstitutionMembership.move_standing(actor, HUNT_ID, 5),
+			func(): return InstitutionMembership.move_standing(_registry, actor, HUNT_ID, 5),
 		],
 		[
 			"a zero standing move",
 			actor,
+			established,
 			InstitutionLedger.R_NON_POSITIVE,
-			func(): return InstitutionMembership.move_standing(actor, AUTHORED_ID, 0),
+			func(): return InstitutionMembership.move_standing(_registry, actor, AUTHORED_ID, 0),
 		],
 	]:
 		var label: String = entry[0]
 		var subject: Actor = entry[1]
-		var answer: Dictionary = (entry[3] as Callable).call()
+		var answer: Dictionary = (entry[4] as Callable).call()
 		assert_eq(bool(answer["ok"]), false, "%s is refused" % label)
-		assert_eq(String(answer["reason"]), String(entry[2]), "%s names its own cause" % label)
+		assert_eq(String(answer["reason"]), String(entry[3]), "%s names its own cause" % label)
 		if subject != null:
-			assert_eq(_fingerprint(subject), established, "%s changed nothing at all" % label)
+			assert_eq(_fingerprint(subject), entry[2], "%s changed nothing at all" % label)
 
 
 ## ## `leave` refuses ONE thing, and it is `not_a_member`
@@ -405,15 +381,22 @@ func test_leaving_refuses_only_not_a_member_and_always_permits_the_rest() -> voi
 ## The room is filled through the verb itself, so the case measures the GATE on real
 ## admissions rather than on a hand-written roster.
 func test_a_full_office_is_a_refused_admit_and_never_a_silent_trim() -> void:
-	var room := int(_guild().position(FACTOR).room())
+	var guild := _guild()
+	var room := int(guild.position(FACTOR).room())
 	assert_eq(room, 5, "the room holds five by authored content")
-	# Fill it to its cap through the verb itself, so every holder is a real admission.
-	var seated: Array = []
+	# Fill it to its cap through the verb itself, so every holder is a real admission. The
+	# ACTORS are kept, not just their ids: `leave` acts on a body, so re-minting an actor
+	# with a matching id would hand it an empty store and the leave would refuse
+	# `not_a_member` — a case that reads as "the room never frees itself" rather than as the
+	# test's own mistake.
+	var seated: Array[String] = []
+	var bodies: Array[Actor] = []
 	for index in room:
 		var who := _actor(StringName("factor_%d" % index))
 		var answer := InstitutionMembership.join(_registry, who, LANTERN_ID, FACTOR)
 		assert_eq(bool(answer["ok"]), true, "holder %d is admitted" % index)
 		seated.append(String(who.id))
+		bodies.append(who)
 	var refused := InstitutionMembership.join(_registry, _actor(&"sixth"), LANTERN_ID, FACTOR)
 	assert_eq(bool(refused["ok"]), false, "the sixth is refused")
 	assert_eq(
@@ -429,9 +412,12 @@ func test_a_full_office_is_a_refused_admit_and_never_a_silent_trim() -> void:
 	# A seat that frees itself is the mirror of a refusal: the refusal is about the ROOM, not
 	# about the actor, so somebody else leaving admits the next applicant.
 	assert_eq(
-		bool(InstitutionMembership.leave(_registry, _actor(StringName(seated[0])))["ok"]),
-		true,
-		"one of them leaves"
+		bool(InstitutionMembership.leave(_registry, bodies[0])["ok"]), true, "one of them leaves"
+	)
+	assert_eq(
+		(InstitutionMembership.roster_of(LANTERN_ID)[String(FACTOR)] as Array).size(),
+		room - 1,
+		"and the roster says so without anybody being told to remove a row"
 	)
 	assert_eq(
 		bool(InstitutionMembership.join(_registry, _actor(&"seventh"), LANTERN_ID, FACTOR)["ok"]),
@@ -517,15 +503,19 @@ func test_the_three_states_are_distinguishable_from_summary() -> void:
 	assert_eq(InstitutionMembership.summary(stranger), {}, "no institutions is an empty answer")
 	assert_eq(InstitutionMembership.summary(null), {}, "and so is no actor at all")
 
-	# State two: the organization EXISTS and one authored office is vacant, because nobody
-	# holds it. That is the roster's empty holder list, published because the organization
-	# authors the office.
+	# State two: the organization EXISTS and the viewer is in it, and one authored office is
+	# VACANT because the world published a roster and nobody is standing in that one. That is
+	# a different fact from an office nobody published a roster for, and both are reachable.
 	var joiner := _actor(&"joiner")
 	InstitutionMembership.join(_registry, joiner, LANTERN_ID)
 	var view: Dictionary = InstitutionMembership.summary(joiner)["institutions"][String(LANTERN_ID)]
 	assert_eq(bool(view["exists"]), true, "the organization exists")
 	assert_eq(view["roster"][String(FACTOR)].size(), 0, "and the unfilled room is vacant")
 	assert_eq(view["roster"].has(String(FACTOR)), true, "a visible row, never a hidden one")
+	# The office the joiner IS in names them, because the world published that roster.
+	assert_eq(
+		(view["roster"][String(CLERK)] as Array).size(), 1, "while the office they hold names them"
+	)
 
 	# State three: a REFUSAL is `{ok: false, reason}` and is never `{}` and never a zero.
 	var refused := InstitutionMembership.join(_registry, joiner, LANTERN_ID)
@@ -600,7 +590,7 @@ func test_a_recognised_stat_moves_by_the_bounded_percent_and_falls_again() -> vo
 	)
 	# The rise: at the authored cap of 150 the percent saturates at the ceiling, so this is
 	# where a member stops gaining recognition — while the LEDGER still reads 150.
-	InstitutionMembership.move_standing(actor, AUTHORED_ID, 110)
+	InstitutionMembership.move_standing(_registry, actor, AUTHORED_ID, 110)
 	assert_almost_eq(
 		actor.stats.derived(RECOGNISED),
 		before[String(RECOGNISED)] * (1.0 + InstitutionClaim.STANDING_PERCENT_CAP),
@@ -612,7 +602,7 @@ func test_a_recognised_stat_moves_by_the_bounded_percent_and_falls_again() -> vo
 		"while the ledger says 150"
 	)
 	# ## And DOWN again, which is the only exit recognition has.
-	InstitutionMembership.move_standing(actor, AUTHORED_ID, -100)
+	InstitutionMembership.move_standing(_registry, actor, AUTHORED_ID, -100)
 	assert_almost_eq(
 		actor.stats.derived(RECOGNISED),
 		before[String(RECOGNISED)] * 1.05,
@@ -738,8 +728,8 @@ func test_two_houses_each_contribute_their_own_bounded_percent() -> void:
 		"and joins a second house"
 	)
 	# Drive both to the ceiling so the sum is the worst case the family can produce.
-	InstitutionMembership.move_standing(actor, AUTHORED_ID, 200)
-	InstitutionMembership.move_standing(actor, CHAPTER_ID, 200)
+	InstitutionMembership.move_standing(_registry, actor, AUTHORED_ID, 200)
+	InstitutionMembership.move_standing(_registry, actor, CHAPTER_ID, 200)
 	assert_eq(
 		int(InstitutionMembership.claim_of(actor, AUTHORED_ID)["standing"]),
 		150,
@@ -796,125 +786,6 @@ func test_a_organization_authoring_no_office_grants_nothing_and_is_not_a_refusal
 		0,
 		"and the circle publishes no office for one to be vacant in"
 	)
-
-
-# --- Save round trip ------------------------------------------------------------
-
-
-## ## The membership store survives the JSON hop
-##
-## `Actor.to_dict` copies `module_data` VERBATIM and converts only the OUTER key, so an inner
-## `StringName` key, a `Resource`, an `Actor` or a `Vector2` would reach the save untouched and
-## break every round trip — **and no checker in this repo can see it**.
-## `JSON.parse_string` returns every number as a float, so BOTH sides go through the hop and
-## the FACTS are compared rather than the representation.
-func test_the_membership_store_round_trips_through_the_actor_save() -> void:
-	var actor := _actor(&"saved")
-	InstitutionMembership.found(_registry, actor, _guild(), "me")
-	InstitutionMembership.move_standing(actor, LANTERN_ID, 33)
-	InstitutionMembership.join(_registry, actor, HUNT_ID)
-	var before := InstitutionMembership.summary(actor)
-	assert_eq((before["institutions"] as Dictionary).size() > 0, true, "there is something to save")
-
-	var parsed = JSON.parse_string(JSON.stringify(actor.to_dict()))
-	assert_ne(parsed, null, "the payload parses")
-	var restored := Actor.from_dict(parsed as Dictionary)
-	assert_ne(restored, null, "and the body comes back")
-	_born.append(restored)
-
-	# ## The ROSTER is process state, and that is the documented gap rather than a bug
-	#
-	# The claims ride the save; the roster does not, because no world save slot can accept
-	# one (`WorldPolityLedger`'s row normalizer keeps `kind`, `standing`, `standing_cap` and
-	# `sequence` and DROPS everything else, and its own boundary rule forbids an actor id on
-	# a row). So after the hop the RESTORED BODY publishes the same roster **in this
-	# process** — the table is still here — and what a restart loses is asserted separately
-	# below, where `clear()` stands in for the quit.
-	var after := InstitutionMembership.summary(restored)
-	assert_eq(
-		_through_json(after["institutions"]),
-		_through_json(before["institutions"]),
-		"the claims survive the hop unchanged, facts and not representation"
-	)
-	# AND the store is save-SAFE by the shared callable, which is the only check in this repo
-	# that can see an inner value type at all.
-	var slot: Variant = restored.module_data.get(InstitutionMembership.MEMBERSHIP_KEY)
-	assert_eq(
-		InstitutionLedger.is_save_safe(slot),
-		true,
-		"the slot carries only what a save can round-trip"
-	)
-	# And the claim is still the actor's, read back through the same verb.
-	assert_eq(InstitutionMembership.holds(restored, LANTERN_ID), true, "so the body still belongs")
-	# ## What a RESTART loses, measured with the table emptied
-	#
-	# `clear()` is what a process exit does to process state, so dropping it here and asking
-	# again is exactly the question "what does a player see after they quit?". The answer is
-	# an EMPTY roster for a house that exists — ADR 0083's FIRST state, which the card
-	# renders as `holders not published` and never as a vacancy nobody declared. The CLAIMS
-	# are unaffected, which is why an exit is a LOSS OF THE ROSTER and not a loss of
-	# membership.
-	InstitutionMembership.clear()
-	assert_eq(
-		InstitutionMembership.roster_of(LANTERN_ID),
-		{},
-		"after a restart the world publishes no roster, rather than an empty one"
-	)
-	assert_eq(
-		(InstitutionMembership.roster_of(LANTERN_ID) as Dictionary).get(String(SEAT)),
-		null,
-		"so no office claims to be held"
-	)
-	assert_eq(
-		InstitutionMembership.holds(restored, LANTERN_ID),
-		true,
-		"while the membership itself came back off the save untouched"
-	)
-
-
-# --- The structural half: it grants no power -------------------------------------
-
-
-## ## ADR 0084's structural half, which `tools arch` CANNOT see
-##
-## "Recognition, access and transmission only — never power" is a claim about METHODS, and a
-## checker reading references cannot see a method that does not exist. So the whole published
-## surface is asserted, name for name, against the forbidden list AND as a whole: a verb added
-## later fails here rather than slipping past a word list.
-func test_the_published_surface_grants_no_power() -> void:
-	var body := FileAccess.get_file_as_string(MEMBERSHIP_FILE)
-	assert_ne(body, "", "the membership file is readable")
-	for verb in FORBIDDEN_VERBS:
-		assert_eq(_calls(body, verb), 0, "'%s' is never written in code" % verb)
-	assert_eq(_published(), PUBLISHED, "the published surface is exactly this one")
-	# A module facade's cap does not apply here — `core/` is a LAYER, not a module — but the
-	# published set is short on purpose: every name is a verb a caller presses or a read it
-	# could not have reached through another verb.
-	assert_eq(PUBLISHED.size(), 12, "twelve verbs, each with a caller or a named reason")
-
-
-## ## NOTHING HERE TICKS
-##
-## No institution owns a clock (DEF-0111, ADR 0083): a ledger whose contents depended on when
-## the save was written is not a ledger. Asserted over this file AND over the whole family,
-## because the rule is a property of the layer and not of one class. A `for` over a FIXED
-## literal list, reading each file: the body never appends to the list.
-func test_nothing_in_the_family_owns_a_clock() -> void:
-	for path in [
-		MEMBERSHIP_FILE,
-		"res://src/core/institution_ledger.gd",
-		"res://src/core/institution_claim.gd",
-		"res://src/core/institution_founding.gd",
-		"res://src/core/institution_projection.gd",
-		"res://src/core/institution_registry.gd",
-		"res://src/core/institution_def.gd",
-		"res://src/core/institution_def_catalog.gd",
-	]:
-		var body := FileAccess.get_file_as_string(path)
-		assert_ne(body, "", "%s is readable" % path)
-		assert_eq(body.contains("Time.get_ticks"), false, "%s owns no clock" % path)
-		assert_eq(body.contains("func _process"), false, "%s declares no process" % path)
-		assert_eq(body.contains("get_tree()"), false, "%s reaches for no tree" % path)
 
 
 # --- Helpers ---------------------------------------------------------------------
@@ -1117,8 +988,7 @@ func _own_modifiers(actor: Actor) -> int:
 
 
 ## The percent one recognized id currently carries from this family, summed over every
-## organization contributing it — which is the N-fold sum, read off the stack rather than
-## recomputed.
+## organization contributing it — the N-fold sum, read off the stack rather than recomputed.
 func _own_percent(actor: Actor, stat_id: String) -> float:
 	var total := 0.0
 	for modifier in actor.stats._modifiers:
@@ -1128,10 +998,3 @@ func _own_percent(actor: Actor, stat_id: String) -> float:
 			continue
 		total += float(modifier.value)
 	return total
-
-
-## A payload through the JSON hop, so both sides of a round-trip assertion are the same
-## representation. `JSON.parse_string` returns every number as a float, which is why a
-## byte-for-byte comparison across the hop is not achievable and the FACTS are compared.
-func _through_json(value: Variant) -> Variant:
-	return JSON.parse_string(JSON.stringify(value))

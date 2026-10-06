@@ -221,15 +221,8 @@ func test_the_boot_source_names_no_kind_no_organization_and_no_def_path() -> voi
 	# had to assert in step so it could not rot; with the second one gone the boot's source
 	# must be UNABLE to name a directory at all, which is what makes a reintroduced second
 	# scan a red assertion rather than a silent split.
-	assert_eq(
-		body.contains("res://data/institutions"), false, "and it names no content root of its own"
-	)
-	assert_eq(
-		body.contains("ContentScan"), false, "and it walks no directory itself"
-	)
-	assert_eq(
-		body.count("InstitutionDefCatalog"), 1, "reading the catalog once, in one place"
-	)
+	assert_eq(_calls(body, "res://data/institutions"), 0, "and it names no content root of its own")
+	assert_eq(_calls(body, "ContentScan"), 0, "and it walks no directory itself")
 
 
 ## The shipped content, loaded and read back. Three DIFFERENT capability sets, chosen

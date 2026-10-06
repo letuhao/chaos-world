@@ -82,6 +82,7 @@ fmt = _load("fmt")
 gate_reach = _load("gate_reach")
 godot_bypass = _load("godot_bypass")
 incident = _load("incident")
+institution_family = _load("institution_family")
 item_derive = _load("item_derive")
 lint = _load("lint")
 loop_guard = _load("loop_guard")
@@ -149,6 +150,14 @@ COMMANDS = {
     "deferred": deferred,
     "domain": domain,
     "incident": incident,
+    # The gate itself already runs in-process inside `check` (INC-0017: hoisted above
+    # fmt --check, because a guard one stray space can switch off is not a guard), and the
+    # same `_load` is what registers its nine red paths for `selftest run`. This entry is
+    # the STANDALONE door only -- `institution-family check` to ask the question directly,
+    # and `institution-family report` to read the exemptions without failing. Adding it to
+    # COMMANDS is what makes `uv run python -m tools institution-family check` a command at
+    # all; before this line it exited 2 with "unrecognized arguments".
+    "institution-family": institution_family,
     "backlog": backlog,
     "cultivation": cultivation,
     "acquisition": acquisition,

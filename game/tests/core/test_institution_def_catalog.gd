@@ -109,13 +109,13 @@ func test_the_boot_names_no_base_root_and_walks_no_directory_of_its_own() -> voi
 	var body := FileAccess.get_file_as_string(BOOT_FILE)
 	assert_ne(body, "", "the boot file is readable")
 	assert_eq(
-		body.contains(InstitutionDefCatalog.INSTITUTIONS_ROOT),
-		false,
+		_calls(body, InstitutionDefCatalog.INSTITUTIONS_ROOT),
+		0,
 		"the app boot names no content root: the core catalog is the ONLY loader"
 	)
 	assert_eq(
-		body.contains("ContentScan"),
-		false,
+		_calls(body, "ContentScan"),
+		0,
 		"and walks no directory of its own, so a mod overlay cannot reach one loader and miss the other"
 	)
 	# And the two halves still AGREE, measured rather than asserted by spelling: the boot's
@@ -499,6 +499,22 @@ static func _ids_of(merged: Dictionary) -> Array:
 	for entry in merged["merged"]:
 		out.append(String(entry["id"]))
 	return out
+
+
+## How many times `needle` appears in CODE, ignoring the `##` prose that documents it. The
+## boot's class note explains WHY it no longer walks a directory, and that sentence names
+## both `ContentScan` and the root — so a raw `contains` reads the explanation as the defect.
+## A `for` over the file's lines, reading only: the body appends to a counter, never to the
+## array being walked.
+static func _calls(body: String, needle: String) -> int:
+	var hits := 0
+	for line in body.split("\n"):
+		var code := line.strip_edges()
+		if code.begins_with("#"):
+			continue
+		if code.contains(needle):
+			hits += 1
+	return hits
 
 
 static func _ensure_dir(dir_path: String) -> void:
