@@ -174,7 +174,7 @@ func _live_stat_ids() -> Array:
 ## reaches the sheet -- `actor_stats.gd` documents that path deliberately. So the
 ## combat-owned rates are declared too, rather than relying on them never appearing.
 func test_the_combat_owned_rates_are_declared() -> void:
-	for id in [&"accuracy", &"parry.rate", &"reflect.resist.rate", &"lifesteal"]:
+	for id in [&"accuracy", &"parry.rate", &"reflect.resist.rate", &"lifesteal.health"]:
 		assert_eq(StatPresenter.is_known(id), true, "%s reaches the sheet" % id)
 		assert_ne(
 			StatPresenter.decimals_for(id),

@@ -143,13 +143,39 @@ const SHIELD_PEN := &"shield.pen"
 ## inside a resolve would reorder the stages it runs between.
 const SHIELD_REGEN := &"shield.regen"
 
-# --- Leech --------------------------------------------------------------------
+# --- Leech, one pair per resource ---------------------------------------------
 
-## Share of the amount actually spent on the target's health returned to the attacker.
-## Applied as a SEPARATE packet after the HP write (S11), never as a modification of
-## the incoming hit: a heal that reduced the damage would make the two orders the same
-## order, and the four load-bearing orderings would stop being load-bearing.
-const LIFESTEAL := &"lifesteal"
+## ADR 0889. A leech is a PAIR per resource, the way every other advantage in this
+## module is: the attacker's `lifesteal.<pool>` against the defender's
+## `leech_resist.<pool>`, over the same `rate_scale` every trigger reads. The pools are
+## the ones the engine actually holds — core's `health` and `stamina` (`actor_pools.gd`)
+## and the qi pool the casting layer owns (`technique_casting.gd:71`).
+const LIFESTEAL_PREFIX := "lifesteal."
+const LEECH_RESIST_PREFIX := "leech_resist."
+const POOLS: Array[StringName] = [&"health", &"qi", &"stamina"]
+
+
+## The offence half of the leech pair for `pool`.
+static func lifesteal_id(pool: StringName) -> StringName:
+	return StringName(LIFESTEAL_PREFIX + String(pool))
+
+
+## The defence half: the answer to the same pool's drain.
+static func leech_resist_id(pool: StringName) -> StringName:
+	return StringName(LEECH_RESIST_PREFIX + String(pool))
+
+
+## Both halves of every pool, offence first per pool. DERIVED from [constant POOLS], so a
+## fourth pool joins by existing — the shape `ElementStats.crit_ids` uses. `ALL_IDS` and
+## `RATE_IDS` cannot call this (a `const` cannot), which is why the shape test pins the
+## literal lists against it instead.
+static func leech_ids() -> Array[StringName]:
+	var out: Array[StringName] = []
+	for pool in POOLS:
+		out.append(lifesteal_id(pool))
+		out.append(leech_resist_id(pool))
+	return out
+
 
 ## ## ADR 0877. The CONTEST pairs, and why this is a derivation rather than a comment
 ##
@@ -167,6 +193,10 @@ const CONTESTS: Dictionary = {
 	ACCURACY: &"evasion",
 	PARRY_RATE: PARRY_BREAK,
 	BLOCK_RATE: BLOCK_BREAK,
+	# ADR 0889: the leech pairs, literal because a `const` cannot call `leech_ids()`.
+	&"lifesteal.health": &"leech_resist.health",
+	&"lifesteal.qi": &"leech_resist.qi",
+	&"lifesteal.stamina": &"leech_resist.stamina",
 }
 
 ## Every id this module owns, in the vocabulary order ADR 0068 lists them. Every id a
@@ -193,7 +223,12 @@ const ALL_IDS: Array[StringName] = [
 	SHIELD_TOUGHNESS,
 	SHIELD_PEN,
 	SHIELD_REGEN,
-	LIFESTEAL,
+	&"lifesteal.health",
+	&"leech_resist.health",
+	&"lifesteal.qi",
+	&"leech_resist.qi",
+	&"lifesteal.stamina",
+	&"leech_resist.stamina",
 ]
 
 ## ## ADR 0215: what this list now means, and what stopped being true
@@ -220,7 +255,12 @@ const RATE_IDS: Array[StringName] = [
 	BLOCK_STRENGTH,
 	REFLECT_RATE,
 	REFLECT_RESIST_RATE,
-	LIFESTEAL,
+	&"lifesteal.health",
+	&"leech_resist.health",
+	&"lifesteal.qi",
+	&"leech_resist.qi",
+	&"lifesteal.stamina",
+	&"leech_resist.stamina",
 ]
 
 ## The defaults of the rate-shaped ids. Every entry is `0.0`, deliberately: an unstatted
@@ -239,7 +279,12 @@ const RATE_DEFAULTS: Dictionary = {
 	BLOCK_STRENGTH: 0.0,
 	REFLECT_RATE: 0.0,
 	REFLECT_RESIST_RATE: 0.0,
-	LIFESTEAL: 0.0,
+	&"lifesteal.health": 0.0,
+	&"leech_resist.health": 0.0,
+	&"lifesteal.qi": 0.0,
+	&"leech_resist.qi": 0.0,
+	&"lifesteal.stamina": 0.0,
+	&"leech_resist.stamina": 0.0,
 }
 
 ## The defaults of every non-rate id. These are also neutral readings, not balance: a

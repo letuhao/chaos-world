@@ -195,30 +195,33 @@ func test_a_reflect_stat_of_a_million_is_a_refusal_and_not_an_infinity() -> void
 
 # --- S11, leech -----------------------------------------------------------------
 #
-# ## ADR 0877: leech's rate is the same flat delta, and `CombatRecoil.leech` is UNCONTESTED
+# ## ADR 0889: leech is a PAIR per resource, over the same flat delta as every trigger
 #
-# `leech` calls `CombatStats.rate_from_zero(LIFESTEAL, 0.0, rate_scale)` — the resister
-# half is a literal `0.0`, because a heal the attacker takes off their own blow is opposed
-# by nothing. The share is therefore `min(1, LIFESTEAL / rate_scale)`: a real, tunable
-# share rather than the ratio's `L / (L + 0) == 1.0`, which made every non-zero
-# `LIFESTEAL` a certainty.
-#
-# There is no pair to author here: leech has ONE half. So the share is asserted as the
-# SHARE the mechanism resolves through its own public read, rather than as a restated
-# literal — which keeps the assertion exact (the pool was charged precisely that) while
-# letting a balance pass move the scale without the ordering claim going stale.
+# `leech` calls `CombatStats.rate_from_zero(lifesteal.<pool>, leech_resist.<pool>,
+# rate_scale)` with `<pool>` = `tuning.lifesteal_pool` — the pool the heal lands in.
+# Before ADR 0889 the defence half was the literal `0.0` (DEF-0351): nothing a defender
+# built could answer a drain. The share is asserted through the mechanism's own public
+# read rather than as a restated literal, so a balance pass moves the scale without the
+# ordering claims going stale.
 
 
-## The leech share `CombatRecoil` resolves for `attacker`, read off the same public
-## formula the stage reads it through. `LIFESTEAL` against its literal `0.0` resist.
-func _leech_share_of(attacker: Actor) -> float:
-	return CombatBand.rate(attacker.stats.derived(CombatStats.LIFESTEAL), 0.0, _tuning)
+## The leech share `CombatRecoil` resolves for `attacker` against `target`, read off the
+## same public formula the stage reads it through: the pool's two halves.
+func _leech_share_of(attacker: Actor, target: Actor) -> float:
+	var pool := _tuning.lifesteal_pool
+	return CombatBand.rate(
+		attacker.stats.derived(CombatStats.lifesteal_id(pool)),
+		target.stats.derived(CombatStats.leech_resist_id(pool)),
+		_tuning
+	)
 
 
 func test_leech_is_a_separate_packet_paid_after_the_health_write() -> void:
 	var attacker := CombatTestKit.quiet_actor(&"attacker")
 	attacker.resource(&"health").change(-100.0)
-	attacker.stats.add_modifier(CombatStats.rate_modifier(CombatStats.LIFESTEAL, 1.0, &"test"))
+	attacker.stats.add_modifier(
+		CombatStats.rate_modifier(CombatStats.lifesteal_id(_tuning.lifesteal_pool), 1.0, &"test")
+	)
 	var mechanism := CombatTestKit.FixedMechanism.new()
 	mechanism.amount = 40.0
 	MechanismSlot.bind(attacker, mechanism)
@@ -231,9 +234,10 @@ func test_leech_is_a_separate_packet_paid_after_the_health_write() -> void:
 	assert_almost_eq(
 		target.resource(&"health").current, target_before - 40.0, "40 spent on the target"
 	)
-	# ADR 0877: the ONE half leech has, `min(1, 1.0 / rate_scale)` — here certainty — so
-	# the whole of what was spent comes back; and the packet is a SEPARATE one, written
-	# after the damage, so the pool moved by exactly the leech and by nothing else.
+	# ADR 0889: an UNOPPOSED half (the target resists nothing) reads `min(1, 1.0 /
+	# rate_scale)` — here certainty — so the whole of what was spent comes back; and the
+	# packet is a SEPARATE one, written after the damage, so the pool moved by exactly the
+	# leech and by nothing else.
 	assert_almost_eq(outcome.lifesteal, 40.0, "one unopposed half leeches all of it")
 	assert_almost_eq(
 		attacker.resource(&"health").current,
@@ -248,7 +252,9 @@ func test_leech_pays_only_on_what_reached_health() -> void:
 	# nothing and a hit against a nearly-dead target heals only what it actually took.
 	var attacker := CombatTestKit.quiet_actor(&"attacker")
 	attacker.resource(&"health").change(-100.0)
-	attacker.stats.add_modifier(CombatStats.rate_modifier(CombatStats.LIFESTEAL, 1.0, &"test"))
+	attacker.stats.add_modifier(
+		CombatStats.rate_modifier(CombatStats.lifesteal_id(_tuning.lifesteal_pool), 1.0, &"test")
+	)
 	var mechanism := CombatTestKit.FixedMechanism.new()
 	mechanism.amount = 40.0
 	MechanismSlot.bind(attacker, mechanism)
@@ -271,7 +277,7 @@ func test_leech_pays_only_on_what_reached_health() -> void:
 	assert_almost_eq(dead_outcome.lifesteal, 5.0, "only the 5.0 that actually left came back")
 	assert_almost_eq(
 		dead_outcome.lifesteal,
-		dead_outcome.overflow * 5.0 / 40.0 * _leech_share_of(attacker),
+		dead_outcome.overflow * 5.0 / 40.0 * _leech_share_of(attacker, nearly_dead),
 		"and it is a share of what was spent, not of what the blow was worth"
 	)
 
@@ -284,8 +290,59 @@ func test_an_unstatted_attacker_leeches_nothing() -> void:
 	)
 	# A non-positive delta reads `0.0` rather than dividing (ADR 0877), so an actor who
 	# has invested nothing leeches nothing — and never an unchosen default.
-	assert_almost_eq(_leech_share_of(attacker), 0.0, "nothing invested contests nothing")
+	assert_almost_eq(
+		_leech_share_of(attacker, CombatTestKit.actor(&"target")),
+		0.0,
+		"nothing invested contests nothing"
+	)
 	assert_almost_eq(outcome.lifesteal, 0.0, "so 0.0 lifesteal leeches 0.0")
+
+
+func test_a_defender_s_leech_resist_cancels_the_drain() -> void:
+	# ADR 0889's acceptance: the pair is real. Before it the defence half was a literal
+	# 0.0, so nothing a defender built could answer a drain (DEF-0351).
+	var attacker := CombatTestKit.quiet_actor(&"attacker")
+	attacker.resource(&"health").change(-100.0)
+	attacker.stats.add_modifier(
+		CombatStats.rate_modifier(CombatStats.lifesteal_id(_tuning.lifesteal_pool), 1.0, &"test")
+	)
+	var mechanism := CombatTestKit.FixedMechanism.new()
+	mechanism.amount = 40.0
+	MechanismSlot.bind(attacker, mechanism)
+	var target := CombatTestKit.actor(&"target")
+	target.stats.add_modifier(
+		CombatStats.rate_modifier(CombatStats.leech_resist_id(_tuning.lifesteal_pool), 1.0, &"test")
+	)
+	var outcome := CombatSpine.resolve_hit(
+		attacker, target, CombatTestKit.technique(100.0), _tuning, null
+	)
+	assert_almost_eq(_leech_share_of(attacker, target), 0.0, "equal halves cancel to zero")
+	assert_almost_eq(outcome.lifesteal, 0.0, "so the drain returns nothing")
+
+
+func test_the_drain_lands_in_the_pool_the_tuning_names() -> void:
+	# The multi-resource half of ADR 0889: the pair read follows `lifesteal_pool`, so the
+	# same blow refills qi where it would have refilled health. The target resists nothing,
+	# so the share is certainty and the whole 40 returns.
+	var tuning := CombatTestKit.shipped()
+	tuning.lifesteal_pool = &"qi"
+	var attacker := CombatTestKit.quiet_actor(&"attacker")
+	attacker.add_resource(ResourcePool.new(&"qi", 100.0))
+	attacker.resource(&"qi").change(-50.0)
+	attacker.stats.add_modifier(
+		CombatStats.rate_modifier(CombatStats.lifesteal_id(&"qi"), 1.0, &"test")
+	)
+	var mechanism := CombatTestKit.FixedMechanism.new()
+	mechanism.amount = 40.0
+	MechanismSlot.bind(attacker, mechanism)
+	var qi_before := attacker.resource(&"qi").current
+	var outcome := CombatSpine.resolve_hit(
+		attacker, CombatTestKit.actor(&"target"), CombatTestKit.technique(100.0), tuning, null
+	)
+	assert_almost_eq(outcome.lifesteal, 40.0, "the drain returned through the qi pair")
+	assert_almost_eq(
+		attacker.resource(&"qi").current, qi_before + 40.0, "into the pool the tuning names"
+	)
 
 
 # --- internals ------------------------------------------------------------------

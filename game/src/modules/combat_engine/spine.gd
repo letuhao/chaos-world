@@ -304,7 +304,7 @@ static func _spend(
 	# --- S10, post-shield and never folded into the amount above. ---
 	CombatRecoil.reflect(attacker, target, tuning, outcome, chain_depth)
 	# --- S11, a separate packet after the HP write, never folded into it either. ---
-	CombatRecoil.leech(attacker, tuning, outcome)
+	CombatRecoil.leech(attacker, target, tuning, outcome)
 	return outcome
 
 

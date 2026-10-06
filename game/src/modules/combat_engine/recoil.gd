@@ -118,13 +118,28 @@ static func _respect(
 ## hit against a 1-HP target heals 1.0 rather than the 40.0 the blow was worth. That is
 ## what makes "leech pays for damage dealt" true rather than "leech pays for damage
 ## rolled".
-static func leech(attacker: Actor, tuning: CombatTuning, outcome: CombatOutcome) -> void:
+##
+## ## ADR 0889: the share is a PAIR per resource
+##
+## `lifesteal.<pool>` BEATS the defender's `leech_resist.<pool>` over `rate_scale` — the
+## same flat contest every trigger uses — where `<pool>` is `tuning.lifesteal_pool`, the
+## same field the heal lands in. Before this the defence half was the literal `0.0`: the
+## audit (DEF-0351) found that nothing a defender built could answer a drain. The BASE of
+## the share is still what left the target's health, because health is the only pool a
+## blow moves today; what the pair decides is how much of it returns, and the tuning's
+## pool decides WHICH resource it returns AS.
+static func leech(
+	attacker: Actor, target: Actor, tuning: CombatTuning, outcome: CombatOutcome
+) -> void:
+	var pool_id := tuning.lifesteal_pool
 	var share := CombatStats.rate_from_zero(
-		_stat(attacker, CombatStats.LIFESTEAL), 0.0, tuning.rate_scale
+		_stat(attacker, CombatStats.lifesteal_id(pool_id)),
+		_stat(target, CombatStats.leech_resist_id(pool_id)),
+		tuning.rate_scale
 	)
 	if share <= 0.0:
 		return
-	var pool := attacker.resource(tuning.lifesteal_pool) as ResourcePool
+	var pool := attacker.resource(pool_id) as ResourcePool
 	if pool == null:
 		return
 	var healed := maxf(0.0, -outcome.health_delta) * share

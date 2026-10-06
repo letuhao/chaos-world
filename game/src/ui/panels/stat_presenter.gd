@@ -159,7 +159,12 @@ const TABLE: Dictionary = {
 	&"block.strength": ["Block strength", 3],
 	&"reflect.rate": ["Reflect rate", 3],
 	&"reflect.resist.rate": ["Reflect resist rate", 3],
-	&"lifesteal": ["Lifesteal", 3],
+	&"lifesteal.health": ["Leech health", 3],
+	&"leech_resist.health": ["Leech resist health", 3],
+	&"lifesteal.qi": ["Leech qi", 3],
+	&"leech_resist.qi": ["Leech resist qi", 3],
+	&"lifesteal.stamina": ["Leech stamina", 3],
+	&"leech_resist.stamina": ["Leech resist stamina", 3],
 }
 
 

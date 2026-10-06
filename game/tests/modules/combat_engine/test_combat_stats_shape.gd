@@ -44,6 +44,33 @@ func test_rate_ids_and_rate_defaults_are_the_same_set() -> void:
 		assert_eq(CombatStats.RATE_IDS.has(id), true, "%s is in RATE_IDS" % String(id))
 
 
+func test_the_leech_family_is_generated_from_the_pools() -> void:
+	# ADR 0889: both halves for every pool, derived from `POOLS` — and the literal lists
+	# the `const` rules force carry exactly that set, which is the one thing a generator
+	# cannot reach.
+	var family := CombatStats.leech_ids()
+	assert_eq(family.size(), CombatStats.POOLS.size() * 2, "two halves per pool")
+	for pool in CombatStats.POOLS:
+		assert_eq(
+			family.has(CombatStats.lifesteal_id(pool)),
+			true,
+			"%s has an offence half" % String(pool)
+		)
+		assert_eq(
+			family.has(CombatStats.leech_resist_id(pool)),
+			true,
+			"%s has a defence half" % String(pool)
+		)
+		assert_eq(
+			CombatStats.counterpart_of(CombatStats.lifesteal_id(pool)),
+			CombatStats.leech_resist_id(pool),
+			"and the pair is data"
+		)
+	for id in family:
+		assert_eq(CombatStats.RATE_IDS.has(id), true, "%s is a rate id" % String(id))
+		assert_eq(CombatStats.RATE_DEFAULTS.has(id), true, "%s has a neutral default" % String(id))
+
+
 func test_every_rate_id_has_an_authored_flat_rate_modifier() -> void:
 	# The one legal shape, per ADR 0068: "author `op: FLAT`, `unit: "rate"`, and add a
 	# SHAPE TEST." `CombatStats.rate_modifier` is the single constructor, so this asserts
