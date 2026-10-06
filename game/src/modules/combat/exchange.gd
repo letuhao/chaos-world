@@ -74,15 +74,15 @@ const OUTCOME_PLAYER_LOST := "player_lost"
 ## ## Why `1.0` is still the shipped value, and what `1.0` does and does not mean
 ##
 ## THE VALUE IS NOT BEING RETUNED BY THIS MOVE. `1.0` does NOT mean "resistance is
-## ignored". `StatusApply.apply_chance` is
-## `clampf(gate * (1 - STATUS_RESISTANCE) * (1 - elem_resist), status_min_apply, 1.0)`, so
-## a gate of `1.0` hands the whole decision to the two resist terms and the roll below --
-## which is the correct reading, and it is what ADR 0087's formula is FOR. What `1.0`
-## DOES mean is that the BASE rate is unconditional, so an unresisted actor short-circuits
-## to `chance == 1.0`, spends no draw, and every landed blow inflicts with certainty.
-## Lowering the authored value makes a resisted actor's landed status *and* a boss's
-## affliction both rarer in proportion, without touching `status_min_apply` (the floor
-## that keeps an open gate from reaching zero) or any `magnitude_cap`. That dial now
+## ignored". `StatusApply.resolve_roll` reads the gate through `apply_chance`, which is
+## `clampf(gate * p_apply, status_min_apply, 1.0)` over ADR 0884's flat power-vs-resist
+## delta — so a gate of `1.0` hands the whole decision to that delta and the roll below.
+## An actor with NO status power lands on the parity half rather than on certainty until
+## `status.power.*` content lands (DEF-0346); the gate multiplies whatever parity the
+## delta resolves. Lowering the authored value makes a resisted actor's landed status
+## *and* a boss's affliction both rarer in proportion, without touching
+## `status_min_apply` (the floor that keeps an open gate from reaching zero) or any
+## `magnitude_cap`. That dial now
 ## lives in data, and a balance pass is a one-line `.tres` edit rather than a `.gd` one.
 ##
 ## The shipped rate is deliberately unchanged from what was measured. The defect was never
@@ -295,10 +295,11 @@ static func live_boss(actor: Actor) -> Dictionary:
 ## `record_defeat` and an uncounted index would replay hit 0's answer forever. Counting
 ## from `LOOT`'s schema namespace keeps the two runtimes' keys apart on one actor.
 ##
-## The three terms are read, not invented: `potency_of` is ADR 0088's reuse of
-## `element_power_<e>` (the floor applies while `ElementsApi.attach` has no production
-## caller), and `apply_chance` is ADR 0087's multiplicative resist formula. Neither is
-## restated here — a second copy of either could drift from the spine's.
+## The three terms are READ, not invented: the chance, the potency and the rolled verdict
+## all come from `StatusApply.resolve_roll` (ADR 0886), the same owner the spine's S12
+## stage calls, so neither path can restate the other's arithmetic. `potency` is no longer
+## floor-only either: `actor_factory.gd` attaches `ElementsApi` to every built actor, so
+## `element_power_<e>` is live and the floor is what an UNTRAINED element reads.
 
 
 ## The number of landed blows this actor has already thrown, as a substream salt.
@@ -340,46 +341,37 @@ static func _status_on_landing(
 	if element == &"":
 		return none
 	var tuning := CombatEngineApi.tuning()
-	var chance := StatusApply.apply_chance(
-		actor,
-		actor,
-		tuning,
-		_status_gate(tuning),
-		&"",
-		&"",
-		element,
-		StatusApply.elemental_resist(actor, actor, tuning, element)
-	)
-	var status_id := StatusApi.status_for_element(element, chance)
+	var gate := _status_gate(tuning)
+	var status_id := StatusApi.status_for_element(element, gate)
 	if status_id == &"":
 		return none
+	var def := StatusApi.definition(status_id)
+	var request := {
+		"id": status_id,
+		"element": element,
+		"kind": &"" if def == null else def.kind,
+		"immunity_tags": [] if def == null else def.immunity_tags,
+		"chance": gate,
+		"scope": String(StatusApply.SCOPE_COMBAT),
+	}
 	var hit_index := _hit_index(actor)
-	# `status_seed`'s THIRD parameter is the technique and is typed `Actor`, which the boss
-	# is not — so it goes in that slot as the `Variant` the signature accepts, and as the
-	# boss dict because that is the encounter `rng.seed` was already derived from. The
-	# status stream is then keyed to the same encounter the exchange is, and per
-	# `status_seed`'s own salt a Dictionary contributes only `active.get("element")`.
-	var stream := RandomNumberGenerator.new()
-	var seed_value := StatusApply.status_seed(rng.seed, actor, actor, active, hit_index)
-	# `stream.seed = seed_value` ONLY. `RandomNumberGenerator.state` is the RAW PCG
-	# state, not a seed: assigning it discards the mixing `seed` performs, so every
-	# derived stream collapsed to the same first draw. Measured over this suite's own 40
-	# seeds: with the overwrite 40/40 landed identically with `randf() == 0.0`; without
-	# it, 22 landed and 18 were refused across 0.0098..0.9811. The status roll ADR 0087
-	# exists to be seeded had no seed at all.
-	stream.seed = seed_value
-	# A saturated chance consumes no draw, matching `StatusApply` and `CombatBand.roll`:
-	# the stream is derived, so nothing here can shift a later blow either way, but the
-	# rule is kept so the two paths cannot disagree about when a roll is free.
-	if chance < 1.0 and not stream.randf() < chance:
+	# ADR 0886: the arithmetic is `StatusApply.resolve_roll`'s, the SAME call the spine's
+	# S12 stage makes — this site used to run only the gate and skip the potency split and
+	# immunity entirely. `active` rides the technique slot the way `status_seed`
+	# documents: the boss is not an `Actor`, and a Dictionary contributes only
+	# `active.get("element")` to the salt, so the stream stays keyed to this encounter.
+	var resolved := StatusApply.resolve_roll(actor, actor, tuning, request, rng, active, hit_index)
+	if not bool(resolved.get(&"ready", false)) or not bool(resolved.get(&"open", false)):
 		return none
 	_count_hit(actor)
-	var potency := StatusApply.potency_of(actor, tuning, element)
-	var applied := StatusApi.apply(actor, status_id, potency)
+	var duration := -1.0
+	if def != null:
+		duration = float(def.duration) * maxf(0.0, float(resolved.get(&"duration_net", 1.0)))
+	var applied := StatusApi.apply(actor, status_id, float(resolved.get(&"potency", 0.0)), duration)
 	return {
 		"applied": bool(applied.get("ok", false)),
 		"id": String(status_id),
-		"potency": potency,
+		"potency": float(resolved.get(&"potency", 0.0)),
 	}
 
 
@@ -393,10 +385,12 @@ static func _status_on_landing(
 ## the thing `ElementProvider` derives `element_power_<e>` from. So this reads the real
 ## carrier rather than inventing a second one.
 ##
-## What it does NOT do is make `element_power_<e>` non-zero. ADR 0088 measured that
-## `ElementsApi.attach` has no production caller, so potency rests on
-## `status_potency_floor` until the mastery path lands — a known dependency of that ADR,
-## not a new one, and the reason the report carries potency separately from "applied".
+## ADR 0088 measured that `ElementsApi.attach` had no production caller; that is no
+## longer true — `actor_factory.gd` attaches it (and `apply_realm_modifiers` after
+## enrolment), so `element_power_<e>` is live for every built actor and potency follows
+## the element rather than the floor for a trained affinity. The floor is what an
+## untrained element reads, which is why the report carries potency separately from
+## "applied".
 ##
 ## ## The strongest, not the first
 ##
@@ -511,30 +505,32 @@ static func _boss_affliction_numbers(
 		return none
 	var tuning := CombatEngineApi.tuning()
 	var element := def.element
-	var chance := StatusApply.apply_chance(
-		actor,
-		actor,
-		tuning,
-		_status_gate(tuning),
-		status_id,
-		def.kind,
-		element,
-		StatusApply.elemental_resist(actor, actor, tuning, element)
-	)
-	# The CLOSED gate, answered BEFORE the stream is derived: an already-closed chance spends
-	# no draw, here or anywhere else, so it is refused rather than rolled against.
+	var request := {
+		"id": status_id,
+		"element": element,
+		"kind": def.kind,
+		"immunity_tags": def.immunity_tags,
+		"chance": _status_gate(tuning),
+		"scope": String(StatusApply.SCOPE_COMBAT),
+	}
+	var salt := int(clampf(share, 0.0, 1.0) * 100.0)
+	# ADR 0886: the same owner the player's own blow uses. `gate_open` is the ROLLED
+	# verdict, resolved here because `loot` has no `combat_engine` edge to roll it and
+	# inventing a bare `randf()` there would be a second place that owns "when is a roll
+	# free" (see `loot_affliction.gd`'s own note on the edge direction).
+	var resolved := StatusApply.resolve_roll(actor, actor, tuning, request, rng, active, salt)
+	if not bool(resolved.get(&"ready", false)):
+		return none
+	var chance := float(resolved.get(&"chance", 0.0))
+	# The CLOSED gate, answered BEFORE any verdict: an already-closed chance spends no
+	# draw, here or anywhere else, so it is refused rather than rolled against.
 	if chance <= 0.0:
 		return none
-	var salt := int(clampf(share, 0.0, 1.0) * 100.0)
-	var stream := RandomNumberGenerator.new()
-	stream.seed = StatusApply.status_seed(rng.seed, actor, actor, active, salt)
-	# The gate itself. Same expression and same short-circuit as `_status_on_landing`, so
-	# the two paths answer one question the same way and a saturated gate is free in both.
-	if chance < 1.0 and not stream.randf() < chance:
+	if not bool(resolved.get(&"open", false)):
 		return {"chance": chance, "potency": 0.0, "gate_open": false}
 	return {
 		"chance": chance,
-		"potency": StatusApply.potency_of(actor, tuning, element),
+		"potency": float(resolved.get(&"potency", 0.0)),
 		"gate_open": true,
 	}
 

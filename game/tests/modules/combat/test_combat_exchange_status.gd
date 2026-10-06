@@ -33,9 +33,11 @@ const PLAYER_STATUS := &"fire_immolation"
 ## reads an absent element as, so the blow genuinely carries an element.
 const AFFINITY := 0.6
 
-## A high `Stat.STATUS_RESISTANCE` on the player, who is the status's SUBJECT. A real
-## defensive stat read by ADR 0087's formula rather than a rig, so the comparison below is
-## between two legal builds and not between a build and a bypass.
+## A high `Stat.STATUS_DEFENSE` on the player, who is the status's SUBJECT. A real
+## defensive stat read by ADR 0884's flat gate rather than a rig, so the comparison below
+## is between two legal builds and not between a build and a bypass. (The retired
+## `Stat.STATUS_RESISTANCE` spelling this used to pin no longer reaches the gate at all,
+## which made the "resisted" arm of the draw test decorative.)
 const RESIST_FLAT := 0.4
 
 ## A saturated `Stat.EVASION`. `CombatDamage.resolve_hit` compares the boss's single draw
@@ -266,7 +268,7 @@ func test_a_resisted_status_consumes_no_draw_from_the_shared_stream() -> void:
 
 	var resisted := _delver()
 	resisted.stats.add_modifier(
-		StatModifier.new(Stat.STATUS_RESISTANCE, Stat.Op.FLAT, RESIST_FLAT, &"test")
+		StatModifier.new(Stat.STATUS_DEFENSE, Stat.Op.FLAT, RESIST_FLAT, &"test")
 	)
 	if not _in_run(resisted):
 		return
@@ -285,14 +287,47 @@ func test_a_resisted_status_consumes_no_draw_from_the_shared_stream() -> void:
 	)
 
 
+# --- 2b. the port's split runs on THIS path too (ADR 0886) -----------------------
+
+
+## ADR 0886's acceptance: the encounter's arithmetic is `StatusApply.resolve_roll`'s, the
+## same call the spine's S12 makes, so the potency split ADR 0885 added reaches THIS path
+## — before the extraction the exchange ran only the gate and an intensity investment
+## changed nothing here.
+##
+## The fixture carries no `elements` provider, so `element_power_<e>` is untrained and the
+## base potency is the authored floor; ONE net scale of intensity doubles it. The expected
+## number is read off the SHIPPED tuning, never pasted.
+func test_the_intensity_split_reaches_the_encounter_path() -> void:
+	var actor := _delver()
+	if not _mapped() or not _in_run(actor):
+		return
+	var tuning := CombatEngineApi.tuning()
+	actor.stats.add_modifier(
+		CombatStats.rate_modifier(StringName(tuning.status_intensity_prefix + "omni"), 1.0, &"test")
+	)
+	var landed := _first_landed(actor)
+	if landed.is_empty():
+		return
+	var status := _status_of(landed["result"])
+	if not bool(status.get("applied", false)):
+		return
+	assert_almost_eq(
+		float(status.get("potency", 0.0)),
+		float(tuning.status_potency_floor) * 2.0,
+		"one net-factor scale of intensity doubles the encounter's reported potency"
+	)
+
+
 # --- 3. nothing mapped is a normal answer, not an error ------------------------
 
 
 func test_a_blow_carrying_no_element_applies_nothing_and_is_not_an_error() -> void:
-	# The case ADR 0105 measures as the COMMON one: `ElementsApi.attach` has no production
-	# caller, so an untrained body has no affinity at all and its blow carries no element.
-	# `status` is still present in the report — a consumer indexes it unconditionally — and
-	# it reads as an ordinary non-application rather than a failure.
+	# The case ADR 0105 measures as the COMMON one: a body with no trained affinity at all
+	# swings an elementless blow. (`ElementsApi.attach` DOES have a production caller now —
+	# `actor_factory.gd` — but this fixture grants no affinity on purpose, so the carrier
+	# resolves to nothing.) `status` is still present in the report — a consumer indexes it
+	# unconditionally — and it reads as an ordinary non-application rather than a failure.
 	var actor := _delver(&"", 0.0)
 	if not _in_run(actor):
 		return

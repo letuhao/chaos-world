@@ -232,12 +232,69 @@ static func apply(
 		return _refused(REFUSE_NO_GATE)
 	if target == null or target.has_status(status_id):
 		return _refused(REFUSE_ALREADY_HELD)
+	# Everything else — the immunity tags, the potency split, the intensity floor, the
+	# chance and the seeded roll — belongs to [method resolve_roll], the ONE owner the
+	# two `CombatExchange` sites call too (ADR 0886).
+	var resolved := resolve_roll(attacker, target, tuning, request, rng, technique, hit_index)
+	if not bool(resolved.get(&"ready", false)):
+		var reason := StringName(resolved.get(REFUSED, REFUSE_NO_REQUEST))
+		var detail: Variant = resolved.get(&"detail", &"")
+		var extra := {}
+		if detail != &"":
+			extra[reason] = detail
+		return _refused(reason, extra)
+	if not bool(resolved.get(&"open", false)):
+		return _refused(REFUSE_RESISTED)
+	return _written(target, tuning, request, resolved)
+
+
+## ADR 0886: the ONE owner of S12's arithmetic — id and gate validation, the immunity
+## tags, the potency split's net factors, the intensity floor, the chance and the seeded
+## roll. The spine's stage and the two `CombatExchange` sites all call this, because the
+## exchange used to run only the gate and skip the split and immunity entirely while
+## carrying its own copy of everything else.
+##
+## Pure arithmetic plus ONE roll on a seeded substream: it WRITES nothing and takes no
+## `CombatOutcome`, so the encounter can call it where the spine's clean-hit gate is
+## already the caller's fact. `potency` is the FULLY FACTORED magnitude a writer should
+## apply, so no caller re-derives it, and the result is primitives only (ADR 0038): a
+## preview renders it, and a module without a `combat_engine` edge carries it across.
+##
+## Returns `{ready, refused, detail, status_id, chance, resist, potency, intensity_net,
+## duration_net, open}`. `ready == false` is one of the named refusals; `ready == true`
+## with `open == false` is the rolled verdict against the chance.
+static func resolve_roll(
+	attacker: Actor,
+	target: Actor,
+	tuning: CombatTuning,
+	request: Dictionary,
+	rng: Variant,
+	technique: Variant = null,
+	hit_index: int = 0
+) -> Dictionary:
+	var out := {
+		&"ready": false,
+		REFUSED: REFUSE_NO_REQUEST,
+		&"detail": &"",
+		&"status_id": &"",
+		&"chance": 0.0,
+		&"resist": 0.0,
+		&"potency": 0.0,
+		&"intensity_net": 1.0,
+		&"duration_net": 1.0,
+		&"open": false,
+	}
+	var status_id := StringName(request.get(KEY_ID, &""))
+	if status_id == &"" or tuning == null:
+		return out
+	var gate := _finite(_number(request.get(KEY_CHANCE, 0.0)))
+	if gate <= 0.0:
+		out[REFUSED] = REFUSE_NO_GATE
+		return out
 	if rng == null:
-		# No generator, no status. The spine takes an injected `rng` precisely so a
-		# resolve is reproducible (ADR 0067); a null one is a caller asking for the
-		# answer that consults no randomness, and a `randf()` fallback would be exactly
-		# the silent guess ADR 0087 rejects.
-		return _refused(REFUSE_NO_RNG)
+		# No generator, no status (ADR 0087) — never a `randf()` fallback.
+		out[REFUSED] = REFUSE_NO_RNG
+		return out
 	var tags := _tags_of(request)
 	# ADR 0885, the hard half of immunity: a defender whose `status.immune.<tag>` reaches
 	# `1.0` refuses the status outright, BEFORE the roll — the closed-gate discipline: a
@@ -246,7 +303,9 @@ static func apply(
 		for tag in tags:
 			var immune := _stat(target, StringName(tuning.status_immune_prefix + String(tag)))
 			if immune >= 1.0:
-				return _refused(REFUSE_IMMUNE, {REFUSE_IMMUNE: tag})
+				out[REFUSED] = REFUSE_IMMUNE
+				out[&"detail"] = tag
+				return out
 	var element := _id_of(request.get(KEY_ELEMENT, &""))
 	var kind := _id_of(request.get(KEY_KIND, &""))
 	var resist := elemental_resist(attacker, target, tuning, element)
@@ -274,12 +333,13 @@ static func apply(
 		tags
 	)
 	if intensity_net <= _finite(tuning.status_min_net_factor):
-		return _refused(REFUSE_NO_POTENCY)
-	# `elem_resist` is the ELEMENTAL half and applies to every scope: it is a
-	# defender's build answering an element, not a combat-games dial, so a cultivation
-	# blessing that happens to name an element is still answered by fire resistance.
-	# The `status_defense` half is the COMBAT dial and is read inside `apply_chance`
-	# only when the scope is COMBAT (ADR 0086).
+		out[REFUSED] = REFUSE_NO_POTENCY
+		return out
+	# `elem_resist` is the ELEMENTAL half and applies to every scope: it is a defender's
+	# build answering an element, not a combat-games dial, so a cultivation blessing that
+	# happens to name an element is still answered by fire resistance. The
+	# `status_defense` half is the COMBAT dial and is read inside `apply_chance` only
+	# when the scope is COMBAT (ADR 0086).
 	var chance := apply_chance(
 		attacker,
 		target,
@@ -291,14 +351,25 @@ static func apply(
 		resist,
 		_id_of(request.get(KEY_SCOPE, SCOPE_COMBAT))
 	)
-	var stream := _substream(rng, attacker, target, technique, hit_index)
-	# Saturated high consumes NO draw, matching `CombatBand.roll`: `p_apply >= 1.0`
-	# means the roll cannot change the answer.
-	if chance < 1.0 and not stream.randf() < chance:
-		return _refused(REFUSE_RESISTED)
-	return _written(
-		attacker, target, tuning, request, status_id, resist, chance, intensity_net, duration_net
+	# Saturated high consumes NO draw, matching `CombatBand.roll`; a closed chance reads
+	# the verdict without deriving a stream at all.
+	var open := false
+	if chance >= 1.0:
+		open = true
+	elif chance > 0.0:
+		open = _substream(rng, attacker, target, technique, hit_index).randf() < chance
+	out[&"ready"] = true
+	out[&"status_id"] = status_id
+	out[&"chance"] = chance
+	out[&"resist"] = resist
+	out[&"potency"] = (
+		maxf(_finite(_number(request.get(KEY_POTENCY, 0.0))), potency_of(attacker, tuning, element))
+		* maxf(0.0, _finite(intensity_net))
 	)
+	out[&"intensity_net"] = intensity_net
+	out[&"duration_net"] = duration_net
+	out[&"open"] = open
+	return out
 
 
 ## Publish `result` on `outcome` by APPENDING it to the proposal's `effects[]`, which
@@ -632,27 +703,18 @@ static func status_seed(
 ## A shape that returned `ok` would be genuinely load-bearing for that case; today it is
 ## reported and passed through, and nothing is silently swallowed.
 static func _written(
-	attacker: Actor,
-	target: Actor,
-	tuning: CombatTuning,
-	request: Dictionary,
-	status_id: StringName,
-	resist: float,
-	chance: float,
-	intensity_net: float = 1.0,
-	duration_net: float = 1.0
+	target: Actor, tuning: CombatTuning, request: Dictionary, resolved: Dictionary
 ) -> Dictionary:
-	# ADR 0885: the intensity factor scales the MAGNITUDE, the duration factor the TIME.
-	# Parity is `1.0` on both, so a request with no split channels authored writes the
-	# same status the pre-split code wrote — the copy is additive at its baseline.
-	var potency := (
-		maxf(
-			_finite(_number(request.get(KEY_POTENCY, 0.0))),
-			potency_of(attacker, tuning, _id_of(request.get(KEY_ELEMENT, &"")))
-		)
-		* maxf(0.0, _finite(intensity_net))
+	# ADR 0886: every number here arrived from [method resolve_roll] already validated
+	# and factored — this function only BUILDS and hands the effect over.
+	var potency := float(resolved.get(&"potency", 0.0))
+	var effect := _status(
+		StringName(resolved.get(&"status_id", &"")),
+		request,
+		potency,
+		tuning,
+		float(resolved.get(&"duration_net", 1.0))
 	)
-	var effect := _status(status_id, request, potency, tuning, duration_net)
 	if effect == null:
 		return _refused(REFUSE_UNWRITABLE)
 	var answer: Variant = target.call(&"add_status", effect)
@@ -666,12 +728,12 @@ static func _written(
 	return {
 		APPLIED: true,
 		REFUSED: &"",
-		&"status_id": String(status_id),
-		&"chance": chance,
-		&"resist": resist,
+		&"status_id": String(StringName(resolved.get(&"status_id", &""))),
+		&"chance": float(resolved.get(&"chance", 0.0)),
+		&"resist": float(resolved.get(&"resist", 0.0)),
 		&"potency": potency,
-		&"intensity_net": maxf(0.0, _finite(intensity_net)),
-		&"duration_net": maxf(0.0, _finite(duration_net)),
+		&"intensity_net": maxf(0.0, _finite(float(resolved.get(&"intensity_net", 1.0)))),
+		&"duration_net": maxf(0.0, _finite(float(resolved.get(&"duration_net", 1.0)))),
 	}
 
 
