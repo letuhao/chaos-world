@@ -1,4 +1,4 @@
-# 0513 The clan tier adopts the shared institution foundation: a delegating coercion, an authored standing cap, and a born-to kind row
+# 0533 The clan tier adopts the shared institution foundation: a delegating coercion, an authored standing cap, and a born-to kind row
 
 - Status: Accepted
 - Date: 2026-10-06
@@ -9,6 +9,12 @@
   ADR 0399 (the sect tier on the generic founding path)
 - Extends: ADR 0399. Amends: nothing. Supersedes: nothing.
 - Resolves: the clan half of ADR 0271's "the sect migration is the next slice"
+- Note: first drafted as `0513`, whose number a concurrent session also took
+  (`0513-ten-grades-across-four-tiers-three-realms-per-grade.md` is theirs). This is the same
+  decision at a free number, which is what ADR 0271 did for `0266`. The tree carries a large
+  pre-existing set of such collisions — `new_adr` warns about them — and re-running until
+  the warning clears is the only race-free path, because the warning lists every number ever
+  taken rather than only the one just collided with.
 
 ## Context
 
