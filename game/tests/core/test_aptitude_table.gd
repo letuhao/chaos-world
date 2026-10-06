@@ -38,6 +38,18 @@ func test_every_aptitude_feeds_something_and_no_edge_is_zero() -> void:
 		assert_eq(fed.has(id), true, "aptitude %s feeds at least one channel" % String(id))
 
 
+func test_the_status_channels_have_a_producer() -> void:
+	# DEF-0346's acceptance: the port's gate and potency channels are FED by the build.
+	# Before this every status ran at parity times the defence share with no authoring
+	# path at all, and the aptitude edge is the producer of record (the audit's chosen
+	# direction over an item wave).
+	var fed := {}
+	for edge in _table().to_edges():
+		fed[edge.channel] = true
+	for channel in [&"status.power.omni", &"status.intensity.omni", &"status.resist.omni"]:
+		assert_eq(fed.has(channel), true, "%s is produced by the matrix" % String(channel))
+
+
 func test_a_magnitude_edge_never_targets_a_realm_scaled_channel() -> void:
 	# The realm MULT already scales these channels; a MAGNITUDE edge on top would apply
 	# the ladder TWICE (ADR 0882).

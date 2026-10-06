@@ -7,6 +7,12 @@
 ; scales (tests/core/test_aptitude_table.gd refuses it).
 ;
 ; The coefficients are an INITIAL AUTHORED PASS, not balance: retune by editing here.
+;
+; The status channels (status.power.omni / status.intensity.omni / status.resist.omni)
+; are produced BY THE BUILD (DEF-0346). MAGNITUDE mode on all three, so the gate contest
+; and the potency axis stay realm-invariant against the bounded status_defense share.
+; `might` and `ferocity` both feed the offense half; `focus` the potency, `composure`
+; the resistance.
 
 [ext_resource type="Script" path="res://src/core/aptitude_table.gd" id="1"]
 
@@ -43,6 +49,10 @@ edge_rows = Array[Dictionary]([
 {"channel": &"accuracy", "source": &"precision", "k": 0.008, "mode": "contest"},
 {"channel": &"crit_chance", "source": &"ferocity", "k": 0.008, "mode": "contest"},
 {"channel": &"crit_damage", "source": &"ferocity", "k": 0.1, "mode": "contest"},
+{"channel": &"status.power.omni", "source": &"might", "k": 0.2, "mode": "magnitude"},
+{"channel": &"status.power.omni", "source": &"ferocity", "k": 0.15, "mode": "magnitude"},
+{"channel": &"status.intensity.omni", "source": &"focus", "k": 0.2, "mode": "magnitude"},
+{"channel": &"status.resist.omni", "source": &"composure", "k": 0.2, "mode": "magnitude"},
 ])
 share_exponent = 1.0
 contest_span = 1.0
