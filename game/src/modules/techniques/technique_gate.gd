@@ -5,9 +5,9 @@ extends RefCounted
 ##
 ## This gate reads `PathState` and `RealmDefaults` directly, both of which live in
 ## `contracts/` and `core/`, so it breaks no boundary. It deliberately does NOT
-## grow a cultivation facade: all three are already at the 12-method cap, and
-## ADR 0059 records that the dependency runs one way — this module learns about
-## the paths, and the path modules learn nothing about techniques.
+## grow a cultivation facade: ADR 0059 records that the dependency runs one way —
+## this module learns about the paths, and the path modules learn nothing about
+## techniques.
 ##
 ## Three readings, one per kind of technique:
 ##

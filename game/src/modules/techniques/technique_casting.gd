@@ -598,11 +598,10 @@ func _grant_mastery(actor: Actor, def: TechniqueDef) -> int:
 		return rung
 	# The codex and the slot table share ONE payload, so the whole snapshot has to be
 	# rewritten whenever a rung moves — writing only the codex half would drop every
-	# equipped binding on the next load (DEF-0154). `TechniquesApi` is at the
-	# 12-method cap, so the commit is reached through its own `raise_mastery`, which
-	# performs set + commit + rebuild together. The rung is therefore NOT set locally
-	# first: that would make `set_rung` inside the facade return false and skip the
-	# commit entirely.
+	# equipped binding on the next load (DEF-0154). The commit is reached through the
+	# facade's own `raise_mastery`, which performs set + commit + rebuild together.
+	# The rung is therefore NOT set locally first: that would make `set_rung` inside
+	# the facade return false and skip the commit entirely.
 	var applied := TechniquesApi.raise_mastery(actor, def.id, reached)
 	return int(applied.get("rung", reached)) if bool(applied.get("ok", false)) else reached
 

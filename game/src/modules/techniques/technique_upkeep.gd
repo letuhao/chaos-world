@@ -235,11 +235,10 @@ func settle(actor: Actor, equipped: Array[StringName]) -> Array[StringName]:
 ##
 ## ## Why `raise_mastery` and not a direct codex write
 ##
-## `TechniquesApi` is at the 12-method cap, and `raise_mastery` is already the
-## facade's one rung verb: it sets, commits the shared payload (a codex-only write
-## would drop every equipped binding — DEF-0154) and rebuilds. Reaching it is the
-## same route `TechniqueCasting._grant_mastery` takes, so both kinds of technique
-## land their rung through one function.
+## `raise_mastery` is already the facade's one rung verb: it sets, commits the
+## shared payload (a codex-only write would drop every equipped binding — DEF-0154)
+## and rebuilds. Reaching it is the same route `TechniqueCasting._grant_mastery`
+## takes, so both kinds of technique land their rung through one function.
 ##
 ## ## The cap is checked BEFORE the counter moves
 ##
