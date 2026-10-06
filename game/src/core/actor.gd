@@ -433,6 +433,12 @@ func to_dict() -> Dictionary:
 		# GDScript attributes to an unrelated file (DEF-0277).
 		"age_years": age_years,
 		"base": stats.base_dict(),
+		# The aptitude layer as a CACHE (ADR 0888): points and the ladder, re-derived and
+		# REPLACED by `ActorFactory.refresh_build` at every restore, so a saved value that
+		# disagrees with the build loses. It rides beside `base` because it is the same
+		# kind of thing — a stat input core owns — and it is absent from an older payload
+		# by simply missing, which `from_dict` reads as the neutral default.
+		"stats": stats.to_dict(),
 		"resources": _resources_dict(),
 		"paths": _paths_dict(),
 		"meridians": meridians.to_dict(),
@@ -509,6 +515,10 @@ static func from_dict(data: Dictionary) -> Actor:
 		if not state.changed.is_connected(actor._invalidator.on_changed):
 			state.changed.connect(actor._invalidator.on_changed)
 		actor.paths[StringName(key)] = state
+	# ADR 0888: the aptitude layer's cache, restored before any provider is re-mounted.
+	# `ActorFactory.refresh_build` overwrites it from the restored BUILD, so this is a
+	# value the body carries until something re-derives it — never the truth.
+	actor.stats.from_dict(data.get("stats", {}))
 	# The restored network REPLACES the one `_init` built. The `meridians` setter
 	# re-points the stat context and connects the invalidator, so nothing here can
 	# leave a provider reading the discarded object (ADR 0057).

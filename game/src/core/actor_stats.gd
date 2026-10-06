@@ -83,6 +83,30 @@ func aptitude_ladder() -> float:
 	return _aptitude_ladder
 
 
+## The aptitude layer as primitives (ADR 0888): a CACHE of the build, never the truth.
+## `AptitudeGrant.apply` re-derives and REPLACES it at every refresh, so a restored value
+## that disagrees with the build loses; the cache exists so a save carries the layer even
+## before anything re-resolves it.
+func to_dict() -> Dictionary:
+	var points := {}
+	for id in _aptitudes.keys():
+		points[String(id)] = float(_aptitudes[id])
+	return {"aptitudes": points, "aptitude_ladder": _aptitude_ladder}
+
+
+## Restore [method to_dict]'s payload. Tolerant by construction: an absent, malformed or
+## non-finite field is the default, which is what an old save means by not carrying one.
+func from_dict(data: Dictionary) -> void:
+	_aptitudes = {}
+	var raw: Variant = data.get("aptitudes", {})
+	if raw is Dictionary:
+		for key in (raw as Dictionary).keys():
+			_aptitudes[StringName(key)] = float((raw as Dictionary)[key])
+	var ladder := float(data.get("aptitude_ladder", 1.0))
+	_aptitude_ladder = ladder if is_finite(ladder) and ladder > 0.0 else 1.0
+	mark_dirty()
+
+
 func set_context(context: StatContext) -> void:
 	_context = context
 	_context.derived = _derived

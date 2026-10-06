@@ -360,6 +360,13 @@ static func restore_cultivation(actor: Actor) -> Actor:
 		_attach_qi(actor)
 	if actor.path(MindPath.PATH_ID) != null:
 		_attach_mind(actor)
+	# ADR 0888: the tail every restore funnels through re-derives the BUILD — realm
+	# multiplier, element halves and the aptitude points — so no mount path can forget
+	# one of the three. Before this, nothing on the restore path called
+	# `RealmScaling.apply` at all: a loaded body read the eight realm-scaled stats at R1
+	# strength and folded its MAGNITUDE aptitude edges at ladder 1.0 until its next
+	# breakthrough.
+	refresh_build(actor)
 	return actor
 
 
@@ -378,6 +385,27 @@ static func restore_cultivation(actor: Actor) -> Actor:
 ## player never walks.
 static func _refresh_element_realm(actor: Actor) -> void:
 	ElementsApi.apply_realm_modifiers(actor)
+
+
+## Re-derive everything a body's BUILD owns, in one verb (ADR 0888): the realm multiplier
+## on the shared stats — which is also the only push of the aptitude LADDER — the element
+## halves, and the aptitude points themselves.
+##
+## This is what a restore was missing. `restore_cultivation` re-mounted providers and the
+## element halves, but nothing on the load path ever called `RealmScaling.apply`, so a
+## loaded body read the eight realm-scaled stats at R1 strength and folded its MAGNITUDE
+## aptitude edges at ladder 1.0 from the same omission. Idempotent by construction:
+## `RealmScaling.apply` strips its own source before writing, `_refresh_element_realm`
+## does the same for the element source, and `AptitudeGrant.apply` REPLACES the store.
+static func refresh_build(actor: Actor) -> Actor:
+	if actor == null:
+		return null
+	RealmScaling.apply(actor)
+	_refresh_element_realm(actor)
+	var grant := AptitudeGrant.shipped()
+	if grant != null:
+		grant.apply(actor)
+	return actor
 
 
 ## Mint an npc of any role — mob, miniboss, boss, npc or rival cultivator — as an
