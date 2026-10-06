@@ -15,12 +15,12 @@ extends TestCase
 const LUNG := &"lung"
 const RANK := &"qi_refining"
 const PERCEPTION := 20.0
-const CLARITY := 10.0
 const WILL := 10.0
-## (clarity * 2.0 + will * 0.5) and (perception * 1.5 + clarity * 1.0), the two
-## unfactored shapes the provider multiplies by the rate and then the bonus.
-const RAW_DEFENSE := CLARITY * 2.0 + WILL * 0.5
-const RAW_TECHNIQUE := PERCEPTION * 1.5 + CLARITY * 1.0
+## `will * 2.5` and `perception * 2.5` (ADR 0900: perception carries the
+## offence reads, will the defence) — the two unfactored shapes the provider
+## multiplies by the rate and then the bonus.
+const RAW_DEFENSE := WILL * 2.5
+const RAW_TECHNIQUE := PERCEPTION * 2.5
 
 
 func _actor() -> Actor:
@@ -33,7 +33,6 @@ func _actor() -> Actor:
 				Stat.WILL: WILL,
 				Stat.COMPREHENSION: 10.0,
 				MindStats.PERCEPTION: PERCEPTION,
-				MindStats.MENTAL_CLARITY: CLARITY,
 			}
 		)
 	)
@@ -163,7 +162,6 @@ func test_a_context_with_no_network_answers_the_untrained_number() -> void:
 			{
 				Stat.WILL: WILL,
 				MindStats.PERCEPTION: PERCEPTION,
-				MindStats.MENTAL_CLARITY: CLARITY,
 			}
 		)
 	)

@@ -250,7 +250,7 @@ const MIND_CONTROL_RATES := [
 ## `mind_focus_chance` was `minf(0.75, …)` — every one of them rate-shaped by rule (a),
 ## every one of them a half of a CONTEST, and every one of them a cap whose only effect
 ## was to stop the defender's half growing. With the `minf` deleted they are
-## `mental_clarity * 0.004 + will * 0.002` and friends: attribute-scaled with no constant
+## `will * 0.006` and friends: attribute-scaled with no constant
 ## term, which is the shape a MAGNITUDE has. That is why they are gone from this list and
 ## why `test_rate_stats_registration.gd` — which reads the source rather than this
 ## paragraph — passes on its own.

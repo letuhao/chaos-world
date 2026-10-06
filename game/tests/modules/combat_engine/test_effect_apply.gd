@@ -28,8 +28,8 @@ extends "res://tests/modules/combat_engine/body_damage_fixture.gd"
 ## 4. a target with no ledger / no sea **takes the blow anyway** and skips the write;
 ## 5. effects land **after** the health write — asserted as an ORDER, not a presence.
 
-## The attacker's pinned base attributes. `perception 20.0` with no `mental_clarity` gives
-## `mental_attack == 40.0` exactly at the neutral realm rate, which is
+## The attacker's pinned base attributes. `perception 20.0` gives
+## `mental_attack == 70.0` exactly at the neutral realm rate (perception * 3.5), which is
 ## `mind_damage_fixture.gd`'s pin restated rather than re-derived. `MindCultivationApi
 ## .attach` is REQUIRED, not decoration: `mental_attack` is contributed by `MindProvider` and
 ## reads `0.0` on an actor nobody attached one to, so every erosion row below would be

@@ -24,33 +24,30 @@ extends StatProvider
 func contribute(context: StatContext) -> Dictionary:
 	# ## The FALLBACK, and why mind was as dead as qi on a real actor
 	#
-	# `perception` and `mental_clarity` are this module's OWN base attributes, and
-	# `MindStats` is the only place their ids are declared — but **nothing in
-	# `game/data` ever allocates them.** No `RaceDef.base_attributes` names either
-	# (all five races grant only core's seven), so on any actor the game can build
-	# both read `0.0`. They are reachable only through an authored `StatModifier`
-	# (`cult_perception` / `cult_mental_clarity`), and the only `.tres` that carry
-	# one are passives a player must equip.
+	# `perception` is this module's OWN base attribute, and `MindStats` is the only
+	# place its id is declared — but **nothing in `game/data` ever allocates it.** No
+	# `RaceDef.base_attributes` names it (all five races grant only core's seven), so
+	# on any actor the game can build it reads `0.0`. It is reachable only through an
+	# authored `StatModifier` (`cult_perception`), and the only `.tres` that carry one
+	# are passives a player must equip.
 	#
-	# So `MENTAL_ATTACK` read exactly `(0 + 0) * factor == 0.0`, `base` was `0.0`,
+	# So `MENTAL_ATTACK` read exactly `0.0 * factor == 0.0`, `base` was `0.0`,
 	# `erosion` was `0.0`, and ADR 0171's whole mind mechanism proposed nothing on a
 	# stock actor — the identical bug class qi had, one module over. `MENTAL_DEFENSE`
 	# was half-alive: it has a `will` term, and every race grants `will`.
 	#
-	# `Stat.WILL` is core's own resolve, and it is ALREADY the defensive term on the
-	# line below, so this makes the mind path's two base attributes resolve to the
-	# one attribute every body in this game actually has, instead of leaving the
-	# authored attributes as unreachable ids that only an equipped passive can move.
-	# An authored `cult_perception` still works exactly as before — it is a FLAT
-	# added on top of this baseline, which is the ADR 0022 shape, not a replacement.
+	# `Stat.WILL` is core's own resolve, and ADR 0183 made this fallback the baseline
+	# for the mind path's attribute reads; ADR 0900 then retired the second attribute
+	# (`mental_clarity`) and split the roles: perception carries the OFFENCE reads,
+	# will the DEFENCE ones, and a stock body reads `perception == will`. An authored
+	# `cult_perception` still works exactly as before — it is a FLAT added on top of
+	# this baseline, which is the ADR 0022 shape, not a replacement.
 	#
-	# The coefficients are the module's OWN and unchanged: `MENTAL_ATTACK` is still
-	# `perception * 2.0 + mental_clarity * 1.5`, and a stock body is read as
-	# `perception == clarity == will`. `test_mind_provider.gd`'s pinned fixtures set
-	# these attributes explicitly and are therefore bit-for-bit unchanged, which is
-	# what keeps this a fallback rather than a rebalance. ADR 0183.
+	# The coefficient SUMS are unchanged: a stock body still reads
+	# `MENTAL_ATTACK == will * 3.5` and `MENTAL_DEFENSE == will * 2.5`.
+	# `test_mind_provider.gd`'s pinned fixtures set the attributes explicitly and were
+	# re-keyed with ADR 0900; the stock read is bit-for-bit unchanged.
 	var perception := _or_core_fall(context, MindStats.PERCEPTION, Stat.WILL)
-	var mental_clarity := _or_core_fall(context, MindStats.MENTAL_CLARITY, Stat.WILL)
 	var will := context.value(Stat.WILL)
 
 	## `mind_power_ratio` was computed here and thrown away, as was a `spirit`
@@ -70,9 +67,11 @@ func contribute(context: StatContext) -> Dictionary:
 	var meridian_power := _meridian_power_bonus(context)
 
 	return {
-		MindStats.MENTAL_ATTACK: (perception * 2.0 + mental_clarity * 1.5) * technique_factor,
-		MindStats.MENTAL_DEFENSE:
-		(mental_clarity * 2.0 + will * 0.5) * technique_factor * (1.0 + meridian_power),
+		# ADR 0900: mental_clarity retired; the OFFENCE reads are perception's and the
+		# DEFENCE reads are will's. A stock body reads perception == will (ADR 0183's
+		# fallback), so every number here is unchanged from the pre-retirement read.
+		MindStats.MENTAL_ATTACK: perception * 3.5 * technique_factor,
+		MindStats.MENTAL_DEFENSE: will * 2.5 * technique_factor * (1.0 + meridian_power),
 		MindStats.SPIRITUAL_SENSE_RANGE: 50.0 + perception * 5.0 + technique_factor * 10.0,
 		# ADR 0071 / BL-0114, then ADR 0215. `MIND_FOCUS_CHANCE` and `MIND_AVOIDANCE`
 		# were ADR 0071's RENAMED `critical_chance` / `dodge_chance`, and ADR 0215 renamed
@@ -96,17 +95,16 @@ func contribute(context: StatContext) -> Dictionary:
 		# three left `Stat.RATE_STATS` and why a FLAT on any of them is legal content
 		# rather than +1000%.
 		#
-		# ## Why the formula bodies are otherwise bit-for-bit unchanged
-		# This is a rename and a de-capping and nothing else. `perception`, `awareness_ratio`
-		# and `mental_clarity` are the same three inputs with the same three coefficients,
-		# so a save written against the old ids keeps the same numbers -- which is the
-		# testable claim `test_mind_clarity_veil_pair.gd` makes, and it makes it by
-		# measuring both halves rather than restating them.
+		# ## The MIND_CLARITY / MIND_VEIL rows are bit-for-bit unchanged
+		# Those two rows read `perception` and `awareness_ratio` and never touched the
+		# retired `mental_clarity` (ADR 0900), so a save written against the old ids keeps
+		# the same numbers -- which is the testable claim `test_mind_clarity_veil_pair.gd`
+		# makes, and it makes it by measuring both halves rather than restating them.
 		MindStats.MIND_CLARITY: 0.05 + perception * 0.003 + awareness_ratio * 0.1,
 		MindStats.MIND_VEIL: perception * 0.002 + awareness_ratio * 0.05,
-		MindStats.ILLUSION_RESISTANCE: mental_clarity * 0.004 + will * 0.002,
+		MindStats.ILLUSION_RESISTANCE: will * 0.006,
 		MindStats.MIND_TECHNIQUE_POWER:
-		(perception * 1.5 + mental_clarity * 1.0) * technique_factor * (1.0 + meridian_power),
+		perception * 2.5 * technique_factor * (1.0 + meridian_power),
 	}
 
 

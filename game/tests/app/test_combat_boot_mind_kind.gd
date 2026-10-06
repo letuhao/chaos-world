@@ -50,10 +50,10 @@ const UNAUTHORED := &""
 ## ## Why a fixture has to supply these at all
 ##
 ## `ActorFactory.build(&"seer")` with no base stats produces an actor whose
-## `perception`, `mental_clarity` and `will` are all `0.0`, and every figure the two
+## `perception` and `will` are both `0.0`, and every figure the two
 ## kinds under test read is DERIVED from exactly those:
 ##
-##   - `illusion_resistance = minf(0.8, mental_clarity * 0.004 + will * 0.002)`, which
+##   - `illusion_resistance = will * 0.006` (ADR 0900), which
 ##     is `0.0` on a blank actor -- so an `OBSCURE` strike would read `0.0` for the same
 ##     reason a `DISRUPT` one does, and the pair of assertions below could not tell the
 ##     two kinds apart at all;
@@ -68,7 +68,6 @@ const UNAUTHORED := &""
 ## and everything after that is production.
 const HERO_BASE := {
 	MindStats.PERCEPTION: 20.0,
-	MindStats.MENTAL_CLARITY: 30.0,
 	Stat.WILL: 25.0,
 	Stat.PHYSIQUE: 10.0,
 }
@@ -78,8 +77,8 @@ const HERO_BASE := {
 ##
 ## ## Why a fixture has to do this at all
 ##
-## `illusion_resistance` and `mental_defense` are BOTH derived from `mental_clarity` and
-## `will`, and `mental_defense` grows roughly four times faster, so on any actor this
+## `illusion_resistance` and `mental_defense` are BOTH derived from `will`, and
+## `mental_defense` grows far faster than the converted illusion term, so on any actor this
 ## `HERO_BASE` describes the plain `D` term already dominates the converted illusion
 ## term. The `maxf` then cannot move — which is correct engine
 ## behaviour, and precisely why ADR 0071's "an illusion-resistance build and a clarity
@@ -203,9 +202,7 @@ func test_a_disrupt_technique_never_reads_illusion_resistance() -> void:
 	var parts := _production_parts(DISRUPT, &"disrupt_probe")
 	assert_eq(String(parts["kind"]), "disrupt", "the authored kind survived the builder")
 	assert_almost_eq(
-		float(parts["illusion_resistance"]),
-		0.0,
-		"a DISRUPT strike is answered by mental_clarity alone"
+		float(parts["illusion_resistance"]), 0.0, "a DISRUPT strike is answered by will alone"
 	)
 
 

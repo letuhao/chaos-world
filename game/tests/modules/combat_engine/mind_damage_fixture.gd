@@ -22,9 +22,9 @@ extends TestCase
 ## ## The pinned actor arithmetic
 ##
 ## `MindProvider` contributes (ADR 0071 / BRIEF 4b):
-## - `mental_attack = (perception * 2.0 + mental_clarity * 1.5) * technique_factor`
-## - `mental_defense  = (mental_clarity * 2.0 + will * 0.5) * technique_factor * (1 + power)`
-## - `illusion_resistance = minf(0.8, mental_clarity * 0.004 + will * 0.002)`
+## - `mental_attack = perception * 3.5 * technique_factor` (ADR 0900)
+## - `mental_defense  = will * 2.5 * technique_factor * (1 + power)`
+## - `illusion_resistance = will * 0.006`
 ##
 ## where `power` is the meridian network's bonus, `0.0` for a fresh actor.
 ##
@@ -33,7 +33,7 @@ extends TestCase
 ## base attributes and each expected number below is exact rather than approximate.
 ## Nothing here sets a realm, so nothing here pins a ladder factor.
 
-## `perception` 20.0 with no `mental_clarity` gives `mental_attack == 40.0` exactly, at
+## `perception` 20.0 gives `mental_attack == 70.0` exactly (perception * 3.5), at
 ## the neutral realm rate. `physique` is the one base stat the spine's S1/S7/S8 own derived
 ## stats need to be non-degenerate. `comprehension` is NOT authored: BL-0163 deleted
 ## `comprehension_bonus` and its formula was `1.0 + comprehension * 0.01 +
@@ -47,7 +47,7 @@ const ATTACKER_BASE := {
 	Stat.PHYSIQUE: 10.0,
 }
 ## The attacker's pinned `mental_attack`, restated for the assertions that quote it.
-const ATTACKER_MENTAL_ATTACK := 40.0
+const ATTACKER_MENTAL_ATTACK := 70.0
 ## The FULL pool every fixture actor carries, so `rupture_bleed`'s `max_health` term is
 ## legible and a mind strike's untouched health pool is a byte-identical number.
 ##
@@ -97,7 +97,7 @@ func tuning() -> CombatTuning:
 
 
 ## An attacker whose `mental_attack` is pinned BY CONSTRUCTION at
-## [constant ATTACKER_MENTAL_ATTACK]: `perception 20.0`, no `mental_clarity`, and no
+## [constant ATTACKER_MENTAL_ATTACK]: `perception 20.0` and no
 ## started mind path so `technique_factor` is the neutral `1.0`.
 ##
 ## `MindCultivationApi.attach` is REQUIRED, not decoration: `mental_attack` is
@@ -124,11 +124,12 @@ func _attacker() -> Actor:
 ## `MindCultivationApi.attach` must run BEFORE `attach_sea`: it creates the `awareness`
 ## pool the coherence term reads and `attach_sea` reads a base stat the provider supplies.
 func _defender(
-	awareness_fraction: float = 0.0, defense: float = 0.0, clarity: float = 0.5
+	awareness_fraction: float = 0.0,
+	defense: float = 0.0,
+	sea_clarity: float = 0.5,
+	will: float = 0.0
 ) -> Actor:
-	var actor := Actor.new(
-		&"mind_defender", {Stat.PHYSIQUE: 10.0, MindStats.MENTAL_CLARITY: clarity}
-	)
+	var actor := Actor.new(&"mind_defender", {Stat.PHYSIQUE: 10.0, Stat.WILL: will})
 	actor.add_resource(ResourcePool.new(&"health", HEALTH))
 	MindCultivationApi.attach(actor)
 	_pin_defense(actor, defense)
@@ -137,7 +138,7 @@ func _defender(
 	# stat an actor with no realm does not carry, which is `0.0` -- and a `0.0` capacity
 	# makes the mechanism visibly inert (hole 2) rather than wrong.
 	sea.set_structural_capacity(SEA_CAPACITY)
-	sea.set_clarity(clarity)
+	sea.set_clarity(sea_clarity)
 	_set_awareness(actor, awareness_fraction)
 	return actor
 
@@ -152,9 +153,9 @@ func _defender(
 ## output as an OFFSET: `_ensure_providers` reads
 ## `(contributed + flat) * (1 + percent) * mult` (`actor_stats.gd:122-127`). So
 ## `StatModifier.new(MENTAL_DEFENSE, FLAT, defense, ...)` adds `defense` to a baseline the
-## fixture never measured, and the pin read `clarity * 2 + d` instead of `d`.
-##
-## At the fixture's own `mental_clarity 0.5` that is `1.0 + d`: the two assertions that
+## fixture never measured, and the pin read the provider's own baseline `+ d` instead
+## of `d`. On the old default build that baseline was `1.0` (`mental_clarity 0.5`):
+## the two assertions that
 ## stated the defender's defense out loud reported `expected 0.0, got 1.0` and
 ## `expected 0.0, got 400.0`, and the sweep's `defense 10.0` row measured `11 / (11 + 40)`
 ## -- the missing `1.0` proving the offset, since a floor would not have moved it. The
@@ -185,7 +186,7 @@ func _pin_defense(actor: Actor, defense: float) -> void:
 ##
 ## `Actor` has no copy constructor: [method Actor.new] rebuilds an actor from BASE stats,
 ## pools and providers and cannot carry a modifier. So a rebuilt copy of a defender arrives
-## carrying the provider's own baseline -- `clamped_mental_clarity * 2` on this actor --
+## carrying the provider's own defence baseline on this actor --
 ## with nothing cancelling it, and the rows that wanted "this defender but with high
 ## `illusion_resistance`" read `expected 0.0, got 400.0` when they were handed one.
 ##

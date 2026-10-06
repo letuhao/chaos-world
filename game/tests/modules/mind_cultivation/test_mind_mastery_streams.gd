@@ -26,7 +26,7 @@ const MID_RANK := &"spirit_sea"
 
 func _actor(rank_id: StringName = RANK) -> Actor:
 	var actor := ActorFactory.build(
-		&"mind_mastery", {Stat.WILL: 30.0, MindStats.MENTAL_CLARITY: 25.0, Stat.COMPREHENSION: 10.0}
+		&"mind_mastery", {Stat.WILL: 30.0, MindStats.PERCEPTION: 25.0, Stat.COMPREHENSION: 10.0}
 	)
 	return ActorFactory.with_mind_cultivation(actor, rank_id)
 
@@ -130,7 +130,7 @@ func test_the_mastery_ladder_advances_one_step_at_a_time() -> void:
 	var steps: Array[int] = []
 	for _attempt in EARN_BOUND:
 		steps.append(ledger.step_of(MindMastery.TRACK_STATUS, key))
-		earn_mastery(actor, def, 1.0)
+		MindStatusApi.earn_mastery(actor, def, 1.0)
 	assert_eq(steps.size(), EARN_BOUND, "the walk ran its bounded length")
 	# Monotonic non-decreasing is the real claim: each step is >= the one before, and
 	# the LAST is strictly greater than the FIRST. A counter that advanced but never
@@ -171,7 +171,7 @@ func test_the_two_tracks_are_separate_ledgers_and_one_never_advances_the_other()
 	assert_ne(ledger, null, "attach mints a ledger")
 	if ledger == null:
 		return
-	earn_mastery(actor, slow, 5.0)
+	MindStatusApi.earn_mastery(actor, slow, 5.0)
 	var status_key := MindMastery.key_for(slow)
 	var voice_key := MindMastery.key_for(voice)
 	assert_eq(
@@ -184,7 +184,7 @@ func test_the_two_tracks_are_separate_ledgers_and_one_never_advances_the_other()
 		0.0,
 		"and projecting was NOT a side effect of it: the two tracks are separate vectors"
 	)
-	earn_mastery(actor, voice, 5.0)
+	MindStatusApi.earn_mastery(actor, voice, 5.0)
 	assert_eq(
 		ledger.uses_of(MindMastery.TRACK_EXPRESSION, voice_key) > 0.0,
 		true,
@@ -399,41 +399,38 @@ func test_the_eight_contest_stats_are_live_on_a_stock_actor() -> void:
 			)
 
 
-## The ONE non-symmetry: `intent` is answered by clarity and everything else by
-## conviction, so a `will`-heavy build has a real gap in its matchup profile. A design
+## The ONE non-symmetry: `intent` — and every OFFENCE half — is answered by
+## perception, while the other five DEFENCE halves answer to conviction. A design
 ## where every counter answered the same attribute would be one axis with six names,
 ## which is exactly the reskin the design refuses.
-func test_intent_is_answered_by_clarity_and_every_other_counter_by_conviction() -> void:
-	var clarity_built := ActorFactory.build(
-		&"clarity_built", {Stat.WILL: 0.0, MindStats.MENTAL_CLARITY: 40.0, Stat.COMPREHENSION: 10.0}
+func test_intent_is_answered_by_perception_and_the_other_counters_by_conviction() -> void:
+	var perceiver := ActorFactory.build(
+		&"perceiver", {Stat.WILL: 10.0, MindStats.PERCEPTION: 40.0, Stat.COMPREHENSION: 10.0}
 	)
-	ActorFactory.with_mind_cultivation(clarity_built, RANK)
+	ActorFactory.with_mind_cultivation(perceiver, RANK)
 	var will_built := ActorFactory.build(
-		&"will_built", {Stat.WILL: 40.0, MindStats.MENTAL_CLARITY: 0.0, Stat.COMPREHENSION: 10.0}
+		&"will_built", {Stat.WILL: 40.0, MindStats.PERCEPTION: 10.0, Stat.COMPREHENSION: 10.0}
 	)
 	ActorFactory.with_mind_cultivation(will_built, RANK)
-	var clarity_intent := clarity_built.stats.derived(
+	var perceiver_intent := perceiver.stats.derived(
 		MindVocabulary.defence_id(MindVocabulary.CHANNEL_INTENT)
 	)
 	var will_intent := will_built.stats.derived(
 		MindVocabulary.defence_id(MindVocabulary.CHANNEL_INTENT)
 	)
-	var clarity_voice := clarity_built.stats.derived(
+	var perceiver_voice := perceiver.stats.derived(
 		MindVocabulary.defence_id(MindVocabulary.CHANNEL_VOICE)
 	)
 	var will_voice := will_built.stats.derived(
 		MindVocabulary.defence_id(MindVocabulary.CHANNEL_VOICE)
 	)
-	assert_eq(clarity_intent > 0.0, true, "a clarity build answers intent")
-	assert_almost_eq(
-		will_intent, 0.0, "and a pure-conviction build does NOT: intent is the one gap"
-	)
-	assert_eq(will_voice > 0.0, true, "a conviction build answers voice")
+	assert_eq(perceiver_intent > will_intent, true, "intent tracks perception, not conviction")
+	assert_eq(will_voice > perceiver_voice, true, "while voice tracks conviction, not perception")
 	assert_eq(
-		clarity_voice > will_voice,
+		perceiver_intent > perceiver_voice,
 		true,
 		(
-			"and clarity is only the backup on voice, so the two channels ask for "
-			+ "different points rather than one attribute twice"
+			"so the two channels ask for different points rather than one attribute "
+			+ "twice: a will build has a real gap in its matchup profile"
 		)
 	)

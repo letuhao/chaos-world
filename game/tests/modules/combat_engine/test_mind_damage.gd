@@ -396,13 +396,12 @@ func test_a_degenerate_tuning_and_a_null_context_never_produce_a_nan() -> void:
 
 ## A defender with `0.0` `mental_defense` and MAX `illusion_resistance`: mitigated on
 ## `OBSCURE`, NOT on `DISRUPT`. This is what makes an illusion-resistance build and a
-## clarity build DIFFERENT defenders of the same skill (ADR 0071), machine-checkable
+## will build DIFFERENT defenders of the same skill (ADR 0071), machine-checkable
 ## rather than asserted.
 ##
-## `illusion_resistance = minf(0.8, mental_clarity * 0.004 + will * 0.002)` per
-## `MindProvider`. At `mental_clarity == 200.0` the formula alone saturates the `0.8`
-## cap -- no `will` term needed -- so the read is at its ceiling and the `maxf` is
-## unambiguous.
+## `illusion_resistance = will * 0.006` per `MindProvider` (ADR 0900). At
+## `will == 100.0` the read is `0.6`, under the `[0, 1]` clamp this file applies
+## to the raw stat -- so the conversion, not the clamp, is what sets `D` here.
 func test_obscure_reads_illusion_resistance_and_disrupt_does_not() -> void:
 	var attacker := _attacker()
 	var defender := _defender(0.0, 0.0)
@@ -421,19 +420,19 @@ func test_obscure_reads_illusion_resistance_and_disrupt_does_not() -> void:
 	assert_almost_eq(
 		defender.stats.derived(MindStats.MENTAL_DEFENSE), 0.0, "and the defender's is pinned at 0.0"
 	)
-	# mental_clarity 200.0 saturates illusion_resistance at its 0.8 cap; mental_defense
-	# is pinned at 0.0 by the fixture, so there is NO other source of mitigation.
-	# The high-clarity build is asked of `_defender` rather than the row's defender mutated
-	# in place with `set_base` + `mark_stats_dirty`: that pair could not be trusted to make
-	# one actor answer `0.8` for resistance and `0.0` for defence at the same time, and an
-	# actor rebuilt outside the fixture arrives with the provider's own `clarity * 2`
-	# baseline undefended -- which is where `expected 0.0, got 400.0` came from. Asking the
-	# fixture for the BUILD keeps the pin and the build on one actor by construction.
-	var illusionist := _defender(0.0, 0.0, 200.0)
+	# will 100.0 drives illusion_resistance to 0.6; mental_defense is pinned at 0.0 by
+	# the fixture, so there is NO other source of mitigation. The high-will build is asked
+	# of `_defender` rather than the row's defender mutated in place with `set_base` +
+	# `mark_stats_dirty`: that pair could not be trusted to make one actor answer 0.6 for
+	# resistance and 0.0 for defence at the same time, and an actor rebuilt outside the
+	# fixture arrives with the provider's own defence baseline undefended -- which is
+	# where `expected 0.0, got 400.0` came from. Asking the fixture for the BUILD keeps
+	# the pin and the build on one actor by construction.
+	var illusionist := _defender(0.0, 0.0, 0.5, 100.0)
 	assert_almost_eq(
 		illusionist.stats.derived(MindStats.ILLUSION_RESISTANCE),
-		0.8,
-		"illusion_resistance is at its 0.8 ceiling"
+		0.6,
+		"illusion_resistance reads will * 0.006"
 	)
 	assert_almost_eq(
 		illusionist.stats.derived(MindStats.MENTAL_DEFENSE),
@@ -451,7 +450,7 @@ func test_obscure_reads_illusion_resistance_and_disrupt_does_not() -> void:
 	# why dividing by `resist_divisor` alone read `0.00042203465127` and made the stat
 	# inert. Everything here is DERIVED from the tuning's own numbers, so a balance pass
 	# moves the expectation with the code.
-	var defense := MindDamage.ILLUSION_MAGNITUDE_SCALE * 0.8
+	var defense := MindDamage.ILLUSION_MAGNITUDE_SCALE * 0.6
 	var divisor_k := _tuning.defense_divisor_k * float(obscure["base"])
 	var expected_mitigation := _tuning.mitigation_ceiling * defense / (divisor_k + defense)
 	assert_almost_eq(
@@ -510,11 +509,11 @@ func test_attend_also_does_not_read_illusion_resistance() -> void:
 	# fixture's pin: `MentalProvider` derives `mental_defense = (clarity * 2 + will * 0.5)`,
 	# and BOTH terms are already `0.0` on this actor before the pin is applied at all --
 	# `will` is never given a base stat, and the fixture pins the stat they do not feed.
-	# `illusion_resistance` is derived from the same two, so it rests at its own `0.0` here
+	# `illusion_resistance` is derived from will, so it rests at its own `0.0` here
 	# and the read below is the mechanism declining the stat, not the stat being absent.
 	# (`DISRUPT`'s twin above proves the counterpart: there the fixture pins the resistance
 	# at its `0.8` ceiling and the same read still answers `0.0`.)
-	var defender := _defender(0.0, 0.0, 0.0)
+	var defender := _defender(0.0, 0.0)
 	var attend := _parts(MindDamage.Kind.ATTEND, attacker, defender)
 	assert_almost_eq(
 		defender.stats.derived(MindStats.MENTAL_DEFENSE), 0.0, "and the defender's is 0.0 to start"

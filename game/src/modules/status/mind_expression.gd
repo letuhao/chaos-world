@@ -29,7 +29,7 @@ extends RefCounted
 ##
 ## `voice` and `intent` are the two projections, and each has a defender stat the
 ## other does not: `voice` is answered by CONVICTION (`will`) and `intent` by
-## CLARITY UNDER MOTION (`mental_clarity`). That non-symmetry is the whole
+## CLARITY UNDER MOTION (`perception`). That non-symmetry is the whole
 ## argument for the track. A third channel would have needed a third defender stat
 ## with a real authored baseline, and the repo's own history — mind's two base
 ## attributes reading `0.0` on every stock actor until ADR 0183 gave them a

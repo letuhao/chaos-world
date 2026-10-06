@@ -141,7 +141,6 @@ const TABLE: Dictionary = {
 	&"qi_sense_range": ["Qi sense range", 1],
 	# --- mind path -------------------------------------------------------------
 	&"perception": ["Perception", 1],
-	&"mental_clarity": ["Mental clarity", 1],
 	&"mental_attack": ["Mental attack", 0],
 	&"mental_defense": ["Mental defence", 0],
 	&"spiritual_sense_range": ["Spiritual sense range", 1],

@@ -24,13 +24,13 @@ extends TestCase
 const FIRST := &"qi_refining"
 const LAST := &"primordial_origin"
 
-## Pre-factor technique power for the base attributes below: 20 * 1.5 + 15 * 1.0.
-const BASE_TECHNIQUE_POWER := 45.0
-## Pre-factor mental attack: 20 * 2.0 + 15 * 1.5.
-const BASE_MENTAL_ATTACK := 62.5
+## Pre-factor technique power for the base attributes below: 20 * 2.5.
+const BASE_TECHNIQUE_POWER := 50.0
+## Pre-factor mental attack: 20 * 3.5 (ADR 0900).
+const BASE_MENTAL_ATTACK := 70.0
 ## R1 is the neutral realm: the first ordinal's rate is `RATE_STEP^0` = 1, so this
 ## end is an exact pin and the top end is derived below.
-const R1_POWER := 45.0
+const R1_POWER := 50.0
 ## Measured ends of the AUTHORED capacity ladder - MindRealmSeed.sea_capacity, not
 ## a profile read, so these two are literals on purpose.
 const R1_CAPACITY := 100.0
@@ -49,7 +49,6 @@ func _actor_at_rank(rank_id: StringName) -> Actor:
 				Stat.WILL: 10.0,
 				Stat.COMPREHENSION: 10.0,
 				MindStats.PERCEPTION: 20.0,
-				MindStats.MENTAL_CLARITY: 15.0,
 			}
 		)
 	)
@@ -225,7 +224,6 @@ func _bare_actor() -> Actor:
 				Stat.WILL: 10.0,
 				Stat.COMPREHENSION: 10.0,
 				MindStats.PERCEPTION: 20.0,
-				MindStats.MENTAL_CLARITY: 15.0,
 			}
 		)
 	)

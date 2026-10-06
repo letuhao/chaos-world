@@ -14,16 +14,16 @@ extends TestCase
 ##   chip floor did all the work: a real, playable hit that reads `hit` and costs 1 HP.
 ##
 ## - **mind.** `MindDamage` prices `MENTAL_ATTACK`, which `MindProvider` derives from
-##   `perception` and `mental_clarity` — the mind module's OWN base attributes, and
-##   **no `RaceDef.base_attributes` in `game/data` names either.** All five races grant
-##   only core's seven attributes. So `MENTAL_ATTACK` was `(0 + 0) * factor == 0.0` on
+##   `perception` — the mind module's OWN base attribute — and **no
+##   `RaceDef.base_attributes` in `game/data` names it.** All five races grant
+##   only core's seven attributes. So `MENTAL_ATTACK` was `0.0 * factor == 0.0` on
 ##   every actor the game can build, ADR 0171's erosion was `0.0`, and the defence
 ##   term it is quoted against was `0.0` on both sides of the assertion.
 ##
 ## ## Why the old suites were green
 ##
 ## Every qi fixture sets `Stat.SPIRIT: 10.0` and every mind fixture sets
-## `MindStats.PERCEPTION: 20.0` / `MENTAL_CLARITY: 15.0` by hand. A pinned fixture
+## `MindStats.PERCEPTION: 20.0` by hand. A pinned fixture
 ## proves the ARITHMETIC is right and says nothing about whether a real body can reach
 ## it — which is why the class needed its own assertion rather than another fixture.
 ##
@@ -183,7 +183,7 @@ func test_a_race_that_negates_the_spiritual_defence_gets_exactly_zero_and_not_a_
 ## The same claim for `MENTAL_ATTACK`, on the one race that may actually take the mind
 ## path. Every race but `emberblood_touched` closes `mind_cultivation`, so that one is
 ## the only stock body a mind cultivator can be born in — and it granted only core's
-## seven, so `perception` and `mental_clarity` were both `0.0` and the whole of ADR
+## seven, so `perception` was `0.0` and the whole of ADR
 ## 0171 proposed nothing.
 ##
 ## `MindProvider` must be attached for the stat to exist at all: it is a provider
@@ -201,9 +201,10 @@ func test_a_mind_cultivator_can_attack_its_own_sea() -> void:
 		actor.stats.derived(MindStats.MENTAL_ATTACK) > 0.0,
 		true,
 		(
-			"MindProvider derives MENTAL_ATTACK from perception and mental_clarity, and"
-			+ " no RaceDef.base_attributes in game/data grants either -- so an unwritten"
-			+ " base attribute read 0.0 and ADR 0171's erosion was 0.0 on every actor the"
+			"MindProvider derives MENTAL_ATTACK from perception (ADR 0183's will"
+			+ " fallback), and no RaceDef.base_attributes in game/data grants it -- so an"
+			+ " unwritten base attribute read 0.0 and ADR 0171's erosion was 0.0 on every"
+			+ " actor the"
 			+ " game can build"
 		)
 	)

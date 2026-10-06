@@ -92,7 +92,7 @@ const SHAPE_INVERT := MindVocabulary.SHAPE_INVERT
 ##   conviction, so the battlefield on that side is `will`.
 ## - `intent` — the DIRECTION of the next act. It errs the target mid-attack; a
 ##   defender answers with composure under motion, so the battlefield there is
-##   `mental_clarity`.
+##   `perception`.
 ##
 ## One channel would have made the track a reskin of the CC group; four would have
 ## been four numbers with no matchups. Two is the smallest set where each channel
@@ -237,7 +237,7 @@ func share_per_pulse() -> float:
 ## `control`, and the number the expression track is balanced on: it is in DATA
 ## because `MindExpression` is a module that may not own a balance constant, and
 ## because the two channels must be priced independently — one is a share of `will`,
-## the other of `mental_clarity`, and a single coefficient would have forced one to
+## the other of `perception`, and a single coefficient would have forced one to
 ## be read against the wrong attribute.
 ##
 ## ## IT IS A SHARE OF THE POOL, NOT A SHARE OF A RATE — which is why it is not

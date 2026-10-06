@@ -12,7 +12,6 @@ func test_resource_ids() -> void:
 
 func test_base_attribute_ids() -> void:
 	assert_eq(String(MindStats.PERCEPTION), "perception", "perception id")
-	assert_eq(String(MindStats.MENTAL_CLARITY), "mental_clarity", "mental_clarity id")
 
 
 func test_derived_stat_ids() -> void:
@@ -46,6 +45,7 @@ func test_derived_stat_ids() -> void:
 	# collapsing two vocabularies into one id.
 	assert_eq(String(MindStats.MIND_FOCUS_CHANCE), "mind_focus_chance", "retired spelling")
 	assert_eq(String(MindStats.MIND_AVOIDANCE), "mind_avoidance", "retired spelling")
+	assert_eq(String(MindStats.MENTAL_CLARITY), "mental_clarity", "retired spelling (ADR 0900)")
 	assert_eq(
 		String(MindStats.MIND_CLARITY) == String(MindStats.MIND_FOCUS_CHANCE),
 		false,

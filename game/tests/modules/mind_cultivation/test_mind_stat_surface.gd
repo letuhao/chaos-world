@@ -57,7 +57,6 @@ func _actor() -> Actor:
 				Stat.WILL: 10.0,
 				Stat.COMPREHENSION: 10.0,
 				MindStats.PERCEPTION: 20.0,
-				MindStats.MENTAL_CLARITY: 15.0,
 			}
 		)
 	)
@@ -90,7 +89,7 @@ func test_the_sea_provider_publishes_exactly_its_authored_surface() -> void:
 ## The absent case, stated: no sea means no contribution at all rather than a zero
 ## capacity somebody downstream has to know to distrust.
 func test_no_sea_component_means_no_contribution() -> void:
-	var actor := Actor.new(&"bare", {Stat.WILL: 10.0, MindStats.MENTAL_CLARITY: 15.0})
+	var actor := Actor.new(&"bare", {Stat.WILL: 10.0, MindStats.PERCEPTION: 15.0})
 	# `attach` is deliberately NOT called here. It used to leave the actor sea-less,
 	# which is how this test built the absent case -- but ADR 0095's shape now makes the
 	# sea part of the path, so `attach` guarantees one (BL-0523). Calling it would make

@@ -6,7 +6,7 @@ script = ExtResource("1_def")
 id = &"dual_qi_mind_both_eyes_open"
 delivered_by = &"treaty_seventeenth_clause"
 display_name = "Both Eyes Open"
-description = "Trains the practitioner to notice the body's warning and the mind's misreading in the same instant. Perception and mental clarity, on the one cadence only a dual path has."
+description = "Trains the practitioner to notice the body's warning and the mind's misreading in the same instant. Perception doubled, on the one cadence only a dual path has."
 tags = Array[StringName]([&"passive", &"dual", &"qi_mind", &"sense"])
 grade = &"immortal"
 rarity = &"rare"
@@ -18,7 +18,6 @@ min_path_realm = {&"qi_cultivation": 26, &"mind_cultivation": 26}
 mastery_rungs = 5
 magnitude = 1.0
 passive_options = Array[Dictionary]([
-	{"option_id": &"cult_perception", "value": 10.0},
-	{"option_id": &"cult_mental_clarity", "value": 8.0},
+	{"option_id": &"cult_perception", "value": 18.0},
 ])
 

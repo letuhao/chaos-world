@@ -14,7 +14,6 @@ func _actor_with_module() -> Actor:
 				Stat.WILL: 10.0,
 				Stat.COMPREHENSION: 10.0,
 				MindStats.PERCEPTION: 20.0,
-				MindStats.MENTAL_CLARITY: 15.0,
 			}
 		)
 	)
@@ -40,11 +39,11 @@ func _rate(rank_id: StringName) -> float:
 
 func test_stats_scale_with_ladder_rank() -> void:
 	var actor := _actor_with_module()
-	assert_almost_eq(actor.stats.derived(MindStats.MENTAL_ATTACK), 62.5, "no path")
+	assert_almost_eq(actor.stats.derived(MindStats.MENTAL_ATTACK), 70.0, "no path")
 	actor.set_path(PathState.new(MindPath.PATH_ID, &"qi_refining"))
-	assert_almost_eq(actor.stats.derived(MindStats.MENTAL_ATTACK), 62.5, "rank 0")
+	assert_almost_eq(actor.stats.derived(MindStats.MENTAL_ATTACK), 70.0, "rank 0")
 	actor.path(MindPath.PATH_ID).rank_id = &"spirit_sea"
-	var expected := 62.5 * _rate(&"spirit_sea")
+	var expected := 70.0 * _rate(&"spirit_sea")
 	assert_almost_eq(
 		actor.stats.derived(MindStats.MENTAL_ATTACK), expected, "rank 10 scales", 0.0001
 	)

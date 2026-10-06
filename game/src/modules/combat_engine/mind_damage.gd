@@ -23,7 +23,7 @@ extends DamageMechanism
 ## ## ADR 0200: `MENTAL_DEFENSE_CAP` and `ILLUSION_RESISTANCE_CAP` are GONE
 ##
 ## Mind was the worst of the three: `clampf(d/(d+base), 0, 0.6)` meant 40% of every mind
-## strike landed at ANY `mental_clarity` and at ANY realm, forever. The denominator was
+## strike landed at ANY `perception` and at ANY realm, forever. The denominator was
 ## already a ratio — the defect was the CLAMP on it and the `d` that never grew with the
 ## ladder. Both caps are deleted rather than re-tuned, and mind now reads the same
 ## `mitigation_ceiling` / `defense_divisor_k` / `pierce_scale` every other mechanism does.
@@ -84,7 +84,7 @@ extends DamageMechanism
 ##
 ## This section used to read: "`mental_defense` enters only through the saturating
 ## `d/(d+base)`, hard-capped at `MENTAL_DEFENSE_CAP`, so **40% of every mind strike always
-## lands at any `mental_clarity` and at any realm**." Every word of that is still true
+## lands at any `perception` and at any realm**." Every word of that is still true
 ## EXCEPT the reason, and the reason was the defect.
 ##
 ## The old floor was `1 - MENTAL_DEFENSE_CAP` because the mitigation was CLAMPED at the
@@ -328,13 +328,13 @@ func breakdown(ctx: AttackContext) -> Dictionary:
 	}
 
 
-## The share of a mind strike that lands at ANY `mental_clarity` and at ANY realm:
+## The share of a mind strike that lands at ANY `perception` and at ANY realm:
 ## `1 - mitigation_ceiling`. `0.05` at the shipped value.
 ##
 ## Published rather than left to every caller to re-derive, because this number IS the mind
 ## analogue of the spine's `min_chip_abs` and a second copy of the arithmetic is a second
 ## place for a rebalance to miss. It is what makes a mind fight's difficulty come from
-## coherence, awareness and the matchup of intent rather than from stacking `mental_clarity`.
+## coherence, awareness and the matchup of intent rather than from stacking `perception`.
 ##
 ## ## It used to be `1 - MENTAL_DEFENSE_CAP`, and the difference is the ADR
 ##
@@ -636,7 +636,7 @@ func _defense_of(
 ## ADR 0200 replaced `ILLUSION_RESISTANCE_CAP` with an unbounded MAGNITUDE, and this file
 ## divides the stat by `resist_divisor` before the `maxf` so `D` and `K` meet as like
 ## quantities. It also clamps the read to `[0, 1]`, because the stat's own authored formula
-## is `minf(0.8, mental_clarity * 0.004 + will * 0.002)` and every value the engine can
+## is `will * 0.006` (ADR 0900) and every value the engine can
 ## produce is in that band.
 ##
 ## Those two facts are inconsistent, and the result is not a rounding drift — it is the
@@ -647,8 +647,8 @@ func _defense_of(
 ## between `0.0` and `0.8`. It is the SAME `100.0` meeting magnitudes that are 4.7x apart in
 ## their natural ranges.
 ##
-## Measured on the suite's own fixtures (`mind_damage_fixture.gd`, `mental_clarity 200.0`
-## for the illusion build, so `ILLUSION_RESISTANCE == 0.8`):
+## Measured at the time of that defect on the suite's own fixtures (`mind_damage_fixture.gd`,
+## the then-`mental_clarity 200.0` illusion build, `ILLUSION_RESISTANCE == 0.8`):
 ##
 ## ```
 ## base = mental_attack * share = 40.0

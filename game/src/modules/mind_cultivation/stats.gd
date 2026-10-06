@@ -5,6 +5,12 @@ extends RefCounted
 
 # Base attributes
 const PERCEPTION := &"perception"
+## Retired by ADR 0900. `mental_clarity` was this module's second base attribute and
+## NOTHING in `game/data` allocated it: ADR 0183's fallback already made it read `will`
+## on every stock actor, and only an active option plus four equipped passives moved it.
+## The OFFENCE reads are [constant PERCEPTION]'s and the DEFENCE reads are `Stat.WILL`'s;
+## the id is kept DECLARED as the tombstone pattern [constant MIND_AVOIDANCE] cites.
+## Do NOT add a read site for it.
 const MENTAL_CLARITY := &"mental_clarity"
 
 # Derived stats

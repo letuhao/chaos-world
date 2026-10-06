@@ -97,7 +97,6 @@
       "cult_dodge_chance",
       "cult_illusion_resistance",
       "cult_mental_attack",
-      "cult_mental_clarity",
       "cult_mental_defense",
       "cult_perception"
     ],
@@ -237,7 +236,6 @@
       "cult_charm",
       "cult_dantian_capacity",
       "cult_fertility",
-      "cult_mental_clarity",
       "cult_muscle_fiber",
       "cult_organ_vitality",
       "cult_perception",
@@ -315,7 +313,6 @@
       "cult_illusion_resistance",
       "cult_maternal_resilience",
       "cult_mental_attack",
-      "cult_mental_clarity",
       "cult_mental_defense",
       "cult_muscle_fiber",
       "cult_organ_vitality",
@@ -434,7 +431,6 @@
       "cult_charm",
       "cult_dantian_capacity",
       "cult_fertility",
-      "cult_mental_clarity",
       "cult_muscle_fiber",
       "cult_organ_vitality",
       "cult_perception",
@@ -465,7 +461,6 @@
       "cult_fertility",
       "cult_illusion_resistance",
       "cult_mental_attack",
-      "cult_mental_clarity",
       "cult_mental_defense",
       "cult_muscle_fiber",
       "cult_organ_vitality",
@@ -513,6 +508,6 @@
       "trade_value"
     ]
   },
-  "source_sha256": "41f19de2cf6903cd",
+  "source_sha256": "45d9a053a0e96219",
   "version": 2
 }

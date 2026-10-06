@@ -27,15 +27,16 @@ extends StatProvider
 ##   `mind_composure_<shape>` reads `will`. All four.
 ## - `voice` argues and is answered by conviction, so `mind_composure_voice` reads
 ##   `will` too.
-## - `intent` errs the target mid-act and is answered by CLARITY UNDER MOTION, so
-##   `mind_composure_intent` reads `mental_clarity`.
+## - `intent` errs the target mid-act and is answered by PERCEPTION under motion, so
+##   `mind_composure_intent` reads `perception` (ADR 0900).
 ##
-## So `will` answers FIVE of the eight and `mental_clarity` answers one. That is not
-## an accident to be evened out; it is the design's only non-symmetry, and it is
-## what a test asserts: a build that invests in `will` is strong against every CC
-## shape and against `voice`, and specifically weak against `intent`, so moving its
-## points moves its matchup profile. A track where every counter answered the same
-## attribute would be one axis with six names.
+## So `perception` answers every OFFENCE half and the `intent` defence, and `will`
+## answers the other five defences. That is not an accident to be evened out; it is
+## the design's only non-symmetry, and it is what a test asserts: a build that puts
+## everything into `will` and nothing into `perception` meets `intent` only through
+## ADR 0183's fallback, so moving points between the two moves its matchup profile.
+## A track where every counter answered the same attribute would be one axis with
+## six names.
 ##
 ## ## Every id is a RATE, and that is what makes them legible
 ##
@@ -48,13 +49,13 @@ extends StatProvider
 ## why the contest's FLOOR is what stops that being a lock, not a baseline that
 ## refuses to be zero.
 ##
-## ## The OFFENCE halves all read `mental_clarity`, deliberately
+## ## The OFFENCE halves all read `perception`, deliberately
 ##
 ## Imposing and projecting are acts of MIND and there is one mind attribute for
-## how sharply they are done. Reading `mental_clarity` on all four offence ids is
-## what makes a perception-based build NOT automatically the best CC caller — the
-## same reason ADR 0183 gave `perception` a core fallback rather than folding the
-## two attributes into one, preserved a second time in a second direction.
+## how sharply they are done. Reading `perception` on all four offence ids, and on
+## the `intent` defence, is what gives a perception investment an axis of its own —
+## it buys the offence halves plus `intent`, and nothing else, where `will` buys the
+## other five defences and (through ADR 0183's fallback) a baseline offence.
 ##
 ## ## `_or_core_fall`, exactly as `MindProvider` does it
 ##
@@ -71,7 +72,7 @@ extends StatProvider
 const ATTACK_CAP := 0.45
 
 ## What one point of the attribute is worth on an offence id. Sized so the cap is
-## reachable at an authored `mental_clarity` rather than being decorative: the
+## reachable at an authored `perception` rather than being decorative: the
 ## largest authored value in `game/data` is well past `ATTACK_CAP / ATTACK_STEP`, so
 ## a specialist can actually saturate it and the contest is a real contest at both
 ## ends.
@@ -104,7 +105,7 @@ const ATTACK_STEP := 0.004
 ## contest defect. The cap itself is measured to be reachable at roughly three
 ## hundred points of investment, above anything a shipped ladder actor carries
 ## (`test_mind_mastery_streams.gd` builds its fixtures at `will 30.0` /
-## `mental_clarity 25.0`), so it is a genuine ceiling rather than a wall in the
+## `perception 25.0`), so it is a genuine ceiling rather than a wall in the
 ## reachable range.
 const DEFENCE_CAP := 0.4
 
@@ -113,22 +114,22 @@ const DEFENCE_STEP := 0.003
 
 
 func contribute(context: StatContext) -> Dictionary:
-	var clarity := _or_core_fall(context, MindStats.MENTAL_CLARITY, Stat.WILL)
+	var perception := _or_core_fall(context, MindStats.PERCEPTION, Stat.WILL)
 	var will := context.value(Stat.WILL)
 	var out: Dictionary = {}
-	# The four CONTROL shapes. Imposed against conviction.
+	# The four CONTROL shapes. Imposed against conviction, and imposed WITH perception.
 	for shape in MindVocabulary.SHAPES:
-		_publish(out, shape, clarity, will)
+		_publish(out, shape, perception, will)
 	# `voice` argues and is answered by conviction: the same pairing as a shape.
-	_publish(out, MindVocabulary.CHANNEL_VOICE, clarity, will)
-	# `intent` errs the target mid-act and is answered by CLARITY UNDER MOTION. The
+	_publish(out, MindVocabulary.CHANNEL_VOICE, perception, will)
+	# `intent` errs the target mid-act and is answered by PERCEPTION under motion. The
 	# ONE defence in the game that does not read `will`, and therefore the one axis a
 	# `will` build genuinely has to think about.
 	out[MindVocabulary.offence_id(MindVocabulary.CHANNEL_INTENT)] = minf(
-		ATTACK_CAP, clarity * ATTACK_STEP
+		ATTACK_CAP, perception * ATTACK_STEP
 	)
 	out[MindVocabulary.defence_id(MindVocabulary.CHANNEL_INTENT)] = minf(
-		DEFENCE_CAP, clarity * DEFENCE_STEP
+		DEFENCE_CAP, perception * DEFENCE_STEP
 	)
 	return out
 

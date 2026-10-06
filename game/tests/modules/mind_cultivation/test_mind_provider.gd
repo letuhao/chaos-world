@@ -15,11 +15,11 @@ const Probe := preload("res://tests/modules/mind_cultivation/mind_gate_probe.gd"
 ## from the profile class rather than from a literal.
 const RANK := &"spirit_sea"
 
-## Base attributes below make the pre-factor value 45.0 technique power
-## (20 * 1.5 + 15 * 1.0) and 62.5 mental attack (20 * 2.0 + 15 * 1.5).
-const BASE_TECHNIQUE_POWER := 45.0
-const BASE_MENTAL_ATTACK := 62.5
-const BASE_MENTAL_DEFENSE := 35.0
+## Base attributes below make the pre-factor value 50.0 technique power
+## (20 * 2.5) and 70.0 mental attack (20 * 3.5); the defence reads will (ADR 0900).
+const BASE_TECHNIQUE_POWER := 50.0
+const BASE_MENTAL_ATTACK := 70.0
+const BASE_MENTAL_DEFENSE := 25.0
 
 
 ## The rate for the reference realm, read from the profile rather than restated.
@@ -57,7 +57,6 @@ func _bare_actor() -> Actor:
 				Stat.WILL: 10.0,
 				Stat.COMPREHENSION: 10.0,
 				MindStats.PERCEPTION: 20.0,
-				MindStats.MENTAL_CLARITY: 15.0,
 			}
 		)
 	)
@@ -71,7 +70,7 @@ func test_attach_adds_resources() -> void:
 
 func test_mental_attack_scales_with_perception() -> void:
 	var actor := _actor_at_rank(RANK)
-	# 62.5 * T
+	# 70.0 * T
 	assert_almost_eq(
 		actor.stats.derived(MindStats.MENTAL_ATTACK),
 		BASE_MENTAL_ATTACK * _rate(),
@@ -80,9 +79,9 @@ func test_mental_attack_scales_with_perception() -> void:
 	)
 
 
-func test_mental_defense_scales_with_clarity() -> void:
+func test_mental_defense_scales_with_will() -> void:
 	var actor := _actor_at_rank(RANK)
-	# 35.0 * T
+	# 25.0 * T
 	assert_almost_eq(
 		actor.stats.derived(MindStats.MENTAL_DEFENSE),
 		BASE_MENTAL_DEFENSE * _rate(),
@@ -91,11 +90,11 @@ func test_mental_defense_scales_with_clarity() -> void:
 	)
 
 
-func test_illusion_resistance_from_clarity_and_will() -> void:
+func test_illusion_resistance_from_will() -> void:
 	var actor := _actor_at_rank(RANK)
-	# Capped and factor-free: 15 * 0.004 + 10 * 0.002
+	# Factor-free will read: 10 * 0.006
 	assert_almost_eq(
-		actor.stats.derived(MindStats.ILLUSION_RESISTANCE), 0.08, "illusion resistance"
+		actor.stats.derived(MindStats.ILLUSION_RESISTANCE), 0.06, "illusion resistance"
 	)
 
 
@@ -159,7 +158,7 @@ func test_meridian_strengthening_boosts_technique_power() -> void:
 	actor.meridians.expand_meridian(&"lung")
 	actor.meridians.strengthen_meridian(&"lung")
 	actor.mark_stats_dirty()
-	# 45.0 * T * (1 + 0.05 power bonus)
+	# 50.0 * T * (1 + 0.05 power bonus)
 	var expected := BASE_TECHNIQUE_POWER * _rate() * 1.05
 	assert_almost_eq(
 		actor.stats.derived(MindStats.MIND_TECHNIQUE_POWER),
@@ -176,7 +175,7 @@ func test_meridian_strengthening_boosts_mental_defense() -> void:
 	actor.meridians.expand_meridian(&"lung")
 	actor.meridians.strengthen_meridian(&"lung")
 	actor.mark_stats_dirty()
-	# 35.0 * T * (1 + 0.05 power bonus)
+	# 25.0 * T * (1 + 0.05 power bonus)
 	var expected := BASE_MENTAL_DEFENSE * _rate() * 1.05
 	assert_almost_eq(
 		actor.stats.derived(MindStats.MENTAL_DEFENSE),
