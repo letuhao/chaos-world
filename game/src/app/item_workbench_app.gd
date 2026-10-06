@@ -1455,6 +1455,12 @@ func _on_world_location_selected(location_id: StringName) -> void:
 func _announce_route() -> void:
 	if _nav != null:
 		_nav.set_active(_route)
+		# The menu owns the screen: the nav bar stays hidden behind it, so a
+		# title never reads as a tab strip with a label under it. Arrival
+		# keeps its bar — the boot probe and the pinned reachability suites
+		# drive nav buttons from there, so hiding it would trade the debug
+		# feel for a red gate.
+		_nav.visible = _route != ROUTE_BOOT
 
 
 ## ## The world bridge, and the FOURTH slot (BL-0906)

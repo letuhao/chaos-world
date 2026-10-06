@@ -31,6 +31,8 @@ func setup() -> void:
 ## only bare instantiations need releasing; a suite that leaves one parented
 ## leaks a subtree per case, which is the 67 GB incident AGENTS.md records.
 func teardown() -> void:
+	if SeamHarness.live != null:
+		SeamHarness.live.teardown()
 	for node in _born:
 		if node == null or not is_instance_valid(node):
 			continue
@@ -141,3 +143,22 @@ func test_the_summary_names_what_the_player_can_do() -> void:
 	assert_eq(bool(view.get("has_save", false)), true, "a save is reported")
 	assert_eq(bool(view.get("can_continue", false)), true, "Continue is reported")
 	assert_eq(bool(view.get("can_new_game", false)), true, "and so is New Game")
+
+
+func test_the_nav_bar_hides_while_the_menu_owns_the_screen() -> void:
+	if SeamHarness.live != null:
+		SeamHarness.live.teardown()
+	var harness := SeamHarness.mount_new()
+	if String(harness.boot_error) != "":
+		assert_eq(String(harness.boot_error), "", "the shell booted")
+		return
+	var nav := harness.app.get_node_or_null("%NavBar") as Control
+	assert_ne(nav, null, "the mounted shell carries its nav bar")
+	if nav == null:
+		return
+	assert_eq(nav.visible, true, "the bar is up on the arrival route the boot opens")
+	assert_eq(bool(harness.navigate(&"boot").get("ok", false)), true, "the menu opens")
+	assert_eq(nav.visible, false, "and the bar hides behind it")
+	assert_eq(bool(harness.navigate(&"workbench").get("ok", false)), true, "going home works")
+	assert_eq(nav.visible, true, "and the bar comes back with the game")
+	harness.teardown()
