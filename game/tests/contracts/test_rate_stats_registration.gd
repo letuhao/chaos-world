@@ -154,30 +154,50 @@ func test_every_registered_rate_id_is_live() -> void:
 	)
 
 
-## The registration this file exists for. A `FLAT` on either id is refused by name, so
-## both halves of the fix are shown together: the entry is here AND it is enforced.
+## The registration this file exists for. A `FLAT` on a module-owned rate id is
+## refused by name, so both halves of the fix are shown together: the entry is
+## here AND it is enforced. The id is read off `MindVocabulary` rather than
+## pasted, so a vocabulary rename moves this with it instead of fossilising.
+##
+## `mind_avoidance` was the id this assertion originally named (BL-0675). ADR 0215
+## retired it in favour of `mind_veil` and dropped it from `RATE_STATS`, so the old
+## spelling is pinned the other way: still absent, and no rate refusal on it.
 func test_a_flat_on_a_module_owned_rate_is_refused() -> void:
+	var rate_id := MindVocabulary.defence_id(MindVocabulary.SHAPE_SLOW)
 	assert_eq(
-		Stat.RATE_STATS.has(Stat.MIND_AVOIDANCE),
+		Stat.RATE_STATS.has(rate_id),
 		true,
-		"mind_avoidance is registered (mind_cultivation/provider.gd:62)"
+		"a vocabulary defence id is registered: %s" % String(rate_id)
 	)
-	var def := _stat_modifier_status(&"mind_avoidance", &"flat", 5.0)
-	assert_ne(def.problems().size(), 0, "a FLAT on mind_avoidance is refused")
+	var def := _stat_modifier_status(rate_id, &"flat", 5.0)
+	assert_ne(def.problems().size(), 0, "a FLAT on %s is refused" % String(rate_id))
 	assert_eq(
 		String(def.problems()[0]).contains("RATE_STATS"),
 		true,
 		"the refusal is the rate rule, not some other defect: %s" % String(def.problems()[0])
 	)
 	assert_eq(
-		String(def.problems()[0]).contains("mind_avoidance"),
+		String(def.problems()[0]).contains(String(rate_id)),
 		true,
 		"and it names the id: %s" % String(def.problems()[0])
 	)
 	# The positive control, so the refusal above is about the op and not about this
 	# status being malformed: the same def with PERCENT is accepted.
-	var percent := _stat_modifier_status(&"mind_avoidance", &"percent", 0.2)
+	var percent := _stat_modifier_status(rate_id, &"percent", 0.2)
 	assert_eq(percent.problems(), [], "the same id with PERCENT is accepted")
+	assert_eq(
+		Stat.RATE_STATS.has(Stat.MIND_AVOIDANCE),
+		false,
+		"mind_avoidance stays retired: ADR 0215 moved it to mind_veil and out of the list"
+	)
+	var retired := _stat_modifier_status(Stat.MIND_AVOIDANCE, &"flat", 5.0)
+	var retired_is_rate_refusal := false
+	for problem in retired.problems():
+		if String(problem).contains("RATE_STATS"):
+			retired_is_rate_refusal = true
+	assert_eq(
+		retired_is_rate_refusal, false, "a FLAT on the retired id is not a rate refusal"
+	)
 
 
 ## A minimal valid `StatusDef` carrying one modifier, so the only problem it can report
@@ -347,6 +367,76 @@ func _module_baselines() -> void:
 			var file := String(file_name)
 			if file.ends_with("provider.gd"):
 				_provider_entries("%s/%s" % [directory, file], stat_consts)
+				_vocabulary_entries("%s/%s" % [directory, file])
+
+
+## Baselines for ids a provider builds through `MindVocabulary.offence_id` /
+## `defence_id` rather than spelling as `<Class>.<CONST>:` entries, which is what
+## `mind_mastery_provider.gd` does for all twelve control ids. The literal-entry
+## scan above cannot see a computed key, so without this the twelve read as
+## having no baseline and the liveness guard fails on ids that are published,
+## capped and registered. `tools/data.py::_resolve_rate_stats` carries the same
+## fallback on its side; the two must agree on the set or the gates disagree.
+##
+## Only ids already in `Stat.RATE_STATS` are recorded, so this cannot invent a
+## registration: a new suffix still has to earn its list entry, and a suffix the
+## provider stops publishing keeps no baseline here. Cap names are substituted
+## with the values the same file declares, because the shape rule reads
+## literals, not names.
+func _vocabulary_entries(path: String) -> void:
+	var text := FileAccess.get_file_as_string(path)
+	if not text.contains("MindVocabulary.offence_id") and not text.contains(
+		"MindVocabulary.defence_id"
+	):
+		return
+	var off_expr := _minf_rhs(text, "offence_id")
+	var def_expr := _minf_rhs(text, "defence_id")
+	if off_expr == "" and def_expr == "":
+		return
+	var caps := _numeric_consts(text)
+	for suffix in MindVocabulary.SHAPES + MindVocabulary.CHANNELS:
+		var off := MindVocabulary.offence_id(suffix)
+		if off_expr != "" and Stat.RATE_STATS.has(off) and not _baselines.has(off):
+			_baselines[off] = _substitute(off_expr, caps)
+		var dn := MindVocabulary.defence_id(suffix)
+		if def_expr != "" and Stat.RATE_STATS.has(dn) and not _baselines.has(dn):
+			_baselines[dn] = _substitute(def_expr, caps)
+
+
+## The `minf(...)` right-hand side of a line publishing through the named
+## generator, or "". Wrapped right-hand sides share `_publish`'s single-line
+## shape, which is what this reads.
+func _minf_rhs(text: String, generator: String) -> String:
+	var matcher := RegEx.create_from_string(
+		"MindVocabulary\\." + generator + "[^=]*=\\s*(minf\\(.*\\))\\s*$"
+	)
+	for line in text.split("\n"):
+		var found := matcher.search(String(line))
+		if found != null:
+			return found.get_string(1)
+	return ""
+
+
+## `const NAME := 0.45` numeric constants in one file, so a cap name in a
+## harvested expression is replaced with the literal the shape rule reads.
+func _numeric_consts(text: String) -> Dictionary:
+	var out: Dictionary = {}
+	var matcher := RegEx.create_from_string("^\\s*const ([A-Z_0-9]+) := ([0-9.]+)\\s*$")
+	for line in text.split("\n"):
+		var found := matcher.search(String(line))
+		if found != null:
+			out[found.get_string(1)] = found.get_string(2)
+	return out
+
+
+## Replace whole-word cap names with their declared values. Word-boundaried so
+## `ATTACK_CAP` never rewrites inside a longer identifier.
+func _substitute(expression: String, caps: Dictionary) -> String:
+	var out := expression
+	for name in caps:
+		var key := String(name)
+		out = RegEx.create_from_string("\\b" + key + "\\b").sub(out, String(caps[name]), true)
+	return out
 
 
 ## `MindStats.MIND_AVOIDANCE` -> `&"mind_avoidance"`, harvested from the module's own

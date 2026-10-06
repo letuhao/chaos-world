@@ -886,13 +886,72 @@ static func ctx_builder_for(
 	attacker: Actor, target: Actor, technique: Variant, selected: StringName = &""
 ) -> Callable:
 	var chosen := selected if selected != &"" else mechanism_for_hit(attacker, technique)
+	var base: Callable
 	match chosen:
 		_BODY_MECHANISM:
-			return BodyDamage.builder(technique, &"", CombatEngineApi.tuning())
+			base = BodyDamage.builder(technique, &"", CombatEngineApi.tuning())
 		_MIND_MECHANISM:
-			return MindDamage.builder(_mind_kind_of(technique), MindCultivationApi.sea(target))
+			base = MindDamage.builder(
+				_mind_kind_of(technique), MindCultivationApi.sea(target), technique
+			)
 		_:
-			return QiDamage.builder(ElementsApi.default_rules(), technique)
+			base = QiDamage.builder(ElementsApi.default_rules(), technique)
+	return _with_status_request(base, technique)
+
+
+## ADR 0105's status request, staged over whichever mechanism builder won. The
+## carrier is the ELEMENT, never the technique: `StatusApi.status_for_element`
+## answers the id the authored catalogue claims for a landed blow of that
+## element, or `&""` when nothing claims it. An elementless blow and an
+## unclaimed element stage nothing, so S12 withholds quietly rather than
+## guessing — degrade, never throw. The gate is the shipped tuning's
+## `status_gate_chance`, read here rather than restated, and a closed gate
+## closes the mapping itself rather than staging a request S12 would refuse.
+static func _with_status_request(base: Callable, technique: Variant) -> Callable:
+	return func(ctx: AttackContext) -> AttackContext:
+		var out: AttackContext = ctx
+		if base.is_valid():
+			var built: Variant = base.call(ctx)
+			if built is AttackContext:
+				out = built
+		_stage_status_request(out, technique)
+		return out
+
+
+## Stage one ADR 0105 request onto `ctx.data`, or nothing when the blow carries
+## no claimable element. Separated so the shape (one gate, element-carried) is
+## asserted in one place rather than in every mechanism arm above.
+static func _stage_status_request(ctx: AttackContext, technique: Variant) -> void:
+	if ctx == null:
+		return
+	var element := _element_of(technique)
+	if element == &"":
+		return
+	var tuning := CombatEngineApi.tuning()
+	var gate := float(tuning.status_gate_chance)
+	var status_id := StatusApi.status_for_element(element, gate)
+	if status_id == &"":
+		return
+	ctx.set_data(
+		StatusApply.REQUEST_KEY,
+		{
+			"id": status_id,
+			"element": element,
+			"chance": gate,
+			"scope": StatusApply.SCOPE_COMBAT,
+		}
+	)
+
+
+## The element a technique carries, or `&""`. Variant-read exactly as
+## `_mind_kind_of` reads `mind_kind`, so a def authored before the field
+## existed degrades to elementless rather than throwing.
+static func _element_of(technique: Variant) -> StringName:
+	if technique is Object:
+		var authored: Variant = (technique as Object).get(&"element")
+		if authored is StringName or authored is String:
+			return StringName(authored)
+	return &""
 
 
 ## The erosion kind `technique` authors, or `DISRUPT` when it authors none.
