@@ -314,13 +314,26 @@ static func elemental_resist(
 	if element == &"" or tuning == null or target == null or target.stats == null:
 		return 0.0
 	var raw := _finite(target.stats.derived(_suffixed(tuning.resist_resistance_prefix, element)))
-	var penetration := maxf(
+	# Answered, not raw: the defender's `ABSORPTION` turns aside this much of the
+	# attacker's penetration before it ever reaches the armour value, as a flat
+	# difference through `CombatStats.pierce` (Keepverse `penDelta`). Either half
+	# floors at zero on its own side: negative penetration would be a defence
+	# bonus wearing an attacker's name, and the mirror holds for absorption.
+	var raw_pen := maxf(
 		0.0,
 		(
 			CombatStats.default_of(CombatStats.PENETRATION)
 			+ _finite(_stat(attacker, CombatStats.PENETRATION))
 		)
 	)
+	var raw_abs := maxf(
+		0.0,
+		(
+			CombatStats.default_of(CombatStats.ABSORPTION)
+			+ _finite(_stat(target, CombatStats.ABSORPTION))
+		)
+	)
+	var penetration := CombatStats.pierce(raw_pen, raw_abs)
 	# ADR 0200. `resist_cap` is gone: mitigation is a RATIO of two magnitudes, never an
 	# authored percent, so there is no ceiling to clamp a resistance to. Penetration now
 	# scales the DEFENSE VALUE (`pierce_scale`) rather than subtracting points off it,

@@ -481,13 +481,24 @@ static func _mitigation_of(defense: float, divisor_k: float, tuning: CombatTunin
 	return _finite(ceiling * share)
 
 
-## The attacker's penetration against this element's DEFENSE, as a magnitude on
-## `CombatTuning.pierce_scale`'s own scale rather than in the old resistance's `[0, 1]`
-## space. Zero when nothing was authored, and never negative: a negative penetration
-## would be a defence BONUS wearing an attacker's name.
+## The attacker's penetration against this element's DEFENSE, ANSWERED by the
+## defender's `ABSORPTION`, as a magnitude on `CombatTuning.pierce_scale`'s own
+## scale rather than in the old resistance's `[0, 1]` space. Zero when nothing
+## was authored, and never negative: a negative penetration would be a defence
+## BONUS wearing an attacker's name, and the answered form keeps that property
+## through `CombatStats.pierce` (Keepverse `penDelta`).
 func _penetration_of(ctx: AttackContext) -> float:
 	var id := CombatStats.PENETRATION
-	return maxf(0.0, CombatStats.default_of(id) + _finite(ctx.attacker_value(id)))
+	return CombatStats.pierce(
+		maxf(0.0, CombatStats.default_of(id) + _finite(ctx.attacker_value(id))),
+		maxf(
+			0.0,
+			(
+				CombatStats.default_of(CombatStats.ABSORPTION)
+				+ _finite(ctx.target_value(CombatStats.ABSORPTION))
+			)
+		)
+	)
 
 
 ## `element_power_<e>`, or 0.0 when there is no element. Zero is a real answer and not

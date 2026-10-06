@@ -81,13 +81,19 @@ const REFLECT_DAMAGE := &"reflect.damage"
 ## How hard the defender blunts a bounce: the same rate contest as parry, at the same
 ## rate scale, and terminal — a bounce that loses it does not bounce again.
 const REFLECT_RESIST_RATE := &"reflect.resist.rate"
-## Scales that blunting.
+## The DEFENCE half of the bounce multiplier: a SHARE of the bounced amount
+## resisted, read by `CombatRecoil.bounce` as `damage * (1 - resist)` floored at
+## `0.0` — the same subtraction shape as `Stat.CRIT_RESIST_DAMAGE` at S6, because
+## the two halves are again a multiplier and a share of it rather than two
+## attack rates. `0.0` resists nothing; `1.0` refuses the bounce outright.
 const REFLECT_RESIST_DAMAGE := &"reflect.resist.damage"
 
 # --- Defensive vocabulary -----------------------------------------------------
 
-## Share of an incoming amount a defender refuses before it reaches the spine. The
-## shield's contribution is `SHIELD_CAPACITY`; this is everything else.
+## The DEFENCE half of penetration: how much of an incoming `penetration.rate`
+## the defender's own absorption turns aside before it ever reaches an armour
+## value. Read wherever penetration is read — the three damage mechanisms and
+## `StatusApply.elemental_resist` — through [method pierce], never beside it.
 const ABSORPTION := &"absorption"
 ## Chance, contested against `ACCURACY` / `EVASION`, that an attack is parried (S2).
 ## ADR 0215: the CONTEST is now `PARRY_RATE / (PARRY_RATE + PARRY_BREAK)` — a ratio of
@@ -238,7 +244,11 @@ const DEFAULTS: Dictionary = {
 	REDUCTION: 0.0,
 	AMPLIFICATION: 0.0,
 	REFLECT_DAMAGE: 1.0,
-	REFLECT_RESIST_DAMAGE: 1.0,
+	# `0.0` resists nothing: a `1.0` baseline here made `1.0 - resist`
+	# non-positive for EVERY defender, so every bounce multiplied to zero --
+	# the same dead-channel `Stat.CRIT_RESIST_DAMAGE` shipped with, and for the
+	# same reason (a share subtracted from `1.0` is a `0.0`-baseline stat).
+	REFLECT_RESIST_DAMAGE: 0.0,
 	PARRY_SHRED: 0.0,
 	BLOCK_SHRED: 0.0,
 	SHIELD_CAPACITY: 0.0,
@@ -323,6 +333,20 @@ static func derived_of(actor: Actor, id: StringName) -> float:
 	if actor == null or actor.stats == null:
 		return 0.0
 	return actor.stats.derived(id)
+
+
+## Penetration ANSWERED: `penetration` less `absorption` — a flat difference of
+## two flat magnitudes, floored at zero, never a percentage (Keepverse
+## `penDelta`). The floor is load-bearing, not tidy: a negative penetration
+## would be a defence bonus wearing an attacker's name, and absorption's whole
+## job is to neutralise penetration, not to harden armour. Both totals arrive
+## with their neutral defaults already folded in, so an unauthored defender
+## answers `0.0` and every existing number is byte-identical until content
+## authors the half. The single place this formula lives: the three damage
+## mechanisms and `StatusApply.elemental_resist` all read through here rather
+## than restating the subtraction.
+static func pierce(penetration: float, absorption: float) -> float:
+	return maxf(0.0, penetration - absorption)
 
 
 ## A `StatModifier` of the only shape ADR 0068 permits for a rate id. The single place

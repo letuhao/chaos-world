@@ -491,12 +491,23 @@ func _resistance_of(ctx: AttackContext, tuning: CombatTuning, sites: Array) -> f
 	return _finite(best)
 
 
-## The attacker's penetration against this body's armour, as a magnitude on
-## `CombatTuning.pierce_scale`'s scale. Zero when nothing was authored and never
-## negative: a negative penetration would be a defence BONUS wearing an attacker's name.
+## The attacker's penetration against this body's armour, ANSWERED by the
+## defender's `ABSORPTION`, as a magnitude on `CombatTuning.pierce_scale`'s
+## scale. Zero when nothing was authored and never negative: a negative
+## penetration would be a defence BONUS wearing an attacker's name, and the
+## answered form keeps that property through `CombatStats.pierce`.
 func _penetration_of(ctx: AttackContext) -> float:
 	var id := CombatStats.PENETRATION
-	return maxf(0.0, CombatStats.default_of(id) + _finite(ctx.attacker_value(id)))
+	return CombatStats.pierce(
+		maxf(0.0, CombatStats.default_of(id) + _finite(ctx.attacker_value(id))),
+		maxf(
+			0.0,
+			(
+				CombatStats.default_of(CombatStats.ABSORPTION)
+				+ _finite(ctx.target_value(CombatStats.ABSORPTION))
+			)
+		)
+	)
 
 
 ## ADR 0200's bounded reciprocal ON THE ARMOUR: `D_eff = D / (1 + max(0, pen) /
