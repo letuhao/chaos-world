@@ -8,7 +8,10 @@ extends Resource
 ##
 ## Taken from `SectPositionDef`: `id`, `display_name`, `description`, `capacity`,
 ## `duties` and `authorities`. Every one is read here by a method below, so this is
-## not a field nothing reads.
+## not a field nothing reads. `standing_percent_stats` joins them and is read by its
+## ONE consumer, `InstitutionProjection.grant`, which is the class that owns every
+## question an allowlist can be asked — including `recognises`, so there is exactly
+## one place in the tree that knows what an allowlist is.
 ##
 ## **Deliberately ABSENT**, each because shipping it would be authored-but-
 ## unreachable content — which `SectPositionDef`'s own note calls out for `contest`
@@ -21,17 +24,42 @@ extends Resource
 ##   - `standing_floor`. `InstitutionLedger.promote` takes a position id and NOTHING
 ##     else, so no promotion in the generic foundation ever reads a floor. sect's
 ##     `SectGate` reads its own, and a guild has no gate in this slice.
-##   - `standing_percent_stats`. This is the sharpest omission and the deliberate
-##     one. ADR 0084 makes the allowlist the ONLY stat surface an institution has,
-##     but the code that CONSUMES it is `SectProjection`, inside `sect`. A generic
-##     allowlist with no projection is an author writing numbers that go nowhere —
-##     and the honest default for a guild position is recognition of **nothing**,
-##     which `InstitutionClaim.standing_percent` already answers as `0.0` at zero
-##     standing. The allowlist moves to `core/` in the slice that migrates `sect`.
 ##   - `teach_tax`. Transmission is a CAPABILITY (`teaches`) whose content is a
 ##     doctrine's floor, and a doctrine is `sect` content.
 ##
-## ## Authority is data, never a number
+## ## ## `standing_percent_stats` is the only stat surface a position has
+##
+## The allowlist this office recognises: stat ids on which the holder's standing
+## projects as a bounded PERCENT (ADR 0084). **Authored per position, never global**,
+## so an author chooses which stats this office is recognised FOR, and a guild's
+## trading-floor office can be recognised on credit while its seat is recognised on
+## something else entirely.
+##
+## The VALUES are never read — a `.tres` writes `0.0` against every id because a
+## Dictionary needs a value and the percent is not authored, it is earned. The KEYS
+## are the whole of the content, and `InstitutionProjection.grant` is the one thing
+## that reads them, for ANY kind.
+##
+## ## An EMPTY allowlist is an authored choice, not a gap
+##
+## An office nobody is recognised for is a real office: the ordinary member, and the
+## ministers of a polity whose whole business is administration. It grants nothing
+## and refuses nothing, which is ADR 0083's FIRST state rather than its third — and
+## it is exactly what all three shipped guild `.tres` files author today. Recognition
+## beginning where office begins is a design, not an omission to be filled in later.
+##
+## ## Every id here must have a DERIVATION, or the percent does nothing
+##
+## A PERCENT evaluates `(baseline + flat) * (1 + p)`, so on a stat nothing backs it
+## is `(0.0 + 0.0) * (1 + p) = 0.0` — a grant that reads as landed, sits in the
+## ledger and moves nothing, which is the silent no-op ADR 0068 measured on 44 items
+## and the reason this field is authored as ids an author has to look up rather than
+## as free text. `InstitutionProjection.unknown_stat` refuses an id this stat sheet
+## cannot name, and names it; `tests/core/test_institution_projection.gd` is the
+## shape test over the ids the shipped content actually names, because `tools arch`
+## cannot see a method that does not exist.
+
+## Authority is data, never a number
 ##
 ## "May this member freeze a credit" is a `.tres` question, not `if rank >= 3`.
 ## `authorities` is an `Array[StringName]` of authored verb ids and this class never
@@ -93,6 +121,13 @@ const NO_POSITION := &""
 ## the class note: this is the other half of the pair above, and an office that
 ## grants nothing has no member worth seating.
 @export var patronage_per_period: int = 0
+
+## The stat ids this office recognises, as `{stat_id: 0.0}`. **The keys are the
+## content and the values are never read** — see the class note. Read only by
+## [method InstitutionProjection.grant], and asked about only through
+## [method InstitutionProjection.recognises], so no second copy of "what an
+## allowlist is" grows here.
+@export var standing_percent_stats: Dictionary = {}
 
 
 ## Whether `authority_id` is one this office may exercise. An authored lookup, never
