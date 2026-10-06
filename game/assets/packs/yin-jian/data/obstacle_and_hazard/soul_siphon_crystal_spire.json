@@ -1,0 +1,142 @@
+{
+  "id": "yin_jian.obstacle_and_hazard.soul_siphon_crystal_spire",
+  "name": "Soul-Siphoning Crystal Spike",
+  "vietnamese_name": "Trụ Tinh Thể Hút Linh Hồn",
+  "hanzi": "噬灵水晶锥",
+  "category": "obstacle_and_hazard",
+  "sub_category": "spikes_and_blade",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "smash_crystal",
+  "gameplay_role": "Glowing purple crystal needle draining player Qi.",
+  "destructible": true,
+  "material": "stone",
+  "cultivation_element": "void",
+  "prompt_summary": "Jagged purple translucent crystal cluster humming with dark energy.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/obstacle_and_hazard/soul_siphon_crystal_spire.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.obstacle_and_hazard.soul_siphon_crystal_spire:261059016",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.21
+      ],
+      [
+        0.598
+      ]
+    ],
+    "frac_zero": 0.8831,
+    "blocks": [
+      [
+        true
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.016,
+        0.443,
+        0.0
+      ],
+      [
+        0.202,
+        0.895,
+        0.275
+      ],
+      [
+        0.867,
+        0.789,
+        0.297
+      ]
+    ],
+    "crop_offset": [
+      16,
+      153
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 74,
+    "contact_reference_px": 74.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      256
+    ]
+  }
+}

@@ -1,0 +1,268 @@
+{
+  "id": "spirit_peaks.flora.slender_tree",
+  "path": "res://assets/world_map/spirit_peaks/flora/slender_tree.png",
+  "type": "prop",
+  "category": "flora",
+  "environment": "spirit_peaks",
+  "environment_name": "Spirit Peaks",
+  "world_tier": "Spirit World",
+  "archetype": "flora.slender_tree",
+  "name": "Slender tree",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image generation, 2026-10-03",
+  "license": "AI-generated for Chaos World; permitted for project use",
+  "alpha": "transparent",
+  "generated_on": "2026-10-03",
+  "prompt_ref": "map-flora-spirit-peaks-slender-tree-v1",
+  "prompt": "Production transparent 256x256 flora sprite for a 2D top-down cultivation RPG map: a Spirit Peaks wind-shaped alpine fir, narrow radial crown with dense blue-green boughs and small pale frost patches. Match approved overhead pine for foliage grouping, contour, and restrained painted detail. Exact orthographic 90-degree canopy view, branch pattern around small centered trunk disk, no horizon or side view. One complete compact evergreen, asymmetrically swept by mountain winds, centered with margin. Gouache fantasy style, fine dark contour, broad value planes; cool diffuse daylight and soft upper-left highlights, no external shadow or glow. Deep blue-green needles, slate shadows, tiny frost and muted brown trunk; chunky boughs, avoid noise. True transparent alpha. No ground, rocks, extra plants, scene, text, frame, watermark.",
+  "reference_ids": [
+    "mortal_highlands.flora.slender_tree"
+  ],
+  "environment_theme": "Cold blue stone, sparse snow, crystalline mist, and hardy dark mountain pines.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.561,
+        0.384
+      ],
+      [
+        0.53,
+        0.619
+      ]
+    ],
+    "frac_zero": 0.7305,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "ground_contact",
+      "cov_gate": 0.01,
+      "authored_open": "",
+      "passable_under": true,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "canopy",
+      "acoustic_profile": "foliage",
+      "material": "foliage",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 1,
+        "hp": 25,
+        "on_destroy": "landmark_and_environment_detail.ground_decal",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": "timber"
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "wood",
+        "qi_affinity": "ambient_absorb",
+        "qi_density_modifier": 1.15,
+        "resonance_radius_cells": 1,
+        "feng_shui_direction": "yang"
+      },
+      "resource": {
+        "resource_type": "timber",
+        "base_yield": 3,
+        "respawn_turns": 300,
+        "min_realm_tier": 1,
+        "harvest_tool_tag": "axe"
+      },
+      "scale_profile": {
+        "min_scale": 0.85,
+        "max_scale": 1.6,
+        "default_scale": 1.0,
+        "supported_scales": [
+          0.85,
+          1.0,
+          1.15,
+          1.35,
+          1.6
+        ],
+        "scale_mode": "stepped",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      6,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.216,
+        0.613,
+        0.023,
+        0.0,
+        0.0
+      ],
+      [
+        0.341,
+        0.739,
+        0.999,
+        0.539,
+        0.024,
+        0.0
+      ],
+      [
+        0.521,
+        0.975,
+        1.0,
+        1.0,
+        0.297,
+        0.0
+      ],
+      [
+        0.446,
+        0.994,
+        1.0,
+        1.0,
+        0.703,
+        0.141
+      ],
+      [
+        0.232,
+        0.871,
+        0.985,
+        0.927,
+        0.347,
+        0.0
+      ],
+      [
+        0.002,
+        0.081,
+        0.524,
+        0.339,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      57,
+      35
+    ],
+    "trunk_columns": [
+      2
+    ],
+    "contact_px": 34,
+    "contact_reference_px": 34.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.245,
+    "dominant_rgb": [
+      67.7,
+      99.8,
+      90.7
+    ],
+    "hsv": {
+      "hue_deg": 159.3,
+      "saturation": 0.45,
+      "value": 0.4
+    },
+    "dominant_palette": "verdant_flora",
+    "center_of_mass_norm": [
+      0.529,
+      0.521
+    ],
+    "horizontal_symmetry": 0.83,
+    "edge_complexity": 0.194
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "canopy",
+  "destructible": {
+    "enabled": true,
+    "tier": 1,
+    "hp": 25,
+    "on_destroy": "landmark_and_environment_detail.ground_decal",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": "timber"
+  },
+  "material": "foliage",
+  "cultivation_element": "wood"
+}

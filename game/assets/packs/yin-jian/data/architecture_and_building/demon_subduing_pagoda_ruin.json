@@ -1,0 +1,403 @@
+{
+  "id": "yin_jian.architecture_and_building.demon_subduing_pagoda_ruin",
+  "name": "Ruined Demon-Subduing Pagoda",
+  "vietnamese_name": "Phế Tích Tháp Trấn Yêu",
+  "hanzi": "残破镇妖塔",
+  "category": "architecture_and_building",
+  "sub_category": "bone_pagoda",
+  "footprint_cells": [
+    4,
+    4
+  ],
+  "canvas_px": [
+    512,
+    512
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "explore_ruin",
+  "gameplay_role": "Ancient cracked pagoda where ancient devils broke free.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "void",
+  "prompt_summary": "Crumbling stone pagoda wrapped in shattered glowing talisman chains.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/architecture_and_building/demon_subduing_pagoda_ruin.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.architecture_and_building.demon_subduing_pagoda_ruin:259794306",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.129,
+        0.684,
+        0.157,
+        0.0
+      ],
+      [
+        0.266,
+        1.0,
+        0.329,
+        0.017
+      ],
+      [
+        0.58,
+        1.0,
+        0.887,
+        0.221
+      ],
+      [
+        0.148,
+        0.396,
+        0.544,
+        0.081
+      ]
+    ],
+    "frac_zero": 0.6955,
+    "blocks": [
+      [
+        false,
+        true,
+        false,
+        false
+      ],
+      [
+        true,
+        true,
+        true,
+        false
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        false,
+        true,
+        true,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 10,
+    "anchor_cell": [
+      2,
+      2
+    ],
+    "sub_grid": [
+      13,
+      15
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.056,
+        0.814,
+        0.159,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.396,
+        0.972,
+        0.297,
+        0.163,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.003,
+        0.041,
+        0.189,
+        0.942,
+        1.0,
+        0.926,
+        0.677,
+        0.021,
+        0.024,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.003,
+        0.647,
+        0.955,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.79,
+        0.087,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.181,
+        0.882,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.417,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.002,
+        0.554,
+        1.0,
+        1.0,
+        1.0,
+        0.919,
+        0.017,
+        0.023,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.464,
+        1.0,
+        1.0,
+        1.0,
+        0.966,
+        0.04,
+        0.106,
+        0.173,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.451,
+        1.0,
+        1.0,
+        1.0,
+        0.944,
+        0.292,
+        0.362,
+        0.0,
+        0.111,
+        0.29,
+        0.105
+      ],
+      [
+        0.0,
+        0.134,
+        0.835,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.767,
+        0.585,
+        0.533,
+        0.086,
+        0.0
+      ],
+      [
+        0.206,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.997,
+        0.523,
+        0.0,
+        0.008,
+        0.0
+      ],
+      [
+        0.493,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.672,
+        0.151,
+        0.301,
+        0.0
+      ],
+      [
+        0.485,
+        0.683,
+        0.81,
+        0.897,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.998,
+        0.683,
+        0.128,
+        0.003,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.896,
+        0.712,
+        0.835,
+        0.982,
+        0.39,
+        0.152,
+        0.087,
+        0.001,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.163,
+        0.0,
+        0.138,
+        0.547,
+        0.609,
+        0.292,
+        0.019,
+        0.031,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.024,
+        0.013,
+        0.095,
+        0.059,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      57,
+      17
+    ],
+    "trunk_columns": [],
+    "contact_px": 4,
+    "contact_reference_px": 4.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        3
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      3
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      512
+    ]
+  }
+}

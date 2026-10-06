@@ -1,0 +1,298 @@
+{
+  "id": "yin_jian.rift_and_portal.realm_portal_asura",
+  "name": "Gate of the Asura Realm",
+  "vietnamese_name": "Cửa Luân Hồi A Tu La Đạo",
+  "hanzi": "阿修罗道门",
+  "category": "rift_and_portal",
+  "sub_category": "six_realms_wheel",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "core_ring",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "enter_battle",
+  "gameplay_role": "Portal to the realm of perpetual war and titans.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "fire",
+  "prompt_summary": "Jagged crimson portal surrounded by burning halberds and battle banners.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/rift_and_portal/realm_portal_asura.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.rift_and_portal.realm_portal_asura:260224443",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.073,
+        0.366,
+        0.242
+      ],
+      [
+        0.196,
+        0.766,
+        0.368
+      ],
+      [
+        0.48,
+        0.853,
+        0.535
+      ]
+    ],
+    "frac_zero": 0.5967,
+    "blocks": [
+      [
+        false,
+        true,
+        true
+      ],
+      [
+        false,
+        true,
+        true
+      ],
+      [
+        false,
+        false,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 5,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.014,
+        0.238,
+        0.298,
+        0.553,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.034,
+        0.0,
+        0.0,
+        0.039,
+        0.496,
+        0.747,
+        0.459,
+        0.162,
+        0.0
+      ],
+      [
+        0.0,
+        0.03,
+        0.437,
+        0.018,
+        0.146,
+        0.709,
+        0.968,
+        0.681,
+        0.124,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.674,
+        0.324,
+        0.717,
+        1.0,
+        1.0,
+        0.842,
+        0.183,
+        0.017,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.44,
+        0.49,
+        1.0,
+        0.859,
+        0.813,
+        0.998,
+        0.604,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.121,
+        0.596,
+        1.0,
+        0.367,
+        0.172,
+        1.0,
+        0.665,
+        0.002,
+        0.0
+      ],
+      [
+        0.0,
+        0.039,
+        0.243,
+        0.646,
+        1.0,
+        0.604,
+        0.153,
+        0.996,
+        0.559,
+        0.157,
+        0.0
+      ],
+      [
+        0.089,
+        0.726,
+        0.998,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.932,
+        0.717,
+        0.127
+      ],
+      [
+        0.654,
+        0.954,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.954,
+        0.362
+      ],
+      [
+        0.309,
+        0.228,
+        0.453,
+        0.696,
+        0.896,
+        1.0,
+        1.0,
+        0.998,
+        0.768,
+        0.513,
+        0.185
+      ],
+      [
+        0.001,
+        0.012,
+        0.021,
+        0.014,
+        0.201,
+        0.986,
+        0.522,
+        0.374,
+        0.039,
+        0.025,
+        0.01
+      ]
+    ],
+    "crop_offset": [
+      16,
+      16
+    ],
+    "trunk_columns": [
+      5,
+      6,
+      7
+    ],
+    "contact_px": 50,
+    "contact_reference_px": 50.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        1,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        1,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        1,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        1,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      1,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      128,
+      0,
+      384,
+      384
+    ]
+  }
+}

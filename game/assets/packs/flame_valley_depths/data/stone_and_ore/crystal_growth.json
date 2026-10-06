@@ -1,0 +1,275 @@
+{
+  "id": "flame_valley_depths.stone_and_ore.crystal_growth",
+  "path": "res://assets/world_map/flame_valley_depths/stone_and_ore/crystal_growth.png",
+  "type": "resource_node",
+  "category": "stone_and_ore",
+  "environment": "flame_valley_depths",
+  "environment_name": "Flame Valley Depths",
+  "world_tier": "Spirit World",
+  "archetype": "stone_and_ore.crystal_growth",
+  "name": "Crystal growth",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image_gen",
+  "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Layered cinder slopes, copper-red stone, scorched earth, and controlled internal firelight.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-06",
+  "prompt_ref": "openai-imagegen:flame_valley_depths.crystal_growth:20261006",
+  "prompt": "One isolated 2x2-cell resource node sprite for a 2D top-down cultivation RPG: a compact cluster of three jagged copper-red crystals growing from a low broken basalt base for Flame Valley Depths. Strict overhead orthographic top-down view, show broad crystal top planes and a compact footprint, no tall front-facing facets. Central ember-red shard with two smaller dark garnet side shards, thin glowing orange seams deep inside the cracks, glow kept subtle and contained. Palette: copper-red stone, scorched charcoal basalt, small controlled firelight. Anime-painted gouache matching map assets, dark #263A35 ink contours, broad readable value planes, restrained upper-left light. Centered complete silhouette with transparent padding, 1024px square source, clear at 256px. Genuine transparent background. No terrain, no floor, no lava pool, no flames, no smoke, no extra objects, no text, no labels, no frame, no watermark, no isometric perspective, no 3D render.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source_images": [
+    {
+      "path": "art-source/map-originals/flame_valley_depths/stone_and_ore/flame_valley_depths__stone_and_ore__crystal_growth__a939b7dd31507c9b.png",
+      "sha256": "a939b7dd31507c9b6a620829db7f6d4f5fb25e7487e6745290c2b9d6ada3078c",
+      "size_px": [
+        1254,
+        1254
+      ],
+      "source": "OpenAI image_gen",
+      "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+      "generated_on": "2026-10-06",
+      "prompt_ref": "openai-imagegen:flame_valley_depths.crystal_growth:20261006",
+      "prompt": "One isolated 2x2-cell resource node sprite for a 2D top-down cultivation RPG: a compact cluster of three jagged copper-red crystals growing from a low broken basalt base for Flame Valley Depths. Strict overhead orthographic top-down view, show broad crystal top planes and a compact footprint, no tall front-facing facets. Central ember-red shard with two smaller dark garnet side shards, thin glowing orange seams deep inside the cracks, glow kept subtle and contained. Palette: copper-red stone, scorched charcoal basalt, small controlled firelight. Anime-painted gouache matching map assets, dark #263A35 ink contours, broad readable value planes, restrained upper-left light. Centered complete silhouette with transparent padding, 1024px square source, clear at 256px. Genuine transparent background. No terrain, no floor, no lava pool, no flames, no smoke, no extra objects, no text, no labels, no frame, no watermark, no isometric perspective, no 3D render.",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
+    }
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.675
+      ]
+    ],
+    "frac_zero": 0.4822,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": true,
+      "vision_mode": "transparent",
+      "acoustic_profile": "crystal",
+      "material": "crystal",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 4,
+        "hp": 220,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "harvest",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.02,
+        0.697,
+        0.801,
+        0.3,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.468,
+        1.0,
+        1.0,
+        0.999,
+        0.341,
+        0.0
+      ],
+      [
+        0.39,
+        0.967,
+        1.0,
+        1.0,
+        1.0,
+        0.959,
+        0.466
+      ],
+      [
+        0.732,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.842
+      ],
+      [
+        0.757,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.8
+      ],
+      [
+        0.179,
+        0.949,
+        1.0,
+        1.0,
+        1.0,
+        0.946,
+        0.155
+      ],
+      [
+        0.0,
+        0.237,
+        0.829,
+        0.676,
+        0.868,
+        0.318,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      23
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.501,
+    "dominant_rgb": [
+      120.3,
+      53.9,
+      39.3
+    ],
+    "hsv": {
+      "hue_deg": 30.8,
+      "saturation": 0.61,
+      "value": 0.47
+    },
+    "dominant_palette": "warm_earth_gold",
+    "center_of_mass_norm": [
+      0.498,
+      0.544
+    ],
+    "horizontal_symmetry": 0.96,
+    "edge_complexity": 0.186
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 4,
+    "hp": 220,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "crystal",
+  "cultivation_element": "none"
+}

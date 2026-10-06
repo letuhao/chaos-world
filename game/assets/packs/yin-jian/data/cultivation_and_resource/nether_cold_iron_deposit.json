@@ -1,0 +1,139 @@
+{
+  "id": "yin_jian.cultivation_and_resource.nether_cold_iron_deposit",
+  "name": "Nether Cold-Iron Seam",
+  "vietnamese_name": "Mạch Sắt Lạnh U Minh",
+  "hanzi": "冥府玄阴铁矿",
+  "category": "cultivation_and_resource",
+  "sub_category": "mineral_and_ore",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "mine_cold_iron",
+  "gameplay_role": "Extremely dense dark ore required to forge Foundation-tier weapons.",
+  "destructible": true,
+  "material": "metal",
+  "cultivation_element": "metal",
+  "prompt_summary": "Dull metallic black ore with frosty blue crystallization on surface.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/cultivation_and_resource/nether_cold_iron_deposit.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.cultivation_and_resource.nether_cold_iron_deposit:264194768",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.604,
+        0.621
+      ]
+    ],
+    "frac_zero": 0.8162,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      4,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.142,
+        0.665,
+        0.518,
+        0.0
+      ],
+      [
+        0.695,
+        1.0,
+        0.855,
+        0.078
+      ],
+      [
+        0.669,
+        0.798,
+        0.279,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      78,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 60,
+    "contact_reference_px": 60.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

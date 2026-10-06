@@ -1,0 +1,147 @@
+{
+  "id": "yin_jian.destructible_and_container.discarded_judge_desk",
+  "name": "Discarded Scribe's Examination Table",
+  "vietnamese_name": "Bàn Phán Quan Bỏ Hoang",
+  "hanzi": "遗弃判官书案",
+  "category": "destructible_and_container",
+  "sub_category": "destructible_and_container",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "search_desk",
+  "gameplay_role": "Dusty wooden desk with dried inkstones and brush rests.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "yin",
+  "prompt_summary": "Heavy dark mahogany desk covered in spiderwebs.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/destructible_and_container/discarded_judge_desk.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.destructible_and_container.discarded_judge_desk:261815425",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.585,
+        0.602
+      ]
+    ],
+    "frac_zero": 0.654,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.296,
+        0.357,
+        0.281,
+        0.281,
+        0.351,
+        0.434
+      ],
+      [
+        0.78,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.809
+      ],
+      [
+        0.502,
+        0.744,
+        0.286,
+        0.286,
+        0.746,
+        0.491
+      ]
+    ],
+    "crop_offset": [
+      32,
+      18
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      4,
+      5
+    ],
+    "contact_px": 41,
+    "contact_reference_px": 41.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

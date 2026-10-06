@@ -1,0 +1,512 @@
+{
+  "id": "primordial_wilds.landmark_and_environment_detail.domain_entrance",
+  "path": "res://assets/world_map/primordial_wilds/landmark_and_environment_detail/domain_entrance.png",
+  "type": "landmark",
+  "category": "landmark_and_environment_detail",
+  "environment": "primordial_wilds",
+  "environment_name": "Primordial Wilds",
+  "world_tier": "Transcendent World",
+  "archetype": "landmark_and_environment_detail.domain_entrance",
+  "name": "Domain entrance",
+  "canvas_px": [
+    512,
+    512
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image generation; 2026-10-04",
+  "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Colossal exposed roots, ancient moss-dark basalt, amber minerals, and untamed growth.",
+  "generated_on": "2026-10-04",
+  "prompt_ref": "openai-imagegen:primordial_wilds.domain_entrance:20261004",
+  "prompt": "Production 2D top-down world-map landmark sprite for Chaos World: a Primordial Wilds domain entrance, isolated with true transparent alpha. Show one broad irregular ring of ancient moss-dark basalt and thick pale exposed roots wrapping around a dark underground portal mouth; amber mineral veins glow subtly between the root and stone plates. The hole itself is painted opaque near-black amber shadow, not transparent. Untamed but legible shapes, roots grip the stone with no detached vines or stones. Orthographic strict straight-down camera, overhead surfaces only, no cave facade, no horizon, no perspective, no isometric view. One connected footprint, centered with generous clear padding, bottom-center ground pivot, short attached shadow. Painterly anime gouache, fine dark #263A35 contours, broad readable value planes, upper-left light, restrained detail, strong 512px silhouette. No ground plane, no scenery, no detached props, no people, no text, no labels, no UI, no frame, no watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "footprint_cells": [
+    4,
+    4
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.205,
+        0.749,
+        0.874,
+        0.303
+      ],
+      [
+        0.836,
+        1.0,
+        1.0,
+        0.876
+      ],
+      [
+        0.787,
+        1.0,
+        1.0,
+        0.838
+      ],
+      [
+        0.194,
+        0.836,
+        0.764,
+        0.234
+      ]
+    ],
+    "frac_zero": 0.4101,
+    "blocks": [
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        false,
+        false,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 14,
+    "anchor_cell": [
+      2,
+      3
+    ],
+    "sem": {
+      "occluder_rule": "core_ring",
+      "cov_gate": 0.1,
+      "authored_open": "bottom_centre",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": false,
+      "vision_mode": "solid",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "enter",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      15,
+      15
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.033,
+        0.414,
+        0.271,
+        0.726,
+        0.953,
+        0.629,
+        0.021,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.024,
+        0.414,
+        0.74,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.784,
+        0.658,
+        0.063,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.065,
+        0.561,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.714,
+        0.0,
+        0.0
+      ],
+      [
+        0.024,
+        0.714,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        0.318,
+        0.0
+      ],
+      [
+        0.261,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.896,
+        0.096
+      ],
+      [
+        0.292,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.439
+      ],
+      [
+        0.81,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.605
+      ],
+      [
+        0.683,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.583
+      ],
+      [
+        0.267,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.827,
+        0.0
+      ],
+      [
+        0.182,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.876,
+        0.0
+      ],
+      [
+        0.002,
+        0.452,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.997,
+        0.599,
+        0.0
+      ],
+      [
+        0.0,
+        0.118,
+        0.842,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.974,
+        0.285,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.089,
+        0.295,
+        0.937,
+        1.0,
+        1.0,
+        1.0,
+        0.975,
+        0.934,
+        0.999,
+        0.591,
+        0.002,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.457,
+        0.723,
+        0.962,
+        0.873,
+        0.306,
+        0.11,
+        0.292,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.333,
+        0.271,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      27,
+      29
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        3
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      3
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      512
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.578,
+    "dominant_rgb": [
+      96.5,
+      84.7,
+      53.2
+    ],
+    "hsv": {
+      "hue_deg": 49.4,
+      "saturation": 0.48,
+      "value": 0.38
+    },
+    "dominant_palette": "warm_earth_gold",
+    "center_of_mass_norm": [
+      0.513,
+      0.495
+    ],
+    "horizontal_symmetry": 0.94,
+    "edge_complexity": 0.283
+  },
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "solid",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

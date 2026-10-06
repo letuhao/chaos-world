@@ -1,0 +1,196 @@
+{
+  "id": "yin_jian.creature_and_denizen.iron_tree_harpy",
+  "name": "Harpy of the Iron Thorns",
+  "vietnamese_name": "Yêu Nữ Rừng Cây Sắt",
+  "hanzi": "铁树妖鸟",
+  "category": "creature_and_denizen",
+  "sub_category": "nether_beast",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "shoot_harpy",
+  "gameplay_role": "Avian woman with metallic feathers nesting on iron trees.",
+  "destructible": false,
+  "material": "bone",
+  "cultivation_element": "metal",
+  "prompt_summary": "Cruel-faced bird of prey with female torso and steel claws.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/iron_tree_harpy.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.iron_tree_harpy:262594717",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.33,
+        0.568
+      ],
+      [
+        0.191,
+        0.45
+      ]
+    ],
+    "frac_zero": 0.6823,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.039,
+        0.254,
+        0.493,
+        0.612,
+        0.037,
+        0.0
+      ],
+      [
+        0.0,
+        0.438,
+        0.807,
+        1.0,
+        1.0,
+        0.44,
+        0.0
+      ],
+      [
+        0.163,
+        0.682,
+        0.062,
+        0.975,
+        1.0,
+        0.95,
+        0.094
+      ],
+      [
+        0.461,
+        0.164,
+        0.0,
+        0.451,
+        1.0,
+        0.929,
+        0.126
+      ],
+      [
+        0.001,
+        0.0,
+        0.125,
+        0.938,
+        1.0,
+        0.601,
+        0.043
+      ],
+      [
+        0.0,
+        0.0,
+        0.415,
+        0.981,
+        0.796,
+        0.157,
+        0.0
+      ],
+      [
+        0.0,
+        0.09,
+        0.547,
+        0.447,
+        0.068,
+        0.007,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      18,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 17,
+    "contact_reference_px": 17.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

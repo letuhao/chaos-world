@@ -1,0 +1,147 @@
+{
+  "id": "yin_jian.creature_and_denizen.lady_meng_po_npc",
+  "name": "Lady Meng Po (The Soup Tender)",
+  "vietnamese_name": "Mạnh Bà Tiên Cô",
+  "hanzi": "幽冥孟婆",
+  "category": "creature_and_denizen",
+  "sub_category": "judge_and_official",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "talk_soup",
+  "gameplay_role": "Ancient serene matron ladling the Five-Flavor Broth of Oblivion.",
+  "destructible": false,
+  "material": "spirit",
+  "cultivation_element": "water",
+  "prompt_summary": "Elderly serene woman in grey-blue traditional robe holding wooden ladle beside steaming pot.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/lady_meng_po_npc.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.lady_meng_po_npc:262074266",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.464
+      ],
+      [
+        0.577
+      ]
+    ],
+    "frac_zero": 0.801,
+    "blocks": [
+      [
+        false
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      4
+    ],
+    "sub_fill": [
+      [
+        0.271,
+        0.385,
+        0.0
+      ],
+      [
+        0.387,
+        0.966,
+        0.828
+      ],
+      [
+        0.634,
+        1.0,
+        0.709
+      ],
+      [
+        0.018,
+        0.584,
+        0.398
+      ]
+    ],
+    "crop_offset": [
+      16,
+      115
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 35,
+    "contact_reference_px": 35.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

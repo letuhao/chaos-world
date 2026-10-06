@@ -1,0 +1,461 @@
+{
+  "id": "yin_jian.rift_and_portal.van_menh_gate_of_destiny",
+  "name": "The Great Gate of Destiny",
+  "vietnamese_name": "Vận Mệnh Chi Môn",
+  "hanzi": "命运之门",
+  "category": "rift_and_portal",
+  "sub_category": "grand_gate",
+  "racial_faction": "fane_of_destiny",
+  "footprint_cells": [
+    4,
+    4
+  ],
+  "canvas_px": [
+    512,
+    512
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "pass_destiny_gate",
+  "gameplay_role": "Cosmic gateway that judges a cultivator's karmic destiny, granting heavenly blessings or fated tribulations.",
+  "destructible": false,
+  "material": "jade",
+  "cultivation_element": "fate",
+  "prompt_summary": "Top-down 45 degree monumental archway carved from translucent white immortal jade, an inner swirling vortex of kaleidoscopic fate light and spinning runes.",
+  "runtime_path": "res://assets/packs/yin-jian/runtime/van_menh_gate_of_destiny.png",
+  "original_path": "assets/packs/yin-jian/original/van_menh_gate_of_destiny_original.jpg",
+  "pivot": "bottom_center",
+  "cv_validation": {
+    "status": "passed",
+    "perspective": "45_degree_world_map_orthographic",
+    "palette": "dark_netherworld_gouache",
+    "rembg_engine": "ComfyUI RMBG-2.0",
+    "subcells_covered": 135,
+    "total_subcells": 256,
+    "coverage_ratio": 0.527
+  },
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/rift_and_portal/van_menh_gate_of_destiny.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.rift_and_portal.van_menh_gate_of_destiny:265523932",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.086,
+        0.792,
+        0.615,
+        0.024
+      ],
+      [
+        0.185,
+        0.993,
+        1.0,
+        0.202
+      ],
+      [
+        0.736,
+        1.0,
+        1.0,
+        0.365
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        0.993
+      ]
+    ],
+    "frac_zero": 0.4171,
+    "blocks": [
+      [
+        false,
+        true,
+        true,
+        false
+      ],
+      [
+        false,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 13,
+    "anchor_cell": [
+      2,
+      3
+    ],
+    "sub_grid": [
+      15,
+      15
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.07,
+        0.252,
+        0.591,
+        0.346,
+        0.474,
+        0.604,
+        0.051,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.021,
+        0.292,
+        0.797,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.683,
+        0.008,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.049,
+        0.587,
+        0.967,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.542,
+        0.015,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.167,
+        0.935,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.841,
+        0.277,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.006,
+        0.672,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.961,
+        0.08,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.002,
+        0.052,
+        0.331,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.858,
+        0.057,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.086,
+        0.546,
+        0.882,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.839,
+        0.083,
+        0.0,
+        0.0
+      ],
+      [
+        0.205,
+        0.398,
+        0.957,
+        0.963,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.651,
+        0.005,
+        0.0,
+        0.0
+      ],
+      [
+        0.106,
+        0.559,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.747,
+        0.013,
+        0.0,
+        0.0
+      ],
+      [
+        0.261,
+        0.842,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        0.63,
+        0.439,
+        0.224
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.958,
+        0.601,
+        0.966
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.941,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      42
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ],
+    "contact_px": 480,
+    "contact_reference_px": 480.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        3
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      3
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      512
+    ]
+  }
+}

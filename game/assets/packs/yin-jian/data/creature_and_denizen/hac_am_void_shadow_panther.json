@@ -1,0 +1,150 @@
+{
+  "id": "yin_jian.creature_and_denizen.hac_am_void_shadow_panther",
+  "name": "Abyssal Shadow Panther",
+  "vietnamese_name": "Thâm Uyên Ám Ảnh Báo",
+  "hanzi": "深渊暗影豹",
+  "category": "creature_and_denizen",
+  "sub_category": "nether_beast",
+  "racial_faction": "darkness",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "tame_shadow_panther",
+  "gameplay_role": "Silent predator that stalks unseen in unlit areas, pouncing on isolated targets with immense burst damage.",
+  "destructible": false,
+  "material": "spirit",
+  "cultivation_element": "dark",
+  "prompt_summary": "Top-down 45 degree sleek muscular feline beast made of liquid smoky darkness, piercing violet eyes, dissolving shadow paws.",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/hac_am_void_shadow_panther.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.hac_am_void_shadow_panther:265800797",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.501,
+        0.402
+      ]
+    ],
+    "frac_zero": 0.6978,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.008,
+        0.221,
+        0.27,
+        0.042,
+        0.105,
+        0.174,
+        0.406
+      ],
+      [
+        0.8,
+        0.998,
+        1.0,
+        0.932,
+        0.961,
+        0.599,
+        0.332
+      ],
+      [
+        0.302,
+        0.564,
+        0.38,
+        0.034,
+        0.391,
+        0.519,
+        0.026
+      ]
+    ],
+    "crop_offset": [
+      21,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      4,
+      5
+    ],
+    "contact_px": 53,
+    "contact_reference_px": 53.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

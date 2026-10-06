@@ -1,0 +1,147 @@
+{
+  "id": "yin_jian.destructible_and_container.torture_rack_bed",
+  "name": "Splintered Wooden Rack Bed",
+  "vietnamese_name": "Giường Kéo Giãn Khớp Gỗ",
+  "hanzi": "刑讯拉伸床",
+  "category": "destructible_and_container",
+  "sub_category": "cage_and_shackle",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "smash_wood",
+  "gameplay_role": "Wooden bench fitted with rollers, ratchets, and leather cuffs.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "metal",
+  "prompt_summary": "Sturdy timber bench with iron windlass wheels at ends.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/destructible_and_container/torture_rack_bed.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.destructible_and_container.torture_rack_bed:261838547",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.5,
+        0.506
+      ]
+    ],
+    "frac_zero": 0.7063,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.45,
+        0.51,
+        0.156,
+        0.125,
+        0.135,
+        0.354,
+        0.447
+      ],
+      [
+        0.719,
+        0.956,
+        0.863,
+        0.847,
+        0.867,
+        0.987,
+        0.682
+      ],
+      [
+        0.314,
+        0.135,
+        0.0,
+        0.0,
+        0.0,
+        0.705,
+        0.246
+      ]
+    ],
+    "crop_offset": [
+      17,
+      32
+    ],
+    "trunk_columns": [
+      5
+    ],
+    "contact_px": 42,
+    "contact_reference_px": 42.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

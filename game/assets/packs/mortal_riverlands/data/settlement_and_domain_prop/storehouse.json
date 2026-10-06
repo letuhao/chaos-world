@@ -1,0 +1,497 @@
+{
+  "id": "mortal_riverlands.settlement_and_domain_prop.storehouse",
+  "path": "res://assets/world_map/mortal_riverlands/settlement_and_domain_prop/storehouse.png",
+  "type": "building",
+  "category": "settlement_and_domain_prop",
+  "environment": "mortal_riverlands",
+  "environment_name": "Mortal Riverlands",
+  "world_tier": "Mortal World",
+  "archetype": "settlement_and_domain_prop.storehouse",
+  "name": "Storehouse",
+  "canvas_px": [
+    512,
+    512
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image generation",
+  "license": "Generated locally with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Silt banks, winding slate-blue channels, smooth river stones, and reed beds.",
+  "generated_on": "2026-10-04",
+  "prompt_ref": "openai-imagegen:mortal_riverlands.settlement_and_domain_prop.storehouse:20261004",
+  "prompt": "2D top-down orthographic game-map building sprite for Chaos World: one Mortal Riverlands storehouse. Isolated full building on a genuinely transparent canvas, bottom-center pivot at the front stair. Compact riverside grain storehouse raised slightly on sturdy timber stilts, with a slate-blue shingle roof, weathered brown plank walls, a narrow loading stair, and two small lidded grain crates beneath one side. Silt-bank and slate-channel region expressed through cool blue-gray materials only; no surrounding water or terrain. Roof is viewed clearly from above, broad readable shapes, no words or signs, no people, boats, crops, or cast shadow beyond sprite. Painterly anime gouache, fine dark #263A35 contours, broad readable planes, soft warm upper-left light, consistent with 2D top-down RPG map art. Centered 512x512 composition with comfortable transparent margin, clean alpha, no horizon, perspective, isometric view, border, grid, text, UI, watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "footprint_cells": [
+    4,
+    4
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.091,
+        0.676,
+        0.683,
+        0.096
+      ],
+      [
+        0.726,
+        1.0,
+        1.0,
+        0.758
+      ],
+      [
+        0.877,
+        1.0,
+        1.0,
+        0.892
+      ],
+      [
+        0.137,
+        0.486,
+        0.482,
+        0.192
+      ]
+    ],
+    "frac_zero": 0.4788,
+    "blocks": [
+      [
+        false,
+        true,
+        true,
+        false
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        false,
+        true,
+        true,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 12,
+    "anchor_cell": [
+      2,
+      3
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.2,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "solid",
+      "acoustic_profile": "wood",
+      "material": "wood",
+      "elevation": 1,
+      "destructible": {
+        "enabled": true,
+        "tier": 2,
+        "hp": 60,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "enter",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      14,
+      15
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.025,
+        0.558,
+        0.543,
+        0.021,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.023,
+        0.404,
+        0.883,
+        1.0,
+        1.0,
+        0.87,
+        0.369,
+        0.021,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.286,
+        0.906,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.922,
+        0.229,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.271,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.235,
+        0.0,
+        0.0
+      ],
+      [
+        0.162,
+        0.565,
+        0.943,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.968,
+        0.634,
+        0.233
+      ],
+      [
+        0.437,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.408
+      ],
+      [
+        0.418,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.481
+      ],
+      [
+        0.513,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.602
+      ],
+      [
+        0.639,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.713
+      ],
+      [
+        0.805,
+        0.895,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.897,
+        0.841
+      ],
+      [
+        0.431,
+        0.987,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.967,
+        0.383
+      ],
+      [
+        0.286,
+        0.351,
+        0.452,
+        0.937,
+        0.691,
+        0.947,
+        1.0,
+        1.0,
+        0.944,
+        0.66,
+        0.856,
+        0.797,
+        0.733,
+        0.324
+      ],
+      [
+        0.0,
+        0.0,
+        0.083,
+        0.336,
+        0.0,
+        0.494,
+        1.0,
+        1.0,
+        0.481,
+        0.0,
+        0.188,
+        0.106,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.311,
+        1.0,
+        1.0,
+        0.261,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.405,
+        0.501,
+        0.522,
+        0.343,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      40,
+      21
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        3
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      3
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      512
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.507,
+    "dominant_rgb": [
+      90.3,
+      89.7,
+      89.1
+    ],
+    "hsv": {
+      "hue_deg": 126.6,
+      "saturation": 0.22,
+      "value": 0.4
+    },
+    "dominant_palette": "verdant_flora",
+    "center_of_mass_norm": [
+      0.516,
+      0.498
+    ],
+    "horizontal_symmetry": 0.97,
+    "edge_complexity": 0.181
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "destructible": {
+    "enabled": true,
+    "tier": 2,
+    "hp": 60,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "wood",
+  "cultivation_element": "none"
+}

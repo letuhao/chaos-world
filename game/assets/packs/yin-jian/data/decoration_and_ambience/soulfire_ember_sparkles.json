@@ -1,0 +1,160 @@
+{
+  "id": "yin_jian.decoration_and_ambience.soulfire_ember_sparkles",
+  "name": "Floating Soulfire Embers",
+  "vietnamese_name": "Tàn Lửa Ma Lơ Lửng",
+  "hanzi": "冥火荧光微粒",
+  "category": "decoration_and_ambience",
+  "sub_category": "mist_and_glow",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Area with floating particles of turquoise embers.",
+  "destructible": false,
+  "material": "spirit",
+  "cultivation_element": "fire",
+  "prompt_summary": "Field of soft glowing cyan sparks suspended in air.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/decoration_and_ambience/soulfire_ember_sparkles.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.decoration_and_ambience.soulfire_ember_sparkles:264892106",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.093,
+        0.195
+      ],
+      [
+        0.533,
+        0.583
+      ]
+    ],
+    "frac_zero": 0.7031,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.027,
+        0.126,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.374,
+        0.048,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.022,
+        0.132,
+        0.675,
+        0.689,
+        0.021,
+        0.0
+      ],
+      [
+        0.012,
+        0.38,
+        0.838,
+        1.0,
+        0.977,
+        0.47,
+        0.023
+      ],
+      [
+        0.345,
+        0.982,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.609
+      ],
+      [
+        0.308,
+        0.654,
+        0.854,
+        1.0,
+        0.933,
+        0.571,
+        0.232
+      ],
+      [
+        0.0,
+        0.027,
+        0.076,
+        0.331,
+        0.394,
+        0.058,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      17
+    ],
+    "trunk_columns": [
+      4
+    ],
+    "contact_px": 11,
+    "contact_reference_px": 11.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

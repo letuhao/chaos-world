@@ -666,7 +666,7 @@ static func _wrong(
 	)
 
 
-## The key gate. `{}` when the fixture is openable, else the named refusal.
+## `{}` when the fixture is openable, else the named refusal.
 ##
 ## An EMPTY `key_item_id` short-circuits BEFORE the bridge is consulted, so an
 ## unkeyed hoard is openable by an actor whose items module was never wired at all —

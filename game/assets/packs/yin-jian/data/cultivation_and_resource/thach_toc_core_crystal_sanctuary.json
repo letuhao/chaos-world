@@ -1,0 +1,310 @@
+{
+  "id": "yin_jian.cultivation_and_resource.thach_toc_core_crystal_sanctuary",
+  "name": "Earth Core Crystal Geode",
+  "vietnamese_name": "Địa Tâm Thạch Tinh Động",
+  "hanzi": "地心石晶洞",
+  "category": "cultivation_and_resource",
+  "sub_category": "mineral_and_ore",
+  "racial_faction": "stone",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "commune_with_crystal",
+  "gameplay_role": "Massive throbbing geode crystal containing planetary core essence, granting permanent defense buffs to stone and earth cultivators.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "earth",
+  "prompt_summary": "Top-down 45 degree cracked giant geode hollow revealing radiant golden-amber earth core crystals, surrounded by heavy stone prayer slabs.",
+  "runtime_path": "res://assets/packs/yin-jian/runtime/thach_toc_core_crystal_sanctuary.png",
+  "original_path": "assets/packs/yin-jian/original/thach_toc_core_crystal_sanctuary_original.jpg",
+  "pivot": "center",
+  "cv_validation": {
+    "status": "passed",
+    "perspective": "strictly_overhead",
+    "lighting": "315_degrees",
+    "subcells_covered": 96,
+    "total_subcells": 144,
+    "coverage_ratio": 0.667
+  },
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/cultivation_and_resource/thach_toc_core_crystal_sanctuary.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.cultivation_and_resource.thach_toc_core_crystal_sanctuary:265476635",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.049,
+        0.74,
+        0.552
+      ],
+      [
+        0.561,
+        1.0,
+        0.798
+      ],
+      [
+        0.961,
+        0.626,
+        0.356
+      ]
+    ],
+    "frac_zero": 0.5003,
+    "blocks": [
+      [
+        false,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 8,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.307,
+        0.775,
+        0.831,
+        0.438,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.12,
+        0.71,
+        0.999,
+        1.0,
+        1.0,
+        0.705,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.001,
+        0.706,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.948,
+        0.012,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.475,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.291,
+        0.0
+      ],
+      [
+        0.0,
+        0.084,
+        0.999,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.838,
+        0.0
+      ],
+      [
+        0.068,
+        0.331,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.737,
+        0.0
+      ],
+      [
+        0.068,
+        0.939,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.397,
+        0.0
+      ],
+      [
+        0.575,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.439,
+        0.0
+      ],
+      [
+        0.986,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.98,
+        0.828,
+        0.497,
+        0.215
+      ],
+      [
+        1.0,
+        1.0,
+        0.967,
+        0.581,
+        0.594,
+        0.673,
+        0.346,
+        0.062,
+        0.023,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        0.548,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      27,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "contact_px": 121,
+    "contact_reference_px": 121.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      384
+    ]
+  }
+}

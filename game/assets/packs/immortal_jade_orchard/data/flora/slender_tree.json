@@ -1,0 +1,260 @@
+{
+  "id": "immortal_jade_orchard.flora.slender_tree",
+  "path": "res://assets/world_map/immortal_jade_orchard/flora/slender_tree.png",
+  "type": "prop",
+  "category": "flora",
+  "environment": "immortal_jade_orchard",
+  "environment_name": "Immortal Jade Orchard",
+  "world_tier": "Immortal World",
+  "archetype": "flora.slender_tree",
+  "name": "Slender tree",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image_gen 2026-10-05",
+  "license": "Generated locally with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Ancient ordered fruit trees, pale blossoms, jade moss, and clear mineral pools.",
+  "generated_on": "2026-10-05",
+  "prompt_ref": "openai-imagegen:immortal-jade-orchard-slender-tree:20261005",
+  "prompt": "Use the provided image only as the foliage style and palette reference. Create one complete isolated slender tree canopy sprite for Immortal Jade Orchard, a 2D top-down fantasy RPG. Strict orthographic straight-down view, not isometric. The whole crown has a tall narrow oval silhouette, about 1:1.6 width-to-height, with visible layered emerald and celadon leaves, a few small pale peach-pink blossoms, and a small dark trunk visible at the bottom-center ground pivot. Make the slender tree a dense elongated crown with no central hole, distinct from the wide ring-shaped reference tree. Transparent background outside the leaves; a short attached shadow remains entirely under the crown. Center the crown horizontally, leave transparent padding, place the trunk base at the bottom-center. Anime-painted gouache, fine dark #263A35 ink contours, broad readable value planes, material-led greens, restrained upper-left light. High-resolution production sprite intended for clean downsampling to 256x256. No terrain, soil patch, pots, fruit piles, extra trees, text, labels, UI, frame, checkerboard, or watermark.",
+  "reference_ids": [
+    "immortal_jade_orchard.flora.canopy_tree"
+  ],
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.644,
+        0.675
+      ],
+      [
+        0.693,
+        0.74
+      ]
+    ],
+    "frac_zero": 0.7603,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "ground_contact",
+      "cov_gate": 0.01,
+      "authored_open": "",
+      "passable_under": true,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "canopy",
+      "acoustic_profile": "foliage",
+      "material": "foliage",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 1,
+        "hp": 25,
+        "on_destroy": "landmark_and_environment_detail.ground_decal",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": "timber"
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "wood",
+        "qi_affinity": "ambient_absorb",
+        "qi_density_modifier": 1.15,
+        "resonance_radius_cells": 1,
+        "feng_shui_direction": "yang"
+      },
+      "resource": {
+        "resource_type": "timber",
+        "base_yield": 3,
+        "respawn_turns": 300,
+        "min_realm_tier": 1,
+        "harvest_tool_tag": "axe"
+      },
+      "scale_profile": {
+        "min_scale": 0.85,
+        "max_scale": 1.6,
+        "default_scale": 1.0,
+        "supported_scales": [
+          0.85,
+          1.0,
+          1.15,
+          1.35,
+          1.6
+        ],
+        "scale_mode": "stepped",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      4,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.079,
+        0.774,
+        0.394,
+        0.0
+      ],
+      [
+        0.52,
+        1.0,
+        0.964,
+        0.048
+      ],
+      [
+        0.746,
+        1.0,
+        1.0,
+        0.447
+      ],
+      [
+        0.885,
+        1.0,
+        1.0,
+        0.76
+      ],
+      [
+        0.662,
+        1.0,
+        0.99,
+        0.474
+      ],
+      [
+        0.166,
+        0.886,
+        0.566,
+        0.0
+      ],
+      [
+        0.0,
+        0.18,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      74,
+      23
+    ],
+    "trunk_columns": [],
+    "contact_px": 46,
+    "contact_reference_px": 46.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.224,
+    "dominant_rgb": [
+      63.0,
+      109.1,
+      65.4
+    ],
+    "hsv": {
+      "hue_deg": 135.5,
+      "saturation": 0.69,
+      "value": 0.44
+    },
+    "dominant_palette": "verdant_flora",
+    "center_of_mass_norm": [
+      0.504,
+      0.477
+    ],
+    "horizontal_symmetry": 0.94,
+    "edge_complexity": 0.15
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "canopy",
+  "destructible": {
+    "enabled": true,
+    "tier": 1,
+    "hp": 25,
+    "on_destroy": "landmark_and_environment_detail.ground_decal",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": "timber"
+  },
+  "material": "foliage",
+  "cultivation_element": "wood"
+}

@@ -1,0 +1,262 @@
+{
+  "id": "primordial_wilds.water_feature.pool",
+  "path": "res://assets/world_map/primordial_wilds/water_feature/pool.png",
+  "type": "prop",
+  "category": "water_feature",
+  "environment": "primordial_wilds",
+  "environment_name": "Primordial Wilds",
+  "world_tier": "Transcendent World",
+  "archetype": "water_feature.pool",
+  "name": "Natural pool",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image generation (image_gen), 2026-10-05",
+  "license": "OpenAI generated image; project use",
+  "alpha": "transparent",
+  "environment_theme": "Colossal exposed roots, ancient moss-dark basalt, amber minerals, and untamed growth.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-05",
+  "prompt_ref": "openai-map-v1:primordial_wilds.water_feature.pool",
+  "prompt": "High-quality production sprite for Chaos World: one natural pool prop for Primordial Wilds, 256x256 native canvas, strict straight-down orthographic overhead view for a 2D top-down RPG. Show one compact irregular natural pool with deep teal water and a quiet amber-mineral glow below the surface, ringed by moss-dark basalt, exposed root arcs and a few small amber mineral deposits integrated into the rim. Wild ancient forest character without drawing any separate tree or surrounding terrain. Keep whole silhouette comfortably inside frame, centered on its ground footprint, readable at 2x2 map cells. Transparent background with crisp natural alpha, no ground disk, no cast shadow, no scene, no perspective or isometric view. Anime-painted gouache, fine dark #263A35 ink contours, broad readable planes, restrained upper-left light, material-led moss green, basalt charcoal, deep water teal and sparse amber. No people, text, border, UI, or watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.762,
+        0.7
+      ],
+      [
+        0.684,
+        0.734
+      ]
+    ],
+    "frac_zero": 0.4978,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.2,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "transparent",
+      "acoustic_profile": "water",
+      "material": "water",
+      "elevation": 0,
+      "destructible": {
+        "enabled": false,
+        "tier": 0,
+        "hp": 0,
+        "on_destroy": null,
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.001,
+        0.542,
+        0.868,
+        0.515,
+        0.239,
+        0.221,
+        0.0
+      ],
+      [
+        0.4,
+        0.999,
+        1.0,
+        1.0,
+        1.0,
+        0.978,
+        0.331
+      ],
+      [
+        0.78,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.818
+      ],
+      [
+        0.841,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.911
+      ],
+      [
+        0.337,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.436
+      ],
+      [
+        0.0,
+        0.58,
+        0.96,
+        0.996,
+        0.83,
+        0.664,
+        0.01
+      ],
+      [
+        0.0,
+        0.0,
+        0.243,
+        0.661,
+        0.005,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      22,
+      27
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.482,
+    "dominant_rgb": [
+      62.3,
+      77.8,
+      49.7
+    ],
+    "hsv": {
+      "hue_deg": 98.6,
+      "saturation": 0.54,
+      "value": 0.32
+    },
+    "dominant_palette": "verdant_flora",
+    "center_of_mass_norm": [
+      0.508,
+      0.501
+    ],
+    "horizontal_symmetry": 0.9,
+    "edge_complexity": 0.271
+  },
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": false,
+    "tier": 0,
+    "hp": 0,
+    "on_destroy": null,
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [],
+    "reveals_loot_category": null
+  },
+  "material": "water",
+  "cultivation_element": "none"
+}

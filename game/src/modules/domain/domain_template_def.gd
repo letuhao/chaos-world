@@ -93,6 +93,21 @@ extends Resource
 ## `arena` and `core` are placed BY RULE and an author pin on them is ignored.
 @export var pins: Array[TemplatePin] = []
 
+## What this domain SAYS, and when — the narrative layer's content (ADR 0237).
+##
+## A beat is `beat_id` + `trigger` + `lines` + optional `tags`, authored as a plain
+## dictionary exactly as `RoomDef.fixtures` and `actor_spawn_refs` are, and read by
+## `DomainNarrative`. The trigger vocabulary is CLOSED there (`TRIGGERS`) and every one
+## of them reads the RUN's own state — the room reached, the discovered set, ADR 0229's
+## `open_index`, a fixture's ledger row — so a line can only fire on something a player
+## actually did.
+##
+## AUTHORED, never generated: a die does not get to decide what a domain says, the same
+## reason `pins` exist for story rooms. And it names a room only as the CONDITION for
+## firing, never as a marker — `DomainMinimap.POI_BY_TAG` remains the one "what is
+## interesting where" vocabulary in the game (ADR 0073).
+@export var beats: Array[Dictionary] = []
+
 
 ## The authored resolution of `loop_ratio`, clamped by `max_loop_edges` and by the
 ## number of candidate pairs the geometry actually produced. Derived from authored

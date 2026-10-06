@@ -1,0 +1,238 @@
+{
+  "id": "immortal_jade_orchard.stone_and_ore.standing_stone",
+  "path": "res://assets/world_map/immortal_jade_orchard/stone_and_ore/standing_stone.png",
+  "type": "prop",
+  "category": "stone_and_ore",
+  "environment": "immortal_jade_orchard",
+  "environment_name": "Immortal Jade Orchard",
+  "world_tier": "Immortal World",
+  "archetype": "stone_and_ore.standing_stone",
+  "name": "Standing stone",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image generation, 2026-10-05",
+  "license": "OpenAI generated image; project use under applicable OpenAI generation terms",
+  "alpha": "transparent",
+  "environment_theme": "Ancient ordered fruit trees, pale blossoms, jade moss, and clear mineral pools.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-05",
+  "prompt_ref": "openai-map-v1:immortal_jade_orchard.stone_and_ore.standing_stone:20261005",
+  "prompt": "One Immortal Jade Orchard standing stone prop, transparent sprite for a 2D top-down RPG map, square 1024x1024. Strict overhead orthographic view; show top face of a single upright pale-stone monolith and compact ground-facing silhouette, no isometric perspective. Tall narrow rounded-rectangular stele oriented north-to-south, pale ivory-gray stone with weathered edges, small smooth jade-green inset near upper end and shallow carved circular ring around it, no writing. A few tiny pale blossom petals along one side of base, subordinate. Centered in a 2x2-cell footprint with transparent margin, no ground plane. Matte anime gouache, broad quiet planes, fine #263A35 contours, gentle diffuse upper-left light, restrained jade accent. Theme: ancient ordered fruit trees, pale blossoms, jade moss, clear mineral pools. Exclude trees, fruit, flower clusters, altar, pedestal steps, extra stones, text, runes, UI, border, background, external cast shadow, perspective convergence, side view, 3D render, watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.838,
+        0.824
+      ],
+      [
+        0.83,
+        0.858
+      ]
+    ],
+    "frac_zero": 0.8237,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "ground_contact",
+      "cov_gate": 0.01,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "solid",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 1,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      3,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.69,
+        0.753,
+        0.0
+      ],
+      [
+        0.883,
+        0.942,
+        0.0
+      ],
+      [
+        0.926,
+        0.994,
+        0.312
+      ],
+      [
+        0.967,
+        1.0,
+        0.542
+      ],
+      [
+        0.855,
+        0.997,
+        0.125
+      ],
+      [
+        0.65,
+        0.77,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      88,
+      22
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 47,
+    "contact_reference_px": 47.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.164,
+    "dominant_rgb": [
+      178.4,
+      177.7,
+      159.5
+    ],
+    "hsv": {
+      "hue_deg": 57.4,
+      "saturation": 0.14,
+      "value": 0.71
+    },
+    "dominant_palette": "monochrome_grey",
+    "center_of_mass_norm": [
+      0.473,
+      0.459
+    ],
+    "horizontal_symmetry": 0.97,
+    "edge_complexity": 0.08
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

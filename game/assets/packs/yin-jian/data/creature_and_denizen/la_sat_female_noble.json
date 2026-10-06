@@ -1,0 +1,134 @@
+{
+  "id": "yin_jian.creature_and_denizen.la_sat_female_noble",
+  "name": "Rakshasa Princess Envoy",
+  "vietnamese_name": "La Sát Vương Quốc Sứ Giả",
+  "hanzi": "罗刹国使女修",
+  "category": "creature_and_denizen",
+  "sub_category": "judge_and_official",
+  "racial_faction": "la_sat",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "converse",
+  "gameplay_role": "Exquisite, charming female diplomat with deadly mind-control, illusion spells, and hidden poison needles.",
+  "destructible": false,
+  "material": "flesh",
+  "cultivation_element": "yin",
+  "prompt_summary": "Top-down 45 degree breathtakingly beautiful female cultivator in gossamer lavender silks, intricate silver hairpin, subtle glowing illusion ribbons floating around her.",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/la_sat_female_noble.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.la_sat_female_noble:265317548",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.602
+      ]
+    ],
+    "frac_zero": 0.65,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.09,
+        0.531,
+        0.169
+      ],
+      [
+        0.618,
+        0.941,
+        0.717
+      ],
+      [
+        1.0,
+        1.0,
+        0.506
+      ]
+    ],
+    "crop_offset": [
+      16,
+      23
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 67,
+    "contact_reference_px": 67.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

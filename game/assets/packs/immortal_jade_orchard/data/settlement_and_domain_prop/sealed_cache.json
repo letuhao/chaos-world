@@ -1,0 +1,209 @@
+{
+  "id": "immortal_jade_orchard.settlement_and_domain_prop.sealed_cache",
+  "path": "res://assets/world_map/immortal_jade_orchard/settlement_and_domain_prop/sealed_cache.png",
+  "type": "interactable",
+  "category": "settlement_and_domain_prop",
+  "environment": "immortal_jade_orchard",
+  "environment_name": "Immortal Jade Orchard",
+  "world_tier": "Immortal World",
+  "archetype": "settlement_and_domain_prop.sealed_cache",
+  "name": "Sealed cache",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image generation, 2026-10-05",
+  "license": "AI-generated with OpenAI; project use",
+  "alpha": "transparent",
+  "environment_theme": "Ancient ordered fruit trees, pale blossoms, jade moss, and clear mineral pools.",
+  "generated_on": "2026-10-05",
+  "prompt_ref": "map-immortal-jade-orchard-sealed-cache-v1",
+  "prompt": "Production isolated interactable sprite for Chaos World, a 2D top-down cultivation fantasy game: one small sealed cache hidden in an ancient immortal jade orchard, a compact pale stone reliquary box with a fitted lid, jade-green moss at its base, delicate fruit-branch carving and one intact jade seal ribbon across the lid. Strict orthographic straight-down overhead view, entire closed object visible, clear bottom-center ground contact, strong readable silhouette at small game scale. Anime-painted gouache, fine dark #263A35 ink contours, broad readable planes, restrained upper-left light; ivory stone, muted jade, a tiny antique-gold accent. Centered isolated object on real transparent background, fills most of square canvas, no ground plane, no other objects, no fruit pile, no open lid, no text, no border, no watermark. High-resolution square source.",
+  "reference_ids": [
+    "none"
+  ],
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.887
+      ]
+    ],
+    "frac_zero": 0.6259,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": true,
+      "vision_mode": "transparent",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "open",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.861,
+        0.926,
+        0.869
+      ],
+      [
+        0.939,
+        1.0,
+        0.939
+      ],
+      [
+        0.676,
+        0.748,
+        0.71
+      ]
+    ],
+    "crop_offset": [
+      19,
+      23
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.341,
+    "dominant_rgb": [
+      158.6,
+      158.7,
+      129.6
+    ],
+    "hsv": {
+      "hue_deg": 61.3,
+      "saturation": 0.23,
+      "value": 0.64
+    },
+    "dominant_palette": "warm_earth_gold",
+    "center_of_mass_norm": [
+      0.464,
+      0.474
+    ],
+    "horizontal_symmetry": 0.96,
+    "edge_complexity": 0.269
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

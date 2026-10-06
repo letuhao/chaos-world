@@ -1,0 +1,195 @@
+{
+  "id": "yin_jian.creature_and_denizen.day_patrol_yaksha",
+  "name": "Day Patrol Yaksha",
+  "vietnamese_name": "Dạ Xoa Tuần Ngày",
+  "hanzi": "日游神夜叉",
+  "category": "creature_and_denizen",
+  "sub_category": "jailer_and_guard",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "engage_sentry",
+  "gameplay_role": "Flying winged demon patrolling the skies with soul-locating lantern.",
+  "destructible": false,
+  "material": "spirit",
+  "cultivation_element": "fire",
+  "prompt_summary": "Red-skinned winged demon with flaming hair holding a spiked club.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/day_patrol_yaksha.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.day_patrol_yaksha:262153094",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.386,
+        0.477
+      ],
+      [
+        0.201,
+        0.147
+      ]
+    ],
+    "frac_zero": 0.7622,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.361,
+        0.792,
+        0.261,
+        0.0,
+        0.07,
+        0.417,
+        0.731
+      ],
+      [
+        0.14,
+        0.726,
+        0.76,
+        0.191,
+        0.286,
+        0.988,
+        0.681
+      ],
+      [
+        0.0,
+        0.043,
+        0.562,
+        0.899,
+        0.851,
+        0.389,
+        0.128
+      ],
+      [
+        0.0,
+        0.0,
+        0.386,
+        0.952,
+        0.607,
+        0.004,
+        0.0
+      ],
+      [
+        0.0,
+        0.006,
+        0.308,
+        0.854,
+        0.243,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.47,
+        0.214,
+        0.133,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.438,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      33
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 26,
+    "contact_reference_px": 26.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

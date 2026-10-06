@@ -1,0 +1,98 @@
+{
+  "id": "yin_jian.cultivation_and_resource.nine_leaf_soul_revival_grass",
+  "name": "Nine-Leaf Soul Revival Grass",
+  "vietnamese_name": "Cỏ Cửu Diệp Hồi Hồn",
+  "hanzi": "九叶还魂草",
+  "category": "cultivation_and_resource",
+  "sub_category": "herb_and_fungus",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "harvest_herb",
+  "gameplay_role": "Legendary herb capable of anchoring dispersing souls back into bodies.",
+  "destructible": true,
+  "material": "foliage",
+  "cultivation_element": "spirit",
+  "prompt_summary": "Slender jade plant with nine star-shaped leaves glowing with silver light.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/cultivation_and_resource/nine_leaf_soul_revival_grass.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.cultivation_and_resource.nine_leaf_soul_revival_grass:263900279",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.538
+      ]
+    ],
+    "frac_zero": 0.6903,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.199,
+        0.621,
+        0.203
+      ],
+      [
+        0.647,
+        1.0,
+        0.628
+      ],
+      [
+        0.506,
+        0.769,
+        0.233
+      ]
+    ],
+    "crop_offset": [
+      16,
+      22
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 47,
+    "contact_reference_px": 47.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

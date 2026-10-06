@@ -1,0 +1,133 @@
+{
+  "id": "yin_jian.creature_and_denizen.bat_tu_blood_lord",
+  "name": "Immortal Blood Tribe Marquis",
+  "vietnamese_name": "Bất Tử Huyết Tộc Hầu Tước",
+  "hanzi": "不死血族侯爵",
+  "category": "creature_and_denizen",
+  "sub_category": "elite_demon",
+  "racial_faction": "immortal_blood",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "engage_noble",
+  "gameplay_role": "Winged vampire noble with lethal aerial dive attacks, rapid life-steal, and blood mist teleportation.",
+  "destructible": false,
+  "material": "flesh",
+  "cultivation_element": "blood",
+  "prompt_summary": "Top-down 45 degree handsome aristocratic pale-skinned warrior with sweeping crimson bat wings, wearing elegant dark silk armor and brandishing a curved blood-rapier.",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/bat_tu_blood_lord.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.bat_tu_blood_lord:265292578",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.339
+      ]
+    ],
+    "frac_zero": 0.804,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.072,
+        0.381,
+        0.374
+      ],
+      [
+        0.07,
+        0.773,
+        0.2
+      ],
+      [
+        0.054,
+        0.733,
+        0.517
+      ]
+    ],
+    "crop_offset": [
+      19,
+      28
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 57,
+    "contact_reference_px": 57.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

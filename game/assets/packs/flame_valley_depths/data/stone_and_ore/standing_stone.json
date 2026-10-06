@@ -1,0 +1,276 @@
+{
+  "id": "flame_valley_depths.stone_and_ore.standing_stone",
+  "path": "res://assets/world_map/flame_valley_depths/stone_and_ore/standing_stone.png",
+  "type": "prop",
+  "category": "stone_and_ore",
+  "environment": "flame_valley_depths",
+  "environment_name": "Flame Valley Depths",
+  "world_tier": "Spirit World",
+  "archetype": "stone_and_ore.standing_stone",
+  "name": "Standing stone",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image_gen",
+  "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Layered cinder slopes, copper-red stone, scorched earth, and controlled internal firelight.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-07",
+  "prompt_ref": "openai-imagegen:flame_valley_depths.standing_stone:20261007",
+  "prompt": "One isolated 2x2-cell standing-stone prop for a 2D top-down RPG map in Flame Valley Depths. A single squat upright marker of dark scorched basalt with a broad angular top and chipped sides, a few fine copper-red cracks glowing faintly from within. Elevated overhead orthographic game-camera angle with the top surface dominant and only short side faces visible; compact, clearly a stone marker, not a mountain. Anime-painted gouache map art, dark #263A35 contour, broad readable planes, soot charcoal and warm umber palette with controlled orange-red fissures, restrained upper-left light. Centered complete silhouette with transparent padding, square high-resolution source, clear at 256px. Genuine transparent background. No ground, no lava, no fire, no smoke, no extra rocks, no writing, no text, no UI, no frame, no watermark, no horizon, no isometric exaggeration, no 3D render.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source_images": [
+    {
+      "path": "art-source/map-originals/flame_valley_depths/stone_and_ore/flame_valley_depths__stone_and_ore__standing_stone__99b4b7b661c8ab69.png",
+      "sha256": "99b4b7b661c8ab6923c6c2e889d9bb441ce7542c1eee8653d1eb449bf07d4c50",
+      "size_px": [
+        1254,
+        1254
+      ],
+      "source": "OpenAI image_gen",
+      "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+      "generated_on": "2026-10-07",
+      "prompt_ref": "openai-imagegen:flame_valley_depths.standing_stone:20261007",
+      "prompt": "One isolated 2x2-cell standing-stone prop for a 2D top-down RPG map in Flame Valley Depths. A single squat upright marker of dark scorched basalt with a broad angular top and chipped sides, a few fine copper-red cracks glowing faintly from within. Elevated overhead orthographic game-camera angle with the top surface dominant and only short side faces visible; compact, clearly a stone marker, not a mountain. Anime-painted gouache map art, dark #263A35 contour, broad readable planes, soot charcoal and warm umber palette with controlled orange-red fissures, restrained upper-left light. Centered complete silhouette with transparent padding, square high-resolution source, clear at 256px. Genuine transparent background. No ground, no lava, no fire, no smoke, no extra rocks, no writing, no text, no UI, no frame, no watermark, no horizon, no isometric exaggeration, no 3D render.",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
+    }
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.811,
+        0.766
+      ],
+      [
+        0.741,
+        0.718
+      ]
+    ],
+    "frac_zero": 0.6046,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "ground_contact",
+      "cov_gate": 0.01,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "solid",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 1,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.203,
+        0.71,
+        0.943,
+        0.386,
+        0.0
+      ],
+      [
+        0.761,
+        1.0,
+        1.0,
+        0.981,
+        0.204
+      ],
+      [
+        0.938,
+        1.0,
+        1.0,
+        1.0,
+        0.87
+      ],
+      [
+        0.846,
+        1.0,
+        1.0,
+        1.0,
+        0.789
+      ],
+      [
+        0.903,
+        1.0,
+        1.0,
+        1.0,
+        0.632
+      ],
+      [
+        0.395,
+        1.0,
+        1.0,
+        0.963,
+        0.081
+      ],
+      [
+        0.004,
+        0.716,
+        0.794,
+        0.335,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      54,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3
+    ],
+    "contact_px": 69,
+    "contact_reference_px": 69.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.381,
+    "dominant_rgb": [
+      72.6,
+      57.1,
+      48.5
+    ],
+    "hsv": {
+      "hue_deg": 35.8,
+      "saturation": 0.29,
+      "value": 0.29
+    },
+    "dominant_palette": "warm_earth_gold",
+    "center_of_mass_norm": [
+      0.491,
+      0.487
+    ],
+    "horizontal_symmetry": 0.92,
+    "edge_complexity": 0.102
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

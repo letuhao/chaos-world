@@ -1,0 +1,170 @@
+{
+  "id": "primordial_wilds.flora.flower_cluster",
+  "path": "res://assets/world_map/primordial_wilds/flora/flower_cluster.png",
+  "type": "prop",
+  "category": "flora",
+  "environment": "primordial_wilds",
+  "environment_name": "Primordial Wilds",
+  "world_tier": "Transcendent World",
+  "archetype": "flora.flower_cluster",
+  "name": "Flower cluster",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "bottom_center",
+  "collision": "none",
+  "status": "generated",
+  "source": "OpenAI image generation (image_gen), 2026-10-05",
+  "license": "OpenAI generated image; project use",
+  "alpha": "transparent",
+  "environment_theme": "Colossal exposed roots, ancient moss-dark basalt, amber minerals, and untamed growth.",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "generated_on": "2026-10-05",
+  "prompt_ref": "openai-map-v1:primordial_wilds.flora.flower_cluster",
+  "prompt": "Production 2D game sprite: a small freestanding Primordial Wilds flower cluster, 128x128, straight-down orthographic view, transparent background. Make the flowers and leaves the entire subject: exactly three ivory blossoms, several deep-green leaves, a few tiny amber flecks. At most two thumb-sized mossy stone chips may appear at the base; no large boulders, no rock platform, no ring of stones, no soil clump, no exposed roots, no landscape. Keep most of the canvas transparent and the compact plant silhouette within one map cell. Style: anime-painted gouache, fine #263A35 ink contours, broad readable planes, muted amber accents, soft upper-left light. It should read immediately as a delicate low flower patch, not a rock formation or resource node. No shadow disk, no horizon, no perspective, no isometric view, no text, border, UI, or watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.571
+      ]
+    ],
+    "frac_zero": 0.8184,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "none",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "transparent",
+      "acoustic_profile": "foliage",
+      "material": "foliage",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 1,
+        "hp": 25,
+        "on_destroy": "landmark_and_environment_detail.ground_decal",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.661,
+        0.587,
+        0.0
+      ],
+      [
+        0.507,
+        0.657,
+        0.156
+      ],
+      [
+        0.0,
+        0.031,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      30,
+      32
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.149,
+    "dominant_rgb": [
+      159.9,
+      151.9,
+      108.8
+    ],
+    "hsv": {
+      "hue_deg": 61.0,
+      "saturation": 0.38,
+      "value": 0.65
+    },
+    "dominant_palette": "warm_earth_gold",
+    "center_of_mass_norm": [
+      0.492,
+      0.49
+    ],
+    "horizontal_symmetry": 0.81,
+    "edge_complexity": 0.141
+  },
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 1,
+    "hp": 25,
+    "on_destroy": "landmark_and_environment_detail.ground_decal",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "foliage",
+  "cultivation_element": "none"
+}

@@ -1,0 +1,301 @@
+{
+  "id": "yin_jian.creature_and_denizen.avici_frost_demon",
+  "name": "Glacial Demon of the Eighth Cold Hell",
+  "vietnamese_name": "Hàn Băng Ác Ma A Tỳ",
+  "hanzi": "极寒狱夜叉",
+  "category": "creature_and_denizen",
+  "sub_category": "elite_demon",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "fight_frost_demon",
+  "gameplay_role": "Horned demon wielding a double-headed frozen greataxe.",
+  "destructible": false,
+  "material": "bone",
+  "cultivation_element": "water",
+  "prompt_summary": "Towering four-horned demon covered in icicle armor.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/avici_frost_demon.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.avici_frost_demon:262479000",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.166,
+        0.529,
+        0.211
+      ],
+      [
+        0.28,
+        0.947,
+        0.267
+      ],
+      [
+        0.659,
+        0.975,
+        0.508
+      ]
+    ],
+    "frac_zero": 0.5681,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.055,
+        0.01,
+        0.0,
+        0.0,
+        0.249,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.025,
+        0.375,
+        0.211,
+        0.457,
+        0.643,
+        0.435,
+        0.166,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.023,
+        0.258,
+        0.66,
+        0.933,
+        1.0,
+        0.818,
+        0.904,
+        0.611,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.007,
+        0.845,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.997,
+        0.538,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.44,
+        0.959,
+        1.0,
+        1.0,
+        1.0,
+        0.876,
+        0.132,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.108,
+        0.215,
+        0.81,
+        1.0,
+        1.0,
+        0.673,
+        0.005,
+        0.0,
+        0.0
+      ],
+      [
+        0.003,
+        0.19,
+        0.58,
+        0.778,
+        0.956,
+        1.0,
+        1.0,
+        0.843,
+        0.519,
+        0.129,
+        0.009
+      ],
+      [
+        0.645,
+        0.979,
+        0.982,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.945,
+        0.41,
+        0.084
+      ],
+      [
+        0.968,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.996,
+        0.91,
+        0.525,
+        0.198,
+        0.0
+      ],
+      [
+        0.197,
+        0.55,
+        0.742,
+        0.762,
+        0.947,
+        0.999,
+        0.843,
+        0.973,
+        0.748,
+        0.061,
+        0.0
+      ],
+      [
+        0.009,
+        0.097,
+        0.091,
+        0.734,
+        0.998,
+        1.0,
+        1.0,
+        1.0,
+        0.953,
+        0.208,
+        0.044
+      ]
+    ],
+    "crop_offset": [
+      16,
+      21
+    ],
+    "trunk_columns": [
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "contact_px": 201,
+    "contact_reference_px": 201.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.0": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.15": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.35": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.6": [
+        0,
+        2,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      1,
+      2,
+      1,
+      2
+    ],
+    "block_rect_px": [
+      128,
+      256,
+      256,
+      384
+    ]
+  }
+}

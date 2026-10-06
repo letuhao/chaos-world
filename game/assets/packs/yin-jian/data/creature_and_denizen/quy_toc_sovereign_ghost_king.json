@@ -1,0 +1,201 @@
+{
+  "id": "yin_jian.creature_and_denizen.quy_toc_sovereign_ghost_king",
+  "name": "Ghost Clan Spectral King",
+  "vietnamese_name": "Quỷ Tộc Thần Quân Quỷ Vương",
+  "hanzi": "鬼族神君鬼王",
+  "category": "creature_and_denizen",
+  "sub_category": "elite_demon",
+  "racial_faction": "ghost",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "engage_ghost_king",
+  "gameplay_role": "Phasing boss who ignores physical terrain, summons waves of soul thralls, and unleashes cold ghost fire waves.",
+  "destructible": false,
+  "material": "spirit",
+  "cultivation_element": "ghost",
+  "prompt_summary": "Top-down 45 degree towering crowned phantom monarch enveloped in cold cyan spirit flame, wearing ghostly jade regalia, wielding a soul-devouring flail.",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/quy_toc_sovereign_ghost_king.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.quy_toc_sovereign_ghost_king:265435867",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.244,
+        0.37
+      ],
+      [
+        0.841,
+        0.746
+      ]
+    ],
+    "frac_zero": 0.5762,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.313,
+        0.082,
+        0.384,
+        0.012
+      ],
+      [
+        0.0,
+        0.012,
+        0.181,
+        0.907,
+        0.456,
+        0.429,
+        0.007
+      ],
+      [
+        0.012,
+        0.455,
+        0.434,
+        1.0,
+        0.867,
+        0.165,
+        0.029
+      ],
+      [
+        0.229,
+        0.792,
+        0.77,
+        1.0,
+        0.844,
+        0.733,
+        0.1
+      ],
+      [
+        0.158,
+        0.928,
+        0.999,
+        1.0,
+        0.999,
+        0.553,
+        0.009
+      ],
+      [
+        0.984,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.948,
+        0.613
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.598
+      ]
+    ],
+    "crop_offset": [
+      16,
+      28
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 212,
+    "contact_reference_px": 212.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

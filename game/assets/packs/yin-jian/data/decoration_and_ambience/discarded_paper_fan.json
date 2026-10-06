@@ -1,0 +1,97 @@
+{
+  "id": "yin_jian.decoration_and_ambience.discarded_paper_fan",
+  "name": "Mourning Paper Fan",
+  "vietnamese_name": "Chiếc Quạt Giấy Tang",
+  "hanzi": "遗落素纸扇",
+  "category": "decoration_and_ambience",
+  "sub_category": "paper_and_offering",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect_fan",
+  "gameplay_role": "White folding paper fan inscribed with lament poem.",
+  "destructible": true,
+  "material": "cloth",
+  "cultivation_element": "yin",
+  "prompt_summary": "Open white pleated paper fan lying face up.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/decoration_and_ambience/discarded_paper_fan.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.decoration_and_ambience.discarded_paper_fan:265180099",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.39
+      ]
+    ],
+    "frac_zero": 0.7634,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.128,
+        0.495
+      ],
+      [
+        0.668,
+        0.931,
+        0.568
+      ],
+      [
+        0.097,
+        0.429,
+        0.097
+      ]
+    ],
+    "crop_offset": [
+      17,
+      22
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 22,
+    "contact_reference_px": 22.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

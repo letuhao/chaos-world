@@ -1,0 +1,196 @@
+{
+  "id": "yin_jian.creature_and_denizen.cui_jue_the_chief_judge",
+  "name": "Chief Judge Cui Jue (Phan Quan)",
+  "vietnamese_name": "Phán Quan Thôi Giác",
+  "hanzi": "首席判官崔珏",
+  "category": "creature_and_denizen",
+  "sub_category": "judge_and_official",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "seek_judgment",
+  "gameplay_role": "The Chief Magistrate holding the Life-Death Book and Judge's Brush.",
+  "destructible": false,
+  "material": "spirit",
+  "cultivation_element": "spirit",
+  "prompt_summary": "Regal official in crimson robes holding open scroll and oversized calligraphy brush.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/cui_jue_the_chief_judge.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.cui_jue_the_chief_judge:262056247",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.31,
+        0.419
+      ],
+      [
+        0.588,
+        0.23
+      ]
+    ],
+    "frac_zero": 0.7108,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.004,
+        0.0,
+        0.485,
+        0.022,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.119,
+        0.273,
+        0.981,
+        0.561,
+        0.146,
+        0.0
+      ],
+      [
+        0.095,
+        0.521,
+        0.865,
+        1.0,
+        1.0,
+        0.313,
+        0.0
+      ],
+      [
+        0.419,
+        1.0,
+        1.0,
+        1.0,
+        0.705,
+        0.428,
+        0.402
+      ],
+      [
+        0.218,
+        0.969,
+        1.0,
+        0.99,
+        0.148,
+        0.0,
+        0.0
+      ],
+      [
+        0.01,
+        0.529,
+        0.986,
+        0.358,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.015,
+        0.435,
+        0.639,
+        0.06,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      23,
+      19
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 51,
+    "contact_reference_px": 51.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

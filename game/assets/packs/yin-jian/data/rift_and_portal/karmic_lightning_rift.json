@@ -1,0 +1,165 @@
+{
+  "id": "yin_jian.rift_and_portal.karmic_lightning_rift",
+  "name": "Karmic Tribulation Spatial Tear",
+  "vietnamese_name": "Lôi Trận Nghiệp Báo Không Gian",
+  "hanzi": "业雷空间裂",
+  "category": "rift_and_portal",
+  "sub_category": "dimensional_fissure",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "hazard_dash",
+  "gameplay_role": "Spatial rip discharging hazardous violet tribulation lightning.",
+  "destructible": false,
+  "material": "spirit",
+  "cultivation_element": "fire",
+  "prompt_summary": "Pulsing violet electric tear hovering above scorched ground.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/rift_and_portal/karmic_lightning_rift.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.rift_and_portal.karmic_lightning_rift:260575926",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.137,
+        0.191
+      ],
+      [
+        0.917,
+        0.697
+      ]
+    ],
+    "frac_zero": 0.5925,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.028,
+        0.0,
+        0.002,
+        0.0
+      ],
+      [
+        0.0,
+        0.004,
+        0.004,
+        0.216,
+        0.005,
+        0.141,
+        0.0
+      ],
+      [
+        0.005,
+        0.06,
+        0.241,
+        0.712,
+        0.482,
+        0.205,
+        0.0
+      ],
+      [
+        0.256,
+        0.845,
+        0.993,
+        1.0,
+        0.984,
+        0.84,
+        0.245
+      ],
+      [
+        0.423,
+        0.997,
+        1.0,
+        1.0,
+        1.0,
+        0.997,
+        0.31
+      ],
+      [
+        1.0,
+        0.976,
+        1.0,
+        1.0,
+        0.916,
+        0.542,
+        0.341
+      ],
+      [
+        1.0,
+        0.999,
+        1.0,
+        0.996,
+        0.999,
+        0.365,
+        0.025
+      ]
+    ],
+    "crop_offset": [
+      16,
+      22
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 177,
+    "contact_reference_px": 177.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

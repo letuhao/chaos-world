@@ -1,0 +1,238 @@
+{
+  "id": "mortal_greenwood.travel_and_wayfinding.wooden_bridge",
+  "path": "res://assets/world_map/mortal_greenwood/travel_and_wayfinding/wooden_bridge.png",
+  "type": "prop",
+  "category": "travel_and_wayfinding",
+  "environment": "mortal_greenwood",
+  "environment_name": "Mortal Greenwood",
+  "world_tier": "Mortal World",
+  "archetype": "travel_and_wayfinding.wooden_bridge",
+  "name": "Wooden bridge",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "none",
+  "status": "generated",
+  "source": "OpenAI image generation",
+  "license": "Generated with OpenAI; OpenAI terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Dense broadleaf canopy, tangled roots, emerald moss, and dappled forest clearings.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-06",
+  "prompt_ref": "openai-map-mortal-greenwood-wooden-bridge-v1",
+  "prompt": "High-quality isolated 2D map sprite of a small wooden footbridge for Mortal Greenwood in Chaos World. Strict vertical overhead orthographic view directly above the bridge deck; show a distinct gently crooked left-to-right crossing made from five uneven dark broadleaf-wood planks lashed onto two curved branch beams, with short vine-and-rope rails along only the two ends and bright emerald moss tucked in joints. Dense broadleaf canopy, tangled roots and dappled forest are the setting motifs, but draw only the self-contained bridge. Full silhouette centered with generous transparent padding, clear walkable center strip, bottom-center ground pivot. Anime-painted gouache, crisp dark #263A35 ink contours, broad readable value planes, material-led wood and moss colors, restrained upper-left light, polished game art readable at 256px. Transparent background, short attached shadow only. No water, no creek, no ground plane, no scenery, no tree trunk, no perspective, no isometric view, no side view, no text, no UI, no border, no watermark, no extra objects.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source_images": [
+    {
+      "path": "art-source/map-originals/mortal_greenwood/travel_and_wayfinding/mortal_greenwood__travel_and_wayfinding__wooden_bridge__e84d3d8dc2af85aa.png",
+      "sha256": "e84d3d8dc2af85aac02c479446ca003d9576427a60ef2d7c996ebcee31bef95e",
+      "size_px": [
+        1774,
+        887
+      ],
+      "source": "OpenAI image generation",
+      "license": "Generated with OpenAI; OpenAI terms apply",
+      "generated_on": "2026-10-06",
+      "prompt_ref": "openai-map-mortal-greenwood-wooden-bridge-v1",
+      "prompt": "High-quality isolated 2D map sprite of a small wooden footbridge for Mortal Greenwood in Chaos World. Strict vertical overhead orthographic view directly above the bridge deck; show a distinct gently crooked left-to-right crossing made from five uneven dark broadleaf-wood planks lashed onto two curved branch beams, with short vine-and-rope rails along only the two ends and bright emerald moss tucked in joints. Dense broadleaf canopy, tangled roots and dappled forest are the setting motifs, but draw only the self-contained bridge. Full silhouette centered with generous transparent padding, clear walkable center strip, bottom-center ground pivot. Anime-painted gouache, crisp dark #263A35 ink contours, broad readable value planes, material-led wood and moss colors, restrained upper-left light, polished game art readable at 256px. Transparent background, short attached shadow only. No water, no creek, no ground plane, no scenery, no tree trunk, no perspective, no isometric view, no side view, no text, no UI, no border, no watermark, no extra objects.",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
+    }
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.666,
+        0.671
+      ]
+    ],
+    "frac_zero": 0.7724,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.15,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": true,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "transparent",
+      "acoustic_profile": "wood",
+      "material": "wood",
+      "elevation": 1,
+      "destructible": {
+        "enabled": true,
+        "tier": 2,
+        "hp": 60,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.566,
+        0.664,
+        0.458,
+        0.428,
+        0.482,
+        0.606,
+        0.533
+      ],
+      [
+        0.568,
+        0.966,
+        0.921,
+        0.989,
+        0.938,
+        0.959,
+        0.57
+      ],
+      [
+        0.438,
+        0.357,
+        0.674,
+        0.922,
+        0.75,
+        0.48,
+        0.471
+      ]
+    ],
+    "crop_offset": [
+      16,
+      155
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.183,
+    "dominant_rgb": [
+      84.0,
+      77.5,
+      41.9
+    ],
+    "hsv": {
+      "hue_deg": 60.1,
+      "saturation": 0.5,
+      "value": 0.35
+    },
+    "dominant_palette": "warm_earth_gold",
+    "center_of_mass_norm": [
+      0.497,
+      0.773
+    ],
+    "horizontal_symmetry": 0.96,
+    "edge_complexity": 0.119
+  },
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 2,
+    "hp": 60,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "wood",
+  "cultivation_element": "none"
+}

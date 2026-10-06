@@ -1,0 +1,301 @@
+{
+  "id": "yin_jian.cultivation_and_resource.crying_spirit_bamboo_groove",
+  "name": "Crying Spirit Bamboo Grove",
+  "vietnamese_name": "Rừng Trúc Khóc U Minh",
+  "hanzi": "泣血黑冥竹林",
+  "category": "cultivation_and_resource",
+  "sub_category": "wood_and_bamboo",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "brush",
+  "interactive_verb": "harvest_bamboo",
+  "gameplay_role": "Dense grove of black hollow bamboo stalks that moan in wind; yields tool materials.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "yin",
+  "prompt_summary": "Dense stand of vertical glossy black bamboo with crimson nodes and weeping leaves.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/cultivation_and_resource/crying_spirit_bamboo_groove.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.cultivation_and_resource.crying_spirit_bamboo_groove:264321331",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.221,
+        0.711,
+        0.285
+      ],
+      [
+        0.264,
+        0.961,
+        0.364
+      ],
+      [
+        0.794,
+        0.852,
+        0.391
+      ]
+    ],
+    "frac_zero": 0.5285,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.004,
+        0.325,
+        0.145,
+        0.2,
+        0.258,
+        0.016,
+        0.014,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.075,
+        0.881,
+        0.931,
+        0.532,
+        0.809,
+        0.511,
+        0.639,
+        0.024,
+        0.0
+      ],
+      [
+        0.0,
+        0.057,
+        0.464,
+        0.962,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.79,
+        0.077,
+        0.0
+      ],
+      [
+        0.0,
+        0.094,
+        0.789,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.925,
+        0.399,
+        0.0
+      ],
+      [
+        0.0,
+        0.354,
+        0.853,
+        0.99,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.942,
+        0.31,
+        0.0
+      ],
+      [
+        0.0,
+        0.008,
+        0.297,
+        0.64,
+        0.974,
+        1.0,
+        1.0,
+        0.915,
+        0.662,
+        0.076,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.146,
+        0.313,
+        0.85,
+        0.988,
+        1.0,
+        0.648,
+        0.108,
+        0.0,
+        0.0
+      ],
+      [
+        0.055,
+        0.369,
+        0.595,
+        0.895,
+        0.992,
+        1.0,
+        1.0,
+        0.963,
+        0.582,
+        0.118,
+        0.0
+      ],
+      [
+        0.979,
+        1.0,
+        0.979,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.985,
+        0.592,
+        0.329
+      ],
+      [
+        0.913,
+        0.812,
+        0.564,
+        0.969,
+        0.884,
+        1.0,
+        1.0,
+        0.905,
+        0.566,
+        0.031,
+        0.0
+      ],
+      [
+        1.0,
+        1.0,
+        0.947,
+        0.352,
+        0.095,
+        0.357,
+        0.56,
+        0.099,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      26
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      5,
+      6
+    ],
+    "contact_px": 113,
+    "contact_reference_px": 113.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        2,
+        0,
+        2
+      ],
+      "1.0": [
+        0,
+        2,
+        0,
+        2
+      ],
+      "1.15": [
+        0,
+        2,
+        0,
+        2
+      ],
+      "1.35": [
+        0,
+        2,
+        0,
+        2
+      ],
+      "1.6": [
+        0,
+        2,
+        0,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      2,
+      0,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      256,
+      128,
+      384
+    ]
+  }
+}

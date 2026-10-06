@@ -1,0 +1,235 @@
+{
+  "id": "immortal_jade_orchard.travel_and_wayfinding.wooden_bridge",
+  "path": "res://assets/world_map/immortal_jade_orchard/travel_and_wayfinding/wooden_bridge.png",
+  "type": "prop",
+  "category": "travel_and_wayfinding",
+  "environment": "immortal_jade_orchard",
+  "environment_name": "Immortal Jade Orchard",
+  "world_tier": "Immortal World",
+  "archetype": "travel_and_wayfinding.wooden_bridge",
+  "name": "Wooden bridge",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "none",
+  "status": "generated",
+  "source": "OpenAI built-in image generation, 2026-10-05",
+  "license": "OpenAI generated image; project use under applicable OpenAI generation terms",
+  "alpha": "transparent",
+  "environment_theme": "Ancient ordered fruit trees, pale blossoms, jade moss, and clear mineral pools.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-05",
+  "prompt_ref": "openai-map-v1:immortal_jade_orchard.travel_and_wayfinding.wooden_bridge",
+  "prompt": "Production 2D top-down RPG map prop for Chaos World: one small wooden footbridge from the Immortal Jade Orchard, transparent 256x256 PNG. Direct overhead orthographic view. A short gently arched pale cedar footbridge with tidy plank deck, low curved rails and restrained jade-green vine details, built for a quiet path crossing a narrow mineral pool. Entire bridge isolated and fully visible, centered bottom-center pivot, readable at 2x2 cells. True transparent background through and around rails, no water or terrain patch, no cast shadow. Anime-painted gouache, fine dark #263A35 contours, broad clean wood planes, pale jade, ivory and subtle gold accents, soft upper-left light. Environment: ancient ordered fruit trees, pale blossoms, jade moss, clear mineral pools. No tree canopy, people, buildings, perspective, text, border, UI, watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.846,
+        0.843
+      ]
+    ],
+    "frac_zero": 0.6959,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.15,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": true,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "transparent",
+      "acoustic_profile": "wood",
+      "material": "wood",
+      "elevation": 1,
+      "destructible": {
+        "enabled": true,
+        "tier": 2,
+        "hp": 60,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      4,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.547,
+        0.5,
+        0.665,
+        0.219
+      ],
+      [
+        0.82,
+        1.0,
+        0.996,
+        0.587
+      ],
+      [
+        0.963,
+        1.0,
+        1.0,
+        0.902
+      ],
+      [
+        0.987,
+        1.0,
+        1.0,
+        0.962
+      ],
+      [
+        0.896,
+        1.0,
+        1.0,
+        0.75
+      ],
+      [
+        0.79,
+        1.0,
+        0.998,
+        0.5
+      ],
+      [
+        0.58,
+        0.273,
+        0.531,
+        0.377
+      ]
+    ],
+    "crop_offset": [
+      76,
+      28
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.289,
+    "dominant_rgb": [
+      190.5,
+      169.4,
+      137.1
+    ],
+    "hsv": {
+      "hue_deg": 39.2,
+      "saturation": 0.3,
+      "value": 0.75
+    },
+    "dominant_palette": "warm_earth_gold",
+    "center_of_mass_norm": [
+      0.509,
+      0.518
+    ],
+    "horizontal_symmetry": 0.98,
+    "edge_complexity": 0.154
+  },
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 2,
+    "hp": 60,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "wood",
+  "cultivation_element": "none"
+}

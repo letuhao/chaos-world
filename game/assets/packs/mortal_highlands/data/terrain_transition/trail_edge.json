@@ -1,0 +1,172 @@
+{
+  "id": "mortal_highlands.terrain_transition.trail_edge",
+  "path": "res://assets/world_map/mortal_highlands/terrain_transition/trail_edge.png",
+  "type": "tile",
+  "category": "terrain_transition",
+  "environment": "mortal_highlands",
+  "environment_name": "Mortal Highlands",
+  "world_tier": "Mortal World",
+  "archetype": "terrain_transition.trail_edge",
+  "name": "Trail edge",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "center",
+  "collision": "none",
+  "status": "generated",
+  "source": "OpenAI built-in image generation (image_gen edit)",
+  "license": "Generated locally with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Exposed grey granite, steep broken ledges, wind-shaped pines, and pale lichen.",
+  "generated_on": "2026-10-04",
+  "prompt_ref": "openai-imagegen:mortal_highlands.terrain_transition.trail_edge:20261004-r1",
+  "prompt": "Edit the supplied map sprite only to correct its composition. Keep its Mortal Highlands cool grey granite, pale lichen, pine-needle details, anime gouache rendering, dark #263A35 contours and true transparent background. Replace the enclosed rounded clearing with one short, broad, gently diagonal footpath segment that visibly enters the left edge and exits the right edge of the square. Make the path a narrow central band of compact grey-brown grit, with one distinct irregular rocky/lichen edge along one side and a subtle ground transition on the other. Keep the path connected to both opposite edges for map placement. Strict 90-degree orthographic overhead, flat surface only, no perspective. Preserve the complete square framing and small transparent corners. Remove any ring-shaped rock border; no enclosed clearing, no large boulders, no cliff faces, no plants beyond a few tiny lichen flecks. No shadow, glow, text, frame, labels, watermark or additional objects.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map",
+    "mortal_highlands.ground_tile.base_ground",
+    "mortal_highlands.terrain_transition.ground_edge"
+  ],
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.94
+      ]
+    ],
+    "frac_zero": 0.5463,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "none",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "transparent",
+      "acoustic_profile": "earth",
+      "material": "earth",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 1,
+        "hp": 40,
+        "on_destroy": "ground_tile.cracked_ground",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "water",
+          "wind"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.956,
+        0.972,
+        0.807
+      ],
+      [
+        0.979,
+        1.0,
+        0.88
+      ],
+      [
+        0.951,
+        0.972,
+        0.882
+      ]
+    ],
+    "crop_offset": [
+      23,
+      23
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.42,
+    "dominant_rgb": [
+      122.7,
+      113.2,
+      97.9
+    ],
+    "hsv": {
+      "hue_deg": 38.1,
+      "saturation": 0.21,
+      "value": 0.48
+    },
+    "dominant_palette": "warm_earth_gold",
+    "center_of_mass_norm": [
+      0.51,
+      0.503
+    ],
+    "horizontal_symmetry": 0.92,
+    "edge_complexity": 0.276
+  },
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 1,
+    "hp": 40,
+    "on_destroy": "ground_tile.cracked_ground",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "water",
+      "wind"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "earth",
+  "cultivation_element": "none"
+}

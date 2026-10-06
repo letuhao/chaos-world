@@ -1,0 +1,130 @@
+{
+  "id": "yin_jian.interactive_and_puzzle.spirit_lantern_crank_post",
+  "name": "Winch for High Temple Lantern",
+  "vietnamese_name": "Trục Tời Kéo Đèn Lồng",
+  "hanzi": "提灯卷扬杆",
+  "category": "interactive_and_puzzle",
+  "sub_category": "water_and_blood_sluice",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "crank_lantern",
+  "gameplay_role": "Lowers high floating lantern down to player height.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "metal",
+  "prompt_summary": "Slender wooden post with brass hand-crank and cable.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/interactive_and_puzzle/spirit_lantern_crank_post.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.interactive_and_puzzle.spirit_lantern_crank_post:263434360",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.385
+      ]
+    ],
+    "frac_zero": 0.827,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      2,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.324,
+        0.171
+      ],
+      [
+        0.417,
+        0.276
+      ],
+      [
+        0.701,
+        0.433
+      ]
+    ],
+    "crop_offset": [
+      37,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 45,
+    "contact_reference_px": 45.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

@@ -1,0 +1,271 @@
+{
+  "id": "yin_jian.rift_and_portal.ghost_flame_summoning_circle",
+  "name": "Ghost-Flame Summoning Circle",
+  "vietnamese_name": "Ma Trận Triệu Hồi Hồn Phách",
+  "hanzi": "幽火降灵阵",
+  "category": "rift_and_portal",
+  "sub_category": "void_portal",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "activate_circle",
+  "gameplay_role": "Ritual floor circle for summoning entities across realms.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "spirit",
+  "prompt_summary": "Intricate chalk and blood runic circle surrounded by five blue torches.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/rift_and_portal/ghost_flame_summoning_circle.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.rift_and_portal.ghost_flame_summoning_circle:260562766",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.175,
+        0.55,
+        0.263
+      ],
+      [
+        0.86,
+        1.0,
+        0.875
+      ],
+      [
+        0.967,
+        1.0,
+        0.869
+      ]
+    ],
+    "frac_zero": 0.3712,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.156,
+        0.0,
+        0.009,
+        0.244,
+        0.004,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.003,
+        0.148,
+        0.68,
+        0.186,
+        0.532,
+        0.211,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.086,
+        0.267,
+        0.878,
+        0.987,
+        1.0,
+        1.0,
+        0.981,
+        0.395,
+        0.114,
+        0.0
+      ],
+      [
+        0.023,
+        0.613,
+        0.955,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.994,
+        0.768,
+        0.023
+      ],
+      [
+        0.582,
+        0.98,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.996,
+        0.603
+      ],
+      [
+        0.68,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.799
+      ],
+      [
+        0.478,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.423
+      ],
+      [
+        0.613,
+        0.993,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.99,
+        0.253
+      ],
+      [
+        0.97,
+        0.814,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.694,
+        0.202
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.908,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "contact_px": 352,
+    "contact_reference_px": 352.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

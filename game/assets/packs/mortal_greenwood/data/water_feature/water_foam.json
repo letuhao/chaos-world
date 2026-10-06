@@ -1,0 +1,164 @@
+{
+  "id": "mortal_greenwood.water_feature.water_foam",
+  "path": "res://assets/world_map/mortal_greenwood/water_feature/water_foam.png",
+  "type": "decal",
+  "category": "water_feature",
+  "environment": "mortal_greenwood",
+  "environment_name": "Mortal Greenwood",
+  "world_tier": "Mortal World",
+  "archetype": "water_feature.water_foam",
+  "name": "Water foam",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "center",
+  "collision": "none",
+  "status": "generated",
+  "source": "OpenAI built-in image_gen via Codex",
+  "license": "AI-generated for Chaos World; permitted for project use",
+  "alpha": "transparent",
+  "environment_theme": "Dense broadleaf canopy, tangled roots, emerald moss, and dappled forest clearings.",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "generated_on": "2026-10-06",
+  "prompt_ref": "openai-map-mortal-greenwood-water-foam-v1",
+  "prompt": "Small water-foam decal for Mortal Greenwood, direct overhead view: three thin curved ivory foam ribbons with tiny bubbles, irregular natural surface pattern, separated by transparent gaps, translucent pale cream and soft leaf-green reflections, low contrast. Painterly gouache, restrained ink, no shadow. True-alpha transparent 512 square source, center pivot, crop to 128x128 for placement over water. No water background, terrain, shoreline, rocks, plants, large splash, text, UI, frame, watermark, or perspective.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.162
+      ]
+    ],
+    "frac_zero": 0.8489,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "none",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "transparent",
+      "acoustic_profile": "water",
+      "material": "water",
+      "elevation": 0,
+      "destructible": {
+        "enabled": false,
+        "tier": 0,
+        "hp": 0,
+        "on_destroy": null,
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.035,
+        0.232,
+        0.089
+      ],
+      [
+        0.121,
+        0.193,
+        0.147
+      ],
+      [
+        0.054,
+        0.285,
+        0.407
+      ]
+    ],
+    "crop_offset": [
+      16,
+      22
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.076,
+    "dominant_rgb": [
+      200.6,
+      206.6,
+      182.8
+    ],
+    "hsv": {
+      "hue_deg": 74.7,
+      "saturation": 0.12,
+      "value": 0.81
+    },
+    "dominant_palette": "monochrome_grey",
+    "center_of_mass_norm": [
+      0.554,
+      0.535
+    ],
+    "horizontal_symmetry": 0.81,
+    "edge_complexity": 0.197
+  },
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": false,
+    "tier": 0,
+    "hp": 0,
+    "on_destroy": null,
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [],
+    "reveals_loot_category": null
+  },
+  "material": "water",
+  "cultivation_element": "none"
+}

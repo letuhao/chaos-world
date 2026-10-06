@@ -1,0 +1,258 @@
+{
+  "id": "spirit_moonfen.landmark_and_environment_detail.statue",
+  "path": "res://assets/world_map/spirit_moonfen/landmark_and_environment_detail/statue.png",
+  "type": "landmark",
+  "category": "landmark_and_environment_detail",
+  "environment": "spirit_moonfen",
+  "environment_name": "Spirit Moonfen",
+  "world_tier": "Spirit World",
+  "archetype": "landmark_and_environment_detail.statue",
+  "name": "Guardian statue",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image generation; 2026-10-05",
+  "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Blue-black fen pools, silver reeds, peat islands, and restrained moonlit reflections.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-05",
+  "prompt_ref": "openai-imagegen:spirit_moonfen.statue:20261005",
+  "prompt": "Use case: stylized-concept. Asset type: production 2D top-down action RPG landmark sprite for Chaos World. Subject: one small Moonfen guardian statue carved as a resting moon-heron, for a spirit fen of blue-black pools, silver reeds, peat islands, and restrained moonlit reflections. View: strict straight-down orthographic, show the sculpture's top surfaces directly above, no frontal portrait, perspective, or isometric projection. Composition: a connected 2×2-cell dark peat-stone plinth with a compact bird-like guardian effigy carved in low relief, clearly visible beak pointing north, folded wing shapes, and a small round moonstone set into its back; complete centered silhouette with transparent padding and bottom-center ground contact, readable at 256×256. Art direction: anime-painted gouache, fine dark #263A35 contours, broad quiet forms, blue-black wet stone, muted silver-gray edge wear, one restrained pale moonstone highlight, soft cool diffuse light, low contrast. Technical output: high-resolution square PNG with genuine transparent background outside the statue. Exclude: water, reeds, island scene, extra statues, living bird, sky, horizon, glowing aura, writing, runes, text, grid, border, UI, watermark, 3D render.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.596,
+        0.601
+      ],
+      [
+        0.962,
+        0.963
+      ]
+    ],
+    "frac_zero": 0.6107,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.2,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "solid",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 1,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "examine",
+        "reach_cells": 2,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.236,
+        0.0,
+        0.0
+      ],
+      [
+        0.644,
+        0.667,
+        0.862,
+        0.663,
+        0.635
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        0.966,
+        1.0,
+        1.0,
+        1.0,
+        0.964
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        0.986,
+        1.0,
+        1.0,
+        1.0,
+        0.988
+      ],
+      [
+        0.441,
+        0.719,
+        0.962,
+        0.667,
+        0.416
+      ]
+    ],
+    "crop_offset": [
+      50,
+      24
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.374,
+    "dominant_rgb": [
+      62.3,
+      67.6,
+      71.0
+    ],
+    "hsv": {
+      "hue_deg": 180.2,
+      "saturation": 0.18,
+      "value": 0.28
+    },
+    "dominant_palette": "azure_water",
+    "center_of_mass_norm": [
+      0.496,
+      0.556
+    ],
+    "horizontal_symmetry": 1.0,
+    "edge_complexity": 0.177
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

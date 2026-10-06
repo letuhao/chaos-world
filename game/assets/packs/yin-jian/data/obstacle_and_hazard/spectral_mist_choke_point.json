@@ -1,0 +1,159 @@
+{
+  "id": "yin_jian.obstacle_and_hazard.spectral_mist_choke_point",
+  "name": "Dense Spectral Choke Wall",
+  "vietnamese_name": "Màn Khí Lạnh Ngăn Đường",
+  "hanzi": "浓凝阴障",
+  "category": "obstacle_and_hazard",
+  "sub_category": "cauldron_and_miasma",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": false,
+  "vision_mode": "solid",
+  "interactive_verb": "dispel_mist",
+  "gameplay_role": "Impenetrable wall of thick fog requiring talisman to part.",
+  "destructible": false,
+  "material": "spirit",
+  "cultivation_element": "yin",
+  "prompt_summary": "Solid curtain of swirling white-blue phantom mist.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/obstacle_and_hazard/spectral_mist_choke_point.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.obstacle_and_hazard.spectral_mist_choke_point:261402951",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.582,
+        0.605,
+        0.612
+      ]
+    ],
+    "frac_zero": 0.7101,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      8,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.169,
+        0.235,
+        0.165,
+        0.076,
+        0.12,
+        0.13,
+        0.436,
+        0.58
+      ],
+      [
+        0.403,
+        0.981,
+        0.96,
+        0.923,
+        0.951,
+        0.986,
+        0.952,
+        0.227
+      ],
+      [
+        0.817,
+        0.882,
+        0.858,
+        0.756,
+        0.718,
+        0.773,
+        0.719,
+        0.211
+      ]
+    ],
+    "crop_offset": [
+      70,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 225,
+    "contact_reference_px": 225.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      128
+    ]
+  }
+}

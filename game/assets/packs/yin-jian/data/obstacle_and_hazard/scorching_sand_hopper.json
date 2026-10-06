@@ -1,0 +1,166 @@
+{
+  "id": "yin_jian.obstacle_and_hazard.scorching_sand_hopper",
+  "name": "Pouring Scorching Sand Chute",
+  "vietnamese_name": "Máng Đổ Cát Nóng",
+  "hanzi": "流沙倾泻口",
+  "category": "obstacle_and_hazard",
+  "sub_category": "fire_and_copper",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "dash_through",
+  "gameplay_role": "Overhead chute pouring burning hot sand.",
+  "destructible": false,
+  "material": "earth",
+  "cultivation_element": "fire",
+  "prompt_summary": "Stone funnel releasing curtain of orange glowing sand.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/obstacle_and_hazard/scorching_sand_hopper.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.obstacle_and_hazard.scorching_sand_hopper:261094008",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.532,
+        0.403
+      ],
+      [
+        0.629,
+        0.824
+      ]
+    ],
+    "frac_zero": 0.5233,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.252,
+        0.661,
+        0.248,
+        0.082,
+        0.003,
+        0.0
+      ],
+      [
+        0.076,
+        0.846,
+        1.0,
+        1.0,
+        0.993,
+        0.485,
+        0.0
+      ],
+      [
+        0.093,
+        0.764,
+        1.0,
+        1.0,
+        1.0,
+        0.443,
+        0.0
+      ],
+      [
+        0.0,
+        0.045,
+        0.75,
+        1.0,
+        0.919,
+        0.046,
+        0.0
+      ],
+      [
+        0.075,
+        0.377,
+        0.775,
+        1.0,
+        0.873,
+        0.513,
+        0.524
+      ],
+      [
+        0.419,
+        0.978,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        0.55,
+        0.456,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 171,
+    "contact_reference_px": 171.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

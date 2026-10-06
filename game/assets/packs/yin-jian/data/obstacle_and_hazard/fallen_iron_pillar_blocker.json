@@ -1,0 +1,151 @@
+{
+  "id": "yin_jian.obstacle_and_hazard.fallen_iron_pillar_blocker",
+  "name": "Toppled Copper Pillar Rubble",
+  "vietnamese_name": "Trụ Đồng Gãy Đổ Chắn Đường",
+  "hanzi": "倒塌铜柱",
+  "category": "obstacle_and_hazard",
+  "sub_category": "fire_and_copper",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "climb_over",
+  "gameplay_role": "Collapsed burning pillar blocking passage.",
+  "destructible": true,
+  "material": "metal",
+  "cultivation_element": "fire",
+  "prompt_summary": "Heavy charred bronze pillar lying horizontally across road.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/obstacle_and_hazard/fallen_iron_pillar_blocker.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.obstacle_and_hazard.fallen_iron_pillar_blocker:261266649",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.691,
+        0.442,
+        0.383
+      ]
+    ],
+    "frac_zero": 0.7939,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.489,
+        0.483,
+        0.247,
+        0.09,
+        0.046,
+        0.104,
+        0.0
+      ],
+      [
+        0.866,
+        1.0,
+        1.0,
+        0.993,
+        0.983,
+        0.948,
+        0.234
+      ],
+      [
+        0.523,
+        0.772,
+        0.301,
+        0.01,
+        0.024,
+        0.246,
+        0.043
+      ]
+    ],
+    "crop_offset": [
+      94,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 55,
+    "contact_reference_px": 55.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      128
+    ]
+  }
+}

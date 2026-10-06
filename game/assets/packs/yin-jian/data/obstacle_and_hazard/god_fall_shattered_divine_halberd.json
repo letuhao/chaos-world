@@ -1,0 +1,321 @@
+{
+  "id": "yin_jian.obstacle_and_hazard.god_fall_shattered_divine_halberd",
+  "name": "Titanic Broken Divine Halberd",
+  "vietnamese_name": "Đoạn Liệt Thái Cổ Thần Kích",
+  "hanzi": "断裂太古神戟",
+  "category": "obstacle_and_hazard",
+  "sub_category": "spikes_and_blade",
+  "racial_faction": "god_fall_battlefield",
+  "footprint_cells": [
+    3,
+    4
+  ],
+  "canvas_px": [
+    384,
+    512
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "occludes_low",
+  "interactive_verb": "salvage_god_metal",
+  "gameplay_role": "Colossal weapon remnant fallen from the heavens. Blocks movement; high-level blacksmiths can quarry divine metal fragments.",
+  "destructible": false,
+  "material": "metal",
+  "cultivation_element": "metal",
+  "prompt_summary": "Top-down 45 degree shattered giant divine halberd head thrust deep into shattered earth at an angle, scarred rusted bronze with glowing ancient runes.",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/obstacle_and_hazard/god_fall_shattered_divine_halberd.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.obstacle_and_hazard.god_fall_shattered_divine_halberd:265612730",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.145,
+        0.451,
+        0.0
+      ],
+      [
+        0.257,
+        0.76,
+        0.004
+      ],
+      [
+        0.578,
+        0.887,
+        0.534
+      ],
+      [
+        1.0,
+        1.0,
+        1.0
+      ]
+    ],
+    "frac_zero": 0.6467,
+    "blocks": [
+      [
+        false,
+        true,
+        false
+      ],
+      [
+        true,
+        true,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 9,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.131,
+        0.946,
+        0.093,
+        0.013,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.807,
+        0.796,
+        0.684,
+        0.389,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.009,
+        0.039,
+        0.721,
+        1.0,
+        0.993,
+        0.169,
+        0.0,
+        0.001,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.044,
+        0.837,
+        1.0,
+        1.0,
+        1.0,
+        0.329,
+        0.005,
+        0.004,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.388,
+        0.763,
+        1.0,
+        1.0,
+        0.518,
+        0.017,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.062,
+        0.0,
+        0.191,
+        0.951,
+        1.0,
+        0.795,
+        0.02,
+        0.019,
+        0.0,
+        0.023
+      ],
+      [
+        0.006,
+        0.908,
+        0.496,
+        0.276,
+        0.696,
+        1.0,
+        0.997,
+        0.602,
+        0.328,
+        0.375,
+        0.046
+      ],
+      [
+        0.609,
+        0.987,
+        1.0,
+        1.0,
+        0.999,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.808,
+        0.753
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      144
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "contact_px": 352,
+    "contact_reference_px": 352.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        3
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        3
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        3
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        3
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        3
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      3
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      512
+    ]
+  }
+}

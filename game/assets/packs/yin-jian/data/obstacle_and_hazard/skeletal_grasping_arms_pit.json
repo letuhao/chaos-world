@@ -1,0 +1,165 @@
+{
+  "id": "yin_jian.obstacle_and_hazard.skeletal_grasping_arms_pit",
+  "name": "Pit of Grasping Skeletal Arms",
+  "vietnamese_name": "Hố Bàn Tay Xương Kéo Xuống",
+  "hanzi": "枯骨陷坑",
+  "category": "obstacle_and_hazard",
+  "sub_category": "spikes_and_blade",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "break_free",
+  "gameplay_role": "Pit where skeletal arms reach up to pull runners under.",
+  "destructible": true,
+  "material": "bone",
+  "cultivation_element": "yin",
+  "prompt_summary": "Hole in flagstones teeming with grasping bleached skeletal hands.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/obstacle_and_hazard/skeletal_grasping_arms_pit.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.obstacle_and_hazard.skeletal_grasping_arms_pit:260855163",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.625,
+        0.6
+      ],
+      [
+        1.0,
+        0.748
+      ]
+    ],
+    "frac_zero": 0.4189,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.06,
+        0.089,
+        0.247,
+        0.225,
+        0.0,
+        0.0
+      ],
+      [
+        0.078,
+        0.579,
+        0.992,
+        1.0,
+        0.999,
+        0.663,
+        0.133
+      ],
+      [
+        0.989,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.594
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.662
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.41
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.882,
+        0.237
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.535,
+        0.036
+      ]
+    ],
+    "crop_offset": [
+      16,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 181,
+    "contact_reference_px": 181.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

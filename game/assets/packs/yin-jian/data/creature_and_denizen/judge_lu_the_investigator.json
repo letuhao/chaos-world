@@ -1,0 +1,193 @@
+{
+  "id": "yin_jian.creature_and_denizen.judge_lu_the_investigator",
+  "name": "Magistrate Lu: The Investigator",
+  "vietnamese_name": "Phán Quan Lục Trọng",
+  "hanzi": "察查司判官陆之道",
+  "category": "creature_and_denizen",
+  "sub_category": "judge_and_official",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "consult_records",
+  "gameplay_role": "Judge examining secret sins and unpunished crimes.",
+  "destructible": false,
+  "material": "spirit",
+  "cultivation_element": "earth",
+  "prompt_summary": "Official in green silk robes holding copper mirror of truth.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/judge_lu_the_investigator.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.judge_lu_the_investigator:262093978",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.438,
+        0.095
+      ],
+      [
+        0.709,
+        0.736
+      ]
+    ],
+    "frac_zero": 0.6504,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.043,
+        0.604,
+        0.338,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.486,
+        1.0,
+        0.72,
+        0.0,
+        0.01,
+        0.0
+      ],
+      [
+        0.0,
+        0.354,
+        1.0,
+        0.413,
+        0.308,
+        0.281,
+        0.0
+      ],
+      [
+        0.075,
+        0.381,
+        0.969,
+        0.964,
+        0.901,
+        0.763,
+        0.12
+      ],
+      [
+        0.688,
+        0.987,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.734
+      ],
+      [
+        0.521,
+        0.667,
+        0.846,
+        0.844,
+        0.925,
+        0.762,
+        0.14
+      ],
+      [
+        0.0,
+        0.0,
+        0.188,
+        0.031,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      38
+    ],
+    "trunk_columns": [],
+    "contact_px": 132,
+    "contact_reference_px": 132.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

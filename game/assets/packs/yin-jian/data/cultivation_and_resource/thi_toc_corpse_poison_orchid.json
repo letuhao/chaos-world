@@ -1,0 +1,98 @@
+{
+  "id": "yin_jian.cultivation_and_resource.thi_toc_corpse_poison_orchid",
+  "name": "Corpse Poison Ghost Orchid",
+  "vietnamese_name": "Thi Độc U Minh Lan",
+  "hanzi": "尸毒幽冥兰",
+  "category": "cultivation_and_resource",
+  "sub_category": "herb_and_fungus",
+  "racial_faction": "corpse",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "harvest_orchid",
+  "gameplay_role": "Rare fleshy orchid growing on burial soil; essential reagent for brewing supreme Corpse Body-Tempering unguents.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "death",
+  "prompt_summary": "Top-down 45 degree fleshy pale purple orchid blossom with weeping black pollen drops, small green spores floating above.",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/cultivation_and_resource/thi_toc_corpse_poison_orchid.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.cultivation_and_resource.thi_toc_corpse_poison_orchid:265726291",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.485
+      ]
+    ],
+    "frac_zero": 0.6927,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.125,
+        0.493,
+        0.091
+      ],
+      [
+        0.62,
+        1.0,
+        0.575
+      ],
+      [
+        0.411,
+        0.817,
+        0.213
+      ]
+    ],
+    "crop_offset": [
+      17,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 47,
+    "contact_reference_px": 47.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

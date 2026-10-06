@@ -1,0 +1,270 @@
+{
+  "id": "yin_jian.cultivation_and_resource.bat_tu_blood_grape_vineyard",
+  "name": "Sacred Blood Grape Trellis Vineyard",
+  "vietnamese_name": "Huyết Bồ Đào Thánh Viên",
+  "hanzi": "血葡萄圣园",
+  "category": "cultivation_and_resource",
+  "sub_category": "herb_and_fungus",
+  "racial_faction": "immortal_blood",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "partial",
+  "blocks_projectile": false,
+  "vision_mode": "occludes_low",
+  "interactive_verb": "harvest_blood_grapes",
+  "gameplay_role": "Agricultural trellis growing heavy clusters of glowing ruby blood grapes used in brewing noble blood wine.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "blood",
+  "prompt_summary": "Top-down 45 degree wooden trellis arbor laden with coiling dark vines and hanging clusters of glowing translucent ruby grapes.",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/cultivation_and_resource/bat_tu_blood_grape_vineyard.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.cultivation_and_resource.bat_tu_blood_grape_vineyard:265674411",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.299,
+        0.629,
+        0.583
+      ],
+      [
+        0.395,
+        0.569,
+        0.471
+      ],
+      [
+        0.497,
+        0.49,
+        0.264
+      ]
+    ],
+    "frac_zero": 0.5813,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 9,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.002,
+        0.193,
+        0.646,
+        0.359,
+        0.256,
+        0.033
+      ],
+      [
+        0.001,
+        0.0,
+        0.01,
+        0.374,
+        0.557,
+        0.826,
+        0.918,
+        0.947,
+        1.0,
+        0.904,
+        0.392
+      ],
+      [
+        0.096,
+        0.458,
+        0.769,
+        0.949,
+        0.86,
+        0.734,
+        0.91,
+        0.982,
+        0.976,
+        0.84,
+        0.07
+      ],
+      [
+        0.419,
+        0.889,
+        0.924,
+        0.822,
+        0.908,
+        0.96,
+        0.792,
+        0.733,
+        0.691,
+        0.413,
+        0.045
+      ],
+      [
+        0.013,
+        0.233,
+        0.915,
+        0.991,
+        0.842,
+        0.546,
+        0.655,
+        0.835,
+        0.826,
+        0.266,
+        0.0
+      ],
+      [
+        0.0,
+        0.033,
+        0.567,
+        0.936,
+        0.917,
+        0.506,
+        0.545,
+        0.316,
+        0.92,
+        0.115,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.378,
+        0.979,
+        0.685,
+        0.084,
+        0.102,
+        0.583,
+        0.999,
+        0.29,
+        0.004
+      ],
+      [
+        0.0,
+        0.0,
+        0.291,
+        0.998,
+        0.211,
+        0.011,
+        0.634,
+        0.997,
+        1.0,
+        0.883,
+        0.155
+      ],
+      [
+        0.0,
+        0.0,
+        0.11,
+        0.935,
+        0.579,
+        0.023,
+        0.624,
+        0.699,
+        0.658,
+        0.271,
+        0.061
+      ],
+      [
+        0.292,
+        0.377,
+        0.638,
+        0.998,
+        0.99,
+        0.47,
+        0.065,
+        0.008,
+        0.023,
+        0.0,
+        0.01
+      ],
+      [
+        1.0,
+        0.935,
+        0.953,
+        1.0,
+        0.949,
+        0.303,
+        0.127,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 164,
+    "contact_reference_px": 164.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        2,
+        0,
+        2
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

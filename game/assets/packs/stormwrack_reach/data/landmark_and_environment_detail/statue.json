@@ -1,0 +1,251 @@
+{
+  "id": "stormwrack_reach.landmark_and_environment_detail.statue",
+  "path": "res://assets/world_map/stormwrack_reach/landmark_and_environment_detail/statue.png",
+  "type": "landmark",
+  "category": "landmark_and_environment_detail",
+  "environment": "stormwrack_reach",
+  "environment_name": "Stormwrack Reach",
+  "world_tier": "Immortal World",
+  "archetype": "landmark_and_environment_detail.statue",
+  "name": "Guardian statue",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image generation, 2026-10-05",
+  "license": "OpenAI generated image; project use under applicable OpenAI generation terms",
+  "alpha": "transparent",
+  "environment_theme": "Wet dark coastal rock, broken seafoam, wind-bent coastal flora, and weathered driftwood.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-05",
+  "prompt_ref": "openai-map-v1:stormwrack_reach.landmark_and_environment_detail.statue:20261005",
+  "prompt": "One weathered guardian statue for Stormwrack Reach, transparent 2D top-down RPG landmark sprite, square 1024x1024. Strict straight-down orthographic view, no perspective convergence. Compact upright stone guardian statue seen directly from above: broad carved head silhouette at north/top, folded shoulders and robe-like stone base extending south/bottom, simple worn sea-wave motif carved into top of plinth. Weathered dark coastal slate, muted blue-gray damp patches, little salt pale edge wear, one small broken corner. Non-threatening and readable at 256x256; centered with transparent margin, no ground plane. Matte anime gouache, broad quiet shapes, restrained #263A35 contour lines, diffuse overcast coastal light, low contrast. Environment: wet dark coastal rock, broken seafoam, wind-bent flora, weathered driftwood. Exclude ocean, shoreline, waves, foam, plants, driftwood, weapons, people, text, labels, UI, border, shadow beyond sprite, isometric view, front-facing portrait, photorealism, 3D render, watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.712,
+        0.71
+      ],
+      [
+        0.887,
+        0.903
+      ]
+    ],
+    "frac_zero": 0.6521,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.2,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "solid",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 1,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "examine",
+        "reach_cells": 2,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      4,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.027,
+        0.682,
+        0.632,
+        0.01
+      ],
+      [
+        0.47,
+        1.0,
+        1.0,
+        0.43
+      ],
+      [
+        0.942,
+        1.0,
+        1.0,
+        0.939
+      ],
+      [
+        0.881,
+        1.0,
+        1.0,
+        0.909
+      ],
+      [
+        0.861,
+        1.0,
+        1.0,
+        0.896
+      ],
+      [
+        0.818,
+        1.0,
+        1.0,
+        0.873
+      ],
+      [
+        0.533,
+        1.0,
+        0.975,
+        0.482
+      ]
+    ],
+    "crop_offset": [
+      62,
+      22
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.333,
+    "dominant_rgb": [
+      67.7,
+      74.0,
+      73.3
+    ],
+    "hsv": {
+      "hue_deg": 161.2,
+      "saturation": 0.12,
+      "value": 0.3
+    },
+    "dominant_palette": "dark_slate",
+    "center_of_mass_norm": [
+      0.488,
+      0.544
+    ],
+    "horizontal_symmetry": 1.0,
+    "edge_complexity": 0.149
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

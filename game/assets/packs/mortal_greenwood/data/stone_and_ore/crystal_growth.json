@@ -1,0 +1,258 @@
+{
+  "id": "mortal_greenwood.stone_and_ore.crystal_growth",
+  "path": "res://assets/world_map/mortal_greenwood/stone_and_ore/crystal_growth.png",
+  "type": "resource_node",
+  "category": "stone_and_ore",
+  "environment": "mortal_greenwood",
+  "environment_name": "Mortal Greenwood",
+  "world_tier": "Mortal World",
+  "archetype": "stone_and_ore.crystal_growth",
+  "name": "Crystal growth",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image_gen built-in; 2026-10-03; crystal-node render and alpha extraction",
+  "license": "Generated with OpenAI image_gen; verify applicable service terms before release",
+  "alpha": "transparent",
+  "generated_on": "2026-10-03",
+  "prompt_ref": "map-resource-greenwood-crystal-v1",
+  "prompt": "Initial sprite prompt: Create a Mortal Greenwood harvestable crystal-growth node: low fractured stone outcrop, five clear pale-jade crystal points, one large and four small, moss in two seams. Use the boulder sprite as stone and gouache/ink reference. Painterly gouache, fine dark forest-green contours, broad facets, upper-left light, restrained texture. Strict vertical top-down, isolated 256x256 canvas with padding, bottom-center pivot. Weathered stone gray, blue-gray shadows, jade crystals, tiny gold glints. Genuine transparent alpha, no checkerboard, background, ground, shadow, scenery, text, border, perspective, isometric, photorealism, pixel art, neon, clutter, watermark.\nTransparency repair prompt: Remove checkerboard and preserve the crystal node's silhouette, facets, colors, light, and gouache brushwork; change only exterior pixels to fully transparent alpha. No crop, repaint, recolor, extra crystals, text, background, ground, shadow, border, watermark.",
+  "reference_ids": [
+    "crystal-node-background-extraction-v1",
+    "mortal_greenwood.stone_and_ore.boulder"
+  ],
+  "environment_theme": "Dense broadleaf canopy, tangled roots, emerald moss, and dappled forest clearings.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.652
+      ]
+    ],
+    "frac_zero": 0.5417,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": true,
+      "vision_mode": "transparent",
+      "acoustic_profile": "crystal",
+      "material": "crystal",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 4,
+        "hp": 220,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "harvest",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.128,
+        0.751,
+        0.047,
+        0.0,
+        0.0
+      ],
+      [
+        0.018,
+        0.609,
+        0.907,
+        1.0,
+        0.688,
+        0.198,
+        0.0
+      ],
+      [
+        0.444,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.82,
+        0.006
+      ],
+      [
+        0.895,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.506
+      ],
+      [
+        0.732,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.958,
+        0.341
+      ],
+      [
+        0.172,
+        0.895,
+        1.0,
+        1.0,
+        1.0,
+        0.645,
+        0.0
+      ],
+      [
+        0.0,
+        0.119,
+        0.825,
+        0.926,
+        0.478,
+        0.056,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      25,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.442,
+    "dominant_rgb": [
+      130.5,
+      144.0,
+      106.5
+    ],
+    "hsv": {
+      "hue_deg": 89.3,
+      "saturation": 0.34,
+      "value": 0.59
+    },
+    "dominant_palette": "verdant_flora",
+    "center_of_mass_norm": [
+      0.496,
+      0.527
+    ],
+    "horizontal_symmetry": 0.95,
+    "edge_complexity": 0.285
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 4,
+    "hp": 220,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "crystal",
+  "cultivation_element": "none"
+}

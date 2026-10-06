@@ -1,0 +1,215 @@
+{
+  "id": "yin_jian.rift_and_portal.blood_mist_conduit_gate",
+  "name": "Blood Mist Conduit Gate",
+  "vietnamese_name": "Cổng Dẫn Khí Huyết Sương",
+  "hanzi": "血雾导引门",
+  "category": "rift_and_portal",
+  "sub_category": "grand_gate",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "core_ring",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "pass_mist",
+  "gameplay_role": "Gate through which red miasma rolls into mortal border.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "yin",
+  "prompt_summary": "Open stone doorway vomiting thick crimson fog.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/rift_and_portal/blood_mist_conduit_gate.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.rift_and_portal.blood_mist_conduit_gate:260713117",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.237,
+        0.666,
+        0.263
+      ],
+      [
+        0.627,
+        0.894,
+        0.49
+      ]
+    ],
+    "frac_zero": 0.7069,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        false,
+        false,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      8,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.001,
+        0.11,
+        0.46,
+        0.88,
+        0.532,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.646,
+        0.998,
+        0.966,
+        0.939,
+        0.452,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.309,
+        1.0,
+        0.256,
+        0.773,
+        0.271,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.135,
+        0.988,
+        0.098,
+        0.87,
+        0.253,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.358,
+        0.995,
+        0.722,
+        0.997,
+        0.932,
+        0.194,
+        0.0
+      ],
+      [
+        0.588,
+        0.894,
+        1.0,
+        1.0,
+        0.943,
+        0.354,
+        0.181,
+        0.338
+      ],
+      [
+        1.0,
+        1.0,
+        0.992,
+        0.938,
+        0.976,
+        0.481,
+        0.802,
+        1.0
+      ]
+    ],
+    "crop_offset": [
+      77,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 229,
+    "contact_reference_px": 229.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

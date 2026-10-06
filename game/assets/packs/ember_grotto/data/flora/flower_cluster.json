@@ -1,0 +1,170 @@
+{
+  "id": "ember_grotto.flora.flower_cluster",
+  "path": "res://assets/world_map/ember_grotto/flora/flower_cluster.png",
+  "type": "prop",
+  "category": "flora",
+  "environment": "ember_grotto",
+  "environment_name": "Ember Grotto",
+  "world_tier": "Mortal World",
+  "archetype": "flora.flower_cluster",
+  "name": "Flower cluster",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "bottom_center",
+  "collision": "none",
+  "status": "generated",
+  "source": "OpenAI image generation (image_gen), 2026-10-05",
+  "license": "OpenAI generated image; project use",
+  "alpha": "transparent",
+  "environment_theme": "Soot-dark basalt, warm umber stone, ember fissures, and compact volcanic formations.",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "generated_on": "2026-10-05",
+  "prompt_ref": "openai-map-v1:ember_grotto.flora.flower_cluster",
+  "prompt": "High-quality production sprite for Chaos World: one small flower cluster prop for Ember Grotto, native 128x128 game canvas, strict straight-down orthographic overhead view for a 2D top-down RPG. A compact fireproof succulent-like plant with dark olive leaves and three small cinnabar-red flowers, growing between a few tiny soot-dark basalt chips; only faint ember-orange centers, no flame. Environment character: soot-dark basalt, warm umber stone, ember fissures, compact volcanic formations. Clearly a low flower cluster, not a shrub or volcanic rock formation. Complete isolated silhouette centered on its bottom-center pivot, readable at 1x1 cell. Transparent background with clean natural alpha, no ground disk, cast shadow, lava pool, terrain square, or scene. Anime-painted gouache, fine dark #263A35 ink contours, broad readable planes, warm umber and restrained cinnabar accents, soft upper-left light. No perspective, isometric view, text, border, UI, or watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.594
+      ]
+    ],
+    "frac_zero": 0.8122,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "none",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "transparent",
+      "acoustic_profile": "foliage",
+      "material": "foliage",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 1,
+        "hp": 25,
+        "on_destroy": "landmark_and_environment_detail.ground_decal",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.613,
+        0.524,
+        0.0
+      ],
+      [
+        0.673,
+        0.695,
+        0.094
+      ],
+      [
+        0.094,
+        0.073,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      31,
+      29
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.157,
+    "dominant_rgb": [
+      102.1,
+      60.5,
+      33.0
+    ],
+    "hsv": {
+      "hue_deg": 33.7,
+      "saturation": 0.61,
+      "value": 0.4
+    },
+    "dominant_palette": "warm_earth_gold",
+    "center_of_mass_norm": [
+      0.488,
+      0.489
+    ],
+    "horizontal_symmetry": 0.81,
+    "edge_complexity": 0.148
+  },
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 1,
+    "hp": 25,
+    "on_destroy": "landmark_and_environment_detail.ground_decal",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "foliage",
+  "cultivation_element": "none"
+}

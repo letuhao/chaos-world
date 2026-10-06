@@ -1,0 +1,134 @@
+{
+  "id": "yin_jian.destructible_and_container.bone_carved_ash_urn",
+  "name": "Carved Bone Relic Urn",
+  "vietnamese_name": "Bình Tro Cốt Chạm Khắc",
+  "hanzi": "浮雕骨瓮",
+  "category": "destructible_and_container",
+  "sub_category": "soul_jar_and_urn",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "shatter",
+  "gameplay_role": "Urn carved from demon bone holding pure Yin marrow.",
+  "destructible": true,
+  "material": "bone",
+  "cultivation_element": "yin",
+  "prompt_summary": "Ivory urn carved with miniature Yama court reliefs.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/destructible_and_container/bone_carved_ash_urn.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.destructible_and_container.bone_carved_ash_urn:261437561",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.624
+      ]
+    ],
+    "frac_zero": 0.6734,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.217,
+        0.971,
+        0.22
+      ],
+      [
+        0.312,
+        1.0,
+        0.291
+      ],
+      [
+        0.997,
+        1.0,
+        0.99
+      ]
+    ],
+    "crop_offset": [
+      16,
+      27
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 96,
+    "contact_reference_px": 96.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

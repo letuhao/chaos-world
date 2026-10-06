@@ -1,0 +1,98 @@
+{
+  "id": "yin_jian.obstacle_and_hazard.demon_teeth_iron_gate_trap",
+  "name": "Snapping Demon-Jaw Floor Trap",
+  "vietnamese_name": "Bẫy Hàm Răng Sắt Sập",
+  "hanzi": "咬骨兽夹",
+  "category": "obstacle_and_hazard",
+  "sub_category": "mechanical_trap",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "disarm_bear_trap",
+  "gameplay_role": "Giant mechanical bear trap concealed in dust.",
+  "destructible": true,
+  "material": "metal",
+  "cultivation_element": "metal",
+  "prompt_summary": "Circular steel bear-trap with serrated interlocking fangs.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/obstacle_and_hazard/demon_teeth_iron_gate_trap.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.obstacle_and_hazard.demon_teeth_iron_gate_trap:261155022",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.724
+      ]
+    ],
+    "frac_zero": 0.6104,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.355,
+        0.858,
+        0.463
+      ],
+      [
+        0.955,
+        1.0,
+        0.785
+      ],
+      [
+        0.81,
+        0.983,
+        0.232
+      ]
+    ],
+    "crop_offset": [
+      16,
+      24
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 62,
+    "contact_reference_px": 62.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

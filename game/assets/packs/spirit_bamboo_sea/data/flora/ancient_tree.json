@@ -1,0 +1,480 @@
+{
+  "id": "spirit_bamboo_sea.flora.ancient_tree",
+  "path": "res://assets/world_map/spirit_bamboo_sea/flora/ancient_tree.png",
+  "type": "landmark",
+  "category": "flora",
+  "environment": "spirit_bamboo_sea",
+  "environment_name": "Spirit Bamboo Sea",
+  "world_tier": "Spirit World",
+  "archetype": "flora.ancient_tree",
+  "name": "Ancient tree",
+  "canvas_px": [
+    512,
+    512
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image generation (image_gen edit)",
+  "license": "Generated locally with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Interlocking jade bamboo crowns, pale leaf litter, green shoots, and winding footpaths.",
+  "generated_on": "2026-10-04",
+  "prompt_ref": "openai-imagegen:spirit_bamboo_sea.flora.ancient_tree:20261004-r1",
+  "prompt": "Make one precise cleanup edit to this transparent tree sprite. Preserve the entire ancient tree exactly: same silhouette, canopy arrangement, trunk, roots, colors, lighting, detail, and framing. Remove only the stray fluorescent lime-green matte/fringe pixels visible immediately outside the foliage silhouette, especially along the upper and left edges. Keep the natural dark green leaf outline intact. Everything outside the tree must be fully transparent with a clean antialiased alpha edge. Do not erode leaves, remove pale blossoms, recolor foliage, add a glow, or alter any tree details. No background, ground, cast shadow, text, labels, border, or watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map",
+    "spirit_bamboo_sea.flora.canopy_tree"
+  ],
+  "footprint_cells": [
+    4,
+    4
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.364,
+        0.912,
+        0.432
+      ],
+      [
+        0.887,
+        1.0,
+        0.933
+      ],
+      [
+        0.339,
+        0.774,
+        0.353
+      ]
+    ],
+    "frac_zero": 0.4544,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sem": {
+      "occluder_rule": "ground_contact",
+      "cov_gate": 0.01,
+      "authored_open": "",
+      "passable_under": true,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "canopy",
+      "acoustic_profile": "foliage",
+      "material": "foliage",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 1,
+        "hp": 25,
+        "on_destroy": "landmark_and_environment_detail.ground_decal",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": "timber"
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "wood",
+        "qi_affinity": "ambient_absorb",
+        "qi_density_modifier": 1.15,
+        "resonance_radius_cells": 1,
+        "feng_shui_direction": "yang"
+      },
+      "resource": {
+        "resource_type": "timber",
+        "base_yield": 3,
+        "respawn_turns": 300,
+        "min_realm_tier": 1,
+        "harvest_tool_tag": "axe"
+      },
+      "scale_profile": {
+        "min_scale": 0.85,
+        "max_scale": 1.6,
+        "default_scale": 1.0,
+        "supported_scales": [
+          0.85,
+          1.0,
+          1.15,
+          1.35,
+          1.6
+        ],
+        "scale_mode": "stepped",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      15,
+      14
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.098,
+        0.464,
+        0.348,
+        0.865,
+        0.9,
+        0.301,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.19,
+        0.77,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.987,
+        0.64,
+        0.37,
+        0.01,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.001,
+        0.191,
+        0.823,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.489,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.503,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.886,
+        0.117,
+        0.0
+      ],
+      [
+        0.16,
+        0.764,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        0.416
+      ],
+      [
+        0.659,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.83
+      ],
+      [
+        0.699,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.927,
+        0.31
+      ],
+      [
+        0.293,
+        0.817,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.636
+      ],
+      [
+        0.408,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.995,
+        0.486
+      ],
+      [
+        0.034,
+        0.879,
+        0.986,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.968,
+        0.454,
+        0.07
+      ],
+      [
+        0.0,
+        0.069,
+        0.646,
+        0.948,
+        1.0,
+        0.999,
+        1.0,
+        1.0,
+        1.0,
+        0.985,
+        0.992,
+        0.906,
+        0.635,
+        0.091,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.021,
+        0.793,
+        0.733,
+        0.935,
+        0.992,
+        1.0,
+        0.961,
+        0.939,
+        0.756,
+        0.42,
+        0.177,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.117,
+        0.193,
+        0.284,
+        0.724,
+        0.975,
+        0.309,
+        0.594,
+        0.173,
+        0.126,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.71,
+        0.092,
+        0.0,
+        0.001,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      23,
+      54
+    ],
+    "trunk_columns": [
+      6
+    ],
+    "contact_px": 29,
+    "contact_reference_px": 21.75,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.0": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.15": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.35": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.6": [
+        1,
+        2,
+        1,
+        2
+      ]
+    },
+    "block_rect": [
+      1,
+      2,
+      1,
+      2
+    ],
+    "block_rect_px": [
+      128,
+      256,
+      256,
+      384
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.523,
+    "dominant_rgb": [
+      79.1,
+      116.4,
+      77.6
+    ],
+    "hsv": {
+      "hue_deg": 114.9,
+      "saturation": 0.57,
+      "value": 0.47
+    },
+    "dominant_palette": "verdant_flora",
+    "center_of_mass_norm": [
+      0.51,
+      0.519
+    ],
+    "horizontal_symmetry": 0.91,
+    "edge_complexity": 0.357
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "canopy",
+  "destructible": {
+    "enabled": true,
+    "tier": 1,
+    "hp": 25,
+    "on_destroy": "landmark_and_environment_detail.ground_decal",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": "timber"
+  },
+  "material": "foliage",
+  "cultivation_element": "wood"
+}

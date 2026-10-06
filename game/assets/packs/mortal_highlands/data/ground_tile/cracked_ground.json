@@ -1,0 +1,179 @@
+{
+  "id": "mortal_highlands.ground_tile.cracked_ground",
+  "path": "res://assets/world_map/mortal_highlands/ground_tile/cracked_ground.png",
+  "type": "tile",
+  "category": "ground_tile",
+  "environment": "mortal_highlands",
+  "environment_name": "Mortal Highlands",
+  "world_tier": "Mortal World",
+  "archetype": "ground_tile.cracked_ground",
+  "name": "Cracked ground",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "center",
+  "collision": "none",
+  "status": "generated",
+  "source": "OpenAI built-in image generation",
+  "license": "AI-generated for Chaos World; permitted for project use",
+  "alpha": "opaque",
+  "environment_theme": "Exposed grey granite, steep broken ledges, wind-shaped pines, and pale lichen.",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "generated_on": "2026-10-05",
+  "prompt_ref": "openai-imagegen:mortal-highlands.ground-tile.cracked-ground:20261005",
+  "prompt": "Production opaque seamless 2D top-down ground tile for Mortal Highlands, intended for a 128x128 map cell. Surface: pale gray granite earth with muted blue-gray mineral patches and faint lichen. Add about five short shallow cracks, irregular and mixed-direction, visible as delicate lines at the final 128px size; not black, not deep. The rest remains broad, quiet stone planes. Reflect exposed granite, wind-worn highland soil, and pale lichen without showing cliffs or plants. Exact straight-down orthographic, flat walkable surface, fills the entire square. Matte anime gouache, fine restrained #263A35 details, soft neutral light, low contrast beneath actors. Even non-directional layout with seamless opposite edges and no obvious repeated motif. Fully opaque. No pine branches, trees, standing plants, large rocks, ledges, cliffs, horizon, perspective, cast shadows, objects, buildings, people, border, grid, text, UI, or watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        1.0
+      ]
+    ],
+    "frac_zero": 0.0,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "none",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "transparent",
+      "acoustic_profile": "earth",
+      "material": "earth",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 1,
+        "hp": 40,
+        "on_destroy": "ground_tile.cracked_ground",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "water",
+          "wind"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      4,
+      4
+    ],
+    "sub_fill": [
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    ],
+    "crop_offset": [
+      0,
+      0
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 1.0,
+    "dominant_rgb": [
+      158.6,
+      156.8,
+      149.9
+    ],
+    "hsv": {
+      "hue_deg": 60.6,
+      "saturation": 0.06,
+      "value": 0.62
+    },
+    "dominant_palette": "monochrome_grey",
+    "center_of_mass_norm": [
+      0.492,
+      0.492
+    ],
+    "horizontal_symmetry": 1.0,
+    "edge_complexity": 0.294
+  },
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 1,
+    "hp": 40,
+    "on_destroy": "ground_tile.cracked_ground",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "water",
+      "wind"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "earth",
+  "cultivation_element": "none"
+}

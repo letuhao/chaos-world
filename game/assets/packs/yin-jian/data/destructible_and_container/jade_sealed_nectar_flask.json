@@ -1,0 +1,94 @@
+{
+  "id": "yin_jian.destructible_and_container.jade_sealed_nectar_flask",
+  "name": "Sealed Jade Nectar Flask",
+  "vietnamese_name": "Bình Ngọc Niêm Phong",
+  "hanzi": "封灵玉瓶",
+  "category": "destructible_and_container",
+  "sub_category": "soul_jar_and_urn",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "unseal",
+  "gameplay_role": "Rare jade bottle containing Meng Po's concentrated brew.",
+  "destructible": true,
+  "material": "stone",
+  "cultivation_element": "spirit",
+  "prompt_summary": "Translucent pale green jade gourd bottle sealed with red wax.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/destructible_and_container/jade_sealed_nectar_flask.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.destructible_and_container.jade_sealed_nectar_flask:261466356",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.443
+      ]
+    ],
+    "frac_zero": 0.8236,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      2,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.313,
+        0.08
+      ],
+      [
+        0.799,
+        0.208
+      ],
+      [
+        0.816,
+        0.339
+      ]
+    ],
+    "crop_offset": [
+      36,
+      16
+    ],
+    "trunk_columns": [
+      0
+    ],
+    "contact_px": 45,
+    "contact_reference_px": 45.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

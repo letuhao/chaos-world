@@ -386,9 +386,18 @@ def _production_prompt(record: dict, subject: str) -> str:
         else:
             framing += "Keep unused areas transparent and make tile edges join cleanly. "
     else:
+        canvas_px = record.get("canvas_px", [128, 128])
+        is_tall = canvas_px[1] >= canvas_px[0] * 2
+        is_wide = canvas_px[0] >= canvas_px[1] * 2
+        aspect_hint = ""
+        if is_tall:
+            aspect_hint = "The object is very tall and narrow in vertical orientation. It must be depicted completely upright and elongated from top to bottom, filling the vertical span of the canvas, strictly vertical with no horizontal or diagonal tilt. "
+        elif is_wide:
+            aspect_hint = "The object is very wide and horizontally elongated. It must stretch horizontally from left to right across the canvas in a wide panoramic span, strictly horizontal with no vertical or diagonal tilt. "
         framing = (
             "Show exactly one complete isolated standalone game asset object in the center, "
-            "with generous clear padding on all sides, honoring the "
+            + aspect_hint
+            + "with clear padding on all sides, honoring the "
             + record["pivot"]
             + " ground pivot. No background environment, no floor, no ground, no tiles, "
             "no shadows cast onto terrain. Pure isolated single object on a plain solid white background. "
@@ -491,7 +500,26 @@ def generate(
         output_node = "732"
         graph["761"]["inputs"]["unet_name"] = args.checkpoint
         graph["627"]["inputs"]["text"] = prompt
-        graph["698"]["inputs"].update(width=args.size, height=args.size)
+        cw, ch = record.get("canvas_px", [args.size, args.size])
+        if getattr(args, "width", None) is not None:
+            gen_w = args.width
+        elif cw >= ch * 2:
+            gen_w = 1024
+        elif ch >= cw * 2:
+            gen_w = 512
+        else:
+            gen_w = args.size
+
+        if getattr(args, "height", None) is not None:
+            gen_h = args.height
+        elif cw >= ch * 2:
+            gen_h = 512
+        elif ch >= cw * 2:
+            gen_h = 1024
+        else:
+            gen_h = args.size
+
+        graph["698"]["inputs"].update(width=gen_w, height=gen_h)
         graph["851"]["inputs"]["seed"] = seed
         graph["599"]["inputs"].update(
             steps=args.steps,

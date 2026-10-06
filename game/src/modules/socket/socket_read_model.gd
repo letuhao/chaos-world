@@ -20,7 +20,10 @@ static func project(
 		return {}
 	var reagents := reagent_views(actor)
 	var index := focused_slot(parent)
-	return {
+	# Built before the projection so `affixes` is populated when `costs` and
+	# `reforge_preview` read it — `project` assembles one dictionary literal, so
+	# there is no statement to order these in.
+	var projected := {
 		"actor_id": String(actor.id),
 		"realm": String(actor.realm()),
 		"parent": parent,
@@ -30,11 +33,18 @@ static func project(
 		"costs": cost_views(reagents, index, parent),
 		"eligibility": eligibility(actor, ledger, parent, reagents, index),
 		"enchant_preview": enchant_preview(actor, ledger, parent, reagents),
+		# The first affix a reforge could legally replace, and what it would cost.
+		# A screen offers one control rather than a selector it must validate
+		# itself; `parent.affixes` is the full list behind that choice.
+		"reforge_preview": reforge_preview(actor, ledger, parent, reagents),
 		"slot_count": int(parent["slot_count"]),
 		"slot_cap": int(parent["cap"]),
 		"imprint_used": int(parent["imprint_used"]),
 		"imprint_cap": SocketPolicy.IMPRINT_CAP,
 	}
+	# The assembled projection (boot repair): the build above never returned it,
+	# which fails this file's parse and everything through `SocketApi` up to boot.
+	return projected
 
 
 ## The socket host a screen is looking at, and every slot it carries.
@@ -63,6 +73,7 @@ static func parent_view(
 		slots.append(slot_view(ledger, slot_entry))
 		imprint_used += (slot_entry.get("imputed", []) as Array).size()
 	var channel := ledger.channel(instance.instance_id)
+	var attempts := ledger.reforge_count(instance.instance_id)
 	return {
 		"instance_id": String(instance.instance_id),
 		"def_id": String(def.id),
@@ -84,7 +95,54 @@ static func parent_view(
 		"enchantment": Dictionary(channel.get("effect", {})).duplicate(true),
 		"enchantment_generation": int(channel.get("generation", 0)),
 		"enchantment_cap": SocketPolicy.enchant_cap(instance.rarity),
+		# Every affix the item carries, each marked with whether a reforge may
+		# replace it, so a screen selects among the legal ones and greys out the
+		# authored ones instead of offering a press that is refused.
+		"affixes": affix_views(instance),
+		"reforge_attempts": attempts,
+		"reforge_cap": SocketPolicy.reforge_cap(instance.rarity),
+		"reforge_next_cost": SocketPolicy.reforge_cost_units(attempts),
+		"reforge_exhausted": attempts >= SocketPolicy.reforge_cap(instance.rarity),
 	}
+
+
+## Every affix `instance` carries, with what a reforge would cost to replace it.
+## `reforgable` is false for an authored fixed option, a set threshold and a
+## unique's locked signature, and `blocked_reason` names why — the same strings
+## the transaction refuses with, so a screen shows the reason rather than inventing
+## one.
+static func affix_views(instance: ItemInstance) -> Array:
+	var out: Array = []
+	if instance == null:
+		return out
+	for effect in SocketPolicy.effects_of(instance):
+		var option_id := StringName(effect.get("option_id", &""))
+		if option_id == &"":
+			continue
+		var reforgeable := SocketPolicy.is_reforgable(instance, option_id)
+		out.append(
+			{
+				"option_id": String(option_id),
+				"label": String(effect.get("label", option_id)),
+				"channel": String(effect.get("channel", "")),
+				"op": String(effect.get("op", "FLAT")),
+				"unit": String(effect.get("unit", "magnitude")),
+				"target_type": String(effect.get("target_type", "")),
+				"target_id": String(effect.get("target_id", "")),
+				"value": float(effect.get("value", 0.0)),
+				"value_min": float(effect.get("value_min", 0.0)),
+				"value_max": float(effect.get("value_max", 0.0)),
+				"reforgable": reforgeable,
+				"blocked_reason": "" if reforgeable else _blocked_reason(effect),
+			}
+		)
+	return out
+
+
+static func _blocked_reason(effect: Dictionary) -> String:
+	if bool(effect.get("locked", false)):
+		return "option_locked"
+	return "authored_option"
 
 
 ## One slot as the screen reads it: the effects the slot itself carries and the
@@ -185,6 +243,39 @@ static func enchant_preview(
 	)
 
 
+## A reforge preview for the first affix on `parent` that may legally be
+## replaced, so a screen has one control to offer and one reason to show. It is
+## the same `ReforgeService.preview` the facade calls — a pure read — so a button
+## built from it cannot disagree with the commit behind it. `option` is "" when no
+## affix on the item is reforgeable, which is the case for a common item and for
+## an item whose affixes are all authored.
+static func reforge_preview(
+	actor: Actor, ledger: SocketLedger, parent: Dictionary, reagents: Dictionary
+) -> Dictionary:
+	var option_id := first_reforgeable(parent)
+	if option_id == "":
+		return ReforgeService.preview(
+			actor, ledger, StringName(String(parent.get("instance_id", ""))), &"", null
+		)
+	return ReforgeService.preview(
+		actor,
+		ledger,
+		StringName(String(parent.get("instance_id", ""))),
+		StringName(option_id),
+		SocketContent.resolve(StringName(first_held(reagents["enchantment"])))
+	)
+
+
+## The first affix on `parent` a reforge may replace, as an id. "" when the item
+## has none: every affix authored, or the cap already spent. Bounded by the
+## affixes the item carries.
+static func first_reforgeable(parent: Dictionary) -> String:
+	for entry in parent.get("affixes", []):
+		if bool((entry as Dictionary).get("reforgable", false)):
+			return String((entry as Dictionary)["option_id"])
+	return ""
+
+
 ## The reagent a player holds for each action, and what the focused slot looks
 ## like right now. Empty ids mean the actor holds nothing usable for that action.
 static func cost_views(reagents: Dictionary, index: int, parent: Dictionary) -> Dictionary:
@@ -197,6 +288,14 @@ static func cost_views(reagents: Dictionary, index: int, parent: Dictionary) -> 
 		"create_slot": first_held(reagents["slot_creation"]),
 		"impute_slot": first_held(reagents["imputation"]),
 		"enchantment": first_held(reagents["enchantment"]),
+		# Reforge spends the enchantment reagent, so the held unit is the same
+		# string and the cost shown is the ESCALATED one, not the flat reagent
+		# count above: a screen that showed "1" here would quote a price the
+		# transaction would refuse to honour.
+		"reforge": first_held(reagents["enchantment"]),
+		"reforge_units": SocketPolicy.reforge_cost_units(
+			int(parent.get("reforge_attempts", 0))
+		),
 		"slot_index": index,
 		"slot_kind": String(focused.get("kind", SocketPolicy.KIND_ANY)),
 		"slot_occupied": bool(focused.get("occupied", false)),
@@ -229,6 +328,10 @@ static func eligibility(
 		EnchantmentService.refusal(
 			actor, ledger, parent_id, SocketContent.resolve(StringName(enchant_id))
 		),
+		# One reason per candidate affix, keyed by option id, because a reforge
+		# names an AFFIX rather than an item: "why can I not replace this one" is
+		# the question a screen actually has to answer.
+		"reforge": reforge_refusals(actor, ledger, parent_id, enchant_id),
 	}
 	# No reagent in hand is its own reason: an unknown id must not be reported as
 	# a missing definition.
@@ -238,6 +341,33 @@ static func eligibility(
 		out["impute_slot"] = "missing_cost"
 	if enchant_id == "":
 		out["enchantment"] = "missing_cost"
+	# A reforge with no reagent in hand is refused the same way, so the map is not
+	# published as a set of empty reasons that read as "available".
+	if enchant_id == "":
+		out["reforge"] = {}
+	return out
+
+
+## Why replacing each affix on `parent_id` would refuse, keyed by option id. An
+## absent key means the affix is not on the item; an empty string means it would
+## commit. The set is bounded by the affixes the item carries, so this never walks
+## the catalog.
+static func reforge_refusals(
+	actor: Actor, ledger: SocketLedger, parent_id: StringName, reagent_id: String
+) -> Dictionary:
+	var out := {}
+	var owner := SocketOwnership.locate(actor, parent_id)
+	var instance := owner.get("instance") as ItemInstance
+	if instance == null:
+		return out
+	var reagent := SocketContent.resolve(StringName(reagent_id))
+	for effect in SocketPolicy.effects_of(instance):
+		var option_id := StringName(effect.get("option_id", &""))
+		if option_id == &"" or out.has(String(option_id)):
+			continue
+		out[String(option_id)] = ReforgeService.refusal(
+			actor, ledger, parent_id, option_id, reagent
+		)
 	return out
 
 

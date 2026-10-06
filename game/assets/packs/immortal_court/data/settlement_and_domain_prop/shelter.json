@@ -1,0 +1,289 @@
+{
+  "id": "immortal_court.settlement_and_domain_prop.shelter",
+  "path": "res://assets/world_map/immortal_court/settlement_and_domain_prop/shelter.png",
+  "type": "prop",
+  "category": "settlement_and_domain_prop",
+  "environment": "immortal_court",
+  "environment_name": "Immortal Court",
+  "world_tier": "Immortal World",
+  "archetype": "settlement_and_domain_prop.shelter",
+  "name": "Field shelter",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image_gen",
+  "license": "AI-generated for Chaos World; permitted for project use",
+  "alpha": "transparent",
+  "environment_theme": "Ivory stone terraces, balanced formal layouts, fine antique-gold seams, and cloud carving.",
+  "generated_on": "2026-10-12",
+  "prompt_ref": "immortal-court-shelter-openai-2026-10-12",
+  "prompt": "Top-down orthographic map prop: a compact formal rest pavilion in Immortal Court, warm ivory stone posts and pale tiled roof, antique-gold seams with restrained cloud carving, visible open entry edge. Anime gouache, fine #263A35 contours, balanced symmetry, broad readable planes, short attached shadow. Complete isolated 256x256 sprite on genuine transparent background; no terrace, people, furniture, surrounding landscape, text, frame, or watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.492,
+        0.677,
+        0.489
+      ],
+      [
+        0.73,
+        1.0,
+        0.725
+      ],
+      [
+        0.522,
+        0.945,
+        0.519
+      ]
+    ],
+    "frac_zero": 0.5806,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 9,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.2,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": true,
+      "vision_mode": "transparent",
+      "acoustic_profile": "wood",
+      "material": "wood",
+      "elevation": 1,
+      "destructible": {
+        "enabled": true,
+        "tier": 2,
+        "hp": 60,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.312,
+        0.411,
+        0.344,
+        0.344,
+        0.389,
+        0.374,
+        0.0
+      ],
+      [
+        0.228,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.33,
+        0.0
+      ],
+      [
+        0.281,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.39,
+        0.0
+      ],
+      [
+        0.592,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.658,
+        0.336
+      ],
+      [
+        0.241,
+        0.958,
+        1.0,
+        1.0,
+        0.998,
+        0.304,
+        0.0
+      ],
+      [
+        0.0,
+        0.938,
+        0.988,
+        1.0,
+        0.968,
+        0.064,
+        0.0
+      ],
+      [
+        0.0,
+        0.828,
+        0.164,
+        0.164,
+        0.734,
+        0.102,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      32,
+      43
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      384
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.398,
+    "dominant_rgb": [
+      197.5,
+      187.3,
+      168.1
+    ],
+    "hsv": {
+      "hue_deg": 55.6,
+      "saturation": 0.17,
+      "value": 0.78
+    },
+    "dominant_palette": "warm_earth_gold",
+    "center_of_mass_norm": [
+      0.505,
+      0.571
+    ],
+    "horizontal_symmetry": 0.99,
+    "edge_complexity": 0.227
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 2,
+    "hp": 60,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "wood",
+  "cultivation_element": "none"
+}

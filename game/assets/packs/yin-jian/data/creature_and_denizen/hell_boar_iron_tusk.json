@@ -1,0 +1,197 @@
+{
+  "id": "yin_jian.creature_and_denizen.hell_boar_iron_tusk",
+  "name": "Iron-Tusk Nether Boar",
+  "vietnamese_name": "Lợn Rừng Nanh Sắt Địa Phủ",
+  "hanzi": "铁齿冥獠猪",
+  "category": "creature_and_denizen",
+  "sub_category": "nether_beast",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "hunt_boar",
+  "gameplay_role": "Wild demonic boar with tusks capable of shattering rock.",
+  "destructible": false,
+  "material": "bone",
+  "cultivation_element": "earth",
+  "prompt_summary": "Bristled black boar with curved metallic steel tusks.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/hell_boar_iron_tusk.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.hell_boar_iron_tusk:262434503",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.321,
+        0.645
+      ],
+      [
+        0.58,
+        0.385
+      ]
+    ],
+    "frac_zero": 0.6314,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.007,
+        0.485,
+        0.327,
+        0.125,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.479,
+        0.999,
+        1.0,
+        0.947,
+        0.21
+      ],
+      [
+        0.0,
+        0.433,
+        0.966,
+        1.0,
+        1.0,
+        1.0,
+        0.533
+      ],
+      [
+        0.016,
+        0.588,
+        1.0,
+        1.0,
+        1.0,
+        0.929,
+        0.133
+      ],
+      [
+        0.232,
+        0.678,
+        1.0,
+        0.988,
+        0.895,
+        0.378,
+        0.033
+      ],
+      [
+        0.404,
+        0.819,
+        1.0,
+        0.349,
+        0.482,
+        0.096,
+        0.006
+      ],
+      [
+        0.0,
+        0.428,
+        0.371,
+        0.147,
+        0.391,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      25
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      4
+    ],
+    "contact_px": 41,
+    "contact_reference_px": 41.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

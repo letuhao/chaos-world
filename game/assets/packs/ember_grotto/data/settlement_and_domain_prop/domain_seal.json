@@ -1,0 +1,267 @@
+{
+  "id": "ember_grotto.settlement_and_domain_prop.domain_seal",
+  "path": "res://assets/world_map/ember_grotto/settlement_and_domain_prop/domain_seal.png",
+  "type": "interactable",
+  "category": "settlement_and_domain_prop",
+  "environment": "ember_grotto",
+  "environment_name": "Ember Grotto",
+  "world_tier": "Mortal World",
+  "archetype": "settlement_and_domain_prop.domain_seal",
+  "name": "Domain seal",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image_gen built-in; 2026-10-03; Ember Grotto seal plus background extraction",
+  "license": "Generated with OpenAI image_gen; verify applicable service terms before release",
+  "generated_on": "2026-10-03",
+  "prompt_ref": "map-prop-ember-grotto-seal-v1",
+  "prompt": "Initial sprite prompt: Create an Ember Grotto domain seal: one low circular basalt seal stone, shallow central spiral groove, three small cinnabar mineral insets, no writing. Use ancient_tree as painterly gouache and fine-ink reference with a volcanic material palette. Charcoal basalt, ash gray, restrained cinnabar and antique gold; upper-left light, low-noise texture. Strict vertical orthographic top-down, isolated object, 256x256 transparent canvas, bottom-center pivot, no external shadow, no floor, no other objects, no text, no perspective, no pixel art, no watermark.\nTransparency repair prompt: Remove the checkerboard background and preserve the exact seal object, silhouette, spiral, gem positions, colors, planes, light and brushwork; change only exterior checkerboard pixels to fully transparent alpha. No ground, extra objects, text, repaint, crop, recolor, shadow, border, watermark.",
+  "reference_ids": [
+    "ember-grotto-seal-background-extraction-v1",
+    "mortal_greenwood.flora.ancient_tree"
+  ],
+  "alpha": "transparent",
+  "environment_theme": "Soot-dark basalt, warm umber stone, ember fissures, and compact volcanic formations.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.743,
+        0.732
+      ],
+      [
+        0.787,
+        0.767
+      ]
+    ],
+    "frac_zero": 0.421,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.2,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "solid",
+      "acoustic_profile": "spirit",
+      "material": "spirit",
+      "elevation": 1,
+      "destructible": {
+        "enabled": false,
+        "tier": 0,
+        "hp": 0,
+        "on_destroy": null,
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "unseal",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.216,
+        0.729,
+        0.958,
+        0.605,
+        0.131,
+        0.0
+      ],
+      [
+        0.261,
+        0.962,
+        1.0,
+        1.0,
+        1.0,
+        0.906,
+        0.191
+      ],
+      [
+        0.811,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.699
+      ],
+      [
+        0.971,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.933
+      ],
+      [
+        0.803,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.735
+      ],
+      [
+        0.376,
+        0.999,
+        1.0,
+        1.0,
+        1.0,
+        0.953,
+        0.163
+      ],
+      [
+        0.0,
+        0.382,
+        0.84,
+        0.959,
+        0.784,
+        0.211,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      18,
+      17
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.562,
+    "dominant_rgb": [
+      97.9,
+      72.0,
+      46.6
+    ],
+    "hsv": {
+      "hue_deg": 30.4,
+      "saturation": 0.45,
+      "value": 0.38
+    },
+    "dominant_palette": "warm_earth_gold",
+    "center_of_mass_norm": [
+      0.493,
+      0.507
+    ],
+    "horizontal_symmetry": 0.98,
+    "edge_complexity": 0.333
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "destructible": {
+    "enabled": false,
+    "tier": 0,
+    "hp": 0,
+    "on_destroy": null,
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [],
+    "reveals_loot_category": null
+  },
+  "material": "spirit",
+  "cultivation_element": "none"
+}

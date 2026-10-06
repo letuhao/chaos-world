@@ -1,0 +1,514 @@
+{
+  "id": "dao_fracture.flora.ancient_tree",
+  "path": "res://assets/world_map/dao_fracture/flora/ancient_tree.png",
+  "type": "landmark",
+  "category": "flora",
+  "environment": "dao_fracture",
+  "environment_name": "Dao Fracture",
+  "world_tier": "Transcendent World",
+  "archetype": "flora.ancient_tree",
+  "name": "Ancient tree",
+  "canvas_px": [
+    512,
+    512
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image_gen",
+  "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Misaligned stone planes, impossible cracks, suspended shards, and narrow luminous seams.",
+  "footprint_cells": [
+    4,
+    4
+  ],
+  "generated_on": "2026-10-06",
+  "prompt_ref": "openai-imagegen:dao_fracture.ancient_tree:20261006",
+  "prompt": "One standalone 4x4-cell ancient tree landmark sprite for a 2D top-down map of Dao Fracture, viewed from directly overhead in orthographic projection. A strange ancient tree crown made from sparse pale slate branches radiating outward from a small central trunk, with fractured angular leaf clusters and several tiny detached mineral shards hovering just off the branch tips. The crown should read as a tree from above, not a crystal pile. Cool gray stonewood, muted blue-silver leaf planes, thin narrow pale-cyan cracks, no strong glow. Anime-painted gouache map art, dark #263A35 contours, broad readable planes, restrained upper-left light. Centered complete irregular canopy silhouette with transparent margins, square high-resolution source, legible at 512px. Genuine transparency outside the tree crown. No terrain, no cliffs, no island, no background, no side-view trunk, no horizon, no text, no frame, no watermark, no perspective, no isometric angle, no 3D render.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source_images": [
+    {
+      "path": "art-source/map-originals/dao_fracture/flora/dao_fracture__flora__ancient_tree__06c5c3d65240b3da.png",
+      "sha256": "06c5c3d65240b3da47804220484df7e8ad42c33b38d25dcc787a6ec3d16534f8",
+      "size_px": [
+        1254,
+        1254
+      ],
+      "source": "OpenAI image_gen",
+      "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+      "generated_on": "2026-10-06",
+      "prompt_ref": "openai-imagegen:dao_fracture.ancient_tree:20261006",
+      "prompt": "One standalone 4x4-cell ancient tree landmark sprite for a 2D top-down map of Dao Fracture, viewed from directly overhead in orthographic projection. A strange ancient tree crown made from sparse pale slate branches radiating outward from a small central trunk, with fractured angular leaf clusters and several tiny detached mineral shards hovering just off the branch tips. The crown should read as a tree from above, not a crystal pile. Cool gray stonewood, muted blue-silver leaf planes, thin narrow pale-cyan cracks, no strong glow. Anime-painted gouache map art, dark #263A35 contours, broad readable planes, restrained upper-left light. Centered complete irregular canopy silhouette with transparent margins, square high-resolution source, legible at 512px. Genuine transparency outside the tree crown. No terrain, no cliffs, no island, no background, no side-view trunk, no horizon, no text, no frame, no watermark, no perspective, no isometric angle, no 3D render.",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
+    }
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.367,
+        0.523,
+        0.248
+      ],
+      [
+        0.544,
+        0.827,
+        0.58
+      ],
+      [
+        0.211,
+        0.593,
+        0.347
+      ]
+    ],
+    "frac_zero": 0.5146,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sem": {
+      "occluder_rule": "ground_contact",
+      "cov_gate": 0.01,
+      "authored_open": "",
+      "passable_under": true,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "canopy",
+      "acoustic_profile": "foliage",
+      "material": "foliage",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 1,
+        "hp": 25,
+        "on_destroy": "landmark_and_environment_detail.ground_decal",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": "timber"
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "wood",
+        "qi_affinity": "ambient_absorb",
+        "qi_density_modifier": 1.15,
+        "resonance_radius_cells": 1,
+        "feng_shui_direction": "yang"
+      },
+      "resource": {
+        "resource_type": "timber",
+        "base_yield": 3,
+        "respawn_turns": 300,
+        "min_realm_tier": 1,
+        "harvest_tool_tag": "axe"
+      },
+      "scale_profile": {
+        "min_scale": 0.85,
+        "max_scale": 1.6,
+        "default_scale": 1.0,
+        "supported_scales": [
+          0.85,
+          1.0,
+          1.15,
+          1.35,
+          1.6
+        ],
+        "scale_mode": "stepped",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      15,
+      15
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.039,
+        0.416,
+        0.31,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.036,
+        0.01,
+        0.214,
+        0.587,
+        1.0,
+        0.63,
+        0.282,
+        0.079,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.229,
+        0.638,
+        0.873,
+        0.479,
+        0.524,
+        0.904,
+        0.831,
+        0.607,
+        0.573,
+        0.122,
+        0.289,
+        0.476,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.29,
+        0.851,
+        1.0,
+        0.854,
+        0.438,
+        0.686,
+        0.683,
+        0.839,
+        0.439,
+        0.659,
+        0.696,
+        0.367,
+        0.097,
+        0.0
+      ],
+      [
+        0.089,
+        0.769,
+        0.995,
+        1.0,
+        0.88,
+        0.621,
+        0.849,
+        0.191,
+        0.826,
+        0.367,
+        0.471,
+        0.704,
+        0.998,
+        0.771,
+        0.163
+      ],
+      [
+        0.0,
+        0.06,
+        0.569,
+        0.739,
+        0.469,
+        0.904,
+        0.397,
+        0.587,
+        0.949,
+        0.329,
+        0.753,
+        0.814,
+        1.0,
+        0.731,
+        0.268
+      ],
+      [
+        0.24,
+        0.727,
+        0.45,
+        0.476,
+        0.39,
+        0.495,
+        1.0,
+        1.0,
+        1.0,
+        0.53,
+        0.812,
+        0.56,
+        0.987,
+        0.858,
+        0.084
+      ],
+      [
+        0.386,
+        1.0,
+        0.974,
+        0.707,
+        0.676,
+        0.949,
+        1.0,
+        1.0,
+        1.0,
+        0.854,
+        0.609,
+        0.678,
+        0.498,
+        0.559,
+        0.316
+      ],
+      [
+        0.704,
+        0.849,
+        0.465,
+        0.415,
+        0.725,
+        0.803,
+        1.0,
+        1.0,
+        1.0,
+        0.664,
+        0.303,
+        0.522,
+        0.269,
+        0.498,
+        0.03
+      ],
+      [
+        0.059,
+        0.373,
+        0.534,
+        0.989,
+        0.506,
+        0.356,
+        0.999,
+        0.931,
+        0.98,
+        0.818,
+        0.735,
+        0.617,
+        0.823,
+        0.397,
+        0.0
+      ],
+      [
+        0.0,
+        0.241,
+        0.199,
+        0.638,
+        0.612,
+        0.585,
+        0.998,
+        0.27,
+        0.293,
+        0.998,
+        0.779,
+        0.82,
+        1.0,
+        0.723,
+        0.094
+      ],
+      [
+        0.0,
+        0.004,
+        0.368,
+        0.582,
+        0.968,
+        0.732,
+        0.627,
+        0.632,
+        0.439,
+        0.697,
+        0.687,
+        0.733,
+        0.93,
+        0.431,
+        0.0
+      ],
+      [
+        0.0,
+        0.008,
+        0.074,
+        0.638,
+        0.956,
+        0.831,
+        0.599,
+        0.949,
+        0.996,
+        0.411,
+        0.693,
+        0.39,
+        0.353,
+        0.038,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.29,
+        0.812,
+        0.336,
+        0.92,
+        1.0,
+        0.341,
+        0.003,
+        0.004,
+        0.23,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.056,
+        0.075,
+        0.345,
+        0.558,
+        0.067,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      22,
+      16
+    ],
+    "trunk_columns": [
+      8
+    ],
+    "contact_px": 26,
+    "contact_reference_px": 19.5,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.0": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.15": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.35": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.6": [
+        1,
+        2,
+        1,
+        2
+      ]
+    },
+    "block_rect": [
+      1,
+      2,
+      1,
+      2
+    ],
+    "block_rect_px": [
+      128,
+      256,
+      256,
+      384
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.403,
+    "dominant_rgb": [
+      104.9,
+      118.7,
+      131.3
+    ],
+    "hsv": {
+      "hue_deg": 198.9,
+      "saturation": 0.23,
+      "value": 0.52
+    },
+    "dominant_palette": "azure_water",
+    "center_of_mass_norm": [
+      0.506,
+      0.504
+    ],
+    "horizontal_symmetry": 0.7,
+    "edge_complexity": 0.321
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "canopy",
+  "destructible": {
+    "enabled": true,
+    "tier": 1,
+    "hp": 25,
+    "on_destroy": "landmark_and_environment_detail.ground_decal",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": "timber"
+  },
+  "material": "foliage",
+  "cultivation_element": "wood"
+}

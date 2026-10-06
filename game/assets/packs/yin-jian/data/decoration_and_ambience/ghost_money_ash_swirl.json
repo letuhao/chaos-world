@@ -1,0 +1,99 @@
+{
+  "id": "yin_jian.decoration_and_ambience.ghost_money_ash_swirl",
+  "name": "Whirling Ash of Burnt Currency",
+  "vietnamese_name": "Xoáy Tro Vàng Mã",
+  "hanzi": "纸钱黑灰风",
+  "category": "decoration_and_ambience",
+  "sub_category": "mist_and_glow",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Miniature dust devil kicking up black paper soot.",
+  "destructible": false,
+  "material": "spirit",
+  "cultivation_element": "fire",
+  "prompt_summary": "Upward spiral of black burnt paper fragments.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/decoration_and_ambience/ghost_money_ash_swirl.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.decoration_and_ambience.ghost_money_ash_swirl:265213259",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.49
+      ]
+    ],
+    "frac_zero": 0.7123,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.235,
+        0.742,
+        0.084
+      ],
+      [
+        0.353,
+        0.949,
+        0.371
+      ],
+      [
+        0.391,
+        0.73,
+        0.387
+      ]
+    ],
+    "crop_offset": [
+      17,
+      20
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 75,
+    "contact_reference_px": 75.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

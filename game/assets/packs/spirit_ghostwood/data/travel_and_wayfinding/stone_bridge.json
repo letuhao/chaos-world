@@ -1,0 +1,211 @@
+{
+  "id": "spirit_ghostwood.travel_and_wayfinding.stone_bridge",
+  "path": "res://assets/world_map/spirit_ghostwood/travel_and_wayfinding/stone_bridge.png",
+  "type": "prop",
+  "category": "travel_and_wayfinding",
+  "environment": "spirit_ghostwood",
+  "environment_name": "Spirit Ghostwood",
+  "world_tier": "Spirit World",
+  "archetype": "travel_and_wayfinding.stone_bridge",
+  "name": "Stone bridge",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "none",
+  "status": "generated",
+  "source": "OpenAI built-in image_gen via Codex",
+  "license": "AI-generated for Chaos World; permitted for project use",
+  "alpha": "transparent",
+  "environment_theme": "Charcoal soil, bone-pale roots, sparse ghost grass, and small cold cyan spirit lights.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-05",
+  "prompt_ref": "openai-map-spirit-ghostwood-stone-bridge-v1",
+  "prompt": "One short narrow stone footbridge for Spirit Ghostwood, direct overhead orthographic view: a slightly bowed left-to-right row of charcoal stone slabs with bone-pale root-like carving, small square endstones, tiny cold cyan spirit lights. Show transparent open gaps around the bridge so it can be placed over water or a ravine; show top surfaces only. Anime-painted gouache, fine dark #263A35 contours, broad readable planes, charcoal and ash-grey with bone ivory, upper-left light, attached contact shadows. Fully visible isolated transparent sprite, 512 square source, crisp silhouette. No landscape, water, terrain, text, UI, frame, watermark, or isometric perspective.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.773,
+        0.771
+      ]
+    ],
+    "frac_zero": 0.8229,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.15,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": true,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "transparent",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 1,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      7,
+      2
+    ],
+    "sub_fill": [
+      [
+        0.688,
+        0.765,
+        0.93,
+        0.991,
+        0.916,
+        0.753,
+        0.686
+      ],
+      [
+        0.822,
+        0.771,
+        0.637,
+        0.599,
+        0.643,
+        0.768,
+        0.825
+      ]
+    ],
+    "crop_offset": [
+      16,
+      177
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.166,
+    "dominant_rgb": [
+      97.2,
+      98.8,
+      94.6
+    ],
+    "hsv": {
+      "hue_deg": 119.5,
+      "saturation": 0.11,
+      "value": 0.4
+    },
+    "dominant_palette": "monochrome_grey",
+    "center_of_mass_norm": [
+      0.496,
+      0.808
+    ],
+    "horizontal_symmetry": 0.97,
+    "edge_complexity": 0.111
+  },
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

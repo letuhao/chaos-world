@@ -1,0 +1,207 @@
+{
+  "id": "mortal_greenwood.water_feature.spring",
+  "path": "res://assets/world_map/mortal_greenwood/water_feature/spring.png",
+  "type": "prop",
+  "category": "water_feature",
+  "environment": "mortal_greenwood",
+  "environment_name": "Mortal Greenwood",
+  "world_tier": "Mortal World",
+  "archetype": "water_feature.spring",
+  "name": "Spring",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "none",
+  "status": "generated",
+  "source": "OpenAI built-in image generation",
+  "license": "Generated locally with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Dense broadleaf canopy, tangled roots, emerald moss, and dappled forest clearings.",
+  "generated_on": "2026-10-04",
+  "prompt_ref": "openai-imagegen:mortal_greenwood.water_feature.spring:20261004",
+  "prompt": "One small natural forest spring, a shallow round turquoise pool edged with irregular pale stones and a little moss. Strict top-down orthographic game-map sprite, anime-painted gouache, fine dark #263A35 ink contours, restrained water highlights, soft upper-left light, transparent outside the stones, no ground plane, detached droplets, glow, text, or cropping.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.733
+      ]
+    ],
+    "frac_zero": 0.5393,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "none",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "transparent",
+      "acoustic_profile": "water",
+      "material": "water",
+      "elevation": 0,
+      "destructible": {
+        "enabled": false,
+        "tier": 0,
+        "hp": 0,
+        "on_destroy": null,
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "draw_water",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      7,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.314,
+        0.896,
+        0.711,
+        0.411,
+        0.011,
+        0.0
+      ],
+      [
+        0.396,
+        0.996,
+        1.0,
+        1.0,
+        1.0,
+        0.81,
+        0.139
+      ],
+      [
+        0.913,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.615
+      ],
+      [
+        0.857,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.801
+      ],
+      [
+        0.485,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.918,
+        0.16
+      ],
+      [
+        0.004,
+        0.362,
+        0.874,
+        0.876,
+        0.667,
+        0.173,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      29,
+      30
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.444,
+    "dominant_rgb": [
+      117.6,
+      156.1,
+      123.9
+    ],
+    "hsv": {
+      "hue_deg": 112.8,
+      "saturation": 0.42,
+      "value": 0.62
+    },
+    "dominant_palette": "verdant_flora",
+    "center_of_mass_norm": [
+      0.515,
+      0.498
+    ],
+    "horizontal_symmetry": 0.96,
+    "edge_complexity": 0.267
+  },
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": false,
+    "tier": 0,
+    "hp": 0,
+    "on_destroy": null,
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [],
+    "reveals_loot_category": null
+  },
+  "material": "water",
+  "cultivation_element": "none"
+}

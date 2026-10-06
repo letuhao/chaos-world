@@ -1,0 +1,258 @@
+{
+  "id": "immortal_court.landmark_and_environment_detail.statue",
+  "path": "res://assets/world_map/immortal_court/landmark_and_environment_detail/statue.png",
+  "type": "landmark",
+  "category": "landmark_and_environment_detail",
+  "environment": "immortal_court",
+  "environment_name": "Immortal Court",
+  "world_tier": "Immortal World",
+  "archetype": "landmark_and_environment_detail.statue",
+  "name": "Guardian statue",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image generation, 2026-10-05",
+  "license": "AI-generated with OpenAI; project use",
+  "alpha": "transparent",
+  "environment_theme": "Ivory stone terraces, balanced formal layouts, fine antique-gold seams, and cloud carving.",
+  "generated_on": "2026-10-05",
+  "prompt_ref": "map-immortal-court-guardian-statue-v1",
+  "prompt": "Production landmark prop for Chaos World, a 2D top-down cultivation fantasy map: an Immortal Court guardian statue, a compact carved ivory-stone qilin lion standing on a low square plinth, decorated with restrained antique-gold seam inlays and cloud-scroll carving. Strict straight-down orthographic overhead view: show the sculpted top surfaces, head at the top, body and four paws clearly arranged from above; no front-facing portrait, no horizon, no perspective. Symmetrical formal silhouette suitable for a palace terrace, solid grounded base and bottom-center pivot. Anime-painted gouache, fine dark #263A35 contours, broad readable stone planes, soft upper-left light, warm ivory and restrained gold. One complete centered statue on real transparent background, no environment, no extra objects, no text, border, or watermark. High-resolution square source.",
+  "reference_ids": [
+    "none"
+  ],
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.611,
+        0.609
+      ],
+      [
+        0.95,
+        0.943
+      ]
+    ],
+    "frac_zero": 0.5966,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.2,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "solid",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 1,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "examine",
+        "reach_cells": 2,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.233,
+        0.699,
+        0.0,
+        0.0
+      ],
+      [
+        0.184,
+        0.696,
+        0.982,
+        0.392,
+        0.101
+      ],
+      [
+        0.903,
+        1.0,
+        1.0,
+        1.0,
+        0.8
+      ],
+      [
+        0.913,
+        1.0,
+        1.0,
+        1.0,
+        0.806
+      ],
+      [
+        0.906,
+        1.0,
+        1.0,
+        1.0,
+        0.833
+      ],
+      [
+        0.958,
+        1.0,
+        1.0,
+        1.0,
+        0.875
+      ],
+      [
+        0.926,
+        0.871,
+        0.902,
+        0.883,
+        0.932
+      ]
+    ],
+    "crop_offset": [
+      70,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.388,
+    "dominant_rgb": [
+      163.3,
+      143.3,
+      115.9
+    ],
+    "hsv": {
+      "hue_deg": 34.5,
+      "saturation": 0.32,
+      "value": 0.64
+    },
+    "dominant_palette": "warm_earth_gold",
+    "center_of_mass_norm": [
+      0.556,
+      0.568
+    ],
+    "horizontal_symmetry": 0.98,
+    "edge_complexity": 0.277
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

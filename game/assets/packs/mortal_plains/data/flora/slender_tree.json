@@ -1,0 +1,269 @@
+{
+  "id": "mortal_plains.flora.slender_tree",
+  "path": "res://assets/world_map/mortal_plains/flora/slender_tree.png",
+  "type": "prop",
+  "category": "flora",
+  "environment": "mortal_plains",
+  "environment_name": "Mortal Plains",
+  "world_tier": "Mortal World",
+  "archetype": "flora.slender_tree",
+  "name": "Slender tree",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image generation (image_gen), 2026-10-05",
+  "license": "OpenAI generated image; project use",
+  "alpha": "transparent",
+  "environment_theme": "Sun-warmed ochre loam, low golden grasses, rounded hills, and worn farm tracks.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-05",
+  "prompt_ref": "openai-map-v1:mortal_plains.flora.slender_tree",
+  "prompt": "High-quality production sprite for Chaos World: one slender tree prop for Mortal Plains, 256x256 native canvas, strict straight-down orthographic overhead view for a 2D top-down RPG. A narrow, wind-shaped drought-hardy tree with an elongated sparse olive canopy, a few warm golden leaves, and one visible dark-brown central trunk opening; distinct from a broad round canopy tree. Its shape should fit worn farm tracks and low golden grasses of Mortal Plains. Keep the complete canopy and rooted base in frame, centered on its bottom-center ground pivot, readable as a 2x2-cell blocker at game scale. Transparent background with clean natural alpha, no ground disk, no cast shadow, no terrain scene. Anime-painted gouache, fine dark #263A35 ink contours, broad readable color planes, warm loam and muted olive palette, restrained upper-left light. No horizon, isometric view, perspective, text, labels, border, UI, or watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.563,
+        0.492
+      ],
+      [
+        0.521,
+        0.554
+      ]
+    ],
+    "frac_zero": 0.72,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "ground_contact",
+      "cov_gate": 0.01,
+      "authored_open": "",
+      "passable_under": true,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "canopy",
+      "acoustic_profile": "foliage",
+      "material": "foliage",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 1,
+        "hp": 25,
+        "on_destroy": "landmark_and_environment_detail.ground_decal",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": "timber"
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "wood",
+        "qi_affinity": "ambient_absorb",
+        "qi_density_modifier": 1.15,
+        "resonance_radius_cells": 1,
+        "feng_shui_direction": "yang"
+      },
+      "resource": {
+        "resource_type": "timber",
+        "base_yield": 3,
+        "respawn_turns": 300,
+        "min_realm_tier": 1,
+        "harvest_tool_tag": "axe"
+      },
+      "scale_profile": {
+        "min_scale": 0.85,
+        "max_scale": 1.6,
+        "default_scale": 1.0,
+        "supported_scales": [
+          0.85,
+          1.0,
+          1.15,
+          1.35,
+          1.6
+        ],
+        "scale_mode": "stepped",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.019,
+        0.488,
+        0.365,
+        0.0,
+        0.0
+      ],
+      [
+        0.084,
+        0.91,
+        0.934,
+        0.159,
+        0.0
+      ],
+      [
+        0.559,
+        0.946,
+        0.997,
+        0.763,
+        0.145
+      ],
+      [
+        0.598,
+        0.981,
+        0.882,
+        0.9,
+        0.125
+      ],
+      [
+        0.612,
+        0.946,
+        0.902,
+        0.751,
+        0.117
+      ],
+      [
+        0.021,
+        0.805,
+        0.763,
+        0.52,
+        0.0
+      ],
+      [
+        0.0,
+        0.2,
+        0.436,
+        0.003,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      58,
+      17
+    ],
+    "trunk_columns": [
+      2
+    ],
+    "contact_px": 29,
+    "contact_reference_px": 29.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.243,
+    "dominant_rgb": [
+      111.3,
+      96.9,
+      50.9
+    ],
+    "hsv": {
+      "hue_deg": 47.0,
+      "saturation": 0.51,
+      "value": 0.44
+    },
+    "dominant_palette": "warm_earth_gold",
+    "center_of_mass_norm": [
+      0.49,
+      0.494
+    ],
+    "horizontal_symmetry": 0.84,
+    "edge_complexity": 0.171
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "canopy",
+  "destructible": {
+    "enabled": true,
+    "tier": 1,
+    "hp": 25,
+    "on_destroy": "landmark_and_environment_detail.ground_decal",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": "timber"
+  },
+  "material": "foliage",
+  "cultivation_element": "wood"
+}

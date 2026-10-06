@@ -1,0 +1,143 @@
+{
+  "id": "yin_jian.destructible_and_container.broken_mirror_stand",
+  "name": "Broken Vanity Mirror of Sins",
+  "vietnamese_name": "Khung Gương Tội Lỗi Vỡ",
+  "hanzi": "残破孽镜架",
+  "category": "destructible_and_container",
+  "sub_category": "destructible_and_container",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "smash",
+  "gameplay_role": "Wooden floor stand holding a shattered bronze mirror plate.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "metal",
+  "prompt_summary": "Carved dragon stand with jagged glass shards.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/destructible_and_container/broken_mirror_stand.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.destructible_and_container.broken_mirror_stand:261824801",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.261
+      ],
+      [
+        0.58
+      ]
+    ],
+    "frac_zero": 0.8759,
+    "blocks": [
+      [
+        true
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.013,
+        0.372,
+        0.285
+      ],
+      [
+        0.322,
+        0.871,
+        0.299
+      ],
+      [
+        0.499,
+        0.737,
+        0.401
+      ]
+    ],
+    "crop_offset": [
+      20,
+      148
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 67,
+    "contact_reference_px": 67.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      256
+    ]
+  }
+}

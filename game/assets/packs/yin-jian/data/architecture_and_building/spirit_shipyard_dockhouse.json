@@ -1,0 +1,485 @@
+{
+  "id": "yin_jian.architecture_and_building.spirit_shipyard_dockhouse",
+  "name": "Ghost Ship Maintenance Yard",
+  "vietnamese_name": "Xưởng Sửa Thuyền Vong",
+  "hanzi": "冥舟船坞",
+  "category": "architecture_and_building",
+  "sub_category": "ghost_market",
+  "footprint_cells": [
+    4,
+    5
+  ],
+  "canvas_px": [
+    512,
+    640
+  ],
+  "collision_type": "core_ring",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "repair_ship",
+  "gameplay_role": "Drydock repairing barges of the Yellow Springs.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "water",
+  "prompt_summary": "Timber dock shed over water with suspended ship hull.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/architecture_and_building/spirit_shipyard_dockhouse.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.architecture_and_building.spirit_shipyard_dockhouse:259926651",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.0,
+        0.125,
+        0.563,
+        0.184
+      ],
+      [
+        0.183,
+        0.99,
+        1.0,
+        0.633
+      ],
+      [
+        0.634,
+        1.0,
+        0.99,
+        0.552
+      ],
+      [
+        0.274,
+        0.818,
+        0.762,
+        0.089
+      ],
+      [
+        0.0,
+        0.07,
+        0.397,
+        0.085
+      ]
+    ],
+    "frac_zero": 0.6384,
+    "blocks": [
+      [
+        false,
+        false,
+        true,
+        false
+      ],
+      [
+        false,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 11,
+    "anchor_cell": [
+      2,
+      2
+    ],
+    "sub_grid": [
+      15,
+      17
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.393,
+        0.496,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.001,
+        0.143,
+        0.546,
+        0.957,
+        0.687,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.01,
+        0.131,
+        0.059,
+        0.336,
+        0.74,
+        0.998,
+        1.0,
+        1.0,
+        0.943,
+        0.143,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.136,
+        0.981,
+        0.965,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.906,
+        0.286,
+        0.0
+      ],
+      [
+        0.015,
+        0.028,
+        0.574,
+        0.894,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.754,
+        0.326,
+        0.286
+      ],
+      [
+        0.216,
+        0.001,
+        0.139,
+        0.645,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.469,
+        0.428,
+        0.694
+      ],
+      [
+        0.1,
+        0.139,
+        0.012,
+        0.557,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.981,
+        0.994,
+        0.274
+      ],
+      [
+        0.021,
+        0.341,
+        0.623,
+        0.984,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.757,
+        0.0
+      ],
+      [
+        0.705,
+        0.969,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.998,
+        0.606,
+        0.384,
+        0.0
+      ],
+      [
+        0.578,
+        0.921,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.761,
+        0.512,
+        0.015,
+        0.235,
+        0.0
+      ],
+      [
+        0.323,
+        0.498,
+        0.307,
+        0.957,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.869,
+        0.631,
+        0.154,
+        0.396,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.028,
+        0.257,
+        0.112,
+        0.057,
+        0.554,
+        1.0,
+        1.0,
+        1.0,
+        0.987,
+        0.857,
+        0.232,
+        0.088,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.07,
+        0.846,
+        0.729,
+        0.796,
+        1.0,
+        1.0,
+        0.979,
+        0.702,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.141,
+        0.484,
+        0.011,
+        0.547,
+        0.852,
+        0.978,
+        0.669,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.055,
+        0.0,
+        0.304,
+        0.254,
+        0.525,
+        0.384,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.238,
+        0.235,
+        0.272,
+        0.009,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.328,
+        0.141,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      106
+    ],
+    "trunk_columns": [],
+    "contact_px": 25,
+    "contact_reference_px": 25.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        3
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      3
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      512
+    ]
+  }
+}

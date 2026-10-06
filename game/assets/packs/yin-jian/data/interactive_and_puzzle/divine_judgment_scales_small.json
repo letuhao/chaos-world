@@ -1,0 +1,98 @@
+{
+  "id": "yin_jian.interactive_and_puzzle.divine_judgment_scales_small",
+  "name": "Portable Merchant's Karma Balance",
+  "vietnamese_name": "Cân Tiểu Ly Nghiệp Báo Nhỏ",
+  "hanzi": "案头小业秤",
+  "category": "interactive_and_puzzle",
+  "sub_category": "judgment_device",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "weigh_item",
+  "gameplay_role": "Desktop scales used to appraise value of soul items.",
+  "destructible": false,
+  "material": "metal",
+  "cultivation_element": "spirit",
+  "prompt_summary": "Small delicate brass scales resting on lacquered wood box.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/interactive_and_puzzle/divine_judgment_scales_small.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.interactive_and_puzzle.divine_judgment_scales_small:263645544",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.564
+      ]
+    ],
+    "frac_zero": 0.6739,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.054,
+        0.526,
+        0.335
+      ],
+      [
+        0.768,
+        0.985,
+        0.593
+      ],
+      [
+        1.0,
+        0.797,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      22
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 61,
+    "contact_reference_px": 61.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

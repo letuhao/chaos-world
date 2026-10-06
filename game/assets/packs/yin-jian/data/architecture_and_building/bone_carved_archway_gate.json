@@ -1,0 +1,156 @@
+{
+  "id": "yin_jian.architecture_and_building.bone_carved_archway_gate",
+  "name": "Carved Bone Memorial Arch (Pailou)",
+  "vietnamese_name": "Cổng Pailou Xương Trắng",
+  "hanzi": "白骨牌坊",
+  "category": "architecture_and_building",
+  "sub_category": "watchtower_gatehouse",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "core_ring",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "pass_under",
+  "gameplay_role": "Ceremonial archway spanning street entrance.",
+  "destructible": false,
+  "material": "bone",
+  "cultivation_element": "yin",
+  "prompt_summary": "Traditional 3-bay Chinese pailou gate carved entirely of skull motifs.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/architecture_and_building/bone_carved_archway_gate.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.architecture_and_building.bone_carved_archway_gate:259980583",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.423,
+        0.747,
+        0.44
+      ]
+    ],
+    "frac_zero": 0.7264,
+    "blocks": [
+      [
+        false,
+        false,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      8,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.437,
+        0.507,
+        0.788,
+        0.934,
+        0.891,
+        0.709,
+        0.507,
+        0.413
+      ],
+      [
+        0.372,
+        0.744,
+        0.68,
+        0.663,
+        0.762,
+        0.639,
+        0.83,
+        0.232
+      ],
+      [
+        0.004,
+        0.367,
+        0.413,
+        0.478,
+        0.595,
+        0.325,
+        0.239,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      69,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 31,
+    "contact_reference_px": 31.0,
+    "blocked_by_scale": {
+      "0.85": [
+        2,
+        0,
+        2,
+        0
+      ],
+      "1.0": [
+        2,
+        0,
+        2,
+        0
+      ],
+      "1.15": [
+        2,
+        0,
+        2,
+        0
+      ],
+      "1.35": [
+        2,
+        0,
+        2,
+        0
+      ],
+      "1.6": [
+        2,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": [
+      2,
+      0,
+      2,
+      0
+    ],
+    "block_rect_px": [
+      256,
+      0,
+      384,
+      128
+    ]
+  }
+}

@@ -456,6 +456,82 @@ def _fallback_def(record: dict, layer: str) -> str:
     )
 
 
+## Trait values a BODY-PLAN placeholder carries. Read from the five hand-authored race defs
+## (`commonborn.tres` and siblings) rather than invented here, because `PortraitDef.trait_value`
+## matches a variant WHOLE (ADR 0177): a value the game has never seen matches nothing, and a value
+## it half-knows answers a variant it was never drawn as.
+PLACEHOLDER_TRAITS = ("form:plain", "palette:neutral")
+
+
+def race_fallback_def(race_id: str, display_name: str, layer: str) -> str:
+    """A one-layer `PortraitDef` keyed by BODY PLAN, naming no individual.
+
+    `PortraitCatalog.for_race` scans every def for a matching `race_id` rather than looking up a def
+    by the race's own id, so this is what makes a species resolvable at all. Measured: 81 of 400
+    characters were covered by some committed def's `race_id` and 319 were not, because a def only
+    exists for a character somebody published.
+
+    `visual_traits` and `palette_key` are the placeholder vocabulary copied from the hand-authored
+    race defs. Deliberately NOT carrying the silhouette's tint: `palette:neutral` is what the game
+    already understands, and a per-species `palette:<element>` would be a new trait value answering
+    a variant request nothing makes.
+    """
+    trait_text = ", ".join(f'&"{trait}"' for trait in PLACEHOLDER_TRAITS)
+    return "\n".join(
+        [
+            '[gd_resource type="Resource" script_class="PortraitDef" load_steps=2 format=3]',
+            "",
+            '[ext_resource type="Script" path="res://src/core/portrait_def.gd" id="1_portrait"]',
+            "",
+            "[resource]",
+            'script = ExtResource("1_portrait")',
+            f'id = &"{race_id}"',
+            f"display_name = {display_name!r}".replace("'", '"'),
+            f'race_id = &"{race_id}"',
+            f"visual_traits = Array[StringName]([{trait_text}])",
+            f'layer_paths = Array[String](["{layer}"])',
+            'palette_key = &"neutral"',
+            "",
+        ]
+    )
+
+
+def _catalog_species() -> list[str]:
+    """Every body-plan id the character catalog names, sorted.
+
+    The catalog rather than the race table, because the catalog is what makes a fallback reachable:
+    a body plan nobody is born as needs no face, and the race table holds 5 entries against 29
+    species the cast is actually born as.
+    """
+    ids: set[str] = set()
+    for record in unique_characters.readable_catalog():
+        if not isinstance(record, dict):
+            continue
+        race = bare_id(str((record.get("appearance") or {}).get("race", "")))
+        if race:
+            ids.add(race)
+    return sorted(ids)
+
+
+def _species_display_names() -> dict[str, str]:
+    """`{bare_id: name}` from the Lore Bible, so a placeholder is titled by authored lore.
+
+    Falls back to the id itself rather than inventing a display name, which is what a missing
+    `races.<id>` entity should produce.
+    """
+    try:
+        from .lore.model import load_bible
+    except ImportError:
+        return {}
+    out: dict[str, str] = {}
+    for key, entity in load_bible().entities.items():
+        if not str(key).startswith("races.") or not isinstance(entity, dict):
+            continue
+        bare = str(key).removeprefix("races.")
+        out[bare] = str(entity.get("name") or bare)
+    return out
+
+
 def _visual_traits(record: dict) -> tuple[list[str], list[str]]:
     """(traits, notes) for a published portrait — ONE value per variant axis.
 
@@ -731,6 +807,13 @@ def register(subparsers) -> None:
         "report", help="per-character readiness across the cast; never fails"
     )
     report.add_argument("--fail-on", choices=("warn", "error"), default=None)
+    races = actions.add_parser(
+        "publish-races",
+        help="write one body-plan PortraitDef per species the cast is born as",
+    )
+    races.add_argument(
+        "--force", action="store_true", help="overwrite an existing body-plan PortraitDef"
+    )
 
 
 def run(args) -> int:
@@ -769,6 +852,43 @@ def run(args) -> int:
             fail("no character is ready to publish")
             return 1
         ok("character bundle sync report complete")
+        return 0
+
+    if action == "publish-races":
+        names = _species_display_names()
+        written: list[str] = []
+        kept: list[str] = []
+        missing_layer: list[str] = []
+        for race_id in _catalog_species():
+            target = PORTRAIT_ROOT / f"{race_id}.tres"
+            if target.is_file() and not args.force:
+                kept.append(race_id)
+                continue
+            layer = f"res://assets/characters/portraits/{race_id}.png"
+            if not (GAME_DIR / layer.removeprefix("res://")).is_file():
+                # Reported, not written: a def pointing at an uncommitted silhouette is the
+                # false-claim shape DEF-0293 was filed for, and the layer must exist.
+                missing_layer.append(race_id)
+                continue
+            PORTRAIT_ROOT.mkdir(parents=True, exist_ok=True)
+            target.write_text(
+                race_fallback_def(race_id, names.get(race_id, race_id), layer),
+                encoding="utf-8",
+                newline="\n",
+            )
+            written.append(race_id)
+        for race_id in kept:
+            info(f"{race_id}.tres already exists; left alone (pass --force to overwrite)")
+        for race_id in missing_layer:
+            fail(
+                f"{race_id}: no committed silhouette at {race_id}.png, so no PortraitDef was "
+                f"written. Run `uv run python -m tools portrait_fallback write` first."
+            )
+        ok(f"wrote {len(written)} body-plan PortraitDef(s); {len(kept)} already existed")
+        for race_id in written:
+            print(f"  {race_id}.tres")
+        if missing_layer:
+            return 1
         return 0
 
     if action == "verify":

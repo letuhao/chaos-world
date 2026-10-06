@@ -1,0 +1,227 @@
+{
+  "id": "spirit_bamboo_sea.settlement_and_domain_prop.sealed_cache",
+  "path": "res://assets/world_map/spirit_bamboo_sea/settlement_and_domain_prop/sealed_cache.png",
+  "type": "interactable",
+  "category": "settlement_and_domain_prop",
+  "environment": "spirit_bamboo_sea",
+  "environment_name": "Spirit Bamboo Sea",
+  "world_tier": "Spirit World",
+  "archetype": "settlement_and_domain_prop.sealed_cache",
+  "name": "Sealed cache",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image_gen",
+  "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Interlocking jade bamboo crowns, pale leaf litter, green shoots, and winding footpaths.",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "generated_on": "2026-10-07",
+  "prompt_ref": "openai-imagegen:spirit_bamboo_sea.sealed_cache:20261007",
+  "prompt": "One tiny reusable 1x1-cell interactable sealed-cache sprite for a 2D top-down map in Spirit Bamboo Sea, viewed from directly overhead. A compact square cache woven from dark green bamboo slats with a flat closed lid, two pale jade bamboo braces, and one simple knotted green cord with a small leaf-shaped seal. No writing. Clear small-object silhouette, complete and centered with transparent margin, high-resolution square source, readable at 128px. Anime gouache map art, fine dark #263A35 ink contours, broad readable planes, jade bamboo greens with pale leaf-green accents, restrained upper-left light. Genuine transparent background. No floor, no leaf litter, no extra props, no person, no labels, no UI, no frame, no watermark, no perspective, no 3D render.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source_images": [
+    {
+      "path": "art-source/map-originals/spirit_bamboo_sea/settlement_and_domain_prop/spirit_bamboo_sea__settlement_and_domain_prop__sealed_cache__82b74bff98927e9c.png",
+      "sha256": "82b74bff98927e9c0f53dff9ebd088841391113319887f31fe1d19fe4af2a98c",
+      "size_px": [
+        1254,
+        1254
+      ],
+      "source": "OpenAI image_gen",
+      "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+      "generated_on": "2026-10-07",
+      "prompt_ref": "openai-imagegen:spirit_bamboo_sea.sealed_cache:20261007",
+      "prompt": "One tiny reusable 1x1-cell interactable sealed-cache sprite for a 2D top-down map in Spirit Bamboo Sea, viewed from directly overhead. A compact square cache woven from dark green bamboo slats with a flat closed lid, two pale jade bamboo braces, and one simple knotted green cord with a small leaf-shaped seal. No writing. Clear small-object silhouette, complete and centered with transparent margin, high-resolution square source, readable at 128px. Anime gouache map art, fine dark #263A35 ink contours, broad readable planes, jade bamboo greens with pale leaf-green accents, restrained upper-left light. Genuine transparent background. No floor, no leaf litter, no extra props, no person, no labels, no UI, no frame, no watermark, no perspective, no 3D render.",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
+    }
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.899
+      ]
+    ],
+    "frac_zero": 0.4873,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": true,
+      "vision_mode": "transparent",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "open",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.869,
+        0.944,
+        0.866
+      ],
+      [
+        0.942,
+        1.0,
+        0.943
+      ],
+      [
+        0.791,
+        0.931,
+        0.788
+      ]
+    ],
+    "crop_offset": [
+      16,
+      19
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.488,
+    "dominant_rgb": [
+      91.9,
+      110.4,
+      73.1
+    ],
+    "hsv": {
+      "hue_deg": 102.6,
+      "saturation": 0.38,
+      "value": 0.43
+    },
+    "dominant_palette": "verdant_flora",
+    "center_of_mass_norm": [
+      0.496,
+      0.501
+    ],
+    "horizontal_symmetry": 0.99,
+    "edge_complexity": 0.302
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

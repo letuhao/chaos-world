@@ -1,0 +1,236 @@
+{
+  "id": "immortal_star_lake.stone_and_ore.crystal_growth",
+  "path": "res://assets/world_map/immortal_star_lake/stone_and_ore/crystal_growth.png",
+  "type": "resource_node",
+  "category": "stone_and_ore",
+  "environment": "immortal_star_lake",
+  "environment_name": "Immortal Star Lake",
+  "world_tier": "Immortal World",
+  "archetype": "stone_and_ore.crystal_growth",
+  "name": "Crystal growth",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image_gen 2026-10-05",
+  "license": "Generated locally with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Deep teal lake stone, star-like reflections, quiet silver highlights, and celestial markings.",
+  "generated_on": "2026-10-05",
+  "prompt_ref": "openai-imagegen:immortal-star-lake-crystal-growth:20261005",
+  "prompt": "Use the provided image only as a material, palette, and contour reference. Create one isolated crystal-growth resource node for Immortal Star Lake in a 2D top-down RPG. Strict orthographic straight-down camera. This is a compact cluster of 5 to 7 translucent pale cyan and silver-blue crystal points emerging from a low irregular base of dark teal lake stone. Make it distinct from the long slab-like ore vein: crystals grouped in a radial cluster with varied short faceted points and a visible stone base. Show broad crystal top facets, restrained star-like reflections, and quiet silver mineral lines. Keep the full silhouette compact and readable at 256x256; base of the rock sits at the bottom-center pivot. True transparent background outside the node with clean alpha and a short attached shadow contained beneath the base. Anime-painted gouache, fine dark #263A35 contour, broad readable value planes, cool upper-left light. No terrain or water, no ground patch, no detached shards, no tools, no characters, no text, labels, UI, frame, checkerboard, or watermark.",
+  "reference_ids": [
+    "immortal_star_lake.stone_and_ore.ore_vein"
+  ],
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.643
+      ]
+    ],
+    "frac_zero": 0.7542,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": true,
+      "vision_mode": "transparent",
+      "acoustic_profile": "crystal",
+      "material": "crystal",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 4,
+        "hp": 220,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "harvest",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      5,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.53,
+        0.393,
+        0.0,
+        0.0
+      ],
+      [
+        0.23,
+        0.8,
+        0.945,
+        0.728,
+        0.015
+      ],
+      [
+        0.641,
+        1.0,
+        1.0,
+        0.992,
+        0.41
+      ],
+      [
+        0.919,
+        1.0,
+        1.0,
+        1.0,
+        0.865
+      ],
+      [
+        0.354,
+        0.851,
+        0.925,
+        0.657,
+        0.214
+      ],
+      [
+        0.0,
+        0.031,
+        0.125,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      57,
+      45
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.232,
+    "dominant_rgb": [
+      81.0,
+      116.4,
+      134.8
+    ],
+    "hsv": {
+      "hue_deg": 196.3,
+      "saturation": 0.47,
+      "value": 0.53
+    },
+    "dominant_palette": "azure_water",
+    "center_of_mass_norm": [
+      0.506,
+      0.535
+    ],
+    "horizontal_symmetry": 0.88,
+    "edge_complexity": 0.153
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 4,
+    "hp": 220,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "crystal",
+  "cultivation_element": "none"
+}

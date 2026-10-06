@@ -40,3 +40,75 @@ static func load_order(roots: Array) -> Dictionary:
 ## without a loader pass (tests, in-repo registrants in a later wave).
 static func build_context(mod_id: String = "") -> RegistrationContext:
 	return RegistrationContext.new(mod_id)
+
+
+## Active contexts and registrations, set by the composition root after boot.
+## Stored here so the facade can answer queries without referencing app/.
+static var _active_contexts: Array = []
+static var _active_registrations: Dictionary = {}
+
+
+## Set the active contexts and registrations after a boot pass.
+static func set_active(contexts: Array, registrations: Dictionary) -> void:
+	_active_contexts = contexts
+	_active_registrations = registrations
+
+
+## Get a mod's config value by key. Returns the value, or null when the key
+## is not in the mod's config schema.
+static func get_config(mod_id: String, key: String) -> Variant:
+	var ctx := _find_context(mod_id)
+	if ctx == null:
+		return null
+	return ctx.get_config(key)
+
+
+## Set a mod's config value and persist to disk. Returns `{ok, reason, detail}`.
+static func set_config(mod_id: String, key: String, value: Variant) -> Dictionary:
+	var ctx := _find_context(mod_id)
+	if ctx == null:
+		return {"ok": false, "reason": "unknown_mod", "detail": "'%s' is not loaded" % mod_id}
+	return ctx.set_config(key, value)
+
+
+## Fire all lifecycle hooks registered for an event. Hooks are called in
+## registration order. A hook that throws is reported and the next hook fires.
+static func fire_lifecycle_event(event: String) -> void:
+	for ctx in _active_contexts:
+		if ctx == null:
+			continue
+		for row in ctx.lifecycle_hooks:
+			if String(row.get("event", "")) == event:
+				var callable: Callable = row.get("callable", Callable())
+				if callable.is_valid():
+					callable.call()
+
+
+## Apply all def patches for a family to a def. Returns the number of patches
+## applied. Patches are applied in load order.
+static func apply_def_patches(family: String, def: Resource) -> int:
+	var registrations: Dictionary = _active_registrations
+	var patches: Array = registrations.get("def_patches", [])
+	var applied := 0
+	for patch in patches:
+		if String(patch.get("family", "")) != family:
+			continue
+		# `def` is a Resource, so the read is single-arg `Object.get`: the
+		# two-arg Dictionary default form does not exist on it and fails the
+		# parse, which takes this whole file (and every boot through it) down.
+		# Absent reads null and never matches an authored patch id (boot repair).
+		var def_id: Variant = def.get("id")
+		if def_id == null or String(patch.get("id", "")) != String(def_id):
+			continue
+		var result := DefPatch.apply(def, patch)
+		if bool(result.get("ok", false)):
+			applied += 1
+	return applied
+
+
+## Find a loaded context by mod id.
+static func _find_context(mod_id: String) -> RegistrationContext:
+	for ctx in _active_contexts:
+		if ctx != null and ctx.mod_id == mod_id:
+			return ctx
+	return null

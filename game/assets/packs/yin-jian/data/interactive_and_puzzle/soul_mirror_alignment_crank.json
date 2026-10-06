@@ -1,0 +1,132 @@
+{
+  "id": "yin_jian.interactive_and_puzzle.soul_mirror_alignment_crank",
+  "name": "Mirror Azimuth Alignment Crank",
+  "vietnamese_name": "Tay Quay Chỉnh Hướng Gương",
+  "hanzi": "转角摇柄",
+  "category": "interactive_and_puzzle",
+  "sub_category": "bagua_mirror_puzzle",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "turn_crank",
+  "gameplay_role": "Fine adjustment crank for high precision mirror alignment.",
+  "destructible": false,
+  "material": "metal",
+  "cultivation_element": "metal",
+  "prompt_summary": "Brass geared pedestal with wooden winding handle.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/interactive_and_puzzle/soul_mirror_alignment_crank.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.interactive_and_puzzle.soul_mirror_alignment_crank:263570577",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.389
+      ]
+    ],
+    "frac_zero": 0.8305,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.541,
+        0.178,
+        0.0
+      ],
+      [
+        0.431,
+        0.258,
+        0.135
+      ],
+      [
+        0.818,
+        0.234,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      30,
+      20
+    ],
+    "trunk_columns": [
+      0
+    ],
+    "contact_px": 45,
+    "contact_reference_px": 45.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

@@ -1,0 +1,184 @@
+{
+  "id": "yin_jian.creature_and_denizen.spirit_silk_moth_giant",
+  "name": "Giant Nether Silk Moth",
+  "vietnamese_name": "Bướm Đêm Khổng Lồ U Minh",
+  "hanzi": "冥丝幽蝶",
+  "category": "creature_and_denizen",
+  "sub_category": "nether_beast",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "harvest_silk",
+  "gameplay_role": "Large beautiful moth shedding glowing sleep dust.",
+  "destructible": false,
+  "material": "foliage",
+  "cultivation_element": "spirit",
+  "prompt_summary": "Wingspan 6ft moth with velvet black wings and emerald eyes.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/spirit_silk_moth_giant.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.spirit_silk_moth_giant:262827383",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.65,
+        0.583
+      ],
+      [
+        0.357,
+        0.281
+      ]
+    ],
+    "frac_zero": 0.6812,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.642,
+        0.86,
+        0.22,
+        0.038,
+        0.115,
+        0.746,
+        0.652
+      ],
+      [
+        0.397,
+        1.0,
+        0.957,
+        0.792,
+        0.84,
+        0.996,
+        0.108
+      ],
+      [
+        0.007,
+        0.803,
+        1.0,
+        1.0,
+        1.0,
+        0.723,
+        0.0
+      ],
+      [
+        0.0,
+        0.683,
+        1.0,
+        0.788,
+        0.979,
+        0.378,
+        0.0
+      ],
+      [
+        0.0,
+        0.587,
+        0.694,
+        0.024,
+        0.617,
+        0.134,
+        0.0
+      ],
+      [
+        0.0,
+        0.209,
+        0.077,
+        0.0,
+        0.151,
+        0.18,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      50
+    ],
+    "trunk_columns": [],
+    "contact_px": 12,
+    "contact_reference_px": 12.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

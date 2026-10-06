@@ -1,0 +1,514 @@
+{
+  "id": "ember_grotto.flora.ancient_tree",
+  "path": "res://assets/world_map/ember_grotto/flora/ancient_tree.png",
+  "type": "landmark",
+  "category": "flora",
+  "environment": "ember_grotto",
+  "environment_name": "Ember Grotto",
+  "world_tier": "Mortal World",
+  "archetype": "flora.ancient_tree",
+  "name": "Ancient tree",
+  "canvas_px": [
+    512,
+    512
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image_gen",
+  "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Soot-dark basalt, warm umber stone, ember fissures, and compact volcanic formations.",
+  "footprint_cells": [
+    4,
+    4
+  ],
+  "generated_on": "2026-10-08",
+  "prompt_ref": "openai-imagegen:ember_grotto.ancient_tree:20261008",
+  "prompt": "One standalone 4x4-cell ancient-tree landmark sprite for a 2D top-down RPG map in Ember Grotto, viewed from directly overhead in orthographic projection. Show the irregular crown footprint of a hardy volcanic tree: a dark soot-brown trunk knot at the center with twisted charred branches radiating through compact russet and copper-red leaf clusters. Fine ember-orange fissures glow faintly along a few branches, controlled and subtle, no flames. Clear tree canopy silhouette from above, complete and compact, not a landscape scene. Anime-painted gouache map art, dark #263A35 contours, broad readable planes, soot-black, warm umber and restrained ember palette, soft upper-left light. Centered with transparent margin, square high-resolution source, legible at 512px. Genuine transparency outside the tree crown. No ground, no lava, no smoke, no volcano, no other plants, no side-view trunk, no horizon, no text, no frame, no watermark, no perspective, no 3D render.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source_images": [
+    {
+      "path": "art-source/map-originals/ember_grotto/flora/ember_grotto__flora__ancient_tree__5ae17ffe6f56e268.png",
+      "sha256": "5ae17ffe6f56e2689183d5e5b4652d00932d7e2f1ace541187ec3da0df04dd01",
+      "size_px": [
+        1254,
+        1254
+      ],
+      "source": "OpenAI image_gen",
+      "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+      "generated_on": "2026-10-08",
+      "prompt_ref": "openai-imagegen:ember_grotto.ancient_tree:20261008",
+      "prompt": "One standalone 4x4-cell ancient-tree landmark sprite for a 2D top-down RPG map in Ember Grotto, viewed from directly overhead in orthographic projection. Show the irregular crown footprint of a hardy volcanic tree: a dark soot-brown trunk knot at the center with twisted charred branches radiating through compact russet and copper-red leaf clusters. Fine ember-orange fissures glow faintly along a few branches, controlled and subtle, no flames. Clear tree canopy silhouette from above, complete and compact, not a landscape scene. Anime-painted gouache map art, dark #263A35 contours, broad readable planes, soot-black, warm umber and restrained ember palette, soft upper-left light. Centered with transparent margin, square high-resolution source, legible at 512px. Genuine transparency outside the tree crown. No ground, no lava, no smoke, no volcano, no other plants, no side-view trunk, no horizon, no text, no frame, no watermark, no perspective, no 3D render.",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
+    }
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.421,
+        0.773,
+        0.32
+      ],
+      [
+        0.77,
+        0.994,
+        0.789
+      ],
+      [
+        0.309,
+        0.79,
+        0.491
+      ]
+    ],
+    "frac_zero": 0.4143,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sem": {
+      "occluder_rule": "ground_contact",
+      "cov_gate": 0.01,
+      "authored_open": "",
+      "passable_under": true,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "canopy",
+      "acoustic_profile": "foliage",
+      "material": "foliage",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 1,
+        "hp": 25,
+        "on_destroy": "landmark_and_environment_detail.ground_decal",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": "timber"
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "wood",
+        "qi_affinity": "ambient_absorb",
+        "qi_density_modifier": 1.15,
+        "resonance_radius_cells": 1,
+        "feng_shui_direction": "yang"
+      },
+      "resource": {
+        "resource_type": "timber",
+        "base_yield": 3,
+        "respawn_turns": 300,
+        "min_realm_tier": 1,
+        "harvest_tool_tag": "axe"
+      },
+      "scale_profile": {
+        "min_scale": 0.85,
+        "max_scale": 1.6,
+        "default_scale": 1.0,
+        "supported_scales": [
+          0.85,
+          1.0,
+          1.15,
+          1.35,
+          1.6
+        ],
+        "scale_mode": "stepped",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      15,
+      15
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.001,
+        0.215,
+        0.745,
+        0.892,
+        0.315,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.039,
+        0.53,
+        0.545,
+        0.088,
+        0.688,
+        0.876,
+        0.982,
+        0.971,
+        0.385,
+        0.044,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.006,
+        0.559,
+        1.0,
+        0.97,
+        0.912,
+        0.865,
+        0.946,
+        0.898,
+        0.973,
+        0.999,
+        0.438,
+        0.128,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.629,
+        0.997,
+        1.0,
+        0.931,
+        0.804,
+        0.811,
+        1.0,
+        1.0,
+        0.863,
+        0.838,
+        0.68,
+        0.422,
+        0.326,
+        0.008
+      ],
+      [
+        0.031,
+        0.841,
+        0.979,
+        0.849,
+        0.894,
+        0.908,
+        0.729,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.989,
+        0.162
+      ],
+      [
+        0.061,
+        0.376,
+        0.982,
+        0.967,
+        0.715,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.968,
+        0.699,
+        0.946,
+        0.954,
+        0.959,
+        0.792
+      ],
+      [
+        0.709,
+        0.982,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.968,
+        0.811,
+        0.694,
+        0.811,
+        0.658,
+        0.545
+      ],
+      [
+        0.73,
+        1.0,
+        1.0,
+        0.905,
+        0.924,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.982,
+        0.968,
+        0.834,
+        0.606,
+        0.034
+      ],
+      [
+        0.174,
+        0.737,
+        0.966,
+        0.673,
+        0.994,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.945,
+        0.741,
+        0.795,
+        0.942,
+        1.0,
+        0.46
+      ],
+      [
+        0.076,
+        0.42,
+        0.832,
+        0.837,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.982,
+        0.982,
+        0.889,
+        0.951,
+        0.982,
+        1.0,
+        0.801
+      ],
+      [
+        0.0,
+        0.762,
+        1.0,
+        0.82,
+        0.949,
+        0.981,
+        0.996,
+        1.0,
+        0.867,
+        0.856,
+        0.904,
+        0.92,
+        0.89,
+        0.968,
+        0.191
+      ],
+      [
+        0.0,
+        0.22,
+        0.516,
+        0.52,
+        0.754,
+        0.891,
+        1.0,
+        0.98,
+        0.659,
+        0.917,
+        0.859,
+        0.982,
+        0.671,
+        0.517,
+        0.079
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.193,
+        0.71,
+        1.0,
+        1.0,
+        0.954,
+        0.778,
+        0.777,
+        0.991,
+        0.987,
+        0.865,
+        0.023,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.206,
+        0.529,
+        0.813,
+        0.999,
+        0.873,
+        0.415,
+        0.482,
+        0.34,
+        0.011,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.135,
+        0.595,
+        0.145,
+        0.095,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      29
+    ],
+    "trunk_columns": [
+      7
+    ],
+    "contact_px": 24,
+    "contact_reference_px": 18.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.0": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.15": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.35": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.6": [
+        1,
+        2,
+        1,
+        2
+      ]
+    },
+    "block_rect": [
+      1,
+      2,
+      1,
+      2
+    ],
+    "block_rect_px": [
+      128,
+      256,
+      256,
+      384
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.538,
+    "dominant_rgb": [
+      115.1,
+      44.6,
+      29.6
+    ],
+    "hsv": {
+      "hue_deg": 26.7,
+      "saturation": 0.67,
+      "value": 0.45
+    },
+    "dominant_palette": "crimson_flame",
+    "center_of_mass_norm": [
+      0.507,
+      0.516
+    ],
+    "horizontal_symmetry": 0.8,
+    "edge_complexity": 0.22
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "canopy",
+  "destructible": {
+    "enabled": true,
+    "tier": 1,
+    "hp": 25,
+    "on_destroy": "landmark_and_environment_detail.ground_decal",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": "timber"
+  },
+  "material": "foliage",
+  "cultivation_element": "wood"
+}

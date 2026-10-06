@@ -1,0 +1,133 @@
+{
+  "id": "yin_jian.cultivation_and_resource.spectral_amber_resin_nodule",
+  "name": "Hardened Spectral Amber Lump",
+  "vietnamese_name": "Cục Hổ Phách U Hồn",
+  "hanzi": "幽魂血琥珀",
+  "category": "cultivation_and_resource",
+  "sub_category": "spiritual_relic",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "chip_amber",
+  "gameplay_role": "Transparent orange resin with trapped wandering wisp inside.",
+  "destructible": true,
+  "material": "stone",
+  "cultivation_element": "spirit",
+  "prompt_summary": "Translucent golden-amber gem with trapped cyan flame.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/cultivation_and_resource/spectral_amber_resin_nodule.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.cultivation_and_resource.spectral_amber_resin_nodule:264640896",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.448
+      ]
+    ],
+    "frac_zero": 0.7615,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.037,
+        0.819,
+        0.22
+      ],
+      [
+        0.346,
+        0.991,
+        0.286
+      ],
+      [
+        0.651,
+        0.472,
+        0.131
+      ]
+    ],
+    "crop_offset": [
+      16,
+      30
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 69,
+    "contact_reference_px": 69.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

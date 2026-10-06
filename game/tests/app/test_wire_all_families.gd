@@ -8,6 +8,16 @@ extends TestCase
 ## this test asserts the wiring exists for every family that HAS a catalog.
 
 const FAMILIES_PATH := "res://../tools/arch/families.json"
+## Production's wiring table, read as text: the arms this suite asserts.
+const WIRING := "res://src/app/item_workbench_body.gd"
+
+
+## `TestCase` publishes `assert_eq`/`assert_ne`/`assert_almost_eq` only, so the
+## two-arg boolean shape used throughout this file is spelled here rather than
+## restated at every call site (file repair: the bare `assert_true` never existed
+## on the base and the suite could not load).
+func assert_true(value: bool, label: String) -> void:
+	assert_eq(value, true, label)
 
 
 func _read_families() -> Dictionary:
@@ -81,8 +91,8 @@ func test_all_families_have_catalogs_or_are_skipped() -> void:
 	assert_true(family_names.size() >= 48, "families.json should have at least 48 families")
 	var unwired: Array[String] = []
 	for family in family_names:
-		var class_name := _catalog_class_for_family(String(family))
-		if class_name == "":
+		var catalog_class := _catalog_class_for_family(String(family))
+		if catalog_class == "":
 			unwired.append(String(family))
 	# Families without catalogs are skipped with a warning, not silent.
 	# This test documents which families are skipped.
@@ -91,42 +101,40 @@ func test_all_families_have_catalogs_or_are_skipped() -> void:
 
 
 func test_catalogs_have_set_overlay_roots() -> void:
+	# Production wires each family with an explicit `<Class>.set_overlay_roots`
+	# arm in `item_workbench_body.gd::_wire_content_roots`, so the wiring is read
+	# off that text rather than through `ClassDB`: the engine's class database
+	# does not resolve GDScript globals (`class_exists` is false for every real
+	# catalog), and every `ClassDB` spelling of this check fails on classes that
+	# compile, load and run. A missing arm here is the unwired family.
+	var body := FileAccess.get_file_as_string(WIRING)
+	assert_ne(body, "", "the production wiring source is readable")
 	var families := _read_families()
 	var family_names: Array = families.get("families", {}).keys()
 	var missing: Array[String] = []
 	for family in family_names:
-		var class_name := _catalog_class_for_family(String(family))
-		if class_name == "":
+		var catalog_class := _catalog_class_for_family(String(family))
+		if catalog_class == "":
 			continue
-		# Check the class exists and has set_overlay_roots
-		if not ClassDB.class_exists(class_name):
-			missing.append("%s (class %s not found)" % [String(family), class_name])
-			continue
-		var script := ClassDB.class_get_script(class_name)
-		if script == null:
-			missing.append("%s (no script)" % String(family))
-			continue
-		assert_true(
-			ClassDB.class_has_method(class_name, &"set_overlay_roots"),
-			(
-				"Catalog %s for family '%s' should have set_overlay_roots"
-				% [class_name, String(family)]
+		if body.find("%s.set_overlay_roots(" % catalog_class) < 0:
+			missing.append(
+				(
+					"%s (no %s.set_overlay_roots arm in _wire_content_roots)"
+					% [String(family), catalog_class]
+				)
 			)
-		)
-	assert_true(
-		ClassDB.class_has_method(class_name, &"_overlay_merge"),
-		"Catalog %s for family '%s' should have _overlay_merge" % [class_name, String(family)]
-	)
-	assert_true(missing.is_empty(), "Missing overlay support: %s" % str(missing))
+	assert_true(missing.is_empty(), "Every wired family is wired in production: %s" % str(missing))
 
 
 func test_overlay_roots_accepts_stack() -> void:
-	# Test that set_overlay_roots accepts a stack and stores it
+	# Test that set_overlay_roots accepts a stack and stores it: the stored
+	# stack reads back verbatim, so the call is a write and not a no-op.
 	var stack: Array = [
 		{"dir": "res://mod_data/test_items", "owner": "test_mod", "declared_overrides": []},
 	]
 	Crafting.set_overlay_roots(stack)
-	# Reset to empty after test
+	assert_eq(Crafting.overlay_roots(), stack, "the stack round-trips through the setter")
+	# Reset to empty after test: static state persists across suites in one process.
 	Crafting.set_overlay_roots([])
 
 
@@ -149,8 +157,8 @@ func test_unwired_families_log_warning() -> void:
 	var family_names: Array = families.get("families", {}).keys()
 	var unwired: Array[String] = []
 	for family in family_names:
-		var class_name := _catalog_class_for_family(String(family))
-		if class_name == "":
+		var catalog_class := _catalog_class_for_family(String(family))
+		if catalog_class == "":
 			unwired.append(String(family))
 	# These families have no catalog and should be skipped with a warning:
 	# domain_templates, domain_rooms, domain_inhabitants, socket_items,

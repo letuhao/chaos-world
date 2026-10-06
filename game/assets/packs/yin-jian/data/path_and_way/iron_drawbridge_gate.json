@@ -1,0 +1,179 @@
+{
+  "id": "yin_jian.path_and_way.iron_drawbridge_gate",
+  "name": "Lowered Iron Drawbridge",
+  "vietnamese_name": "Cầu Treo Sắt Hạ Xuống",
+  "hanzi": "铁吊桥",
+  "category": "path_and_way",
+  "sub_category": "bridge",
+  "footprint_cells": [
+    2,
+    3
+  ],
+  "canvas_px": [
+    256,
+    384
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "cross",
+  "gameplay_role": "Heavy reinforced iron drawbridge across fortress moat.",
+  "destructible": false,
+  "material": "metal",
+  "cultivation_element": "metal",
+  "prompt_summary": "Drawbridge with heavy counterweight chains resting flat.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/path_and_way/iron_drawbridge_gate.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.path_and_way.iron_drawbridge_gate:259205664",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.226,
+        0.171
+      ],
+      [
+        0.62,
+        0.679
+      ],
+      [
+        0.099,
+        0.296
+      ]
+    ],
+    "frac_zero": 0.7993,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ],
+      [
+        false,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      8
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.03,
+        0.405,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.107,
+        0.0,
+        0.188,
+        0.71,
+        0.102,
+        0.407,
+        0.022
+      ],
+      [
+        0.578,
+        0.403,
+        0.853,
+        1.0,
+        0.708,
+        0.782,
+        0.0
+      ],
+      [
+        0.269,
+        0.927,
+        1.0,
+        1.0,
+        1.0,
+        0.957,
+        0.296
+      ],
+      [
+        0.0,
+        0.021,
+        0.617,
+        1.0,
+        0.548,
+        0.348,
+        0.323
+      ],
+      [
+        0.0,
+        0.0,
+        0.177,
+        0.893,
+        0.83,
+        0.035,
+        0.002
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.388,
+        0.401,
+        0.157,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.016,
+        0.01,
+        0.177,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      138
+    ],
+    "trunk_columns": [],
+    "contact_px": 5,
+    "contact_reference_px": 5.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

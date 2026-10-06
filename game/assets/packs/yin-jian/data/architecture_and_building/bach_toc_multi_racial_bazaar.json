@@ -1,0 +1,420 @@
+{
+  "id": "yin_jian.architecture_and_building.bach_toc_multi_racial_bazaar",
+  "name": "Hundred Races Grand Market Bazaar",
+  "vietnamese_name": "Bách Tộc Vương Thành Vạn Thương Phố",
+  "hanzi": "百族王城万商街",
+  "category": "architecture_and_building",
+  "sub_category": "ghost_market",
+  "racial_faction": "hundred_races",
+  "footprint_cells": [
+    5,
+    4
+  ],
+  "canvas_px": [
+    640,
+    512
+  ],
+  "collision_type": "partial",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "trade_in_bazaar",
+  "gameplay_role": "Thriving commercial plaza with multi-racial shops, beast merchants, alchemists, and exotic currency exchanges.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "neutral",
+  "prompt_summary": "Top-down 45 degree bustling oriental street market with colorful fabric awnings, stalls packed with glowing elixirs, dragon bones, exotic banners of minor clans.",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/architecture_and_building/bach_toc_multi_racial_bazaar.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.architecture_and_building.bach_toc_multi_racial_bazaar:265551144",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.0,
+        0.082,
+        0.54,
+        0.237,
+        0.074
+      ],
+      [
+        0.201,
+        0.876,
+        0.999,
+        0.743,
+        0.648
+      ],
+      [
+        0.294,
+        0.995,
+        1.0,
+        0.999,
+        0.651
+      ],
+      [
+        0.0,
+        0.185,
+        0.97,
+        0.775,
+        0.15
+      ]
+    ],
+    "frac_zero": 0.6268,
+    "blocks": [
+      [
+        false,
+        false,
+        true,
+        true,
+        false
+      ],
+      [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        false,
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 16,
+    "anchor_cell": [
+      2,
+      2
+    ],
+    "sub_grid": [
+      15,
+      15
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.247,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.121,
+        0.151,
+        0.832,
+        0.14,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.029,
+        0.692,
+        0.984,
+        1.0,
+        0.922,
+        0.449,
+        0.009,
+        0.007,
+        0.034,
+        0.075
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.008,
+        0.576,
+        0.85,
+        1.0,
+        1.0,
+        1.0,
+        0.561,
+        0.195,
+        0.135,
+        0.508,
+        0.564,
+        0.228
+      ],
+      [
+        0.0,
+        0.01,
+        0.007,
+        0.496,
+        0.999,
+        0.893,
+        1.0,
+        1.0,
+        0.968,
+        0.632,
+        0.218,
+        0.608,
+        1.0,
+        0.995,
+        0.346
+      ],
+      [
+        0.0,
+        0.37,
+        0.859,
+        0.998,
+        1.0,
+        0.826,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.907,
+        1.0,
+        0.995,
+        0.869,
+        0.069
+      ],
+      [
+        0.02,
+        0.419,
+        0.504,
+        0.902,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.786,
+        0.992,
+        0.72,
+        0.254,
+        0.0
+      ],
+      [
+        0.004,
+        0.091,
+        0.434,
+        0.917,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.666,
+        0.994,
+        0.998,
+        0.599,
+        0.019
+      ],
+      [
+        0.0,
+        0.192,
+        0.91,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.414
+      ],
+      [
+        0.0,
+        0.025,
+        0.973,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.631,
+        0.22
+      ],
+      [
+        0.0,
+        0.019,
+        0.917,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.979,
+        0.329,
+        0.043
+      ],
+      [
+        0.0,
+        0.0,
+        0.02,
+        0.322,
+        0.885,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.997,
+        0.793,
+        0.126,
+        0.015
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.052,
+        0.649,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.984,
+        0.248,
+        0.045,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.004,
+        0.801,
+        1.0,
+        1.0,
+        0.998,
+        0.5,
+        0.202,
+        0.265,
+        0.044,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.104,
+        0.989,
+        1.0,
+        1.0,
+        1.0,
+        0.335,
+        0.128,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      83,
+      16
+    ],
+    "trunk_columns": [
+      6,
+      7,
+      8,
+      9
+    ],
+    "contact_px": 148,
+    "contact_reference_px": 148.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        2,
+        3,
+        3,
+        3
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

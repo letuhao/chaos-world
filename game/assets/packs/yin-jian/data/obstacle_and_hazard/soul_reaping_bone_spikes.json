@@ -1,0 +1,195 @@
+{
+  "id": "yin_jian.obstacle_and_hazard.soul_reaping_bone_spikes",
+  "name": "Soul-Reaping Bone Spikes",
+  "vietnamese_name": "Bãi Chông Đoạt Phách",
+  "hanzi": "夺魄白骨刺",
+  "category": "obstacle_and_hazard",
+  "sub_category": "spikes_and_blade",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "disarm_spikes",
+  "gameplay_role": "Retractable bone spikes stabbing up from flagstones.",
+  "destructible": true,
+  "material": "bone",
+  "cultivation_element": "yin",
+  "prompt_summary": "Sharp sharpened femur and rib spikes jutting up from stone slots.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/obstacle_and_hazard/soul_reaping_bone_spikes.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.obstacle_and_hazard.soul_reaping_bone_spikes:260809752",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.204,
+        0.365
+      ],
+      [
+        0.767,
+        0.52
+      ]
+    ],
+    "frac_zero": 0.6408,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.014,
+        0.046,
+        0.453,
+        0.022
+      ],
+      [
+        0.0,
+        0.012,
+        0.08,
+        0.351,
+        0.705,
+        0.356,
+        0.0
+      ],
+      [
+        0.002,
+        0.299,
+        0.646,
+        0.831,
+        1.0,
+        0.439,
+        0.034
+      ],
+      [
+        0.084,
+        0.633,
+        1.0,
+        1.0,
+        1.0,
+        0.801,
+        0.215
+      ],
+      [
+        0.861,
+        0.981,
+        1.0,
+        1.0,
+        1.0,
+        0.862,
+        0.522
+      ],
+      [
+        1.0,
+        0.979,
+        0.896,
+        0.915,
+        0.718,
+        0.12,
+        0.0
+      ],
+      [
+        0.927,
+        0.027,
+        0.016,
+        0.009,
+        0.047,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      28
+    ],
+    "trunk_columns": [
+      0
+    ],
+    "contact_px": 33,
+    "contact_reference_px": 33.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

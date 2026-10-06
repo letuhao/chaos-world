@@ -1,0 +1,266 @@
+{
+  "id": "ember_grotto.travel_and_wayfinding.stone_waypoint",
+  "path": "res://assets/world_map/ember_grotto/travel_and_wayfinding/stone_waypoint.png",
+  "type": "prop",
+  "category": "travel_and_wayfinding",
+  "environment": "ember_grotto",
+  "environment_name": "Ember Grotto",
+  "world_tier": "Mortal World",
+  "archetype": "travel_and_wayfinding.stone_waypoint",
+  "name": "Stone waypoint",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "ComfyUI local checkpoint: Flux1S/originByN0utis_originFluxAnimeV1.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Soot-dark basalt, warm umber stone, ember fissures, and compact volcanic formations.",
+  "generated_on": "2026-10-03",
+  "prompt_ref": "comfyui-map-v1:ember_grotto.travel_and_wayfinding.stone_waypoint:700061",
+  "prompt": "A compact ember-grotto waystone viewed directly overhead, a small ring of charcoal basalt stones surrounding a low orange crystal slab carved with a simple spiral, two narrow ember seams and no writing, distinct single-landmark silhouette, isolated map prop.\n\nProduction sprite for Chaos World, a 2D top-down cultivation action RPG. Asset: Stone waypoint (ember_grotto.travel_and_wayfinding.stone_waypoint); environment: Ember Grotto in the Mortal World. Environment art signature: Soot-dark basalt, warm umber stone, ember fissures, and compact volcanic formations. Show one complete isolated object viewed straight down. Leave clear padding and honor the bottom_center ground pivot. Use a transparent background. The final image must have transparent pixels outside the art. Straight-down orthographic camera, with no horizon or isometric projection. Anime-painted gouache, dark #263A35 ink contours, broad readable value planes, material-led colors, restrained surface detail, soft upper-left light. Keep the silhouette and identifying detail legible at the indexed game size. No text, labels, UI, frame, watermark, or unrelated objects.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "negative_prompt": "text, letters, watermark, border, UI, extra objects, duplicate subject, isometric view, perspective, horizon, photorealism, 3D render, noisy texture",
+  "generation_settings": {
+    "checkpoint": "Flux1S/originByN0utis_originFluxAnimeV1.safetensors",
+    "lora": "flux/gokaygokayFlux-2D-Game-Assets-LoRA.safetensors",
+    "lora_strength": 0.8,
+    "seed": 700061,
+    "steps": 32,
+    "size": 1024,
+    "target_size": 256,
+    "cfg": 1.0,
+    "guidance": 3.5,
+    "sampler": "euler",
+    "scheduler": "normal",
+    "rembg_model": "isnet-anime",
+    "rembg_post_processing": false,
+    "alpha_matting": false,
+    "alpha_foreground_threshold": 240,
+    "alpha_background_threshold": 10,
+    "alpha_erode_size": 0
+  },
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.779
+      ]
+    ],
+    "frac_zero": 0.6301,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "ground_contact",
+      "cov_gate": 0.01,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": true,
+      "vision_mode": "brush",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "activate",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      6,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.093,
+        0.711,
+        0.969,
+        0.794,
+        0.326,
+        0.0
+      ],
+      [
+        0.673,
+        1.0,
+        1.0,
+        1.0,
+        0.987,
+        0.358
+      ],
+      [
+        0.969,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.969
+      ],
+      [
+        0.839,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.659
+      ],
+      [
+        0.282,
+        0.949,
+        1.0,
+        0.996,
+        0.664,
+        0.014
+      ],
+      [
+        0.0,
+        0.267,
+        0.899,
+        0.589,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      41,
+      42
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3
+    ],
+    "contact_px": 92,
+    "contact_reference_px": 46.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.356,
+    "dominant_rgb": [
+      111.0,
+      81.0,
+      69.7
+    ],
+    "hsv": {
+      "hue_deg": 164.9,
+      "saturation": 0.48,
+      "value": 0.47
+    },
+    "dominant_palette": "verdant_flora",
+    "center_of_mass_norm": [
+      0.497,
+      0.499
+    ],
+    "horizontal_symmetry": 0.98,
+    "edge_complexity": 0.15
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "brush",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

@@ -1,0 +1,290 @@
+{
+  "id": "mortal_greenwood.settlement_and_domain_prop.shelter",
+  "path": "res://assets/world_map/mortal_greenwood/settlement_and_domain_prop/shelter.png",
+  "type": "prop",
+  "category": "settlement_and_domain_prop",
+  "environment": "mortal_greenwood",
+  "environment_name": "Mortal Greenwood",
+  "world_tier": "Mortal World",
+  "archetype": "settlement_and_domain_prop.shelter",
+  "name": "Field shelter",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image_gen built-in; 2026-10-03; shelter render plus background extraction",
+  "license": "Generated with OpenAI image_gen; verify applicable service terms before release",
+  "alpha": "transparent",
+  "generated_on": "2026-10-03",
+  "prompt_ref": "map-prop-greenwood-field-shelter-v1",
+  "prompt": "Initial sprite prompt: Create one Mortal Greenwood field shelter: a simple woodland lean-to with broad reed-and-wood roof, two support posts visible at its open front, and one tied bundle beside it; no people. Use ancient_tree as painterly gouache/ink reference, upper-left light, broad material planes, restrained texture, timber/straw/forest-green palette. Strict vertical orthographic top-down view, complete isolated sprite with transparent padding, 256x256 canvas, bottom-center pivot. No ground or cast shadow, background, landscape, trees, other structures, characters, text, border, perspective, isometric, photorealism, pixel art, heavy gradients, watermark.\nTransparency repair prompt: Remove checkerboard; preserve all shelter/bundle pixels, roof outline, construction, colors, lighting, and brush texture. Change only exterior checkerboard to fully transparent alpha. Do not add ground, objects, people, background, crop, repaint, recolor, text, border, watermark.",
+  "reference_ids": [
+    "mortal_greenwood.flora.ancient_tree",
+    "shelter-background-extraction-v1"
+  ],
+  "environment_theme": "Dense broadleaf canopy, tangled roots, emerald moss, and dappled forest clearings.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.403,
+        0.879,
+        0.378
+      ],
+      [
+        0.895,
+        1.0,
+        0.873
+      ],
+      [
+        0.222,
+        0.319,
+        0.51
+      ]
+    ],
+    "frac_zero": 0.5479,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 9,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.2,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": true,
+      "vision_mode": "transparent",
+      "acoustic_profile": "wood",
+      "material": "wood",
+      "elevation": 1,
+      "destructible": {
+        "enabled": true,
+        "tier": 2,
+        "hp": 60,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.182,
+        0.57,
+        0.829,
+        0.573,
+        0.04,
+        0.0
+      ],
+      [
+        0.203,
+        0.923,
+        1.0,
+        1.0,
+        1.0,
+        0.696,
+        0.111
+      ],
+      [
+        0.695,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.741
+      ],
+      [
+        0.758,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.6
+      ],
+      [
+        0.471,
+        0.878,
+        0.97,
+        0.923,
+        1.0,
+        0.803,
+        0.133
+      ],
+      [
+        0.0,
+        0.134,
+        0.146,
+        0.026,
+        0.521,
+        0.899,
+        0.082
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.28,
+        0.575,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      24,
+      29
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      384
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.422,
+    "dominant_rgb": [
+      107.6,
+      102.9,
+      41.3
+    ],
+    "hsv": {
+      "hue_deg": 60.5,
+      "saturation": 0.69,
+      "value": 0.47
+    },
+    "dominant_palette": "warm_earth_gold",
+    "center_of_mass_norm": [
+      0.526,
+      0.491
+    ],
+    "horizontal_symmetry": 0.83,
+    "edge_complexity": 0.359
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 2,
+    "hp": 60,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "wood",
+  "cultivation_element": "none"
+}

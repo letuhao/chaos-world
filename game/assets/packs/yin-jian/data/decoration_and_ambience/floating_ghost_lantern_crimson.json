@@ -1,0 +1,92 @@
+{
+  "id": "yin_jian.decoration_and_ambience.floating_ghost_lantern_crimson",
+  "name": "Floating Ghost Lantern (Crimson)",
+  "vietnamese_name": "Đèn Lồng Lơ Lửng Đỏ Máu",
+  "hanzi": "赤血浮灯",
+  "category": "decoration_and_ambience",
+  "sub_category": "lantern_and_light",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "extinguish",
+  "gameplay_role": "Bobbing lantern glowing with sinister scarlet light.",
+  "destructible": true,
+  "material": "paper",
+  "cultivation_element": "yin",
+  "prompt_summary": "Round red silk lantern with gold tassel glowing crimson.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/decoration_and_ambience/floating_ghost_lantern_crimson.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.decoration_and_ambience.floating_ghost_lantern_crimson:264708393",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.405
+      ]
+    ],
+    "frac_zero": 0.8393,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      2,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.242,
+        0.244
+      ],
+      [
+        0.819,
+        0.891
+      ],
+      [
+        0.102,
+        0.138
+      ]
+    ],
+    "crop_offset": [
+      35,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 4,
+    "contact_reference_px": 4.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

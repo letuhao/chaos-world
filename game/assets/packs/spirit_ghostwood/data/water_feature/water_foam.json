@@ -1,0 +1,182 @@
+{
+  "id": "spirit_ghostwood.water_feature.water_foam",
+  "path": "res://assets/world_map/spirit_ghostwood/water_feature/water_foam.png",
+  "type": "decal",
+  "category": "water_feature",
+  "environment": "spirit_ghostwood",
+  "environment_name": "Spirit Ghostwood",
+  "world_tier": "Spirit World",
+  "archetype": "water_feature.water_foam",
+  "name": "Water foam",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "center",
+  "collision": "none",
+  "status": "generated",
+  "source": "OpenAI image generation",
+  "license": "Generated with OpenAI; OpenAI terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Charcoal soil, bone-pale roots, sparse ghost grass, and small cold cyan spirit lights.",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "generated_on": "2026-10-06",
+  "prompt_ref": "openai-map-spirit-ghostwood-water-foam-v1",
+  "prompt": "High-quality isolated 2D top-down map decal: a single small cluster of ghostly stream foam for Spirit Ghostwood in Chaos World. Strict vertical overhead view. Shape it as a broken crescent of pale cold-cyan and bone-white bubbles curling around one small dark transparent opening, with delicate thin foam filigree and two tiny spirit glints. Keep the decal flat and low profile, compact and readable at 128px, centered with generous transparent padding and a center pivot. Spirit Ghostwood motif: charcoal dark waters are implied only by the foam contrast, bone-pale highlights, sparse cold cyan light. Anime-painted gouache, crisp dark #263A35 contours only where needed, broad readable shapes, restrained upper-left light. Transparent background; foam pixels only. No water surface, no terrain, no ground, no scenery, no riverbanks, no perspective, no isometric angle, no text, no UI, no frame, no watermark, no extra objects.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source_images": [
+    {
+      "path": "art-source/map-originals/spirit_ghostwood/water_feature/spirit_ghostwood__water_feature__water_foam__47b3543391c79f97.png",
+      "sha256": "47b3543391c79f97762a84b98c29449123ef310f576ec7290225da1424ba318c",
+      "size_px": [
+        1254,
+        1254
+      ],
+      "source": "OpenAI image generation",
+      "license": "Generated with OpenAI; OpenAI terms apply",
+      "generated_on": "2026-10-06",
+      "prompt_ref": "openai-map-spirit-ghostwood-water-foam-v1",
+      "prompt": "High-quality isolated 2D top-down map decal: a single small cluster of ghostly stream foam for Spirit Ghostwood in Chaos World. Strict vertical overhead view. Shape it as a broken crescent of pale cold-cyan and bone-white bubbles curling around one small dark transparent opening, with delicate thin foam filigree and two tiny spirit glints. Keep the decal flat and low profile, compact and readable at 128px, centered with generous transparent padding and a center pivot. Spirit Ghostwood motif: charcoal dark waters are implied only by the foam contrast, bone-pale highlights, sparse cold cyan light. Anime-painted gouache, crisp dark #263A35 contours only where needed, broad readable shapes, restrained upper-left light. Transparent background; foam pixels only. No water surface, no terrain, no ground, no scenery, no riverbanks, no perspective, no isometric angle, no text, no UI, no frame, no watermark, no extra objects.",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
+    }
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.328
+      ]
+    ],
+    "frac_zero": 0.7438,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "none",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "transparent",
+      "acoustic_profile": "water",
+      "material": "water",
+      "elevation": 0,
+      "destructible": {
+        "enabled": false,
+        "tier": 0,
+        "hp": 0,
+        "on_destroy": null,
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.409,
+        0.261,
+        0.026
+      ],
+      [
+        0.803,
+        0.12,
+        0.138
+      ],
+      [
+        0.295,
+        0.572,
+        0.216
+      ]
+    ],
+    "crop_offset": [
+      19,
+      17
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.173,
+    "dominant_rgb": [
+      166.9,
+      193.1,
+      194.5
+    ],
+    "hsv": {
+      "hue_deg": 172.9,
+      "saturation": 0.17,
+      "value": 0.77
+    },
+    "dominant_palette": "azure_water",
+    "center_of_mass_norm": [
+      0.414,
+      0.532
+    ],
+    "horizontal_symmetry": 0.48,
+    "edge_complexity": 0.276
+  },
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": false,
+    "tier": 0,
+    "hp": 0,
+    "on_destroy": null,
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [],
+    "reveals_loot_category": null
+  },
+  "material": "water",
+  "cultivation_element": "none"
+}

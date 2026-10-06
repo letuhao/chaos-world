@@ -1,0 +1,251 @@
+{
+  "id": "immortal_cloud_isles.landmark_and_environment_detail.statue",
+  "path": "res://assets/world_map/immortal_cloud_isles/landmark_and_environment_detail/statue.png",
+  "type": "landmark",
+  "category": "landmark_and_environment_detail",
+  "environment": "immortal_cloud_isles",
+  "environment_name": "Immortal Cloud Isles",
+  "world_tier": "Immortal World",
+  "archetype": "landmark_and_environment_detail.statue",
+  "name": "Guardian statue",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image generation, 2026-10-05",
+  "license": "OpenAI generated image; project use under applicable OpenAI generation terms",
+  "alpha": "transparent",
+  "environment_theme": "Floating pale rock shelves, soft cloud banks, cool blue-grey shade, and airy silhouettes.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-05",
+  "prompt_ref": "openai-map-v1:immortal_cloud_isles.landmark_and_environment_detail.statue:20261005",
+  "prompt": "One guardian statue landmark for Immortal Cloud Isles, transparent sprite for 2D top-down RPG map, square 1024x1024. Strict straight-down orthographic camera, top surfaces and ground-facing silhouette only, no isometric projection. Pale blue-gray stone crane guardian perched seated on low circular cloud-carved plinth; long beak points north/top, folded wings curve to both sides, tail feathers south/bottom. Fine carved feather grooves and restrained cloud-scroll carving, tiny lichen flecks, no glow. Clear bird silhouette at 256x256, centered with clean transparent margin, no terrain background. Matte anime gouache, broad quiet planes, fine #263A35 contours, cool diffuse upper-left light, low contrast. Floating pale rock shelves, soft cloud banks, cool blue-gray shade, airy silhouettes. Exclude flying pose, spread wings, other birds, trees, crystals, buildings, people, text, UI, border, background, external shadow, isometric or perspective view, 3D render, watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.32,
+        0.315
+      ],
+      [
+        0.781,
+        0.775
+      ]
+    ],
+    "frac_zero": 0.7529,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.2,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "solid",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 1,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "examine",
+        "reach_cells": 2,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      4,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.098,
+        0.089,
+        0.0
+      ],
+      [
+        0.0,
+        0.248,
+        0.237,
+        0.0
+      ],
+      [
+        0.329,
+        0.867,
+        0.865,
+        0.318
+      ],
+      [
+        0.794,
+        1.0,
+        1.0,
+        0.782
+      ],
+      [
+        0.985,
+        1.0,
+        1.0,
+        0.975
+      ],
+      [
+        0.678,
+        1.0,
+        1.0,
+        0.664
+      ],
+      [
+        0.051,
+        0.565,
+        0.557,
+        0.048
+      ]
+    ],
+    "crop_offset": [
+      56,
+      18
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.233,
+    "dominant_rgb": [
+      141.5,
+      150.7,
+      158.7
+    ],
+    "hsv": {
+      "hue_deg": 192.4,
+      "saturation": 0.13,
+      "value": 0.63
+    },
+    "dominant_palette": "monochrome_grey",
+    "center_of_mass_norm": [
+      0.466,
+      0.586
+    ],
+    "horizontal_symmetry": 0.98,
+    "edge_complexity": 0.158
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

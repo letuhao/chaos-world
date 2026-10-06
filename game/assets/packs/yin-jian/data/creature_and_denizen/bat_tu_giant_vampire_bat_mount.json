@@ -1,0 +1,195 @@
+{
+  "id": "yin_jian.creature_and_denizen.bat_tu_giant_vampire_bat_mount",
+  "name": "Armored War Vampire Bat Mount",
+  "vietnamese_name": "Bất Tử Huyết Bức Chiến Thú",
+  "hanzi": "不死战血蝠",
+  "category": "creature_and_denizen",
+  "sub_category": "nether_beast",
+  "racial_faction": "immortal_blood",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "mount_vampire_bat",
+  "gameplay_role": "Winged combat beast used for high-speed aerial reconnaissance and bombing runs with blood bombs.",
+  "destructible": false,
+  "material": "flesh",
+  "cultivation_element": "blood",
+  "prompt_summary": "Top-down 45 degree massive dark leather-winged vampire bat resting on knuckles, silver-studded leather saddle on back, glowing red eyes.",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/bat_tu_giant_vampire_bat_mount.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.bat_tu_giant_vampire_bat_mount:265681286",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.567,
+        0.522
+      ],
+      [
+        0.383,
+        0.455
+      ]
+    ],
+    "frac_zero": 0.6472,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.055,
+        0.17,
+        0.039,
+        0.358,
+        0.003,
+        0.0
+      ],
+      [
+        0.146,
+        0.909,
+        0.549,
+        0.927,
+        0.768,
+        0.013,
+        0.083
+      ],
+      [
+        0.679,
+        1.0,
+        1.0,
+        1.0,
+        0.79,
+        0.764,
+        0.127
+      ],
+      [
+        0.846,
+        0.931,
+        1.0,
+        0.994,
+        1.0,
+        0.994,
+        0.438
+      ],
+      [
+        0.639,
+        0.371,
+        0.744,
+        0.528,
+        1.0,
+        0.632,
+        0.0
+      ],
+      [
+        0.245,
+        0.044,
+        0.049,
+        0.824,
+        0.466,
+        0.003,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.298,
+        0.489,
+        0.014,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      25,
+      17
+    ],
+    "trunk_columns": [
+      3
+    ],
+    "contact_px": 35,
+    "contact_reference_px": 35.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

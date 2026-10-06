@@ -1,0 +1,132 @@
+{
+  "id": "yin_jian.creature_and_denizen.minh_toc_grand_hexmaster",
+  "name": "Nether Clan High Hexmaster",
+  "vietnamese_name": "Minh Tộc Đại Chú Sư",
+  "hanzi": "冥族大咒师",
+  "category": "creature_and_denizen",
+  "sub_category": "judge_and_official",
+  "racial_faction": "nether",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "challenge_hexmaster",
+  "gameplay_role": "Ranged spellcaster who places lingering curse debuffs, reduces damage output, and summons shadow clones.",
+  "destructible": false,
+  "material": "spirit",
+  "cultivation_element": "yin",
+  "prompt_summary": "Top-down 45 degree floating figure draped in dark indigo hooded robes, holding a twisted black jade staff tipped with a glowing violet eye.",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/minh_toc_grand_hexmaster.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.minh_toc_grand_hexmaster:265415471",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.35
+      ]
+    ],
+    "frac_zero": 0.78,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.458,
+        0.342,
+        0.001
+      ],
+      [
+        0.232,
+        0.953,
+        0.525
+      ],
+      [
+        0.026,
+        0.428,
+        0.091
+      ]
+    ],
+    "crop_offset": [
+      18,
+      17
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 11,
+    "contact_reference_px": 11.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

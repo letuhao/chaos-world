@@ -1,0 +1,252 @@
+{
+  "id": "immortal_cloud_isles.flora.fallen_log",
+  "path": "res://assets/world_map/immortal_cloud_isles/flora/fallen_log.png",
+  "type": "prop",
+  "category": "flora",
+  "environment": "immortal_cloud_isles",
+  "environment_name": "Immortal Cloud Isles",
+  "world_tier": "Immortal World",
+  "archetype": "flora.fallen_log",
+  "name": "Fallen log",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image generation, 2026-10-05",
+  "license": "OpenAI generated image; project use under applicable OpenAI generation terms",
+  "alpha": "transparent",
+  "environment_theme": "Floating pale rock shelves, soft cloud banks, cool blue-grey shade, and airy silhouettes.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-05",
+  "prompt_ref": "openai-map-v1:immortal_cloud_isles.flora.fallen_log",
+  "prompt": "Production 2D top-down world-map sprite for Chaos World: one fallen log prop from Immortal Cloud Isles, 256x256 transparent PNG. Strict straight-down overhead view. A short weathered pale driftwood trunk resting on a small sparse branch cluster, silver-white bark with cool blue-grey shadow and a few tiny sky-blue lichen marks; delicate broken roots, airy light silhouette suited to floating rock shelves. Keep the full compact log inside the image, centered at bottom-center ground contact, readable at 2x2 map cells. Transparent background beyond the object; no cloud-shaped base, ground patch, cast shadow or landscape. Anime-painted gouache, fine dark #263A35 contour, broad readable wood planes, restrained upper-left light. Environment: floating pale rock shelves, soft cloud banks, cool blue-grey shade, airy silhouettes. No perspective, no thick dark forest roots, no snow, no extra objects, text, border, UI, watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.301,
+        0.565
+      ],
+      [
+        0.486,
+        0.296
+      ]
+    ],
+    "frac_zero": 0.7801,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "ground_contact",
+      "cov_gate": 0.01,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": true,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "brush",
+      "acoustic_profile": "wood",
+      "material": "wood",
+      "elevation": 1,
+      "destructible": {
+        "enabled": true,
+        "tier": 2,
+        "hp": 60,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      7,
+      5
+    ],
+    "sub_fill": [
+      [
+        0.024,
+        0.043,
+        0.0,
+        0.268,
+        0.207,
+        0.044,
+        0.07
+      ],
+      [
+        0.371,
+        0.555,
+        0.482,
+        0.645,
+        0.938,
+        0.974,
+        0.858
+      ],
+      [
+        0.631,
+        1.0,
+        1.0,
+        0.888,
+        0.787,
+        0.706,
+        0.253
+      ],
+      [
+        0.075,
+        0.39,
+        0.534,
+        0.048,
+        0.022,
+        0.379,
+        0.086
+      ],
+      [
+        0.016,
+        0.19,
+        0.005,
+        0.0,
+        0.0,
+        0.044,
+        0.2
+      ]
+    ],
+    "crop_offset": [
+      22,
+      66
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 24,
+    "contact_reference_px": 24.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.187,
+    "dominant_rgb": [
+      175.2,
+      174.0,
+      178.7
+    ],
+    "hsv": {
+      "hue_deg": 141.3,
+      "saturation": 0.11,
+      "value": 0.73
+    },
+    "dominant_palette": "monochrome_grey",
+    "center_of_mass_norm": [
+      0.513,
+      0.528
+    ],
+    "horizontal_symmetry": 0.75,
+    "edge_complexity": 0.158
+  },
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "brush",
+  "destructible": {
+    "enabled": true,
+    "tier": 2,
+    "hp": 60,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "wood",
+  "cultivation_element": "none"
+}

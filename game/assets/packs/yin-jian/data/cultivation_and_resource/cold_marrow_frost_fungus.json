@@ -1,0 +1,98 @@
+{
+  "id": "yin_jian.cultivation_and_resource.cold_marrow_frost_fungus",
+  "name": "Cold Marrow Frost Fungus",
+  "vietnamese_name": "Nấm Hàn Tủy Băng Giá",
+  "hanzi": "寒髓霜耳",
+  "category": "cultivation_and_resource",
+  "sub_category": "herb_and_fungus",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "scrape_fungus",
+  "gameplay_role": "Ice-encrusted shelf mushroom growing on frozen cavern walls.",
+  "destructible": true,
+  "material": "foliage",
+  "cultivation_element": "water",
+  "prompt_summary": "Translucent blue ruff-like bracket fungus resembling frost flowers.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/cultivation_and_resource/cold_marrow_frost_fungus.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.cultivation_and_resource.cold_marrow_frost_fungus:264085656",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.562
+      ]
+    ],
+    "frac_zero": 0.6818,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.151,
+        0.75,
+        0.344
+      ],
+      [
+        0.635,
+        0.992,
+        0.622
+      ],
+      [
+        0.484,
+        0.633,
+        0.307
+      ]
+    ],
+    "crop_offset": [
+      19,
+      20
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 49,
+    "contact_reference_px": 49.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

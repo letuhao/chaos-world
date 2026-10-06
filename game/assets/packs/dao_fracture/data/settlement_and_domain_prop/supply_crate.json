@@ -1,0 +1,209 @@
+{
+  "id": "dao_fracture.settlement_and_domain_prop.supply_crate",
+  "path": "res://assets/world_map/dao_fracture/settlement_and_domain_prop/supply_crate.png",
+  "type": "prop",
+  "category": "settlement_and_domain_prop",
+  "environment": "dao_fracture",
+  "environment_name": "Dao Fracture",
+  "world_tier": "Transcendent World",
+  "archetype": "settlement_and_domain_prop.supply_crate",
+  "name": "Supply crate",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image generation, 2026-10-05",
+  "license": "OpenAI generated image; project use under applicable OpenAI generation terms",
+  "alpha": "transparent",
+  "environment_theme": "Misaligned stone planes, impossible cracks, suspended shards, and narrow luminous seams.",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "generated_on": "2026-10-05",
+  "prompt_ref": "openai-map-v1:dao_fracture.settlement_and_domain_prop.supply_crate:20261005",
+  "prompt": "Single sealed supply crate from Dao Fracture, 2D top-down RPG map prop, transparent 1024x1024. Strict straight-down orthographic view of the crate top, no isometric or perspective. Compact one-cell prop with bold silhouette readable at 128x128: dark weathered stone-and-metal storage box, square lid with a few misaligned slate plates and narrow seams of dim violet-cyan light. Two sturdy oxidized bronze corner bands and one simple central latch. Fractures small and restrained; crate intact and usable. Centered with transparent margin, no floor or external cast shadow. Matte anime gouache, broad quiet planes, fine restrained #263A35 contours, diffuse upper-left light. Dao Fracture motif of misaligned stone planes, impossible cracks, suspended shards, narrow luminous seams. Exclude weapons, people, hands, open contents, letters, runes, labels, text, UI, border, background, floating shards, glow bloom, dramatic perspective, 3D render, watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.933
+      ]
+    ],
+    "frac_zero": 0.5822,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": true,
+      "vision_mode": "transparent",
+      "acoustic_profile": "wood",
+      "material": "wood",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 2,
+        "hp": 60,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "loot",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.903,
+        0.94,
+        0.893
+      ],
+      [
+        0.973,
+        1.0,
+        0.957
+      ],
+      [
+        0.873,
+        0.888,
+        0.873
+      ]
+    ],
+    "crop_offset": [
+      24,
+      23
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.38,
+    "dominant_rgb": [
+      66.7,
+      65.2,
+      65.0
+    ],
+    "hsv": {
+      "hue_deg": 167.1,
+      "saturation": 0.2,
+      "value": 0.29
+    },
+    "dominant_palette": "azure_water",
+    "center_of_mass_norm": [
+      0.509,
+      0.492
+    ],
+    "horizontal_symmetry": 0.98,
+    "edge_complexity": 0.168
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 2,
+    "hp": 60,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "wood",
+  "cultivation_element": "none"
+}

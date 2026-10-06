@@ -208,6 +208,11 @@ static func discovered(actor: Actor) -> Array:
 ## HERE, inside the read model the facade already publishes, exactly as `map_data` and
 ## `fixtures` are. A thirteenth verb would have bought nothing a reader of this one
 ## dictionary cannot already read.
+##
+## `narrative` (ADR 0237) is that same move one layer up. `DomainNarrative.resolve` is a
+## PURE READ of run state — it holds no fired-beat ledger and writes nothing — which is
+## exactly what makes it safe to fold into a read model a caller may call every frame, and
+## exactly what a thirteenth verb would not have bought.
 static func summary(actor: Actor) -> Dictionary:
 	var shape := map_summary(actor)
 	if shape.is_empty():
@@ -221,7 +226,17 @@ static func summary(actor: Actor) -> Dictionary:
 		"discovered": discovered(actor).size(),
 		"fixtures": DomainFixtures.summary(actor),
 		"run": _band(actor),
+		"narrative": _narrative(actor),
 	}
+
+
+## Narrative read for `summary()` (boot repair, owner: domain-progression lane).
+## `_narrative(actor)` is called above but was never defined, which fails this
+## file's parse and every boot through it. `DomainNarrative.resolve` needs a
+## template the read model does not carry, so the real fold-in stays with the
+## lane; this returns the shape (`{}` = no narrative resolved yet) until then.
+static func _narrative(_actor: Actor) -> Dictionary:
+	return {}
 
 
 ## Action: enter a domain from an already-built map. The map is the producer seam's

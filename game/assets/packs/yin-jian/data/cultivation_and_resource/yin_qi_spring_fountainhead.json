@@ -1,0 +1,161 @@
+{
+  "id": "yin_jian.cultivation_and_resource.yin_qi_spring_fountainhead",
+  "name": "Primal Yin Qi Fountainhead",
+  "vietnamese_name": "Mắt Âm Khí Nguyên Thủy",
+  "hanzi": "玄阴灵泉之眼",
+  "category": "cultivation_and_resource",
+  "sub_category": "yin_qi_spring",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "cultivate_meditate",
+  "gameplay_role": "Spiritual spring where ambient Yin energy is 300% denser; prime breakthrough site.",
+  "destructible": false,
+  "material": "water",
+  "cultivation_element": "yin",
+  "prompt_summary": "Bubbling natural stone spring gushing glowing turquoise mist.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/cultivation_and_resource/yin_qi_spring_fountainhead.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.cultivation_and_resource.yin_qi_spring_fountainhead:263756057",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.536,
+        0.447
+      ],
+      [
+        0.729,
+        0.726
+      ]
+    ],
+    "frac_zero": 0.5852,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.398,
+        0.933,
+        0.744,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.507,
+        1.0,
+        0.982,
+        0.33,
+        0.023,
+        0.0
+      ],
+      [
+        0.0,
+        0.553,
+        1.0,
+        1.0,
+        1.0,
+        0.808,
+        0.019
+      ],
+      [
+        0.284,
+        0.955,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.314
+      ],
+      [
+        0.788,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.907,
+        0.109
+      ],
+      [
+        0.301,
+        0.73,
+        0.996,
+        1.0,
+        1.0,
+        0.387,
+        0.0
+      ],
+      [
+        0.02,
+        0.0,
+        0.33,
+        0.888,
+        0.674,
+        0.076,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      33
+    ],
+    "trunk_columns": [
+      3,
+      4
+    ],
+    "contact_px": 105,
+    "contact_reference_px": 105.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "id": "yin_jian.path_and_way.van_menh_rainbow_destiny_bridge",
+  "name": "Rainbow Light Destiny Bridge",
+  "vietnamese_name": "Thất Thải Vận Mệnh Kiều",
+  "hanzi": "七彩命运虹桥",
+  "category": "path_and_way",
+  "sub_category": "bridge",
+  "racial_faction": "fane_of_destiny",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Ethereal bridge of solid rainbow light spanning bottomless mountain chasms around Destiny Mountain.",
+  "destructible": false,
+  "material": "spirit",
+  "cultivation_element": "fate",
+  "prompt_summary": "Top-down 45 degree straight bridge span composed of solid, translucent rainbow celestial light floating over an abyss.",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/path_and_way/van_menh_rainbow_destiny_bridge.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.path_and_way.van_menh_rainbow_destiny_bridge:265814321",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.674,
+        0.311,
+        0.298
+      ]
+    ],
+    "frac_zero": 0.824,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.724,
+        0.316,
+        0.208,
+        0.104,
+        0.093,
+        0.186,
+        0.045
+      ],
+      [
+        1.0,
+        0.906,
+        0.771,
+        0.689,
+        0.67,
+        0.799,
+        0.486
+      ],
+      [
+        0.983,
+        0.169,
+        0.008,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      91,
+      22
+    ],
+    "trunk_columns": [
+      0
+    ],
+    "contact_px": 41,
+    "contact_reference_px": 41.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

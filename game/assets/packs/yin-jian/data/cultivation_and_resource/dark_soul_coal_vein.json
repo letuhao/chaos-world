@@ -1,0 +1,141 @@
+{
+  "id": "yin_jian.cultivation_and_resource.dark_soul_coal_vein",
+  "name": "Black Soul Charcoal Seam",
+  "vietnamese_name": "Mạch Than Hồn Đen",
+  "hanzi": "冥石焦炭层",
+  "category": "cultivation_and_resource",
+  "sub_category": "mineral_and_ore",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "pickaxe_coal",
+  "gameplay_role": "Fuel that burns without oxygen and produces intense heat.",
+  "destructible": true,
+  "material": "earth",
+  "cultivation_element": "fire",
+  "prompt_summary": "Layer of brittle jet-black shiny coal in rock cut.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/cultivation_and_resource/dark_soul_coal_vein.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.cultivation_and_resource.dark_soul_coal_vein:264513252",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.615,
+        0.791
+      ]
+    ],
+    "frac_zero": 0.7741,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      4,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.006,
+        0.448,
+        0.717,
+        0.0
+      ],
+      [
+        0.528,
+        1.0,
+        0.898,
+        0.463
+      ],
+      [
+        0.988,
+        0.985,
+        0.988,
+        1.0
+      ]
+    ],
+    "crop_offset": [
+      75,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "contact_px": 106,
+    "contact_reference_px": 106.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

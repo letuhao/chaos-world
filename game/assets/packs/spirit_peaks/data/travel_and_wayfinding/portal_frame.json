@@ -1,0 +1,513 @@
+{
+  "id": "spirit_peaks.travel_and_wayfinding.portal_frame",
+  "path": "res://assets/world_map/spirit_peaks/travel_and_wayfinding/portal_frame.png",
+  "type": "landmark",
+  "category": "travel_and_wayfinding",
+  "environment": "spirit_peaks",
+  "environment_name": "Spirit Peaks",
+  "world_tier": "Spirit World",
+  "archetype": "travel_and_wayfinding.portal_frame",
+  "name": "Portal frame",
+  "canvas_px": [
+    512,
+    512
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image_gen",
+  "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Cold blue stone, sparse snow, crystalline mist, and hardy dark mountain pines.",
+  "footprint_cells": [
+    4,
+    4
+  ],
+  "generated_on": "2026-10-08",
+  "prompt_ref": "openai-imagegen:spirit_peaks.portal_frame:20261008",
+  "prompt": "One standalone 4x4-cell portal-frame landmark sprite for a 2D top-down fantasy map in Spirit Peaks. Show a compact ancient gateway built from two cold-blue granite uprights and a broken curved lintel of pale crystalline stone, framing a clearly empty oval opening filled with only a faint translucent icy mist. Elevated overhead orthographic game-camera angle: top surfaces dominate, short side faces only, no visible facade interior. Sparse snow dust and a few dark pine-root fragments at the base, but no surrounding landscape. Anime-painted gouache map art, dark #263A35 contours, broad readable value planes, cold blue stone, restrained silver highlights, soft upper-left light. Centered complete landmark silhouette, bottom-center ground anchor, transparent padding, square high-resolution source, legible at 512px. Genuine transparent background. No characters, no scenery, no mountains, no snow field, no text, no runes, no frame, no watermark, no horizon, no isometric exaggeration, no 3D render.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source_images": [
+    {
+      "path": "art-source/map-originals/spirit_peaks/travel_and_wayfinding/spirit_peaks__travel_and_wayfinding__portal_frame__37cbc6d0477c1751.png",
+      "sha256": "37cbc6d0477c17518e477c98118d2cdc9e6cf1830b28dca44597f634744f27cf",
+      "size_px": [
+        1254,
+        1254
+      ],
+      "source": "OpenAI image_gen",
+      "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+      "generated_on": "2026-10-08",
+      "prompt_ref": "openai-imagegen:spirit_peaks.portal_frame:20261008",
+      "prompt": "One standalone 4x4-cell portal-frame landmark sprite for a 2D top-down fantasy map in Spirit Peaks. Show a compact ancient gateway built from two cold-blue granite uprights and a broken curved lintel of pale crystalline stone, framing a clearly empty oval opening filled with only a faint translucent icy mist. Elevated overhead orthographic game-camera angle: top surfaces dominate, short side faces only, no visible facade interior. Sparse snow dust and a few dark pine-root fragments at the base, but no surrounding landscape. Anime-painted gouache map art, dark #263A35 contours, broad readable value planes, cold blue stone, restrained silver highlights, soft upper-left light. Centered complete landmark silhouette, bottom-center ground anchor, transparent padding, square high-resolution source, legible at 512px. Genuine transparent background. No characters, no scenery, no mountains, no snow field, no text, no runes, no frame, no watermark, no horizon, no isometric exaggeration, no 3D render.",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
+    }
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.214,
+        0.692,
+        0.708,
+        0.261
+      ],
+      [
+        0.56,
+        0.355,
+        0.236,
+        0.575
+      ],
+      [
+        0.649,
+        0.341,
+        0.234,
+        0.717
+      ],
+      [
+        0.592,
+        0.538,
+        0.448,
+        0.68
+      ]
+    ],
+    "frac_zero": 0.4902,
+    "blocks": [
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        false,
+        false,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 14,
+    "anchor_cell": [
+      2,
+      3
+    ],
+    "sem": {
+      "occluder_rule": "core_ring",
+      "cov_gate": 0.1,
+      "authored_open": "bottom_centre",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": false,
+      "vision_mode": "solid",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 1,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "enter",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      15,
+      14
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.296,
+        0.746,
+        0.893,
+        0.639,
+        0.268,
+        0.076,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.007,
+        0.534,
+        0.8,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.97,
+        0.993,
+        0.688,
+        0.021,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.012,
+        0.697,
+        1.0,
+        1.0,
+        0.997,
+        0.461,
+        0.83,
+        0.545,
+        0.938,
+        1.0,
+        1.0,
+        0.858,
+        0.245,
+        0.0
+      ],
+      [
+        0.0,
+        0.373,
+        1.0,
+        1.0,
+        1.0,
+        0.307,
+        0.092,
+        0.0,
+        0.001,
+        0.611,
+        0.936,
+        1.0,
+        1.0,
+        0.557,
+        0.0
+      ],
+      [
+        0.0,
+        0.353,
+        1.0,
+        1.0,
+        0.972,
+        0.528,
+        0.0,
+        0.0,
+        0.0,
+        0.021,
+        0.435,
+        1.0,
+        1.0,
+        0.45,
+        0.0
+      ],
+      [
+        0.0,
+        0.274,
+        1.0,
+        1.0,
+        0.873,
+        0.079,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.687,
+        1.0,
+        1.0,
+        0.293,
+        0.0
+      ],
+      [
+        0.0,
+        0.365,
+        1.0,
+        1.0,
+        0.72,
+        0.033,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.405,
+        1.0,
+        1.0,
+        0.375,
+        0.0
+      ],
+      [
+        0.0,
+        0.346,
+        1.0,
+        1.0,
+        0.647,
+        0.268,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.434,
+        1.0,
+        1.0,
+        0.386,
+        0.0
+      ],
+      [
+        0.0,
+        0.351,
+        1.0,
+        1.0,
+        0.774,
+        0.055,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.535,
+        1.0,
+        1.0,
+        0.634,
+        0.0
+      ],
+      [
+        0.077,
+        0.894,
+        1.0,
+        1.0,
+        1.0,
+        0.185,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.703,
+        1.0,
+        1.0,
+        0.988,
+        0.459
+      ],
+      [
+        0.724,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.462,
+        0.0,
+        0.0,
+        0.0,
+        0.231,
+        0.997,
+        1.0,
+        1.0,
+        1.0,
+        0.757
+      ],
+      [
+        0.552,
+        0.919,
+        1.0,
+        1.0,
+        1.0,
+        0.893,
+        0.271,
+        0.022,
+        0.111,
+        0.891,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.788
+      ],
+      [
+        0.021,
+        0.636,
+        0.967,
+        0.994,
+        1.0,
+        0.841,
+        0.046,
+        0.129,
+        0.163,
+        0.609,
+        0.821,
+        1.0,
+        1.0,
+        0.784,
+        0.194
+      ],
+      [
+        0.0,
+        0.0,
+        0.073,
+        0.407,
+        0.707,
+        0.415,
+        0.105,
+        0.0,
+        0.026,
+        0.059,
+        0.664,
+        0.569,
+        0.427,
+        0.006,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      49
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        3
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      3
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      512
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.399,
+    "dominant_rgb": [
+      104.8,
+      126.3,
+      150.0
+    ],
+    "hsv": {
+      "hue_deg": 202.9,
+      "saturation": 0.36,
+      "value": 0.59
+    },
+    "dominant_palette": "azure_water",
+    "center_of_mass_norm": [
+      0.504,
+      0.551
+    ],
+    "horizontal_symmetry": 0.91,
+    "edge_complexity": 0.215
+  },
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "solid",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

@@ -1,0 +1,141 @@
+{
+  "id": "yin_jian.decoration_and_ambience.unidentified_bone_pile_tall",
+  "name": "Tall Pile of Assorted Bone Knuckles",
+  "vietnamese_name": "Đống Xương Khớp Lớn",
+  "hanzi": "大堆杂骨碎",
+  "category": "decoration_and_ambience",
+  "sub_category": "bone_and_skull",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "kick_pile",
+  "gameplay_role": "Irregular mound of knuckles, vertebrae, and teeth.",
+  "destructible": true,
+  "material": "bone",
+  "cultivation_element": "yin",
+  "prompt_summary": "Heap of bleached yellowish animal and human bone joints.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/decoration_and_ambience/unidentified_bone_pile_tall.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.decoration_and_ambience.unidentified_bone_pile_tall:265166349",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.529,
+        0.656
+      ]
+    ],
+    "frac_zero": 0.7992,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      4,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.095,
+        0.777,
+        0.191,
+        0.004
+      ],
+      [
+        0.781,
+        1.0,
+        0.922,
+        0.241
+      ],
+      [
+        0.379,
+        0.582,
+        0.797,
+        0.683
+      ]
+    ],
+    "crop_offset": [
+      76,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "contact_px": 53,
+    "contact_reference_px": 53.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

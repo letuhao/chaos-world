@@ -1,0 +1,170 @@
+{
+  "id": "stormwrack_reach.terrain_transition.slope_ramp",
+  "path": "res://assets/world_map/stormwrack_reach/terrain_transition/slope_ramp.png",
+  "type": "tile",
+  "category": "terrain_transition",
+  "environment": "stormwrack_reach",
+  "environment_name": "Stormwrack Reach",
+  "world_tier": "Immortal World",
+  "archetype": "terrain_transition.slope_ramp",
+  "name": "Slope ramp",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "center",
+  "collision": "none",
+  "status": "generated",
+  "source": "OpenAI image generation (image_gen), 2026-10-05",
+  "license": "OpenAI generated image; project use",
+  "alpha": "transparent",
+  "environment_theme": "Wet dark coastal rock, broken seafoam, wind-bent coastal flora, and weathered driftwood.",
+  "generated_on": "2026-10-05",
+  "prompt_ref": "map-stormwrack-reach-slope-ramp-v3",
+  "prompt": "Production 2D top-down terrain transition sprite for Stormwrack Reach: one compact irregular coastal ramp patch transitioning from pale weathered stone through wet dark slate into deep blue-grey water with broken white seafoam. Strict straight-down orthographic map view, with no horizon or perspective; surfaces and transition bands should read clearly at 128x128. Wind-worn coastal material, cool slate, driftwood-tan rock, subtle moss, soft upper-left light; anime-painted gouache with fine #263A35 contours and broad planes. Centered isolated shape with true transparent exterior. No full background tile, text, frame, or watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.697
+      ]
+    ],
+    "frac_zero": 0.611,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "none",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": true,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "transparent",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 1,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.264,
+        0.875,
+        0.47
+      ],
+      [
+        0.879,
+        1.0,
+        0.879
+      ],
+      [
+        0.464,
+        0.865,
+        0.52
+      ]
+    ],
+    "crop_offset": [
+      20,
+      17
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.357,
+    "dominant_rgb": [
+      105.2,
+      117.5,
+      114.0
+    ],
+    "hsv": {
+      "hue_deg": 132.7,
+      "saturation": 0.28,
+      "value": 0.5
+    },
+    "dominant_palette": "verdant_flora",
+    "center_of_mass_norm": [
+      0.52,
+      0.505
+    ],
+    "horizontal_symmetry": 0.93,
+    "edge_complexity": 0.29
+  },
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

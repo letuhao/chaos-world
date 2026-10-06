@@ -1,0 +1,225 @@
+{
+  "id": "stormwrack_reach.stone_and_ore.small_rock",
+  "path": "res://assets/world_map/stormwrack_reach/stone_and_ore/small_rock.png",
+  "type": "prop",
+  "category": "stone_and_ore",
+  "environment": "stormwrack_reach",
+  "environment_name": "Stormwrack Reach",
+  "world_tier": "Immortal World",
+  "archetype": "stone_and_ore.small_rock",
+  "name": "Small rock",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "ComfyUI local checkpoint: Flux1S/originByN0utis_originFluxAnimeV1.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Wet dark coastal rock, broken seafoam, wind-bent coastal flora, and weathered driftwood.",
+  "generated_on": "2026-10-03",
+  "prompt_ref": "comfyui-map-v1:stormwrack_reach.stone_and_ore.small_rock:700029",
+  "prompt": "A single small storm-coast rock viewed directly overhead, smooth dark slate-blue stone with a pale salt streak, tiny sea-glass fleck and two bright water highlights on the surface, compact readable silhouette, no beach or ground, isolated map prop.\n\nProduction sprite for Chaos World, a 2D top-down cultivation action RPG. Asset: Small rock (stormwrack_reach.stone_and_ore.small_rock); environment: Stormwrack Reach in the Immortal World. Environment art signature: Wet dark coastal rock, broken seafoam, wind-bent coastal flora, and weathered driftwood. Show one complete isolated object viewed straight down. Leave clear padding and honor the bottom_center ground pivot. Use a transparent background. The final image must have transparent pixels outside the art. Straight-down orthographic camera, with no horizon or isometric projection. Anime-painted gouache, dark #263A35 ink contours, broad readable value planes, material-led colors, restrained surface detail, soft upper-left light. Keep the silhouette and identifying detail legible at the indexed game size. No text, labels, UI, frame, watermark, or unrelated objects.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "negative_prompt": "text, letters, watermark, border, UI, extra objects, duplicate subject, isometric view, perspective, horizon, photorealism, 3D render, noisy texture",
+  "generation_settings": {
+    "checkpoint": "Flux1S/originByN0utis_originFluxAnimeV1.safetensors",
+    "lora": "flux/gokaygokayFlux-2D-Game-Assets-LoRA.safetensors",
+    "lora_strength": 0.8,
+    "seed": 700029,
+    "steps": 32,
+    "size": 1024,
+    "target_size": 128,
+    "cfg": 1.0,
+    "guidance": 3.5,
+    "sampler": "euler",
+    "scheduler": "normal",
+    "rembg_model": "isnet-anime",
+    "rembg_post_processing": false,
+    "alpha_matting": false,
+    "alpha_foreground_threshold": 240,
+    "alpha_background_threshold": 10,
+    "alpha_erode_size": 0
+  },
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.7
+      ]
+    ],
+    "frac_zero": 0.7488,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": true,
+      "vision_mode": "transparent",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.482,
+        0.731,
+        0.042
+      ],
+      [
+        0.919,
+        0.993,
+        0.625
+      ],
+      [
+        0.391,
+        0.561,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      32,
+      24
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.23,
+    "dominant_rgb": [
+      55.9,
+      82.1,
+      109.8
+    ],
+    "hsv": {
+      "hue_deg": 212.4,
+      "saturation": 0.59,
+      "value": 0.43
+    },
+    "dominant_palette": "azure_water",
+    "center_of_mass_norm": [
+      0.515,
+      0.508
+    ],
+    "horizontal_symmetry": 0.96,
+    "edge_complexity": 0.075
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

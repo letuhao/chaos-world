@@ -1,0 +1,200 @@
+{
+  "id": "yin_jian.obstacle_and_hazard.hell_hound_kennel_gate",
+  "name": "Hellhound Enclosure Iron Gate",
+  "vietnamese_name": "Cổng Chuồng Chó Săn Ngục",
+  "hanzi": "地狱犬笼门",
+  "category": "obstacle_and_hazard",
+  "sub_category": "mechanical_trap",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "open_cage",
+  "gameplay_role": "Iron gate that releases hostile hellhounds when opened.",
+  "destructible": true,
+  "material": "metal",
+  "cultivation_element": "metal",
+  "prompt_summary": "Spiked cage door with rusted latch and warning skull.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/obstacle_and_hazard/hell_hound_kennel_gate.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.obstacle_and_hazard.hell_hound_kennel_gate:261253892",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.379,
+        0.361
+      ],
+      [
+        0.732,
+        0.587
+      ]
+    ],
+    "frac_zero": 0.5771,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.003,
+        0.038,
+        0.042,
+        0.245,
+        0.026,
+        0.008,
+        0.003
+      ],
+      [
+        0.021,
+        0.592,
+        0.8,
+        0.741,
+        0.712,
+        0.516,
+        0.033
+      ],
+      [
+        0.046,
+        0.876,
+        0.711,
+        0.271,
+        0.595,
+        0.857,
+        0.059
+      ],
+      [
+        0.063,
+        0.709,
+        0.777,
+        0.485,
+        0.805,
+        0.655,
+        0.029
+      ],
+      [
+        0.269,
+        0.918,
+        0.91,
+        0.503,
+        0.864,
+        0.815,
+        0.12
+      ],
+      [
+        0.742,
+        0.997,
+        0.688,
+        0.905,
+        1.0,
+        0.833,
+        0.139
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.979,
+        0.49,
+        0.019
+      ]
+    ],
+    "crop_offset": [
+      16,
+      27
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 175,
+    "contact_reference_px": 175.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

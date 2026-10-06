@@ -1,0 +1,97 @@
+{
+  "id": "yin_jian.cultivation_and_resource.ghost_face_orchid",
+  "name": "Ghost-Face Orchid",
+  "vietnamese_name": "Hoa Lan Mặt Quỷ",
+  "hanzi": "幽冥鬼面兰",
+  "category": "cultivation_and_resource",
+  "sub_category": "herb_and_fungus",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "pick_orchid",
+  "gameplay_role": "Delicate orchid whose petals resemble a smiling spectral face.",
+  "destructible": true,
+  "material": "foliage",
+  "cultivation_element": "spirit",
+  "prompt_summary": "Tall slender stalk with three eerie white orchid flowers.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/cultivation_and_resource/ghost_face_orchid.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.cultivation_and_resource.ghost_face_orchid:264008541",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.328
+      ]
+    ],
+    "frac_zero": 0.8103,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.037,
+        0.509,
+        0.0
+      ],
+      [
+        0.155,
+        0.616,
+        0.031
+      ],
+      [
+        0.301,
+        0.633,
+        0.138
+      ]
+    ],
+    "crop_offset": [
+      25,
+      17
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 73,
+    "contact_reference_px": 73.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

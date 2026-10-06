@@ -1,0 +1,165 @@
+{
+  "id": "dao_fracture.terrain_transition.shore_edge",
+  "path": "res://assets/world_map/dao_fracture/terrain_transition/shore_edge.png",
+  "type": "tile",
+  "category": "terrain_transition",
+  "environment": "dao_fracture",
+  "environment_name": "Dao Fracture",
+  "world_tier": "Transcendent World",
+  "archetype": "terrain_transition.shore_edge",
+  "name": "Shore edge",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "center",
+  "collision": "none",
+  "status": "generated",
+  "source": "OpenAI built-in image_gen",
+  "license": "AI-generated for Chaos World; permitted for project use",
+  "alpha": "transparent",
+  "environment_theme": "Misaligned stone planes, impossible cracks, suspended shards, and narrow luminous seams.",
+  "generated_on": "2026-10-04",
+  "prompt_ref": "dao-fracture-shore-edge-openai-2026-10-04",
+  "prompt": "128x128 transparent top-down orthographic terrain transition sprite: a single horizontal edge where fractured floating charcoal basalt slabs meet dark void water, with narrow cyan-white luminous seams at the boundary. Anime-painted gouache, fine #263A35 contour, broad readable planes, restrained upper-left light. Isolated edge segment on genuine transparency; no landscape, horizon, text, border, or watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.807
+      ]
+    ],
+    "frac_zero": 0.747,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "none",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "transparent",
+      "acoustic_profile": "earth",
+      "material": "earth",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 1,
+        "hp": 40,
+        "on_destroy": "ground_tile.cracked_ground",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "water",
+          "wind"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      3,
+      2
+    ],
+    "sub_fill": [
+      [
+        0.805,
+        0.854,
+        0.798
+      ],
+      [
+        0.727,
+        0.879,
+        0.742
+      ]
+    ],
+    "crop_offset": [
+      17,
+      42
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.221,
+    "dominant_rgb": [
+      45.8,
+      54.8,
+      61.0
+    ],
+    "hsv": {
+      "hue_deg": 205.8,
+      "saturation": 0.3,
+      "value": 0.24
+    },
+    "dominant_palette": "azure_water",
+    "center_of_mass_norm": [
+      0.498,
+      0.517
+    ],
+    "horizontal_symmetry": 1.0,
+    "edge_complexity": 0.122
+  },
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 1,
+    "hp": 40,
+    "on_destroy": "ground_tile.cracked_ground",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "water",
+      "wind"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "earth",
+  "cultivation_element": "none"
+}

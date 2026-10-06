@@ -1,0 +1,182 @@
+{
+  "id": "immortal_jade_orchard.water_feature.water_foam",
+  "path": "res://assets/world_map/immortal_jade_orchard/water_feature/water_foam.png",
+  "type": "decal",
+  "category": "water_feature",
+  "environment": "immortal_jade_orchard",
+  "environment_name": "Immortal Jade Orchard",
+  "world_tier": "Immortal World",
+  "archetype": "water_feature.water_foam",
+  "name": "Water foam",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "center",
+  "collision": "none",
+  "status": "generated",
+  "source": "OpenAI image generation",
+  "license": "Generated with OpenAI; OpenAI terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Ancient ordered fruit trees, pale blossoms, jade moss, and clear mineral pools.",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "generated_on": "2026-10-06",
+  "prompt_ref": "openai-map-immortal-jade-orchard-water-foam-v1",
+  "prompt": "High-quality isolated 2D top-down map decal: a small patch of water foam for Immortal Jade Orchard, Chaos World. Strict vertical overhead view. Form a loose five-petal blossom of white and pale jade foam curls around a transparent open center, with three tiny pink blossom petals caught at the outer edges and thin turquoise bubbles tracing only parts of the curves. The foam itself is the entire decal, centered with a center pivot, compact and readable at 128px. Environment motif: ancient ordered fruit trees, pale blossoms, jade moss, clear mineral pools. Anime-painted gouache, clean dark #263A35 contour accents, broad readable shapes, restrained upper-left light, delicate high-quality detail. Transparent background; foam and petals only. No water surface, no pool, no riverbank, no ground, no environment, no perspective, no isometric view, no text, no UI, no frame, no watermark, no extra objects.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source_images": [
+    {
+      "path": "art-source/map-originals/immortal_jade_orchard/water_feature/immortal_jade_orchard__water_feature__water_foam__7587bae32f48d2a5.png",
+      "sha256": "7587bae32f48d2a558989057c08af56231fcc06848278b8c91177b1e624c4cd3",
+      "size_px": [
+        1254,
+        1254
+      ],
+      "source": "OpenAI image generation",
+      "license": "Generated with OpenAI; OpenAI terms apply",
+      "generated_on": "2026-10-06",
+      "prompt_ref": "openai-map-immortal-jade-orchard-water-foam-v1",
+      "prompt": "High-quality isolated 2D top-down map decal: a small patch of water foam for Immortal Jade Orchard, Chaos World. Strict vertical overhead view. Form a loose five-petal blossom of white and pale jade foam curls around a transparent open center, with three tiny pink blossom petals caught at the outer edges and thin turquoise bubbles tracing only parts of the curves. The foam itself is the entire decal, centered with a center pivot, compact and readable at 128px. Environment motif: ancient ordered fruit trees, pale blossoms, jade moss, clear mineral pools. Anime-painted gouache, clean dark #263A35 contour accents, broad readable shapes, restrained upper-left light, delicate high-quality detail. Transparent background; foam and petals only. No water surface, no pool, no riverbank, no ground, no environment, no perspective, no isometric view, no text, no UI, no frame, no watermark, no extra objects.",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
+    }
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.473
+      ]
+    ],
+    "frac_zero": 0.6556,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "none",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "transparent",
+      "acoustic_profile": "water",
+      "material": "water",
+      "elevation": 0,
+      "destructible": {
+        "enabled": false,
+        "tier": 0,
+        "hp": 0,
+        "on_destroy": null,
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.285,
+        0.665,
+        0.266
+      ],
+      [
+        0.68,
+        0.22,
+        0.676
+      ],
+      [
+        0.415,
+        0.555,
+        0.496
+      ]
+    ],
+    "crop_offset": [
+      16,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.266,
+    "dominant_rgb": [
+      182.1,
+      206.6,
+      199.0
+    ],
+    "hsv": {
+      "hue_deg": 132.7,
+      "saturation": 0.16,
+      "value": 0.82
+    },
+    "dominant_palette": "verdant_flora",
+    "center_of_mass_norm": [
+      0.504,
+      0.506
+    ],
+    "horizontal_symmetry": 0.74,
+    "edge_complexity": 0.316
+  },
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": false,
+    "tier": 0,
+    "hp": 0,
+    "on_destroy": null,
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [],
+    "reveals_loot_category": null
+  },
+  "material": "water",
+  "cultivation_element": "none"
+}

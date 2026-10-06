@@ -1,0 +1,263 @@
+{
+  "id": "stormwrack_reach.travel_and_wayfinding.stone_waypoint",
+  "path": "res://assets/world_map/stormwrack_reach/travel_and_wayfinding/stone_waypoint.png",
+  "type": "prop",
+  "category": "travel_and_wayfinding",
+  "environment": "stormwrack_reach",
+  "environment_name": "Stormwrack Reach",
+  "world_tier": "Immortal World",
+  "archetype": "travel_and_wayfinding.stone_waypoint",
+  "name": "Stone waypoint",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image_gen, 2026-10-05",
+  "license": "AI-generated for Chaos World; permitted for project use",
+  "alpha": "transparent",
+  "environment_theme": "Wet dark coastal rock, broken seafoam, wind-bent coastal flora, and weathered driftwood.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-05",
+  "prompt_ref": "map-prop-stormwrack-stone-waypoint-openai-v1",
+  "prompt": "One low stone waypoint for Stormwrack Reach, a weathered dark basalt marker slab set among a few attached rounded coastal stones, a simple carved tide-spiral symbol with no writing, pale seafoam caught in creases, and one small piece of salt-bleached driftwood at the base. Use the existing Mortal Greenwood stone waypoint only for direct overhead camera, grounded marker silhouette, and readable carved-stone focal point; make this a distinctly coastal version. Strict 90-degree straight-down orthographic top-down view; show complete top surfaces, no perspective or horizon. Anime-painted gouache cultivation fantasy, fine dark ink contours #263A35, broad readable planes, wet dark charcoal basalt, slate-blue sheen, muted seafoam ivory and tiny cool cyan accent, restrained upper-left light. One connected 2x2-cell waypoint cluster centered and fully visible, transparent padding, bottom-center ground pivot, short attached shadow only, detail clear at 256px. Genuine transparent background outside waypoint; no shoreline, water background, grass, trees, scenery, extra markers, text, runes, border, UI, watermark, or cropped edges.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map",
+    "mortal_greenwood.travel_and_wayfinding.stone_waypoint"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.626
+      ]
+    ],
+    "frac_zero": 0.5428,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "ground_contact",
+      "cov_gate": 0.01,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": true,
+      "vision_mode": "brush",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "activate",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.4,
+        0.867,
+        0.165,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.279,
+        0.955,
+        1.0,
+        0.747,
+        0.027,
+        0.0
+      ],
+      [
+        0.244,
+        0.993,
+        1.0,
+        1.0,
+        1.0,
+        0.688,
+        0.031
+      ],
+      [
+        0.757,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.685
+      ],
+      [
+        0.74,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.435
+      ],
+      [
+        0.07,
+        0.941,
+        1.0,
+        1.0,
+        1.0,
+        0.758,
+        0.013
+      ],
+      [
+        0.0,
+        0.246,
+        0.43,
+        0.898,
+        0.453,
+        0.031,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      25,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 48,
+    "contact_reference_px": 24.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.441,
+    "dominant_rgb": [
+      81.7,
+      88.6,
+      82.4
+    ],
+    "hsv": {
+      "hue_deg": 129.0,
+      "saturation": 0.24,
+      "value": 0.36
+    },
+    "dominant_palette": "verdant_flora",
+    "center_of_mass_norm": [
+      0.505,
+      0.526
+    ],
+    "horizontal_symmetry": 0.95,
+    "edge_complexity": 0.302
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "brush",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

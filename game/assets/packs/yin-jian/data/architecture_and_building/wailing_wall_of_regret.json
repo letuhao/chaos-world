@@ -1,0 +1,160 @@
+{
+  "id": "yin_jian.architecture_and_building.wailing_wall_of_regret",
+  "name": "Wailing Wall of Remorse",
+  "vietnamese_name": "Tường Than Khóc Hối Lỗi",
+  "hanzi": "悔恨哭墙",
+  "category": "architecture_and_building",
+  "sub_category": "shrine_and_temple",
+  "footprint_cells": [
+    4,
+    1
+  ],
+  "canvas_px": [
+    512,
+    128
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "listen_confessions",
+  "gameplay_role": "High stone wall where souls weep for mortal sins.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "spirit",
+  "prompt_summary": "Massive soot-stained stone wall engraved with prayer inscriptions.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/architecture_and_building/wailing_wall_of_regret.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.architecture_and_building.wailing_wall_of_regret:259956968",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.697,
+        0.412,
+        0.321,
+        0.318
+      ]
+    ],
+    "frac_zero": 0.81,
+    "blocks": [
+      [
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      2,
+      0
+    ],
+    "sub_grid": [
+      9,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.411,
+        0.606,
+        0.178,
+        0.145,
+        0.032,
+        0.001,
+        0.005,
+        0.019,
+        0.04
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        0.995,
+        0.967,
+        0.909,
+        0.907,
+        0.919,
+        0.928
+      ],
+      [
+        0.594,
+        0.607,
+        0.176,
+        0.046,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      119,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 49,
+    "contact_reference_px": 49.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      128
+    ]
+  }
+}

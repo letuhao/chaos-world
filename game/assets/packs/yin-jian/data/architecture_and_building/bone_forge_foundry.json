@@ -1,0 +1,360 @@
+{
+  "id": "yin_jian.architecture_and_building.bone_forge_foundry",
+  "name": "Underworld Bone Forge",
+  "vietnamese_name": "Lò Đúc Cốt Giáp",
+  "hanzi": "冥铁骨炉",
+  "category": "architecture_and_building",
+  "sub_category": "ghost_market",
+  "footprint_cells": [
+    4,
+    4
+  ],
+  "canvas_px": [
+    512,
+    512
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "forge_gear",
+  "gameplay_role": "Smithy forging weapons from soul-iron and bone.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "fire",
+  "prompt_summary": "Foundry with chimney belching black smoke and glowing anvil.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/architecture_and_building/bone_forge_foundry.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.architecture_and_building.bone_forge_foundry:259913770",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.032,
+        0.727,
+        0.567,
+        0.0
+      ],
+      [
+        0.353,
+        0.989,
+        0.155,
+        0.0
+      ],
+      [
+        0.527,
+        0.97,
+        0.856,
+        0.087
+      ],
+      [
+        0.0,
+        0.484,
+        0.818,
+        0.54
+      ]
+    ],
+    "frac_zero": 0.7519,
+    "blocks": [
+      [
+        false,
+        true,
+        true,
+        false
+      ],
+      [
+        true,
+        true,
+        false,
+        false
+      ],
+      [
+        true,
+        true,
+        true,
+        false
+      ],
+      [
+        false,
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 10,
+    "anchor_cell": [
+      2,
+      2
+    ],
+    "sub_grid": [
+      10,
+      15
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.46,
+        0.998,
+        1.0,
+        0.69,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.365,
+        0.757,
+        0.99,
+        1.0,
+        0.3,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.392,
+        1.0,
+        0.72,
+        0.724,
+        0.194,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.267,
+        0.897,
+        1.0,
+        0.698,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.219,
+        1.0,
+        1.0,
+        0.67,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.106,
+        1.0,
+        1.0,
+        0.617,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.087,
+        0.77,
+        1.0,
+        1.0,
+        0.937,
+        0.401,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.366,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.874,
+        0.093,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.759,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.416,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.574,
+        0.521,
+        0.973,
+        1.0,
+        1.0,
+        1.0,
+        0.709,
+        0.084,
+        0.0,
+        0.0
+      ],
+      [
+        0.15,
+        0.0,
+        0.488,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.415,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.453,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.996,
+        0.288,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.531,
+        0.992,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.921,
+        0.344
+      ],
+      [
+        0.0,
+        0.0,
+        0.014,
+        0.143,
+        0.45,
+        0.95,
+        1.0,
+        0.968,
+        0.383,
+        0.025
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.148,
+        0.756,
+        0.202,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      182,
+      16
+    ],
+    "trunk_columns": [
+      6
+    ],
+    "contact_px": 34,
+    "contact_reference_px": 34.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        3
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      3
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      512
+    ]
+  }
+}

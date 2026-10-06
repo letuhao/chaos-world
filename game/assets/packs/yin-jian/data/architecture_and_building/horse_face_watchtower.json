@@ -1,0 +1,174 @@
+{
+  "id": "yin_jian.architecture_and_building.horse_face_watchtower",
+  "name": "Horse-Face Sentry Watchtower",
+  "vietnamese_name": "Chòi Canh Mã Diện",
+  "hanzi": "马面哨楼",
+  "category": "architecture_and_building",
+  "sub_category": "watchtower_gatehouse",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "scout",
+  "gameplay_role": "High wooden watchtower with archer slits.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "yin",
+  "prompt_summary": "Tall timber watchtower on wooden stilts with searchlight lantern.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/architecture_and_building/horse_face_watchtower.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.architecture_and_building.horse_face_watchtower:259547742",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.62,
+        0.601
+      ],
+      [
+        0.371,
+        0.492
+      ]
+    ],
+    "frac_zero": 0.7778,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      4,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.191,
+        0.475,
+        0.16,
+        0.0
+      ],
+      [
+        0.615,
+        1.0,
+        0.952,
+        0.312
+      ],
+      [
+        0.489,
+        1.0,
+        0.934,
+        0.618
+      ],
+      [
+        0.354,
+        0.946,
+        0.94,
+        0.214
+      ],
+      [
+        0.335,
+        0.672,
+        0.751,
+        0.069
+      ],
+      [
+        0.352,
+        0.657,
+        0.709,
+        0.222
+      ],
+      [
+        0.055,
+        0.359,
+        0.227,
+        0.025
+      ]
+    ],
+    "crop_offset": [
+      70,
+      17
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 23,
+    "contact_reference_px": 23.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

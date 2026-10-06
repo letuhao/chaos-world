@@ -13,11 +13,19 @@ extends RefCounted
 ##                survive inserting and extracting any number of times.
 ##   `channels` — per target instance, the single replaceable enchantment and how
 ##                many treatments that target has already received.
+##   `reforges` — per target instance, how many reforges it has received. Kept
+##                as its own counter rather than read off the instance, because
+##                the escalating cost and the cap are about ATTEMPTS, and an
+##                attempt that produced the same affix still cost material.
 ##   `requests` — committed enchantment request ids, so a repeated callback or a
 ##                load-then-click cannot double-apply or double-charge.
 
 const STATE_KEY := &"socket_state"
 const VERSION := 1
+## How many replaced option ids one instance keeps as an audit trail. An upper
+## bound rather than a growing list: the ledger is persisted per actor, and the
+## per-rarity cap already bounds the real count.
+const REFORGE_HISTORY_CAP := 8
 
 var data: Dictionary = {}
 
@@ -36,16 +44,17 @@ static func migrate(payload: Dictionary) -> Dictionary:
 	if version < 1:
 		payload = payload.duplicate(true)
 		payload["version"] = VERSION
-	for section in ["parents", "channels", "requests"]:
+	for section in ["parents", "channels", "reforges", "requests"]:
 		if not payload.get(section) is Dictionary:
 			payload[section] = {}
 	payload["parents"] = _migrate_parents(payload["parents"])
 	payload["channels"] = _migrate_channels(payload["channels"])
+	payload["reforges"] = _migrate_reforges(payload["reforges"])
 	return payload
 
 
 static func empty() -> Dictionary:
-	return {"version": VERSION, "parents": {}, "channels": {}, "requests": {}}
+	return {"version": VERSION, "parents": {}, "channels": {}, "reforges": {}, "requests": {}}
 
 
 func to_dict() -> Dictionary:
@@ -163,6 +172,35 @@ func touched_ids() -> Array:
 	return out.keys()
 
 
+## How many reforges `target_id` has received. Read by the escalating cost and by
+## the cap, so a restored ledger prices the next attempt exactly as the live one
+## did — a save/load round trip must never hand back the cheap first attempt.
+func reforge_count(target_id: StringName) -> int:
+	if target_id == &"":
+		return 0
+	var entry = data["reforges"].get(String(target_id), {})
+	return maxi(0, int(entry.get("attempts", 0))) if entry is Dictionary else 0
+
+
+## Record one reforge against `target_id` and report the new attempt count. Only
+## a commit may call this: a preview is not an attempt and costs nothing.
+func record_reforge(target_id: StringName, option_id: StringName) -> int:
+	if target_id == &"":
+		return 0
+	var key := String(target_id)
+	var entry: Dictionary = data["reforges"].get(key, {"attempts": 0, "replaced": []})
+	entry["attempts"] = int(entry.get("attempts", 0)) + 1
+	var replaced: Array = entry.get("replaced", [])
+	# Bounded by the cap the policy allows, so this list cannot grow without limit.
+	# It is the audit trail of what an investment spent, not the rollback source:
+	# the replaced effect is also carried by the result each request recorded.
+	if replaced.size() < REFORGE_HISTORY_CAP:
+		replaced.append(String(option_id))
+	entry["replaced"] = replaced
+	data["reforges"][key] = entry
+	return int(entry["attempts"])
+
+
 ## A committed enchantment request, or an empty dictionary.
 func request(request_id: StringName) -> Dictionary:
 	if request_id == &"":
@@ -199,6 +237,23 @@ static func _migrate_parents(parents: Dictionary) -> Dictionary:
 				slot_entry["gem_effects"] = []
 			slots.append(slot_entry)
 		out[String(key)] = {"def_id": String(entry.get("def_id", "")), "slots": slots}
+	return out
+
+
+static func _migrate_reforges(reforges: Dictionary) -> Dictionary:
+	var out := {}
+	for key in reforges.keys():
+		var entry = reforges[key]
+		if not entry is Dictionary:
+			continue
+		var replaced: Array = []
+		for option_id in entry.get("replaced", []):
+			if not replaced.has(option_id):
+				replaced.append(option_id)
+		out[String(key)] = {
+			"attempts": maxi(0, int(entry.get("attempts", 0))),
+			"replaced": replaced.slice(0, REFORGE_HISTORY_CAP),
+		}
 	return out
 
 

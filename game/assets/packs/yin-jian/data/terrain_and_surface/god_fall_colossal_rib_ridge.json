@@ -1,0 +1,471 @@
+{
+  "id": "yin_jian.terrain_and_surface.god_fall_colossal_rib_ridge",
+  "name": "God-Fall Skeletal Rib Ridge",
+  "vietnamese_name": "Thần Lạc Hóa Thạch Cốt Lĩnh",
+  "hanzi": "神落化石骨岭",
+  "category": "terrain_and_surface",
+  "sub_category": "hazard_surface",
+  "racial_faction": "god_fall_battlefield",
+  "footprint_cells": [
+    5,
+    4
+  ],
+  "canvas_px": [
+    640,
+    512
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "blocks_vision",
+  "interactive_verb": "scramble_ridge",
+  "gameplay_role": "Impassable mountain ridge formed by the gigantic petrified ribcage of a fallen ancient god.",
+  "destructible": false,
+  "material": "bone",
+  "cultivation_element": "death",
+  "prompt_summary": "Top-down 45 degree colossal white fossilized rib bones curving out of jagged red earth like mountain ridges, divine golden aura fading into grey stone.",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/terrain_and_surface/god_fall_colossal_rib_ridge.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.terrain_and_surface.god_fall_colossal_rib_ridge:265598743",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.0,
+        0.001,
+        0.057,
+        0.311,
+        0.01
+      ],
+      [
+        0.0,
+        0.177,
+        0.867,
+        0.988,
+        0.549
+      ],
+      [
+        0.188,
+        0.885,
+        1.0,
+        0.978,
+        0.914
+      ],
+      [
+        0.598,
+        0.788,
+        0.902,
+        0.797,
+        1.0
+      ]
+    ],
+    "frac_zero": 0.5918,
+    "blocks": [
+      [
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      [
+        false,
+        false,
+        true,
+        true,
+        true
+      ],
+      [
+        false,
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 13,
+    "anchor_cell": [
+      2,
+      2
+    ],
+    "sub_grid": [
+      16,
+      15
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.207,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.459,
+        0.062,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.073,
+        0.03,
+        0.018,
+        0.784,
+        0.412,
+        0.042,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.01,
+        0.181,
+        0.335,
+        0.324,
+        0.521,
+        1.0,
+        0.854,
+        0.214,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.008,
+        0.194,
+        0.419,
+        0.784,
+        0.961,
+        1.0,
+        1.0,
+        0.992,
+        0.591,
+        0.243,
+        0.004,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.021,
+        0.429,
+        0.831,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.968,
+        0.677,
+        0.086,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.134,
+        0.463,
+        0.904,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.773,
+        0.312
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.043,
+        0.568,
+        0.918,
+        0.99,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.996,
+        0.962
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.354,
+        0.997,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.913,
+        0.823
+      ],
+      [
+        0.062,
+        0.093,
+        0.226,
+        0.854,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.774,
+        0.939,
+        1.0
+      ],
+      [
+        0.106,
+        0.383,
+        0.695,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.915,
+        0.754,
+        0.862,
+        0.797,
+        1.0
+      ],
+      [
+        0.264,
+        0.877,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.908,
+        0.843,
+        0.929,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        0.177,
+        0.825,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.96,
+        0.846,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        0.06,
+        0.781,
+        1.0,
+        0.984,
+        0.928,
+        0.985,
+        1.0,
+        1.0,
+        0.705,
+        0.637,
+        0.979,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        0.136,
+        0.728,
+        0.416,
+        0.14,
+        0.156,
+        0.269,
+        1.0,
+        1.0,
+        0.36,
+        0.0,
+        0.251,
+        0.918,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    ],
+    "crop_offset": [
+      75,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      6,
+      7,
+      8,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "contact_px": 141,
+    "contact_reference_px": 141.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        4,
+        3
+      ],
+      "1.0": [
+        0,
+        0,
+        4,
+        3
+      ],
+      "1.15": [
+        0,
+        0,
+        4,
+        3
+      ],
+      "1.35": [
+        0,
+        0,
+        4,
+        3
+      ],
+      "1.6": [
+        0,
+        0,
+        4,
+        3
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      4,
+      3
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      640,
+      512
+    ]
+  }
+}

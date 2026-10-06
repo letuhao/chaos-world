@@ -110,13 +110,13 @@ var _api_registry: Dictionary = {}
 var _config_values: Dictionary = {}
 
 ## Config schema from the manifest: Array of {key, label, type, default, ...}.
-var _config_schema: Array[Dictionary] = []
+var _config_schema: Array = []
 
 ## Lifecycle hooks registered through `add_lifecycle_hook`.
 var lifecycle_hooks: Array[Dictionary] = []
 
 ## Def patches from the manifest, applied during catalog merge.
-var def_patches: Array[Dictionary] = []
+var def_patches: Array = []
 
 
 func _init(

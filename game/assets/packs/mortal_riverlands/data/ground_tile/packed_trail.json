@@ -1,0 +1,180 @@
+{
+  "id": "mortal_riverlands.ground_tile.packed_trail",
+  "path": "res://assets/world_map/mortal_riverlands/ground_tile/packed_trail.png",
+  "type": "tile",
+  "category": "ground_tile",
+  "environment": "mortal_riverlands",
+  "environment_name": "Mortal Riverlands",
+  "world_tier": "Mortal World",
+  "archetype": "ground_tile.packed_trail",
+  "name": "Packed trail",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "center",
+  "collision": "none",
+  "status": "generated",
+  "source": "OpenAI built-in image generation",
+  "license": "Generated locally with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "opaque",
+  "environment_theme": "Silt banks, winding slate-blue channels, smooth river stones, and reed beds.",
+  "generated_on": "2026-10-04",
+  "prompt_ref": "openai-imagegen:mortal-riverlands.ground_tile.packed_trail:20261004",
+  "prompt": "Seamless opaque top-down square path surface for Mortal Riverlands: firmly tamped grey-brown river silt, sparse small smooth slate-blue river pebbles, a few tiny muted reed fragments embedded flat in the earth. Flat terrain texture only, no raised objects. Anime gouache brushwork, broad low-contrast areas, subtle #263A35 contour accents, cool riverland palette with warm damp earth. Full bleed square, irregular even texture, no focal mark, designed for 3x3 seamless repetition. No trail borders, water, grass clumps, footprints, large stones, scenery, perspective, grid, border, text, shadows, watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map",
+    "mortal_plains.ground_tile.packed_trail"
+  ],
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        1.0
+      ]
+    ],
+    "frac_zero": 0.0,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "none",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "transparent",
+      "acoustic_profile": "earth",
+      "material": "earth",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 1,
+        "hp": 40,
+        "on_destroy": "ground_tile.cracked_ground",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "water",
+          "wind"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      4,
+      4
+    ],
+    "sub_fill": [
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    ],
+    "crop_offset": [
+      0,
+      0
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 1.0,
+    "dominant_rgb": [
+      130.0,
+      113.6,
+      89.9
+    ],
+    "hsv": {
+      "hue_deg": 36.0,
+      "saturation": 0.31,
+      "value": 0.51
+    },
+    "dominant_palette": "warm_earth_gold",
+    "center_of_mass_norm": [
+      0.492,
+      0.492
+    ],
+    "horizontal_symmetry": 1.0,
+    "edge_complexity": 0.043
+  },
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 1,
+    "hp": 40,
+    "on_destroy": "ground_tile.cracked_ground",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "water",
+      "wind"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "earth",
+  "cultivation_element": "none"
+}

@@ -1,0 +1,213 @@
+{
+  "id": "yin_jian.interactive_and_puzzle.merit_counter_abacus_monument",
+  "name": "Monumental Bronze Abacus",
+  "vietnamese_name": "Bàn Tính Công Đức Bằng Đồng",
+  "hanzi": "功德大铜算盘",
+  "category": "interactive_and_puzzle",
+  "sub_category": "judgment_device",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "slide_beads",
+  "gameplay_role": "Sliding the bronze beads aligns karmic arithmetic to open secret vaults.",
+  "destructible": false,
+  "material": "metal",
+  "cultivation_element": "metal",
+  "prompt_summary": "Large upright bronze abacus frame with sliding circular metal beads.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/interactive_and_puzzle/merit_counter_abacus_monument.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.interactive_and_puzzle.merit_counter_abacus_monument:262914041",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.476,
+        0.461,
+        0.402
+      ],
+      [
+        0.511,
+        0.663,
+        0.483
+      ]
+    ],
+    "frac_zero": 0.706,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      8,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.126,
+        0.018,
+        0.0,
+        0.0,
+        0.0,
+        0.005,
+        0.162,
+        0.0
+      ],
+      [
+        0.497,
+        0.714,
+        0.569,
+        0.55,
+        0.531,
+        0.625,
+        0.515,
+        0.0
+      ],
+      [
+        0.518,
+        0.792,
+        0.615,
+        0.566,
+        0.619,
+        0.746,
+        0.602,
+        0.006
+      ],
+      [
+        0.373,
+        0.939,
+        0.882,
+        0.878,
+        0.922,
+        0.949,
+        0.416,
+        0.0
+      ],
+      [
+        0.141,
+        0.625,
+        0.196,
+        0.094,
+        0.182,
+        0.554,
+        0.169,
+        0.0
+      ],
+      [
+        0.053,
+        0.986,
+        0.925,
+        0.809,
+        0.729,
+        0.881,
+        0.18,
+        0.0
+      ],
+      [
+        0.005,
+        0.796,
+        0.913,
+        0.933,
+        0.934,
+        0.835,
+        0.587,
+        0.009
+      ]
+    ],
+    "crop_offset": [
+      72,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 179,
+    "contact_reference_px": 179.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

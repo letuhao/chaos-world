@@ -1,0 +1,99 @@
+{
+  "id": "yin_jian.decoration_and_ambience.ghost_handprint_blood_wall",
+  "name": "Bloody Handprints on Wall",
+  "vietnamese_name": "Vết Bàn Tay Máu Trên Tường",
+  "hanzi": "墙面血手印",
+  "category": "decoration_and_ambience",
+  "sub_category": "ambient_decal",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Two small bloody handprints dragging down wall.",
+  "destructible": false,
+  "material": "water",
+  "cultivation_element": "yin",
+  "prompt_summary": "Red smeared handprints on vertical stone surface.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/decoration_and_ambience/ghost_handprint_blood_wall.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.decoration_and_ambience.ghost_handprint_blood_wall:265100180",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.724
+      ]
+    ],
+    "frac_zero": 0.6317,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.774,
+        0.909,
+        0.16
+      ],
+      [
+        0.834,
+        1.0,
+        0.149
+      ],
+      [
+        0.735,
+        0.79,
+        0.55
+      ]
+    ],
+    "crop_offset": [
+      22,
+      19
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 74,
+    "contact_reference_px": 74.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,282 @@
+{
+  "id": "immortal_jade_orchard.water_feature.pool",
+  "path": "res://assets/world_map/immortal_jade_orchard/water_feature/pool.png",
+  "type": "prop",
+  "category": "water_feature",
+  "environment": "immortal_jade_orchard",
+  "environment_name": "Immortal Jade Orchard",
+  "world_tier": "Immortal World",
+  "archetype": "water_feature.pool",
+  "name": "Natural pool",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "ComfyUI local checkpoint: Flux1S/originByN0utis_originFluxAnimeV1.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Ancient ordered fruit trees, pale blossoms, jade moss, and clear mineral pools.",
+  "generated_on": "2026-10-03",
+  "prompt_ref": "comfyui-map-v1:immortal_jade_orchard.water_feature.pool:20261016",
+  "prompt": "One small sacred orchard spring pool as a standalone 2D top-down map prop. Perfect overhead view of an irregular shallow basin with a thin pale-stone rim, clear jade-green water, a few soft pink blossom petals floating on the surface and gentle ring ripples. Compact readable silhouette, isolated with transparent padding, no surrounding garden terrain.\n\nProduction sprite for Chaos World, a 2D top-down cultivation action RPG. Asset: Natural pool (immortal_jade_orchard.water_feature.pool); environment: Immortal Jade Orchard in the Immortal World. Environment art signature: Ancient ordered fruit trees, pale blossoms, jade moss, and clear mineral pools. Show one complete isolated object viewed straight down. Leave clear padding and honor the center ground pivot. Use a transparent background. The final image must have transparent pixels outside the art. Straight-down orthographic camera, with no horizon or isometric projection. Anime-painted gouache, dark #263A35 ink contours, broad readable value planes, material-led colors, restrained surface detail, soft upper-left light. Keep the silhouette and identifying detail legible at the indexed game size. No text, labels, UI, frame, watermark, or unrelated objects.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "negative_prompt": "forest scene, full landscape, large lake, river, waterfall, background, terrain texture, ground tile, pedestal, circular platform, text, watermark, border, frame, UI, horizon, isometric, perspective, side view, photorealistic, 3D render",
+  "generation_settings": {
+    "checkpoint": "Flux1S/originByN0utis_originFluxAnimeV1.safetensors",
+    "lora": "flux/gokaygokayFlux-2D-Game-Assets-LoRA.safetensors",
+    "lora_strength": 0.8,
+    "seed": 20261016,
+    "steps": 32,
+    "size": 1024,
+    "target_size": 256,
+    "cfg": 1.0,
+    "guidance": 3.5,
+    "sampler": "euler",
+    "scheduler": "normal",
+    "rembg_model": "isnet-anime",
+    "rembg_post_processing": false,
+    "alpha_matting": false,
+    "alpha_foreground_threshold": 240,
+    "alpha_background_threshold": 10,
+    "alpha_erode_size": 0
+  },
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.828,
+        0.836
+      ],
+      [
+        0.861,
+        0.811
+      ]
+    ],
+    "frac_zero": 0.483,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.2,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "transparent",
+      "acoustic_profile": "water",
+      "material": "water",
+      "elevation": 0,
+      "destructible": {
+        "enabled": false,
+        "tier": 0,
+        "hp": 0,
+        "on_destroy": null,
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.186,
+        0.826,
+        0.914,
+        0.946,
+        0.742,
+        0.447,
+        0.0
+      ],
+      [
+        0.682,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.977,
+        0.299
+      ],
+      [
+        0.771,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.997,
+        0.309
+      ],
+      [
+        0.928,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.977,
+        0.045
+      ],
+      [
+        0.787,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.981,
+        0.201
+      ],
+      [
+        0.292,
+        0.862,
+        0.981,
+        0.989,
+        0.818,
+        0.36,
+        0.031
+      ],
+      [
+        0.0,
+        0.0,
+        0.25,
+        0.453,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      27,
+      31
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.496,
+    "dominant_rgb": [
+      120.6,
+      156.4,
+      147.1
+    ],
+    "hsv": {
+      "hue_deg": 156.7,
+      "saturation": 0.44,
+      "value": 0.65
+    },
+    "dominant_palette": "verdant_flora",
+    "center_of_mass_norm": [
+      0.493,
+      0.498
+    ],
+    "horizontal_symmetry": 0.96,
+    "edge_complexity": 0.216
+  },
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": false,
+    "tier": 0,
+    "hp": 0,
+    "on_destroy": null,
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [],
+    "reveals_loot_category": null
+  },
+  "material": "water",
+  "cultivation_element": "none"
+}

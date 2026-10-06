@@ -1,0 +1,197 @@
+{
+  "id": "yin_jian.cultivation_and_resource.ironwood_coffin_tree",
+  "name": "Underworld Ironwood Sarcophagus Tree",
+  "vietnamese_name": "Cây Gỗ Sắt Làm Quan Tài",
+  "hanzi": "沉阴铁木",
+  "category": "cultivation_and_resource",
+  "sub_category": "wood_and_bamboo",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "canopy",
+  "interactive_verb": "fell_tree",
+  "gameplay_role": "Dense heavy timber that never rots even submerged in Yellow Springs.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "metal",
+  "prompt_summary": "Sturdy dark-trunked tree with gnarled limbs and steel-colored bark.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/cultivation_and_resource/ironwood_coffin_tree.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.cultivation_and_resource.ironwood_coffin_tree:264333972",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.424,
+        0.474
+      ],
+      [
+        0.426,
+        0.551
+      ]
+    ],
+    "frac_zero": 0.6513,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.039,
+        0.621,
+        0.87,
+        0.298,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.391,
+        0.868,
+        0.895,
+        0.784,
+        0.206,
+        0.0
+      ],
+      [
+        0.237,
+        0.941,
+        0.455,
+        0.754,
+        0.641,
+        0.582,
+        0.007
+      ],
+      [
+        0.069,
+        0.216,
+        0.375,
+        0.881,
+        0.353,
+        0.0,
+        0.0
+      ],
+      [
+        0.042,
+        0.472,
+        0.778,
+        0.997,
+        0.521,
+        0.254,
+        0.0
+      ],
+      [
+        0.322,
+        0.986,
+        1.0,
+        1.0,
+        1.0,
+        0.669,
+        0.059
+      ],
+      [
+        0.008,
+        0.134,
+        0.564,
+        0.597,
+        0.614,
+        0.041,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      26,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 81,
+    "contact_reference_px": 81.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

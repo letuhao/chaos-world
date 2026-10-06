@@ -1,0 +1,161 @@
+{
+  "id": "yin_jian.path_and_way.blood_waterfall_splash_walk",
+  "name": "Blood Falls Apron Walkway",
+  "vietnamese_name": "Đường Vòng Dưới Thác Máu",
+  "hanzi": "血瀑水栈",
+  "category": "path_and_way",
+  "sub_category": "bridge",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "canopy",
+  "interactive_verb": null,
+  "gameplay_role": "Wet timber walkway passing behind a red waterfall.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "yin",
+  "prompt_summary": "Slick dark planks bathed in crimson mist.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/path_and_way/blood_waterfall_splash_walk.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.path_and_way.blood_waterfall_splash_walk:259244138",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.541,
+        0.397
+      ],
+      [
+        0.35,
+        0.597
+      ]
+    ],
+    "frac_zero": 0.6105,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.005,
+        0.007,
+        0.117,
+        0.408,
+        0.085,
+        0.001,
+        0.0
+      ],
+      [
+        0.046,
+        0.419,
+        0.815,
+        1.0,
+        0.714,
+        0.092,
+        0.0
+      ],
+      [
+        0.558,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.47,
+        0.031
+      ],
+      [
+        0.351,
+        0.934,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.414
+      ],
+      [
+        0.008,
+        0.284,
+        0.908,
+        1.0,
+        1.0,
+        0.898,
+        0.346
+      ],
+      [
+        0.0,
+        0.01,
+        0.247,
+        0.932,
+        0.881,
+        0.286,
+        0.012
+      ],
+      [
+        0.0,
+        0.0,
+        0.058,
+        0.6,
+        0.775,
+        0.03,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      22
+    ],
+    "trunk_columns": [
+      3,
+      4
+    ],
+    "contact_px": 46,
+    "contact_reference_px": 46.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

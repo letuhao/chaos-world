@@ -1,0 +1,315 @@
+{
+  "id": "yin_jian.rift_and_portal.gate_of_departed_mortals",
+  "name": "Gate of Departing Mortals",
+  "vietnamese_name": "Cổng Biệt Dương Gian",
+  "hanzi": "离阳之门",
+  "category": "rift_and_portal",
+  "sub_category": "grand_gate",
+  "footprint_cells": [
+    4,
+    3
+  ],
+  "canvas_px": [
+    512,
+    384
+  ],
+  "collision_type": "core_ring",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "cross_threshold",
+  "gameplay_role": "Threshold dividing mortal warm sunlight from perpetual nether gloom.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "yin",
+  "prompt_summary": "Half-stone half-shadow portal shimmering with golden and cyan energy.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/rift_and_portal/gate_of_departed_mortals.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.rift_and_portal.gate_of_departed_mortals:260182131",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.007,
+        0.434,
+        0.641,
+        0.057
+      ],
+      [
+        0.187,
+        0.997,
+        0.999,
+        0.55
+      ],
+      [
+        0.861,
+        0.996,
+        1.0,
+        1.0
+      ]
+    ],
+    "frac_zero": 0.5819,
+    "blocks": [
+      [
+        false,
+        true,
+        true,
+        false
+      ],
+      [
+        false,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        false,
+        false,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 7,
+    "anchor_cell": [
+      2,
+      1
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.109,
+        0.067,
+        0.186,
+        0.051,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.248,
+        0.808,
+        0.528,
+        0.718,
+        0.049,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.022,
+        0.444,
+        0.962,
+        1.0,
+        1.0,
+        0.951,
+        0.388,
+        0.028,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.318,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.583,
+        0.011,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.287,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.626,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.028,
+        0.587,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.839,
+        0.452,
+        0.362
+      ],
+      [
+        0.0,
+        0.271,
+        0.824,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.998,
+        1.0
+      ],
+      [
+        0.158,
+        0.918,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        0.412,
+        0.832,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        0.994,
+        0.97,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    ],
+    "crop_offset": [
+      80,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "contact_px": 352,
+    "contact_reference_px": 352.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      384
+    ]
+  }
+}

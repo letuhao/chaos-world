@@ -1,0 +1,297 @@
+{
+  "id": "yin_jian.architecture_and_building.bell_tower_of_evening_souls",
+  "name": "Bell Tower of Evening Souls",
+  "vietnamese_name": "Lầu Chuông Hoàng Hôn",
+  "hanzi": "暮魂钟楼",
+  "category": "architecture_and_building",
+  "sub_category": "tribunal_pavilion",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "core_ring",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "ring_bell",
+  "gameplay_role": "Belfry tolling the curfew bell for wandering ghosts.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "metal",
+  "prompt_summary": "Elevated two-tier wooden belfry holding giant bronze bell.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/architecture_and_building/bell_tower_of_evening_souls.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.architecture_and_building.bell_tower_of_evening_souls:259819002",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.075,
+        0.63,
+        0.196
+      ],
+      [
+        0.014,
+        0.832,
+        0.364
+      ],
+      [
+        0.238,
+        0.791,
+        0.45
+      ]
+    ],
+    "frac_zero": 0.6536,
+    "blocks": [
+      [
+        false,
+        true,
+        false
+      ],
+      [
+        false,
+        true,
+        true
+      ],
+      [
+        false,
+        false,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.326,
+        0.239,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.01,
+        0.0,
+        0.124,
+        0.92,
+        0.862,
+        0.097,
+        0.0,
+        0.016,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.36,
+        0.754,
+        0.98,
+        1.0,
+        1.0,
+        0.98,
+        0.771,
+        0.283,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.421,
+        0.982,
+        0.997,
+        0.998,
+        0.985,
+        0.388,
+        0.0,
+        0.014
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.104,
+        0.814,
+        0.907,
+        0.932,
+        0.775,
+        0.154,
+        0.061,
+        0.091
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.146,
+        0.55,
+        0.981,
+        0.999,
+        0.564,
+        0.232,
+        0.288,
+        0.139
+      ],
+      [
+        0.0,
+        0.047,
+        0.031,
+        0.328,
+        0.604,
+        1.0,
+        1.0,
+        0.653,
+        0.512,
+        0.798,
+        0.11
+      ],
+      [
+        0.01,
+        0.036,
+        0.52,
+        0.599,
+        0.78,
+        1.0,
+        1.0,
+        0.773,
+        0.989,
+        0.888,
+        0.098
+      ],
+      [
+        0.043,
+        0.473,
+        0.894,
+        0.988,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.863,
+        0.352
+      ],
+      [
+        0.0,
+        0.077,
+        0.256,
+        0.229,
+        0.788,
+        0.999,
+        1.0,
+        0.823,
+        0.28,
+        0.235,
+        0.026
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.003,
+        0.419,
+        0.612,
+        0.27,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      17
+    ],
+    "trunk_columns": [
+      5,
+      6
+    ],
+    "contact_px": 30,
+    "contact_reference_px": 30.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        1,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        1,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        1,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        1,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      1,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      128,
+      0,
+      384,
+      384
+    ]
+  }
+}

@@ -1,0 +1,252 @@
+{
+  "id": "ember_grotto.stone_and_ore.standing_stone",
+  "path": "res://assets/world_map/ember_grotto/stone_and_ore/standing_stone.png",
+  "type": "prop",
+  "category": "stone_and_ore",
+  "environment": "ember_grotto",
+  "environment_name": "Ember Grotto",
+  "world_tier": "Mortal World",
+  "archetype": "stone_and_ore.standing_stone",
+  "name": "Standing stone",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image_gen via Codex",
+  "license": "AI-generated for Chaos World; permitted for project use",
+  "alpha": "transparent",
+  "environment_theme": "Soot-dark basalt, warm umber stone, ember fissures, and compact volcanic formations.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-06",
+  "prompt_ref": "openai-map-ember-grotto-standing-stone-v1",
+  "prompt": "One jagged standing basalt stone for Ember Grotto, strict direct overhead orthographic view: compact irregular column silhouette, soot-dark charcoal stone with angular cracked planes, thin glowing ember-orange fissures, warm umber at its base. Anime gouache, fine dark #263A35 contour, broad readable planes, upper-left light, attached short shadow. Centered complete sprite, transparent true alpha, 512 square source, bottom-center pivot, 2x2 cells. No lava pool, cave background, ground plane, extra rocks, detached shadow, text, UI, frame, watermark, perspective or isometric view.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.539,
+        0.55
+      ],
+      [
+        0.783,
+        0.809
+      ]
+    ],
+    "frac_zero": 0.7201,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "ground_contact",
+      "cov_gate": 0.01,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "solid",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 1,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      4,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.733,
+        0.338,
+        0.0
+      ],
+      [
+        0.193,
+        1.0,
+        0.857,
+        0.009
+      ],
+      [
+        0.375,
+        1.0,
+        1.0,
+        0.161
+      ],
+      [
+        0.455,
+        1.0,
+        1.0,
+        0.353
+      ],
+      [
+        0.715,
+        1.0,
+        1.0,
+        0.594
+      ],
+      [
+        0.906,
+        1.0,
+        1.0,
+        0.852
+      ],
+      [
+        0.369,
+        0.889,
+        0.822,
+        0.195
+      ]
+    ],
+    "crop_offset": [
+      70,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "contact_px": 74,
+    "contact_reference_px": 74.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.266,
+    "dominant_rgb": [
+      83.4,
+      56.9,
+      44.7
+    ],
+    "hsv": {
+      "hue_deg": 55.4,
+      "saturation": 0.37,
+      "value": 0.33
+    },
+    "dominant_palette": "warm_earth_gold",
+    "center_of_mass_norm": [
+      0.501,
+      0.548
+    ],
+    "horizontal_symmetry": 0.96,
+    "edge_complexity": 0.099
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

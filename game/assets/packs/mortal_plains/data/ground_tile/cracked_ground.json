@@ -1,0 +1,180 @@
+{
+  "id": "mortal_plains.ground_tile.cracked_ground",
+  "path": "res://assets/world_map/mortal_plains/ground_tile/cracked_ground.png",
+  "type": "tile",
+  "category": "ground_tile",
+  "environment": "mortal_plains",
+  "environment_name": "Mortal Plains",
+  "world_tier": "Mortal World",
+  "archetype": "ground_tile.cracked_ground",
+  "name": "Cracked ground",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "center",
+  "collision": "none",
+  "status": "generated",
+  "source": "OpenAI built-in image generation",
+  "license": "Generated locally with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "opaque",
+  "environment_theme": "Sun-warmed ochre loam, low golden grasses, rounded hills, and worn farm tracks.",
+  "generated_on": "2026-10-04",
+  "prompt_ref": "openai-imagegen:mortal-plains.ground_tile.cracked_ground:20261004",
+  "prompt": "Seamless opaque top-down ground tile: sun-warmed ochre-brown cracked loam with shallow irregular hairline cracks, a few tiny low golden grass blades, subtle earth clumps. Flat texture only, no focal point. Full-bleed square, distributed and repeatable on all edges. Anime gouache, fine #263A35 accents, broad readable planes, restrained texture, upper-left diffuse light. No rocks, footprints, path, hills, horizon, perspective, border, grid, text, watermark, shadows.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map",
+    "mortal_plains.ground_tile.base_ground"
+  ],
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        1.0
+      ]
+    ],
+    "frac_zero": 0.0,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "none",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "transparent",
+      "acoustic_profile": "earth",
+      "material": "earth",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 1,
+        "hp": 40,
+        "on_destroy": "ground_tile.cracked_ground",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "water",
+          "wind"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      4,
+      4
+    ],
+    "sub_fill": [
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    ],
+    "crop_offset": [
+      0,
+      0
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 1.0,
+    "dominant_rgb": [
+      182.0,
+      125.2,
+      53.2
+    ],
+    "hsv": {
+      "hue_deg": 33.5,
+      "saturation": 0.71,
+      "value": 0.71
+    },
+    "dominant_palette": "warm_earth_gold",
+    "center_of_mass_norm": [
+      0.492,
+      0.492
+    ],
+    "horizontal_symmetry": 1.0,
+    "edge_complexity": 0.139
+  },
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 1,
+    "hp": 40,
+    "on_destroy": "ground_tile.cracked_ground",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "water",
+      "wind"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "earth",
+  "cultivation_element": "none"
+}

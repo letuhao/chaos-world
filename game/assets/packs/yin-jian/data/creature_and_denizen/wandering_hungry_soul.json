@@ -1,0 +1,97 @@
+{
+  "id": "yin_jian.creature_and_denizen.wandering_hungry_soul",
+  "name": "Wandering Lost Soul",
+  "vietnamese_name": "Cô Hồn Dã Quỷ",
+  "hanzi": "游荡孤魂",
+  "category": "creature_and_denizen",
+  "sub_category": "wandering_spirit",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "pacify_or_slay",
+  "gameplay_role": "Pitiable drifting shade wandering in the ash fields.",
+  "destructible": false,
+  "material": "spirit",
+  "cultivation_element": "yin",
+  "prompt_summary": "Translucent pale blue human silhouette with glowing eyes and trailing mist.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/wandering_hungry_soul.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.wandering_hungry_soul:262184957",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.383
+      ]
+    ],
+    "frac_zero": 0.8046,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.023,
+        0.432,
+        0.024
+      ],
+      [
+        0.524,
+        0.925,
+        0.271
+      ],
+      [
+        0.159,
+        0.46,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      28,
+      18
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 20,
+    "contact_reference_px": 20.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

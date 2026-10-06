@@ -1,0 +1,281 @@
+{
+  "id": "yin_jian.architecture_and_building.corpse_oil_lamp_foundry",
+  "name": "Lamp Oil Refining Works",
+  "vietnamese_name": "Xưởng Nấu Dầu Thắp Hồn",
+  "hanzi": "熬尸制灯坊",
+  "category": "architecture_and_building",
+  "sub_category": "ghost_market",
+  "footprint_cells": [
+    4,
+    3
+  ],
+  "canvas_px": [
+    512,
+    384
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "produce_oil",
+  "gameplay_role": "Refinery distilling oil for everlasting temple lanterns.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "fire",
+  "prompt_summary": "Shed with smoking iron vats and copper pipes.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/architecture_and_building/corpse_oil_lamp_foundry.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.architecture_and_building.corpse_oil_lamp_foundry:260059539",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.137,
+        0.617,
+        0.559,
+        0.014
+      ],
+      [
+        0.679,
+        1.0,
+        0.793,
+        0.054
+      ],
+      [
+        0.378,
+        0.805,
+        0.622,
+        0.193
+      ]
+    ],
+    "frac_zero": 0.7644,
+    "blocks": [
+      [
+        false,
+        true,
+        true,
+        false
+      ],
+      [
+        true,
+        true,
+        true,
+        false
+      ],
+      [
+        true,
+        true,
+        true,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 8,
+    "anchor_cell": [
+      2,
+      1
+    ],
+    "sub_grid": [
+      9,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.001,
+        0.647,
+        0.998,
+        0.969,
+        0.135,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.057,
+        0.172,
+        0.904,
+        0.893,
+        0.179,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.124,
+        0.261,
+        0.505,
+        0.949,
+        0.372,
+        0.003,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.559,
+        0.327,
+        1.0,
+        1.0,
+        1.0,
+        0.231,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.537,
+        0.871,
+        1.0,
+        1.0,
+        1.0,
+        0.59,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.616,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.637,
+        0.011,
+        0.016,
+        0.0
+      ],
+      [
+        0.269,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.729,
+        0.229,
+        0.0,
+        0.0
+      ],
+      [
+        0.178,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.875,
+        0.264,
+        0.01
+      ],
+      [
+        0.34,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.982,
+        0.498,
+        0.077,
+        0.021
+      ],
+      [
+        0.037,
+        0.485,
+        0.992,
+        0.998,
+        0.844,
+        0.304,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.074,
+        0.301,
+        0.191,
+        0.048,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      123,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 4,
+    "contact_reference_px": 4.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      384
+    ]
+  }
+}

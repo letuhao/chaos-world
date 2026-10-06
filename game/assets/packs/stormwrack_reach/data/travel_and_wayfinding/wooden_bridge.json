@@ -1,0 +1,253 @@
+{
+  "id": "stormwrack_reach.travel_and_wayfinding.wooden_bridge",
+  "path": "res://assets/world_map/stormwrack_reach/travel_and_wayfinding/wooden_bridge.png",
+  "type": "prop",
+  "category": "travel_and_wayfinding",
+  "environment": "stormwrack_reach",
+  "environment_name": "Stormwrack Reach",
+  "world_tier": "Immortal World",
+  "archetype": "travel_and_wayfinding.wooden_bridge",
+  "name": "Wooden bridge",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "none",
+  "status": "generated",
+  "source": "OpenAI image_gen",
+  "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Wet dark coastal rock, broken seafoam, wind-bent coastal flora, and weathered driftwood.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-06",
+  "prompt_ref": "openai-imagegen:stormwrack_reach.wooden_bridge:20261006",
+  "prompt": "One isolated reusable wooden bridge segment sprite for a 2D top-down map, intended for a 2x2-cell placement in Stormwrack Reach. Strict straight-down overhead orthographic view: short weathered driftwood planks laid side by side across a narrow gap, running vertically through the square; two simple dark rope lashings and a few worn uneven board ends. Show only the bridge\\x27s top surfaces, no side view or perspective. Wet charcoal-brown timber with muted sea-gray highlights, small weathered edges, no bright saturated colors. Anime-painted gouache map art, dark #263A35 ink contours, broad readable value planes, restrained upper-left light. Centered complete compact silhouette, transparent padding, square high-resolution source, legible when normalized to 256px. Genuine transparent background. No water, no river, no shore, no piers or extra props, no scenery, no cast shadow, no text, no frame, no watermark, no isometric angle, no perspective, no 3D render.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source_images": [
+    {
+      "path": "art-source/map-originals/stormwrack_reach/travel_and_wayfinding/stormwrack_reach__travel_and_wayfinding__wooden_bridge__98c70781a2a3a41f.png",
+      "sha256": "98c70781a2a3a41fa369dad1b5bf83116f232bd4efa638e7745f49af8074ec30",
+      "size_px": [
+        1254,
+        1254
+      ],
+      "source": "OpenAI image_gen",
+      "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+      "generated_on": "2026-10-06",
+      "prompt_ref": "openai-imagegen:stormwrack_reach.wooden_bridge:20261006",
+      "prompt": "One isolated reusable wooden bridge segment sprite for a 2D top-down map, intended for a 2x2-cell placement in Stormwrack Reach. Strict straight-down overhead orthographic view: short weathered driftwood planks laid side by side across a narrow gap, running vertically through the square; two simple dark rope lashings and a few worn uneven board ends. Show only the bridge\\x27s top surfaces, no side view or perspective. Wet charcoal-brown timber with muted sea-gray highlights, small weathered edges, no bright saturated colors. Anime-painted gouache map art, dark #263A35 ink contours, broad readable value planes, restrained upper-left light. Centered complete compact silhouette, transparent padding, square high-resolution source, legible when normalized to 256px. Genuine transparent background. No water, no river, no shore, no piers or extra props, no scenery, no cast shadow, no text, no frame, no watermark, no isometric angle, no perspective, no 3D render.",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
+    }
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.855,
+        0.855
+      ]
+    ],
+    "frac_zero": 0.6166,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.15,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": true,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "transparent",
+      "acoustic_profile": "wood",
+      "material": "wood",
+      "elevation": 1,
+      "destructible": {
+        "enabled": true,
+        "tier": 2,
+        "hp": 60,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      4,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.822,
+        0.62,
+        0.632,
+        0.836
+      ],
+      [
+        0.866,
+        0.927,
+        0.923,
+        0.852
+      ],
+      [
+        0.881,
+        0.911,
+        0.939,
+        0.894
+      ],
+      [
+        0.914,
+        0.936,
+        0.932,
+        0.897
+      ],
+      [
+        0.927,
+        0.952,
+        0.953,
+        0.913
+      ],
+      [
+        0.907,
+        0.919,
+        0.933,
+        0.917
+      ],
+      [
+        0.808,
+        0.568,
+        0.578,
+        0.809
+      ]
+    ],
+    "crop_offset": [
+      66,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.36,
+    "dominant_rgb": [
+      73.4,
+      66.0,
+      58.9
+    ],
+    "hsv": {
+      "hue_deg": 41.5,
+      "saturation": 0.19,
+      "value": 0.29
+    },
+    "dominant_palette": "warm_earth_gold",
+    "center_of_mass_norm": [
+      0.495,
+      0.498
+    ],
+    "horizontal_symmetry": 0.92,
+    "edge_complexity": 0.163
+  },
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 2,
+    "hp": 60,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "wood",
+  "cultivation_element": "none"
+}

@@ -1,0 +1,196 @@
+{
+  "id": "yin_jian.creature_and_denizen.bone_scorpion_stalker",
+  "name": "Pincer Bone Scorpion",
+  "vietnamese_name": "Bọ Cạp Cốt Biển Cát",
+  "hanzi": "骨砂潜行蝎",
+  "category": "creature_and_denizen",
+  "sub_category": "nether_beast",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "slay_scorpion",
+  "gameplay_role": "Giant white scorpion burrowing under bone dust sands.",
+  "destructible": false,
+  "material": "bone",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ivory scorpion with huge bone pincers and raised dripping stinger.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/bone_scorpion_stalker.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.bone_scorpion_stalker:262762313",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.092,
+        0.35
+      ],
+      [
+        0.396,
+        0.52
+      ]
+    ],
+    "frac_zero": 0.7235,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.407,
+        0.729,
+        0.057,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.434,
+        0.379,
+        0.262,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.204,
+        0.329,
+        0.745,
+        0.261,
+        0.0
+      ],
+      [
+        0.021,
+        0.366,
+        0.767,
+        0.939,
+        0.991,
+        0.708,
+        0.28
+      ],
+      [
+        0.767,
+        0.539,
+        0.702,
+        0.968,
+        0.923,
+        0.513,
+        0.303
+      ],
+      [
+        0.529,
+        0.018,
+        0.044,
+        0.278,
+        1.0,
+        0.4,
+        0.024
+      ],
+      [
+        0.111,
+        0.0,
+        0.206,
+        0.668,
+        0.57,
+        0.016,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      21
+    ],
+    "trunk_columns": [
+      3,
+      4
+    ],
+    "contact_px": 55,
+    "contact_reference_px": 55.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

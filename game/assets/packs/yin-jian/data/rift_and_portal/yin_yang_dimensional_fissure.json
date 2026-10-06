@@ -1,0 +1,166 @@
+{
+  "id": "yin_jian.rift_and_portal.yin_yang_dimensional_fissure",
+  "name": "Yin-Yang Spatial Fissure",
+  "vietnamese_name": "Vết Rách Không Gian Âm Dương",
+  "hanzi": "阴阳两界裂隙",
+  "category": "rift_and_portal",
+  "sub_category": "dimensional_fissure",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "traverse_rift",
+  "gameplay_role": "Spontaneous spatial tear connecting mortal domain to netherworld.",
+  "destructible": false,
+  "material": "spirit",
+  "cultivation_element": "void",
+  "prompt_summary": "Jagged vertical cosmic rift crackling with black and white lightning.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/rift_and_portal/yin_yang_dimensional_fissure.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.rift_and_portal.yin_yang_dimensional_fissure:260268008",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.173,
+        0.583,
+        0.179
+      ],
+      [
+        0.194,
+        0.709,
+        0.166
+      ]
+    ],
+    "frac_zero": 0.8052,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.107,
+        0.081,
+        0.012,
+        0.0
+      ],
+      [
+        0.0,
+        0.037,
+        0.115,
+        0.78,
+        0.247,
+        0.005,
+        0.0
+      ],
+      [
+        0.13,
+        0.543,
+        0.996,
+        1.0,
+        0.841,
+        0.033,
+        0.0
+      ],
+      [
+        0.036,
+        0.664,
+        1.0,
+        0.991,
+        0.945,
+        0.438,
+        0.041
+      ],
+      [
+        0.004,
+        0.398,
+        1.0,
+        1.0,
+        0.799,
+        0.129,
+        0.025
+      ],
+      [
+        0.0,
+        0.041,
+        0.766,
+        0.582,
+        0.264,
+        0.014,
+        0.014
+      ],
+      [
+        0.0,
+        0.239,
+        0.618,
+        0.269,
+        0.0,
+        0.009,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      95,
+      16
+    ],
+    "trunk_columns": [
+      2
+    ],
+    "contact_px": 28,
+    "contact_reference_px": 28.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

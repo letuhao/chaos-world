@@ -1,0 +1,196 @@
+{
+  "id": "yin_jian.creature_and_denizen.headless_executioner_axe",
+  "name": "Headless Guillotine Brute",
+  "vietnamese_name": "Đao Phủ Chặt Đầu Không Đầu",
+  "hanzi": "无头巨斧蛮鬼",
+  "category": "creature_and_denizen",
+  "sub_category": "jailer_and_guard",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "slay_brute",
+  "gameplay_role": "Massive broad-shouldered headless executioner swinging heavy axe.",
+  "destructible": false,
+  "material": "bone",
+  "cultivation_element": "metal",
+  "prompt_summary": "Giant headless brute with mouth on chest swinging executioner axe.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/headless_executioner_axe.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.headless_executioner_axe:262702148",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.357,
+        0.524
+      ],
+      [
+        0.623,
+        0.515
+      ]
+    ],
+    "frac_zero": 0.6148,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.054,
+        0.505,
+        0.008,
+        0.0
+      ],
+      [
+        0.0,
+        0.081,
+        0.691,
+        0.906,
+        0.976,
+        0.162,
+        0.0
+      ],
+      [
+        0.0,
+        0.658,
+        1.0,
+        1.0,
+        1.0,
+        0.594,
+        0.016
+      ],
+      [
+        0.205,
+        0.871,
+        0.765,
+        1.0,
+        0.719,
+        0.922,
+        0.271
+      ],
+      [
+        0.136,
+        0.782,
+        0.897,
+        1.0,
+        0.797,
+        0.641,
+        0.079
+      ],
+      [
+        0.747,
+        1.0,
+        1.0,
+        0.999,
+        0.835,
+        0.78,
+        0.046
+      ],
+      [
+        0.04,
+        0.119,
+        0.683,
+        0.423,
+        0.03,
+        0.032,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 35,
+    "contact_reference_px": 35.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

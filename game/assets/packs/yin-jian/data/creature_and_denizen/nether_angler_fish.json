@@ -1,0 +1,195 @@
+{
+  "id": "yin_jian.creature_and_denizen.nether_angler_fish",
+  "name": "Wangchuan Angler Demon",
+  "vietnamese_name": "Cá Cần Câu Săn Hồn",
+  "hanzi": "忘川提灯怪鱼",
+  "category": "creature_and_denizen",
+  "sub_category": "nether_beast",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "catch_fish",
+  "gameplay_role": "Predatory fish using glowing spirit lantern as bait in shallows.",
+  "destructible": false,
+  "material": "bone",
+  "cultivation_element": "water",
+  "prompt_summary": "Monstrous fish with gaping teeth and glowing lantern stalk.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/nether_angler_fish.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.nether_angler_fish:262664231",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.481,
+        0.395
+      ],
+      [
+        0.753,
+        0.613
+      ]
+    ],
+    "frac_zero": 0.6036,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.296,
+        0.082,
+        0.027,
+        0.149,
+        0.0
+      ],
+      [
+        0.0,
+        0.191,
+        0.873,
+        0.696,
+        0.32,
+        0.312,
+        0.0
+      ],
+      [
+        0.383,
+        0.981,
+        1.0,
+        1.0,
+        0.998,
+        0.35,
+        0.0
+      ],
+      [
+        0.871,
+        1.0,
+        1.0,
+        1.0,
+        0.912,
+        0.121,
+        0.0
+      ],
+      [
+        0.527,
+        1.0,
+        1.0,
+        1.0,
+        0.99,
+        0.708,
+        0.06
+      ],
+      [
+        0.488,
+        1.0,
+        0.941,
+        0.999,
+        0.972,
+        0.504,
+        0.099
+      ],
+      [
+        0.117,
+        0.596,
+        0.277,
+        0.299,
+        0.334,
+        0.001,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      26,
+      16
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 37,
+    "contact_reference_px": 37.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

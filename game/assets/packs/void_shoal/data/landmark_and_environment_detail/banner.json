@@ -1,0 +1,244 @@
+{
+  "id": "void_shoal.landmark_and_environment_detail.banner",
+  "path": "res://assets/world_map/void_shoal/landmark_and_environment_detail/banner.png",
+  "type": "prop",
+  "category": "landmark_and_environment_detail",
+  "environment": "void_shoal",
+  "environment_name": "Void Shoal",
+  "world_tier": "Transcendent World",
+  "archetype": "landmark_and_environment_detail.banner",
+  "name": "Faction banner",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image generation (image_gen), 2026-10-05",
+  "license": "OpenAI generated image; project use",
+  "alpha": "transparent",
+  "environment_theme": "Black glass shoals, deep violet water, scattered stone fragments, and sparse cyan glimmers.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-05",
+  "prompt_ref": "openai-map-v1:void_shoal.landmark_and_environment_detail.banner",
+  "prompt": "High-quality production sprite for Chaos World: one faction banner prop for Void Shoal, native 256x256 canvas, strict straight-down orthographic overhead view for a 2D top-down RPG. A weathered black-glass stone standard with a short dark pole and a compact torn banner of deep violet cloth, marked only by a few abstract cyan glimmers and pale mineral stitching; no readable symbol or text. Environment character: black glass shoals, deep violet water, scattered stone fragments, sparse cyan glimmers. Show the complete object isolated and centered on its bottom-center ground pivot, readable at 2x2 cells. Transparent background with clean natural alpha, no ground disk, cast shadow, landscape, or scene. Anime-painted gouache, fine dark #263A35 ink contours, broad readable planes, restrained upper-left light. No perspective, isometric view, letters, labels, border, UI, or watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.417
+      ],
+      [
+        0.222
+      ]
+    ],
+    "frac_zero": 0.8089,
+    "blocks": [
+      [
+        false
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "ground_contact",
+      "cov_gate": 0.01,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": true,
+      "vision_mode": "brush",
+      "acoustic_profile": "cloth",
+      "material": "cloth",
+      "elevation": 0,
+      "destructible": {
+        "enabled": false,
+        "tier": 0,
+        "hp": 0,
+        "on_destroy": null,
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.394,
+        0.0,
+        0.0
+      ],
+      [
+        0.359,
+        0.312,
+        0.705,
+        0.32,
+        0.328
+      ],
+      [
+        0.216,
+        0.981,
+        0.97,
+        0.833,
+        0.042
+      ],
+      [
+        0.052,
+        0.935,
+        0.794,
+        0.836,
+        0.0
+      ],
+      [
+        0.0,
+        0.62,
+        0.31,
+        0.503,
+        0.0
+      ],
+      [
+        0.0,
+        0.106,
+        0.253,
+        0.095,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.284,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      51,
+      18
+    ],
+    "trunk_columns": [
+      2
+    ],
+    "contact_px": 13,
+    "contact_reference_px": 6.5,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.157,
+    "dominant_rgb": [
+      53.7,
+      50.5,
+      78.5
+    ],
+    "hsv": {
+      "hue_deg": 222.4,
+      "saturation": 0.44,
+      "value": 0.31
+    },
+    "dominant_palette": "azure_water",
+    "center_of_mass_norm": [
+      0.491,
+      0.447
+    ],
+    "horizontal_symmetry": 0.91,
+    "edge_complexity": 0.125
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "brush",
+  "destructible": {
+    "enabled": false,
+    "tier": 0,
+    "hp": 0,
+    "on_destroy": null,
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [],
+    "reveals_loot_category": null
+  },
+  "material": "cloth",
+  "cultivation_element": "none"
+}

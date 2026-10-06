@@ -1,0 +1,133 @@
+{
+  "id": "yin_jian.creature_and_denizen.soul_bound_slave_laborer",
+  "name": "Soulbound Stone Quarry Laborer",
+  "vietnamese_name": "Lao Dịch Đập Đá Đền Tội",
+  "hanzi": "采石苦役鬼",
+  "category": "creature_and_denizen",
+  "sub_category": "wandering_spirit",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "comfort_slave",
+  "gameplay_role": "Soul condemned to haul heavy rocks for eternity.",
+  "destructible": false,
+  "material": "spirit",
+  "cultivation_element": "earth",
+  "prompt_summary": "Bent ghost carrying massive boulder strapped to back.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/soul_bound_slave_laborer.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.soul_bound_slave_laborer:262657429",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.578
+      ]
+    ],
+    "frac_zero": 0.7112,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.216,
+        0.847,
+        0.35
+      ],
+      [
+        0.614,
+        1.0,
+        0.58
+      ],
+      [
+        0.496,
+        0.708,
+        0.164
+      ]
+    ],
+    "crop_offset": [
+      19,
+      31
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 62,
+    "contact_reference_px": 62.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

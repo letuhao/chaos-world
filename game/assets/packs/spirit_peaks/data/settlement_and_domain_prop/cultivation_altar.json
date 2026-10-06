@@ -1,0 +1,257 @@
+{
+  "id": "spirit_peaks.settlement_and_domain_prop.cultivation_altar",
+  "path": "res://assets/world_map/spirit_peaks/settlement_and_domain_prop/cultivation_altar.png",
+  "type": "interactable",
+  "category": "settlement_and_domain_prop",
+  "environment": "spirit_peaks",
+  "environment_name": "Spirit Peaks",
+  "world_tier": "Spirit World",
+  "archetype": "settlement_and_domain_prop.cultivation_altar",
+  "name": "Cultivation altar",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image generation; 2026-10-05",
+  "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Cold blue stone, sparse snow, crystalline mist, and hardy dark mountain pines.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-05",
+  "prompt_ref": "openai-imagegen:spirit_peaks.cultivation_altar:20261005",
+  "prompt": "Use case: stylized-concept. Asset type: production 2D top-down action RPG interactable sprite for Chaos World. Subject: one compact cultivation altar for Spirit Peaks, a cold mountain region of blue stone, sparse snow, crystalline mist, and hardy dark pines. View: strict straight-down orthographic, altar surface seen directly from above, no perspective or isometric projection. Composition: one connected 2×2-cell low octagonal blue-stone platform with a shallow central meditation basin, four integrated corner stones, sparse snow gathered in a few seams, and a subtle pale-cyan crystal inlay ring; full silhouette centered with transparent margin, bottom-center ground contact, clear at 256×256. Art direction: anime-painted gouache, fine dark #263A35 contours, broad readable planes, cold slate-blue and charcoal stone, ivory snow, restrained cyan accents, soft diffuse upper-left winter light, matte finish, short attached contact shadow only. Technical output: high-resolution square PNG with genuine transparent background outside the altar. Exclude: mountain scene, pine trees, snowfield, fog backdrop, candles, people, text, runes, symbols, grid, border, UI, watermark, glow bloom, tall sides, 3D render.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.807,
+        0.806
+      ],
+      [
+        0.833,
+        0.83
+      ]
+    ],
+    "frac_zero": 0.5457,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.2,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "solid",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 1,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "meditate",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      6,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.648,
+        0.867,
+        0.427,
+        0.423,
+        0.893,
+        0.628
+      ],
+      [
+        0.885,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.878
+      ],
+      [
+        0.434,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.396
+      ],
+      [
+        0.521,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.481
+      ],
+      [
+        0.955,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.944
+      ],
+      [
+        0.572,
+        0.889,
+        0.414,
+        0.423,
+        0.919,
+        0.535
+      ]
+    ],
+    "crop_offset": [
+      35,
+      36
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.437,
+    "dominant_rgb": [
+      100.4,
+      118.3,
+      138.1
+    ],
+    "hsv": {
+      "hue_deg": 211.7,
+      "saturation": 0.3,
+      "value": 0.54
+    },
+    "dominant_palette": "azure_water",
+    "center_of_mass_norm": [
+      0.506,
+      0.502
+    ],
+    "horizontal_symmetry": 0.99,
+    "edge_complexity": 0.239
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

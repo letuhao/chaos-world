@@ -1,0 +1,170 @@
+{
+  "id": "immortal_jade_orchard.stone_and_ore.rubble",
+  "path": "res://assets/world_map/immortal_jade_orchard/stone_and_ore/rubble.png",
+  "type": "decal",
+  "category": "stone_and_ore",
+  "environment": "immortal_jade_orchard",
+  "environment_name": "Immortal Jade Orchard",
+  "world_tier": "Immortal World",
+  "archetype": "stone_and_ore.rubble",
+  "name": "Rubble scatter",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "center",
+  "collision": "none",
+  "status": "generated",
+  "source": "OpenAI built-in image_gen via Codex",
+  "license": "AI-generated for Chaos World; permitted for project use",
+  "alpha": "transparent",
+  "environment_theme": "Ancient ordered fruit trees, pale blossoms, jade moss, and clear mineral pools.",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "generated_on": "2026-10-06",
+  "prompt_ref": "openai-map-immortal-jade-orchard-rubble-v2",
+  "prompt": "A sparse scatter of nine small separate pebble-sized pale jade fragments with tiny moss flecks and a few ivory blossom petals for an Immortal Jade Orchard ground decal. Strict direct overhead flat view, wide transparent gaps, no fragment larger than a small pebble, low-profile, muted pale jade and ivory, painterly gouache with subtle dark ink edging. True transparent background, 512 square source, centered for cropping to a 128x128 center-pivot decal. Absolutely no large rocks, slabs, boulders, terrain patch, ground plane, shadows, text, border, UI, or perspective.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.117
+      ]
+    ],
+    "frac_zero": 0.8973,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "none",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "transparent",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.078,
+        0.193,
+        0.075
+      ],
+      [
+        0.074,
+        0.235,
+        0.129
+      ],
+      [
+        0.093,
+        0.058,
+        0.116
+      ]
+    ],
+    "crop_offset": [
+      18,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.064,
+    "dominant_rgb": [
+      174.2,
+      181.4,
+      152.5
+    ],
+    "hsv": {
+      "hue_deg": 77.2,
+      "saturation": 0.21,
+      "value": 0.72
+    },
+    "dominant_palette": "verdant_flora",
+    "center_of_mass_norm": [
+      0.516,
+      0.502
+    ],
+    "horizontal_symmetry": 0.89,
+    "edge_complexity": 0.118
+  },
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

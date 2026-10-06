@@ -1,0 +1,281 @@
+{
+  "id": "yin_jian.creature_and_denizen.nether_leech_queen",
+  "name": "Queen of the Blood Swamp Leeches",
+  "vietnamese_name": "Đỉa Chúa Biển Máu",
+  "hanzi": "吸血水蛭后",
+  "category": "creature_and_denizen",
+  "sub_category": "nether_beast",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "slay_leech_queen",
+  "gameplay_role": "Bloated ringed slug pulsating with harvested blood.",
+  "destructible": false,
+  "material": "bone",
+  "cultivation_element": "yin",
+  "prompt_summary": "Giant pinkish-black leech with concentric rings of fangs.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/nether_leech_queen.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.nether_leech_queen:262540883",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.034,
+        0.733,
+        0.536
+      ],
+      [
+        0.398,
+        1.0,
+        0.711
+      ],
+      [
+        0.469,
+        0.753,
+        0.496
+      ]
+    ],
+    "frac_zero": 0.5679,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      11,
+      10
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.001,
+        0.278,
+        0.728,
+        0.819,
+        0.557,
+        0.435,
+        0.098
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.002,
+        0.591,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.9,
+        0.172
+      ],
+      [
+        0.0,
+        0.0,
+        0.009,
+        0.596,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.821,
+        0.039,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.179,
+        0.979,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.994,
+        0.34,
+        0.001
+      ],
+      [
+        0.0,
+        0.012,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.866,
+        0.13
+      ],
+      [
+        0.0,
+        0.244,
+        0.935,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.937,
+        0.274
+      ],
+      [
+        0.033,
+        0.635,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.655,
+        0.095
+      ],
+      [
+        0.092,
+        0.697,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.953,
+        0.484,
+        0.117
+      ],
+      [
+        0.155,
+        0.652,
+        0.662,
+        0.515,
+        0.987,
+        0.855,
+        0.7,
+        0.979,
+        0.973,
+        0.365,
+        0.065
+      ],
+      [
+        0.0,
+        0.024,
+        0.018,
+        0.0,
+        0.061,
+        0.004,
+        0.0,
+        0.03,
+        0.254,
+        0.015,
+        0.052
+      ]
+    ],
+    "crop_offset": [
+      17,
+      59
+    ],
+    "trunk_columns": [],
+    "contact_px": 10,
+    "contact_reference_px": 10.0,
+    "blocked_by_scale": {
+      "0.85": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "1.0": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "1.15": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "1.35": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "1.6": [
+        2,
+        2,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      2,
+      2,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      256,
+      256,
+      384,
+      384
+    ]
+  }
+}

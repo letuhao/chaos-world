@@ -1,0 +1,216 @@
+{
+  "id": "transcendent_realm.water_feature.spring",
+  "path": "res://assets/world_map/transcendent_realm/water_feature/spring.png",
+  "type": "prop",
+  "category": "water_feature",
+  "environment": "transcendent_realm",
+  "environment_name": "Transcendent Realm",
+  "world_tier": "Transcendent World",
+  "archetype": "water_feature.spring",
+  "name": "Spring",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "none",
+  "status": "generated",
+  "source": "OpenAI image generation (image_gen), 2026-10-05",
+  "license": "OpenAI generated image; project use",
+  "alpha": "transparent",
+  "environment_theme": "Calm ivory and platinum forms, sparse gold accents, and impossibly clean sacred stone.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-05",
+  "prompt_ref": "openai-map-v1:transcendent_realm.water_feature.spring",
+  "prompt": "High-quality production sprite for Chaos World: one natural spring prop for Transcendent Realm, native 256x256 canvas, strict straight-down orthographic overhead view for a 2D top-down RPG. A small immaculate sacred spring welling from a clean pale-platinum stone ring, clear ivory-blue water with subtle geometric ripples and only a few sparse antique-gold mineral lines; calm, precise, and otherworldly rather than ornate. Environment character: calm ivory and platinum forms, sparse gold accents, impossibly clean sacred stone. Complete isolated feature centered on its bottom-center pivot, readable at 2x2 map cells. Transparent background with crisp natural alpha, no ground disk, cast shadow, terrain tile, or scenery. Anime-painted gouache, fine dark #263A35 ink contours, broad readable planes, very restrained gold and cool water highlights, upper-left light. No perspective, isometric view, horizon, text, UI, border, or watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.617
+      ]
+    ],
+    "frac_zero": 0.5299,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "none",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "transparent",
+      "acoustic_profile": "water",
+      "material": "water",
+      "elevation": 0,
+      "destructible": {
+        "enabled": false,
+        "tier": 0,
+        "hp": 0,
+        "on_destroy": null,
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "draw_water",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.294,
+        0.655,
+        0.215,
+        0.0,
+        0.0
+      ],
+      [
+        0.024,
+        0.551,
+        0.997,
+        1.0,
+        0.971,
+        0.423,
+        0.002
+      ],
+      [
+        0.507,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.397
+      ],
+      [
+        0.925,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.897
+      ],
+      [
+        0.573,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.484
+      ],
+      [
+        0.073,
+        0.686,
+        1.0,
+        1.0,
+        0.996,
+        0.568,
+        0.029
+      ],
+      [
+        0.0,
+        0.0,
+        0.347,
+        0.576,
+        0.257,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      20,
+      19
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.453,
+    "dominant_rgb": [
+      189.6,
+      198.7,
+      191.6
+    ],
+    "hsv": {
+      "hue_deg": 104.4,
+      "saturation": 0.16,
+      "value": 0.81
+    },
+    "dominant_palette": "verdant_flora",
+    "center_of_mass_norm": [
+      0.503,
+      0.512
+    ],
+    "horizontal_symmetry": 0.99,
+    "edge_complexity": 0.246
+  },
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": false,
+    "tier": 0,
+    "hp": 0,
+    "on_destroy": null,
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [],
+    "reveals_loot_category": null
+  },
+  "material": "water",
+  "cultivation_element": "none"
+}

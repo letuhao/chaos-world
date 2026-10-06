@@ -1,0 +1,302 @@
+{
+  "id": "yin_jian.obstacle_and_hazard.mountain_of_knives_slope_rock",
+  "name": "Mountain of Knives Blade Crag",
+  "vietnamese_name": "Vách Đá Rừng Đao",
+  "hanzi": "刀山剑峰",
+  "category": "obstacle_and_hazard",
+  "sub_category": "spikes_and_blade",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": null,
+  "gameplay_role": "Impassable mountain crag covered in razor blades.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "metal",
+  "prompt_summary": "Steep rock cliff face studded with hundreds of upright steel broadswords.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/obstacle_and_hazard/mountain_of_knives_slope_rock.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.obstacle_and_hazard.mountain_of_knives_slope_rock:260820490",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.003,
+        0.609,
+        0.116
+      ],
+      [
+        0.266,
+        0.992,
+        0.36
+      ],
+      [
+        1.0,
+        0.932,
+        0.413
+      ]
+    ],
+    "frac_zero": 0.5694,
+    "blocks": [
+      [
+        false,
+        true,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 7,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.077,
+        0.166,
+        0.163,
+        0.08,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.013,
+        0.601,
+        0.801,
+        0.783,
+        0.573,
+        0.01,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.073,
+        0.919,
+        1.0,
+        1.0,
+        0.938,
+        0.05,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.191,
+        1.0,
+        1.0,
+        1.0,
+        0.961,
+        0.078,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.013,
+        0.574,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.308,
+        0.006,
+        0.0
+      ],
+      [
+        0.0,
+        0.027,
+        0.271,
+        0.958,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.694,
+        0.0,
+        0.0
+      ],
+      [
+        0.293,
+        0.34,
+        0.916,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.972,
+        0.218,
+        0.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.877,
+        0.65
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.99,
+        0.957,
+        0.314,
+        0.07
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.606,
+        0.086,
+        0.101,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.903,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      31
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 222,
+    "contact_reference_px": 222.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      384
+    ]
+  }
+}

@@ -1,0 +1,201 @@
+{
+  "id": "yin_jian.obstacle_and_hazard.avici_glacier_pillar",
+  "name": "Avici Ice Needle Spire",
+  "vietnamese_name": "Cột Băng Hàn Địa Ngục",
+  "hanzi": "阿鼻冰锥峰",
+  "category": "obstacle_and_hazard",
+  "sub_category": "ice_and_frost",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "melt_ice",
+  "gameplay_role": "Towering crystalline needle of freezing demonic ice.",
+  "destructible": true,
+  "material": "stone",
+  "cultivation_element": "water",
+  "prompt_summary": "Sharp vertical spire of translucent blue-black ice.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/obstacle_and_hazard/avici_glacier_pillar.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.obstacle_and_hazard.avici_glacier_pillar:260909641",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.095,
+        0.164
+      ],
+      [
+        0.832,
+        0.876
+      ]
+    ],
+    "frac_zero": 0.6238,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.287,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.015,
+        0.806,
+        0.025,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.023,
+        0.906,
+        0.388,
+        0.011,
+        0.0
+      ],
+      [
+        0.0,
+        0.068,
+        0.382,
+        1.0,
+        0.573,
+        0.1,
+        0.087
+      ],
+      [
+        0.84,
+        0.808,
+        0.942,
+        1.0,
+        0.996,
+        0.994,
+        0.96
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        0.979,
+        0.987
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      25
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 224,
+    "contact_reference_px": 224.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      256,
+      256
+    ]
+  }
+}

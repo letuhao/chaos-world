@@ -1,0 +1,132 @@
+{
+  "id": "yin_jian.creature_and_denizen.tam_do_ha_ancient_ferryman",
+  "name": "San Tu River Ancient Ferryman",
+  "vietnamese_name": "Tam Đồ Hà Cổ Độ Đò Lão",
+  "hanzi": "三途河古渡翁",
+  "category": "creature_and_denizen",
+  "sub_category": "judge_and_official",
+  "racial_faction": "san_tu_river",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "pay_ferry_fee",
+  "gameplay_role": "Mysterious immortal boatman who accepts soul coins to safely transport cultivators across void river currents.",
+  "destructible": false,
+  "material": "spirit",
+  "cultivation_element": "yin",
+  "prompt_summary": "Top-down 45 degree cloaked hunched figure in straw raincape and conical bamboo hat, holding a long dragon-bone punting pole, face veiled in shadow.",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/tam_do_ha_ancient_ferryman.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.tam_do_ha_ancient_ferryman:265591609",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.421
+      ]
+    ],
+    "frac_zero": 0.7419,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.152,
+        0.637,
+        0.158
+      ],
+      [
+        0.124,
+        0.893,
+        0.593
+      ],
+      [
+        0.314,
+        0.591,
+        0.268
+      ]
+    ],
+    "crop_offset": [
+      20,
+      18
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 23,
+    "contact_reference_px": 23.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "id": "yin_jian.decoration_and_ambience.hanging_skull_lantern",
+  "name": "Hanging Horned Skull Lantern",
+  "vietnamese_name": "Đèn Đầu Lâu Sừng Dê",
+  "hanzi": "角颅吊灯",
+  "category": "decoration_and_ambience",
+  "sub_category": "lantern_and_light",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "swing_lantern",
+  "gameplay_role": "Ram skull hollowed out with candle burning inside eye cavities.",
+  "destructible": true,
+  "material": "bone",
+  "cultivation_element": "fire",
+  "prompt_summary": "White ram skull on iron chain with flames in sockets.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/decoration_and_ambience/hanging_skull_lantern.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.decoration_and_ambience.hanging_skull_lantern:264719159",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.342
+      ]
+    ],
+    "frac_zero": 0.7928,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.213,
+        0.35,
+        0.219
+      ],
+      [
+        0.442,
+        0.918,
+        0.45
+      ],
+      [
+        0.0,
+        0.395,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      20
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 14,
+    "contact_reference_px": 14.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

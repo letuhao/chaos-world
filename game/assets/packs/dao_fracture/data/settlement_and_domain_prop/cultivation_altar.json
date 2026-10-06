@@ -1,0 +1,272 @@
+{
+  "id": "dao_fracture.settlement_and_domain_prop.cultivation_altar",
+  "path": "res://assets/world_map/dao_fracture/settlement_and_domain_prop/cultivation_altar.png",
+  "type": "interactable",
+  "category": "settlement_and_domain_prop",
+  "environment": "dao_fracture",
+  "environment_name": "Dao Fracture",
+  "world_tier": "Transcendent World",
+  "archetype": "settlement_and_domain_prop.cultivation_altar",
+  "name": "Cultivation altar",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image_gen, 2026-10-05",
+  "license": "AI-generated for Chaos World; permitted for project use",
+  "alpha": "transparent",
+  "environment_theme": "Misaligned stone planes, impossible cracks, suspended shards, and narrow luminous seams.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-05",
+  "prompt_ref": "map-interactable-dao-fracture-cultivation-altar-openai-v1",
+  "prompt": "One compact Dao Fracture cultivation altar, a low square dark-stone slab with four slightly misaligned corner plates, an inset circular meditation seal and a few short hairline luminous violet-blue seams; two tiny stone chips hover close above opposite corners but remain visually attached to this single altar. Strict 90-degree straight-down orthographic camera, directly overhead; show top surface and full 2x2-cell footprint, no perspective. Hand-painted anime gouache cultivation fantasy, fine dark ink contours #263A35, broad readable value planes, nearly black basalt and cool grey stone, sparse violet and pale cyan light within narrow cracks, restrained neutral upper-left light. One grounded altar centered, complete compact silhouette with transparent padding, readable at 256px, bottom-center anchor, short attached shadow only. Genuine transparent background outside altar and its tiny chips; no environment scene, ground plane, extra props, people, text, symbols that resemble letters, border, UI, watermark, or cropped edges.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.743,
+        0.651
+      ],
+      [
+        0.908,
+        0.832
+      ]
+    ],
+    "frac_zero": 0.386,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.2,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "solid",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 1,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "meditate",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.484,
+        0.281,
+        0.08,
+        0.062,
+        0.15,
+        0.312,
+        0.124
+      ],
+      [
+        0.86,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.476
+      ],
+      [
+        0.794,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.402
+      ],
+      [
+        0.638,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.218
+      ],
+      [
+        0.716,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.417
+      ],
+      [
+        0.965,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.653
+      ],
+      [
+        0.765,
+        0.951,
+        0.77,
+        0.773,
+        0.886,
+        0.907,
+        0.438
+      ]
+    ],
+    "crop_offset": [
+      17,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.593,
+    "dominant_rgb": [
+      78.1,
+      77.9,
+      90.9
+    ],
+    "hsv": {
+      "hue_deg": 218.2,
+      "saturation": 0.18,
+      "value": 0.36
+    },
+    "dominant_palette": "azure_water",
+    "center_of_mass_norm": [
+      0.475,
+      0.538
+    ],
+    "horizontal_symmetry": 0.97,
+    "edge_complexity": 0.293
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

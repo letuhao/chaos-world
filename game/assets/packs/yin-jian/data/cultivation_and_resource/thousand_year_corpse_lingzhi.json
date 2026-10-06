@@ -1,0 +1,134 @@
+{
+  "id": "yin_jian.cultivation_and_resource.thousand_year_corpse_lingzhi",
+  "name": "Thousand-Year Corpse Ganoderma",
+  "vietnamese_name": "Nấm Linh Chi Xác Chết Ngàn Năm",
+  "hanzi": "千年尸血灵芝",
+  "category": "cultivation_and_resource",
+  "sub_category": "herb_and_fungus",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "harvest_fungus",
+  "gameplay_role": "Rare glossy mushroom growing upon ancient demon bones, boosts lifespan.",
+  "destructible": true,
+  "material": "foliage",
+  "cultivation_element": "yin",
+  "prompt_summary": "Thick umbrella mushroom with dark crimson lacquered cap and amber rim.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/cultivation_and_resource/thousand_year_corpse_lingzhi.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.cultivation_and_resource.thousand_year_corpse_lingzhi:263972185",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.572
+      ]
+    ],
+    "frac_zero": 0.6554,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.305,
+        0.945,
+        0.519
+      ],
+      [
+        0.207,
+        0.866,
+        0.336
+      ],
+      [
+        0.659,
+        0.97,
+        0.354
+      ]
+    ],
+    "crop_offset": [
+      16,
+      18
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 84,
+    "contact_reference_px": 84.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

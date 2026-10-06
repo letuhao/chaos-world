@@ -1,0 +1,134 @@
+{
+  "id": "yin_jian.creature_and_denizen.ghost_city_street_sweeper",
+  "name": "Eternal Street Sweeper Spirit",
+  "vietnamese_name": "Vong Hồn Quét Rác Vĩnh Viễn",
+  "hanzi": "扫街幽魂翁",
+  "category": "creature_and_denizen",
+  "sub_category": "wandering_spirit",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "speak_sweeper",
+  "gameplay_role": "Old spirit sweeping the same spot of ash forever.",
+  "destructible": false,
+  "material": "spirit",
+  "cultivation_element": "earth",
+  "prompt_summary": "Bent elderly spirit holding bamboo broom sweeping ash.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/ghost_city_street_sweeper.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.ghost_city_street_sweeper:262771653",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.425
+      ]
+    ],
+    "frac_zero": 0.748,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.003,
+        0.758,
+        0.314
+      ],
+      [
+        0.067,
+        0.618,
+        0.548
+      ],
+      [
+        0.652,
+        0.519,
+        0.413
+      ]
+    ],
+    "crop_offset": [
+      24,
+      21
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 48,
+    "contact_reference_px": 48.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

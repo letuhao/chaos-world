@@ -1,0 +1,166 @@
+{
+  "id": "yin_jian.path_and_way.ascent_of_nine_trials_upper",
+  "name": "Nine Trials Grand Stair: Upper",
+  "vietnamese_name": "Cửu Trọng Khổ Ải: Bậc Trên",
+  "hanzi": "九苦石梯上段",
+  "category": "path_and_way",
+  "sub_category": "stairs_and_ramps",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Top summit of the grand staircase leading to palace gates.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "yin",
+  "prompt_summary": "Carved stone steps arriving at ornate palace threshold.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/path_and_way/ascent_of_nine_trials_upper.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.path_and_way.ascent_of_nine_trials_upper:259105975",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.589,
+        0.529
+      ],
+      [
+        0.983,
+        0.983
+      ]
+    ],
+    "frac_zero": 0.4177,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.301,
+        0.514,
+        0.0,
+        0.075,
+        0.121,
+        0.0
+      ],
+      [
+        0.313,
+        0.896,
+        0.911,
+        0.607,
+        0.878,
+        0.886,
+        0.338
+      ],
+      [
+        0.235,
+        0.998,
+        1.0,
+        1.0,
+        1.0,
+        0.997,
+        0.223
+      ],
+      [
+        0.482,
+        0.992,
+        1.0,
+        1.0,
+        1.0,
+        0.976,
+        0.439
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      23
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 224,
+    "contact_reference_px": 224.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

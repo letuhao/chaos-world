@@ -1,0 +1,174 @@
+{
+  "id": "spirit_peaks.flora.cultivation_herb",
+  "path": "res://assets/world_map/spirit_peaks/flora/cultivation_herb.png",
+  "type": "resource_node",
+  "category": "flora",
+  "environment": "spirit_peaks",
+  "environment_name": "Spirit Peaks",
+  "world_tier": "Spirit World",
+  "archetype": "flora.cultivation_herb",
+  "name": "Cultivation herb",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "bottom_center",
+  "collision": "none",
+  "status": "generated",
+  "source": "OpenAI image generation, 2026-10-03",
+  "license": "AI-generated for Chaos World; permitted for project use",
+  "alpha": "transparent",
+  "generated_on": "2026-10-03",
+  "prompt_ref": "map-flora-spirit-peaks-cultivation-herb-v1",
+  "prompt": "Production transparent 128x128 harvestable herb sprite for a 2D straight-down top-down cultivation RPG map: one rare Spirit Peaks frostleaf herb, a tight five-leaf rosette of blue-green oval leaves, one small pale-jade flower bud and thin frost crystals along two leaf tips. Match approved herb resource sprite for botanical silhouette, brushwork, and contour. Exact overhead view, centered complete low plant with margin and base at bottom; readable at 128x128. Hand-painted gouache, fine dark contour, broad clean value planes, restrained detail; cool diffuse light with soft upper-left highlights and no glow. Deep pine teal foliage, pale jade veins and bud, tiny ivory frost. Smooth resilient leaves with a few veins, small ice grains. True transparent background. No pot, soil, rock, snowbank, extra plants, water, text, frame, watermark.",
+  "reference_ids": [
+    "mortal_greenwood.flora.cultivation_herb"
+  ],
+  "environment_theme": "Cold blue stone, sparse snow, crystalline mist, and hardy dark mountain pines.",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.497
+      ]
+    ],
+    "frac_zero": 0.8014,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "none",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "transparent",
+      "acoustic_profile": "foliage",
+      "material": "foliage",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 1,
+        "hp": 25,
+        "on_destroy": "landmark_and_environment_detail.ground_decal",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "harvest",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.45,
+        0.622,
+        0.192
+      ],
+      [
+        0.515,
+        0.823,
+        0.357
+      ],
+      [
+        0.0,
+        0.17,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      26,
+      31
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.167,
+    "dominant_rgb": [
+      65.6,
+      127.0,
+      91.6
+    ],
+    "hsv": {
+      "hue_deg": 142.9,
+      "saturation": 0.6,
+      "value": 0.5
+    },
+    "dominant_palette": "verdant_flora",
+    "center_of_mass_norm": [
+      0.509,
+      0.507
+    ],
+    "horizontal_symmetry": 0.76,
+    "edge_complexity": 0.163
+  },
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 1,
+    "hp": 25,
+    "on_destroy": "landmark_and_environment_detail.ground_decal",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "foliage",
+  "cultivation_element": "none"
+}

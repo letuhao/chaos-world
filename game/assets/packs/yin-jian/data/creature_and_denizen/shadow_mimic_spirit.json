@@ -1,0 +1,97 @@
+{
+  "id": "yin_jian.creature_and_denizen.shadow_mimic_spirit",
+  "name": "Shadow Mimic Phantom",
+  "vietnamese_name": "Hư Ảnh Giả Dạng",
+  "hanzi": "惑心影魅",
+  "category": "creature_and_denizen",
+  "sub_category": "wandering_spirit",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "expose_mimic",
+  "gameplay_role": "Deceptive shade that mimics the appearance of player companions.",
+  "destructible": false,
+  "material": "spirit",
+  "cultivation_element": "void",
+  "prompt_summary": "Shifting amorphous silhouette of smoke taking shape of human adventurer.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/shadow_mimic_spirit.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.shadow_mimic_spirit:262267235",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.496
+      ]
+    ],
+    "frac_zero": 0.7664,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.229,
+        0.651,
+        0.391
+      ],
+      [
+        0.825,
+        0.798,
+        0.016
+      ],
+      [
+        0.308,
+        0.383,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      28,
+      16
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 19,
+    "contact_reference_px": 19.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

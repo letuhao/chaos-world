@@ -1,0 +1,250 @@
+{
+  "id": "mortal_highlands.stone_and_ore.ore_vein",
+  "path": "res://assets/world_map/mortal_highlands/stone_and_ore/ore_vein.png",
+  "type": "resource_node",
+  "category": "stone_and_ore",
+  "environment": "mortal_highlands",
+  "environment_name": "Mortal Highlands",
+  "world_tier": "Mortal World",
+  "archetype": "stone_and_ore.ore_vein",
+  "name": "Ore vein",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image generation, 2026-10-03",
+  "license": "AI-generated for Chaos World; permitted for project use",
+  "alpha": "transparent",
+  "generated_on": "2026-10-03",
+  "prompt_ref": "map-stone-mortal-highlands-ore-vein-v1",
+  "prompt": "Production transparent 256x256 harvestable resource-node sprite for a 2D top-down cultivation RPG map: an exposed iron-ore vein in a low slate outcrop from Mortal Highlands, with three distinct rusty red-brown ore seams through cool gray stone. Match approved stone sprite for gouache facets, contour, and material texture. Exact orthographic 90-degree overhead; top surfaces only, no isometric angle or vertical cliff faces. Compact irregular centered outcrop, complete silhouette and margin, ore seams readable as a harvestable node. Broad value planes, fine dark contour, restrained detail; soft diffuse upper-left light, no external cast shadow. Cool slate, iron-red and burnt umber ore, tiny pale mineral highlights, sparse dry olive moss. Few cracks, metallic color only in natural seams, no crystals or gems. True transparent alpha. No ground, tools, water, text, frame, watermark.",
+  "reference_ids": [
+    "mortal_greenwood.stone_and_ore.boulder"
+  ],
+  "environment_theme": "Exposed grey granite, steep broken ledges, wind-shaped pines, and pale lichen.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.707
+      ]
+    ],
+    "frac_zero": 0.5638,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": true,
+      "vision_mode": "transparent",
+      "acoustic_profile": "crystal",
+      "material": "crystal",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 4,
+        "hp": 220,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "mine",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.213,
+        0.909,
+        0.849,
+        0.286,
+        0.0
+      ],
+      [
+        0.103,
+        0.94,
+        1.0,
+        1.0,
+        0.972,
+        0.263
+      ],
+      [
+        0.676,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.827
+      ],
+      [
+        0.937,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.857
+      ],
+      [
+        0.479,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.533
+      ],
+      [
+        0.001,
+        0.667,
+        1.0,
+        1.0,
+        0.847,
+        0.089
+      ],
+      [
+        0.0,
+        0.0,
+        0.612,
+        0.63,
+        0.174,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      36,
+      29
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.42,
+    "dominant_rgb": [
+      123.8,
+      108.4,
+      92.5
+    ],
+    "hsv": {
+      "hue_deg": 60.2,
+      "saturation": 0.27,
+      "value": 0.49
+    },
+    "dominant_palette": "warm_earth_gold",
+    "center_of_mass_norm": [
+      0.519,
+      0.516
+    ],
+    "horizontal_symmetry": 0.94,
+    "edge_complexity": 0.254
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 4,
+    "hp": 220,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "crystal",
+  "cultivation_element": "none"
+}

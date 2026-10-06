@@ -1,0 +1,133 @@
+{
+  "id": "yin_jian.creature_and_denizen.corpse_pack_scavenger_dog",
+  "name": "Carrion Scavenger Hound",
+  "vietnamese_name": "Chó Hoang Gặm Xương",
+  "hanzi": "野坟腐犬",
+  "category": "creature_and_denizen",
+  "sub_category": "nether_beast",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "shoo_away",
+  "gameplay_role": "Stray mangy hound with exposed ribs gnawing on bones.",
+  "destructible": false,
+  "material": "bone",
+  "cultivation_element": "earth",
+  "prompt_summary": "Emaciated hound with patches of missing fur and red eyes.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/corpse_pack_scavenger_dog.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.corpse_pack_scavenger_dog:262553698",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.606
+      ]
+    ],
+    "frac_zero": 0.6523,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.107,
+        0.732,
+        0.394
+      ],
+      [
+        0.739,
+        1.0,
+        0.655
+      ],
+      [
+        1.0,
+        0.806,
+        0.024
+      ]
+    ],
+    "crop_offset": [
+      16,
+      25
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 58,
+    "contact_reference_px": 58.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

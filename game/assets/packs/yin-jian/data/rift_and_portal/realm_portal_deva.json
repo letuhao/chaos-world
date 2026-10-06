@@ -1,0 +1,306 @@
+{
+  "id": "yin_jian.rift_and_portal.realm_portal_deva",
+  "name": "Gate of the Deva Realm",
+  "vietnamese_name": "Cửa Luân Hồi Thiên Đạo",
+  "hanzi": "天道转生门",
+  "category": "rift_and_portal",
+  "sub_category": "six_realms_wheel",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "core_ring",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "ascend_heaven",
+  "gameplay_role": "Portal leading to heavenly celestial rebirth.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "spirit",
+  "prompt_summary": "Radiant archway of golden clouds, floating lotus petals, and divine light.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/rift_and_portal/realm_portal_deva.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.rift_and_portal.realm_portal_deva:260215620",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.169,
+        0.824,
+        0.175
+      ],
+      [
+        0.503,
+        0.985,
+        0.535
+      ],
+      [
+        0.881,
+        0.977,
+        0.82
+      ]
+    ],
+    "frac_zero": 0.4477,
+    "blocks": [
+      [
+        false,
+        true,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        false,
+        false,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 5,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.14,
+        0.204,
+        0.859,
+        0.446,
+        0.106,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.062,
+        0.601,
+        0.891,
+        1.0,
+        0.995,
+        0.41,
+        0.062,
+        0.008,
+        0.0
+      ],
+      [
+        0.0,
+        0.053,
+        0.312,
+        0.981,
+        1.0,
+        1.0,
+        1.0,
+        0.919,
+        0.461,
+        0.064,
+        0.0
+      ],
+      [
+        0.0,
+        0.076,
+        0.789,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.797,
+        0.015,
+        0.0
+      ],
+      [
+        0.0,
+        0.092,
+        0.758,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.888,
+        0.229,
+        0.0
+      ],
+      [
+        0.0,
+        0.478,
+        0.992,
+        1.0,
+        1.0,
+        0.969,
+        0.954,
+        0.961,
+        1.0,
+        0.413,
+        0.04
+      ],
+      [
+        0.0,
+        0.436,
+        0.984,
+        1.0,
+        1.0,
+        0.937,
+        0.998,
+        1.0,
+        0.994,
+        0.298,
+        0.0
+      ],
+      [
+        0.22,
+        0.271,
+        0.804,
+        0.965,
+        0.965,
+        0.874,
+        1.0,
+        1.0,
+        1.0,
+        0.734,
+        0.025
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        0.994,
+        0.955,
+        0.891,
+        1.0,
+        1.0,
+        1.0,
+        0.995,
+        0.343
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.994,
+        0.925,
+        0.432
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.906
+      ]
+    ],
+    "crop_offset": [
+      16,
+      27
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "contact_px": 350,
+    "contact_reference_px": 350.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      384
+    ]
+  }
+}

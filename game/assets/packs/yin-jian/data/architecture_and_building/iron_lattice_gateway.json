@@ -1,0 +1,151 @@
+{
+  "id": "yin_jian.architecture_and_building.iron_lattice_gateway",
+  "name": "Spiked Iron Lattice Gate",
+  "vietnamese_name": "Cổng Sắt Gai Nhọn",
+  "hanzi": "铁棘辕门",
+  "category": "architecture_and_building",
+  "sub_category": "watchtower_gatehouse",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "core_ring",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "open_gate",
+  "gameplay_role": "Heavy defensive gate controlling checkpoint access.",
+  "destructible": false,
+  "material": "metal",
+  "cultivation_element": "metal",
+  "prompt_summary": "Portcullis gate flanked by twin stone pillars with gargoyles.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/architecture_and_building/iron_lattice_gateway.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.architecture_and_building.iron_lattice_gateway:259989838",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.548,
+        0.196,
+        0.508
+      ]
+    ],
+    "frac_zero": 0.8165,
+    "blocks": [
+      [
+        false,
+        false,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.373,
+        0.363,
+        0.031,
+        0.0,
+        0.156,
+        0.555,
+        0.013
+      ],
+      [
+        0.784,
+        0.947,
+        0.591,
+        0.454,
+        0.869,
+        0.877,
+        0.284
+      ],
+      [
+        0.466,
+        0.349,
+        0.0,
+        0.0,
+        0.172,
+        0.552,
+        0.013
+      ]
+    ],
+    "crop_offset": [
+      91,
+      24
+    ],
+    "trunk_columns": [
+      0,
+      5
+    ],
+    "contact_px": 21,
+    "contact_reference_px": 21.0,
+    "blocked_by_scale": {
+      "0.85": [
+        2,
+        0,
+        2,
+        0
+      ],
+      "1.0": [
+        2,
+        0,
+        2,
+        0
+      ],
+      "1.15": [
+        2,
+        0,
+        2,
+        0
+      ],
+      "1.35": [
+        2,
+        0,
+        2,
+        0
+      ],
+      "1.6": [
+        2,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": [
+      2,
+      0,
+      2,
+      0
+    ],
+    "block_rect_px": [
+      256,
+      0,
+      384,
+      128
+    ]
+  }
+}

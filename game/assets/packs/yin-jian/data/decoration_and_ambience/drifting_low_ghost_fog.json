@@ -1,0 +1,161 @@
+{
+  "id": "yin_jian.decoration_and_ambience.drifting_low_ghost_fog",
+  "name": "Drifting Low Ground Mist",
+  "vietnamese_name": "Màn Sương Khói Đục Lượn Lờ",
+  "hanzi": "地表幽雾层",
+  "category": "decoration_and_ambience",
+  "sub_category": "mist_and_glow",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "brush",
+  "interactive_verb": null,
+  "gameplay_role": "Ground-level swirling fog creating stealth zones.",
+  "destructible": false,
+  "material": "spirit",
+  "cultivation_element": "yin",
+  "prompt_summary": "Low translucent milky fog layer curling across terrain.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/decoration_and_ambience/drifting_low_ghost_fog.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.decoration_and_ambience.drifting_low_ghost_fog:264865018",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.492,
+        0.272
+      ],
+      [
+        0.679,
+        0.714
+      ]
+    ],
+    "frac_zero": 0.5943,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.066,
+        0.679,
+        0.646,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.595,
+        1.0,
+        0.456,
+        0.105,
+        0.005,
+        0.0
+      ],
+      [
+        0.0,
+        0.542,
+        1.0,
+        1.0,
+        0.862,
+        0.619,
+        0.021
+      ],
+      [
+        0.258,
+        0.743,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.301
+      ],
+      [
+        0.779,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.696
+      ],
+      [
+        0.103,
+        0.675,
+        0.912,
+        1.0,
+        0.984,
+        0.691,
+        0.266
+      ],
+      [
+        0.0,
+        0.0,
+        0.017,
+        0.51,
+        0.358,
+        0.054,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      33
+    ],
+    "trunk_columns": [
+      3,
+      4
+    ],
+    "contact_px": 71,
+    "contact_reference_px": 71.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

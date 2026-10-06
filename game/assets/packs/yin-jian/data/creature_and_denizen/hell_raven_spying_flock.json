@@ -1,0 +1,166 @@
+{
+  "id": "yin_jian.creature_and_denizen.hell_raven_spying_flock",
+  "name": "Flock of Spy Crows (x5)",
+  "vietnamese_name": "Đàn Quạ Thám Thính Địa Phủ",
+  "hanzi": "群鸦眼线",
+  "category": "creature_and_denizen",
+  "sub_category": "nether_beast",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "scatter_birds",
+  "gameplay_role": "Group of crows reporting trespassing intruders to judges.",
+  "destructible": false,
+  "material": "spirit",
+  "cultivation_element": "yin",
+  "prompt_summary": "Five black crows perched together on dead branch.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/hell_raven_spying_flock.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.hell_raven_spying_flock:262793118",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.183,
+        0.288
+      ],
+      [
+        0.783,
+        0.74
+      ]
+    ],
+    "frac_zero": 0.5991,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.001,
+        0.0,
+        0.0,
+        0.1,
+        0.547,
+        0.054,
+        0.0
+      ],
+      [
+        0.0,
+        0.017,
+        0.11,
+        0.309,
+        0.56,
+        0.564,
+        0.0
+      ],
+      [
+        0.0,
+        0.174,
+        0.852,
+        0.506,
+        0.646,
+        0.107,
+        0.002
+      ],
+      [
+        0.041,
+        0.379,
+        0.513,
+        0.992,
+        0.886,
+        0.221,
+        0.0
+      ],
+      [
+        0.024,
+        0.562,
+        1.0,
+        1.0,
+        0.908,
+        0.272,
+        0.078
+      ],
+      [
+        0.854,
+        0.984,
+        1.0,
+        1.0,
+        0.986,
+        0.906,
+        0.664
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.988,
+        1.0,
+        1.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      19
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 224,
+    "contact_reference_px": 224.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

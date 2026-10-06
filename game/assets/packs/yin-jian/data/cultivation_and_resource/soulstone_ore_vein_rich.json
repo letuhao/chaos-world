@@ -1,0 +1,193 @@
+{
+  "id": "yin_jian.cultivation_and_resource.soulstone_ore_vein_rich",
+  "name": "Rich Soulstone Ore Vein",
+  "vietnamese_name": "Mỏ Quặng Minh Thạch Đậm Đặc",
+  "hanzi": "富集幽冥石矿脉",
+  "category": "cultivation_and_resource",
+  "sub_category": "mineral_and_ore",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "mine_soulstone",
+  "gameplay_role": "Dense rock deposit rich in soulstones used for currency and array crafting.",
+  "destructible": true,
+  "material": "stone",
+  "cultivation_element": "spirit",
+  "prompt_summary": "Dark basalt rock laced with thick veins of glowing turquoise crystals.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/cultivation_and_resource/soulstone_ore_vein_rich.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.cultivation_and_resource.soulstone_ore_vein_rich:264120350",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.266,
+        0.644
+      ],
+      [
+        0.578,
+        0.507
+      ]
+    ],
+    "frac_zero": 0.6119,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.029,
+        0.384,
+        0.907,
+        0.045
+      ],
+      [
+        0.012,
+        0.0,
+        0.275,
+        0.879,
+        1.0,
+        0.986,
+        0.041
+      ],
+      [
+        0.0,
+        0.257,
+        0.983,
+        1.0,
+        1.0,
+        0.874,
+        0.092
+      ],
+      [
+        0.113,
+        0.904,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.565
+      ],
+      [
+        0.346,
+        1.0,
+        1.0,
+        1.0,
+        0.998,
+        0.912,
+        0.154
+      ],
+      [
+        0.035,
+        0.877,
+        0.859,
+        0.695,
+        0.622,
+        0.131,
+        0.062
+      ],
+      [
+        0.0,
+        0.0,
+        0.048,
+        0.011,
+        0.03,
+        0.058,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      26
+    ],
+    "trunk_columns": [],
+    "contact_px": 5,
+    "contact_reference_px": 5.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

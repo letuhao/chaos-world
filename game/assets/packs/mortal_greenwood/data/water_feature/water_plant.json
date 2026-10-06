@@ -1,0 +1,188 @@
+{
+  "id": "mortal_greenwood.water_feature.water_plant",
+  "path": "res://assets/world_map/mortal_greenwood/water_feature/water_plant.png",
+  "type": "prop",
+  "category": "water_feature",
+  "environment": "mortal_greenwood",
+  "environment_name": "Mortal Greenwood",
+  "world_tier": "Mortal World",
+  "archetype": "water_feature.water_plant",
+  "name": "Water plant",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "bottom_center",
+  "collision": "none",
+  "status": "generated",
+  "source": "OpenAI image_gen",
+  "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Dense broadleaf canopy, tangled roots, emerald moss, and dappled forest clearings.",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "generated_on": "2026-10-06",
+  "prompt_ref": "openai-imagegen:mortal_greenwood.water_plant:20261006",
+  "prompt": "One small transparent 1x1-cell water-plant prop sprite for a 2D top-down map in Mortal Greenwood, strict overhead orthographic view. A compact cluster of three rounded floating lily leaves with clear vein patterns and one tiny pale cream bud, seen directly from above; include a few delicate thin stems between leaves, but no water. Fresh forest greens with an emerald moss accent, anime gouache map art, fine dark #263A35 contours, broad clear value planes, restrained upper-left light. Centered complete silhouette with generous transparent padding, square high-resolution source, legible at 128px. Genuine transparent background so it can be layered over water tiles. No pond, no terrain, no extra flowers, no insects, no scene, no text, no frame, no watermark, no perspective, no 3D render.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source_images": [
+    {
+      "path": "art-source/map-originals/mortal_greenwood/water_feature/mortal_greenwood__water_feature__water_plant__c4131b63bb1a8157.png",
+      "sha256": "c4131b63bb1a815708abf96311385d5248d9115be502969f9eb89b908a868086",
+      "size_px": [
+        1254,
+        1254
+      ],
+      "source": "OpenAI image_gen",
+      "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+      "generated_on": "2026-10-06",
+      "prompt_ref": "openai-imagegen:mortal_greenwood.water_plant:20261006",
+      "prompt": "One small transparent 1x1-cell water-plant prop sprite for a 2D top-down map in Mortal Greenwood, strict overhead orthographic view. A compact cluster of three rounded floating lily leaves with clear vein patterns and one tiny pale cream bud, seen directly from above; include a few delicate thin stems between leaves, but no water. Fresh forest greens with an emerald moss accent, anime gouache map art, fine dark #263A35 contours, broad clear value planes, restrained upper-left light. Centered complete silhouette with generous transparent padding, square high-resolution source, legible at 128px. Genuine transparent background so it can be layered over water tiles. No pond, no terrain, no extra flowers, no insects, no scene, no text, no frame, no watermark, no perspective, no 3D render.",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
+    }
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.571
+      ]
+    ],
+    "frac_zero": 0.6349,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "none",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": true,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "canopy",
+      "acoustic_profile": "foliage",
+      "material": "foliage",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 1,
+        "hp": 25,
+        "on_destroy": "landmark_and_environment_detail.ground_decal",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.811,
+        0.725,
+        0.159
+      ],
+      [
+        0.654,
+        0.762,
+        0.71
+      ],
+      [
+        0.233,
+        0.692,
+        0.396
+      ]
+    ],
+    "crop_offset": [
+      16,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.321,
+    "dominant_rgb": [
+      81.7,
+      126.7,
+      62.0
+    ],
+    "hsv": {
+      "hue_deg": 108.2,
+      "saturation": 0.54,
+      "value": 0.5
+    },
+    "dominant_palette": "verdant_flora",
+    "center_of_mass_norm": [
+      0.471,
+      0.476
+    ],
+    "horizontal_symmetry": 0.56,
+    "edge_complexity": 0.189
+  },
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "canopy",
+  "destructible": {
+    "enabled": true,
+    "tier": 1,
+    "hp": 25,
+    "on_destroy": "landmark_and_environment_detail.ground_decal",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "foliage",
+  "cultivation_element": "none"
+}

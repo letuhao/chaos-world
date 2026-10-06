@@ -63,6 +63,9 @@ func run() -> Dictionary:
 		# registrations the app pushes into catalogs, screens and hooks.
 		registrations = ModRuntime.finalize(contexts, status.get("registry"))
 		ModBoot.active_registrations = registrations
+		# Publish to the facade so mods can query config, fire lifecycle
+		# events, and apply def patches without referencing app/.
+		ModsApi.set_active(contexts, registrations)
 	else:
 		order = []
 		contexts = []
@@ -70,6 +73,7 @@ func run() -> Dictionary:
 		ModBoot.active_order = []
 		ModBoot.active_contexts = []
 		ModBoot.active_registrations = {}
+		ModsApi.set_active([], {})
 		push_error("ModBoot: %s — %s" % [status.get("reason", ""), status.get("detail", "")])
 	return status
 

@@ -1,0 +1,261 @@
+{
+  "id": "yin_jian.interactive_and_puzzle.bagua_compass_floor_tile",
+  "name": "Bagua Directional Floor Disc",
+  "vietnamese_name": "Đĩa Bát Quái Xoay Dưới Sàn",
+  "hanzi": "地面旋转八卦盘",
+  "category": "interactive_and_puzzle",
+  "sub_category": "bagua_mirror_puzzle",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "rotate_floor",
+  "gameplay_role": "Player walks in circles to rotate the floor section.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "earth",
+  "prompt_summary": "Large circular granite floor insert carved with eight trigrams.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/interactive_and_puzzle/bagua_compass_floor_tile.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.interactive_and_puzzle.bagua_compass_floor_tile:263330416",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.345,
+        0.802,
+        0.367
+      ],
+      [
+        0.781,
+        1.0,
+        0.844
+      ],
+      [
+        0.355,
+        0.803,
+        0.42
+      ]
+    ],
+    "frac_zero": 0.4654,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.062,
+        0.014,
+        0.222,
+        0.557,
+        0.213,
+        0.015,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.08,
+        0.495,
+        0.902,
+        1.0,
+        1.0,
+        1.0,
+        0.868,
+        0.393,
+        0.059,
+        0.0
+      ],
+      [
+        0.0,
+        0.196,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.242,
+        0.0
+      ],
+      [
+        0.02,
+        0.887,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.819,
+        0.015
+      ],
+      [
+        0.218,
+        0.979,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.297
+      ],
+      [
+        0.459,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.611
+      ],
+      [
+        0.222,
+        0.971,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.996,
+        0.152
+      ],
+      [
+        0.021,
+        0.92,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.876,
+        0.01
+      ],
+      [
+        0.0,
+        0.208,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.236,
+        0.016
+      ],
+      [
+        0.0,
+        0.096,
+        0.426,
+        0.819,
+        0.982,
+        1.0,
+        1.0,
+        0.878,
+        0.476,
+        0.272,
+        0.0
+      ],
+      [
+        0.0,
+        0.001,
+        0.044,
+        0.014,
+        0.108,
+        0.491,
+        0.203,
+        0.16,
+        0.01,
+        0.022,
+        0.008
+      ]
+    ],
+    "crop_offset": [
+      18,
+      18
+    ],
+    "trunk_columns": [
+      5
+    ],
+    "contact_px": 12,
+    "contact_reference_px": 12.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,515 @@
+{
+  "id": "void_shoal.flora.ancient_tree",
+  "path": "res://assets/world_map/void_shoal/flora/ancient_tree.png",
+  "type": "landmark",
+  "category": "flora",
+  "environment": "void_shoal",
+  "environment_name": "Void Shoal",
+  "world_tier": "Transcendent World",
+  "archetype": "flora.ancient_tree",
+  "name": "Ancient tree",
+  "canvas_px": [
+    512,
+    512
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image_gen",
+  "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Black glass shoals, deep violet water, scattered stone fragments, and sparse cyan glimmers.",
+  "footprint_cells": [
+    4,
+    4
+  ],
+  "generated_on": "2026-10-06",
+  "prompt_ref": "openai-imagegen:void_shoal.ancient_tree:20261006",
+  "prompt": "One standalone 4x4-cell ancient tree landmark sprite for a 2D top-down map of Void Shoal, viewed from directly above in strict orthographic projection. Show the crown footprint of an ancient twisted tree: broad irregular dark violet-black canopy masses and visible angular slate branches radiating from a small central trunk point, as seen from overhead. A few sparse pale cyan glimmers like tiny spirit lights among the canopy, not a glowing aura. Silhouette should read clearly as a tree crown from above, compact and complete, no landscape scene. Anime-painted gouache map art, dark #263A35 contours, broad readable planes, black-glass and deep-violet palette, restrained cyan accents, soft upper-left light. Centered with transparent margin, square high-resolution source, readable at 512px. Genuine transparency outside the crown. No water, no ground, no island, no perspective, no visible trunk side, no horizon, no text, no frame, no watermark, no 3D render.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source_images": [
+    {
+      "path": "art-source/map-originals/void_shoal/flora/void_shoal__flora__ancient_tree__5001685a10020e15.png",
+      "sha256": "5001685a10020e15141e85be8b2149d6e5ceee9f91fe448498084fa1e4e71f25",
+      "size_px": [
+        1254,
+        1254
+      ],
+      "source": "OpenAI image_gen",
+      "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+      "generated_on": "2026-10-06",
+      "prompt_ref": "openai-imagegen:void_shoal.ancient_tree:20261006",
+      "prompt": "One standalone 4x4-cell ancient tree landmark sprite for a 2D top-down map of Void Shoal, viewed from directly above in strict orthographic projection. Show the crown footprint of an ancient twisted tree: broad irregular dark violet-black canopy masses and visible angular slate branches radiating from a small central trunk point, as seen from overhead. A few sparse pale cyan glimmers like tiny spirit lights among the canopy, not a glowing aura. Silhouette should read clearly as a tree crown from above, compact and complete, no landscape scene. Anime-painted gouache map art, dark #263A35 contours, broad readable planes, black-glass and deep-violet palette, restrained cyan accents, soft upper-left light. Centered with transparent margin, square high-resolution source, readable at 512px. Genuine transparency outside the crown. No water, no ground, no island, no perspective, no visible trunk side, no horizon, no text, no frame, no watermark, no 3D render.",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
+    }
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.437,
+        0.78,
+        0.431
+      ],
+      [
+        0.751,
+        0.938,
+        0.814
+      ],
+      [
+        0.303,
+        0.805,
+        0.416
+      ]
+    ],
+    "frac_zero": 0.4064,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sem": {
+      "occluder_rule": "ground_contact",
+      "cov_gate": 0.01,
+      "authored_open": "",
+      "passable_under": true,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "canopy",
+      "acoustic_profile": "foliage",
+      "material": "foliage",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 1,
+        "hp": 25,
+        "on_destroy": "landmark_and_environment_detail.ground_decal",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": "timber"
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "wood",
+        "qi_affinity": "ambient_absorb",
+        "qi_density_modifier": 1.15,
+        "resonance_radius_cells": 1,
+        "feng_shui_direction": "yang"
+      },
+      "resource": {
+        "resource_type": "timber",
+        "base_yield": 3,
+        "respawn_turns": 300,
+        "min_realm_tier": 1,
+        "harvest_tool_tag": "axe"
+      },
+      "scale_profile": {
+        "min_scale": 0.85,
+        "max_scale": 1.6,
+        "default_scale": 1.0,
+        "supported_scales": [
+          0.85,
+          1.0,
+          1.15,
+          1.35,
+          1.6
+        ],
+        "scale_mode": "stepped",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      15,
+      15
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.002,
+        0.014,
+        0.449,
+        0.873,
+        0.537,
+        0.027,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.373,
+        0.835,
+        0.568,
+        0.959,
+        1.0,
+        0.998,
+        0.576,
+        0.277,
+        0.315,
+        0.639,
+        0.094,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.242,
+        0.966,
+        1.0,
+        1.0,
+        0.994,
+        0.987,
+        0.854,
+        0.989,
+        0.518,
+        0.757,
+        0.779,
+        0.236,
+        0.0
+      ],
+      [
+        0.075,
+        0.57,
+        0.809,
+        1.0,
+        1.0,
+        1.0,
+        0.997,
+        0.775,
+        0.91,
+        0.647,
+        0.943,
+        0.83,
+        0.728,
+        0.371,
+        0.0
+      ],
+      [
+        0.199,
+        0.979,
+        1.0,
+        1.0,
+        0.995,
+        0.805,
+        0.57,
+        0.987,
+        0.99,
+        1.0,
+        1.0,
+        1.0,
+        0.992,
+        0.974,
+        0.495
+      ],
+      [
+        0.037,
+        0.488,
+        1.0,
+        1.0,
+        1.0,
+        0.866,
+        0.908,
+        0.532,
+        0.986,
+        1.0,
+        0.997,
+        1.0,
+        1.0,
+        1.0,
+        0.778
+      ],
+      [
+        0.186,
+        0.581,
+        0.613,
+        0.939,
+        0.931,
+        0.863,
+        1.0,
+        1.0,
+        0.863,
+        0.927,
+        0.735,
+        0.93,
+        0.992,
+        0.977,
+        0.568
+      ],
+      [
+        0.603,
+        0.956,
+        0.94,
+        0.796,
+        0.54,
+        0.856,
+        1.0,
+        1.0,
+        1.0,
+        0.987,
+        0.672,
+        0.867,
+        0.749,
+        0.521,
+        0.438
+      ],
+      [
+        0.722,
+        1.0,
+        0.842,
+        1.0,
+        0.987,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.957,
+        0.948,
+        0.995,
+        0.698,
+        0.193
+      ],
+      [
+        0.043,
+        0.664,
+        1.0,
+        0.977,
+        0.828,
+        0.948,
+        0.999,
+        0.695,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.369
+      ],
+      [
+        0.0,
+        0.194,
+        0.505,
+        0.604,
+        0.787,
+        0.949,
+        0.992,
+        0.878,
+        1.0,
+        0.82,
+        0.771,
+        0.996,
+        1.0,
+        0.98,
+        0.637
+      ],
+      [
+        0.0,
+        0.0,
+        0.308,
+        0.983,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.902,
+        0.856,
+        0.844,
+        0.856,
+        0.19,
+        0.026
+      ],
+      [
+        0.0,
+        0.0,
+        0.13,
+        0.612,
+        0.998,
+        1.0,
+        1.0,
+        0.924,
+        1.0,
+        1.0,
+        0.875,
+        0.267,
+        0.689,
+        0.177,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.133,
+        0.855,
+        0.953,
+        0.64,
+        0.716,
+        0.891,
+        0.702,
+        0.389,
+        0.113,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.006,
+        0.113,
+        0.001,
+        0.456,
+        0.624,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      22
+    ],
+    "trunk_columns": [
+      7,
+      8
+    ],
+    "contact_px": 40,
+    "contact_reference_px": 30.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.0": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.15": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.35": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.6": [
+        1,
+        2,
+        1,
+        2
+      ]
+    },
+    "block_rect": [
+      1,
+      2,
+      1,
+      2
+    ],
+    "block_rect_px": [
+      128,
+      256,
+      256,
+      384
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.547,
+    "dominant_rgb": [
+      39.8,
+      39.2,
+      64.3
+    ],
+    "hsv": {
+      "hue_deg": 240.2,
+      "saturation": 0.43,
+      "value": 0.25
+    },
+    "dominant_palette": "azure_water",
+    "center_of_mass_norm": [
+      0.512,
+      0.5
+    ],
+    "horizontal_symmetry": 0.81,
+    "edge_complexity": 0.177
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "canopy",
+  "destructible": {
+    "enabled": true,
+    "tier": 1,
+    "hp": 25,
+    "on_destroy": "landmark_and_environment_detail.ground_decal",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": "timber"
+  },
+  "material": "foliage",
+  "cultivation_element": "wood"
+}

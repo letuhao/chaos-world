@@ -1,0 +1,302 @@
+{
+  "id": "yin_jian.architecture_and_building.sacrificial_furnace_kiln",
+  "name": "Paper Offering Cremation Kiln",
+  "vietnamese_name": "Lò Thiêu Đồ Mã Hoàng Gia",
+  "hanzi": "焚灵化宝炉",
+  "category": "architecture_and_building",
+  "sub_category": "ghost_market",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "cremate",
+  "gameplay_role": "Furnace burning offerings to manifest them in spirit realm.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "fire",
+  "prompt_summary": "Octagonal brick kiln spewing sparks and golden smoke.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/architecture_and_building/sacrificial_furnace_kiln.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.architecture_and_building.sacrificial_furnace_kiln:260046570",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.005,
+        0.478,
+        0.585
+      ],
+      [
+        0.534,
+        1.0,
+        0.621
+      ],
+      [
+        0.997,
+        0.951,
+        0.408
+      ]
+    ],
+    "frac_zero": 0.5057,
+    "blocks": [
+      [
+        false,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 8,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.578,
+        1.0,
+        1.0,
+        0.927,
+        0.826,
+        0.358
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.188,
+        0.789,
+        1.0,
+        0.821,
+        0.072,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.019,
+        0.172,
+        0.531,
+        1.0,
+        0.738,
+        0.673,
+        0.012,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.08,
+        0.743,
+        1.0,
+        1.0,
+        1.0,
+        0.862,
+        0.242,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.557,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.703,
+        0.0,
+        0.0
+      ],
+      [
+        0.065,
+        0.011,
+        0.845,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.979,
+        0.063,
+        0.0
+      ],
+      [
+        0.82,
+        0.846,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.268,
+        0.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.411,
+        0.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.988,
+        0.342,
+        0.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.799,
+        0.589,
+        0.214,
+        0.0,
+        0.0
+      ],
+      [
+        0.961,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.363,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      25,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 203,
+    "contact_reference_px": 203.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      384
+    ]
+  }
+}

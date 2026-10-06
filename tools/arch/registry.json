@@ -78,6 +78,12 @@
         "holdings"
       ]
     },
+    "consumables": {
+      "deps": [
+        "contracts",
+        "core"
+      ]
+    },
     "custody": {
       "deps": [
         "contracts",
@@ -86,6 +92,12 @@
       ]
     },
     "destiny": {
+      "deps": [
+        "contracts",
+        "core"
+      ]
+    },
+    "dialogue": {
       "deps": [
         "contracts",
         "core"

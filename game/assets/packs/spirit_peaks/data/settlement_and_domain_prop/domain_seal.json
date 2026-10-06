@@ -1,0 +1,266 @@
+{
+  "id": "spirit_peaks.settlement_and_domain_prop.domain_seal",
+  "path": "res://assets/world_map/spirit_peaks/settlement_and_domain_prop/domain_seal.png",
+  "type": "interactable",
+  "category": "settlement_and_domain_prop",
+  "environment": "spirit_peaks",
+  "environment_name": "Spirit Peaks",
+  "world_tier": "Spirit World",
+  "archetype": "settlement_and_domain_prop.domain_seal",
+  "name": "Domain seal",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image_gen via Codex",
+  "license": "AI-generated for Chaos World; permitted for project use",
+  "alpha": "transparent",
+  "environment_theme": "Cold blue stone, sparse snow, crystalline mist, and hardy dark mountain pines.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-05",
+  "prompt_ref": "openai-map-spirit-peaks-domain-seal-v1",
+  "prompt": "One ancient circular domain seal on a compact stone platform, strict directly-overhead orthographic view. Round carved cold blue-grey slate disc, concentric rings, warm ivory abstract non-letter sigils, restrained ember-red mineral glow in thin cracks. Anime gouache, fine dark ink contours, broad value planes, restrained antique gold, upper-left light, short attached shadow. Centered, fully visible, transparent 512 square source, crisp silhouette; no landscape, floor, text, UI, border, perspective, or detached shadow.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.651,
+        0.647
+      ],
+      [
+        0.644,
+        0.659
+      ]
+    ],
+    "frac_zero": 0.4862,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.2,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "solid",
+      "acoustic_profile": "spirit",
+      "material": "spirit",
+      "elevation": 1,
+      "destructible": {
+        "enabled": false,
+        "tier": 0,
+        "hp": 0,
+        "on_destroy": null,
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "unseal",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.074,
+        0.485,
+        0.787,
+        0.41,
+        0.012,
+        0.0
+      ],
+      [
+        0.066,
+        0.861,
+        1.0,
+        1.0,
+        1.0,
+        0.872,
+        0.089
+      ],
+      [
+        0.473,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.423
+      ],
+      [
+        0.815,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.82
+      ],
+      [
+        0.436,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.443
+      ],
+      [
+        0.054,
+        0.856,
+        1.0,
+        1.0,
+        1.0,
+        0.849,
+        0.078
+      ],
+      [
+        0.0,
+        0.073,
+        0.444,
+        0.807,
+        0.505,
+        0.054,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.496,
+    "dominant_rgb": [
+      101.1,
+      90.2,
+      79.8
+    ],
+    "hsv": {
+      "hue_deg": 120.9,
+      "saturation": 0.32,
+      "value": 0.43
+    },
+    "dominant_palette": "verdant_flora",
+    "center_of_mass_norm": [
+      0.497,
+      0.499
+    ],
+    "horizontal_symmetry": 0.97,
+    "edge_complexity": 0.305
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "destructible": {
+    "enabled": false,
+    "tier": 0,
+    "hp": 0,
+    "on_destroy": null,
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [],
+    "reveals_loot_category": null
+  },
+  "material": "spirit",
+  "cultivation_element": "none"
+}

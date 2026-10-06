@@ -1,0 +1,218 @@
+{
+  "id": "yin_jian.creature_and_denizen.paper_dragon_procession",
+  "name": "Festive Funeral Paper Dragon",
+  "vietnamese_name": "Đoàn Rồng Giấy Đám Ma",
+  "hanzi": "送葬纸龙队",
+  "category": "creature_and_denizen",
+  "sub_category": "wandering_spirit",
+  "footprint_cells": [
+    5,
+    2
+  ],
+  "canvas_px": [
+    640,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "view_parade",
+  "gameplay_role": "Spectral funeral parade carrying a 30ft dancing paper dragon.",
+  "destructible": false,
+  "material": "cloth",
+  "cultivation_element": "spirit",
+  "prompt_summary": "Elaborate multi-segmented red and gold paper dragon lifted by ghost poles.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/paper_dragon_procession.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.paper_dragon_procession:262509839",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.016,
+        0.104,
+        0.206,
+        0.588,
+        0.421
+      ],
+      [
+        0.499,
+        0.681,
+        0.63,
+        0.264,
+        0.022
+      ]
+    ],
+    "frac_zero": 0.8753,
+    "blocks": [
+      [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        true,
+        true,
+        true,
+        true,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      2,
+      1
+    ],
+    "sub_grid": [
+      8,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.282,
+        0.434
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.279,
+        0.661,
+        0.677,
+        0.209
+      ],
+      [
+        0.0,
+        0.088,
+        0.008,
+        0.093,
+        0.927,
+        1.0,
+        0.777,
+        0.005
+      ],
+      [
+        0.0,
+        0.651,
+        0.841,
+        0.784,
+        1.0,
+        0.67,
+        0.231,
+        0.0
+      ],
+      [
+        0.229,
+        1.0,
+        0.992,
+        0.985,
+        0.935,
+        0.144,
+        0.081,
+        0.0
+      ],
+      [
+        0.593,
+        0.991,
+        0.742,
+        0.453,
+        0.465,
+        0.064,
+        0.05,
+        0.0
+      ],
+      [
+        0.32,
+        0.343,
+        0.032,
+        0.052,
+        0.273,
+        0.047,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      198,
+      17
+    ],
+    "trunk_columns": [],
+    "contact_px": 23,
+    "contact_reference_px": 23.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

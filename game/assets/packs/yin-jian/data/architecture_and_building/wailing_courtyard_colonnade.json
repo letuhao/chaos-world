@@ -1,0 +1,209 @@
+{
+  "id": "yin_jian.architecture_and_building.wailing_courtyard_colonnade",
+  "name": "Colonnade of Wailing Whispers",
+  "vietnamese_name": "Hành Lang Khóc Than",
+  "hanzi": "泣魂曲廊",
+  "category": "architecture_and_building",
+  "sub_category": "tribunal_pavilion",
+  "footprint_cells": [
+    4,
+    2
+  ],
+  "canvas_px": [
+    512,
+    256
+  ],
+  "collision_type": "core_ring",
+  "blocks_projectile": true,
+  "vision_mode": "canopy",
+  "interactive_verb": "walk",
+  "gameplay_role": "Covered winding corridor amplifying echoes of lamentation.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "yin",
+  "prompt_summary": "Covered traditional walkway with open red pillars and railing.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/architecture_and_building/wailing_courtyard_colonnade.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.architecture_and_building.wailing_courtyard_colonnade:260105995",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.196,
+        0.491,
+        0.734,
+        0.467
+      ],
+      [
+        0.283,
+        0.799,
+        0.733,
+        0.13
+      ]
+    ],
+    "frac_zero": 0.8242,
+    "blocks": [
+      [
+        false,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      2,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.011,
+        0.354,
+        0.186,
+        0.0
+      ],
+      [
+        0.0,
+        0.116,
+        0.215,
+        0.835,
+        1.0,
+        0.852,
+        0.43
+      ],
+      [
+        0.242,
+        0.692,
+        1.0,
+        1.0,
+        0.994,
+        0.566,
+        0.0
+      ],
+      [
+        0.26,
+        0.849,
+        0.853,
+        1.0,
+        0.938,
+        0.527,
+        0.0
+      ],
+      [
+        0.0,
+        0.492,
+        0.782,
+        1.0,
+        0.921,
+        0.118,
+        0.0
+      ],
+      [
+        0.348,
+        0.876,
+        1.0,
+        0.984,
+        0.293,
+        0.0,
+        0.0
+      ],
+      [
+        0.082,
+        0.372,
+        0.71,
+        0.661,
+        0.062,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      154,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3
+    ],
+    "contact_px": 32,
+    "contact_reference_px": 32.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      256
+    ]
+  }
+}

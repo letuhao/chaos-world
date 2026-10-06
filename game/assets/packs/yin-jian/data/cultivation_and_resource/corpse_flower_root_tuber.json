@@ -1,0 +1,148 @@
+{
+  "id": "yin_jian.cultivation_and_resource.corpse_flower_root_tuber",
+  "name": "Bulbous Corpse Flower Root",
+  "vietnamese_name": "Củ Rễ Hoa Xác Chết Khổng Lồ",
+  "hanzi": "食尸妖花地下茎",
+  "category": "cultivation_and_resource",
+  "sub_category": "herb_and_fungus",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "dig_root",
+  "gameplay_role": "Starchy subterranean root packed with spiritual nutrition.",
+  "destructible": true,
+  "material": "earth",
+  "cultivation_element": "yin",
+  "prompt_summary": "Gnarly brown tuber root shaped like a sleeping infant.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/cultivation_and_resource/corpse_flower_root_tuber.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.cultivation_and_resource.corpse_flower_root_tuber:264593308",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.574,
+        0.217
+      ]
+    ],
+    "frac_zero": 0.7615,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.088,
+        0.841,
+        0.75,
+        0.336,
+        0.154,
+        0.282,
+        0.057
+      ],
+      [
+        0.511,
+        1.0,
+        0.768,
+        0.474,
+        0.392,
+        0.238,
+        0.452
+      ],
+      [
+        0.529,
+        0.483,
+        0.256,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      24
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 81,
+    "contact_reference_px": 81.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

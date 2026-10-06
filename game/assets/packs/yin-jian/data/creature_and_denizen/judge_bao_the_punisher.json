@@ -1,0 +1,196 @@
+{
+  "id": "yin_jian.creature_and_denizen.judge_bao_the_punisher",
+  "name": "Magistrate Bao: The Iron Punisher",
+  "vietnamese_name": "Phán Quan Phạt Ác",
+  "hanzi": "罚恶司判官包拯",
+  "category": "creature_and_denizen",
+  "sub_category": "judge_and_official",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "plead_mercy",
+  "gameplay_role": "Uncompromising black-faced judge delivering harsh sentences.",
+  "destructible": false,
+  "material": "spirit",
+  "cultivation_element": "metal",
+  "prompt_summary": "Dark-skinned fierce official with crescent moon forehead mark holding guillotine blade.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/judge_bao_the_punisher.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.judge_bao_the_punisher:262109992",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.15,
+        0.403
+      ],
+      [
+        0.504,
+        0.656
+      ]
+    ],
+    "frac_zero": 0.662,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.393,
+        0.221,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.066,
+        0.819,
+        0.846,
+        0.06,
+        0.078
+      ],
+      [
+        0.0,
+        0.065,
+        0.433,
+        1.0,
+        0.981,
+        0.157,
+        0.181
+      ],
+      [
+        0.0,
+        0.372,
+        0.458,
+        1.0,
+        0.972,
+        0.334,
+        0.327
+      ],
+      [
+        0.115,
+        0.581,
+        0.865,
+        1.0,
+        1.0,
+        0.848,
+        0.265
+      ],
+      [
+        0.409,
+        0.94,
+        0.861,
+        1.0,
+        1.0,
+        0.907,
+        0.31
+      ],
+      [
+        0.083,
+        0.189,
+        0.042,
+        0.59,
+        0.665,
+        0.203,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      21
+    ],
+    "trunk_columns": [
+      3,
+      4
+    ],
+    "contact_px": 53,
+    "contact_reference_px": 53.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

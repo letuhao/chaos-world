@@ -1,0 +1,170 @@
+{
+  "id": "immortal_court.terrain_transition.trail_edge",
+  "path": "res://assets/world_map/immortal_court/terrain_transition/trail_edge.png",
+  "type": "tile",
+  "category": "terrain_transition",
+  "environment": "immortal_court",
+  "environment_name": "Immortal Court",
+  "world_tier": "Immortal World",
+  "archetype": "terrain_transition.trail_edge",
+  "name": "Trail edge",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "center",
+  "collision": "none",
+  "status": "generated",
+  "source": "OpenAI image_gen (2026-10-04)",
+  "license": "Generated for Chaos World under OpenAI service terms",
+  "alpha": "transparent",
+  "environment_theme": "Ivory stone terraces, balanced formal layouts, fine antique-gold seams, and cloud carving.",
+  "generated_on": "2026-10-04",
+  "prompt_ref": "openai-imagegen:immortal-court-trail-edge-2026-10-04",
+  "prompt": "Image 1 is a style and square-shape reference only. Create a top-down trail-edge transition tile for Immortal Court. One compact near-square rounded patch fills most of the canvas, transparent only at corners and a small margin. A narrow ivory flagstone walking path with fine antique-gold seams crosses pale mineral soil, edged by a gently irregular boundary and sparse cloud carving. Straight-down orthographic camera, flat ground only. Anime-painted gouache, dark #263A35 contours, broad readable planes, restrained detail. Clear at 128x128. No long strip, ribbon, panorama, horizon, raised curb, perspective, text, border, or extra objects. Clean transparent alpha, no halo or shadow.",
+  "reference_ids": [
+    "immortal_court.terrain_transition.ground_edge"
+  ],
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.915
+      ]
+    ],
+    "frac_zero": 0.5513,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "none",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "transparent",
+      "acoustic_profile": "earth",
+      "material": "earth",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 1,
+        "hp": 40,
+        "on_destroy": "ground_tile.cracked_ground",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "water",
+          "wind"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.852,
+        0.978,
+        0.8
+      ],
+      [
+        0.995,
+        1.0,
+        0.966
+      ],
+      [
+        0.825,
+        0.961,
+        0.735
+      ]
+    ],
+    "crop_offset": [
+      22,
+      20
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.417,
+    "dominant_rgb": [
+      202.9,
+      191.1,
+      148.3
+    ],
+    "hsv": {
+      "hue_deg": 47.7,
+      "saturation": 0.3,
+      "value": 0.8
+    },
+    "dominant_palette": "warm_earth_gold",
+    "center_of_mass_norm": [
+      0.503,
+      0.493
+    ],
+    "horizontal_symmetry": 0.92,
+    "edge_complexity": 0.267
+  },
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 1,
+    "hp": 40,
+    "on_destroy": "ground_tile.cracked_ground",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "water",
+      "wind"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "earth",
+  "cultivation_element": "none"
+}

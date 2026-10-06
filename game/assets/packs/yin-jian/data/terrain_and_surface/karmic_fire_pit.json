@@ -1,0 +1,97 @@
+{
+  "id": "yin_jian.terrain_and_surface.karmic_fire_pit",
+  "name": "Karmic Fire Ground",
+  "vietnamese_name": "Đất Cháy Lửa Nghiệp Báo",
+  "hanzi": "业火燎原",
+  "category": "terrain_and_surface",
+  "sub_category": "hazard_surface",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Purifying karmic flames burning sinful actors.",
+  "destructible": false,
+  "material": "earth",
+  "cultivation_element": "fire",
+  "prompt_summary": "Deep crimson-black scorched soil with flickering magenta flames.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/terrain_and_surface/karmic_fire_pit.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.terrain_and_surface.karmic_fire_pit:258508468",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.444
+      ]
+    ],
+    "frac_zero": 0.7299,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.09,
+        0.503,
+        0.095
+      ],
+      [
+        0.662,
+        1.0,
+        0.667
+      ],
+      [
+        0.021,
+        0.22,
+        0.502
+      ]
+    ],
+    "crop_offset": [
+      16,
+      29
+    ],
+    "trunk_columns": [
+      2
+    ],
+    "contact_px": 22,
+    "contact_reference_px": 22.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

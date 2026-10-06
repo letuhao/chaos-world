@@ -60,6 +60,9 @@ __pycache__/
 /art-source/map-originals/
 game/assets/packs/*/original/
 
+# Local map-generation workspace; keep runtime sprites uncommitted until the batch is approved.
+game/assets/world_map/
+
 # OS noise
 .DS_Store
 Thumbs.db

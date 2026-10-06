@@ -1,0 +1,306 @@
+{
+  "id": "yin_jian.architecture_and_building.tu_la_blood_weapon_forge",
+  "name": "Asura Blood Quenched Forge",
+  "vietnamese_name": "Tu La Huyết Tôi Binh Lò",
+  "hanzi": "修罗血淬兵炉",
+  "category": "architecture_and_building",
+  "sub_category": "bone_pagoda",
+  "racial_faction": "tu_la",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "quench_weapon",
+  "gameplay_role": "Deep smelting furnace where weapons are quenched in demonic blood to grant life-drain and bleed attributes.",
+  "destructible": false,
+  "material": "metal",
+  "cultivation_element": "fire",
+  "prompt_summary": "Top-down 45 degree crude iron forge furnace with roaring crimson flames, an open vat of boiling dark red blood for quenching glowing swords.",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/architecture_and_building/tu_la_blood_weapon_forge.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.architecture_and_building.tu_la_blood_weapon_forge:265703818",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.098,
+        0.877,
+        0.386
+      ],
+      [
+        0.71,
+        1.0,
+        0.606
+      ],
+      [
+        1.0,
+        1.0,
+        1.0
+      ]
+    ],
+    "frac_zero": 0.3657,
+    "blocks": [
+      [
+        false,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 8,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.803,
+        0.0,
+        0.0,
+        0.293,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.873,
+        0.315
+      ],
+      [
+        0.091,
+        0.0,
+        0.0,
+        0.413,
+        0.769,
+        1.0,
+        1.0,
+        0.95,
+        0.846,
+        0.394,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.053,
+        0.641,
+        1.0,
+        0.725,
+        0.143,
+        0.156,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.002,
+        0.018,
+        0.713,
+        1.0,
+        1.0,
+        1.0,
+        0.766,
+        0.088,
+        0.0,
+        0.0
+      ],
+      [
+        0.06,
+        0.257,
+        0.458,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.556,
+        0.045,
+        0.026
+      ],
+      [
+        0.795,
+        0.674,
+        0.899,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.936,
+        0.376,
+        0.166
+      ],
+      [
+        1.0,
+        0.996,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.93,
+        0.612
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "contact_px": 352,
+    "contact_reference_px": 352.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      384
+    ]
+  }
+}

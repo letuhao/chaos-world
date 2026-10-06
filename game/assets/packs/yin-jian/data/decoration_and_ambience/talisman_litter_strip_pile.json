@@ -1,0 +1,99 @@
+{
+  "id": "yin_jian.decoration_and_ambience.talisman_litter_strip_pile",
+  "name": "Torn Talisman Paper Scraps",
+  "vietnamese_name": "Mảnh Phù Chú Rách Rưới",
+  "hanzi": "残破黄符地纸",
+  "category": "decoration_and_ambience",
+  "sub_category": "paper_and_offering",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "read_scrap",
+  "gameplay_role": "Floor strewn with torn strips of yellow talisman paper with red ink.",
+  "destructible": false,
+  "material": "cloth",
+  "cultivation_element": "spirit",
+  "prompt_summary": "Scattered yellow paper strips with cursive cinnabar seals.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/decoration_and_ambience/talisman_litter_strip_pile.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.decoration_and_ambience.talisman_litter_strip_pile:264858115",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.636
+      ]
+    ],
+    "frac_zero": 0.6286,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.051,
+        0.632,
+        0.411
+      ],
+      [
+        0.525,
+        1.0,
+        0.794
+      ],
+      [
+        0.394,
+        0.969,
+        1.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      19
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 82,
+    "contact_reference_px": 82.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

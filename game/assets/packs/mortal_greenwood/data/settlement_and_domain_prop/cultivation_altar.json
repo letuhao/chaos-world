@@ -1,0 +1,272 @@
+{
+  "id": "mortal_greenwood.settlement_and_domain_prop.cultivation_altar",
+  "path": "res://assets/world_map/mortal_greenwood/settlement_and_domain_prop/cultivation_altar.png",
+  "type": "interactable",
+  "category": "settlement_and_domain_prop",
+  "environment": "mortal_greenwood",
+  "environment_name": "Mortal Greenwood",
+  "world_tier": "Mortal World",
+  "archetype": "settlement_and_domain_prop.cultivation_altar",
+  "name": "Cultivation altar",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image generation",
+  "license": "Generated locally with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Dense broadleaf canopy, tangled roots, emerald moss, and dappled forest clearings.",
+  "generated_on": "2026-10-04",
+  "prompt_ref": "openai-imagegen:mortal_greenwood.settlement_and_domain_prop.cultivation_altar:20261004",
+  "prompt": "One compact forest cultivation altar, a low circular carved stone platform with a simple jade seal motif and moss tufts on its rim. Strict top-down orthographic map sprite, anime-painted gouache, fine dark #263A35 ink contours, muted warm-gray stone, restrained pale jade, readable broad value planes, soft upper-left light, transparent background, short attached shadow, no ground plane, extra props, glow, text, or cropping.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.788,
+        0.773
+      ],
+      [
+        0.765,
+        0.761
+      ]
+    ],
+    "frac_zero": 0.469,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.2,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "solid",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 1,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "meditate",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.012,
+        0.49,
+        0.887,
+        0.969,
+        0.698,
+        0.104,
+        0.0
+      ],
+      [
+        0.48,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.864,
+        0.098
+      ],
+      [
+        0.875,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.799
+      ],
+      [
+        0.942,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.889
+      ],
+      [
+        0.7,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.42
+      ],
+      [
+        0.146,
+        0.896,
+        1.0,
+        1.0,
+        0.997,
+        0.529,
+        0.0
+      ],
+      [
+        0.0,
+        0.134,
+        0.757,
+        0.922,
+        0.382,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      31,
+      21
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.514,
+    "dominant_rgb": [
+      145.9,
+      140.5,
+      116.9
+    ],
+    "hsv": {
+      "hue_deg": 49.3,
+      "saturation": 0.22,
+      "value": 0.58
+    },
+    "dominant_palette": "warm_earth_gold",
+    "center_of_mass_norm": [
+      0.524,
+      0.487
+    ],
+    "horizontal_symmetry": 0.98,
+    "edge_complexity": 0.268
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

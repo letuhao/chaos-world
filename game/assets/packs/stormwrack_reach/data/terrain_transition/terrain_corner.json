@@ -1,0 +1,170 @@
+{
+  "id": "stormwrack_reach.terrain_transition.terrain_corner",
+  "path": "res://assets/world_map/stormwrack_reach/terrain_transition/terrain_corner.png",
+  "type": "tile",
+  "category": "terrain_transition",
+  "environment": "stormwrack_reach",
+  "environment_name": "Stormwrack Reach",
+  "world_tier": "Immortal World",
+  "archetype": "terrain_transition.terrain_corner",
+  "name": "Terrain corner",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "center",
+  "collision": "none",
+  "status": "generated",
+  "source": "OpenAI built-in image generation edit, 2026-10-05",
+  "license": "OpenAI generated image; project use under applicable OpenAI generation terms",
+  "alpha": "transparent",
+  "environment_theme": "Wet dark coastal rock, broken seafoam, wind-bent coastal flora, and weathered driftwood.",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "generated_on": "2026-10-05",
+  "prompt_ref": "openai-map-v1:stormwrack_reach.terrain_transition.terrain_corner:20261005-v2",
+  "prompt": "Edit this game-map sprite only. Preserve the existing upper-left corner footprint, the transparent lower-right, the curved pale seafoam boundary, the Stormwrack charcoal and slate palette, and square framing. Change the rocks into a flatter continuous top-down coastal stone surface: reduce individual stone breaks, remove all side shading and bevels, use broad matte slate planes with shallow cracks and subtle wet color variation. The outer curved edge should remain a flat line of seafoam, not a raised edge. Strict overhead 2D anime gouache map style, clean alpha. No 3D depth, no stacked rocks, no cliff wall, no perspective, no cast shadow, no bright fringe, no new objects, no text, no border.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.504
+      ]
+    ],
+    "frac_zero": 0.7291,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "none",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "transparent",
+      "acoustic_profile": "earth",
+      "material": "earth",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 1,
+        "hp": 40,
+        "on_destroy": "ground_tile.cracked_ground",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "water",
+          "wind"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        1.0,
+        0.938,
+        0.512
+      ],
+      [
+        0.999,
+        0.305,
+        0.0
+      ],
+      [
+        0.504,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.257,
+    "dominant_rgb": [
+      65.2,
+      75.2,
+      76.5
+    ],
+    "hsv": {
+      "hue_deg": 187.8,
+      "saturation": 0.16,
+      "value": 0.3
+    },
+    "dominant_palette": "azure_water",
+    "center_of_mass_norm": [
+      0.36,
+      0.371
+    ],
+    "horizontal_symmetry": 0.58,
+    "edge_complexity": 0.121
+  },
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 1,
+    "hp": 40,
+    "on_destroy": "ground_tile.cracked_ground",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "water",
+      "wind"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "earth",
+  "cultivation_element": "none"
+}

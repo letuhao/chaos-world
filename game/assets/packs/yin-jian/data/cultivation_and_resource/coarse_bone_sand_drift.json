@@ -1,0 +1,104 @@
+{
+  "id": "yin_jian.cultivation_and_resource.coarse_bone_sand_drift",
+  "name": "Siftable Bone Dust Drift",
+  "vietnamese_name": "Đụn Cát Cốt Đãi Được",
+  "hanzi": "可淘骨尘堆",
+  "category": "cultivation_and_resource",
+  "sub_category": "mineral_and_ore",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "sift_bone_powder",
+  "gameplay_role": "Mound of bone sand that can be panned for gold flakes.",
+  "destructible": true,
+  "material": "earth",
+  "cultivation_element": "yin",
+  "prompt_summary": "Low mound of fine white dust.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/cultivation_and_resource/coarse_bone_sand_drift.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.cultivation_and_resource.coarse_bone_sand_drift:264418056",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.332,
+        0.541
+      ]
+    ],
+    "frac_zero": 0.8609,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      4,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.276,
+        0.521,
+        0.0
+      ],
+      [
+        0.22,
+        0.922,
+        0.913,
+        0.211
+      ],
+      [
+        0.409,
+        0.612,
+        0.316,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      75,
+      21
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 56,
+    "contact_reference_px": 56.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

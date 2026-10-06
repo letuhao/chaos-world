@@ -1,0 +1,263 @@
+{
+  "id": "stormwrack_reach.flora.slender_tree",
+  "path": "res://assets/world_map/stormwrack_reach/flora/slender_tree.png",
+  "type": "prop",
+  "category": "flora",
+  "environment": "stormwrack_reach",
+  "environment_name": "Stormwrack Reach",
+  "world_tier": "Immortal World",
+  "archetype": "flora.slender_tree",
+  "name": "Slender tree",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image_gen 2026-10-05",
+  "license": "Generated locally with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Wet dark coastal rock, broken seafoam, wind-bent coastal flora, and weathered driftwood.",
+  "generated_on": "2026-10-05",
+  "prompt_ref": "openai-imagegen:stormwrack-reach-slender-tree:20261005",
+  "prompt": "Use case: production game sprite. Create one isolated slender tree canopy sprite for Stormwrack Reach, a 2D top-down RPG. Camera is exactly overhead at 90 degrees, orthographic and straight down. Show a tall narrow oval crown of wind-swept coastal leaves from above; foliage canopy is the main shape, with only a small glimpse of dark driftwood trunk at the bottom-center pivot. Layer muted seafoam-blue and slate-green leaves, sparse pale salt highlights, and a few dark branch lines visible between leaves. Clear stylized silhouette, simple enough to read at 256x256. Anime-painted gouache, fine dark #263A35 contour, broad readable value planes, restrained upper-left light. Output one complete PNG with genuine transparent background: alpha zero everywhere outside the leaves and tiny trunk. No blue glow, no background gradient, no shadow halo, no ground, no coast, no water, no sky. No perspective, no isometric view, no text, UI, frame, checkerboard, watermark, or extra trees.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.532,
+        0.625
+      ],
+      [
+        0.695,
+        0.704
+      ]
+    ],
+    "frac_zero": 0.7329,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "ground_contact",
+      "cov_gate": 0.01,
+      "authored_open": "",
+      "passable_under": true,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "canopy",
+      "acoustic_profile": "foliage",
+      "material": "foliage",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 1,
+        "hp": 25,
+        "on_destroy": "landmark_and_environment_detail.ground_decal",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": "timber"
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "wood",
+        "qi_affinity": "ambient_absorb",
+        "qi_density_modifier": 1.15,
+        "resonance_radius_cells": 1,
+        "feng_shui_direction": "yang"
+      },
+      "resource": {
+        "resource_type": "timber",
+        "base_yield": 3,
+        "respawn_turns": 300,
+        "min_realm_tier": 1,
+        "harvest_tool_tag": "axe"
+      },
+      "scale_profile": {
+        "min_scale": 0.85,
+        "max_scale": 1.6,
+        "default_scale": 1.0,
+        "supported_scales": [
+          0.85,
+          1.0,
+          1.15,
+          1.35,
+          1.6
+        ],
+        "scale_mode": "stepped",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      4,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.379,
+        0.668,
+        0.001
+      ],
+      [
+        0.237,
+        0.993,
+        0.84,
+        0.016
+      ],
+      [
+        0.6,
+        1.0,
+        0.997,
+        0.435
+      ],
+      [
+        0.856,
+        1.0,
+        1.0,
+        0.565
+      ],
+      [
+        0.699,
+        1.0,
+        1.0,
+        0.576
+      ],
+      [
+        0.397,
+        1.0,
+        0.947,
+        0.266
+      ],
+      [
+        0.006,
+        0.614,
+        0.373,
+        0.069
+      ]
+    ],
+    "crop_offset": [
+      72,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 38,
+    "contact_reference_px": 38.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.242,
+    "dominant_rgb": [
+      79.3,
+      108.3,
+      101.7
+    ],
+    "hsv": {
+      "hue_deg": 160.9,
+      "saturation": 0.34,
+      "value": 0.43
+    },
+    "dominant_palette": "verdant_flora",
+    "center_of_mass_norm": [
+      0.51,
+      0.5
+    ],
+    "horizontal_symmetry": 0.85,
+    "edge_complexity": 0.165
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "canopy",
+  "destructible": {
+    "enabled": true,
+    "tier": 1,
+    "hp": 25,
+    "on_destroy": "landmark_and_environment_detail.ground_decal",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": "timber"
+  },
+  "material": "foliage",
+  "cultivation_element": "wood"
+}

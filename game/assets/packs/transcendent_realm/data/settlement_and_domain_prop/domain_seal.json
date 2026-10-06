@@ -1,0 +1,284 @@
+{
+  "id": "transcendent_realm.settlement_and_domain_prop.domain_seal",
+  "path": "res://assets/world_map/transcendent_realm/settlement_and_domain_prop/domain_seal.png",
+  "type": "interactable",
+  "category": "settlement_and_domain_prop",
+  "environment": "transcendent_realm",
+  "environment_name": "Transcendent Realm",
+  "world_tier": "Transcendent World",
+  "archetype": "settlement_and_domain_prop.domain_seal",
+  "name": "Domain seal",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image_gen",
+  "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Calm ivory and platinum forms, sparse gold accents, and impossibly clean sacred stone.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-06",
+  "prompt_ref": "openai-imagegen:transcendent_realm.domain_seal:20261006",
+  "prompt": "One isolated 2x2-cell interactable prop for a 2D top-down cultivation RPG map: a Transcendent Realm domain seal, viewed from directly overhead in strict orthographic projection. A low round ivory-white stone medallion with a broad smooth top, thin platinum concentric grooves and a few sparse antique-gold inlays forming a simple abstract geometric seal; no letters or readable runes. A small beveled edge and compact solid stone body make it a physical object, not a flat UI icon. Calm sacred precision, centered complete silhouette with transparent padding, square high-resolution source, readable at 256px. Anime-painted gouache map art, fine dark #263A35 contour, broad uncluttered value planes, ivory/platinum palette, restrained gold details, soft upper-left light. Genuine transparent background. No floor, no background, no aura, no extra objects, no text, no UI frame, no watermark, no perspective, no isometric view, no 3D render.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source_images": [
+    {
+      "path": "art-source/map-originals/transcendent_realm/settlement_and_domain_prop/transcendent_realm__settlement_and_domain_prop__domain_seal__f68937d6b16fe937.png",
+      "sha256": "f68937d6b16fe9375c66a29398644de83557d9839a076c82fb97cbadd5bf69b7",
+      "size_px": [
+        1254,
+        1254
+      ],
+      "source": "OpenAI image_gen",
+      "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+      "generated_on": "2026-10-06",
+      "prompt_ref": "openai-imagegen:transcendent_realm.domain_seal:20261006",
+      "prompt": "One isolated 2x2-cell interactable prop for a 2D top-down cultivation RPG map: a Transcendent Realm domain seal, viewed from directly overhead in strict orthographic projection. A low round ivory-white stone medallion with a broad smooth top, thin platinum concentric grooves and a few sparse antique-gold inlays forming a simple abstract geometric seal; no letters or readable runes. A small beveled edge and compact solid stone body make it a physical object, not a flat UI icon. Calm sacred precision, centered complete silhouette with transparent padding, square high-resolution source, readable at 256px. Anime-painted gouache map art, fine dark #263A35 contour, broad uncluttered value planes, ivory/platinum palette, restrained gold details, soft upper-left light. Genuine transparent background. No floor, no background, no aura, no extra objects, no text, no UI frame, no watermark, no perspective, no isometric view, no 3D render.",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
+    }
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.717,
+        0.718
+      ],
+      [
+        0.72,
+        0.721
+      ]
+    ],
+    "frac_zero": 0.4385,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.2,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "solid",
+      "acoustic_profile": "spirit",
+      "material": "spirit",
+      "elevation": 1,
+      "destructible": {
+        "enabled": false,
+        "tier": 0,
+        "hp": 0,
+        "on_destroy": null,
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "unseal",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.18,
+        0.665,
+        0.879,
+        0.671,
+        0.18,
+        0.0
+      ],
+      [
+        0.179,
+        0.965,
+        1.0,
+        1.0,
+        1.0,
+        0.966,
+        0.181
+      ],
+      [
+        0.67,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.669
+      ],
+      [
+        0.9,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.899
+      ],
+      [
+        0.662,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.664
+      ],
+      [
+        0.16,
+        0.945,
+        1.0,
+        1.0,
+        1.0,
+        0.947,
+        0.162
+      ],
+      [
+        0.0,
+        0.151,
+        0.669,
+        0.884,
+        0.671,
+        0.153,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      18
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.545,
+    "dominant_rgb": [
+      211.4,
+      203.0,
+      187.6
+    ],
+    "hsv": {
+      "hue_deg": 40.5,
+      "saturation": 0.13,
+      "value": 0.83
+    },
+    "dominant_palette": "monochrome_grey",
+    "center_of_mass_norm": [
+      0.498,
+      0.503
+    ],
+    "horizontal_symmetry": 1.0,
+    "edge_complexity": 0.221
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "destructible": {
+    "enabled": false,
+    "tier": 0,
+    "hp": 0,
+    "on_destroy": null,
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [],
+    "reveals_loot_category": null
+  },
+  "material": "spirit",
+  "cultivation_element": "none"
+}

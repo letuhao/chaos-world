@@ -1,0 +1,177 @@
+{
+  "id": "yin_jian.path_and_way.naihe_bridge_approach_left",
+  "name": "Naihe Bridge: Left Approach",
+  "vietnamese_name": "Cầu Nại Hà: Mố Cầu Trái",
+  "hanzi": "奈何桥左段",
+  "category": "path_and_way",
+  "sub_category": "bridge",
+  "footprint_cells": [
+    2,
+    3
+  ],
+  "canvas_px": [
+    256,
+    384
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": true,
+  "vision_mode": "canopy",
+  "interactive_verb": null,
+  "gameplay_role": "Western ascent onto the Naihe Bridge.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "spirit",
+  "prompt_summary": "Stone ramp flanked by roaring stone qilin statues.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/path_and_way/naihe_bridge_approach_left.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.path_and_way.naihe_bridge_approach_left:258969413",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.411,
+        0.374
+      ],
+      [
+        0.887,
+        0.662
+      ],
+      [
+        0.951,
+        0.773
+      ]
+    ],
+    "frac_zero": 0.6567,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.078,
+        0.686,
+        0.217,
+        0.081,
+        0.745,
+        0.168,
+        0.0
+      ],
+      [
+        0.104,
+        0.99,
+        0.334,
+        0.531,
+        0.933,
+        0.241,
+        0.0
+      ],
+      [
+        0.345,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.466,
+        0.0
+      ],
+      [
+        0.634,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.665,
+        0.212
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.38
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.504
+      ],
+      [
+        1.0,
+        0.944,
+        0.448,
+        0.997,
+        0.97,
+        0.602,
+        0.022
+      ]
+    ],
+    "crop_offset": [
+      16,
+      156
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 106,
+    "contact_reference_px": 106.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

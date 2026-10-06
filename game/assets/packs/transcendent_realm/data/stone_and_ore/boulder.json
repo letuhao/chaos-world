@@ -1,0 +1,268 @@
+{
+  "id": "transcendent_realm.stone_and_ore.boulder",
+  "path": "res://assets/world_map/transcendent_realm/stone_and_ore/boulder.png",
+  "type": "prop",
+  "category": "stone_and_ore",
+  "environment": "transcendent_realm",
+  "environment_name": "Transcendent Realm",
+  "world_tier": "Transcendent World",
+  "archetype": "stone_and_ore.boulder",
+  "name": "Boulder",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image generation, 2026-10-05",
+  "license": "OpenAI generated image; project use under applicable OpenAI generation terms",
+  "alpha": "transparent",
+  "environment_theme": "Calm ivory and platinum forms, sparse gold accents, and impossibly clean sacred stone.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-05",
+  "prompt_ref": "openai-map-v1:transcendent_realm.stone_and_ore.boulder",
+  "prompt": "Production 2D top-down RPG map prop for Chaos World: one sacred boulder from the Transcendent Realm, transparent 256x256 PNG. Direct overhead orthographic view showing its broad rounded top surface. A solitary smooth ivory-white limestone boulder with fine platinum veins and one restrained antique-gold mineral line, calm clean shape that feels impossibly ancient; a tiny gold leaf rests at its edge. Entire boulder visible, centered bottom-center pivot, readable at 2x2 cells. True transparent background outside stone, no ground patch or cast shadow. Anime-painted gouache, fine dark #263A35 contour, broad quiet value planes, soft upper-left light. Environment: calm ivory and platinum forms, sparse gold accents, impossibly clean sacred stone. No pile, cliff, platform, text, border, UI, watermark, perspective.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.728,
+        0.749
+      ],
+      [
+        0.763,
+        0.77
+      ]
+    ],
+    "frac_zero": 0.4541,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.2,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": true,
+      "vision_mode": "transparent",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.228,
+        0.832,
+        0.915,
+        0.697,
+        0.184,
+        0.0
+      ],
+      [
+        0.164,
+        0.968,
+        1.0,
+        1.0,
+        1.0,
+        0.98,
+        0.374
+      ],
+      [
+        0.756,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.893
+      ],
+      [
+        0.914,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.887
+      ],
+      [
+        0.631,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.67
+      ],
+      [
+        0.11,
+        0.813,
+        1.0,
+        1.0,
+        1.0,
+        0.859,
+        0.062
+      ],
+      [
+        0.0,
+        0.029,
+        0.719,
+        0.863,
+        0.625,
+        0.107,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      31
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.531,
+    "dominant_rgb": [
+      197.7,
+      190.9,
+      179.6
+    ],
+    "hsv": {
+      "hue_deg": 39.1,
+      "saturation": 0.1,
+      "value": 0.78
+    },
+    "dominant_palette": "monochrome_grey",
+    "center_of_mass_norm": [
+      0.503,
+      0.532
+    ],
+    "horizontal_symmetry": 0.96,
+    "edge_complexity": 0.137
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

@@ -1,0 +1,166 @@
+{
+  "id": "yin_jian.obstacle_and_hazard.creeping_permafrost_zone",
+  "name": "Creeping Permafrost Crust",
+  "vietnamese_name": "Mảng Băng Trơn Trượt",
+  "hanzi": "极寒冻层",
+  "category": "obstacle_and_hazard",
+  "sub_category": "ice_and_frost",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Super-slick ice patch causing sliding and handling loss.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "water",
+  "prompt_summary": "Sheet of crystal ice over flagstones.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/obstacle_and_hazard/creeping_permafrost_zone.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.obstacle_and_hazard.creeping_permafrost_zone:260922521",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.466,
+        0.74
+      ],
+      [
+        0.975,
+        0.959
+      ]
+    ],
+    "frac_zero": 0.4683,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.085,
+        0.531,
+        0.893,
+        0.84,
+        0.089
+      ],
+      [
+        0.024,
+        0.518,
+        0.944,
+        1.0,
+        1.0,
+        0.982,
+        0.211
+      ],
+      [
+        0.133,
+        0.987,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.393
+      ],
+      [
+        0.705,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.992,
+        0.546
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      46
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 224,
+    "contact_reference_px": 224.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

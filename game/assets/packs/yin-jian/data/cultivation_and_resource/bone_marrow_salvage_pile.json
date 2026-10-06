@@ -1,0 +1,105 @@
+{
+  "id": "yin_jian.cultivation_and_resource.bone_marrow_salvage_pile",
+  "name": "Bleached Marrow Bones Pile",
+  "vietnamese_name": "Đống Xương Ống Lấy Tủy",
+  "hanzi": "剔净腿骨堆",
+  "category": "cultivation_and_resource",
+  "sub_category": "wood_and_bamboo",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "extract_marrow",
+  "gameplay_role": "Thick femur bones yielding alchemical marrow paste.",
+  "destructible": true,
+  "material": "bone",
+  "cultivation_element": "yin",
+  "prompt_summary": "Stack of clean cracked longbones.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/cultivation_and_resource/bone_marrow_salvage_pile.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.cultivation_and_resource.bone_marrow_salvage_pile:264651842",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.573,
+        0.39
+      ]
+    ],
+    "frac_zero": 0.8351,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      4,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.024,
+        0.665,
+        0.289,
+        0.0
+      ],
+      [
+        0.71,
+        0.985,
+        0.689,
+        0.013
+      ],
+      [
+        0.579,
+        0.591,
+        0.119,
+        0.422
+      ]
+    ],
+    "crop_offset": [
+      75,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      3
+    ],
+    "contact_px": 40,
+    "contact_reference_px": 40.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

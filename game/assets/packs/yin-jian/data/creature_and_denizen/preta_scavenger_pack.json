@@ -1,0 +1,201 @@
+{
+  "id": "yin_jian.creature_and_denizen.preta_scavenger_pack",
+  "name": "Pack of Scavenger Pretas (x3)",
+  "vietnamese_name": "Bầy Ngạ Quỷ Tranh Ăn",
+  "hanzi": "结伴饿鬼小队",
+  "category": "creature_and_denizen",
+  "sub_category": "hungry_ghost_preta",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "disperse_pack",
+  "gameplay_role": "Group of starving ghosts fighting over sacrificial crumbs.",
+  "destructible": false,
+  "material": "spirit",
+  "cultivation_element": "yin",
+  "prompt_summary": "Three emaciated figures squabbling over food on ground.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/preta_scavenger_pack.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.preta_scavenger_pack:262635559",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.539,
+        0.346
+      ],
+      [
+        0.99,
+        0.963
+      ]
+    ],
+    "frac_zero": 0.472,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.002,
+        0.267,
+        0.491,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.073,
+        0.673,
+        0.741,
+        0.891,
+        0.254,
+        0.314,
+        0.031
+      ],
+      [
+        0.385,
+        0.983,
+        0.973,
+        0.995,
+        0.297,
+        0.949,
+        0.391
+      ],
+      [
+        0.759,
+        1.0,
+        1.0,
+        1.0,
+        0.769,
+        0.995,
+        0.8
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.763
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.979
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      31
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 224,
+    "contact_reference_px": 224.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

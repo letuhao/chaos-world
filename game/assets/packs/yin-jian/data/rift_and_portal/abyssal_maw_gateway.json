@@ -1,0 +1,416 @@
+{
+  "id": "yin_jian.rift_and_portal.abyssal_maw_gateway",
+  "name": "Abyssal Maw Gateway",
+  "vietnamese_name": "Cổng Miệng Quỷ Vực Thẳm",
+  "hanzi": "深渊魔口门",
+  "category": "rift_and_portal",
+  "sub_category": "abyss_gateway",
+  "footprint_cells": [
+    4,
+    4
+  ],
+  "canvas_px": [
+    512,
+    512
+  ],
+  "collision_type": "core_ring",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "enter_abyss",
+  "gameplay_role": "Colossal fossilized demon jawbone forming an entrance cave.",
+  "destructible": false,
+  "material": "bone",
+  "cultivation_element": "void",
+  "prompt_summary": "Towering skeletal fanged mouth opening into glowing green underworld cavern.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/rift_and_portal/abyssal_maw_gateway.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.rift_and_portal.abyssal_maw_gateway:260403256",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.217,
+        0.729,
+        0.846,
+        0.236
+      ],
+      [
+        0.475,
+        1.0,
+        1.0,
+        0.623
+      ],
+      [
+        0.43,
+        0.929,
+        0.988,
+        0.494
+      ],
+      [
+        0.008,
+        0.5,
+        0.474,
+        0.0
+      ]
+    ],
+    "frac_zero": 0.5419,
+    "blocks": [
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 12,
+    "anchor_cell": [
+      2,
+      2
+    ],
+    "sub_grid": [
+      15,
+      14
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.081,
+        0.0,
+        0.393,
+        0.823,
+        0.769,
+        0.887,
+        0.624,
+        0.292,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.266,
+        0.484,
+        0.087,
+        0.948,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.877,
+        0.006,
+        0.229,
+        0.062,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.61,
+        0.959,
+        0.917,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.767,
+        0.82,
+        0.459,
+        0.0
+      ],
+      [
+        0.0,
+        0.099,
+        0.854,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.561,
+        0.0
+      ],
+      [
+        0.0,
+        0.532,
+        0.982,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.972,
+        0.225
+      ],
+      [
+        0.0,
+        0.029,
+        0.286,
+        0.923,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.918,
+        0.249,
+        0.0
+      ],
+      [
+        0.065,
+        0.74,
+        0.728,
+        0.943,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.954,
+        0.494,
+        0.01
+      ],
+      [
+        0.892,
+        1.0,
+        0.926,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.959,
+        0.325
+      ],
+      [
+        0.032,
+        0.553,
+        0.237,
+        0.835,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.916,
+        0.573,
+        0.146
+      ],
+      [
+        0.0,
+        0.022,
+        0.0,
+        0.043,
+        0.585,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.997,
+        0.444,
+        0.165,
+        0.071,
+        0.001
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.047,
+        0.792,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.542,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.215,
+        0.454,
+        0.492,
+        1.0,
+        1.0,
+        1.0,
+        0.798,
+        0.01,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.018,
+        0.288,
+        0.672,
+        0.65,
+        0.982,
+        0.786,
+        0.114,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.054,
+        0.33,
+        0.018,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      55
+    ],
+    "trunk_columns": [],
+    "contact_px": 23,
+    "contact_reference_px": 23.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      384
+    ]
+  }
+}

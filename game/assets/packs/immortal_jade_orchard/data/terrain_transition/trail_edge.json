@@ -1,0 +1,171 @@
+{
+  "id": "immortal_jade_orchard.terrain_transition.trail_edge",
+  "path": "res://assets/world_map/immortal_jade_orchard/terrain_transition/trail_edge.png",
+  "type": "tile",
+  "category": "terrain_transition",
+  "environment": "immortal_jade_orchard",
+  "environment_name": "Immortal Jade Orchard",
+  "world_tier": "Immortal World",
+  "archetype": "terrain_transition.trail_edge",
+  "name": "Trail edge",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "center",
+  "collision": "none",
+  "status": "generated",
+  "source": "OpenAI built-in image generation",
+  "license": "Generated locally with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Ancient ordered fruit trees, pale blossoms, jade moss, and clear mineral pools.",
+  "generated_on": "2026-10-04",
+  "prompt_ref": "openai-imagegen:immortal-jade-orchard.terrain_transition.trail_edge:20261004",
+  "prompt": "Compact curved path edge for Immortal Jade Orchard: pale packed stone-dust path meeting jade moss with a few pale blossom petals and two tiny clear mineral-pool glints. Top-down flat ground, near-square curved patch with transparent pixels outside. No long ribbon or perspective, centered whole shape, clear at 128x128. Anime-painted gouache, fine #263A35 contours, broad readable planes, jade green and pale stone. No trees, trunks, large rocks, water body, scene, characters, text, grid, frame, watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map",
+    "mortal_riverlands.terrain_transition.trail_edge"
+  ],
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.655
+      ]
+    ],
+    "frac_zero": 0.7505,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "none",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "transparent",
+      "acoustic_profile": "earth",
+      "material": "earth",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 1,
+        "hp": 40,
+        "on_destroy": "ground_tile.cracked_ground",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "water",
+          "wind"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.29,
+        0.908,
+        0.608
+      ],
+      [
+        0.826,
+        0.954,
+        0.136
+      ],
+      [
+        0.203,
+        0.766,
+        0.1
+      ]
+    ],
+    "crop_offset": [
+      30,
+      26
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.222,
+    "dominant_rgb": [
+      136.4,
+      155.5,
+      110.9
+    ],
+    "hsv": {
+      "hue_deg": 87.9,
+      "saturation": 0.38,
+      "value": 0.63
+    },
+    "dominant_palette": "verdant_flora",
+    "center_of_mass_norm": [
+      0.543,
+      0.5
+    ],
+    "horizontal_symmetry": 0.64,
+    "edge_complexity": 0.178
+  },
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 1,
+    "hp": 40,
+    "on_destroy": "ground_tile.cracked_ground",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "water",
+      "wind"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "earth",
+  "cultivation_element": "none"
+}

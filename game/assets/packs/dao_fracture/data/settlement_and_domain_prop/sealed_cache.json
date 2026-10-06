@@ -1,0 +1,209 @@
+{
+  "id": "dao_fracture.settlement_and_domain_prop.sealed_cache",
+  "path": "res://assets/world_map/dao_fracture/settlement_and_domain_prop/sealed_cache.png",
+  "type": "interactable",
+  "category": "settlement_and_domain_prop",
+  "environment": "dao_fracture",
+  "environment_name": "Dao Fracture",
+  "world_tier": "Transcendent World",
+  "archetype": "settlement_and_domain_prop.sealed_cache",
+  "name": "Sealed cache",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image generation, 2026-10-05",
+  "license": "OpenAI generated image; project use under applicable OpenAI generation terms",
+  "alpha": "transparent",
+  "environment_theme": "Misaligned stone planes, impossible cracks, suspended shards, and narrow luminous seams.",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "generated_on": "2026-10-05",
+  "prompt_ref": "openai-map-v1:dao_fracture.settlement_and_domain_prop.sealed_cache:20261005",
+  "prompt": "One sealed cache from Dao Fracture, transparent production 2D top-down RPG map sprite, square 1024x1024. Strict straight-down orthographic view showing the lid/top surfaces, no isometric perspective. Small mysterious dark basalt cache, roughly square with one subtly misaligned corner plane; compact sturdy container with thick aged bronze brackets, closed faceted lid, and a single narrow seam of dim violet-cyan light. Simple central lock plate, no writing or runes. Intact and securely sealed, bold silhouette readable at 128x128, centered with clean transparent margin; no ground plane. Matte anime gouache, broad quiet planes, fine #263A35 contours, diffuse upper-left light, restrained glints. Dao Fracture motif: shifted stone planes and a thin impossible crack. Exclude open lid, contents, weapons, hands, people, excessive crystals, floating shards, glow bloom, background, external shadow, text, labels, UI, border, perspective, 3D render, watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.916
+      ]
+    ],
+    "frac_zero": 0.6678,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": true,
+      "vision_mode": "transparent",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "open",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.876,
+        0.952,
+        0.678
+      ],
+      [
+        0.969,
+        1.0,
+        0.856
+      ],
+      [
+        0.861,
+        0.889,
+        0.722
+      ]
+    ],
+    "crop_offset": [
+      28,
+      27
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.302,
+    "dominant_rgb": [
+      60.9,
+      59.5,
+      59.4
+    ],
+    "hsv": {
+      "hue_deg": 165.8,
+      "saturation": 0.26,
+      "value": 0.27
+    },
+    "dominant_palette": "azure_water",
+    "center_of_mass_norm": [
+      0.502,
+      0.497
+    ],
+    "horizontal_symmetry": 0.96,
+    "edge_complexity": 0.116
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

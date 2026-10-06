@@ -1,0 +1,99 @@
+{
+  "id": "yin_jian.creature_and_denizen.nether_crow_messenger",
+  "name": "Underworld Soul-Guiding Crow",
+  "vietnamese_name": "Quạ Đen Dẫn Hồn",
+  "hanzi": "冥府信鸦",
+  "category": "creature_and_denizen",
+  "sub_category": "nether_beast",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "listen_omen",
+  "gameplay_role": "Spectral black bird delivering messages from the Ten Courts.",
+  "destructible": false,
+  "material": "spirit",
+  "cultivation_element": "yin",
+  "prompt_summary": "Glossy black crow perched on skull with glowing turquoise eyes.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/nether_crow_messenger.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.nether_crow_messenger:262340938",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.588
+      ]
+    ],
+    "frac_zero": 0.6703,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.116,
+        0.78,
+        0.21
+      ],
+      [
+        0.552,
+        0.774,
+        0.297
+      ],
+      [
+        0.999,
+        1.0,
+        0.874
+      ]
+    ],
+    "crop_offset": [
+      16,
+      25
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 96,
+    "contact_reference_px": 96.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

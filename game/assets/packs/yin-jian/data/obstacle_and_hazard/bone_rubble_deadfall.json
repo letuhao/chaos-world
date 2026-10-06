@@ -1,0 +1,166 @@
+{
+  "id": "yin_jian.obstacle_and_hazard.bone_rubble_deadfall",
+  "name": "Bone Rubble Deadfall Trap",
+  "vietnamese_name": "Bẫy Xương Sụp Đổ",
+  "hanzi": "碎骨塌方",
+  "category": "obstacle_and_hazard",
+  "sub_category": "spikes_and_blade",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "trigger_trap",
+  "gameplay_role": "Ceiling trap dropping heavy bones and rocks.",
+  "destructible": true,
+  "material": "bone",
+  "cultivation_element": "earth",
+  "prompt_summary": "Heap of precariously balanced boulders and skulls.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/obstacle_and_hazard/bone_rubble_deadfall.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.obstacle_and_hazard.bone_rubble_deadfall:261013749",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.268,
+        0.485
+      ],
+      [
+        0.891,
+        0.952
+      ]
+    ],
+    "frac_zero": 0.5112,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.277,
+        0.771,
+        0.303,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.203,
+        0.94,
+        1.0,
+        0.503,
+        0.0
+      ],
+      [
+        0.0,
+        0.414,
+        0.773,
+        1.0,
+        1.0,
+        0.219,
+        0.0
+      ],
+      [
+        0.06,
+        0.803,
+        1.0,
+        1.0,
+        1.0,
+        0.744,
+        0.187
+      ],
+      [
+        0.43,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.895
+      ],
+      [
+        0.903,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      24
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 224,
+    "contact_reference_px": 224.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

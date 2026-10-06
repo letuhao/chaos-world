@@ -1,0 +1,141 @@
+{
+  "id": "yin_jian.obstacle_and_hazard.frozen_demon_cadaver",
+  "name": "Frozen Demon Corpse Obstacle",
+  "vietnamese_name": "Xác Quỷ Đóng Băng",
+  "hanzi": "冻僵魔尸",
+  "category": "obstacle_and_hazard",
+  "sub_category": "ice_and_frost",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "thaw_or_smash",
+  "gameplay_role": "Statue-like demon frozen in solid ice blocking path.",
+  "destructible": true,
+  "material": "bone",
+  "cultivation_element": "water",
+  "prompt_summary": "Blue-skinned horned demon frozen in block of clear ice.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/obstacle_and_hazard/frozen_demon_cadaver.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.obstacle_and_hazard.frozen_demon_cadaver:261346758",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.638,
+        0.681
+      ]
+    ],
+    "frac_zero": 0.8004,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      4,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.066,
+        0.612,
+        0.309,
+        0.0
+      ],
+      [
+        0.465,
+        1.0,
+        0.656,
+        0.117
+      ],
+      [
+        1.0,
+        1.0,
+        0.988,
+        0.847
+      ]
+    ],
+    "crop_offset": [
+      78,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "contact_px": 100,
+    "contact_reference_px": 100.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

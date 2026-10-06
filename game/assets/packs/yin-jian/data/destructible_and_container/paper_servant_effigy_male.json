@@ -1,0 +1,132 @@
+{
+  "id": "yin_jian.destructible_and_container.paper_servant_effigy_male",
+  "name": "Joss-Paper Servant Effigy (Male)",
+  "vietnamese_name": "Người Giấy Nam Hầu Hạ",
+  "hanzi": "纸扎童男",
+  "category": "destructible_and_container",
+  "sub_category": "effigy_and_paper",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "burn",
+  "gameplay_role": "Life-size paper doll that animates when burned or attacked.",
+  "destructible": true,
+  "material": "cloth",
+  "cultivation_element": "yin",
+  "prompt_summary": "Painted paper doll with red circular rouged cheeks and black servant robe.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/destructible_and_container/paper_servant_effigy_male.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.destructible_and_container.paper_servant_effigy_male:261562858",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.555
+      ]
+    ],
+    "frac_zero": 0.6924,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.09,
+        0.732,
+        0.0
+      ],
+      [
+        0.811,
+        1.0,
+        0.787
+      ],
+      [
+        0.279,
+        0.963,
+        0.205
+      ]
+    ],
+    "crop_offset": [
+      19,
+      16
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 51,
+    "contact_reference_px": 51.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

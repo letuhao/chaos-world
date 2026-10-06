@@ -1,0 +1,151 @@
+{
+  "id": "yin_jian.interactive_and_puzzle.ancestral_tablet_socket_shelf",
+  "name": "Ancestral Tablet Placement Altar",
+  "vietnamese_name": "Giá Cắm Bài Vị Tổ Tiên",
+  "hanzi": "祖灵牌位架",
+  "category": "interactive_and_puzzle",
+  "sub_category": "altar_and_font",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "insert_tablet",
+  "gameplay_role": "Inserting matching wooden ancestral tablets in lineage order.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "spirit",
+  "prompt_summary": "Step-shelf with empty slotted indentations for spirit tablets.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/interactive_and_puzzle/ancestral_tablet_socket_shelf.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.interactive_and_puzzle.ancestral_tablet_socket_shelf:263375963",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.727,
+        0.392,
+        0.471
+      ]
+    ],
+    "frac_zero": 0.7622,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.513,
+        0.44,
+        0.392,
+        0.376,
+        0.375,
+        0.414,
+        0.472
+      ],
+      [
+        1.0,
+        0.987,
+        0.859,
+        0.75,
+        0.777,
+        0.901,
+        0.869
+      ],
+      [
+        1.0,
+        0.603,
+        0.01,
+        0.0,
+        0.0,
+        0.025,
+        0.228
+      ]
+    ],
+    "crop_offset": [
+      81,
+      18
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 53,
+    "contact_reference_px": 53.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      128
+    ]
+  }
+}

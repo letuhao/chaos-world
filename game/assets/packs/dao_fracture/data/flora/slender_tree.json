@@ -1,0 +1,270 @@
+{
+  "id": "dao_fracture.flora.slender_tree",
+  "path": "res://assets/world_map/dao_fracture/flora/slender_tree.png",
+  "type": "prop",
+  "category": "flora",
+  "environment": "dao_fracture",
+  "environment_name": "Dao Fracture",
+  "world_tier": "Transcendent World",
+  "archetype": "flora.slender_tree",
+  "name": "Slender tree",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image generation, 2026-10-05",
+  "license": "AI-generated with OpenAI; project use",
+  "alpha": "transparent",
+  "environment_theme": "Misaligned stone planes, impossible cracks, suspended shards, and narrow luminous seams.",
+  "generated_on": "2026-10-05",
+  "prompt_ref": "map-dao-fracture-slender-tree-v2",
+  "prompt": "One isolated map sprite for a 2D game, viewed at a true 90-degree angle directly above the ground, orthographic top-down with NO visible horizon and NO visible vertical trunk sides. Subject: the overhead canopy footprint of one slender tree from Dao Fracture. Make a narrow elongated oval crown of sparse silver-lavender leaves, with thin dark twisted branches radiating from a small central trunk knot; a few tiny black stone shards hover just outside the canopy and connect by delicate cyan-violet fracture glows. The shape must read as a tree canopy seen from above, not a side-view tree illustration. Top-down canopy lighting with upper-left highlights, anime-painted gouache, fine dark #263A35 contours, broad readable leaf clusters, restrained detail. Center the complete narrow canopy and root shadow footprint on a transparent square background; keep all leaf clusters uncropped and make it fill most of the square. No horizon, perspective, upright vertical trunk, platform, ground plane, extra trees, text, border, or watermark. High-resolution transparent PNG.",
+  "reference_ids": [
+    "none"
+  ],
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.564,
+        0.542
+      ],
+      [
+        0.529,
+        0.571
+      ]
+    ],
+    "frac_zero": 0.6854,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "ground_contact",
+      "cov_gate": 0.01,
+      "authored_open": "",
+      "passable_under": true,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "canopy",
+      "acoustic_profile": "foliage",
+      "material": "foliage",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 1,
+        "hp": 25,
+        "on_destroy": "landmark_and_environment_detail.ground_decal",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": "timber"
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "wood",
+        "qi_affinity": "ambient_absorb",
+        "qi_density_modifier": 1.15,
+        "resonance_radius_cells": 1,
+        "feng_shui_direction": "yang"
+      },
+      "resource": {
+        "resource_type": "timber",
+        "base_yield": 3,
+        "respawn_turns": 300,
+        "min_realm_tier": 1,
+        "harvest_tool_tag": "axe"
+      },
+      "scale_profile": {
+        "min_scale": 0.85,
+        "max_scale": 1.6,
+        "default_scale": 1.0,
+        "supported_scales": [
+          0.85,
+          1.0,
+          1.15,
+          1.35,
+          1.6
+        ],
+        "scale_mode": "stepped",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.077,
+        0.479,
+        0.591,
+        0.023,
+        0.0
+      ],
+      [
+        0.323,
+        0.904,
+        0.871,
+        0.372,
+        0.004
+      ],
+      [
+        0.547,
+        0.763,
+        0.822,
+        0.801,
+        0.246
+      ],
+      [
+        0.632,
+        0.737,
+        0.907,
+        0.772,
+        0.357
+      ],
+      [
+        0.521,
+        0.942,
+        0.812,
+        0.724,
+        0.455
+      ],
+      [
+        0.147,
+        0.854,
+        0.902,
+        0.442,
+        0.004
+      ],
+      [
+        0.0,
+        0.421,
+        0.464,
+        0.02,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      63,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 22,
+    "contact_reference_px": 22.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.249,
+    "dominant_rgb": [
+      112.9,
+      108.9,
+      143.7
+    ],
+    "hsv": {
+      "hue_deg": 252.0,
+      "saturation": 0.27,
+      "value": 0.56
+    },
+    "dominant_palette": "azure_water",
+    "center_of_mass_norm": [
+      0.511,
+      0.491
+    ],
+    "horizontal_symmetry": 0.8,
+    "edge_complexity": 0.225
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "canopy",
+  "destructible": {
+    "enabled": true,
+    "tier": 1,
+    "hp": 25,
+    "on_destroy": "landmark_and_environment_detail.ground_decal",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": "timber"
+  },
+  "material": "foliage",
+  "cultivation_element": "wood"
+}

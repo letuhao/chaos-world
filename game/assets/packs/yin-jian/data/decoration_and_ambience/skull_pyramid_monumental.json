@@ -1,0 +1,305 @@
+{
+  "id": "yin_jian.decoration_and_ambience.skull_pyramid_monumental",
+  "name": "Monumental Demon Skull Mound",
+  "vietnamese_name": "Gò Đầu Lâu Quỷ Khổng Lồ",
+  "hanzi": "大魔骨丘",
+  "category": "decoration_and_ambience",
+  "sub_category": "bone_and_skull",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "climb_mound",
+  "gameplay_role": "Colossal burial mound composed of thousands of mixed skulls.",
+  "destructible": true,
+  "material": "bone",
+  "cultivation_element": "yin",
+  "prompt_summary": "Large conical heap of mixed human and horned beast skulls.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/decoration_and_ambience/skull_pyramid_monumental.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.decoration_and_ambience.skull_pyramid_monumental:264799313",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.061,
+        0.85,
+        0.087
+      ],
+      [
+        0.759,
+        1.0,
+        0.705
+      ],
+      [
+        1.0,
+        0.95,
+        0.613
+      ]
+    ],
+    "frac_zero": 0.4513,
+    "blocks": [
+      [
+        false,
+        true,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 7,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.056,
+        0.453,
+        0.889,
+        0.685,
+        0.056,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.119,
+        0.988,
+        1.0,
+        1.0,
+        0.374,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.017,
+        0.677,
+        1.0,
+        1.0,
+        1.0,
+        0.827,
+        0.055,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.016,
+        0.505,
+        0.992,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.584,
+        0.117,
+        0.0
+      ],
+      [
+        0.104,
+        0.671,
+        0.997,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.729,
+        0.084
+      ],
+      [
+        0.575,
+        0.998,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.938,
+        0.349
+      ],
+      [
+        0.983,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.97,
+        0.218
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.877,
+        0.108
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.95,
+        0.986,
+        0.281,
+        0.057
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.984,
+        0.965,
+        0.813,
+        0.671,
+        0.84,
+        0.478,
+        0.06
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.583,
+        0.535,
+        1.0,
+        0.979,
+        0.347
+      ]
+    ],
+    "crop_offset": [
+      16,
+      39
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "contact_px": 209,
+    "contact_reference_px": 209.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      384
+    ]
+  }
+}

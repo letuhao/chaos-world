@@ -1,0 +1,279 @@
+{
+  "id": "immortal_star_lake.stone_and_ore.standing_stone",
+  "path": "res://assets/world_map/immortal_star_lake/stone_and_ore/standing_stone.png",
+  "type": "prop",
+  "category": "stone_and_ore",
+  "environment": "immortal_star_lake",
+  "environment_name": "Immortal Star Lake",
+  "world_tier": "Immortal World",
+  "archetype": "stone_and_ore.standing_stone",
+  "name": "Standing stone",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image_gen",
+  "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Deep teal lake stone, star-like reflections, quiet silver highlights, and celestial markings.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-06",
+  "prompt_ref": "openai-imagegen:immortal_star_lake.standing_stone:20261006",
+  "prompt": "One isolated production sprite for a 2D top-down RPG map: an ancient standing stone marker for Immortal Star Lake. Strict 90-degree straight-down orthographic view showing a compact irregular oval footprint, like a broad low slab lying flat, with engraved simple celestial star-map grooves on its visible top and a small silver-blue star reflection motif. Dark deep-teal lake stone, fine restrained #263A35 contour, broad readable planes, anime-painted gouache, subtle upper-left light. Centered, complete, 1024px square source with generous transparent padding and clean genuine alpha. Detail stays legible at 256px. No water background, no floor, no cast shadow, no additional stones, no vertical monument side face, no horizon, no perspective, no isometric projection, no text, no runes that resemble writing, no frame, no watermark, no 3D render.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source_images": [
+    {
+      "path": "art-source/map-originals/immortal_star_lake/stone_and_ore/immortal_star_lake__stone_and_ore__standing_stone__308c7be6a2575b97.png",
+      "sha256": "308c7be6a2575b9762d500898eb9b6e02776b7c57f94237be5ac6454871cdd0a",
+      "size_px": [
+        1254,
+        1254
+      ],
+      "source": "OpenAI image_gen",
+      "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+      "generated_on": "2026-10-06",
+      "prompt_ref": "openai-imagegen:immortal_star_lake.standing_stone:20261006",
+      "prompt": "One isolated production sprite for a 2D top-down RPG map: an ancient standing stone marker for Immortal Star Lake. Strict 90-degree straight-down orthographic view showing a compact irregular oval footprint, like a broad low slab lying flat, with engraved simple celestial star-map grooves on its visible top and a small silver-blue star reflection motif. Dark deep-teal lake stone, fine restrained #263A35 contour, broad readable planes, anime-painted gouache, subtle upper-left light. Centered, complete, 1024px square source with generous transparent padding and clean genuine alpha. Detail stays legible at 256px. No water background, no floor, no cast shadow, no additional stones, no vertical monument side face, no horizon, no perspective, no isometric projection, no text, no runes that resemble writing, no frame, no watermark, no 3D render.",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
+    }
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.744,
+        0.725
+      ],
+      [
+        0.774,
+        0.748
+      ]
+    ],
+    "frac_zero": 0.5751,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "ground_contact",
+      "cov_gate": 0.01,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "solid",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 1,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      7,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.003,
+        0.438,
+        0.841,
+        0.974,
+        0.773,
+        0.317,
+        0.0
+      ],
+      [
+        0.527,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.542
+      ],
+      [
+        0.947,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.915
+      ],
+      [
+        0.589,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.591
+      ],
+      [
+        0.024,
+        0.564,
+        0.951,
+        0.953,
+        0.828,
+        0.52,
+        0.035
+      ],
+      [
+        0.0,
+        0.0,
+        0.219,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      79
+    ],
+    "trunk_columns": [
+      2
+    ],
+    "contact_px": 132,
+    "contact_reference_px": 132.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.412,
+    "dominant_rgb": [
+      49.1,
+      82.9,
+      86.8
+    ],
+    "hsv": {
+      "hue_deg": 185.2,
+      "saturation": 0.47,
+      "value": 0.35
+    },
+    "dominant_palette": "azure_water",
+    "center_of_mass_norm": [
+      0.495,
+      0.625
+    ],
+    "horizontal_symmetry": 0.98,
+    "edge_complexity": 0.125
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

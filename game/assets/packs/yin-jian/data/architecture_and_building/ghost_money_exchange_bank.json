@@ -1,0 +1,433 @@
+{
+  "id": "yin_jian.architecture_and_building.ghost_money_exchange_bank",
+  "name": "Nether Treasury Exchange Bank",
+  "vietnamese_name": "Tiền Trang Địa Phủ",
+  "hanzi": "冥通钱庄",
+  "category": "architecture_and_building",
+  "sub_category": "ghost_market",
+  "footprint_cells": [
+    4,
+    4
+  ],
+  "canvas_px": [
+    512,
+    512
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "exchange_currency",
+  "gameplay_role": "Bank converting mortal burned joss money into underworld spiritual coins.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "metal",
+  "prompt_summary": "Heavily barred stone bank with huge bronze abacus.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/architecture_and_building/ghost_money_exchange_bank.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.architecture_and_building.ghost_money_exchange_bank:259725211",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.0,
+        0.224,
+        0.699,
+        0.027
+      ],
+      [
+        0.514,
+        0.947,
+        1.0,
+        0.479
+      ],
+      [
+        0.636,
+        1.0,
+        1.0,
+        0.417
+      ],
+      [
+        0.224,
+        0.872,
+        0.485,
+        0.316
+      ]
+    ],
+    "frac_zero": 0.5306,
+    "blocks": [
+      [
+        false,
+        true,
+        true,
+        false
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 14,
+    "anchor_cell": [
+      2,
+      2
+    ],
+    "sub_grid": [
+      15,
+      15
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.064,
+        0.0,
+        0.0,
+        0.287,
+        0.656,
+        0.018,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.604,
+        0.361,
+        0.334,
+        0.995,
+        0.977,
+        0.182,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.053,
+        0.631,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.189,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.073,
+        0.616,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.786,
+        0.23,
+        0.001,
+        0.018
+      ],
+      [
+        0.0,
+        0.0,
+        0.1,
+        0.544,
+        0.95,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.917,
+        0.61,
+        0.126
+      ],
+      [
+        0.222,
+        0.673,
+        0.98,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.901,
+        0.41,
+        0.002
+      ],
+      [
+        0.786,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.993,
+        0.441,
+        0.0,
+        0.0
+      ],
+      [
+        0.236,
+        0.997,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.901,
+        0.018,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.68,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.886,
+        0.256,
+        0.019,
+        0.0
+      ],
+      [
+        0.0,
+        0.331,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.997,
+        0.947,
+        0.643,
+        0.089
+      ],
+      [
+        0.0,
+        0.207,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.719,
+        0.06
+      ],
+      [
+        0.0,
+        0.033,
+        0.837,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.99,
+        1.0,
+        0.925,
+        0.61,
+        0.131
+      ],
+      [
+        0.0,
+        0.0,
+        0.078,
+        0.809,
+        1.0,
+        1.0,
+        1.0,
+        0.972,
+        0.484,
+        0.087,
+        0.071,
+        0.273,
+        0.27,
+        0.06,
+        0.137
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.046,
+        0.712,
+        0.983,
+        0.694,
+        0.144,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.013,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.094,
+        0.294,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      42
+    ],
+    "trunk_columns": [],
+    "contact_px": 64,
+    "contact_reference_px": 64.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        3
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      3
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      512
+    ]
+  }
+}

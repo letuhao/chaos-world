@@ -1,0 +1,132 @@
+{
+  "id": "yin_jian.destructible_and_container.corpse_fat_barrel",
+  "name": "Oak Cask of Refined Corpse Fat",
+  "vietnamese_name": "Thùng Gỗ Đựng Mỡ Người",
+  "hanzi": "尸脂木桶",
+  "category": "destructible_and_container",
+  "sub_category": "destructible_and_container",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "puncture_cask",
+  "gameplay_role": "Wooden barrel leaking flammable oily residue.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "fire",
+  "prompt_summary": "Iron-hooped wooden barrel leaking dark yellowish grease.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/destructible_and_container/corpse_fat_barrel.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.destructible_and_container.corpse_fat_barrel:261957740",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.589
+      ]
+    ],
+    "frac_zero": 0.7057,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.569,
+        0.621,
+        0.0
+      ],
+      [
+        0.854,
+        0.998,
+        0.236
+      ],
+      [
+        0.306,
+        0.869,
+        0.131
+      ]
+    ],
+    "crop_offset": [
+      24,
+      18
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 38,
+    "contact_reference_px": 38.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

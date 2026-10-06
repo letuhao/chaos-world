@@ -1,0 +1,132 @@
+{
+  "id": "yin_jian.destructible_and_container.paper_servant_effigy_female",
+  "name": "Joss-Paper Servant Effigy (Female)",
+  "vietnamese_name": "Người Giấy Nữ Hầu Hạ",
+  "hanzi": "纸扎童女",
+  "category": "destructible_and_container",
+  "sub_category": "effigy_and_paper",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "burn",
+  "gameplay_role": "Life-size female paper doll with spirit energy.",
+  "destructible": true,
+  "material": "cloth",
+  "cultivation_element": "yin",
+  "prompt_summary": "Painted paper doll with braids, red cheeks, and green robe.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/destructible_and_container/paper_servant_effigy_female.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.destructible_and_container.paper_servant_effigy_female:261575581",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.455
+      ]
+    ],
+    "frac_zero": 0.7647,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.002,
+        0.614,
+        0.001
+      ],
+      [
+        0.497,
+        0.979,
+        0.478
+      ],
+      [
+        0.349,
+        0.751,
+        0.271
+      ]
+    ],
+    "crop_offset": [
+      18,
+      23
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 62,
+    "contact_reference_px": 62.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

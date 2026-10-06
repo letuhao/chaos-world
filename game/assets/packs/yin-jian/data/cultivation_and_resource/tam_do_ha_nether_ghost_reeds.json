@@ -1,0 +1,168 @@
+{
+  "id": "yin_jian.cultivation_and_resource.tam_do_ha_nether_ghost_reeds",
+  "name": "San Tu Nether Ghost Reeds",
+  "vietnamese_name": "Tam Đồ Hà Minh Vi Bụi Lau",
+  "hanzi": "三途河冥苇丛",
+  "category": "cultivation_and_resource",
+  "sub_category": "herb_and_fungus",
+  "racial_faction": "san_tu_river",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "partial",
+  "blocks_projectile": false,
+  "vision_mode": "occludes_low",
+  "interactive_verb": "harvest_reeds",
+  "gameplay_role": "Blood-stemmed reeds growing in the riverbed; essential component for refining Saint Soul Pills and spirit cloaks.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "yin",
+  "prompt_summary": "Top-down 45 degree thick cluster of tall dark red water reeds growing from shallow black river water, faint blue soul spores floating off the plumes.",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/cultivation_and_resource/tam_do_ha_nether_ghost_reeds.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.cultivation_and_resource.tam_do_ha_nether_ghost_reeds:265584689",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.274,
+        0.282
+      ],
+      [
+        0.663,
+        0.676
+      ]
+    ],
+    "frac_zero": 0.5879,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.031,
+        0.264,
+        0.561,
+        0.043,
+        0.0,
+        0.0
+      ],
+      [
+        0.013,
+        0.33,
+        0.443,
+        0.414,
+        0.435,
+        0.064,
+        0.018
+      ],
+      [
+        0.013,
+        0.224,
+        0.424,
+        0.644,
+        0.534,
+        0.417,
+        0.128
+      ],
+      [
+        0.007,
+        0.504,
+        0.62,
+        0.993,
+        0.94,
+        0.359,
+        0.019
+      ],
+      [
+        0.051,
+        0.59,
+        0.905,
+        1.0,
+        1.0,
+        0.779,
+        0.377
+      ],
+      [
+        0.826,
+        0.993,
+        1.0,
+        1.0,
+        0.986,
+        0.861,
+        0.371
+      ],
+      [
+        0.027,
+        0.495,
+        1.0,
+        1.0,
+        0.945,
+        0.239,
+        0.336
+      ]
+    ],
+    "crop_offset": [
+      16,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 131,
+    "contact_reference_px": 131.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

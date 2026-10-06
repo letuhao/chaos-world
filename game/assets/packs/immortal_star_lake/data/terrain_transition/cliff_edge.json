@@ -1,0 +1,205 @@
+{
+  "id": "immortal_star_lake.terrain_transition.cliff_edge",
+  "path": "res://assets/world_map/immortal_star_lake/terrain_transition/cliff_edge.png",
+  "type": "tile",
+  "category": "terrain_transition",
+  "environment": "immortal_star_lake",
+  "environment_name": "Immortal Star Lake",
+  "world_tier": "Immortal World",
+  "archetype": "terrain_transition.cliff_edge",
+  "name": "Cliff edge",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image generation (image_gen)",
+  "license": "Generated locally with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Deep teal lake stone, star-like reflections, quiet silver highlights, and celestial markings.",
+  "generated_on": "2026-10-04",
+  "prompt_ref": "openai-imagegen:immortal-star-lake-cliff-edge-2026-10-04",
+  "prompt": "Use case: stylized-concept. Asset type: transparent 2D top-down cliff-edge terrain tile for Chaos World. Create one compact near-square cliff boundary patch for Immortal Star Lake. Environment theme: deep teal lake stone, star-like reflections, quiet silver highlights, celestial markings. Camera strictly overhead orthographic, no perspective. Show pale blue-gray lake stone ground that ends at one irregular cliff edge; along the edge, a narrow dark teal vertical rock face is visible as a shaded band, then clean transparent space beyond. Add only a few faint silver mineral marks on the top surface. Fill most of the square, with clear alpha outside the cliff edge and small transparent corners; not a ribbon. Anime-painted gouache, fine dark #263A35 contours, broad readable planes, subdued cool upper-left light. The boundary silhouette must clearly indicate a solid blocker at 128x128; genuine alpha without halo or cast shadow. Exclude water, sky, stars, floating rocks, extra objects, buildings, vegetation, horizon, isometric view, border, grid, text, UI, watermark, opaque background.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.713
+      ]
+    ],
+    "frac_zero": 0.579,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "solid",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 1,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.924,
+        0.936,
+        0.72
+      ],
+      [
+        0.954,
+        1.0,
+        0.362
+      ],
+      [
+        0.884,
+        0.579,
+        0.017
+      ]
+    ],
+    "crop_offset": [
+      16,
+      17
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.392,
+    "dominant_rgb": [
+      99.5,
+      123.5,
+      136.3
+    ],
+    "hsv": {
+      "hue_deg": 200.5,
+      "saturation": 0.3,
+      "value": 0.53
+    },
+    "dominant_palette": "azure_water",
+    "center_of_mass_norm": [
+      0.426,
+      0.452
+    ],
+    "horizontal_symmetry": 0.73,
+    "edge_complexity": 0.15
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

@@ -1,0 +1,156 @@
+{
+  "id": "yin_jian.creature_and_denizen.underworld_bailiff_sergeant",
+  "name": "Ghost City Enforcing Bailiff",
+  "vietnamese_name": "Đầu Lĩnh Nha Sai Âm Phủ",
+  "hanzi": "阴差衙役长",
+  "category": "creature_and_denizen",
+  "sub_category": "jailer_and_guard",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "show_permit",
+  "gameplay_role": "Official checking transit permits at market gates.",
+  "destructible": false,
+  "material": "spirit",
+  "cultivation_element": "metal",
+  "prompt_summary": "Burly guard in blue robe with leather vest holding truncheon.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/underworld_bailiff_sergeant.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.underworld_bailiff_sergeant:262648366",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.64
+      ],
+      [
+        0.613
+      ]
+    ],
+    "frac_zero": 0.6454,
+    "blocks": [
+      [
+        false
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.007,
+        0.646,
+        0.174
+      ],
+      [
+        0.483,
+        1.0,
+        0.79
+      ],
+      [
+        0.84,
+        1.0,
+        0.916
+      ],
+      [
+        0.638,
+        1.0,
+        0.793
+      ],
+      [
+        0.444,
+        0.927,
+        0.535
+      ],
+      [
+        0.128,
+        0.219,
+        0.515
+      ]
+    ],
+    "crop_offset": [
+      16,
+      49
+    ],
+    "trunk_columns": [
+      2
+    ],
+    "contact_px": 22,
+    "contact_reference_px": 22.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

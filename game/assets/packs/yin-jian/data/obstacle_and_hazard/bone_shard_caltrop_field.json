@@ -1,0 +1,160 @@
+{
+  "id": "yin_jian.obstacle_and_hazard.bone_shard_caltrop_field",
+  "name": "Bone Caltrop Scatter Field",
+  "vietnamese_name": "Bãi Chông Xương Rải Rác",
+  "hanzi": "散落骨蒺藜",
+  "category": "obstacle_and_hazard",
+  "sub_category": "spikes_and_blade",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "clear_caltrops",
+  "gameplay_role": "Area scattered with multi-pointed bone caltrops.",
+  "destructible": true,
+  "material": "bone",
+  "cultivation_element": "yin",
+  "prompt_summary": "Dense scattering of 4-pointed sharp bone stars.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/obstacle_and_hazard/bone_shard_caltrop_field.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.obstacle_and_hazard.bone_shard_caltrop_field:261166240",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.433,
+        0.687
+      ],
+      [
+        0.437,
+        0.515
+      ]
+    ],
+    "frac_zero": 0.5871,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.002,
+        0.38,
+        0.61,
+        0.169,
+        0.002
+      ],
+      [
+        0.001,
+        0.253,
+        0.56,
+        0.974,
+        1.0,
+        0.946,
+        0.117
+      ],
+      [
+        0.124,
+        0.939,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.646
+      ],
+      [
+        0.669,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.625
+      ],
+      [
+        0.038,
+        0.364,
+        0.906,
+        1.0,
+        1.0,
+        0.847,
+        0.045
+      ],
+      [
+        0.0,
+        0.007,
+        0.608,
+        1.0,
+        0.871,
+        0.17,
+        0.003
+      ],
+      [
+        0.0,
+        0.005,
+        0.243,
+        0.58,
+        0.12,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      20
+    ],
+    "trunk_columns": [
+      3
+    ],
+    "contact_px": 24,
+    "contact_reference_px": 24.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

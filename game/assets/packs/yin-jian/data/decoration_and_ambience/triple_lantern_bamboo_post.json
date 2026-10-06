@@ -1,0 +1,152 @@
+{
+  "id": "yin_jian.decoration_and_ambience.triple_lantern_bamboo_post",
+  "name": "Triple Lantern Waypost",
+  "vietnamese_name": "Cột Treo Ba Đèn Lồng",
+  "hanzi": "三目路牌灯杆",
+  "category": "decoration_and_ambience",
+  "sub_category": "lantern_and_light",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Roadside pole holding three hanging lanterns at different heights.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "spirit",
+  "prompt_summary": "Weathered timber post with three projecting arms holding paper lamps.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/decoration_and_ambience/triple_lantern_bamboo_post.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.decoration_and_ambience.triple_lantern_bamboo_post:264730335",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.365
+      ],
+      [
+        0.423
+      ]
+    ],
+    "frac_zero": 0.8231,
+    "blocks": [
+      [
+        false
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      5
+    ],
+    "sub_fill": [
+      [
+        0.001,
+        0.522,
+        0.199
+      ],
+      [
+        0.137,
+        0.792,
+        0.521
+      ],
+      [
+        0.055,
+        0.616,
+        0.213
+      ],
+      [
+        0.135,
+        0.906,
+        0.541
+      ],
+      [
+        0.828,
+        0.852,
+        0.065
+      ]
+    ],
+    "crop_offset": [
+      18,
+      108
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 58,
+    "contact_reference_px": 58.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

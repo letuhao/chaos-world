@@ -1,0 +1,243 @@
+{
+  "id": "yin_jian.path_and_way.golden_bridge_virtuous",
+  "name": "Golden Bridge of the Virtuous",
+  "vietnamese_name": "Cầu Vàng Công Đức",
+  "hanzi": "金桥接引",
+  "category": "path_and_way",
+  "sub_category": "bridge",
+  "footprint_cells": [
+    2,
+    4
+  ],
+  "canvas_px": [
+    256,
+    512
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "cross",
+  "gameplay_role": "Golden bridge for pure souls reincarnating into Deva realm.",
+  "destructible": false,
+  "material": "metal",
+  "cultivation_element": "spirit",
+  "prompt_summary": "Luminous golden jade bridge radiating divine golden halo.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/path_and_way/golden_bridge_virtuous.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.path_and_way.golden_bridge_virtuous:258990795",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.329,
+        0.51
+      ],
+      [
+        0.437,
+        0.454
+      ],
+      [
+        0.442,
+        0.447
+      ],
+      [
+        0.656,
+        0.63
+      ]
+    ],
+    "frac_zero": 0.6478,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      6,
+      15
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.039,
+        0.423,
+        0.005,
+        0.0
+      ],
+      [
+        0.011,
+        0.376,
+        0.929,
+        0.985,
+        0.76,
+        0.203
+      ],
+      [
+        0.0,
+        0.238,
+        0.969,
+        1.0,
+        0.73,
+        0.072
+      ],
+      [
+        0.17,
+        0.783,
+        1.0,
+        1.0,
+        0.815,
+        0.005
+      ],
+      [
+        0.105,
+        0.661,
+        1.0,
+        1.0,
+        0.553,
+        0.005
+      ],
+      [
+        0.0,
+        0.127,
+        0.997,
+        1.0,
+        0.111,
+        0.0
+      ],
+      [
+        0.0,
+        0.004,
+        0.979,
+        1.0,
+        0.109,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.947,
+        1.0,
+        0.097,
+        0.0
+      ],
+      [
+        0.0,
+        0.003,
+        0.955,
+        1.0,
+        0.15,
+        0.0
+      ],
+      [
+        0.046,
+        0.078,
+        0.976,
+        1.0,
+        0.2,
+        0.0
+      ],
+      [
+        0.358,
+        0.741,
+        1.0,
+        1.0,
+        0.431,
+        0.003
+      ],
+      [
+        0.234,
+        0.958,
+        1.0,
+        1.0,
+        0.919,
+        0.23
+      ],
+      [
+        0.126,
+        0.897,
+        1.0,
+        1.0,
+        0.956,
+        0.228
+      ],
+      [
+        0.2,
+        0.914,
+        1.0,
+        1.0,
+        0.828,
+        0.189
+      ],
+      [
+        0.0,
+        0.646,
+        0.975,
+        0.771,
+        0.131,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      34,
+      18
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3
+    ],
+    "contact_px": 78,
+    "contact_reference_px": 78.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "id": "yin_jian.decoration_and_ambience.crimson_curse_streamer_pair",
+  "name": "Twin Crimson Curse Streamers",
+  "vietnamese_name": "Đôi Dải Lụa Đỏ Nguyền Rủa",
+  "hanzi": "双赤咒幡",
+  "category": "decoration_and_ambience",
+  "sub_category": "banner_and_fabric",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "burn_streamer",
+  "gameplay_role": "Pair of red banners fluttering in subterranean draft.",
+  "destructible": true,
+  "material": "cloth",
+  "cultivation_element": "yin",
+  "prompt_summary": "Two red silk banners with golden calligraphy inscriptions.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/decoration_and_ambience/crimson_curse_streamer_pair.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.decoration_and_ambience.crimson_curse_streamer_pair:264763030",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.379
+      ],
+      [
+        0.608
+      ]
+    ],
+    "frac_zero": 0.8435,
+    "blocks": [
+      [
+        false
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.438,
+        0.55
+      ],
+      [
+        0.396,
+        0.874,
+        0.644
+      ],
+      [
+        0.539,
+        0.777,
+        0.217
+      ]
+    ],
+    "crop_offset": [
+      17,
+      143
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 47,
+    "contact_reference_px": 47.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

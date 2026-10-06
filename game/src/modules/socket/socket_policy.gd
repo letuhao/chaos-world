@@ -29,6 +29,11 @@ const AUTHORED_CHANNELS: Array[String] = ["socket_slot", "socket_item", "enchant
 ## with two sockets gets two independent slots instead of one budget split
 ## between them.
 const IMPRINT_CAP := 2
+## The one effect channel a reforge may replace: an instance's OWN realized
+## affix. Everything else an item carries — item-authored fixed options, a set
+## threshold, a unique's locked signature — belongs to another subsystem and is
+## authored content, so it is never a reforge target.
+const ROLL_CHANNEL := &"rolled"
 
 
 ## Socket slots an item of this rarity may carry: rare one, legendary two.
@@ -64,11 +69,78 @@ static func kind_of(def: ItemDef) -> StringName:
 	return KIND_ANY
 
 
+## How many reforges one instance may ever receive: one per affix it carries
+## beyond the first.
+##
+## The first affix is the item's character and is never replaced, so a common
+## item — the one rarity that cannot carry a socket either — is not investable
+## at all. That is a deliberate answer rather than an oversight: the forge
+## invests in the pieces it can already build on, and refusing the rest is what
+## keeps "reforge" from being a universal upgrade button.
+static func reforge_cap(rarity: StringName) -> int:
+	return maxi(0, ItemRarity.affix_count(ItemRarity.sanitize(rarity)) - 1)
+
+
+## Units of reagent the `attempts`-th reforge of one instance costs: 1, 2, 3, …
+##
+## Escalating, and that is the whole answer to "a re-roll lottery". The first
+## attempt is cheap enough to try on a lucky drop; the next two are not, so the
+## bill for chasing one better affix is a decision rather than a habit.
+static func reforge_cost_units(attempts: int) -> int:
+	return 1 + maxi(0, attempts)
+
+
 ## Whether a gem may sit in a slot of `kind`. An `any` slot or an `any` gem
 ## matches everything; anything else has to agree.
 static func accepts_kind(def: ItemDef, kind: StringName) -> bool:
 	var own := kind_of(def)
 	return own == KIND_ANY or kind == &"" or kind == KIND_ANY or own == kind
+
+
+## Whether `option_id` is one this instance's owner may replace: its OWN rolled
+## affix, unlocked. Anything an item reaches through another channel — a
+## definition's fixed option, a set threshold, a unique's locked signature — is
+## authored by someone else and is refused.
+static func is_reforgable(instance: ItemInstance, option_id: StringName) -> bool:
+	if instance == null or option_id == &"":
+		return false
+	var carried := false
+	for effect in effects_of(instance):
+		if StringName(effect.get("option_id", &"")) != option_id:
+			continue
+		carried = true
+		if StringName(effect.get("channel", &"")) != ROLL_CHANNEL:
+			return false
+		if bool(effect.get("locked", false)):
+			return false
+	return carried
+
+
+## Every affix on `instance` a reforge may NOT replace, as ids. A screen reads
+## this to mark an option unselectable rather than letting a press be refused.
+static func locked_reforge_ids(instance: ItemInstance) -> Array[StringName]:
+	var out: Array[StringName] = []
+	if instance == null:
+		return out
+	for effect in effects_of(instance):
+		var option_id := StringName(effect.get("option_id", &""))
+		if option_id == &"" or out.has(option_id):
+			continue
+		if not is_reforgable(instance, option_id):
+			out.append(option_id)
+	return out
+
+
+## The index in `instance.rolled` of `option_id`, or -1. A reforge replaces one
+## realized entry in place, so this is what makes "this one affix, keep the
+## rest" a single-array edit rather than a rebuild of the item.
+static func rolled_index(instance: ItemInstance, option_id: StringName) -> int:
+	if instance == null or option_id == &"":
+		return -1
+	for index in instance.rolled.size():
+		if StringName(instance.rolled[index].get("option_id", &"")) == option_id:
+			return index
+	return -1
 
 
 ## Realm tier a definition sits in. 0 means ungated content.

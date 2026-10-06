@@ -1,0 +1,246 @@
+{
+  "id": "primordial_wilds.settlement_and_domain_prop.workbench",
+  "path": "res://assets/world_map/primordial_wilds/settlement_and_domain_prop/workbench.png",
+  "type": "interactable",
+  "category": "settlement_and_domain_prop",
+  "environment": "primordial_wilds",
+  "environment_name": "Primordial Wilds",
+  "world_tier": "Transcendent World",
+  "archetype": "settlement_and_domain_prop.workbench",
+  "name": "Outdoor workbench",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image_gen edit 2026-10-05",
+  "license": "Generated locally with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Colossal exposed roots, ancient moss-dark basalt, amber minerals, and untamed growth.",
+  "generated_on": "2026-10-05",
+  "prompt_ref": "openai-imagegen-edit:primordial-wilds-workbench-overhead:20261005",
+  "prompt": "Edit the initial workbench render to correct only the camera angle while preserving the subject, rootwood tabletop, basalt supports, amber inclusions, stone mallet, gouache style, palette, and clean transparent background. Show the workbench from a strict orthographic camera directly overhead at 90 degrees, like a top-down game map. The tabletop must dominate; do not show a front-facing vertical side wall or perspective convergence. Show the support blocks and legs only as small top surfaces peeking from beneath the tabletop edges. Keep the complete centered workbench and bottom-center pivot with padding. Preserve genuine transparent pixels outside the workbench. No ground plane, new objects, text, UI, frame, checkerboard, or watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map",
+    "mortal_plains.settlement_and_domain_prop.workbench"
+  ],
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.856,
+        0.834
+      ],
+      [
+        0.844,
+        0.873
+      ]
+    ],
+    "frac_zero": 0.6302,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.2,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": true,
+      "vision_mode": "transparent",
+      "acoustic_profile": "wood",
+      "material": "wood",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 2,
+        "hp": 60,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "craft",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      7,
+      4
+    ],
+    "sub_fill": [
+      [
+        0.622,
+        0.848,
+        0.693,
+        0.758,
+        0.695,
+        0.887,
+        0.523
+      ],
+      [
+        0.945,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.868
+      ],
+      [
+        0.912,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.909
+      ],
+      [
+        0.595,
+        0.837,
+        0.622,
+        0.731,
+        0.713,
+        0.933,
+        0.556
+      ]
+    ],
+    "crop_offset": [
+      20,
+      72
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.354,
+    "dominant_rgb": [
+      138.5,
+      95.0,
+      59.3
+    ],
+    "hsv": {
+      "hue_deg": 27.4,
+      "saturation": 0.56,
+      "value": 0.54
+    },
+    "dominant_palette": "crimson_flame",
+    "center_of_mass_norm": [
+      0.504,
+      0.523
+    ],
+    "horizontal_symmetry": 0.94,
+    "edge_complexity": 0.237
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 2,
+    "hp": 60,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "wood",
+  "cultivation_element": "none"
+}

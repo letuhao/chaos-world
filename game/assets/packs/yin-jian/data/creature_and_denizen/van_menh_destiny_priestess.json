@@ -1,0 +1,132 @@
+{
+  "id": "yin_jian.creature_and_denizen.van_menh_destiny_priestess",
+  "name": "Priestess of the Fane of Destiny",
+  "vietnamese_name": "Vận Mệnh Thần Điện Thần Nữ",
+  "hanzi": "命运神殿神女",
+  "category": "creature_and_denizen",
+  "sub_category": "judge_and_official",
+  "racial_faction": "fane_of_destiny",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "consult_oracle",
+  "gameplay_role": "High-ranking Oracle delivering world prophecy quests, revealing hidden leylines, and appraising saint relics.",
+  "destructible": false,
+  "material": "flesh",
+  "cultivation_element": "fate",
+  "prompt_summary": "Top-down 45 degree graceful saintess floating slightly above ground, wearing flowing immaculate white and gold ceremonial robes, holding an orb of fate.",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/van_menh_destiny_priestess.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.van_menh_destiny_priestess:265544416",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.508
+      ]
+    ],
+    "frac_zero": 0.7286,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.092,
+        0.252,
+        0.454
+      ],
+      [
+        0.613,
+        0.986,
+        0.72
+      ],
+      [
+        0.265,
+        0.842,
+        0.348
+      ]
+    ],
+    "crop_offset": [
+      22,
+      19
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 45,
+    "contact_reference_px": 45.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

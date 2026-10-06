@@ -1,0 +1,99 @@
+{
+  "id": "yin_jian.creature_and_denizen.ghost_fire_wisp_swarm",
+  "name": "Swarm of Ghost-Fire Wisps",
+  "vietnamese_name": "Bầy Ma Trơi U Minh",
+  "hanzi": "幽冥鬼火群",
+  "category": "creature_and_denizen",
+  "sub_category": "nether_beast",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "catch_wisp",
+  "gameplay_role": "Cluster of flickering sentient blue-green soul sparks.",
+  "destructible": false,
+  "material": "spirit",
+  "cultivation_element": "spirit",
+  "prompt_summary": "Cluster of seven floating azure ethereal fireballs bobbing in air.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/ghost_fire_wisp_swarm.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.ghost_fire_wisp_swarm:262320803",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.451
+      ]
+    ],
+    "frac_zero": 0.7104,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.372,
+        0.018
+      ],
+      [
+        0.518,
+        0.868,
+        0.462
+      ],
+      [
+        0.728,
+        0.719,
+        0.404
+      ]
+    ],
+    "crop_offset": [
+      16,
+      19
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 40,
+    "contact_reference_px": 40.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,205 @@
+{
+  "id": "yin_jian.creature_and_denizen.thousand_leg_bone_centipede",
+  "name": "Centipede of Ten Thousand Bones",
+  "vietnamese_name": "Vạn Cốt Rết Khổng Lồ",
+  "hanzi": "万骨巨蜈蚣",
+  "category": "creature_and_denizen",
+  "sub_category": "nether_beast",
+  "footprint_cells": [
+    4,
+    2
+  ],
+  "canvas_px": [
+    512,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "crush_centipede",
+  "gameplay_role": "Armored centipede whose segments are carved human skulls.",
+  "destructible": false,
+  "material": "bone",
+  "cultivation_element": "yin",
+  "prompt_summary": "Long segmented arthropod with hundreds of needle bone legs and pincers.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/thousand_leg_bone_centipede.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.thousand_leg_bone_centipede:262329587",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.021,
+        0.401,
+        0.795,
+        0.453
+      ],
+      [
+        0.11,
+        0.613,
+        0.61,
+        0.194
+      ]
+    ],
+    "frac_zero": 0.8393,
+    "blocks": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        true,
+        true,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      2,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.317,
+        0.558,
+        0.479,
+        0.455,
+        0.003
+      ],
+      [
+        0.0,
+        0.268,
+        0.885,
+        1.0,
+        0.825,
+        0.292,
+        0.0
+      ],
+      [
+        0.0,
+        0.035,
+        0.16,
+        0.571,
+        1.0,
+        0.999,
+        0.406
+      ],
+      [
+        0.0,
+        0.002,
+        0.381,
+        0.96,
+        1.0,
+        0.912,
+        0.443
+      ],
+      [
+        0.042,
+        0.26,
+        0.946,
+        1.0,
+        0.913,
+        0.41,
+        0.085
+      ],
+      [
+        0.315,
+        0.462,
+        0.896,
+        0.616,
+        0.424,
+        0.081,
+        0.0
+      ],
+      [
+        0.044,
+        0.029,
+        0.117,
+        0.202,
+        0.136,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      149,
+      17
+    ],
+    "trunk_columns": [],
+    "contact_px": 14,
+    "contact_reference_px": 14.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

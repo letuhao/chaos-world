@@ -1,0 +1,209 @@
+{
+  "id": "mortal_riverlands.settlement_and_domain_prop.supply_crate",
+  "path": "res://assets/world_map/mortal_riverlands/settlement_and_domain_prop/supply_crate.png",
+  "type": "prop",
+  "category": "settlement_and_domain_prop",
+  "environment": "mortal_riverlands",
+  "environment_name": "Mortal Riverlands",
+  "world_tier": "Mortal World",
+  "archetype": "settlement_and_domain_prop.supply_crate",
+  "name": "Supply crate",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image generation, 2026-10-05",
+  "license": "OpenAI generated image; project use under applicable OpenAI generation terms",
+  "alpha": "transparent",
+  "environment_theme": "Silt banks, winding slate-blue channels, smooth river stones, and reed beds.",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "generated_on": "2026-10-05",
+  "prompt_ref": "openai-map-v1:mortal_riverlands.settlement_and_domain_prop.supply_crate:20261005",
+  "prompt": "One Mortal Riverlands supply crate, production transparent sprite for a 2D top-down RPG map, square 1024x1024. Strict straight-down orthographic view showing only lid and top surfaces. Compact square weathered river-trader crate made of warm gray-brown timber boards, two muted slate-blue reinforcing straps, a simple rope tie, and a couple of smooth river stones resting at one corner as weights. One small pale reed bundle tucked beside it, crate is clear focal silhouette. Centered with clean transparent margin, no ground plane; readable at 128x128. Matte anime gouache, broad quiet planes, fine restrained #263A35 contours, soft overcast upper-left light, low contrast. Environment: silt banks, winding slate-blue channels, smooth river stones, reed beds. Exclude water background, shoreline, large reeds, people, tools, text, labels, UI, border, floating details, external shadow, isometric or perspective view, 3D render, watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.946
+      ]
+    ],
+    "frac_zero": 0.6938,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": true,
+      "vision_mode": "transparent",
+      "acoustic_profile": "wood",
+      "material": "wood",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 2,
+        "hp": 60,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "loot",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.943,
+        0.975,
+        0.809
+      ],
+      [
+        0.977,
+        1.0,
+        0.879
+      ],
+      [
+        0.635,
+        0.802,
+        0.167
+      ]
+    ],
+    "crop_offset": [
+      29,
+      31
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.28,
+    "dominant_rgb": [
+      118.1,
+      102.0,
+      86.9
+    ],
+    "hsv": {
+      "hue_deg": 52.8,
+      "saturation": 0.27,
+      "value": 0.47
+    },
+    "dominant_palette": "warm_earth_gold",
+    "center_of_mass_norm": [
+      0.502,
+      0.499
+    ],
+    "horizontal_symmetry": 1.0,
+    "edge_complexity": 0.179
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 2,
+    "hp": 60,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "wood",
+  "cultivation_element": "none"
+}

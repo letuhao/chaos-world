@@ -1,0 +1,133 @@
+{
+  "id": "yin_jian.creature_and_denizen.wandering_blind_minstrel",
+  "name": "Blind Minstrel of the Nether Road",
+  "vietnamese_name": "Nghệ Nhân Đàn Nhị Mù",
+  "hanzi": "瞽目琴师魂",
+  "category": "creature_and_denizen",
+  "sub_category": "wandering_spirit",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "listen_tune",
+  "gameplay_role": "Musician playing somber erhu melodies that reveal hidden doors.",
+  "destructible": false,
+  "material": "spirit",
+  "cultivation_element": "wood",
+  "prompt_summary": "Old blind ghost seated playing two-stringed Chinese fiddle.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/wandering_blind_minstrel.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.wandering_blind_minstrel:262864129",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.506
+      ]
+    ],
+    "frac_zero": 0.7071,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.026,
+        0.478,
+        0.159
+      ],
+      [
+        0.457,
+        0.998,
+        0.55
+      ],
+      [
+        0.997,
+        0.527,
+        0.298
+      ]
+    ],
+    "crop_offset": [
+      16,
+      19
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 44,
+    "contact_reference_px": 44.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

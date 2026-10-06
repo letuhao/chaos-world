@@ -1,0 +1,189 @@
+{
+  "id": "yin_jian.destructible_and_container.iron_picket_corpse_crate",
+  "name": "Iron Picket Prison Crate",
+  "vietnamese_name": "Lồng Sắt Giam Tù",
+  "hanzi": "铁条死囚笼",
+  "category": "destructible_and_container",
+  "sub_category": "cage_and_shackle",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "smash_cage",
+  "gameplay_role": "Ground-level iron cage containing trapped spirits or loot.",
+  "destructible": true,
+  "material": "metal",
+  "cultivation_element": "metal",
+  "prompt_summary": "Heavy square iron bar cage with padlock.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/destructible_and_container/iron_picket_corpse_crate.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.destructible_and_container.iron_picket_corpse_crate:261529434",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.551,
+        0.575
+      ],
+      [
+        0.546,
+        0.504
+      ]
+    ],
+    "frac_zero": 0.6282,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.229,
+        0.316,
+        0.0,
+        0.0
+      ],
+      [
+        0.223,
+        0.663,
+        0.923,
+        0.953,
+        0.652,
+        0.182
+      ],
+      [
+        0.865,
+        0.878,
+        0.78,
+        0.816,
+        0.869,
+        0.902
+      ],
+      [
+        0.577,
+        0.874,
+        0.987,
+        0.985,
+        0.83,
+        0.635
+      ],
+      [
+        0.388,
+        0.983,
+        1.0,
+        0.712,
+        0.719,
+        0.446
+      ],
+      [
+        0.014,
+        0.565,
+        1.0,
+        0.802,
+        0.685,
+        0.096
+      ],
+      [
+        0.0,
+        0.001,
+        0.583,
+        0.521,
+        0.009,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      32,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 37,
+    "contact_reference_px": 37.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

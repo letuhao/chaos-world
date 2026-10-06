@@ -1,0 +1,127 @@
+{
+  "id": "yin_jian.decoration_and_ambience.hac_am_eclipse_brazier",
+  "name": "Dark Clan Eclipse Anti-Light Brazier",
+  "vietnamese_name": "Hắc Ám Thực Quang Hỏa Bồn",
+  "hanzi": "黑暗蚀光火盆",
+  "category": "decoration_and_ambience",
+  "sub_category": "lantern_and_light",
+  "racial_faction": "darkness",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "extinguish_brazier",
+  "gameplay_role": "Inverted flame source that projects a sphere of deep shadow instead of illumination.",
+  "destructible": true,
+  "material": "metal",
+  "cultivation_element": "dark",
+  "prompt_summary": "Top-down 45 degree dark iron tripod brazier burning with an inverted black flame that darkens the surrounding tiles.",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/decoration_and_ambience/hac_am_eclipse_brazier.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.decoration_and_ambience.hac_am_eclipse_brazier:265807606",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.426
+      ]
+    ],
+    "frac_zero": 0.8679,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      2,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.311,
+        0.096
+      ],
+      [
+        0.806,
+        0.546
+      ],
+      [
+        0.349,
+        0.2
+      ]
+    ],
+    "crop_offset": [
+      41,
+      18
+    ],
+    "trunk_columns": [],
+    "contact_px": 7,
+    "contact_reference_px": 7.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

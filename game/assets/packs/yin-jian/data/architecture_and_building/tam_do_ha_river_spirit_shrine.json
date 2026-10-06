@@ -1,0 +1,263 @@
+{
+  "id": "yin_jian.architecture_and_building.tam_do_ha_river_spirit_shrine",
+  "name": "San Tu River Spirit Pagoda Shrine",
+  "vietnamese_name": "Tam Đồ Hà Thần Miếu",
+  "hanzi": "三途河神庙",
+  "category": "architecture_and_building",
+  "sub_category": "shrine_and_temple",
+  "racial_faction": "san_tu_river",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "pray_for_crossing",
+  "gameplay_role": "Ancient shrine standing in river shallows; paying offerings calms river monsters and protects barges.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "yin",
+  "prompt_summary": "Top-down 45 degree moss-grown weathered stone pagoda erected on wooden piles in river shallows, copper river-god bell hanging from eaves.",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/architecture_and_building/tam_do_ha_river_spirit_shrine.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.architecture_and_building.tam_do_ha_river_spirit_shrine:265855028",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.134,
+        0.654,
+        0.204
+      ],
+      [
+        0.622,
+        1.0,
+        0.639
+      ],
+      [
+        0.445,
+        0.789,
+        0.414
+      ]
+    ],
+    "frac_zero": 0.6854,
+    "blocks": [
+      [
+        false,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 8,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      8,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.001,
+        0.556,
+        0.002,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.016,
+        0.147,
+        0.818,
+        0.307,
+        0.014,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.105,
+        0.804,
+        1.0,
+        0.987,
+        0.511,
+        0.03,
+        0.0
+      ],
+      [
+        0.376,
+        0.752,
+        1.0,
+        1.0,
+        1.0,
+        0.988,
+        0.559,
+        0.188
+      ],
+      [
+        0.29,
+        0.797,
+        1.0,
+        1.0,
+        1.0,
+        0.979,
+        0.475,
+        0.0
+      ],
+      [
+        0.049,
+        0.445,
+        1.0,
+        1.0,
+        1.0,
+        0.756,
+        0.041,
+        0.0
+      ],
+      [
+        0.262,
+        0.965,
+        1.0,
+        1.0,
+        1.0,
+        0.982,
+        0.411,
+        0.023
+      ],
+      [
+        0.771,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.964,
+        0.344
+      ],
+      [
+        0.46,
+        0.823,
+        1.0,
+        1.0,
+        1.0,
+        0.957,
+        0.514,
+        0.0
+      ],
+      [
+        0.043,
+        0.448,
+        0.886,
+        0.972,
+        0.762,
+        0.389,
+        0.01,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.119,
+        0.487,
+        0.113,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      75,
+      16
+    ],
+    "trunk_columns": [
+      3
+    ],
+    "contact_px": 18,
+    "contact_reference_px": 18.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      384
+    ]
+  }
+}

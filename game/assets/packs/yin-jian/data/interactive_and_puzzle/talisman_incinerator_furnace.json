@@ -1,0 +1,198 @@
+{
+  "id": "yin_jian.interactive_and_puzzle.talisman_incinerator_furnace",
+  "name": "Talisman Cleansing Incinerator",
+  "vietnamese_name": "Lò Đốt Tiêu Hủy Bùa Hư",
+  "hanzi": "化符火炉",
+  "category": "interactive_and_puzzle",
+  "sub_category": "brazier_and_burner",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "incinerate_talisman",
+  "gameplay_role": "Burning corrupted items restores player spiritual balance.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "fire",
+  "prompt_summary": "Small dome-shaped brick furnace with iron chimney.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/interactive_and_puzzle/talisman_incinerator_furnace.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.interactive_and_puzzle.talisman_incinerator_furnace:263467128",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.421,
+        0.195
+      ],
+      [
+        0.746,
+        0.692
+      ]
+    ],
+    "frac_zero": 0.6515,
+    "blocks": [
+      [
+        true,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.92,
+        0.295,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.007,
+        0.884,
+        0.238,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.575,
+        1.0,
+        0.84,
+        0.135,
+        0.0,
+        0.0
+      ],
+      [
+        0.198,
+        1.0,
+        1.0,
+        1.0,
+        0.736,
+        0.055,
+        0.0
+      ],
+      [
+        0.583,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.708,
+        0.062
+      ],
+      [
+        0.704,
+        1.0,
+        1.0,
+        1.0,
+        0.996,
+        0.399,
+        0.0
+      ],
+      [
+        0.135,
+        0.469,
+        0.632,
+        0.553,
+        0.542,
+        0.23,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      36,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 74,
+    "contact_reference_px": 74.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

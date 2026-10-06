@@ -1,0 +1,249 @@
+{
+  "id": "ember_grotto.settlement_and_domain_prop.cultivation_altar",
+  "path": "res://assets/world_map/ember_grotto/settlement_and_domain_prop/cultivation_altar.png",
+  "type": "interactable",
+  "category": "settlement_and_domain_prop",
+  "environment": "ember_grotto",
+  "environment_name": "Ember Grotto",
+  "world_tier": "Mortal World",
+  "archetype": "settlement_and_domain_prop.cultivation_altar",
+  "name": "Cultivation altar",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image generation; 2026-10-05",
+  "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Soot-dark basalt, warm umber stone, ember fissures, and compact volcanic formations.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-05",
+  "prompt_ref": "openai-imagegen:ember_grotto.cultivation_altar:20261005",
+  "prompt": "Use case: stylized-concept. Asset type: production 2D top-down action RPG interactable sprite for Chaos World. Subject: one compact cultivation altar for Ember Grotto, made from soot-dark basalt, warm umber stone, and restrained ember fissures. View: strict straight-down orthographic map camera; show the altar's top surfaces only, no front-facing facade, no perspective convergence, no isometric view. Composition: one connected 2×2-cell stone altar platform with a low octagonal stepped slab, central shallow circular offering bowl viewed from above, four small corner stones integrated into the platform, and a few thin orange-red ember lines carved into its surface. Clear silhouette, readable at 256×256, centered with generous transparent padding and bottom-center ground contact. Art direction: anime-painted gouache, fine dark #263A35 ink contours, broad readable planes, material-led dark basalt and warm umber, minimal muted ember-orange highlights, soft upper-left light, short attached contact shadow only, matte painted finish. Technical output: high-resolution square PNG with genuine transparent background outside the entire altar. Exclude: full cave scene, lava field, smoke, flames, floating rocks, characters, tools, writing, runes, symbols, UI, grid, border, watermark, 3D render, visible vertical sides, horizon.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.887,
+        0.885
+      ],
+      [
+        0.905,
+        0.904
+      ]
+    ],
+    "frac_zero": 0.6217,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.2,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "solid",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 1,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "meditate",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      6,
+      5
+    ],
+    "sub_fill": [
+      [
+        0.893,
+        0.791,
+        0.779,
+        0.769,
+        0.947,
+        0.63
+      ],
+      [
+        0.84,
+        1.0,
+        1.0,
+        1.0,
+        0.979,
+        0.24
+      ],
+      [
+        0.749,
+        1.0,
+        1.0,
+        1.0,
+        0.923,
+        0.0
+      ],
+      [
+        0.846,
+        1.0,
+        1.0,
+        1.0,
+        0.974,
+        0.286
+      ],
+      [
+        0.918,
+        0.858,
+        0.812,
+        0.825,
+        0.976,
+        0.682
+      ]
+    ],
+    "crop_offset": [
+      48,
+      48
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.362,
+    "dominant_rgb": [
+      82.2,
+      59.2,
+      47.1
+    ],
+    "hsv": {
+      "hue_deg": 22.4,
+      "saturation": 0.36,
+      "value": 0.32
+    },
+    "dominant_palette": "crimson_flame",
+    "center_of_mass_norm": [
+      0.508,
+      0.5
+    ],
+    "horizontal_symmetry": 1.0,
+    "edge_complexity": 0.137
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

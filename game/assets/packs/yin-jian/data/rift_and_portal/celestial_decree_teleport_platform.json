@@ -1,0 +1,271 @@
+{
+  "id": "yin_jian.rift_and_portal.celestial_decree_teleport_platform",
+  "name": "Celestial Decree Teleport Dais",
+  "vietnamese_name": "Đài Truyền Tống Thiên Sắc",
+  "hanzi": "仙敕法台",
+  "category": "rift_and_portal",
+  "sub_category": "void_portal",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "warp",
+  "gameplay_role": "Sanctioned teleport pad used by Yama envoys.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "spirit",
+  "prompt_summary": "Raised circular marble platform engraved with cloud seals.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/rift_and_portal/celestial_decree_teleport_platform.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.rift_and_portal.celestial_decree_teleport_platform:260687300",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.31,
+        0.377,
+        0.16
+      ],
+      [
+        0.858,
+        1.0,
+        0.81
+      ],
+      [
+        1.0,
+        1.0,
+        1.0
+      ]
+    ],
+    "frac_zero": 0.3809,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.002,
+        0.354,
+        0.036,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.006,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.098,
+        0.704,
+        0.146,
+        0.011,
+        0.0,
+        0.0,
+        0.071,
+        0.064,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.1,
+        0.846,
+        0.829,
+        0.693,
+        0.754,
+        0.632,
+        0.727,
+        0.368,
+        0.0,
+        0.0
+      ],
+      [
+        0.045,
+        0.436,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.922,
+        0.3,
+        0.025
+      ],
+      [
+        0.091,
+        0.79,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.752,
+        0.075
+      ],
+      [
+        0.705,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.47
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.613
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "contact_px": 352,
+    "contact_reference_px": 352.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

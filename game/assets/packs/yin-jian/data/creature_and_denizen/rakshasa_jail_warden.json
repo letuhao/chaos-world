@@ -1,0 +1,195 @@
+{
+  "id": "yin_jian.creature_and_denizen.rakshasa_jail_warden",
+  "name": "Rakshasa Iron Warden",
+  "vietnamese_name": "Quản Ngục La Sát",
+  "hanzi": "罗刹典狱长",
+  "category": "creature_and_denizen",
+  "sub_category": "jailer_and_guard",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "bribe_or_fight",
+  "gameplay_role": "Brutal female demon warden brandishing barbed cat-o'-nine-tails.",
+  "destructible": false,
+  "material": "bone",
+  "cultivation_element": "metal",
+  "prompt_summary": "Muscular fanged female demon in spiked iron mail wielding barbed scourge.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/rakshasa_jail_warden.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.rakshasa_jail_warden:262167023",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.097,
+        0.648
+      ],
+      [
+        0.249,
+        0.364
+      ]
+    ],
+    "frac_zero": 0.7523,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.002,
+        0.483,
+        0.364,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.231,
+        0.982,
+        0.965,
+        0.394,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.388,
+        0.953,
+        0.953,
+        0.684,
+        0.133
+      ],
+      [
+        0.002,
+        0.0,
+        0.541,
+        0.916,
+        0.986,
+        0.584,
+        0.039
+      ],
+      [
+        0.26,
+        0.533,
+        0.057,
+        0.593,
+        0.708,
+        0.315,
+        0.0
+      ],
+      [
+        0.318,
+        0.646,
+        0.139,
+        0.367,
+        0.249,
+        0.0,
+        0.0
+      ],
+      [
+        0.001,
+        0.338,
+        0.103,
+        0.393,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      31,
+      17
+    ],
+    "trunk_columns": [
+      3
+    ],
+    "contact_px": 16,
+    "contact_reference_px": 16.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

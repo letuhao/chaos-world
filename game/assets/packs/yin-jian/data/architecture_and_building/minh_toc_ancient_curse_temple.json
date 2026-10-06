@@ -1,0 +1,465 @@
+{
+  "id": "yin_jian.architecture_and_building.minh_toc_ancient_curse_temple",
+  "name": "Nether Clan Ancestral Curse Temple",
+  "vietnamese_name": "Minh Tộc Chú Văn Thần Miếu",
+  "hanzi": "冥族咒文神庙",
+  "category": "architecture_and_building",
+  "sub_category": "shrine_and_temple",
+  "racial_faction": "nether",
+  "footprint_cells": [
+    5,
+    4
+  ],
+  "canvas_px": [
+    640,
+    512
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "blocks_vision",
+  "interactive_verb": "enter_curse_temple",
+  "gameplay_role": "Sacred center of the Nether Clan. Teaches forbidden curse scriptures and soul-binding hexes.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "yin",
+  "prompt_summary": "Top-down 45 degree dark levitating stone temple surrounded by hovering inscribed jade steles, dark indigo banners with glowing cursive curse characters.",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/architecture_and_building/minh_toc_ancient_curse_temple.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.architecture_and_building.minh_toc_ancient_curse_temple:265397367",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.0,
+        0.216,
+        0.517,
+        0.15,
+        0.028
+      ],
+      [
+        0.298,
+        0.596,
+        0.91,
+        0.584,
+        0.399
+      ],
+      [
+        0.814,
+        1.0,
+        1.0,
+        1.0,
+        0.573
+      ],
+      [
+        0.016,
+        0.306,
+        0.916,
+        0.613,
+        0.004
+      ]
+    ],
+    "frac_zero": 0.6251,
+    "blocks": [
+      [
+        false,
+        true,
+        true,
+        false,
+        false
+      ],
+      [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        false,
+        true,
+        true,
+        true,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 15,
+    "anchor_cell": [
+      2,
+      2
+    ],
+    "sub_grid": [
+      16,
+      15
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.005,
+        0.0,
+        0.251,
+        0.895,
+        0.067,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.086,
+        0.5,
+        0.009,
+        0.473,
+        1.0,
+        0.21,
+        0.092,
+        0.017,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.091,
+        0.986,
+        0.039,
+        0.456,
+        1.0,
+        0.262,
+        0.526,
+        0.424,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.001,
+        0.856,
+        0.196,
+        0.545,
+        1.0,
+        0.329,
+        0.574,
+        0.354,
+        0.0,
+        0.447,
+        0.259,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.021,
+        0.704,
+        0.142,
+        0.653,
+        0.358,
+        0.799,
+        1.0,
+        0.689,
+        0.605,
+        0.256,
+        0.017,
+        0.97,
+        0.516,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.044,
+        0.977,
+        0.484,
+        0.149,
+        0.532,
+        0.954,
+        1.0,
+        0.954,
+        0.488,
+        0.107,
+        0.236,
+        1.0,
+        0.362,
+        0.007,
+        0.0
+      ],
+      [
+        0.015,
+        0.074,
+        0.782,
+        0.833,
+        0.82,
+        0.997,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.912,
+        0.897,
+        1.0,
+        0.707,
+        0.072,
+        0.0
+      ],
+      [
+        0.0,
+        0.538,
+        0.895,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.609,
+        0.092,
+        0.0
+      ],
+      [
+        0.637,
+        0.752,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.786,
+        0.305
+      ],
+      [
+        0.49,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.838,
+        0.525,
+        0.002
+      ],
+      [
+        0.984,
+        0.99,
+        0.997,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.96,
+        0.403,
+        0.05,
+        0.0
+      ],
+      [
+        0.104,
+        0.273,
+        0.233,
+        0.625,
+        0.962,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.966,
+        0.33,
+        0.0,
+        0.001,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.127,
+        0.759,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.989,
+        0.707,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.185,
+        1.0,
+        1.0,
+        0.994,
+        0.997,
+        0.619,
+        0.104,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.07,
+        0.519,
+        0.873,
+        0.573,
+        0.806,
+        0.248,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      73,
+      17
+    ],
+    "trunk_columns": [
+      6,
+      7,
+      8,
+      9
+    ],
+    "contact_px": 53,
+    "contact_reference_px": 53.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        4,
+        3
+      ],
+      "1.0": [
+        0,
+        0,
+        4,
+        3
+      ],
+      "1.15": [
+        0,
+        0,
+        4,
+        3
+      ],
+      "1.35": [
+        0,
+        0,
+        4,
+        3
+      ],
+      "1.6": [
+        0,
+        0,
+        4,
+        3
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      4,
+      3
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      640,
+      512
+    ]
+  }
+}

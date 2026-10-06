@@ -1,0 +1,302 @@
+{
+  "id": "yin_jian.architecture_and_building.tu_la_slaughter_battle_tower",
+  "name": "Asura Slaughter Battle Tower",
+  "vietnamese_name": "Tu La Sát Lục Chiến Tháp",
+  "hanzi": "修罗杀戮战塔",
+  "category": "architecture_and_building",
+  "sub_category": "watchtower_gatehouse",
+  "racial_faction": "tu_la",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "blocks_vision",
+  "interactive_verb": "challenge_tower",
+  "gameplay_role": "Tower of trials where cultivators fight Asura phantoms floor by floor to condense their Slaughter Domain.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "blood",
+  "prompt_summary": "Top-down 45 degree spiraling black stone war tower, serrated bladed balconies, glowing red slaughter qi swirling around the summit like a fiery cyclone.",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/architecture_and_building/tu_la_slaughter_battle_tower.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.architecture_and_building.tu_la_slaughter_battle_tower:265338175",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.065,
+        0.699,
+        0.383
+      ],
+      [
+        0.189,
+        0.948,
+        0.567
+      ],
+      [
+        0.852,
+        0.942,
+        0.445
+      ]
+    ],
+    "frac_zero": 0.5378,
+    "blocks": [
+      [
+        false,
+        true,
+        true
+      ],
+      [
+        false,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 7,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.167,
+        0.081,
+        0.344,
+        0.301,
+        0.466,
+        0.014,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.001,
+        0.647,
+        0.301,
+        0.896,
+        0.869,
+        0.535,
+        0.644,
+        0.196,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.052,
+        0.854,
+        0.99,
+        1.0,
+        0.874,
+        0.625,
+        0.14,
+        0.242,
+        0.0
+      ],
+      [
+        0.0,
+        0.024,
+        0.191,
+        0.947,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.848,
+        0.068,
+        0.0
+      ],
+      [
+        0.0,
+        0.034,
+        0.56,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.972,
+        0.234,
+        0.0
+      ],
+      [
+        0.0,
+        0.046,
+        0.094,
+        0.727,
+        1.0,
+        1.0,
+        1.0,
+        0.973,
+        0.669,
+        0.028,
+        0.0
+      ],
+      [
+        0.0,
+        0.151,
+        0.316,
+        0.188,
+        0.921,
+        1.0,
+        1.0,
+        0.965,
+        0.229,
+        0.005,
+        0.0
+      ],
+      [
+        0.037,
+        0.1,
+        0.649,
+        0.98,
+        1.0,
+        1.0,
+        1.0,
+        0.938,
+        0.568,
+        0.111,
+        0.0
+      ],
+      [
+        0.721,
+        0.936,
+        0.998,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.893,
+        0.116,
+        0.047
+      ],
+      [
+        0.987,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.82,
+        0.146,
+        0.049,
+        0.008
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.739,
+        0.377,
+        0.32,
+        0.129,
+        0.003,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      26,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 179,
+    "contact_reference_px": 179.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      384
+    ]
+  }
+}

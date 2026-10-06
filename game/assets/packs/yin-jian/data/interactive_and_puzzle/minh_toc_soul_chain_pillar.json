@@ -1,0 +1,133 @@
+{
+  "id": "yin_jian.interactive_and_puzzle.minh_toc_soul_chain_pillar",
+  "name": "Nether Soul-Binding Chain Pillar",
+  "vietnamese_name": "Minh Tộc Tỏa Hồn Trụ",
+  "hanzi": "冥族锁魂铁柱",
+  "category": "interactive_and_puzzle",
+  "sub_category": "judgment_device",
+  "racial_faction": "nether",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "shatter_chains",
+  "gameplay_role": "Pillar that casts spirit-constricting chains at passing enemies, rooting them in place for 3 seconds.",
+  "destructible": true,
+  "material": "metal",
+  "cultivation_element": "yin",
+  "prompt_summary": "Top-down 45 degree tall black iron pillar wrapped in glowing violet chains, spectral soul faces struggling in the metal surface.",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/interactive_and_puzzle/minh_toc_soul_chain_pillar.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.interactive_and_puzzle.minh_toc_soul_chain_pillar:265739975",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.439
+      ]
+    ],
+    "frac_zero": 0.7316,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.2,
+        0.553,
+        0.678
+      ],
+      [
+        0.312,
+        0.717,
+        0.027
+      ],
+      [
+        0.472,
+        0.807,
+        0.018
+      ]
+    ],
+    "crop_offset": [
+      21,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 47,
+    "contact_reference_px": 47.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

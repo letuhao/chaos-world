@@ -1,0 +1,195 @@
+{
+  "id": "yin_jian.creature_and_denizen.phantom_stallion_charger",
+  "name": "Phantom Nightmare Steed",
+  "vietnamese_name": "Chiến Mã Ác Mộng Lửa Ma",
+  "hanzi": "梦魇冥战马",
+  "category": "creature_and_denizen",
+  "sub_category": "nether_beast",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "tame_steed",
+  "gameplay_role": "Wild spectral warhorse with mane of blue flames.",
+  "destructible": false,
+  "material": "bone",
+  "cultivation_element": "fire",
+  "prompt_summary": "Muscular black stallion with burning blue eyes and flaming hooves.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/phantom_stallion_charger.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.phantom_stallion_charger:262672992",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.664,
+        0.446
+      ],
+      [
+        0.361,
+        0.141
+      ]
+    ],
+    "frac_zero": 0.6964,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.34,
+        0.671,
+        0.111,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.8,
+        1.0,
+        0.661,
+        0.371,
+        0.708,
+        0.346,
+        0.02
+      ],
+      [
+        0.536,
+        0.956,
+        0.99,
+        1.0,
+        0.965,
+        0.822,
+        0.455
+      ],
+      [
+        0.077,
+        0.986,
+        1.0,
+        0.981,
+        0.772,
+        0.085,
+        0.018
+      ],
+      [
+        0.24,
+        0.587,
+        0.788,
+        0.361,
+        0.259,
+        0.047,
+        0.0
+      ],
+      [
+        0.068,
+        0.378,
+        0.346,
+        0.0,
+        0.139,
+        0.028,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.438,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      25,
+      17
+    ],
+    "trunk_columns": [
+      2
+    ],
+    "contact_px": 20,
+    "contact_reference_px": 20.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

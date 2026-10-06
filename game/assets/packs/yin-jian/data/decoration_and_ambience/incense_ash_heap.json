@@ -1,0 +1,99 @@
+{
+  "id": "yin_jian.decoration_and_ambience.incense_ash_heap",
+  "name": "Dumped Incense Ash Pile",
+  "vietnamese_name": "Đống Tàn Nhang Đổ Ra",
+  "hanzi": "倾倒香灰堆",
+  "category": "decoration_and_ambience",
+  "sub_category": "ambient_decal",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "kick_ash",
+  "gameplay_role": "Pile of fragrant soft grey incense ash.",
+  "destructible": false,
+  "material": "earth",
+  "cultivation_element": "fire",
+  "prompt_summary": "Conical mound of fine grey powder with incense ends.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/decoration_and_ambience/incense_ash_heap.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.decoration_and_ambience.incense_ash_heap:265039186",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.612
+      ]
+    ],
+    "frac_zero": 0.649,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.003,
+        0.269,
+        0.104
+      ],
+      [
+        0.729,
+        1.0,
+        0.637
+      ],
+      [
+        1.0,
+        1.0,
+        0.897
+      ]
+    ],
+    "crop_offset": [
+      16,
+      20
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 96,
+    "contact_reference_px": 96.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

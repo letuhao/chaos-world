@@ -1,0 +1,124 @@
+{
+  "id": "yin_jian.path_and_way.chained_cliff_ladder",
+  "name": "Chained Cliff Ladder",
+  "vietnamese_name": "Thang Xích Vách Đá",
+  "hanzi": "悬崖铁索梯",
+  "category": "path_and_way",
+  "sub_category": "stairs_and_ramps",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "climb",
+  "gameplay_role": "Heavy iron ladder anchored into sheer abyss walls.",
+  "destructible": false,
+  "material": "metal",
+  "cultivation_element": "metal",
+  "prompt_summary": "Rusted iron ladder pins hammered into sheer basalt rock.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/path_and_way/chained_cliff_ladder.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.path_and_way.chained_cliff_ladder:259125420",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.715
+      ],
+      [
+        0.246
+      ]
+    ],
+    "frac_zero": 0.71,
+    "blocks": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true
+      ],
+      [
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.512,
+        0.795,
+        0.5
+      ],
+      [
+        0.859,
+        1.0,
+        0.781
+      ],
+      [
+        0.544,
+        1.0,
+        0.462
+      ],
+      [
+        0.178,
+        0.999,
+        0.182
+      ],
+      [
+        0.001,
+        0.748,
+        0.004
+      ],
+      [
+        0.0,
+        0.258,
+        0.0
+      ],
+      [
+        0.0,
+        0.031,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      40
+    ],
+    "trunk_columns": [],
+    "contact_px": 7,
+    "contact_reference_px": 7.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,296 @@
+{
+  "id": "yin_jian.interactive_and_puzzle.altar_of_five_sacrifices",
+  "name": "Altar of the Five Offerings",
+  "vietnamese_name": "Đàn Thờ Ngũ Tế",
+  "hanzi": "五牲祭神坛",
+  "category": "interactive_and_puzzle",
+  "sub_category": "altar_and_font",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "core_ring",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "place_offering",
+  "gameplay_role": "Stone altar requiring 5 distinct elements to open dungeon vault.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "spirit",
+  "prompt_summary": "Stepped square stone altar with five hollow offering bowls.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/interactive_and_puzzle/altar_of_five_sacrifices.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.interactive_and_puzzle.altar_of_five_sacrifices:263198404",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.133,
+        0.723,
+        0.214
+      ],
+      [
+        0.776,
+        1.0,
+        0.922
+      ],
+      [
+        0.76,
+        0.847,
+        0.212
+      ]
+    ],
+    "frac_zero": 0.5101,
+    "blocks": [
+      [
+        false,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        false,
+        false,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.194,
+        0.916,
+        0.59,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.395,
+        1.0,
+        0.831,
+        0.041,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.157,
+        0.181,
+        0.54,
+        0.99,
+        1.0,
+        1.0,
+        0.87,
+        0.294,
+        0.265,
+        0.117
+      ],
+      [
+        0.052,
+        0.976,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.848
+      ],
+      [
+        0.19,
+        0.994,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.917
+      ],
+      [
+        0.131,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.781
+      ],
+      [
+        0.398,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.958,
+        0.158
+      ],
+      [
+        0.874,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.87,
+        0.19,
+        0.0
+      ],
+      [
+        0.686,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.994,
+        0.538,
+        0.071,
+        0.0,
+        0.0
+      ],
+      [
+        0.151,
+        0.49,
+        0.782,
+        0.938,
+        0.959,
+        0.771,
+        0.524,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.008,
+        0.473,
+        0.176,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      39
+    ],
+    "trunk_columns": [
+      3
+    ],
+    "contact_px": 81,
+    "contact_reference_px": 81.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      384
+    ]
+  }
+}

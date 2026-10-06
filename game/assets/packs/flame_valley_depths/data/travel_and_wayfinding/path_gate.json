@@ -1,0 +1,241 @@
+{
+  "id": "flame_valley_depths.travel_and_wayfinding.path_gate",
+  "path": "res://assets/world_map/flame_valley_depths/travel_and_wayfinding/path_gate.png",
+  "type": "prop",
+  "category": "travel_and_wayfinding",
+  "environment": "flame_valley_depths",
+  "environment_name": "Flame Valley Depths",
+  "world_tier": "Spirit World",
+  "archetype": "travel_and_wayfinding.path_gate",
+  "name": "Path gate",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image generation, 2026-10-05",
+  "license": "OpenAI generated image; project use under applicable OpenAI generation terms",
+  "alpha": "transparent",
+  "environment_theme": "Layered cinder slopes, copper-red stone, scorched earth, and controlled internal firelight.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-05",
+  "prompt_ref": "openai-map-v1:flame_valley_depths.travel_and_wayfinding.path_gate",
+  "prompt": "Production 2D top-down RPG map sprite for Chaos World: one path gate in Flame Valley Depths, transparent 256x256. Strict directly overhead orthographic view. Two compact copper-red basalt gate pillars stand on each side of a narrow traversable opening, joined by a short broken top lintel, with restrained internal ember seams. Design should read as a small trail gateway, not a huge building; keep whole silhouette within frame, centered bottom-center, 2x2-cell size. True transparent background through the gate opening and around the pillars, no ground tile or cast shadow. Anime-painted gouache, fine dark #263A35 contour, broad clean volcanic stone planes, controlled internal orange firelight, soft upper-left lighting. Environment: layered cinder slopes, copper-red stone, scorched earth, controlled internal firelight. No lava pool, flames, smoke, scene, perspective, text, border, UI, watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.549,
+        0.543
+      ],
+      [
+        0.586,
+        0.591
+      ]
+    ],
+    "frac_zero": 0.7779,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "core_ring",
+      "cov_gate": 0.1,
+      "authored_open": "bottom_centre",
+      "passable_under": true,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "canopy",
+      "acoustic_profile": "wood",
+      "material": "wood",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 2,
+        "hp": 60,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "unlock",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      6,
+      4
+    ],
+    "sub_fill": [
+      [
+        0.343,
+        0.777,
+        0.276,
+        0.328,
+        0.87,
+        0.154
+      ],
+      [
+        0.486,
+        0.982,
+        0.37,
+        0.521,
+        1.0,
+        0.297
+      ],
+      [
+        0.646,
+        0.991,
+        0.056,
+        0.262,
+        1.0,
+        0.63
+      ],
+      [
+        0.674,
+        0.879,
+        0.131,
+        0.288,
+        0.903,
+        0.632
+      ]
+    ],
+    "crop_offset": [
+      31,
+      69
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.203,
+    "dominant_rgb": [
+      106.9,
+      53.7,
+      37.5
+    ],
+    "hsv": {
+      "hue_deg": 23.9,
+      "saturation": 0.59,
+      "value": 0.42
+    },
+    "dominant_palette": "crimson_flame",
+    "center_of_mass_norm": [
+      0.482,
+      0.524
+    ],
+    "horizontal_symmetry": 0.97,
+    "edge_complexity": 0.104
+  },
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "canopy",
+  "destructible": {
+    "enabled": true,
+    "tier": 2,
+    "hp": 60,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "wood",
+  "cultivation_element": "none"
+}

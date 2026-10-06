@@ -1,0 +1,265 @@
+{
+  "id": "mortal_highlands.travel_and_wayfinding.travel_shrine",
+  "path": "res://assets/world_map/mortal_highlands/travel_and_wayfinding/travel_shrine.png",
+  "type": "interactable",
+  "category": "travel_and_wayfinding",
+  "environment": "mortal_highlands",
+  "environment_name": "Mortal Highlands",
+  "world_tier": "Mortal World",
+  "archetype": "travel_and_wayfinding.travel_shrine",
+  "name": "Travel shrine",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image_gen via Codex",
+  "license": "AI-generated for Chaos World; permitted for project use",
+  "alpha": "transparent",
+  "environment_theme": "Exposed grey granite, steep broken ledges, wind-shaped pines, and pale lichen.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-06",
+  "prompt_ref": "openai-map-mortal-highlands-travel-shrine-v1",
+  "prompt": "One compact Mortal Highlands travel shrine, direct overhead orthographic view: weathered grey-granite roadside shrine with pale lichen, small roof cap visible from above, one simple carved mountain emblem, tiny warm ivory offering bowl, and one wind-shaped pine sprig attached beside the base. Anime gouache, fine dark #263A35 contours, broad readable planes, granite grey and restrained ivory/gold, upper-left light, short attached shadow. Centered isolated full sprite, true transparent background, 512 square source, bottom-center pivot, 2x2 footprint. No landscape, path, text, UI, border, watermark, perspective, or isometric view.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.594,
+        0.887
+      ],
+      [
+        0.621,
+        0.816
+      ]
+    ],
+    "frac_zero": 0.5104,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.2,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": true,
+      "vision_mode": "transparent",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "pray",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.781,
+        0.693,
+        0.818,
+        0.699,
+        0.751
+      ],
+      [
+        0.0,
+        0.894,
+        1.0,
+        1.0,
+        1.0,
+        0.782
+      ],
+      [
+        0.009,
+        0.937,
+        1.0,
+        1.0,
+        1.0,
+        0.863
+      ],
+      [
+        0.412,
+        0.753,
+        1.0,
+        1.0,
+        0.988,
+        0.438
+      ],
+      [
+        0.494,
+        0.902,
+        1.0,
+        1.0,
+        1.0,
+        0.383
+      ],
+      [
+        0.0,
+        0.602,
+        1.0,
+        1.0,
+        1.0,
+        0.464
+      ],
+      [
+        0.0,
+        0.598,
+        0.914,
+        0.864,
+        0.967,
+        0.458
+      ]
+    ],
+    "crop_offset": [
+      35,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.464,
+    "dominant_rgb": [
+      120.8,
+      115.5,
+      100.3
+    ],
+    "hsv": {
+      "hue_deg": 66.1,
+      "saturation": 0.2,
+      "value": 0.48
+    },
+    "dominant_palette": "warm_earth_gold",
+    "center_of_mass_norm": [
+      0.542,
+      0.495
+    ],
+    "horizontal_symmetry": 0.88,
+    "edge_complexity": 0.303
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

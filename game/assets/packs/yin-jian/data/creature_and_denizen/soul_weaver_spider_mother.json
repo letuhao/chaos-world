@@ -1,0 +1,435 @@
+{
+  "id": "yin_jian.creature_and_denizen.soul_weaver_spider_mother",
+  "name": "Broodmother of the Webbed Abyss",
+  "vietnamese_name": "Nhện Mẹ Dệt Hồn",
+  "hanzi": "织魄魔蛛母",
+  "category": "creature_and_denizen",
+  "sub_category": "elite_demon",
+  "footprint_cells": [
+    4,
+    4
+  ],
+  "canvas_px": [
+    512,
+    512
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "slay_spider",
+  "gameplay_role": "Giant spider spinning cocoons out of trapped ghost memories.",
+  "destructible": false,
+  "material": "bone",
+  "cultivation_element": "yin",
+  "prompt_summary": "Enormous bloated spider with human porcelain face on thorax.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/soul_weaver_spider_mother.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.soul_weaver_spider_mother:262500883",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.0,
+        0.247,
+        0.68,
+        0.308
+      ],
+      [
+        0.371,
+        0.965,
+        1.0,
+        0.565
+      ],
+      [
+        0.382,
+        0.808,
+        0.675,
+        0.381
+      ],
+      [
+        0.069,
+        0.038,
+        0.221,
+        0.052
+      ]
+    ],
+    "frac_zero": 0.6222,
+    "blocks": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        true,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      2,
+      2
+    ],
+    "sub_grid": [
+      15,
+      15
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.002,
+        0.04,
+        0.021,
+        0.312,
+        0.027,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.104,
+        0.497,
+        0.756,
+        0.896,
+        0.851,
+        0.978,
+        0.259,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.135,
+        0.83,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.496,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.637,
+        0.688,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.853,
+        0.092,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.11,
+        0.672,
+        1.0,
+        0.961,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.2,
+        0.0
+      ],
+      [
+        0.0,
+        0.09,
+        0.731,
+        0.927,
+        0.879,
+        0.988,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.982,
+        0.077,
+        0.0
+      ],
+      [
+        0.0,
+        0.891,
+        0.723,
+        0.802,
+        0.951,
+        0.991,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.881,
+        0.06,
+        0.0
+      ],
+      [
+        0.0,
+        0.628,
+        0.899,
+        0.94,
+        0.982,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.964,
+        0.671,
+        0.707,
+        0.0
+      ],
+      [
+        0.025,
+        0.826,
+        0.537,
+        0.458,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.752,
+        0.808,
+        0.093,
+        0.634,
+        0.01
+      ],
+      [
+        0.567,
+        0.924,
+        0.038,
+        0.006,
+        0.907,
+        0.999,
+        1.0,
+        1.0,
+        1.0,
+        0.692,
+        0.01,
+        0.469,
+        0.652,
+        0.3,
+        0.264
+      ],
+      [
+        0.229,
+        0.645,
+        0.0,
+        0.0,
+        0.726,
+        0.194,
+        0.773,
+        0.396,
+        0.786,
+        0.396,
+        0.0,
+        0.105,
+        0.607,
+        0.006,
+        0.259
+      ],
+      [
+        0.056,
+        0.582,
+        0.0,
+        0.0,
+        0.207,
+        0.043,
+        0.492,
+        0.001,
+        0.829,
+        0.507,
+        0.0,
+        0.021,
+        0.511,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.386,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.001,
+        0.826,
+        0.083,
+        0.0,
+        0.0,
+        0.307,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.05,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.15,
+        0.523,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.368,
+        0.053,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      21,
+      17
+    ],
+    "trunk_columns": [
+      7
+    ],
+    "contact_px": 13,
+    "contact_reference_px": 13.0,
+    "blocked_by_scale": {
+      "0.85": [
+        2,
+        3,
+        2,
+        3
+      ],
+      "1.0": [
+        2,
+        3,
+        2,
+        3
+      ],
+      "1.15": [
+        2,
+        3,
+        2,
+        3
+      ],
+      "1.35": [
+        2,
+        3,
+        2,
+        3
+      ],
+      "1.6": [
+        2,
+        3,
+        2,
+        3
+      ]
+    },
+    "block_rect": [
+      2,
+      3,
+      2,
+      3
+    ],
+    "block_rect_px": [
+      256,
+      384,
+      384,
+      512
+    ]
+  }
+}

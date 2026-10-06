@@ -1,0 +1,268 @@
+{
+  "id": "mortal_highlands.stone_and_ore.standing_stone",
+  "path": "res://assets/world_map/mortal_highlands/stone_and_ore/standing_stone.png",
+  "type": "prop",
+  "category": "stone_and_ore",
+  "environment": "mortal_highlands",
+  "environment_name": "Mortal Highlands",
+  "world_tier": "Mortal World",
+  "archetype": "stone_and_ore.standing_stone",
+  "name": "Standing stone",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image_gen",
+  "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Exposed grey granite, steep broken ledges, wind-shaped pines, and pale lichen.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-07",
+  "prompt_ref": "openai-imagegen:mortal_highlands.standing_stone:20261007",
+  "prompt": "One isolated 2x2-cell standing-stone prop for a 2D top-down RPG map, Mortal Highlands. A single weathered pale-gray granite monolith marker with a broad irregular top, chipped facets, thin pale lichen streaks and a few natural cracks. Viewed from an elevated overhead orthographic game-camera angle; the upper surface is dominant and the short side edge only gives enough height to read it as upright. Compact stone footprint, not a mountain or pile. Centered complete silhouette, transparent padding, square high-resolution source, clear at 256px. Anime-painted gouache map art, fine dark #263A35 ink contours, broad readable planes, cool granite with restrained upper-left light. Genuine transparent background. No ground, no landscape, no pine trees, no extra stones, no runes, no text, no UI, no frame, no watermark, no horizon, no isometric exaggeration, no photorealism, no 3D render.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source_images": [
+    {
+      "path": "art-source/map-originals/mortal_highlands/stone_and_ore/mortal_highlands__stone_and_ore__standing_stone__cdd4aa3282c91d37.png",
+      "sha256": "cdd4aa3282c91d3758b2f005deb93f9cfe4bacf29272f13cd7721c40458ebc4d",
+      "size_px": [
+        1254,
+        1254
+      ],
+      "source": "OpenAI image_gen",
+      "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+      "generated_on": "2026-10-07",
+      "prompt_ref": "openai-imagegen:mortal_highlands.standing_stone:20261007",
+      "prompt": "One isolated 2x2-cell standing-stone prop for a 2D top-down RPG map, Mortal Highlands. A single weathered pale-gray granite monolith marker with a broad irregular top, chipped facets, thin pale lichen streaks and a few natural cracks. Viewed from an elevated overhead orthographic game-camera angle; the upper surface is dominant and the short side edge only gives enough height to read it as upright. Compact stone footprint, not a mountain or pile. Centered complete silhouette, transparent padding, square high-resolution source, clear at 256px. Anime-painted gouache map art, fine dark #263A35 ink contours, broad readable planes, cool granite with restrained upper-left light. Genuine transparent background. No ground, no landscape, no pine trees, no extra stones, no runes, no text, no UI, no frame, no watermark, no horizon, no isometric exaggeration, no photorealism, no 3D render.",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
+    }
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.74,
+        0.787
+      ],
+      [
+        0.593,
+        0.779
+      ]
+    ],
+    "frac_zero": 0.71,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "ground_contact",
+      "cov_gate": 0.01,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "solid",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 1,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      4,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.139,
+        0.73,
+        0.619,
+        0.0
+      ],
+      [
+        0.705,
+        1.0,
+        0.989,
+        0.441
+      ],
+      [
+        0.914,
+        1.0,
+        1.0,
+        0.846
+      ],
+      [
+        0.744,
+        1.0,
+        1.0,
+        0.809
+      ],
+      [
+        0.577,
+        1.0,
+        1.0,
+        0.561
+      ],
+      [
+        0.322,
+        1.0,
+        1.0,
+        0.426
+      ],
+      [
+        0.006,
+        0.739,
+        0.709,
+        0.039
+      ]
+    ],
+    "crop_offset": [
+      72,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 49,
+    "contact_reference_px": 49.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.277,
+    "dominant_rgb": [
+      146.9,
+      147.7,
+      142.9
+    ],
+    "hsv": {
+      "hue_deg": 104.9,
+      "saturation": 0.08,
+      "value": 0.59
+    },
+    "dominant_palette": "monochrome_grey",
+    "center_of_mass_norm": [
+      0.509,
+      0.489
+    ],
+    "horizontal_symmetry": 0.92,
+    "edge_complexity": 0.167
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

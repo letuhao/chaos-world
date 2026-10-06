@@ -1,0 +1,263 @@
+{
+  "id": "yin_jian.path_and_way.wangchuan_ferry_dock",
+  "name": "Wangchuan River Ferry Pier",
+  "vietnamese_name": "Bến Thuyền Vong Xuyên",
+  "hanzi": "忘川渡口",
+  "category": "path_and_way",
+  "sub_category": "crossing_and_pier",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "board_ferry",
+  "gameplay_role": "Dock where the Ghost Ferryman ferries departed souls.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "water",
+  "prompt_summary": "Weathered black timber pier extending into water with soul lantern.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/path_and_way/wangchuan_ferry_dock.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.path_and_way.wangchuan_ferry_dock:259053185",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.0,
+        0.498,
+        0.195
+      ],
+      [
+        0.136,
+        0.835,
+        0.433
+      ],
+      [
+        0.694,
+        0.375,
+        0.0
+      ]
+    ],
+    "frac_zero": 0.6914,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.312,
+        0.515,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.235,
+        0.994,
+        0.572,
+        0.0,
+        0.001,
+        0.023,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.511,
+        0.93,
+        0.967,
+        0.667,
+        0.668,
+        0.112,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.022,
+        0.162,
+        0.793,
+        1.0,
+        1.0,
+        0.808,
+        0.062,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.078,
+        0.481,
+        1.0,
+        1.0,
+        1.0,
+        0.714,
+        0.274,
+        0.0
+      ],
+      [
+        0.07,
+        0.059,
+        0.046,
+        0.266,
+        1.0,
+        1.0,
+        1.0,
+        0.813,
+        0.839,
+        0.514,
+        0.251
+      ],
+      [
+        0.256,
+        0.243,
+        0.203,
+        0.867,
+        1.0,
+        1.0,
+        0.795,
+        0.172,
+        0.597,
+        0.041,
+        0.227
+      ],
+      [
+        0.004,
+        0.137,
+        0.819,
+        1.0,
+        1.0,
+        0.971,
+        0.197,
+        0.0,
+        0.03,
+        0.0,
+        0.0
+      ],
+      [
+        0.064,
+        0.894,
+        1.0,
+        1.0,
+        0.982,
+        0.542,
+        0.006,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.911,
+        1.0,
+        1.0,
+        0.983,
+        0.633,
+        0.041,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.149,
+        0.58,
+        0.925,
+        0.375,
+        0.051,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      21,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3
+    ],
+    "contact_px": 64,
+    "contact_reference_px": 64.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

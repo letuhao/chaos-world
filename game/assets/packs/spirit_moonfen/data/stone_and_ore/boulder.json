@@ -1,0 +1,279 @@
+{
+  "id": "spirit_moonfen.stone_and_ore.boulder",
+  "path": "res://assets/world_map/spirit_moonfen/stone_and_ore/boulder.png",
+  "type": "prop",
+  "category": "stone_and_ore",
+  "environment": "spirit_moonfen",
+  "environment_name": "Spirit Moonfen",
+  "world_tier": "Spirit World",
+  "archetype": "stone_and_ore.boulder",
+  "name": "Boulder",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "ComfyUI local checkpoint: Flux1S/originByN0utis_originFluxAnimeV1.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Blue-black fen pools, silver reeds, peat islands, and restrained moonlit reflections.",
+  "generated_on": "2026-10-03",
+  "prompt_ref": "comfyui-map-v1:spirit_moonfen.stone_and_ore.boulder:700051",
+  "prompt": "A single large moonfen boulder seen directly overhead, dark charcoal stone with bone-pale veins, a few silver roots gripping the upper surface and a tiny cool cyan spirit glint, compact moss only on the rock, no marsh ground or water, isolated map object.\n\nProduction sprite for Chaos World, a 2D top-down cultivation action RPG. Asset: Boulder (spirit_moonfen.stone_and_ore.boulder); environment: Spirit Moonfen in the Spirit World. Environment art signature: Blue-black fen pools, silver reeds, peat islands, and restrained moonlit reflections. Show one complete isolated object viewed straight down. Leave clear padding and honor the bottom_center ground pivot. Use a transparent background. The final image must have transparent pixels outside the art. Straight-down orthographic camera, with no horizon or isometric projection. Anime-painted gouache, dark #263A35 ink contours, broad readable value planes, material-led colors, restrained surface detail, soft upper-left light. Keep the silhouette and identifying detail legible at the indexed game size. No text, labels, UI, frame, watermark, or unrelated objects.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "negative_prompt": "text, letters, watermark, border, UI, extra objects, duplicate subject, isometric view, perspective, horizon, photorealism, 3D render, noisy texture",
+  "generation_settings": {
+    "checkpoint": "Flux1S/originByN0utis_originFluxAnimeV1.safetensors",
+    "lora": "flux/gokaygokayFlux-2D-Game-Assets-LoRA.safetensors",
+    "lora_strength": 0.8,
+    "seed": 700051,
+    "steps": 32,
+    "size": 1024,
+    "target_size": 256,
+    "cfg": 1.0,
+    "guidance": 3.5,
+    "sampler": "euler",
+    "scheduler": "normal",
+    "rembg_model": "isnet-anime",
+    "rembg_post_processing": false,
+    "alpha_matting": false,
+    "alpha_foreground_threshold": 240,
+    "alpha_background_threshold": 10,
+    "alpha_erode_size": 0
+  },
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.554,
+        0.606
+      ],
+      [
+        0.801,
+        0.795
+      ]
+    ],
+    "frac_zero": 0.5819,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.2,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": true,
+      "vision_mode": "transparent",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      7,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.024,
+        0.508,
+        0.949,
+        0.445,
+        0.0,
+        0.0
+      ],
+      [
+        0.025,
+        0.806,
+        1.0,
+        1.0,
+        0.995,
+        0.384,
+        0.0
+      ],
+      [
+        0.464,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.868,
+        0.0
+      ],
+      [
+        0.437,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.87,
+        0.027
+      ],
+      [
+        0.731,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.989,
+        0.479
+      ],
+      [
+        0.124,
+        0.71,
+        0.897,
+        0.951,
+        0.78,
+        0.375,
+        0.028
+      ]
+    ],
+    "crop_offset": [
+      25,
+      40
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.401,
+    "dominant_rgb": [
+      73.4,
+      77.0,
+      80.2
+    ],
+    "hsv": {
+      "hue_deg": 184.8,
+      "saturation": 0.45,
+      "value": 0.36
+    },
+    "dominant_palette": "azure_water",
+    "center_of_mass_norm": [
+      0.501,
+      0.553
+    ],
+    "horizontal_symmetry": 0.96,
+    "edge_complexity": 0.136
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

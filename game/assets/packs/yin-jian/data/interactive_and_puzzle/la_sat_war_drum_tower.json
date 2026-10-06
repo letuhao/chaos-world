@@ -1,0 +1,195 @@
+{
+  "id": "yin_jian.interactive_and_puzzle.la_sat_war_drum_tower",
+  "name": "Rakshasa War Cry Drum Tower",
+  "vietnamese_name": "La Sát Chiến Cổ Lâu",
+  "hanzi": "罗刹战鼓楼",
+  "category": "interactive_and_puzzle",
+  "sub_category": "bell_and_chime",
+  "racial_faction": "la_sat",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "beat_war_drum",
+  "gameplay_role": "Sounding the drum triggers global morale boosts or summons male Rakshasa reinforcements.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "fire",
+  "prompt_summary": "Top-down 45 degree fortified wooden watch platform mounting a colossal red war drum made from dragon hide, surrounded by bone torches.",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/interactive_and_puzzle/la_sat_war_drum_tower.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.interactive_and_puzzle.la_sat_war_drum_tower:265331274",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.455,
+        0.471
+      ],
+      [
+        0.552,
+        0.577
+      ]
+    ],
+    "frac_zero": 0.6305,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.028,
+        0.009,
+        0.276,
+        0.0,
+        0.026,
+        0.0
+      ],
+      [
+        0.0,
+        0.532,
+        0.73,
+        0.896,
+        0.539,
+        0.272,
+        0.0
+      ],
+      [
+        0.137,
+        0.767,
+        1.0,
+        1.0,
+        1.0,
+        0.228,
+        0.24
+      ],
+      [
+        0.586,
+        0.973,
+        1.0,
+        1.0,
+        1.0,
+        0.896,
+        0.255
+      ],
+      [
+        0.331,
+        0.973,
+        1.0,
+        1.0,
+        1.0,
+        0.781,
+        0.0
+      ],
+      [
+        0.0,
+        0.483,
+        1.0,
+        1.0,
+        0.888,
+        0.049,
+        0.0
+      ],
+      [
+        0.0,
+        0.311,
+        0.219,
+        0.267,
+        0.517,
+        0.003,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      26,
+      17
+    ],
+    "trunk_columns": [
+      4
+    ],
+    "contact_px": 20,
+    "contact_reference_px": 20.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

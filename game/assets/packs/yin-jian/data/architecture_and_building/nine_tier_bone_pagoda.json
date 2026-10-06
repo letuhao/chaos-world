@@ -1,0 +1,435 @@
+{
+  "id": "yin_jian.architecture_and_building.nine_tier_bone_pagoda",
+  "name": "Nine-Tier Bone Pagoda",
+  "vietnamese_name": "Cửu Tầng Cốt Tháp",
+  "hanzi": "九级白骨塔",
+  "category": "architecture_and_building",
+  "sub_category": "bone_pagoda",
+  "footprint_cells": [
+    4,
+    4
+  ],
+  "canvas_px": [
+    512,
+    512
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "ascend",
+  "gameplay_role": "Towering pagoda constructed from demon and dragon bones.",
+  "destructible": false,
+  "material": "bone",
+  "cultivation_element": "yin",
+  "prompt_summary": "Soaring 9-tier bone pagoda with skull finials on every roof horn.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/architecture_and_building/nine_tier_bone_pagoda.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.architecture_and_building.nine_tier_bone_pagoda:259509955",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.0,
+        0.214,
+        0.184,
+        0.0
+      ],
+      [
+        0.0,
+        0.526,
+        0.504,
+        0.014
+      ],
+      [
+        0.158,
+        0.834,
+        0.925,
+        0.166
+      ],
+      [
+        0.461,
+        0.75,
+        0.646,
+        0.122
+      ]
+    ],
+    "frac_zero": 0.6957,
+    "blocks": [
+      [
+        false,
+        true,
+        false,
+        false
+      ],
+      [
+        false,
+        true,
+        true,
+        false
+      ],
+      [
+        false,
+        true,
+        true,
+        false
+      ],
+      [
+        true,
+        true,
+        true,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 8,
+    "anchor_cell": [
+      2,
+      2
+    ],
+    "sub_grid": [
+      15,
+      15
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.123,
+        0.113,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.396,
+        0.403,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.022,
+        0.021,
+        0.654,
+        0.685,
+        0.022,
+        0.024,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.055,
+        0.664,
+        1.0,
+        1.0,
+        0.681,
+        0.069,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.028,
+        0.563,
+        1.0,
+        1.0,
+        0.605,
+        0.039,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.086,
+        0.689,
+        1.0,
+        1.0,
+        0.731,
+        0.107,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.267,
+        0.869,
+        1.0,
+        1.0,
+        0.882,
+        0.278,
+        0.052,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.006,
+        0.468,
+        0.866,
+        1.0,
+        1.0,
+        0.863,
+        0.471,
+        0.412,
+        0.052,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.111,
+        0.15,
+        0.229,
+        0.977,
+        1.0,
+        1.0,
+        0.986,
+        0.557,
+        0.705,
+        0.003,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.12,
+        0.65,
+        0.808,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.848,
+        0.051,
+        0.002,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.053,
+        0.44,
+        0.908,
+        0.868,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.986,
+        0.417,
+        0.112,
+        0.021,
+        0.0
+      ],
+      [
+        0.256,
+        0.626,
+        0.996,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.981,
+        0.474,
+        0.263,
+        0.089,
+        0.069
+      ],
+      [
+        0.007,
+        0.761,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.789,
+        0.213,
+        0.046,
+        0.006,
+        0.0
+      ],
+      [
+        0.118,
+        0.632,
+        0.59,
+        0.85,
+        0.805,
+        0.801,
+        0.916,
+        0.977,
+        0.4,
+        0.236,
+        0.362,
+        0.218,
+        0.008,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.001,
+        0.125,
+        0.169,
+        0.077,
+        0.249,
+        0.387,
+        0.142,
+        0.0,
+        0.013,
+        0.006,
+        0.015,
+        0.016,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      27,
+      17
+    ],
+    "trunk_columns": [
+      7
+    ],
+    "contact_px": 13,
+    "contact_reference_px": 13.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        3
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        3
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        3
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        3
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        3
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      3
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      512
+    ]
+  }
+}

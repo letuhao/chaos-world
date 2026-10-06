@@ -1,0 +1,193 @@
+{
+  "id": "yin_jian.creature_and_denizen.headless_cavalry_spirit",
+  "name": "Decapitated Ghost Cavalier",
+  "vietnamese_name": "Kỵ Binh Không Đầu",
+  "hanzi": "无头鬼骑",
+  "category": "creature_and_denizen",
+  "sub_category": "wandering_spirit",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "duel_cavalier",
+  "gameplay_role": "Armored general carrying severed head under arm atop spectral steed.",
+  "destructible": false,
+  "material": "bone",
+  "cultivation_element": "metal",
+  "prompt_summary": "Headless warrior on skeletal horse holding spear in one hand and head in other.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/headless_cavalry_spirit.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.headless_cavalry_spirit:262221760",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.127,
+        0.339
+      ],
+      [
+        0.275,
+        0.549
+      ]
+    ],
+    "frac_zero": 0.7555,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.188,
+        0.239,
+        0.002,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.082,
+        0.999,
+        0.746,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.345,
+        0.878,
+        0.972,
+        0.078,
+        0.0
+      ],
+      [
+        0.0,
+        0.287,
+        0.675,
+        1.0,
+        1.0,
+        0.287,
+        0.053
+      ],
+      [
+        0.151,
+        0.318,
+        0.589,
+        1.0,
+        1.0,
+        0.818,
+        0.091
+      ],
+      [
+        0.193,
+        0.0,
+        0.011,
+        0.759,
+        0.915,
+        0.488,
+        0.009
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.025,
+        0.221,
+        0.172,
+        0.051
+      ]
+    ],
+    "crop_offset": [
+      17,
+      29
+    ],
+    "trunk_columns": [],
+    "contact_px": 23,
+    "contact_reference_px": 23.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

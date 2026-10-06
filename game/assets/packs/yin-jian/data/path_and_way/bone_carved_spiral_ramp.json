@@ -1,0 +1,259 @@
+{
+  "id": "yin_jian.path_and_way.bone_carved_spiral_ramp",
+  "name": "Bone Carved Spiral Ramp",
+  "vietnamese_name": "Dốc Xoắn Khắc Xương",
+  "hanzi": "盘骨回廊",
+  "category": "path_and_way",
+  "sub_category": "stairs_and_ramps",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": true,
+  "vision_mode": "canopy",
+  "interactive_verb": null,
+  "gameplay_role": "Spiral ramp wrapping around a subterranean rock pillar.",
+  "destructible": false,
+  "material": "bone",
+  "cultivation_element": "yin",
+  "prompt_summary": "Sweeping spiral ramp constructed of fused vertebral columns.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/path_and_way/bone_carved_spiral_ramp.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.path_and_way.bone_carved_spiral_ramp:259116731",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.287,
+        0.83,
+        0.268
+      ],
+      [
+        0.784,
+        0.813,
+        0.379
+      ],
+      [
+        0.381,
+        0.771,
+        0.531
+      ]
+    ],
+    "frac_zero": 0.5598,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.106,
+        0.124,
+        0.283,
+        0.754,
+        0.501,
+        0.161,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.676,
+        0.683,
+        0.995,
+        1.0,
+        0.854,
+        0.215,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.097,
+        0.991,
+        1.0,
+        1.0,
+        1.0,
+        0.965,
+        0.826,
+        0.225,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.352,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.737,
+        0.0,
+        0.0
+      ],
+      [
+        0.082,
+        0.986,
+        1.0,
+        1.0,
+        1.0,
+        0.951,
+        0.721,
+        0.983,
+        0.971,
+        0.025,
+        0.0
+      ],
+      [
+        0.6,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.303,
+        0.045,
+        0.571,
+        0.576,
+        0.0,
+        0.0
+      ],
+      [
+        0.442,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.861,
+        0.195,
+        0.214,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.509,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.971,
+        0.802,
+        0.653,
+        0.031,
+        0.0
+      ],
+      [
+        0.035,
+        0.453,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.419,
+        0.062
+      ],
+      [
+        0.0,
+        0.13,
+        0.417,
+        0.746,
+        0.979,
+        1.0,
+        0.997,
+        0.954,
+        0.686,
+        0.025,
+        0.0
+      ],
+      [
+        0.0,
+        0.001,
+        0.0,
+        0.078,
+        0.082,
+        0.173,
+        0.122,
+        0.166,
+        0.039,
+        0.015,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      29,
+      17
+    ],
+    "trunk_columns": [],
+    "contact_px": 3,
+    "contact_reference_px": 3.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

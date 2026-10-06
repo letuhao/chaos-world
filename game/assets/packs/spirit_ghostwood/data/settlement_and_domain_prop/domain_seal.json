@@ -1,0 +1,266 @@
+{
+  "id": "spirit_ghostwood.settlement_and_domain_prop.domain_seal",
+  "path": "res://assets/world_map/spirit_ghostwood/settlement_and_domain_prop/domain_seal.png",
+  "type": "interactable",
+  "category": "settlement_and_domain_prop",
+  "environment": "spirit_ghostwood",
+  "environment_name": "Spirit Ghostwood",
+  "world_tier": "Spirit World",
+  "archetype": "settlement_and_domain_prop.domain_seal",
+  "name": "Domain seal",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image generation, 2026-10-05",
+  "license": "OpenAI generated image; project use under applicable OpenAI generation terms",
+  "alpha": "transparent",
+  "environment_theme": "Charcoal soil, bone-pale roots, sparse ghost grass, and small cold cyan spirit lights.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-05",
+  "prompt_ref": "openai-map-v1:spirit_ghostwood.settlement_and_domain_prop.domain_seal:20261005",
+  "prompt": "One Spirit Ghostwood domain seal, production sprite for a 2D top-down cultivation RPG map. Square 1024x1024, genuine transparent background. Strict straight-down orthographic view, show top surfaces and ground-facing silhouette, no perspective or isometric angle. A heavy flat circular charcoal-basalt boundary seal set into ground: broad dark stone ring, pale bone-white root inlay forming an abstract closed loop, small cold-cyan spirit crystal at center. Four short radial chips and tiny dim cyan points; no lettering or readable runes. Compact centered landmark footprint sized for 2x2 cells, clear at 256x256, clean transparent margin. Matte anime gouache, #263A35 fine contours, broad low-contrast planes, diffuse upper-left light, restrained glow. Ghostwood palette: charcoal, bone-pale roots, very subtle moss, cold cyan. Exclude people, altar table, candles, flames, smoke, text, writing-like symbols, ground background, external cast shadow, floating object, side view, 3D render, border, UI, watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.693,
+        0.686
+      ],
+      [
+        0.697,
+        0.689
+      ]
+    ],
+    "frac_zero": 0.5174,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.2,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "solid",
+      "acoustic_profile": "spirit",
+      "material": "spirit",
+      "elevation": 1,
+      "destructible": {
+        "enabled": false,
+        "tier": 0,
+        "hp": 0,
+        "on_destroy": null,
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "unseal",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.199,
+        0.661,
+        0.82,
+        0.492,
+        0.032,
+        0.0
+      ],
+      [
+        0.217,
+        0.973,
+        1.0,
+        1.0,
+        1.0,
+        0.72,
+        0.003
+      ],
+      [
+        0.696,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.425
+      ],
+      [
+        0.857,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.72
+      ],
+      [
+        0.536,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.971,
+        0.189
+      ],
+      [
+        0.051,
+        0.769,
+        1.0,
+        1.0,
+        0.975,
+        0.372,
+        0.0
+      ],
+      [
+        0.0,
+        0.015,
+        0.449,
+        0.704,
+        0.194,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      22,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.467,
+    "dominant_rgb": [
+      81.1,
+      84.3,
+      79.0
+    ],
+    "hsv": {
+      "hue_deg": 130.8,
+      "saturation": 0.13,
+      "value": 0.34
+    },
+    "dominant_palette": "monochrome_grey",
+    "center_of_mass_norm": [
+      0.493,
+      0.473
+    ],
+    "horizontal_symmetry": 1.0,
+    "edge_complexity": 0.239
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "destructible": {
+    "enabled": false,
+    "tier": 0,
+    "hp": 0,
+    "on_destroy": null,
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [],
+    "reveals_loot_category": null
+  },
+  "material": "spirit",
+  "cultivation_element": "none"
+}

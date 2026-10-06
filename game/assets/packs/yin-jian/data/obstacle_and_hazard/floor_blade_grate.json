@@ -1,0 +1,97 @@
+{
+  "id": "yin_jian.obstacle_and_hazard.floor_blade_grate",
+  "name": "Pop-up Floor Blade Grate",
+  "vietnamese_name": "Bẫy Lưỡi Dao Sàn",
+  "hanzi": "地刺陷阱",
+  "category": "obstacle_and_hazard",
+  "sub_category": "spikes_and_blade",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "disarm",
+  "gameplay_role": "Triggered pressure plate sprouting serrated daggers.",
+  "destructible": false,
+  "material": "metal",
+  "cultivation_element": "metal",
+  "prompt_summary": "Square bronze floor plate with row of razor slits.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/obstacle_and_hazard/floor_blade_grate.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.obstacle_and_hazard.floor_blade_grate:260844419",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.505
+      ]
+    ],
+    "frac_zero": 0.7924,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.293,
+        0.688,
+        0.084
+      ],
+      [
+        0.685,
+        0.973,
+        0.453
+      ],
+      [
+        0.055,
+        0.445,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      26,
+      32
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 31,
+    "contact_reference_px": 31.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

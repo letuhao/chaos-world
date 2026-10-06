@@ -1,0 +1,478 @@
+{
+  "id": "mortal_plains.landmark_and_environment_detail.ruined_arch",
+  "path": "res://assets/world_map/mortal_plains/landmark_and_environment_detail/ruined_arch.png",
+  "type": "landmark",
+  "category": "landmark_and_environment_detail",
+  "environment": "mortal_plains",
+  "environment_name": "Mortal Plains",
+  "world_tier": "Mortal World",
+  "archetype": "landmark_and_environment_detail.ruined_arch",
+  "name": "Ruined arch",
+  "canvas_px": [
+    512,
+    512
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image generation",
+  "license": "Generated with OpenAI; OpenAI terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Sun-warmed ochre loam, low golden grasses, rounded hills, and worn farm tracks.",
+  "footprint_cells": [
+    4,
+    4
+  ],
+  "generated_on": "2026-10-06",
+  "prompt_ref": "openai-map-mortal-plains-ruined-arch-v1",
+  "prompt": "High-quality isolated 2D map landmark sprite: the broken footprint of a ruined stone arch in Mortal Plains, Chaos World. Strict vertical overhead orthographic camera looking straight down; make the ruin read as a clear U-shaped ancient doorway from above, not a frontal arch. Two thick weathered limestone column bases at the north end, their fallen lintel stones continuing partway down both sides, a deliberate wide open passage at the south, scattered attached rubble tucked against the broken sides. Warm pale sandstone, sun-worn ochre and restrained dry-grass tufts embedded only in stone cracks. Complete isolated footprint, centered with generous transparent padding, bottom-center ground pivot, strong readable silhouette. Anime-painted gouache, dark #263A35 ink contours, broad readable value planes, restrained upper-left light, polished landmark detail legible at 512px. Transparent background. No terrain plane, no surrounding landscape, no hills, no farm track, no horizon, no frontal view, no perspective, no isometric angle, no text, no UI, no frame, no watermark, no extra ruins.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source_images": [
+    {
+      "path": "art-source/map-originals/mortal_plains/landmark_and_environment_detail/mortal_plains__landmark_and_environment_detail__ruined_arch__d621d03316038b49.png",
+      "sha256": "d621d03316038b498dd5e690f79f5a8a0e7f61641a03a69295d5445edd6de063",
+      "size_px": [
+        1230,
+        1278
+      ],
+      "source": "OpenAI image generation",
+      "license": "Generated with OpenAI; OpenAI terms apply",
+      "generated_on": "2026-10-06",
+      "prompt_ref": "openai-map-mortal-plains-ruined-arch-v1",
+      "prompt": "High-quality isolated 2D map landmark sprite: the broken footprint of a ruined stone arch in Mortal Plains, Chaos World. Strict vertical overhead orthographic camera looking straight down; make the ruin read as a clear U-shaped ancient doorway from above, not a frontal arch. Two thick weathered limestone column bases at the north end, their fallen lintel stones continuing partway down both sides, a deliberate wide open passage at the south, scattered attached rubble tucked against the broken sides. Warm pale sandstone, sun-worn ochre and restrained dry-grass tufts embedded only in stone cracks. Complete isolated footprint, centered with generous transparent padding, bottom-center ground pivot, strong readable silhouette. Anime-painted gouache, dark #263A35 ink contours, broad readable value planes, restrained upper-left light, polished landmark detail legible at 512px. Transparent background. No terrain plane, no surrounding landscape, no hills, no farm track, no horizon, no frontal view, no perspective, no isometric angle, no text, no UI, no frame, no watermark, no extra ruins.",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
+    }
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.526,
+        0.584
+      ],
+      [
+        0.464,
+        0.45
+      ]
+    ],
+    "frac_zero": 0.5394,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "core_ring",
+      "cov_gate": 0.1,
+      "authored_open": "bottom_centre",
+      "passable_under": true,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "canopy",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      15,
+      15
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.165,
+        0.595,
+        0.339,
+        0.229,
+        0.22,
+        0.247,
+        0.328,
+        0.297,
+        0.254,
+        0.467,
+        0.806,
+        0.699,
+        0.01,
+        0.0
+      ],
+      [
+        0.019,
+        0.916,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.422,
+        0.0
+      ],
+      [
+        0.121,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.926,
+        0.658,
+        0.68,
+        0.997,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.579,
+        0.0
+      ],
+      [
+        0.259,
+        1.0,
+        1.0,
+        1.0,
+        0.725,
+        0.168,
+        0.0,
+        0.0,
+        0.213,
+        0.627,
+        1.0,
+        1.0,
+        1.0,
+        0.705,
+        0.004
+      ],
+      [
+        0.356,
+        1.0,
+        1.0,
+        0.99,
+        0.067,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.04,
+        0.864,
+        1.0,
+        1.0,
+        0.983,
+        0.198
+      ],
+      [
+        0.018,
+        0.826,
+        1.0,
+        0.886,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.45,
+        1.0,
+        1.0,
+        0.921,
+        0.245
+      ],
+      [
+        0.086,
+        0.843,
+        1.0,
+        0.904,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.812,
+        1.0,
+        1.0,
+        0.841,
+        0.0
+      ],
+      [
+        0.734,
+        1.0,
+        1.0,
+        0.988,
+        0.347,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.609,
+        1.0,
+        1.0,
+        0.535,
+        0.0
+      ],
+      [
+        0.7,
+        1.0,
+        1.0,
+        1.0,
+        0.42,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.203,
+        0.893,
+        1.0,
+        1.0,
+        0.911,
+        0.164
+      ],
+      [
+        0.021,
+        0.568,
+        1.0,
+        1.0,
+        0.467,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.033,
+        0.789,
+        1.0,
+        1.0,
+        1.0,
+        0.395
+      ],
+      [
+        0.209,
+        0.89,
+        1.0,
+        1.0,
+        0.476,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.682,
+        1.0,
+        1.0,
+        1.0,
+        0.651
+      ],
+      [
+        0.712,
+        1.0,
+        1.0,
+        1.0,
+        0.597,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.584,
+        1.0,
+        1.0,
+        0.997,
+        0.365
+      ],
+      [
+        0.652,
+        1.0,
+        1.0,
+        1.0,
+        0.38,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.015,
+        0.836,
+        1.0,
+        1.0,
+        0.932,
+        0.208
+      ],
+      [
+        0.083,
+        0.785,
+        0.981,
+        0.993,
+        0.116,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.201,
+        0.738,
+        0.968,
+        0.137,
+        0.0
+      ],
+      [
+        0.0,
+        0.002,
+        0.468,
+        0.815,
+        0.069,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.59,
+        0.441,
+        0.018,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      20,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.437,
+    "dominant_rgb": [
+      165.6,
+      140.6,
+      101.7
+    ],
+    "hsv": {
+      "hue_deg": 35.9,
+      "saturation": 0.41,
+      "value": 0.65
+    },
+    "dominant_palette": "warm_earth_gold",
+    "center_of_mass_norm": [
+      0.5,
+      0.455
+    ],
+    "horizontal_symmetry": 0.89,
+    "edge_complexity": 0.235
+  },
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "canopy",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

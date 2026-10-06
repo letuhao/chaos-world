@@ -1,0 +1,127 @@
+{
+  "id": "yin_jian.creature_and_denizen.hac_am_shadow_assassin",
+  "name": "Dark Clan Shadow Stalker",
+  "vietnamese_name": "Hắc Ám Tộc Ảnh Sát Thủ",
+  "hanzi": "黑暗族暗影刺客",
+  "category": "creature_and_denizen",
+  "sub_category": "elite_demon",
+  "racial_faction": "darkness",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "engage_assassin",
+  "gameplay_role": "Invisibly teleports behind target; unleashes critical backstab strikes with shadow-imbued daggers.",
+  "destructible": false,
+  "material": "flesh",
+  "cultivation_element": "dark",
+  "prompt_summary": "Top-down 45 degree semi-translucent humanoid clad in skin-tight midnight silk, twin curved daggers dripping dark mist, face obscured by a dark veil.",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/hac_am_shadow_assassin.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.hac_am_shadow_assassin:265506055",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.483
+      ]
+    ],
+    "frac_zero": 0.7887,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      2,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.16,
+        0.615
+      ],
+      [
+        0.668,
+        0.834
+      ],
+      [
+        0.313,
+        0.305
+      ]
+    ],
+    "crop_offset": [
+      32,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 10,
+    "contact_reference_px": 10.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

@@ -1,0 +1,288 @@
+{
+  "id": "yin_jian.cultivation_and_resource.bat_tu_blood_holy_spring",
+  "name": "Sacred Holy Blood Spring",
+  "vietnamese_name": "Huyết Thánh Tuyền Mạch",
+  "hanzi": "血圣泉脉",
+  "category": "cultivation_and_resource",
+  "sub_category": "yin_qi_spring",
+  "racial_faction": "immortal_blood",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "water",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "commune_with_spring",
+  "gameplay_role": "High-purity liquid blood spring that grants blood-refining buffs and replenishes vitality for flesh cultivators.",
+  "destructible": false,
+  "material": "fluid",
+  "cultivation_element": "blood",
+  "prompt_summary": "Top-down 45 degree ornate stone font brimming with thick bubbling crimson holy blood, surrounded by red blood-vein moss and floating red mist.",
+  "runtime_path": "res://assets/packs/yin-jian/runtime/bat_tu_blood_holy_spring.png",
+  "original_path": "assets/packs/yin-jian/original/bat_tu_blood_holy_spring_original.jpg",
+  "pivot": "center",
+  "cv_validation": {
+    "status": "passed",
+    "perspective": "45_degree_world_map_orthographic",
+    "palette": "dark_netherworld_gouache",
+    "rembg_engine": "ComfyUI RMBG-2.0",
+    "subcells_covered": 81,
+    "total_subcells": 144,
+    "coverage_ratio": 0.562
+  },
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/cultivation_and_resource/bat_tu_blood_holy_spring.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.cultivation_and_resource.bat_tu_blood_holy_spring:265271870",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.212,
+        0.369,
+        0.076
+      ],
+      [
+        0.747,
+        1.0,
+        0.666
+      ],
+      [
+        1.0,
+        1.0,
+        0.983
+      ]
+    ],
+    "frac_zero": 0.422,
+    "blocks": [
+      [
+        true,
+        true,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 8,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.044,
+        0.2,
+        0.0,
+        0.0,
+        0.0,
+        0.013,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.104,
+        0.657,
+        0.036,
+        0.0,
+        0.045,
+        0.18,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.002,
+        0.674,
+        0.718,
+        0.411,
+        0.557,
+        0.752,
+        0.505,
+        0.041,
+        0.082,
+        0.0
+      ],
+      [
+        0.0,
+        0.083,
+        0.532,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.969,
+        0.456,
+        0.167,
+        0.0
+      ],
+      [
+        0.0,
+        0.334,
+        0.967,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.997,
+        0.286,
+        0.002
+      ],
+      [
+        0.395,
+        0.926,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.823,
+        0.03
+      ],
+      [
+        0.927,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.854,
+        0.416
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.995,
+        0.687,
+        0.946
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.993,
+        0.995,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      18
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "contact_px": 352,
+    "contact_reference_px": 352.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        2,
+        2,
+        2
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

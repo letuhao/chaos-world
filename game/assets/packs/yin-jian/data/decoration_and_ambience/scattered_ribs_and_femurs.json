@@ -1,0 +1,97 @@
+{
+  "id": "yin_jian.decoration_and_ambience.scattered_ribs_and_femurs",
+  "name": "Scattered Ribs and Longbones",
+  "vietnamese_name": "Xương Tàn Rải Rác",
+  "hanzi": "散落遗骨地饰",
+  "category": "decoration_and_ambience",
+  "sub_category": "bone_and_skull",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Floor decal of bleached bones half buried in ash.",
+  "destructible": false,
+  "material": "bone",
+  "cultivation_element": "yin",
+  "prompt_summary": "Splay of ribs, arm bones, and finger joints on earth.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/decoration_and_ambience/scattered_ribs_and_femurs.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.decoration_and_ambience.scattered_ribs_and_femurs:264810633",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.485
+      ]
+    ],
+    "frac_zero": 0.7418,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.291,
+        0.461,
+        0.533
+      ],
+      [
+        0.733,
+        0.862,
+        0.351
+      ],
+      [
+        0.435,
+        0.169,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      36
+    ],
+    "trunk_columns": [
+      0
+    ],
+    "contact_px": 38,
+    "contact_reference_px": 38.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

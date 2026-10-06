@@ -1,0 +1,225 @@
+{
+  "id": "yin_jian.creature_and_denizen.ox_head_general",
+  "name": "Ox-Head General (Nguu Dau)",
+  "vietnamese_name": "Ngưu Đầu Tướng Quân",
+  "hanzi": "牛头罗刹将军",
+  "category": "creature_and_denizen",
+  "sub_category": "jailer_and_guard",
+  "footprint_cells": [
+    2,
+    3
+  ],
+  "canvas_px": [
+    256,
+    384
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "fight_jailer",
+  "gameplay_role": "Massive bull-headed minotaur jailer wielding a barbed steel pitchfork.",
+  "destructible": false,
+  "material": "bone",
+  "cultivation_element": "metal",
+  "prompt_summary": "Muscular dark-furred ox-headed titan clad in iron armor wielding heavy steel trident.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/ox_head_general.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.ox_head_general:262121164",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.293,
+        0.241
+      ],
+      [
+        0.244,
+        0.81
+      ],
+      [
+        0.115,
+        0.328
+      ]
+    ],
+    "frac_zero": 0.7663,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      9
+    ],
+    "sub_fill": [
+      [
+        0.191,
+        0.11,
+        0.0,
+        0.017,
+        0.0,
+        0.011,
+        0.0
+      ],
+      [
+        0.319,
+        0.515,
+        0.131,
+        0.312,
+        0.037,
+        0.298,
+        0.0
+      ],
+      [
+        0.2,
+        0.759,
+        0.163,
+        0.942,
+        0.989,
+        0.677,
+        0.0
+      ],
+      [
+        0.0,
+        0.233,
+        0.387,
+        0.983,
+        1.0,
+        0.973,
+        0.077
+      ],
+      [
+        0.0,
+        0.019,
+        0.397,
+        0.533,
+        1.0,
+        0.975,
+        0.484
+      ],
+      [
+        0.0,
+        0.0,
+        0.48,
+        0.961,
+        1.0,
+        0.975,
+        0.65
+      ],
+      [
+        0.0,
+        0.0,
+        0.463,
+        0.376,
+        0.554,
+        0.991,
+        0.203
+      ],
+      [
+        0.0,
+        0.0,
+        0.229,
+        0.021,
+        0.0,
+        0.501,
+        0.354
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.043,
+        0.495
+      ]
+    ],
+    "crop_offset": [
+      17,
+      84
+    ],
+    "trunk_columns": [
+      6
+    ],
+    "contact_px": 20,
+    "contact_reference_px": 20.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.0": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.15": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.35": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.6": [
+        1,
+        2,
+        1,
+        2
+      ]
+    },
+    "block_rect": [
+      1,
+      2,
+      1,
+      2
+    ],
+    "block_rect_px": [
+      128,
+      256,
+      256,
+      384
+    ]
+  }
+}

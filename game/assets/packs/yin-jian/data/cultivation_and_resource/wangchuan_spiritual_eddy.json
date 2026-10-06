@@ -1,0 +1,164 @@
+{
+  "id": "yin_jian.cultivation_and_resource.wangchuan_spiritual_eddy",
+  "name": "Wangchuan River Spiritual Eddy",
+  "vietnamese_name": "Xoáy Nước Linh Khí Vong Xuyên",
+  "hanzi": "忘川通灵涡",
+  "category": "cultivation_and_resource",
+  "sub_category": "yin_qi_spring",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "gather_dew",
+  "gameplay_role": "Eddy where spiritual dew coalesces on the river surface.",
+  "destructible": false,
+  "material": "water",
+  "cultivation_element": "water",
+  "prompt_summary": "Swirling patch of luminescent blue water with floating spirit motes.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/cultivation_and_resource/wangchuan_spiritual_eddy.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.cultivation_and_resource.wangchuan_spiritual_eddy:263865320",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.282,
+        0.653
+      ],
+      [
+        0.977,
+        0.554
+      ]
+    ],
+    "frac_zero": 0.5168,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.144,
+        0.085,
+        0.276,
+        0.0
+      ],
+      [
+        0.0,
+        0.057,
+        0.181,
+        0.863,
+        0.95,
+        0.915,
+        0.112
+      ],
+      [
+        0.0,
+        0.468,
+        0.821,
+        1.0,
+        1.0,
+        1.0,
+        0.697
+      ],
+      [
+        0.337,
+        0.942,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.618
+      ],
+      [
+        0.96,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.413,
+        0.078
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.984,
+        0.398,
+        0.002
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        0.923,
+        0.448,
+        0.042,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      18,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 127,
+    "contact_reference_px": 127.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

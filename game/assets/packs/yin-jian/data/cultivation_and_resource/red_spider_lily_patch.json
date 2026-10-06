@@ -1,0 +1,158 @@
+{
+  "id": "yin_jian.cultivation_and_resource.red_spider_lily_patch",
+  "name": "Crimson Lycoris Flower Patch",
+  "vietnamese_name": "Bãi Hoa Bỉ Ngạn Đỏ Thẫm",
+  "hanzi": "曼珠沙华花丛",
+  "category": "cultivation_and_resource",
+  "sub_category": "herb_and_fungus",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "gather_flowers",
+  "gameplay_role": "Field of brilliant red spider lilies used in memory potions.",
+  "destructible": true,
+  "material": "foliage",
+  "cultivation_element": "yin",
+  "prompt_summary": "Dense carpet of fiery red filament flowers.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/cultivation_and_resource/red_spider_lily_patch.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.cultivation_and_resource.red_spider_lily_patch:264430855",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.388,
+        0.364
+      ],
+      [
+        0.456,
+        0.56
+      ]
+    ],
+    "frac_zero": 0.6046,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.021,
+        0.219,
+        0.021,
+        0.0,
+        0.019,
+        0.002,
+        0.0
+      ],
+      [
+        0.049,
+        0.726,
+        0.339,
+        0.35,
+        0.666,
+        0.416,
+        0.002
+      ],
+      [
+        0.015,
+        0.636,
+        1.0,
+        1.0,
+        0.974,
+        0.521,
+        0.043
+      ],
+      [
+        0.084,
+        0.541,
+        1.0,
+        1.0,
+        1.0,
+        0.932,
+        0.162
+      ],
+      [
+        0.328,
+        0.819,
+        1.0,
+        1.0,
+        1.0,
+        0.994,
+        0.482
+      ],
+      [
+        0.041,
+        0.129,
+        0.617,
+        0.907,
+        0.831,
+        0.585,
+        0.107
+      ],
+      [
+        0.012,
+        0.102,
+        0.274,
+        0.273,
+        0.252,
+        0.135,
+        0.04
+      ]
+    ],
+    "crop_offset": [
+      16,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 9,
+    "contact_reference_px": 9.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

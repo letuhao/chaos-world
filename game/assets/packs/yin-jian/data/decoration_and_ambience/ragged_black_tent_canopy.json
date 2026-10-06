@@ -1,0 +1,300 @@
+{
+  "id": "yin_jian.decoration_and_ambience.ragged_black_tent_canopy",
+  "name": "Torn Nether Market Canopy",
+  "vietnamese_name": "Mái Che Chợ Ma Rách Rưới",
+  "hanzi": "破败黑布遮蓬",
+  "category": "decoration_and_ambience",
+  "sub_category": "banner_and_fabric",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "canopy",
+  "interactive_verb": null,
+  "gameplay_role": "Tattered black cloth stretched on bamboo posts providing shadow.",
+  "destructible": true,
+  "material": "cloth",
+  "cultivation_element": "yin",
+  "prompt_summary": "Square black cloth canopy with ragged edges over bamboo frame.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/decoration_and_ambience/ragged_black_tent_canopy.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.decoration_and_ambience.ragged_black_tent_canopy:264774229",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.332,
+        0.529,
+        0.536
+      ],
+      [
+        0.299,
+        1.0,
+        0.602
+      ],
+      [
+        0.652,
+        0.474,
+        0.551
+      ]
+    ],
+    "frac_zero": 0.5395,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.494,
+        0.099,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.287,
+        0.551
+      ],
+      [
+        0.0,
+        0.188,
+        0.849,
+        0.538,
+        0.368,
+        0.237,
+        0.243,
+        0.433,
+        0.581,
+        0.837,
+        0.158
+      ],
+      [
+        0.36,
+        0.0,
+        0.692,
+        1.0,
+        1.0,
+        0.869,
+        0.97,
+        1.0,
+        1.0,
+        0.871,
+        0.247
+      ],
+      [
+        0.136,
+        0.0,
+        0.458,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.197,
+        0.012
+      ],
+      [
+        0.0,
+        0.0,
+        0.411,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.915,
+        0.11,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.436,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.985,
+        0.139,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.663,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.338,
+        0.0
+      ],
+      [
+        0.0,
+        0.011,
+        0.917,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.437,
+        0.0
+      ],
+      [
+        0.0,
+        0.503,
+        1.0,
+        1.0,
+        1.0,
+        0.241,
+        0.075,
+        0.898,
+        0.462,
+        0.875,
+        0.275
+      ],
+      [
+        0.312,
+        1.0,
+        1.0,
+        0.897,
+        0.561,
+        0.318,
+        0.536,
+        0.909,
+        0.569,
+        0.702,
+        0.321
+      ],
+      [
+        0.746,
+        0.455,
+        0.96,
+        0.498,
+        0.0,
+        0.0,
+        0.0,
+        0.089,
+        0.725,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      22,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      8
+    ],
+    "contact_px": 71,
+    "contact_reference_px": 71.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        2,
+        0,
+        2
+      ],
+      "1.0": [
+        0,
+        2,
+        0,
+        2
+      ],
+      "1.15": [
+        0,
+        2,
+        0,
+        2
+      ],
+      "1.35": [
+        0,
+        2,
+        0,
+        2
+      ],
+      "1.6": [
+        0,
+        2,
+        0,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      2,
+      0,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      256,
+      128,
+      384
+    ]
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "id": "yin_jian.destructible_and_container.sacrificial_pig_paper_replica",
+  "name": "Joss-Paper Whole Roast Pig",
+  "vietnamese_name": "Heo Quay Bằng Giấy Vàng Mã",
+  "hanzi": "纸扎全猪祭品",
+  "category": "destructible_and_container",
+  "sub_category": "effigy_and_paper",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "burn_offering",
+  "gameplay_role": "Paper replica of whole roasted banquet pig on tray.",
+  "destructible": true,
+  "material": "cloth",
+  "cultivation_element": "fire",
+  "prompt_summary": "Red painted glossy paper pig resting on bamboo platter.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/destructible_and_container/sacrificial_pig_paper_replica.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.destructible_and_container.sacrificial_pig_paper_replica:261966590",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.488,
+        0.42
+      ]
+    ],
+    "frac_zero": 0.8678,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.407,
+        0.405,
+        0.0
+      ],
+      [
+        0.655,
+        1.0,
+        0.478
+      ],
+      [
+        0.028,
+        0.683,
+        0.402
+      ]
+    ],
+    "crop_offset": [
+      80,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 34,
+    "contact_reference_px": 34.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

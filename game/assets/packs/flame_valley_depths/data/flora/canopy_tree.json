@@ -1,0 +1,306 @@
+{
+  "id": "flame_valley_depths.flora.canopy_tree",
+  "path": "res://assets/world_map/flame_valley_depths/flora/canopy_tree.png",
+  "type": "prop",
+  "category": "flora",
+  "environment": "flame_valley_depths",
+  "environment_name": "Flame Valley Depths",
+  "world_tier": "Spirit World",
+  "archetype": "flora.canopy_tree",
+  "name": "Canopy tree",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "ComfyUI local checkpoint: Flux1S/originByN0utis_originFluxAnimeV1.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Layered cinder slopes, copper-red stone, scorched earth, and controlled internal firelight.",
+  "generated_on": "2026-10-03",
+  "prompt_ref": "comfyui-map-v1:flame_valley_depths.flora.canopy_tree:700028",
+  "prompt": "A single flame-valley canopy tree seen directly overhead, dense rounded crown of dark green leaves with copper-red outer tips and sparse orange flowers, small brown trunk opening at center, clear compact silhouette, isolated sprite with no terrain or cast shadow.\n\nProduction sprite for Chaos World, a 2D top-down cultivation action RPG. Asset: Canopy tree (flame_valley_depths.flora.canopy_tree); environment: Flame Valley Depths in the Spirit World. Environment art signature: Layered cinder slopes, copper-red stone, scorched earth, and controlled internal firelight. Show one complete isolated object viewed straight down. Leave clear padding and honor the bottom_center ground pivot. Use a transparent background. The final image must have transparent pixels outside the art. Straight-down orthographic camera, with no horizon or isometric projection. Anime-painted gouache, dark #263A35 ink contours, broad readable value planes, material-led colors, restrained surface detail, soft upper-left light. Keep the silhouette and identifying detail legible at the indexed game size. No text, labels, UI, frame, watermark, or unrelated objects.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "negative_prompt": "text, letters, watermark, border, UI, extra objects, duplicate subject, isometric view, perspective, horizon, photorealism, 3D render, noisy texture",
+  "generation_settings": {
+    "checkpoint": "Flux1S/originByN0utis_originFluxAnimeV1.safetensors",
+    "lora": "flux/gokaygokayFlux-2D-Game-Assets-LoRA.safetensors",
+    "lora_strength": 0.8,
+    "seed": 700028,
+    "steps": 32,
+    "size": 1024,
+    "target_size": 256,
+    "cfg": 1.0,
+    "guidance": 3.5,
+    "sampler": "euler",
+    "scheduler": "normal",
+    "rembg_model": "isnet-anime",
+    "rembg_post_processing": false,
+    "alpha_matting": false,
+    "alpha_foreground_threshold": 240,
+    "alpha_background_threshold": 10,
+    "alpha_erode_size": 0
+  },
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.742,
+        0.737
+      ],
+      [
+        0.324,
+        0.334
+      ]
+    ],
+    "frac_zero": 0.6377,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "ground_contact",
+      "cov_gate": 0.01,
+      "authored_open": "",
+      "passable_under": true,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "canopy",
+      "acoustic_profile": "foliage",
+      "material": "foliage",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 1,
+        "hp": 25,
+        "on_destroy": "landmark_and_environment_detail.ground_decal",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": "timber"
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "wood",
+        "qi_affinity": "ambient_absorb",
+        "qi_density_modifier": 1.15,
+        "resonance_radius_cells": 1,
+        "feng_shui_direction": "yang"
+      },
+      "resource": {
+        "resource_type": "timber",
+        "base_yield": 3,
+        "respawn_turns": 300,
+        "min_realm_tier": 1,
+        "harvest_tool_tag": "axe"
+      },
+      "scale_profile": {
+        "min_scale": 0.85,
+        "max_scale": 1.6,
+        "default_scale": 1.0,
+        "supported_scales": [
+          0.85,
+          1.0,
+          1.15,
+          1.35,
+          1.6
+        ],
+        "scale_mode": "stepped",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.379,
+        0.841,
+        0.863,
+        0.451,
+        0.03,
+        0.0
+      ],
+      [
+        0.436,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.534,
+        0.0
+      ],
+      [
+        0.839,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.962,
+        0.144
+      ],
+      [
+        0.314,
+        0.584,
+        0.771,
+        0.848,
+        0.569,
+        0.378,
+        0.037
+      ],
+      [
+        0.0,
+        0.0,
+        0.361,
+        0.544,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.037,
+        0.677,
+        0.823,
+        0.099,
+        0.0,
+        0.0
+      ],
+      [
+        0.248,
+        0.693,
+        0.934,
+        0.936,
+        0.816,
+        0.267,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      30,
+      23
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 184,
+    "contact_reference_px": 184.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.335,
+    "dominant_rgb": [
+      60.8,
+      50.6,
+      46.8
+    ],
+    "hsv": {
+      "hue_deg": 175.3,
+      "saturation": 0.64,
+      "value": 0.3
+    },
+    "dominant_palette": "azure_water",
+    "center_of_mass_norm": [
+      0.499,
+      0.446
+    ],
+    "horizontal_symmetry": 0.96,
+    "edge_complexity": 0.148
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "canopy",
+  "destructible": {
+    "enabled": true,
+    "tier": 1,
+    "hp": 25,
+    "on_destroy": "landmark_and_environment_detail.ground_decal",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": "timber"
+  },
+  "material": "foliage",
+  "cultivation_element": "wood"
+}

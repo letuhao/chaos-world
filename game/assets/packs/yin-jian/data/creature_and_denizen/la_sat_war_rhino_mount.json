@@ -1,0 +1,202 @@
+{
+  "id": "yin_jian.creature_and_denizen.la_sat_war_rhino_mount",
+  "name": "Rakshasa Six-Horned War Rhino",
+  "vietnamese_name": "La Sát Lục Giác Chiến Tê",
+  "hanzi": "罗刹六角战犀",
+  "category": "creature_and_denizen",
+  "sub_category": "nether_beast",
+  "racial_faction": "la_sat",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "mount_war_rhino",
+  "gameplay_role": "Crushing siege beast clad in thick iron barding. Demolishes enemy palisades and fortifications.",
+  "destructible": false,
+  "material": "flesh",
+  "cultivation_element": "earth",
+  "prompt_summary": "Top-down 45 degree colossal grey rhino with six curved black horn blades, heavy spiked iron armor plates, war saddle.",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/la_sat_war_rhino_mount.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.la_sat_war_rhino_mount:265696941",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.45,
+        0.477,
+        0.057
+      ],
+      [
+        0.033,
+        0.515,
+        0.746
+      ]
+    ],
+    "frac_zero": 0.8139,
+    "blocks": [
+      [
+        true,
+        true,
+        false
+      ],
+      [
+        false,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.217,
+        0.05,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.609,
+        0.674,
+        0.571,
+        0.209,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.322,
+        0.989,
+        1.0,
+        0.936,
+        0.171,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.278,
+        1.0,
+        1.0,
+        0.963,
+        0.604,
+        0.017
+      ],
+      [
+        0.0,
+        0.017,
+        0.788,
+        0.983,
+        1.0,
+        1.0,
+        0.682
+      ],
+      [
+        0.0,
+        0.0,
+        0.103,
+        0.264,
+        0.842,
+        0.961,
+        0.474
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.224,
+        0.594,
+        0.426
+      ]
+    ],
+    "crop_offset": [
+      87,
+      16
+    ],
+    "trunk_columns": [
+      5,
+      6
+    ],
+    "contact_px": 24,
+    "contact_reference_px": 24.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

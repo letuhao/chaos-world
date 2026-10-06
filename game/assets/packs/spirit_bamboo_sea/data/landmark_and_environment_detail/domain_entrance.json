@@ -1,0 +1,453 @@
+{
+  "id": "spirit_bamboo_sea.landmark_and_environment_detail.domain_entrance",
+  "path": "res://assets/world_map/spirit_bamboo_sea/landmark_and_environment_detail/domain_entrance.png",
+  "type": "landmark",
+  "category": "landmark_and_environment_detail",
+  "environment": "spirit_bamboo_sea",
+  "environment_name": "Spirit Bamboo Sea",
+  "world_tier": "Spirit World",
+  "archetype": "landmark_and_environment_detail.domain_entrance",
+  "name": "Domain entrance",
+  "canvas_px": [
+    512,
+    512
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image generation",
+  "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Interlocking jade bamboo crowns, pale leaf litter, green shoots, and winding footpaths.",
+  "generated_on": "2026-10-04",
+  "prompt_ref": "openai-imagegen:spirit-bamboo-sea.landmark_and_environment_detail.domain_entrance:20261004",
+  "prompt": "Overhead top-down domain entrance for Spirit Bamboo Sea: jade-stone gate foundation, dark bamboo pylons, pale celadon lintel, central circular mist seal, fine leaf carvings, teal mineral accents. Full isolated landmark, transparent padding, bottom-center pivot, anime gouache, #263A35 contours, no surroundings or text.",
+  "reference_ids": [
+    "immortal_jade_orchard.landmark_and_environment_detail.domain_entrance"
+  ],
+  "footprint_cells": [
+    4,
+    4
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.758,
+        0.519,
+        0.518,
+        0.754
+      ],
+      [
+        0.726,
+        0.778,
+        0.78,
+        0.726
+      ],
+      [
+        0.702,
+        1.0,
+        1.0,
+        0.707
+      ],
+      [
+        0.611,
+        0.877,
+        0.88,
+        0.616
+      ]
+    ],
+    "frac_zero": 0.5295,
+    "blocks": [
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        false,
+        false,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 14,
+    "anchor_cell": [
+      2,
+      3
+    ],
+    "sem": {
+      "occluder_rule": "core_ring",
+      "cov_gate": 0.1,
+      "authored_open": "bottom_centre",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": false,
+      "vision_mode": "solid",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "enter",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      12,
+      14
+    ],
+    "sub_fill": [
+      [
+        0.492,
+        0.935,
+        0.101,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.764,
+        0.76,
+        0.0
+      ],
+      [
+        0.649,
+        1.0,
+        0.867,
+        0.578,
+        0.519,
+        0.594,
+        0.532,
+        0.548,
+        0.768,
+        0.989,
+        0.883,
+        0.125
+      ],
+      [
+        0.723,
+        1.0,
+        0.996,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        1.0,
+        0.91,
+        0.302
+      ],
+      [
+        0.455,
+        1.0,
+        0.476,
+        0.494,
+        0.463,
+        0.586,
+        0.449,
+        0.556,
+        0.27,
+        1.0,
+        0.729,
+        0.0
+      ],
+      [
+        0.354,
+        0.99,
+        1.0,
+        0.681,
+        0.592,
+        0.646,
+        0.594,
+        0.633,
+        0.935,
+        1.0,
+        0.613,
+        0.0
+      ],
+      [
+        0.222,
+        0.992,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.488,
+        0.0
+      ],
+      [
+        0.213,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.509,
+        0.0
+      ],
+      [
+        0.18,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.456,
+        0.0
+      ],
+      [
+        0.131,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.408,
+        0.0
+      ],
+      [
+        0.212,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.501,
+        0.0
+      ],
+      [
+        0.431,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.726,
+        0.0
+      ],
+      [
+        0.249,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.538,
+        0.0
+      ],
+      [
+        0.012,
+        0.556,
+        0.481,
+        0.57,
+        0.844,
+        0.907,
+        0.844,
+        0.748,
+        0.398,
+        0.554,
+        0.172,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.125,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      81,
+      35
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        3
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      3
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      512
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.432,
+    "dominant_rgb": [
+      125.2,
+      144.5,
+      126.0
+    ],
+    "hsv": {
+      "hue_deg": 116.1,
+      "saturation": 0.22,
+      "value": 0.57
+    },
+    "dominant_palette": "verdant_flora",
+    "center_of_mass_norm": [
+      0.51,
+      0.495
+    ],
+    "horizontal_symmetry": 0.99,
+    "edge_complexity": 0.231
+  },
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "solid",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

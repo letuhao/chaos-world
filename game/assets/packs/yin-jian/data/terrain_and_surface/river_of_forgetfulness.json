@@ -1,0 +1,133 @@
+{
+  "id": "yin_jian.terrain_and_surface.river_of_forgetfulness",
+  "name": "River Wangchuan Waters",
+  "vietnamese_name": "Sông Vong Xuyên",
+  "hanzi": "忘川河水",
+  "category": "terrain_and_surface",
+  "sub_category": "fluid_and_water",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "The River of Forgetfulness where memories dissolve.",
+  "destructible": false,
+  "material": "water",
+  "cultivation_element": "spirit",
+  "prompt_summary": "Deep iridescent indigo-grey water with floating soul mists.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/terrain_and_surface/river_of_forgetfulness.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.terrain_and_surface.river_of_forgetfulness:258224689",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.612
+      ]
+    ],
+    "frac_zero": 0.6326,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.041,
+        0.619,
+        0.642
+      ],
+      [
+        0.668,
+        1.0,
+        0.728
+      ],
+      [
+        0.981,
+        0.699,
+        0.115
+      ]
+    ],
+    "crop_offset": [
+      16,
+      19
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 57,
+    "contact_reference_px": 57.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

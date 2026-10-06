@@ -1,0 +1,314 @@
+{
+  "id": "yin_jian.rift_and_portal.iron_curtain_nether_gate",
+  "name": "Iron Curtain Nether Gate",
+  "vietnamese_name": "Thiết Quan Cương Giới Môn",
+  "hanzi": "玄铁重关门",
+  "category": "rift_and_portal",
+  "sub_category": "grand_gate",
+  "footprint_cells": [
+    4,
+    3
+  ],
+  "canvas_px": [
+    512,
+    384
+  ],
+  "collision_type": "core_ring",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "open_gate",
+  "gameplay_role": "Massive blast-doors locking down rogue hell revolts.",
+  "destructible": false,
+  "material": "metal",
+  "cultivation_element": "metal",
+  "prompt_summary": "Gigantic riveted iron double gates bound by five padlocks.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/rift_and_portal/iron_curtain_nether_gate.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.rift_and_portal.iron_curtain_nether_gate:260195158",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.191,
+        0.002,
+        0.015,
+        0.153
+      ],
+      [
+        0.0,
+        0.274,
+        0.133,
+        0.006
+      ],
+      [
+        0.168,
+        0.23,
+        0.066,
+        0.175
+      ]
+    ],
+    "frac_zero": 0.9144,
+    "blocks": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        true,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      2,
+      1
+    ],
+    "sub_grid": [
+      12,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.096,
+        0.0,
+        0.0,
+        0.0,
+        0.016,
+        0.012,
+        0.0,
+        0.0,
+        0.0,
+        0.028,
+        0.0,
+        0.0
+      ],
+      [
+        0.317,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.155,
+        0.0,
+        0.0
+      ],
+      [
+        0.702,
+        0.53,
+        0.059,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.386,
+        0.666,
+        0.288,
+        0.008
+      ],
+      [
+        0.212,
+        0.056,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.113,
+        0.104,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.171,
+        0.104,
+        0.059,
+        0.0,
+        0.0,
+        0.0,
+        0.027,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.018,
+        0.771,
+        0.587,
+        0.359,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.006,
+        0.76,
+        0.824,
+        0.23,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.005
+      ],
+      [
+        0.033,
+        0.0,
+        0.0,
+        0.0,
+        0.532,
+        0.631,
+        0.0,
+        0.0,
+        0.0,
+        0.017,
+        0.062,
+        0.081
+      ],
+      [
+        0.861,
+        0.591,
+        0.07,
+        0.0,
+        0.511,
+        0.6,
+        0.0,
+        0.0,
+        0.461,
+        0.795,
+        0.298,
+        0.0
+      ],
+      [
+        0.15,
+        0.0,
+        0.0,
+        0.0,
+        0.187,
+        0.542,
+        0.0,
+        0.0,
+        0.0,
+        0.214,
+        0.02,
+        0.0
+      ],
+      [
+        0.048,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.203,
+        0.0,
+        0.0,
+        0.0,
+        0.143,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      72,
+      17
+    ],
+    "trunk_columns": [],
+    "contact_px": 10,
+    "contact_reference_px": 10.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

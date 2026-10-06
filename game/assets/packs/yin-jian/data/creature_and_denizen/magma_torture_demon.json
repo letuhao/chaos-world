@@ -1,0 +1,286 @@
+{
+  "id": "yin_jian.creature_and_denizen.magma_torture_demon",
+  "name": "Molten Copper Torture Fiend",
+  "vietnamese_name": "Hỏa Diệm Ác Quỷ Vạc Nước",
+  "hanzi": "溶铜炙炎鬼",
+  "category": "creature_and_denizen",
+  "sub_category": "elite_demon",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "fight_fire_demon",
+  "gameplay_role": "Blazing demon with cracked molten stone skin wielding ladle.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "fire",
+  "prompt_summary": "Bulky stone golem demon leaking magma from cracks.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/magma_torture_demon.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.magma_torture_demon:262487790",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.207,
+        0.852,
+        0.405
+      ],
+      [
+        0.717,
+        0.969,
+        0.791
+      ],
+      [
+        0.582,
+        0.439,
+        0.233
+      ]
+    ],
+    "frac_zero": 0.5563,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      10,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.189,
+        0.793,
+        0.477,
+        0.135,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.215,
+        0.856,
+        1.0,
+        1.0,
+        0.929,
+        0.836,
+        0.186,
+        0.0
+      ],
+      [
+        0.0,
+        0.021,
+        0.609,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.62,
+        0.0
+      ],
+      [
+        0.0,
+        0.504,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.695,
+        0.229
+      ],
+      [
+        0.0,
+        0.712,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.934,
+        1.0,
+        0.693
+      ],
+      [
+        0.064,
+        0.941,
+        1.0,
+        0.913,
+        1.0,
+        1.0,
+        0.958,
+        0.566,
+        1.0,
+        0.899
+      ],
+      [
+        0.859,
+        1.0,
+        0.921,
+        0.613,
+        1.0,
+        1.0,
+        0.907,
+        0.207,
+        0.873,
+        0.777
+      ],
+      [
+        0.651,
+        1.0,
+        0.974,
+        0.765,
+        0.985,
+        0.643,
+        0.915,
+        0.672,
+        0.793,
+        0.58
+      ],
+      [
+        0.331,
+        1.0,
+        1.0,
+        0.75,
+        0.797,
+        0.0,
+        0.385,
+        0.041,
+        0.769,
+        0.22
+      ],
+      [
+        0.003,
+        0.567,
+        1.0,
+        0.977,
+        0.281,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.048,
+        0.545,
+        0.9,
+        0.203,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      31,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 60,
+    "contact_reference_px": 60.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.0": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.15": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.35": [
+        0,
+        2,
+        0,
+        2
+      ],
+      "1.6": [
+        0,
+        2,
+        0,
+        2
+      ]
+    },
+    "block_rect": [
+      1,
+      2,
+      1,
+      2
+    ],
+    "block_rect_px": [
+      128,
+      256,
+      256,
+      384
+    ]
+  }
+}

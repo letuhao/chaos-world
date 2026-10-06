@@ -1,0 +1,165 @@
+{
+  "id": "stormwrack_reach.terrain_transition.shore_edge",
+  "path": "res://assets/world_map/stormwrack_reach/terrain_transition/shore_edge.png",
+  "type": "tile",
+  "category": "terrain_transition",
+  "environment": "stormwrack_reach",
+  "environment_name": "Stormwrack Reach",
+  "world_tier": "Immortal World",
+  "archetype": "terrain_transition.shore_edge",
+  "name": "Shore edge",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "center",
+  "collision": "none",
+  "status": "generated",
+  "source": "OpenAI built-in image generation; 2026-10-04",
+  "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Wet dark coastal rock, broken seafoam, wind-bent coastal flora, and weathered driftwood.",
+  "generated_on": "2026-10-04",
+  "prompt_ref": "openai-imagegen:stormwrack_reach.terrain_transition.shore_edge:20261004",
+  "prompt": "Create one production-ready transparent terrain-transition sprite for Chaos World, a 2D top-down cultivation-fantasy RPG. Asset: Shore edge for Stormwrack Reach. Canvas square, isolated cutout with genuinely transparent pixels outside the painted land-and-water shape. Strict straight-down orthographic ground view; no horizon or perspective. Show a compact roughly horizontal shoreline segment that can align with neighboring tiles: wet dark coastal rock in the upper portion, irregular broken pale seafoam along a gently uneven shoreline, and deep muted blue-teal shallow water in the lower portion. Keep both rock and water within the same compact tile-shaped mass, with clean transparent outer corners and no cast shadow or glow halo. The ends of the shore line enter and leave opposite left and right edges at matching heights for horizontal continuation. Environment materials: wet charcoal basalt, salt-worn slate, muted seafoam, subdued teal water, faint driftwood-brown inclusions. Painterly anime gouache matching the game map, fine dark #263A35 contours, broad readable shapes, restrained upper-left light, visible at 128x128. No separate driftwood objects, plants, cliffs, walls, buildings, foam spray, splashes, border, grid, text, labels, UI, watermark, or background.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.821
+      ]
+    ],
+    "frac_zero": 0.7681,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "none",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "transparent",
+      "acoustic_profile": "earth",
+      "material": "earth",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 1,
+        "hp": 40,
+        "on_destroy": "ground_tile.cracked_ground",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "water",
+          "wind"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      3,
+      2
+    ],
+    "sub_fill": [
+      [
+        0.885,
+        0.844,
+        0.733
+      ],
+      [
+        0.74,
+        0.857,
+        0.853
+      ]
+    ],
+    "crop_offset": [
+      17,
+      41
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.207,
+    "dominant_rgb": [
+      70.1,
+      93.7,
+      99.2
+    ],
+    "hsv": {
+      "hue_deg": 180.9,
+      "saturation": 0.3,
+      "value": 0.39
+    },
+    "dominant_palette": "azure_water",
+    "center_of_mass_norm": [
+      0.488,
+      0.501
+    ],
+    "horizontal_symmetry": 0.83,
+    "edge_complexity": 0.141
+  },
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 1,
+    "hp": 40,
+    "on_destroy": "ground_tile.cracked_ground",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "water",
+      "wind"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "earth",
+  "cultivation_element": "none"
+}

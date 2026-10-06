@@ -1,0 +1,435 @@
+{
+  "id": "yin_jian.architecture_and_building.tu_la_blood_duel_arena",
+  "name": "Asura Blood Duel Platform",
+  "vietnamese_name": "Tu La Quyết Đấu Lôi Đài",
+  "hanzi": "修罗决斗擂台",
+  "category": "architecture_and_building",
+  "sub_category": "tribunal_pavilion",
+  "racial_faction": "tu_la",
+  "footprint_cells": [
+    4,
+    4
+  ],
+  "canvas_px": [
+    512,
+    512
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "enter_duel_arena",
+  "gameplay_role": "Bound ring for lethal 1v1 duels. Trapped boundary prevents escape until one fighter falls.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "fire",
+  "prompt_summary": "Top-down 45 degree elevated square stone battle platform bound by rusted iron chains, dried blood stains on slabs, corner iron braziers blazing crimson.",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/architecture_and_building/tu_la_blood_duel_arena.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.architecture_and_building.tu_la_blood_duel_arena:265351910",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.005,
+        0.508,
+        0.502,
+        0.005
+      ],
+      [
+        0.743,
+        1.0,
+        1.0,
+        0.746
+      ],
+      [
+        0.401,
+        0.985,
+        0.989,
+        0.436
+      ],
+      [
+        0.0,
+        0.443,
+        0.433,
+        0.0
+      ]
+    ],
+    "frac_zero": 0.5624,
+    "blocks": [
+      [
+        false,
+        true,
+        true,
+        false
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        false,
+        true,
+        true,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 12,
+    "anchor_cell": [
+      2,
+      2
+    ],
+    "sub_grid": [
+      15,
+      15
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.246,
+        0.872,
+        0.192,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.063,
+        0.838,
+        1.0,
+        0.795,
+        0.036,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.279,
+        0.893,
+        1.0,
+        1.0,
+        1.0,
+        0.844,
+        0.201,
+        0.0,
+        0.0,
+        0.0,
+        0.007
+      ],
+      [
+        0.0,
+        0.0,
+        0.037,
+        0.567,
+        0.993,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.978,
+        0.447,
+        0.007,
+        0.03,
+        0.034
+      ],
+      [
+        0.091,
+        0.413,
+        0.839,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.729,
+        0.438,
+        0.176
+      ],
+      [
+        0.594,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.475
+      ],
+      [
+        0.881,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.893
+      ],
+      [
+        0.418,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.58
+      ],
+      [
+        0.003,
+        0.52,
+        0.981,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.969,
+        0.591,
+        0.045
+      ],
+      [
+        0.0,
+        0.0,
+        0.167,
+        0.883,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.885,
+        0.174,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.117,
+        0.861,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.86,
+        0.127,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.1,
+        0.866,
+        1.0,
+        1.0,
+        1.0,
+        0.809,
+        0.092,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.264,
+        1.0,
+        1.0,
+        1.0,
+        0.142,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.008,
+        0.697,
+        1.0,
+        0.6,
+        0.001,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.044,
+        0.654,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      31
+    ],
+    "trunk_columns": [
+      7
+    ],
+    "contact_px": 39,
+    "contact_reference_px": 39.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        3
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      3
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      512
+    ]
+  }
+}

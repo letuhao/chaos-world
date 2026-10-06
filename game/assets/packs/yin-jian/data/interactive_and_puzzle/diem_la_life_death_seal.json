@@ -1,0 +1,195 @@
+{
+  "id": "yin_jian.interactive_and_puzzle.diem_la_life_death_seal",
+  "name": "Monumental Life-Death Imperial Seal",
+  "vietnamese_name": "Sinh Tử Hoàng Ấn Cự Bia",
+  "hanzi": "生死皇印巨碑",
+  "category": "interactive_and_puzzle",
+  "sub_category": "altar_and_font",
+  "racial_faction": "yanluo",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "commune_with_seal",
+  "gameplay_role": "Interactive judicial imperial seal that tests cultivator's comprehension of life-and-death duality.",
+  "destructible": false,
+  "material": "jade",
+  "cultivation_element": "yin",
+  "prompt_summary": "Top-down 45 degree levitating square dark jade imperial seal with coiling golden dragons, emitting dual concentric halos of bright white life qi and pitch-black death qi.",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/interactive_and_puzzle/diem_la_life_death_seal.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.interactive_and_puzzle.diem_la_life_death_seal:265244581",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.369,
+        0.349
+      ],
+      [
+        0.457,
+        0.466
+      ]
+    ],
+    "frac_zero": 0.6839,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.001,
+        0.244,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.012,
+        0.036,
+        0.326,
+        0.877,
+        0.188,
+        0.006,
+        0.007
+      ],
+      [
+        0.263,
+        0.627,
+        0.996,
+        1.0,
+        0.993,
+        0.582,
+        0.253
+      ],
+      [
+        0.674,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.633
+      ],
+      [
+        0.054,
+        0.548,
+        0.999,
+        1.0,
+        0.986,
+        0.461,
+        0.271
+      ],
+      [
+        0.0,
+        0.0,
+        0.35,
+        0.983,
+        0.255,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.013,
+        0.647,
+        0.022,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      26
+    ],
+    "trunk_columns": [
+      3
+    ],
+    "contact_px": 34,
+    "contact_reference_px": 34.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

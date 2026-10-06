@@ -1,0 +1,99 @@
+{
+  "id": "yin_jian.creature_and_denizen.spectral_lotus_fairy",
+  "name": "Spectral Lotus Spirit Maiden",
+  "vietnamese_name": "Nàng Tiên Hoa Sen Ma",
+  "hanzi": "幽冥莲华精",
+  "category": "creature_and_denizen",
+  "sub_category": "judge_and_official",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "commune",
+  "gameplay_role": "Ethereal benign fairy blooming from untainted soul ponds.",
+  "destructible": false,
+  "material": "spirit",
+  "cultivation_element": "water",
+  "prompt_summary": "Delicate translucent maiden floating inside pink lotus bloom.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/spectral_lotus_fairy.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.spectral_lotus_fairy:262447843",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.701
+      ]
+    ],
+    "frac_zero": 0.6077,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.161,
+        0.56,
+        0.121
+      ],
+      [
+        0.77,
+        0.994,
+        0.873
+      ],
+      [
+        1.0,
+        1.0,
+        1.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      22
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 96,
+    "contact_reference_px": 96.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

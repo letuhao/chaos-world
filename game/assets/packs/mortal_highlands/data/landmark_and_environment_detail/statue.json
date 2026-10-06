@@ -1,0 +1,265 @@
+{
+  "id": "mortal_highlands.landmark_and_environment_detail.statue",
+  "path": "res://assets/world_map/mortal_highlands/landmark_and_environment_detail/statue.png",
+  "type": "landmark",
+  "category": "landmark_and_environment_detail",
+  "environment": "mortal_highlands",
+  "environment_name": "Mortal Highlands",
+  "world_tier": "Mortal World",
+  "archetype": "landmark_and_environment_detail.statue",
+  "name": "Guardian statue",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image generation, 2026-10-05",
+  "license": "OpenAI generated image; project use under applicable OpenAI generation terms",
+  "alpha": "transparent",
+  "environment_theme": "Exposed grey granite, steep broken ledges, wind-shaped pines, and pale lichen.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-05",
+  "prompt_ref": "openai-map-v1:mortal_highlands.landmark_and_environment_detail.statue:20261005",
+  "prompt": "One Guardian statue landmark for Mortal Highlands, transparent sprite for a 2D top-down RPG map, square 1024x1024. Strict straight-down orthographic view showing top surfaces and north-facing silhouette, no isometric projection or perspective. A squat weathered grey-granite mountain sentinel carved seated on a square broken plinth: rounded helmeted head at north/top, broad shoulders, folded arms, robe-like lower stone shape south/bottom. Sparse pale lichen patches and small carved mountain-chevron motif on plinth top. Stylized simple silhouette clear at 256x256, centered with transparent margin, no terrain background. Matte anime gouache, broad low-contrast granite planes, fine #263A35 contours, cool diffuse highland light, restrained pale highlights. Theme: exposed grey granite, steep broken ledges, wind-shaped pines, pale lichen. Exclude pine trees, snow, weapons, people, text, runes, UI, border, background, external cast shadow, front-facing portrait, isometric or dramatic perspective, 3D render, watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.78,
+        0.764
+      ],
+      [
+        0.892,
+        0.864
+      ]
+    ],
+    "frac_zero": 0.4825,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.2,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "solid",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 1,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "examine",
+        "reach_cells": 2,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.109,
+        0.199,
+        0.771,
+        0.467,
+        0.179,
+        0.022
+      ],
+      [
+        0.876,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.75
+      ],
+      [
+        0.936,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.834
+      ],
+      [
+        0.943,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.822
+      ],
+      [
+        0.903,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.748
+      ],
+      [
+        0.938,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.828
+      ],
+      [
+        0.599,
+        0.825,
+        0.497,
+        0.515,
+        0.786,
+        0.473
+      ]
+    ],
+    "crop_offset": [
+      43,
+      17
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.499,
+    "dominant_rgb": [
+      105.5,
+      108.4,
+      105.5
+    ],
+    "hsv": {
+      "hue_deg": 130.2,
+      "saturation": 0.06,
+      "value": 0.43
+    },
+    "dominant_palette": "monochrome_grey",
+    "center_of_mass_norm": [
+      0.515,
+      0.518
+    ],
+    "horizontal_symmetry": 0.97,
+    "edge_complexity": 0.319
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

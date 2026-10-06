@@ -1,0 +1,151 @@
+{
+  "id": "yin_jian.architecture_and_building.ghost_boundary_stele_gate",
+  "name": "Border Boundary Stele Gateway",
+  "vietnamese_name": "Cổng Cương Giới U Đô",
+  "hanzi": "幽都界碑门",
+  "category": "architecture_and_building",
+  "sub_category": "watchtower_gatehouse",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "core_ring",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "cross_border",
+  "gameplay_role": "Gateway marking the sovereignty boundary of Fengdu.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "yin",
+  "prompt_summary": "Twin stone obelisks carved with warning scripts framing a lintel.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/architecture_and_building/ghost_boundary_stele_gate.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.architecture_and_building.ghost_boundary_stele_gate:260125615",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.673,
+        0.361,
+        0.436
+      ]
+    ],
+    "frac_zero": 0.7763,
+    "blocks": [
+      [
+        false,
+        false,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.474,
+        0.531,
+        0.22,
+        0.105,
+        0.109,
+        0.26,
+        0.683
+      ],
+      [
+        0.731,
+        1.0,
+        0.967,
+        0.911,
+        0.939,
+        1.0,
+        0.405
+      ],
+      [
+        0.815,
+        0.614,
+        0.07,
+        0.0,
+        0.0,
+        0.291,
+        0.006
+      ]
+    ],
+    "crop_offset": [
+      82,
+      18
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 33,
+    "contact_reference_px": 33.0,
+    "blocked_by_scale": {
+      "0.85": [
+        2,
+        0,
+        2,
+        0
+      ],
+      "1.0": [
+        2,
+        0,
+        2,
+        0
+      ],
+      "1.15": [
+        2,
+        0,
+        2,
+        0
+      ],
+      "1.35": [
+        2,
+        0,
+        2,
+        0
+      ],
+      "1.6": [
+        2,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": [
+      2,
+      0,
+      2,
+      0
+    ],
+    "block_rect_px": [
+      256,
+      0,
+      384,
+      128
+    ]
+  }
+}

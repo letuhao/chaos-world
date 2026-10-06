@@ -1,0 +1,98 @@
+{
+  "id": "yin_jian.terrain_and_surface.soul_sand_quicksand",
+  "name": "Soul-Absorbing Quicksand",
+  "vietnamese_name": "Cát Lún Hút Phách",
+  "hanzi": "噬魂流砂",
+  "category": "terrain_and_surface",
+  "sub_category": "hazard_surface",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "struggle",
+  "gameplay_role": "Quicksand slowing speed by 75% and siphoning Qi.",
+  "destructible": false,
+  "material": "earth",
+  "cultivation_element": "void",
+  "prompt_summary": "Swirling vortex of white bone dust pulling inward.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/terrain_and_surface/soul_sand_quicksand.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.terrain_and_surface.soul_sand_quicksand:258402030",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.553
+      ]
+    ],
+    "frac_zero": 0.6672,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.157,
+        0.859,
+        0.106
+      ],
+      [
+        0.707,
+        1.0,
+        0.738
+      ],
+      [
+        0.354,
+        0.712,
+        0.237
+      ]
+    ],
+    "crop_offset": [
+      16,
+      24
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 52,
+    "contact_reference_px": 52.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

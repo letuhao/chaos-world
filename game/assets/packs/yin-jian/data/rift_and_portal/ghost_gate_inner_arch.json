@@ -1,0 +1,208 @@
+{
+  "id": "yin_jian.rift_and_portal.ghost_gate_inner_arch",
+  "name": "Inner Arch of Ghost Gate Pass",
+  "vietnamese_name": "Cổng Vòm Trong Quỷ Môn Quan",
+  "hanzi": "鬼门关内瓮门",
+  "category": "rift_and_portal",
+  "sub_category": "grand_gate",
+  "footprint_cells": [
+    4,
+    2
+  ],
+  "canvas_px": [
+    512,
+    256
+  ],
+  "collision_type": "core_ring",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "pass_under",
+  "gameplay_role": "The secondary checkpoint arch inside Ghost Gate fortress.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "yin",
+  "prompt_summary": "Massive stone arch with iron portcullis teeth.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/rift_and_portal/ghost_gate_inner_arch.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.rift_and_portal.ghost_gate_inner_arch:260171146",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.472,
+        0.714,
+        0.85,
+        0.482
+      ],
+      [
+        0.459,
+        0.554,
+        0.355,
+        0.345
+      ]
+    ],
+    "frac_zero": 0.7891,
+    "blocks": [
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        false,
+        false,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      2,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.085,
+        0.4,
+        0.819,
+        0.825,
+        0.286
+      ],
+      [
+        0.521,
+        0.822,
+        0.986,
+        1.0,
+        1.0,
+        1.0,
+        0.141
+      ],
+      [
+        0.498,
+        1.0,
+        1.0,
+        0.762,
+        0.941,
+        0.988,
+        0.095
+      ],
+      [
+        0.392,
+        1.0,
+        0.875,
+        0.271,
+        0.818,
+        0.911,
+        0.007
+      ],
+      [
+        0.17,
+        1.0,
+        0.768,
+        0.0,
+        0.83,
+        0.854,
+        0.163
+      ],
+      [
+        0.03,
+        1.0,
+        0.699,
+        0.0,
+        0.312,
+        0.899,
+        0.31
+      ],
+      [
+        0.0,
+        0.707,
+        0.611,
+        0.0,
+        0.0,
+        0.003,
+        0.02
+      ]
+    ],
+    "crop_offset": [
+      138,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 48,
+    "contact_reference_px": 48.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      256
+    ]
+  }
+}

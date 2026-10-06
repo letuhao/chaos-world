@@ -1,0 +1,245 @@
+{
+  "id": "immortal_jade_orchard.settlement_and_domain_prop.workbench",
+  "path": "res://assets/world_map/immortal_jade_orchard/settlement_and_domain_prop/workbench.png",
+  "type": "interactable",
+  "category": "settlement_and_domain_prop",
+  "environment": "immortal_jade_orchard",
+  "environment_name": "Immortal Jade Orchard",
+  "world_tier": "Immortal World",
+  "archetype": "settlement_and_domain_prop.workbench",
+  "name": "Outdoor workbench",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image generation; 2026-10-04",
+  "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Ancient ordered fruit trees, pale blossoms, jade moss, and clear mineral pools.",
+  "generated_on": "2026-10-04",
+  "prompt_ref": "openai-imagegen:immortal_jade_orchard.workbench:20261004",
+  "prompt": "Production transparent sprite for Chaos World, a 2D top-down cultivation RPG: one outdoor workbench used by cultivators in the Immortal Jade Orchard. Camera is orthographic and strictly straight overhead. Show a compact rectangular pale-wood worktable from directly above, broad plank work surface with a small built-in vise at one end, two attached side shelves, a few jade-colored moss patches and pale blossom petals caught in its corners. Put only a small set of tools neatly on the tabletop as one attached visual cluster: a bronze hand plane, two slim chisels, and a small ceramic bowl. Keep the silhouette uncluttered and unmistakably a sturdy workbench; no people, no chair, no ground, no separate objects outside the table footprint. Center the complete object on a square transparent canvas with generous padding and bottom-center pivot; tiny contact shadow stays tight to the feet. Painterly anime gouache, fine dark #263A35 contours, broad readable planes, upper-left light, material-led details, fitted for a 256px game object. Genuine transparent alpha outside the sprite. No environment scene, no perspective, no isometric view, no text, no labels, no UI, no frame, no watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.941,
+        0.933
+      ],
+      [
+        0.681,
+        0.684
+      ]
+    ],
+    "frac_zero": 0.7378,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.2,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": true,
+      "vision_mode": "transparent",
+      "acoustic_profile": "wood",
+      "material": "wood",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 2,
+        "hp": 60,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "craft",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      7,
+      4
+    ],
+    "sub_fill": [
+      [
+        0.799,
+        0.976,
+        0.969,
+        0.969,
+        0.973,
+        0.864,
+        0.543
+      ],
+      [
+        0.964,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.914
+      ],
+      [
+        0.305,
+        0.787,
+        0.625,
+        0.625,
+        0.815,
+        0.367,
+        0.281
+      ],
+      [
+        0.0,
+        0.203,
+        0.0,
+        0.0,
+        0.281,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      32,
+      76
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.24,
+    "dominant_rgb": [
+      165.6,
+      135.6,
+      100.7
+    ],
+    "hsv": {
+      "hue_deg": 34.7,
+      "saturation": 0.42,
+      "value": 0.65
+    },
+    "dominant_palette": "warm_earth_gold",
+    "center_of_mass_norm": [
+      0.512,
+      0.463
+    ],
+    "horizontal_symmetry": 0.98,
+    "edge_complexity": 0.129
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 2,
+    "hp": 60,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "wood",
+  "cultivation_element": "none"
+}

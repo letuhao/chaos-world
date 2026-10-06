@@ -1,0 +1,195 @@
+{
+  "id": "yin_jian.creature_and_denizen.diem_la_celestial_dragon_beast",
+  "name": "Yanluo Imperial Coiling Dragon Steed",
+  "vietnamese_name": "Diêm La Ngự Long Thần Thú",
+  "hanzi": "阎罗御龙神兽",
+  "category": "creature_and_denizen",
+  "sub_category": "nether_beast",
+  "racial_faction": "yanluo",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "mount_dragon",
+  "gameplay_role": "Majestic coiling black-gold dragon steed ridden by princes; breathes golden life-death fire.",
+  "destructible": false,
+  "material": "flesh",
+  "cultivation_element": "neutral",
+  "prompt_summary": "Top-down 45 degree majestic sinuous black dragon with golden horn crowns and whiskers, golden-trimmed saddle on its back.",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/diem_la_celestial_dragon_beast.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.diem_la_celestial_dragon_beast:265660875",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.539,
+        0.453
+      ],
+      [
+        0.489,
+        0.218
+      ]
+    ],
+    "frac_zero": 0.6925,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.077,
+        0.145,
+        0.129,
+        0.0,
+        0.184,
+        0.435,
+        0.078
+      ],
+      [
+        0.436,
+        0.902,
+        0.404,
+        0.05,
+        0.429,
+        0.322,
+        0.0
+      ],
+      [
+        0.688,
+        0.989,
+        0.74,
+        0.697,
+        0.676,
+        0.625,
+        0.0
+      ],
+      [
+        0.456,
+        0.897,
+        0.908,
+        0.965,
+        0.953,
+        0.665,
+        0.0
+      ],
+      [
+        0.081,
+        0.986,
+        1.0,
+        0.582,
+        0.429,
+        0.0,
+        0.0
+      ],
+      [
+        0.077,
+        0.543,
+        0.609,
+        0.054,
+        0.072,
+        0.0,
+        0.0
+      ],
+      [
+        0.07,
+        0.13,
+        0.491,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      29,
+      17
+    ],
+    "trunk_columns": [
+      2
+    ],
+    "contact_px": 26,
+    "contact_reference_px": 26.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

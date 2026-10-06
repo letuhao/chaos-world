@@ -1,0 +1,213 @@
+{
+  "id": "yin_jian.interactive_and_puzzle.seven_tone_nether_bell_rack",
+  "name": "Seven-Tone Bell Rack of Wailing",
+  "vietnamese_name": "Dàn Chuông Bảy Âm U Minh",
+  "hanzi": "七音泣魂编钟",
+  "category": "interactive_and_puzzle",
+  "sub_category": "bell_and_chime",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "strike_bell",
+  "gameplay_role": "Striking the bells in the correct musical pentatonic sequence breaks seal.",
+  "destructible": false,
+  "material": "metal",
+  "cultivation_element": "metal",
+  "prompt_summary": "Ornate two-tier bronze bell carillon with carved dragon frame.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/interactive_and_puzzle/seven_tone_nether_bell_rack.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.interactive_and_puzzle.seven_tone_nether_bell_rack:262990936",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.181,
+        0.661,
+        0.142
+      ],
+      [
+        0.762,
+        0.984,
+        0.548
+      ]
+    ],
+    "frac_zero": 0.6962,
+    "blocks": [
+      [
+        false,
+        true,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      8,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.018,
+        0.186,
+        0.398,
+        0.02,
+        0.001,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.312,
+        0.674,
+        0.966,
+        0.686,
+        0.495,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.222,
+        0.669,
+        1.0,
+        0.846,
+        0.3,
+        0.031,
+        0.0
+      ],
+      [
+        0.049,
+        0.737,
+        0.489,
+        1.0,
+        0.779,
+        0.573,
+        0.064,
+        0.0
+      ],
+      [
+        0.198,
+        0.777,
+        0.987,
+        1.0,
+        1.0,
+        0.931,
+        0.18,
+        0.0
+      ],
+      [
+        0.63,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.915,
+        0.445,
+        0.196
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.896,
+        0.203,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      76,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 210,
+    "contact_reference_px": 210.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

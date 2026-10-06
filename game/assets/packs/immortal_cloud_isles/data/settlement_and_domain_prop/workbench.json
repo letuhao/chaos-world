@@ -1,0 +1,245 @@
+{
+  "id": "immortal_cloud_isles.settlement_and_domain_prop.workbench",
+  "path": "res://assets/world_map/immortal_cloud_isles/settlement_and_domain_prop/workbench.png",
+  "type": "interactable",
+  "category": "settlement_and_domain_prop",
+  "environment": "immortal_cloud_isles",
+  "environment_name": "Immortal Cloud Isles",
+  "world_tier": "Immortal World",
+  "archetype": "settlement_and_domain_prop.workbench",
+  "name": "Outdoor workbench",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image generation; 2026-10-04",
+  "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Floating pale rock shelves, soft cloud banks, cool blue-grey shade, and airy silhouettes.",
+  "generated_on": "2026-10-04",
+  "prompt_ref": "openai-imagegen:immortal_cloud_isles.settlement_and_domain_prop.workbench:20261004",
+  "prompt": "One isolated, square 1024x1024 production sprite for a 2D top-down fantasy game: an outdoor workbench in Immortal Cloud Isles. Perfectly straight-down orthographic overhead view, like a flat illustrated map token; no perspective, no visible side faces, no horizon. A rectangular work surface made from pale floating-island stone slabs with thin cool blue-gray seams and a few antique-brass fasteners. Four small round-topped support posts visible from above at the corners. On the surface, place one circular blue-gray calibration plate with simple concentric grooves, a slim brass measuring tool, two small white ceramic bowls, and one folded pale-blue cloth. Keep each piece arranged on the tabletop, all viewed from directly above. Airy silhouette, clear readable tabletop, no surrounding cloud scene. Outside the tabletop and support posts is genuinely transparent; no broad cast shadow or halo. Anime-painted gouache, fine dark #263A35 contours, broad readable planes, pale stone and cool blue-gray palette with restrained brass. Keep enough detail for 256x256 map use. No text, writing, stars, loose props, people, buildings, 3D render, isometric angle, front apron, visible legs, background, border, watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.858,
+        0.857
+      ],
+      [
+        0.847,
+        0.848
+      ]
+    ],
+    "frac_zero": 0.6181,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.2,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": true,
+      "vision_mode": "transparent",
+      "acoustic_profile": "wood",
+      "material": "wood",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 2,
+        "hp": 60,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "craft",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      7,
+      4
+    ],
+    "sub_fill": [
+      [
+        0.765,
+        0.781,
+        0.781,
+        0.788,
+        0.781,
+        0.781,
+        0.756
+      ],
+      [
+        0.788,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.738
+      ],
+      [
+        0.786,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.737
+      ],
+      [
+        0.769,
+        0.75,
+        0.75,
+        0.762,
+        0.75,
+        0.75,
+        0.776
+      ]
+    ],
+    "crop_offset": [
+      21,
+      76
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.361,
+    "dominant_rgb": [
+      178.0,
+      178.3,
+      170.9
+    ],
+    "hsv": {
+      "hue_deg": 95.0,
+      "saturation": 0.14,
+      "value": 0.73
+    },
+    "dominant_palette": "monochrome_grey",
+    "center_of_mass_norm": [
+      0.505,
+      0.544
+    ],
+    "horizontal_symmetry": 1.0,
+    "edge_complexity": 0.176
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 2,
+    "hp": 60,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "wood",
+  "cultivation_element": "none"
+}

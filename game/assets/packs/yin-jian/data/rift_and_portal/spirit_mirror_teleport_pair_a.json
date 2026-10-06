@@ -1,0 +1,193 @@
+{
+  "id": "yin_jian.rift_and_portal.spirit_mirror_teleport_pair_a",
+  "name": "Soul Resonance Mirror (Alpha)",
+  "vietnamese_name": "Gương Dịch Chuyển Linh Hồn (A)",
+  "hanzi": "子母阴阳镜(子)",
+  "category": "rift_and_portal",
+  "sub_category": "void_portal",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "teleport",
+  "gameplay_role": "Twin teleport mirror linked to partner B.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "spirit",
+  "prompt_summary": "Bronze framed mirror glowing with silver runes.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/rift_and_portal/spirit_mirror_teleport_pair_a.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.rift_and_portal.spirit_mirror_teleport_pair_a:260638195",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.301,
+        0.679
+      ],
+      [
+        0.46,
+        0.479
+      ]
+    ],
+    "frac_zero": 0.6624,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.099,
+        0.766,
+        0.479,
+        0.295,
+        0.0
+      ],
+      [
+        0.0,
+        0.009,
+        0.369,
+        1.0,
+        1.0,
+        0.959,
+        0.604
+      ],
+      [
+        0.003,
+        0.313,
+        0.856,
+        1.0,
+        1.0,
+        1.0,
+        0.312
+      ],
+      [
+        0.142,
+        0.932,
+        1.0,
+        1.0,
+        1.0,
+        0.819,
+        0.001
+      ],
+      [
+        0.042,
+        0.733,
+        0.988,
+        1.0,
+        1.0,
+        0.336,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.311,
+        0.553,
+        0.877,
+        0.024,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.184,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      39
+    ],
+    "trunk_columns": [],
+    "contact_px": 29,
+    "contact_reference_px": 29.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

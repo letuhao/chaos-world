@@ -1,0 +1,268 @@
+{
+  "id": "immortal_cloud_isles.stone_and_ore.boulder",
+  "path": "res://assets/world_map/immortal_cloud_isles/stone_and_ore/boulder.png",
+  "type": "prop",
+  "category": "stone_and_ore",
+  "environment": "immortal_cloud_isles",
+  "environment_name": "Immortal Cloud Isles",
+  "world_tier": "Immortal World",
+  "archetype": "stone_and_ore.boulder",
+  "name": "Boulder",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image generation",
+  "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Floating pale rock shelves, soft cloud banks, cool blue-grey shade, and airy silhouettes.",
+  "generated_on": "2026-10-04",
+  "prompt_ref": "openai-imagegen:immortal-cloud-isles.stone_and_ore.boulder:20261004",
+  "prompt": "Overhead isolated Immortal Cloud Isles boulder prop: irregular rounded pale blue-gray granite mass with broad fractured planes, celadon mineral seams and cool white lichen, small attached lower shadow. Transparent padding, bottom-center pivot, anime gouache, #263A35 contours, no background or text.",
+  "reference_ids": [
+    "immortal_star_lake.stone_and_ore.boulder"
+  ],
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.729,
+        0.695
+      ],
+      [
+        0.625,
+        0.685
+      ]
+    ],
+    "frac_zero": 0.5547,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.2,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": true,
+      "vision_mode": "transparent",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.258,
+        0.854,
+        0.923,
+        0.376,
+        0.024,
+        0.0
+      ],
+      [
+        0.316,
+        0.979,
+        1.0,
+        1.0,
+        1.0,
+        0.651,
+        0.023
+      ],
+      [
+        0.913,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.767
+      ],
+      [
+        0.64,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.787
+      ],
+      [
+        0.147,
+        0.999,
+        1.0,
+        1.0,
+        1.0,
+        0.755,
+        0.05
+      ],
+      [
+        0.0,
+        0.312,
+        0.792,
+        0.997,
+        0.618,
+        0.043,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.027,
+        0.576,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      27,
+      28
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.43,
+    "dominant_rgb": [
+      158.7,
+      169.5,
+      171.1
+    ],
+    "hsv": {
+      "hue_deg": 167.4,
+      "saturation": 0.13,
+      "value": 0.68
+    },
+    "dominant_palette": "monochrome_grey",
+    "center_of_mass_norm": [
+      0.511,
+      0.487
+    ],
+    "horizontal_symmetry": 0.96,
+    "edge_complexity": 0.193
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

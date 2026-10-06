@@ -1,0 +1,158 @@
+{
+  "id": "yin_jian.cultivation_and_resource.nether_mercury_puddle",
+  "name": "Pool of Liquid Nether Mercury",
+  "vietnamese_name": "Vũng Thủy Ngân U Minh",
+  "hanzi": "九幽水银池",
+  "category": "cultivation_and_resource",
+  "sub_category": "mineral_and_ore",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "ladle_mercury",
+  "gameplay_role": "Metallic liquid pool used in sealing arrays.",
+  "destructible": false,
+  "material": "metal",
+  "cultivation_element": "metal",
+  "prompt_summary": "Shimmering silver reflective pool of dense liquid metal.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/cultivation_and_resource/nether_mercury_puddle.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.cultivation_and_resource.nether_mercury_puddle:264582485",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.513,
+        0.704
+      ],
+      [
+        0.643,
+        0.415
+      ]
+    ],
+    "frac_zero": 0.5982,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.146,
+        0.11,
+        0.557,
+        0.643,
+        0.471,
+        0.0
+      ],
+      [
+        0.066,
+        0.919,
+        0.978,
+        1.0,
+        1.0,
+        0.867,
+        0.325
+      ],
+      [
+        0.027,
+        0.965,
+        1.0,
+        1.0,
+        1.0,
+        0.909,
+        0.072
+      ],
+      [
+        0.737,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        0.321,
+        0.0
+      ],
+      [
+        0.501,
+        0.999,
+        1.0,
+        0.992,
+        1.0,
+        0.358,
+        0.0
+      ],
+      [
+        0.082,
+        0.509,
+        0.661,
+        0.262,
+        0.508,
+        0.125,
+        0.0
+      ],
+      [
+        0.044,
+        0.01,
+        0.055,
+        0.003,
+        0.049,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      26,
+      36
+    ],
+    "trunk_columns": [],
+    "contact_px": 5,
+    "contact_reference_px": 5.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

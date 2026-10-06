@@ -34,7 +34,8 @@ extends RefCounted
 ## Aggregate `contexts` (in load order) into the runtime registrations.
 ## `registry` is the shared ModuleRegistry the contexts registered through.
 ## Returns `{content_roots, modules, screens, attach_hooks, subscriptions,
-## stat_declarations, declared_resources, declaration_refusals}`:
+## stat_declarations, declared_resources, declaration_refusals,
+## lifecycle_hooks, def_patches}`:
 ##   content_roots: {family: Array[{dir, owner, declared_overrides}]}
 ##   modules: ModuleRegistry.order() — {ok, order, reason, detail}
 ##   screens: Array[{id, scene_path, label}]
@@ -45,6 +46,8 @@ extends RefCounted
 ##   stat_declarations: Array[{mod_id, id, op, resource, zero_baseline}] (ADR 0275)
 ##   declared_resources: {pool_id: mod_id} — who owns each pool across the boot
 ##   declaration_refusals: Array[{mod_id, reason, detail}] — every REFUSED row
+##   lifecycle_hooks: Array[{event, callable, mod_id}] — mod lifecycle hooks
+##   def_patches: Array[{family, id, field, value, operation, mod_id}] — def patches
 static func finalize(contexts: Array, registry: ModuleRegistry) -> Dictionary:
 	var content_roots := {}
 	var screens: Array[Dictionary] = []
@@ -53,6 +56,8 @@ static func finalize(contexts: Array, registry: ModuleRegistry) -> Dictionary:
 	var stat_declarations: Array[Dictionary] = []
 	var declared_resources: Dictionary = {}
 	var declaration_refusals: Array[Dictionary] = []
+	var lifecycle_hooks: Array[Dictionary] = []
+	var def_patches: Array[Dictionary] = []
 	for ctx in contexts:
 		if ctx == null:
 			continue
@@ -98,6 +103,31 @@ static func finalize(contexts: Array, registry: ModuleRegistry) -> Dictionary:
 					}
 				)
 			)
+		for row in ctx.lifecycle_hooks:
+			(
+				lifecycle_hooks
+				. append(
+					{
+						"event": String(row.get("event", "")),
+						"callable": row.get("callable", Callable()),
+						"mod_id": ctx.mod_id,
+					}
+				)
+			)
+		for row in ctx.def_patches:
+			(
+				def_patches
+				. append(
+					{
+						"family": String(row.get("family", "")),
+						"id": String(row.get("id", "")),
+						"field": String(row.get("field", "")),
+						"value": row.get("value", null),
+						"operation": String(row.get("operation", "set")),
+						"mod_id": ctx.mod_id,
+					}
+				)
+			)
 	_collect_stat_declarations(
 		contexts, stat_declarations, declared_resources, declaration_refusals
 	)
@@ -110,6 +140,8 @@ static func finalize(contexts: Array, registry: ModuleRegistry) -> Dictionary:
 		"stat_declarations": stat_declarations,
 		"declared_resources": declared_resources,
 		"declaration_refusals": declaration_refusals,
+		"lifecycle_hooks": lifecycle_hooks,
+		"def_patches": def_patches,
 		"registry": registry,
 	}
 

@@ -1,0 +1,204 @@
+{
+  "id": "yin_jian.obstacle_and_hazard.hac_am_light_devouring_obelisk",
+  "name": "Light-Devouring Shadow Obelisk",
+  "vietnamese_name": "Thôn Quang Hắc Ám Ma Châm",
+  "hanzi": "吞光黑暗魔针",
+  "category": "obstacle_and_hazard",
+  "sub_category": "mechanical_trap",
+  "racial_faction": "darkness",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "blocks_vision",
+  "interactive_verb": "dispel_darkness",
+  "gameplay_role": "Absorbs all ambient illumination in a 6-tile radius, plunging players into absolute pitch-black fog-of-war.",
+  "destructible": true,
+  "material": "stone",
+  "cultivation_element": "dark",
+  "prompt_summary": "Top-down 45 degree razor-sharp needle obelisk of pure matte black stone, absorbing all nearby light into a dark visual vortex, tendrils of shadow creeping outward.",
+  "runtime_path": "res://assets/packs/yin-jian/runtime/hac_am_light_devouring_obelisk.png",
+  "original_path": "assets/packs/yin-jian/original/hac_am_light_devouring_obelisk_original.jpg",
+  "pivot": "center",
+  "cv_validation": {
+    "status": "passed",
+    "perspective": "strictly_overhead",
+    "lighting": "315_degrees",
+    "subcells_covered": 38,
+    "total_subcells": 64,
+    "coverage_ratio": 0.594
+  },
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/obstacle_and_hazard/hac_am_light_devouring_obelisk.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.obstacle_and_hazard.hac_am_light_devouring_obelisk:265490416",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.236,
+        0.383
+      ],
+      [
+        0.416,
+        0.493
+      ]
+    ],
+    "frac_zero": 0.6892,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.005,
+        0.0,
+        0.0,
+        0.0,
+        0.032,
+        0.116,
+        0.055
+      ],
+      [
+        0.005,
+        0.114,
+        0.187,
+        0.414,
+        0.688,
+        0.678,
+        0.0
+      ],
+      [
+        0.0,
+        0.354,
+        1.0,
+        1.0,
+        0.997,
+        0.557,
+        0.0
+      ],
+      [
+        0.077,
+        0.561,
+        1.0,
+        1.0,
+        1.0,
+        0.765,
+        0.045
+      ],
+      [
+        0.012,
+        0.387,
+        1.0,
+        1.0,
+        1.0,
+        0.482,
+        0.003
+      ],
+      [
+        0.01,
+        0.317,
+        0.371,
+        0.545,
+        0.501,
+        0.562,
+        0.005
+      ],
+      [
+        0.009,
+        0.014,
+        0.0,
+        0.048,
+        0.0,
+        0.068,
+        0.062
+      ]
+    ],
+    "crop_offset": [
+      16,
+      24
+    ],
+    "trunk_columns": [],
+    "contact_px": 8,
+    "contact_reference_px": 8.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

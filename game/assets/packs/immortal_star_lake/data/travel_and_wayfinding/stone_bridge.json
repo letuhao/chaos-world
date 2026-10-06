@@ -1,0 +1,235 @@
+{
+  "id": "immortal_star_lake.travel_and_wayfinding.stone_bridge",
+  "path": "res://assets/world_map/immortal_star_lake/travel_and_wayfinding/stone_bridge.png",
+  "type": "prop",
+  "category": "travel_and_wayfinding",
+  "environment": "immortal_star_lake",
+  "environment_name": "Immortal Star Lake",
+  "world_tier": "Immortal World",
+  "archetype": "travel_and_wayfinding.stone_bridge",
+  "name": "Stone bridge",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "none",
+  "status": "generated",
+  "source": "OpenAI image generation (image_gen), 2026-10-05",
+  "license": "OpenAI generated image; project use",
+  "alpha": "transparent",
+  "environment_theme": "Deep teal lake stone, star-like reflections, quiet silver highlights, and celestial markings.",
+  "generated_on": "2026-10-05",
+  "prompt_ref": "map-immortal-star-lake-stone-bridge-v1",
+  "prompt": "One isolated 2D top-down game-map bridge prop for Chaos World, Immortal Star Lake. Strict direct overhead orthographic view. A short graceful stone footbridge spanning a narrow gap: gently curved pale blue-grey stone walkway oriented vertically, low dark teal edge stones, tiny quiet silver star-like inlays. Broad continuous walking surface, readable at 256x256. Deep teal lake stone, restrained silver highlights, subtle celestial engraving without text. Show top surfaces only, slight attached contact shadow, no isometric perspective. Entire bridge centered with transparent padding and bottom-center ground contact. Anime-painted gouache, fine #263A35 contours, broad planes, restrained upper-left light. True transparent exterior; no lake or landscape background, characters, signs, words, frame, or watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.668,
+        0.678
+      ]
+    ],
+    "frac_zero": 0.7086,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.15,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": true,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "transparent",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 1,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      4,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.57,
+        0.618,
+        0.681,
+        0.482
+      ],
+      [
+        0.297,
+        1.0,
+        1.0,
+        0.113
+      ],
+      [
+        0.183,
+        1.0,
+        0.971,
+        0.0
+      ],
+      [
+        0.225,
+        1.0,
+        1.0,
+        0.034
+      ],
+      [
+        0.344,
+        1.0,
+        1.0,
+        0.184
+      ],
+      [
+        0.711,
+        1.0,
+        1.0,
+        0.645
+      ],
+      [
+        0.83,
+        0.828,
+        0.834,
+        0.825
+      ]
+    ],
+    "crop_offset": [
+      67,
+      18
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.274,
+    "dominant_rgb": [
+      111.4,
+      130.8,
+      135.1
+    ],
+    "hsv": {
+      "hue_deg": 182.2,
+      "saturation": 0.24,
+      "value": 0.53
+    },
+    "dominant_palette": "azure_water",
+    "center_of_mass_norm": [
+      0.497,
+      0.532
+    ],
+    "horizontal_symmetry": 0.99,
+    "edge_complexity": 0.142
+  },
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

@@ -18,6 +18,11 @@ const TAGS_SLOT_REAGENT := &"socket_reagent"
 const TAGS_IMPUTATION := &"imputation_reagent"
 const TAGS_ENCHANTMENT := &"enchantment_reagent"
 const TAGS_SLOT_CREATION := &"slot_creation"
+## A reforge spends the same reagent the enchantment channel does. That is a
+## deliberate overlap and not a missing content tag: one pool of material means
+## improving a worn affix competes for the same units as enchanting a new one,
+## which is what makes the choice between them a decision.
+const REFORGE_REAGENT_TAG := TAGS_ENCHANTMENT
 
 
 ## Give `actor` a socket ledger and start tracking its equipment, so a worn item
@@ -123,6 +128,63 @@ static func preview_enchantment(
 	# stays exactly one event per committed or refused transaction.
 	return EnchantmentService.preview(
 		actor, ledger, target_instance_id, resolve_content(reagent_def_id), rng
+	)
+
+
+## What replacing `option_id` on `target_instance_id` could produce, and what
+## would stop it. Changes nothing: no unit consumed, no state written, no roll
+## advanced. `option_id` is one of the target's OWN rolled affixes; an authored
+## fixed option, a set threshold and a unique's locked signature are refused.
+static func preview_reforge(
+	actor: Actor,
+	target_instance_id: StringName,
+	option_id: StringName,
+	reagent_def_id: StringName,
+	rng: RandomNumberGenerator = null
+) -> Dictionary:
+	var ledger := _ledger(actor)
+	if ledger == null:
+		return SocketResult.refused(ReforgeService.ACTION_PREVIEW, target_instance_id, "no_actor")
+	# A preview is not a change, so it is not published: the change notification
+	# stays exactly one event per committed or refused transaction.
+	return ReforgeService.preview(
+		actor,
+		ledger,
+		target_instance_id,
+		option_id,
+		resolve_content(reagent_def_id),
+		rng
+	)
+
+
+## Replace `option_id` on `target_instance_id` with a newly realized affix,
+## spending an escalating number of `reagent_def_id`. The cost grows with every
+## reforge the same instance has received and the count is finite
+## (`SocketPolicy.reforge_cap`), so this is an investment rather than a lottery.
+## The replacement is recorded, never re-derived: a save/load round trip restores
+## the instance carrying it, and it is not rerolled from its seed. Replaying the
+## same `request_id` returns the recorded result without charging twice.
+static func commit_reforge(
+	actor: Actor,
+	target_instance_id: StringName,
+	option_id: StringName,
+	reagent_def_id: StringName,
+	request_id: StringName,
+	seed: int
+) -> Dictionary:
+	return _run(
+		actor,
+		ReforgeService.ACTION_COMMIT,
+		func(ledger: SocketLedger) -> Dictionary:
+			return ReforgeService.commit(
+				actor,
+				ledger,
+				target_instance_id,
+				option_id,
+				resolve_content(reagent_def_id),
+				request_id,
+				seed
+			)
 	)
 
 

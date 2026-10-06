@@ -1,0 +1,188 @@
+{
+  "id": "yin_jian.creature_and_denizen.bone_golem_centurion",
+  "name": "Assembled Bone Centurion",
+  "vietnamese_name": "Binh Đoàn Cốt Khôi Lỗi",
+  "hanzi": "百骨战甲傀儡",
+  "category": "creature_and_denizen",
+  "sub_category": "jailer_and_guard",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "fight_golem",
+  "gameplay_role": "Animated construct of bones fused together by green sorcery.",
+  "destructible": false,
+  "material": "bone",
+  "cultivation_element": "yin",
+  "prompt_summary": "Sturdy 8ft tall skeletal automaton with spiked bone shield.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/bone_golem_centurion.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.bone_golem_centurion:262586029",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.213,
+        0.615
+      ],
+      [
+        0.446,
+        0.302
+      ]
+    ],
+    "frac_zero": 0.7365,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.103,
+        0.188,
+        0.078
+      ],
+      [
+        0.0,
+        0.0,
+        0.465,
+        0.963,
+        0.887,
+        0.455
+      ],
+      [
+        0.126,
+        0.12,
+        0.974,
+        0.981,
+        0.9,
+        0.784
+      ],
+      [
+        0.626,
+        0.822,
+        0.559,
+        0.781,
+        0.447,
+        0.672
+      ],
+      [
+        0.324,
+        0.86,
+        0.441,
+        0.432,
+        0.497,
+        0.438
+      ],
+      [
+        0.003,
+        0.625,
+        0.608,
+        0.3,
+        0.323,
+        0.039
+      ],
+      [
+        0.0,
+        0.008,
+        0.469,
+        0.0,
+        0.085,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      38,
+      16
+    ],
+    "trunk_columns": [
+      2
+    ],
+    "contact_px": 18,
+    "contact_reference_px": 18.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

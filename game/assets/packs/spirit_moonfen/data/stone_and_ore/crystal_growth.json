@@ -1,0 +1,237 @@
+{
+  "id": "spirit_moonfen.stone_and_ore.crystal_growth",
+  "path": "res://assets/world_map/spirit_moonfen/stone_and_ore/crystal_growth.png",
+  "type": "resource_node",
+  "category": "stone_and_ore",
+  "environment": "spirit_moonfen",
+  "environment_name": "Spirit Moonfen",
+  "world_tier": "Spirit World",
+  "archetype": "stone_and_ore.crystal_growth",
+  "name": "Crystal growth",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image generation (image_gen edit)",
+  "license": "Generated locally with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Blue-black fen pools, silver reeds, peat islands, and restrained moonlit reflections.",
+  "generated_on": "2026-10-04",
+  "prompt_ref": "openai-imagegen:spirit_moonfen.stone_and_ore.crystal_growth:20261004-r1",
+  "prompt": "Rework the supplied crystal-node sprite into a strict top-down map asset. Keep one crystal growth resource node, the Spirit Moonfen palette of deep teal, muted violet, silver-blue and dark peat, and the same general clustered silhouette. Change the camera to exactly vertical orthographic overhead: remove the three-quarter view and foreshortening. Show the crystal cluster as a compact radial arrangement of pointed mineral shards rooted in a small dark peat-and-slate base; make the broad polygon facets visible from above, with only short side facets and no visible front-facing tall walls. Use simplified painted gouache planes, fine dark #263A35 contours, restrained highlights and less glossy 3D rendering. Keep the complete object centered with a bottom-center ground pivot and genuine transparent background. No scene, water, reeds, cast shadow, glow halo, text, border, signature or watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map",
+    "spirit_peaks.stone_and_ore.crystal_growth"
+  ],
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.649
+      ]
+    ],
+    "frac_zero": 0.7232,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": true,
+      "vision_mode": "transparent",
+      "acoustic_profile": "crystal",
+      "material": "crystal",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 4,
+        "hp": 220,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "harvest",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      5,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.282,
+        0.749,
+        0.134,
+        0.0
+      ],
+      [
+        0.373,
+        1.0,
+        1.0,
+        0.916,
+        0.216
+      ],
+      [
+        0.741,
+        1.0,
+        1.0,
+        1.0,
+        0.816
+      ],
+      [
+        0.75,
+        1.0,
+        1.0,
+        1.0,
+        0.823
+      ],
+      [
+        0.21,
+        0.953,
+        1.0,
+        0.884,
+        0.13
+      ],
+      [
+        0.0,
+        0.069,
+        0.604,
+        0.115,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      48,
+      42
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.263,
+    "dominant_rgb": [
+      64.5,
+      93.1,
+      120.9
+    ],
+    "hsv": {
+      "hue_deg": 209.2,
+      "saturation": 0.48,
+      "value": 0.47
+    },
+    "dominant_palette": "azure_water",
+    "center_of_mass_norm": [
+      0.487,
+      0.519
+    ],
+    "horizontal_symmetry": 0.94,
+    "edge_complexity": 0.181
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 4,
+    "hp": 220,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "crystal",
+  "cultivation_element": "none"
+}

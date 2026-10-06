@@ -1,0 +1,163 @@
+{
+  "id": "yin_jian.cultivation_and_resource.pure_yang_anomaly_fissure",
+  "name": "Pure Yang Geothermal Anomaly",
+  "vietnamese_name": "Huyệt Thuần Dương Đột Biến",
+  "hanzi": "纯阳地火眼",
+  "category": "cultivation_and_resource",
+  "sub_category": "yin_qi_spring",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "balance_yin_yang",
+  "gameplay_role": "Rare pocket of warm Yang energy deep in hell, vital for Dual Cultivation balance.",
+  "destructible": false,
+  "material": "earth",
+  "cultivation_element": "fire",
+  "prompt_summary": "Radiant golden-white fissure surrounded by healthy yellow flowers in ash.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/cultivation_and_resource/pure_yang_anomaly_fissure.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.cultivation_and_resource.pure_yang_anomaly_fissure:263824125",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.491,
+        0.422
+      ],
+      [
+        0.812,
+        0.659
+      ]
+    ],
+    "frac_zero": 0.5208,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.003,
+        0.15,
+        0.258,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.042,
+        0.083,
+        0.777,
+        0.923,
+        0.417,
+        0.268,
+        0.0
+      ],
+      [
+        0.196,
+        0.992,
+        1.0,
+        1.0,
+        1.0,
+        0.889,
+        0.213
+      ],
+      [
+        0.687,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.521
+      ],
+      [
+        0.69,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        0.328
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.771,
+        0.036
+      ],
+      [
+        0.791,
+        0.314,
+        0.334,
+        0.484,
+        0.541,
+        0.372,
+        0.054
+      ]
+    ],
+    "crop_offset": [
+      16,
+      18
+    ],
+    "trunk_columns": [
+      0,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 22,
+    "contact_reference_px": 22.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

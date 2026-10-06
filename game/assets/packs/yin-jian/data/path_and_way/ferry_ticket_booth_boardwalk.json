@@ -1,0 +1,151 @@
+{
+  "id": "yin_jian.path_and_way.ferry_ticket_booth_boardwalk",
+  "name": "Ferryman Toll Boardwalk",
+  "vietnamese_name": "Cầu Ván Trạm Thu Phí Thuyền",
+  "hanzi": "渡口栈板",
+  "category": "path_and_way",
+  "sub_category": "crossing_and_pier",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "pay_toll",
+  "gameplay_role": "Boardwalk where souls pay with copper joss coins.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "yin",
+  "prompt_summary": "Wood boardwalk leading to small toll counter.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/path_and_way/ferry_ticket_booth_boardwalk.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.path_and_way.ferry_ticket_booth_boardwalk:259230640",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.147,
+        0.602
+      ],
+      [
+        0.532,
+        0.174
+      ]
+    ],
+    "frac_zero": 0.7502,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.022,
+        0.016,
+        0.49,
+        0.215,
+        0.072
+      ],
+      [
+        0.0,
+        0.027,
+        0.685,
+        1.0,
+        1.0,
+        0.478
+      ],
+      [
+        0.084,
+        0.0,
+        0.348,
+        0.913,
+        0.946,
+        0.011
+      ],
+      [
+        0.338,
+        0.127,
+        0.867,
+        1.0,
+        0.523,
+        0.0
+      ],
+      [
+        0.6,
+        0.608,
+        0.985,
+        0.68,
+        0.074,
+        0.0
+      ],
+      [
+        0.666,
+        0.915,
+        0.893,
+        0.097,
+        0.0,
+        0.0
+      ],
+      [
+        0.009,
+        0.071,
+        0.084,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      36,
+      17
+    ],
+    "trunk_columns": [],
+    "contact_px": 6,
+    "contact_reference_px": 6.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

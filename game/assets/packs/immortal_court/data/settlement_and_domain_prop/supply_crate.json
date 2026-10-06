@@ -1,0 +1,227 @@
+{
+  "id": "immortal_court.settlement_and_domain_prop.supply_crate",
+  "path": "res://assets/world_map/immortal_court/settlement_and_domain_prop/supply_crate.png",
+  "type": "prop",
+  "category": "settlement_and_domain_prop",
+  "environment": "immortal_court",
+  "environment_name": "Immortal Court",
+  "world_tier": "Immortal World",
+  "archetype": "settlement_and_domain_prop.supply_crate",
+  "name": "Supply crate",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image_gen",
+  "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Ivory stone terraces, balanced formal layouts, fine antique-gold seams, and cloud carving.",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "generated_on": "2026-10-06",
+  "prompt_ref": "openai-imagegen:immortal_court.supply_crate:20261006",
+  "prompt": "One tiny reusable supply-crate sprite for a 2D top-down RPG map, Immortal Court, strict overhead orthographic view. A single compact closed ivory-lacquered wooden storage chest, square footprint, with a clean visible top lid, thin platinum corner bands and one restrained antique-gold clasp. Simple formal cloud-scroll carving around the lid edge, no writing. Centered complete 1x1-cell object with transparent margin, square high-resolution source, readable at 128px. Anime-painted gouache map art, dark #263A35 fine contours, broad calm value planes, ivory and platinum palette with sparse gold accents, soft upper-left light. Genuine transparent background. No open lid, no visible contents, no ground, no extra objects, no text, no labels, no UI, no frame, no watermark, no perspective, no 3D render.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source_images": [
+    {
+      "path": "art-source/map-originals/immortal_court/settlement_and_domain_prop/immortal_court__settlement_and_domain_prop__supply_crate__7bf3cbf7f912177a.png",
+      "sha256": "7bf3cbf7f912177ab527e3e09c0779012e0eb634ba59a0dddc89cf913ce71231",
+      "size_px": [
+        1254,
+        1254
+      ],
+      "source": "OpenAI image_gen",
+      "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+      "generated_on": "2026-10-06",
+      "prompt_ref": "openai-imagegen:immortal_court.supply_crate:20261006",
+      "prompt": "One tiny reusable supply-crate sprite for a 2D top-down RPG map, Immortal Court, strict overhead orthographic view. A single compact closed ivory-lacquered wooden storage chest, square footprint, with a clean visible top lid, thin platinum corner bands and one restrained antique-gold clasp. Simple formal cloud-scroll carving around the lid edge, no writing. Centered complete 1x1-cell object with transparent margin, square high-resolution source, readable at 128px. Anime-painted gouache map art, dark #263A35 fine contours, broad calm value planes, ivory and platinum palette with sparse gold accents, soft upper-left light. Genuine transparent background. No open lid, no visible contents, no ground, no extra objects, no text, no labels, no UI, no frame, no watermark, no perspective, no 3D render.",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
+    }
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.919
+      ]
+    ],
+    "frac_zero": 0.476,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": true,
+      "vision_mode": "transparent",
+      "acoustic_profile": "wood",
+      "material": "wood",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 2,
+        "hp": 60,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "loot",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.866,
+        0.938,
+        0.867
+      ],
+      [
+        0.936,
+        1.0,
+        0.937
+      ],
+      [
+        0.895,
+        0.931,
+        0.897
+      ]
+    ],
+    "crop_offset": [
+      16,
+      19
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.496,
+    "dominant_rgb": [
+      208.7,
+      196.0,
+      173.3
+    ],
+    "hsv": {
+      "hue_deg": 40.3,
+      "saturation": 0.19,
+      "value": 0.82
+    },
+    "dominant_palette": "warm_earth_gold",
+    "center_of_mass_norm": [
+      0.496,
+      0.509
+    ],
+    "horizontal_symmetry": 0.97,
+    "edge_complexity": 0.245
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 2,
+    "hp": 60,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "wood",
+  "cultivation_element": "none"
+}

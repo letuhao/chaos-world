@@ -1,0 +1,134 @@
+{
+  "id": "yin_jian.decoration_and_ambience.stone_qilin_head_fragment",
+  "name": "Broken Stone Qilin Head",
+  "vietnamese_name": "Đầu Kỳ Lân Đá Gãy Vụn",
+  "hanzi": "残破石麒麟首",
+  "category": "decoration_and_ambience",
+  "sub_category": "bone_and_skull",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect_ruin",
+  "gameplay_role": "Severed head of grand gate guardian statue.",
+  "destructible": true,
+  "material": "stone",
+  "cultivation_element": "stone",
+  "prompt_summary": "Weathered granite monster head lying on its side.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/decoration_and_ambience/stone_qilin_head_fragment.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.decoration_and_ambience.stone_qilin_head_fragment:264953212",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.564
+      ]
+    ],
+    "frac_zero": 0.6831,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.078,
+        0.352,
+        0.191
+      ],
+      [
+        0.518,
+        0.989,
+        0.388
+      ],
+      [
+        0.697,
+        0.977,
+        0.859
+      ]
+    ],
+    "crop_offset": [
+      19,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 86,
+    "contact_reference_px": 86.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

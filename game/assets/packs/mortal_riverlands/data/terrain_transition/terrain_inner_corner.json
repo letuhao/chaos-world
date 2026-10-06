@@ -1,0 +1,170 @@
+{
+  "id": "mortal_riverlands.terrain_transition.terrain_inner_corner",
+  "path": "res://assets/world_map/mortal_riverlands/terrain_transition/terrain_inner_corner.png",
+  "type": "tile",
+  "category": "terrain_transition",
+  "environment": "mortal_riverlands",
+  "environment_name": "Mortal Riverlands",
+  "world_tier": "Mortal World",
+  "archetype": "terrain_transition.terrain_inner_corner",
+  "name": "Terrain inner corner",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "center",
+  "collision": "none",
+  "status": "generated",
+  "source": "OpenAI image generation, 2026-10-05",
+  "license": "AI-generated with OpenAI; project use",
+  "alpha": "transparent",
+  "environment_theme": "Silt banks, winding slate-blue channels, smooth river stones, and reed beds.",
+  "generated_on": "2026-10-05",
+  "prompt_ref": "map-mortal-riverlands-inner-corner-v1",
+  "prompt": "Production modular transition sprite for a 2D top-down game: a Mortal Riverlands riverbank inner-corner tile viewed straight down. An irregular L-shaped bank of tan silt, smooth rounded river stones, and a few short reed tufts fills the top edge and left edge, curving into a clear concave quarter-circle notch opening toward the lower-right where the water/base layer will show through. Silhouette must touch the top and left canvas edges and leave the concave area fully transparent. Use muted riverbank browns, grey-blue stones, restrained reed green. Anime-painted gouache, fine #263A35 contours, broad readable forms, soft upper-left light, low detail suitable for 128px use. Transparent background outside the bank shape; no water drawn, no cast shadow, no scene, no text, no grid, no border, no watermark.",
+  "reference_ids": [
+    "none"
+  ],
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.341
+      ]
+    ],
+    "frac_zero": 0.7857,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "none",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "transparent",
+      "acoustic_profile": "earth",
+      "material": "earth",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 1,
+        "hp": 40,
+        "on_destroy": "ground_tile.cracked_ground",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "water",
+          "wind"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.91,
+        0.604,
+        0.353
+      ],
+      [
+        0.651,
+        0.0,
+        0.0
+      ],
+      [
+        0.463,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      18
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.182,
+    "dominant_rgb": [
+      120.4,
+      107.2,
+      84.7
+    ],
+    "hsv": {
+      "hue_deg": 51.8,
+      "saturation": 0.28,
+      "value": 0.48
+    },
+    "dominant_palette": "warm_earth_gold",
+    "center_of_mass_norm": [
+      0.342,
+      0.37
+    ],
+    "horizontal_symmetry": 0.58,
+    "edge_complexity": 0.17
+  },
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 1,
+    "hp": 40,
+    "on_destroy": "ground_tile.cracked_ground",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "water",
+      "wind"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "earth",
+  "cultivation_element": "none"
+}

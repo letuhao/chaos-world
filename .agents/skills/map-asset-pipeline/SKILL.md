@@ -16,7 +16,8 @@ Deliver coherent, reviewed map layers with traceable sources and declared footpr
   * For modular packs (e.g. Yin-Jian), ALWAYS pass `--index <pack_path>` (e.g. `--index game/assets/packs/yin-jian/yin_jian_pack.json`).
   * `map_generate.py` directly reads records from both JSONL catalogs and JSON pack files via `load_index_record(index_path, asset_id)`.
   * `scripts/rembg.py` normalizes raw cutouts directly to game-ready PNGs at `game/assets/world_map/...`.
-- Read [the data and geometry reference](references/data-matrix-spec.md) for index fields, composition layouts, source recovery, or matrix work. Do not load the bundled scripts for ordinary art generation.
+- Read [the data and geometry reference](references/data-matrix-spec.md) for index fields, composition layouts, source recovery, or matrix work.
+- Read [the LoRA and generation parameters reference](references/lora-recipes.md) for local ComfyUI settings, node maps, and curated adapter recipes. Do not re-inspect `map_generate.py` or ComfyUI JSON templates.
 - Use only `uv run python -m tools <task>` entrypoints. Run gates in the background with output under `build/`, as required by `AGENTS.md`.
 - The bundled scripts measure diagnostic geometry and validate its consistency. Their authored collision, destruction, vision, audio, and cultivation fields do not establish runtime support. Trace the actual consumer before promising gameplay behavior.
 

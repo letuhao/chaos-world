@@ -1,0 +1,98 @@
+{
+  "id": "yin_jian.creature_and_denizen.judge_decree_carrier_bird",
+  "name": "Golden Messenger Falcon of King Yanluo",
+  "vietnamese_name": "Chim Cắt Đưa Tin Diêm Vương",
+  "hanzi": "阎君信隼",
+  "category": "creature_and_denizen",
+  "sub_category": "nether_beast",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "intercept_falcon",
+  "gameplay_role": "Fast raptor carrying sealed execution mandates.",
+  "destructible": false,
+  "material": "spirit",
+  "cultivation_element": "spirit",
+  "prompt_summary": "Gleaming golden-feathered falcon with scroll cylinder.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/judge_decree_carrier_bird.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.judge_decree_carrier_bird:262681730",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.532
+      ]
+    ],
+    "frac_zero": 0.6776,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.122,
+        0.556,
+        0.399
+      ],
+      [
+        0.637,
+        0.985,
+        0.627
+      ],
+      [
+        0.628,
+        0.784,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 57,
+    "contact_reference_px": 57.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

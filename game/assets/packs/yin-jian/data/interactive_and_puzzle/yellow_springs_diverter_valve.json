@@ -1,0 +1,132 @@
+{
+  "id": "yin_jian.interactive_and_puzzle.yellow_springs_diverter_valve",
+  "name": "Yellow Springs Flow Diverter",
+  "vietnamese_name": "Van Chuyển Dòng Nước Vàng",
+  "hanzi": "分水机关铜阀",
+  "category": "interactive_and_puzzle",
+  "sub_category": "water_and_blood_sluice",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "throw_valve",
+  "gameplay_role": "Valve switching yellow water between irrigation and moat channels.",
+  "destructible": false,
+  "material": "metal",
+  "cultivation_element": "water",
+  "prompt_summary": "Bronze horizontal valve lever set into canal side-wall.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/interactive_and_puzzle/yellow_springs_diverter_valve.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.interactive_and_puzzle.yellow_springs_diverter_valve:263122091",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.434
+      ]
+    ],
+    "frac_zero": 0.7498,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.42,
+        0.478,
+        0.0
+      ],
+      [
+        0.691,
+        0.869,
+        0.594
+      ],
+      [
+        0.231,
+        0.427,
+        0.012
+      ]
+    ],
+    "crop_offset": [
+      20,
+      18
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 22,
+    "contact_reference_px": 22.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

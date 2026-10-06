@@ -1,0 +1,193 @@
+{
+  "id": "yin_jian.creature_and_denizen.zhong_kui_demon_queller",
+  "name": "Zhong Kui: The Demon Queller",
+  "vietnamese_name": "Chung Quỳ: Đạo Sĩ Trảm Ma",
+  "hanzi": "赐福镇宅钟馗",
+  "category": "creature_and_denizen",
+  "sub_category": "judge_and_official",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "challenge_duel",
+  "gameplay_role": "Fierce bearded deity wielding an exorcism demon-slaying sword.",
+  "destructible": false,
+  "material": "spirit",
+  "cultivation_element": "metal",
+  "prompt_summary": "Fierce imposing warrior with bushy black beard, red magistrate hat, wielding ancient broadsword.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/zhong_kui_demon_queller.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.zhong_kui_demon_queller:262065537",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.452,
+        0.325
+      ],
+      [
+        0.788,
+        0.736
+      ]
+    ],
+    "frac_zero": 0.607,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.104,
+        0.431,
+        0.345,
+        0.002,
+        0.0
+      ],
+      [
+        0.0,
+        0.575,
+        0.94,
+        0.891,
+        0.141,
+        0.0
+      ],
+      [
+        0.184,
+        0.768,
+        0.97,
+        0.943,
+        0.431,
+        0.0
+      ],
+      [
+        0.011,
+        0.689,
+        1.0,
+        0.861,
+        0.403,
+        0.012
+      ],
+      [
+        0.326,
+        0.896,
+        1.0,
+        1.0,
+        0.853,
+        0.241
+      ],
+      [
+        0.646,
+        1.0,
+        1.0,
+        1.0,
+        0.992,
+        0.412
+      ],
+      [
+        0.669,
+        0.984,
+        1.0,
+        1.0,
+        1.0,
+        0.552
+      ]
+    ],
+    "crop_offset": [
+      46,
+      20
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 185,
+    "contact_reference_px": 185.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

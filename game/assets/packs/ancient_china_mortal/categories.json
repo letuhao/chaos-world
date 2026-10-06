@@ -1,0 +1,280 @@
+[
+  {
+    "id": "terrain_and_surface",
+    "name": "Terrain & Ground Surfaces",
+    "vietnamese_name": "Địa Hình & Thổ Nhưỡng",
+    "description": "Base soils, loess dirt, river silt, farmland, flagstones, and seasonal ground layers of ancient China.",
+    "sub_categories": [
+      "loess_and_dirt",
+      "paddy_and_farmland",
+      "flagstone_and_paving",
+      "river_silt_gravel",
+      "dry_cracked_clay"
+    ],
+    "planned_count": 45,
+    "gameplay_gap_hooks": {
+      "interaction": "farming_soil_fertility",
+      "weather_states": ["dry_dust", "muddy_rain", "frozen_winter"],
+      "movement_cost": { "loess_and_dirt": 1.0, "paddy_and_farmland": 1.4, "flagstone_and_paving": 0.8 }
+    }
+  },
+  {
+    "id": "path_and_way",
+    "name": "Roads, Paths & Bridges",
+    "vietnamese_name": "Đường Đi, Cầu Cống & Kênh Đào",
+    "description": "Courier highways, stone arched bridges, canal towpaths, village alleys, and wooden river crossings.",
+    "sub_categories": [
+      "courier_highway",
+      "village_alley",
+      "stone_arched_bridge",
+      "canal_towpath",
+      "wooden_footbridge"
+    ],
+    "planned_count": 50,
+    "gameplay_gap_hooks": {
+      "interaction": "cart_convoy_route",
+      "nav_surface": "walk_surface",
+      "travel_speed_multiplier": 1.25
+    }
+  },
+  {
+    "id": "civilian_settlement",
+    "name": "Village & Town Living",
+    "vietnamese_name": "Thôn Trang, Thị Trấn & Dân Cư",
+    "description": "Courtyard homes, thatched peasant cottages, village teahouses, wine taverns, pharmacies, and clan halls.",
+    "sub_categories": [
+      "peasant_thatched_cottage",
+      "courtyard_residence_siheyuan",
+      "tavern_and_teahouse",
+      "clan_ancestral_hall",
+      "herbal_pharmacy",
+      "watermill_and_grainstore"
+    ],
+    "planned_count": 65,
+    "gameplay_gap_hooks": {
+      "interior_transition": "doorway_portal",
+      "housing_capacity": 4,
+      "economy_role": "civilian_tax_and_rest"
+    }
+  },
+  {
+    "id": "imperial_and_law",
+    "name": "Imperial Administration & Law",
+    "vietnamese_name": "Nha Môn, Công Đường & Quân Pháp",
+    "description": "County magistrate courts, Drum of Grievance, imperial jails, pillories, courier post-stations, and wanted boards.",
+    "sub_categories": [
+      "magistrate_court_yamen",
+      "drum_of_grievance",
+      "county_jail_and_pillory",
+      "courier_post_station",
+      "wanted_noticeboard",
+      "imperial_granary"
+    ],
+    "planned_count": 45,
+    "gameplay_gap_hooks": {
+      "quest_trigger": "wanted_bounty_and_trial",
+      "justice_system": "crime_bounty_and_imprisonment",
+      "authority_faction": "imperial_dynasty"
+    }
+  },
+  {
+    "id": "military_and_fortress",
+    "name": "Fortresses, Gates & Borders",
+    "vietnamese_name": "Thành Quách, Tiêu Điểm & Biên Giới",
+    "description": "Rammed-earth ramparts, crenellated brick bastions, gatehouses with portcullises, beacon towers, and barracks.",
+    "sub_categories": [
+      "city_gate_and_portcullis",
+      "rammed_earth_rampart",
+      "crenellated_brick_wall",
+      "signal_beacon_tower",
+      "military_barracks",
+      "archery_range"
+    ],
+    "planned_count": 60,
+    "gameplay_gap_hooks": {
+      "defense_rating": "heavy_fortification",
+      "alarm_system": "signal_smoke_flare",
+      "garrison_spawn": "soldier_reinforcements"
+    }
+  },
+  {
+    "id": "war_and_battlefield",
+    "name": "Warfare, Siege & Battle Ruins",
+    "vietnamese_name": "Chiến Trường, Công Thành & Tàn Tích",
+    "description": "Spiked barricades, catapult batteries, broken supply wagons, battle arrows stuck in soil, and war drums.",
+    "sub_categories": [
+      "spiked_barricade_cheval_de_frise",
+      "siege_engine_and_catapult",
+      "broken_supply_wagon",
+      "battlefield_arrow_cluster",
+      "war_drum_and_signal_horn",
+      "corpse_trench"
+    ],
+    "planned_count": 55,
+    "gameplay_gap_hooks": {
+      "hazard_damage": "caltrop_bleed_and_slow",
+      "battle_ruins_loot": "scavenge_broken_weapons",
+      "war_state_trigger": "border_clash_zone"
+    }
+  },
+  {
+    "id": "river_and_maritime",
+    "name": "Canal, Fishery & River Docks",
+    "vietnamese_name": "Bến Thuyền, Kênh Đào & Thủy Đạo",
+    "description": "Wooden piers, houseboats, fishing sampans, cargo grain barges, ferry crossings, and fish-drying racks.",
+    "sub_categories": [
+      "wooden_dock_and_pier",
+      "cargo_grain_barge",
+      "fishing_sampan_and_houseboat",
+      "ferry_crossing_station",
+      "fish_drying_rack",
+      "water_toll_checkpoint"
+    ],
+    "planned_count": 45,
+    "gameplay_gap_hooks": {
+      "water_transport": "ferry_and_boat_travel",
+      "fishing_minigame": "harvest_freshwater_fish",
+      "trade_network": "riverine_cargo_smuggling"
+    }
+  },
+  {
+    "id": "trade_craft_industry",
+    "name": "Industry, Crafts & Sericulture",
+    "vietnamese_name": "Nghề Thủ Công, Lò Gốm & Khai Khoáng",
+    "description": "Salt evaporation flats, ceramic brick kilns, charcoal burning mounds, iron forges, and silk dye vats.",
+    "sub_categories": [
+      "salt_evaporation_pan",
+      "ceramic_and_brick_kiln",
+      "charcoal_burning_mound",
+      "iron_smithy_forge",
+      "dye_vat_and_silk_rack",
+      "grain_threshing_floor"
+    ],
+    "planned_count": 55,
+    "gameplay_gap_hooks": {
+      "crafting_station": "blacksmith_pottery_weaving",
+      "resource_production": ["refined_salt", "iron_ingots", "silk_fabric"],
+      "work_cycle": "artisan_shifts"
+    }
+  },
+  {
+    "id": "outlaw_and_jianghu",
+    "name": "Bandits, Wilderness Inns & Shadow World",
+    "vietnamese_name": "Sơn Tặc, Hắc Điếm & Tiêu Cục",
+    "description": "Mountain bandit stockades, skull boundary poles, remote wilderness inns (Dragon Gate style), and escort wagons.",
+    "sub_categories": [
+      "bandit_stockade_palisade",
+      "skull_boundary_pole",
+      "wilderness_tavern_black_inn",
+      "secret_tunnel_trapdoor",
+      "escort_caravan_wagon",
+      "underworld_gambling_den"
+    ],
+    "planned_count": 50,
+    "gameplay_gap_hooks": {
+      "encounter_type": "bandit_ambush_or_extortion",
+      "escort_mission": "caravan_bodyguard_route",
+      "black_market": "stolen_contraband_fencing"
+    }
+  },
+  {
+    "id": "folk_religion_fengshui",
+    "name": "Folk Shrines, Graves & Feng Shui",
+    "vietnamese_name": "Miếu Thần, Lăng Mộ & Phong Thủy",
+    "description": "Earth God shrines (Thổ Địa Miếu), City God altars, roadside warding stones, ancestral burial mounds, and incense urns.",
+    "sub_categories": [
+      "earth_god_shrine_tudi",
+      "city_god_temple_chenghuang",
+      "warding_stone_shigandang",
+      "ancestral_earthen_tumulus",
+      "paper_money_brazier",
+      "fengshui_geomancy_pillar"
+    ],
+    "planned_count": 50,
+    "gameplay_gap_hooks": {
+      "spiritual_blessing": "mortal_luck_and_safe_travel",
+      "ancestor_offering": "burn_joss_paper_for_karma",
+      "fengshui_leyline": "geomancy_qi_gathering"
+    }
+  },
+  {
+    "id": "low_realm_cultivation",
+    "name": "Low-Tier Sects & Qi Condensation",
+    "vietnamese_name": "Sơ Nhập Tu Tiên & Môn Phái Dân Gian",
+    "description": "Martial training grounds, wooden training dummies, iron sand pans, bronze medicinal stoves, and Qi-testing steles.",
+    "sub_categories": [
+      "wooden_training_dummy_mukren",
+      "iron_sand_training_pan",
+      "bronze_medicinal_stove",
+      "spirit_testing_stele",
+      "low_grade_herb_patch",
+      "disciple_meditation_mat"
+    ],
+    "planned_count": 60,
+    "gameplay_gap_hooks": {
+      "cultivation_tier": "qi_condensation_stage_1_to_3",
+      "stat_training": ["body_strength", "qi_circulation", "blade_affinity"],
+      "alchemy_craft": "low_tier_blood_pill"
+    }
+  },
+  {
+    "id": "destructible_and_loot",
+    "name": "Destructibles & Treasure Containers",
+    "vietnamese_name": "Vật Phá Hủy & Rương Báu",
+    "description": "Glazed wine jars, wooden supply crates, grain urns, merchant lockboxes, bandit iron chests, and loose pavers.",
+    "sub_categories": [
+      "glazed_wine_jar",
+      "wooden_cargo_crate",
+      "clay_grain_urn",
+      "merchant_brass_lockbox",
+      "bandit_iron_chest",
+      "loose_paving_stash"
+    ],
+    "planned_count": 50,
+    "gameplay_gap_hooks": {
+      "destructible": true,
+      "drop_loot_table": "mortal_copper_coins_and_supplies",
+      "hit_vulnerability": ["slash", "blunt", "fire"]
+    }
+  },
+  {
+    "id": "creature_and_denizen",
+    "name": "Commoners, Troops & Draft Beasts",
+    "vietnamese_name": "Nhân Vật, Binh Sĩ & Súc Vật",
+    "description": "Peasants, dockers, magistrates, soldiers, wandering wuxia fighters, water buffaloes, mules, and watchdogs.",
+    "sub_categories": [
+      "peasant_farmer_and_artisan",
+      "imperial_soldier_and_bailiff",
+      "wandering_wuxia_swordsman",
+      "mountain_bandit_raider",
+      "low_qi_disciple",
+      "draft_beast_and_livestock"
+    ],
+    "planned_count": 85,
+    "gameplay_gap_hooks": {
+      "ai_behavior": ["patrol", "farming_routine", "hostile_ambush", "vendor_dialogue"],
+      "mount_or_draft": "water_buffalo_cart_pulling",
+      "reputation_impact": "civilian_harm_increases_wanted_level"
+    }
+  },
+  {
+    "id": "flora_and_ambience",
+    "name": "Plants, Trees & Atmospheric Dressing",
+    "vietnamese_name": "Thực Vật, Cảnh Quan & Khí Quyển",
+    "description": "Weeping willows, ginkgo trees, peach orchards, bamboo groves, red festival lanterns, wine flag banners, and scarecrows.",
+    "sub_categories": [
+      "weeping_willow_tree",
+      "ginkgo_and_peach_tree",
+      "bamboo_cluster",
+      "festival_red_lantern",
+      "wine_tavern_flag_banner",
+      "scarecrow_and_drying_corn"
+    ],
+    "planned_count": 65,
+    "gameplay_gap_hooks": {
+      "wind_sway_shader": true,
+      "season_tint": ["spring_blossom", "summer_green", "autumn_gold", "winter_bare"],
+      "ambience_occluder": "canopy_vision_fade"
+    }
+  }
+]

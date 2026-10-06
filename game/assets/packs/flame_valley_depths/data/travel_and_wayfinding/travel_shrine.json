@@ -1,0 +1,290 @@
+{
+  "id": "flame_valley_depths.travel_and_wayfinding.travel_shrine",
+  "path": "res://assets/world_map/flame_valley_depths/travel_and_wayfinding/travel_shrine.png",
+  "type": "interactable",
+  "category": "travel_and_wayfinding",
+  "environment": "flame_valley_depths",
+  "environment_name": "Flame Valley Depths",
+  "world_tier": "Spirit World",
+  "archetype": "travel_and_wayfinding.travel_shrine",
+  "name": "Travel shrine",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image generation",
+  "license": "Generated with OpenAI; OpenAI terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Layered cinder slopes, copper-red stone, scorched earth, and controlled internal firelight.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-06",
+  "prompt_ref": "openai-map-flame-valley-depths-travel-shrine-v1",
+  "prompt": "High-quality isolated 2D game-map sprite: one interactable travel shrine for Flame Valley Depths in Chaos World. Strict vertical overhead orthographic view looking directly down. A compact octagonal shrine pedestal of layered copper-red basalt slabs with a narrow broken rim, a hollow round center holding a small controlled golden-white flame, four dark copper corner inlays and radial channels of warm internal firelight. Strong, unmistakable single-object silhouette, full shrine and base included, centered with generous transparent padding, bottom-center ground pivot. Flame Valley materials: layered cinder slopes, copper-red stone, scorched earth, controlled internal firelight. Anime-painted gouache, dark #263A35 ink contours, broad readable value planes, refined high-quality surface detail but clear at 256px, restrained upper-left lighting. Transparent background, short attached contact shadow only. No ground plane, no terrain, no landscape, no environment, no smoke cloud, no perspective, no isometric view, no side view, no text, no UI, no frame, no watermark, no extra objects.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source_images": [
+    {
+      "path": "art-source/map-originals/flame_valley_depths/travel_and_wayfinding/flame_valley_depths__travel_and_wayfinding__travel_shrine__3a1a0e29b7fe62b7.png",
+      "sha256": "3a1a0e29b7fe62b78cb172d89d9260bd019338a18cf8c2c8f9792410e91c2fca",
+      "size_px": [
+        1246,
+        1262
+      ],
+      "source": "OpenAI image generation",
+      "license": "Generated with OpenAI; OpenAI terms apply",
+      "generated_on": "2026-10-06",
+      "prompt_ref": "openai-map-flame-valley-depths-travel-shrine-v1",
+      "prompt": "High-quality isolated 2D game-map sprite: one interactable travel shrine for Flame Valley Depths in Chaos World. Strict vertical overhead orthographic view looking directly down. A compact octagonal shrine pedestal of layered copper-red basalt slabs with a narrow broken rim, a hollow round center holding a small controlled golden-white flame, four dark copper corner inlays and radial channels of warm internal firelight. Strong, unmistakable single-object silhouette, full shrine and base included, centered with generous transparent padding, bottom-center ground pivot. Flame Valley materials: layered cinder slopes, copper-red stone, scorched earth, controlled internal firelight. Anime-painted gouache, dark #263A35 ink contours, broad readable value planes, refined high-quality surface detail but clear at 256px, restrained upper-left lighting. Transparent background, short attached contact shadow only. No ground plane, no terrain, no landscape, no environment, no smoke cloud, no perspective, no isometric view, no side view, no text, no UI, no frame, no watermark, no extra objects.",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
+    }
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.645,
+        0.651
+      ],
+      [
+        0.747,
+        0.749
+      ]
+    ],
+    "frac_zero": 0.4569,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.2,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": true,
+      "vision_mode": "transparent",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "pray",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.004,
+        0.419,
+        0.879,
+        0.262,
+        0.0,
+        0.0
+      ],
+      [
+        0.185,
+        0.804,
+        1.0,
+        1.0,
+        0.996,
+        0.75,
+        0.042
+      ],
+      [
+        0.51,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.367
+      ],
+      [
+        0.98,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.977
+      ],
+      [
+        0.761,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.694
+      ],
+      [
+        0.205,
+        0.932,
+        1.0,
+        1.0,
+        1.0,
+        0.832,
+        0.087
+      ],
+      [
+        0.0,
+        0.213,
+        0.73,
+        0.986,
+        0.635,
+        0.077,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      20,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.508,
+    "dominant_rgb": [
+      115.8,
+      64.1,
+      38.4
+    ],
+    "hsv": {
+      "hue_deg": 21.1,
+      "saturation": 0.62,
+      "value": 0.45
+    },
+    "dominant_palette": "crimson_flame",
+    "center_of_mass_norm": [
+      0.498,
+      0.511
+    ],
+    "horizontal_symmetry": 1.0,
+    "edge_complexity": 0.258
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

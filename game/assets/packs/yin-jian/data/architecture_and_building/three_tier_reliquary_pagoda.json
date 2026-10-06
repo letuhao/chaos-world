@@ -1,0 +1,182 @@
+{
+  "id": "yin_jian.architecture_and_building.three_tier_reliquary_pagoda",
+  "name": "Three-Tier Reliquary Stupa",
+  "vietnamese_name": "Bảo Tháp Xá Lợi U Hồn",
+  "hanzi": "舍利骨刹",
+  "category": "architecture_and_building",
+  "sub_category": "bone_pagoda",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": null,
+  "gameplay_role": "Small bone stupa containing venerable ghost master relics.",
+  "destructible": false,
+  "material": "bone",
+  "cultivation_element": "spirit",
+  "prompt_summary": "Compact dome stupa crowned with bronze trident.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/architecture_and_building/three_tier_reliquary_pagoda.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.architecture_and_building.three_tier_reliquary_pagoda:259527966",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.282,
+        0.278
+      ],
+      [
+        0.769,
+        0.76
+      ]
+    ],
+    "frac_zero": 0.756,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.069,
+        0.143,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.308,
+        0.46,
+        0.0,
+        0.0
+      ],
+      [
+        0.069,
+        0.668,
+        0.742,
+        0.125,
+        0.0
+      ],
+      [
+        0.634,
+        1.0,
+        1.0,
+        0.768,
+        0.0
+      ],
+      [
+        0.774,
+        1.0,
+        1.0,
+        0.882,
+        0.0
+      ],
+      [
+        0.801,
+        1.0,
+        1.0,
+        0.901,
+        0.212
+      ],
+      [
+        0.193,
+        0.631,
+        0.718,
+        0.256,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      61,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 60,
+    "contact_reference_px": 60.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

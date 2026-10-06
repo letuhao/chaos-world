@@ -1,0 +1,170 @@
+{
+  "id": "mortal_plains.flora.flower_cluster",
+  "path": "res://assets/world_map/mortal_plains/flora/flower_cluster.png",
+  "type": "prop",
+  "category": "flora",
+  "environment": "mortal_plains",
+  "environment_name": "Mortal Plains",
+  "world_tier": "Mortal World",
+  "archetype": "flora.flower_cluster",
+  "name": "Flower cluster",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "bottom_center",
+  "collision": "none",
+  "status": "generated",
+  "source": "OpenAI image generation, 2026-10-03",
+  "license": "AI-generated for Chaos World; permitted for project use",
+  "alpha": "transparent",
+  "generated_on": "2026-10-03",
+  "prompt_ref": "map-flora-mortal-plains-flower-cluster-v1",
+  "prompt": "One isolated 128x128 decorative flora sprite for a 2D top-down cultivation RPG world map: a loose cluster of small golden meadow flowers and fine grass tufts native to Mortal Plains, viewed from slightly above. Match approved flower-cluster sprite s painted botanical detail, overhead readability, and edge treatment. Compact full silhouette, centered with transparent margin; several distinct warm yellow flowers, amber centers, fresh and olive greens, broad readable petals and leaves; gentle upper-left light and restrained painted texture. No vase, soil, ground tile, external shadow, props, text, frame, labels, watermark; true transparent alpha.",
+  "reference_ids": [
+    "mortal_greenwood.flora.flower_cluster"
+  ],
+  "environment_theme": "Sun-warmed ochre loam, low golden grasses, rounded hills, and worn farm tracks.",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.546
+      ]
+    ],
+    "frac_zero": 0.7579,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "none",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "transparent",
+      "acoustic_profile": "foliage",
+      "material": "foliage",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 1,
+        "hp": 25,
+        "on_destroy": "landmark_and_environment_detail.ground_decal",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.329,
+        0.561,
+        0.024
+      ],
+      [
+        0.759,
+        0.941,
+        0.365
+      ],
+      [
+        0.284,
+        0.442,
+        0.043
+      ]
+    ],
+    "crop_offset": [
+      29,
+      24
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.186,
+    "dominant_rgb": [
+      139.2,
+      139.1,
+      43.4
+    ],
+    "hsv": {
+      "hue_deg": 69.2,
+      "saturation": 0.72,
+      "value": 0.6
+    },
+    "dominant_palette": "warm_earth_gold",
+    "center_of_mass_norm": [
+      0.511,
+      0.512
+    ],
+    "horizontal_symmetry": 0.82,
+    "edge_complexity": 0.224
+  },
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 1,
+    "hp": 25,
+    "on_destroy": "landmark_and_environment_detail.ground_decal",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "foliage",
+  "cultivation_element": "none"
+}

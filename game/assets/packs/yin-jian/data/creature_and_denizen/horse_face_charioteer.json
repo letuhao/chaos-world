@@ -1,0 +1,296 @@
+{
+  "id": "yin_jian.creature_and_denizen.horse_face_charioteer",
+  "name": "Horse-Face Chariot Executioner",
+  "vietnamese_name": "Chiến Xa Mã Diện",
+  "hanzi": "马面战车使",
+  "category": "creature_and_denizen",
+  "sub_category": "jailer_and_guard",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "intercept_chariot",
+  "gameplay_role": "Heavy chariot drawn by two skeletal horses with scythe wheels.",
+  "destructible": false,
+  "material": "metal",
+  "cultivation_element": "metal",
+  "prompt_summary": "Bronze chariot with blade axles driven by horse-faced demon.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/horse_face_charioteer.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.horse_face_charioteer:262465712",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.0,
+        0.41,
+        0.492
+      ],
+      [
+        0.554,
+        0.615,
+        0.655
+      ],
+      [
+        0.418,
+        0.37,
+        0.0
+      ]
+    ],
+    "frac_zero": 0.6813,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        true,
+        true,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.122,
+        0.349,
+        0.015,
+        0.0,
+        0.02
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.018,
+        0.469,
+        0.639,
+        1.0,
+        0.859,
+        0.408,
+        0.418
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.357,
+        0.748,
+        0.973,
+        1.0,
+        1.0,
+        0.75,
+        0.085
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.431,
+        0.858,
+        0.997,
+        1.0,
+        1.0,
+        0.693,
+        0.46
+      ],
+      [
+        0.13,
+        0.464,
+        0.153,
+        0.316,
+        0.796,
+        0.439,
+        0.714,
+        0.852,
+        0.893,
+        0.939,
+        0.8
+      ],
+      [
+        0.677,
+        1.0,
+        0.939,
+        0.995,
+        0.997,
+        0.44,
+        0.033,
+        0.363,
+        0.666,
+        0.925,
+        0.407
+      ],
+      [
+        0.781,
+        0.935,
+        1.0,
+        1.0,
+        1.0,
+        0.486,
+        0.368,
+        0.021,
+        0.264,
+        0.483,
+        0.003
+      ],
+      [
+        0.047,
+        0.772,
+        1.0,
+        0.873,
+        0.847,
+        0.205,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.723,
+        0.39,
+        0.624,
+        0.846,
+        0.465,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.401,
+        0.0,
+        0.592,
+        0.81,
+        0.103,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.391,
+        0.297,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      39
+    ],
+    "trunk_columns": [
+      3
+    ],
+    "contact_px": 42,
+    "contact_reference_px": 42.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.0": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.15": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.35": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.6": [
+        0,
+        2,
+        0,
+        2
+      ]
+    },
+    "block_rect": [
+      1,
+      2,
+      1,
+      2
+    ],
+    "block_rect_px": [
+      128,
+      256,
+      256,
+      384
+    ]
+  }
+}

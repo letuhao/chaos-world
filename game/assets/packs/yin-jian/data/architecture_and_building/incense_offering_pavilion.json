@@ -1,0 +1,403 @@
+{
+  "id": "yin_jian.architecture_and_building.incense_offering_pavilion",
+  "name": "Grand Incense Offering Pavilion",
+  "vietnamese_name": "Đình Dâng Hương Đại Tế",
+  "hanzi": "祭香大亭",
+  "category": "architecture_and_building",
+  "sub_category": "shrine_and_temple",
+  "footprint_cells": [
+    4,
+    4
+  ],
+  "canvas_px": [
+    512,
+    512
+  ],
+  "collision_type": "core_ring",
+  "blocks_projectile": true,
+  "vision_mode": "canopy",
+  "interactive_verb": "offer_incense",
+  "gameplay_role": "Open pavilion with giant incense tripod.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "fire",
+  "prompt_summary": "Square pavilion housing massive three-legged bronze censer.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/architecture_and_building/incense_offering_pavilion.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.architecture_and_building.incense_offering_pavilion:260000634",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.107,
+        0.561,
+        0.191,
+        0.011
+      ],
+      [
+        0.582,
+        0.981,
+        0.775,
+        0.159
+      ],
+      [
+        0.142,
+        0.618,
+        0.437,
+        0.425
+      ],
+      [
+        0.0,
+        0.314,
+        0.349,
+        0.021
+      ]
+    ],
+    "frac_zero": 0.7222,
+    "blocks": [
+      [
+        false,
+        true,
+        false,
+        false
+      ],
+      [
+        true,
+        true,
+        true,
+        false
+      ],
+      [
+        false,
+        true,
+        true,
+        true
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 7,
+    "anchor_cell": [
+      2,
+      2
+    ],
+    "sub_grid": [
+      13,
+      15
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.015,
+        0.22,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.421,
+        0.763,
+        0.03,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.086,
+        0.63,
+        0.994,
+        1.0,
+        0.83,
+        0.231,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.344,
+        0.499,
+        0.931,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.996,
+        0.675,
+        0.383,
+        0.149,
+        0.0,
+        0.0
+      ],
+      [
+        0.559,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.883,
+        0.065,
+        0.005,
+        0.0
+      ],
+      [
+        0.051,
+        0.573,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.887,
+        0.147,
+        0.028,
+        0.222,
+        0.0
+      ],
+      [
+        0.0,
+        0.215,
+        0.863,
+        0.945,
+        1.0,
+        1.0,
+        1.0,
+        0.79,
+        0.677,
+        0.0,
+        0.377,
+        0.285,
+        0.0
+      ],
+      [
+        0.0,
+        0.159,
+        0.561,
+        0.307,
+        1.0,
+        1.0,
+        0.79,
+        0.092,
+        0.637,
+        0.102,
+        0.744,
+        0.109,
+        0.0
+      ],
+      [
+        0.0,
+        0.181,
+        0.673,
+        0.352,
+        1.0,
+        1.0,
+        0.876,
+        0.188,
+        0.766,
+        0.849,
+        0.647,
+        0.099,
+        0.013
+      ],
+      [
+        0.0,
+        0.098,
+        0.357,
+        0.191,
+        0.744,
+        0.934,
+        0.552,
+        0.078,
+        0.628,
+        1.0,
+        0.998,
+        0.726,
+        0.02
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.114,
+        0.718,
+        0.007,
+        0.0,
+        0.376,
+        0.775,
+        0.513,
+        0.405,
+        0.203
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.173,
+        0.891,
+        0.397,
+        0.188,
+        0.655,
+        0.716,
+        0.018,
+        0.0,
+        0.088
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.379,
+        0.988,
+        0.268,
+        0.901,
+        0.501,
+        0.003,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.213,
+        0.772,
+        0.737,
+        0.248,
+        0.082,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.006,
+        0.292,
+        0.31,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      51,
+      17
+    ],
+    "trunk_columns": [],
+    "contact_px": 14,
+    "contact_reference_px": 14.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      384
+    ]
+  }
+}

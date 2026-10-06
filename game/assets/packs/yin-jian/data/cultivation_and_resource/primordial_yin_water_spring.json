@@ -1,0 +1,166 @@
+{
+  "id": "yin_jian.cultivation_and_resource.primordial_yin_water_spring",
+  "name": "Primordial Heavy Water Spring",
+  "vietnamese_name": "Mạch Nước Thái Âm Huyền Thủy",
+  "hanzi": "太阴玄水眼",
+  "category": "cultivation_and_resource",
+  "sub_category": "yin_qi_spring",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "bottle_heavy_water",
+  "gameplay_role": "Drops of ultra-dense water weighing tons, used to temper divine weapons.",
+  "destructible": false,
+  "material": "water",
+  "cultivation_element": "water",
+  "prompt_summary": "Deep bubbling dark indigo pool where water droplets bead and bounce like mercury.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/cultivation_and_resource/primordial_yin_water_spring.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.cultivation_and_resource.primordial_yin_water_spring:264406496",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.356,
+        0.497
+      ],
+      [
+        1.0,
+        1.0
+      ]
+    ],
+    "frac_zero": 0.4693,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.095,
+        0.032,
+        0.118,
+        0.105,
+        0.095,
+        0.0
+      ],
+      [
+        0.0,
+        0.201,
+        0.104,
+        0.439,
+        0.766,
+        0.314,
+        0.044
+      ],
+      [
+        0.408,
+        0.879,
+        0.809,
+        0.873,
+        1.0,
+        0.93,
+        0.499
+      ],
+      [
+        0.996,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.997
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      28
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 224,
+    "contact_reference_px": 224.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

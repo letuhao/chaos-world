@@ -1,0 +1,186 @@
+{
+  "id": "yin_jian.destructible_and_container.bronze_ritual_urn",
+  "name": "Bronze Ritual Soul Vessel",
+  "vietnamese_name": "Vạc Đồng Nghi Lễ Hồn Phách",
+  "hanzi": "青铜祭魂樽",
+  "category": "destructible_and_container",
+  "sub_category": "soul_jar_and_urn",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "topple",
+  "gameplay_role": "Heavy bronze jar yielding refined copper and spirit shards.",
+  "destructible": true,
+  "material": "metal",
+  "cultivation_element": "metal",
+  "prompt_summary": "Heavy three-legged bronze urn with verdigris and dragon handles.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/destructible_and_container/bronze_ritual_urn.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.destructible_and_container.bronze_ritual_urn:261446708",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.604,
+        0.625
+      ],
+      [
+        0.521,
+        0.495
+      ]
+    ],
+    "frac_zero": 0.6278,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.014,
+        0.0,
+        0.0,
+        0.064,
+        0.068,
+        0.015
+      ],
+      [
+        0.761,
+        0.661,
+        0.956,
+        0.981,
+        0.648,
+        0.787
+      ],
+      [
+        0.696,
+        0.988,
+        1.0,
+        1.0,
+        0.987,
+        0.673
+      ],
+      [
+        0.567,
+        1.0,
+        1.0,
+        1.0,
+        0.998,
+        0.525
+      ],
+      [
+        0.143,
+        1.0,
+        1.0,
+        1.0,
+        0.986,
+        0.044
+      ],
+      [
+        0.363,
+        0.603,
+        0.748,
+        0.68,
+        0.574,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.306,
+        0.219,
+        0.016,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      34,
+      18
+    ],
+    "trunk_columns": [],
+    "contact_px": 21,
+    "contact_reference_px": 21.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

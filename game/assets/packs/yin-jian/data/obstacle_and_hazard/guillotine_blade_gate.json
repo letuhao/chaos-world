@@ -1,0 +1,156 @@
+{
+  "id": "yin_jian.obstacle_and_hazard.guillotine_blade_gate",
+  "name": "Dropping Iron Portcullis Guillotine",
+  "vietnamese_name": "Cửa Chém Đầu Tự Động",
+  "hanzi": "落头闸门",
+  "category": "obstacle_and_hazard",
+  "sub_category": "mechanical_trap",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "pass_under_quick",
+  "gameplay_role": "Trap gate dropping heavy serrated blades upon entry.",
+  "destructible": false,
+  "material": "metal",
+  "cultivation_element": "metal",
+  "prompt_summary": "Overhead wooden frame with suspended heavy iron guillotine slab.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/obstacle_and_hazard/guillotine_blade_gate.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.obstacle_and_hazard.guillotine_blade_gate:260991921",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.033,
+        0.545,
+        0.486
+      ]
+    ],
+    "frac_zero": 0.8259,
+    "blocks": [
+      [
+        false,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      8,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.071,
+        0.024,
+        0.483,
+        0.729,
+        0.244,
+        0.05,
+        0.201,
+        0.044
+      ],
+      [
+        0.0,
+        0.0,
+        0.324,
+        0.669,
+        0.403,
+        0.961,
+        1.0,
+        0.966
+      ],
+      [
+        0.0,
+        0.0,
+        0.383,
+        0.686,
+        0.364,
+        0.177,
+        0.588,
+        0.268
+      ]
+    ],
+    "crop_offset": [
+      74,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      6
+    ],
+    "contact_px": 50,
+    "contact_reference_px": 50.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        0,
+        2,
+        0
+      ],
+      "1.0": [
+        1,
+        0,
+        2,
+        0
+      ],
+      "1.15": [
+        1,
+        0,
+        2,
+        0
+      ],
+      "1.35": [
+        1,
+        0,
+        2,
+        0
+      ],
+      "1.6": [
+        1,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": [
+      1,
+      0,
+      2,
+      0
+    ],
+    "block_rect_px": [
+      128,
+      0,
+      384,
+      128
+    ]
+  }
+}

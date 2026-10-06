@@ -1,0 +1,100 @@
+{
+  "id": "yin_jian.decoration_and_ambience.rotting_bamboo_mat",
+  "name": "Decomposed Woven Bamboo Mat",
+  "vietnamese_name": "Chiếu Tre Rách Nát",
+  "hanzi": "腐朽竹席地饰",
+  "category": "decoration_and_ambience",
+  "sub_category": "ambient_decal",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Frayed split bamboo mat half covered in loam.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "earth",
+  "prompt_summary": "Dark weathered bamboo weave coming unraveled.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/decoration_and_ambience/rotting_bamboo_mat.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.decoration_and_ambience.rotting_bamboo_mat:264939705",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.466,
+        0.492
+      ]
+    ],
+    "frac_zero": 0.8455,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.179,
+        0.697,
+        0.107
+      ],
+      [
+        0.684,
+        0.958,
+        0.694
+      ],
+      [
+        0.04,
+        0.672,
+        0.103
+      ]
+    ],
+    "crop_offset": [
+      82,
+      20
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 34,
+    "contact_reference_px": 34.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

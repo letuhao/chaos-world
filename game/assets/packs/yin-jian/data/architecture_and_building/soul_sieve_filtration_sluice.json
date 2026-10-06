@@ -1,0 +1,181 @@
+{
+  "id": "yin_jian.architecture_and_building.soul_sieve_filtration_sluice",
+  "name": "Soul Sieve Water Sluice",
+  "vietnamese_name": "Cửa Phân Lọc Tạp Niệm",
+  "hanzi": "滤魄水闸",
+  "category": "architecture_and_building",
+  "sub_category": "tribunal_pavilion",
+  "footprint_cells": [
+    4,
+    2
+  ],
+  "canvas_px": [
+    512,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "operate_sluice",
+  "gameplay_role": "Sluice system filtering impure thoughts from souls.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "water",
+  "prompt_summary": "Stone dam with mechanical bronze sieve grates.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/architecture_and_building/soul_sieve_filtration_sluice.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.architecture_and_building.soul_sieve_filtration_sluice:260093159",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.333,
+        0.628,
+        0.84,
+        0.178
+      ],
+      [
+        0.502,
+        0.849,
+        0.854,
+        0.437
+      ]
+    ],
+    "frac_zero": 0.7633,
+    "blocks": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      2,
+      1
+    ],
+    "sub_grid": [
+      8,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.217,
+        0.538,
+        0.042,
+        0.0,
+        0.0
+      ],
+      [
+        0.27,
+        0.604,
+        0.655,
+        0.952,
+        1.0,
+        0.549,
+        0.0,
+        0.0
+      ],
+      [
+        0.173,
+        0.987,
+        1.0,
+        1.0,
+        1.0,
+        0.816,
+        0.0,
+        0.0
+      ],
+      [
+        0.323,
+        0.959,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.369,
+        0.01
+      ],
+      [
+        0.657,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.995,
+        0.816,
+        0.031
+      ],
+      [
+        0.233,
+        0.93,
+        1.0,
+        1.0,
+        1.0,
+        0.698,
+        0.132,
+        0.0
+      ],
+      [
+        0.0,
+        0.174,
+        0.428,
+        0.486,
+        0.556,
+        0.1,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      141,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 13,
+    "contact_reference_px": 13.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

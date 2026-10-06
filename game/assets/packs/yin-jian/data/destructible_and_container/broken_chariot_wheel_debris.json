@@ -1,0 +1,97 @@
+{
+  "id": "yin_jian.destructible_and_container.broken_chariot_wheel_debris",
+  "name": "Shattered Ghost Chariot Wheel",
+  "vietnamese_name": "Bánh Xe Ma Vỡ Vụn",
+  "hanzi": "残破冥车轮",
+  "category": "destructible_and_container",
+  "sub_category": "destructible_and_container",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "salvage_wood",
+  "gameplay_role": "Heavy iron-rimmed carriage wheel from damaged ferry cart.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "metal",
+  "prompt_summary": "Large spoked wooden cartwheel half buried in ash.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/destructible_and_container/broken_chariot_wheel_debris.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.destructible_and_container.broken_chariot_wheel_debris:262033465",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.395
+      ]
+    ],
+    "frac_zero": 0.7493,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.384,
+        0.48,
+        0.37
+      ],
+      [
+        0.476,
+        0.715,
+        0.421
+      ],
+      [
+        0.392,
+        0.229,
+        0.002
+      ]
+    ],
+    "crop_offset": [
+      16,
+      20
+    ],
+    "trunk_columns": [
+      0
+    ],
+    "contact_px": 23,
+    "contact_reference_px": 23.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

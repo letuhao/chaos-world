@@ -1,0 +1,102 @@
+{
+  "id": "yin_jian.decoration_and_ambience.mourning_crepe_swag",
+  "name": "Mourning Crepe Fabric Swag",
+  "vietnamese_name": "Dải Vải Tang Treo Cửa",
+  "hanzi": "门楣孝布饰",
+  "category": "decoration_and_ambience",
+  "sub_category": "banner_and_fabric",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "White pleated fabric draped across door lintels.",
+  "destructible": true,
+  "material": "cloth",
+  "cultivation_element": "yin",
+  "prompt_summary": "Draped white mourning cloth forming scalloped swag.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/decoration_and_ambience/mourning_crepe_swag.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.decoration_and_ambience.mourning_crepe_swag:264783143",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.413,
+        0.607
+      ]
+    ],
+    "frac_zero": 0.8418,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.175,
+        0.264,
+        0.446
+      ],
+      [
+        0.312,
+        1.0,
+        0.795
+      ],
+      [
+        0.431,
+        0.742,
+        0.471
+      ]
+    ],
+    "crop_offset": [
+      80,
+      19
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 65,
+    "contact_reference_px": 65.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

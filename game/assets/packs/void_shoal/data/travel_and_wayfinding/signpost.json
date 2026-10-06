@@ -1,0 +1,212 @@
+{
+  "id": "void_shoal.travel_and_wayfinding.signpost",
+  "path": "res://assets/world_map/void_shoal/travel_and_wayfinding/signpost.png",
+  "type": "prop",
+  "category": "travel_and_wayfinding",
+  "environment": "void_shoal",
+  "environment_name": "Void Shoal",
+  "world_tier": "Transcendent World",
+  "archetype": "travel_and_wayfinding.signpost",
+  "name": "Signpost",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image generation (image_gen), 2026-10-05",
+  "license": "OpenAI generated image; project use",
+  "alpha": "transparent",
+  "environment_theme": "Black glass shoals, deep violet water, scattered stone fragments, and sparse cyan glimmers.",
+  "generated_on": "2026-10-05",
+  "prompt_ref": "map-void-shoal-signpost-v1",
+  "prompt": "One production 2D top-down map prop sprite for Chaos World: a compact navigational signpost marker for the Void Shoal, an environment of black glass shoals, deep violet water, scattered stone fragments, and sparse cyan glimmers. Strict orthographic straight-down view: a low, clearly readable ground-mounted black-glass post base with two short flat directional arms crossing at its center, each arm ending in a small pointed stone arrowhead. Add restrained cyan inlay lines and tiny violet mineral glints, but no letters or writing. Whole object visible, centered with transparent padding, bottom-center ground contact and compact solid silhouette, legible at 128x128. Anime-painted gouache, fine dark #263A35 contours, broad clear planes, restrained upper-left light. True transparent background; no terrain or shadow beyond the foot, no scenery, characters, labels, text, border, or watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.303
+      ]
+    ],
+    "frac_zero": 0.8345,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "ground_contact",
+      "cov_gate": 0.01,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": true,
+      "vision_mode": "brush",
+      "acoustic_profile": "wood",
+      "material": "wood",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 2,
+        "hp": 60,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "read",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.186,
+        0.523,
+        0.194
+      ],
+      [
+        0.132,
+        0.529,
+        0.097
+      ],
+      [
+        0.133,
+        0.727,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      19,
+      23
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 34,
+    "contact_reference_px": 34.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.13,
+    "dominant_rgb": [
+      53.0,
+      61.8,
+      74.6
+    ],
+    "hsv": {
+      "hue_deg": 220.3,
+      "saturation": 0.31,
+      "value": 0.29
+    },
+    "dominant_palette": "azure_water",
+    "center_of_mass_norm": [
+      0.475,
+      0.517
+    ],
+    "horizontal_symmetry": 0.98,
+    "edge_complexity": 0.121
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "brush",
+  "destructible": {
+    "enabled": true,
+    "tier": 2,
+    "hp": 60,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "wood",
+  "cultivation_element": "none"
+}

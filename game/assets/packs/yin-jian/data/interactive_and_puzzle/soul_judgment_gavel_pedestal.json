@@ -1,0 +1,195 @@
+{
+  "id": "yin_jian.interactive_and_puzzle.soul_judgment_gavel_pedestal",
+  "name": "Gavel Pedestal of King Yanluo",
+  "vietnamese_name": "Đài Búa Phán Xét Diêm La",
+  "hanzi": "惊堂木审案法台",
+  "category": "interactive_and_puzzle",
+  "sub_category": "judgment_device",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "strike_gavel",
+  "gameplay_role": "Striking the gavel triggers courtroom traps or silences nearby spirits.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "spirit",
+  "prompt_summary": "Carved mahogany altar holding heavy wooden striking gavel.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/interactive_and_puzzle/soul_judgment_gavel_pedestal.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.interactive_and_puzzle.soul_judgment_gavel_pedestal:262890059",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.704,
+        0.321
+      ],
+      [
+        0.652,
+        0.46
+      ]
+    ],
+    "frac_zero": 0.6181,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.655,
+        0.751,
+        0.245,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.128,
+        0.901,
+        1.0,
+        1.0,
+        0.178,
+        0.0,
+        0.0
+      ],
+      [
+        0.774,
+        1.0,
+        1.0,
+        1.0,
+        0.801,
+        0.0,
+        0.0
+      ],
+      [
+        0.119,
+        0.939,
+        1.0,
+        0.956,
+        0.244,
+        0.073,
+        0.0
+      ],
+      [
+        0.666,
+        0.996,
+        1.0,
+        0.994,
+        0.914,
+        0.321,
+        0.0
+      ],
+      [
+        0.225,
+        0.922,
+        1.0,
+        0.966,
+        0.935,
+        0.352,
+        0.023
+      ],
+      [
+        0.0,
+        0.144,
+        0.82,
+        0.158,
+        0.131,
+        0.004,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      27,
+      16
+    ],
+    "trunk_columns": [
+      2
+    ],
+    "contact_px": 40,
+    "contact_reference_px": 40.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

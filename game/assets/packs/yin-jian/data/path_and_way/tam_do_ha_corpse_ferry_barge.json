@@ -1,0 +1,281 @@
+{
+  "id": "yin_jian.path_and_way.tam_do_ha_corpse_ferry_barge",
+  "name": "San Tu River Ancient Corpse Barge",
+  "vietnamese_name": "Tam Đồ Hà Cổ Thi Thuyền",
+  "hanzi": "三途河古尸船",
+  "category": "path_and_way",
+  "sub_category": "crossing_and_pier",
+  "racial_faction": "san_tu_river",
+  "footprint_cells": [
+    5,
+    2
+  ],
+  "canvas_px": [
+    640,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "board_ferry",
+  "gameplay_role": "Gigantic ancient rotting wooden galleon navigating the San Tu River, serving as a mobile ferry crossing between distant realms.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "yin",
+  "prompt_summary": "Top-down 45 degree long weathered black-wood river barge with tattered sails, green ghost fire lantern on prow, carrying chained bronze coffins.",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/path_and_way/tam_do_ha_corpse_ferry_barge.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.path_and_way.tam_do_ha_corpse_ferry_barge:265571905",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.168,
+        0.242,
+        0.264,
+        0.433,
+        0.542
+      ],
+      [
+        0.164,
+        0.469,
+        0.541,
+        0.594,
+        0.298
+      ]
+    ],
+    "frac_zero": 0.7224,
+    "blocks": [
+      [
+        false,
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        false,
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 8,
+    "anchor_cell": [
+      2,
+      1
+    ],
+    "sub_grid": [
+      17,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.054,
+        0.0,
+        0.0,
+        0.139,
+        0.374
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.017,
+        0.769,
+        0.706,
+        0.774,
+        0.724,
+        0.668
+      ],
+      [
+        0.171,
+        0.109,
+        0.249,
+        0.328,
+        0.388,
+        0.438,
+        0.42,
+        0.455,
+        0.469,
+        0.494,
+        0.502,
+        0.599,
+        0.975,
+        1.0,
+        0.946,
+        0.638,
+        0.014
+      ],
+      [
+        0.289,
+        0.855,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.891,
+        0.038
+      ],
+      [
+        0.0,
+        0.015,
+        0.465,
+        0.817,
+        0.978,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.941,
+        0.21,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.049,
+        0.16,
+        0.218,
+        0.282,
+        0.337,
+        0.346,
+        0.358,
+        0.396,
+        0.477,
+        0.3,
+        0.072,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.101,
+        0.245,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      53,
+      18
+    ],
+    "trunk_columns": [],
+    "contact_px": 28,
+    "contact_reference_px": 28.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        0,
+        4,
+        1
+      ],
+      "1.0": [
+        1,
+        0,
+        4,
+        1
+      ],
+      "1.15": [
+        1,
+        0,
+        4,
+        1
+      ],
+      "1.35": [
+        1,
+        0,
+        4,
+        1
+      ],
+      "1.6": [
+        1,
+        0,
+        4,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      0,
+      4,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      0,
+      640,
+      256
+    ]
+  }
+}

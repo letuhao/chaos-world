@@ -6,10 +6,34 @@ extends VBoxContainer
 ## the actor's slot usage. It never mutates item state — the screen owns every
 ## action.
 ##
+## It also publishes the COMPARISON: for the selected row, the per-stat delta
+## against the item already occupying the slot that row would go into. That is
+## the answer to "is this better than what I am wearing", which with hundreds of
+## competing wearables and five slots was previously only answerable by hand.
+##
+## ## Why the comparison is honest about having no counterpart
+##
+## Most selections have no honest delta: an empty slot has nothing to beat, a
+## stack cannot be worn at all, a grade gate means the swap cannot happen, and an
+## occupant of a different subtype is not a like-for-like item. Each is a NAMED
+## `state`, never a zero-filled row that reads like "no change". A zero delta and
+## an absent delta are different facts and the contract keeps them apart.
+##
+## ## Why `direction` is arithmetic and not a judgement
+##
+## `up`/`down`/`flat` report the sign of `candidate - equipped` and nothing more.
+## Whether a higher number is GOOD depends on the stat — more `crit_resist` helps,
+## more `crit_resist_damage` hurts — and this panel holds no catalog of that, so
+## it does not pretend to. The renderer colours the sign; the sign carries the
+## fact, which is also what makes the reading survive without colour.
+##
 ## Widgets live in `inventory_panel.tscn`; only the data rows are built here,
 ## because their number follows the actor's contents.
 
 signal selection_changed(row: Dictionary)
+## The player pressed Lock on the selected row. The panel holds no item state, so
+## it asks and the screen owns the write.
+signal lock_requested(instance_id: StringName, locked: bool)
 
 const KIND_INSTANCE := "instance"
 const KIND_STACK := "stack"
@@ -21,6 +45,68 @@ const RARITY_LABELS := {
 	&"legendary": "Legendary",
 }
 
+## The items module's option target vocabulary, spelled out here exactly as
+## `item_action_rules.gd` spells out its activations: `ui/` may not name an items
+## type directly, and the gate that catches a mismatch is the `not_equippable`
+## path rather than a silent success.
+const TARGET_STAT := &"stat"
+
+## The comparison states. Each is a distinct fact about whether a delta exists,
+## and a test names the one it means. `none` is the empty contract, so a reader
+## never has to distinguish "no comparison" from "no state".
+const STATE_NONE := "none"
+## The slot is free, so the delta is against nothing: every value is a gain and
+## `has_counterpart` is false. The half that only works once something is worn.
+const STATE_EMPTY_SLOT := "empty_slot"
+## A real occupant of the candidate's own subtype. The only state with a
+## counterpart, and the only one that answers "should I swap".
+const STATE_COMPARABLE := "comparable"
+## The slot holds an item whose subtype is not the candidate's, so the numbers
+## are published but answer no question the player asked: it is not the same kind
+## of thing to compare against.
+const STATE_DIFFERENT_SUBTYPE := "different_subtype"
+## The subtype's authored rule refuses the very slot the candidate maps to.
+const STATE_WRONG_SLOT := "wrong_slot"
+## A stack, or a definition that is not equipment. It cannot be worn at all, so
+## there is no equip and no delta.
+const STATE_NOT_EQUIPPABLE := "not_equippable"
+## The subtype is authored as wearing nowhere — socket material, not apparel.
+const STATE_UNWEARABLE := "unwearable"
+## The actor's realm tier is below the definition's required tier. The swap is
+## refused by gameplay, so a delta would be a promise the facade will not keep.
+const STATE_GRADE_GATED := "grade_gated"
+## Bound to an actor who is not this one.
+const STATE_BOUND_TO_OTHER := "bound_to_other"
+## The subtype expresses no slot opinion and the player has chosen none.
+const STATE_NO_SLOT := "no_slot"
+
+const DIRECTION_UP := "up"
+const DIRECTION_DOWN := "down"
+const DIRECTION_FLAT := "flat"
+
+## Wording for each state. This panel owns every `%s` and every `%d` in it — the
+## screen hands raw values and never formats one.
+const COMPARE_TEXT := {
+	STATE_NONE: "No item selected",
+	STATE_EMPTY_SLOT: "%s is empty — nothing to compare against",
+	STATE_COMPARABLE: "Against %s in %s",
+	STATE_DIFFERENT_SUBTYPE: "%s holds a different kind of item — not a like-for-like swap",
+	STATE_WRONG_SLOT: "%s cannot be worn in %s",
+	STATE_NOT_EQUIPPABLE: "Cannot be equipped",
+	STATE_UNWEARABLE: "Cannot be worn",
+	STATE_GRADE_GATED: "Grade %s needs a higher realm",
+	STATE_BOUND_TO_OTHER: "Bound to another",
+	STATE_NO_SLOT: "No slot chosen",
+}
+
+## Why the lock control is dark. `lock_unsupported` is the honest one today: the
+## module verb the lock needs is not published yet, and a lit button that cannot
+## write would be the exact defect this lane exists to fix.
+const LOCK_NO_SELECTION := "no_selection"
+const LOCK_STACK := "stack_not_lockable"
+const LOCK_UNSUPPORTED := "lock_unsupported"
+const LOCK_WORN := "already_equipped"
+
 var _actor: Actor
 var _rows: Array[Dictionary] = []
 var _suppress: bool = false
@@ -29,6 +115,35 @@ var _inventory_source: RefCounted = null
 var _equipment_source: RefCounted = null
 var _header: Label = null
 var _list: ItemList = null
+## The slot the player will equip into, handed down by the screen so the
+## comparison targets the slot an equip would actually use.
+var _target_slot: StringName = &""
+var _compare: Dictionary = {}
+var _lock: Dictionary = {}
+var _lock_read: Callable = Callable()
+var _lock_write: Callable = Callable()
+var _compare_title: Label = null
+var _compare_head: Label = null
+var _compare_rows: VBoxContainer = null
+var _lock_button: Button = null
+
+
+func _init() -> void:
+	_compare = _empty_comparison()
+	_lock = _empty_lock()
+
+
+## Empty contracts for the comparison/lock reads (boot repair, owner: lane-compare lane).
+## `_init` calls both but their definitions have not landed yet, which fails this
+## file's parse and everything that loads it (`screens/item_workbench.gd` up to the
+## boot scene). `STATE_NONE` is the lane's own documented empty contract ("`none` is
+## the empty contract"), so these return its shape until the lane fills them in.
+func _empty_comparison() -> Dictionary:
+	return {"state": STATE_NONE}
+
+
+func _empty_lock() -> Dictionary:
+	return {"state": STATE_NONE}
 
 
 func _ready() -> void:

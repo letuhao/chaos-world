@@ -1,0 +1,196 @@
+{
+  "id": "yin_jian.obstacle_and_hazard.haunted_bell_sound_hazard",
+  "name": "Cursed Resonating Gong",
+  "vietnamese_name": "Chiêng Đồng Ma Quái Tự Gõ",
+  "hanzi": "摄魂魔锣",
+  "category": "obstacle_and_hazard",
+  "sub_category": "mechanical_trap",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "full_body",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "muffle_gong",
+  "gameplay_role": "Gong whose vibrations inflict stun and ear-bleed.",
+  "destructible": true,
+  "material": "metal",
+  "cultivation_element": "spirit",
+  "prompt_summary": "Large black gong suspended on wooden frame ringing itself.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/obstacle_and_hazard/haunted_bell_sound_hazard.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.obstacle_and_hazard.haunted_bell_sound_hazard:261359569",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.409,
+        0.388
+      ],
+      [
+        0.556,
+        0.381
+      ]
+    ],
+    "frac_zero": 0.648,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.067,
+        0.452,
+        0.299,
+        0.219,
+        0.221,
+        0.364,
+        0.062
+      ],
+      [
+        0.029,
+        0.77,
+        0.479,
+        0.527,
+        0.473,
+        0.746,
+        0.022
+      ],
+      [
+        0.0,
+        0.468,
+        0.724,
+        1.0,
+        0.734,
+        0.406,
+        0.0
+      ],
+      [
+        0.0,
+        0.394,
+        0.879,
+        1.0,
+        0.891,
+        0.406,
+        0.006
+      ],
+      [
+        0.206,
+        0.64,
+        0.324,
+        0.682,
+        0.285,
+        0.585,
+        0.057
+      ],
+      [
+        0.709,
+        0.991,
+        0.734,
+        0.039,
+        0.454,
+        0.96,
+        0.337
+      ],
+      [
+        1.0,
+        0.831,
+        0.166,
+        0.011,
+        0.165,
+        0.152,
+        0.064
+      ]
+    ],
+    "crop_offset": [
+      16,
+      26
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 75,
+    "contact_reference_px": 75.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

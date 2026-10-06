@@ -1,0 +1,170 @@
+{
+  "id": "primordial_wilds.terrain_transition.shore_edge",
+  "path": "res://assets/world_map/primordial_wilds/terrain_transition/shore_edge.png",
+  "type": "tile",
+  "category": "terrain_transition",
+  "environment": "primordial_wilds",
+  "environment_name": "Primordial Wilds",
+  "world_tier": "Transcendent World",
+  "archetype": "terrain_transition.shore_edge",
+  "name": "Shore edge",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "center",
+  "collision": "none",
+  "status": "generated",
+  "source": "OpenAI built-in image generation",
+  "license": "Generated locally with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Colossal exposed roots, ancient moss-dark basalt, amber minerals, and untamed growth.",
+  "generated_on": "2026-10-04",
+  "prompt_ref": "openai-imagegen:primordial_wilds.terrain_transition.shore_edge:20261004",
+  "prompt": "Transparent near-square Primordial Wilds shore-edge terrain transition: irregular moss-dark basalt bank, colossal exposed roots, amber mineral flecks, and a clear teal pool along the right side; straight-down orthographic, painterly anime gouache, restrained upper-left light, isolated on transparent canvas with clean alpha, no cast shadow beyond the silhouette, no text.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.778
+      ]
+    ],
+    "frac_zero": 0.5607,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "none",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "transparent",
+      "acoustic_profile": "earth",
+      "material": "earth",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 1,
+        "hp": 40,
+        "on_destroy": "ground_tile.cracked_ground",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "water",
+          "wind"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.523,
+        0.896,
+        0.583
+      ],
+      [
+        0.896,
+        1.0,
+        0.923
+      ],
+      [
+        0.565,
+        0.945,
+        0.628
+      ]
+    ],
+    "crop_offset": [
+      18,
+      17
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.406,
+    "dominant_rgb": [
+      75.7,
+      87.0,
+      55.3
+    ],
+    "hsv": {
+      "hue_deg": 86.8,
+      "saturation": 0.48,
+      "value": 0.35
+    },
+    "dominant_palette": "verdant_flora",
+    "center_of_mass_norm": [
+      0.505,
+      0.503
+    ],
+    "horizontal_symmetry": 0.93,
+    "edge_complexity": 0.217
+  },
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 1,
+    "hp": 40,
+    "on_destroy": "ground_tile.cracked_ground",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "water",
+      "wind"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "earth",
+  "cultivation_element": "none"
+}

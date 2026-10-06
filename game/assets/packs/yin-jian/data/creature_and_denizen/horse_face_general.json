@@ -1,0 +1,207 @@
+{
+  "id": "yin_jian.creature_and_denizen.horse_face_general",
+  "name": "Horse-Face General (Ma Dien)",
+  "vietnamese_name": "Mã Diện Tướng Quân",
+  "hanzi": "马面罗刹将军",
+  "category": "creature_and_denizen",
+  "sub_category": "jailer_and_guard",
+  "footprint_cells": [
+    2,
+    3
+  ],
+  "canvas_px": [
+    256,
+    384
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "fight_jailer",
+  "gameplay_role": "Equine-headed demon wielding a soul-severing crescent halberd.",
+  "destructible": false,
+  "material": "bone",
+  "cultivation_element": "metal",
+  "prompt_summary": "Tall lanky equine-headed demon in leather brigandine wielding long polearm.",
+  "racial_faction": "traditional_diyu",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/horse_face_general.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.horse_face_general:262129954",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.217,
+        0.216
+      ],
+      [
+        0.286,
+        0.459
+      ],
+      [
+        0.178,
+        0.615
+      ]
+    ],
+    "frac_zero": 0.8337,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.138,
+        0.281,
+        0.284,
+        0.009,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.697,
+        1.0,
+        0.545,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.54,
+        0.98,
+        0.809,
+        0.026,
+        0.0
+      ],
+      [
+        0.0,
+        0.085,
+        0.399,
+        1.0,
+        0.821,
+        0.244,
+        0.089
+      ],
+      [
+        0.013,
+        0.474,
+        0.204,
+        0.936,
+        0.991,
+        0.896,
+        0.251
+      ],
+      [
+        0.283,
+        0.046,
+        0.0,
+        0.384,
+        0.865,
+        0.771,
+        0.092
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.125,
+        0.434,
+        0.037
+      ]
+    ],
+    "crop_offset": [
+      18,
+      166
+    ],
+    "trunk_columns": [
+      5
+    ],
+    "contact_px": 45,
+    "contact_reference_px": 45.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.0": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.15": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.35": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.6": [
+        1,
+        2,
+        1,
+        2
+      ]
+    },
+    "block_rect": [
+      1,
+      2,
+      1,
+      2
+    ],
+    "block_rect_px": [
+      128,
+      256,
+      256,
+      384
+    ]
+  }
+}

@@ -1,0 +1,250 @@
+{
+  "id": "mortal_highlands.stone_and_ore.crystal_growth",
+  "path": "res://assets/world_map/mortal_highlands/stone_and_ore/crystal_growth.png",
+  "type": "resource_node",
+  "category": "stone_and_ore",
+  "environment": "mortal_highlands",
+  "environment_name": "Mortal Highlands",
+  "world_tier": "Mortal World",
+  "archetype": "stone_and_ore.crystal_growth",
+  "name": "Crystal growth",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image generation; 2026-10-05",
+  "license": "Generated with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Exposed grey granite, steep broken ledges, wind-shaped pines, and pale lichen.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "generated_on": "2026-10-05",
+  "prompt_ref": "openai-imagegen:mortal_highlands.crystal_growth:20261005",
+  "prompt": "Use case: stylized-concept. Asset type: production 2D top-down action RPG resource-node sprite for Chaos World. Subject: one harvestable crystal growth rooted in exposed grey granite for Mortal Highlands, with wind-shaped pine country and pale lichen suggested only through material accents. View: strict straight-down orthographic map camera, broad crystal top facets visible directly above, no perspective or isometric angle. Composition: connected 2×2-cell low-profile granite outcrop with three short angular translucent smoky-blue quartz crystal tops emerging from pale gray rock, tiny pale lichen patches in creases; robust silhouette readable at 256×256, centered with transparent padding and bottom-center ground contact. Art direction: anime-painted gouache, fine dark #263A35 contours, broad readable planes, cool granite, muted blue-gray crystal with a few restrained ivory glints, soft highland daylight, matte surface, attached contact shadow only. Technical output: high-resolution square PNG with genuine transparent background outside the entire cluster. Exclude: tall upright spires, vertical faceted sides, terrain scene, pine trees, sky, floating shards, extra nodes, text, runes, grid, border, UI, watermark, glow bloom, 3D render.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.621
+      ]
+    ],
+    "frac_zero": 0.6213,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": true,
+      "vision_mode": "transparent",
+      "acoustic_profile": "crystal",
+      "material": "crystal",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 4,
+        "hp": 220,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "harvest",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.002,
+        0.652,
+        0.819,
+        0.213,
+        0.0,
+        0.0
+      ],
+      [
+        0.451,
+        1.0,
+        1.0,
+        0.978,
+        0.529,
+        0.081
+      ],
+      [
+        0.409,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.777
+      ],
+      [
+        0.854,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.719
+      ],
+      [
+        0.481,
+        1.0,
+        1.0,
+        1.0,
+        0.812,
+        0.135
+      ],
+      [
+        0.005,
+        0.35,
+        0.946,
+        0.872,
+        0.092,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.294,
+        0.334,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      40,
+      36
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.363,
+    "dominant_rgb": [
+      128.7,
+      131.3,
+      130.0
+    ],
+    "hsv": {
+      "hue_deg": 118.9,
+      "saturation": 0.12,
+      "value": 0.54
+    },
+    "dominant_palette": "monochrome_grey",
+    "center_of_mass_norm": [
+      0.507,
+      0.529
+    ],
+    "horizontal_symmetry": 0.86,
+    "edge_complexity": 0.268
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 4,
+    "hp": 220,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "crystal",
+  "cultivation_element": "none"
+}

@@ -1,0 +1,199 @@
+{
+  "id": "yin_jian.creature_and_denizen.quy_toc_phantom_carriage",
+  "name": "Spectral Horse Carriage",
+  "vietnamese_name": "Quỷ Hồn Giá Mã Xa",
+  "hanzi": "鬼魂驾马车",
+  "category": "creature_and_denizen",
+  "sub_category": "nether_beast",
+  "racial_faction": "ghost",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "ride_carriage",
+  "gameplay_role": "Translucent carriage pulled by skeletal horses, used for fast travel across misty ghost provinces.",
+  "destructible": false,
+  "material": "spirit",
+  "cultivation_element": "ghost",
+  "prompt_summary": "Top-down 45 degree ornate black-wood carriage pulled by twin translucent skeletal horses with cyan mane flames, floating slightly above ground.",
+  "status": "generated",
+  "path": "res://assets/world_map/yin_jian/creature_and_denizen/quy_toc_phantom_carriage.png",
+  "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "generated_on": "2026-10-06",
+  "prompt_ref": "comfyui-map-v1:yin_jian.creature_and_denizen.quy_toc_phantom_carriage:265753801",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.556,
+        0.343,
+        0.0
+      ],
+      [
+        0.193,
+        0.505,
+        0.519
+      ]
+    ],
+    "frac_zero": 0.8094,
+    "blocks": [
+      [
+        true,
+        true,
+        false
+      ],
+      [
+        false,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.389,
+        0.142,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.447,
+        0.99,
+        0.929,
+        0.386,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.146,
+        1.0,
+        1.0,
+        0.342,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.265,
+        0.965,
+        1.0,
+        0.834,
+        0.535,
+        0.221,
+        0.228
+      ],
+      [
+        0.057,
+        0.548,
+        0.745,
+        0.919,
+        0.866,
+        1.0,
+        0.794
+      ],
+      [
+        0.0,
+        0.0,
+        0.002,
+        0.426,
+        0.8,
+        0.714,
+        0.144
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.01,
+        0.098,
+        0.147,
+        0.061
+      ]
+    ],
+    "crop_offset": [
+      81,
+      17
+    ],
+    "trunk_columns": [],
+    "contact_px": 7,
+    "contact_reference_px": 7.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

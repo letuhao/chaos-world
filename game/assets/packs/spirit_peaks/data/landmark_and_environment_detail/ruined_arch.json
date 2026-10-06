@@ -1,0 +1,478 @@
+{
+  "id": "spirit_peaks.landmark_and_environment_detail.ruined_arch",
+  "path": "res://assets/world_map/spirit_peaks/landmark_and_environment_detail/ruined_arch.png",
+  "type": "landmark",
+  "category": "landmark_and_environment_detail",
+  "environment": "spirit_peaks",
+  "environment_name": "Spirit Peaks",
+  "world_tier": "Spirit World",
+  "archetype": "landmark_and_environment_detail.ruined_arch",
+  "name": "Ruined arch",
+  "canvas_px": [
+    512,
+    512
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image generation",
+  "license": "Generated with OpenAI; OpenAI terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Cold blue stone, sparse snow, crystalline mist, and hardy dark mountain pines.",
+  "footprint_cells": [
+    4,
+    4
+  ],
+  "generated_on": "2026-10-06",
+  "prompt_ref": "openai-map-spirit-peaks-ruined-arch-v1",
+  "prompt": "High-quality isolated 2D game-map landmark: a ruined mountain arch in Spirit Peaks, Chaos World. Strict vertical overhead orthographic view, camera directly above the structure. Show a broken angular gateway footprint from above: two squat snow-capped cold-blue granite column tops on the south corners, a shattered curved lintel of fractured blocks running across the north and partly down the west side, leaving a clear passage gap to the east. Sparse snow in stone joints, a few dark pine-needle flecks and tiny crystalline ice seams. The shape must read as an ancient ruined arch footprint, not a frontal wall. Complete 4x4-cell silhouette, centered with generous transparent padding and bottom-center pivot. Spirit Peaks materials: cold blue stone, sparse snow, crystalline mist, hardy dark mountain pines. Anime-painted gouache, dark #263A35 ink contours, broad readable value planes, restrained upper-left light, refined high-quality landmark detail legible at 512px. Transparent background; no ground plane or landscape. No perspective, no isometric angle, no side view, no background pines, no text, no UI, no frame, no watermark, no extra ruins.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source_images": [
+    {
+      "path": "art-source/map-originals/spirit_peaks/landmark_and_environment_detail/spirit_peaks__landmark_and_environment_detail__ruined_arch__f746111684da9980.png",
+      "sha256": "f746111684da998052ff5aa89a57c29d8bf1d210e2682eaaab9115612b318b1c",
+      "size_px": [
+        1245,
+        1263
+      ],
+      "source": "OpenAI image generation",
+      "license": "Generated with OpenAI; OpenAI terms apply",
+      "generated_on": "2026-10-06",
+      "prompt_ref": "openai-map-spirit-peaks-ruined-arch-v1",
+      "prompt": "High-quality isolated 2D game-map landmark: a ruined mountain arch in Spirit Peaks, Chaos World. Strict vertical overhead orthographic view, camera directly above the structure. Show a broken angular gateway footprint from above: two squat snow-capped cold-blue granite column tops on the south corners, a shattered curved lintel of fractured blocks running across the north and partly down the west side, leaving a clear passage gap to the east. Sparse snow in stone joints, a few dark pine-needle flecks and tiny crystalline ice seams. The shape must read as an ancient ruined arch footprint, not a frontal wall. Complete 4x4-cell silhouette, centered with generous transparent padding and bottom-center pivot. Spirit Peaks materials: cold blue stone, sparse snow, crystalline mist, hardy dark mountain pines. Anime-painted gouache, dark #263A35 ink contours, broad readable value planes, restrained upper-left light, refined high-quality landmark detail legible at 512px. Transparent background; no ground plane or landscape. No perspective, no isometric angle, no side view, no background pines, no text, no UI, no frame, no watermark, no extra ruins.",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
+    }
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.528,
+        0.382
+      ],
+      [
+        0.537,
+        0.454
+      ]
+    ],
+    "frac_zero": 0.5627,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sem": {
+      "occluder_rule": "core_ring",
+      "cov_gate": 0.1,
+      "authored_open": "bottom_centre",
+      "passable_under": true,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "canopy",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      15,
+      15
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.247,
+        0.651,
+        0.877,
+        0.586,
+        0.568,
+        0.383,
+        0.094,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.349,
+        0.99,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.901,
+        0.762,
+        0.302,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.205,
+        0.728,
+        0.998,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        1.0,
+        0.947,
+        0.104,
+        0.0
+      ],
+      [
+        0.0,
+        0.704,
+        1.0,
+        1.0,
+        1.0,
+        0.997,
+        0.59,
+        0.519,
+        0.587,
+        0.615,
+        0.607,
+        1.0,
+        0.982,
+        0.499,
+        0.0
+      ],
+      [
+        0.126,
+        0.895,
+        1.0,
+        1.0,
+        0.908,
+        0.32,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.088,
+        0.6,
+        0.967,
+        0.395,
+        0.0
+      ],
+      [
+        0.378,
+        1.0,
+        1.0,
+        1.0,
+        0.299,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.016,
+        0.878,
+        0.5,
+        0.0
+      ],
+      [
+        0.031,
+        0.88,
+        1.0,
+        1.0,
+        0.226,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.048,
+        0.758,
+        0.029
+      ],
+      [
+        0.0,
+        0.798,
+        1.0,
+        1.0,
+        0.368,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.102,
+        0.89,
+        0.095
+      ],
+      [
+        0.231,
+        0.978,
+        1.0,
+        1.0,
+        0.635,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.514,
+        0.852,
+        0.789,
+        0.137
+      ],
+      [
+        0.713,
+        1.0,
+        1.0,
+        1.0,
+        0.496,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.085,
+        0.939,
+        1.0,
+        1.0,
+        0.568
+      ],
+      [
+        0.795,
+        1.0,
+        1.0,
+        1.0,
+        0.476,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.538,
+        1.0,
+        1.0,
+        1.0,
+        0.861
+      ],
+      [
+        0.622,
+        1.0,
+        1.0,
+        1.0,
+        0.798,
+        0.063,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.651,
+        1.0,
+        1.0,
+        1.0,
+        0.772
+      ],
+      [
+        0.617,
+        1.0,
+        1.0,
+        1.0,
+        0.962,
+        0.149,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.648,
+        1.0,
+        1.0,
+        1.0,
+        0.454
+      ],
+      [
+        0.651,
+        1.0,
+        1.0,
+        0.997,
+        0.593,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.58,
+        1.0,
+        1.0,
+        1.0,
+        0.549
+      ],
+      [
+        0.234,
+        0.447,
+        0.688,
+        0.543,
+        0.229,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.318,
+        0.588,
+        0.795,
+        0.595,
+        0.36
+      ]
+    ],
+    "crop_offset": [
+      20,
+      17
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.409,
+    "dominant_rgb": [
+      108.7,
+      126.5,
+      149.7
+    ],
+    "hsv": {
+      "hue_deg": 212.0,
+      "saturation": 0.35,
+      "value": 0.59
+    },
+    "dominant_palette": "azure_water",
+    "center_of_mass_norm": [
+      0.474,
+      0.503
+    ],
+    "horizontal_symmetry": 0.69,
+    "edge_complexity": 0.252
+  },
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "canopy",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

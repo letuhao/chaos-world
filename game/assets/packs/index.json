@@ -1,0 +1,107 @@
+{
+  "schema": "mapdata/pack_registry@1",
+  "total_packs": 20,
+  "total_assets": 1475,
+  "packs": [
+    {
+      "pack_id": "dao_fracture",
+      "asset_count": 43,
+      "has_manifest": true
+    },
+    {
+      "pack_id": "ember_grotto",
+      "asset_count": 44,
+      "has_manifest": true
+    },
+    {
+      "pack_id": "flame_valley_depths",
+      "asset_count": 45,
+      "has_manifest": true
+    },
+    {
+      "pack_id": "immortal_cloud_isles",
+      "asset_count": 43,
+      "has_manifest": true
+    },
+    {
+      "pack_id": "immortal_court",
+      "asset_count": 44,
+      "has_manifest": true
+    },
+    {
+      "pack_id": "immortal_jade_orchard",
+      "asset_count": 45,
+      "has_manifest": true
+    },
+    {
+      "pack_id": "immortal_star_lake",
+      "asset_count": 45,
+      "has_manifest": true
+    },
+    {
+      "pack_id": "mortal_greenwood",
+      "asset_count": 45,
+      "has_manifest": true
+    },
+    {
+      "pack_id": "mortal_highlands",
+      "asset_count": 44,
+      "has_manifest": true
+    },
+    {
+      "pack_id": "mortal_plains",
+      "asset_count": 46,
+      "has_manifest": true
+    },
+    {
+      "pack_id": "mortal_riverlands",
+      "asset_count": 46,
+      "has_manifest": true
+    },
+    {
+      "pack_id": "primordial_wilds",
+      "asset_count": 45,
+      "has_manifest": true
+    },
+    {
+      "pack_id": "spirit_bamboo_sea",
+      "asset_count": 45,
+      "has_manifest": true
+    },
+    {
+      "pack_id": "spirit_ghostwood",
+      "asset_count": 42,
+      "has_manifest": true
+    },
+    {
+      "pack_id": "spirit_moonfen",
+      "asset_count": 46,
+      "has_manifest": true
+    },
+    {
+      "pack_id": "spirit_peaks",
+      "asset_count": 45,
+      "has_manifest": true
+    },
+    {
+      "pack_id": "stormwrack_reach",
+      "asset_count": 44,
+      "has_manifest": true
+    },
+    {
+      "pack_id": "transcendent_realm",
+      "asset_count": 44,
+      "has_manifest": true
+    },
+    {
+      "pack_id": "void_shoal",
+      "asset_count": 45,
+      "has_manifest": true
+    },
+    {
+      "pack_id": "yin-jian",
+      "asset_count": 629,
+      "has_manifest": true
+    }
+  ]
+}

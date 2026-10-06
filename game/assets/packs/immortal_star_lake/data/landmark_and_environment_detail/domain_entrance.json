@@ -1,0 +1,530 @@
+{
+  "id": "immortal_star_lake.landmark_and_environment_detail.domain_entrance",
+  "path": "res://assets/world_map/immortal_star_lake/landmark_and_environment_detail/domain_entrance.png",
+  "type": "landmark",
+  "category": "landmark_and_environment_detail",
+  "environment": "immortal_star_lake",
+  "environment_name": "Immortal Star Lake",
+  "world_tier": "Immortal World",
+  "archetype": "landmark_and_environment_detail.domain_entrance",
+  "name": "Domain entrance",
+  "canvas_px": [
+    512,
+    512
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI image generation",
+  "license": "Generated with OpenAI; OpenAI terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Deep teal lake stone, star-like reflections, quiet silver highlights, and celestial markings.",
+  "footprint_cells": [
+    4,
+    4
+  ],
+  "generated_on": "2026-10-06",
+  "prompt_ref": "openai-map-immortal-star-lake-domain-entrance-v1",
+  "prompt": "High-quality isolated 2D game-map landmark sprite for Immortal Star Lake: a domain entrance viewed in strict vertical overhead orthographic view, camera directly above the ground looking straight down. Depict one broad circular threshold assembly embedded in a compact square of pale deep-teal lakeside stone paving: an open ring of carved silver-gray stones, a clear gap at the southern edge marking the walk-through doorway, a small eight-point star engraving centered on the threshold, two squat matching gate pylons flanking the gap. The center of the ring remains transparent/empty, and all paving and stones belong to the isolated object silhouette only. Deep teal lake stone, star-like silver accents, restrained celestial markings. Full complete silhouette centered with generous transparent padding, bottom-center ground pivot. Anime-painted gouache, crisp dark #263A35 ink contours, broad readable value planes, restrained upper-left light, refined details readable at 512px. Transparent background, short attached contact shadow only. No perspective, no isometric angle, no front view, no landscape, no water backdrop, no environment, no ground outside the entrance assembly, no text, no UI, no border, no watermark, no extra objects.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source_images": [
+    {
+      "path": "art-source/map-originals/immortal_star_lake/landmark_and_environment_detail/immortal_star_lake__landmark_and_environment_detail__domain_entrance__07a6996cec5b3e27.png",
+      "sha256": "07a6996cec5b3e27ced33fc33fbe79f95cb138d1ac880ab4ad441f558c6512e1",
+      "size_px": [
+        1254,
+        1254
+      ],
+      "source": "OpenAI image generation",
+      "license": "Generated with OpenAI; OpenAI terms apply",
+      "generated_on": "2026-10-06",
+      "prompt_ref": "openai-map-immortal-star-lake-domain-entrance-v1",
+      "prompt": "High-quality isolated 2D game-map landmark sprite for Immortal Star Lake: a domain entrance viewed in strict vertical overhead orthographic view, camera directly above the ground looking straight down. Depict one broad circular threshold assembly embedded in a compact square of pale deep-teal lakeside stone paving: an open ring of carved silver-gray stones, a clear gap at the southern edge marking the walk-through doorway, a small eight-point star engraving centered on the threshold, two squat matching gate pylons flanking the gap. The center of the ring remains transparent/empty, and all paving and stones belong to the isolated object silhouette only. Deep teal lake stone, star-like silver accents, restrained celestial markings. Full complete silhouette centered with generous transparent padding, bottom-center ground pivot. Anime-painted gouache, crisp dark #263A35 ink contours, broad readable value planes, restrained upper-left light, refined details readable at 512px. Transparent background, short attached contact shadow only. No perspective, no isometric angle, no front view, no landscape, no water backdrop, no environment, no ground outside the entrance assembly, no text, no UI, no border, no watermark, no extra objects.",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
+    }
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.655,
+        0.688,
+        0.689,
+        0.654
+      ],
+      [
+        0.817,
+        0.036,
+        0.037,
+        0.816
+      ],
+      [
+        0.898,
+        0.246,
+        0.246,
+        0.898
+      ],
+      [
+        0.726,
+        0.904,
+        0.904,
+        0.725
+      ]
+    ],
+    "frac_zero": 0.4492,
+    "blocks": [
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        false,
+        false,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        false,
+        false,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 12,
+    "anchor_cell": [
+      2,
+      3
+    ],
+    "sem": {
+      "occluder_rule": "core_ring",
+      "cov_gate": 0.1,
+      "authored_open": "bottom_centre",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": false,
+      "vision_mode": "solid",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "enter",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      15,
+      15
+    ],
+    "sub_fill": [
+      [
+        0.046,
+        0.349,
+        0.421,
+        0.156,
+        0.095,
+        0.356,
+        0.529,
+        0.703,
+        0.529,
+        0.357,
+        0.089,
+        0.156,
+        0.421,
+        0.349,
+        0.045
+      ],
+      [
+        0.453,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.449
+      ],
+      [
+        0.221,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.985,
+        0.756,
+        0.681,
+        0.757,
+        0.986,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.222
+      ],
+      [
+        0.179,
+        1.0,
+        1.0,
+        1.0,
+        0.793,
+        0.148,
+        0.0,
+        0.0,
+        0.0,
+        0.149,
+        0.794,
+        1.0,
+        1.0,
+        1.0,
+        0.172
+      ],
+      [
+        0.511,
+        1.0,
+        1.0,
+        0.884,
+        0.062,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.063,
+        0.887,
+        1.0,
+        1.0,
+        0.505
+      ],
+      [
+        0.57,
+        1.0,
+        1.0,
+        0.457,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.462,
+        1.0,
+        1.0,
+        0.567
+      ],
+      [
+        0.656,
+        1.0,
+        1.0,
+        0.268,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.271,
+        1.0,
+        1.0,
+        0.651
+      ],
+      [
+        0.916,
+        1.0,
+        1.0,
+        0.346,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.348,
+        1.0,
+        1.0,
+        0.914
+      ],
+      [
+        0.71,
+        1.0,
+        1.0,
+        0.749,
+        0.006,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.007,
+        0.754,
+        1.0,
+        1.0,
+        0.708
+      ],
+      [
+        0.662,
+        1.0,
+        1.0,
+        1.0,
+        0.608,
+        0.184,
+        0.0,
+        0.0,
+        0.0,
+        0.189,
+        0.61,
+        1.0,
+        1.0,
+        1.0,
+        0.66
+      ],
+      [
+        0.559,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.938,
+        0.259,
+        0.062,
+        0.261,
+        0.938,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.556
+      ],
+      [
+        0.298,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.289
+      ],
+      [
+        0.671,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.66
+      ],
+      [
+        0.6,
+        1.0,
+        0.961,
+        0.708,
+        0.84,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.839,
+        0.708,
+        0.964,
+        1.0,
+        0.596
+      ],
+      [
+        0.012,
+        0.143,
+        0.204,
+        0.0,
+        0.038,
+        0.551,
+        0.872,
+        0.947,
+        0.873,
+        0.553,
+        0.036,
+        0.0,
+        0.207,
+        0.145,
+        0.012
+      ]
+    ],
+    "crop_offset": [
+      16,
+      29
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        3
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      3
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      512
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.531,
+    "dominant_rgb": [
+      106.1,
+      121.7,
+      119.2
+    ],
+    "hsv": {
+      "hue_deg": 141.9,
+      "saturation": 0.2,
+      "value": 0.49
+    },
+    "dominant_palette": "verdant_flora",
+    "center_of_mass_norm": [
+      0.499,
+      0.539
+    ],
+    "horizontal_symmetry": 0.99,
+    "edge_complexity": 0.266
+  },
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "solid",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}

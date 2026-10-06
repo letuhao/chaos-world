@@ -1,0 +1,374 @@
+{
+  "id": "mortal_plains.flora.cultivation_herb",
+  "path": "res://assets/world_map/mortal_plains/flora/cultivation_herb.png",
+  "type": "resource_node",
+  "category": "flora",
+  "environment": "mortal_plains",
+  "environment_name": "Mortal Plains",
+  "world_tier": "Mortal World",
+  "archetype": "flora.cultivation_herb",
+  "name": "Cultivation herb",
+  "canvas_px": [
+    512,
+    512
+  ],
+  "pivot": "bottom_center",
+  "collision": "none",
+  "status": "generated",
+  "source": "ComfyUI local checkpoint: Flux1S/originByN0utis_originFluxAnimeV1.safetensors",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Sun-warmed ochre loam, low golden grasses, rounded hills, and worn farm tracks.",
+  "generated_on": "2026-10-03",
+  "prompt_ref": "comfyui-map-v1:mortal_plains.flora.cultivation_herb:20261006",
+  "prompt": "A single collectible cultivation herb viewed directly overhead like a flat top-down 2D map sprite. Small tidy rosette of distinctive jade-green leaves arranged radially around one delicate pale-gold medicinal flower, a few subtle blue-green luminous veins, compact silhouette, no visible upright trunk or side-facing parts, isolated object with transparent background, no soil mound or ground patch.\n\nProduction sprite for Chaos World, a 2D top-down cultivation action RPG. Asset: Cultivation herb (mortal_plains.flora.cultivation_herb); environment: Mortal Plains in the Mortal World. Environment art signature: Sun-warmed ochre loam, low golden grasses, rounded hills, and worn farm tracks. Show one complete isolated object viewed straight down. Leave clear padding and honor the bottom_center ground pivot. Use a transparent background. The final image must have transparent pixels outside the art. Straight-down orthographic camera, with no horizon or isometric projection. Anime-painted gouache, dark #263A35 ink contours, broad readable value planes, material-led colors, restrained surface detail, soft upper-left light. Keep the silhouette and identifying detail legible at the indexed game size. No text, labels, UI, frame, watermark, or unrelated objects.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "negative_prompt": "background, ground, soil patch, rocks, landscape, horizon, perspective, isometric, side view, upright plant viewed from side, pot, multiple plants, duplicate, text, letters, watermark, border, frame, UI, photorealism, 3D render",
+  "generation_settings": {
+    "checkpoint": "Flux1S/originByN0utis_originFluxAnimeV1.safetensors",
+    "lora": "flux/gokaygokayFlux-2D-Game-Assets-LoRA.safetensors",
+    "lora_strength": 0.8,
+    "seed": 20261006,
+    "steps": 32,
+    "size": 1024,
+    "target_size": 512,
+    "cfg": 1.0,
+    "guidance": 3.5,
+    "sampler": "euler",
+    "scheduler": "normal",
+    "rembg_model": "isnet-anime",
+    "rembg_post_processing": false,
+    "alpha_matting": false,
+    "alpha_foreground_threshold": 240,
+    "alpha_background_threshold": 10,
+    "alpha_erode_size": 0
+  },
+  "footprint_cells": [
+    4,
+    4
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.665
+      ]
+    ],
+    "frac_zero": 0.6085,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "none",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": false,
+      "blocks_projectile": false,
+      "vision_mode": "transparent",
+      "acoustic_profile": "foliage",
+      "material": "foliage",
+      "elevation": 0,
+      "destructible": {
+        "enabled": true,
+        "tier": 1,
+        "hp": 25,
+        "on_destroy": "landmark_and_environment_detail.ground_decal",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "fire",
+          "slash"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": {
+        "verb": "harvest",
+        "reach_cells": 1,
+        "from_adjacent": true
+      },
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      13,
+      13
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.658,
+        0.3,
+        0.02,
+        0.082,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.682,
+        0.549,
+        0.999,
+        0.943,
+        0.785,
+        0.736,
+        0.629,
+        0.043,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.108,
+        0.829,
+        0.955,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.374,
+        0.075,
+        0.0
+      ],
+      [
+        0.0,
+        0.414,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.981,
+        0.058,
+        0.0
+      ],
+      [
+        0.026,
+        0.545,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.841,
+        0.205,
+        0.0
+      ],
+      [
+        0.138,
+        0.948,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.744,
+        0.069
+      ],
+      [
+        0.655,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.711,
+        0.125
+      ],
+      [
+        0.312,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.785,
+        0.15
+      ],
+      [
+        0.288,
+        0.938,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.268,
+        0.0
+      ],
+      [
+        0.0,
+        0.498,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.639,
+        0.162,
+        0.0
+      ],
+      [
+        0.0,
+        0.206,
+        0.759,
+        0.809,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.983,
+        0.641,
+        0.135,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.166,
+        0.271,
+        0.739,
+        0.998,
+        0.529,
+        0.218,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.016,
+        0.672,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      54,
+      65
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.381,
+    "dominant_rgb": [
+      99.6,
+      136.7,
+      88.9
+    ],
+    "hsv": {
+      "hue_deg": 100.2,
+      "saturation": 0.5,
+      "value": 0.56
+    },
+    "dominant_palette": "verdant_flora",
+    "center_of_mass_norm": [
+      0.492,
+      0.519
+    ],
+    "horizontal_symmetry": 0.92,
+    "edge_complexity": 0.117
+  },
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "destructible": {
+    "enabled": true,
+    "tier": 1,
+    "hp": 25,
+    "on_destroy": "landmark_and_environment_detail.ground_decal",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "fire",
+      "slash"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "foliage",
+  "cultivation_element": "none"
+}

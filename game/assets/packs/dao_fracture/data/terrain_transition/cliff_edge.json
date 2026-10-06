@@ -1,0 +1,203 @@
+{
+  "id": "dao_fracture.terrain_transition.cliff_edge",
+  "path": "res://assets/world_map/dao_fracture/terrain_transition/cliff_edge.png",
+  "type": "tile",
+  "category": "terrain_transition",
+  "environment": "dao_fracture",
+  "environment_name": "Dao Fracture",
+  "world_tier": "Transcendent World",
+  "archetype": "terrain_transition.cliff_edge",
+  "name": "Cliff edge",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "center",
+  "collision": "solid",
+  "status": "generated",
+  "source": "OpenAI built-in image generation",
+  "license": "Generated locally with OpenAI image generation; applicable OpenAI generation terms apply",
+  "alpha": "transparent",
+  "environment_theme": "Misaligned stone planes, impossible cracks, suspended shards, and narrow luminous seams.",
+  "generated_on": "2026-10-04",
+  "prompt_ref": "openai-imagegen:dao-fracture.terrain_transition.cliff_edge:20261004",
+  "prompt": "Small irregular Dao Fracture cliff-edge tile: pale smoky stone top surface with impossible misaligned planes, a few narrow muted amber-white luminous cracks, sharply broken rim exposing dark layered stone along lower-right. At most two tiny suspended fragments outside rim, separated by transparent gaps. Broad solid land upper-left, transparent outside. Compact near-square silhouette, centered, clear at 128x128. Anime-painted gouache, fine #263A35 contour, broad planes, restrained highlights, orthographic map plane, no shadow, perspective, sky, landscape, large loose rocks, text, border, grid, watermark.",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map",
+    "stormwrack_reach.terrain_transition.cliff_edge"
+  ],
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "matrix_data": {
+    "coverage": [
+      [
+        0.568
+      ]
+    ],
+    "frac_zero": 0.8172,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sem": {
+      "occluder_rule": "full_body",
+      "cov_gate": 0.1,
+      "authored_open": "",
+      "passable_under": false,
+      "walk_surface": false,
+      "blocks_sight": true,
+      "blocks_projectile": true,
+      "vision_mode": "solid",
+      "acoustic_profile": "stone",
+      "material": "stone",
+      "elevation": 1,
+      "destructible": {
+        "enabled": true,
+        "tier": 3,
+        "hp": 140,
+        "on_destroy": "stone_and_ore.rubble",
+        "unique_destroyed_archetype": null,
+        "elemental_vulnerabilities": [
+          "crush",
+          "earth"
+        ],
+        "reveals_loot_category": null
+      },
+      "interact": null,
+      "cultivation": {
+        "element": "none",
+        "qi_affinity": "neutral",
+        "qi_density_modifier": 1.0,
+        "resonance_radius_cells": 0,
+        "feng_shui_direction": "neutral"
+      },
+      "resource": null,
+      "scale_profile": {
+        "min_scale": 1.0,
+        "max_scale": 1.0,
+        "default_scale": 1.0,
+        "scale_mode": "constant",
+        "contact_rule": "constant_subcell"
+      }
+    },
+    "sub_grid": [
+      2,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.768,
+        0.456
+      ],
+      [
+        0.673,
+        0.582
+      ],
+      [
+        0.201,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      32,
+      29
+    ],
+    "trunk_columns": [],
+    "contact_px": 0,
+    "contact_reference_px": 0.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  },
+  "visual_evaluation": {
+    "opacity_ratio": 0.158,
+    "dominant_rgb": [
+      129.8,
+      131.3,
+      122.7
+    ],
+    "hsv": {
+      "hue_deg": 96.7,
+      "saturation": 0.13,
+      "value": 0.53
+    },
+    "dominant_palette": "monochrome_grey",
+    "center_of_mass_norm": [
+      0.479,
+      0.484
+    ],
+    "horizontal_symmetry": 0.78,
+    "edge_complexity": 0.144
+  },
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "destructible": {
+    "enabled": true,
+    "tier": 3,
+    "hp": 140,
+    "on_destroy": "stone_and_ore.rubble",
+    "unique_destroyed_archetype": null,
+    "elemental_vulnerabilities": [
+      "crush",
+      "earth"
+    ],
+    "reveals_loot_category": null
+  },
+  "material": "stone",
+  "cultivation_element": "none"
+}
