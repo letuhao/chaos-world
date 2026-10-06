@@ -275,7 +275,7 @@ func test_rebuilding_never_compounds_and_stripping_survives_a_deleted_definition
 	assert_eq(office.standing_percent_stats.size(), 0, "the office now recognises nothing")
 	assert_eq(
 		InstitutionProjection.unknown_stat(actor, office.standing_percent_stats),
-		"",
+		null,
 		"so there is nothing left to refuse"
 	)
 	InstitutionProjection.strip(actor, _source)
@@ -360,9 +360,29 @@ func test_an_allowlisted_stat_nothing_can_derive_is_refused_by_name_and_writes_n
 	# it would make recognition depend on an unrelated investment.
 	assert_eq(
 		InstitutionProjection.unknown_stat(actor, {String(Stat.COMPREHENSION): 0.0}),
-		"",
+		null,
 		"while an unbought attribute is still a derivation"
 	)
+	# ## An EMPTY-STRING key is a content fault and is NAMED, which is why "no fault" is
+	# `null` and not `""`. The first version returned `""` from both answers, so
+	# `{"": 0.0}` — a `.tres` Godot loads without complaint — reported itself clean and
+	# the projector went on to write a modifier on `&""` that no reader can ever look up.
+	# This is the one defect the adversarial pass on this slice found that the suite did
+	# not, so it is pinned here rather than left to a future reader's luck.
+	var blank := {"": 0.0, String(RECOGNISED): 0.0}
+	assert_eq(
+		InstitutionProjection.unknown_stat(actor, blank),
+		"",
+		"an empty key is named as the offender"
+	)
+	var blanked := InstitutionProjection.apply(actor, {"standing": 100}, blank, _source)
+	assert_eq(bool(blanked["ok"]), false, "and a blank key is refused, not granted")
+	assert_eq(
+		String(blanked["reason"]),
+		InstitutionProjection.R_UNKNOWN_RECOGNISED_STAT,
+		"naming the same cause as any other unnameable id"
+	)
+	assert_eq(String(blanked["unknown"]), "", "with the empty id itself as the name")
 	# ## The refusal is NON-DESTRUCTIVE, which is the order `grant` runs its two halves
 	# in and the reason a member's standing recognition does not vanish because a modder
 	# mistyped an id. The previous good pass stands; ADR 0083's third state is "this was
@@ -563,7 +583,7 @@ func test_every_id_the_shipped_content_names_has_a_derivation_on_a_full_sheet() 
 				# and neither is inferred from the other.
 				assert_eq(
 					InstitutionProjection.unknown_stat(_reference, {String(stat_id): 0.0}),
-					"",
+					null,
 					"so the projector can name it too"
 				)
 	assert_eq(named > 0, true, "the shipped content really does name stat ids")

@@ -127,9 +127,16 @@ static func grant(
 	# over five rebuilds while every assertion about the sheet went quietly wrong. A
 	# caller CANNOT compound here by forgetting to strip, because the strip is not the
 	# caller's job.
-	var unknown := unknown_stat(actor, allowlist)
-	if unknown != "":
-		return {"ok": false, "reason": R_UNKNOWN_RECOGNISED_STAT, "unknown": unknown, "granted": {}}
+	# `Variant`, DECLARED rather than inferred: the answer is `null` or a `String`, so
+	# `:=` would infer `Variant` and this repo treats that warning as an error.
+	var unknown: Variant = unknown_stat(actor, allowlist)
+	if unknown != null:
+		return {
+			"ok": false,
+			"reason": R_UNKNOWN_RECOGNISED_STAT,
+			"unknown": String(unknown),
+			"granted": {},
+		}
 	strip(actor, source_tag)
 	var percent := InstitutionClaim.standing_percent(int(standing))
 	var granted: Dictionary = {}
@@ -145,12 +152,12 @@ static func grant(
 	return InstitutionLedger.ok({"granted": granted})
 
 
-## A refusal carrying `granted` as well, so a caller may index the key on EVERY
-## answer instead of branching on `ok` first — the shape
-## `InstitutionLedger.ok`/`refuse` states for `ok` and `reason`, extended to this
-## verb's one payload.
+## A refusal carrying `granted` and `unknown` as well, so a caller may index either key
+## on EVERY answer instead of branching first — the shape
+## `InstitutionLedger.ok`/`refuse` states for `ok` and `reason`, extended to this verb's
+## two payloads.
 static func _refused(reason: String) -> Dictionary:
-	return {"ok": false, "reason": reason, "granted": {}}
+	return {"ok": false, "reason": reason, "unknown": "", "granted": {}}
 
 
 ## [method grant], with the standing read off the caller's own ledger. **The driver any
@@ -210,23 +217,40 @@ static func recognises(allowlist: Dictionary, stat_id: StringName) -> bool:
 	return false
 
 
-## The first allowlist id this actor's stat sheet cannot NAME, or `""` when every id
-## has a derivation. The authoring-time read, published so a def can be checked
-## before a member ever holds the office.
+## The first allowlist id this actor's stat sheet cannot NAME, or `null` when every id
+## has a derivation. The authoring-time read, published so a def can be checked before a
+## member ever holds the office.
+##
+## ## `null` and NOT `""`, and that is not a style preference
+##
+## The first version returned `""` for "no fault" and `String(stat_id)` for the
+## offender. An allowlist carrying an **empty-string key** — `{"": 0.0}`, which Godot
+## loads from a `.tres` without complaint — therefore reported itself clean, because the
+## offender it found WAS the empty string, and the projector went on to write a modifier
+## on `&""` that no reader could ever look up. So the two answers had to be told apart by
+## something other than their text, and `null` is the one value a stat id cannot be.
+## `""` is a legal, if useless, allowlist key; it is a CONTENT fault and is named.
 ##
 ## **Nameable is not the same as non-zero.** An id whose derivation happens to read
 ## zero on THIS actor is a member who has invested nothing there, which is an ordinary
 ## sheet and not a content fault — and a percent that waits for the investment is
-## exactly the behaviour ADR 0084 asks for. What is refused is an id with no
-## derivation at all, where the percent is guaranteed to do nothing forever.
-static func unknown_stat(actor: Actor, allowlist: Dictionary) -> String:
+## exactly the behaviour ADR 0084 asks for. What is refused is an id with no derivation
+## at all, where the percent is guaranteed to do nothing forever.
+##
+## ## It can refuse too eagerly, and that is the safe direction
+##
+## Membership is read off the actor's whole sheet, so an id carried ONLY by another
+## subsystem's transient modifier reads as unnameable the moment that subsystem strips
+## it — a false refusal. Safe, because a refusal writes nothing and the previous grant
+## stands, where a false GRANT would be a modifier nothing ever reads.
+static func unknown_stat(actor: Actor, allowlist: Dictionary) -> Variant:
 	if actor == null:
-		return ""
+		return null
 	for key in allowlist.keys():
 		var stat_id := StringName(InstitutionLedger.text(key, ""))
 		if not _derivable(actor, stat_id):
 			return String(stat_id)
-	return ""
+	return null
 
 
 ## Whether `stat_id` has a derivation this sheet can carry: a base attribute counts

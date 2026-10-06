@@ -70,6 +70,13 @@ the runtime half is `unknown_stat` and the content half is a shape test over eve
 the shipped `.tres` files name, measured on an actor invested in **every** attribute —
 which is the only sheet on which "has no derivation" and "has no investment" separate.
 
+**7. "NO FAULT" IS `null`, NOT `""`.** `unknown_stat` answers `null` or the offending
+id, and the two cannot be told apart by their text. `{"": 0.0}` is an allowlist Godot
+loads without complaint and `""` is a legal `String`, so the version that returned `""`
+for both reported that allowlist CLEAN and then wrote a modifier on `&""` that no reader
+can look up — a grant that exists, compounds, and is invisible. **A sentinel has to be a
+value the domain cannot produce.**
+
 ## Consequences
 
 - **A guild can now recognise a member**, and the grant falls when standing falls.
