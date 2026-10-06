@@ -105,10 +105,11 @@ const POISE := &"poise"
 ## no code declares, and `tests/modules/status` pins the refusal surface. Content that
 ## wants a flat mitigation budget says `core_status_defense` now.
 const STATUS_DEFENSE := &"status_defense"
-## Retired by ADR 0200 in favour of [constant STATUS_DEFENSE]. Declared so a reference to
-## the old id fails to COMPILE with a name rather than silently reading `0.0` off an
-## unbacked stat -- the exact shape `test_combat_stats_shape.gd` exists to catch. Do not
-## add a read site for it; that is how a second vocabulary starts.
+## Retired by ADR 0200 in favour of [constant STATUS_DEFENSE]. Kept DECLARED as the
+## tombstone pattern [constant MIND_AVOIDANCE] cites: code and tests keep a NAME for the
+## retired spelling so `test_status_resistance_band.gd` can assert it resolves to nothing,
+## rather than the string drifting free. Do not add a read site for it; that is how a
+## second vocabulary starts.
 const STATUS_RESISTANCE := &"status_resistance"
 const MOVE_SPEED := &"move_speed"
 const CULTIVATION_RATE := &"cultivation_rate"
@@ -300,7 +301,9 @@ const MIND_CONTROL_RATES := [
 ## the gate sits one to two orders of magnitude past the top of the AUTHORED attribute
 ## range, so the baseline contributes a small positive number and never the cap.
 ## **MEASURED 2026-10-04 (DEF-0262), through a real `ActorStats` and the real
-## `StatusApply.apply_chance`, off `combat_damage.tres`:**
+## `StatusApply.apply_chance`, off `combat_damage.tres`:** (Read under ADR 0200's
+## multiplicative composition, which ADR 0884 later replaced;
+## `tests/modules/status/test_status_resistance_band.gd` carries the current numbers.)
 ##
 ## | actor | `will` | `status_resistance` (now `status_defense`) | apply chance at gate 1.0 |
 ## | --- | --- | --- | --- |
@@ -323,15 +326,15 @@ const MIND_CONTROL_RATES := [
 ## so does something, just very little.
 ##
 ## `ZERO_BASELINE_STATS` therefore refuses PERCENT on these ids for a DIFFERENT and
-## correct reason: it is one authoring convention for all five, and `damage_reduction`
+## correct reason: it is one authoring convention for all four, and `damage_reduction`
 ## is the one whose baseline really is the constant `0.0`. See the block above for the
 ## per-stat gate arithmetic.
 ##
 ## So the STRICTER rule is the one that is right, and it is the one
-## `StatusDef.ZERO_BASELINE_STATS` enforces: a PERCENT on any of these five ids is a
+## `StatusDef.ZERO_BASELINE_STATS` enforces: a PERCENT on any of these four ids is a
 ## refused `.tres`, not a silent no-op (`tests/modules/status/test_status_refusals.gd`).
 ## An earlier version of this comment said PERCENT was "fine in normal play" on the
-## attribute-gated four — that was the contracts layer telling designers a modifier
+## attribute-gated three — that was the contracts layer telling designers a modifier
 ## works when it moves almost nothing. Membership below is unchanged (`RATE_STATS` is a
 ## claim about FLAT); the sentence above is a claim about PERCENT, and the two are
 ## different questions.

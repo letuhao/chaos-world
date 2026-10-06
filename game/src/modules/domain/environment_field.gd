@@ -730,9 +730,9 @@ static func primary_path(actor: Actor) -> StringName:
 static func _hazard(zone: EnvironmentZoneDef, duration: float, amount: float) -> StatusEffect:
 	var effect := StatusEffect.new(zone.status_id, duration)
 	effect.kind = StatusEffect.Kind.DOT
-	# CULTIVATION scope, not COMBAT: an environment is never opposed by
-	# `Stat.STATUS_RESISTANCE`, because the hazard is a place rather than an attack and
-	# taxing the player for walking into authored scenery is not a difficulty knob.
+	# CULTIVATION scope, not COMBAT: an environment is never opposed by the
+	# combat gate's `status_defense`, because the hazard is a place rather than an attack
+	# and taxing the player for walking into authored scenery is not a difficulty knob.
 	effect.scope = StatusEffect.Scope.CULTIVATION
 	# REFRESH, not STACK: a zone re-applies on `stay_budget` from one entry point, so a
 	# stack would make standing still RAISE the damage on every re-apply. REFRESH is the

@@ -343,23 +343,22 @@ extends Resource
 ##
 ## ## `1.0` does NOT mean resistance is ignored
 ##
-## `StatusApply.apply_chance` is `clampf(gate * (1 - STATUS_RESISTANCE) * (1 -
-## elem_resist), status_min_apply, 1.0)`, so a gate of `1.0` hands the whole decision to
-## the two resist terms and the roll -- which is what ADR 0087's formula is FOR. What it
-## DOES mean is that the base rate is unconditional, so an unresisted actor's `chance`
-## short-circuits to `1.0` and consumes no draw: every landed blow of that element
-## inflicts with certainty. That saturation is the value a balance pass moves first.
+## `StatusApply.apply_chance` is ADR 0884's flat contest -- `clampf(gate * p_apply,
+## status_min_apply, 1.0)` with `p_apply` at parity reading `0.5` -- so a gate of `1.0`
+## hands the whole decision to the delta, NOT to certainty: even an unresisted actor is
+## a coin flip. What `1.0` DOES mean is that the base rate discounts the contest by
+## nothing, and that parity-is-half is the value a balance pass moves first.
 ##
 ## Clamped to `[0, 1]` on read by `StatusApi`/`CombatExchange` callers: above one the
 ## formula's own `clampf(..., 1.0)` makes it unreachable arithmetic, and a gate below
 ## `0.0` is the CLOSED gate (ADR 0087), which spends no draw at all.
 @export var status_gate_chance: float = 0.0
-## Floor on the apply chance of a gate that is OPEN. The multiplicative form
-## `chance * (1 - STATUS_RESISTANCE) * (1 - elem_resist)` cannot go negative, so a
-## defender can slow application to a crawl but can never make it impossible: this
-## value, not a clamp to zero, is what guarantees an authored status still lands
-## sometimes (ADR 0087). A CLOSED gate -- an authored `status_chance` of `0` -- reads
-## no floor at all and consumes no draw, so a technique that applies nothing costs
+## Floor on the apply chance of a gate that is OPEN. ADR 0884's flat contest bottoms
+## out at `p_apply`'s own `0.0` clamp before this floor, so a defender can slow
+## application to a crawl but can never make it impossible: this value, not a clamp to
+## zero, is what guarantees an authored status still lands sometimes (ADR 0087).
+## A CLOSED gate -- an authored `status_chance` of `0` -- reads no floor at all and
+## consumes no draw, so a technique that applies nothing costs
 ## nothing (ADR 0068's "a fully-saturated roll is free", applied to S12).
 @export var status_min_apply: float = 0.0
 ## Coefficient from the attacker's `element_power_<e>` onto the applied status's

@@ -125,7 +125,7 @@ const OPS: Array[StringName] = [&"flat", &"percent"]
 ## Stats a PERCENT modifier on is refused for, because authoring one is a mistake:
 ## `ActorStats._put` resolves `(base + flat) * (1 + percent)`, and for every id below a
 ## PERCENT is either a guaranteed no-op or an author-confusing rounding error. **The
-## list is a single authoring convention covering FIVE differently-shaped stats**, and
+## list is a single authoring convention covering FOUR differently-shaped stats**, and
 ## the note on each is what tells a designer which of the two they are in.
 ##
 ## ## The two shapes in this list, MEASURED rather than asserted (DEF-0262, 2026-10-04)
@@ -133,31 +133,31 @@ const OPS: Array[StringName] = [&"flat", &"percent"]
 ## - `damage_reduction` is the ONLY one whose baseline is the CONSTANT `0.0`. A PERCENT
 ##   there is the literal ADR 0022 defect: `(0.0 + 0.0) * (1 + p) = 0.0` for every `p`,
 ##   44 items once granted nothing at all.
-## - The other four are `minf(cap, attribute * k)` — ADR 0022's `attribute-gated` shape,
+## - The other three are `minf(cap, attribute * k)` — ADR 0022's `attribute-gated` shape,
 ##   which stays in `Stat.RATE_STATS` because the cap term makes FLAT the worse error.
 ##   Their baseline is a small NON-ZERO number, so a PERCENT is not *literally* inert, and
 ##   an earlier revision of this comment claimed they read `0.0` for every actor and
-##   that PERCENT was "meaningful in normal play". **Both halves were wrong.** Measured
-##   through a real `ActorStats`: `status_resistance` on a shipped race's own `will` of
-##   `2.0` reads `0.006`, not `0.0`.
+##   that PERCENT was "meaningful in normal play". **Both halves were wrong.** The
+##   family's small-positive shape was measured through a real `ActorStats` on its
+##   renamed member — `status_defense` reads `0.006` at a race's own `will` of `2.0`
+##   (`tests/modules/status/test_status_resistance_band.gd`) — never a constant `0.0`.
 ##
-## So for the attribute-gated four the refusal is a CONVENTION, not an arithmetic
+## So for the attribute-gated three the refusal is a CONVENTION, not an arithmetic
 ## necessity: the lever is much smaller than the author of `percent 0.2` will picture,
 ## and a FLAT states the same intent on a 0..1 stat unambiguously. Refusing it anyway is
-## what stops five ids from spelling the same number two ways.
+## what stops four ids from spelling the same number two ways.
 ##
 ## Per-stat gate arithmetic, each measured against the authored content:
 ## - `evasion`        = `minf(0.6, agility * 0.0015)`        needs agility 400;   authored 1..15
-## - `status_resistance` = `minf(0.8, will * 0.003)`       needs will 250;      authored 3..52.9
 ## - `cooldown_reduction` = `minf(0.4, comprehension * 0.002)`
 ##   needs comprehension 500; authored 0..18
 ## - `qi_cost_reduction` = `minf(0.5, aptitude * 0.001)`   needs aptitude 500;  authored 1..13
 ## - `damage_reduction`  = `0.0`                           needs nothing
 ##
 ## Every gate is one to two orders of magnitude past the top of its authored range. The
-## attribute-gated four therefore sit at a SMALL fraction of their cap in real play, and
-## that is the stat's shape working: ADR 0087's multiplicative form still bottoms out at
-## `1.0 * (1 - 0.8) = 0.2` and `status_min_apply` is the floor under THAT.
+## attribute-gated three therefore sit at a SMALL fraction of their cap in real play, and
+## that is the stat's shape working: none of them ever becomes a switch-off, and the
+## status gate's own floor (`status_min_apply`) is the same rule on the status side.
 ##
 ## The audit is checked against the STAT, never against the status that carries it
 ## (ADR 0090). `tests/modules/status/test_status_refusals.gd` pins each id against a
@@ -168,7 +168,6 @@ const ZERO_BASELINE_STATS: Array[StringName] = [
 	&"damage_reduction",
 	&"evasion",
 	&"qi_cost_reduction",
-	&"status_resistance",
 ]
 ## `StatusEffect.is_permanent()`'s sentinel, restated as a duration a designer can
 ## author: a CULTIVATION gift with no expiry.

@@ -34,7 +34,7 @@ const FRACTION_IDS: Array[StringName] = [
 	&"loot_bonus",
 	&"qi_cost_reduction",
 	&"sea_turbulence",
-	&"status_resistance",
+	&"status_defense",
 ]
 
 ## Ids that are a 0-or-1 state dressed as a float, and so are whole numbers by

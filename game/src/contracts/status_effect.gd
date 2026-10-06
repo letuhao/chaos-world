@@ -28,7 +28,7 @@ enum Kind {
 }
 
 enum Scope {
-	COMBAT,  ## opposed by `Stat.STATUS_RESISTANCE`.
+	COMBAT,  ## opposed by the combat status gate: power vs `status_defense` (ADR 0884).
 	CULTIVATION,  ## never resisted: a blessing the game pays out must not tax the player.
 }
 
@@ -121,9 +121,10 @@ func allows_op(op: Stat.Op) -> bool:
 	return ALLOWED_OPS.has(op)
 
 
-## Whether this status is opposed by `resistance` (`Stat.STATUS_RESISTANCE`). Only
-## `Scope.COMBAT` is: taxing the player for a reward the game itself paid out is
-## not a difficulty knob.
+## Whether this status is opposed by a `resistance` value. Only `Scope.COMBAT` is:
+## taxing the player for a reward the game itself paid out is not a difficulty knob.
+## The combat gate that supplies `resistance` is `StatusApply`'s power-vs-`status_defense`
+## contest (ADR 0884).
 func is_resisted_by(resistance: float) -> bool:
 	return scope == Scope.COMBAT and resistance > 0.0
 

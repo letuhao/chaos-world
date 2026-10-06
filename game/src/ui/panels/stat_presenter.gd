@@ -52,7 +52,7 @@ const EXACT := -1
 
 ## id -> [label, decimals]. `decimals` is a count, or `EXACT`.
 ## Rates are NOT converted to percentages, deliberately: `Stat.RATE_STATS` mixes
-## fractions (`crit_chance`, `evasion`, `status_resistance`) with multipliers where
+## fractions (`crit_chance`, `evasion`) with multipliers where
 ## 1.0 means no change (`crit_damage`, `attack_speed`, `cultivation_rate`,
 ## `insight_gain`). One blanket "show rates as %" would report `crit_damage = 1.54`
 ## as 154%, which is a worse lie than a decimal. The label carries the unit instead.
@@ -96,10 +96,10 @@ const TABLE: Dictionary = {
 	&"defense_spiritual": ["Spiritual defence", 0],
 	&"evasion": ["Evasion", 3],
 	&"poise": ["Poise", 0],
-	&"status_resistance": ["Status resistance", 3],
 	# ADR 0200: the will-derived MAGNITUDE the status gate actually reads (`will * 0.003`
-	# through the mitigation ratio); `status_resistance` above carries a provider's value
-	# that no stat id moves. Both are declared because both can print.
+	# through the mitigation ratio). The retired `status_resistance` spelling held this
+	# seat until 2026-10-07; it is deliberately NOT declared here, because it resolves to
+	# nothing on every actor and a label would print a stat nobody can move.
 	&"status_defense": ["Status defense", 3],
 	&"damage_reduction": ["Damage reduction", 3],
 	# --- pace and cost ---------------------------------------------------------

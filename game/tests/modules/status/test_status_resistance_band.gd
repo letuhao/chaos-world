@@ -30,9 +30,10 @@ extends TestCase
 ##    authored flat against a 551x ladder is the defect ADR 0200 exists to remove, so
 ##    "the cap is not a build target" is replaced by "every further point of `will`, and
 ##    every rung of the ladder, still moves the gate".
-## 3. A FLAT on it is legal authored content (`core_status_defense`), which it was not
-##    while the id was rate-shaped — the PERCENT multiply still lands on a non-zero
-##    baseline, so it is real rather than the ADR 0022 `(0.0 + 0.0) * 1.5` trap.
+## 3. A FLAT on it is legal authored content, which it was not while the id was
+##    rate-shaped — the PERCENT multiply still lands on a non-zero baseline, so it is
+##    real rather than the ADR 0022 `(0.0 + 0.0) * 1.5` trap. (No `core_status_defense`
+##    option exists yet; every `core_status_resistance` carrier is a no-op — DEF-0357.)
 ## 4. The composed gate still lands STRICTLY ABOVE `status_min_apply` for any finite
 ##    defense, because the resist is a RATIO: `mitigation_ceiling * D / (K + D)` is
 ##    strictly below the ceiling, and `1 - mitigation_ceiling` is what is left. Immunity
@@ -92,8 +93,8 @@ func _at_realm(id: StringName, will: float, realm_id: StringName) -> Actor:
 func test_the_baseline_is_small_and_positive_never_zero() -> void:
 	# The claim ADR 0022's amendment and DEF-0262 both retracted: that this baseline
 	# reads `0.0` and a PERCENT on it is a guaranteed no-op. It is `0.006` at a race's
-	# own `will`, so it is positive — which is why `Stat.ZERO_BASELINE_STATS` refuses
-	# PERCENT here as a CONVENTION rather than because the arithmetic makes it inert.
+	# own `will`, so it is positive — a small magnitude, not a constant `0.0`, and the
+	# PERCENT beside it multiplies rather than annihilating.
 	var actor := ActorFactory.build(&"probe_pos", {Stat.WILL: TOP_RACE_WILL})
 	var baseline := actor.stats.derived(Stat.STATUS_DEFENSE)
 	assert_ne(baseline, 0.0, "the baseline is NOT the constant 0.0 that ADR 0022 described")
@@ -102,10 +103,10 @@ func test_the_baseline_is_small_and_positive_never_zero() -> void:
 		TOP_RACE_WILL * WILL_COEFFICIENT,
 		"and it is exactly the authored coefficient times the actor's own will"
 	)
-	# The retired id is a DIFFERENT id, not a synonym. Content that used to grant
-	# `core_status_resistance` now grants `core_status_defense`, and the old string
-	# resolves to nothing rather than to this value — which is the migration cost ADR
-	# 0200 accepted, and it is measured here so a silent alias cannot hide it.
+	# The retired id is a DIFFERENT id, not a synonym: the old string resolves to
+	# nothing rather than to this value — the migration cost ADR 0200 accepted, measured
+	# here so a silent alias cannot hide it. The CARRIERS were never migrated (no
+	# `core_status_defense` option exists; every old grant is a no-op — DEF-0357).
 	assert_eq(
 		actor.stats.derived(Stat.STATUS_RESISTANCE) <= 0.0,
 		true,
@@ -117,8 +118,8 @@ func test_the_baseline_is_small_and_positive_never_zero() -> void:
 ## (1 + percent)` is the ADR 0022 trap; on a non-zero baseline the multiply is real, so
 ## the documentation sites that called this a guaranteed no-op were describing a number
 ## this game does not produce. ADR 0200 is also what makes a FLAT here LEGAL content at
-## all: the id left `Stat.RATE_STATS` with the `minf`, so `core_status_defense` grants
-## an authored magnitude rather than being a refused `.tres`.
+## all: the id left `Stat.RATE_STATS` with the `minf`, so a `core_status_defense` grant
+## is an authored magnitude rather than a refused `.tres` (the option is owed — DEF-0357).
 func test_a_percent_and_a_flat_both_move_this_baseline_rather_than_annihilating_it() -> void:
 	# The PERCENT half, on the new id. `(0.0 + flat) * (1 + percent)` is the ADR 0022 trap;
 	# on a non-zero baseline the multiply is real, so the documentation sites that called
@@ -133,8 +134,8 @@ func test_a_percent_and_a_flat_both_move_this_baseline_rather_than_annihilating_
 		"a PERCENT multiplies a non-zero baseline rather than reading (0.0 + 0.0) * 1.5"
 	)
 	# The FLAT half, which ADR 0200 is what makes legal: the id left `Stat.RATE_STATS`
-	# with the `minf`, so a `core_status_defense` grant is authored content rather than a
-	# refused `.tres`. On a SEPARATE body so the two are not conflated — see below for why
+	# with the `minf`, so a FLAT grant here is authored content rather than a refused
+	# `.tres`. On a SEPARATE body so the two are not conflated — see below for why
 	# they must not be.
 	var geared := ActorFactory.build(&"probe_flat", {Stat.WILL: TOP_RACE_WILL})
 	geared.stats.add_modifier(
@@ -303,10 +304,11 @@ func test_the_resist_term_is_a_ratio_below_the_mitigation_ceiling_not_a_cap() ->
 
 
 ## The player's actual experience, through the REAL production apply path and the
-## SHIPPED tuning: a race's own `will`, and a race's `will` plus every one of the five
-## equipment slots carrying authored `core_status_defense` flat. Both stay above the
-## `1 - mitigation_ceiling` the curve bottoms out at — so the authored experience is
-## "debuffs land often, and a committed build tips the odds", never immunity.
+## SHIPPED tuning: a race's own `will`, and a race's `will` plus the five-slot flat
+## budget simulated below (the authored `core_status_defense` content is owed — DEF-0357).
+## Both stay above the `1 - mitigation_ceiling` the curve bottoms out at — so the
+## authored experience is "debuffs land often, and a committed build tips the odds",
+## never immunity.
 func test_the_experienced_range_is_a_small_edge_and_never_immunity() -> void:
 	var tuning := _tuning()
 	var actor := ActorFactory.build(&"probe_exp", {Stat.WILL: TOP_RACE_WILL})

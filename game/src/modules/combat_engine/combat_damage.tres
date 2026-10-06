@@ -111,10 +111,10 @@ mind_deviation_stat = "mind_technique_power"
 ; constant: its numbers are "provisional ... re-tuned by an edit, never by an ADR".
 ;
 ; THE VALUE IS UNCHANGED AT 1.0. This change moved the dial, it did not move the dial's
-; value: 1.0 is what shipped and the shipped rate is what was measured. What 1.0 still
-; means is unchanged too -- `apply_chance` is `gate * (1 - STATUS_RESISTANCE) * (1 -
-; elem_resist)`, so an unresisted actor short-circuits to certainty and consumes no
-; draw. A balance pass now edits this ONE line rather than editing a `.gd`.
+; value: 1.0 is what shipped and the shipped rate is what was measured. Under ADR 0884's
+; flat contest what 1.0 means is `gate * p_apply`, with `p_apply = clampf(0.5 +
+; (power - resist) / (2 * status_rate_scale), 0.0, 1.0)` -- parity reads HALF, not
+; certainty. A balance pass now edits this ONE line rather than editing a `.gd`.
 status_gate_chance = 1.0
 status_min_apply = 0.01
 status_power_prefix = "status.power."

@@ -45,7 +45,7 @@ const REFUSED_CEILING := &"magnitude_ceiling"
 const REFUSED_WRITTEN := &"unwritable"
 
 ## Combat-scope statuses get the ONE purge vocabulary this repo already owns.
-## A mind status is never CULTIVATION scope: `Stat.STATUS_RESISTANCE` does not
+## A mind status is never CULTIVATION scope: the combat gate's `status_defense` does not
 ## answer a confrontation, `MindContest`'s own defence stat does, and giving a mind
 ## status the general resist term as well would be a second, invisible contest
 ## layered on the one the player can read.

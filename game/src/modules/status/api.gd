@@ -292,7 +292,7 @@ static func tick_statuses(actor: Actor, delta: float) -> Dictionary:
 ## The refusal is the load-bearing half and it is what keeps the boundary from eroding one
 ## call at a time: this verb applies the SCOPE it is named for and nothing else. A COMBAT
 ## def routed here would install a debuff through the blessing path, where
-## [method clear_combat_scope] does not reach it and `StatusApply`'s `status_resistance`
+## [method clear_combat_scope] does not reach it and `StatusApply`'s `status_defense`
 ## gate was never drawn. A COMBAT status belongs to [method apply], which is reached from
 ## the blow that inflicts it.
 ##
@@ -589,8 +589,8 @@ static func summary(actor: Actor = null) -> Dictionary:
 # --- the mind-control vocabulary (its own tree, its own contests) ----------------
 #
 # The closed twenty above are ELEMENT-RIDING: inflicted by a landed blow that names
-# an element, resolved through `StatusApply`'s apply chance and resisted by
-# `Stat.STATUS_RESISTANCE`. None of that is true of a mind status, which is inflicted
+# an element, resolved through `StatusApply`'s apply chance and resisted by the
+# combat gate's `status_defense`. None of that is true of a mind status, which is inflicted
 # by a CONFRONTATION, names no element, is resisted by its own contest, and whose
 # whole point is that it can never be unavoidable. So the mind vocabulary is a second
 # content tree (`res://src/data/mind_statuses`), a second content type
