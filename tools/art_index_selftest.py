@@ -33,12 +33,12 @@ import io
 import json
 import shutil
 import struct
-import tempfile
 import zlib
 from pathlib import Path
 
 from . import art_index
 from . import character_bundle_sync as sync
+from .common import GAME_DIR
 from .selftest import case, expect
 
 #: A minimal shot row: enough for `plan_index` to reach every branch it has.
@@ -92,10 +92,10 @@ def _png_bytes(width: int, height: int) -> bytes:
     )
 
 
-## Every fixture root lives UNDER `GAME_DIR`, because what this tool writes is a `res://` path and a
-## root in `%TEMP%` makes every case report "outside the game tree" — a real refusal, and not the one
-## any case here is testing. The directory is created under a name no shipped path uses and removed
-## on exit, so a crashed case leaves a stray folder rather than a stray catalog row.
+## Every fixture root lives UNDER `GAME_DIR`, because what this tool writes is a `res://` path and
+## a root in `%TEMP%` makes every case report "outside the game tree" — a real refusal, and not the
+## one any case here is testing. The directory uses a name no shipped path has and is removed on
+## exit, so a crashed case leaves a stray folder rather than a stray catalog row.
 FIXTURE_DIR = "art_index_selftest_fixture"
 
 
@@ -279,7 +279,7 @@ def _installed_copy_is_the_same_render() -> None:
         )
         expect(
             art_index._digest(installed)
-            == art_index._digest(outputs / "selftest_dialogue_portrait.png"),
+            == art_index._digest(root / "outputs/selftest_dialogue_portrait.png"),
             "_digest disagreed with itself on two byte-identical files",
         )
 
