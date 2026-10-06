@@ -56,6 +56,7 @@ no_caller_verbs_selftest = _load("arch.no_caller_verbs_selftest")
 # without sweeping another session's in-flight cases (INC-0041), and an uncommittable red path is
 # not a red path.
 art_index = _load("art_index")
+character_bundle_sync_selftest = _load("character_bundle_sync_selftest")
 art_index_selftest = _load("art_index_selftest")
 png_provenance = _load("png_provenance")
 png_provenance_selftest = _load("png_provenance_selftest")
