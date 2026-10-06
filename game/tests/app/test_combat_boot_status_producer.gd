@@ -100,6 +100,17 @@ func _pair() -> Dictionary:
 ## passes a `ctx_builder` into the spine.
 func _hero() -> Actor:
 	var actor := ActorFactory.with_body_cultivation(ActorFactory.build(&"bruiser", HERO_BASE))
+	# ADR 0884: the status gate is a flat contest now, so a hero who means to land a status
+	# carries the STATUS POWER that opens it. Without this the rows below would measure the
+	# parity half and a seeded coin flip rather than the production path.
+	var tuning := CombatEngineApi.tuning()
+	actor.stats.add_modifier(
+		CombatStats.rate_modifier(
+			StringName(tuning.status_power_prefix + "omni"),
+			float(tuning.status_rate_scale) * 4.0,
+			&"test"
+		)
+	)
 	CombatBoot.install(actor)
 	return actor
 
@@ -191,6 +202,13 @@ func test_the_shipped_ctx_builder_writes_the_status_request_for_an_authored_elem
 		StringName(request.get("element", &"")),
 		EARTH,
 		"carrying the element it was authored from, for ADR 0088's potency read"
+	)
+	var def := StatusApi.definition(EARTH_QUAKE)
+	assert_ne(def, null, "the authored earth status has a def to read a kind from")
+	assert_eq(
+		StringName(request.get("kind", &"")),
+		&"" if def == null else def.kind,
+		"and the status's own kind rides it for ADR 0884's category channel"
 	)
 	# The gate is DATA and not a literal in `app/` (ADR 0087's `status_chance`, which ADR
 	# 0105 moved onto `CombatTuning.status_gate_chance`): a producer that restated `1.0`

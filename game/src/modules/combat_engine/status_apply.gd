@@ -32,10 +32,8 @@ extends RefCounted
 ##
 ## ```
 ## gate    = the attack's authored status_chance           (0.0 means "applies nothing")
-## elem_r  = clampf(defender element_defense_<e> / resist_divisor
-##                  - CombatStats.PENETRATION, 0, resist_cap)
-## p_apply = clampf(gate * (1 - Stat.STATUS_RESISTANCE) * (1 - elem_r),
-##                  status_min_apply, 1.0)                  (only when gate > 0)
+## p_apply = the flat power-vs-resist contest              (ADR 0884, via `apply_chance`)
+## chance  = clampf(gate * p_apply, status_min_apply, 1.0) (only when gate > 0)
 ## potency = maxf(status_potency_floor,
 ##                attacker element_power_<e> * status_potency_scale)
 ## ```
@@ -172,6 +170,9 @@ const REFUSE_UNWRITABLE := &"unwritable"
 const KEY_ID := &"id"
 const KEY_CHANCE := &"chance"
 const KEY_ELEMENT := &"element"
+## ADR 0884: the status's own `kind` (`StatusDef.kind`), read for the per-category
+## channel. An absent key reads `&""`, which simply skips that channel.
+const KEY_KIND := &"kind"
 const KEY_SCOPE := &"scope"
 const KEY_DURATION := &"duration"
 const KEY_POTENCY := &"potency"
@@ -236,10 +237,18 @@ static func apply(
 	# `elem_resist` is the ELEMENTAL half and applies to every scope: it is a
 	# defender's build answering an element, not a combat-games dial, so a cultivation
 	# blessing that happens to name an element is still answered by fire resistance.
-	# `Stat.STATUS_RESISTANCE` is the COMBAT half and is read inside `apply_chance`
+	# The `status_defense` half is the COMBAT dial and is read inside `apply_chance`
 	# only when the scope is COMBAT (ADR 0086).
 	var chance := apply_chance(
-		gate, target, tuning, resist, _id_of(request.get(KEY_SCOPE, SCOPE_COMBAT))
+		attacker,
+		target,
+		tuning,
+		gate,
+		status_id,
+		_id_of(request.get(KEY_KIND, &"")),
+		element,
+		resist,
+		_id_of(request.get(KEY_SCOPE, SCOPE_COMBAT))
 	)
 	var stream := _substream(rng, attacker, target, technique, hit_index)
 	# Saturated high consumes NO draw, matching `CombatBand.roll`: `p_apply >= 1.0`
@@ -348,28 +357,35 @@ static func elemental_resist(
 	return defense
 
 
-## The chance an OPEN gate actually applies: `clampf(chance * (1 - STATUS_RESISTANCE) *
-## (1 - elem_resist), status_min_apply, 1.0)`, with the `STATUS_RESISTANCE` term read
-## ONLY for a COMBAT-scope status.
+## The chance an OPEN gate actually applies (ADR 0884):
 ##
-## ## Why MULTIPLICATIVE and not `stat_resist + elem_resist`
+## ```
+## power   = status.power.omni + status.power.<kind> + status.power.<status_id>
+## resist  = status_defense share [combat only] + elemental_resist
+##           + status.resist.<element> + status.resist.omni
+##           + status.resist.<kind> + status.resist.<status_id>
+## p_apply = clampf(0.5 + (power - resist) / (2 * status_rate_scale), 0.0, 1.0)
+## chance  = clampf(gate * p_apply, status_min_apply, 1.0)
+## ```
 ##
-## ADR 0087 rejects the sum outright: the two rates reach `0.8` and `0.75`, so a
-## defender at both caps produces `p_apply <= 0.0` — hard status immunity, reached by
-## stacking two ordinary defensive stats. The product cannot go negative and each term
-## stays in `[0, 1]`, so the two families compose instead of annihilate, and
-## `status_min_apply` is a FLOOR on a still-positive number rather than a rescue from a
-## negative one. Same reasoning as ADR 0067's S8 and ADR 0069's resistance: a floor is a
-## distributional claim, a clamp is a truncation.
+## ## Parity reads HALF, which is Keepverse's own semantics on our clamp
 ##
-## ## Why the scope gates ONE term and not the other
+## Keepverse's evaluator builds its apply chance from the same `power - resist` delta
+## through a sigmoid, whose value at parity is exactly `0.5`; this copy keeps that
+## semantics on this tree's linear clamp (ADR 0877): parity reads half, `+/-`
+## `status_rate_scale` of net advantage reads certainty / zero, and NEITHER input is
+## capped. A strict-zero parity (the hit/crit rule) would make a shipped status
+## impossible the moment its defender held one point of defence, which replaces the
+## feature rather than porting it.
+##
+## ## Why the scope gates ONE term and not the others
 ##
 ## ADR 0086: "`Scope.COMBAT` is resisted by `Stat.STATUS_RESISTANCE`; `Scope.CULTIVATION`
-## is not — a blessing the game pays out must not tax the player for receiving it." The
-## elemental term is deliberately NOT gated: `element_defense_<e>` is a defender's
-## BUILD answering an element rather than a combat-games dial, so a cultivation effect
-## naming an element is still answered by that element's resistance. Gating both would
-## make `STATUS_RESISTANCE` a status-tax instead of a piece of combat vocabulary.
+## is not — a blessing the game pays out must not tax the player for receiving it." Only
+## the `status_defense` share is gated, because it is the combat-games dial. Every
+## channel term and `elemental_resist` are a defender's BUILD answering a status, so a
+## cultivation effect naming an element is still answered by that element's resistance
+## and by a defender's authored stance.
 ##
 ## ## The stat id is read from `tuning.status_defense_stat`, and that is the whole fix
 ##
@@ -391,27 +407,56 @@ static func elemental_resist(
 ## is the failure this indirection exists to catch.
 ##
 ## The `0..1` clamp stays, and it is NOT a cap on the input: `status_defense` is unbounded,
-## and the read maps it through ADR 0200's own ratio against the attacker's own scale, which
-## is the same shape `QiDamage`, `BodyDamage` and `MindDamage` use. A floor authored for a
-## dimensionless `0.6` is not a floor for a magnitude that reaches `3.3`, so S12's immunity
-## question is genuinely OPEN and is deliberately left asserting only what holds today: the
-## gate is strictly below `1.0`, the two resists compose multiplicatively rather than
-## summing into immunity (ADR 0087), and `status_min_apply` is what forbids a `0.0` once the
-## magnitude does outrun the ratio.
+## and the read maps it through ADR 0200's own ratio, which is the same shape `QiDamage`,
+## `BodyDamage` and `MindDamage` use. ADR 0884 REPLACED the multiplicative composition with
+## one flat delta, so what keeps a fully defended target reachable is `status_min_apply`
+## alone: it is the floor a saturated defender still takes the status at, and it is what
+## forbids the `0.0` an unbounded resist total would otherwise reach.
 static func apply_chance(
-	gate: float,
+	attacker: Actor,
 	target: Actor,
 	tuning: CombatTuning,
+	gate: float,
+	status_id: StringName,
+	kind: StringName,
+	element: StringName,
 	elem_resist: float,
 	scope: StringName = SCOPE_COMBAT
 ) -> float:
 	if tuning == null or gate <= 0.0:
 		return 0.0
-	var resist := 0.0
+	var power := _channel_total(attacker, tuning.status_power_prefix, status_id, kind, &"")
+	var resist := _channel_total(target, tuning.status_resist_prefix, status_id, kind, element)
+	resist += maxf(0.0, _finite(elem_resist))
 	if scope == SCOPE_COMBAT:
-		resist = clampf(_status_defense_share(target, tuning), 0.0, 1.0)
-	var chance := _finite(gate) * (1.0 - resist) * (1.0 - clampf(_finite(elem_resist), 0.0, 1.0))
+		resist += clampf(_status_defense_share(target, tuning), 0.0, 1.0)
+	var scale := _finite(tuning.status_rate_scale)
+	# A non-positive scale cannot say how much advantage is decisive, and the honest
+	# answer for a contest with no exchange rate is parity rather than a division.
+	var p_apply := 0.5
+	if scale > 0.0:
+		p_apply = clampf(0.5 + (power - resist) / (2.0 * scale), 0.0, 1.0)
+	var chance := _finite(gate) * p_apply
 	return clampf(chance, clampf(_finite(tuning.status_min_apply), 0.0, 1.0), 1.0)
+
+
+## One side's authored channel total (ADR 0884): `prefix + "omni"` always, plus
+## `prefix + kind`, `prefix + status_id` and — the defender's call — `prefix + element`
+## when each is known. An unauthored or absent prefix reads `0.0` for the whole side, and
+## an unknown id reads `0.0` like every other absent stat on this path.
+static func _channel_total(
+	actor: Actor, prefix: String, status_id: StringName, kind: StringName, element: StringName
+) -> float:
+	if prefix == "" or actor == null or actor.stats == null:
+		return 0.0
+	var total := _stat(actor, StringName(prefix + "omni"))
+	if kind != &"":
+		total += _stat(actor, StringName(prefix + String(kind)))
+	if status_id != &"":
+		total += _stat(actor, StringName(prefix + String(status_id)))
+	if element != &"":
+		total += _stat(actor, StringName(prefix + String(element)))
+	return maxf(0.0, _finite(total))
 
 
 ## ADR 0200's ratio for the COMBAT half of the status gate:

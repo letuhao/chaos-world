@@ -55,7 +55,9 @@ const FORGED_ID := "an_affliction_nobody_authored"
 ## is between two legal builds and not between a build and a bypass. `Stat.STATUS_RESISTANCE`
 ## is a `0.0`-baselined `0.8`-capped RATE, so FLAT is the only modifier form that can move it
 ## (`combat_engine/status_apply.gd`).
-const RESIST_FLAT := 0.6
+## ADR 0884: the resisted arm solves for a SHARE of the gate's own scale, because the gate
+## is a flat delta now — a `0.6` FLAT on the stat meant `0.6/resist_divisor` of a share.
+const RESIST_SHARE := 0.3
 
 ## How many fresh delvers to run before concluding a rate. Each is its own actor in its own
 ## run at its own seed, so the sample is independent draws rather than one actor's fights.
@@ -148,14 +150,27 @@ const _DIVERGENT_SEEDS: Array[int] = [
 ## A bare delver with the same attachments the existing exchange suites use: core pools, an
 ## item state and the loot state. No gear on purpose — at +60 flat attack one blow is worth
 ## the whole pool, and a one-shot delver would advance the band under the assertions.
-func _delver(resist: float = 0.0) -> Actor:
+func _delver(resist_share: float = 0.0) -> Actor:
 	var actor := Actor.new(&"delver", {Stat.PHYSIQUE: 10.0, Stat.SPIRIT: 8.0})
 	actor.attach_core_resources()
 	ItemsApi.attach(actor)
 	LootApi.attach(actor)
-	if resist > 0.0:
+	if resist_share > 0.0:
+		# Solved against the SHIPPED tuning so a retune moves the fixture with it, and on
+		# the id the gate ACTUALLY reads: the old `Stat.STATUS_RESISTANCE` spelling is the
+		# id ADR 0200 retired, so this arm measured nothing until it was corrected.
+		var tuning := CombatEngineApi.tuning()
+		var ceiling := clampf(float(tuning.mitigation_ceiling), 0.0, 1.0)
+		var divisor_k := maxf(0.0, float(tuning.defense_divisor_k))
+		var share := clampf(resist_share, 0.0, ceiling - 1e-6)
+		var defense := divisor_k * share / maxf(1e-9, ceiling - share)
 		actor.stats.add_modifier(
-			StatModifier.new(Stat.STATUS_RESISTANCE, Stat.Op.FLAT, resist, &"affliction_resist")
+			StatModifier.new(
+				StringName(tuning.status_defense_stat),
+				Stat.Op.FLAT,
+				defense * float(tuning.resist_divisor),
+				&"affliction_resist"
+			)
 		)
 	return actor
 
@@ -219,13 +234,16 @@ func _exchange_against(boss_id: StringName, seed_value: int, resist: float = 0.0
 	return CombatExchange.exchange(actor, seed_value)
 
 
-## How many of `SWEEP` fresh fights landed the boss's affliction on the player.
+## How many of `SWEEP` fresh fights landed the boss's affliction on the player, WITH the
+## denominator it actually measured.
 ##
 ## Each iteration is an independent actor, its own run and its own seed, so the only thing
 ## the sample shares is the authored content — which is the point: the spread being measured
-## is the gate's, not one actor's. Returns `-1` when a fight could not be set up at all, so a
-## broken fixture reads as "unmeasurable" rather than as "never applies".
-func _affliction_rate(boss_id: StringName, resist: float) -> int:
+## is the gate's, not one actor's. A fight that could not be set up is not a draw the gate
+## refused, so the MEASURED count travels with the landed one and every rate below divides
+## by it. `rate` is `-1.0` when the sample is too thin to read, so a broken fixture reads as
+## "unmeasurable" rather than as "never applies".
+func _affliction_rate(boss_id: StringName, resist: float) -> Dictionary:
 	var landed := 0
 	var measured := 0
 	for index in SWEEP:
@@ -236,8 +254,8 @@ func _affliction_rate(boss_id: StringName, resist: float) -> int:
 		if bool(_affliction_of(result).get("applied", false)):
 			landed += 1
 	if measured < SWEEP / 2:
-		return -1
-	return landed
+		return {"landed": landed, "measured": measured, "rate": -1.0}
+	return {"landed": landed, "measured": measured, "rate": float(landed) / float(measured)}
 
 
 # --- 1. reachability: a boss with an authored affliction inflicts it --------------
@@ -474,37 +492,50 @@ func test_a_resisted_player_is_afflicted_less_often_than_an_open_one() -> void:
 	# gate from theatre.
 	#
 	# Both samples are 64 independent fights against the same shipped hound with the same
-	# delver bundle; the ONLY difference is a `Stat.STATUS_RESISTANCE` of `0.6` on one of
-	# them. ADR 0087's `apply_chance` is multiplicative and reads that stat for a COMBAT
-	# scope, so the resisted player asks for roughly 40% where the open one asks for 100%,
-	# and the two rates must differ by at least [constant RATE_GAP].
-	var open_rate := _affliction_rate(HOUND, 0.0)
-	var resisted_rate := _affliction_rate(HOUND, RESIST_FLAT)
-	if open_rate < 0 or resisted_rate < 0:
+	# delver bundle; the ONLY difference is a solved `RESIST_SHARE` of the gate's own scale
+	# on one of them. ADR 0884's `apply_chance` is a flat delta, so that share reads
+	# straight off the parity half — `0.5 - share` — and the two rates must differ by at
+	# least [constant RATE_GAP].
+	var open_sample := _affliction_rate(HOUND, 0.0)
+	var resisted_sample := _affliction_rate(HOUND, RESIST_SHARE)
+	if float(open_sample["rate"]) < 0.0 or float(resisted_sample["rate"]) < 0.0:
 		return
+	# Measured denominators, not `SWEEP`: an iteration whose walk could not arrive is not a
+	# draw the gate refused, and dividing by 64 would read a setup skip as a resist.
+	var open_rate := int(open_sample["landed"])
+	var resisted_rate := int(resisted_sample["landed"])
 	assert_eq(
 		resisted_rate < open_rate,
 		true,
 		(
-			"a resisted player is afflicted less often (%d/64) than an open one (%d/64)"
-			% [resisted_rate, open_rate]
+			"a resisted player is afflicted less often (%d/%d) than an open one (%d/%d)"
+			% [
+				resisted_rate,
+				int(resisted_sample["measured"]),
+				open_rate,
+				int(open_sample["measured"])
+			]
 		)
 	)
 	assert_eq(
-		float(open_rate - resisted_rate) / float(SWEEP) >= RATE_GAP,
+		float(open_sample["rate"]) - float(resisted_sample["rate"]) >= RATE_GAP,
 		true,
 		(
-			"by at least the measured gap (%d/64 = %.2f of %d draws): the resist formula is LIVE"
-			% [open_rate - resisted_rate, float(open_rate - resisted_rate) / float(SWEEP), SWEEP]
+			"by at least the measured gap (%.2f): the resist formula is LIVE"
+			% (float(open_sample["rate"]) - float(resisted_sample["rate"]))
 		)
 	)
-	# The control that gives both numbers meaning: at an OPEN gate the shipped corpus has to
-	# apply most of the time. A gate wired to always refuse would satisfy "resisted < open"
-	# while applying nothing at all, so the open sample is pinned near saturation.
+	# The control that gives both numbers meaning: an UNINVESTED delver's gate sits at the
+	# parity half of ADR 0884's flat delta (`status.power` has no shipped producer yet), so
+	# the open sample lands near HALF. Degenerate means near zero, which is what a gate
+	# wired to always refuse would read.
 	assert_eq(
-		float(open_rate) / float(SWEEP) >= 0.5,
+		float(open_sample["rate"]) >= 0.25,
 		true,
-		"and the open-gate rate is not itself degenerate (%d/64)" % open_rate
+		(
+			"and the open-gate rate is not itself degenerate (%d/%d)"
+			% [open_rate, int(open_sample["measured"])]
+		)
 	)
 
 
@@ -555,11 +586,12 @@ func test_the_affliction_roll_does_not_disturb_the_boss_own_answer() -> void:
 	#
 	# Two delvers with the same numbers and the same seed, differing ONLY in a resisted
 	# status stat, must therefore agree on `share_taken` AND on the player's resulting
-	# health. The resisted actor spends a draw the plain one does not — it must roll where
-	# the open gate short-circuits — and that is exactly the cursor this case exists to
+	# health. The two arms answer DIFFERENT chances — the resisted one a share lower — so
+	# their verdicts genuinely diverge, and that difference is exactly the cursor this case
+	# exists to
 	# prove was not shared.
 	var plain := _facing(HOUND, 4242)
-	var resisted := _facing(HOUND, 4242, RESIST_FLAT)
+	var resisted := _facing(HOUND, 4242, RESIST_SHARE)
 	if not _in_run(plain) or not _in_run(resisted):
 		return
 	var plain_result := CombatExchange.exchange(plain, 4242)
@@ -583,32 +615,32 @@ func test_the_affliction_roll_does_not_disturb_the_boss_own_answer() -> void:
 	#
 	# It used to assert the two verdicts differ (`applied` true on one, false on the other),
 	# which pinned a single SEED to a single draw and so only ever witnessed whether seed
-	# 4242 happened to fall on one side of its chance. Measured over the 64-seed sweep the
-	# two arms agree on 23 of 64 draws — and that is the correct behaviour, not a defect:
-	# ADR 0087's chance is `1 - STATUS_RESISTANCE` = 0.4 for the resisted build, so it has
-	# to land 40% of the time, and a 0.4-chance gate CAN roll true. Demanding a different
+	# 4242 happened to fall on one side of its chance. Over a sweep the two arms agree on
+	# many draws — and that is the correct behaviour, not a defect: ADR 0884's chance is
+	# `0.5 - RESIST_SHARE` for the resisted build, so it has to land sometimes, and a
+	# positive-chance gate CAN roll true. Demanding a different
 	# verdict would demand a gate that never opens on the resisted build, which is the
 	# `RATE_GAP` case above, and would fail the moment the salt moved.
 	#
 	# The claim under test is RNG ISOLATION, not the gate's polarity: it is that a difference
 	# in the affliction's own verdict cannot move the shared cursor. What makes that
-	# non-vacuous is that the resisted arm demonstrably DRAWS where the open arm does not —
-	# so a shared-cursor bug would have moved `share_taken`. The two verdicts may agree, and
+	# non-vacuous is that the two arms genuinely answer DIFFERENT chances — so a shared
+	# cursor bug would have shown up in `share_taken`. The two verdicts may agree, and
 	# over a sweep they mostly do; they may only not be the SAME EVENT. So this scans seeds
 	# for one where the two genuinely diverge, and only then compares the answers, which is
 	# the configuration in which a cursor bug is actually observable.
 	var seeds_diverged := 0
 	for seed_value in _DIVERGENT_SEEDS:
 		var open_arm := _facing(HOUND, seed_value)
-		var closed_arm := _facing(HOUND, seed_value, RESIST_FLAT)
+		var closed_arm := _facing(HOUND, seed_value, RESIST_SHARE)
 		if not _in_run(open_arm) or not _in_run(closed_arm):
 			continue
 		var open_result := CombatExchange.exchange(open_arm, seed_value)
 		var closed_result := CombatExchange.exchange(closed_arm, seed_value)
 		if not bool(open_result.get("ok", false)) or not bool(closed_result.get("ok", false)):
 			continue
-		# A seed whose two arms agree is NOT this case's subject — it is the majority of
-		# seeds and the expected answer for a 0.4-chance gate. Skipped, not asserted
+		# A seed whose two arms agree is NOT this case's subject — it is a majority of
+		# seeds and the expected answer for a positive-chance gate. Skipped, not asserted
 		# against: asserting here would pin the whole sweep to a polarity the gate does not
 		# have, which is the same coin-flip assertion in a wider window.
 		if (
@@ -621,8 +653,11 @@ func test_the_affliction_roll_does_not_disturb_the_boss_own_answer() -> void:
 			float(closed_result["share_taken"]),
 			float(open_result["share_taken"]),
 			(
-				"seed %d, whose gates diverge: the boss's answer is the same share "
-				+ "whether or not a status landed" % seed_value
+				(
+					"seed %d, whose gates diverge: the boss's answer is the same share "
+					+ "whether or not a status landed"
+				)
+				% seed_value
 			)
 		)
 		assert_eq(
@@ -704,9 +739,15 @@ func test_the_gate_is_one_dial_and_the_resist_formula_is_the_only_arithmetic() -
 	# The formula itself, read through the spine: a resisted actor's resolved chance must be
 	# strictly below an open one's at the same gate. This is the claim the rate test above
 	# measures end to end, asserted here at its source so a failure localises.
-	var open_chance := StatusApply.apply_chance(tuning.status_gate_chance, null, tuning, 0.0)
-	var closed_chance := StatusApply.apply_chance(0.0, null, tuning, 0.0)
-	assert_eq(float(open_chance), 1.0, "an unresisted actor at the shipped gate rolls at 1.0")
+	var open_chance := StatusApply.apply_chance(
+		null, null, tuning, tuning.status_gate_chance, &"", &"", &"", 0.0
+	)
+	var closed_chance := StatusApply.apply_chance(null, null, tuning, 0.0, &"", &"", &"", 0.0)
+	assert_almost_eq(
+		float(open_chance),
+		float(tuning.status_gate_chance) * 0.5,
+		"an unresisted actor rolls at the gate times the parity half (ADR 0884)"
+	)
 	assert_eq(
 		float(closed_chance),
 		0.0,

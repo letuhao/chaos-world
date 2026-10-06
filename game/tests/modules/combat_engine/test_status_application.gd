@@ -159,61 +159,37 @@ func test_status_resistance_raises_the_resist_and_reaches_immunity_at_the_cap() 
 			StringName(_tuning.status_defense_stat), _tuning_cap_resist(), &"test"
 		)
 	)
-	var open_chance := StatusApply.apply_chance(1.0, open_target, _tuning, 0.0)
-	var closed_chance := StatusApply.apply_chance(1.0, closed_target, _tuning, 0.0)
-	assert_almost_eq(open_chance, 1.0, "an undefended defender takes it at the authored chance")
+	var open_chance := StatusApply.apply_chance(null, open_target, _tuning, 1.0, &"", &"", &"", 0.0)
+	var closed_chance := StatusApply.apply_chance(
+		null, closed_target, _tuning, 1.0, &"", &"", &"", 0.0
+	)
+	# ADR 0884: parity reads half, and the defender's `status_defense` share enters the
+	# flat delta directly — one `status_rate_scale` of net advantage is the whole exchange
+	# rate, so a `0.9` share is far past the point where the gate reaches the floor.
+	assert_almost_eq(open_chance, 0.5, "an undefended defender reads the parity half")
 	assert_eq(
 		closed_chance <= open_chance,
 		true,
 		"the COMBAT half's status defense strictly raises the resist"
 	)
-	assert_eq(closed_chance < 1.0, true, "and at the cap it is never a guarantee")
-	# The cap ALONE is not enough to reach the floor, and that is arithmetic rather than
-	# an accident: the resist is `mitigation_ceiling * D/(K+D)` against a `K` of
-	# `defense_divisor_k`, so it is strictly below `1.0` for every finite defense and the
-	# gate bottoms out at `1.0 * (1 - mitigation_ceiling) = 0.05` with no elemental term.
-	# Proving the floor is what forbids immunity therefore means driving the product BELOW
-	# it, which is what the second resist is for, and a single defendable figure is
-	# `status_min_apply = 0.01` — which is exactly what the two-resist case below drives
-	# the product under. It is the SUM form that reaches `p_apply <= 0.0` here, and
-	# rejecting that form is why this number is not zero.
-	assert_eq(
-		closed_chance > _tuning.status_min_apply,
-		true,
-		"the capped resist alone leaves the gate above the floor"
-	)
-	# ADR 0200 deleted `resist_cap` and core's `minf(0.8, will * 0.003)` with it, so "both
-	# resists at their caps" is now "both resists deep enough to matter". The property is
-	# UNCHANGED and this is a correction rather than a relaxation: two ordinary defensive
-	# investments still compose into a crawl and never into a refusal. What moved is that
-	# the resist is a ratio now, so its reading is strictly below an authored ceiling at
-	# every finite defense — and at `1.0e9` of elemental resist the product itself goes to
-	# `0.0`, which is what makes `status_min_apply` load-bearing rather than decorative.
-	#
-	# ## The "crawl" is the FLOOR, and it is asserted as such below rather than twice here
-	#
-	# At `1.0e9` of elemental resist the elemental term is `0.0` and the product is `0.0`, so
-	# `apply_chance` returns `status_min_apply` EXACTLY. This block used to assert both
-	# `> status_min_apply` and `== status_min_apply` over two identical calls
-	# (`1.0 * (1 - share) * (1 - clampf(1.0e9, 0, 1))` is `0.0` either way), which is a
-	# contradiction rather than a pair of claims: the second is what the first denies.
-	# `saturated_pair > closed_chance` is what "compose into a CRAWL" means — the second
-	# resist drags the pair below the resist-alone row — and it still holds. The identity
-	# with the floor is asserted once, by the `floored` case below, where it belongs.
-	var saturated_pair := StatusApply.apply_chance(1.0, closed_target, _tuning, 1.0e9)
-	assert_eq(
-		saturated_pair < closed_chance,
-		true,
-		"both resists saturated compose into a crawl above the floor, never a refusal (ADR 0087)"
-	)
-	# Saturate the elemental term too and the product falls toward the floor, where the
-	# floor is the ONLY thing keeping the answer non-zero. This is the immunity claim:
-	# without `status_min_apply` this reads 0.0 and a saturated defender is immune.
-	var floored := StatusApply.apply_chance(1.0, closed_target, _tuning, 1.0e9)
 	assert_almost_eq(
-		floored, _tuning.status_min_apply, "full immunity is not reachable; the floor is"
+		closed_chance,
+		_tuning.status_min_apply,
+		"and at that depth the floor is the only thing keeping it reachable"
 	)
-	assert_eq(floored > 0.0, true, "and a saturated defender still takes the status sometimes")
+	var saturated_pair := StatusApply.apply_chance(
+		null, closed_target, _tuning, 1.0, &"", &"", &"", 1.0e9
+	)
+	# Both resists and the elemental term saturate into the SAME floor: ADR 0884's single
+	# delta has no way under it, and `status_min_apply` is what forbids a hard zero — the
+	# immunity claim, unchanged in spirit from ADR 0087's product and asserted at the one
+	# place it belongs.
+	assert_almost_eq(
+		saturated_pair, _tuning.status_min_apply, "full immunity is not reachable; the floor is"
+	)
+	assert_eq(
+		saturated_pair > 0.0, true, "and a saturated defender still takes the status sometimes"
+	)
 
 
 func test_a_cultivation_scope_status_is_not_resisted() -> void:
@@ -224,12 +200,14 @@ func test_a_cultivation_scope_status_is_not_resisted() -> void:
 			StringName(_tuning.status_defense_stat), _status_defense_for(0.9), &"test"
 		)
 	)
-	var combat := StatusApply.apply_chance(1.0, target, _tuning, 0.0, StatusApply.SCOPE_COMBAT)
-	var cultivation := StatusApply.apply_chance(
-		1.0, target, _tuning, 0.0, StringName("cultivation")
+	var combat := StatusApply.apply_chance(
+		null, target, _tuning, 1.0, &"", &"", &"", 0.0, StatusApply.SCOPE_COMBAT
 	)
-	assert_eq(combat < 1.0, true, "a COMBAT status is resisted")
-	assert_almost_eq(cultivation, 1.0, "a CULTIVATION status is not resisted at all")
+	var cultivation := StatusApply.apply_chance(
+		null, target, _tuning, 1.0, &"", &"", &"", 0.0, StringName("cultivation")
+	)
+	assert_eq(combat < cultivation, true, "a COMBAT status is resisted")
+	assert_almost_eq(cultivation, 0.5, "and a CULTIVATION status pays only the parity reading")
 
 
 ## ## ADR 0200: the stat the gate reads is a MAGNITUDE, and the fixture has to build one
@@ -263,14 +241,20 @@ func _status_defense_for(share: float) -> float:
 	return defense * _tuning.resist_divisor
 
 
-func test_elemental_resistance_reduces_the_chance_multiplicatively() -> void:
-	# ADR 0087 rejects `stat_resist + elem_resist`: the sum goes negative at both caps and
-	# manufactures immunity out of two ordinary defensive stats. The product cannot.
+func test_the_elemental_resist_adds_into_the_flat_delta() -> void:
+	# ADR 0884: the elemental resist is one more term of the SAME delta, so half of one
+	# rate scale of it takes exactly half of the parity reading away.
 	var target := CombatTestKit.actor(&"target")
-	var half := StatusApply.apply_chance(1.0, target, _tuning, 0.5)
-	assert_almost_eq(half, 0.5, "an elemental resist of 0.5 halves the chance")
+	var parity := StatusApply.apply_chance(null, target, _tuning, 1.0, &"", &"", &"fire", 0.0)
+	var half := StatusApply.apply_chance(
+		null, target, _tuning, 1.0, &"", &"", &"fire", _tuning.status_rate_scale * 0.5
+	)
+	assert_almost_eq(parity, 0.5, "parity reads half")
+	assert_almost_eq(half, 0.25, "half a rate scale of elemental resist takes half of it")
 	assert_eq(
-		StatusApply.apply_chance(1.0, target, _tuning, 1.0) >= 0.0, true, "and never goes negative"
+		StatusApply.apply_chance(null, target, _tuning, 1.0, &"", &"", &"fire", 1.0) >= 0.0,
+		true,
+		"and it never goes negative"
 	)
 
 
@@ -417,6 +401,15 @@ func test_every_status_constant_is_read_from_the_tres_and_not_hardcoded() -> voi
 	assert_eq(
 		_tuning.status_default_duration > 0.0, true, "a status must not be born already expired"
 	)
+	assert_eq(_tuning.status_rate_scale > 0.0, true, "status_rate_scale is authored in the .tres")
+	assert_eq(
+		_tuning.status_power_prefix != "", true, "the status power prefix is authored in the .tres"
+	)
+	assert_eq(
+		_tuning.status_resist_prefix != "",
+		true,
+		"the status resist prefix is authored in the .tres"
+	)
 
 
 func test_editing_the_tuning_changes_the_outcome_without_touching_a_gd_file() -> void:
@@ -530,6 +523,14 @@ func _resolve(
 	hit_index: int = 0
 ) -> Dictionary:
 	var attacker := CombatTestKit.quiet_actor(attacker_id)
+	# ADR 0884: the gate is a flat power-vs-resist contest now, so an "open gate" fixture
+	# carries the STATUS POWER that opens it. Without this the suite would measure the
+	# parity `0.5` on every case below instead of the authored gate.
+	attacker.stats.add_modifier(
+		CombatStats.rate_modifier(
+			StringName(_tuning.status_power_prefix + "omni"), _tuning.status_rate_scale, &"test"
+		)
+	)
 	MechanismSlot.bind(attacker, mechanism)
 	var rng := CombatTestKit.rng(seed_value)
 	var technique := CombatTestKit.technique(100.0)

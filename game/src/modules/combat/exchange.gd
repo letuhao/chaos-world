@@ -341,9 +341,13 @@ static func _status_on_landing(
 		return none
 	var tuning := CombatEngineApi.tuning()
 	var chance := StatusApply.apply_chance(
-		_status_gate(tuning),
+		actor,
 		actor,
 		tuning,
+		_status_gate(tuning),
+		&"",
+		&"",
+		element,
 		StatusApply.elemental_resist(actor, actor, tuning, element)
 	)
 	var status_id := StatusApi.status_for_element(element, chance)
@@ -508,9 +512,13 @@ static func _boss_affliction_numbers(
 	var tuning := CombatEngineApi.tuning()
 	var element := def.element
 	var chance := StatusApply.apply_chance(
-		_status_gate(tuning),
+		actor,
 		actor,
 		tuning,
+		_status_gate(tuning),
+		status_id,
+		def.kind,
+		element,
 		StatusApply.elemental_resist(actor, actor, tuning, element)
 	)
 	# The CLOSED gate, answered BEFORE the stream is derived: an already-closed chance spends

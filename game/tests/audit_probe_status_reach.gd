@@ -199,7 +199,9 @@ func _guard_report() -> String:
 					% [
 						flat,
 						res,
-						StatusApply.apply_chance(1.0, a2, tuning, 0.0, &"combat"),
+						StatusApply.apply_chance(
+							null, a2, tuning, 1.0, &"", &"", &"", 0.0, &"combat"
+						),
 					]
 				)
 			)
@@ -222,9 +224,13 @@ func _guard_report() -> String:
 						er,
 						StatusApply.elemental_resist(a4, a4, tuning, &"fire"),
 						StatusApply.apply_chance(
-							1.0,
+							null,
 							a4,
 							tuning,
+							1.0,
+							&"",
+							&"",
+							&"fire",
 							StatusApply.elemental_resist(a4, a4, tuning, &"fire"),
 							&"combat"
 						),

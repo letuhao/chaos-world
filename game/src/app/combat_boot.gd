@@ -932,14 +932,21 @@ static func _stage_status_request(ctx: AttackContext, technique: Variant) -> voi
 	var status_id := StatusApi.status_for_element(element, gate)
 	if status_id == &"":
 		return
-	ctx.set_data(
-		StatusApply.REQUEST_KEY,
-		{
-			"id": status_id,
-			"element": element,
-			"chance": gate,
-			"scope": StatusApply.SCOPE_COMBAT,
-		}
+	# ADR 0884: the status's own `kind` rides the request so S12 can read the
+	# per-category channel without knowing a `status` module class.
+	var def := StatusApi.definition(status_id)
+	(
+		ctx
+		. set_data(
+			StatusApply.REQUEST_KEY,
+			{
+				"id": status_id,
+				"element": element,
+				"kind": &"" if def == null else def.kind,
+				"chance": gate,
+				"scope": StatusApply.SCOPE_COMBAT,
+			}
+		)
 	)
 
 

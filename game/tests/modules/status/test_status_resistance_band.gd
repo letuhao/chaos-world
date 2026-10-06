@@ -325,7 +325,7 @@ func test_the_experienced_range_is_a_small_edge_and_never_immunity() -> void:
 		TOP_RACE_WILL * WILL_COEFFICIENT + TOP_GEAR_FLAT,
 		"a fully equipped author of this stat reads the will coefficient plus the gear flat"
 	)
-	var chance := StatusApply.apply_chance(1.0, actor, tuning, 0.0)
+	var chance := StatusApply.apply_chance(null, actor, tuning, 1.0, &"", &"", &"", 0.0)
 	assert_eq(
 		chance > 1.0 - float(tuning.mitigation_ceiling),
 		true,
@@ -375,7 +375,7 @@ func test_a_deep_status_defense_composes_into_a_crawl_rather_than_annihilating()
 		true,
 		"the deep defense is on the stat rather than replacing the will baseline (%.6f)" % resolved
 	)
-	var alone := StatusApply.apply_chance(1.0, actor, tuning, 0.0)
+	var alone := StatusApply.apply_chance(null, actor, tuning, 1.0, &"", &"", &"", 0.0)
 	assert_eq(alone > 0.0, true, "the deep resist alone leaves the gate above 0.0 (%.6f)" % alone)
 	assert_eq(alone < 1.0, true, "and no finite defense is a guarantee (%.6f)" % alone)
 
@@ -390,24 +390,24 @@ func test_a_deep_status_defense_composes_into_a_crawl_rather_than_annihilating()
 		share, target_share, "the deep defense asks the gate for the share it solved for", 0.0001
 	)
 
-	# ADR 0087's composition, checked as the PRODUCT it is: the elemental term MULTIPLIES
-	# the status term rather than summing with it, so two ordinary defensive investments
-	# compose into a crawl and never into a refusal.
+	# ADR 0884: the two defensive terms enter ONE flat delta, so their composition is the
+	# floor rather than a product — a deep defense plus an elemental resist reaches it and
+	# never passes it.
 	var elem := 0.5
-	var composed := StatusApply.apply_chance(1.0, actor, tuning, elem)
+	var composed := StatusApply.apply_chance(null, actor, tuning, 1.0, &"", &"", &"", elem)
 	assert_almost_eq(
 		composed,
-		(1.0 - share) * (1.0 - elem),
-		"the two resists compose as a product, not a sum",
+		float(tuning.status_min_apply),
+		"the composed defence saturates into the authored floor",
 		0.0001
 	)
 	assert_eq(
-		composed < alone,
+		composed <= alone,
 		true,
 		(
 			(
-				"the elemental resist drags the pair under the resist-alone reading "
-				+ "(%.6f < %.6f)"
+				"the elemental resist never raises the chance above the resist-alone reading "
+				+ "(%.6f <= %.6f)"
 			)
 			% [composed, alone]
 		)
@@ -416,7 +416,7 @@ func test_a_deep_status_defense_composes_into_a_crawl_rather_than_annihilating()
 	# resist at its own ceiling annihilates the product, so the only thing standing between
 	# a maximally defended target and hard immunity is `status_min_apply`. Read off the
 	# SHIPPED tuning, so a rebalance of the floor moves the assertion with it.
-	var saturated := StatusApply.apply_chance(1.0, actor, tuning, 1.0)
+	var saturated := StatusApply.apply_chance(null, actor, tuning, 1.0, &"", &"", &"", 1.0)
 	assert_almost_eq(
 		saturated,
 		float(tuning.status_min_apply),

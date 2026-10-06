@@ -272,6 +272,19 @@ extends Resource
 ## silently answering with the wrong number — which is the failure this indirection is
 ## guarding against, not enabling.
 @export var status_defense_stat: String = "status_defense"
+## ADR 0884. The authored prefixes of the status POWER/RESIST channels, read by S12's
+## gate: `status.power.omni` + `status.power.<kind>` + `status.power.<status_id>` on the
+## attacker, and the `status.resist.` counterparts (plus `status.resist.<element>`) on
+## the defender. STRINGS on the `element_power_prefix` pattern — naming `status` module
+## classes here would put a compile-time edge into a module whose dependency list is
+## `["contracts", "core"]`.
+@export var status_power_prefix: String = ""
+@export var status_resist_prefix: String = ""
+## ADR 0884. The exchange rate of the gate's flat delta: parity (power == resist) reads
+## `0.5`, and +/- this much net advantage reads certainty / zero. A non-positive value
+## reads parity rather than dividing by zero. Unmeasured placeholder; the balance pass
+## owns the value.
+@export var status_rate_scale: float = 0.0
 
 # --- S12: status application (ADR 0087, ADR 0088) ------------------------------
 #

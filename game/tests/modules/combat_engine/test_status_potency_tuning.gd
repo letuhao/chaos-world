@@ -380,6 +380,16 @@ func _resolve(
 	attacker_id: StringName, affinity: float, target: Actor, seed_value: int
 ) -> Dictionary:
 	var attacker := _elemental(attacker_id, affinity)
+	# ADR 0884: the status gate is a flat contest now, so the fixture carries the STATUS
+	# POWER that opens it — otherwise these rows would measure the parity half and the
+	# seed instead of the potency under test.
+	attacker.stats.add_modifier(
+		CombatStats.rate_modifier(
+			StringName(_tuning.status_power_prefix + "omni"),
+			float(_tuning.status_rate_scale) * 4.0,
+			&"test"
+		)
+	)
 	var mechanism := CombatTestKit.FixedMechanism.new()
 	mechanism.amount = 25.0
 	MechanismSlot.bind(attacker, mechanism)
