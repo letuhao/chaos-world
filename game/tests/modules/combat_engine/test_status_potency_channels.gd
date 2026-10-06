@@ -134,3 +134,20 @@ func test_the_net_factor_clamps_at_the_authored_ceiling() -> void:
 		float(_tuning.status_max_net_factor),
 		"the ceiling is an OUTPUT bound (ADR 0200)"
 	)
+
+
+func test_an_authored_base_replaces_the_shared_reuse_and_zero_keeps_it() -> void:
+	# ADR 0897: the reuse is a FALLBACK, not a floor. An authored base below it wins —
+	# 0.05 against the 0.1 the shared curve reads — and 0.0 keeps the shared reading,
+	# which is what every shipped def authors today.
+	var target := CombatTestKit.actor(&"target")
+	var authored := _resolve(_open_attacker(), target, _request({"potency": 0.05}))
+	assert_almost_eq(float(authored[&"potency"]), 0.05, "the authored base IS the base")
+	var shared := _resolve(
+		_open_attacker(), CombatTestKit.actor(&"target2"), _request({"potency": 0.0})
+	)
+	assert_almost_eq(
+		float(shared[&"potency"]),
+		float(_tuning.status_potency_floor),
+		"and 0.0 keeps the shared reuse, which is every shipped def's authoring"
+	)

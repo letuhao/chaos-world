@@ -34,8 +34,9 @@ extends RefCounted
 ## gate    = the attack's authored status_chance           (0.0 means "applies nothing")
 ## p_apply = the flat power-vs-resist contest              (ADR 0884, via `apply_chance`)
 ## chance  = clampf(gate * p_apply, status_min_apply, 1.0) (only when gate > 0)
-## potency = maxf(status_potency_floor,
-##                attacker element_power_<e> * status_potency_scale)
+## potency = an authored StatusDef.potency_base when one is authored (> 0),
+##           else maxf(status_potency_floor,
+##                     attacker element_power_<e> * status_potency_scale)
 ## ```
 ##
 ## and then ONE draw from a per-hit SUBSTREAM decides it. The roll is `r < p_apply`.
@@ -362,10 +363,12 @@ static func resolve_roll(
 	out[&"status_id"] = status_id
 	out[&"chance"] = chance
 	out[&"resist"] = resist
-	out[&"potency"] = (
-		maxf(_finite(_number(request.get(KEY_POTENCY, 0.0))), potency_of(attacker, tuning, element))
-		* maxf(0.0, _finite(intensity_net))
-	)
+	# ADR 0897: an AUTHORED base replaces the shared reuse; absent (0.0) keeps it. The
+	# `maxf` this used to be made the reuse a floor no def could go under, which is the
+	# reuse refusing to retire.
+	var authored := maxf(_finite(_number(request.get(KEY_POTENCY, 0.0))), 0.0)
+	var base := authored if authored > 0.0 else potency_of(attacker, tuning, element)
+	out[&"potency"] = base * maxf(0.0, _finite(intensity_net))
 	out[&"intensity_net"] = intensity_net
 	out[&"duration_net"] = duration_net
 	out[&"open"] = open

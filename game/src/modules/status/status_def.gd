@@ -211,6 +211,16 @@ const DURATION_FOREVER := -1.0
 ## `status.immuneReduction.<tag>` channels blunts both potency net factors. Empty means
 ## no tag answers it — the same default Keepverse ships on every status in its catalogue.
 @export var immunity_tags: Array[StringName] = []
+## ADR 0897 (DEF-0344's family 6). The status's OWN base magnitude on the POTENCY path:
+## `0.0` means NOT AUTHORED, and the shared `element_power_<e>` reuse decides — which is
+## every shipped def today, so the default is byte-identical. The writers hand it to S12 in
+## the request's `potency` slot, and an authored base REPLACES the reuse rather than
+## `maxf`-ing against it, because retiring the reuse is what authoring a base means.
+##
+## This does not reopen the "no magnitude vocabulary" rule: `magnitude_unit` still governs
+## how the status RESOLVES its effect, and this is the one number the potency path was
+## missing. A def authors it only where the shared reuse is the wrong shape for it.
+@export var potency_base: float = 0.0
 @export var payload: Dictionary = {}
 
 
@@ -342,6 +352,7 @@ func to_dict() -> Dictionary:
 		"permanent": is_permanent(),
 		"magnitude_unit": String(magnitude_unit),
 		"magnitude_cap": magnitude_cap,
+		"potency_base": potency_base,
 		"tick_interval": tick_interval,
 		"mitigation_tags": levers,
 		"modifiers": mods,

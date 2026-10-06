@@ -710,7 +710,12 @@ func _print_placeholder_families() -> void:
 			% [tuning.status_potency_scale, tuning.status_potency_floor]
 		)
 	)
-	print("                            an authored per-status base is DEF-0344's content wave")
+	print(
+		(
+			"                            authorable per status since ADR 0897 "
+			+ "(StatusDef.potency_base; every shipped def 0.0 = fallback) -- the values are the wave"
+		)
+	)
 	print("")
 
 

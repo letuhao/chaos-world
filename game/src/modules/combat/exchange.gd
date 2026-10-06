@@ -351,6 +351,7 @@ static func _status_on_landing(
 		"element": element,
 		"kind": &"" if def == null else def.kind,
 		"immunity_tags": [] if def == null else def.immunity_tags,
+		"potency": 0.0 if def == null else def.potency_base,
 		"chance": gate,
 		"scope": String(StatusApply.SCOPE_COMBAT),
 	}
@@ -510,6 +511,7 @@ static func _boss_affliction_numbers(
 		"element": element,
 		"kind": def.kind,
 		"immunity_tags": def.immunity_tags,
+		"potency": def.potency_base,
 		"chance": _status_gate(tuning),
 		"scope": String(StatusApply.SCOPE_COMBAT),
 	}
