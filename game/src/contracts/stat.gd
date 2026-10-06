@@ -47,13 +47,14 @@ const CRIT_DAMAGE := &"crit_damage"
 ## same change as the half it answers. Unbounded magnitude, published by
 ## `core/actor_stats.gd`; the contest lives in `CombatSpine.crit_chance`.
 const CRIT_RESIST := &"crit_resist"
-## ADR 0215. What a resisted crit costs the defender instead of becoming: a MULTIPLIER
-## with a `1.0` baseline (nothing resisted), so it is the mind/crit-damage answer to
-## [constant CRIT_RESIST] — the pair that keeps "you cannot crit me" from being a free
-## immunity. `0.5` means a crit against this defender lands at half. A FLAT is therefore
-## still a content error on it and it REMAINS a `RATE_STATS` member.
+## ADR 0215. What a resisted crit costs the defender instead of becoming: a SHARE OF A
+## CRIT RESISTED, so it is the mind/crit-damage answer to [constant CRIT_RESIST] — the pair
+## that keeps "you cannot crit me" from being a free immunity. `0.5` means a crit against
+## this defender lands at half. A FLAT is therefore the only form that can move it, and it
+## is ABSENT from `RATE_STATS` for exactly that reason (a PERCENT on a `0.0` baseline is
+## the ADR 0022 silent no-op).
 ##
-## Published by `core/actor_stats.gd` as `1.0 + will * 0.004` — `will`, not a module's
+## Published by `core/actor_stats.gd` as `will * 0.004` — `will`, not a module's
 ## `composure`, because core has no composure attribute and the pair has to be the same
 ## kind of number on both sides (`CRIT_DAMAGE` reads `comprehension`). The contest that
 ## reads it is `CombatSpine._crit_damage`: `crit_damage * (1 - CRIT_RESIST_DAMAGE)`,
@@ -61,6 +62,15 @@ const CRIT_RESIST := &"crit_resist"
 ## argued at the call site — the two halves are a multiplier and a share of it, not two
 ## attack rates, so there is no "share of a crit" for `offense / (offense + defense)` to
 ## return.
+##
+## ## The baseline is `0.0`, and the `1.0 +` that briefly shipped is why the shape test exists
+## This is a `0.0`-baseline share: `0.0` resists nothing, `1.0` refuses the crit outright.
+## Publishing it as `1.0 + will * 0.004` made `1.0 - CRIT_RESIST_DAMAGE` non-positive for
+## EVERY actor, so every crit in the game multiplied to zero — a dead channel that still
+## rendered as "a crit that was resisted". A `1.0` baseline is the correct reading of a
+## MULTIPLIER (`crit_damage * resist`) and a wrong reading of this one, which is subtracted
+## from `1.0`. `RATE_STATS` membership is derived from the baseline expression, so dropping
+## the id from that list is the guard that keeps the two spellings from drifting back.
 const CRIT_RESIST_DAMAGE := &"crit_resist_damage"
 const PENETRATION := &"penetration"
 const ATTACK_SPEED := &"attack_speed"
@@ -221,7 +231,6 @@ const MIND_CONTROL_RATES := [
 ## Shape proof, one line each — a cap under `1.0`, or a `1.0 +`/`1.0 *` term that
 ## makes `1.0` mean no change:
 ##   conception_chance        fertility/provider.gd:18    clampf(0.05 + fertility*0.02, 0.0, 0.95)
-##   crit_resist_damage       core/actor_stats.gd         1.0 + will * 0.004      (ADR 0215)
 ##   dual_cultivation_rate    dual_cultivation/provider.gd:31
 ##     (1.0 + aptitude * 0.02) * (1.0 - deviation * 0.5)
 ##   gestation_speed          fertility/provider.gd:19    1.0 + (physique+spirit+aptitude)*0.01
@@ -234,7 +243,7 @@ const MIND_CONTROL_RATES := [
 ## gap: that is the whole reachability argument, and the registration test asserts it
 ## rather than trusting this paragraph.
 ##
-## ## ADR 0215 moved THREE of them out, and the removed shapes are the proof
+## ## ADR 0215 moved THREE of them out, a follow-up moved a FOURTH, and the removed shapes are the proof
 ##
 ## `illusion_resistance` was `minf(0.8, …)`, `mind_avoidance` was `minf(0.6, …)` and
 ## `mind_focus_chance` was `minf(0.75, …)` — every one of them rate-shaped by rule (a),
@@ -244,6 +253,13 @@ const MIND_CONTROL_RATES := [
 ## term, which is the shape a MAGNITUDE has. That is why they are gone from this list and
 ## why `test_rate_stats_registration.gd` — which reads the source rather than this
 ## paragraph — passes on its own.
+## The fourth is `crit_resist_damage`: it shipped as `1.0 + will * 0.004`, which IS
+## rate-shaped by rule (b) and was registered here for that reason — but the consumer
+## reads it as a SHARE (`crit_damage * (1 - CRIT_RESIST_DAMAGE)`), where `0.0` resists
+## nothing and `1.0` refuses the crit outright. Under that reading the `1.0` baseline
+## made every crit multiply to zero, so the baseline moved to `will * 0.004` and the id
+## left this list with it: on a `0.0` baseline a PERCENT is the ADR 0022 no-op and FLAT
+## is the only legal form.
 ##
 ## The two that declare `unit: "rate"` and are still magnitudes, so a FLAT on them
 ## is LEGAL content and registering them would refuse good work:
@@ -352,9 +368,20 @@ const MIND_CONTROL_RATES := [
 ## written for, and the difference is the difference ADR 0215 names: they bound DEGENERATE
 ## STACKING on an axis nothing contests, and no contest reads them.
 ##
-## `CRIT_RESIST_DAMAGE` is the one id ADR 0215 ADDS to this list, and it is here for the
-## ordinary reason: a `1.0`-baseline multiplier is a rate whatever else it is, so `+10`
-## means 1000% and must stay refused.
+## `CRIT_RESIST_DAMAGE` was the one id ADR 0215 ADDED to this list, and it has since been
+## REMOVED from it — the same journey `ACCURACY` took. It is published as
+## `will * 0.004` (`core/actor_stats.gd`): a `0.0`-baseline MAGNITUDE, not a `1.0`-baseline
+## multiplier. A PERCENT on a `0.0` baseline is the ADR 0022 silent no-op — `(0.0 + 0.0) *
+## (1 + p) == 0.0` — so membership here would REFUSE the only form (FLAT) that can legally
+## move it, and permit the one form (PERCENT) that cannot. That is the list's whole purpose
+## inverted.
+##
+## Its twin `CRIT_RESIST` (`will * 0.003`), the other half of the crit-CHANCE contest, reads
+## the same attribute for the same reason and was never in this list. One half of a pair
+## registered as a rate while the other is a magnitude is what made the `1.0 +` baseline in
+## `actor_stats.gd` look defensible on review — the guard
+## `tests/contracts/test_rate_stats_registration.gd` derives membership from the BASELINE
+## EXPRESSION, so it is what makes the two halves unable to disagree again.
 ##
 ## ## What STAYS, and the rule that decides it
 ##
@@ -373,7 +400,6 @@ const RATE_STATS := [
 	COOLDOWN_REDUCTION,
 	CONCEPTION_CHANCE,
 	CRIT_DAMAGE,
-	CRIT_RESIST_DAMAGE,
 	CULTIVATION_RATE,
 	DUAL_CULTIVATION_RATE,
 	GESTATION_SPEED,

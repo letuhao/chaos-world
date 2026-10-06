@@ -412,8 +412,38 @@ static func _crit(attacker: Actor, target: Actor, rng: Variant) -> bool:
 ## The landed probability for one attack, `p_hit` for the band roll. Public because a
 ## preview must quote the exact chance a screen shows, and a caller reaching into the
 ## spine's internals to get it would be a second, divergent copy of this line.
-static func landed_chance(attacker: Actor, target: Actor, tuning: CombatTuning) -> float:
-	return CombatStats.contest_of(CombatStats.ACCURACY, attacker, Stat.EVASION, target)
+##
+## ## Why the contest is asked EVASION-first and complemented — DO NOT "simplify" this
+##
+## The hit contest is algebraically `accuracy / (accuracy + evasion)`, and writing it
+## that way round is the same ratio to any algebraist and a DIFFERENT FUNCTION here,
+## because the two differ on exactly one input: the zero-sum pair.
+##
+## [method CombatStats.contest] answers `o + d == 0.0` with `0.0`, documented as "neither
+## half is invested, so neither side can win". That is the right answer for PARRY and
+## CRIT, where `0.0` means "nobody parries, nobody crits" — the neutral is the absence of
+## the event. **For the hit it is inverted.** There, `0.0` would mean "the attacker wins
+## nothing", i.e. every swing at every body that has not invested in dodging is a
+## guaranteed miss. But the attacker never has to EARN a hit: the neutral reading of a
+## body with no evasion and a swing with no accuracy is that the blow LANDS.
+##
+## So this reads the share the DEFENDER takes — `evasion / (evasion + accuracy)`, the
+## fraction of attacks dodging actually turns aside — and complements it. Identical to
+## the plain ratio at every non-degenerate input (homogeneous of degree zero, so both
+## spellings agree whenever the sum is positive), and correct at the one input where they
+## do not: `1.0 - 0.0 == 1.0` is a landed blow. That is why the whole spine is reachable
+## at all with stock actors — `CombatTestKit.actor()` has agility 0 and no accuracy, so
+## both halves read `0.0`.
+##
+## Written the other way round, this same function returned `p_hit == 0.0` for every
+## stock pair, and the consequence was not one wrong number but a spine that could not
+## resolve ANY hit: 13 assertions across four suites failed at S2's early return with
+## `0.0` where a landed amount was expected. A test-only workaround — bolting
+## `accuracy = 1000.0` onto six fixtures — would have made all 13 pass while leaving the
+## discontinuity live in shipped play: `0.001` accuracy would land every hit and exactly
+## `0.0` would land none.
+static func landed_chance(attacker: Actor, target: Actor, _tuning: CombatTuning) -> float:
+	return 1.0 - CombatStats.contest_of(Stat.EVASION, target, CombatStats.ACCURACY, attacker)
 
 
 ## S2's `p_parry`. Linear-from-zero, so an unstatted defender parries 0% and never a

@@ -228,7 +228,30 @@ func _recompute() -> void:
 	# fully invested defender refusing every crit is a REACHABLE limit and not an
 	# asymptotic one -- which is deliberate, and is what keeps "you cannot crit me" from
 	# being a free immunity that the ladder can never beat.
-	_put(Stat.CRIT_RESIST_DAMAGE, 1.0 + will * 0.004, buckets)
+	#
+	# ## Why the baseline is `0.0` and not `1.0 +`, which was a total misreading of the same line
+	# This stat is a SHARE OF A CRIT RESISTED, read by `CombatSpine._crit_damage` as
+	# `crit_damage * (1 - CRIT_RESIST_DAMAGE)`. Under that reading `0.0` is "nothing
+	# resisted" and `1.0` is "every crit refused" -- which is exactly what the paragraph
+	# above says when it reads "`0.5` means a crit lands at half". Shipping `1.0 + will *
+	# 0.004` made the two halves of that sentence impossible: `1.0` already means "fully
+	# resisted", so `1.0 - 1.0` clamped at `0.0` and EVERY crit in the game was worth
+	# nothing on EVERY actor. Not a balance extreme -- a dead channel, invisible because a
+	# crit that does nothing still looks like a crit that was resisted.
+	#
+	# A `1.0` baseline would have been right for a MULTIPLIER (`crit_damage * resist`), and
+	# that is the shape this was copied from -- `CRIT_DAMAGE`'s own `1.5 +`. The id has
+	# `RESIST` in its name and its consumer subtracts it; a multiplier and a share are not
+	# interchangeable just because both are bounded in `[0, 1]`. `contracts/stat.gd` had to
+	# lose the id from `RATE_STATS` in the same change for the same reason: on a `0.0`
+	# baseline a PERCENT is the ADR 0022 no-op and a FLAT is the only form that can move
+	# it, which is precisely what membership in `RATE_STATS` forbids.
+	#
+	# It is a MAGNITUDE, like `CRIT_RESIST` (the other half of the crit-CHANCE contest,
+	# `will * 0.003`, also absent from `RATE_STATS`) — the pair reads the same attribute for
+	# the same reason, and one of the two being a rate while its twin is a magnitude is
+	# what let the wrong baseline look plausible in the first place.
+	_put(Stat.CRIT_RESIST_DAMAGE, will * 0.004, buckets)
 	_put(Stat.PENETRATION, spirit * 0.5, buckets)
 	# `ATTACK_SPEED` is one of the three caps ADR 0200 DELIBERATELY KEEPS. See below.
 	_put(Stat.ATTACK_SPEED, minf(2.5, 1.0 + agility * 0.008), buckets)
