@@ -6,9 +6,10 @@ extends RefCounted
 ##
 ## ## Why this is a component and not a facade method
 ##
-## `TechniquesApi` is at `MAX_FACADE_PUBLIC_METHODS` (12) and ADR 0056 records that
-## the cap binds immediately. So the action is published the way `TechniqueUpkeep`
-## is reached — a component id on the actor, named by a constant on the facade:
+## `TechniquesApi` names this the way it names `TechniqueUpkeep` — a component id on
+## the actor, published as a constant on the facade rather than a method on it. ADR
+## 0056 forced that shape with a twelve-verb cap that ADR 0265 removed; cohesion is
+## what keeps it now, because the verb would forward straight into this component.
 ##
 ## ```
 ## var casting := actor.component(TechniquesApi.CASTING_COMPONENT) as TechniqueCasting

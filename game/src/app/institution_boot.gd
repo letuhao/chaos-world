@@ -18,21 +18,31 @@ extends RefCounted
 ##
 ## ## DISCOVERY IS AUTOMATIC, and that is the whole point of this slice
 ##
-## `install()` walks one directory through `core/ContentScan` — which caps recursion
-## at `MAX_DEPTH` and sorts its result, so the load order never depends on
-## `DirAccess` iteration order — and registers whatever it finds. **This file names
-## no kind, no organization id and no def path.** A modder adding a new kind of
-## organization drops a `.tres` into the directory and touches nothing else; a test
-## asserts this structurally by scanning this file for the shipped kind names.
+## `install()` reads `InstitutionDefCatalog` and registers whatever the family holds.
+## **This file names no kind, no organization id, no def path and no content root.** A
+## modder adding a new kind of organization drops a `.tres` into the family directory
+## and touches nothing else; a test asserts this structurally by scanning this file for
+## the shipped kind names and for the directory literal.
 ##
 ## The alternative — the boot enumerating its rows — is exactly the wiring ADR 0271
 ## calls the reason a kind could not be added without editing a module, and the
 ## silent skip ADR 0184's acceptance criterion forbids.
 ##
-## ## A REFUSED FILE IS REPORTED, NEVER SKIPPED SILENTLY
+## ## ONE LOADER, and this file used to be the second one
+##
+## `install()` walked `ContentScan` itself while `InstitutionDefCatalog` merged the same
+## directory through `CatalogOverlay` — two scans, two verdicts, and a mod's overlay
+## roots visible to one of them and not the other. **Both halves now read the catalog**,
+## and this file's own `CONTENT_ROOT` is deleted: the family has exactly one loader, and
+## the catalog's refused-merge rule (register nothing rather than half of it) is the rule
+## both halves now obey. Two constants naming one directory from two layers in two
+## directions — which `tests/core/test_institution_def_catalog.gd` had to assert in step
+## so the duplication could not rot — is gone with the second loader.
+##
+## ## A REFUSED FAMILY IS REPORTED, NEVER SKIPPED SILENTLY
 ##
 ## `install()` returns `{ok, registered, refused, organizations, root}`, and every
-## refusal names the file and the authored reason. The announcement is a
+## refusal names the family and the authored reason. The announcement is a
 ## `push_warning` rather than a `push_error` on purpose: `_wire_content_roots` in this
 ## same layer uses that split (a family with no overlay catalog is recorded and
 ## announced, never a boot failure), and a `.tres` an author broke is a content fault
@@ -53,27 +63,21 @@ extends RefCounted
 ## value is [member last_report], the pass's own read model, exactly as `ModBoot`
 ## keeps `active_registrations`.
 ##
-## ## NOT WIRED INTO THE COMPOSITION ROOT YET — and that is recorded, not hidden
+## ## WIRED, and what the wiring is
 ##
-## `install()` ships with **zero production callers**: `app/item_workbench_body.gd`
-## has another session's exclusive ownership, so this slice adds the seam and the
-## proof rather than editing the boot path. One line beside `EconomyBoot.install(a)`
-## closes it. The same honest state `ClanRegistry` documented for its own seam.
+## `install()` runs from the composition root's attach pipeline beside
+## `EconomyBoot.install(actor)`, and the root's route binder hands the institution screen
+## its three actor-scoped Callables — the reader, the joiner and the leaver. Those three
+## are `InstitutionMembership`'s public verbs, so a hero can found a trading guild, join a
+## hunting guild and LEAVE both houses from the screen, and the recognition those verbs
+## project is the same bounded percent every other institution kind projects.
 
-## The one directory every authored organization lives in, discovered whole. A flat
-## family, because a `.tres` declares its own `kind` (ADR 0271 §5) and a subdirectory
-## per kind would put the kind in the path as well — two sources of truth for one
-## fact, which is the failure this programme exists to remove.
-const CONTENT_ROOT := "res://data/institutions"
-
-## A file that could not be loaded at all. Reported rather than skipped, because a
-## silently unread content file is content a modder believes shipped.
-const R_UNREADABLE_CONTENT := "unreadable_content"
-## A `.tres` in the directory that is not an `InstitutionDef` — a different content
-## family filed here, or a def script that failed to compile. Named rather than
-## accepted, because loading it as a generic organization is the invented default
-## `InstitutionRegistry` refuses by name for a kind.
-const R_NOT_AN_INSTITUTION_DEF := "not_an_institution_def"
+## The family's merge refused: two roots declaring one id with no override on the later
+## one. The catalog leaves itself EMPTY in that state on purpose, so this boot registers
+## NOTHING rather than half the family — a registry half-populated is a world that
+## disagrees with the refusal, which is the shape `InstitutionDefCatalog._ensure_loaded`
+## exists to prevent.
+const R_MERGE_REFUSED := "merge_refused"
 ## Two `.tres` of ONE kind declaring different capability sets. Authored here because
 ## the registry has no opinion about it: it refuses a duplicate kind and knows nothing
 ## about two organizations agreeing or not.
@@ -99,25 +103,64 @@ static var last_report: Dictionary = {}
 ## what returns a registry to nothing.
 static func install(registry: InstitutionRegistry = null) -> Dictionary:
 	var target := registry if registry != null else InstitutionRegistry.instance()
+	var catalog := InstitutionDefCatalog.instance()
 	var report := {
 		"ok": true,
-		"root": CONTENT_ROOT,
+		"root": InstitutionDefCatalog.INSTITUTIONS_ROOT,
 		"registered": [],
 		"refused": [],
 		"organizations": [],
 	}
-	# A `for` over `ContentScan`'s OWN sorted snapshot, writing into three fresh
-	# arrays: the body never grows the array being walked, so the bound is the
-	# directory's own file count and there is no shape here for a loop to grow in
-	# lockstep with its own bound.
-	for path in ContentScan.files_under(CONTENT_ROOT):
-		var file := String(path)
-		var accepted := _accept(target, file)
+	# ## The catalog's verdict comes FIRST, and a refused merge registers NOTHING
+	#
+	# `is_loaded()` is false for a family that has never loaded as well as for one whose
+	# merge refused, so the merge reason is read too: a catalog that has not been read yet
+	# has no reason, and a refused one names its own. Loading half the family would leave a
+	# registry disagreeing with the refusal, which is the exact state the catalog refuses
+	# to serve.
+	if not catalog.is_loaded():
+		report["ok"] = false
+		(
+			report["refused"]
+			. append(
+				{
+					"path": String(InstitutionDefCatalog.INSTITUTIONS_ROOT),
+					"reason": String(catalog.summary()["merge_reason"]),
+				}
+			)
+		)
+		return _published(report, target)
+	# A `for` over the catalog's OWN sorted id snapshot, writing into two fresh arrays: the
+	# body never grows the array being walked, so the bound is the family's merged file
+	# count and there is no shape here for a loop to grow in lockstep with its own bound
+	# (`tests/arch_rules/test_no_unbounded_wait.gd`).
+	for institution_id in catalog.ids():
+		var def := catalog.definition(institution_id)
+		if def == null:
+			continue
+		var accepted := _accept(target, catalog, def)
 		if bool(accepted["ok"]):
 			report["organizations"].append(accepted["organization"])
 			continue
-		report["refused"].append({"path": file, "reason": String(accepted["reason"])})
+		(
+			report["refused"]
+			. append(
+				{
+					"path": catalog.path_of(institution_id),
+					"reason": String(accepted["reason"]),
+				}
+			)
+		)
 	report["ok"] = (report["refused"] as Array).is_empty()
+	return _published(report, target)
+
+
+## ## Stamp the pass and announce every refusal, then hand the report back
+##
+## Split out of [method install] because the merge-refusal branch has to return the same
+## stamped report as the walked one: a report that skipped the announcement on one branch
+## would print nothing about a family that loaded nothing.
+static func _published(report: Dictionary, target: InstitutionRegistry) -> Dictionary:
 	# The registered kinds are read back off the REGISTRY rather than tallied here, so
 	# the report is the resulting STATE and cannot disagree with what a caller then
 	# asks the registry.
@@ -190,39 +233,46 @@ static func register_def(registry: InstitutionRegistry, def: InstitutionDef) -> 
 ## Everything this pass knows about one organization's content, as primitives. The
 ## read model a panel, a headless driver and a mod-authoring test all answer from, so
 ## none of them has to walk the directory itself and none of them can drift from what
-## the boot accepted.
+## the boot accepted. **Read off the catalog, not off the filesystem**, so this answer
+## and [method install]'s cannot describe two different families.
 static func summary(registry: InstitutionRegistry = null) -> Dictionary:
 	var target := registry if registry != null else InstitutionRegistry.instance()
+	var catalog := InstitutionDefCatalog.instance()
 	var rows: Array = []
-	for path in ContentScan.files_under(CONTENT_ROOT):
-		var loaded := load(String(path))
-		if not (loaded is InstitutionDef):
+	for institution_id in catalog.ids():
+		var def := catalog.definition(institution_id)
+		if def == null:
 			continue
-		var def := loaded as InstitutionDef
-		var capabilities: Array = []
-		for capability in def.authored_capabilities():
-			capabilities.append(String(capability))
-		(
-			rows
-			. append(
-				{
-					"id": String(def.id),
-					"kind": String(def.kind),
-					"def_type": _def_type_of(def),
-					"capabilities": capabilities,
-					"positions": _names(def.position_ids()),
-					"territories": _names(def.claimed_territories()),
-					"founding_cost": int(def.founding_cost),
-					"registered": target.knows(def.kind),
-				}
-			)
-		)
+		rows.append(_organization_row(catalog, def, target))
 	return {
-		"ok": true,
-		"root": CONTENT_ROOT,
+		"ok": catalog.is_loaded(),
+		"root": String(InstitutionDefCatalog.INSTITUTIONS_ROOT),
 		"kinds": _names(target.kinds()),
 		"refused": last_report.get("refused", []),
 		"organizations": rows,
+	}
+
+
+## One organization's whole content read model, as primitives. `owner` and `path` come
+## from the MERGE rather than from this file, so a base def and a mod's are told apart by
+## the decision that accepted them instead of by a second walk of the same tree.
+static func _organization_row(
+	catalog: InstitutionDefCatalog, def: InstitutionDef, target: InstitutionRegistry
+) -> Dictionary:
+	var capabilities: Array = []
+	for capability in def.authored_capabilities():
+		capabilities.append(String(capability))
+	return {
+		"id": String(def.id),
+		"kind": String(def.kind),
+		"def_type": _def_type_of(def),
+		"capabilities": capabilities,
+		"positions": _names(def.position_ids()),
+		"territories": _names(def.claimed_territories()),
+		"founding_cost": int(def.founding_cost),
+		"registered": target.knows(def.kind),
+		"owner": catalog.owner_of(def.id),
+		"path": catalog.path_of(def.id),
 	}
 
 
@@ -245,25 +295,22 @@ static func _def_type_of(def: InstitutionDef) -> String:
 	return String(script.get_global_name())
 
 
-## Load one file and register it, answering `{ok, organization}` or
-## `{ok: false, reason}`.
-static func _accept(registry: InstitutionRegistry, path: String) -> Dictionary:
-	if not ResourceLoader.exists(path):
-		return InstitutionLedger.refuse(R_UNREADABLE_CONTENT)
-	var loaded: Resource = load(path)
-	if loaded == null:
-		return InstitutionLedger.refuse(R_UNREADABLE_CONTENT)
-	if not (loaded is InstitutionDef):
-		return InstitutionLedger.refuse(R_NOT_AN_INSTITUTION_DEF)
-	var def := loaded as InstitutionDef
-	var answer := register_def(registry, def)
+## ## Register one MERGED def and publish the row it reached the registry on
+##
+## `{ok: true, organization}` or `{ok: false, reason}`. The def comes from the catalog,
+## so `path` is the winning path the MERGE chose and a mod's organization reports the
+## mod's file rather than the base directory's.
+static func _accept(
+	target: InstitutionRegistry, catalog: InstitutionDefCatalog, def: InstitutionDef
+) -> Dictionary:
+	var answer := register_def(target, def)
 	if not bool(answer["ok"]):
 		return answer
 	# The def's OWN check runs here too, now that the kind IS registered, and its
 	# verdict is published rather than swallowed. `register_def` already ran the
 	# registry-free half, so this can only fail on the registry half — and a caller
 	# reading the report can see which `.tres` reached a live row on which terms.
-	var verdict := def.check(registry)
+	var verdict := def.check(target)
 	var flags: Array = []
 	for capability in def.authored_capabilities():
 		flags.append(String(capability))
@@ -273,7 +320,8 @@ static func _accept(registry: InstitutionRegistry, path: String) -> Dictionary:
 			{
 				"organization":
 				{
-					"path": path,
+					"path": catalog.path_of(def.id),
+					"owner": catalog.owner_of(def.id),
 					"id": String(def.id),
 					"kind": String(def.kind),
 					"capabilities": flags,

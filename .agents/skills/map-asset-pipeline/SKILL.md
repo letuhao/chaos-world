@@ -10,7 +10,12 @@ Deliver coherent, reviewed map layers with traceable sources and declared footpr
 ## Sources and boundaries
 
 - Read the top-down world-map section of [art direction](../../../docs/art-direction.md) before preparing prompts or judging art.
-- The catalog is `game/assets/map-asset-index.jsonl`; command behavior belongs to [map_assets.py](../../../tools/map_assets.py), [map_generate.py](../../../tools/map_generate.py), and [map_layout.py](../../../tools/map_layout.py). Code wins when this skill disagrees.
+- The default catalog is `game/assets/map-asset-index.jsonl`. Modular asset packs (such as `game/assets/packs/yin-jian/yin_jian_pack.json`) use their own pack index files (`.json` or `.jsonl`).
+- **Multiple Index Support:**
+  * All map tooling commands (`tools.map_assets` and `tools.map_generate`) support `--index <path>` to target specific pack indexes without touching or corrupting the primary `map-asset-index.jsonl`.
+  * For modular packs (e.g. Yin-Jian), ALWAYS pass `--index <pack_path>` (e.g. `--index game/assets/packs/yin-jian/yin_jian_pack.json`).
+  * `map_generate.py` directly reads records from both JSONL catalogs and JSON pack files via `load_index_record(index_path, asset_id)`.
+  * `scripts/rembg.py` normalizes raw cutouts directly to game-ready PNGs at `game/assets/world_map/...`.
 - Read [the data and geometry reference](references/data-matrix-spec.md) for index fields, composition layouts, source recovery, or matrix work. Do not load the bundled scripts for ordinary art generation.
 - Use only `uv run python -m tools <task>` entrypoints. Run gates in the background with output under `build/`, as required by `AGENTS.md`.
 - The bundled scripts measure diagnostic geometry and validate its consistency. Their authored collision, destruction, vision, audio, and cultivation fields do not establish runtime support. Trace the actual consumer before promising gameplay behavior.
@@ -18,16 +23,16 @@ Deliver coherent, reviewed map layers with traceable sources and declared footpr
 ## 1. Inspect and choose a small slice
 
 ```text
-uv run python -m tools assets map report
-uv run python -m tools assets map next --count 6
-uv run python -m tools assets map generate --help
+uv run python -m tools assets map report [--index <pack-path>]
+uv run python -m tools assets map next --count 6 [--index <pack-path>]
+uv run python -m tools.map_generate --help
 ```
 
-Read the selected index records, including `environment_theme`, `alpha`, `pivot`, `canvas_px`, `footprint_cells`, and `collision`. Use existing art when it fits. `next` suggests coverage gaps; it does not choose the user's scope. Counts and environment lists come from the live catalog, not this skill.
+Read the selected index records, including `environment_theme`, `alpha`, `pivot`, `canvas_px`, `footprint_cells`, and `collision`. Use existing art when it fits. `next` suggests coverage gaps; it does not choose the user's scope. Counts and environment lists come from the live catalog or specified pack, not this skill.
 
-For a new environment kit, start with its opaque terrain surface, then a representative blocker, resource node, route/entrance, and landmark. Compare them together before scaling the batch. Optional tiles follow the base surface. Make variants differ in silhouette, material, or structure; a hue-only recolor is not new art.
+For a new environment kit or pack, start with its opaque terrain surface, then a representative blocker, resource node, route/entrance, and landmark. Compare them together before scaling the batch. Optional tiles follow the base surface. Make variants differ in silhouette, material, or structure; a hue-only recolor is not new art.
 
-Before installation, claim the index and destination paths and check their working-tree state. The installer rewrites the whole index: serialize index writers, inspect the current diff, and do not merge or overwrite another session's uncommitted entries. Use `scaffold` only when the catalog is absent; it refuses an existing index. Use `migrate` only for missing legacy alpha/footprint metadata, not to refresh environment themes.
+Before installation, claim the index and destination paths and check their working-tree state. When writing to an index, serialize index writers, inspect the current diff, and do not merge or overwrite another session's uncommitted entries. Never write pack assets into the core `map-asset-index.jsonl`.
 
 ## 2. Generate with a concrete brief
 
@@ -74,9 +79,21 @@ Open actual source and runtime images with an image-viewing tool; filenames, gen
 
 Install a reviewed preview without generating it again:
 
+For standard catalog assets:
 ```text
 uv run python -m tools assets map install --asset-id <catalog-id> --source "<reviewed-source.png>" --source-name "<actual tool/model>" --license "<actual terms>" --generated-on <YYYY-MM-DD> --prompt-ref "<generation identifier>" --prompt "<exact production prompt>" --reference-id "docs/art-direction.md#top-down-world-map"
 uv run python -m tools assets map preview --asset-id <catalog-id>
+```
+
+For modular packs (e.g. Yin-Jian):
+- Normalize and place the PNG into runtime:
+```text
+uv run python .agents/skills/map-asset-pipeline/scripts/rembg.py --input "<reviewed-source.png>" --output "game/assets/world_map/yin_jian/<category>/<asset_name>.png" --size <w> <h> --pivot <pivot>
+```
+- Update the pack asset entry in `game/assets/packs/yin-jian/yin_jian_pack.json` with status `"generated"`, `"path"`, provenance, and generation details.
+- Validate pack consistency and visual metrics:
+```text
+uv run python -m tools assets map audit --index game/assets/packs/yin-jian/yin_jian_pack.json
 ```
 
 For local preview-only runs, recover the expanded production prompt and run details from source workflow metadata or ComfyUI history; the short subject brief alone is not the exact production prompt. Record only provenance you can verify. Reference IDs document guidance; they do not imply the generator consumed a reference image.

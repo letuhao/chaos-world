@@ -212,9 +212,23 @@ func test_the_boot_source_names_no_kind_no_organization_and_no_def_path() -> voi
 		"institution_def.gd",
 	]:
 		assert_eq(_calls(body, authored), 0, "the boot never writes '%s' down" % authored)
-	# It DOES walk a directory, which is the difference between automatic and manual.
+	# ## And it walks NO directory of its own — the catalog does, and there is one loader
+	#
+	# The assertion used to be that the boot NAMES the content root, which proved it walked
+	# one. It is now the stronger half: the boot holds no root constant and no scan at all,
+	# because `InstitutionDefCatalog` merges the family and the boot reads it. Two loaders
+	# naming one directory from two layers is the duplication `test_institution_def_catalog.gd`
+	# had to assert in step so it could not rot; with the second one gone the boot's source
+	# must be UNABLE to name a directory at all, which is what makes a reintroduced second
+	# scan a red assertion rather than a silent split.
 	assert_eq(
-		body.contains(InstitutionBoot.CONTENT_ROOT), true, "and it names the one content root"
+		body.contains("res://data/institutions"), false, "and it names no content root of its own"
+	)
+	assert_eq(
+		body.contains("ContentScan"), false, "and it walks no directory itself"
+	)
+	assert_eq(
+		body.count("InstitutionDefCatalog"), 1, "reading the catalog once, in one place"
 	)
 
 

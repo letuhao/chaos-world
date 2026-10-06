@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="BuildingDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/clan_building/building_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"training_grounds"
+display_name = "Training Grounds"
+description = "A dedicated space for combat training. Improves combat experience gain and unlocks training verbs."
+category = &"combat"
+max_level = 3
+base_cost_materials = 200
+base_cost_contribution = 100
+cost_scale = 2.0
+base_upkeep = 20
+unlock_clan_level = 1
+bonuses = [
+{"stat_id": "combat_exp_gain", "value": 0.05, "is_percent": true},
+{"stat_id": "combat_exp_gain", "value": 0.10, "is_percent": true},
+{"stat_id": "combat_exp_gain", "value": 0.15, "is_percent": true},
+]
+verbs_unlocked = [
+[&"train_combat"],
+[&"spar"],
+[&"train_formation"],
+]
+tags = [&"combat", &"training", &"active"]

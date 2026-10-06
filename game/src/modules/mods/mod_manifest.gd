@@ -75,6 +75,26 @@ static func parse(text: String, source_path: String = "") -> Dictionary:
 	var events := _parse_string_array(raw.get("events", []), "events", source_path)
 	if not events[0]:
 		return events[1]
+	var integrations := _parse_integrations(raw.get("integrations", []), source_path)
+	if not integrations[0]:
+		return integrations[1]
+	var update_url := ""
+	if raw.has("update_url"):
+		if typeof(raw["update_url"]) != TYPE_STRING:
+			return _fail(
+				"bad_update_url", "%s: 'update_url' must be a string" % source_path
+			)
+		update_url = String(raw["update_url"])
+	var incompatible_with := _parse_string_array(
+		raw.get("incompatible_with", []), "incompatible_with", source_path
+	)
+	if not incompatible_with[0]:
+		return incompatible_with[1]
+	var conflicts_with := _parse_string_array(
+		raw.get("conflicts_with", []), "conflicts_with", source_path
+	)
+	if not conflicts_with[0]:
+		return conflicts_with[1]
 	return {
 		"ok": true,
 		"reason": "",
@@ -94,6 +114,10 @@ static func parse(text: String, source_path: String = "") -> Dictionary:
 			"attach_hooks": hooks[1],
 			"screens": screens[1],
 			"events": events[1],
+			"integrations": integrations[1],
+			"update_url": update_url,
+			"incompatible_with": incompatible_with[1],
+			"conflicts_with": conflicts_with[1],
 			"path": source_path,
 			"root": source_path.get_base_dir(),
 		},
@@ -212,6 +236,48 @@ static func _parse_string_array(value, field: String, source_path: String) -> Ar
 				)
 			]
 		out.append(String(entry))
+	return [true, out]
+
+
+static func _parse_integrations(value, source_path: String) -> Array:
+	if typeof(value) != TYPE_ARRAY:
+		return [
+			false, _fail("bad_integrations", "%s: 'integrations' must be an array" % source_path)
+		]
+	var out: Array[Dictionary] = []
+	for entry in value:
+		if (
+			typeof(entry) != TYPE_DICTIONARY
+			or typeof(entry.get("target_mod", null)) != TYPE_STRING
+			or typeof(entry.get("api_name", null)) != TYPE_STRING
+		):
+			return [
+				false,
+				_fail(
+					"bad_integrations",
+					"%s: an 'integrations' entry needs string 'target_mod' and 'api_name'"
+					% source_path
+				),
+			]
+		var row := {
+			"target_mod": String(entry["target_mod"]),
+			"api_name": String(entry["api_name"]),
+		}
+		if entry.has("min_version"):
+			if (
+				typeof(entry["min_version"]) != TYPE_STRING
+				or not is_digits_and_dots(String(entry["min_version"]))
+			):
+				return [
+					false,
+					_fail(
+						"bad_integrations",
+						"%s: '%s.min_version' is not a dotted number"
+						% [source_path, String(entry["target_mod"])]
+					),
+				]
+			row["min_version"] = String(entry["min_version"])
+		out.append(row)
 	return [true, out]
 
 

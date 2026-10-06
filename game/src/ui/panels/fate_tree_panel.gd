@@ -128,7 +128,8 @@ func _render() -> void:
 	if _graph == null:
 		return
 	for child in _graph.get_children():
-		child.queue_free()
+		_graph.remove_child(child)
+		child.free()
 	if _view.is_empty():
 		return
 	var fates := _view.get("fates", {}) as Dictionary

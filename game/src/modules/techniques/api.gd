@@ -26,10 +26,12 @@ const CODEX_COMPONENT := &"technique_codex"
 const SLOTS_COMPONENT := &"technique_slots"
 const UPKEEP_COMPONENT := &"technique_upkeep"
 
-## Active execution and the per-technique cooldown table (DEF-0125). NOT a facade
-## method: `TechniquesApi` is at the 12-method cap (`MAX_FACADE_PUBLIC_METHODS`) and
-## ADR 0056 records that the cap binds immediately, so `activate` is reached the way
-## `TechniqueUpkeep` is — as a component, named here. See `technique_casting.gd`.
+## Active execution and the per-technique cooldown table (DEF-0125). Not a facade
+## method: `activate` is a component on the actor, reached the way `TechniqueUpkeep`
+## is and named here as a constant. ADR 0056 originally forced that by a twelve-verb
+## cap that ADR 0265 removed; what keeps it a component now is cohesion — the facade
+## publishes the component id rather than re-exporting its collaborators. See
+## `technique_casting.gd`.
 const CASTING_COMPONENT := &"technique_casting"
 
 ## ## The DELIVERY seam, and why there is no `DELIVERY` constant here
@@ -59,9 +61,9 @@ const CASTING_COMPONENT := &"technique_casting"
 
 ## The ACTIVATION READBACK: what one landed cast actually moved, as primitives.
 ##
-## NOT a facade method either, for the same reason as the two above — the cap is 12
-## and this module publishes 12. It is reached as a named type, which is what keeps
-## the readback a CONSTANT rather than a thirteenth verb:
+## Not a facade method either, for the same reason as the two above. It is reached as
+## a named type, which is what keeps the readback a CONSTANT rather than a verb that
+## forwards into this module's own interior:
 ##
 ## ```
 ## var before := TechniqueCastView.snapshot(caster, foe)

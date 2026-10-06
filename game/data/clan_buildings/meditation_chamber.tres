@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="BuildingDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/clan_building/building_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"meditation_chamber"
+display_name = "Meditation Chamber"
+description = "A quiet chamber for cultivation meditation. Enhances cultivation speed and unlocks meditation verbs."
+category = &"cultivation"
+max_level = 3
+base_cost_materials = 250
+base_cost_contribution = 120
+cost_scale = 2.0
+base_upkeep = 18
+unlock_clan_level = 2
+bonuses = [
+{"stat_id": "cultivation_speed", "value": 0.05, "is_percent": true},
+{"stat_id": "cultivation_speed", "value": 0.10, "is_percent": true},
+{"stat_id": "cultivation_speed", "value": 0.15, "is_percent": true},
+]
+verbs_unlocked = [
+[&"meditate"],
+[&"deep_cultivation"],
+[&"breakthrough_meditation"],
+]
+tags = [&"cultivation", &"meditation", &"active"]

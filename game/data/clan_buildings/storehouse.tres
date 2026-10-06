@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="BuildingDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/clan_building/building_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"storehouse"
+display_name = "Storehouse"
+description = "A secure storage facility for materials and goods. Increases material storage capacity and unlocks economy verbs."
+category = &"economy"
+max_level = 3
+base_cost_materials = 175
+base_cost_contribution = 80
+cost_scale = 2.0
+base_upkeep = 12
+unlock_clan_level = 1
+bonuses = [
+{"stat_id": "material_capacity", "value": 0.10, "is_percent": true},
+{"stat_id": "material_capacity", "value": 0.20, "is_percent": true},
+{"stat_id": "material_capacity", "value": 0.30, "is_percent": true},
+]
+verbs_unlocked = [
+[&"store_materials"],
+[&"trade_goods"],
+[&"manage_inventory"],
+]
+tags = [&"economy", &"storage", &"passive"]

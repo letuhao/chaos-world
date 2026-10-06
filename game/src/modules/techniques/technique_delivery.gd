@@ -6,10 +6,10 @@ extends RefCounted
 ##
 ## ## Why this is a class and not a facade method
 ##
-## `TechniquesApi` is at `MAX_FACADE_PUBLIC_METHODS` (12) and ADR 0056 records that
-## the cap binds immediately, so this cannot become a 13th `static func`. It is
-## reached the same way `TechniqueCasting` is reached — a named type in this module,
-## published as a CONSTANT on the facade rather than as a method on it:
+## `TechniquesApi` publishes this as a CONSTANT rather than as a method on it. It is
+## reached the same way `TechniqueCasting` is reached — a named type in this module.
+## ADR 0056 forced that shape with a twelve-verb cap that ADR 0265 removed; cohesion
+## is what keeps it now:
 ##
 ## ```
 ## var seam := TechniqueDelivery.installed()
@@ -18,8 +18,9 @@ extends RefCounted
 ##
 ## `TechniqueDelivery.installed()` is the composition-root-installed seam, and
 ## `TechniqueDelivery.study` is the one call `items` makes. Neither is on
-## `TechniquesApi`, so the facade stays at exactly twelve. See
-## `technique_casting.gd` for the same argument about `CASTING_COMPONENT`.
+## `TechniquesApi`, because both belong to this module's interior rather than to its
+## interface. See `technique_casting.gd` for the same argument about
+## `CASTING_COMPONENT`.
 ##
 ## ## Why the SEAM is a Callable and not a direct call
 ##

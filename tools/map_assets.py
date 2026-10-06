@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import tempfile
@@ -17,6 +18,7 @@ from .common import GAME_DIR, REPO_ROOT, ToolError, fail, ok
 
 INDEX_PATH = GAME_DIR / "assets" / "map-asset-index.jsonl"
 ASSET_ROOT = GAME_DIR / "assets" / "world_map"
+ORIGINAL_ROOT = REPO_ROOT / "art-source" / "map-originals"
 MIN_ASSETS = 1000
 GRID_UNIT_PX = map_layout.GRID_UNIT_PX
 ALPHA_CROP_THRESHOLD = 16
@@ -363,8 +365,24 @@ def register(parent_parser) -> None:
     )
     generate.add_argument("--reference-id", action="append", default=[])
 
+    # Keep --index after the action, matching every other map command's CLI shape.
+    for action_parser in actions.choices.values():
+        action_parser.add_argument(
+            "--index",
+            default=str(INDEX_PATH),
+            help=f"JSONL catalog path (default: {INDEX_PATH.relative_to(REPO_ROOT).as_posix()})",
+        )
+
 
 def run(args) -> int:
+    global INDEX_PATH
+    selected_index = Path(args.index).expanduser().resolve()
+    if selected_index.suffix.lower() != ".jsonl":
+        raise ToolError(
+            "map asset management requires a JSONL catalog; "
+            "pack JSON is read by map_generate only"
+        )
+    INDEX_PATH = selected_index
     action = args.map_assets_action
     if action == "scaffold":
         _scaffold()
@@ -569,15 +587,19 @@ def _generate(records: list[dict], args) -> None:
 
 
 def _install(records: list[dict], args) -> None:
-    issues = _validate(records)
-    if issues:
-        raise ToolError(f"cannot install into an invalid map index ({len(issues)} issue(s))")
     record = next((item for item in records if item["id"] == args.asset_id), None)
     if record is None:
         raise ToolError(f"unknown map asset id '{args.asset_id}'")
     replace_generated = (
         getattr(args, "replace_generated", False) and record["status"] == "generated"
     )
+    # A replacement can repair its own stale archive mapping; all other catalog checks still apply.
+    issues = _validate(
+        records,
+        skip_source_images_for={args.asset_id} if replace_generated else set(),
+    )
+    if issues:
+        raise ToolError(f"cannot install into an invalid map index ({len(issues)} issue(s))")
     if record["status"] != "planned" and not replace_generated:
         raise ToolError(f"refusing to replace '{args.asset_id}' with status '{record['status']}'")
     if not args.reference_id or any(not value.strip() for value in args.reference_id):
@@ -606,6 +628,7 @@ def _install(records: list[dict], args) -> None:
             source_image = opened.convert("RGBA")
     except OSError as exc:
         raise ToolError(f"could not read source PNG: {source_path}") from exc
+    source_size_px = source_image.size
     alpha = source_image.getchannel("A")
     canvas_px = getattr(args, "canvas_px", None)
     if canvas_px is not None:
@@ -647,6 +670,25 @@ def _install(records: list[dict], args) -> None:
             "reference_ids": sorted(set(args.reference_id)),
         }
     )
+    archived_source = _archive_source_image(record, source_path, source_size_px, args)
+    source_images = record.setdefault("source_images", [])
+    if not isinstance(source_images, list):
+        raise ToolError(f"{args.asset_id}: source_images must be a list")
+    matching = next(
+        (
+            index
+            for index, item in enumerate(source_images)
+            if isinstance(item, dict) and item.get("sha256") == archived_source["sha256"]
+        ),
+        None,
+    )
+    if matching is None:
+        source_images.append(archived_source)
+    else:
+        source_images[matching] = archived_source
+    source_findings = _source_image_findings(source_images)
+    if source_findings:
+        raise ToolError("invalid archived source metadata: " + "; ".join(source_findings))
     negative_prompt = getattr(args, "negative_prompt", None)
     if negative_prompt:
         record["negative_prompt"] = negative_prompt
@@ -696,7 +738,9 @@ def _install(records: list[dict], args) -> None:
     )
 
 
-def _validate(records: list[dict]) -> list[str]:
+def _validate(
+    records: list[dict], *, skip_source_images_for: set[str] | None = None
+) -> list[str]:
     issues: list[str] = []
     seen_ids: set[str] = set()
     seen_paths: set[str] = set()
@@ -791,6 +835,11 @@ def _validate(records: list[dict]) -> list[str]:
             issues.append(f"{label}: alpha must be opaque or transparent")
         if status in {"generated", "approved"}:
             _validate_existing_file(record, label, issues)
+            if asset_id not in (skip_source_images_for or set()):
+                issues.extend(
+                    f"{label}: {finding}"
+                    for finding in _source_image_findings(record.get("source_images"))
+                )
             source = record.get("source")
             license_terms = record.get("license")
             if not isinstance(source, str) or source.startswith("planned"):
@@ -837,6 +886,115 @@ def _validate(records: list[dict]) -> list[str]:
     if len(environment_counts) < 4:
         issues.append(f"index has only {len(environment_counts)} environments; expected at least 4")
     return issues
+
+
+def _archive_source_image(
+    record: dict, source_path: Path, size_px: tuple[int, int], args
+) -> dict:
+    source_bytes = source_path.read_bytes()
+    digest = hashlib.sha256(source_bytes).hexdigest()
+    relative_path = Path("art-source") / "map-originals" / record["environment"] / record[
+        "category"
+    ] / (
+        f"{record['id'].replace('.', '__')}__{digest[:16]}.png"
+    )
+    archive_path = (REPO_ROOT / relative_path).resolve()
+    if not archive_path.is_relative_to(ORIGINAL_ROOT.resolve()):
+        raise ToolError(f"{args.asset_id}: source archive path escapes art-source/map-originals")
+    archive_path.parent.mkdir(parents=True, exist_ok=True)
+    if archive_path.exists():
+        try:
+            existing_digest = hashlib.sha256(archive_path.read_bytes()).hexdigest()
+        except OSError as exc:
+            raise ToolError(f"could not read existing source archive {archive_path}") from exc
+        if existing_digest != digest:
+            raise ToolError(f"{args.asset_id}: source archive hash collision at {archive_path}")
+    else:
+        try:
+            with archive_path.open("xb") as handle:
+                handle.write(source_bytes)
+        except FileExistsError:
+            try:
+                existing_digest = hashlib.sha256(archive_path.read_bytes()).hexdigest()
+            except OSError as exc:
+                raise ToolError(f"could not read concurrent source archive {archive_path}") from exc
+            if existing_digest != digest:
+                raise ToolError(f"{args.asset_id}: source archive changed during install")
+        except OSError as exc:
+            raise ToolError(f"could not archive source image to {archive_path}") from exc
+    return {
+        "path": relative_path.as_posix(),
+        "sha256": digest,
+        "size_px": list(size_px),
+        "source": args.source_name.strip(),
+        "license": args.license.strip(),
+        "generated_on": args.generated_on,
+        "prompt_ref": args.prompt_ref.strip(),
+        "prompt": args.prompt.strip(),
+        "reference_ids": sorted(set(args.reference_id)),
+    }
+
+
+def _source_image_findings(source_images: object) -> list[str]:
+    if source_images is None:
+        return []
+    if not isinstance(source_images, list):
+        return ["source_images must be a list"]
+    findings: list[str] = []
+    seen: set[str] = set()
+    for index, source in enumerate(source_images, 1):
+        label = f"source_images[{index}]"
+        if not isinstance(source, dict):
+            findings.append(f"{label} must be an object")
+            continue
+        path_value = source.get("path")
+        if not isinstance(path_value, str) or not path_value.strip():
+            findings.append(f"{label}.path must be a non-empty repository-relative path")
+            continue
+        if Path(path_value).suffix.lower() != ".png":
+            findings.append(f"{label}.path must point to a PNG archive")
+        archive_path = (REPO_ROOT / Path(path_value)).resolve()
+        if not archive_path.is_relative_to(ORIGINAL_ROOT.resolve()):
+            findings.append(f"{label} path escapes art-source/map-originals")
+            continue
+        if archive_path.as_posix() in seen:
+            findings.append(f"{label} duplicates an archived path")
+        seen.add(archive_path.as_posix())
+        if not archive_path.is_file():
+            findings.append(f"{label} archive file is missing")
+            continue
+        digest = source.get("sha256")
+        if not isinstance(digest, str) or len(digest) != 64 or any(
+            character not in "0123456789abcdef" for character in digest
+        ):
+            findings.append(f"{label}.sha256 must be a lowercase SHA-256 digest")
+        elif hashlib.sha256(archive_path.read_bytes()).hexdigest() != digest:
+            findings.append(f"{label} SHA-256 does not match archived bytes")
+        size_px = source.get("size_px")
+        if (
+            not isinstance(size_px, list)
+            or len(size_px) != 2
+            or any(type(value) is not int or value < 1 for value in size_px)
+        ):
+            findings.append(f"{label}.size_px must contain two positive integers")
+        else:
+            try:
+                with Image.open(archive_path) as image:
+                    if list(image.size) != size_px:
+                        findings.append(f"{label}.size_px does not match archived image")
+            except OSError:
+                findings.append(f"{label} archive is not a readable image")
+        for field in ("source", "license", "generated_on", "prompt_ref", "prompt"):
+            if not isinstance(source.get(field), str) or not source[field].strip():
+                findings.append(f"{label}.{field} must be a non-empty string")
+        try:
+            generated_on = source.get("generated_on")
+            if isinstance(generated_on, str):
+                if date.fromisoformat(generated_on).isoformat() != generated_on:
+                    findings.append(f"{label}.generated_on must use YYYY-MM-DD format")
+        except ValueError:
+            findings.append(f"{label}.generated_on must use YYYY-MM-DD format")
+    return findings
 
 
 def _validate_existing_file(record: dict, label: str, issues: list[str]) -> None:

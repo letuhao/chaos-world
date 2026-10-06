@@ -27,6 +27,10 @@ const GENERIC_DEF := "res://src/core/institution_def.gd"
 ## A def authored on a SUBCLASS, for the one case that pins the family's documented
 ## discovery limit. Under `res://tests/` so it creates no boundary edge either way.
 const SUBCLASS_DEF := "res://tests/core/institution_subclass_fixture_def.gd"
+## The composition root's institution wiring, read as TEXT for the structural half of the
+## one-loader case: what the boot's SOURCE may name is what decides whether a second scan
+## can come back.
+const BOOT_FILE := "res://src/app/institution_boot.gd"
 
 var _temp_root: String = ""
 ## Every catalog this suite touches, cleared in teardown: the headless runner drives every
@@ -89,17 +93,40 @@ func test_the_base_root_is_where_the_shipped_organizations_live() -> void:
 	assert_eq(shipped.size() > 0, true, "and it is not empty on this tree")
 
 
-## ## The catalog's base root and the boot's AGREE — asserted while both exist
+## ## The boot holds NO base root of its own — there is ONE loader, not two in step
 ##
-## They name one directory from two files in two layers, which is a duplication this
-## slice could not remove (the boot is under `app/`, held by another session). Asserting
-## the agreement means the duplication cannot rot silently: a rename on either side that
-## forgets the other fails HERE instead of splitting the family in two.
-func test_the_catalog_and_the_boot_agree_on_the_base_root() -> void:
+## Two constants naming one directory from two layers was a duplication this slice could
+## only ASSERT IN STEP: a rename on either side that forgot the other failed here, which is
+## how the second loader survived as long as it did — a mod's overlay roots reached the
+## catalog's merge and never the boot's own `ContentScan` walk, so two answers described
+## two different families.
+##
+## The duplication is gone: `InstitutionBoot.install` and `InstitutionBoot.summary` both
+## read this catalog, and the boot's own constant was deleted with its walk. What replaces
+## the assertion is STRONGER — the boot's source is structurally unable to name a
+## directory, so a second scan is a red test rather than a silent split.
+func test_the_boot_names_no_base_root_and_walks_no_directory_of_its_own() -> void:
+	var body := FileAccess.get_file_as_string(BOOT_FILE)
+	assert_ne(body, "", "the boot file is readable")
 	assert_eq(
-		InstitutionDefCatalog.INSTITUTIONS_ROOT,
-		InstitutionBoot.CONTENT_ROOT,
-		"the core catalog and the app boot name ONE directory"
+		body.contains(InstitutionDefCatalog.INSTITUTIONS_ROOT),
+		false,
+		"the app boot names no content root: the core catalog is the ONLY loader"
+	)
+	assert_eq(
+		body.contains("ContentScan"),
+		false,
+		"and walks no directory of its own, so a mod overlay cannot reach one loader and miss the other"
+	)
+	# And the two halves still AGREE, measured rather than asserted by spelling: the boot's
+	# report and the boot's own read model describe the same organizations. On THIS
+	# suite's registry, which `teardown` clears — the shared one would hand three guild
+	# kinds to every suite after this one in the same process.
+	InstitutionBoot.install(_registry)
+	assert_eq(
+		(InstitutionBoot.last_report["organizations"] as Array).size(),
+		(InstitutionBoot.summary(_registry)["organizations"] as Array).size(),
+		"so install() and summary() cannot describe two different families"
 	)
 
 

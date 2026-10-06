@@ -109,6 +109,15 @@ const ROUTE_CUSTODY := &"custody"
 ## whether to offer it). One half alone would force the screen to re-derive the gate.
 const ROUTE_CLAN := &"clan"
 
+## The institutions page (ADR 0271 / 0278). The family published a registry, a catalog, a
+## generic founding verb, a ledger and a projection, and `core/` published NO
+## actor-scoped surface — so this screen shipped with three Callables that nothing bound
+## and refused `no_join_seam` / `no_leave_seam` by name. `InstitutionMembership` is that
+## surface. All three halves arrive as methods rather than bare static references because
+## every one of them takes the BOUND ACTOR, which `ui/` may not mint — the same reason
+## `ROUTE_COMBAT_READOUT` above passes `Callable(self, ...)` for its blow.
+const ROUTE_INSTITUTION := &"institution"
+
 ## The floor (DEF-0309). `MarketApi.drop`, `take` and `settle` shipped a bounded,
 ## decaying, per-location container of realized instances and nothing in the shipped
 ## program could reach it: `market_screen.gd` stated the omission out loud and left
@@ -1174,6 +1183,22 @@ func _bind_route_screen(route_id: StringName, screen: Control) -> void:
 				Callable(ClanRegistry, "commit"),
 				Callable(ClanRegistry, "available")
 			)
+		ROUTE_INSTITUTION:
+			# THE ARM THAT MAKES JOIN AND LEAVE PRESSABLE (ADR 0271 / 0278).
+			# `InstitutionScreen.bind_institutions(reader, joiner, leaver)` shipped with
+			# all three seams unbound and every verb refusing by name, so a guild, a hunt
+			# and a farmers' circle were three rows a player could read and not one verb
+			# they could press. The three Callables are `InstitutionMembership`'s own
+			# public verbs over the bound actor, and `install()` has already run from the
+			# attach pipeline, so the kinds the screen lists are the ones this boot
+			# registered rather than the ones the content directory happens to hold.
+			screen.call("setup", _actor)
+			screen.call(
+				"bind_institutions",
+				Callable(self, "_read_institutions"),
+				Callable(self, "_join_institution"),
+				Callable(self, "_leave_institution")
+			)
 		ROUTE_CUSTODY:
 			# THE ARM THAT MAKES THE PAGE'S PRIMARY VERB PRESSABLE (ADR 0247 / DEF-0310).
 			# `CustodyScreen.stage_capture` and `stage_transfer` are the only doors into
@@ -1421,3 +1446,34 @@ func _world_open_events() -> Array[Dictionary]:
 	if _world == null:
 		return []
 	return _world.open_events()
+
+
+# --- The institution seams -------------------------------------------------------
+#
+# Three verbs, one actor, no state of their own. Each hands the screen the ANSWER and
+# nothing else: the screen never names `InstitutionMembership` (it may, being a downward
+# `core` read, but the ownership of the ACTOR is this root's), and no verb here
+# interprets a refusal — a named reason reaches the player verbatim, which is the whole
+# point of ADR 0083's third state.
+
+
+## What the bound hero holds of every organization, as primitives. `{}` when they hold
+## nothing, which is the FIRST state rather than a failure, so an unaffiliated hero reads
+## "belonging to nothing" instead of a screen that refused to load.
+func _read_institutions() -> Dictionary:
+	return InstitutionMembership.summary(_actor)
+
+
+## Enrol the bound hero in the organization the screen named. The verdict is returned
+## unchanged, so the screen renders the module's own reason rather than a paraphrase of it.
+func _join_institution(institution_id: String) -> Dictionary:
+	return InstitutionMembership.join(
+		InstitutionRegistry.instance(), _actor, StringName(institution_id)
+	)
+
+
+## Walk the bound hero out. The screen's seam takes NO organization id, so this leaves
+## every house the hero holds — the total reading, and the only one that cannot be
+## ambiguous about which organization a press meant.
+func _leave_institution() -> Dictionary:
+	return InstitutionMembership.leave(InstitutionRegistry.instance(), _actor)

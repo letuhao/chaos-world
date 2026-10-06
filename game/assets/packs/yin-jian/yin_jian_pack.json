@@ -189,7 +189,16 @@
       "material": "earth",
       "cultivation_element": "yin",
       "prompt_summary": "Seamless tile of dark grey compacted ash and bone powder.",
-      "racial_faction": "traditional_diyu"
+      "racial_faction": "traditional_diyu",
+      "status": "generated",
+      "path": "res://assets/world_map/yin_jian/terrain_and_surface/ash_soil.png",
+      "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+      "license": "Generated locally; source checkpoint license terms apply",
+      "generated_on": "2026-10-06",
+      "prompt_ref": "comfyui-map-v1:yin_jian.terrain_and_surface.ash_soil:7711",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
     },
     {
       "id": "yin_jian.terrain_and_surface.charred_earth",
@@ -215,7 +224,16 @@
       "material": "earth",
       "cultivation_element": "fire",
       "prompt_summary": "Seamless burnt volcanic loam with faint dull red embers.",
-      "racial_faction": "traditional_diyu"
+      "racial_faction": "traditional_diyu",
+      "status": "generated",
+      "path": "res://assets/world_map/yin_jian/terrain_and_surface/charred_earth.png",
+      "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+      "license": "Generated locally; source checkpoint license terms apply",
+      "generated_on": "2026-10-06",
+      "prompt_ref": "comfyui-map-v1:yin_jian.terrain_and_surface.charred_earth:2020",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
     },
     {
       "id": "yin_jian.terrain_and_surface.bone_dust_sand",
@@ -241,7 +259,16 @@
       "material": "earth",
       "cultivation_element": "yin",
       "prompt_summary": "Seamless fine ivory bone sand with tiny skull fragments.",
-      "racial_faction": "traditional_diyu"
+      "racial_faction": "traditional_diyu",
+      "status": "generated",
+      "path": "res://assets/world_map/yin_jian/terrain_and_surface/bone_dust_sand.png",
+      "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+      "license": "Generated locally; source checkpoint license terms apply",
+      "generated_on": "2026-10-06",
+      "prompt_ref": "comfyui-map-v1:yin_jian.terrain_and_surface.bone_dust_sand:6622",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
     },
     {
       "id": "yin_jian.terrain_and_surface.cracked_yellow_clay",
@@ -267,7 +294,16 @@
       "material": "earth",
       "cultivation_element": "earth",
       "prompt_summary": "Parched dried mud with deep fissures and sulfur crust.",
-      "racial_faction": "traditional_diyu"
+      "racial_faction": "traditional_diyu",
+      "status": "generated",
+      "path": "res://assets/world_map/yin_jian/terrain_and_surface/cracked_yellow_clay.png",
+      "source": "Google image generation (gemini-3.1-flash-image)",
+      "license": "Generated for Chaos World",
+      "generated_on": "2026-10-06",
+      "prompt_ref": "google-gen:yin_jian.terrain_and_surface.cracked_yellow_clay",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
     },
     {
       "id": "yin_jian.terrain_and_surface.basalt_flagstone",
@@ -293,7 +329,16 @@
       "material": "stone",
       "cultivation_element": "yin",
       "prompt_summary": "Rough chiseled black basalt flagstones with moss.",
-      "racial_faction": "traditional_diyu"
+      "racial_faction": "traditional_diyu",
+      "status": "generated",
+      "path": "res://assets/world_map/yin_jian/terrain_and_surface/basalt_flagstone.png",
+      "source": "Google image generation (gemini-3.1-flash-image)",
+      "license": "Generated for Chaos World",
+      "generated_on": "2026-10-06",
+      "prompt_ref": "google-gen:yin_jian.terrain_and_surface.basalt_flagstone",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
     },
     {
       "id": "yin_jian.terrain_and_surface.obsidian_crust",
@@ -319,7 +364,16 @@
       "material": "stone",
       "cultivation_element": "fire",
       "prompt_summary": "Smooth reflective dark obsidian rock crust.",
-      "racial_faction": "traditional_diyu"
+      "racial_faction": "traditional_diyu",
+      "status": "generated",
+      "path": "res://assets/world_map/yin_jian/terrain_and_surface/obsidian_crust.png",
+      "source": "Google image generation (gemini-3.1-flash-image)",
+      "license": "Generated for Chaos World",
+      "generated_on": "2026-10-06",
+      "prompt_ref": "google-gen:yin_jian.terrain_and_surface.obsidian_crust",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
     },
     {
       "id": "yin_jian.terrain_and_surface.decayed_peat",
@@ -345,7 +399,16 @@
       "material": "earth",
       "cultivation_element": "water",
       "prompt_summary": "Wet dark spongy peat bog with ghostly fungal spores.",
-      "racial_faction": "traditional_diyu"
+      "racial_faction": "traditional_diyu",
+      "status": "generated",
+      "path": "res://assets/world_map/yin_jian/terrain_and_surface/decayed_peat.png",
+      "source": "Google image generation (gemini-3.1-flash-image)",
+      "license": "Generated for Chaos World",
+      "generated_on": "2026-10-06",
+      "prompt_ref": "google-gen:yin_jian.terrain_and_surface.decayed_peat",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
     },
     {
       "id": "yin_jian.terrain_and_surface.frozen_nether_frost",
@@ -371,7 +434,16 @@
       "material": "stone",
       "cultivation_element": "water",
       "prompt_summary": "Blue-white translucent ice sheet over dark abyss soil.",
-      "racial_faction": "traditional_diyu"
+      "racial_faction": "traditional_diyu",
+      "status": "generated",
+      "path": "res://assets/world_map/yin_jian/terrain_and_surface/frozen_nether_frost.png",
+      "source": "Google image generation (gemini-3.1-flash-image)",
+      "license": "Generated for Chaos World",
+      "generated_on": "2026-10-06",
+      "prompt_ref": "google-gen:yin_jian.terrain_and_surface.frozen_nether_frost",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
     },
     {
       "id": "yin_jian.terrain_and_surface.blood_soaked_loam",
@@ -4297,7 +4369,16 @@
       "material": "wood",
       "cultivation_element": "yin",
       "prompt_summary": "Hexagonal pavilion built on wooden stilts with red glazed tile roof.",
-      "racial_faction": "traditional_diyu"
+      "racial_faction": "traditional_diyu",
+      "status": "generated",
+      "path": "res://assets/world_map/yin_jian/architecture_and_building/blood_pond_lotus_pavilion.png",
+      "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+      "license": "Generated locally; source checkpoint license terms apply",
+      "generated_on": "2026-10-06",
+      "prompt_ref": "comfyui-map-v1:yin_jian.architecture_and_building.blood_pond_lotus_pavilion:1289",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
     },
     {
       "id": "yin_jian.architecture_and_building.ghost_boundary_stele_gate",
@@ -12877,7 +12958,16 @@
       "material": "paper",
       "cultivation_element": "spirit",
       "prompt_summary": "Square white silk lantern hovering 3ft off ground with cyan glow.",
-      "racial_faction": "traditional_diyu"
+      "racial_faction": "traditional_diyu",
+      "status": "generated",
+      "path": "res://assets/world_map/yin_jian/decoration_and_ambience/floating_ghost_lantern_cyan.png",
+      "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+      "license": "Generated locally; source checkpoint license terms apply",
+      "generated_on": "2026-10-06",
+      "prompt_ref": "comfyui-map-v1:yin_jian.decoration_and_ambience.floating_ghost_lantern_cyan:169264182",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
     },
     {
       "id": "yin_jian.decoration_and_ambience.floating_ghost_lantern_crimson",
@@ -12929,7 +13019,16 @@
       "material": "stone",
       "cultivation_element": "fire",
       "prompt_summary": "Carved granite lantern with four square window holes.",
-      "racial_faction": "traditional_diyu"
+      "racial_faction": "traditional_diyu",
+      "status": "generated",
+      "path": "res://assets/world_map/yin_jian/decoration_and_ambience/standing_stone_soul_lamp.png",
+      "source": "ComfyUI local checkpoint: krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors",
+      "license": "Generated locally; source checkpoint license terms apply",
+      "generated_on": "2026-10-06",
+      "prompt_ref": "comfyui-map-v1:yin_jian.decoration_and_ambience.standing_stone_soul_lamp:88123",
+      "reference_ids": [
+        "docs/art-direction.md#top-down-world-map"
+      ]
     },
     {
       "id": "yin_jian.decoration_and_ambience.hanging_skull_lantern",

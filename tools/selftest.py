@@ -91,6 +91,7 @@ class Report:
 
 def run_all(suite: str | None = None) -> Report:
     importlib.import_module(".map_asset_geometry_selftest", __package__)
+    importlib.import_module(".map_assets_selftest", __package__)
     selected = [(name, fn) for name, fn in CASES if suite is None or suite in name]
     if not selected:
         from .common import ToolError

@@ -151,6 +151,10 @@ static func load_order(roots: Array) -> Dictionary:
 	if not bool(graph.get("ok", false)):
 		graph["mods"] = []
 		return graph
+	var compat := _check_compatibility(mods)
+	if not bool(compat.get("ok", false)):
+		compat["mods"] = []
+		return compat
 	var depths: Dictionary = graph["depths"]
 	var ordered: Array[Dictionary] = []
 	for mod in mods:
@@ -173,9 +177,12 @@ static func load_order(roots: Array) -> Dictionary:
 	# One shared registry per boot: every mod's `register_module` forwards into
 	# it, so `ModRuntime.finalize` can order the whole pass from a single graph.
 	var registry := ModuleRegistry.new()
+	# One shared API registry per boot: every mod's `register_mod_api` stores
+	# into it, so one mod's context can resolve another mod's registered API.
+	var api_registry := {}
 	var contexts: Array = []
 	for mod in ordered:
-		contexts.append(_stamp_context(mod, registry))
+		contexts.append(_stamp_context(mod, registry, api_registry))
 	return {
 		"ok": true,
 		"reason": "",
@@ -260,14 +267,48 @@ static func _validate_and_depth(mods: Array[Dictionary]) -> Dictionary:
 	return {"ok": true, "depths": depths}
 
 
+## Check incompatible_with and conflicts_with declarations across all mods.
+## Returns `{ok: true}` or `{ok: false, reason, detail}` with a named cause.
+static func _check_compatibility(mods: Array[Dictionary]) -> Dictionary:
+	var by_id := {}
+	for mod in mods:
+		by_id[mod["id"]] = mod
+	for mod in mods:
+		for other_id in mod["incompatible_with"]:
+			if by_id.has(other_id):
+				return {
+					"ok": false,
+					"reason": "incompatible_mod",
+					"detail":
+					(
+						"'%s' is incompatible with '%s', which is loaded"
+						% [mod["id"], other_id]
+					),
+				}
+		for other_id in mod["conflicts_with"]:
+			if by_id.has(other_id):
+				return {
+					"ok": false,
+					"reason": "conflicting_mod",
+					"detail":
+					(
+						"'%s' conflicts with '%s', which is loaded"
+						% [mod["id"], other_id]
+					),
+				}
+	return {"ok": true}
+
+
 ## One mod's declarations, played through the five seams into a fresh
 ## context. The ctx is stamped with its mod_id, its manifest (so the seams can
 ## read the declared overrides) and the shared registry (so `register_module`
 ## forwards into the one graph the boot orders from). Attach hooks carry an
 ## EMPTY Callable here: the manifest declares the phase, the mod's own entry
 ## point binds the real function in W3+.
-static func _stamp_context(mod: Dictionary, registry: ModuleRegistry) -> RegistrationContext:
-	var ctx := RegistrationContext.new(mod["id"], mod, registry)
+static func _stamp_context(
+	mod: Dictionary, registry: ModuleRegistry, api_registry: Dictionary = {}
+) -> RegistrationContext:
+	var ctx := RegistrationContext.new(mod["id"], mod, registry, api_registry)
 	for row in mod["content_roots"]:
 		ctx.add_content_root(row["family"], row["dir"], row.get("id_field", "id"))
 	for module in mod["modules"]:

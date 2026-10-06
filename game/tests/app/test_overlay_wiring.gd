@@ -35,6 +35,20 @@ func test_remaining_families_have_overlay_methods() -> void:
 		"SectCatalog",
 		"SectDoctrineCatalog",
 		"FateCatalog",
+		"InstitutionDefCatalog",
+		"StatusCatalog",
+		"SoulCatalog",
+		"SetCatalog",
+		"NationCatalog",
+		"ShopCatalog",
+		"ClanCatalog",
+		"ResourceNodeCatalog",
+		"WeaponKindCatalog",
+		"MaterialArtCatalog",
+		"InjuryCatalog",
+		"BloodlineCatalog",
+		"AnchorCatalog",
+		"DifficultyCatalog",
 	]
 	for catalog_name in catalogs as Array[String]:
 		assert_eq(
@@ -65,7 +79,13 @@ func test_wire_content_roots_has_match_arms() -> void:
 	if stop < 0:
 		return
 	var wiring := body.substr(start, stop - start)
-	for family in ["item_options", "sects", "sect_doctrines", "fates"]:
+	for family in [
+		"item_options", "sects", "sect_doctrines", "fates", "destinies",
+		"institutions", "statuses", "soul_arrivals", "sets", "nations",
+		"nation_territories", "market_shops", "clans", "holdings",
+		"body_weapons", "body_material_arts", "body_injury_tuning",
+		"bloodlines", "anchors", "difficulty",
+	]:
 		assert_ne(
 			wiring.find('&"%s":' % family),
 			-1,
@@ -85,6 +105,34 @@ func test_set_overlay_roots_accepts_stack() -> void:
 	SectDoctrineCatalog.set_overlay_roots([])
 	FateCatalog.set_overlay_roots(stack)
 	FateCatalog.set_overlay_roots([])
+	InstitutionDefCatalog.set_overlay_roots(stack)
+	InstitutionDefCatalog.set_overlay_roots([])
+	StatusCatalog.set_overlay_roots(stack)
+	StatusCatalog.set_overlay_roots([])
+	SoulCatalog.set_overlay_roots(stack)
+	SoulCatalog.set_overlay_roots([])
+	SetCatalog.set_overlay_roots(stack)
+	SetCatalog.set_overlay_roots([])
+	NationCatalog.set_overlay_roots(stack)
+	NationCatalog.set_overlay_roots([])
+	ShopCatalog.set_overlay_roots(stack)
+	ShopCatalog.set_overlay_roots([])
+	ClanCatalog.set_overlay_roots(stack)
+	ClanCatalog.set_overlay_roots([])
+	ResourceNodeCatalog.set_overlay_roots(stack)
+	ResourceNodeCatalog.set_overlay_roots([])
+	WeaponKindCatalog.set_overlay_roots(stack)
+	WeaponKindCatalog.set_overlay_roots([])
+	MaterialArtCatalog.set_overlay_roots(stack)
+	MaterialArtCatalog.set_overlay_roots([])
+	InjuryCatalog.set_overlay_roots(stack)
+	InjuryCatalog.set_overlay_roots([])
+	BloodlineCatalog.set_overlay_roots(stack)
+	BloodlineCatalog.set_overlay_roots([])
+	AnchorCatalog.set_overlay_roots(stack)
+	AnchorCatalog.set_overlay_roots([])
+	DifficultyCatalog.set_overlay_roots(stack)
+	DifficultyCatalog.set_overlay_roots([])
 
 
 # --- Events bus factory is OPEN ------------------------------------------------

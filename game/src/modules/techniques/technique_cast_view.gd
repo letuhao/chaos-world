@@ -6,10 +6,11 @@ extends RefCounted
 ##
 ## ## Why this is a class and not a facade method
 ##
-## `TechniquesApi` is at `MAX_FACADE_PUBLIC_METHODS` (12) and publishes 12, so this
-## cannot become a thirteenth `static func`. It is reached the way `TechniqueCasting`
-## and `TechniqueDelivery` are reached — a named type in this module, published as a
-## CONSTANT on the facade rather than as a method on it.
+## `TechniquesApi` publishes this as a CONSTANT, not as a verb. It is reached the way
+## `TechniqueCasting` and `TechniqueDelivery` are reached — a named type in this
+## module, named by a constant on the facade. The twelve-verb cap that originally
+## forced that shape is gone (ADR 0265); cohesion is what keeps it, because a facade
+## that re-exports its own module interior has stopped being an interface.
 ##
 ## ```
 ## var before := TechniqueCastView.snapshot(caster, foe)

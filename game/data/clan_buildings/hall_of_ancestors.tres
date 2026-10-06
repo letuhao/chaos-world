@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="BuildingDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/clan_building/building_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"hall_of_ancestors"
+display_name = "Hall of Ancestors"
+description = "A sacred hall honoring the clan's lineage. Strengthens bloodline recognition and unlocks lineage-related verbs."
+category = &"lineage"
+max_level = 3
+base_cost_materials = 150
+base_cost_contribution = 75
+cost_scale = 2.0
+base_upkeep = 15
+unlock_clan_level = 1
+bonuses = [
+{"stat_id": "lineage_recognition", "value": 0.05, "is_percent": true},
+{"stat_id": "lineage_recognition", "value": 0.10, "is_percent": true},
+{"stat_id": "lineage_recognition", "value": 0.15, "is_percent": true},
+]
+verbs_unlocked = [
+[&"view_lineage"],
+[&"honor_ancestors"],
+[&"call_bloodline"],
+]
+tags = [&"lineage", &"recognition", &"passive"]

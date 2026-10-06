@@ -358,6 +358,24 @@ const ROUTES: Array[Dictionary] = [
 		"root": false,
 	},
 	{
+		# Every organization of ANY kind (ADR 0271 / 0278). The institution family
+		# shipped a registry, a catalog, a generic founding verb, a ledger and a
+		# projection, and `core/` published NO actor-scoped surface at all — so
+		# `institution_screen.tscn` sat in the UI program with three Callables nothing
+		# bound and a `found` verb whose written ledger it published and dropped.
+		# `InstitutionMembership` is that surface, and the composition root's route
+		# binder binds it. Unrouted, the screen cost exactly 2 red assertions in
+		# `test_ui_conventions.gd` because `SeamHarness.screen_scene_paths()` is a
+		# directory scan; this row clears both and is what makes the verbs pressable.
+		"id": &"institution",
+		"node": "InstitutionScreen",
+		"label": "Guilds",
+		"hint": "Every kind of organization, the offices it publishes, and your place in one.",
+		"scene": "res://src/ui/screens/institution_screen.tscn",
+		"key": "i",
+		"root": false,
+	},
+	{
 		# The soul and hearth page (ADR 0127 / 0129 / 0146 / 0128). `soul`,
 		# `difficulty`, `anchor` and `save` shipped their verbs, their content and
 		# their suites, and nothing in the shipped program ever rendered any of

@@ -16,14 +16,16 @@ from PIL import Image, ImageDraw, ImageFont
 
 from .common import REPO_ROOT, ToolError
 
-DEFAULT_CHECKPOINT = "Flux1S/originByN0utis_originFluxAnimeV1.safetensors"
-DEFAULT_LORA = "flux/gokaygokayFlux-2D-Game-Assets-LoRA.safetensors"
 # One resident model only: this PC has a single GPU and cannot hold two Krea2 UNETs
 # at once, so item generation shares the character workflow's model
 # (moodyKrea2Minimal_v40_api_v2.json node 761) instead of loading a second one.
 KREA2_MODEL = "krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors"
 KREA2_CLIP = "qwen3vl_4b_fp8_scaled.safetensors"
 KREA2_VAE = "qwen_image_vae.safetensors"
+KREA2_REMBG_MODEL = "RMBG-2.0"
+DEFAULT_CHECKPOINT = KREA2_MODEL
+DEFAULT_LORA = ""
+DEFAULT_REMBG_MODEL = KREA2_REMBG_MODEL
 KREA2_LORAS = (
     (
         "929",
@@ -118,13 +120,10 @@ KREA2_LORAS = (
     ("916", "krea2/DBX Anime Style V1.safetensors", "dbx_anime_style", 0.0),
     ("915", "krea2/GachaStyleKrea2FINAL.safetensors", "gacha_style", 0.0),
 )
-KREA2_REMBG_MODEL = "RMBG-2.0"
+REMBG_COMPARE_MODELS = ("u2netp", "u2net", "silueta", "isnet-general-use", "isnet-anime", "RMBG-2.0")
 DEFAULT_NEGATIVE = (
-    "text, letters, watermark, border, UI, extra objects, duplicate subject, "
-    "isometric view, perspective, horizon, photorealism, 3D render, noisy texture"
+    "ground plane, floor, tiles, terrain texture, shadows on ground, environment, scenery, landscape, room, walls, text, letters, watermark, border, UI, extra objects, duplicate subject, isometric view, 3D render, photorealism, noisy texture"
 )
-REMBG_COMPARE_MODELS = ("u2netp", "u2net", "silueta", "isnet-general-use", "isnet-anime")
-DEFAULT_REMBG_MODEL = "isnet-anime"
 
 # Adapted from the supplied standalone ComfyUI workflow. Model, prompt, size,
 # sampler, steps, guidance, seed, and background-removal model are CLI inputs.
@@ -387,37 +386,60 @@ def _production_prompt(record: dict, subject: str) -> str:
         else:
             framing += "Keep unused areas transparent and make tile edges join cleanly. "
     else:
-        framing = "Show one complete isolated object viewed straight down. "
-        framing += "Leave clear padding and honor the " + record["pivot"] + " ground pivot. "
-        framing += "Use a transparent background. "
+        framing = (
+            "Show exactly one complete isolated standalone game asset object in the center, "
+            "with generous clear padding on all sides, honoring the "
+            + record["pivot"]
+            + " ground pivot. No background environment, no floor, no ground, no tiles, "
+            "no shadows cast onto terrain. Pure isolated single object on a plain solid white background. "
+        )
     if record["alpha"] == "opaque":
-        transparency = "The final image must be fully opaque. "
+        transparency = "The canvas must be fully filled edge to edge. "
     else:
-        transparency = "The final image must have transparent pixels outside the art. "
+        transparency = (
+            "Isolated prop cutout on a solid plain white background. "
+            "No ground surface, no floor plane, no scenery behind or around the object. "
+        )
     if record["type"] == "item_icon":
         return (
             f"{subject.strip()}\n\n"
             "Production inventory icon for Chaos World, a 2D cultivation action RPG. "
             f"Family: {record['id']}. {framing}"
-            "Transparent background. Painterly anime gouache with crisp dark ink contours, "
+            "Solid plain white background. Painterly anime gouache with crisp dark ink contours, "
             "clear value grouping, luminous material accents, restrained detail, and soft "
             "upper-left light. Keep the silhouette readable at 32x32 pixels. "
             "Use a varied palette and a fitting motif; avoid repeating the same crystal, "
             "jade, cloud, or lotus treatment across families. No text, labels, UI, frame, "
             "watermark, or unrelated objects."
         )
+    if record["alpha"] == "opaque":
+        return (
+            f"{subject.strip()}\n\n"
+            f"Production sprite for Chaos World, a 2D top-down cultivation action RPG. "
+            f"Asset: {record['name']} ({record['id']}); environment motif: "
+            f"{record['environment_name']} in the {record['world_tier']}. "
+            f"Art style: {record['environment_theme']} "
+            f"{framing}{transparency}"
+            "Straight-down orthographic camera, flat top-down angle, with no horizon or isometric projection. "
+            "Anime-painted gouache, dark #263A35 ink contours, broad readable value "
+            "planes, material-led colors, restrained surface detail, soft upper-left light. "
+            "Keep the silhouette and identifying detail legible at the indexed game size. "
+            "No text, labels, UI, frame, watermark, or unrelated objects."
+        )
+
     return (
         f"{subject.strip()}\n\n"
         f"Production sprite for Chaos World, a 2D top-down cultivation action RPG. "
-        f"Asset: {record['name']} ({record['id']}); environment: "
+        f"Asset: {record['name']} ({record['id']}); environment motif: "
         f"{record['environment_name']} in the {record['world_tier']}. "
-        f"Environment art signature: {record['environment_theme']} "
+        f"Art style: {record['environment_theme']} "
         f"{framing}{transparency}"
         "Straight-down orthographic camera, with no horizon or isometric projection. "
         "Anime-painted gouache, dark #263A35 ink contours, broad readable value "
         "planes, material-led colors, restrained surface detail, soft upper-left light. "
         "Keep the silhouette and identifying detail legible at the indexed game size. "
-        "No text, labels, UI, frame, watermark, or unrelated objects."
+        "No ground plane, no floor, no tiles, no text, labels, UI, frame, watermark, or unrelated objects. "
+        "Solid plain white background."
     )
 
 
@@ -428,7 +450,7 @@ def generate(
     output_dir: str = "map-generated",
     client_id: str = "chaos-world-map",
 ) -> tuple[Path, str, int]:
-    profile = getattr(args, "profile", "flux1s")
+    profile = getattr(args, "profile", "krea2")
     if profile not in PROFILES:
         raise ToolError(f"unknown generation profile '{profile}'")
     settings = PROFILES[profile]
@@ -743,3 +765,170 @@ def _write_new_file(path: Path, data: bytes) -> None:
     finally:
         if descriptor is not None:
             os.close(descriptor)
+
+
+def load_index_record(index_path: Path | str, asset_id: str) -> dict:
+    """Load a single asset record by ID from a .jsonl or .json pack index."""
+    path = Path(index_path).resolve()
+    if not path.is_file():
+        raise ToolError(f"index file not found: {path}")
+
+    text = path.read_text(encoding="utf-8")
+    stripped = text.strip()
+    if stripped.startswith("{") and not stripped.endswith("}") or path.suffix.lower() == ".json":
+        try:
+            data = json.loads(text)
+        except json.JSONDecodeError as exc:
+            raise ToolError(f"invalid JSON in index {path}: {exc}") from exc
+
+        assets = data.get("assets", []) if isinstance(data, dict) else data
+        for item in assets:
+            if item.get("id") == asset_id:
+                record = copy.deepcopy(item)
+                if "type" not in record:
+                    cat = record.get("category", "")
+                    subcat = record.get("sub_category", "")
+                    if cat == "terrain_and_surface" and subcat == "base_ground":
+                        record["type"] = "terrain_texture"
+                    elif subcat in {"trail", "paved_road", "edge_transition"}:
+                        record["type"] = "tile"
+                    elif "building" in cat or "hall" in cat or "architecture" in cat:
+                        record["type"] = "building"
+                    elif "landmark" in cat or "tribunal" in cat:
+                        record["type"] = "landmark"
+                    else:
+                        record["type"] = "prop"
+
+                if "alpha" not in record:
+                    if record["type"] in {"tile", "terrain_texture"}:
+                        record["alpha"] = "opaque"
+                    else:
+                        record["alpha"] = "transparent"
+
+                if "pivot" not in record:
+                    record["pivot"] = "bottom_center" if record["type"] != "tile" else "center"
+
+                if "world_tier" not in record:
+                    record["world_tier"] = data.get("world_tier", "Nether Realm")
+
+                if "environment_name" not in record:
+                    record["environment_name"] = data.get("pack_name", "Yin-Jian (Netherworld)")
+
+                if "environment_theme" not in record:
+                    record["environment_theme"] = data.get(
+                        "art_style",
+                        "Dark netherworld gouache, eerie spirit cyan and cinnabar crimson.",
+                    )
+                return record
+        raise ToolError(f"asset ID '{asset_id}' not found in pack index {path}")
+
+    for line_number, line in enumerate(text.splitlines(), 1):
+        if not line.strip():
+            continue
+        try:
+            item = json.loads(line)
+        except json.JSONDecodeError as exc:
+            raise ToolError(f"{path.name}:{line_number}: invalid JSON ({exc})") from exc
+        if item.get("id") == asset_id:
+            return item
+
+    raise ToolError(f"asset ID '{asset_id}' not found in index {path}")
+
+
+def main(argv: list[str] | None = None) -> int:
+    import argparse
+
+    default_index = REPO_ROOT / "game" / "assets" / "map-asset-index.jsonl"
+    parser = argparse.ArgumentParser(
+        description="Generate map asset sprites via local ComfyUI (Krea2 default)"
+    )
+    parser.add_argument(
+        "--asset-id",
+        required=True,
+        help="asset ID to generate (found in index or pack)",
+    )
+    parser.add_argument(
+        "--index",
+        default=str(default_index),
+        help=f"path to .jsonl index or pack .json (default: {default_index.relative_to(REPO_ROOT)})",
+    )
+    parser.add_argument(
+        "--prompt",
+        default="",
+        help="subject prompt details (defaults to asset's prompt_summary or name)",
+    )
+    parser.add_argument(
+        "--negative",
+        default="ground plane, floor, tiles, terrain texture, shadows on ground, environment, scenery, landscape, room, walls, text, letters, watermark, border, UI, extra objects, duplicate subject, isometric view, 3D render, photorealism, noisy texture",
+    )
+    parser.add_argument("--seed", type=int, default=-1, help="-1 chooses a random seed")
+    parser.add_argument("--size", type=int, default=1024, help="square generation resolution")
+    parser.add_argument(
+        "--preview-only",
+        action="store_true",
+        default=True,
+        help="save preview only (default: True for standalone script)",
+    )
+    parser.add_argument("--steps", type=int, default=8)
+    parser.add_argument("--cfg", type=float, default=1.0)
+    parser.add_argument("--guidance", type=float, default=None)
+    parser.add_argument("--sampler", default="euler_ancestral")
+    parser.add_argument("--scheduler", default="beta")
+    parser.add_argument(
+        "--profile",
+        default="krea2",
+        choices=sorted(PROFILES),
+        help="generation workflow profile (default: krea2)",
+    )
+    parser.add_argument(
+        "--checkpoint",
+        default=DEFAULT_CHECKPOINT,
+        help=f"model checkpoint/unet name (default: {DEFAULT_CHECKPOINT})",
+    )
+    parser.add_argument("--lora", default=DEFAULT_LORA)
+    parser.add_argument("--lora-strength", type=float, default=0.0)
+    parser.add_argument(
+        "--rembg-model",
+        default=DEFAULT_REMBG_MODEL,
+        help=f"background removal model (default: {DEFAULT_REMBG_MODEL})",
+    )
+    parser.add_argument(
+        "--rembg-post-processing", action=argparse.BooleanOptionalAction, default=False
+    )
+    parser.add_argument(
+        "--alpha-matting", action=argparse.BooleanOptionalAction, default=False
+    )
+    parser.add_argument("--alpha-foreground-threshold", type=int, default=240)
+    parser.add_argument("--alpha-background-threshold", type=int, default=10)
+    parser.add_argument("--alpha-erode-size", type=int, default=0)
+    parser.add_argument("--comfy-url", default="http://127.0.0.1:8188")
+    parser.add_argument("--timeout", type=int, default=600)
+    parser.add_argument(
+        "--output-dir",
+        default="map-generated",
+        help="subfolder in build/ for output image",
+    )
+
+    args = parser.parse_args(argv)
+
+    try:
+        record = load_index_record(args.index, args.asset_id)
+        if not args.prompt.strip():
+            args.prompt = record.get("prompt_summary") or record.get("name") or args.asset_id
+
+        output_path, used_prompt, seed = generate(
+            record,
+            args,
+            output_dir=args.output_dir,
+        )
+        print(f"\n[OK] Successfully generated: {output_path}")
+        print(f"Seed: {seed}")
+        print(f"Prompt:\n{used_prompt}\n")
+        return 0
+    except ToolError as exc:
+        print(f"\n[ERROR] {exc}", file=os.sys.stderr)
+        return 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

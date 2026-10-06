@@ -1,0 +1,77 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/ui/screens/collection_screen.gd" id="1"]
+[ext_resource type="Theme" path="res://src/ui/theme/chaos_world_theme.tres" id="2"]
+
+[node name="CollectionScreen" type="Control"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2")
+script = ExtResource("1")
+
+[node name="Layout" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Layout"]
+layout_mode = 2
+theme_type_variation = &"ScreenTitle"
+text = "Collection"
+
+[node name="CollectionHeader" type="Label" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"SectionTitle"
+text = "No hero bound."
+
+[node name="Scroll" type="ScrollContainer" parent="Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Tiers" type="VBoxContainer" parent="Layout/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Tier0" parent="Layout/Scroll/Tiers" instance=ExtResource("res://src/ui/panels/collection_tier_row.tscn")]
+unique_name_in_owner = true
+
+[node name="Tier1" parent="Layout/Scroll/Tiers" instance=ExtResource("res://src/ui/panels/collection_tier_row.tscn")]
+unique_name_in_owner = true
+
+[node name="Tier2" parent="Layout/Scroll/Tiers" instance=ExtResource("res://src/ui/panels/collection_tier_row.tscn")]
+unique_name_in_owner = true
+
+[node name="Tier3" parent="Layout/Scroll/Tiers" instance=ExtResource("res://src/ui/panels/collection_tier_row.tscn")]
+unique_name_in_owner = true
+
+[node name="Tier4" parent="Layout/Scroll/Tiers" instance=ExtResource("res://src/ui/panels/collection_tier_row.tscn")]
+unique_name_in_owner = true
+
+[node name="Tier5" parent="Layout/Scroll/Tiers" instance=ExtResource("res://src/ui/panels/collection_tier_row.tscn")]
+unique_name_in_owner = true
+
+[node name="Tier6" parent="Layout/Scroll/Tiers" instance=ExtResource("res://src/ui/panels/collection_tier_row.tscn")]
+unique_name_in_owner = true
+
+[node name="Tier7" parent="Layout/Scroll/Tiers" instance=ExtResource("res://src/ui/panels/collection_tier_row.tscn")]
+unique_name_in_owner = true
+
+[node name="Tier8" parent="Layout/Scroll/Tiers" instance=ExtResource("res://src/ui/panels/collection_tier_row.tscn")]
+unique_name_in_owner = true
+
+[node name="Tier9" parent="Layout/Scroll/Tiers" instance=ExtResource("res://src/ui/panels/collection_tier_row.tscn")]
+unique_name_in_owner = true
+
+[node name="Tier10" parent="Layout/Scroll/Tiers" instance=ExtResource("res://src/ui/panels/collection_tier_row.tscn")]
+unique_name_in_owner = true
+
+[node name="Tier11" parent="Layout/Scroll/Tiers" instance=ExtResource("res://src/ui/panels/collection_tier_row.tscn")]
+unique_name_in_owner = true
+
+[node name="FooterLabel" type="Label" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MetaLabel"
+text = ""

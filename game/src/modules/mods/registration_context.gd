@@ -101,11 +101,21 @@ var _manifest: Dictionary = {}
 ## loader; a context made outside a loader pass (tests) builds its own.
 var _registry: ModuleRegistry = null
 
+## Shared mod-to-mod API registry: {mod_id: {api_name: api_object}}. Injected
+## by the loader so one mod's context can resolve another mod's registered API.
+var _api_registry: Dictionary = {}
 
-func _init(id: String = "", manifest: Dictionary = {}, registry: ModuleRegistry = null) -> void:
+
+func _init(
+	id: String = "",
+	manifest: Dictionary = {},
+	registry: ModuleRegistry = null,
+	api_registry: Dictionary = {}
+) -> void:
 	mod_id = id
 	_manifest = manifest
 	_registry = registry if registry != null else ModuleRegistry.new()
+	_api_registry = api_registry
 
 
 ## Declare one content family rooted at `dir` (e.g. items, recipes). The row
@@ -256,6 +266,37 @@ func declare_stats(block: Dictionary) -> Dictionary:
 	return parsed
 
 
+## Expose this mod's API object under `api_name` so other mods can find it
+## through [method get_mod_api]. The api_object is any RefCounted or Object the
+## mod wants to share (e.g. a facade, a data table). Later registrations by the
+## same mod overwrite earlier ones under the same name.
+func register_mod_api(api_name: String, api_object: Object) -> void:
+	if not _api_registry.has(mod_id):
+		_api_registry[mod_id] = {}
+	(_api_registry[mod_id] as Dictionary)[api_name] = api_object
+
+
+## Resolve another mod's registered API. Returns the api_object the target mod
+## registered under `api_name`, or null when the target mod is not loaded, has
+## not registered that api_name, or the target mod's version is below the
+## `min_version` declared in this mod's `integrations[]` manifest entry.
+func get_mod_api(mod_id: String, api_name: String) -> Object:
+	if not _api_registry.has(mod_id):
+		return null
+	var apis: Dictionary = _api_registry[mod_id]
+	if not apis.has(api_name):
+		return null
+	return apis.get(api_name)
+
+
+## Check whether a newer version of this mod is available. Returns
+## `{has_update: bool, latest_version: String, download_url: String}`.
+## Currently a stub: the HTTP check is deferred, so this always reports
+## `{has_update: false, latest_version: "", download_url: ""}`.
+func check_for_update() -> Dictionary:
+	return {"has_update": false, "latest_version": "", "download_url": ""}
+
+
 ## The pools this mod declared, in DECLARATION order. Hand this to a
 ## `CultivationPathDef.resource_ids` and `ensure_resources` mints the pool — which
 ## is what makes the vocabulary genuinely CLOSED rather than merely narrowed: an id
@@ -295,4 +336,8 @@ func registrations() -> Dictionary:
 		"stat_declarations": stat_declarations,
 		"declared_resource_ids": declared_resources,
 		"declaration_refusals": declaration_refusals,
+		"integrations": _manifest.get("integrations", []),
+		"update_url": _manifest.get("update_url", ""),
+		"incompatible_with": _manifest.get("incompatible_with", []),
+		"conflicts_with": _manifest.get("conflicts_with", []),
 	}

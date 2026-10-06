@@ -289,6 +289,13 @@ func _attach_steps() -> Array[Dictionary]:
 		{"name": &"domain", "run": func(_a): DomainBoot.install()},
 		{"name": &"combat", "run": func(a): CombatBoot.install(a)},
 		{"name": &"technique_seams", "run": func(_a): _bind_technique_seams()},
+		# Every organization of ANY kind (ADR 0271 / 0278). Beside `economy` and BEFORE
+		# it, because the institution family is CONTENT plus REGISTRY rows and neither
+		# depends on the economy's stores: `InstitutionBoot.install` discovers the
+		# authored organizations and registers each KIND it finds. It shipped with
+		# zero production callers, so a guild `.tres` a modder dropped into the family
+		# was never read by anything the player runs.
+		{"name": &"institutions", "run": func(_a): InstitutionBoot.install()},
 		{"name": &"economy", "run": func(a): EconomyBoot.install(a)},
 	]
 
@@ -394,6 +401,42 @@ func _wire_content_roots(content_roots: Dictionary) -> void:
 				FateCatalog.set_overlay_roots(stack)
 			&"destinies":
 				FateCatalog.set_overlay_roots(stack)
+			# Every organization of ANY kind, base and mod overlay together (ADR 0184 §5).
+			# This is the ONE family row that declares no module, because its machinery is
+			# `core`-owned and a module facade for a core type would be an indirection with no
+			# second owner. Unwired, a mod's `content_roots: [{family: "institutions"}]` fell
+			# to the `:` arm below: recorded in `_unwired_families`, announced, and ignored —
+			# the silent skip ADR 0184's own acceptance criterion forbids (DEF-0326).
+			&"institutions":
+				InstitutionDefCatalog.set_overlay_roots(stack)
+			&"statuses":
+				StatusCatalog.set_overlay_roots(stack)
+			&"soul_arrivals":
+				SoulCatalog.set_overlay_roots(stack)
+			&"sets":
+				SetCatalog.set_overlay_roots(stack)
+			&"nations":
+				NationCatalog.set_overlay_roots(stack)
+			&"nation_territories":
+				NationCatalog.set_overlay_roots(stack)
+			&"market_shops":
+				ShopCatalog.set_overlay_roots(stack)
+			&"clans":
+				ClanCatalog.set_overlay_roots(stack)
+			&"holdings":
+				ResourceNodeCatalog.set_overlay_roots(stack)
+			&"body_weapons":
+				WeaponKindCatalog.set_overlay_roots(stack)
+			&"body_material_arts":
+				MaterialArtCatalog.set_overlay_roots(stack)
+			&"body_injury_tuning":
+				InjuryCatalog.set_overlay_roots(stack)
+			&"bloodlines":
+				BloodlineCatalog.set_overlay_roots(stack)
+			&"anchors":
+				AnchorCatalog.set_overlay_roots(stack)
+			&"difficulty":
+				DifficultyCatalog.set_overlay_roots(stack)
 			_:
 				# Family has no overlay-capable catalog — warn and record, never
 				# skip silently (audit Gap 5).

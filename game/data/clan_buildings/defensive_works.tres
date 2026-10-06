@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="BuildingDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/clan_building/building_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"defensive_works"
+display_name = "Defensive Works"
+description = "Fortifications and defensive structures. Protects against rival sabotage and unlocks defense verbs."
+category = &"military"
+max_level = 3
+base_cost_materials = 300
+base_cost_contribution = 150
+cost_scale = 2.0
+base_upkeep = 25
+unlock_clan_level = 2
+bonuses = [
+{"stat_id": "sabotage_resist", "value": 0.10, "is_percent": true},
+{"stat_id": "sabotage_resist", "value": 0.25, "is_percent": true},
+{"stat_id": "sabotage_resist", "value": 0.50, "is_percent": true},
+]
+verbs_unlocked = [
+[&"patrol"],
+[&"fortify"],
+[&"repel_sabotage"],
+]
+tags = [&"military", &"defense", &"active"]
