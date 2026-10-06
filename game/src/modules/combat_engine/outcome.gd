@@ -18,9 +18,11 @@ extends RefCounted
 ##
 ## The read model exists so a parry is a DEFENSIVE RESPONSE to the blow rather than an
 ## exemption from it: `CombatSpine.PARRY_COST` and `CombatSpine.BLOCK_COST` are the
-## authored fractions of the landed amount a parry or a block refunds, applied after
-## S9. They are refusals, not nullifications — and a refusal can never refuse EVERY
-## hit, because S8's chip floor runs before S9 and a landed hit is never below it.
+## NEUTRAL shares of the landed amount that survive a parry or a block, applied at S9's
+## entrance (after S8's floor, before the health write) and moved from the neutral by
+## the response's own `strength`/`shred` pair (ADR 0878). They are refusals, not
+## nullifications — a refusal can never refuse every hit, because the chip floor runs
+## before the refusal AND the removal is capped by `CombatTuning.refusal_cap`.
 ##
 ## ## The sign convention
 ##

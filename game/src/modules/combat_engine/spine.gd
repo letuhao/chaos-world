@@ -54,11 +54,12 @@ extends RefCounted
 ## table, a location resolver — through the seam without a sixth stage. It receives the
 ## built context and returns it; returning the argument unchanged is the default.
 
-## What a parry refunds: the share of the landed amount that reaches the defender's
-## health. A parry is a DEFENSIVE RESPONSE to a blow, not an exemption from it — and
-## because S8's chip floor runs before S9, a refusal can never refuse every hit. This
-## is the only vocabulary combat needs to express a parry, and it needs no extra stage
-## and no second `mitigate` call.
+## What a parry refunds at NEUTRAL investment: the share of the landed amount that
+## reaches the defender's health before [method _refusal] moves it by the response's own
+## `strength`/`shred` pair (ADR 0878). A parry is a DEFENSIVE RESPONSE to a blow, not an
+## exemption from it — and because S8's chip floor runs before S9, a refusal can never
+## refuse every hit. This is the only vocabulary combat needs to express a parry, and it
+## needs no extra stage and no second `mitigate` call.
 const PARRY_COST := 0.5
 ## Block's twin of `PARRY_COST`: a block is the cheaper, weaker response.
 const BLOCK_COST := 0.75
@@ -286,7 +287,7 @@ static func amp_factor(delta: float, tuning: CombatTuning) -> float:
 static func _spend(
 	attacker: Actor, target: Actor, tuning: CombatTuning, outcome: CombatOutcome, chain_depth: int
 ) -> CombatOutcome:
-	var spendable := outcome.amount * _refusal(outcome)
+	var spendable := outcome.amount * _refusal(attacker, target, tuning, outcome)
 	outcome.absorbed = _absorb(target, spendable)
 	outcome.overflow = maxf(0.0, spendable - outcome.absorbed)
 	var health := target.resource(&"health") as ResourcePool
@@ -343,14 +344,39 @@ static func _absorb(target: Actor, spendable: float) -> float:
 	return clampf(spendable - float(overflow), 0.0, spendable)
 
 
-## S2's aftermath on the amount: a parry refunds `PARRY_COST`, a block refunds
-## `BLOCK_COST`, a clean hit refunds all of it. A miss never reaches this.
-static func _refusal(outcome: CombatOutcome) -> float:
+## S2's aftermath on the amount: a parry keeps `PARRY_COST`, a block keeps `BLOCK_COST`,
+## a clean hit keeps all of it. A miss never reaches this.
+##
+## ## The removal is a PAIR (ADR 0878): the defender's `strength` raises what the
+## ## response removes and the attacker's `shred` lowers it, as a flat delta over
+## ## `rate_scale` — ADR 0877's shape, read at the one place a landed blow's cost is
+## ## decided. Equal halves cancel to the neutral, the floor is zero (a fully shredded
+## ## response removes nothing), and the cap is `CombatTuning.refusal_cap`, so no stack
+## ## of `strength` ever refuses a landed blow outright.
+static func _refusal(
+	attacker: Actor, target: Actor, tuning: CombatTuning, outcome: CombatOutcome
+) -> float:
+	if tuning == null:
+		return 1.0
+	var neutral := 0.0
+	var strength_id := &""
+	var shred_id := &""
 	if outcome.parried:
-		return PARRY_COST
-	if outcome.blocked:
-		return BLOCK_COST
-	return 1.0
+		neutral = 1.0 - PARRY_COST
+		strength_id = CombatStats.PARRY_STRENGTH
+		shred_id = CombatStats.PARRY_SHRED
+	elif outcome.blocked:
+		neutral = 1.0 - BLOCK_COST
+		strength_id = CombatStats.BLOCK_STRENGTH
+		shred_id = CombatStats.BLOCK_SHRED
+	else:
+		return 1.0
+	var scale := tuning.rate_scale
+	var removal := neutral
+	if scale > 0.0:
+		removal += (_stat(target, strength_id) - _stat(attacker, shred_id)) / scale
+	removal = clampf(removal, 0.0, clampf(tuning.refusal_cap, 0.0, 1.0))
+	return 1.0 - removal
 
 
 ## S10's aftermath, S11's aftermath, and the bounce arithmetic all live in
@@ -434,9 +460,9 @@ static func landed_chance(attacker: Actor, target: Actor, tuning: CombatTuning) 
 
 
 ## S2's `p_parry`: the defender's `PARRY_RATE` beats the attacker's `PARRY_BREAK`
-## (ADR 0877). `PARRY_SHRED` is NOT read here: shredding a parry costs the defender
-## their ability to parry again — a defensive RESPONSE to a landed parry, which wave E
-## owns and which has no business inside a band roll that must stay one comparison.
+## (ADR 0877). `PARRY_STRENGTH` and `PARRY_SHRED` are NOT read here: they move the
+## refusal share at the S2 AFTERMATH ([method _refusal], ADR 0878) — what a landed parry
+## COSTS — and have no business inside a band roll that must stay one comparison.
 ##
 ## The second argument is `PARRY_BREAK` and fixing it here is part of the ADR: it read
 ## the attacker's own `PARRY_RATE`, so the attacker's suppress half was dead and an
@@ -448,10 +474,10 @@ static func _parry(attacker: Actor, target: Actor, tuning: CombatTuning) -> floa
 
 
 ## S2's `p_block`. Block's twin of [method _parry]: same contest, same fixing of the
-## suppress argument to `BLOCK_BREAK`, one vocabulary (ADR 0877). `BLOCK_STRENGTH` is
-## the defender's amplifier and is NOT read by the spine — it scales what a block
-## removes, not the band itself, so no two of the four parry ids and the four block ids
-## can disagree about what blocking means.
+## suppress argument to `BLOCK_BREAK`, one vocabulary (ADR 0877). `BLOCK_STRENGTH` and
+## `BLOCK_SHRED` are read at [method _refusal] rather than here — they scale what a
+## block REMOVES, not the band itself, so no two of the four parry ids and the four
+## block ids can disagree about what blocking means.
 static func _block(attacker: Actor, target: Actor, tuning: CombatTuning) -> float:
 	return CombatBand.rate(
 		_stat(target, CombatStats.BLOCK_RATE), _stat(attacker, CombatStats.BLOCK_BREAK), tuning

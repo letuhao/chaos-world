@@ -104,22 +104,23 @@ const ABSORPTION := &"absorption"
 ## 0215's ratio, and now the flat delta. The defender RAISES the trigger and the
 ## attacker SUPPRESSES it; the ownership is the same, the form is not.
 const PARRY_RATE := &"parry.rate"
-## Scales `PARRY_RATE` without changing its sign: at zero it reads zero, so a
-## `strength`-only investment still parries 0% rather than a sigmoid's 0.5. ADR 0215 does
-## not change this: a `strength` is an AMPLIFIER on the magnitude, not a second contest.
+## The DEFENDER's half of the refusal pair (ADR 0878): a landed parry keeps
+## `1.0 - PARRY_COST` minus what `strength` raises and `shred` lowers, as a flat delta
+## over `rate_scale`. It is not a second contest on the band — `CombatSpine._parry`
+## reads the trigger, `CombatSpine._refusal` reads this.
 const PARRY_STRENGTH := &"parry.strength"
-## What parrying costs the defender: `break` spends poise, `shred` spends the ability
-## to parry again. ADR 0215 makes `PARRY_BREAK` the DEFENCE half of the parry contest
-## (the `break` side is the attacker's to apply, the `raise` side is the defender's to
-## invest in — the ownership rule is unchanged, the FORM is). `PARRY_SHRED` remains a
-## defensive RESPONSE read by no contest, for `CombatSpine._parry`'s reason: breaking the
-## parry costs the defender poise and re-reads, which has no business inside a band roll
-## that must stay one comparison.
+## The ATTACKER's half of the refusal pair, the suppress side: every point of `shred`
+## lowers what a landed parry removes, and at parity the removal is the neutral. Read at
+## `CombatSpine._refusal` (ADR 0878), never inside the band roll. `PARRY_BREAK` is the
+## OTHER attacker half — whether the parry HAPPENS — and the two are different
+## questions: the trigger, and what the trigger costs.
 const PARRY_BREAK := &"parry.break"
 const PARRY_SHRED := &"parry.shred"
 ## Block's twin of the four above. Same band, same contest, one vocabulary (ADR 0877):
 ## `p_block = clampf((BLOCK_RATE - BLOCK_BREAK) / rate_scale, 0, 1)`.
 const BLOCK_RATE := &"block.rate"
+## Block's twins of the refusal pair above (ADR 0878): `strength` raises what a landed
+## block removes, `shred` lowers it, and the neutral is `1.0 - BLOCK_COST`.
 const BLOCK_STRENGTH := &"block.strength"
 const BLOCK_BREAK := &"block.break"
 const BLOCK_SHRED := &"block.shred"

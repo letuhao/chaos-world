@@ -58,6 +58,14 @@ extends Resource
 ## probability OUTPUT is. Zero is the degenerate default and reads as "no exchange
 ## rate", so every trigger answers `0.0` rather than dividing.
 @export var rate_scale: float = 0.0
+## The CEILING on the share of a landed blow a parry or a block may REMOVE (ADR 0878):
+## `removed = clampf(neutral + (strength - shred) / rate_scale, 0.0, refusal_cap)`, and
+## the response deals `1.0 - removed`. `0.95` is Keepverse's per-response cap: a defence
+## that stacks `strength` forever still takes at least 5% of a landed blow, so no stack
+## of responses reaches immunity on its own. Zero is the degenerate default and reads as
+## "no response removes anything", which is visibly broken rather than plausible — the
+## same convention as every other field on this resource.
+@export var refusal_cap: float = 0.0
 ## The divisor of the amplification/reduction factor at S7: `maxf(0, 1 + d /
 ## amp_scale)`, linear and floored at zero. See `CombatSpine.amp_factor` for why this is
 ## NOT a reciprocal -- ADR 0067 refuses `AmpFactorReciprocal` by name, and a reciprocal

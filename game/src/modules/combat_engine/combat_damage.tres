@@ -15,6 +15,12 @@ chain_depth_limit = 6
 ; of a `[0, 1]`-space formula that no longer ships; at these magnitudes it would read
 ; every trigger as `0.0`. Retuning a trigger is this one line.
 rate_scale = 0.01
+; ADR 0878. The removal CAP for a landed parry or block: a response can never remove
+; more than this share of a landed blow. `0.95` is Keepverse's own per-response cap and
+; mirrors this file's `avoidance_band_cap` rationale on a different output -- an
+; anti-immunity bound. At `0.0` a response would remove nothing, which is the
+; degenerate state a caller without this file gets.
+refusal_cap = 0.95
 amp_scale = 10.0
 lifesteal_pool = &"health"
 default_element_share = 0.8
