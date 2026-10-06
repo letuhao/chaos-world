@@ -23,8 +23,17 @@ extends TestCase
 const LEDGER := "res://src/contracts/stat_ledger.json"
 const STATUSES: Array[String] = ["exists", "new", "legacy"]
 const LAYERS: Array[String] = ["L0", "L1", "L2", "L3", "L4", "L5", "L1-old"]
+## The DECLARED PRINCIPLE names, in hidden-grammar order: Sinh, Phat, Tang, Luyen, Luu.
 const PRINCIPLES: Array[String] = ["sinh", "phat", "tang", "luyen", "luu"]
 const PATHS: Array[String] = ["body", "qi", "mind"]
+
+## The impact classes (the census that turns counts into power; DEF-0344's discipline).
+## A class says what KIND of number a channel is, so the report can weigh it instead of
+## counting it, and untagged ids are additive. The factors are census POLICY, like the
+## balance report's bands — which is why they live here and not in the ledger: the ledger
+## says what each id IS, and a retune edits the factors with evidence.
+const CLASSES: Array[String] = ["rate", "multiplier", "pool"]
+const CLASS_FACTORS := {"additive": 1.0, "rate": 1.5, "multiplier": 2.0, "pool": 1.25}
 
 
 func _ledger() -> Dictionary:
@@ -69,7 +78,9 @@ func test_the_fifteen_primaries_are_three_paths_of_five() -> void:
 		assert_eq(ids.has(id), false, "%s is unique" % id)
 		ids[id] = true
 		assert_eq(PATHS.has(path), true, "%s names a real path (%s)" % [id, path])
-		assert_eq(PRINCIPLES.has(principle), true, "%s names a real principle (%s)" % [id, principle])
+		assert_eq(
+			PRINCIPLES.has(principle), true, "%s names a real principle (%s)" % [id, principle]
+		)
 		by_path[path] = int(by_path.get(path, 0)) + 1
 		by_path_principle["%s/%s" % [path, principle]] = true
 	assert_eq(by_path.size(), 3, "three paths")
@@ -115,6 +126,80 @@ func test_channel_weights_are_normalized_and_one_principle() -> void:
 				"%s: owner %s must share the channel's principle" % [id, owner]
 			)
 		assert_almost_eq(total, 1.0, "%s: weights sum to 1" % id)
+
+
+# --- the impact classes and the weighted report ---------------------------------
+
+
+## Every class tag must name a real row, once: two tags on one id would double-weight it in
+## the report, and a tag on a retired id would silently weigh nothing.
+func test_class_tags_name_real_disjoint_rows() -> void:
+	var ledger := _ledger()
+	var known := {}
+	for entry in _rows(ledger):
+		known[String((entry as Dictionary).get("id", ""))] = true
+	var classes: Dictionary = ledger.get("classes", {})
+	var seen := {}
+	for kind in classes.keys():
+		assert_eq(CLASSES.has(String(kind)), true, "%s is a declared class" % kind)
+		var tags: Array = classes[kind]
+		for entry in tags:
+			var tag := String(entry)
+			assert_eq(known.has(tag), true, "%s tags a real row" % tag)
+			assert_eq(seen.has(tag), false, "%s is tagged once, not twice" % tag)
+			seen[tag] = true
+
+
+## The census: per-cell totals weighed by class instead of counted. NOT asserted, like the
+## raw report — the spread it prints is what a retune is read from.
+func test_the_class_weighted_report() -> void:
+	var ledger := _ledger()
+	var classes: Dictionary = ledger.get("classes", {})
+	var class_of := {}
+	for kind in classes.keys():
+		var tags: Array = classes[kind]
+		for entry in tags:
+			class_of[String(entry)] = String(kind)
+	var totals := {}
+	var weighted := {}
+	var path_of := {}
+	for entry in _primaries(ledger):
+		var row: Dictionary = entry
+		var id := String(row.get("id", ""))
+		totals[id] = 0.0
+		weighted[id] = 0.0
+		path_of[id] = String(row.get("path", ""))
+	for entry in _rows(ledger):
+		var row: Dictionary = entry
+		var owners: Dictionary = row.get("owners", {}) as Dictionary
+		var factor := float(
+			CLASS_FACTORS.get(class_of.get(String(row.get("id", "")), "additive"), 1.0)
+		)
+		for cell in owners.keys():
+			var owner := String(cell)
+			totals[owner] = float(totals.get(owner, 0.0)) + float(owners[cell])
+			weighted[owner] = float(weighted.get(owner, 0.0)) + float(owners[cell]) * factor
+	print("")
+	print("=== STAT LEDGER, CLASS-WEIGHTED (counts -> power; factors are census policy) ==")
+	for path in PATHS:
+		print("--- %s ---" % path)
+		for id in totals.keys():
+			if String(path_of.get(id, "")) != path:
+				continue
+			print("%-18s raw %6.2f   weighted %6.2f" % [id, float(totals[id]), float(weighted[id])])
+	var lowest := 999.0
+	var highest := 0.0
+	for id in weighted.keys():
+		lowest = minf(lowest, float(weighted[id]))
+		highest = maxf(highest, float(weighted[id]))
+	print(
+		(
+			"weighted spread: lowest %s  highest %s  ratio %sx"
+			% [str(lowest), str(highest), "%.2f" % (highest / maxf(lowest, 0.001))]
+		)
+	)
+	print("")
+	assert_eq(highest > 0.0, true, "the weighted report has power to show")
 
 
 # --- reconciliation against the live vocabulary ---------------------------------
@@ -223,11 +308,7 @@ func test_the_distribution_report() -> void:
 	print(
 		(
 			"spread: lowest %s  highest %s  ratio %sx"
-			% [
-				str(lowest),
-				str(highest),
-				"%.2f" % (highest / maxf(lowest, 0.001))
-			]
+			% [str(lowest), str(highest), "%.2f" % (highest / maxf(lowest, 0.001))]
 		)
 	)
 	print("")

@@ -12,6 +12,11 @@
   },
   "paths": ["body", "qi", "mind"],
   "principles": ["sinh", "phat", "tang", "luyen", "luu"],
+  "classes": {
+    "rate": ["health_regen", "stamina_regen", "qi_regen", "qi_regen_rate", "regeneration", "accuracy", "evasion", "crit_chance", "crit_resist", "crit_resist_damage", "parry.rate", "block.rate", "parry.break", "block.break", "parry.shred", "block.shred", "reflect.rate", "reflect.resist.rate", "reflect.resist.damage", "damage_reduction", "reduction", "absorption", "status_defense", "status_resistance", "seduction_resist", "mind_veil", "mind_clarity", "illusion_resistance", "breakthrough_chance", "conception_chance", "multiple_birth_chance", "cultivation_rate", "dual_cultivation_rate", "qi_transfer_rate", "recovery_rate", "leech_resist.health", "leech_resist.qi", "leech_resist.stamina", "lifesteal.health", "lifesteal.qi", "lifesteal.stamina", "soul_recovery", "mental_recovery"],
+    "multiplier": ["attack_speed", "move_speed", "flight_speed", "cast_speed", "technique_power", "amplification", "penetration", "penetration.rate", "qi_purity", "insight_gain", "cooldown_reduction", "qi_cost_reduction", "technique_cost_reduction", "gestation_speed", "offspring_quality", "craft_quality.smithing", "craft_quality.alchemy", "craft_quality.inscription", "refine_yield", "gather_yield", "pursuit", "trade_margin", "soul_anchor"],
+    "pool": ["max_health", "max_qi", "max_stamina", "body_integrity", "sea_capacity", "awareness", "dantian_capacity", "shield.capacity", "soul_integrity", "essence_capacity", "essence", "social_reputation", "clan_standing", "building_level", "clan_level", "bloodline_power"]
+  },
   "primaries": [
     {"id": "body_growth", "label": "Sinh Co", "path": "body", "principle": "sinh"},
     {"id": "body_force", "label": "Kinh Luc", "path": "body", "principle": "phat"},
