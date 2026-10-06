@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="AptitudeGrant" load_steps=2 format=3]
+
+; The seed grant table (ADR 0883). One row per major: {path, posture, per_realm}.
+; A started path grants (ladder_index + 1) * per_realm, split evenly across the
+; posture's four aptitudes. The three majors ARE the three postures: body -> force,
+; qi -> finesse, mind -> bastion. technique_points is what one learned technique adds
+; into the dominant posture.
+;
+; The budgets are an INITIAL AUTHORED PASS, not balance: absolute size cancels in the
+; matrix's share normalisation, so what actually differs between builds is the RATIO
+; across rows — retune by editing here.
+
+[ext_resource type="Script" path="res://src/core/aptitude_grant.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+rows = Array[Dictionary]([
+{"path": &"body_cultivation", "posture": &"force", "per_realm": 4.0},
+{"path": &"qi_cultivation", "posture": &"finesse", "per_realm": 4.0},
+{"path": &"mind_cultivation", "posture": &"bastion", "per_realm": 4.0},
+])
+technique_points = 2.0

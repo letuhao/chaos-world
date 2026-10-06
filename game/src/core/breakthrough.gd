@@ -53,6 +53,12 @@ static func try_advance(
 	state.stage += 1
 	state.progress = 0.0
 	RealmScaling.apply(actor)
+	# ADR 0883: BREAKTHROUGH is one of the two stages that resolve what an actor has BUILT
+	# into aptitude points, and this is the one success site all three majors reach — the
+	# same reason the milestone commit below lives here rather than in each path.
+	var grant := AptitudeGrant.shipped()
+	if grant != null:
+		grant.apply(actor)
 	WorldAnchor.commit(actor, RealmDefaults.ladder().index_of(next_realm.id))
 	actor.path_advanced.emit(path_id, next_realm.id)
 	return true
