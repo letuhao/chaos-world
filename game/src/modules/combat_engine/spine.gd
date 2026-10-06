@@ -151,7 +151,7 @@ static func resolve_hit(
 	if band.missed:
 		return outcome
 	# --- S3: a SECOND draw, clean hits only. A parried or blocked hit never crits. ---
-	var crit := band.is_clean() and _crit(attacker, target, tuning, rng)
+	var crit := band.is_clean() and _crit(attacker, target, technique, tuning, rng)
 	outcome.crit = crit
 	# --- S4 / S5: the seam. Two virtuals, one shape, three implementations. ---
 	var ctx := _context(ctx_builder, attacker, target, technique, tuning, outcome.base, true, crit)
@@ -417,18 +417,44 @@ static func _scaled_core_reduction(target: Actor, tuning: CombatTuning) -> float
 	return clampf(_stat(target, Stat.DAMAGE_REDUCTION), 0.0, tuning.amp_scale)
 
 
-## S3's draw. The crit CHANCE trigger: attacker's `Stat.CRIT_CHANCE` BEATS the
-## defender's `Stat.CRIT_RESIST` — `clampf((crit_chance - crit_resist) / rate_scale, 0, 1)`
-## through [method CombatStats.contest_of] (ADR 0877). Equal halves read `0.0`, so the
-## crit is something the attacker WINS rather than a midpoint nobody chose; the defence
-## half has been read since ADR 0215 and is untouched by the shape change.
-static func _crit(attacker: Actor, target: Actor, tuning: CombatTuning, rng: Variant) -> bool:
+## S3's draw. The crit CHANCE trigger: the attacker's `Stat.CRIT_CHANCE` plus its element
+## channel BEATS the defender's `Stat.CRIT_RESIST` plus its matching resist half —
+## `clampf(delta / rate_scale, 0, 1)` through [method CombatStats.rate_from_zero]
+## (ADR 0877). Equal halves read `0.0`, so the crit is something the attacker WINS rather
+## than a midpoint nobody chose; the core defence half has been read since ADR 0215 and is
+## untouched by the shape change.
+##
+## ## The element channel (ADR 0880)
+##
+## A technique naming an element (`TechniqueDef.element`) reads that element's
+## `element_crit_<e>` / `element_crit_resist_<e>` channel ON TOP of the core pair; an
+## elementless technique reads the omni channel (`element_crit_` / `element_crit_resist_`
+## — the empty suffix IS the omni id, because the elements module generates both halves
+## under one prefix rule). The channels have been generated, realm-scaled and
+## provider-emitted since ADR 0215 and were read by NOTHING until this; the spine reaches
+## them by PREFIX on `tuning` because naming that module's classes would put a
+## compile-time edge into a module whose dependency list is `["contracts", "core"]` — the
+## same reason `element_power_prefix` exists. Neither prefix authored reads exactly as it
+## did before the channels existed.
+##
+## One technique reads ONE channel, never omni PLUS element: Keepverse's omni is a channel
+## a build invests in separately, so its reader sums them; ours is the same formula over
+## the SUMMED affinities (`ElementProvider.contribute`), so summing would count the
+## technique's own element — and the `CRIT_BASE` every channel already carries — twice.
+static func _crit(
+	attacker: Actor, target: Actor, technique: TechniqueDef, tuning: CombatTuning, rng: Variant
+) -> bool:
 	if rng == null:
 		return false
-	var p := CombatStats.contest_of(
-		Stat.CRIT_CHANCE, attacker, Stat.CRIT_RESIST, target, tuning.rate_scale
-	)
-	return rng.randf() < p
+	var offense := _stat(attacker, Stat.CRIT_CHANCE)
+	var defense := _stat(target, Stat.CRIT_RESIST)
+	if tuning.element_crit_prefix != "" and tuning.element_crit_resist_prefix != "":
+		var suffix := ""
+		if technique != null and technique.element != &"":
+			suffix = String(technique.element)
+		offense += _stat(attacker, StringName(tuning.element_crit_prefix + suffix))
+		defense += _stat(target, StringName(tuning.element_crit_resist_prefix + suffix))
+	return rng.randf() < CombatStats.rate_from_zero(offense, defense, tuning.rate_scale)
 
 
 ## S2's `p_hit`: the landed chance, as the flat delta

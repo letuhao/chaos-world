@@ -125,13 +125,21 @@ extends Resource
 ## non-zero. Clamped to `[0, 1]` on read for the same sign reason as `mitigation_ceiling`.
 @export var damage_reduction_cap: float = 0.0
 ## The authored prefixes of the `elements` module's per-element stat ids, read by the
-## qi path so it does not have to name that module's classes to name its stats
-## (BRIEF 1.7: tuning in DATA; ADR 0069: `ElementRules` is injected, so the combat layer
-## reads `elements` rather than the other way round). These are STRINGS on purpose: a
-## `StringName` constant naming `elements` would put a compile-time edge into a module
-## whose dependency list is `["contracts", "core"]`, and the registry must not lie.
+## qi path, the status arithmetic and S3's crit trigger so none of them has to name that
+## module's classes to name its stats (BRIEF 1.7: tuning in DATA; ADR 0069:
+## `ElementRules` is injected, so the combat layer reads `elements` rather than the other
+## way round). These are STRINGS on purpose: a `StringName` constant naming `elements`
+## would put a compile-time edge into a module whose dependency list is `["contracts",
+## "core"]`, and the registry must not lie.
+##
+## The crit pair (ADR 0880) has no second id shape: the suffix is the technique's own
+## element id, and the EMPTY suffix is the omni channel (`element_crit_` /
+## `element_crit_resist_`), the same generator rule the elements module publishes both
+## halves under. Both must be authored for S3 to read the channel at all.
 @export var element_power_prefix: String = ""
 @export var resist_resistance_prefix: String = ""
+@export var element_crit_prefix: String = ""
+@export var element_crit_resist_prefix: String = ""
 
 # --- The mind path's own bounds (ADR 0071) ------------------------------------
 #

@@ -69,6 +69,8 @@ pierce_scale = 10.0
 damage_reduction_cap = 0.9
 element_power_prefix = "element_power_"
 resist_resistance_prefix = "element_defense_"
+element_crit_prefix = "element_crit_"
+element_crit_resist_prefix = "element_crit_resist_"
 default_mind_share = 1.0
 ; ADR 0200. `mental_defense_cap = 0.6` and `illusion_resistance_cap = 0.8` are both
 ; DELETED, and mind now reads the same `mitigation_ceiling` / `defense_divisor_k` /
