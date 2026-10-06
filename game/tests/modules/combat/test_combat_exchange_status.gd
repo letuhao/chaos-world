@@ -319,6 +319,52 @@ func test_the_intensity_split_reaches_the_encounter_path() -> void:
 	)
 
 
+# --- 2c. the immunity family answers a TAGGED def on THIS path (ADR 0885 / DEF-0352) ---
+
+
+## DEF-0352's acceptance: a SHIPPED def carries `immunity_tags`, the encounter passes
+## them into the request, and a defender built to answer the tag never takes the status —
+## while the SAME blow against a body without the answer does. Both arms, because the
+## refusal arm alone would pass on a catalogue that mapped nothing at all.
+func test_a_tagged_status_is_refused_by_its_answer_and_applied_without_it() -> void:
+	var def := StatusApi.definition(PLAYER_STATUS)
+	assert_ne(def, null, "the fixture's status ships")
+	if def == null:
+		return
+	assert_ne(def.immunity_tags.is_empty(), true, "and the shipped def carries an immunity tag")
+	if not _mapped():
+		return
+	var tag: StringName = def.immunity_tags[0]
+	var immune_id := StringName(CombatEngineApi.tuning().status_immune_prefix + String(tag))
+
+	var answering := _delver()
+	answering.stats.add_modifier(CombatStats.rate_modifier(immune_id, 1.0, &"test"))
+	if not _in_run(answering):
+		return
+	var refused := _first_landed(answering)
+	if refused.is_empty():
+		return
+	assert_eq(
+		bool(_status_of(refused["result"]).get("applied", true)),
+		false,
+		"the tag's answer refuses the status outright"
+	)
+	assert_eq(answering.has_status(PLAYER_STATUS), false, "and the actor never holds it")
+
+	var plain := _delver()
+	if not _in_run(plain):
+		return
+	var landed := _first_landed(plain)
+	if landed.is_empty():
+		return
+	assert_eq(
+		bool(_status_of(landed["result"]).get("applied", false)),
+		true,
+		"the control arm applies, so the refusal above is the tag's doing"
+	)
+	assert_eq(plain.has_status(PLAYER_STATUS), true, "and the control body holds it")
+
+
 # --- 3. nothing mapped is a normal answer, not an error ------------------------
 
 

@@ -15,6 +15,9 @@ magnitude_unit = &"element_power"
 magnitude_cap = 10.0
 tick_interval = 1.0
 mitigation_tags = Array[StringName]([&"affinity", &"technique", &"pill"])
+; ADR 0885's immunity family, first tagged content (DEF-0352): a defender whose
+; status.immune.burn reaches 1.0 refuses this outright, and immuneReduction.burn blunts it.
+immunity_tags = Array[StringName]([&"burn"])
 payload = {
 "mechanic": &"escalating_burn",
 "text": "Fire takes hold and burns hotter the longer it is left alone.",

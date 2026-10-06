@@ -8,16 +8,18 @@
 ;
 ; The coefficients are an INITIAL AUTHORED PASS, not balance: retune by editing here.
 ;
-; The status channels (status.power.omni / status.intensity.omni / status.resist.omni)
-; are produced BY THE BUILD (DEF-0346). CONTEST mode on all three (ADR 0891): the gate
-; and the net factors read ONE FIXED scale over the delta, and a realm-scaled input
+; The status channels (status.power.omni / status.intensity.omni / status.resist.omni /
+; status.duration.omni / status.durationReduction.omni) are produced BY THE BUILD
+; (DEF-0346, duration added under DEF-0352). CONTEST mode on all of them (ADR 0891): the
+; gate and the net factors read ONE FIXED scale over the delta, and a realm-scaled input
 ; saturates that scale — any epsilon of advantage would read certainty at R30 while the
 ; same shares read a real fraction at R1. The ladder belongs to the base magnitude
 ; (`element_power`), never to the contest.
-; `might` and `ferocity` both feed the offense half; `focus` the potency, `composure`
-; the resistance. The same `composure` feeds the LEECH answer half for every pool
-; (leech_resist.health/.qi/.stamina, ADR 0889) — a CONTEST rate, so the defender's answer
-; is a share of the build like every other contest input (ADR 0891).
+; `might` and `ferocity` both feed the offense half; `focus` the potency AND the duration;
+; `composure` the resistance AND the duration reduction. The same `composure` feeds the
+; LEECH answer half for every pool (leech_resist.health/.qi/.stamina, ADR 0889) — a
+; CONTEST rate, so the defender's answer is a share of the build like every other contest
+; input (ADR 0891).
 
 [ext_resource type="Script" path="res://src/core/aptitude_table.gd" id="1"]
 
@@ -58,6 +60,8 @@ edge_rows = Array[Dictionary]([
 {"channel": &"status.power.omni", "source": &"ferocity", "k": 0.15, "mode": "contest"},
 {"channel": &"status.intensity.omni", "source": &"focus", "k": 0.2, "mode": "contest"},
 {"channel": &"status.resist.omni", "source": &"composure", "k": 0.2, "mode": "contest"},
+{"channel": &"status.duration.omni", "source": &"focus", "k": 0.15, "mode": "contest"},
+{"channel": &"status.durationReduction.omni", "source": &"composure", "k": 0.15, "mode": "contest"},
 {"channel": &"leech_resist.health", "source": &"composure", "k": 0.008, "mode": "contest"},
 {"channel": &"leech_resist.qi", "source": &"composure", "k": 0.008, "mode": "contest"},
 {"channel": &"leech_resist.stamina", "source": &"composure", "k": 0.008, "mode": "contest"},

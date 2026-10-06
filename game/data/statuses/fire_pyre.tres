@@ -14,6 +14,9 @@ magnitude_unit = &"sibling_amp"
 magnitude_cap = 1.0
 tick_interval = 1.0
 mitigation_tags = Array[StringName]([&"affinity", &"technique"])
+; The same tag as `fire_immolation` (DEF-0352): one defence answers the whole burn family,
+; which is what makes the tag a family rather than one def's private note.
+immunity_tags = Array[StringName]([&"burn"])
 payload = {
 "mechanic": &"feed_siblings",
 "text": "A burning body burns harder. Every other burn already on the target feeds this one.",

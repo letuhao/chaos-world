@@ -46,7 +46,13 @@ func test_the_status_channels_have_a_producer() -> void:
 	var fed := {}
 	for edge in _table().to_edges():
 		fed[edge.channel] = true
-	for channel in [&"status.power.omni", &"status.intensity.omni", &"status.resist.omni"]:
+	for channel in [
+		&"status.power.omni",
+		&"status.intensity.omni",
+		&"status.resist.omni",
+		&"status.duration.omni",
+		&"status.durationReduction.omni",
+	]:
 		assert_eq(fed.has(channel), true, "%s is produced by the matrix" % String(channel))
 
 
