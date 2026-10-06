@@ -1858,6 +1858,45 @@ def _backfill_command(records: list[dict], args) -> int:
     return 0
 
 
+## Fields that describe a FILE ON DISK rather than an authoring decision. A rebuild that drops
+## these silently un-indexes a render: the row goes back to `planned` and the art becomes a file
+## nothing maps to, which is the defect DEF-0252 exists to name. Read as a CONSTANT so the set of
+## reality-bearing fields is one declaration rather than a key list repeated per rewrite site.
+RENDER_REALITY_FIELDS = (
+    "path",
+    "source",
+    "prompt",
+    "generated_on",
+    "license",
+    "seed",
+    "generation_settings",
+    "withdrawn",
+)
+
+
+def _merge_shot_preserving_render(fresh: dict, previous: dict | None) -> dict:
+    """A rebuilt shot carrying forward whatever the previous one recorded about its render.
+
+    `fresh` wins for every AUTHORING field, because the rebuild is what decides scene, pose,
+    expression, framing, canvas and daypart. `previous` wins for every field in
+    [constant RENDER_REALITY_FIELDS] and for `status`, because those describe bytes on disk: a
+    rebuild cannot un-render a file, and reporting a rendered shot as `planned` makes the catalog
+    disagree with the filesystem.
+
+    `previous` is None for a daypart with no prior row, which is the ordinary first-run case and
+    returns `fresh` unchanged rather than a copy.
+    """
+    if not isinstance(previous, dict):
+        return fresh
+    merged = dict(fresh)
+    for field in RENDER_REALITY_FIELDS:
+        if previous.get(field) not in (None, ""):
+            merged[field] = previous[field]
+    if previous.get("status") == "generated":
+        merged["status"] = "generated"
+    return merged
+
+
 def _daily_family_command(records: list[dict], args) -> int:
     """Give every canon record a COMPLETE `daily_life` family: one shot per `daypart`.
 
@@ -1966,6 +2005,25 @@ def _daily_family_command(records: list[dict], args) -> int:
                         "status": "planned",
                     }
                 )
+            # REBUILDING a family must not DESTROY what a render recorded. The first version of this
+            # rebuilt the whole `daily_life` family from fresh literals and dropped every
+            # `path`/`source`/`prompt`/`generated_on` on an already-rendered shot. Measured cost:
+            # 10411 shot rows, 0 carrying a path, while git history never held 19 either - so the
+            # provenance was gone and had never been committed. `daily-family` is idempotent and is
+            # re-run after a render, which is exactly when a rebuild must preserve rather than
+            # replace.
+            #
+            # The two kinds of field are separated rather than merged blindly: AUTHORING fields
+            # (scene, pose, expression, framing, canvas, daypart) belong to this function and are
+            # rewritten, while REALITY fields describe a file on disk and are carried forward
+            # untouched. `status` is carried too, because a rendered shot that a rebuild relabels
+            # `planned` reports a real file as though it had never been produced.
+            previous = {
+                str(shot.get("daypart")): shot
+                for shot in shots
+                if isinstance(shot, dict) and shot.get("slot") == "daily_life"
+            }
+            family = [_merge_shot_preserving_render(new, previous.get(daypart)) for new in family]
             art["shots"] = [
                 shot
                 for shot in shots
