@@ -174,8 +174,9 @@ func test_every_boss_dropped_qi_reagent_is_paid_unconditionally_on_every_clear()
 ## walks, and the qi gate audits never exercise it because `Probe.stock` grants items
 ## outright.
 ##
-## Two ways to hold a certain consumable, both counted: 15 are guaranteed DIRECT
-## drops already in the bag, the other 75 are crafted. A guaranteed drop is never
+## Two ways to hold a certain consumable, both counted: the 15 pinned direct drops
+## arrive in the bag from their own domains' hunts, and the rest are crafted. A
+## guaranteed drop is never
 ## re-crafted, because its recipe can name a rolled reagent, so insisting on the craft
 ## would assert something no player needs to do. Nothing is left to the roll any more,
 ## so there is no longer a class of consumable that is merely counted rather than
@@ -187,6 +188,7 @@ func test_every_certain_qi_consumable_is_held_end_to_end_from_its_own_domains() 
 	assert_eq(realms.size(), REALM_COUNT, "30 realms are walked")
 	var crafted := 0
 	var dropped := 0
+	var dropped_ids: Array[String] = []
 	var rolled := 0
 	var first_failure := ""
 	for realm_id in realms:
@@ -206,6 +208,7 @@ func test_every_certain_qi_consumable_is_held_end_to_end_from_its_own_domains() 
 		for item_id in certain:
 			if ItemsApi.has_item(actor, StringName(item_id)):
 				dropped += 1
+				dropped_ids.append(item_id)
 				continue
 			var recipe := _recipe(_craft_recipe(item_id))
 			if recipe == null:
@@ -238,9 +241,20 @@ func test_every_certain_qi_consumable_is_held_end_to_end_from_its_own_domains() 
 		REALM_COUNT * CONSUMABLE_ROLES.size(),
 		"all 90 qi consumables are acquirable on every single clear"
 	)
+	# The GUARANTEE is the route this asserts, not the exact split. Every pinned direct
+	# drop must be in the bag straight after its own domains' hunts — that is the claim
+	# the 15 exist to make. The COUNT is deliberately not pinned: a rolled pool can hand
+	# a craft-certain consumable over as a side drop too, and "the player got an extra
+	# elixir" is not a defect. Pinning the count made this suite read the hunt seed's
+	# roll stream instead of the acquisition program.
+	var missing: Array[String] = []
+	for item_id in BOSS_DROPPED_CONSUMABLES:
+		if not dropped_ids.has(item_id):
+			missing.append(item_id)
+	missing.sort()
 	assert_eq(
-		dropped,
-		BOSS_DROPPED_CONSUMABLES.size(),
-		"the boss-dropped consumables arrive as guaranteed drops, not as crafts"
+		missing,
+		[] as Array[String],
+		"every pinned boss-dropped consumable arrives as a guaranteed drop, not as a craft"
 	)
 	assert_eq(rolled, 0, "no qi consumable arrives only when the roll favours the player")
