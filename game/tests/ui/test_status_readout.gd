@@ -35,6 +35,12 @@ const CULTIVATION_STATUS := &"wood_bloom"
 ## interleaved and a test returning early would skip a free at its end.
 var _born: Array[Node] = []
 
+## Every `StatusLoop` `_root_loop` handed out. A `Callable` is the only holder the
+## screen has, and a Callable whose RefCounted target was freed is INVALID — a
+## temporary loop here would make `combat_exit_wired()` read false for a reason the
+## screen never saw, which is a test bug wearing a wiring bug's clothes.
+var _loops: Array[StatusLoop] = []
+
 
 ## The player and the composition root's own status wire over them — the same pair
 ## `item_workbench_app.gd` builds, so a purge here is the purge the app performs.
@@ -64,6 +70,7 @@ func teardown() -> void:
 		if is_instance_valid(node):
 			node.free()
 	_born.clear()
+	_loops.clear()
 
 
 func _screen(actor: Actor) -> LootEncounterScreen:
@@ -242,10 +249,13 @@ func _wired_screen(actor: Actor) -> LootEncounterScreen:
 	return screen
 
 
-## A `StatusLoop` over `actor`, matching the root's field. Built here rather than
-## borrowed so the case names the exact wiring it is asserting.
+## A `StatusLoop` over `actor`, matching the root's field. Held in `_loops` rather than
+## built inline, because the seam is a `Callable` and the loop must stay alive for as
+## long as the screen holds it.
 func _root_loop(actor: Actor) -> StatusLoop:
-	return StatusLoop.new(actor)
+	var loop := StatusLoop.new(actor)
+	_loops.append(loop)
+	return loop
 
 
 ## THE claim: a player who ends a fight stops carrying the debuff that fight inflicted.
@@ -267,12 +277,16 @@ func test_ending_a_fight_purges_the_debuff_that_fight_inflicted() -> void:
 		true,
 		"and the player can see they are burning"
 	)
+	# Leaving is refused for a player who never entered (the refusal
+	# `test_an_unwired_purge_still_lets_the_player_leave_the_fight` pins), so the fight
+	# is entered first — the same order the player takes.
+	assert_eq(screen.act_enter(), true, "the player enters the domain")
 
 	assert_eq(screen.act_leave(), true, "the player leaves the domain")
 
 	assert_eq(actor.has_status(COMBAT_STATUS), false, "the burn is gone the moment combat ends")
 	assert_eq(
-		String(screen.summary()["last_cleared"]).find("fire_immolation") >= 0,
+		(screen.summary()["last_cleared"] as Array).has("fire_immolation"),
 		true,
 		"and the purge NAMES what it removed, so the screen can report it"
 	)
@@ -295,6 +309,7 @@ func test_ending_a_fight_never_touches_a_cultivation_blessing() -> void:
 	var granted := StatusApi.apply_cultivation(actor, CULTIVATION_STATUS, 1.0)
 	assert_eq(bool(granted["ok"]), true, "the permanent blessing applies")
 	StatusApi.apply(actor, COMBAT_STATUS, 2.0)
+	assert_eq(screen.act_enter(), true, "the player enters the domain")
 	assert_eq(screen.act_leave(), true, "the player leaves the domain")
 
 	assert_eq(actor.has_status(COMBAT_STATUS), false, "the COMBAT burn was purged")
