@@ -89,9 +89,6 @@ func _ensure_loaded() -> void:
 		_absorb(load(path) as DialogueDef, path)
 
 
-var _loaded_unused: bool = false
-
-
 ## Take one def, refusing the three ways a conversation can be unplayable: it declares
 ## no id, its entry names no node it authors, or another conversation already claims its
 ## npc. Every refusal is a NAMED string rather than a dropped row, because a catalog

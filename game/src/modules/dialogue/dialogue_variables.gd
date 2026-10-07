@@ -48,6 +48,13 @@ const KIND_STRING := "string"
 ## and quietly compared against a float.
 const TYPES: Array[String] = [KIND_BOOL, KIND_INT, KIND_FLOAT, KIND_STRING]
 
+# --- refusals. Named, and every one is an AUTHORING or cap error ---------------
+
+const REFUSAL_NO_KEY := "no_key"
+const REFUSAL_UNSUPPORTED_TYPE := "unsupported_type"
+const REFUSAL_TYPE_MISMATCH := "type_mismatch"
+const REFUSAL_STORE_FULL := "variable_store_full"
+
 ## Rows this store may hold. A conversation cannot grow a save without limit, so a
 ## store past the cap REFUSES the write and reports it rather than dropping the oldest
 ## silently — a silently dropped flag is a door that opens forever after.
@@ -226,14 +233,6 @@ static func to_payload(store: DialogueVariables) -> Dictionary:
 		"version": SCHEMA_VERSION,
 		STATE_KEY: {} if store == null else store.to_dict(),
 	}
-
-
-# --- refusals. Named, and every one is an AUTHORING or cap error ---------------
-
-const REFUSAL_NO_KEY := "no_key"
-const REFUSAL_UNSUPPORTED_TYPE := "unsupported_type"
-const REFUSAL_TYPE_MISMATCH := "type_mismatch"
-const REFUSAL_STORE_FULL := "variable_store_full"
 
 
 # --- internals -----------------------------------------------------------------
