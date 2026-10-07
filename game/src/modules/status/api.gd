@@ -279,7 +279,11 @@ static func tick_statuses(actor: Actor, delta: float) -> Dictionary:
 			runtime.tick_elapsed -= interval
 			runtime.ticks_elapsed += 1
 			ticks += 1
-			damage += _pulse(actor, runtime)
+			var paid := _pulse(actor, runtime)
+			damage += paid
+			# ADR 0902 (P7): the meter's value-event source — the amount this pulse paid.
+			if paid > 0.0:
+				_feed_meter(actor, status.instance_id, runtime, paid)
 	actor.tick_statuses(delta)
 	var expired := _count_lost(before, _live_instances(actor))
 	_reconcile(actor)
@@ -654,6 +658,17 @@ static func record_instance_hit(
 	return StatusCounters.record(actor, instance_id, every_hits, reset_on_burst, hits)
 
 
+## One VALUE-EVENT advance in the instance key space (ADR 0902, P7): the second of the
+## ONE accumulator's two sources, where the first is a counted hit. Floats, because a
+## meter fills from an amount rather than a count; the crossing answers true.
+static func record_meter_value(
+	actor: Actor, instance_id: int, every: float, reset_on_burst: bool, value: float
+) -> bool:
+	if instance_id <= 0:
+		return false
+	return StatusCounters.advance(actor, instance_id, every, reset_on_burst, value)
+
+
 ## Both counter key spaces, as copies (ADR 0902, P6/P13 readback).
 static func counter_snapshot(actor: Actor) -> Dictionary:
 	return StatusCounters.snapshot(actor)
@@ -707,6 +722,32 @@ static func record_landed_blow(host: Actor, entry: Dictionary) -> bool:
 		# unique for every stacking except `coexist`, which this docblock names.
 		instance_id = _live_instance_for(host, status_id)
 	return record_instance_hit(host, instance_id, every_hits, reset_on_burst)
+
+
+## ADR 0902 (P7): a `meter`-kind status fills from the VALUE events its own pulses pay
+## — the second of the one accumulator's two sources (hit counts are the first, T4's
+## landed-blow path). Crossing the authored `payload.meter.every` publishes
+## `status_meter_fired`; `reset_on_burst` follows the same residual rule as every other
+## counter. A def that is not a meter is a no-op here, so every shipped def is
+## byte-identical.
+static func _feed_meter(
+	actor: Actor, instance_id: int, runtime: StatusRuntime, amount: float
+) -> void:
+	if actor == null or runtime == null or runtime.def == null:
+		return
+	var def := runtime.def
+	if def.kind != &"meter":
+		return
+	var config: Variant = def.payload.get("meter", {})
+	if not (config is Dictionary):
+		return
+	var authored := config as Dictionary
+	var every := maxf(0.0, float(authored.get("every", 0.0)))
+	if every <= 0.0:
+		return
+	var reset_on_burst := bool(authored.get("reset_on_burst", true))
+	if StatusCounters.advance(actor, instance_id, every, reset_on_burst, amount):
+		StatusEvents.note_meter_fired(actor.id, def.id, instance_id, amount)
 
 
 ## The element→status mapping of ADR 0105: the id whose def claims
@@ -959,6 +1000,10 @@ static func _kind_of(kind: StringName) -> StatusEffect.Kind:
 			return StatusEffect.Kind.AMPLIFIER
 		&"burst":
 			return StatusEffect.Kind.BURST
+		&"counter":
+			return StatusEffect.Kind.COUNTER
+		&"meter":
+			return StatusEffect.Kind.METER
 		_:
 			return StatusEffect.Kind.STAT_MODIFIER
 

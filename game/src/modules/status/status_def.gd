@@ -89,6 +89,8 @@ const KINDS: Array[StringName] = [
 	&"control",
 	&"amplifier",
 	&"burst",
+	&"counter",
+	&"meter",
 ]
 const SCOPES: Array[StringName] = [&"combat", &"cultivation"]
 const STACKING: Array[StringName] = [&"refresh", &"stack", &"replace", &"coexist"]
@@ -337,6 +339,7 @@ func problems() -> Array[String]:
 	out.append_array(_mitigation_problems())
 	out.append_array(_mechanic_problems())
 	out.append_array(_modifier_problems())
+	out.append_array(_kind_problems())
 	return out
 
 
@@ -392,6 +395,35 @@ func to_dict() -> Dictionary:
 		"spends_on_apply": bool(payload.get("spends_on_apply", false)),
 		"blockable": bool(payload.get("blockable", true)),
 	}
+
+
+## The kind-conditional payload rules (ADR 0902, P2/P7). A `counter` or `meter` def
+## whose accumulator has nothing authored would be a status that silently never fires —
+## the "loads and never resolves" shape this file refuses — so the config is REQUIRED
+## for those two kinds and validated here.
+##
+## A def of any OTHER kind may still carry `payload.counter`: T4's landed-blow firing
+## counts it kind-agnostically, so this rule ADDS a requirement for the new kinds
+## rather than moving the existing one.
+func _kind_problems() -> Array[String]:
+	var out: Array[String] = []
+	if kind == &"counter":
+		var counter: Variant = payload.get("counter", {})
+		if not (counter is Dictionary) or (counter as Dictionary).is_empty():
+			out.append("is a counter kind with no payload.counter to fire on")
+		elif int((counter as Dictionary).get("every_hits", 0)) <= 0:
+			out.append("authors payload.counter without every_hits > 0, so it can never fire")
+	if kind == &"meter":
+		var meter: Variant = payload.get("meter", {})
+		if not (meter is Dictionary) or (meter as Dictionary).is_empty():
+			out.append("is a meter kind with no payload.meter to fill toward")
+		elif float((meter as Dictionary).get("every", 0.0)) <= 0.0:
+			out.append("authors payload.meter without every > 0.0, so it can never fire")
+		if magnitude_unit != &"health_share" and magnitude_unit != &"element_power":
+			out.append(
+				"is a meter kind whose magnitude_unit pays no pulse, so no value can fill it"
+			)
+	return out
 
 
 func _mitigation_problems() -> Array[String]:

@@ -42,21 +42,30 @@ static func grant_key(grant_id: StringName, scope_key: StringName) -> String:
 	)
 
 
-## Advance one counter and answer whether its threshold was reached on THIS call.
-## `key` decides the space: a String/StringName names the grant space (empty is
-## refused), an int names the instance space.
+## Advance one counter by `hits` COUNTED units (ADR 0902, P6=C) — the hit-count
+## source. Delegates to [method advance], the ONE accumulator both sources share.
 static func record(
 	actor: Actor, key: Variant, every_hits: int, reset_on_burst: bool, hits: int = 1
 ) -> bool:
-	if actor == null or every_hits <= 0 or hits <= 0:
+	return advance(actor, key, float(every_hits), reset_on_burst, float(hits))
+
+
+## Advance one accumulator by an AMOUNT — the value-event source (ADR 0902, P7), and
+## the one implementation both sources call. Answers whether the threshold was reached
+## on THIS call: `reset_on_burst` keeps the residual (`n` modulo `every`), otherwise
+## the running total is kept and every later call past the threshold answers true.
+static func advance(
+	actor: Actor, key: Variant, every: float, reset_on_burst: bool, amount: float
+) -> bool:
+	if actor == null or every <= 0.0 or amount <= 0.0:
 		return false
 	var space: Variant = _space_for(actor, key)
 	if not (space is Dictionary):
 		return false
 	var stored := space as Dictionary
-	var n := int(stored.get(key, 0)) + hits
-	if n >= every_hits:
-		stored[key] = (n % every_hits) if reset_on_burst else n
+	var n := float(stored.get(key, 0)) + amount
+	if n >= every:
+		stored[key] = fmod(n, every) if reset_on_burst else n
 		return true
 	stored[key] = n
 	return false

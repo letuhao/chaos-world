@@ -25,6 +25,8 @@ enum Kind {
 	CONTROL,  ## gates an action; magnitude is the gate's strength.
 	AMPLIFIER,  ## scales other statuses; magnitude is the factor.
 	BURST,  ## lands once and expires; magnitude is the single hit.
+	COUNTER,  ## accumulates HIT COUNTS toward an authored threshold (ADR 0902, P2/P7).
+	METER,  ## accumulates VALUE EVENTS toward an authored threshold (ADR 0902, P2/P7).
 }
 
 enum Scope {
@@ -212,6 +214,6 @@ static func _enum_or_default(value: Variant, fallback: int) -> int:
 	if index < 0:
 		return fallback
 	match index:
-		Kind.DOT, Kind.STAT_MODIFIER, Kind.CONTROL, Kind.AMPLIFIER, Kind.BURST:
+		Kind.DOT, Kind.STAT_MODIFIER, Kind.CONTROL, Kind.AMPLIFIER, Kind.BURST, Kind.COUNTER, Kind.METER:
 			return index
 	return fallback

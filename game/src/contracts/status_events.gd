@@ -39,6 +39,12 @@ signal status_resisted(
 	host_id: StringName, status_id: StringName, reason: StringName, detail: StringName
 )
 
+## A meter-kind status crossed its authored threshold (ADR 0902, P7). `amount` is the
+## value event that crossed it, so a subscriber can scale its reaction.
+signal status_meter_fired(
+	host_id: StringName, status_id: StringName, instance_id: int, amount: float
+)
+
 ## How many refusals the log keeps (ADR 0902, P13). A read model for a screen and a
 ## test rather than a history: the oldest entry is dropped once the cap is reached,
 ## and the bound is a constant, so no caller can grow it by refusing harder.
@@ -68,25 +74,34 @@ static func note_applied(
 ## subscriber that re-reads the log from inside its own handler sees the fact it was
 ## just told about.
 static func note_resisted(
-	host_id: StringName,
-	status_id: StringName,
-	reason: StringName,
-	detail: StringName = &""
+	host_id: StringName, status_id: StringName, reason: StringName, detail: StringName = &""
 ) -> void:
 	var bus := shared()
-	bus._resisted.append(
-		{
-			"host": String(host_id),
-			"id": String(status_id),
-			"reason": String(reason),
-			"detail": String(detail),
-		}
+	(
+		bus
+		. _resisted
+		. append(
+			{
+				"host": String(host_id),
+				"id": String(status_id),
+				"reason": String(reason),
+				"detail": String(detail),
+			}
+		)
 	)
 	# Bounded as each entry lands — ONE `if`, never a `while`: the log is a window,
 	# and this is the loop shape INC-0002 cannot exist in.
 	if bus._resisted.size() > RESISTED_LOG_CAP:
 		bus._resisted.pop_front()
 	bus.status_resisted.emit(host_id, status_id, reason, detail)
+
+
+## Emit one METER-FIRED fact (ADR 0902, P7). Emit-only: the meter's own state is the
+## accumulator's, and this announces the crossing rather than recording a second copy.
+static func note_meter_fired(
+	host_id: StringName, status_id: StringName, instance_id: int, amount: float
+) -> void:
+	shared().status_meter_fired.emit(host_id, status_id, instance_id, amount)
 
 
 ## The refusals newest-last, as primitives-only copies: a caller cannot reach into
