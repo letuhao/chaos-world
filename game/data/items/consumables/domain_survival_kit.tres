@@ -7,21 +7,22 @@ script = ExtResource("1_item")
 id = &"domain_survival_kit"
 display_name = "Domain Survival Kit"
 category = &"consumable"
-rarity = &"uncommon"
-realm = &"qi_condensation"
+rarity = &"common"
+realm = &"qi_refining"
 subcategory = &"food"
 grade = &"mortal"
 stackable = true
 max_stack = 5
 tags = Array[StringName]([&"domain", &"survival", &"food", &"water", &"torch"])
-sources = Array[StringName]([&"domain:entry", &"gather:domain_cache", &"craft:domain_survival_kit_recipe"])
+sources = Array[StringName]([&"domain:qi_qi_refining_domain", &"gather:domain_cache", &"craft:domain_survival_kit_recipe"])
 description = "A bundled kit. Restores 2 food, 2 water, and 2 torch when consumed."
-# resource: food, water, torch
-# depletion_rate: 1 per room entered (each resource)
-# duration: 2 rooms (all resources)
-# cost_when_empty: starvation, dehydration, darkness
+; resource: food, water, torch
+; depletion_rate: 1 per room entered (each resource)
+; duration: 2 rooms (all resources)
+; cost_when_empty: starvation, dehydration, darkness
+; Values sit at the qi_refining magnitude window's floor (data audit D5: [1.0, 10.0]).
 fixed_modifiers = Array[Dictionary]([
-	{"option_id": &"core_health_regen", "value": 0.3},
-	{"option_id": &"core_stamina_regen", "value": 0.3},
+	{"option_id": &"core_health_regen", "value": 1.0},
+	{"option_id": &"core_stamina_regen", "value": 1.0},
 ])
 roll_spec = {"count": 0, "contexts": []}

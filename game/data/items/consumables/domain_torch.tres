@@ -8,18 +8,18 @@ id = &"domain_torch"
 display_name = "Domain Torch"
 category = &"consumable"
 rarity = &"common"
-realm = &"qi_condensation"
+realm = &"qi_refining"
 subcategory = &"talisman"
 grade = &"mortal"
 stackable = true
 max_stack = 10
 tags = Array[StringName]([&"domain", &"survival", &"torch"])
-sources = Array[StringName]([&"domain:entry", &"gather:domain_cache"])
+sources = Array[StringName]([&"domain:qi_qi_refining_domain", &"gather:domain_cache"])
 description = "A wrapped torch. Restores 4 torch when consumed."
-# resource: torch
-# depletion_rate: 1 per room entered
-# duration: 4 rooms
-# cost_when_empty: darkness (perception penalty)
+; resource: torch
+; depletion_rate: 1 per room entered
+; duration: 4 rooms
+; cost_when_empty: darkness (perception penalty)
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"core_move_speed", "value": 0.02},
 ])

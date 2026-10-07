@@ -8,19 +8,20 @@ id = &"domain_waterskin"
 display_name = "Domain Waterskin"
 category = &"consumable"
 rarity = &"common"
-realm = &"qi_condensation"
+realm = &"qi_refining"
 subcategory = &"elixir"
 grade = &"mortal"
 stackable = true
 max_stack = 10
 tags = Array[StringName]([&"domain", &"survival", &"water"])
-sources = Array[StringName]([&"domain:entry", &"gather:domain_cache"])
+sources = Array[StringName]([&"domain:qi_qi_refining_domain", &"gather:domain_cache"])
 description = "A sturdy waterskin. Restores 3 water when consumed."
-# resource: water
-# depletion_rate: 1 per room entered
-# duration: 3 rooms
-# cost_when_empty: dehydration (health DOT)
+; resource: water
+; depletion_rate: 1 per room entered
+; duration: 3 rooms
+; cost_when_empty: dehydration (health DOT)
+; Values sit at the qi_refining magnitude window's floor (data audit D5: [1.0, 10.0]).
 fixed_modifiers = Array[Dictionary]([
-	{"option_id": &"core_stamina_regen", "value": 0.5},
+	{"option_id": &"core_stamina_regen", "value": 1.0},
 ])
 roll_spec = {"count": 0, "contexts": []}
