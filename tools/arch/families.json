@@ -15,6 +15,8 @@
     "loot_tiers": {"data_dir": "loot", "def_class": "LootTierDef", "module": "loot"},
     "loot_encounters": {"data_dir": "loot/encounters", "def_class": "LootEncounterDef", "module": "loot"},
     "recipes": {"data_dir": "recipes", "def_class": "RecipeDef", "module": "items"},
+    "chests": {"data_dir": "chests", "def_class": "ChestDef", "module": "items"},
+    "dialogues": {"data_dir": "dialogue", "def_class": "DialogueDef", "module": "dialogue"},
     "bosses": {"data_dir": "bosses", "def_class": "BossDef", "module": "world"},
     "domains": {"data_dir": "domains", "def_class": "DomainDef", "module": "world"},
     "fates": {"data_dir": "destiny/fates", "def_class": "FateDef", "module": "destiny"},
