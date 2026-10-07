@@ -295,6 +295,11 @@ func _ready() -> void:
 	)
 	SaveApi.install_store("market", WorldLedgerStore.new("market", MarketState.SCHEMA_VERSION))
 	SaveApi.install_store("custody", WorldLedgerStore.new("custody", CustodyState.SCHEMA_VERSION))
+	# ## The worldmap ledger (worldmap launch slice). Changed cells and the
+	# ## resume point ride the envelope key it owns; the venture boot stages
+	# ## both into this same instance, so the save and the screen cannot drift
+	# ## into two answers about where the holes are or where the player stood.
+	SaveApi.install_store(WorldmapLedger.WORLD_KEY, WorldmapLedger.new())
 	# ## The world-scoped POLITY ledger (DEF-0119), installed in the same block and for the
 	# ## same reason.
 	#

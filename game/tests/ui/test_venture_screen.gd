@@ -263,3 +263,17 @@ func test_debug_without_a_world_refuses() -> void:
 	if screen == null:
 		return
 	assert_eq(screen.call("act_debug"), false, "nothing standing, nothing to paint")
+
+
+func test_reopening_resumes_where_the_player_stood() -> void:
+	var screen := _venture_screen()
+	if screen == null:
+		return
+	screen.call("act_open")
+	screen.call("act_east")
+	var cell := _cell_of(screen.call("summary") as Dictionary)
+	assert_ne(cell, Vector2i(0, 1), "the step moved")
+	screen.call("act_open")
+	assert_eq(
+		_cell_of(screen.call("summary") as Dictionary), cell, "and reopening resumes the cell"
+	)

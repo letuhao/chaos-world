@@ -20,6 +20,14 @@ static var _domain_exit: Callable = Callable()
 ## Installed by `app/`; tests reset through `clear_transition`.
 static var _transition: Callable = Callable()
 
+## Descent return cells, outermost first. Owned HERE rather than by any scene:
+## navigating away frees the scene, and a return recorded on a freed node is
+## a way back that no longer exists. Non-empty means inside a domain node.
+## Tests reset through `clear_returns`; a domain-route Leave that bypasses
+## the scene orphans the top entry, and the next descent stacks above it —
+## LIFO still returns the newest first, so the orphan costs nothing.
+static var _returns: Array = []
+
 
 ## Forget every node and edge. Tests only: production graphs are built once.
 static func clear_graph() -> void:
@@ -115,6 +123,36 @@ static func leave_domain_run() -> Dictionary:
 	if not has_domain():
 		return {"ok": false, "reason": "no_domain_seam"}
 	return _domain_exit.call() as Dictionary
+
+
+## Remember where a descent left from. The scene pushes once the run exists.
+## (Statics live beside `_graph` above.)
+static func push_return(node_id: String, cell: Vector2i) -> void:
+	_returns.append({"node": node_id, "cell": cell})
+
+
+## Take the newest return, or `{}` when above ground.
+static func pop_return() -> Dictionary:
+	if _returns.is_empty():
+		return {}
+	return _returns.pop_back() as Dictionary
+
+
+## Read the newest return without taking it, or `{}` when above ground.
+static func peek_return() -> Dictionary:
+	if _returns.is_empty():
+		return {}
+	return (_returns[_returns.size() - 1] as Dictionary).duplicate(true)
+
+
+## How many descents deep the player stands.
+static func return_depth() -> int:
+	return _returns.size()
+
+
+## Forget every return. Tests only.
+static func clear_returns() -> void:
+	_returns.clear()
 
 
 ## Install the transition hook for non-seamless arrivals (statics beside

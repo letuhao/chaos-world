@@ -50,9 +50,13 @@ func test_the_container_the_ledger_owns_is_the_one_the_store_routes() -> void:
 			break
 	assert_ne(line.is_empty(), true, "the store routes a worldmap container")
 	assert_eq(
-		line.contains('"mutations"'), true, "and it routes the one container this ledger owns"
+		line.contains('"mutations"') and line.contains('"position"'),
+		true,
+		"and it routes both containers this ledger owns"
 	)
-	assert_eq(WorldmapLedger.CONTAINERS, ["mutations"], "and the ledger owns exactly one")
+	assert_eq(
+		WorldmapLedger.CONTAINERS, ["mutations", "position"], "and the ledger owns exactly two"
+	)
 
 
 func test_a_corrupt_overlay_repairs_instead_of_believed() -> void:
@@ -99,13 +103,23 @@ func test_a_hole_dug_this_session_is_still_open_after_the_quit() -> void:
 	assert_eq(_standable(first_session, victim), true, "which is walkable now")
 
 	var ledger := WorldmapLedger.new()
-	ledger.write_ledger({"mutations": first_session.export_mutations()})
+	ledger.write_ledger(
+		{
+			"mutations": first_session.export_mutations(),
+			"position": {"node": "overworld", "cell": [2, 1]}
+		}
+	)
 	SaveApi.install_store(WorldmapLedger.WORLD_KEY, ledger)
 	assert_eq(bool(SaveApi.persist(_hero(), "standard")["ok"]), true, "and the save landed")
 
 	var envelope := SaveStore.restore()["envelope"] as Dictionary
 	var carried = (envelope.get("world", {}) as Dictionary).get(WorldmapLedger.WORLD_KEY)
 	assert_eq(carried is Dictionary, true, "mutations rode out in the envelope")
+	assert_eq(
+		((carried as Dictionary).get("position", {}) as Dictionary).get("node", ""),
+		"overworld",
+		"with the resume point beside them"
+	)
 
 	var next_session := WorldmapLedger.new()
 	SaveApi.install_store(WorldmapLedger.WORLD_KEY, next_session)
@@ -132,6 +146,28 @@ func test_import_replaces_the_overlay_and_drops_the_cache() -> void:
 	)
 	assert_eq(
 		streamer.summary().get("cached", -1) as int, 0, "with no stale chunks disagreeing with it"
+	)
+
+
+func test_a_resume_point_rides_along_and_repairs() -> void:
+	var ledger := WorldmapLedger.new()
+	ledger.write_ledger({"position": {"node": "overworld", "cell": [3, 1]}})
+	var read := ledger.read_ledger()
+	assert_eq(
+		(read.get("position", {}) as Dictionary).get("node", ""), "overworld", "the node rides"
+	)
+	assert_eq((read.get("position", {}) as Dictionary).get("cell", []), [3, 1], "with the cell")
+	ledger.write_ledger({"position": {"node": "", "cell": [3]}})
+	assert_eq(
+		(ledger.read_ledger().get("position", {}) as Dictionary).is_empty(),
+		true,
+		"while a malformed point restores nothing rather than somewhere wrong"
+	)
+	ledger.write_ledger({})
+	assert_eq(
+		(ledger.read_ledger().get("position", {}) as Dictionary).is_empty(),
+		true,
+		"and an absent point is a new arrival, not a corrupt save"
 	)
 
 

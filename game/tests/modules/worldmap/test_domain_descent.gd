@@ -21,6 +21,7 @@ var _exits := 0
 
 func setup() -> void:
 	WorldmapApi.clear_domain()
+	WorldmapApi.clear_returns()
 	_scene = null
 	_hero = null
 	_entered.clear()
@@ -29,6 +30,7 @@ func setup() -> void:
 
 func teardown() -> void:
 	WorldmapApi.clear_domain()
+	WorldmapApi.clear_returns()
 	if _scene != null and is_instance_valid(_scene):
 		if _scene.get_parent() != null:
 			_scene.get_parent().remove_child(_scene)
@@ -117,6 +119,33 @@ func _open() -> void:
 	_scene = WorldmapScene.new()
 	var outcome := _scene.open(graph, "overworld", _configs())
 	assert_eq(bool(outcome.get("ok", false)), true, "the overworld opens")
+
+
+func test_the_way_back_survives_the_scene_that_pushed_it() -> void:
+	# Navigation frees the scene mid-descent. The return lives module-side,
+	# so a fresh scene over the same graph still knows the way back.
+	_hero = _actor()
+	_install()
+	_open()
+	_scene.step(1, 0)
+	assert_eq(_scene.debug_summary().get("node"), "cave", "inside")
+	_scene.free()
+	_scene = null
+	var graph := WorldmapGraph.new()
+	graph.add_node({"id": "overworld", "kind": &"wilderness", "parent": ""})
+	graph.add_node({"id": "cave", "kind": &"dungeon", "parent": "overworld"})
+	_scene = WorldmapScene.new()
+	var outcome := _scene.open(graph, "overworld", _configs())
+	assert_eq(bool(outcome.get("ok", false)), true, "a fresh scene opens above ground")
+	assert_eq(
+		(_scene.debug_summary().get("domain", {}) as Dictionary).is_empty(),
+		false,
+		"reading the standing descent as its own"
+	)
+	var back := _scene.return_from_domain()
+	assert_eq(bool(back.get("ok", false)), true, "and the way back still opens")
+	assert_eq(_scene.player_cell(), Vector2i(1, 1), "on the exact cell")
+	assert_eq(DomainApi.rooms(_hero).is_empty(), true, "with the run left through the seam")
 
 
 func test_a_descent_with_no_seam_refuses_by_name() -> void:

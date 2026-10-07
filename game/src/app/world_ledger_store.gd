@@ -84,9 +84,10 @@ const _KEY_CONTAINERS := {
 	# reason `polity` and `world_time` are here: `core/worldmap_ledger.gd` may
 	# not name this store and this store may not name that file, so the
 	# container is AUTHORED here and asserted equal to
-	# `WorldmapLedger.CONTAINERS` by test. ONE container, because seeds
-	# regenerate everything else — only changed cells ride the envelope.
-	"worldmap": ["mutations"],
+	# `WorldmapLedger.CONTAINERS` by test. TWO containers: changed cells, and
+	# the resume point — seeds regenerate everything else, but neither the
+	# holes nor where the player stood.
+	"worldmap": ["mutations", "position"],
 }
 
 ## The one envelope key this view reads and writes. Fixed at construction, never a field a

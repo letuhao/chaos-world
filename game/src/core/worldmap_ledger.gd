@@ -24,8 +24,10 @@ const SCHEMA_VERSION := 1
 
 ## The containers this ledger owns. `app/world_ledger_store.gd` routes a key
 ## by container NAME and may not reach this file's normalizer, so the table is
-## authored here and asserted against the store's copy by test.
-const CONTAINERS: Array[String] = ["mutations"]
+## authored here and asserted against the store's copy by test. `mutations`
+## is what changed; `position` is where the player stood (node + cell) — the
+## one fact a resume needs that regeneration cannot answer.
+const CONTAINERS: Array[String] = ["mutations", "position"]
 
 ## Bounds, not budgets. A mutation overlay grows one entry per destroyed cell,
 ## so a save that never prunes is a save that grows without a ceiling — the
@@ -93,7 +95,25 @@ static func normalize_payload(payload: Dictionary) -> Dictionary:
 				break
 			kept_cells[cell_key] = cells[cell_key]
 		capped[chunk_id] = kept_cells
-	return {"version": SCHEMA_VERSION, "mutations": capped}
+	return {
+		"version": SCHEMA_VERSION, "mutations": capped, "position": _normalize_position(payload)
+	}
+
+
+## The resume point as the disk should carry it: node plus cell, both present
+## and well-shaped, or nothing. An absent or malformed position is a new
+## arrival, not a corrupt save — the entry row is the honest answer for it.
+static func _normalize_position(payload: Dictionary) -> Dictionary:
+	var raw = payload.get("position", {})
+	if not (raw is Dictionary):
+		return {}
+	var node := String((raw as Dictionary).get("node", ""))
+	var cell := (raw as Dictionary).get("cell", []) as Array
+	if node.is_empty() or cell.size() != 2:
+		return {}
+	if not (str(cell[0]).is_valid_int() and str(cell[1]).is_valid_int()):
+		return {}
+	return {"node": node, "cell": [int(cell[0]), int(cell[1])]}
 
 
 ## A ledger as the disk should carry it, JSON-safe. String keys, plain bools.

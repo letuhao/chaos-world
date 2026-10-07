@@ -33,6 +33,8 @@ const ENV := "mortal_greenwood"
 
 ## Open `node_id` under the screen's holder, freeing whatever stood there.
 ## Refuses an unknown node by name; a half-opened node is reported, never shown.
+## A saved position for the node resumes it (falling back to the entry when
+## the ground moved), and saved mutations import before anything renders.
 static func open(screen: Control, node_id: String) -> Dictionary:
 	if screen == null:
 		return {"ok": false, "reason": "no_surface"}
@@ -51,42 +53,59 @@ static func open(screen: Control, node_id: String) -> Dictionary:
 	if not bool(outcome.get("ok", false)):
 		scene.free()
 		return outcome
+	_restore(scene, node_id)
 	return {"ok": true, "reason": "", "node": node_id}
 
 
-## Free the world under the screen. Idempotent: closing nothing reports
-## `{"ok": true, "freed": 0}` rather than failing a teardown that calls twice.
+## Free the world under the screen. Mutations ride out to the ledger first:
+## closing is the last verb that sees them. Idempotent: closing nothing
+## reports `{"ok": true, "freed": 0}` rather than failing a teardown that
+## calls twice.
 static func close(screen: Control) -> Dictionary:
 	var scene := _scene_of(screen)
 	if scene == null:
 		return {"ok": true, "reason": "", "freed": 0}
+	_persist(scene)
 	scene.free()
 	return {"ok": true, "reason": "", "freed": 1}
 
 
-## Step the player one cell. Unopened reads as refused, not as a crash.
+## Step the player one cell. Records the resume point afterwards: a step is
+## the one verb that always moves it. Unopened reads as refused, not a crash.
 static func step(screen: Control, dx: int, dy: int) -> Dictionary:
 	var scene := _scene_of(screen)
 	if scene == null:
 		return {"moved": false, "traveled": false, "reason": "unopened"}
-	return scene.step(dx, dy)
+	var outcome := scene.step(dx, dy)
+	if bool(outcome.get("moved", false)):
+		_record_position(scene)
+	return outcome
 
 
-## Destroy whatever the player's cell masks. Unopened refuses by the same name.
+## Destroy whatever the player's cell masks. Mutations ride out to the ledger
+## at once: a hole is the one change a quit must never lose. Unopened refuses
+## by the same name.
 static func destroy(screen: Control) -> Dictionary:
 	var scene := _scene_of(screen)
 	if scene == null:
 		return {"ok": false, "reason": "unopened", "freed": 0}
-	return scene.destroy_at(scene.player_cell())
+	var outcome := scene.destroy_at(scene.player_cell())
+	if bool(outcome.get("ok", false)):
+		_persist(scene)
+	return outcome
 
 
 ## Leave the domain node and stand back on the exact cell left from.
-## Unopened refuses by the same name; above ground refuses `not_inside`.
+## Records the resume point: the return is a move. Unopened refuses by the
+## same name; above ground refuses `not_inside`.
 static func return_from_domain(screen: Control) -> Dictionary:
 	var scene := _scene_of(screen)
 	if scene == null:
 		return {"ok": false, "reason": "unopened"}
-	return scene.return_from_domain()
+	var outcome := scene.return_from_domain()
+	if bool(outcome.get("ok", false)):
+		_record_position(scene)
+	return outcome
 
 
 ## Show or hide the debug painting on the world under the screen. Unopened
@@ -156,6 +175,58 @@ static func _scene_of(screen: Control) -> WorldmapScene:
 	if holder == null:
 		return null
 	return holder.get_node_or_null(NodePath(WORLD_NODE)) as WorldmapScene
+
+
+## The installed worldmap ledger, or null when nobody installed one (a
+## headless probe driving the boot directly). Missing is skipped, never
+## fabricated: writing a resume into nothing is how a position is believed
+## saved and is not.
+static func _ledger() -> WorldmapLedger:
+	return SaveApi.store_for(WorldmapLedger.WORLD_KEY) as WorldmapLedger
+
+
+## Copy the scene's overlay and resume point into the ledger. Mutations and
+## position ride the next autosave from there; this only stages them.
+static func _persist(scene: WorldmapScene) -> void:
+	var ledger := _ledger()
+	if ledger == null:
+		return
+	var overlay := scene.streamer().export_mutations()
+	var cell := scene.player_cell()
+	var stored := ledger.read_ledger()
+	stored["mutations"] = overlay
+	stored["position"] = {"node": scene.debug_summary().get("node", ""), "cell": [cell.x, cell.y]}
+	ledger.write_ledger(stored)
+
+
+## Record the resume point alone. Steps and returns move it; the overlay only
+## moves on destruction, so this stays cheap enough to run per step.
+static func _record_position(scene: WorldmapScene) -> void:
+	var ledger := _ledger()
+	if ledger == null:
+		return
+	var stored := ledger.read_ledger()
+	var cell := scene.player_cell()
+	stored["position"] = {"node": scene.debug_summary().get("node", ""), "cell": [cell.x, cell.y]}
+	ledger.write_ledger(stored)
+
+
+## Restore a saved session into a freshly opened scene: mutations first (so
+## the ground renders broken), then the resume point for the opened node.
+## Anything absent restores nothing; a stale cell falls back to the entry.
+static func _restore(scene: WorldmapScene, node_id: String) -> void:
+	var ledger := _ledger()
+	if ledger == null:
+		return
+	var stored := ledger.read_ledger()
+	scene.streamer().import_mutations(stored.get("mutations", {}) as Dictionary)
+	var position := stored.get("position", {}) as Dictionary
+	if String(position.get("node", "")) != node_id:
+		return
+	var cell := position.get("cell", []) as Array
+	if cell.size() != 2:
+		return
+	scene.warp(Vector2i(int(cell[0]), int(cell[1])))
 
 
 ## The demo graph. Rebuilt per call from constants: places change rarely and
@@ -243,9 +314,9 @@ static func _demo_configs() -> Dictionary:
 			"domain_seed": 20261003,
 		},
 		"far":
+		# A second environment across the portal: the far side renders
+		# plains ground under the same pipeline, so the demo proves one
 		{
-			# A second environment across the portal: the far side renders
-			# plains ground under the same pipeline, so the demo proves one
 			# graph spanning two looks, two chunk sizes and two seeds.
 			"environment": "mortal_plains",
 			"chunk_size": 12,

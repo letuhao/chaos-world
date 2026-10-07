@@ -40,10 +40,9 @@ var _player: Node2D = null
 var _holders: Dictionary = {}
 var _textures: Dictionary = {}
 var _debug_borders := false
-## Return cells for domain descents, outermost first. Non-empty means the
-## player stands inside a domain node: the one flag both `step` and
-## `destroy_at` read, so there is no second "am I inside" to disagree.
-var _returns: Array = []
+## Inside-domain reads through `WorldmapApi.return_depth()`: the return stack
+## is module-owned (it survives the scene that pushed it), so there is no
+## member here to disagree with it.
 
 
 ## Open a node: build the streamer, generate the entry chunk, render the
@@ -94,7 +93,7 @@ func player_cell() -> Vector2i:
 ## so a step here refuses `inside_domain` rather than striding through walls
 ## the scene cannot see.
 func step(dx: int, dy: int) -> Dictionary:
-	if not _returns.is_empty():
+	if WorldmapApi.return_depth() > 0:
 		return {"moved": false, "traveled": false, "reason": "inside_domain"}
 	var target := _player_cell + Vector2i(dx, dy)
 	var cc := _chunk_coords(target)
@@ -125,7 +124,7 @@ func step(dx: int, dy: int) -> Dictionary:
 ## and returning keeps it. Returns how many cells were freed. Inside a domain
 ## node there is no chunk to break: rooms keep their own state on the run.
 func destroy_at(cell: Vector2i) -> Dictionary:
-	if not _returns.is_empty():
+	if WorldmapApi.return_depth() > 0:
 		return {"ok": false, "freed": 0, "reason": "inside_domain"}
 	var cc := _chunk_coords(cell)
 	var local := _local_of(cell)
@@ -223,8 +222,13 @@ func debug_summary() -> Dictionary:
 		holders.append(String(id))
 	holders.sort()
 	var domain := {}
-	if not _returns.is_empty():
-		var back := _returns[_returns.size() - 1] as Dictionary
+	if WorldmapApi.return_depth() > 0:
+		# The stack is module-owned: a fresh scene opened while a descent
+		# stands elsewhere reads the same truth — the player is inside, and
+		# this overworld view is a backdrop until the return, not a second
+		# vote. The template below is this node's own config, which is empty
+		# unless THIS node is the domain.
+		var back := WorldmapApi.peek_return()
 		var cell := back.get("cell", Vector2i.ZERO) as Vector2i
 		domain = {
 			"template": String(_config.get("domain_template", "")),
@@ -388,7 +392,7 @@ func _descend(
 	)
 	if not bool(entered.get("ok", false)):
 		return {"traveled": false, "reason": String(entered.get("reason", ""))}
-	_returns.append({"node": _node_id, "cell": _player_cell})
+	WorldmapApi.push_return(_node_id, _player_cell)
 	_node_id = to_node
 	_player_cell = edge.get("to_cell", Vector2i.ZERO) as Vector2i
 	_config = target_config
@@ -402,12 +406,12 @@ func _descend(
 ## and rendered range are exactly as the descent found them. Refuses
 ## `not_inside` above ground and passes a refused leave through untouched.
 func return_from_domain() -> Dictionary:
-	if _returns.is_empty():
+	if WorldmapApi.return_depth() == 0:
 		return {"ok": false, "reason": "not_inside"}
 	var left := WorldmapApi.leave_domain_run()
 	if not bool(left.get("ok", false)):
 		return {"ok": false, "reason": String(left.get("reason", ""))}
-	var back := _returns.pop_back() as Dictionary
+	var back := WorldmapApi.pop_return()
 	_node_id = String(back.get("node", ""))
 	_player_cell = back.get("cell", Vector2i.ZERO) as Vector2i
 	_config = (_node_configs.get(_node_id, {}) as Dictionary).duplicate(true)
@@ -417,6 +421,24 @@ func return_from_domain() -> Dictionary:
 	refresh_around(_chunk_of(_player_cell))
 	_place_player()
 	return {"ok": true, "reason": ""}
+
+
+## Stand on `cell`, trusting a restore over fresh ground. Falls back to the
+## entry row when the cell is outside the streamed world or no longer
+## standable (content moved under an old save): a restore that strands is
+## worse than one that starts at the door. Reports which answer it gave.
+func warp(cell: Vector2i) -> Dictionary:
+	var cc := _chunk_coords(cell)
+	_streamer.chunk_data(_node_id, cc.x, cc.y, _size, _seed)
+	if _standable(cell):
+		_player_cell = cell
+		refresh_around(_chunk_of(cell))
+		_place_player()
+		return {"ok": true, "reason": "", "cell": [cell.x, cell.y]}
+	_player_cell = Vector2i(0, int(_config.get("entry_row", 1)))
+	refresh_around(_chunk_of(_player_cell))
+	_place_player()
+	return {"ok": true, "reason": "fallback_entry", "cell": [_player_cell.x, _player_cell.y]}
 
 
 func _clear_holders() -> void:
