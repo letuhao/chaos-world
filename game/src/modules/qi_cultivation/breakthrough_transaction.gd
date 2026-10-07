@@ -9,6 +9,9 @@ extends RefCounted
 ## rolls for success/failure. On failure, applies deviation consequences.
 
 const _ITEMS := preload("res://src/modules/items/api.gd")
+## The element gate's mastery read, through the elements facade (ADR 0004's "master
+## elements to rise"): the qi path names no element stats of its own.
+const _ELEMENTS := preload("res://src/modules/elements/api.gd")
 
 
 ## Preview the breakthrough. Returns a dictionary with:
@@ -60,6 +63,11 @@ static func preview(actor: Actor) -> Dictionary:
 		var channel := actor.meridians.get_meridian(meridian_id)
 		if not seed.channel_met(channel):
 			result["unmet_conditions"].append("channel_not_ready:%s" % meridian_id)
+	# ADR 0004's "master elements to rise". The same predicate the condition enforces
+	# (`QiRealmSeed.element_mastery_met`), so the reported gate is the enforced gate
+	# (ADR 0044) and a panel quoting this list quotes the truth.
+	if not seed.element_mastery_met(_ELEMENTS.total_mastery(actor)):
+		result["unmet_conditions"].append("insufficient_element_mastery")
 	# Tier gates. These delegate to the same `Breakthrough` predicates `execute`
 	# enforces, so the preview can never disagree with the transaction about
 	# whether a realm is enterable (ADR 0032).

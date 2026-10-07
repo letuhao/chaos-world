@@ -260,6 +260,13 @@ static func mastery_of(actor: Actor, element_id: StringName) -> float:
 	return ElementMastery.mastery_of(actor, element_id)
 
 
+## Every element's mastery summed: the currency the elemental climb is paid in, and the
+## read the QI path's breakthrough gate takes at its tier rises (ADR 0004's "master
+## elements to rise"). A facade read, so the qi condition names no module internals.
+static func total_mastery(actor: Actor) -> float:
+	return ElementMastery.total_mastery(actor)
+
+
 ## Open an element the body was not born with: a rare resource raises the AFFINITY
 ## itself, and the practice gate follows.
 static func awaken(actor: Actor, element_id: StringName, amount: float) -> bool:

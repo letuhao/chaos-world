@@ -124,6 +124,29 @@ static func earn_progress(actor: Actor, seed: QiRealmSeed) -> bool:
 	return state.progress >= seed.progress_required
 
 
+## Earn the target realm's ELEMENT gate (ADR 0004's "master elements to rise"), through
+## the public verbs: `awaken` opens a spark on a body born without one — the same door a
+## player uses, and the only way `practise` accepts a sitting — and `practise` raises the
+## mastery at the shared rate. One sitting is sized to the whole gate, like
+## `earn_progress`, and `GATE_BOUND` is the canary: a gate no sitting closes reports
+## false instead of pressing forever.
+static func earn_element_mastery(actor: Actor, target: QiRealmSeed) -> bool:
+	if target == null:
+		return false
+	if target.element_mastery_required <= 0.0:
+		return true
+	if actor.affinities.get_value(ElementStats.FIRE) <= 0.0:
+		ElementsApi.awaken(actor, ElementStats.FIRE, 1.0)
+	var waited := 0
+	while (
+		waited < GATE_BOUND and ElementsApi.total_mastery(actor) < target.element_mastery_required
+	):
+		waited += 1
+		if not ElementsApi.practise(actor, ElementStats.FIRE, target.element_mastery_required):
+			return false
+	return ElementsApi.total_mastery(actor) >= target.element_mastery_required
+
+
 ## Cultivate until the dantian is full and carries the next realm's quality.
 ## `dantian.is_full` and `dantian.quality` are the conditions.
 static func fill_and_refine(actor: Actor, seed: QiRealmSeed) -> bool:
@@ -259,6 +282,8 @@ static func prepared(rank_id: StringName, target: QiRealmSeed) -> Actor:
 		return actor
 	recover_all(actor)
 	if not earn_progress(actor, target):
+		return actor
+	if not earn_element_mastery(actor, target):
 		return actor
 	if not meditate_to_floor(actor, target.comprehension_required):
 		return actor

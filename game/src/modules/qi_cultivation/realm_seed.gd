@@ -41,6 +41,18 @@ static var _cache: Dictionary = {}
 @export var comprehension_required: float = 10.0
 @export var dantian_quality_required: float = 0.5
 @export var dantian_fill_required: float = 1.0
+## ADR 0004's "master elements to rise": the total `element_mastery_<e>` summed across
+## every element that entering this realm demands. `0.0` is the authored "no gate" and
+## every realm below the first tier rise carries it; the three rises
+## (`spirit_condensation`, `earth_immortal`, `transcendent`) carry their own realm's
+## `progress_required`, so the elemental climb must have reached the same rung the qi
+## climb is entering. The two ladders already share one rate (ADR 0116/0268); this
+## shares one number.
+##
+## The READ is the caller's: `QiBreakthroughCondition` and the transaction's preview
+## both hand this seed `ElementsApi.total_mastery(actor)`, so a seed never learns where
+## mastery lives.
+@export var element_mastery_required: float = 0.0
 @export var required_meridians: Array[StringName] = []
 @export var required_channel_state: StringName = MeridianState.OPEN
 ## Training depth each required channel must carry to enter this realm, counted on
@@ -87,3 +99,11 @@ func channel_met(channel: MeridianState) -> bool:
 	if channel == null or not channel.meets(required_channel_state):
 		return false
 	return channel.refinement >= required_channel_refinement
+
+
+## Whether `total_mastery` satisfies this realm's ELEMENT gate. The ONE definition of
+## that gate: `QiBreakthroughCondition` enforces it and `QiBreakthroughTransaction
+## .preview` reports it, so a preview cannot disagree with the action it previews
+## (ADR 0044) — the same rule `channel_met` follows. `0.0` is the authored "no gate".
+func element_mastery_met(total_mastery: float) -> bool:
+	return element_mastery_required <= 0.0 or total_mastery >= element_mastery_required

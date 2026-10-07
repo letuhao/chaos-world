@@ -167,6 +167,7 @@ func _ready(actor: Actor, seed: QiRealmSeed) -> bool:
 		and Probe.train_gate_channels(actor, seed)
 		and Probe.recover_all(actor)
 		and Probe.earn_progress(actor, seed)
+		and Probe.earn_element_mastery(actor, seed)
 		and Probe.meditate_to_floor(actor, seed.comprehension_required)
 		and Probe.fill_and_refine(actor, seed)
 		and Probe.fill_and_refine(actor, seed)

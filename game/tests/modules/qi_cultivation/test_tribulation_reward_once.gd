@@ -47,6 +47,7 @@ func _prepare(actor: Actor) -> void:
 	assert_eq(Probe.train_gate_channels(actor, seed), true, "channels trained for R19")
 	Probe.recover_all(actor)
 	assert_eq(Probe.earn_progress(actor, seed), true, "progress earned")
+	assert_eq(Probe.earn_element_mastery(actor, seed), true, "the element gate is earned")
 	assert_eq(
 		Probe.meditate_to_floor(actor, seed.comprehension_required), true, "comprehension earned"
 	)
