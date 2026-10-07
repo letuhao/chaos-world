@@ -61,8 +61,6 @@ func open(graph: WorldmapGraph, node_id: String, node_configs: Dictionary) -> Di
 	_seed = int(_config.get("seed", 0))
 	_streamer = WorldmapStreamer.new()
 	_streamer.configure(WorldmapApi.default_generator(), _config)
-	_streamer.data_radius = int(_config.get("data_radius", 2))
-	_streamer.scene_radius = int(_config.get("scene_radius", 1))
 	y_sort_enabled = true
 	var entry := Vector2i(0, int(_config.get("entry_row", 1)))
 	_player_cell = entry
@@ -106,6 +104,9 @@ func step(dx: int, dy: int) -> Dictionary:
 	_player_cell = target
 	refresh_around(_chunk_of(target))
 	_place_player()
+	# Predict along the step just taken: the chunks ahead generate now, as
+	# data, so arriving reads cache instead of generating underfoot.
+	_streamer.preload_toward(dx, dy, 2)
 	var edge := _portal_at(target)
 	if not edge.is_empty():
 		# Spelled out rather than `merged()`: merge keeps the receiver's
@@ -154,9 +155,13 @@ func destroy_at(cell: Vector2i) -> Dictionary:
 	return {"ok": freed > 0, "freed": freed}
 
 
-## Render every chunk in the scene range, drop holders outside it. Data range
-## is wider and stays cached: unloading forgets nodes, never knowledge.
+## Render every chunk in the scene range, drop holders outside it, and hide
+## holders outside the render range. Data range is wider and stays cached:
+## unloading forgets nodes, never knowledge. A hidden holder costs nodes but
+## no pixels: the render range is what the eye gets, the scene range is what
+## the tree gets, and the two stop pretending to be one thing.
 func refresh_around(focus: Vector2i) -> void:
+	_streamer.set_focus(focus)
 	var want := {}
 	for offset in _streamer.neighborhood(focus.x, focus.y, _streamer.scene_radius):
 		var id := "%s:%d,%d" % [_node_id, offset.x, offset.y]
@@ -170,6 +175,10 @@ func refresh_around(focus: Vector2i) -> void:
 			(_holders[id] as Node).free()
 			_holders.erase(id)
 			_streamer.unload(id)
+			continue
+		var cc := _coords_of_id(String(id))
+		var near := maxi(abs(cc.x - focus.x), abs(cc.y - focus.y))
+		(_holders[id] as Node2D).visible = near <= _streamer.render_radius
 	queue_redraw()
 
 
@@ -287,8 +296,9 @@ func _portal_at(cell: Vector2i) -> Dictionary:
 ## Travel an edge: switch node, stand on its far cell, stream around it.
 ## Works for a door in the same world, a portal to another universe, and a
 ## descent into a nested domain — the scene never asks which, because the
-## edge already said. The gate is asked FIRST, before any state moves: a
-## refused crossing leaves the player exactly where they stood.
+## edge already said. The gate is asked FIRST, then the transition hook for
+## non-seamless arrivals, all before any state moves: a refused crossing
+## leaves the player exactly where they stood.
 func _travel(edge: Dictionary) -> Dictionary:
 	var gate := WorldmapApi.can_traverse(edge)
 	if not bool(gate.get("ok", false)):
@@ -299,6 +309,10 @@ func _travel(edge: Dictionary) -> Dictionary:
 	if not _node_configs.has(to_node):
 		return {"traveled": false, "reason": "unknown_node"}
 	var target_config := (_node_configs[to_node] as Dictionary).duplicate(true)
+	if not bool(target_config.get("seamless", true)):
+		var passage := WorldmapApi.run_transition(_node_id, to_node, edge)
+		if not bool(passage.get("ok", false)):
+			return {"traveled": false, "reason": String(passage.get("reason", ""))}
 	var template_id := String(target_config.get("domain_template", ""))
 	if not template_id.is_empty():
 		return _descend(edge, to_node, target_config, template_id)

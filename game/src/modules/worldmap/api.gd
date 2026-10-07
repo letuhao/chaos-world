@@ -16,6 +16,10 @@ static var _graph: WorldmapGraph = WorldmapGraph.new()
 static var _domain_entry: Callable = Callable()
 static var _domain_exit: Callable = Callable()
 
+## The transition seam for non-seamless arrivals (a loading screen, a fade).
+## Installed by `app/`; tests reset through `clear_transition`.
+static var _transition: Callable = Callable()
+
 
 ## Forget every node and edge. Tests only: production graphs are built once.
 static func clear_graph() -> void:
@@ -111,6 +115,35 @@ static func leave_domain_run() -> Dictionary:
 	if not has_domain():
 		return {"ok": false, "reason": "no_domain_seam"}
 	return _domain_exit.call() as Dictionary
+
+
+## Install the transition hook for non-seamless arrivals (statics beside
+## `_graph` above). A node config with `seamless: false` yields control to
+## the hook before the scene switches; the hook answers `{ok, reason}` and a
+## refusal holds the player where they stand. Refuses a dead Callable by name.
+static func install_transition(hook: Callable) -> Dictionary:
+	if not hook.is_valid():
+		return {"ok": false, "reason": "dead_transition_seam"}
+	_transition = hook
+	return {"ok": true, "reason": ""}
+
+
+## Forget the hook. Tests only.
+static func clear_transition() -> void:
+	_transition = Callable()
+
+
+## Whether a transition hook is installed.
+static func has_transition() -> bool:
+	return _transition.is_valid()
+
+
+## Run the transition for an arrival both sides named. No hook refuses by
+## name; a hook's own refusal passes through untouched.
+static func run_transition(from_node: String, to_node: String, edge: Dictionary) -> Dictionary:
+	if not has_transition():
+		return {"ok": false, "reason": "no_transition_seam"}
+	return _transition.call(from_node, to_node, (edge as Dictionary).duplicate(true)) as Dictionary
 
 
 ## Generate one chunk through the standard pass set. Pure data: no nodes,
