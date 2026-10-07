@@ -939,9 +939,9 @@ func load_slot(slot: StringName) -> Dictionary:
 		return {"ok": false, "reason": "unknown_slot", "slot": String(slot)}
 	if not SaveApi.exists(slot):
 		return {"ok": false, "reason": "empty_slot", "slot": String(slot)}
-	var set := SaveApi.set_live_slot(slot)
-	if not bool(set.get("ok", false)):
-		return {"ok": false, "reason": String(set.get("reason", "")), "slot": String(slot)}
+	var switched := SaveApi.set_live_slot(slot)
+	if not bool(switched.get("ok", false)):
+		return {"ok": false, "reason": String(switched.get("reason", "")), "slot": String(slot)}
 	var published := SaveApi.publish_world(slot)
 	if not bool(published.get("ok", false)):
 		return {"ok": false, "reason": String(published.get("reason", "")), "slot": String(slot)}
