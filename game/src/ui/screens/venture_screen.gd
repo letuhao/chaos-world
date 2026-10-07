@@ -26,12 +26,15 @@ var _step_call: Callable = Callable()
 var _destroy_call: Callable = Callable()
 var _read_call: Callable = Callable()
 var _return_call: Callable = Callable()
+var _debug_call: Callable = Callable()
+var _debug := false
 
 var _header_label: Label = null
 var _status_label: Label = null
 var _node_option: OptionButton = null
 var _open_button: Button = null
 var _message_label: Label = null
+var _debug_label: Label = null
 
 
 func _ready() -> void:
@@ -47,14 +50,15 @@ func on_screen_hidden() -> void:
 	pass
 
 
-## Inject the five seams. Safe to call again; the screen re-reads and repaints.
+## Inject the six seams. Safe to call again; the screen re-reads and repaints.
 func bind_venture(
 	open_call: Callable,
 	close_call: Callable,
 	step_call: Callable,
 	destroy_call: Callable,
 	read_call: Callable,
-	return_call: Callable
+	return_call: Callable,
+	debug_call: Callable
 ) -> void:
 	_open_call = open_call
 	_close_call = close_call
@@ -62,6 +66,7 @@ func bind_venture(
 	_destroy_call = destroy_call
 	_read_call = read_call
 	_return_call = return_call
+	_debug_call = debug_call
 	_bind_nodes()
 	refresh()
 
@@ -132,6 +137,24 @@ func act_return() -> bool:
 	return true
 
 
+## Flip the debug painting. Answers the flag it set, so a driver asserts the
+## toggle rather than pixels.
+func act_debug() -> bool:
+	_bind_nodes()
+	if not _debug_call.is_valid():
+		set_message("No venture seam is bound.", TONE_ERROR)
+		return false
+	_debug = not _debug
+	var outcome := _debug_call.call(self, _debug) as Dictionary
+	refresh()
+	if not bool(outcome.get("ok", false)):
+		_debug = not _debug
+		set_message("Debug refused: %s." % String(outcome.get("reason", "")), TONE_ERROR)
+		return false
+	set_message("Debug painting %s." % ("on" if _debug else "off"), TONE_OK)
+	return true
+
+
 func act_north() -> bool:
 	return _act_step(0, -1)
 
@@ -176,6 +199,7 @@ func _summary() -> Dictionary:
 	view["header"] = _text_of(_header_label)
 	view["status"] = _text_of(_status_label)
 	view["message_text"] = _text_of(_message_label)
+	view["debug_text"] = _text_of(_debug_label)
 	view["selected"] = _selected_node()
 	return view
 
@@ -230,12 +254,55 @@ func _render() -> void:
 	_set_disabled(
 		get_node_or_null("%ReturnButton") as Button, not (inside and _return_call.is_valid())
 	)
+	_set_disabled(
+		get_node_or_null("%DebugButton") as Button, not (standing and _debug_call.is_valid())
+	)
+	_set_text(_debug_label, _debug_text(view))
 
 
 func _read_view() -> Dictionary:
 	if not _read_call.is_valid():
 		return {"nodes": [], "open": false}
 	return _read_call.call(self) as Dictionary
+
+
+## The debug overlay as text: node and seed, player cell, holders, loaded and
+## simulated sets, ranges, passes, edges and POI counts. Empty when nothing
+## stands: no world, nothing to observe.
+func _debug_text(view: Dictionary) -> String:
+	if not _debug or not bool(view.get("open", false)):
+		return ""
+	var ranges := view.get("ranges", {}) as Dictionary
+	var lines := [
+		"node %s seed %d" % [String(view.get("node", "")), int(view.get("seed", 0))],
+		(
+			"at %s holders %d loaded %d simulated %d"
+			% [
+				str(view.get("player_cell", [])),
+				(view.get("holders", []) as Array).size(),
+				(view.get("loaded", []) as Array).size(),
+				(view.get("simulated", []) as Array).size(),
+			]
+		),
+		(
+			"ranges data %d sim %d scene %d render %d"
+			% [
+				int(ranges.get("data", 0)),
+				int(ranges.get("sim", 0)),
+				int(ranges.get("scene", 0)),
+				int(ranges.get("render", 0)),
+			]
+		),
+		"passes %s" % [", ".join(view.get("passes", []) as Array)],
+		(
+			"edges %d pois %d"
+			% [
+				(view.get("edges", []) as Array).size(),
+				(view.get("pois", []) as Array).size(),
+			]
+		),
+	]
+	return "\n".join(lines)
 
 
 func _selected_node() -> String:
@@ -263,6 +330,7 @@ func _bind_nodes() -> void:
 	_node_option = get_node_or_null("%NodeOption") as OptionButton
 	_open_button = get_node_or_null("%OpenButton") as Button
 	_message_label = get_node_or_null("%MessageLabel") as Label
+	_debug_label = get_node_or_null("%DebugLabel") as Label
 	_connect_once("%NorthButton", "pressed", act_north)
 	_connect_once("%SouthButton", "pressed", act_south)
 	_connect_once("%WestButton", "pressed", act_west)
@@ -271,6 +339,7 @@ func _bind_nodes() -> void:
 	_connect_once("%OpenButton", "pressed", act_open)
 	_connect_once("%CloseButton", "pressed", act_close)
 	_connect_once("%ReturnButton", "pressed", act_return)
+	_connect_once("%DebugButton", "pressed", act_debug)
 
 
 ## Guarded like the composition root's own connections: a reused screen that

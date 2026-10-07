@@ -89,8 +89,17 @@ static func return_from_domain(screen: Control) -> Dictionary:
 	return scene.return_from_domain()
 
 
+## Show or hide the debug painting on the world under the screen. Unopened
+## refuses by the same name as every other verb here.
+static func set_debug(screen: Control, enabled: bool) -> Dictionary:
+	var scene := _scene_of(screen)
+	if scene == null:
+		return {"ok": false, "reason": "unopened"}
+	return scene.set_debug(enabled)
+
+
 ## The venture read model, primitives only: demo nodes, open state, and the
-## live world's own debug summary with edges trimmed to strings. `{}`
+## live world's own debug summary trimmed to strings and arrays. `{}`
 ## answers nothing: an unopened screen reports its nodes and `open: false`.
 static func read(screen: Control) -> Dictionary:
 	var view := {"nodes": NODES.duplicate(), "open": false}
@@ -104,13 +113,35 @@ static func read(screen: Control) -> Dictionary:
 	view["holders"] = (summary.get("holders", []) as Array).duplicate()
 	var edges: Array = []
 	for edge in summary.get("edges", []) as Array:
-		edges.append(
-			{
-				"to": String((edge as Dictionary).get("to", "")),
-				"kind": String((edge as Dictionary).get("kind", ""))
-			}
+		var row := edge as Dictionary
+		var from_cell := row.get("from_cell", Vector2i(-1, -1)) as Vector2i
+		var to_cell := row.get("to_cell", Vector2i(-1, -1)) as Vector2i
+		(
+			edges
+			. append(
+				{
+					"to": String(row.get("to", "")),
+					"kind": String(row.get("kind", "")),
+					"hook": String(row.get("hook", "")),
+					"from_cell": [from_cell.x, from_cell.y],
+					"to_cell": [to_cell.x, to_cell.y],
+				}
+			)
 		)
 	view["edges"] = edges
+	view["seed"] = int(summary.get("seed", 0))
+	view["passes"] = (summary.get("passes", []) as Array).duplicate()
+	view["pois"] = (summary.get("pois", []) as Array).duplicate(true)
+	view["debug"] = bool(summary.get("debug_borders", false))
+	view["simulated"] = (
+		((summary.get("streamer", {}) as Dictionary).get("simulated", []) as Array).duplicate()
+	)
+	view["ranges"] = {
+		"data": int((summary.get("streamer", {}) as Dictionary).get("data_radius", 0)),
+		"sim": int((summary.get("streamer", {}) as Dictionary).get("sim_radius", 0)),
+		"scene": int((summary.get("streamer", {}) as Dictionary).get("scene_radius", 0)),
+		"render": int((summary.get("streamer", {}) as Dictionary).get("render_radius", 0)),
+	}
 	view["loaded"] = (
 		((summary.get("streamer", {}) as Dictionary).get("loaded", []) as Array).duplicate()
 	)

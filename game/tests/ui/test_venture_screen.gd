@@ -218,3 +218,48 @@ func _backtrack_of(verb: String) -> StringName:
 func _cell_of(view: Dictionary) -> Vector2i:
 	var cell := view.get("player_cell", [0, 0]) as Array
 	return Vector2i(int(cell[0]), int(cell[1]))
+
+
+func test_debug_is_dark_until_toggled() -> void:
+	var screen := _venture_screen()
+	if screen == null:
+		return
+	screen.call("act_open")
+	var view := screen.call("summary") as Dictionary
+	assert_eq(String(view.get("debug_text", "x")), "", "no overlay before the toggle")
+	assert_eq(screen.call("act_debug"), true, "the toggle answers true")
+	view = screen.call("summary") as Dictionary
+	var text := String(view.get("debug_text", ""))
+	assert_eq(text.contains("node overworld"), true, "naming the node")
+	assert_eq(text.contains("seed 1234"), true, "and its seed")
+	assert_eq(text.contains("terrain"), true, "listing passes")
+	assert_eq(text.contains("collision"), true, "to the last writer")
+	assert_eq(screen.call("act_debug"), true, "toggling back answers true")
+	assert_eq(
+		String((screen.call("summary") as Dictionary).get("debug_text", "x")),
+		"",
+		"and darkens again"
+	)
+
+
+func test_debug_names_edges_pois_and_ranges() -> void:
+	var screen := _venture_screen()
+	if screen == null:
+		return
+	screen.call("act_open")
+	screen.call("act_debug")
+	var view := screen.call("summary") as Dictionary
+	var text := String(view.get("debug_text", ""))
+	assert_eq(text.contains("edges 2"), true, "door and portal with their cells")
+	assert_eq(text.contains("ranges data 2 sim"), true, "with the ranges in force")
+	assert_eq(text.contains("pois "), true, "and a POI count")
+	assert_eq((view.get("passes", []) as Array).size(), 13, "across the whole pass set")
+	var first_edge := (view.get("edges", []) as Array)[0] as Dictionary
+	assert_eq((first_edge.get("from_cell", []) as Array).size(), 2, "edges carry cells")
+
+
+func test_debug_without_a_world_refuses() -> void:
+	var screen := _venture_screen()
+	if screen == null:
+		return
+	assert_eq(screen.call("act_debug"), false, "nothing standing, nothing to paint")

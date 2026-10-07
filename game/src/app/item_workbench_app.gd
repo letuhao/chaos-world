@@ -1472,7 +1472,8 @@ func _bind_route_screen(route_id: StringName, screen: Control) -> void:
 				Callable(VentureBoot, "step"),
 				Callable(VentureBoot, "destroy"),
 				Callable(VentureBoot, "read"),
-				Callable(VentureBoot, "return_from_domain")
+				Callable(VentureBoot, "return_from_domain"),
+				Callable(VentureBoot, "set_debug")
 			)
 			# Slice 3: the descent seam. The scene asks it when a node names
 			# a domain template; the actor it enters onto is this root's own,

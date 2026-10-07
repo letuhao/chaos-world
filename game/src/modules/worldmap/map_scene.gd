@@ -213,9 +213,10 @@ func render_region(region_id: String, coords: Array) -> Dictionary:
 
 
 ## Primitives only: player, loaded holders with seeds and mutation counts,
-## streamer state, this node's travel edges, and the domain descent (empty
-## above ground). The descent block is the scene's own record — template,
-## return node and cell — never the run, which lives on the actor.
+## streamer state, this node's travel edges, generation passes, POIs, and the
+## domain descent (empty above ground). The descent block is the scene's own
+## record — template, return node and cell — never the run, which lives on
+## the actor.
 func debug_summary() -> Dictionary:
 	var holders: Array = []
 	for id in _holders.keys():
@@ -230,29 +231,75 @@ func debug_summary() -> Dictionary:
 			"return_node": String(back.get("node", "")),
 			"return_cell": [cell.x, cell.y],
 		}
+	var passes: Array = []
+	for layer in WorldmapApi.default_generator().layers():
+		passes.append(String(layer))
 	return {
 		"node": _node_id,
 		"player_cell": [_player_cell.x, _player_cell.y],
 		"chunk_size": _size,
+		"seed": _seed,
 		"holders": holders,
 		"streamer": _streamer.summary() if _streamer != null else {},
 		"edges": _graph.edges_from(_node_id) if _graph != null else [],
+		"passes": passes,
+		"pois": _loaded_pois(),
 		"debug_borders": _debug_borders,
 		"domain": domain,
 	}
 
 
-func _draw() -> void:
-	if not _debug_borders:
-		return
+## POIs of every loaded chunk in map cells, primitives only. Reads the data
+## cache behind loaded holders — generating nothing, since a rendered chunk
+## is always cached.
+func _loaded_pois() -> Array:
+	var out: Array = []
+	if _streamer == null:
+		return out
 	for id in _holders.keys():
 		if String(id).begins_with(REGION_PREFIX):
 			continue
 		var cc := _coords_of_id(String(id))
-		var rect := Rect2(
-			Vector2(cc.x * _size, cc.y * _size) * CELL_PX, Vector2(_size, _size) * CELL_PX
+		var chunk := _streamer.chunk_data(_node_id, cc.x, cc.y, _size, _seed)
+		var meta := chunk.layers.get("metadata", {}) as Dictionary
+		for poi in meta.get("pois", []) as Array:
+			var row := (poi as Dictionary).duplicate()
+			var cell := row.get("cell", [0, 0]) as Array
+			row["cell"] = [cc.x * _size + int(cell[0]), cc.y * _size + int(cell[1])]
+			row["chunk"] = String(id)
+			out.append(row)
+	return out
+
+
+## Show or hide the debug painting (chunk boundaries + ids). Answers what
+## changed so a driver can assert the toggle rather than pixels.
+func set_debug(enabled: bool) -> Dictionary:
+	_debug_borders = enabled
+	queue_redraw()
+	return {"ok": true, "reason": "", "debug": _debug_borders}
+
+
+func _draw() -> void:
+	if not _debug_borders:
+		return
+	var font := ThemeDB.fallback_font
+	for id in _holders.keys():
+		if String(id).begins_with(REGION_PREFIX):
+			continue
+		var cc := _coords_of_id(String(id))
+		var origin := Vector2(cc.x * _size, cc.y * _size) * CELL_PX
+		draw_rect(
+			Rect2(origin, Vector2(_size, _size) * CELL_PX), Color(0.55, 0.84, 0.76, 0.8), false, 3.0
 		)
-		draw_rect(rect, Color(0.55, 0.84, 0.76, 0.8), false, 3.0)
+		draw_string(
+			font,
+			origin + Vector2(8, 28),
+			String(id),
+			HORIZONTAL_ALIGNMENT_LEFT,
+			-1,
+			22,
+			Color(0.55, 0.84, 0.76, 0.9)
+		)
 
 
 func _unhandled_input(event: InputEvent) -> void:
