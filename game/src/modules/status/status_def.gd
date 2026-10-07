@@ -91,6 +91,7 @@ const KINDS: Array[StringName] = [
 	&"burst",
 	&"counter",
 	&"meter",
+	&"contagion",
 ]
 const SCOPES: Array[StringName] = [&"combat", &"cultivation"]
 const STACKING: Array[StringName] = [&"refresh", &"stack", &"replace", &"coexist"]
@@ -423,6 +424,17 @@ func _kind_problems() -> Array[String]:
 			out.append(
 				"is a meter kind whose magnitude_unit pays no pulse, so no value can fill it"
 			)
+	if kind == &"contagion":
+		var spread: Variant = payload.get("spread", {})
+		if not (spread is Dictionary) or (spread as Dictionary).is_empty():
+			out.append("is a contagion kind with no payload.spread to hop with")
+		elif (
+			float((spread as Dictionary).get("chance", 0.0)) <= 0.0
+			or int((spread as Dictionary).get("max_hops", 0)) <= 0
+		):
+			# The use-time clamp is the CEILING (`StatusSpread.max_hops_of`), so this
+			# gate only refuses a config that could never hop at all.
+			out.append("authors payload.spread without chance > 0 and max_hops > 0")
 	return out
 
 

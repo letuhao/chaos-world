@@ -56,6 +56,11 @@ const WEAR_SUFFIX := "_wear"
 ## The suffix the BUFF half of every band carries. The buff is what the same years bought.
 const CLARITY_SUFFIX := "_clarity"
 
+## The projection TRACK id (ADR 0902 P8, BL-0924): the table's bands are its rungs, each
+## the band's own (wear, clarity) pair, so a band transition is ONE
+## `StatusProjection.sync` that withdraws the previous pair before writing the next.
+const TRACK := &"age"
+
 ## The table, loaded once and cached. Loaded rather than `preload`ed because the `.tres`
 ## binds THIS script's sibling (`age_band_table.gd`) and a compile-time reference from a
 ## script that the table's own loader reaches is the load cycle `TimeLadder._table_resource`
@@ -78,12 +83,6 @@ static func clarity_id(band: StringName) -> StringName:
 ## line wants the cost before the gain, because the cost is what the player is paying.
 static func ids_for(band: StringName) -> Array[StringName]:
 	return [wear_id(band), clarity_id(band)]
-
-
-## The projection TRACK id and its rungs (ADR 0902 P8, BL-0924): the table's bands in
-## threshold order, each rung the band's own (wear, clarity) pair, so a band transition is
-## ONE `StatusProjection.sync` that withdraws the previous pair before writing the next.
-const TRACK := &"age"
 
 
 ## Every band's id pair, youngest first — the rung list `StatusProjection.sync` walks.

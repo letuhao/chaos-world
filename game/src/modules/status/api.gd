@@ -266,6 +266,8 @@ static func tick_statuses(actor: Actor, delta: float) -> Dictionary:
 		runtime.tick_elapsed += delta
 		# The ICD clock is real time, not the pulse cadence (ADR 0902, P4).
 		runtime.icd_elapsed += delta
+		# The spread window rides the same clock (ADR 0902, P9).
+		runtime.spread_elapsed += delta
 		# Bounded `for` over a count read from a FIXED cap, never a `while` on the
 		# accumulator: a loop whose bound is the value its own body drains is the shape
 		# that reached 67 GB (INC-0002). `owed` is snapshotted from the accumulator
@@ -633,6 +635,39 @@ static func sync_projection(
 
 static func sync_age_band(actor: Actor) -> Dictionary:
 	return AgeBands.sync(actor)
+
+
+## ## `spread_status` — one contagion hop (ADR 0902, P9/BL-0925)
+##
+## The source instance's def drives it: `payload.spread = {chance, max_hops, icd}` is
+## authored on a `contagion`-kind def. The CALLER supplies the candidate hosts (the
+## module owns no board), the hop cap and the window are enforced here, and the window
+## restarts on the hop that fires. `chance` overrides the authored value when >= 0.0.
+static func spread_status(
+	actor: Actor, instance_id: int, candidates: Array, chance: float = -1.0, rng: Variant = null
+) -> Array[Dictionary]:
+	if actor == null or rng == null:
+		return []
+	var source := _effect_by_instance(actor, instance_id)
+	if source == null:
+		return []
+	var def := StatusCatalog.instance().any_definition(source.id)
+	var config := StatusSpread.config_of(def)
+	if config.is_empty():
+		return []
+	var chance_used := chance if chance >= 0.0 else float(config.get("chance", 0.0))
+	if chance_used <= 0.0:
+		return []
+	var runtime := _runtime(actor).get(instance_id) as StatusRuntime
+	var icd := maxf(0.0, float(config.get("icd", 0.0)))
+	if runtime != null and runtime.spread_elapsed < icd:
+		return []
+	var rows := StatusSpread.hop(
+		actor, def, candidates, chance_used, rng, StatusSpread.hop_of(source)
+	)
+	if not rows.is_empty() and runtime != null:
+		runtime.spread_elapsed = 0.0
+	return rows
 
 
 ## Remove the statuses carrying `instances`, in place, and let the same reconcile
@@ -1026,6 +1061,8 @@ static func _kind_of(kind: StringName) -> StatusEffect.Kind:
 			return StatusEffect.Kind.COUNTER
 		&"meter":
 			return StatusEffect.Kind.METER
+		&"contagion":
+			return StatusEffect.Kind.CONTAGION
 		_:
 			return StatusEffect.Kind.STAT_MODIFIER
 

@@ -49,6 +49,10 @@ var source: StringName = &""
 ## module's re-application lockout reads. Advanced by [method StatusApi.tick_statuses].
 var icd_elapsed: float = 0.0
 
+## Seconds since this instance last SPREAD (ADR 0902, P9/BL-0925): the contagion
+## window, advanced by the same tick. `0.0` = no window.
+var spread_elapsed: float = 0.0
+
 
 static func _runtimes(actor: Actor) -> Dictionary:
 	var key := actor.get_instance_id()
