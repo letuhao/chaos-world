@@ -45,6 +45,12 @@ signal status_meter_fired(
 	host_id: StringName, status_id: StringName, instance_id: int, amount: float
 )
 
+## A counter crossed its authored threshold and discharged one pulse (ADR 0902, P6);
+## `every_hits` is the threshold it crossed, so a subscriber reads the cadence it paid.
+signal status_counter_fired(
+	host_id: StringName, status_id: StringName, instance_id: int, every_hits: int
+)
+
 ## How many refusals the log keeps (ADR 0902, P13). A read model for a screen and a
 ## test rather than a history: the oldest entry is dropped once the cap is reached,
 ## and the bound is a constant, so no caller can grow it by refusing harder.
@@ -102,6 +108,14 @@ static func note_meter_fired(
 	host_id: StringName, status_id: StringName, instance_id: int, amount: float
 ) -> void:
 	shared().status_meter_fired.emit(host_id, status_id, instance_id, amount)
+
+
+## Emit one COUNTER-FIRED fact (ADR 0902, P6): a counter crossed its threshold and
+## discharged one pulse of its own channel.
+static func note_counter_fired(
+	host_id: StringName, status_id: StringName, instance_id: int, every_hits: int
+) -> void:
+	shared().status_counter_fired.emit(host_id, status_id, instance_id, every_hits)
 
 
 ## The refusals newest-last, as primitives-only copies: a caller cannot reach into

@@ -24,7 +24,9 @@ extends TestCase
 
 ## The expectation the shape test compares the SCRIPT against, never a second copy the
 ## file could drift from silently.
-const DECLARED: Array[StringName] = [&"status_applied", &"status_resisted", &"status_meter_fired"]
+const DECLARED: Array[StringName] = [
+	&"status_applied", &"status_resisted", &"status_meter_fired", &"status_counter_fired"
+]
 
 ## The only directories a producer may live in (ADR 0902, P5): the status module owns
 ## the facade door, `combat_engine` owns the spine's S12 stage, and `combat` owns the
@@ -43,6 +45,7 @@ const EMITS: Dictionary = {
 	&"status_applied": "note_applied(",
 	&"status_resisted": "note_resisted(",
 	&"status_meter_fired": "note_meter_fired(",
+	&"status_counter_fired": "note_counter_fired(",
 }
 
 ## Bound on the directory walk: a recursive walk with no depth cap is the hazard
@@ -91,14 +94,14 @@ func test_every_signal_argument_is_a_primitive() -> void:
 
 ## The argument COUNT is pinned alongside the type: a widened payload passes the
 ## primitive check while still changing what every subscriber must read.
-func test_the_declared_shape_is_exactly_three_signals() -> void:
+func test_the_declared_shape_is_exactly_four_signals() -> void:
 	var declared: Array[StringName] = []
 	for entry in StatusEvents.new().get_script().get_script_signal_list():
 		declared.append(StringName(entry.name))
 		assert_eq(
 			(entry.args as Array).size(), 4, "'%s' takes four primitives" % String(entry.name)
 		)
-	assert_eq(declared.size(), DECLARED.size(), "three signals, and no fourth")
+	assert_eq(declared.size(), DECLARED.size(), "four signals, and no fifth")
 	for name in DECLARED:
 		assert_eq(declared.has(name), true, "'%s' is declared" % String(name))
 
@@ -106,8 +109,8 @@ func test_the_declared_shape_is_exactly_three_signals() -> void:
 # --- A declaration has a producer -----------------------------------------------
 
 
-## A signal nothing emits is a lie in a contract file. Three declared, three emitted,
-## or this goes red at the name.
+## A signal nothing emits is a lie in a contract file. Four declared, four emitted, or
+## this goes red at the name.
 func test_every_declared_signal_is_emitted_by_production_code() -> void:
 	var emitted := _emitting_sources()
 	assert_eq(emitted.is_empty(), false, "the walk found the producer directories at all")

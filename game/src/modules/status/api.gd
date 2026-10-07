@@ -776,7 +776,16 @@ static func record_landed_blow(host: Actor, entry: Dictionary) -> bool:
 		# No fresh handle: advance the LIVE instance the id names. The first match is
 		# unique for every stacking except `coexist`, which this docblock names.
 		instance_id = _live_instance_for(host, status_id)
-	return record_instance_hit(host, instance_id, every_hits, reset_on_burst)
+	var fired := record_instance_hit(host, instance_id, every_hits, reset_on_burst)
+	if fired:
+		# The crossing PAYS (ADR 0902, P6): the accumulated hits discharge as one pulse
+		# of the def's own channel — the counter's whole point, not a bookkeeping flag —
+		# and the fact is announced beside the meter's crossing.
+		var runtime := _runtime(host).get(instance_id) as StatusRuntime
+		if runtime != null:
+			_pulse(host, runtime)
+		StatusEvents.note_counter_fired(host.id, status_id, instance_id, every_hits)
+	return fired
 
 
 ## ADR 0902 (P7): a `meter`-kind status fills from the VALUE events its own pulses pay
@@ -802,6 +811,9 @@ static func _feed_meter(
 		return
 	var reset_on_burst := bool(authored.get("reset_on_burst", true))
 	if StatusCounters.advance(actor, instance_id, every, reset_on_burst, amount):
+		# The discharge (ADR 0902, P7): the meter pays one pulse of its own channel
+		# when it crosses, beside the announced fact.
+		_pulse(actor, runtime)
 		StatusEvents.note_meter_fired(actor.id, def.id, instance_id, amount)
 
 

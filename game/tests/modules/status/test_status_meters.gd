@@ -185,13 +185,21 @@ func test_a_meter_status_fills_from_the_values_its_pulses_pay() -> void:
 	assert_eq(bool(applied.get("ok", false)), true, "the meter lands")
 	var instance_id := int(applied.get("instance_id", 0))
 	# One pulse pays `magnitude * share_per_pulse` = 2.0 * 0.05 = 0.1, and the tick
-	# loop feeds that value into the SAME accumulator the counters use.
+	# loop feeds that value into the SAME accumulator the counters use. The crossing
+	# tick ALSO discharges one extra pulse (ADR 0902, P7), so the drops are measured.
 	StatusApi.tick_statuses(actor, 1.0)
-	assert_eq(hits.size(), 0, "0.10 of 0.25 does not cross")
+	var before := actor.resource(&"health").current
 	StatusApi.tick_statuses(actor, 1.0)
-	assert_eq(hits.size(), 0, "0.20 of 0.25 does not cross")
+	var plain_drop := before - actor.resource(&"health").current
+	before = actor.resource(&"health").current
 	StatusApi.tick_statuses(actor, 1.0)
+	var crossing_drop := before - actor.resource(&"health").current
 	assert_eq(hits.size(), 1, "0.30 crosses once")
+	assert_eq(
+		crossing_drop > plain_drop,
+		true,
+		"and the crossing discharged an extra pulse of its own channel"
+	)
 	var hit: Dictionary = hits[0]
 	assert_eq(String(hit["id"]), "probe_kind_meter", "naming the meter that crossed")
 	assert_eq(int(hit["instance"]), instance_id, "with the live handle")

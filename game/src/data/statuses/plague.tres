@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="StatusDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/status/status_def.gd" id="1_status"]
+
+[resource]
+script = ExtResource("1_status")
+id = &"plague"
+; Ambient (a body condition): the first shipped `contagion` (ADR 0902, P9/BL-0925).
+; `coexist` so every hop is its OWN instance and the hop depth travels per instance.
+element = &""
+ambient = true
+on_landed_blow = false
+kind = &"contagion"
+scope = &"cultivation"
+stacking = &"coexist"
+duration = 30.0
+magnitude_unit = &"health_share"
+magnitude_cap = 2.0
+tick_interval = 2.0
+mitigation_tags = Array[StringName]([&"affinity", &"gear", &"technique", &"pill"])
+payload = {
+"mechanic": &"bleed",
+"text": "It does not kill what it holds; it makes carriers. Every breath spends somebody else.",
+"pool": &"health",
+"share_per_pulse": 0.02,
+; `chance` is parity (the neutral coin the contest vocabulary already names), `max_hops`
+; sits one below the constant ceiling so content never rides the hard cap, and `icd` is
+; two of the def's OWN pulses (2 x tick_interval) — derived, not hand-picked.
+"spread": {"chance": 0.5, "max_hops": 3, "icd": 4.0},
+"modifiers": []
+}

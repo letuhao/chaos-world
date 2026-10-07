@@ -236,3 +236,22 @@ func test_the_summary_publishes_both_counter_spaces() -> void:
 		"the grant space is published"
 	)
 	assert_eq((counters["instance"] as Dictionary).size(), 1, "and so is the instance space")
+
+
+## The crossing PAYS (ADR 0902, P6): the accumulated hits discharge as one pulse of the
+## def's own channel, on the same store the counters live in.
+func test_the_crossing_discharges_one_pulse_of_its_own_channel() -> void:
+	_register({"every_hits": 2, "reset_on_burst": true})
+	var actor := ActorFactory.build(&"counter_discharge", {Stat.PHYSIQUE: 20.0, Stat.SPIRIT: 20.0})
+	var applied := StatusApi.apply(actor, PROBE, 2.0)
+	var instance_id := int(applied.get("instance_id", 0))
+	var before := actor.resource(&"health").current
+	var entry := {"applied": true, "status_id": String(PROBE), "instance_id": instance_id}
+	assert_eq(StatusApi.record_landed_blow(actor, entry), false, "the first blow counts")
+	assert_almost_eq(actor.resource(&"health").current, before, "and pays nothing", 1e-9)
+	assert_eq(StatusApi.record_landed_blow(actor, entry), true, "the second crosses")
+	assert_eq(
+		actor.resource(&"health").current < before,
+		true,
+		"and the crossing discharges one pulse of the def's own channel"
+	)

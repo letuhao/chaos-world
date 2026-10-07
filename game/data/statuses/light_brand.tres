@@ -8,6 +8,8 @@ id = &"light_brand"
 element = &"light"
 on_landed_blow = true
 kind = &"dot"
+family = &"radiance"
+categories = Array[StringName]([&"dot"])
 scope = &"combat"
 stacking = &"stack"
 duration = 13.0
@@ -23,5 +25,6 @@ payload = {
 "modifiers": [
 	{"stat": &"defense_spiritual", "op": "flat", "value": -8.0},
 	{"stat": &"attack_speed", "op": "percent", "value": -0.25}
-]
+],
+"counter": {"every_hits": 13, "reset_on_burst": true},
 }

@@ -7,6 +7,8 @@ script = ExtResource("1_status")
 id = &"water_deluge"
 element = &"water"
 kind = &"burst"
+family = &"tide"
+categories = Array[StringName]([&"burst"])
 scope = &"combat"
 stacking = &"replace"
 duration = 2.0
@@ -21,5 +23,6 @@ payload = {
 "share_per_pulse": 0.15,
 "spends_on_apply": true,
 "blockable": false,
-"modifiers": []
+"modifiers": [],
+"counter": {"every_hits": 1, "reset_on_burst": true},
 }

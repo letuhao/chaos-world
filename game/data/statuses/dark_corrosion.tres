@@ -8,6 +8,8 @@ id = &"dark_corrosion"
 element = &"dark"
 on_landed_blow = true
 kind = &"dot"
+family = &"decay"
+categories = Array[StringName]([&"dot"])
 scope = &"combat"
 stacking = &"stack"
 duration = 16.0
@@ -25,5 +27,6 @@ payload = {
 "modifiers": [
 {"stat": &"defense_physical", "op": &"percent", "value": -0.3},
 {"stat": &"health_regen", "op": &"flat", "value": -1.5}
-]
+],
+"counter": {"every_hits": 16, "reset_on_burst": true},
 }

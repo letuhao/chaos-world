@@ -8,6 +8,8 @@ id = &"wood_parasite"
 element = &"wood"
 on_landed_blow = true
 kind = &"dot"
+family = &"growth"
+categories = Array[StringName]([&"dot"])
 scope = &"combat"
 stacking = &"stack"
 duration = 14.0
@@ -23,5 +25,6 @@ payload = {
 "modifiers": [
 {"stat": &"max_qi", "op": &"flat", "value": -18.0},
 {"stat": &"qi_regen", "op": &"flat", "value": -1.0}
-]
+],
+"counter": {"every_hits": 14, "reset_on_burst": true},
 }

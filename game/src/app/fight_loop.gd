@@ -485,7 +485,21 @@ func _strike(attacker: Actor, defender: Actor, seed_value: int) -> Dictionary:
 	var outcome := CombatBoot.resolve_hit(
 		attacker, defender, technique, CombatEngineApi.tuning(), rng
 	)
+	_spread_contagion(attacker, defender)
 	return outcome.to_dict()
+
+
+## The first candidate supplier for contagion (ADR 0902, P9/BL-0925): a fight is the
+## game's first multi-host moment, so a plague one fighter carries reaches the other
+## here. The module owns no board; this loop owns both hosts, and a non-contagion status
+## no-ops inside `spread_status` (no authored config), so the filter lives there.
+func _spread_contagion(attacker: Actor, defender: Actor) -> void:
+	if attacker == null or defender == null:
+		return
+	var rng := RandomNumberGenerator.new()
+	rng.seed = absi(hash(String(attacker.id) + "^" + String(defender.id)))
+	for status in attacker.statuses:
+		StatusApi.spread_status(attacker, status.instance_id, [defender], -1.0, rng)
 
 
 ## The authored inputs a bare blow carries, and why they are in-memory rather than a

@@ -8,6 +8,8 @@ id = &"wind_gust"
 element = &"wind"
 on_landed_blow = true
 kind = &"dot"
+family = &"gale"
+categories = Array[StringName]([&"dot"])
 scope = &"combat"
 stacking = &"refresh"
 duration = 10.0
@@ -23,5 +25,6 @@ payload = {
 "modifiers": [
 {"stat": &"stamina_regen", "op": &"flat", "value": -2.0},
 {"stat": &"defense_physical", "op": &"percent", "value": -0.2}
-]
+],
+"counter": {"every_hits": 10, "reset_on_burst": true},
 }

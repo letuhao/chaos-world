@@ -8,6 +8,8 @@ id = &"metal_sever"
 element = &"metal"
 on_landed_blow = true
 kind = &"dot"
+family = &"edge"
+categories = Array[StringName]([&"dot"])
 scope = &"combat"
 stacking = &"refresh"
 duration = 12.0
@@ -20,5 +22,6 @@ payload = {
 "text": "The cut will not close. Wounded, the body's own damage reduction is stripped away while the bleeding runs.",
 "pool": &"health",
 "share_per_pulse": 0.03,
-"modifiers": [{"stat": &"damage_reduction", "op": &"flat", "value": -0.08}]
+"modifiers": [{"stat": &"damage_reduction", "op": &"flat", "value": -0.08}],
+"counter": {"every_hits": 12, "reset_on_burst": true},
 }

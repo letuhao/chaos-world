@@ -8,6 +8,8 @@ id = &"fire_immolation"
 element = &"fire"
 on_landed_blow = true
 kind = &"dot"
+family = &"burn"
+categories = Array[StringName]([&"dot"])
 scope = &"combat"
 stacking = &"refresh"
 duration = 16.0
@@ -25,5 +27,6 @@ payload = {
 "share_per_pulse": 0.02,
 "escalation_per_tick": 0.12,
 "escalation_cap": 3.0,
-"modifiers": []
+"modifiers": [],
+"counter": {"every_hits": 16, "reset_on_burst": true},
 }
