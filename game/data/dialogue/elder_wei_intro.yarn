@@ -1,0 +1,28 @@
+// The authored source of elder_wei_intro.tres (ADR 0862).
+// Compile with:
+//   uv run python -m tools dialogue compile \
+//     --src game/data/dialogue/elder_wei_intro.yarn \
+//     --npc elder_wei --id elder_wei_intro \
+//     --out res://data/dialogue/elder_wei_intro.tres
+//
+// `-> #id label` names a choice's id so a saved press is addressed by name rather than
+// by position (DialogueChoiceDef's own rule).
+title: intro
+---
+elder_wei: You climb like someone who has read the register.
+elder_wei: Ask me what you came to ask.
+-> #ask_oath Ask whose oath is written in that book. <<set $asked_about_the_oath = true>> <<jump oath>>
+===
+title: oath
+---
+elder_wei: An oath is a debt a body agrees to carry.
+elder_wei: Mine is older than this mountain and I am still paying it.
+-> #ask_debt Then ask who holds the debt now. <<if $regard >= 2>> <<jump debt>>
+-> #leave Say nothing more.
+===
+title: debt
+---
+elder_wei: Whoever is still standing when the book closes.
+elder_wei: That is the whole of it, and it is not a small thing to say.
+-> #leave Say nothing more.
+===

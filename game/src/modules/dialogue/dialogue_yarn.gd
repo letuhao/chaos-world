@@ -176,12 +176,27 @@ static func _build_node(block: Dictionary) -> DialogueNodeDef:
 ## One `-> text <<if ...>> <<set ...>> <<jump ...>>` choice line: the label is
 ## everything before the first `<<`, and EVERY `<<...>>` after it is applied to the
 ## choice, in order.
+##
+## ## An option may name its own id: `-> #ask_oath Ask whose oath...`
+##
+## Without an id a choice gets a POSITIONAL one (`choice_0`), and `DialogueChoiceDef`
+## warns at length against exactly that: a saved press is addressed by id, so reordering
+## a node's options would silently redirect every saved press. A writer who cares names
+## the id; one who does not gets the positional fallback rather than a compile error.
 static func _build_choice(line: String, index: int) -> DialogueChoiceDef:
 	var choice := DialogueChoiceDef.new()
 	choice.choice_id = StringName("choice_%d" % index)
 	var body := line.substr(2)
 	var command_at := body.find("<<")
-	choice.label = (body.substr(0, command_at) if command_at >= 0 else body).strip_edges()
+	var head := (body.substr(0, command_at) if command_at >= 0 else body).strip_edges()
+	if head.begins_with("#"):
+		var space := head.find(" ")
+		var token := head if space < 0 else head.substr(0, space)
+		var named := token.substr(1).strip_edges()
+		if named != "":
+			choice.choice_id = StringName(named)
+		head = "" if space < 0 else head.substr(space + 1).strip_edges()
+	choice.label = head
 	for inner in commands_of(body):
 		_apply_command(inner, choice)
 	return choice

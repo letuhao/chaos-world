@@ -75,6 +75,7 @@ claim_guard = _load("claim_guard")
 cultivation = _load("cultivation")
 data = _load("data")
 deferred = _load("deferred")
+dialogue = _load("dialogue")
 difficulty = _load("difficulty")
 domain = _load("domain")
 export = _load("export")
@@ -155,6 +156,7 @@ COMMANDS = {
     "difficulty": difficulty,
     "new_adr": new_adr,
     "deferred": deferred,
+    "dialogue": dialogue,
     "domain": domain,
     "incident": incident,
     # The gate itself already runs in-process inside `check` (INC-0017: hoisted above

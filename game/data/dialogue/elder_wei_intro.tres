@@ -1,61 +1,68 @@
-[gd_resource type="Resource" script_class="DialogueDef" load_steps=12 format=3]
+[gd_resource type="Resource" script_class="DialogueDef" format=3]
 
-[ext_resource type="Script" path="res://src/modules/dialogue/dialogue_def.gd" id="1_def"]
-[ext_resource type="Script" path="res://src/modules/dialogue/dialogue_node_def.gd" id="2_node"]
-[ext_resource type="Script" path="res://src/modules/dialogue/dialogue_choice_def.gd" id="3_choice"]
-[ext_resource type="Script" path="res://src/modules/dialogue/dialogue_condition.gd" id="4_cond"]
+[ext_resource type="Script" path="res://src/modules/dialogue/dialogue_node_def.gd" id="1_suvdg"]
+[ext_resource type="Script" path="res://src/modules/dialogue/dialogue_choice_def.gd" id="2_rw6tp"]
+[ext_resource type="Script" path="res://src/modules/dialogue/dialogue_condition.gd" id="3_yeayy"]
+[ext_resource type="Script" path="res://src/modules/dialogue/dialogue_def.gd" id="4_2e8kr"]
 
-[sub_resource type="Resource" id="Cond_regard"]
-script = ExtResource("4_cond")
-verb = &"at_least"
-key = &"regard"
-value = 2
-
-[sub_resource type="Resource" id="Choice_ask_oath"]
-script = ExtResource("3_choice")
+[sub_resource type="Resource" id="Resource_gj3tu"]
+script = ExtResource("2_rw6tp")
 choice_id = &"ask_oath"
 label = "Ask whose oath is written in that book."
 target = &"oath"
 effect_key = &"asked_about_the_oath"
 effect_value = true
 
-[sub_resource type="Resource" id="Choice_ask_debt"]
-script = ExtResource("3_choice")
-choice_id = &"ask_debt"
-label = "Then ask who holds the debt now."
-target = &"debt"
-condition = SubResource("Cond_regard")
-
-[sub_resource type="Resource" id="Choice_leave"]
-script = ExtResource("3_choice")
-choice_id = &"leave"
-label = "Say nothing more."
-target = &""
-
-[sub_resource type="Resource" id="Node_debt"]
-script = ExtResource("2_node")
-node_id = &"debt"
-speaker = &"elder_wei"
-lines = Array[String](["Whoever is still standing when the book closes.", "That is the whole of it, and it is not a small thing to say."])
-choices = Array[ExtResource("3_choice")]([SubResource("Choice_leave")])
-
-[sub_resource type="Resource" id="Node_oath"]
-script = ExtResource("2_node")
-node_id = &"oath"
-speaker = &"elder_wei"
-lines = Array[String](["An oath is a debt a body agrees to carry.", "Mine is older than this mountain and I am still paying it."])
-choices = Array[ExtResource("3_choice")]([SubResource("Choice_ask_debt"), SubResource("Choice_leave")])
-
-[sub_resource type="Resource" id="Node_intro"]
-script = ExtResource("2_node")
+[sub_resource type="Resource" id="Resource_bn7gs"]
+script = ExtResource("1_suvdg")
 node_id = &"intro"
 speaker = &"elder_wei"
 lines = Array[String](["You climb like someone who has read the register.", "Ask me what you came to ask."])
-choices = Array[ExtResource("3_choice")]([SubResource("Choice_ask_oath")])
+choices = Array[ExtResource("2_rw6tp")]([SubResource("Resource_gj3tu")])
+
+[sub_resource type="Resource" id="Resource_bk5ax"]
+script = ExtResource("3_yeayy")
+verb = &"at_least"
+key = &"regard"
+value = 2
+
+[sub_resource type="Resource" id="Resource_0wgr3"]
+script = ExtResource("2_rw6tp")
+choice_id = &"ask_debt"
+label = "Then ask who holds the debt now."
+target = &"debt"
+condition = SubResource("Resource_bk5ax")
+effect_value = null
+
+[sub_resource type="Resource" id="Resource_62rv6"]
+script = ExtResource("2_rw6tp")
+choice_id = &"leave"
+label = "Say nothing more."
+effect_value = null
+
+[sub_resource type="Resource" id="Resource_xwq8t"]
+script = ExtResource("1_suvdg")
+node_id = &"oath"
+speaker = &"elder_wei"
+lines = Array[String](["An oath is a debt a body agrees to carry.", "Mine is older than this mountain and I am still paying it."])
+choices = Array[ExtResource("2_rw6tp")]([SubResource("Resource_0wgr3"), SubResource("Resource_62rv6")])
+
+[sub_resource type="Resource" id="Resource_6i6nv"]
+script = ExtResource("2_rw6tp")
+choice_id = &"leave"
+label = "Say nothing more."
+effect_value = null
+
+[sub_resource type="Resource" id="Resource_j465n"]
+script = ExtResource("1_suvdg")
+node_id = &"debt"
+speaker = &"elder_wei"
+lines = Array[String](["Whoever is still standing when the book closes.", "That is the whole of it, and it is not a small thing to say."])
+choices = Array[ExtResource("2_rw6tp")]([SubResource("Resource_6i6nv")])
 
 [resource]
-script = ExtResource("1_def")
+script = ExtResource("4_2e8kr")
 dialog_id = &"elder_wei_intro"
 npc_id = &"elder_wei"
 entry_node = &"intro"
-nodes = Array[ExtResource("2_node")]([SubResource("Node_intro"), SubResource("Node_oath"), SubResource("Node_debt")])
+nodes = Array[ExtResource("1_suvdg")]([SubResource("Resource_bn7gs"), SubResource("Resource_xwq8t"), SubResource("Resource_j465n")])
