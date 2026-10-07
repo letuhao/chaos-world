@@ -118,3 +118,18 @@ func test_can_use_needs_both_the_elemental_rank_and_the_qi_realm() -> void:
 	assert_eq(
 		ElementsApi.can_use(actor, ElementStats.LIGHTNING), true, "both halves met, tier 2 opens"
 	)
+
+
+func test_locked_names_the_refusal_for_an_unreachable_element() -> void:
+	var actor := _actor(&"element_locked")
+	assert_eq(ElementsApi.locked(actor, ElementStats.FIRE), &"", "tier 1 is usable")
+	assert_eq(
+		ElementsApi.locked(actor, ElementStats.LIGHTNING),
+		&"element_locked",
+		"tier 2 names the refusal"
+	)
+	assert_eq(ElementsApi.locked(actor, &""), &"", "unelemental needs no gate")
+	assert_eq(bool(ElementsApi.begin(actor).get("ok", false)), true, "awakened")
+	actor.set_path(PathState.new(ElementMastery.PATH_ID, &"spirit_sea"))
+	actor.set_path(PathState.new(PathState.QI, &"spirit_sea"))
+	assert_eq(ElementsApi.locked(actor, ElementStats.LIGHTNING), &"", "both halves met")

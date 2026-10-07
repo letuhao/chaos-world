@@ -277,3 +277,15 @@ static func advance(actor: Actor) -> Dictionary:
 ## element's tier AND the actor's realm must allow it (both, deliberately).
 static func can_use(actor: Actor, element_id: StringName) -> bool:
 	return ElementMastery.usable(actor, element_id)
+
+
+## The NAMED refusal a firing site reports when `element_id` is out of reach, or `&""`
+## when the element is usable — or empty, which is unelemental and needs no gate. One
+## place words the refusal, so every site refuses with the same reason (ADR 0034's rule
+## that a gate and its preview share the wording).
+static func locked(actor: Actor, element_id: StringName) -> StringName:
+	if element_id == &"":
+		return &""
+	if can_use(actor, element_id):
+		return &""
+	return &"element_locked"

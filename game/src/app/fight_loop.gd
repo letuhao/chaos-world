@@ -476,15 +476,25 @@ func summary() -> Dictionary:
 ## random happens and every attack lands" (ADR 0087's S12). That is the honest default
 ## for a headless drive: a whiff and a gut-punch are different events, and a fight whose
 ## ledger depends on the frame's RNG cannot be asserted on.
-func _strike(attacker: Actor, defender: Actor, seed_value: int) -> Dictionary:
-	var technique := _swing()
+##
+## `technique` overrides the bare swing for a caller that carries its own — and for the
+## elemental door's test, which must fire a locked element through the REAL site.
+func _strike(
+	attacker: Actor, defender: Actor, seed_value: int, technique: TechniqueDef = null
+) -> Dictionary:
+	var swing := technique if technique != null else _swing()
+	# The elemental door (S2c): a technique whose element is above the attacker's rank
+	# AND realm is REFUSED here, with the module's own named reason. The shipped bare
+	# swing is fire (tier 1), so this guard is dormant for it — the live site is any
+	# authored technique a caller passes, which is why the parameter above exists.
+	var locked := ElementsApi.locked(attacker, swing.element)
+	if locked != &"":
+		return {"ok": false, "reason": String(locked), "amount": 0.0, "crit": false}
 	var rng: Variant = null
 	if seed_value != 0:
 		rng = RandomNumberGenerator.new()
 		rng.seed = (seed_value * 2654435761 + absi(hash(String(attacker.id)))) & 0x7FFFFFFF
-	var outcome := CombatBoot.resolve_hit(
-		attacker, defender, technique, CombatEngineApi.tuning(), rng
-	)
+	var outcome := CombatBoot.resolve_hit(attacker, defender, swing, CombatEngineApi.tuning(), rng)
 	_spread_contagion(attacker, defender)
 	return outcome.to_dict()
 
