@@ -6,7 +6,10 @@ extends RefCounted
 ## placement dicts (`{asset, cell, footprint, z}`); `mutations` maps
 ## `"x,y"` to `{"blocked": bool}`, applied OVER regeneration — so an
 ## untouched chunk is reproducible from its seed alone, while a touched one
-## keeps exactly what changed and nothing else.
+## keeps exactly what changed and nothing else. `layers` carries every later
+## pass layer (`elevation`, encounters, ...) by the pass's own name, so a new
+## pass never migrates this shape: first-class fields stay three, and the
+## fourth is a map keyed by whoever wrote it.
 
 var id: String = ""
 var node: String = ""
@@ -18,6 +21,7 @@ var walkable: Array = []
 var terrain: Array = []
 var props: Array = []
 var mutations: Dictionary = {}
+var layers: Dictionary = {}
 
 
 static func make(
@@ -73,6 +77,7 @@ func to_dict() -> Dictionary:
 		"terrain": terrain.duplicate(true),
 		"props": props.duplicate(true),
 		"mutations": mutations.duplicate(true),
+		"layers": layers.duplicate(true),
 	}
 
 
@@ -88,4 +93,5 @@ static func from_dict(data: Dictionary) -> WorldChunk:
 	chunk.terrain = (data.get("terrain", []) as Array).duplicate(true)
 	chunk.props = (data.get("props", []) as Array).duplicate(true)
 	chunk.mutations = (data.get("mutations", {}) as Dictionary).duplicate(true)
+	chunk.layers = (data.get("layers", {}) as Dictionary).duplicate(true)
 	return chunk

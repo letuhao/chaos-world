@@ -36,6 +36,12 @@ extends RefCounted
 ## own layer. `requires()` names the layers it reads (e.g. a scatter pass
 ## requires `"terrain"`), so the pipeline orders passes and fails a missing
 ## dependency by name instead of reading another pass's absence as emptiness.
+##
+## Two address books, one rule: `terrain`, `props` and `walkable` are
+## first-class and read top-level; every later layer (elevation, encounters,
+## ...) reads from `chunk["layers"]` under its own name and is written back
+## there by the pipeline. A pass returns its payload top-level either way —
+## the fold is the pipeline's, not the author's.
 
 
 ## The pass's own layer name (e.g. `&"terrain"`, `&"vegetation"`). Empty here;

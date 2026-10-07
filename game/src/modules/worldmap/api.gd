@@ -128,12 +128,14 @@ static func generate_chunk(
 	return generator.generate(node_id, cx, cy, chunk_size, seed, config, mutations)
 
 
-## The standard pass set: terrain, water, scatter, collision, in dependency
-## order. One place, so every caller generates the same layers.
+## The standard pass set, in dependency order. One place, so every caller
+## generates the same layers.
 static func default_generator() -> WorldmapGenerator:
 	var generator := WorldmapGenerator.new()
 	generator.register_pass(WorldmapTerrainPass.new())
 	generator.register_pass(WorldmapWaterPass.new())
+	generator.register_pass(WorldmapElevationPass.new())
 	generator.register_pass(WorldmapScatterPass.new())
+	generator.register_pass(WorldmapRoadsPass.new())
 	generator.register_pass(WorldmapCollisionPass.new())
 	return generator

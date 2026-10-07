@@ -56,17 +56,29 @@ func generate(
 		"scatter": config.get("scatter", []),
 		"authored_terrain": config.get("authored_terrain", []),
 		"water": config.get("water", true),
+		"palette": config.get("palette", ["ground_tile.base_ground"]),
+		"roads": config.get("roads", 0),
 	}
-	var data := {"terrain": [], "props": [], "walkable": []}
+	var data := {"terrain": [], "props": [], "walkable": [], "layers": {}}
+	# First-class fields stay three: a pass returns its layer top-level (e.g.
+	# `{"elevation": rows}`) and anything beyond the three folds into `layers`
+	# under the pass's own key, so a new pass never touches this function.
 	for layer in order:
 		var stage := _passes[layer] as WorldmapContract
 		var out := stage.run(ctx, data)
 		for key in out.keys():
-			data[key] = out[key]
+			if String(key) in ["terrain", "props", "walkable"]:
+				data[key] = out[key]
+			elif String(key) == "layers" and out[key] is Dictionary:
+				for layer_key in (out[key] as Dictionary).keys():
+					(data["layers"] as Dictionary)[layer_key] = (out[key] as Dictionary)[layer_key]
+			else:
+				(data["layers"] as Dictionary)[String(key)] = out[key]
 	var chunk := WorldChunk.make("%s:%d,%d" % [node_id, cx, cy], node_id, cx, cy, chunk_size, seed)
 	chunk.terrain = data.get("terrain", [])
 	chunk.props = data.get("props", [])
 	chunk.walkable = data.get("walkable", [])
+	chunk.layers = data.get("layers", {})
 	for key in (mutations as Dictionary).keys():
 		var cell := String(key).split(",")
 		if cell.size() == 2:
