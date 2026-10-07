@@ -24,9 +24,12 @@ extends RefCounted
 ##
 ## A band with only the debuff is a tax on whoever is unlucky to be old, which AGENTS.md's
 ## yin-yang rule calls a bug rather than a feature. Every band row therefore authors BOTH,
-## and `tests/modules/status/test_age_band_statuses.gd` proves the pairing behaviourally:
-## removing the buff half must leave a long-lived hero STRICTLY WORSE than removing the
-## debuff half does.
+## and the projection's suites (`test_status_projection.gd`,
+## `tests/app/test_age_band_projection.gd`) assert the pair installs and swaps as ONE unit:
+## a band transition that wrote one half without the other fails there. The STRICT
+## behavioural ordering the pairing deserves (wear-only must leave a long-lived hero worse
+## than clarity-only does) is tracked in the deferred ledger — this docblock named a suite
+## for it that was never authored.
 ##
 ## ## Why the status ids are derived from the BAND NAME rather than authored beside it
 ##
