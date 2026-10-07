@@ -1493,6 +1493,10 @@ func _bind_route_screen(route_id: StringName, screen: Control) -> void:
 			WorldmapApi.install_domain(
 				Callable(self, "_venture_domain_enter"), Callable(self, "_venture_domain_leave")
 			)
+			# DEF-0374: the far arrival plays the loading screen. A named root
+			# method carries the live screen in, because a lambda cannot and
+			# the seam takes only the crossing.
+			WorldmapApi.install_transition(Callable(self, "_venture_transition"))
 		_:
 			screen.call("setup", _actor)
 
@@ -1522,6 +1526,13 @@ func _venture_domain_leave() -> Dictionary:
 	if _actor == null:
 		return {"ok": false, "reason": "no_actor"}
 	return DomainBoot.leave_domain(_actor)
+
+
+## The venture transition seam (DEF-0374). Carries the live screen into the
+## boot's loading drive: the seam names the crossing, and only the root
+## knows which screen is showing it.
+func _venture_transition(from_node: String, to_node: String, edge: Dictionary) -> Dictionary:
+	return VentureBoot.transition(_live_screen(), from_node, to_node, edge)
 
 
 ## Free everything this root built that is not a node the stack owns. Idempotent, and

@@ -27,9 +27,14 @@ func teardown() -> void:
 	# The harness owns the mounted root: `mount_new` tears the previous one
 	# down, and freeing a screen out from under its stack leaves the stack
 	# toggling visibility on a freed node. So teardown is the harness's.
+	# Module statics are NOT the harness's: a descent test leaves its return
+	# on the shared stack and its run on the boot, and the next test would
+	# start "inside" with every step refused. Clear both here.
 	if _harness != null:
 		_harness.teardown()
 	_harness = null
+	WorldmapApi.clear_returns()
+	DomainBoot.reset()
 
 
 func _seam() -> SeamHarness:
@@ -168,35 +173,74 @@ func test_returning_stands_back_on_the_doorway_cell() -> void:
 	assert_eq(DomainApi.rooms(_harness.actor).is_empty(), true, "with the run gone from the actor")
 
 
-## Depth-first walk to the demo doorway through the screen's own step verbs.
-## Arrival READS as the cave node (the step that lands on the door descends),
-## so reaching is the assertion and no route is precomputed. Seen is keyed by
-## node AND cell: the far portal is a round trip, so the same coordinates recur
-## on two planes and a cell-only key would close the far side unvisited.
+## Depth-first walk to a demo node through the screen's own step verbs.
+## Arrival READS as the node (the step that lands on the door descends, the
+## step onto the pad portals), so reaching is the assertion and no route is
+## precomputed. Seen is keyed by node AND cell: the far portal is a round
+## trip, so the same coordinates recur on two planes and a cell-only key
+## would close the far side unvisited.
 ## Bounded by `WALK_DEPTH`: sealed ground answers false, never spins.
 func _walk_to_door(screen: Control) -> bool:
-	return _dfs(screen, {}, 0)
+	return _dfs(screen, {}, 0, "cave")
 
 
-func _dfs(screen: Control, seen: Dictionary, depth: int) -> bool:
+func _walk_to_far(screen: Control) -> bool:
+	var seen := {}
+	return _dfs(screen, seen, 0, "far")
+
+
+func _dfs(screen: Control, seen: Dictionary, depth: int, want: String) -> bool:
 	var view := screen.call("summary") as Dictionary
-	if String(view.get("node", "")) == "cave":
+	if String(view.get("node", "")) == want:
 		return true
 	var cur := _key_of(view)
 	if depth >= WALK_DEPTH or seen.has(cur):
 		return false
 	seen[cur] = true
+	# Stay on the demo's single chunk per plane: past its edge lies
+	# unbounded generated wilderness, and a walk that leaves the map it is
+	# proving can burn its whole depth finding its way back.
+	var size := int(view.get("chunk_size", 8))
 	for verb in ["act_east", "act_north", "act_south", "act_west"]:
 		if depth + 1 >= WALK_DEPTH:
 			break
+		var target := _cell_of(view) + _delta_of(verb)
+		if target.x < 0 or target.y < 0 or target.x >= size or target.y >= size:
+			continue
+		# Never step onto another node's door on the way: a descent cannot
+		# be backtracked out of, so the search would strand there.
+		if _edge_to(view, _cell_of(view) + _delta_of(verb), want) != "":
+			continue
 		if not bool(screen.call(verb)):
 			continue
-		if String((screen.call("summary") as Dictionary).get("node", "")) == "cave":
+		if String((screen.call("summary") as Dictionary).get("node", "")) == want:
 			return true
-		if _dfs(screen, seen, depth + 1):
+		if _dfs(screen, seen, depth + 1, want):
 			return true
 		screen.call(_backtrack_of(verb))
 	return false
+
+
+## Where a step from `cell` by `delta` would travel, or "" for open ground.
+## Read off the world's own edge list, never restated.
+func _edge_to(view: Dictionary, cell: Vector2i, want: String) -> String:
+	for edge in view.get("edges", []) as Array:
+		var row := edge as Dictionary
+		var from := row.get("from_cell", []) as Array
+		if int(from[0]) == cell.x and int(from[1]) == cell.y and String(row.get("to", "")) != want:
+			return String(row.get("to", ""))
+	return ""
+
+
+func _delta_of(verb: String) -> Vector2i:
+	match verb:
+		"act_east":
+			return Vector2i(1, 0)
+		"act_west":
+			return Vector2i(-1, 0)
+		"act_south":
+			return Vector2i(0, 1)
+	return Vector2i(0, -1)
 
 
 func _key_of(view: Dictionary) -> String:
@@ -330,3 +374,17 @@ func test_walking_away_dismisses_without_earning() -> void:
 		"",
 		"clearing the offer without a fate"
 	)
+
+
+func test_the_far_arrival_plays_the_loading_screen() -> void:
+	var screen := _venture_screen()
+	if screen == null:
+		return
+	screen.call("act_open")
+	assert_eq(_walk_to_far(screen), true, "the far pad is reachable on foot")
+	var view := screen.call("summary") as Dictionary
+	assert_eq(String(view.get("node", "")), "far", "through the portal to the far side")
+	assert_eq(
+		screen.get_node_or_null("VentureTransition"), null, "with the overlay freed afterwards"
+	)
+	assert_eq((view.get("holders", []) as Array).is_empty(), false, "and the far side rendered")

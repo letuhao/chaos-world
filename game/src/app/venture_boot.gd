@@ -247,6 +247,65 @@ static func read(screen: Control) -> Dictionary:
 	return view
 
 
+## Drive a non-seamless arrival through the loading screen: mount the real
+## loading scene as an overlay, hang its art, then stream the arrival data
+## neighborhood with the bar telling the truth about chunks done of total.
+## Synchronous by necessity — travel resolves inside one step call, and
+## navigating the stack mid-step is the freed-button hazard, so the cutscene
+## plays here instead of on the loading route. Returns `{ok}` when the far
+## side is fully generated; the overlay is always freed, arrived or refused.
+static func transition(
+	screen: Control, from_node: String, to_node: String, edge: Dictionary
+) -> Dictionary:
+	var scene := _scene_of(screen)
+	if scene == null:
+		return {"ok": false, "reason": "unopened"}
+	var packed := load("res://src/ui/screens/loading_screen.tscn") as PackedScene
+	if packed == null:
+		return {"ok": false, "reason": "no_loading_scene"}
+	var overlay := packed.instantiate() as Control
+	if overlay == null:
+		return {"ok": false, "reason": "no_loading_scene"}
+	overlay.name = "VentureTransition"
+	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	screen.add_child(overlay)
+	overlay.call(
+		"set_layers",
+		"res://assets/loading/loading_wallpaper.png",
+		"res://assets/loading/fairy.png",
+		"res://assets/loading/sword.png"
+	)
+	var configs := _demo_configs()
+	if not configs.has(to_node):
+		overlay.free()
+		return {"ok": false, "reason": "unknown_node"}
+	var arrival := configs[to_node] as Dictionary
+	var to_cell := (edge as Dictionary).get("to_cell", Vector2i.ZERO) as Vector2i
+	var size := maxi(2, int(arrival.get("chunk_size", 8)))
+	var focus := Vector2i(floori(float(to_cell.x) / size), floori(float(to_cell.y) / size))
+	var radius := maxi(0, int(arrival.get("data_radius", 1)))
+	var streamer := scene.streamer()
+	var bar := overlay.get_node_or_null("%LoadBar") as ProgressBar
+	var status := overlay.get_node_or_null("%StatusLabel") as Label
+	var targets: Array = []
+	for offset in streamer.neighborhood(focus.x, focus.y, radius):
+		targets.append(offset)
+	if bar != null:
+		bar.max_value = maxi(1, targets.size())
+		bar.value = 0
+	var done := 0
+	for coord in targets:
+		var at := coord as Vector2i
+		streamer.chunk_data(to_node, at.x, at.y, size, int(arrival.get("seed", 0)))
+		done += 1
+		if bar != null:
+			bar.value = done
+		if status != null:
+			status.text = "Crossing to %s… %d of %d." % [to_node, done, targets.size()]
+	overlay.free()
+	return {"ok": true, "reason": "", "from": from_node, "to": to_node, "chunks": done}
+
+
 static func _scene_of(screen: Control) -> WorldmapScene:
 	if screen == null:
 		return null
@@ -398,9 +457,12 @@ static func _demo_configs() -> Dictionary:
 		"far":
 		# A second environment across the portal: the far side renders
 		# plains ground under the same pipeline, so the demo proves one
+		# graph spanning two looks, two chunk sizes and two seeds. The
+		# arrival is NOT seamless: crossing plays the loading screen
 		{
-			# graph spanning two looks, two chunk sizes and two seeds.
+			# through the installed transition hook (DEF-0374).
 			"environment": "mortal_plains",
+			"seamless": false,
 			"chunk_size": 12,
 			"seed": 7,
 			"entry_row": 1,
