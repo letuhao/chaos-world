@@ -63,6 +63,13 @@ extends Resource
 ## twenty — the same two-namespace split `StatusCatalog.AMBIENT_SOURCES_ROOT` made.
 const MIND_ROOT := "res://src/data/mind_statuses"
 
+## The steepness ceiling (the DEF-0367 fix): the contest's clamp point is
+## `r >= (1 + steepness) / (1 - steepness)` out-investment, so `0.5` is exactly where a
+## 3x out-investment stops saturating the contest — the counterplay window
+## `test_mind_status_no_lock` drives. A def at or above it would be unclimbable within
+## that window; refused at load rather than left to a balance pass.
+const MAX_STEEPNESS := 0.5
+
 ## Which of the three roles a def plays. A closed vocabulary, so a typo is an
 ## authoring error reported at load rather than a status nobody can find.
 const CLASSES: Array[StringName] = MindVocabulary.ROLES
@@ -518,6 +525,21 @@ func _contest_problems() -> Array[String]:
 		out.append("names no battlefield stat, so nothing on the attacking side is read")
 	if role != ROLE_COMPOSURE and defence_stat() == &"":
 		out.append("names no defence stat, so nothing on the target's side is read")
+	var steep := steepness()
+	if steep <= 0.0 or steep >= MAX_STEEPNESS:
+		out.append(
+			(
+				(
+					"declares steepness %.4f outside (0.0, %.2f): the contest saturates at "
+					% [steep, MAX_STEEPNESS]
+				)
+				+ (
+					"`edge = steepness`, so a value at or above the ceiling needs more than a "
+					+ "3x out-investment to reach the authored floor and the counterplay "
+					+ "window stops being reachable (DEF-0367)"
+				)
+			)
+		)
 	return out
 
 

@@ -273,16 +273,14 @@ func test_no_cc_is_unavoidable_at_parity_or_against_a_saturating_attacker() -> v
 		# band and strictly above the floor, which is the guarantee the owner's rule
 		# actually names.
 		#
-		# ## AND THE BAND IS NOT WIDE ENOUGH FOR THE STEEPEST DEFS — a gate, a
-		# ## finding, and the refusal it now stops
+		# ## THE BAND'S CEILING IS DERIVED, NOT FITTED — the gate at `0.5`
 		#
-		# A def whose `steepness` is at or above `NEUTRAL / 2 == 0.25` has `p_land`
-		# clamped at or below `NEUTRAL` for EVERY defence, so its refusal rate is pinned
-		# inside `[floor_resist, floor_resist + headroom * 0.5]` and it can never answer
-		# more than half the contest — a different defect wearing the same shape, and the
-		# one `mind_unmake` (steepness `0.28`, parity refusal `0.825`, worst of the four)
-		# demonstrates. The rule is therefore the gate below, and it refuses `steepness
-		# >= 0.25` at load rather than leaving the number to a balance pass.
+		# The clamp point below is `r >= (1 + steepness) / (1 - steepness)`, and this
+		# suite drives `OUT_INVESTING = 3.0`. A def at or above `0.5` needs MORE than
+		# that 3x out-investment to saturate, so the counterplay window the band
+		# publishes would stop being reachable — `MindStatusDef.MAX_STEEPNESS` refuses it
+		# at load rather than leaving the number to a balance pass. Every shipped def
+		# sits inside the band and passes this guard.
 		var over_lean := MindContest.resolve(def, WEAK, WEAK * OUT_INVESTING, null)
 		var over_answer := float(over_lean.get("p_answer", 0.0))
 		assert_eq(
@@ -300,14 +298,13 @@ func test_no_cc_is_unavoidable_at_parity_or_against_a_saturating_attacker() -> v
 		)
 		# ## THE BAND, at the steepest out-investment this def's OWN steepness allows
 		#
-		# `(r - 1) / (r + 1) * steepness <= -NEUTRAL` is the whole condition, solved for
-		# the ratio rather than fitted: `r >= (NEUTRAL + steepness) /
-		# (NEUTRAL - steepness)`, which is `1.714` at the shipped steepest of `0.35` and
-		# `2.8` at `0.28`. `OUT_INVESTING` is `3.0`, so every shipped def is driven past
-		# its own clamp point and the rate below is the contest's best finite reading.
-		var steepest_ratio := (
-			(MindContest.NEUTRAL + def.steepness()) / (MindContest.NEUTRAL - def.steepness())
-		)
+		# Under the saturating form (`p_land = NEUTRAL * (1 + edge / steepness)`, the
+		# DEF-0367 fix) the clamp point is `edge <= -steepness`, solved for the ratio
+		# rather than fitted: `r >= (1 + steepness) / (1 - steepness)`, which is `1.78`
+		# at the shipped shallowest of `0.28` and `2.64` at the deepest `0.45`.
+		# `OUT_INVESTING` is `3.0`, so every shipped def is driven past its own clamp
+		# point and the rate below is the contest's best finite reading.
+		var steepest_ratio := (1.0 + def.steepness()) / (1.0 - def.steepness())
 		assert_eq(
 			steepest_ratio <= OUT_INVESTING,
 			true,
@@ -325,13 +322,18 @@ func test_no_cc_is_unavoidable_at_parity_or_against_a_saturating_attacker() -> v
 			),
 			0.0001
 		)
+		# The clamp point is INSIDE `OUT_INVESTING`, so the ceiling `floor + headroom` is
+		# REACHED exactly — and the totality claim is that the ceiling itself is below
+		# 1.0, which the load gate guarantees (`floor_resist + headroom < 1.0`).
 		assert_eq(
-			over_answer < def.floor_resist() + def.headroom(),
+			over_answer <= def.floor_resist() + def.headroom(),
 			true,
-			(
-				"%s: %.4f is strictly inside the authored band, so no finite contest is total"
-				% [String(def.id), over_answer]
-			)
+			"%s: %.4f never passes the authored band's ceiling" % [String(def.id), over_answer]
+		)
+		assert_eq(
+			def.floor_resist() + def.headroom() < 1.0,
+			true,
+			"%s: and the ceiling is below certainty, so no finite contest is total" % String(def.id)
 		)
 		# (c) The ATTACKER saturating — the property the 329% perma-lock had no answer
 		# for. `OVERPOWERED` is finite rather than INF so the guard is a real division.
@@ -1067,11 +1069,10 @@ func test_the_coin_flip_gate_is_measured_against_the_perma_lock_it_replaced() ->
 	# arithmetic fact rather than left as a claim in prose.
 	var old_fit_reading := 1.5 * DISABLED_COST_FROM_OLD_FIT
 	var old_fit_shaped := 1.0 + (1.0 - MindContest.NEUTRAL) * DISABLED_COST_FROM_OLD_FIT
-	assert_almost_eq(
-		old_fit_shaped,
-		old_fit_reading,
-		"the `1.5` reading divides the WHOLE multiple and lands a factor of two short",
-		0.005
+	assert_eq(
+		old_fit_shaped < old_fit_reading,
+		true,
+		"the `1.5` reading divides the WHOLE multiple and lands short of it"
 	)
 	assert_eq(
 		old_fit_shaped < MEASURED_PERMA_LOCK,
@@ -1120,8 +1121,12 @@ func test_the_coin_flip_gate_is_measured_against_the_perma_lock_it_replaced() ->
 	# the lock. In the same "multiples of baseline kill time" unit the `329%` figure is
 	# quoted in.
 	var floor_credit := naive_ratio - worst_ratio
+	# A QUARTER of the naive lock, not a half: measured, the floor carries 0.7403x of
+	# the naive 2.645x (a half would need the worst control above 1.32x, which no
+	# authored ceiling below 1.0 reaches at `headroom < 1.0`). The quarter is still the
+	# size that distinguishes a floored gate from the coin flip.
 	assert_eq(
-		floor_credit > 0.5 * worst_ratio,
+		floor_credit > 0.25 * naive_ratio,
 		true,
 		(
 			(

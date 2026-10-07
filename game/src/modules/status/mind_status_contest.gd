@@ -133,7 +133,17 @@ static func resolve(
 	# is and is not: parity is a 50% LAND rate, but the ANSWER rate is
 	# `floor_resist + headroom * 0.5`, which on a shipped def is far above the 0.5
 	# the naive form would have left a non-investor with.
-	var p_land := clampf(NEUTRAL + edge * _finite(def.steepness()), 0.0, 1.0)
+	# THE SATURATING COIN FLIP (the DEF-0367 fix): `steepness` is the EDGE the contest
+	# saturates at, so `p_land` reaches 1.0 / 0.0 once the stronger side holds
+	# `steepness` of the edge and parity stays `NEUTRAL` at edge 0 for every value.
+	# The form this replaces (`NEUTRAL + edge * steepness`) could only reach the floor
+	# for `steepness >= NEUTRAL`, so the whole authored band (0.28..0.45) left the
+	# authored `floor_resist` UNREACHABLE at saturation — the defect DEF-0367 recorded.
+	# A non-positive steepness would divide by zero and is refused at load
+	# (`MindStatusDef._contest_problems`); the epsilon keeps a bad resource from
+	# crashing the resolve before that gate has run.
+	var steep := maxf(_finite(def.steepness()), 0.000001)
+	var p_land := clampf(NEUTRAL * (1.0 + edge / steep), 0.0, 1.0)
 	answer["p_land"] = p_land
 	var floor_value := def.floor_resist()
 	var headroom := def.headroom()
