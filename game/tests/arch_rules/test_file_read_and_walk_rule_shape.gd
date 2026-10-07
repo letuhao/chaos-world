@@ -283,6 +283,7 @@ func test_rule_eight_alone_accepts_the_bounded_walk_and_declines_the_rest() -> v
 func test_a_read_that_advances_nothing_still_fails_the_whole_predicate() -> void:
 	assert_eq(_verdict(FILE_READ_STANDING_STILL), false, "a loop that reads nothing still fails")
 	assert_eq(_verdict(FILE_READ_OTHER_HANDLE), false, "and one that reads another handle")
+	assert_eq(_verdict(FILE_READ_BEHIND_BRANCH), false, "and one whose read never runs")
 
 
 ## The live shapes the whole guard must still refuse, so rule 8 cannot have
@@ -291,6 +292,7 @@ func test_a_walk_the_evidence_cannot_support_still_fails_the_whole_predicate() -
 	for source in [
 		WALK_REPARENTING_BUILD,
 		WALK_UNCAPPED_BUILD,
+		WALK_FILL_ELSEWHERE,
 		WALK_WITHOUT_A_LOOKUP,
 		WALK_LOOKUP_BEHIND_BRANCH
 	]:
