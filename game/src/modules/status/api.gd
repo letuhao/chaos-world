@@ -577,6 +577,9 @@ static func clear_grant(actor: Actor, grant_id: StringName) -> Dictionary:
 		cleared.append(String(status.id))
 		instances.append(status.instance_id)
 	_purge_instances(actor, instances)
+	# ADR 0902 (P6=C): the grant's counters go with its instances — the Keepverse
+	# `ClearGrant` prefix sweep, so a re-projected grant starts from zero.
+	StatusCounters.clear_grant(actor, grant_id)
 	return {"ok": true, "grant": String(grant_id), "cleared": cleared, "count": cleared.size()}
 
 
@@ -603,6 +606,8 @@ static func withdraw(actor: Actor) -> Dictionary:
 		instances.append(status.instance_id)
 	_purge_instances(actor, instances)
 	StatusRuntime.forget(actor)
+	# ADR 0902 (P6=C): the host's counters leave with its instances.
+	StatusCounters.forget(actor)
 	return {"ok": true, "cleared": cleared, "count": cleared.size()}
 
 
@@ -615,6 +620,93 @@ static func _purge_instances(actor: Actor, instances: Array[int]) -> void:
 			actor.statuses.remove_at(index)
 	_reconcile(actor)
 	actor.mark_stats_dirty()
+
+
+## ## `record_counter_hit` / `record_instance_hit` — the two key spaces (ADR 0902, P6=C)
+##
+## The Keepverse `RecordCounterHit` shape: the CALLER brings the key and the threshold
+## config, and the call answers whether a burst threshold was reached. `every_hits <= 0`
+## and an empty grant are refused (`false`) rather than counted against nothing.
+##
+## The per-instance spelling keys by the handle `StatusRegistry` minted, so two
+## `coexist` instances of one id count independently — the same identity rule the
+## instance-keyed store already follows.
+static func record_counter_hit(
+	actor: Actor,
+	grant_id: StringName,
+	scope_key: StringName,
+	every_hits: int,
+	reset_on_burst: bool,
+	hits: int = 1
+) -> bool:
+	if actor == null or grant_id == &"":
+		return false
+	return StatusCounters.record(
+		actor, StatusCounters.grant_key(grant_id, scope_key), every_hits, reset_on_burst, hits
+	)
+
+
+static func record_instance_hit(
+	actor: Actor, instance_id: int, every_hits: int, reset_on_burst: bool, hits: int = 1
+) -> bool:
+	if instance_id <= 0:
+		return false
+	return StatusCounters.record(actor, instance_id, every_hits, reset_on_burst, hits)
+
+
+## Both counter key spaces, as copies (ADR 0902, P6/P13 readback).
+static func counter_snapshot(actor: Actor) -> Dictionary:
+	return StatusCounters.snapshot(actor)
+
+
+## ## `record_landed_blow` — the landed-blow firing (ADR 0902, P6=C)
+##
+## Called with the `status_application` row the spine's S12 filed on a landed outcome
+## (`StatusApply.record`'s flattened entry) — `CombatBoot.resolve_hit` is the caller.
+## A def that authors a counter under its payload advances here:
+##
+##     payload.counter = {every_hits: int, reset_on_burst: bool, space: "instance"|"grant", scope: name}
+##
+## and a def that authors none is a no-op — every shipped def today, so the funnel
+## call is byte-identical for the shipped content and the wiring is what makes a
+## future authored counter live.
+##
+## `space` names the key space: `"instance"` (the default) keys by the row's minted
+## handle — or, for an `already_held` row that carries none, by the LIVE instance the
+## id names, so "every N hits while this status is up" is real. `"grant"` keys by the
+## row's grant plus the config's `scope`. ONE hit per landed blow; a caller merging N
+## blows advances N through [method record_counter_hit].
+static func record_landed_blow(host: Actor, entry: Dictionary) -> bool:
+	if host == null or entry.is_empty():
+		return false
+	# ADR 0902 (P6=C): a row that NAMES a status counts — an `already_held` refusal is
+	# still a landed blow carrying the status; one naming nothing is not this verb's.
+	var status_id := StringName(entry.get("status_id", &""))
+	if status_id == &"":
+		return false
+	var def := StatusCatalog.instance().any_definition(status_id)
+	if def == null:
+		return false
+	var config: Variant = def.payload.get("counter", {})
+	if not (config is Dictionary) or (config as Dictionary).is_empty():
+		return false
+	var counter := config as Dictionary
+	var every_hits := int(counter.get("every_hits", 0))
+	var reset_on_burst := bool(counter.get("reset_on_burst", true))
+	if String(counter.get("space", "instance")) == "grant":
+		return record_counter_hit(
+			host,
+			StringName(entry.get("grant_id", &"")),
+			StringName(counter.get("scope", &"")),
+			every_hits,
+			reset_on_burst
+		)
+	var instance_id := int(entry.get("instance_id", 0))
+	if instance_id <= 0:
+		# No fresh handle: advance the LIVE instance the id names. The first match is
+		# unique for every stacking except `coexist`, which this docblock names.
+		instance_id = _live_instance_for(host, status_id)
+	return record_instance_hit(host, instance_id, every_hits, reset_on_burst)
 
 
 ## The element→status mapping of ADR 0105: the id whose def claims
@@ -675,6 +767,7 @@ static func summary(actor: Actor = null) -> Dictionary:
 		"active": [],
 		"rejected": [],
 		"resisted": StatusEvents.shared().resisted_log(),
+		"counters": {},
 	}
 	for status_id in ids:
 		(report["ids"] as Array).append(String(status_id))
@@ -708,6 +801,8 @@ static func summary(actor: Actor = null) -> Dictionary:
 			)
 		)
 	report["active"] = active
+	# ADR 0902 (P6/P13): both counter key spaces, an actor-scoped read.
+	report["counters"] = StatusCounters.snapshot(actor)
 	return report
 
 
@@ -904,6 +999,16 @@ static func _icd_refusal(actor: Actor, def: StatusDef) -> bool:
 		if runtime == null or runtime.icd_elapsed < icd:
 			return true
 	return false
+
+
+## The live instance handle carrying `status_id` on `actor`, or 0 when none does
+## (ADR 0902, P6=C). Bounded `for` over the actor's own list; the FIRST match is
+## unique for every stacking except `coexist`, which [method record_landed_blow] names.
+static func _live_instance_for(actor: Actor, status_id: StringName) -> int:
+	for status in actor.statuses:
+		if status.id == status_id:
+			return status.instance_id
+	return 0
 
 
 ## The live effect carrying `instance_id`, or null (ADR 0902, P3). Bounded
@@ -1134,12 +1239,18 @@ static func _strings_of(values: Array[StringName]) -> Array[String]:
 ## the sibling carrying another instance of the same id untouched.
 static func _prune(actor: Actor, live: Array[int]) -> void:
 	var runtimes := _runtime(actor)
+	var gone: Array[int] = []
 	for instance in runtimes.keys():
 		var runtime := runtimes.get(instance) as StatusRuntime
 		if runtime == null or live.has(int(instance)):
 			continue
 		runtimes.erase(instance)
 		StatusRuntime.clear_source(actor, runtime.source)
+		gone.append(int(instance))
+	if not gone.is_empty():
+		# ADR 0902 (P6=C): a left instance's counters leave with it, so a successor
+		# instance can never inherit a dead sibling's count.
+		StatusCounters.drop_instances(actor, gone)
 
 
 ## Drop the purged ids from the actor's array, in place, and let `_prune` sweep the

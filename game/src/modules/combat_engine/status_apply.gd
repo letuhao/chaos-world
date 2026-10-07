@@ -250,7 +250,16 @@ static func apply(
 		# the CALLER's gap — there is nobody the status failed to land on.
 		if target != null:
 			StatusEvents.note_resisted(target.id, status_id, REFUSE_ALREADY_HELD)
-		return _refused(REFUSE_ALREADY_HELD)
+		# ADR 0902 (P6=C): the row still NAMES the status an already-held blow carried,
+		# so the landed-blow counter can advance the LIVE instance — a hit is
+		# delivered even when the merge has nothing to do.
+		return _refused(
+			REFUSE_ALREADY_HELD,
+			{
+				&"status_id": String(status_id),
+				&"grant_id": String(_id_of(request.get(KEY_GRANT, &""))),
+			}
+		)
 	# Everything else — the immunity tags, the potency split, the intensity floor, the
 	# chance and the seeded roll — belongs to [method resolve_roll], the ONE owner the
 	# two `CombatExchange` sites call too (ADR 0886).
@@ -803,6 +812,8 @@ static func _written(
 		APPLIED: true,
 		REFUSED: &"",
 		&"status_id": String(StringName(resolved.get(&"status_id", &""))),
+		&"instance_id": instance_id,
+		&"grant_id": String(_id_of(request.get(KEY_GRANT, &""))),
 		&"chance": float(resolved.get(&"chance", 0.0)),
 		&"resist": float(resolved.get(&"resist", 0.0)),
 		&"potency": potency,

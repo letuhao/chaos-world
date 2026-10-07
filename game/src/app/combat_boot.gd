@@ -385,14 +385,18 @@ static func _runs_for(candidate: StringName, attacker: Actor) -> bool:
 ## already parses the DUAL `"a+b"` spelling (ADR 0059), so nothing here re-derives it
 ## and a fourth path added there is answerable here without an edit to this file.
 static func _mechanisms_for_technique(technique: Object) -> Array[StringName]:
+	# A DECLARED typed local, not `[...] as Array[StringName]`: this engine returns an
+	# UNTYPED array for an as-cast literal, and the caller's `var asked :=` then fails
+	# at runtime — the defect this shape replaces.
+	var fallback: Array[StringName] = [_DEFAULT_MECHANISM]
 	if technique.has_method(&"path_ids"):
 		var ids: Variant = technique.call(&"path_ids")
 		if ids is Array:
 			return _mechanisms_for_paths(ids as Array)
-		return [_DEFAULT_MECHANISM]
+		return fallback
 	# A def that cannot answer its own paths is a def the seam cannot read, and qi is
 	# the one mechanism whose inputs every root-built actor is guaranteed to carry.
-	return [_DEFAULT_MECHANISM]
+	return fallback
 
 
 static func _mechanisms_for_paths(paths: Array) -> Array[StringName]:
@@ -406,7 +410,10 @@ static func _mechanisms_for_paths(paths: Array) -> Array[StringName]:
 				out.append(_MIND_MECHANISM)
 			PathState.QI:
 				out.append(_DEFAULT_MECHANISM)
-	return out if not out.is_empty() else [_DEFAULT_MECHANISM] as Array[StringName]
+	if out.is_empty():
+		# The same declared typed local, for the same reason as above.
+		out.append(_DEFAULT_MECHANISM)
+	return out
 
 
 ## The name of the mechanism `attacker` currently carries, or the qi fallback when it
@@ -803,21 +810,47 @@ static func resolve_hit(
 	# allowed to know concrete types and this file already names all three in `_instance`.
 	# A fourth mechanism needs no edit here: it is not built-in, so it is kept, which is
 	# the correct default for anything this root did not create.
+	var outcome: CombatOutcome = null
 	if _is_foreign(previous):
 		var injected := ctx_builder_for(attacker, target, technique, selected)
-		return CombatEngineApi.resolve_hit(attacker, target, technique, resolved, rng, injected)
-	if previous == null:
-		return CombatEngineApi.resolve_hit(attacker, target, technique, resolved, rng)
-	if has_hit_resolver():
+		outcome = CombatEngineApi.resolve_hit(attacker, target, technique, resolved, rng, injected)
+	elif previous == null:
+		outcome = CombatEngineApi.resolve_hit(attacker, target, technique, resolved, rng)
+	elif has_hit_resolver():
 		CombatEngineApi.bind_mechanism(attacker, _instance(selected, attacker))
 		var ctx := ctx_builder_for(attacker, target, technique, selected)
-		var outcome := CombatEngineApi.resolve_hit(attacker, target, technique, resolved, rng, ctx)
+		outcome = CombatEngineApi.resolve_hit(attacker, target, technique, resolved, rng, ctx)
 		CombatEngineApi.bind_mechanism(attacker, previous)
-		return outcome
-	CombatEngineApi.bind_mechanism(attacker, _instance(selected, attacker))
-	var plain := CombatEngineApi.resolve_hit(attacker, target, technique, resolved, rng)
-	CombatEngineApi.bind_mechanism(attacker, previous)
-	return plain
+	else:
+		CombatEngineApi.bind_mechanism(attacker, _instance(selected, attacker))
+		outcome = CombatEngineApi.resolve_hit(attacker, target, technique, resolved, rng)
+		CombatEngineApi.bind_mechanism(attacker, previous)
+	# ADR 0902 (P6=C): the landed blow reaches the counter store through ONE status
+	# facade verb — this funnel is the caller that already holds both edges.
+	_fire_status_counters(target, outcome)
+	return outcome
+
+
+## ADR 0902 (P6=C): the spine's landed blow, delivered to the counter store through
+## the status facade. Every `status_application` row the S12 stage filed on this outcome
+## that NAMES a status is offered to `StatusApi.record_landed_blow`, which advances a
+## counter only when the status's def authors `payload.counter` — no shipped def does,
+## so the shipped content is byte-identical and the wiring is what makes a future
+## authored counter live. An `already_held` row counts too: the blow landed and carried
+## the status even when the merge had nothing to do. No module edge is invented: `app/`
+## is the caller.
+static func _fire_status_counters(target: Actor, outcome: CombatOutcome) -> void:
+	if target == null or outcome == null:
+		return
+	for entry in CombatProposalReader.effects_of(outcome.proposal):
+		if not entry is Dictionary:
+			continue
+		var row := entry as Dictionary
+		if StringName(row.get("kind", &"")) != StatusApply.EFFECT_KIND:
+			continue
+		if StringName(row.get("status_id", &"")) == &"":
+			continue
+		StatusApi.record_landed_blow(target, row)
 
 
 ## The `ctx_builder` for one hit: the builder for the `selected` mechanism [method
