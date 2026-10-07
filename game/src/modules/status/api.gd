@@ -615,6 +615,26 @@ static func withdraw(actor: Actor) -> Dictionary:
 	return {"ok": true, "cleared": cleared, "count": cleared.size()}
 
 
+## ## `sync_projection` / `sync_age_band` — the projection host's doors (ADR 0902, P8/BL-0924)
+##
+## `sync_projection` is the generic host: a track's stage in, `{change, stage, ids, grant,
+## reason}` out, with `change` in `applied|withdrew|no_change` and one apply per
+## transition. `sync_age_band` is the ONE shipped track — the age bands — resolved from
+## its own table so a caller never restates the rungs.
+static func sync_projection(
+	actor: Actor,
+	track_id: StringName,
+	stage: int,
+	rungs: Array,
+	match: StringName = StatusProjection.MATCH_PREFIX
+) -> Dictionary:
+	return StatusProjection.sync(actor, track_id, stage, rungs, match)
+
+
+static func sync_age_band(actor: Actor) -> Dictionary:
+	return AgeBands.sync(actor)
+
+
 ## Remove the statuses carrying `instances`, in place, and let the same reconcile
 ## every other purge runs release their records and modifiers. INSTANCE-keyed where
 ## [method _purge] is id-keyed (ADR 0902, P3), because `coexist` siblings share an id.
@@ -844,6 +864,8 @@ static func summary(actor: Actor = null) -> Dictionary:
 	report["active"] = active
 	# ADR 0902 (P6/P13): both counter key spaces, an actor-scoped read.
 	report["counters"] = StatusCounters.snapshot(actor)
+	# ADR 0902 (P8): the age track's own read model (band, pair, fractions).
+	report["age"] = AgeBands.summary(actor)
 	return report
 
 

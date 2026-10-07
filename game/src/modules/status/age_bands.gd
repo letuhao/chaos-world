@@ -80,6 +80,40 @@ static func ids_for(band: StringName) -> Array[StringName]:
 	return [wear_id(band), clarity_id(band)]
 
 
+## The projection TRACK id and its rungs (ADR 0902 P8, BL-0924): the table's bands in
+## threshold order, each rung the band's own (wear, clarity) pair, so a band transition is
+## ONE `StatusProjection.sync` that withdraws the previous pair before writing the next.
+const TRACK := &"age"
+
+
+## Every band's id pair, youngest first — the rung list `StatusProjection.sync` walks.
+static func rungs() -> Array:
+	var out: Array = []
+	for row in _table().bands():
+		out.append(ids_for(StringName(row.get("band", ""))))
+	return out
+
+
+## The rung index `actor` currently stands on: [method band_for]'s answer, mapped through
+## the same ordered rows, so the projection cannot disagree with the read model.
+static func stage_of(actor: Actor) -> int:
+	var band := band_for(actor)
+	var rows := _table().bands()
+	for index in rows.size():
+		if StringName(rows[index].get("band", "")) == band:
+			return index
+	return 0
+
+
+## Sync `actor`'s age projection: the current band's pair installed, the previous band's
+## withdrawn. The band is the DRIVING SCALAR — this reads it and writes the statuses, and
+## nothing here touches a clock (the caller that owns time decides when to sync).
+static func sync(actor: Actor) -> Dictionary:
+	return StatusProjection.sync(
+		actor, TRACK, stage_of(actor), rungs(), StatusProjection.MATCH_PREFIX
+	)
+
+
 ## The band `actor` is standing in, read against its EFFECTIVE lifespan.
 ##
 ## ## The lifespan is `RealmDefaults.LIFESPAN`'s published read, never a re-derivation
@@ -111,7 +145,7 @@ static func band_for(actor: Actor) -> StringName:
 	var days_per_year := days_per_year()
 	if days_per_year <= 0:
 		return AgeBandTable.FIRST_ASH
-	return BANDS.band_for(maxf(0.0, actor.age_years) * float(days_per_year), lifespan)
+	return _table().band_for(maxf(0.0, actor.age_years) * float(days_per_year), lifespan)
 
 
 ## Whole DAYS in one authored YEAR, or `0` when either magnitude is unauthored. Spelled as
@@ -139,10 +173,10 @@ static func _lifespan_of(actor: Actor) -> float:
 
 
 ## The whole age read as primitives, for a screen and a test: the band, both halves of it,
-## and the numbers behind them. This is what `StatusApi.summary` publishes under `age`, and
-## it is the read model rather than a verb — `status/api.gd` is at
-## `rules.MAX_FACADE_PUBLIC_METHODS` and a thirteenth method is a facade split, not a new
-## accessor.
+## and the numbers behind them. This is what `StatusApi.summary` publishes under `age`.
+## The cap a former version of this sentence cited (`rules.MAX_FACADE_PUBLIC_METHODS`) is
+## DELETED (`tools/arch/rules.py`): the facade is measured by FAN-IN now, so the read
+## model is a key on `StatusApi.summary`, never a second accessor.
 ##
 ## `{}` for no actor, so the "no actor" shape is the same one every panel in `src/ui/` uses.
 static func summary(actor: Actor) -> Dictionary:

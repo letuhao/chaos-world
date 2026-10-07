@@ -117,14 +117,20 @@ func test_a_status_expires_through_the_production_path_and_releases_its_modifier
 	# Expiry is the other half of "nobody can tick": without a caller nothing ever
 	# reaches `remaining <= 0`. And the modifier release is what stops an expired
 	# debuff from silently disarming the target forever.
+	#
+	# The age projection installs its band pair on the loop's first frame (ADR 0902,
+	# P8), so the ABSOLUTE count carries those modifiers too. The claim is the DELTA:
+	# the debuff's own two go and nothing else moves.
+	_frames(1)
+	var baseline := _actor.stats.modifier_count()
 	var applied := StatusApi.apply(_actor, &"metal_sunder", 1.0)
 	assert_eq(bool(applied["ok"]), true, "the debuff applies")
-	assert_eq(_actor.stats.modifier_count(), 2, "both authored modifiers are held")
+	assert_eq(_actor.stats.modifier_count(), baseline + 2, "both authored modifiers are held")
 	# 10.0s duration at a 0.25s frame is 40 frames; 48 overshoots into the next frame
 	# so the expiry is definitely behind us.
 	_frames(48)
 	assert_eq(_actor.has_status(&"metal_sunder"), false, "expired through app/ wiring")
-	assert_eq(_actor.stats.modifier_count(), 0, "and its modifiers were removed in full")
+	assert_eq(_actor.stats.modifier_count(), baseline, "and its modifiers were removed in full")
 
 
 func test_a_permanent_cultivation_status_survives_ticking() -> void:

@@ -88,6 +88,12 @@ var _actor: Actor
 ## a table, and it is reset whenever no sea is present so it cannot grow without limit.
 var _collapse_held: float = 0.0
 
+## The last band this loop synced the age projection for (ADR 0902, P8/BL-0924). `&""`
+## means "never synced", so an actor's FIRST tick installs its band pair — the age
+## system's own "installed at conception" — and a fresh loop can never mistake a loaded
+## actor for one it already projected.
+var _band: StringName = &""
+
 
 func _init(actor: Actor = null) -> void:
 	_actor = actor
@@ -108,6 +114,7 @@ func _init(actor: Actor = null) -> void:
 func attach(actor: Actor) -> void:
 	_actor = actor
 	_collapse_held = 0.0
+	_band = &""
 
 
 func actor() -> Actor:
@@ -194,7 +201,21 @@ func tick(delta: float) -> Dictionary:
 	result["technique_suspensions"] = _strings(TechniquesApi.settle_upkeep(_actor, step))
 	result["born"] = FertilityApi.advance(_actor, step * SECONDS_PER_GESTATION_DAY_TURN)
 	_tick_combat(step, result)
+	result["age_band"] = _sync_age_band()
 	return result
+
+
+## The age projection's driver (ADR 0902, P8/BL-0924): this loop is the composition
+## root's only time wire, so the band TRANSITION is detected here — one `band_for` read a
+## frame — and the projection host does the writing (withdrawing the previous band's pair
+## before installing the next). The host itself reads no clock; this caller owns time.
+func _sync_age_band() -> String:
+	var band := AgeBands.band_for(_actor)
+	if band == _band:
+		return String(band)
+	_band = band
+	StatusApi.sync_age_band(_actor)
+	return String(band)
 
 
 ## The three combat ticks, reported under their own keys so a readout and a test read
