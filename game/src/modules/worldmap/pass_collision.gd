@@ -2,10 +2,11 @@ class_name WorldmapCollisionPass
 extends WorldmapContract
 
 ## Collision: the walkable grid from water terrain and blocking footprints.
-## Requires `terrain` and `scatter`. Runs LAST by construction — anything
-## placed after it would stand on cells already judged walkable, which is how
-## a prop ends up inside a wall. Water blocks by archetype prefix; props
-## block their footprint cells when the placement says `blocking`.
+## Requires every props writer (`terrain`, `scatter`, `roads`, `resources`,
+## `structures`, `landmarks`) and runs LAST by construction — anything placed
+## after it would stand on cells already judged walkable, which is how a prop
+## ends up inside a wall. Water blocks by archetype prefix; props block their
+## footprint cells when the placement says `blocking`.
 
 
 func pass_id() -> StringName:
@@ -13,7 +14,7 @@ func pass_id() -> StringName:
 
 
 func requires() -> Array:
-	return [&"terrain", &"scatter"]
+	return [&"terrain", &"scatter", &"roads", &"resources", &"structures", &"landmarks"]
 
 
 func run(ctx: Dictionary, chunk: Dictionary) -> Dictionary:

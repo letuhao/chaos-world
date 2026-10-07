@@ -41,7 +41,9 @@ extends RefCounted
 ## first-class and read top-level; every later layer (elevation, encounters,
 ## ...) reads from `chunk["layers"]` under its own name and is written back
 ## there by the pipeline. A pass returns its payload top-level either way —
-## the fold is the pipeline's, not the author's.
+## the fold is the pipeline's, not the author's. `props` is the one
+## first-class exception: every scatter-family pass APPENDS its own
+## placements, because overwriting would let registration order eat writers.
 
 
 ## The pass's own layer name (e.g. `&"terrain"`, `&"vegetation"`). Empty here;

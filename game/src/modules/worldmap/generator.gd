@@ -58,16 +58,28 @@ func generate(
 		"water": config.get("water", true),
 		"palette": config.get("palette", ["ground_tile.base_ground"]),
 		"roads": config.get("roads", 0),
+		"resources": config.get("resources", []),
+		"structures": config.get("structures", []),
+		"settlements": config.get("settlements", []),
+		"landmarks": config.get("landmarks", []),
+		"landmark_density": config.get("landmark_density", 0.15),
+		"encounter_tables": config.get("encounter_tables", []),
+		"encounter_density": config.get("encounter_density", 0.0),
+		"npc_roles": config.get("npc_roles", []),
 	}
 	var data := {"terrain": [], "props": [], "walkable": [], "layers": {}}
 	# First-class fields stay three: a pass returns its layer top-level (e.g.
 	# `{"elevation": rows}`) and anything beyond the three folds into `layers`
 	# under the pass's own key, so a new pass never touches this function.
+	# `props` is the one first-class exception: every scatter-family pass
+	# APPENDS, because overwriting would let registration order eat writers.
 	for layer in order:
 		var stage := _passes[layer] as WorldmapContract
 		var out := stage.run(ctx, data)
 		for key in out.keys():
-			if String(key) in ["terrain", "props", "walkable"]:
+			if String(key) == "props" and out[key] is Array:
+				(data["props"] as Array).append_array(out[key] as Array)
+			elif String(key) in ["terrain", "walkable"]:
 				data[key] = out[key]
 			elif String(key) == "layers" and out[key] is Dictionary:
 				for layer_key in (out[key] as Dictionary).keys():

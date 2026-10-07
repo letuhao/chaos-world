@@ -27,18 +27,39 @@ func test_a_duplicate_layer_is_refused() -> void:
 func test_readers_run_after_their_requirements() -> void:
 	var generator := WorldmapGenerator.new()
 	# Registered backwards on purpose: the pipeline orders, not the caller.
-	generator.register_pass(WorldmapCollisionPass.new())
-	generator.register_pass(WorldmapScatterPass.new())
-	generator.register_pass(WorldmapWaterPass.new())
+	generator.register_pass(WorldmapElevationPass.new())
 	generator.register_pass(WorldmapTerrainPass.new())
+	var chunk := generator.generate("node", 0, 0, 6, 7, _config())
+	assert_eq(chunk.terrain.size(), 6, "terrain was laid")
+	assert_eq((chunk.layers.get("elevation", []) as Array).size(), 6, "before elevation read it")
+
+
+func test_the_standard_set_registers_every_layer() -> void:
+	var generator := WorldmapApi.default_generator()
 	var names: Array = []
 	for layer in generator.layers():
 		names.append(String(layer))
 	names.sort()
-	assert_eq(names, ["collision", "scatter", "terrain", "water"], "all four layers registered")
+	assert_eq(
+		names,
+		[
+			"collision",
+			"elevation",
+			"encounters",
+			"landmarks",
+			"npc_spawns",
+			"resources",
+			"roads",
+			"scatter",
+			"structures",
+			"terrain",
+			"water",
+		],
+		"the standard set registers every layer"
+	)
 	var chunk := generator.generate("node", 0, 0, 6, 7, _config())
 	assert_eq(chunk.terrain.size(), 6, "terrain was laid before water read it")
-	assert_eq(chunk.walkable.size(), 6, "and collision ran last over both")
+	assert_eq(chunk.walkable.size(), 6, "and collision ran last over everything")
 
 
 func test_an_unsatisfiable_requirement_fails_loudly() -> void:
