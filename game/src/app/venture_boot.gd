@@ -244,7 +244,10 @@ static func _demo_configs() -> Dictionary:
 		},
 		"far":
 		{
-			"environment": ENV,
+			# A second environment across the portal: the far side renders
+			# plains ground under the same pipeline, so the demo proves one
+			# graph spanning two looks, two chunk sizes and two seeds.
+			"environment": "mortal_plains",
 			"chunk_size": 12,
 			"seed": 7,
 			"entry_row": 1,
