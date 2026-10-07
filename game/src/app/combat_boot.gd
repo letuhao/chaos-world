@@ -103,10 +103,14 @@ const _ACUPOINTS_COMPONENT := &"acupoints"
 ## either — this is the middle of the catalogue, which is the only honest answer for
 ## "a blow with no technique on it".
 const BARE_SWING_MAGNITUDE := 2.0
-## The elemental share a bare swing carries. The shipped `combat_damage.tres`'s own
-## `default_element_share` (0.8) rather than a second copy of it, so the two cannot
-## disagree about what a blow with no authored element is worth.
-const BARE_SWING_SHARE := 0.8
+## The elemental share a bare swing carries: NONE, because the blow is elementless and
+## an elementless attack reads its OWN authored share and never the tuning default. The
+## owner's ruling is that an un-authored attack is PHYSICAL by default (BL-0348), so a
+## `0.0` here is what keeps the swing raw; a pure-qi blow is a technique that AUTHORS a
+## share, which is the omni channel's own door (ADR 0004). An ELEMENTAL swing is
+## unaffected either way: a named element with a non-positive share reads the tuning
+## default, exactly as before.
+const BARE_SWING_SHARE := 0.0
 
 ## The injected attack callable: `func(attacker: Actor, defender: Actor, seed_value: int)
 ## -> Variant`. Null means no adapter can land a blow, which [method strike] reports by

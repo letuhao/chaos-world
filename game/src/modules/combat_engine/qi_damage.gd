@@ -6,11 +6,12 @@ extends DamageMechanism
 ## ## The formula, verbatim
 ##
 ## ```
-## share    = technique.element_share, or the tuning default, if the element is valid; else 0
+## share    = technique.element_share, or the tuning default, for a technique that NAMED an
+##            element; the technique's own authored share only, for an ELEMENTLESS one
 ## m_e      = magnitude * share              (elemental share)
 ## m_0      = magnitude * (1 - share)        (raw share -- THIS IS THE FLOOR)
 ## a_0      = attacker ATTACK_SPIRITUAL
-## a_e      = attacker element_power_<e>
+## a_e      = attacker element_power_<e>     (<e> = "" is the omni channel, ADR 0004)
 ## D        = defender element_defense_<e> / resist_divisor      (a MAGNITUDE, not a percent)
 ## D_eff    = D * 1 / (1 + max(0, mastery_pen) / pierce_scale)   (bounded in (0, 1])
 ## K        = defense_divisor_k * a_e        (scales with the ATTACKER)
@@ -208,12 +209,13 @@ func breakdown(ctx: AttackContext) -> Dictionary:
 		return _empty_parts()
 	var tuning := _tuning_of(ctx)
 	var element := _element_of(ctx)
-	var share := 0.0 if element == &"" else _share_of(ctx, tuning)
+	var channel := _raw_element_of(ctx)
+	var share := _share_of(ctx, tuning, element, channel)
 	var magnitude := maxf(0.0, _finite(ctx.magnitude))
 	var matchup := _matchup_of(ctx, element)
 	var raw_attack := _finite(ctx.attacker_value(Stat.ATTACK_SPIRITUAL))
-	var elemental_power := _element_power_of(ctx, tuning, element)
-	var defense := _defense_of(ctx, tuning, element)
+	var elemental_power := _element_power_of(ctx, tuning, channel)
+	var defense := _defense_of(ctx, tuning, channel)
 	var defense_effective := _pierced_defense(defense, _penetration_of(ctx), tuning)
 	var divisor_k := maxf(0.0, _finite(tuning.defense_divisor_k) * elemental_power)
 	var mitigation_rate := _mitigation_of(defense_effective, divisor_k, tuning)
@@ -315,15 +317,15 @@ func _tuning_of(ctx: AttackContext) -> CombatTuning:
 	return _shipped if _shipped != null else CombatTuning.new()
 
 
-## The ONE element this attack carries, or `&""`. A non-id value (an `Array`, which is
-## how a hybrid payload would arrive) is not an element, so a blend degrades to the
-## raw-only hit instead of being silently averaged into one.
+## The ONE element this attack carries, VALIDATED against the table, or `&""`. A non-id
+## value (an `Array`, which is how a hybrid payload would arrive) is not an element, so a
+## blend degrades to the raw-only hit instead of being silently averaged into one.
 ##
 ## With no rules injected the element is trusted as authored, because there is no table
 ## to validate it against; with rules, an id the table does not know is not an element.
+## This is the id the MATCHUP reads -- it needs a pair the table can price.
 func _element_of(ctx: AttackContext) -> StringName:
-	var raw: Variant = ctx.data_value(ELEMENT_KEY, null)
-	var candidate: StringName = raw if raw is StringName or raw is String else &""
+	var candidate := _raw_element_of(ctx)
 	if candidate == &"":
 		return &""
 	var table: Variant = _rules_of(ctx)
@@ -332,15 +334,58 @@ func _element_of(ctx: AttackContext) -> StringName:
 	return candidate if _has_element(table, candidate) else &""
 
 
-## `element_share`, or the tuning's default when the technique authored none. `0` means
-## "use the default" (ADR 0069), and so does anything non-positive: a share outside
-## `[0, 1]` is an authoring error and the raw share's sign is checked here rather than
-## left to produce a negative floor.
-func _share_of(ctx: AttackContext, tuning: CombatTuning) -> float:
+## The authored element id BEFORE validation: `&""` when the technique authored none or
+## handed a non-id. This is the id the CHANNEL reads use -- `element_power_<e>` and
+## `element_defense_<e>` -- on the same rule the spine's crit read uses to build
+## `element_crit_prefix + element`: an empty id reads the omni pair, and an id the table
+## does not know reads a pair that does not exist (0.0) rather than silently becoming the
+## omni channel, which would hide the authoring error.
+func _raw_element_of(ctx: AttackContext) -> StringName:
+	var raw: Variant = ctx.data_value(ELEMENT_KEY, null)
+	return raw if raw is StringName or raw is String else &""
+
+
+## `element_share`, on two different rules, and the difference is the whole point.
+##
+## An attack that NAMED an element reads its own authored share, and `0` -- or anything
+## non-positive -- means "use the tuning's default" (ADR 0069); a share outside `[0, 1]`
+## is an authoring error and the raw share's sign is checked here rather than left to
+## produce a negative floor.
+##
+## An ELEMENTLESS attack reads its OWN authored share and NEVER the tuning default. The
+## default prices an elemental technique that forgot its share; reading it here would
+## turn every physical blow into a hidden omni attack, which is the exact opposite of the
+## owner's ruling that an un-authored attack is PHYSICAL by default (BL-0348). So a
+## pure-qi technique opts into the omni channel by AUTHORING a share, and one that authors
+## none stays raw.
+##
+## Two things that are NOT the elementless case, and both stay physical:
+## an id the table does not know (`channel` is the raw id, non-empty -- broken authoring),
+## and a payload that is not an id at all (an `Array`, which is how a hybrid arrives).
+## Routing either to the omni channel would hide the defect rather than price it.
+func _share_of(
+	ctx: AttackContext, tuning: CombatTuning, element: StringName, channel: StringName
+) -> float:
 	var authored := _number(ctx.data_value(ELEMENT_SHARE_KEY, 0.0))
+	if element == &"":
+		if channel != &"" or not _element_absent_or_empty(ctx):
+			return 0.0
+		return clampf(authored, 0.0, 1.0)
 	if authored <= 0.0:
 		authored = _finite(tuning.default_element_share)
 	return clampf(authored, 0.0, 1.0)
+
+
+## Whether the element slot is ABSENT or an empty id -- the only two shapes that mean
+## "this attack carries no element". A value that is not an id at all (an `Array`) is a
+## broken payload, not an elementless one.
+func _element_absent_or_empty(ctx: AttackContext) -> bool:
+	var raw: Variant = ctx.data_value(ELEMENT_KEY, null)
+	if raw == null:
+		return true
+	if raw is StringName or raw is String:
+		return StringName(raw) == &""
+	return false
 
 
 ## `rules.multiplier(attacker_element, defender_element)`, or `NEUTRAL` when either
@@ -394,6 +439,12 @@ func _defender_element_of(ctx: AttackContext) -> StringName:
 ## ADR 0200's `D`: the defender's authored `element_defense_<e>`, a MAGNITUDE in points
 ## rather than the `[0, 1]` PERCENT this used to read.
 ##
+## `channel` is the RAW element id (`_raw_element_of`), so an elementless attack reads
+## `element_defense_` -- the omni pair `ElementProvider` publishes on the same rule as
+## the per-element one. That is what makes a pure-qi blow answerable: its defense half
+## exists and is the defender's own breadth (summed affinity + `will`), not a fabricated
+## zero.
+##
 ## It is divided by `CombatTuning.resist_divisor` only to share a magnitude space with the
 ## attacker's `element_power_<e>` — NOT to become a fraction, and that is the whole
 ## difference between the two regimes. A constant divisor meeting two growing numbers is
@@ -406,13 +457,11 @@ func _defender_element_of(ctx: AttackContext) -> StringName:
 ## The SIGN is preserved deliberately. `ElementProvider` publishes `maxf(0.0, ...)` so no
 ## shipped actor carries a negative today, but a defence DEBUFF is the case ADR 0200 names
 ## and a `maxf(0.0, ...)` here would erase it before the mirror branch ever saw it.
-func _defense_of(ctx: AttackContext, tuning: CombatTuning, element: StringName) -> float:
-	if element == &"":
-		return 0.0
+func _defense_of(ctx: AttackContext, tuning: CombatTuning, channel: StringName) -> float:
 	var divisor := _finite(tuning.resist_divisor)
 	if divisor <= 0.0:
 		return 0.0
-	return _finite(ctx.target_value(_suffixed(tuning.resist_resistance_prefix, element))) / divisor
+	return _finite(ctx.target_value(_suffixed(tuning.resist_resistance_prefix, channel))) / divisor
 
 
 ## ADR 0200's penetration, as a bounded reciprocal ON THE DEFENSE VALUE:
@@ -501,13 +550,17 @@ func _penetration_of(ctx: AttackContext) -> float:
 	)
 
 
-## `element_power_<e>`, or 0.0 when there is no element. Zero is a real answer and not
-## a failure: an actor with no affinity for an element has an elemental term of zero,
-## which is the "untrained element" case and the only way this term is ever 0.0.
-func _element_power_of(ctx: AttackContext, tuning: CombatTuning, element: StringName) -> float:
-	if element == &"":
-		return 0.0
-	return maxf(0.0, _finite(ctx.attacker_value(_suffixed(tuning.element_power_prefix, element))))
+## `element_power_<e>`, read through the tuning's prefix. `channel` is the RAW element id
+## (`_raw_element_of`), so an elementless attack reads `element_power_` — the omni channel
+## ADR 0004's "pure qi is a real omni channel" is about, published by `ElementProvider` as
+## the SUMMED affinity with the SUMMED mastery at the tier-1 rate. An id the table does
+## not know reads a stat nobody publishes, which is 0.0 — broken authoring stays broken
+## rather than becoming an omni blow.
+##
+## Zero is a real answer and not a failure: an actor with no affinity at all has an
+## elemental term of zero in every channel, which is the "untrained element" case.
+func _element_power_of(ctx: AttackContext, tuning: CombatTuning, channel: StringName) -> float:
+	return maxf(0.0, _finite(ctx.attacker_value(_suffixed(tuning.element_power_prefix, channel))))
 
 
 ## Whether `table` knows `element`, through whichever of `has` / `ids` it answers.

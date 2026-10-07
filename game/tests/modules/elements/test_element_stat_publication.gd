@@ -78,13 +78,14 @@ func test_the_provider_publishes_a_power_and_a_defense_id_for_every_element_it_k
 				)
 			)
 	# MEASURED, not asserted per element: the four ids above and nothing else is the
-	# contract, plus the OMNI crit pair, which the provider publishes on the same rule
-	# (`ElementStats.all_ids()` carries OMNI) rather than as a special case. A stray
+	# contract, plus the OMNI pairs, which the provider publishes on the same rule
+	# (`ElementStats.all_ids()` carries OMNI) rather than as a special case: the crit
+	# pair (ADR 0215) and the power/defense pair (ADR 0004's pure-qi channel). A stray
 	# fifth id per element is a finding rather than a free extra.
 	assert_eq(
 		published.size(),
-		rules.ids().size() * 4 + 2,
-		"the provider publishes four ids per element plus the omni pair, and nothing else"
+		rules.ids().size() * 4 + 4,
+		"the provider publishes four ids per element plus the omni power/defense and crit pairs"
 	)
 
 
@@ -338,6 +339,44 @@ func test_both_element_halves_take_the_realm_multiplier() -> void:
 		defense_ratio,
 		power_ratio,
 		"the two halves move by ONE factor, which is what makes D/(K+D) realm-invariant",
+		1e-9
+	)
+
+
+## ADR 0004's pure-qi channel is a MAGNITUDE pair too, so it rides the same ladder — and
+## by the SAME factor, or a pure-qi blow's mitigated fraction drifts with the realm
+## exactly as the per-element pair's would. The omni ids are not in `rules.ids()`, so
+## this is the case that catches a ladder write that forgot them.
+func test_the_omni_pair_takes_the_same_realm_multiplier() -> void:
+	var realms := RealmDefaults.ladder().realms()
+	var deepest := realms[realms.size() - 1] as RealmDef
+	var actor := ActorFactory.build(&"omni_magnitudes")
+	actor.set_affinity(ElementStats.FIRE, 4.0)
+	actor.set_affinity(ElementStats.WATER, 2.0)
+	var power_before := actor.stats.derived(ElementStats.power_id(ElementStats.OMNI))
+	var defense_before := actor.stats.derived(ElementStats.defense_id(ElementStats.OMNI))
+	assert_eq(power_before > 0.0, true, "the summed affinity publishes a non-zero omni power")
+	assert_eq(defense_before > 0.0, true, "and a non-zero omni defense")
+	ActorFactory.with_qi_cultivation(actor, deepest.id)
+	assert_almost_eq(
+		actor.stats.derived(ElementStats.power_id(ElementStats.OMNI)),
+		power_before * deepest.power,
+		"the omni power rides the ladder",
+		1e-6
+	)
+	assert_almost_eq(
+		actor.stats.derived(ElementStats.defense_id(ElementStats.OMNI)),
+		defense_before * deepest.power,
+		"and so does the omni defense, by the same factor",
+		1e-6
+	)
+	# The strip half: `RealmScaling.apply` clears the source tag wholesale, so the omni
+	# pair must be on the owned list or a breakthrough leaves a stale multiplier behind.
+	RealmScaling.apply(actor)
+	assert_almost_eq(
+		actor.stats.derived(ElementStats.power_id(ElementStats.OMNI)),
+		power_before,
+		"the breakthrough clears the omni power's multiplier",
 		1e-9
 	)
 

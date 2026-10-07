@@ -147,6 +147,24 @@ static func apply_realm_modifiers(actor: Actor, rules: ElementRules = null) -> v
 				ElementStats.defense_id(element), Stat.Op.MULT, realm.power, RealmScaling.SOURCE
 			)
 		)
+	# ADR 0004's pure-qi channel rides the SAME ladder, for the crit pair's reason one
+	# block down: a realm-flat omni pair would leave a pure-qi blow's elemental share
+	# drifting down the ladder while every per-element pair rides it, and the channel
+	# would be worthless at depth. `ElementStats.OMNI` is not in `resolved.ids()`, so it
+	# is written here rather than by the loop above.
+	actor.stats.add_modifier(
+		StatModifier.new(
+			ElementStats.power_id(ElementStats.OMNI), Stat.Op.MULT, realm.power, RealmScaling.SOURCE
+		)
+	)
+	actor.stats.add_modifier(
+		StatModifier.new(
+			ElementStats.defense_id(ElementStats.OMNI),
+			Stat.Op.MULT,
+			realm.power,
+			RealmScaling.SOURCE
+		)
+	)
 	# ADR 0215. The per-element CRIT pair rides the SAME ladder as the power/defense
 	# pair, for the same reason and because a contest is a ratio of two numbers that must
 	# be the same KIND of number. Scaling only the offence half would make a deep-realm
@@ -197,6 +215,11 @@ static func strip_realm_modifiers(actor: Actor, rules: ElementRules = null) -> v
 	for element in resolved.ids():
 		owned.append(ElementStats.power_id(element))
 		owned.append(ElementStats.defense_id(element))
+	# ADR 0004's pure-qi channel is on the owned list for the same reason the crit pair
+	# is: leaving it out would leave a stale `MULT` behind on every breakthrough, and a
+	# pure-qi blow would keep answering with the realm the body left.
+	owned.append(ElementStats.power_id(ElementStats.OMNI))
+	owned.append(ElementStats.defense_id(ElementStats.OMNI))
 	# ADR 0215: the crit pair is on the owned list for the same reason the other two
 	# halves are — leaving it out would leave a stale `MULT` behind on every breakthrough
 	# and the halves of the crit contest would drift apart again by one realm step.

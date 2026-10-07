@@ -2,7 +2,9 @@ class_name ElementProvider
 extends StatProvider
 
 ## Contributes per-element derived stats: element_power_<e> and
-## element_defense_<e> for every element in the rules (ADR 0004, ADR 0200).
+## element_defense_<e> for every element in the rules (ADR 0004, ADR 0200), plus the
+## OMNI pair (`element_power_` / `element_defense_`) an elementless attack reads —
+## ADR 0004's "pure qi is a real omni channel".
 ## element_mastery_<e> is a base attribute owned by core, not passed through here.
 ##
 ## ## The per-tier mastery divisor, and why it lives HERE
@@ -136,6 +138,17 @@ func contribute(context: StatContext) -> Dictionary:
 		0.0,
 		CRIT_RESIST_BASE + omni_affinity * CRIT_RESIST_AFFINITY_STEP + will * CRIT_RESIST_WILL_STEP
 	)
+	# ADR 0004's "pure qi is a real omni channel": the MAGNITUDE pair an ELEMENTLESS
+	# attack reads, on the same rule the per-element pair above uses with `affinity`
+	# read as the SUM and `mastery` as the SUM. A mono-affinity body with all its
+	# mastery in that element reads its own element's power exactly, and breadth pays
+	# linearly on both halves -- the trade pure qi makes is no matchup swing (always
+	# NEUTRAL) for no matchup upside. The mastery rate is `_mastery_rate(OMNI)`, which
+	# reads as tier 1 because the omni channel is not an element and has no tier to tax.
+	out[ElementStats.power_id(ElementStats.OMNI)] = maxf(
+		0.0, omni_affinity * (1.0 + _mastery_rate(ElementStats.OMNI) * omni_mastery)
+	)
+	out[ElementStats.defense_id(ElementStats.OMNI)] = maxf(0.0, omni_affinity * 0.5 + will * 0.2)
 	return out
 
 

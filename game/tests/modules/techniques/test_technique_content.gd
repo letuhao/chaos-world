@@ -585,29 +585,28 @@ func test_a_passive_has_no_cost_block_and_an_active_has_one() -> void:
 ## carries an `element` for status (ADR 0105) and search vocabulary only, and is now
 ## allowed to author its share as absent; the field's default `0.0` means "use the
 ## module's default" and is not "no element".
+##
+## An ELEMENTLESS row is either PHYSICAL (share `0.0`) or a PURE-QI blow: a positive
+## share reads the omni channel, the bare `element_power_` / `element_defense_` pair
+## `ElementProvider` publishes from the summed affinity and summed mastery (ADR 0004,
+## "pure qi is a real omni channel"). The tuning default never reaches an elementless
+## row -- it prices a technique that NAMED an element and forgot its share.
 func test_a_path_that_resolves_a_share_authors_one() -> void:
 	var elements := {}
 	for def in _defs():
 		if def.element == &"":
+			# A share outside `[0, 1]` is still an authoring error: the mechanism
+			# clamps it, and content must not rely on that.
 			assert_eq(
-				def.element_share,
-				0.0,
+				def.element_share >= 0.0 and def.element_share <= 1.0,
+				true,
 				(
 					(
-						"'%s' is unelemental, which is element == empty and share 0.0; a "
-						+ "non-zero share with no element is a different authoring intent"
+						"'%s' is unelemental: its share is 0.0 (physical) or a pure-qi "
+						+ "share in (0, 1] that reads the omni channel"
 					)
 					% def.id
 				)
-			)
-			# No tag is needed to say "unelemental": an empty `element` and a zero
-			# share already say it. Pinning a tag NAME here would turn a rename of
-			# search vocabulary into a content failure, so the assertion is on the
-			# fields that actually drive behaviour.
-			assert_eq(
-				def.element == &"" and def.element_share == 0.0,
-				true,
-				"'%s' is unelemental by its own fields, not by a label" % def.id
 			)
 			continue
 		assert_eq(

@@ -854,6 +854,9 @@ func test_degradation_never_throws_and_keeps_the_raw_term() -> void:
 	var b := QiDamage.new().breakdown(unknown)
 	assert_eq(b["element"], "", "an unknown element is no element")
 	assert_eq(float(b["share"]), 0.0, "so no elemental share")
+	assert_almost_eq(
+		float(b["elemental_power"]), 0.0, "and no channel resolves for an id nobody published"
+	)
 	assert_eq(float(b["raw_term"]) > 0.0, true, "raw term intact")
 	assert_eq(is_finite(float(b["total"])), true, "finite")
 
@@ -867,15 +870,56 @@ func test_degradation_never_throws_and_keeps_the_raw_term() -> void:
 	assert_almost_eq(float(c["mitigation"]), 1.0, "so mitigation is exactly 1.0")
 	assert_eq(is_finite(float(c["total"])), true, "finite")
 
-	# (d) an unelemental technique: share 0, whole magnitude raw.
-	var d := QiDamage.new().breakdown(_context(attacker, target, &"", 0.8))
+	# (d) an unelemental technique with NO authored share: physical, whole magnitude raw.
+	# The tuning default does not reach it -- it prices an elemental technique that
+	# forgot its share (BL-0348's physical-by-default ruling), and the pure-qi channel
+	# is opt-in by authoring one (see the omni-channel case below).
+	var d := QiDamage.new().breakdown(_context(attacker, target, &"", 0.0))
 	assert_eq(d["element"], "", "no element authored")
-	assert_eq(float(d["share"]), 0.0, "no share")
+	assert_eq(float(d["share"]), 0.0, "and no authored share")
 	assert_eq(float(d["raw"]), float(d["magnitude"]), "the whole magnitude is raw")
 	assert_almost_eq(
 		float(d["total"]),
 		float(d["magnitude"]) * float(d["raw_attack"]),
 		"so the hit is a pure spiritual hit"
+	)
+
+
+## ADR 0004's "pure qi is a real omni channel": an elementless technique that AUTHORS a
+## share reads the omni pair -- the summed affinity / summed mastery channel
+## `ElementProvider` publishes -- and never the matchup table, so its elemental term
+## exists with no STRONG/WEAK swing. This is the door a pure-qi blow walks through.
+func test_an_elementless_technique_with_a_share_reads_the_omni_channel() -> void:
+	var attacker := _attacker(ElementStats.FIRE)
+	var target := _defender(ElementStats.WOOD, 0.0)
+	var parts := QiDamage.new().breakdown(_context(attacker, target, &"", 0.8))
+	assert_almost_eq(
+		float(parts["elemental_power"]), _fire_affinity(), "the omni power is the summed affinity"
+	)
+	assert_almost_eq(float(parts["share"]), 0.8, "the authored share is read, not zeroed")
+	assert_almost_eq(float(parts["matchup"]), 1.0, "and the pure channel is always NEUTRAL")
+	assert_eq(float(parts["elemental_term"]) > 0.0, true, "so the elemental term exists")
+	assert_almost_eq(
+		float(parts["total"]),
+		float(parts["raw_term"]) + float(parts["elemental_term"]),
+		"and the total is the two terms, as for any element"
+	)
+
+
+## The other half of the door: an elementless technique that authors NO share stays
+## PHYSICAL even though the tuning ships a non-zero `default_element_share`. Reading the
+## default here would turn every physical blow into a hidden omni attack -- the exact
+## opposite of BL-0348's ruling.
+func test_the_tuning_default_never_reaches_an_elementless_attack() -> void:
+	var attacker := _attacker(ElementStats.FIRE)
+	var target := _defender(ElementStats.WOOD, 0.0)
+	var parts := QiDamage.new().breakdown(_context(attacker, target, &"", 0.0))
+	assert_eq(_tuning.default_element_share > 0.0, true, "the shipped default is non-zero")
+	assert_almost_eq(float(parts["share"]), 0.0, "and still does not reach the elementless hit")
+	assert_almost_eq(
+		float(parts["total"]),
+		float(parts["magnitude"]) * float(parts["raw_attack"]),
+		"so the hit is entirely raw"
 	)
 
 
