@@ -426,7 +426,9 @@ func _descend(
 	var band := false
 	if not loot_domain.is_empty():
 		var bound := WorldmapApi.enter_loot_band(
-			loot_domain, int(target_config.get("loot_tier", 1)), int(target_config.get("domain_seed", 0))
+			loot_domain,
+			int(target_config.get("loot_tier", 1)),
+			int(target_config.get("domain_seed", 0))
 		)
 		if not bool(bound.get("ok", false)):
 			WorldmapApi.leave_domain_run()
@@ -454,7 +456,10 @@ func return_from_domain() -> Dictionary:
 	var back := WorldmapApi.peek_return()
 	if bool(back.get("band", false)):
 		var left_band := WorldmapApi.leave_loot_band()
-		if not bool(left_band.get("ok", false)) and String(left_band.get("reason", "")) != "not_in_domain":
+		if (
+			not bool(left_band.get("ok", false))
+			and String(left_band.get("reason", "")) != "not_in_domain"
+		):
 			return {"ok": false, "reason": String(left_band.get("reason", ""))}
 	var left := WorldmapApi.leave_domain_run()
 	if not bool(left.get("ok", false)):

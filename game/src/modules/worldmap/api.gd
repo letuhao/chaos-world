@@ -28,6 +28,12 @@ static var _transition: Callable = Callable()
 ## LIFO still returns the newest first, so the orphan costs nothing.
 static var _returns: Array = []
 
+## The loot-band seam: who enters and abandons boss bands. Installed by `app/`
+## (the composition root owns the actor a band is written onto). Tests reset
+## through `clear_loot`.
+static var _loot_entry: Callable = Callable()
+static var _loot_exit: Callable = Callable()
+
 
 ## Forget every node and edge. Tests only: production graphs are built once.
 static func clear_graph() -> void:
@@ -125,17 +131,8 @@ static func leave_domain_run() -> Dictionary:
 	return _domain_exit.call() as Dictionary
 
 
-## The loot-band seam: who enters and abandons boss bands. Installed by `app/`
-## (the composition root owns the actor a band is written onto), read by the
-## scene when a node config names a `loot_domain`. Same shape as the domain
-## seam; a different question, so a different pair. Tests reset through
-## `clear_loot`.
-static var _loot_entry: Callable = Callable()
-static var _loot_exit: Callable = Callable()
-
-
-## Install the band entry and exit. Refuses a dead Callable by name;
-## re-installing replaces, so a boot re-mount never stacks.
+## Install the band entry and exit (statics beside `_graph` above). Refuses a
+## dead Callable by name; re-installing replaces, so a boot re-mount never stacks.
 static func install_loot(entry: Callable, exit: Callable) -> Dictionary:
 	if not entry.is_valid() or not exit.is_valid():
 		return {"ok": false, "reason": "dead_loot_seam"}

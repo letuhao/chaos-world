@@ -21,6 +21,7 @@ var _exits := 0
 
 func setup() -> void:
 	WorldmapApi.clear_domain()
+	WorldmapApi.clear_loot()
 	WorldmapApi.clear_returns()
 	_scene = null
 	_hero = null
@@ -30,6 +31,7 @@ func setup() -> void:
 
 func teardown() -> void:
 	WorldmapApi.clear_domain()
+	WorldmapApi.clear_loot()
 	WorldmapApi.clear_returns()
 	if _scene != null and is_instance_valid(_scene):
 		if _scene.get_parent() != null:
@@ -44,6 +46,8 @@ func teardown() -> void:
 func _actor() -> Actor:
 	var body := Actor.new(&"hero", {Stat.PHYSIQUE: 10.0})
 	body.attach_core_resources()
+	ItemsApi.attach(body, 24)
+	LootApi.attach(body)
 	_born.append(body)
 	return body
 
@@ -236,3 +240,108 @@ func _blocking_cell() -> Vector2i:
 		return Vector2i(base.x, base.y)
 	assert_eq(true, false, "the config grows a blocking prop to break")
 	return Vector2i(-1, -1)
+
+
+# --- The boss band joins the descent --------------------------------------------------
+
+
+func _loot_configs() -> Dictionary:
+	var configs := _configs()
+	(configs["cave"] as Dictionary)["loot_domain"] = "amulet_storm_phoenix_domain"
+	(configs["cave"] as Dictionary)["loot_tier"] = 1
+	return configs
+
+
+func _open_loot() -> void:
+	var graph := WorldmapGraph.new()
+	graph.add_node({"id": "overworld", "kind": &"wilderness", "parent": ""})
+	graph.add_node({"id": "cave", "kind": &"dungeon", "parent": "overworld"})
+	(
+		graph
+		. add_edge(
+			{
+				"from": "overworld",
+				"to": "cave",
+				"kind": &"doorway",
+				"from_cell": Vector2i(1, 1),
+				"to_cell": Vector2i(1, 1),
+			}
+		)
+	)
+	_scene = WorldmapScene.new()
+	var outcome := _scene.open(graph, "overworld", _loot_configs())
+	assert_eq(bool(outcome.get("ok", false)), true, "the overworld opens")
+
+
+func _install_loot() -> void:
+	_install()
+	var outcome := WorldmapApi.install_loot(
+		Callable(self, "_loot_entry"), Callable(self, "_loot_exit")
+	)
+	assert_eq(bool(outcome.get("ok", false)), true, "the loot seam installs")
+
+
+func _loot_entry(domain_id: String, tier: int, seed: int) -> Dictionary:
+	return LootApi.enter_domain(_hero, StringName(domain_id), tier, seed)
+
+
+func _loot_exit() -> Dictionary:
+	return LootApi.abandon(_hero)
+
+
+func _band() -> Dictionary:
+	return LootApi.summary(_hero).get("active", {}) as Dictionary
+
+
+func test_a_descent_with_a_loot_domain_also_enters_the_band() -> void:
+	_hero = _actor()
+	_install_loot()
+	_open_loot()
+	var outcome := _scene.step(1, 0)
+	assert_eq(bool(outcome.get("traveled", false)), true, "the doorway descends")
+	assert_eq(DomainApi.rooms(_hero).is_empty(), false, "with a real run")
+	assert_eq(bool(_band().get("in_domain", false)), true, "and a live band behind it")
+	assert_eq(String(_band().get("boss_id", "")), "amulet_storm_phoenix", "facing its first boss")
+
+
+func test_a_struck_boss_mints_and_the_return_keeps_the_reward() -> void:
+	_hero = _actor()
+	_install_loot()
+	_open_loot()
+	_scene.step(1, 0)
+	var active := _band()
+	var struck := LootApi.strike(_hero, float(active.get("vitality_max", 1.0)) * 10.0, 7)
+	assert_eq(String(struck.get("reason", "")), "defeated", "the blow fells the boss")
+	assert_eq(int(struck.get("drop_count", 0)) > 0, true, "minting drops")
+	var encounter := String(struck.get("encounter_id", ""))
+	var back := _scene.return_from_domain()
+	assert_eq(bool(back.get("ok", false)), true, "the way back opens")
+	assert_eq(bool(_band().get("in_domain", false)), false, "with the band abandoned")
+	var reward := LootApi.reward(_hero, encounter)
+	assert_eq(bool(reward.get("ok", false)), true, "but the reward survives the return")
+
+
+func test_a_refused_band_unwinds_the_run() -> void:
+	_hero = _actor()
+	_install()
+	WorldmapApi.install_loot(Callable(self, "_loot_refused"), Callable(self, "_loot_exit"))
+	_open_loot()
+	var outcome := _scene.step(1, 0)
+	assert_eq(bool(outcome.get("traveled", false)), false, "no band, no descent")
+	assert_eq(String(outcome.get("reason", "")), "sealed", "passing the refusal through")
+	assert_eq(DomainApi.rooms(_hero).is_empty(), true, "with the run unwound")
+	assert_eq(WorldmapApi.return_depth(), 0, "and no return pushed")
+
+
+func _loot_refused(_domain_id: String, _tier: int, _seed: int) -> Dictionary:
+	return {"ok": false, "reason": "sealed"}
+
+
+func test_a_descent_without_a_loot_seam_refuses_by_name() -> void:
+	_hero = _actor()
+	_install()
+	_open_loot()
+	var outcome := _scene.step(1, 0)
+	assert_eq(bool(outcome.get("traveled", false)), false, "nothing installed, nothing entered")
+	assert_eq(String(outcome.get("reason", "")), "no_loot_seam", "and it says so")
+	assert_eq(DomainApi.rooms(_hero).is_empty(), true, "with the run unwound")
