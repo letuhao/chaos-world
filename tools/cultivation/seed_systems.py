@@ -276,6 +276,12 @@ def _seed_system(files: dict[str, str], key: str, spec: dict) -> None:
                 "Boss-only catalyst for the realm's pill.",
             ),
         ):
+            if item_id == sea_catalyst and spec["prefix"] != "mind":
+                # DEF-0296: the sea catalyst is mind-only, exactly as the seed's own
+                # `sea_catalyst` field is (QiRealmSeed has no such field). Emitting it
+                # for qi recreates the 60 files ADR 0096 deleted, so the item follows
+                # the field rather than the loop.
+                continue
             files[f"items/{category}/{item_id}.tres"] = data._tres(
                 "item",
                 [
@@ -288,7 +294,10 @@ def _seed_system(files: dict[str, str], key: str, spec: dict) -> None:
                     f'description = "{description}"',
                 ],
             )
-        for suffix, output in (("pill", pill), ("elixir", elixir), ("sea", sea_catalyst)):
+        suffixes = [("pill", pill), ("elixir", elixir)]
+        if spec["prefix"] == "mind":
+            suffixes.append(("sea", sea_catalyst))
+        for suffix, output in suffixes:
             recipe = f"{prefix}_{suffix}_recipe"
             files[f"recipes/{recipe}.tres"] = data._tres(
                 "recipe",
