@@ -115,6 +115,7 @@ func _action_ids() -> Array:
 
 
 func _bind_nodes() -> void:
+	L.localize_tree(self)
 	if _row != null:
 		return
 	_row = get_node_or_null("%ActionRow") as HBoxContainer

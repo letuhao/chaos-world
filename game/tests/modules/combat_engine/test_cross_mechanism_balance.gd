@@ -45,8 +45,9 @@ extends TestCase
 ## `CombatTuning.shipped()`, a live `ActorStats.derived` read, an authored `.tres`
 ## (`RealmDef.power`, `MindRealmSeed.sea_capacity`), or arithmetic on those. The
 ## only two named inputs are fixture-shaped rather than balance-shaped, and both
-## are named in prose: qi's attack carries the shipped default elemental share
-## (no technique authored one, so `CombatTuning.default_element_share` decides),
+## are named in prose: qi's attack AUTHORS its elemental share (`MEASURED_SHARE`,
+## because BL-0348 ruled the tuning default to `0.0` and a row that read the default
+## would measure a zero-share tautology rather than the elemental path),
 ## and body's strike aims at one named meridian, `lung`, because ADR 0070's
 ## granularity IS the meridian and a sweep is a different mechanic.
 ##
@@ -77,6 +78,11 @@ const ATTACKING_ELEMENT := ElementStats.LIGHTNING
 const DEFENDER_ELEMENT := ElementStats.WATER
 ## The meridian body's strike aims at. Named in the docblock above.
 const AIM_MERIDIAN := &"lung"
+
+## The elemental share the qi row AUTHORS. `0.8` was the shipped default until
+## BL-0348's ruling set it to `0.0`; authoring it here keeps the fraction column
+## measuring the elemental path rather than a `0 == 0` tautology.
+const MEASURED_SHARE := 0.8
 
 ## ADR 0069's realm invariance is asserted to this epsilon because
 ## `test_qi_damage_realm.gd` already asserts the SAME claim to the SAME epsilon
@@ -177,12 +183,12 @@ func _qi_hit(realm_id: StringName) -> Dictionary:
 	var target: Actor = _qi._defender(ATTACKING_ELEMENT, defense_points)
 	_stand_at(attacker, PathState.QI, realm_id)
 	_stand_at(target, PathState.QI, realm_id)
-	var technique: TechniqueDef = _qi._technique(ATTACKING_ELEMENT, _tuning.default_element_share)
+	var technique: TechniqueDef = _qi._technique(ATTACKING_ELEMENT, MEASURED_SHARE)
 	var ctx: AttackContext = _qi._context(
 		attacker,
 		target,
 		ATTACKING_ELEMENT,
-		_tuning.default_element_share,
+		MEASURED_SHARE,
 		CombatSpine.base_damage(attacker, technique),
 		DEFENDER_ELEMENT
 	)

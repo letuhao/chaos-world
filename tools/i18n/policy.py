@@ -21,7 +21,9 @@ CATALOG_DIR = "game/locale"
 ## Control properties that carry player-facing text, in `.gd` and `.tscn`.
 TEXT_PROPERTIES = ("text", "tooltip_text", "placeholder_text")
 
-## Authored-content fields (`.tres`) that carry player-facing text.
+## Authored-content fields (`.tres`) that carry player-facing text. Single-string and
+## array-of-string alike: `names`/`manners`/`activities` are authored lists a composer picks
+## from, and each element is a string a player reads.
 CONTENT_FIELDS = (
     "display_name",
     "description",
@@ -34,6 +36,16 @@ CONTENT_FIELDS = (
     "caption",
     "label",
     "summary",
+    "prose",
+    "body",
+    "teaser",
+    "epithet",
+    "motto",
+    "quote",
+    "note",
+    "names",
+    "manners",
+    "activities",
 )
 
 ## Whole-word tokens a GDScript identifier must contain to be a display sink: a `const`/`var`
@@ -58,6 +70,18 @@ DISPLAY_TOKENS = frozenset(
         "HEADER",
         "REPLY",
         "GREETING",
+        # A composed persona's own wording: a default manner, an activity, a name, an opinion.
+        "NAME",
+        "MANNER",
+        "ACTIVITY",
+        "OPINION",
+        "TELL",
+        "PROSE",
+        "BODY",
+        "TEASER",
+        "EPITHET",
+        "MOTTO",
+        "QUOTE",
     }
 )
 
@@ -84,6 +108,12 @@ def owner_of(rel: str) -> str | None:
     not one shared file, so two owners never collide, and a mod ships its own owners.
     """
     path = rel.replace("\\", "/")
+    if path.startswith("game/src/modules/"):
+        rest = path[len("game/src/modules/") :]
+        sub = rest.split("/", 1)[0]
+        return _owner("", sub) if "/" in rest and sub else "modules"
+    if path.startswith("game/src/core/"):
+        return "core"
     if path.startswith("game/src/ui/"):
         rest = path[len("game/src/ui/") :]
         if "/" not in rest:
@@ -112,9 +142,16 @@ def domain_of(rel: str) -> Domain | None:
 
 
 def scope_kind(rel: str) -> str | None:
-    """The file kind a path is scanned as, or None when it is not in scope."""
+    """The file kind a path is scanned as, or None when it is not in scope.
+
+    `.gd` display text is not only in `ui/`: a module composes a persona or a realm name too
+    (`npc_minor_composer.gd`'s default manner, `realm_defaults.gd`'s realm names), so a module
+    and `core` are scanned as well. `app/` and `contracts/` are not: they compose no wording.
+    """
     path = rel.replace("\\", "/")
-    if path.startswith("game/src/ui/") and path.endswith(".gd"):
+    if path.endswith(".gd") and path.startswith(
+        ("game/src/ui/", "game/src/modules/", "game/src/core/")
+    ):
         return "gd"
     if (path.startswith("game/src/ui/") or path.startswith("game/scenes/")) and path.endswith(
         ".tscn"
@@ -143,7 +180,11 @@ def is_player_text(value: str) -> bool:
         return False
     if not any(ch.isalpha() for ch in text):
         return False
-    if text.startswith(("res://", "user://", "/", "%", "uid://")):
+    if text.startswith(("res://", "user://", "uid://", "/")):
+        return False
+    # A node path is `%Identifier` with no spaces; a FORMAT string (`"%s x%d"`) is a message and
+    # must not be mistaken for one — the earlier blanket `%` guard dropped every such message.
+    if re.fullmatch(r"%[A-Za-z_][A-Za-z0-9_]*", text):
         return False
     if text.startswith(f"{SLUG_PREFIX}_"):
         return False

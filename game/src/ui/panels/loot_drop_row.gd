@@ -104,6 +104,7 @@ func focus_initial() -> void:
 ## Resolve the scene's widgets on first use rather than in `@onready`: the headless
 ## suite runner drives this row before a scene tree exists. Idempotent.
 func _bind_nodes() -> void:
+	L.localize_tree(self)
 	if _name_label != null:
 		return
 	_name_label = get_node_or_null("%DropName") as Label

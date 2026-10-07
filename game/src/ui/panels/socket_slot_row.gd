@@ -48,6 +48,7 @@ func summary() -> Dictionary:
 ## headless suite runner drives this panel before a scene tree exists, so
 ## `_ready()` is not a dependable place to bind them. Idempotent.
 func _bind_nodes() -> void:
+	L.localize_tree(self)
 	if _head_label != null:
 		return
 	_head_label = get_node_or_null("%HeadLabel") as Label

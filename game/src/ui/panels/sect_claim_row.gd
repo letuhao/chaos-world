@@ -149,6 +149,7 @@ func focus_initial() -> void:
 
 
 func _bind_nodes() -> void:
+	L.localize_tree(self)
 	if _institution_label != null:
 		return
 	_institution_label = get_node_or_null("%InstitutionLabel") as Label

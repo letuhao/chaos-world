@@ -1,0 +1,197 @@
+{
+  "id": "medieval_western.parish_chapels_and_wayside_shrines.nave_and_chancel_field_chapel_pilgrim_honored",
+  "name": "Votive-Adorned Single-Room Stone & Thatch Field Chapel",
+  "vietnamese_name": "Nhà Nguyện Nhỏ Lợp Tranh Giữa Cánh Đồng (Đầy Lễ Vật Hành Hương)",
+  "category": "parish_chapels_and_wayside_shrines",
+  "sub_category": "thatched_field_chapel_building",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "enter",
+  "gameplay_role": "Wayside chapel and shrine element (Single-Room Stone & Thatch Field Chapel).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of votive-adorned single-room stone & thatch field chapel, scattered copper coins, wax ex-votos, and prayer ribbons, Parish field chapel and wayside shrine style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/parish_chapels_and_wayside_shrines/nave_and_chancel_field_chapel_pilgrim_honored.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.parish_chapels_and_wayside_shrines.nave_and_chancel_field_chapel_pilgrim_honored:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.656,
+        0.631
+      ],
+      [
+        0.882,
+        0.869
+      ]
+    ],
+    "frac_zero": 0.5169,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.206,
+        0.845,
+        0.579,
+        0.065,
+        0.0
+      ],
+      [
+        0.146,
+        0.997,
+        1.0,
+        1.0,
+        0.76,
+        0.0
+      ],
+      [
+        0.475,
+        1.0,
+        1.0,
+        1.0,
+        0.942,
+        0.451
+      ],
+      [
+        0.837,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.708
+      ],
+      [
+        0.896,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.814
+      ],
+      [
+        0.868,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.871
+      ],
+      [
+        0.31,
+        0.758,
+        0.986,
+        0.931,
+        0.656,
+        0.171
+      ]
+    ],
+    "crop_offset": [
+      36,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 140,
+    "contact_reference_px": 140.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

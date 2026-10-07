@@ -1,0 +1,110 @@
+{
+  "id": "medieval_western.witchcraft_folklore_and_bog_magic.bog_mire_stewing_black_cauldron_poppet_pinned",
+  "name": "Twig-Bound Tripod Iron Cauldron over Swampfire",
+  "vietnamese_name": "Vạc Sắt Đen Nấu Nước Thuốc Trên Lửa Đầm (Buộc Cành Cây Dại)",
+  "category": "witchcraft_folklore_and_bog_magic",
+  "sub_category": "bog_stilt_thatched_witch_hut",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "stir_brew",
+  "gameplay_role": "Witchcraft folklore element (Tripod Iron Cauldron over Swampfire).",
+  "destructible": false,
+  "material": "iron",
+  "feudal_culture": "celtic_gaelic",
+  "prompt_summary": "2D orthographic top-down game sprite of twig-bound tripod iron cauldron over swampfire, woven willow withes and iron nail bindings, Medieval folklore witchcraft and bog magic style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/witchcraft_folklore_and_bog_magic/bog_mire_stewing_black_cauldron_poppet_pinned.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.witchcraft_folklore_and_bog_magic.bog_mire_stewing_black_cauldron_poppet_pinned:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.604
+      ]
+    ],
+    "frac_zero": 0.6528,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.107,
+        0.683,
+        0.087
+      ],
+      [
+        0.723,
+        1.0,
+        0.725
+      ],
+      [
+        0.547,
+        0.917,
+        0.594
+      ]
+    ],
+    "crop_offset": [
+      18,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 74,
+    "contact_reference_px": 74.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -137,6 +137,7 @@ func focus_initial() -> void:
 ## Resolved lazily in `_bind_nodes()`, never `@onready`: the headless runner drives
 ## this row before a scene tree exists (ADR 0080, UI standard).
 func _bind_nodes() -> void:
+	L.localize_tree(self)
 	if _name_label != null:
 		return
 	_name_label = get_node_or_null("%NameLabel") as Label

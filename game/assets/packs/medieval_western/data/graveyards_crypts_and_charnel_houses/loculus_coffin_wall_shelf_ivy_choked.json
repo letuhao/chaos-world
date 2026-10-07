@@ -1,0 +1,206 @@
+{
+  "id": "medieval_western.graveyards_crypts_and_charnel_houses.loculus_coffin_wall_shelf_ivy_choked",
+  "name": "Ivy-Strangled Tiered Catacomb Loculus Coffin Niche",
+  "vietnamese_name": "Hàng Ngăn Đặt Quan Tài Khoét Vách Đá (Dây Leo Xiết Chặt)",
+  "category": "graveyards_crypts_and_charnel_houses",
+  "sub_category": "subterranean_catacomb_niches",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "search_loculus",
+  "gameplay_role": "Graveyard and crypt mortality element (Tiered Catacomb Loculus Coffin Niche).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of ivy-strangled tiered catacomb loculus coffin niche, tangled dark ivy vines obscuring Latin inscriptions, Medieval graveyard churchyard crypt and ossuary style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/graveyards_crypts_and_charnel_houses/loculus_coffin_wall_shelf_ivy_choked.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.graveyards_crypts_and_charnel_houses.loculus_coffin_wall_shelf_ivy_choked:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.618,
+        0.649
+      ],
+      [
+        0.786,
+        0.791
+      ]
+    ],
+    "frac_zero": 0.4635,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.03,
+        0.513,
+        0.779,
+        0.372,
+        0.014,
+        0.0
+      ],
+      [
+        0.094,
+        0.716,
+        1.0,
+        1.0,
+        0.979,
+        0.455,
+        0.0
+      ],
+      [
+        0.539,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.985,
+        0.377
+      ],
+      [
+        0.418,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.925,
+        0.316
+      ],
+      [
+        0.148,
+        0.988,
+        1.0,
+        1.0,
+        1.0,
+        0.727,
+        0.005
+      ],
+      [
+        0.542,
+        0.989,
+        1.0,
+        1.0,
+        1.0,
+        0.955,
+        0.312
+      ],
+      [
+        0.478,
+        0.768,
+        0.971,
+        0.975,
+        0.949,
+        0.602,
+        0.335
+      ]
+    ],
+    "crop_offset": [
+      23,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 188,
+    "contact_reference_px": 188.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

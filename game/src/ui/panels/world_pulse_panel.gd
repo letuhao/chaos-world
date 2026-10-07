@@ -44,25 +44,26 @@ signal advance_requested
 ## decides what it is worth.
 signal retreat_requested(periods: int)
 
-## Wording for each reason a caller can hand back. The UI program owns no rule, so it
-## only says what was reported.
-var REASON_TEXT := {
-	"": L.t("LOC_UI_PANELS_EE322903D3"),
-	"no_actor": L.t("LOC_UI_PANELS_8C6B2C3AB4"),
-	"no_director": L.t("LOC_UI_PANELS_C0199FC7CA"),
-	"no_world": L.t("LOC_UI_PANELS_17753763A2"),
-	"no_world_clock": L.t("LOC_UI_PANELS_6B48266C7B"),
-	"no_retreat": L.t("LOC_UI_PANELS_6476B66F57"),
-	"unplannable_span": L.t("LOC_UI_PANELS_EE78098BE8"),
+## Wording for each reason a caller can hand back, as KEYS. A `const` cannot hold a resolved
+## value (a `var REASON_TEXT` is a `class-variable-name` lint error), so the table holds the key
+## and [method reason_text] resolves it — the same split a `.tres` field uses.
+const REASON_TEXT := {
+	"": "LOC_UI_PANELS_EE322903D3",
+	"no_actor": "LOC_UI_PANELS_8C6B2C3AB4",
+	"no_director": "LOC_UI_PANELS_C0199FC7CA",
+	"no_world": "LOC_UI_PANELS_17753763A2",
+	"no_world_clock": "LOC_UI_PANELS_6B48266C7B",
+	"no_retreat": "LOC_UI_PANELS_6476B66F57",
+	"unplannable_span": "LOC_UI_PANELS_EE78098BE8",
 }
 
 ## What the readout says when no clock is wired. Named rather than blank so the missing
 ## seam is visible on the screen instead of being an empty row a player reads as "zero".
-var UNWIRED_CLOCK := L.t("LOC_UI_PANELS_C9D9CF171D")
-var UNWIRED_CADENCE := L.t("LOC_UI_PANELS_BAD9895BED")
-var EMPTY_MEMORY := L.t("LOC_UI_PANELS_8208317A74")
-var WAIT_LABEL := L.t("LOC_UI_PANELS_9C7608368A")
-var UNAVAILABLE_SUFFIX := L.t("LOC_UI_PANELS_DFE3923CC6")
+const UNWIRED_CLOCK := "LOC_UI_PANELS_C9D9CF171D"
+const UNWIRED_CADENCE := "LOC_UI_PANELS_BAD9895BED"
+const EMPTY_MEMORY := "LOC_UI_PANELS_8208317A74"
+const WAIT_LABEL := "LOC_UI_PANELS_9C7608368A"
+const UNAVAILABLE_SUFFIX := "LOC_UI_PANELS_DFE3923CC6"
 
 ## ## The open-event heading, and the sentence under it
 ##
@@ -73,23 +74,23 @@ var UNAVAILABLE_SUFFIX := L.t("LOC_UI_PANELS_DFE3923CC6")
 ## which is the exact failure the bridge slot exists to make visible. A third, middle
 ## wording covers the case a panel cannot honestly call either: rows published, none of
 ## them nameable.
-var EVENTS_TITLE_OPEN := L.t("LOC_UI_PANELS_18FEB73E8B")
-var EVENTS_TITLE_EMPTY := L.t("LOC_UI_PANELS_AB0911EF8D")
-var EVENTS_TITLE_UNWIRED := L.t("LOC_UI_PANELS_1230074BDC")
-var EVENTS_TITLE_UNNAMED := L.t("LOC_UI_PANELS_A0D1357B51")
-var EVENTS_EMPTY_LINE := L.t("LOC_UI_PANELS_66222545E1")
-var EVENTS_UNWIRED_LINE := L.t("LOC_UI_PANELS_AA1371E549")
-var EVENTS_UNNAMED_LINE := L.t("LOC_UI_PANELS_A870B91DB2")
+const EVENTS_TITLE_OPEN := "LOC_UI_PANELS_18FEB73E8B"
+const EVENTS_TITLE_EMPTY := "LOC_UI_PANELS_AB0911EF8D"
+const EVENTS_TITLE_UNWIRED := "LOC_UI_PANELS_1230074BDC"
+const EVENTS_TITLE_UNNAMED := "LOC_UI_PANELS_A0D1357B51"
+const EVENTS_EMPTY_LINE := "LOC_UI_PANELS_66222545E1"
+const EVENTS_UNWIRED_LINE := "LOC_UI_PANELS_AA1371E549"
+const EVENTS_UNNAMED_LINE := "LOC_UI_PANELS_A870B91DB2"
 
 ## The heading over the season-scale control. Named rather than inlined so the wording a
 ## player reads is one string a test can pin.
-var RETREAT_TITLE := L.t("LOC_UI_PANELS_6A5ACB6459")
-var RETREAT_LABEL := L.t("LOC_UI_PANELS_9D2BC3DE40")
-var RETREAT_EMPTY := L.t("LOC_UI_PANELS_0C5D8C6003")
+const RETREAT_TITLE := "LOC_UI_PANELS_6A5ACB6459"
+const RETREAT_LABEL := "LOC_UI_PANELS_9D2BC3DE40"
+const RETREAT_EMPTY := "LOC_UI_PANELS_0C5D8C6003"
 ## Shown instead of a cost line when nothing is selected or no clock is wired — an empty
 ## line under a selector reads as "free", which is the one thing this control must never
 ## suggest.
-var RETREAT_NO_COST := L.t("LOC_UI_PANELS_7B66B4A655")
+const RETREAT_NO_COST := "LOC_UI_PANELS_7B66B4A655"
 
 var _wired: bool = false
 var _can_advance: bool = false
@@ -273,13 +274,23 @@ func summary() -> Dictionary:
 ## same line before it repaints, and two spellings of one refusal is how a panel and
 ## its screen start disagreeing.
 func reason_text(reason: String) -> String:
-	return String(REASON_TEXT.get(reason, "The world did not move: %s" % reason))
+	var key := String(REASON_TEXT.get(reason, ""))
+	if key.is_empty():
+		return unknown_reason_text(reason)
+	return L.t(key)
+
+
+## The line for a reason this panel does not know. It names the reason itself, so it stays a
+## FORMAT whose MESSAGE the tool keys — a composed sentence would need a row per reason.
+func unknown_reason_text(reason: String) -> String:
+	return L.t("LOC_UI_PANELS_9E07065839") % reason
 
 
 # --- Plumbing ----------------------------------------------------------------
 
 
 func _bind_nodes() -> void:
+	L.localize_tree(self)
 	if _title_label != null:
 		return
 	_title_label = get_node_or_null("%TitleLabel") as Label
@@ -513,7 +524,7 @@ func _stage_text(row: Dictionary) -> String:
 		return ""
 	if total < 1:
 		return stage
-	return "%s (stage %d of %d)" % [stage, _stage_position(row), total]
+	return L.t("LOC_UI_PANELS_9928B5A647") % [stage, _stage_position(row), total]
 
 
 ## The stage position as a 1-based number for a player. `stage_index` is 0-based — the
@@ -538,7 +549,7 @@ func _stage_position(row: Dictionary) -> int:
 func _held_text(row: Dictionary) -> String:
 	if not row.has("periods_held"):
 		return ""
-	return "held %d periods" % int(row.get("periods_held", 0))
+	return L.t("LOC_UI_PANELS_C77125F229") % int(row.get("periods_held", 0))
 
 
 ## The open-event rows a caller published, coerced into the one shape this panel renders.
@@ -569,7 +580,7 @@ func _clock_text() -> String:
 		return UNWIRED_CLOCK
 	if _periods <= 0 and _period_count <= 0:
 		return L.t("LOC_UI_PANELS_2948F603C6")
-	return "Period %d passed - %d recorded in the world's memory" % [_periods, _period_count]
+	return L.t("LOC_UI_PANELS_E4F495B812") % [_periods, _period_count]
 
 
 ## The authored cadence, in the only form a player can use it: minutes and seconds.
@@ -577,13 +588,13 @@ func _cadence_text() -> String:
 	var seconds := _period_seconds
 	if not _wired or seconds <= 0.0:
 		return UNWIRED_CADENCE
-	return "One period every %s" % _duration_text(seconds)
+	return L.t("LOC_UI_PANELS_A35F241E6C") % _duration_text(seconds)
 
 
 func _news_title_text() -> String:
 	if _news.is_empty():
 		return L.t("LOC_UI_PANELS_5ACDF79B27")
-	return "The world's news (%d/%d heard)" % [_heard(), _news.size()]
+	return L.t("LOC_UI_PANELS_2266FA3128") % [_heard(), _news.size()]
 
 
 ## One news row. The fact id is spoken as the world's own vocabulary, and a row the
@@ -591,7 +602,10 @@ func _news_title_text() -> String:
 ## that something is coming.
 func _news_line(row: Dictionary) -> String:
 	var fact := String(row.get("fact", ""))
-	return "%s - %s" % [fact, "heard" if bool(row.get("recorded", false)) else "not yet"]
+	return (
+		L.t("LOC_UI_PANELS_E3007085F4")
+		% [fact, "heard" if bool(row.get("recorded", false)) else L.t("LOC_UI_PANELS_3A230353F0")]
+	)
 
 
 ## What the world did with the beats it was offered. Reported even when nothing is
@@ -609,7 +623,7 @@ func _pulse_text() -> String:
 ## a fraction of one is not a thing a player is waiting for.
 func _duration_text(seconds: float) -> String:
 	var whole := int(roundf(seconds))
-	return "%dm %02ds" % [whole / 60, whole % 60]
+	return L.t("LOC_UI_PANELS_50D3A52F57") % [whole / 60, whole % 60]
 
 
 ## ## What the chosen sit COSTS, in the clock's own authored magnitudes
@@ -638,7 +652,7 @@ func _retreat_cost_text() -> String:
 		if count < 1:
 			continue
 		parts.append("%s x%d" % [String(str(entry)), count])
-	return "This sit costs %s" % " - ".join(parts)
+	return L.t("LOC_UI_PANELS_5F92005ED7") % " - ".join(parts)
 
 
 ## The selector's own entry per offered length, in the reader's order. A raw period count

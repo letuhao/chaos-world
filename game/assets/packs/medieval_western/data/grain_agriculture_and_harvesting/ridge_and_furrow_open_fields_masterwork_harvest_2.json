@@ -1,0 +1,201 @@
+{
+  "id": "medieval_western.grain_agriculture_and_harvesting.ridge_and_furrow_open_fields_masterwork_harvest_2",
+  "name": "Bountiful Harvest Ridge And Furrow Open Fields #2",
+  "vietnamese_name": "Vụ Mùa Bội Thu Ridge And Furrow Open Fields #2",
+  "category": "grain_agriculture_and_harvesting",
+  "sub_category": "ridge_and_furrow_open_fields",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "celebrate_harvest",
+  "gameplay_role": "Bountiful harvest manorial centerpiece.",
+  "destructible": false,
+  "material": "organic",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "Bountiful harvest festival centerpiece of ridge_and_furrow_open_fields, golden wheat and harvest garlands, medieval style.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/grain_agriculture_and_harvesting/ridge_and_furrow_open_fields_masterwork_harvest_2.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.grain_agriculture_and_harvesting.ridge_and_furrow_open_fields_masterwork_harvest_2:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.421,
+        0.463
+      ],
+      [
+        0.626,
+        0.63
+      ]
+    ],
+    "frac_zero": 0.5937,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.19,
+        0.475,
+        0.41,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.098,
+        0.871,
+        1.0,
+        0.842,
+        0.129,
+        0.0
+      ],
+      [
+        0.042,
+        0.588,
+        1.0,
+        1.0,
+        0.963,
+        0.509,
+        0.053
+      ],
+      [
+        0.662,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.74
+      ],
+      [
+        0.61,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.57
+      ],
+      [
+        0.001,
+        0.358,
+        0.931,
+        1.0,
+        0.931,
+        0.314,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.156,
+        0.76,
+        0.125,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      25
+    ],
+    "trunk_columns": [
+      3
+    ],
+    "contact_px": 45,
+    "contact_reference_px": 45.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

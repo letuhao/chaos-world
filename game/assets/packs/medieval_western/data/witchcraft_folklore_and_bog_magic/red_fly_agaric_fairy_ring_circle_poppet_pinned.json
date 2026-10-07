@@ -1,0 +1,174 @@
+{
+  "id": "medieval_western.witchcraft_folklore_and_bog_magic.red_fly_agaric_fairy_ring_circle_poppet_pinned",
+  "name": "Twig-Bound Amanita Muscaria Toadstool Fairy Ring",
+  "vietnamese_name": "Vòng Tròn Nấm Đỏ Chấm Trắng Cổ Tích (Buộc Cành Cây Dại)",
+  "category": "witchcraft_folklore_and_bog_magic",
+  "sub_category": "poisonous_nightshade_and_fungi_ring",
+  "type": "flora",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "step_inside",
+  "gameplay_role": "Witchcraft folklore element (Amanita Muscaria Toadstool Fairy Ring).",
+  "destructible": false,
+  "material": "plant",
+  "feudal_culture": "celtic_gaelic",
+  "prompt_summary": "2D orthographic top-down game sprite of twig-bound amanita muscaria toadstool fairy ring, woven willow withes and iron nail bindings, Medieval folklore witchcraft and bog magic style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/witchcraft_folklore_and_bog_magic/red_fly_agaric_fairy_ring_circle_poppet_pinned.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.witchcraft_folklore_and_bog_magic.red_fly_agaric_fairy_ring_circle_poppet_pinned:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.561,
+        0.582
+      ],
+      [
+        0.795,
+        0.81
+      ]
+    ],
+    "frac_zero": 0.499,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.003,
+        0.292,
+        0.414,
+        0.157,
+        0.032,
+        0.0
+      ],
+      [
+        0.056,
+        0.706,
+        0.981,
+        0.985,
+        0.893,
+        0.375,
+        0.0
+      ],
+      [
+        0.375,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.861,
+        0.045
+      ],
+      [
+        0.638,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.964,
+        0.277
+      ],
+      [
+        0.899,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.806
+      ],
+      [
+        0.544,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.957,
+        0.299
+      ],
+      [
+        0.023,
+        0.447,
+        0.876,
+        0.956,
+        0.66,
+        0.242,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      25,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 105,
+    "contact_reference_px": 105.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

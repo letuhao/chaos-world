@@ -1,0 +1,204 @@
+{
+  "id": "medieval_western.graveyards_crypts_and_charnel_houses.yew_shaded_stone_lichgate_bench_weeping_yew",
+  "name": "Yew-Shaded Timber Lychgate Corpse Shelter Roof",
+  "vietnamese_name": "Cổng Nghĩa Địa Lychgate Có Mái Che Đặt Quan Tài (Bóng Cây Thủy Tùng)",
+  "category": "graveyards_crypts_and_charnel_houses",
+  "sub_category": "ancient_churchyard_yew_tree",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "pass_gate",
+  "gameplay_role": "Graveyard and crypt mortality element (Timber Lychgate Corpse Shelter Roof).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of yew-shaded timber lychgate corpse shelter roof, somber red berries and dark evergreen yew needles, Medieval graveyard churchyard crypt and ossuary style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/graveyards_crypts_and_charnel_houses/yew_shaded_stone_lichgate_bench_weeping_yew.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.graveyards_crypts_and_charnel_houses.yew_shaded_stone_lichgate_bench_weeping_yew:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.468,
+        0.522
+      ],
+      [
+        0.722,
+        0.848
+      ]
+    ],
+    "frac_zero": 0.539,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.098,
+        0.165,
+        0.108,
+        0.157,
+        0.0
+      ],
+      [
+        0.0,
+        0.106,
+        0.71,
+        0.79,
+        0.675,
+        0.382,
+        0.0
+      ],
+      [
+        0.553,
+        0.897,
+        1.0,
+        1.0,
+        1.0,
+        0.727,
+        0.024
+      ],
+      [
+        0.689,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.951,
+        0.543
+      ],
+      [
+        0.756,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.541
+      ],
+      [
+        0.509,
+        0.994,
+        0.996,
+        1.0,
+        1.0,
+        1.0,
+        0.51
+      ],
+      [
+        0.0,
+        0.278,
+        0.372,
+        0.725,
+        0.85,
+        0.462,
+        0.003
+      ]
+    ],
+    "crop_offset": [
+      26,
+      18
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 57,
+    "contact_reference_px": 57.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

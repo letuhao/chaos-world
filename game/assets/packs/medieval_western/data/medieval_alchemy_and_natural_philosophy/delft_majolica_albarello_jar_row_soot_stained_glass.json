@@ -1,0 +1,118 @@
+{
+  "id": "medieval_western.medieval_alchemy_and_natural_philosophy.delft_majolica_albarello_jar_row_soot_stained_glass",
+  "name": "Fire-Stained Row of Majolica Drug Jars (Albarello)",
+  "vietnamese_name": "Dãy Bình Gốm Majolica Đựng Dược Liệu (Ám Khói Lò Nung)",
+  "category": "medieval_alchemy_and_natural_philosophy",
+  "sub_category": "herbal_apothecary_drawers_and_jars",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "take_medicine",
+  "gameplay_role": "Alchemy and natural philosophy element (Row of Majolica Drug Jars (Albarello)).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of fire-stained row of majolica drug jars (albarello), flame-blackened glass and charcoal smudge, Medieval alchemy laboratory and natural philosophy style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/medieval_alchemy_and_natural_philosophy/delft_majolica_albarello_jar_row_soot_stained_glass.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.medieval_alchemy_and_natural_philosophy.delft_majolica_albarello_jar_row_soot_stained_glass:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.491,
+        0.474
+      ]
+    ],
+    "frac_zero": 0.7201,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.151,
+        0.225,
+        0.223,
+        0.333,
+        0.204,
+        0.156,
+        0.08
+      ],
+      [
+        0.852,
+        1.0,
+        0.999,
+        1.0,
+        1.0,
+        0.985,
+        0.571
+      ],
+      [
+        0.092,
+        0.164,
+        0.368,
+        0.254,
+        0.17,
+        0.14,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      26,
+      18
+    ],
+    "trunk_columns": [
+      2
+    ],
+    "contact_px": 14,
+    "contact_reference_px": 14.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

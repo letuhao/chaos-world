@@ -27,7 +27,13 @@ from ..common import REPO_ROOT, ToolError, info, ok, warn
 from . import catalog, policy
 from .scan import REWRITABLE, Finding, Scan, Unsupported, scan_file
 
-SCOPE_ROOTS = ("game/src/ui", "game/scenes", "game/data")
+SCOPE_ROOTS = (
+    "game/src/ui",
+    "game/src/modules",
+    "game/src/core",
+    "game/scenes",
+    "game/data",
+)
 
 ## The growth guard covers the code we write, not the data we author: a `.gd` sink can be
 ## fixed with `L.t`, a `.tscn`/`.tres` one cannot yet, so gating growth there would be a
@@ -45,16 +51,21 @@ GAPS_REL = "game/locale/gaps.json"
 ## are rewritten only with an explicit `--unsafe`, after the reader-side work lands.
 SCOPES: dict[str, frozenset[str]] = {
     "sinks": frozenset(
-        {"gd_prop_lit", "gd_prop_expr", "gd_return_lit", "gd_const_lit", "gd_const_kw"}
+        {
+            "gd_prop_lit",
+            "gd_prop_expr",
+            "gd_return_lit",
+            "gd_const_key",
+        }
     ),
     "scenes": frozenset({"tscn_lit"}),
     "content": frozenset({"tres_lit"}),
 }
 SCOPES["all"] = frozenset().union(*SCOPES.values())
-## `scenes` rewrites a `.tscn` whose text has no call site, so it refuses a write until a panel
-## resolves the key at display. `sinks` and `content` both rewrite safely: both put a KEY in
-## the source and the English in that owner's catalog.
-UNSAFE_SCOPES = frozenset({"scenes", "all"})
+## No scope refuses a write now. `sinks` and `content` put a KEY in the source and the English in
+## the owner's catalog, and a SCREEN/PANEL `.tscn` resolves through its owner's `L.localize_tree`
+## pass — so a scene literal has a call site after all. The hook stays for a scope that does not.
+UNSAFE_SCOPES: frozenset[str] = frozenset()
 
 ## Every file `extract --write` is about to touch is copied here first, so a botched run is
 ## restorable without git — the tree is shared with live agents and a path-wide revert is
@@ -137,14 +148,12 @@ def scan_all(repo_root: Path) -> list[tuple[str, Scan]]:
 
 def _replacement(finding: Finding, original: str) -> str:
     """The text a sink is rewritten to. `original` is the current source slice of the span."""
-    if finding.kind == "gd_const_kw":
-        return "var"
     if finding.kind == "gd_prop_expr":
         return f"{policy.RESOLVER}({original})"
     slug = finding.key or catalog.slug_for(finding.prefix, finding.english)
-    if finding.kind in ("tscn_lit", "tres_lit"):
-        # A scene value or a data field holds the bare key; the reader (a panel via L.t, or a
-        # Control's auto-translate at draw) is what resolves it.
+    if finding.kind in ("tscn_lit", "tres_lit", "gd_const_key"):
+        # A scene value, a data field or a `static`-context const holds the BARE key; a reader
+        # resolves it (`L.t` at the sink). This is what keeps a static-only module compilable.
         return f'"{slug}"'
     # The English lives in the catalog, not at the call site (ADR 0918), so a text change is
     # a data change and a mod can override the key without editing src.

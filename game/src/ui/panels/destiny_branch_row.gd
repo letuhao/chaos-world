@@ -14,9 +14,9 @@ extends PanelContainer
 ## selection and offers nothing to press, because a destiny is earned and cannot
 ## be chosen or equipped (ADR 0065). `summary()` is the testable surface.
 
-var UNNAMED_HEAD := L.t("LOC_UI_PANELS_9B115C99B1")
-var HELD_META := L.t("LOC_UI_PANELS_85EBF36150")
-var LOCKED_META := L.t("LOC_UI_PANELS_2EAAB6910F")
+const UNNAMED_HEAD := "LOC_UI_PANELS_9B115C99B1"
+const HELD_META := "LOC_UI_PANELS_85EBF36150"
+const LOCKED_META := "LOC_UI_PANELS_2EAAB6910F"
 
 var _view: Dictionary = {}
 var _head: String = ""
@@ -122,6 +122,7 @@ func focus_initial() -> void:
 ## headless suite runner drives this row before a scene tree exists, so
 ## `_ready()` is not a dependable place to bind them. Idempotent.
 func _bind_nodes() -> void:
+	L.localize_tree(self)
 	if _head_label != null:
 		return
 	_head_label = get_node_or_null("%HeadLabel") as Label

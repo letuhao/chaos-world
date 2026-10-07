@@ -1,0 +1,110 @@
+{
+  "id": "medieval_western.witchcraft_folklore_and_bog_magic.woven_willow_hag_stone_talisman_smoke_blackened",
+  "name": "Hex-Smoked Perforated Adder Stone Hanging Charm",
+  "vietnamese_name": "Viên Đá Thủng Lỗ Tự Nhiên Treo Trừ Tà (Ám Khói Bùa Ngải)",
+  "category": "witchcraft_folklore_and_bog_magic",
+  "sub_category": "straw_corn_dolly_and_hex_poppets",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "peer_through",
+  "gameplay_role": "Witchcraft folklore element (Perforated Adder Stone Hanging Charm).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "celtic_gaelic",
+  "prompt_summary": "2D orthographic top-down game sprite of hex-smoked perforated adder stone hanging charm, pungent incense smoke of henbane and wormwood, Medieval folklore witchcraft and bog magic style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/witchcraft_folklore_and_bog_magic/woven_willow_hag_stone_talisman_smoke_blackened.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.witchcraft_folklore_and_bog_magic.woven_willow_hag_stone_talisman_smoke_blackened:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.662
+      ]
+    ],
+    "frac_zero": 0.702,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.326,
+        0.523,
+        0.052
+      ],
+      [
+        0.858,
+        1.0,
+        0.438
+      ],
+      [
+        0.716,
+        0.844,
+        0.448
+      ]
+    ],
+    "crop_offset": [
+      27,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 63,
+    "contact_reference_px": 63.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

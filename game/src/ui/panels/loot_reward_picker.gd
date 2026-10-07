@@ -80,6 +80,7 @@ func summary() -> Dictionary:
 ## Resolve the scene's widgets on first use rather than in `@onready`: the headless
 ## suite drives this panel before a scene tree exists. Idempotent.
 func _bind_nodes() -> void:
+	L.localize_tree(self)
 	if _title_label != null:
 		return
 	_title_label = get_node_or_null("%RewardPickerTitle") as Label

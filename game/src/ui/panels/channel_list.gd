@@ -126,6 +126,7 @@ static func state_rank(state: StringName) -> int:
 
 
 func _bind_nodes() -> void:
+	L.localize_tree(self)
 	if _rows_box != null:
 		return
 	_header = get_node_or_null("%HeaderLabel") as Label

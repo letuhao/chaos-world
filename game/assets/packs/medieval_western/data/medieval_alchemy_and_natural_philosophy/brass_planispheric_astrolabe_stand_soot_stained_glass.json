@@ -1,0 +1,109 @@
+{
+  "id": "medieval_western.medieval_alchemy_and_natural_philosophy.brass_planispheric_astrolabe_stand_soot_stained_glass",
+  "name": "Fire-Stained Engraved Brass Planispheric Astrolabe",
+  "vietnamese_name": "Thước Trắc Tinh Bằng Đồng Khắc Kinh Độ (Ám Khói Lò Nung)",
+  "category": "medieval_alchemy_and_natural_philosophy",
+  "sub_category": "astrolabe_armillary_sphere_and_charts",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "calculate_stars",
+  "gameplay_role": "Alchemy and natural philosophy element (Engraved Brass Planispheric Astrolabe).",
+  "destructible": false,
+  "material": "iron",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of fire-stained engraved brass planispheric astrolabe, flame-blackened glass and charcoal smudge, Medieval alchemy laboratory and natural philosophy style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/medieval_alchemy_and_natural_philosophy/brass_planispheric_astrolabe_stand_soot_stained_glass.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.medieval_alchemy_and_natural_philosophy.brass_planispheric_astrolabe_stand_soot_stained_glass:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.65
+      ]
+    ],
+    "frac_zero": 0.6729,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.319,
+        0.716,
+        0.224
+      ],
+      [
+        0.869,
+        1.0,
+        0.773
+      ],
+      [
+        0.508,
+        0.852,
+        0.305
+      ]
+    ],
+    "crop_offset": [
+      23,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 52,
+    "contact_reference_px": 52.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

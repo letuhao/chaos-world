@@ -154,6 +154,7 @@ func summary() -> Dictionary:
 
 
 func _bind_nodes() -> void:
+	L.localize_tree(self)
 	if _bound_nodes:
 		return
 	_header_label = get_node_or_null("%PickerHeader") as Label

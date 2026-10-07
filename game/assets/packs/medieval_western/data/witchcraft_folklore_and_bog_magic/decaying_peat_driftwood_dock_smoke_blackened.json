@@ -1,0 +1,118 @@
+{
+  "id": "medieval_western.witchcraft_folklore_and_bog_magic.decaying_peat_driftwood_dock_smoke_blackened",
+  "name": "Hex-Smoked Rotting Peat Plank Skiff Mooring",
+  "vietnamese_name": "Cầu Gỗ Mục Buộc Thuyền Ven Bãi Than Bùn (Ám Khói Bùa Ngải)",
+  "category": "witchcraft_folklore_and_bog_magic",
+  "sub_category": "bog_stilt_thatched_witch_hut",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "board",
+  "gameplay_role": "Witchcraft folklore element (Rotting Peat Plank Skiff Mooring).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "celtic_gaelic",
+  "prompt_summary": "2D orthographic top-down game sprite of hex-smoked rotting peat plank skiff mooring, pungent incense smoke of henbane and wormwood, Medieval folklore witchcraft and bog magic style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/witchcraft_folklore_and_bog_magic/decaying_peat_driftwood_dock_smoke_blackened.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.witchcraft_folklore_and_bog_magic.decaying_peat_driftwood_dock_smoke_blackened:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.377,
+        0.368
+      ]
+    ],
+    "frac_zero": 0.7489,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.036,
+        0.467,
+        0.36,
+        0.071,
+        0.0
+      ],
+      [
+        0.249,
+        0.492,
+        0.869,
+        0.819,
+        0.477,
+        0.21
+      ],
+      [
+        0.197,
+        0.433,
+        0.654,
+        0.67,
+        0.504,
+        0.205
+      ]
+    ],
+    "crop_offset": [
+      32,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 20,
+    "contact_reference_px": 20.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

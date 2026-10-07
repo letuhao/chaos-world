@@ -1,0 +1,125 @@
+{
+  "id": "medieval_western.graveyards_crypts_and_charnel_houses.mounded_turf_grave_with_cross_charnel_dusted",
+  "name": "Bone-Dusted Freshly Mounded Earth Peasant Grave",
+  "vietnamese_name": "Mộ Mới Đắp Đất Có Cắm Thánh Giá Gỗ (Bụi Xương Trắng)",
+  "category": "graveyards_crypts_and_charnel_houses",
+  "sub_category": "churchyard_standing_slate_headstones",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "pray",
+  "gameplay_role": "Graveyard and crypt mortality element (Freshly Mounded Earth Peasant Grave).",
+  "destructible": false,
+  "material": "earth",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of bone-dusted freshly mounded earth peasant grave, dry pale calcium bone dust and cobwebs, Medieval graveyard churchyard crypt and ossuary style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/graveyards_crypts_and_charnel_houses/mounded_turf_grave_with_cross_charnel_dusted.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.graveyards_crypts_and_charnel_houses.mounded_turf_grave_with_cross_charnel_dusted:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.451,
+        0.449
+      ]
+    ],
+    "frac_zero": 0.7192,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.204,
+        0.197,
+        0.0,
+        0.0
+      ],
+      [
+        0.197,
+        0.379,
+        0.748,
+        0.743,
+        0.396,
+        0.197
+      ],
+      [
+        0.626,
+        0.968,
+        0.971,
+        0.969,
+        0.933,
+        0.642
+      ]
+    ],
+    "crop_offset": [
+      31,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 192,
+    "contact_reference_px": 192.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

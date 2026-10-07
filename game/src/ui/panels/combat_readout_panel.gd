@@ -304,6 +304,7 @@ func actor_text() -> String:
 ## Resolved lazily, never in `@onready`: the headless suite drives this panel before a
 ## scene tree exists (ADR 0038). Idempotent.
 func _bind_nodes() -> void:
+	L.localize_tree(self)
 	if _bound:
 		return
 	_verdict_label = get_node_or_null("%VerdictLabel") as Label

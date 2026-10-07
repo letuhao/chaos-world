@@ -96,6 +96,7 @@ func focus_initial() -> void:
 ## headless suite runner drives this panel before a scene tree exists, so
 ## `_ready()` is not a dependable place to bind them. Idempotent.
 func _bind_nodes() -> void:
+	L.localize_tree(self)
 	if _name_label != null:
 		return
 	_name_label = get_node_or_null("%NameLabel") as Label

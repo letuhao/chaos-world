@@ -1,0 +1,109 @@
+{
+  "id": "medieval_western.grain_agriculture_and_harvesting.pyramidal_wheat_sheaf_stook_rain_soaked_crop",
+  "name": "Rain-Flattened Standing Shock of Wheat Sheaves (Stook)",
+  "vietnamese_name": "Gốc Bó Thóc Đứng Xếp Hình Chóp Ngoài Đồng (Mưa Rạp Thân Cây)",
+  "category": "grain_agriculture_and_harvesting",
+  "sub_category": "reaping_scythes_sickles_and_stooks",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": true,
+  "vision_mode": "low",
+  "interactive_verb": "inspect_sheaf",
+  "gameplay_role": "Manorial agrarian supply chain element (Standing Shock of Wheat Sheaves (Stook)).",
+  "destructible": false,
+  "material": "organic",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of rain-flattened standing shock of wheat sheaves (stook), damp autumn mud and rain-bowed heavy grain stalks, Medieval open field agriculture and grain harvest style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/grain_agriculture_and_harvesting/pyramidal_wheat_sheaf_stook_rain_soaked_crop.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.grain_agriculture_and_harvesting.pyramidal_wheat_sheaf_stook_rain_soaked_crop:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.47
+      ]
+    ],
+    "frac_zero": 0.7013,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.069,
+        0.677,
+        0.071
+      ],
+      [
+        0.393,
+        0.897,
+        0.401
+      ],
+      [
+        0.798,
+        0.652,
+        0.348
+      ]
+    ],
+    "crop_offset": [
+      16,
+      24
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 65,
+    "contact_reference_px": 65.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

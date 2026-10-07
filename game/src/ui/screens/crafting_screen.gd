@@ -254,7 +254,7 @@ func _row_hint(recipe_id: StringName) -> String:
 			return L.t("LOC_UI_SCREENS_20C7C5522F")
 		CRAFT_SHORT:
 			var missing := _missing_of(recipe_id)
-			return "Missing %s" % ", ".join(_display_names(missing))
+			return L.t("LOC_UI_SCREENS_B4BAA63FDA") % ", ".join(_display_names(missing))
 		_:
 			return L.t("LOC_UI_SCREENS_1BADD5A415")
 

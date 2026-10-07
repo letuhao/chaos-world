@@ -1,0 +1,168 @@
+{
+  "id": "medieval_western.monasteries_cloisters_and_scriptoria.monastic_oak_pallet_bed_ink_stained",
+  "name": "Scribe-Inked Straw-Tick Monk's Narrow Pallet Bed",
+  "vietnamese_name": "Giường Gỗ Hẹp Đệm Rơm Của Tu Sĩ (Vết Mực Chép Kinh)",
+  "category": "monasteries_cloisters_and_scriptoria",
+  "sub_category": "monastic_cell_and_dormitory",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "sleep",
+  "gameplay_role": "Monastic cloister life element (Straw-Tick Monk's Narrow Pallet Bed).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of scribe-inked straw-tick monk's narrow pallet bed, black oak-gall ink droplets and pumice powder traces, Monastic abbey cloister and scriptorium style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/monasteries_cloisters_and_scriptoria/monastic_oak_pallet_bed_ink_stained.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.monasteries_cloisters_and_scriptoria.monastic_oak_pallet_bed_ink_stained:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.595
+      ],
+      [
+        0.63
+      ]
+    ],
+    "frac_zero": 0.6403,
+    "blocks": [
+      [
+        true
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.396,
+        0.679,
+        0.067
+      ],
+      [
+        0.812,
+        1.0,
+        0.291
+      ],
+      [
+        0.578,
+        0.953,
+        0.0
+      ],
+      [
+        0.604,
+        0.976,
+        0.008
+      ],
+      [
+        0.606,
+        0.979,
+        0.0
+      ],
+      [
+        0.731,
+        1.0,
+        0.038
+      ],
+      [
+        0.62,
+        0.872,
+        0.112
+      ]
+    ],
+    "crop_offset": [
+      22,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 57,
+    "contact_reference_px": 57.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      256
+    ]
+  }
+}

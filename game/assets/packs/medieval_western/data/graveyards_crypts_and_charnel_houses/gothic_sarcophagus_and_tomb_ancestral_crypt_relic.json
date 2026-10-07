@@ -1,0 +1,204 @@
+{
+  "id": "medieval_western.graveyards_crypts_and_charnel_houses.gothic_sarcophagus_and_tomb_ancestral_crypt_relic",
+  "name": "Ancestral Hallowed Gothic Sarcophagus And Tomb",
+  "vietnamese_name": "Di Vật Tổ Tiên Gothic Sarcophagus And Tomb",
+  "category": "graveyards_crypts_and_charnel_houses",
+  "sub_category": "gothic_sarcophagus_and_tomb",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "commune",
+  "gameplay_role": "Ancestral relic from centuries past.",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "Ancient ancestral relic of gothic_sarcophagus_and_tomb, mossy stone and mortality symbols, Gothic style.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/graveyards_crypts_and_charnel_houses/gothic_sarcophagus_and_tomb_ancestral_crypt_relic.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.graveyards_crypts_and_charnel_houses.gothic_sarcophagus_and_tomb_ancestral_crypt_relic:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.477,
+        0.465
+      ],
+      [
+        0.798,
+        0.812
+      ]
+    ],
+    "frac_zero": 0.5376,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.098,
+        0.246,
+        0.51,
+        0.127,
+        0.0,
+        0.0
+      ],
+      [
+        0.001,
+        0.47,
+        0.978,
+        1.0,
+        0.643,
+        0.19,
+        0.0
+      ],
+      [
+        0.004,
+        0.825,
+        1.0,
+        1.0,
+        0.94,
+        0.323,
+        0.0
+      ],
+      [
+        0.405,
+        0.97,
+        1.0,
+        1.0,
+        0.998,
+        0.736,
+        0.071
+      ],
+      [
+        0.854,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.757
+      ],
+      [
+        0.6,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.976,
+        0.295
+      ],
+      [
+        0.055,
+        0.549,
+        0.834,
+        0.945,
+        0.667,
+        0.335,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      25,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 125,
+    "contact_reference_px": 125.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

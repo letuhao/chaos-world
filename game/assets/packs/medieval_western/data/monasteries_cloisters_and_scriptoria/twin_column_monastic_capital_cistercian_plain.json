@@ -1,0 +1,169 @@
+{
+  "id": "medieval_western.monasteries_cloisters_and_scriptoria.twin_column_monastic_capital_cistercian_plain",
+  "name": "Cistercian Austere Carved Folio Twin Monastic Column",
+  "vietnamese_name": "Cặp Cột Đá Nhỏ Chạm Lá Cây Cổ Điển (Khổ Hạnh Cistercian)",
+  "category": "monasteries_cloisters_and_scriptoria",
+  "sub_category": "cloister_quadrangle_arcaded_walk",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": null,
+  "gameplay_role": "Monastic cloister life element (Carved Folio Twin Monastic Column).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of cistercian austere carved folio twin monastic column, unornamented clean pale limestone and strict geometric purity, Monastic abbey cloister and scriptorium style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/monasteries_cloisters_and_scriptoria/twin_column_monastic_capital_cistercian_plain.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.monasteries_cloisters_and_scriptoria.twin_column_monastic_capital_cistercian_plain:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.497
+      ],
+      [
+        0.755
+      ]
+    ],
+    "frac_zero": 0.5811,
+    "blocks": [
+      [
+        true
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.313,
+        0.947,
+        0.354
+      ],
+      [
+        0.296,
+        1.0,
+        0.332
+      ],
+      [
+        0.178,
+        1.0,
+        0.192
+      ],
+      [
+        0.087,
+        1.0,
+        0.072
+      ],
+      [
+        0.635,
+        0.986,
+        0.612
+      ],
+      [
+        0.923,
+        1.0,
+        0.894
+      ],
+      [
+        0.662,
+        0.972,
+        0.681
+      ]
+    ],
+    "crop_offset": [
+      17,
+      18
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 90,
+    "contact_reference_px": 90.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      256
+    ]
+  }
+}

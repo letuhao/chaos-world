@@ -1,0 +1,168 @@
+{
+  "id": "medieval_western.parish_chapels_and_wayside_shrines.crutch_and_ex_voto_hanging_wall_country_limestone",
+  "name": "Fieldstone Plain Wall Hung with Crutches & Wax Limbs",
+  "vietnamese_name": "Vách Treo Nạng Gỗ & Lễ Vật Tạ Ơn Bằng Sáp (Đá Đồng Quê Mộc)",
+  "category": "parish_chapels_and_wayside_shrines",
+  "sub_category": "pilgrims_sacred_spring_shrine",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "admire_miracle",
+  "gameplay_role": "Wayside chapel and shrine element (Wall Hung with Crutches & Wax Limbs).",
+  "destructible": false,
+  "material": "organic",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of fieldstone plain wall hung with crutches & wax limbs, rustic unhewn rubble fieldstone and rough mortar, Parish field chapel and wayside shrine style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/parish_chapels_and_wayside_shrines/crutch_and_ex_voto_hanging_wall_country_limestone.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.parish_chapels_and_wayside_shrines.crutch_and_ex_voto_hanging_wall_country_limestone:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.383
+      ],
+      [
+        0.682
+      ]
+    ],
+    "frac_zero": 0.7196,
+    "blocks": [
+      [
+        true
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.264,
+        0.607,
+        0.0
+      ],
+      [
+        0.221,
+        0.567,
+        0.0
+      ],
+      [
+        0.305,
+        0.608,
+        0.0
+      ],
+      [
+        0.364,
+        0.707,
+        0.0
+      ],
+      [
+        0.474,
+        0.888,
+        0.0
+      ],
+      [
+        0.855,
+        0.937,
+        0.288
+      ],
+      [
+        0.705,
+        0.887,
+        0.229
+      ]
+    ],
+    "crop_offset": [
+      27,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 58,
+    "contact_reference_px": 58.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      256
+    ]
+  }
+}

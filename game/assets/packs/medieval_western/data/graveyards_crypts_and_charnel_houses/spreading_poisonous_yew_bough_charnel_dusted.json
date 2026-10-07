@@ -1,0 +1,203 @@
+{
+  "id": "medieval_western.graveyards_crypts_and_charnel_houses.spreading_poisonous_yew_bough_charnel_dusted",
+  "name": "Bone-Dusted Low Spreading Evergreen Yew Canopy",
+  "vietnamese_name": "Cành Cây Thủy Tùng Xòe Thấp Đầy Quả Độc (Bụi Xương Trắng)",
+  "category": "graveyards_crypts_and_charnel_houses",
+  "sub_category": "ancient_churchyard_yew_tree",
+  "type": "flora",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": null,
+  "gameplay_role": "Graveyard and crypt mortality element (Low Spreading Evergreen Yew Canopy).",
+  "destructible": false,
+  "material": "plant",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of bone-dusted low spreading evergreen yew canopy, dry pale calcium bone dust and cobwebs, Medieval graveyard churchyard crypt and ossuary style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/graveyards_crypts_and_charnel_houses/spreading_poisonous_yew_bough_charnel_dusted.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.graveyards_crypts_and_charnel_houses.spreading_poisonous_yew_bough_charnel_dusted:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.339,
+        0.397
+      ],
+      [
+        0.731,
+        0.807
+      ]
+    ],
+    "frac_zero": 0.5722,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.047,
+        0.359,
+        0.0,
+        0.002,
+        0.0
+      ],
+      [
+        0.0,
+        0.221,
+        0.5,
+        0.954,
+        0.388,
+        0.204,
+        0.0
+      ],
+      [
+        0.011,
+        0.688,
+        0.798,
+        0.891,
+        0.83,
+        0.405,
+        0.007
+      ],
+      [
+        0.445,
+        0.79,
+        0.994,
+        1.0,
+        0.931,
+        0.538,
+        0.498
+      ],
+      [
+        0.429,
+        0.997,
+        1.0,
+        1.0,
+        1.0,
+        0.979,
+        0.438
+      ],
+      [
+        0.527,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.996,
+        0.27
+      ],
+      [
+        0.0,
+        0.332,
+        0.873,
+        0.987,
+        0.722,
+        0.272,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      25,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 99,
+    "contact_reference_px": 99.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

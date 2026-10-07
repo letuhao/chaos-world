@@ -39,8 +39,37 @@ interface"), so this is a reviewed change to that surface, not an ad-hoc read.
   a `.tres` display field to a readable key derived from the def's own `id` + field name
   (`LOC_DESTINY_OATH_BREAKER_DISPLAY_NAME`) and fills that owner's en catalog — so the key is
   stable across an English edit, one def is defined once for every language, and no per-language
-  copy of the content exists. A reader that COMPOSES a sentence from fields must resolve each
-  field (`L.t(field)`), because a whole composed string is not a key.
+  copy of the content exists.
+- **A composed sentence resolves its keys too.** `L.t` replaces every embedded `LOC_…` token,
+  so `"%s x%d" % [display_name, n]` reads correctly without every composition site resolving its
+  own parts; a token with no row is left visible rather than blanked.
+- **A scene's text is resolved by its SCREEN or its PANEL.** A `.tscn` literal has no call
+  site, so `L.localize_tree` walks the subtree from `_bind_nodes()` — before any `summary()`
+  reads a label. A panel has no shared base, so each panel calls the pass itself; the screen
+  pass covers the panels nested under it. It is depth-capped and idempotent, so it is a `while`
+  the arch rule can see and a repaint is free. An app scene under `game/scenes/` has no script
+  at all: its literals are inventoried (`tscn_app_lit`) and NOT rewritten, because nothing would
+  resolve them — the rewrite target is a scene whose owner runs the pass.
+- **A display field may be a LIST.** `names = Array[String](["a", "b"])` keys each ELEMENT
+  (`LOC_NPC_QI_DAO_NAMES_1`), because a composed persona picks one row and a whole-array key
+  would have no reader. A code array (`plausible_tiers`) is not a display field and is left.
+- **A `%`-format expression keys its message AND its argument wording.**
+  `"%s - %s" % [fact, "heard" if ok else "not yet"]` holds three messages; keying only the
+  leading literal would ship English inside a translated line. The template keys as a whole
+  (`L.t(key) % [name, n]`) so the message translates and the data stays data.
+- **A `const` in a static-only file keeps `const` and holds the bare KEY.** A `var` is
+  unreachable from a `static func`, so `L.t` at the declaration would not compile; the reader
+  resolves the key at the sink instead, exactly as it resolves a `.tres` field.
+- **The scope is every layer that composes wording**: `.gd` in `ui/`, `modules/` and `core/`
+  (a persona composer's default manner, a realm name), plus `data/`, plus the `src/ui` scenes.
+  `app/` and `contracts/` compose no wording and stay out.
+- **Counted text is `L.tn(key, count)`**, which takes the singular row and the locale's `key_1`.
+  A text `.tres` `Translation` carries no CLDR rule, so the form COUNT lives in an explicit
+  table and an unlisted locale is refused loudly rather than given an English-shaped plural;
+  a locale needing more than two forms must wait for a catalog format that can hold them.
+- **`L.set_locale(code)` switches and returns false when no catalog is loaded**, so a caller
+  can refuse rather than half-switch. A non-Latin locale additionally needs a font with its
+  glyphs, and the theme declares none today — so no such locale ships until that asset lands.
 
 ## Consequences
 

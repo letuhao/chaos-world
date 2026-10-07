@@ -907,20 +907,31 @@ func test_an_elementless_technique_with_a_share_reads_the_omni_channel() -> void
 
 
 ## The other half of the door: an elementless technique that authors NO share stays
-## PHYSICAL even though the tuning ships a non-zero `default_element_share`. Reading the
-## default here would turn every physical blow into a hidden omni attack -- the exact
-## opposite of BL-0348's ruling.
+## PHYSICAL — and the SHIPPED default is now `0.0` (BL-0348's ruling: an un-authored
+## attack is physical by default). The non-zero case is proven against a LOCAL tuning,
+## because the rule is about elementless attacks rather than about this one number.
 func test_the_tuning_default_never_reaches_an_elementless_attack() -> void:
 	var attacker := _attacker(ElementStats.FIRE)
 	var target := _defender(ElementStats.WOOD, 0.0)
-	var parts := QiDamage.new().breakdown(_context(attacker, target, &"", 0.0))
-	assert_eq(_tuning.default_element_share > 0.0, true, "the shipped default is non-zero")
-	assert_almost_eq(float(parts["share"]), 0.0, "and still does not reach the elementless hit")
+	assert_almost_eq(_tuning.default_element_share, 0.0, "the shipped default is physical")
+	# A tuning that ships a NON-ZERO default still does not reach an elementless attack:
+	# the default prices a technique that NAMED an element and forgot its share.
+	var loud := CombatTuning.new()
+	loud.default_element_share = 0.5
+	var mechanism := QiDamage.new()
+	mechanism.tuning = loud
+	var parts: Dictionary = mechanism.breakdown(_context(attacker, target, &"", 0.0))
+	assert_almost_eq(float(parts["share"]), 0.0, "a non-zero default does not reach it")
 	assert_almost_eq(
 		float(parts["total"]),
 		float(parts["magnitude"]) * float(parts["raw_attack"]),
 		"so the hit is entirely raw"
 	)
+	# The positive control: the same default DOES price an ELEMENTAL technique that
+	# authored none, so the refusal above is about elementless attacks and not about a
+	# mechanism that ignores its tuning.
+	var priced: Dictionary = mechanism.breakdown(_context(attacker, target, ElementStats.FIRE, 0.0))
+	assert_almost_eq(float(priced["share"]), 0.5, "a named element reads the default")
 
 
 ## A null context, a null proposal and a NaN magnitude are the three remaining ways a

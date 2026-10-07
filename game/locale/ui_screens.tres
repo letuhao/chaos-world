@@ -11,6 +11,7 @@ messages = {
 "LOC_UI_SCREENS_6E9BC19A74": "No hero bound.",
 "LOC_UI_SCREENS_975C3AAE95": "No recipe selected",
 "LOC_UI_SCREENS_9F67364101": " onto this ledger.",
+"LOC_UI_SCREENS_B4BAA63FDA": "Missing %s",
 "LOC_UI_SCREENS_D42CA15044": "Read-only: nothing here is chosen, equipped or given up.",
 "LOC_UI_SCREENS_E8AB972321": "Earned, and yours for good:",
 }

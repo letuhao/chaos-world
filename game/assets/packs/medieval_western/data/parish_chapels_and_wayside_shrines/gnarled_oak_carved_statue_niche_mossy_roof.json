@@ -1,0 +1,205 @@
+{
+  "id": "medieval_western.parish_chapels_and_wayside_shrines.gnarled_oak_carved_statue_niche_mossy_roof",
+  "name": "Moss-Roofed Ancient Hollow Oak with Saint Statue",
+  "vietnamese_name": "Cây Sồi Già Khoét Rỗng Đặt Tượng Thánh Nữ (Mái Phủ Rêu Xanh)",
+  "category": "parish_chapels_and_wayside_shrines",
+  "sub_category": "hollow_tree_saint_shrine",
+  "type": "flora",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "pray",
+  "gameplay_role": "Wayside chapel and shrine element (Ancient Hollow Oak with Saint Statue).",
+  "destructible": false,
+  "material": "plant",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of moss-roofed ancient hollow oak with saint statue, thick green moss blanket on stone slates, Parish field chapel and wayside shrine style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/parish_chapels_and_wayside_shrines/gnarled_oak_carved_statue_niche_mossy_roof.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.parish_chapels_and_wayside_shrines.gnarled_oak_carved_statue_niche_mossy_roof:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.445,
+        0.426
+      ],
+      [
+        0.719,
+        0.796
+      ]
+    ],
+    "frac_zero": 0.557,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.19,
+        0.798,
+        0.694,
+        0.14,
+        0.0,
+        0.0
+      ],
+      [
+        0.044,
+        0.47,
+        0.627,
+        0.587,
+        0.454,
+        0.578,
+        0.044
+      ],
+      [
+        0.149,
+        0.328,
+        0.678,
+        0.889,
+        0.477,
+        0.233,
+        0.073
+      ],
+      [
+        0.117,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.566,
+        0.0
+      ],
+      [
+        0.086,
+        0.942,
+        1.0,
+        1.0,
+        1.0,
+        0.839,
+        0.182
+      ],
+      [
+        0.646,
+        0.993,
+        1.0,
+        1.0,
+        1.0,
+        0.989,
+        0.432
+      ],
+      [
+        0.147,
+        0.628,
+        0.876,
+        0.977,
+        0.746,
+        0.454,
+        0.034
+      ]
+    ],
+    "crop_offset": [
+      25,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 137,
+    "contact_reference_px": 137.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

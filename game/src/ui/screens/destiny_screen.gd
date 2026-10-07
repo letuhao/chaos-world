@@ -35,19 +35,19 @@ const BRANCH_ROWS := 8
 const FATE_ROWS := 24
 const BRANCH_SCENE := "res://src/ui/panels/destiny_branch_row.tscn"
 const FATE_SCENE := "res://src/ui/panels/fate_row.tscn"
-var HEADER_TEXT := L.t("LOC_UI_SCREENS_328078C42D")
-var NO_ACTOR_TEXT := L.t("LOC_UI_SCREENS_6E9BC19A74")
+const HEADER_TEXT := "LOC_UI_SCREENS_328078C42D"
+const NO_ACTOR_TEXT := "LOC_UI_SCREENS_6E9BC19A74"
 ## The notice shown when fate or destiny is earned. The wording is a constant
 ## because the screen owns no vocabulary of its own: the NARRATIVE is the row's
 ## (`FateRow` prints the authored description and meta line, `DestinyBranchRow`
 ## the authored bearing), and this only says the thing happened.
-var FATE_EARNED_NOTICE := L.t("LOC_UI_SCREENS_E8AB972321")
-var DESTINY_EARNED_NOTICE := L.t("LOC_UI_SCREENS_43B2043F11")
+const FATE_EARNED_NOTICE := "LOC_UI_SCREENS_E8AB972321"
+const DESTINY_EARNED_NOTICE := "LOC_UI_SCREENS_43B2043F11"
 ## An earn the codex cannot attribute to the hero it is rendering. The bus
 ## carries an `actor_id`, not an `Actor`, so a second hero earning a fate while
 ## this page is open is a real possibility and is counted rather than painted
 ## onto the wrong ledger.
-var FOREIGN_EARN_NOTE := L.t("LOC_UI_SCREENS_41A5FB5302") + L.t("LOC_UI_SCREENS_9F67364101")
+const FOREIGN_EARN_NOTE := "LOC_UI_SCREENS_41A5FB5302" + "LOC_UI_SCREENS_9F67364101"
 
 var _codex: Dictionary = {}
 var _header: Label = null

@@ -1,0 +1,205 @@
+{
+  "id": "medieval_western.graveyards_crypts_and_charnel_houses.massive_hollow_churchyard_yew_chilled_damp",
+  "name": "Subterranean Damp Giant Gnarled Cemetery Yew Trunk",
+  "vietnamese_name": "Gốc Cây Thủy Tùng Cổ Thụ Nghĩa Địa Nghìn Năm (Ẩm Ướt Lòng Đất)",
+  "category": "graveyards_crypts_and_charnel_houses",
+  "sub_category": "ancient_churchyard_yew_tree",
+  "type": "flora",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "shelter_under",
+  "gameplay_role": "Graveyard and crypt mortality element (Giant Gnarled Cemetery Yew Trunk).",
+  "destructible": false,
+  "material": "plant",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of subterranean damp giant gnarled cemetery yew trunk, glistening damp subterranean moisture beads, Medieval graveyard churchyard crypt and ossuary style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/graveyards_crypts_and_charnel_houses/massive_hollow_churchyard_yew_chilled_damp.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.graveyards_crypts_and_charnel_houses.massive_hollow_churchyard_yew_chilled_damp:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.45,
+        0.479
+      ],
+      [
+        0.818,
+        0.828
+      ]
+    ],
+    "frac_zero": 0.5168,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.002,
+        0.11,
+        0.537,
+        0.924,
+        0.259,
+        0.038,
+        0.0
+      ],
+      [
+        0.089,
+        0.081,
+        0.674,
+        1.0,
+        0.442,
+        0.151,
+        0.0
+      ],
+      [
+        0.389,
+        0.481,
+        0.748,
+        1.0,
+        0.469,
+        0.573,
+        0.057
+      ],
+      [
+        0.445,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.18
+      ],
+      [
+        0.858,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.699
+      ],
+      [
+        0.561,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.377
+      ],
+      [
+        0.087,
+        0.71,
+        0.928,
+        0.967,
+        0.802,
+        0.402,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      23,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 140,
+    "contact_reference_px": 140.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

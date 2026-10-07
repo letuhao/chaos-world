@@ -1,0 +1,123 @@
+{
+  "id": "medieval_western.plague_lazarettos_and_quarantine.shrouded_corpse_linen_stack_lime_washed_quarantine",
+  "name": "Quicklime-Dusted Row of Linen-Bound Wrapped Cadavers",
+  "vietnamese_name": "Hàng Xác Chết Quấn Vải Lanh Thô Chờ Chôn (Rắc Vôi Sống Sát Khuẩn)",
+  "category": "plague_lazarettos_and_quarantine",
+  "sub_category": "mass_pestilence_trench_grave",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "say_prayer",
+  "gameplay_role": "Plague lazaretto and quarantine element (Row of Linen-Bound Wrapped Cadavers).",
+  "destructible": false,
+  "material": "cloth",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of quicklime-dusted row of linen-bound wrapped cadavers, white caustic quicklime powder dusting and quarantine marks, Medieval plague quarantine lazaretto pestilence style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/plague_lazarettos_and_quarantine/shrouded_corpse_linen_stack_lime_washed_quarantine.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.plague_lazarettos_and_quarantine.shrouded_corpse_linen_stack_lime_washed_quarantine:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.745,
+        0.747
+      ]
+    ],
+    "frac_zero": 0.6001,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.603,
+        0.817,
+        0.828,
+        0.805,
+        0.836,
+        0.817,
+        0.56
+      ],
+      [
+        0.794,
+        0.985,
+        0.98,
+        0.912,
+        0.941,
+        0.987,
+        0.806
+      ],
+      [
+        0.144,
+        0.156,
+        0.153,
+        0.028,
+        0.397,
+        0.166,
+        0.216
+      ]
+    ],
+    "crop_offset": [
+      17,
+      38
+    ],
+    "trunk_columns": [
+      4
+    ],
+    "contact_px": 102,
+    "contact_reference_px": 102.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

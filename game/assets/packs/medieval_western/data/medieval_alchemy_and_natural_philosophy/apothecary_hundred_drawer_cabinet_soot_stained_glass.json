@@ -1,0 +1,196 @@
+{
+  "id": "medieval_western.medieval_alchemy_and_natural_philosophy.apothecary_hundred_drawer_cabinet_soot_stained_glass",
+  "name": "Fire-Stained Walnut Apothecary Drug Drawer Chest",
+  "vietnamese_name": "Tủ Thuốc Trăm Ngăn Bằng Gỗ Óc Chó (Ám Khói Lò Nung)",
+  "category": "medieval_alchemy_and_natural_philosophy",
+  "sub_category": "herbal_apothecary_drawers_and_jars",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "search_drawers",
+  "gameplay_role": "Alchemy and natural philosophy element (Walnut Apothecary Drug Drawer Chest).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of fire-stained walnut apothecary drug drawer chest, flame-blackened glass and charcoal smudge, Medieval alchemy laboratory and natural philosophy style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/medieval_alchemy_and_natural_philosophy/apothecary_hundred_drawer_cabinet_soot_stained_glass.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.medieval_alchemy_and_natural_philosophy.apothecary_hundred_drawer_cabinet_soot_stained_glass:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.895,
+        0.894
+      ],
+      [
+        0.732,
+        0.746
+      ]
+    ],
+    "frac_zero": 0.4596,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.551,
+        0.908,
+        0.906,
+        0.906,
+        0.906,
+        0.906,
+        0.508
+      ],
+      [
+        0.729,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.716
+      ],
+      [
+        0.867,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.883
+      ],
+      [
+        0.736,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.759
+      ],
+      [
+        0.246,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.258
+      ],
+      [
+        0.024,
+        0.763,
+        0.557,
+        0.641,
+        0.558,
+        0.792,
+        0.037
+      ]
+    ],
+    "crop_offset": [
+      16,
+      48
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 163,
+    "contact_reference_px": 163.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

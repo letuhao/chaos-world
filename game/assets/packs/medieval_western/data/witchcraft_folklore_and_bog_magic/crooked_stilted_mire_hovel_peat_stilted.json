@@ -1,0 +1,205 @@
+{
+  "id": "medieval_western.witchcraft_folklore_and_bog_magic.crooked_stilted_mire_hovel_peat_stilted",
+  "name": "Bog-Waterlogged Crooked Willow-Stilted Thatched Witch Hut",
+  "vietnamese_name": "Túp Lều Tranh Chân Cọc Cong Veo Giữa Đầm (Ngập Nước Đầm Lầy)",
+  "category": "witchcraft_folklore_and_bog_magic",
+  "sub_category": "bog_stilt_thatched_witch_hut",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "enter",
+  "gameplay_role": "Witchcraft folklore element (Crooked Willow-Stilted Thatched Witch Hut).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "celtic_gaelic",
+  "prompt_summary": "2D orthographic top-down game sprite of bog-waterlogged crooked willow-stilted thatched witch hut, dark rotting swamp timber and dripping mire, Medieval folklore witchcraft and bog magic style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/witchcraft_folklore_and_bog_magic/crooked_stilted_mire_hovel_peat_stilted.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.witchcraft_folklore_and_bog_magic.crooked_stilted_mire_hovel_peat_stilted:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.541,
+        0.486
+      ],
+      [
+        0.79,
+        0.801
+      ]
+    ],
+    "frac_zero": 0.4804,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.075,
+        0.225,
+        0.152,
+        0.479,
+        0.078,
+        0.0,
+        0.0
+      ],
+      [
+        0.289,
+        0.539,
+        0.622,
+        0.994,
+        0.695,
+        0.283,
+        0.046
+      ],
+      [
+        0.146,
+        0.93,
+        1.0,
+        1.0,
+        1.0,
+        0.718,
+        0.358
+      ],
+      [
+        0.679,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.979,
+        0.475
+      ],
+      [
+        0.706,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.777
+      ],
+      [
+        0.413,
+        0.979,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        0.422
+      ],
+      [
+        0.0,
+        0.551,
+        0.838,
+        0.978,
+        0.759,
+        0.429,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      18,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 143,
+    "contact_reference_px": 143.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

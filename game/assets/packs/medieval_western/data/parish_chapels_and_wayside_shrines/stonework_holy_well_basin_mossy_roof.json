@@ -1,0 +1,174 @@
+{
+  "id": "medieval_western.parish_chapels_and_wayside_shrines.stonework_holy_well_basin_mossy_roof",
+  "name": "Moss-Roofed Arched Masonry Holy Well Enclosure",
+  "vietnamese_name": "Miếu Vòm Đá Quây Giếng Nước Thánh Lành Tật (Mái Phủ Rêu Xanh)",
+  "category": "parish_chapels_and_wayside_shrines",
+  "sub_category": "pilgrims_sacred_spring_shrine",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "water",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "drink_holy_water",
+  "gameplay_role": "Wayside chapel and shrine element (Arched Masonry Holy Well Enclosure).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of moss-roofed arched masonry holy well enclosure, thick green moss blanket on stone slates, Parish field chapel and wayside shrine style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/parish_chapels_and_wayside_shrines/stonework_holy_well_basin_mossy_roof.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.parish_chapels_and_wayside_shrines.stonework_holy_well_basin_mossy_roof:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.549,
+        0.54
+      ],
+      [
+        0.817,
+        0.824
+      ]
+    ],
+    "frac_zero": 0.5107,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.23,
+        0.561,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.176,
+        0.189,
+        0.91,
+        1.0,
+        0.437,
+        0.208,
+        0.034
+      ],
+      [
+        0.679,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.058
+      ],
+      [
+        0.671,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.994,
+        0.163
+      ],
+      [
+        0.852,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.986,
+        0.594
+      ],
+      [
+        0.749,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.982,
+        0.486
+      ],
+      [
+        0.01,
+        0.57,
+        0.9,
+        0.996,
+        0.711,
+        0.245,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      25,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 122,
+    "contact_reference_px": 122.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

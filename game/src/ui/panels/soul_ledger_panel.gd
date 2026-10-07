@@ -160,6 +160,7 @@ func has_save() -> bool:
 ## Resolved lazily, never in `@onready`: the headless runner drives this panel
 ## before a scene tree exists. Idempotent, and every connect guarded.
 func _bind_nodes() -> void:
+	L.localize_tree(self)
 	if _bound:
 		return
 	_soul_label = get_node_or_null("%SoulLabel") as Label

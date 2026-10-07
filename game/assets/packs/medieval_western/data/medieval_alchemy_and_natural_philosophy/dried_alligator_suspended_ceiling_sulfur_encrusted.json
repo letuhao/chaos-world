@@ -1,0 +1,121 @@
+{
+  "id": "medieval_western.medieval_alchemy_and_natural_philosophy.dried_alligator_suspended_ceiling_sulfur_encrusted",
+  "name": "Brimstone-Encrusted Stuffed Crocodile Hanging Ceiling Trophy",
+  "vietnamese_name": "Xác Cá Sấu Khô Treo Trần Nhà Thầy Giả Kim (Đọng Vàng Lưu Huỳnh)",
+  "category": "medieval_alchemy_and_natural_philosophy",
+  "sub_category": "herbal_apothecary_drawers_and_jars",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "gaze_up",
+  "gameplay_role": "Alchemy and natural philosophy element (Stuffed Crocodile Hanging Ceiling Trophy).",
+  "destructible": false,
+  "material": "organic",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of brimstone-encrusted stuffed crocodile hanging ceiling trophy, yellow crystalline sulfur crust and vitriol stains, Medieval alchemy laboratory and natural philosophy style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/medieval_alchemy_and_natural_philosophy/dried_alligator_suspended_ceiling_sulfur_encrusted.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.medieval_alchemy_and_natural_philosophy.dried_alligator_suspended_ceiling_sulfur_encrusted:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.564,
+        0.496
+      ]
+    ],
+    "frac_zero": 0.6931,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.484,
+        0.935,
+        0.988,
+        0.197,
+        0.0
+      ],
+      [
+        0.48,
+        0.978,
+        1.0,
+        1.0,
+        0.626,
+        0.215
+      ],
+      [
+        0.0,
+        0.279,
+        0.991,
+        0.996,
+        0.2,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      33,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 90,
+    "contact_reference_px": 90.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

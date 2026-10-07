@@ -1,0 +1,193 @@
+{
+  "id": "medieval_western.graveyards_crypts_and_charnel_houses.geometric_skull_and_femur_wall_ancient_mossy",
+  "name": "Mossy Weathered Stacked Human Skulls & Femurs Wall",
+  "vietnamese_name": "Bức Tường Xương Người & Hộp Sọ Xếp Khéo (Rêu Phong Cổ)",
+  "category": "graveyards_crypts_and_charnel_houses",
+  "sub_category": "charnel_house_ossuary_skull_wall",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "inspect_ossuary",
+  "gameplay_role": "Graveyard and crypt mortality element (Stacked Human Skulls & Femurs Wall).",
+  "destructible": false,
+  "material": "organic",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of mossy weathered stacked human skulls & femurs wall, centuries of damp green velvet moss and eroded stone, Medieval graveyard churchyard crypt and ossuary style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/graveyards_crypts_and_charnel_houses/geometric_skull_and_femur_wall_ancient_mossy.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.graveyards_crypts_and_charnel_houses.geometric_skull_and_femur_wall_ancient_mossy:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.775,
+        0.783
+      ],
+      [
+        0.665,
+        0.756
+      ]
+    ],
+    "frac_zero": 0.5358,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.428,
+        0.597,
+        0.458,
+        0.443,
+        0.532,
+        0.64,
+        0.421
+      ],
+      [
+        0.898,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.881
+      ],
+      [
+        0.578,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.53
+      ],
+      [
+        0.524,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.596
+      ],
+      [
+        0.455,
+        0.862,
+        0.884,
+        0.737,
+        1.0,
+        1.0,
+        0.61
+      ],
+      [
+        0.0,
+        0.0,
+        0.196,
+        0.665,
+        0.413,
+        0.194,
+        0.041
+      ]
+    ],
+    "crop_offset": [
+      17,
+      62
+    ],
+    "trunk_columns": [
+      3,
+      4
+    ],
+    "contact_px": 80,
+    "contact_reference_px": 80.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

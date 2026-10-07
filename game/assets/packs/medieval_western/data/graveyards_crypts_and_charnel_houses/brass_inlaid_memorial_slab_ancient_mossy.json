@@ -1,0 +1,123 @@
+{
+  "id": "medieval_western.graveyards_crypts_and_charnel_houses.brass_inlaid_memorial_slab_ancient_mossy",
+  "name": "Mossy Weathered Floor Brass Inlay Knight Memorial Plate",
+  "vietnamese_name": "Tấm Đồng Khảm Sàn Khắc Chân Dung Hiệp Sĩ (Rêu Phong Cổ)",
+  "category": "graveyards_crypts_and_charnel_houses",
+  "sub_category": "gothic_sarcophagus_and_tomb",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "read_epitaph",
+  "gameplay_role": "Graveyard and crypt mortality element (Floor Brass Inlay Knight Memorial Plate).",
+  "destructible": false,
+  "material": "iron",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of mossy weathered floor brass inlay knight memorial plate, centuries of damp green velvet moss and eroded stone, Medieval graveyard churchyard crypt and ossuary style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/graveyards_crypts_and_charnel_houses/brass_inlaid_memorial_slab_ancient_mossy.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.graveyards_crypts_and_charnel_houses.brass_inlaid_memorial_slab_ancient_mossy:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.671,
+        0.69
+      ]
+    ],
+    "frac_zero": 0.6159,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.209,
+        0.4,
+        0.864,
+        0.839,
+        0.393,
+        0.166
+      ],
+      [
+        0.892,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.864
+      ],
+      [
+        0.281,
+        0.554,
+        0.931,
+        0.879,
+        0.538,
+        0.278
+      ]
+    ],
+    "crop_offset": [
+      35,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 96,
+    "contact_reference_px": 96.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

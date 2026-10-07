@@ -1,0 +1,98 @@
+{
+  "id": "medieval_western.witchcraft_folklore_and_bog_magic.raven_feather_smudge_wand_poppet_pinned",
+  "name": "Twig-Bound Smudge Wand of Mugwort & Crow Quills",
+  "vietnamese_name": "Bó Cây Ngải Đốt Xông Khói Kèm Lông Quạ (Buộc Cành Cây Dại)",
+  "category": "witchcraft_folklore_and_bog_magic",
+  "sub_category": "divination_table_and_bone_casting",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "cleanse_space",
+  "gameplay_role": "Witchcraft folklore element (Smudge Wand of Mugwort & Crow Quills).",
+  "destructible": false,
+  "material": "organic",
+  "feudal_culture": "celtic_gaelic",
+  "prompt_summary": "2D orthographic top-down game sprite of twig-bound smudge wand of mugwort & crow quills, woven willow withes and iron nail bindings, Medieval folklore witchcraft and bog magic style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/witchcraft_folklore_and_bog_magic/raven_feather_smudge_wand_poppet_pinned.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.witchcraft_folklore_and_bog_magic.raven_feather_smudge_wand_poppet_pinned:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.337
+      ]
+    ],
+    "frac_zero": 0.9156,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      2,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.586,
+        0.031
+      ],
+      [
+        0.348,
+        0.0
+      ],
+      [
+        0.107,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      47,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 4,
+    "contact_reference_px": 4.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

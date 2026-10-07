@@ -148,6 +148,7 @@ func has_telegraph() -> bool:
 ## Resolved lazily, never in an annotation: the headless runner drives this panel before
 ## a scene tree exists (AGENTS.md, UI standard). Idempotent.
 func _bind_nodes() -> void:
+	L.localize_tree(self)
 	if _bound:
 		return
 	_boundary_label = get_node_or_null("%BoundaryLabel") as Label

@@ -113,7 +113,9 @@ func _render() -> void:
 
 ## Resolve scene nodes. Idempotent; override but always call `super()`.
 func _bind_nodes() -> void:
-	pass
+	# A scene's literal text is a KEY with no call site, so the screen resolves its own subtree
+	# here: before any `summary()` reads a label, and before `_render()` overwrites dynamic text.
+	L.localize_tree(self)
 
 
 ## The first enabled focusable control, or null. Depth-first so a screen's own

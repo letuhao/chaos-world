@@ -1,0 +1,116 @@
+{
+  "id": "medieval_western.parish_chapels_and_wayside_shrines.weeping_cross_pilgrim_steps_mossy_roof",
+  "name": "Moss-Roofed Calvary Weeping Cross Step Platform",
+  "vietnamese_name": "Bậc Đá Quỳ Cầu Nguyện Thánh Giá Calvary (Mái Phủ Rêu Xanh)",
+  "category": "parish_chapels_and_wayside_shrines",
+  "sub_category": "wayside_stone_cross_crucifix",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "kneel",
+  "gameplay_role": "Wayside chapel and shrine element (Calvary Weeping Cross Step Platform).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of moss-roofed calvary weeping cross step platform, thick green moss blanket on stone slates, Parish field chapel and wayside shrine style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/parish_chapels_and_wayside_shrines/weeping_cross_pilgrim_steps_mossy_roof.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.parish_chapels_and_wayside_shrines.weeping_cross_pilgrim_steps_mossy_roof:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.435,
+        0.44
+      ]
+    ],
+    "frac_zero": 0.7432,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.004,
+        0.496,
+        0.296,
+        0.0,
+        0.0
+      ],
+      [
+        0.648,
+        0.867,
+        1.0,
+        1.0,
+        0.853,
+        0.637
+      ],
+      [
+        0.005,
+        0.15,
+        0.898,
+        0.818,
+        0.103,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      34,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 66,
+    "contact_reference_px": 66.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

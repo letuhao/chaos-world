@@ -802,6 +802,7 @@ func _route_touches(route: Dictionary, room_id: String) -> bool:
 ## `summary()` both read through here, so a test that never instantiates the scene still
 ## gets the empty vocabulary rather than a null dereference.
 func _bind_nodes() -> void:
+	L.localize_tree(self)
 	if _bound_nodes:
 		return
 	_bound_nodes = true

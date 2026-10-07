@@ -1,0 +1,207 @@
+{
+  "id": "medieval_western.graveyards_crypts_and_charnel_houses.geometric_skull_and_femur_wall_ivy_choked",
+  "name": "Ivy-Strangled Stacked Human Skulls & Femurs Wall",
+  "vietnamese_name": "Bức Tường Xương Người & Hộp Sọ Xếp Khéo (Dây Leo Xiết Chặt)",
+  "category": "graveyards_crypts_and_charnel_houses",
+  "sub_category": "charnel_house_ossuary_skull_wall",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "inspect_ossuary",
+  "gameplay_role": "Graveyard and crypt mortality element (Stacked Human Skulls & Femurs Wall).",
+  "destructible": false,
+  "material": "organic",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of ivy-strangled stacked human skulls & femurs wall, tangled dark ivy vines obscuring Latin inscriptions, Medieval graveyard churchyard crypt and ossuary style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/graveyards_crypts_and_charnel_houses/geometric_skull_and_femur_wall_ivy_choked.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.graveyards_crypts_and_charnel_houses.geometric_skull_and_femur_wall_ivy_choked:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.771,
+        0.774
+      ],
+      [
+        0.768,
+        0.788
+      ]
+    ],
+    "frac_zero": 0.3952,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.087,
+        0.348,
+        0.58,
+        0.918,
+        0.53,
+        0.355,
+        0.072
+      ],
+      [
+        0.718,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.697
+      ],
+      [
+        0.757,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.764
+      ],
+      [
+        0.478,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.473
+      ],
+      [
+        0.209,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.244
+      ],
+      [
+        0.326,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        0.364
+      ],
+      [
+        0.386,
+        0.721,
+        0.919,
+        0.771,
+        0.984,
+        0.749,
+        0.35
+      ]
+    ],
+    "crop_offset": [
+      17,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 191,
+    "contact_reference_px": 191.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

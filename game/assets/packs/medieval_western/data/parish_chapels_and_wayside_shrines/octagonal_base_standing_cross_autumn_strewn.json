@@ -1,0 +1,167 @@
+{
+  "id": "medieval_western.parish_chapels_and_wayside_shrines.octagonal_base_standing_cross_autumn_strewn",
+  "name": "Autumn Leaf-Strewn Wayside Octagonal Shaft Stone Cross",
+  "vietnamese_name": "Thánh Giá Đá Ven Đường Bệ Tám Cạnh (Rụng Đầy Lá Vàng)",
+  "category": "parish_chapels_and_wayside_shrines",
+  "sub_category": "wayside_stone_cross_crucifix",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "pray",
+  "gameplay_role": "Wayside chapel and shrine element (Wayside Octagonal Shaft Stone Cross).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of autumn leaf-strewn wayside octagonal shaft stone cross, blanket of dry fallen beech and oak leaves, Parish field chapel and wayside shrine style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/parish_chapels_and_wayside_shrines/octagonal_base_standing_cross_autumn_strewn.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.parish_chapels_and_wayside_shrines.octagonal_base_standing_cross_autumn_strewn:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.217
+      ],
+      [
+        0.644
+      ]
+    ],
+    "frac_zero": 0.7291,
+    "blocks": [
+      [
+        true
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.1,
+        0.545,
+        0.097
+      ],
+      [
+        0.148,
+        0.538,
+        0.151
+      ],
+      [
+        0.0,
+        0.406,
+        0.0
+      ],
+      [
+        0.079,
+        0.637,
+        0.069
+      ],
+      [
+        0.646,
+        1.0,
+        0.628
+      ],
+      [
+        0.842,
+        1.0,
+        0.882
+      ],
+      [
+        0.184,
+        0.787,
+        0.171
+      ]
+    ],
+    "crop_offset": [
+      16,
+      38
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 78,
+    "contact_reference_px": 78.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      256
+    ]
+  }
+}

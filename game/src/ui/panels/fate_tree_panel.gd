@@ -242,6 +242,7 @@ func _destiny_gates() -> Array:
 
 
 func _bind_nodes() -> void:
+	L.localize_tree(self)
 	if _graph != null:
 		return
 	_scroll = ScrollContainer.new()

@@ -1,0 +1,203 @@
+{
+  "id": "medieval_western.medieval_alchemy_and_natural_philosophy.brick_athanor_philosophical_furnace_sulfur_encrusted",
+  "name": "Brimstone-Encrusted Masonry Tower Athanor Slow Furnace",
+  "vietnamese_name": "Lò Nung Chậm Tháp Gạch Athanor (Đọng Vàng Lưu Huỳnh)",
+  "category": "medieval_alchemy_and_natural_philosophy",
+  "sub_category": "athanor_tower_furnace_and_alembic",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "tend_athanor",
+  "gameplay_role": "Alchemy and natural philosophy element (Masonry Tower Athanor Slow Furnace).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of brimstone-encrusted masonry tower athanor slow furnace, yellow crystalline sulfur crust and vitriol stains, Medieval alchemy laboratory and natural philosophy style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/medieval_alchemy_and_natural_philosophy/brick_athanor_philosophical_furnace_sulfur_encrusted.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.medieval_alchemy_and_natural_philosophy.brick_athanor_philosophical_furnace_sulfur_encrusted:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.539,
+        0.554
+      ],
+      [
+        0.738,
+        0.761
+      ]
+    ],
+    "frac_zero": 0.5438,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.075,
+        0.835,
+        0.936,
+        0.252,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.146,
+        0.998,
+        1.0,
+        0.64,
+        0.021,
+        0.0
+      ],
+      [
+        0.278,
+        0.927,
+        0.998,
+        1.0,
+        0.958,
+        0.547,
+        0.0
+      ],
+      [
+        0.503,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.889,
+        0.068
+      ],
+      [
+        0.795,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.996,
+        0.56
+      ],
+      [
+        0.394,
+        0.989,
+        1.0,
+        1.0,
+        1.0,
+        0.843,
+        0.04
+      ],
+      [
+        0.0,
+        0.156,
+        0.857,
+        0.963,
+        0.421,
+        0.01,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      26,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 84,
+    "contact_reference_px": 84.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

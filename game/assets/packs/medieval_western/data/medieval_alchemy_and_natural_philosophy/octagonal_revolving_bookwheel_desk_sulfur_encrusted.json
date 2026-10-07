@@ -1,0 +1,197 @@
+{
+  "id": "medieval_western.medieval_alchemy_and_natural_philosophy.octagonal_revolving_bookwheel_desk_sulfur_encrusted",
+  "name": "Brimstone-Encrusted Revolving Scholar's Multiple Bookwheel",
+  "vietnamese_name": "Bánh Xe Gỗ Quay Đọc Nhiều Sách Cùng Lúc (Đọng Vàng Lưu Huỳnh)",
+  "category": "medieval_alchemy_and_natural_philosophy",
+  "sub_category": "scholars_reading_pulpit_and_codices",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "rotate_wheel",
+  "gameplay_role": "Alchemy and natural philosophy element (Revolving Scholar's Multiple Bookwheel).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of brimstone-encrusted revolving scholar's multiple bookwheel, yellow crystalline sulfur crust and vitriol stains, Medieval alchemy laboratory and natural philosophy style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/medieval_alchemy_and_natural_philosophy/octagonal_revolving_bookwheel_desk_sulfur_encrusted.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.medieval_alchemy_and_natural_philosophy.octagonal_revolving_bookwheel_desk_sulfur_encrusted:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.704,
+        0.69
+      ],
+      [
+        0.804,
+        0.773
+      ]
+    ],
+    "frac_zero": 0.5617,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.317,
+        0.607,
+        0.377,
+        0.016,
+        0.0
+      ],
+      [
+        0.556,
+        0.92,
+        0.925,
+        0.931,
+        0.709,
+        0.117
+      ],
+      [
+        0.856,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.301
+      ],
+      [
+        0.912,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.609
+      ],
+      [
+        0.746,
+        1.0,
+        1.0,
+        1.0,
+        0.947,
+        0.102
+      ],
+      [
+        0.325,
+        0.984,
+        1.0,
+        1.0,
+        0.604,
+        0.0
+      ],
+      [
+        0.374,
+        0.792,
+        1.0,
+        0.96,
+        0.154,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      44,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "contact_px": 127,
+    "contact_reference_px": 127.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "id": "medieval_western.medieval_alchemy_and_natural_philosophy.zodiacal_parchment_horoscope_board_soot_stained_glass",
+  "name": "Fire-Stained Celestial Zodiac Chart on Oak Table",
+  "vietnamese_name": "Bản Đồ Mười Hai Cung Hoàng Đạo Trên Bàn (Ám Khói Lò Nung)",
+  "category": "medieval_alchemy_and_natural_philosophy",
+  "sub_category": "astrolabe_armillary_sphere_and_charts",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "cast_horoscope",
+  "gameplay_role": "Alchemy and natural philosophy element (Celestial Zodiac Chart on Oak Table).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of fire-stained celestial zodiac chart on oak table, flame-blackened glass and charcoal smudge, Medieval alchemy laboratory and natural philosophy style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/medieval_alchemy_and_natural_philosophy/zodiacal_parchment_horoscope_board_soot_stained_glass.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.medieval_alchemy_and_natural_philosophy.zodiacal_parchment_horoscope_board_soot_stained_glass:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.613,
+        0.646
+      ]
+    ],
+    "frac_zero": 0.6309,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.276,
+        0.482,
+        0.344,
+        0.344,
+        0.565,
+        0.412
+      ],
+      [
+        0.708,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.747
+      ],
+      [
+        0.528,
+        0.33,
+        0.858,
+        0.852,
+        0.355,
+        0.519
+      ]
+    ],
+    "crop_offset": [
+      33,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 60,
+    "contact_reference_px": 60.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

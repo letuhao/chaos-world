@@ -23,7 +23,11 @@ rate_scale = 0.01
 refusal_cap = 0.95
 amp_scale = 10.0
 lifesteal_pool = &"health"
-default_element_share = 0.8
+; BL-0348's ruling: an un-authored attack is PHYSICAL by default. `0.8` routed 80% of
+; every un-authored attack through the element path -- a different game from `0.0`. At
+; `0.0` a technique that wants an elemental term AUTHORS its share, which every shipped
+; elemental technique already does; an elementless or un-authored blow is pure physical.
+default_element_share = 0.0
 ; ADR 0200. `resist_divisor` still puts `element_defense_<e>` into the same magnitude
 ; space as `element_power_<e>`, and it stays at `100.0` because the shipped
 ; `ElementProvider` still contributes defense as `affinity * 0.5 + will * 0.2` against

@@ -189,6 +189,7 @@ func focus_initial() -> void:
 
 
 func _bind_nodes() -> void:
+	L.localize_tree(self)
 	if _title_label != null:
 		return
 	_title_label = get_node_or_null("%RewardTitle") as Label

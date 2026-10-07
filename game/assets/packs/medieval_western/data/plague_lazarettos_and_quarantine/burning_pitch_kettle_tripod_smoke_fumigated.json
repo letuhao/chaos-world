@@ -1,0 +1,110 @@
+{
+  "id": "medieval_western.plague_lazarettos_and_quarantine.burning_pitch_kettle_tripod_smoke_fumigated",
+  "name": "Fumigation-Smoked Boiling Pine Resin Pitch Kettle Stand",
+  "vietnamese_name": "Nồi Nhựa Cây Thông Sôi Bốc Hơi Diệt Khuẩn (Xông Khói Trừ Tà Khí)",
+  "category": "plague_lazarettos_and_quarantine",
+  "sub_category": "fumigation_herbs_and_cleansing_fires",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "tend_fire",
+  "gameplay_role": "Plague lazaretto and quarantine element (Boiling Pine Resin Pitch Kettle Stand).",
+  "destructible": false,
+  "material": "iron",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of fumigation-smoked boiling pine resin pitch kettle stand, pungent aromatic sulfur and juniper smoke clouds, Medieval plague quarantine lazaretto pestilence style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/plague_lazarettos_and_quarantine/burning_pitch_kettle_tripod_smoke_fumigated.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.plague_lazarettos_and_quarantine.burning_pitch_kettle_tripod_smoke_fumigated:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.692
+      ]
+    ],
+    "frac_zero": 0.6436,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.265,
+        0.799,
+        0.156
+      ],
+      [
+        0.876,
+        1.0,
+        0.602
+      ],
+      [
+        0.703,
+        0.974,
+        0.488
+      ]
+    ],
+    "crop_offset": [
+      23,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 69,
+    "contact_reference_px": 69.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

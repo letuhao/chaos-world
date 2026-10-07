@@ -115,6 +115,7 @@ func is_placeholder() -> bool:
 ## before a scene tree exists. Idempotent by construction — nothing is cached
 ## across calls.
 func _bind_nodes() -> void:
+	L.localize_tree(self)
 	if _bound:
 		return
 	_name_label = get_node_or_null("%PortraitNameLabel") as Label

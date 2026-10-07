@@ -110,6 +110,7 @@ func focus_initial() -> void:
 ## suite drives this panel before a scene tree exists, so `_ready()` is not a
 ## dependable place to bind them. Idempotent.
 func _bind_nodes() -> void:
+	L.localize_tree(self)
 	if _bound:
 		return
 	_bound = true

@@ -103,6 +103,7 @@ func focus_initial() -> void:
 ## dependable place to bind them. Idempotent, and the connect is guarded so a
 ## reused row never accumulates a second handler.
 func _bind_nodes() -> void:
+	L.localize_tree(self)
 	if _head_label != null:
 		return
 	_head_label = get_node_or_null("%HeadLabel") as Label

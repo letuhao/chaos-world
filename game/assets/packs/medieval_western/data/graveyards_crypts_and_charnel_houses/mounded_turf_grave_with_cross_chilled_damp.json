@@ -1,0 +1,129 @@
+{
+  "id": "medieval_western.graveyards_crypts_and_charnel_houses.mounded_turf_grave_with_cross_chilled_damp",
+  "name": "Subterranean Damp Freshly Mounded Earth Peasant Grave",
+  "vietnamese_name": "Mộ Mới Đắp Đất Có Cắm Thánh Giá Gỗ (Ẩm Ướt Lòng Đất)",
+  "category": "graveyards_crypts_and_charnel_houses",
+  "sub_category": "churchyard_standing_slate_headstones",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "pray",
+  "gameplay_role": "Graveyard and crypt mortality element (Freshly Mounded Earth Peasant Grave).",
+  "destructible": false,
+  "material": "earth",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of subterranean damp freshly mounded earth peasant grave, glistening damp subterranean moisture beads, Medieval graveyard churchyard crypt and ossuary style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/graveyards_crypts_and_charnel_houses/mounded_turf_grave_with_cross_chilled_damp.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.graveyards_crypts_and_charnel_houses.mounded_turf_grave_with_cross_chilled_damp:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.573,
+        0.578
+      ]
+    ],
+    "frac_zero": 0.663,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.19,
+        0.248,
+        0.0,
+        0.02,
+        0.0
+      ],
+      [
+        0.402,
+        0.772,
+        0.967,
+        0.976,
+        0.814,
+        0.446,
+        0.0
+      ],
+      [
+        0.822,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.845,
+        0.5
+      ]
+    ],
+    "crop_offset": [
+      31,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 194,
+    "contact_reference_px": 194.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

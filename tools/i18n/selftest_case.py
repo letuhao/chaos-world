@@ -220,19 +220,15 @@ def _const_dict_is_a_use() -> None:
         expect(_check(root) == 0, "extract keeps the row: the use is found inside the region")
 
 
-@case("i18n: a const in a file with a static func is left alone (a var would not compile)")
-def _static_const_is_skipped() -> None:
+@case("i18n: a const holds a bare KEY, never a `var` (a `var REASON_TEXT` fails lint)")
+def _static_const_holds_a_key() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         root = Path(tmp)
         _tree(root, _STATIC_CONST, catalog.render("en", {}))
         result = engine.scan_all(Path(root))[0][1]
         kinds = {finding.kind for finding in result.findings}
-        expect("gd_const_kw" not in kinds, "the const is not turned into a var")
-        expect("gd_const_lit" not in kinds, "and its wording is not wrapped")
-        expect(
-            any("static func" in item.reason for item in result.unsupported),
-            "instead it is reported for a human",
-        )
+        expect("gd_const_kw" not in kinds, "the const stays a const (a var would fail lint)")
+        expect(kinds == {"gd_const_key"}, "its literal becomes a bare key a reader resolves")
 
 
 _CONTENT_TRES = """[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
@@ -291,3 +287,48 @@ def _export_import_round_trip() -> None:
         expect(_check(root) == 0, "the imported locale catalog is a valid subset")
         translated = catalog.load(root / "game" / "locale" / "items.vi.tres")
         expect(list(translated.values()) == ["Ngoc Bi"], "the row landed under the derived key")
+
+
+_ARRAY_TRES = """[gd_resource type="Resource" script_class="NpcPlaceVoice" load_steps=2 format=3]
+
+[resource]
+id = &"qi_dao"
+names = Array[String](["the woman sweeping", "the boy on the steps"])
+plausible_tiers = Array[String](["minor"])
+"""
+
+_FORMAT_SINK = """extends Control
+
+
+func _hint_text() -> String:
+\treturn "%s x%d" % [_name, _count]
+"""
+
+
+@case("i18n: an array-valued display field keys each element")
+def _array_field_keys_each_element() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        write(root / "game" / "data" / "npc" / "probe.tres", _ARRAY_TRES)
+        write(root / "game" / "locale" / "gaps.json", "{}")
+        result = engine.scan_all(Path(root))[0][1]
+        keys = [finding.key for finding in result.findings]
+        expect(
+            keys == ["LOC_NPC_QI_DAO_NAMES_1", "LOC_NPC_QI_DAO_NAMES_2"],
+            f"each list element gets its own key, and a code array is ignored: {keys}",
+        )
+
+
+@case("i18n: a format string is keyed as the message, its arguments left as data")
+def _format_string_is_keyed() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        _tree(root, _FORMAT_SINK, catalog.render("en", {}))
+        _extract(root)
+        text = (root / "game" / "src" / "ui" / "panel.gd").read_text(encoding="utf-8")
+        expect(
+            'L.t("LOC_UI_' in text and '") % [_name, _count]' in text,
+            f"the literal is keyed and the arguments stay: {text!r}",
+        )
+        rows = catalog.load(root / "game" / "locale" / "ui.tres")
+        expect("%s x%d" in rows.values(), "the MESSAGE is the row, not the formatted result")

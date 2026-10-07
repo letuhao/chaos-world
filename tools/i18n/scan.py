@@ -39,7 +39,11 @@ _GD_DECL = re.compile(
 _GD_FUNC = re.compile(r"^\s*(?:static\s+)?func\s+(?P<name>[A-Za-z_]\w*)")
 _GD_RETURN = re.compile(r"^\s*return\s+(?P<rhs>.+?)\s*$")
 _USE2 = re.compile(r'L\.t\(\s*"(LOC_[^"]+)"\s*,\s*"((?:[^"\\]|\\.)*)"\s*\)')
-_USE1 = re.compile(r'L\.t\(\s*"(LOC_[^"]+)"\s*\)')
+## Any `LOC_…` literal is a USE, however it is held: `L.t(key)` at a sink, a bare
+## `const X := "LOC_…"` that a reader resolves, or a key in a format's arguments. A key
+## nothing references is an orphan, and matching only the wrapped form called every
+## const-held key one — which `extract` would then prune while the source still used it.
+_USE_ANY = re.compile(r'"(LOC_[A-Z0-9_]+)"')
 _TRES_ROW = re.compile(
     r'^\s*"?(?P<field>'
     + "|".join(policy.CONTENT_FIELDS)
@@ -49,10 +53,11 @@ _TSCN_ROW = re.compile(
     r"^\s*(?P<prop>" + "|".join(policy.TEXT_PROPERTIES) + r')\s*=\s*"(?P<lit>(?:[^"\\]|\\.)*)"'
 )
 
-## Kinds carrying a literal (they get a slug and a catalog row).
-LIT_KINDS = frozenset({"gd_prop_lit", "gd_return_lit", "gd_const_lit"})
-## Kinds the tool rewrites. `gd_const_kw` is the `const` -> `var` keyword change.
-REWRITABLE = LIT_KINDS | {"gd_prop_expr", "gd_const_kw"}
+## Kinds carrying a literal (they get a key and a catalog row).
+LIT_KINDS = frozenset({"gd_prop_lit", "gd_return_lit", "gd_const_key"})
+## Kinds the tool rewrites. `gd_const_key` leaves a `const` a `const` holding a bare KEY; the
+## reader resolves it, because a `var REASON_TEXT` is a `class-variable-name` lint error.
+REWRITABLE = LIT_KINDS | {"gd_prop_expr"}
 
 
 @dataclass
@@ -216,7 +221,7 @@ def scan_gd(rel: str, text: str, prefix: str, catalog: str) -> Scan:
             current_func = matched_func.group("name")
         for use in _USE2.finditer(code):
             uses.append(Use(rel, line_no, use.group(1), decode(use.group(2))))
-        for use in _USE1.finditer(code):
+        for use in _USE_ANY.finditer(code):
             uses.append(Use(rel, line_no, use.group(1), ""))
 
         if any(start <= line_start < end for start, end in regions):
@@ -260,6 +265,75 @@ def _wrapped_spans(text: str, start: int, end: int) -> list[tuple[int, int]]:
     return spans
 
 
+def _format_operator(rhs: str) -> int:
+    """Index of the `%` that makes `rhs` a format expression, or -1.
+
+    The operator is the `%` OUTSIDE any string (a `%` inside the message is a placeholder) and
+    not a `%%` escape. That is what separates `"%s x%d" % [a, b]` from a plain literal.
+    """
+    in_string = False
+    escaped = False
+    index = 0
+    while index < len(rhs):
+        char = rhs[index]
+        if in_string:
+            if escaped:
+                escaped = False
+            elif char == "\\":
+                escaped = True
+            elif char == '"':
+                in_string = False
+        elif char == '"':
+            in_string = True
+        elif char == "%" and (index + 1 >= len(rhs) or rhs[index + 1] != "%"):
+            return index
+        index += 1
+    return -1
+
+
+def _key_format(rel, line_no, base, rhs, prefix, catalog, kind, findings) -> bool:
+    """Key a `%`-format expression: its MESSAGE literal and every prose literal in ARGUMENTS.
+
+    `"%s - %s" % [fact, "heard" if ok else "not yet"]` holds three messages — the template and
+    the two argument words — so keying only the leading literal would ship English inside an
+    otherwise translated line. Returns True when `rhs` IS a format expression. The message is
+    keyed only when it is a bare literal, so an already-migrated `L.t(key) % […]` keys just its
+    remaining argument wording.
+    """
+    operator = _format_operator(rhs)
+    if operator < 0:
+        return False
+    message = STRING_LIT.fullmatch(rhs[:operator].strip())
+    if message is not None:
+        english = decode(message.group(0)[1:-1])
+        if policy.is_player_text(english):
+            findings.append(
+                Finding(rel, line_no, base, base + message.end(), english, prefix, catalog, kind)
+            )
+    arguments = rhs[operator + 1 :]
+    offset = base + operator + 1
+    wrapped = _wrapped_spans(arguments, 0, len(arguments))
+    for literal in STRING_LIT.finditer(arguments):
+        if any(begin <= literal.start() and literal.end() <= stop for begin, stop in wrapped):
+            continue
+        english = decode(literal.group(0)[1:-1])
+        if not policy.is_player_text(english):
+            continue
+        findings.append(
+            Finding(
+                rel,
+                line_no,
+                offset + literal.start(),
+                offset + literal.end(),
+                english,
+                prefix,
+                catalog,
+                kind,
+            )
+        )
+    return True
+
+
 def _scan_assign(rel, line_no, line_start, code, prefix, catalog, findings, unsupported) -> None:
     match = _GD_ASSIGN.search(code)
     if match is None:
@@ -267,6 +341,8 @@ def _scan_assign(rel, line_no, line_start, code, prefix, catalog, findings, unsu
     rhs = match.group("rhs")
     start = line_start + match.start("rhs")
     end = line_start + match.end("rhs")
+    if _key_format(rel, line_no, start, rhs, prefix, catalog, "gd_prop_lit", findings):
+        return
     literal = STRING_LIT.fullmatch(rhs)
     if literal is not None:
         english = decode(literal.group(0)[1:-1])
@@ -331,33 +407,13 @@ def _scan_decl(
                     english,
                     prefix,
                     catalog,
-                    "gd_const_lit",
+                    # A `const` cannot hold a RESOLVED value without losing its name to a `var`
+                    # (`class-variable-name` forbids `var REASON_TEXT`), so it holds the bare
+                    # KEY; a `var` resolves at the declaration, exactly as a sink does.
+                    "gd_const_key" if is_const else "gd_prop_lit",
                 )
             )
-    if not literals:
-        return
-    if is_const and "static func" in text:
-        # A `var` is not reachable from a `static func`, so `DomainOutcome.outcome_text`
-        # reading its own `OUTCOME_TEXT` would stop compiling. Leave the const's wording
-        # alone and report it; a human migrates the file (see the ADR's reader-side note).
-        unsupported.append(
-            Unsupported(rel, line_no, f"{match.group('name')} (const, file has a static func)")
-        )
-        return
     findings.extend(literals)
-    if is_const:
-        findings.append(
-            Finding(
-                rel,
-                line_no,
-                line_start + match.start("kw"),
-                line_start + match.end("kw"),
-                "",
-                prefix,
-                catalog,
-                "gd_const_kw",
-            )
-        )
 
 
 def _scan_return(rel, line_no, line_start, code, prefix, catalog, findings) -> None:
@@ -365,24 +421,25 @@ def _scan_return(rel, line_no, line_start, code, prefix, catalog, findings) -> N
     if match is None:
         return
     rhs = match.group("rhs")
+    start = line_start + match.start("rhs")
+    if _key_format(rel, line_no, start, rhs, prefix, catalog, "gd_return_lit", findings):
+        return
     literal = STRING_LIT.fullmatch(rhs)
-    if literal is None:
-        return
-    english = decode(literal.group(0)[1:-1])
-    if not policy.is_player_text(english):
-        return
-    findings.append(
-        Finding(
-            rel,
-            line_no,
-            line_start + match.start("rhs"),
-            line_start + match.end("rhs"),
-            english,
-            prefix,
-            catalog,
-            "gd_return_lit",
-        )
-    )
+    if literal is not None:
+        english = decode(literal.group(0)[1:-1])
+        if policy.is_player_text(english):
+            findings.append(
+                Finding(
+                    rel,
+                    line_no,
+                    start,
+                    line_start + match.end("rhs"),
+                    english,
+                    prefix,
+                    catalog,
+                    "gd_return_lit",
+                )
+            )
 
 
 def _scan_rows(rel, text, prefix, catalog, kind, pattern) -> list[Finding]:
@@ -416,11 +473,31 @@ def _scan_rows(rel, text, prefix, catalog, kind, pattern) -> list[Finding]:
 
 
 _TRES_ID = re.compile(r'^id\s*[:=]\s*&?"(?P<id>[^"]+)"', re.MULTILINE)
+## A display field whose value is a bracketed LIST (`Array[String](["a", "b"])`). Each element
+## is a string a player reads — a composed persona picks one — so each gets its own key.
+_TRES_ARRAY = re.compile(
+    r"^[ \t]*\"?(?P<field>"
+    + "|".join(policy.CONTENT_FIELDS)
+    + r")\"?[ \t]*[:=][ \t]*(?:Array\[[^\]]*\][ \t]*\()?\[(?P<items>[^\]]*)\]",
+    re.MULTILINE,
+)
 
 
 def _token(value: str) -> str:
     """A key fragment: upper-case, non-alphanumeric runs collapsed to `_`."""
     return re.sub(r"[^A-Za-z0-9]+", "_", value).strip("_").upper() or "X"
+
+
+def _line_of(text: str, offset: int) -> int:
+    return text.count("\n", 0, offset) + 1
+
+
+def _lines(text: str):
+    """`(line_no, offset, line)` triples, so a match position maps to a file offset."""
+    offset = 0
+    for line_no, line in enumerate(text.splitlines(keepends=True), start=1):
+        yield line_no, offset, line
+        offset += len(line)
 
 
 def scan_tres(rel: str, text: str, prefix: str, catalog: str) -> Scan:
@@ -429,19 +506,47 @@ def scan_tres(rel: str, text: str, prefix: str, catalog: str) -> Scan:
     The game's data holds the KEY, not the English (`display_name = "LOC_ITEMS_X_NAME"`), and
     one def is defined once for every language. The key derives from the def's own `id` (or the
     file stem when it has none) plus the field name — stable across an English edit, which is
-    the whole point — and a positional suffix when a field repeats in one file.
+    the whole point — and an index for a repeated field or a list element.
     """
     ident = _TRES_ID.search(text)
     stem = rel.rsplit("/", 1)[-1].rsplit(".", 1)[0]
     token = _token(ident.group("id")) if ident else _token(stem)
-    collected: list[tuple[int, int, int, str, str]] = []
     uses: list[Use] = []
-    offset = 0
-    line_no = 0
-    for raw_line in text.splitlines(keepends=True):
-        line_no += 1
-        line_start = offset
-        offset += len(raw_line)
+    collected: list[tuple[int, int, int, str, str]] = []  # start, end, line, key_field, value
+
+    # A bracketed list is scanned first: its elements own indexed field names, so the
+    # single-string pass must skip their lines rather than read the array opener as a value.
+    array_spans: list[tuple[int, int]] = []
+    for match in _TRES_ARRAY.finditer(text):
+        field = match.group("field").upper()
+        base = match.start("items")
+        index = 0
+        for literal in STRING_LIT.finditer(match.group("items")):
+            value = decode(literal.group(0)[1:-1])
+            if value.startswith(policy.SLUG_PREFIX):
+                uses.append(Use(rel, _line_of(text, base + literal.start()), value, ""))
+                continue
+            if not policy.is_player_text(value):
+                continue
+            index += 1
+            # `items` starts just after the `[`, and a STRING_LIT match INCLUDES its quotes,
+            # so the span is the literal itself — no `- 1` (that is for `_TRES_ROW`, whose
+            # capture excludes the quotes).
+            found = base + literal.start()
+            collected.append(
+                (
+                    found,
+                    base + literal.end(),
+                    _line_of(text, found),
+                    f"{field}_{index}",
+                    value,
+                )
+            )
+        array_spans.append((match.start(), match.end()))
+
+    for line_no, line_start, raw_line in _lines(text):
+        if any(start <= line_start < end for start, end in array_spans):
+            continue
         match = _TRES_ROW.match(raw_line)
         if match is None:
             continue
@@ -462,6 +567,7 @@ def scan_tres(rel: str, text: str, prefix: str, catalog: str) -> Scan:
                 value,
             )
         )
+
     counts: dict[str, int] = {}
     for _start, _end, _line, field, _value in collected:
         counts[field] = counts.get(field, 0) + 1
@@ -477,7 +583,16 @@ def scan_tres(rel: str, text: str, prefix: str, catalog: str) -> Scan:
 
 
 def scan_tscn(rel: str, text: str, prefix: str, catalog: str) -> Scan:
-    return Scan(_scan_rows(rel, text, prefix, catalog, "tscn_lit", _TSCN_ROW), [], [], False)
+    """A `.tscn` literal is always inventoried, but only a SCREEN/PANEL scene is a rewrite target.
+
+    A `src/ui` scene's owner script runs `L.localize_tree` in `_bind_nodes`, so a key in the
+    scene resolves at display. An app-owned scene under `game/scenes/` has no script at all, so
+    a key there would draw as its own key — it stays inventoried (`tscn_app_lit`) and unrewritten
+    until that scene's owner calls the pass.
+    """
+    under_ui = rel.replace("\\", "/").startswith("game/src/ui/")
+    kind = "tscn_lit" if under_ui else "tscn_app_lit"
+    return Scan(_scan_rows(rel, text, prefix, catalog, kind, _TSCN_ROW), [], [], False)
 
 
 def scan_file(rel: str, text: str) -> Scan | None:

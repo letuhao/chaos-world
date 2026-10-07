@@ -29,15 +29,25 @@ extends TestCase
 ##    an append behind a branch that never holds is the same defect;
 ## 6. it advances a SEARCH INDEX strictly past its own match, proven by
 ##    `<index> = <text>.find(<needle>, <index> + <needle>.length())` in the body's
-##    own assignment to the identifier the condition tests.
+##    own assignment to the identifier the condition tests;
+## 7. it is the `FileAccess` READ terminator (`not <file>.eof_reached()`), fed by
+##    a cursor-advancing reader on the SAME `<file>` at the loop's own
+##    indentation -- rule 2's sibling for a file rather than a listing;
+## 8. it follows a cursor through a map (`<cursor> = <map>[<cursor>]`) that the
+##    SAME function built with a preceding, already-bounded loop, capped at a
+##    fixed size and placed under a `has` guard.
 ##
-## None of the six can express the original defect, which was `while <a state
+## None of the eight can express the original defect, which was `while <a state
 ## value that never becomes true>`. Note the honest limit -- a `break` or an
 ## `append` behind a condition that never holds is still an unbounded wait, and no
 ## static scan can see that. This catches the shape; it does not prove convergence.
 ## The older note about the five being the whole list was wrong the moment
 ## `test_screen_reachability.gd` grew a `find()` scan that the first five could
-## not name, which is INC-0022.
+## not name, which is INC-0022. The lesson held twice more: `asset_catalog.gd`
+## reads its JSONL index with `while not file.eof_reached():` and
+## `test_chunk_streaming.gd` walks a back-pointer map, and neither shape is
+## expressible by the six -- so seven and eight were added, each only after the
+## guard went RED on a loop that terminates.
 
 const SRC_ROOT := "res://src"
 const TESTS_ROOT := "res://tests"
@@ -52,6 +62,28 @@ const AUTHORED_SUFFIXES: Array[String] = [
 	"_magnitudes",
 	"_rows",
 	"_table",
+]
+## The `FileAccess` readers that ADVANCE the file cursor. Named, never a `get_*`
+## wildcard: `get_position()` and `get_error()` match the wildcard and advance
+## nothing, so a pattern rule would wave through a loop that re-reads its own
+## position forever. `get_as_text()` consumes the rest of the file, which is a
+## cursor advance like any other -- the next `eof_reached()` is true.
+const FILE_CURSOR_READERS: Array[String] = [
+	"get_line",
+	"get_csv_line",
+	"get_as_text",
+	"get_buffer",
+	"get_string",
+	"get_pascal_string",
+	"get_var",
+	"get_8",
+	"get_16",
+	"get_32",
+	"get_64",
+	"get_float",
+	"get_double",
+	"get_real",
+	"get_token",
 ]
 
 
@@ -399,11 +431,28 @@ func _bounded_by_shape(condition: String, source: String) -> bool:
 
 
 func _is_bounded(condition: String, source: String) -> bool:
+	if _bounded_without_a_walk(source, condition):
+		return true
+	# 8. A cursor that unconditionally steps through a map the same function
+	# built under a fixed size cap.
+	return _walk_follows_capped_map(source, condition)
+
+
+## Rules 2, 7, 1, 3, 5, 6 and 4 -- every accept path that predates the map walk,
+## in the order they have always been checked. Rule 8 proves its FILL with THIS,
+## never with `_is_bounded`: a fill that was itself only accepted by citing
+## another map walk would make the rule self-supporting, and the base of that
+## chain would never stand on a shape that predates it.
+func _bounded_without_a_walk(source: String, condition: String) -> bool:
 	# 2. The DirAccess terminator: `get_next()` returns "" at the end of a listing,
 	# written either as `!= ""` or as `not entry.is_empty()`.
 	if condition.contains('!= ""'):
 		return true
 	if _is_dir_access_sentinel(condition, source):
+		return true
+	# 7. The FileAccess READ terminator: `eof_reached()` turns true at the end of
+	# the file, and the body advances the same handle.
+	if _is_file_read_terminator(condition, source):
 		return true
 	if _bounded_by_shape(condition, source):
 		return true
@@ -609,6 +658,64 @@ func _is_dir_access_sentinel(condition: String, source: String) -> bool:
 	return false
 
 
+## 7. `while not file.eof_reached():` fed by a cursor-advancing read on the SAME
+## handle -- the shape `WorldmapAssets._ensure_loaded` reads its JSONL index
+## with, and rule 2's sibling for a file rather than a listing.
+##
+## WHAT THIS ADMITS, EXACTLY. The condition must negate `eof_reached()` on a
+## named handle, and the loop's OWN body -- at the loop's own indentation, not
+## nested in a branch -- must call one of `FILE_CURSOR_READERS` on that same
+## handle. A `FileAccess` cursor only moves forward as bytes are consumed:
+## `eof_reached()` cannot turn false again, and a read that consumes at least
+## one byte strictly advances the cursor toward the end of a finite file. So
+## every pass moves the cursor the condition reads, and the loop ends the pass
+## the read consumes the file's last byte. `get_as_text()` -- the one reader
+## that consumes everything left -- ends it in a single pass.
+##
+## WHY IT CANNOT ADMIT AN UNBOUNDED WAIT. INC-0001's shape is `while <a state
+## value that never becomes true>` where nothing in the body moves it. Here the
+## condition reads one handle and the body provably advances THAT handle: a
+## `file.get_position()` loop (a `get_*` that does not advance) is declined
+## because the reader list is named, not a wildcard; a `cache.get_line()` beside
+## a `file.eof_reached()` is declined because the handle differs; and a read
+## behind an `if` is declined because the rule reads only the body's own
+## indentation, the same place rule 5 refuses an append behind a branch.
+##
+## HONEST LIMITS. Only the `not <file>.eof_reached()` spelling is admitted --
+## `!file.eof_reached()` and `file.eof_reached() == false` are the same loop in
+## another coat, and the fix is the loop, not a wider rule. The reader list is
+## authored, so a correct loop over an API added later is declined until the
+## list says so. And a read at the loop's own indentation is still skippable by
+## an earlier unconditional `continue` in the body -- the residue every
+## body-shape rule in this file shares, and one no static scan can close.
+func _is_file_read_terminator(condition: String, source: String) -> bool:
+	for identifier in _identifiers(condition):
+		if condition.contains("not " + identifier + ".eof_reached()"):
+			return _body_advances_handle(source, condition, identifier)
+	return false
+
+
+## Whether the loop's own body calls a cursor-advancing reader on `handle`, at
+## the body's shallowest indentation. A read one level deeper is behind a branch,
+## which is the defect rule 5 already refuses for an append: the branch may never
+## hold, the handle never moves, and the loop spins on a file that never ends.
+func _body_advances_handle(source: String, condition: String, handle: String) -> bool:
+	var lines := _loop_body_lines(source, condition)
+	if lines.is_empty():
+		return false
+	var shallowest := 1 << 30
+	for entry in lines:
+		shallowest = mini(shallowest, int(entry.split("|", true, 1)[0]))
+	for entry in lines:
+		var parts := entry.split("|", true, 1)
+		if int(parts[0]) != shallowest:
+			continue
+		for reader in FILE_CURSOR_READERS:
+			if parts[1].contains(handle + "." + reader + "("):
+				return true
+	return false
+
+
 ## `while rows.size() < needed:` whose body appends to `rows` on EVERY pass. Each
 ## pass grows the container by one toward a fixed count, so it ends in at most
 ## `needed` iterations. The append must sit at the loop's own indentation, not
@@ -670,6 +777,286 @@ func _body_contains_exit(source: String, condition: String) -> bool:
 		if body.contains(keyword):
 			return true
 	return false
+
+
+## 8. `while cursor != from: cursor = prev[cursor]` -- a walk that follows
+## back-pointers through a map the SAME function built, the shape
+## `test_chunk_streaming.gd::_route` walks its BFS tree with.
+##
+## WHAT THIS ADMITS, EXACTLY. The condition must test one named cursor against a
+## sentinel with `!=`, and the body -- at the loop's own indentation, so an
+## unconditional step and never one behind a branch -- must reassign that cursor
+## from a map lookup on ITSELF (`cursor = prev[cursor]`). The map must then be
+## evidenced three ways IN THE SAME FUNCTION, all of it before the walk:
+##
+##   - a PRECEDING loop the guard already accepts as bounded (`_bounded_without_a_walk`, so a
+##     second map walk cannot vouch for this one) that places keys into the map;
+##   - that loop's condition caps `<map>.size()` against a FIXED count -- an
+##     integer literal or a `CONSTANT_CASE` constant, never a caller's variable;
+##   - the placement is guarded by `<map>.has(<key>)` for a key the loop also
+##     places, which is what stops a key from being re-parented and is what
+##     makes a cycle impossible in the admitted idiom;
+##   - and the map is seeded at the sentinel (`{from: -1}` or `map[from] = ...`),
+##     so the chain the walk follows ends where the walk stops.
+##
+## Given those, every pass moves the cursor to a value the map already holds
+## (the seeded-or-placed keys), the map holds at most the capped number of keys,
+## and each key has one parent that was placed before it -- so the walk visits
+## at most `<cap>` distinct keys and reaches the sentinel, which is what the
+## loop tests.
+##
+## WHY IT CANNOT ADMIT AN UNBOUNDED WAIT. INC-0001 is a body that moves nothing.
+## Here the body unconditionally reassigns the tested cursor, and the rule
+## refuses to accept the step on its own: without a bounded, capped, guarded,
+## seeded build in the same function, the lookup is just an assignment to an
+## unknown structure and is declined -- which is why a lone `cursor = prev[cursor]`
+## still fails the gate, as does an uncapped build, a build in another function,
+## a build that re-parents, and a step that assigns a constant.
+##
+## HONEST LIMITS. The scan verifies the SHAPE, not the map's semantic integrity:
+## a builder that defeats all four checks could still hand the walk a cycle, and
+## the walk would spin -- no static scan can follow values through a dictionary.
+## The rule is also deliberately narrow about spelling: the sentinel must be on
+## the right of `!=`, the lookup must be a direct `[` read (not `get()`), and the
+## cap must be the final term of the condition. If a loop wants a step this rule
+## cannot name, the fix is the loop, not a wider rule here.
+func _walk_follows_capped_map(source: String, condition: String) -> bool:
+	var lookup := _walk_map_lookup(source, condition)
+	if lookup.is_empty():
+		return false
+	var cursor: String = lookup[0]
+	var map_name: String = lookup[1]
+	var sentinel := _walk_sentinel(condition, cursor)
+	if sentinel == "":
+		return false
+	return _map_built_by_a_capped_traversal(source, condition, map_name, sentinel)
+
+
+## The `[cursor, map]` pair a walk's body proves: `<cursor> = <map>[<cursor>]` at
+## the body's shallowest indentation, where `<cursor>` is the identifier the
+## condition tests with `!= `. Empty when no such step exists -- and empty is the
+## answer for `cursor = to` (no lookup), for a lookup behind an `if`, and for a
+## condition that names no `!=` at all.
+func _walk_map_lookup(source: String, condition: String) -> Array[String]:
+	var found: Array[String] = []
+	var lines := _loop_body_lines(source, condition)
+	if lines.is_empty():
+		return found
+	var shallowest := 1 << 30
+	for entry in lines:
+		shallowest = mini(shallowest, int(entry.split("|", true, 1)[0]))
+	for cursor in _identifiers(condition):
+		if not condition.contains(cursor + " != "):
+			continue
+		for entry in lines:
+			var parts := entry.split("|", true, 1)
+			if int(parts[0]) != shallowest:
+				continue
+			for map_name in _identifiers(parts[1]):
+				if parts[1].contains(cursor + " = " + map_name + "[" + cursor + "]"):
+					var pair: Array[String] = [cursor, map_name]
+					return pair
+	return found
+
+
+## The value the walk tests `!= ` against, when it is one bare name. `cursor !=
+## from:` returns `from`; a computed sentinel (`cursor != to + 1`) is declined
+## because the seed evidence the rule needs is textual.
+func _walk_sentinel(condition: String, cursor: String) -> String:
+	var at := condition.find(cursor + " != ")
+	if at < 0:
+		return ""
+	var rest := condition.substr(at + cursor.length() + 4).strip_edges()
+	var sentinel := ""
+	for index in rest.length():
+		var character := rest[index]
+		if character == " " or character == ":":
+			break
+		sentinel += character
+	return sentinel if sentinel.is_valid_identifier() else ""
+
+
+## Whether a PRECEDING loop in the SAME function built `map_name` under a fixed
+## size cap, with a guarded placement, seeded at `sentinel` -- the four facts
+## rule 8 stands on. Each candidate is checked by `_bounded_without_a_walk` (the
+## accept paths that predate rule 8), never by `_is_bounded`, so no walk can
+## vouch for another.
+func _map_built_by_a_capped_traversal(
+	source: String, walk_condition: String, map_name: String, sentinel: String
+) -> bool:
+	var walk_at := _line_index_of(source, _while_line(source, walk_condition))
+	if walk_at < 0:
+		return false
+	for condition in _while_conditions(source):
+		if condition == walk_condition:
+			continue
+		if not _bounded_without_a_walk(source, condition):
+			continue
+		if not _map_size_is_capped(condition, map_name):
+			continue
+		if not _has_a_guarded_placement(_loop_body(source, condition), map_name):
+			continue
+		var fill_at := _line_index_of(source, _while_line(source, condition))
+		if fill_at < 0 or fill_at >= walk_at:
+			continue
+		if _enclosing_function(source, fill_at) != _enclosing_function(source, walk_at):
+			continue
+		if not _map_is_seeded_at(_function_span(source, walk_at), map_name, sentinel):
+			continue
+		return true
+	return false
+
+
+## Whether the condition bounds `<map>.size()` against a FIXED count -- an
+## integer literal or a `CONSTANT_CASE` name -- as rule 5's target is not
+## required to be. A caller-sized cap (`prev.size() < needed`) is a bound whose
+## length the caller chose, which is exactly what this refuses.
+func _map_size_is_capped(condition: String, map_name: String) -> bool:
+	var needle := map_name + ".size()"
+	var at := condition.find(needle)
+	if at < 0:
+		return false
+	var rest := condition.substr(at + needle.length()).strip_edges()
+	for operator in ["<=", "<"]:
+		if rest.begins_with(operator):
+			return _is_fixed_count(rest.substr(operator.length()))
+	return false
+
+
+## A count written down: digits (with `_` separators) or a CONSTANT_CASE name.
+## `ROUTE_VISIT_CAP` and `1024` are fixed; `needed` and `rows.size()` are not.
+func _is_fixed_count(text: String) -> bool:
+	var token := text.strip_edges().trim_suffix(":").strip_edges()
+	if token == "":
+		return false
+	if token.replace("_", "").is_valid_int():
+		return true
+	if not token.is_valid_identifier() or token != token.to_upper():
+		return false
+	for index in token.length():
+		var character := token[index]
+		if character >= "A" and character <= "Z":
+			continue
+		if character >= "0" and character <= "9" or character == "_":
+			continue
+		return false
+	return true
+
+
+## Whether the fill's body PLACES a key and checks the same key with `has`, the
+## evidence that a placed key is never re-parented -- which is what makes a cycle
+## impossible in the admitted idiom. A body that places keys with no `has` guard
+## is refused (it can re-parent, and a re-parented pair can cycle).
+func _has_a_guarded_placement(body: String, map_name: String) -> bool:
+	var placed := _keys_placed_into(body, map_name)
+	if placed.is_empty():
+		return false
+	var checked := _keys_checked_with(body, map_name)
+	for key in placed:
+		if checked.has(key):
+			return true
+	return false
+
+
+## The keys `<map>` is assigned into, across every nesting of a body:
+## `map[key] = ...` yields `key`. A comparison (`map[key] == ...`) yields nothing.
+func _keys_placed_into(text: String, map_name: String) -> Array[String]:
+	var out: Array[String] = []
+	var opening := map_name + "["
+	var cursor := 0
+	while true:
+		var at := text.find(opening, cursor)
+		if at < 0:
+			break
+		var close := text.find("]", at)
+		if close < 0:
+			break
+		var rest := text.substr(close + 1).strip_edges()
+		if rest.begins_with("=") and not rest.begins_with("=="):
+			out.append(
+				text.substr(at + opening.length(), close - at - opening.length()).strip_edges()
+			)
+		cursor = close + 1
+	return out
+
+
+## The keys `<map>` is checked with `has(...)`: `map.has(key)` yields `key`.
+func _keys_checked_with(text: String, map_name: String) -> Array[String]:
+	var out: Array[String] = []
+	var opening := map_name + ".has("
+	var cursor := 0
+	while true:
+		var at := text.find(opening, cursor)
+		if at < 0:
+			break
+		var close := text.find(")", at)
+		if close < 0:
+			break
+		out.append(text.substr(at + opening.length(), close - at - opening.length()).strip_edges())
+		cursor = close + 1
+	return out
+
+
+## Whether the map is seeded at the sentinel the walk stops on: a dictionary
+## literal (`{from: -1}`) or an explicit write (`map[from] = ...`). The seed is
+## the evidence that the chain ends where the walk stops rather than at another
+## root the walk would then read past.
+func _map_is_seeded_at(text: String, map_name: String, sentinel: String) -> bool:
+	var dense := text.replace(" ", "").replace("\t", "")
+	if dense.contains(map_name + ":={" + sentinel + ":"):
+		return true
+	if not dense.contains(map_name + "[" + sentinel + "]="):
+		return false
+	return not dense.contains(map_name + "[" + sentinel + "]==")
+
+
+## The line index of the nearest `func` at indentation 0 above `at`, or -1 when
+## the walk is not inside a function. Rule 8 is scoped to one function so a
+## bounded build elsewhere in the file cannot vouch for a walk in another.
+func _enclosing_function(source: String, at: int) -> int:
+	var lines := source.split("\n")
+	var index := at - 1
+	while index >= 0:
+		if _indent_of(lines[index]) == 0 and _starts_a_function(lines[index]):
+			return index
+		index -= 1
+	return -1
+
+
+## Whether a line opens a function definition at class level.
+func _starts_a_function(line: String) -> bool:
+	var stripped := line.strip_edges()
+	return stripped.begins_with("func ") or stripped.begins_with("static func ")
+
+
+## The text of the function enclosing `at`, from its `func` line to the line
+## before the next class-level `func`. Used to check the walk's own function for
+## the seed, so a seed in another function is not read as evidence.
+func _function_span(source: String, at: int) -> String:
+	var start := _enclosing_function(source, at)
+	if start < 0:
+		return ""
+	var lines := source.split("\n")
+	var span := ""
+	var index := start
+	while index < lines.size():
+		if index > start and _indent_of(lines[index]) == 0 and _starts_a_function(lines[index]):
+			break
+		span += lines[index] + "\n"
+		index += 1
+	return span
+
+
+## The first line index whose line EQUALS `line_text`, or -1. Used to order the
+## fill loop strictly before the walk and to locate both inside their function.
+func _line_index_of(source: String, line_text: String) -> int:
+	if line_text == "":
+		return -1
+	var lines := source.split("\n")
+	for index in lines.size():
+		if lines[index] == line_text:
+			return index
+	return -1
 
 
 ## The `_while` line carrying `condition`, reassembled across its continuation

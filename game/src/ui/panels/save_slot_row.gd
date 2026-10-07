@@ -77,6 +77,7 @@ func is_filled() -> bool:
 
 
 func _bind_nodes() -> void:
+	L.localize_tree(self)
 	_status_label = get_node_or_null("%StatusLabel") as Label
 	_load_button = get_node_or_null("%LoadButton") as Button
 	_erase_button = get_node_or_null("%EraseButton") as Button

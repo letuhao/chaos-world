@@ -1,0 +1,202 @@
+{
+  "id": "medieval_western.plague_lazarettos_and_quarantine.isolated_timber_pest_ward_smoke_fumigated",
+  "name": "Fumigation-Smoked Boarded Timber Quarantine Pesthouse",
+  "vietnamese_name": "Nhà Cách Ly Dịch Bệnh Gỗ Bịt Kín Cửa (Xông Khói Trừ Tà Khí)",
+  "category": "plague_lazarettos_and_quarantine",
+  "sub_category": "lazaretto_pest_house_ward",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "enter",
+  "gameplay_role": "Plague lazaretto and quarantine element (Boarded Timber Quarantine Pesthouse).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of fumigation-smoked boarded timber quarantine pesthouse, pungent aromatic sulfur and juniper smoke clouds, Medieval plague quarantine lazaretto pestilence style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/plague_lazarettos_and_quarantine/isolated_timber_pest_ward_smoke_fumigated.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.plague_lazarettos_and_quarantine.isolated_timber_pest_ward_smoke_fumigated:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.661,
+        0.554
+      ],
+      [
+        0.703,
+        0.559
+      ]
+    ],
+    "frac_zero": 0.5336,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.348,
+        0.876,
+        0.253,
+        0.443,
+        0.797,
+        0.202
+      ],
+      [
+        0.002,
+        0.832,
+        1.0,
+        0.89,
+        0.858,
+        0.234,
+        0.0
+      ],
+      [
+        0.386,
+        0.986,
+        1.0,
+        1.0,
+        0.966,
+        0.524,
+        0.0
+      ],
+      [
+        0.601,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.699,
+        0.003
+      ],
+      [
+        0.492,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.684,
+        0.0
+      ],
+      [
+        0.369,
+        0.896,
+        1.0,
+        1.0,
+        0.927,
+        0.415,
+        0.0
+      ],
+      [
+        0.0,
+        0.162,
+        0.771,
+        0.841,
+        0.276,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      22,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 47,
+    "contact_reference_px": 47.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

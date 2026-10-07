@@ -108,6 +108,7 @@ func focus_initial() -> void:
 ## this row before a scene tree exists. Idempotent, and the connect is guarded so
 ## a re-resolved button cannot stack a second handler per press (AGENTS.md).
 func _bind_nodes() -> void:
+	L.localize_tree(self)
 	if _head_label != null:
 		return
 	_head_label = get_node_or_null("%FaceHeadLabel") as Label

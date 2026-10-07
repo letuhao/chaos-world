@@ -15,11 +15,11 @@ extends PanelContainer
 ## screen never renders a number. `summary()` is the testable surface.
 
 ## Stands in for a hidden fate's name. A marker, never the name and never the id.
-var UNNAMED_HEAD := L.t("LOC_UI_PANELS_9B115C99B1")
-var EARNED_TEXT := L.t("LOC_UI_PANELS_257F305B04")
-var LOCKED_META := L.t("LOC_UI_PANELS_2EAAB6910F")
-var SECTION_PREFIX := L.t("LOC_UI_PANELS_A798882F1C")
-var SECTION_TAIL := L.t("LOC_UI_PANELS_63CFEB1E46")
+const UNNAMED_HEAD := "LOC_UI_PANELS_9B115C99B1"
+const EARNED_TEXT := "LOC_UI_PANELS_257F305B04"
+const LOCKED_META := "LOC_UI_PANELS_2EAAB6910F"
+const SECTION_PREFIX := "LOC_UI_PANELS_A798882F1C"
+const SECTION_TAIL := "LOC_UI_PANELS_63CFEB1E46"
 ## The row doubles as the heading between the earned and the locked entries, so
 ## the count it shows belongs to the row rather than to the screen.
 const CATEGORY_UNKNOWN := "uncategorised"
@@ -150,6 +150,7 @@ func focus_initial() -> void:
 ## headless suite runner drives this row before a scene tree exists, so
 ## `_ready()` is not a dependable place to bind them. Idempotent.
 func _bind_nodes() -> void:
+	L.localize_tree(self)
 	if _head_label != null:
 		return
 	_head_label = get_node_or_null("%HeadLabel") as Label

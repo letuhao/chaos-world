@@ -1,0 +1,168 @@
+{
+  "id": "medieval_western.plague_lazarettos_and_quarantine.open_quicklime_pest_trench_smoke_fumigated",
+  "name": "Fumigation-Smoked Deep Rectangular Soil Plague Trench",
+  "vietnamese_name": "Hố Chôn Tập Thể Sâu Rải Vôi Sống Trắng Xóa (Xông Khói Trừ Tà Khí)",
+  "category": "plague_lazarettos_and_quarantine",
+  "sub_category": "mass_pestilence_trench_grave",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "inspect_pit",
+  "gameplay_role": "Plague lazaretto and quarantine element (Deep Rectangular Soil Plague Trench).",
+  "destructible": false,
+  "material": "earth",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of fumigation-smoked deep rectangular soil plague trench, pungent aromatic sulfur and juniper smoke clouds, Medieval plague quarantine lazaretto pestilence style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/plague_lazarettos_and_quarantine/open_quicklime_pest_trench_smoke_fumigated.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.plague_lazarettos_and_quarantine.open_quicklime_pest_trench_smoke_fumigated:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.604,
+        0.658
+      ],
+      [
+        0.878,
+        0.692
+      ]
+    ],
+    "frac_zero": 0.5654,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.058,
+        0.164,
+        0.359,
+        0.971,
+        0.496,
+        0.364
+      ],
+      [
+        0.32,
+        1.0,
+        1.0,
+        1.0,
+        0.182,
+        0.0
+      ],
+      [
+        0.459,
+        1.0,
+        1.0,
+        1.0,
+        0.669,
+        0.19
+      ],
+      [
+        0.601,
+        1.0,
+        1.0,
+        1.0,
+        0.605,
+        0.0
+      ],
+      [
+        0.737,
+        1.0,
+        1.0,
+        1.0,
+        0.607,
+        0.0
+      ],
+      [
+        0.904,
+        1.0,
+        1.0,
+        1.0,
+        0.795,
+        0.0
+      ],
+      [
+        0.624,
+        0.8,
+        0.931,
+        0.882,
+        0.557,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      41,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 135,
+    "contact_reference_px": 135.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

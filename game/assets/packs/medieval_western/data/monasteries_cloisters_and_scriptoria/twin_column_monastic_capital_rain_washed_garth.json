@@ -1,0 +1,168 @@
+{
+  "id": "medieval_western.monasteries_cloisters_and_scriptoria.twin_column_monastic_capital_rain_washed_garth",
+  "name": "Garth Rain-Cooled Carved Folio Twin Monastic Column",
+  "vietnamese_name": "Cặp Cột Đá Nhỏ Chạm Lá Cây Cổ Điển (Mưa Mát Vườn Tu Viện)",
+  "category": "monasteries_cloisters_and_scriptoria",
+  "sub_category": "cloister_quadrangle_arcaded_walk",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": null,
+  "gameplay_role": "Monastic cloister life element (Carved Folio Twin Monastic Column).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of garth rain-cooled carved folio twin monastic column, fresh green moss on flagstones around the inner lawn, Monastic abbey cloister and scriptorium style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/monasteries_cloisters_and_scriptoria/twin_column_monastic_capital_rain_washed_garth.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.monasteries_cloisters_and_scriptoria.twin_column_monastic_capital_rain_washed_garth:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.72
+      ],
+      [
+        0.886
+      ]
+    ],
+    "frac_zero": 0.5065,
+    "blocks": [
+      [
+        true
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.318,
+        0.661,
+        0.294
+      ],
+      [
+        0.748,
+        1.0,
+        0.669
+      ],
+      [
+        0.881,
+        1.0,
+        0.821
+      ],
+      [
+        0.896,
+        1.0,
+        0.859
+      ],
+      [
+        0.956,
+        1.0,
+        0.926
+      ],
+      [
+        0.878,
+        1.0,
+        0.83
+      ],
+      [
+        0.373,
+        0.988,
+        0.333
+      ]
+    ],
+    "crop_offset": [
+      17,
+      34
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 74,
+    "contact_reference_px": 74.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      256
+    ]
+  }
+}

@@ -132,6 +132,7 @@ func has_roster() -> bool:
 ## Resolved lazily, never in `@onready`: the headless runner drives this panel before a
 ## scene tree exists, so a binding that waits for `_ready` never happens. Idempotent.
 func _bind_nodes() -> void:
+	L.localize_tree(self)
 	if _bound:
 		return
 	_room_label = get_node_or_null("%RoomLabel") as Label

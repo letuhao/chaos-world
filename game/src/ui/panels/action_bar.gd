@@ -185,6 +185,7 @@ func focus_initial() -> void:
 ## headless suite runner drives this bar before a scene tree exists, so `_ready()`
 ## is not a dependable place to bind them. Idempotent.
 func _bind_nodes() -> void:
+	L.localize_tree(self)
 	if _slot_option != null:
 		return
 	_slot_option = get_node_or_null("%SlotOption") as OptionButton

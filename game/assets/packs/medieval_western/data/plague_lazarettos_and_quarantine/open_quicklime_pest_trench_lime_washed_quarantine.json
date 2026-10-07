@@ -1,0 +1,168 @@
+{
+  "id": "medieval_western.plague_lazarettos_and_quarantine.open_quicklime_pest_trench_lime_washed_quarantine",
+  "name": "Quicklime-Dusted Deep Rectangular Soil Plague Trench",
+  "vietnamese_name": "Hố Chôn Tập Thể Sâu Rải Vôi Sống Trắng Xóa (Rắc Vôi Sống Sát Khuẩn)",
+  "category": "plague_lazarettos_and_quarantine",
+  "sub_category": "mass_pestilence_trench_grave",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "inspect_pit",
+  "gameplay_role": "Plague lazaretto and quarantine element (Deep Rectangular Soil Plague Trench).",
+  "destructible": false,
+  "material": "earth",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of quicklime-dusted deep rectangular soil plague trench, white caustic quicklime powder dusting and quarantine marks, Medieval plague quarantine lazaretto pestilence style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/plague_lazarettos_and_quarantine/open_quicklime_pest_trench_lime_washed_quarantine.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.plague_lazarettos_and_quarantine.open_quicklime_pest_trench_lime_washed_quarantine:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.667,
+        0.674
+      ],
+      [
+        0.825,
+        0.855
+      ]
+    ],
+    "frac_zero": 0.5313,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.102,
+        0.688,
+        0.455,
+        0.638,
+        0.545,
+        0.0
+      ],
+      [
+        0.308,
+        1.0,
+        1.0,
+        1.0,
+        0.871,
+        0.0
+      ],
+      [
+        0.345,
+        1.0,
+        1.0,
+        1.0,
+        0.896,
+        0.0
+      ],
+      [
+        0.526,
+        1.0,
+        1.0,
+        1.0,
+        0.997,
+        0.156
+      ],
+      [
+        0.705,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.497
+      ],
+      [
+        0.882,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.825
+      ],
+      [
+        0.376,
+        0.69,
+        0.764,
+        0.87,
+        0.847,
+        0.145
+      ]
+    ],
+    "crop_offset": [
+      38,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 143,
+    "contact_reference_px": 143.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

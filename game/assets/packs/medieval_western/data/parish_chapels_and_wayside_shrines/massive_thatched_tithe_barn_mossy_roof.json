@@ -1,0 +1,210 @@
+{
+  "id": "medieval_western.parish_chapels_and_wayside_shrines.massive_thatched_tithe_barn_mossy_roof",
+  "name": "Moss-Roofed Aisle-Timber Thatched Great Tithe Barn",
+  "vietnamese_name": "Kho Thóc Mười Phần Một Khổng Lồ Khung Gỗ (Mái Phủ Rêu Xanh)",
+  "category": "parish_chapels_and_wayside_shrines",
+  "sub_category": "tithe_barn_parish_compound",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "enter",
+  "gameplay_role": "Wayside chapel and shrine element (Aisle-Timber Thatched Great Tithe Barn).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of moss-roofed aisle-timber thatched great tithe barn, thick green moss blanket on stone slates, Parish field chapel and wayside shrine style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/parish_chapels_and_wayside_shrines/massive_thatched_tithe_barn_mossy_roof.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.parish_chapels_and_wayside_shrines.massive_thatched_tithe_barn_mossy_roof:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.392,
+        0.776,
+        0.379
+      ],
+      [
+        0.639,
+        0.99,
+        0.727
+      ]
+    ],
+    "frac_zero": 0.6914,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.229,
+        0.438,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.147,
+        0.266,
+        0.892,
+        0.966,
+        0.331,
+        0.25,
+        0.0
+      ],
+      [
+        0.488,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.837,
+        0.0
+      ],
+      [
+        0.587,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.941,
+        0.326
+      ],
+      [
+        0.859,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.818
+      ],
+      [
+        0.088,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.799,
+        0.117
+      ],
+      [
+        0.005,
+        0.546,
+        0.953,
+        0.988,
+        0.758,
+        0.192,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      94,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 119,
+    "contact_reference_px": 119.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

@@ -139,6 +139,7 @@ func _number(value: float) -> String:
 
 
 func _bind_nodes() -> void:
+	L.localize_tree(self)
 	if _label != null:
 		return
 	_label = get_node_or_null("%StatLabel") as Label

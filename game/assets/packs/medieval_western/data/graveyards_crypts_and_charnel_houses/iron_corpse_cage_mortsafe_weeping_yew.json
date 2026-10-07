@@ -1,0 +1,155 @@
+{
+  "id": "medieval_western.graveyards_crypts_and_charnel_houses.iron_corpse_cage_mortsafe_weeping_yew",
+  "name": "Yew-Shaded Wrought Iron Grave-Robber Mortsafe Cage",
+  "vietnamese_name": "Lồng Sắt Chống Trộm Xác Mortsafe Khóa Mộ (Bóng Cây Thủy Tùng)",
+  "category": "graveyards_crypts_and_charnel_houses",
+  "sub_category": "churchyard_standing_slate_headstones",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "low",
+  "interactive_verb": "inspect_cage",
+  "gameplay_role": "Graveyard and crypt mortality element (Wrought Iron Grave-Robber Mortsafe Cage).",
+  "destructible": false,
+  "material": "iron",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of yew-shaded wrought iron grave-robber mortsafe cage, somber red berries and dark evergreen yew needles, Medieval graveyard churchyard crypt and ossuary style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/graveyards_crypts_and_charnel_houses/iron_corpse_cage_mortsafe_weeping_yew.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.graveyards_crypts_and_charnel_houses.iron_corpse_cage_mortsafe_weeping_yew:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.643,
+        0.667
+      ]
+    ],
+    "frac_zero": 0.6244,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.515,
+        0.253,
+        0.479,
+        0.333,
+        0.283,
+        0.618
+      ],
+      [
+        0.787,
+        0.912,
+        0.981,
+        0.97,
+        0.956,
+        0.803
+      ],
+      [
+        0.439,
+        0.708,
+        0.82,
+        0.746,
+        0.717,
+        0.442
+      ]
+    ],
+    "crop_offset": [
+      36,
+      18
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 149,
+    "contact_reference_px": 149.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

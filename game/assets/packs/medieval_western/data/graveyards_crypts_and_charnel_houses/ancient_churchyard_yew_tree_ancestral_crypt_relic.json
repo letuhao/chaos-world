@@ -1,0 +1,195 @@
+{
+  "id": "medieval_western.graveyards_crypts_and_charnel_houses.ancient_churchyard_yew_tree_ancestral_crypt_relic",
+  "name": "Ancestral Hallowed Ancient Churchyard Yew Tree",
+  "vietnamese_name": "Di Vật Tổ Tiên Ancient Churchyard Yew Tree",
+  "category": "graveyards_crypts_and_charnel_houses",
+  "sub_category": "ancient_churchyard_yew_tree",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "commune",
+  "gameplay_role": "Ancestral relic from centuries past.",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "Ancient ancestral relic of ancient_churchyard_yew_tree, mossy stone and mortality symbols, Gothic style.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/graveyards_crypts_and_charnel_houses/ancient_churchyard_yew_tree_ancestral_crypt_relic.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.graveyards_crypts_and_charnel_houses.ancient_churchyard_yew_tree_ancestral_crypt_relic:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.414,
+        0.447
+      ],
+      [
+        0.63,
+        0.628
+      ]
+    ],
+    "frac_zero": 0.6435,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.144,
+        0.747,
+        0.595,
+        0.013,
+        0.0
+      ],
+      [
+        0.114,
+        0.802,
+        0.983,
+        0.993,
+        0.657,
+        0.017
+      ],
+      [
+        0.28,
+        0.523,
+        0.687,
+        0.508,
+        0.79,
+        0.259
+      ],
+      [
+        0.139,
+        0.076,
+        0.737,
+        0.66,
+        0.237,
+        0.0
+      ],
+      [
+        0.629,
+        0.774,
+        0.983,
+        0.961,
+        0.812,
+        0.309
+      ],
+      [
+        0.692,
+        0.999,
+        1.0,
+        1.0,
+        0.992,
+        0.615
+      ],
+      [
+        0.0,
+        0.261,
+        0.77,
+        0.662,
+        0.174,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      36,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 58,
+    "contact_reference_px": 58.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}
