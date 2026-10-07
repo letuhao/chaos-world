@@ -1,0 +1,174 @@
+{
+  "id": "medieval_western.tannery_leatherwork_and_cordwaining.sunken_oak_bark_tannin_vat_wax_burnished",
+  "name": "Beeswax-Burnished Lined Stone Pit of Dark Brown Tan Liquor",
+  "vietnamese_name": "Bể Đá Ngâm Dung Dịch Vỏ Sồi Thuộc Da (Đánh Bóng Sáp Ong)",
+  "category": "tannery_leatherwork_and_cordwaining",
+  "sub_category": "tanbark_liquor_vats_and_crushers",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "water",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "steep_tannin",
+  "gameplay_role": "Supply chain industry element (Lined Stone Pit of Dark Brown Tan Liquor).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of beeswax-burnished lined stone pit of dark brown tan liquor, gleaming glossy smooth brown leather sheen, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/tannery_leatherwork_and_cordwaining/sunken_oak_bark_tannin_vat_wax_burnished.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.tannery_leatherwork_and_cordwaining.sunken_oak_bark_tannin_vat_wax_burnished:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.754,
+        0.671
+      ],
+      [
+        0.743,
+        0.81
+      ]
+    ],
+    "frac_zero": 0.4397,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.369,
+        0.816,
+        0.913,
+        0.631,
+        0.083,
+        0.0
+      ],
+      [
+        0.31,
+        0.999,
+        1.0,
+        1.0,
+        1.0,
+        0.782,
+        0.003
+      ],
+      [
+        0.676,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.219
+      ],
+      [
+        0.875,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.532
+      ],
+      [
+        0.707,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.9
+      ],
+      [
+        0.292,
+        0.965,
+        1.0,
+        1.0,
+        1.0,
+        0.997,
+        0.494
+      ],
+      [
+        0.0,
+        0.296,
+        0.761,
+        0.93,
+        0.793,
+        0.41,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      20,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 110,
+    "contact_reference_px": 110.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

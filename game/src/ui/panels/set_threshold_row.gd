@@ -44,7 +44,7 @@ func show_threshold(view: Dictionary) -> void:
 	_state_line = (
 		"%s — %s"
 		% [
-			ACTIVE_TEXT if bool(_threshold.get("active", false)) else INACTIVE_TEXT,
+			L.t(ACTIVE_TEXT if bool(_threshold.get("active", false)) else INACTIVE_TEXT),
 			_requires_line(),
 		]
 	)

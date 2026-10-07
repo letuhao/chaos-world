@@ -239,7 +239,8 @@ func _meta_text(def: Resource, entry: Dictionary) -> String:
 
 
 func _rarity_label(rarity: StringName) -> String:
-	return String(RARITY_LABELS.get(rarity, "Common"))
+	# The vocabulary holds KEYS, so this is where they resolve — one place, before `summary()`.
+	return L.t(String(RARITY_LABELS.get(rarity, RARITY_LABELS[&"common"])))
 
 
 func _render() -> void:

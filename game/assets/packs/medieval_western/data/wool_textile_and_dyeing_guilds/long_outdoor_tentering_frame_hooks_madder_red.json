@@ -1,0 +1,165 @@
+{
+  "id": "medieval_western.wool_textile_and_dyeing_guilds.long_outdoor_tentering_frame_hooks_madder_red",
+  "name": "Madder-Root Scarlet Long Field Timber Tenter Frame with Hooks",
+  "vietnamese_name": "Giàn Gỗ Dài Cắm Móc Sắt Căng Phơi Vải Dạ (Nhuộm Rễ Cây Madder Đỏ)",
+  "category": "wool_textile_and_dyeing_guilds",
+  "sub_category": "tentering_frame_meadow_stretching",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "low",
+  "interactive_verb": "stretch_cloth",
+  "gameplay_role": "Supply chain industry element (Long Field Timber Tenter Frame with Hooks).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of madder-root scarlet long field timber tenter frame with hooks, warm rustic earthy madder root red, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/wool_textile_and_dyeing_guilds/long_outdoor_tentering_frame_hooks_madder_red.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.wool_textile_and_dyeing_guilds.long_outdoor_tentering_frame_hooks_madder_red:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.479,
+        0.653,
+        0.485
+      ]
+    ],
+    "frac_zero": 0.6919,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      9,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.126,
+        0.206,
+        0.207,
+        0.294,
+        0.644,
+        0.212,
+        0.209,
+        0.212,
+        0.094
+      ],
+      [
+        0.829,
+        0.999,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.759
+      ],
+      [
+        0.27,
+        0.336,
+        0.376,
+        0.523,
+        0.668,
+        0.433,
+        0.346,
+        0.355,
+        0.2
+      ]
+    ],
+    "crop_offset": [
+      54,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 16,
+    "contact_reference_px": 16.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      128
+    ]
+  }
+}

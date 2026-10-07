@@ -579,14 +579,15 @@ func _body_contains_exit(source: String, condition: String) -> bool:
 ##
 ## HONEST LIMITS. The scan verifies the SHAPE, not the map's semantic integrity:
 ## a builder that defeats all four checks could still hand the walk a cycle, and
-## the walk would spin -- no static scan can follow values through a dictionary.
-## A DISJUNCTION is declined: `cursor != from or flag` keeps the loop alive after
-## the sentinel and walks into a key the map never placed, whereas every `and`
-## clause can only end the loop earlier. The rule is also deliberately narrow
-## about spelling: the sentinel must be on the right of `!=`, the lookup must be
-## a direct `[` read (not `get()`), and the cap must be the final term of the
-## condition. If a loop wants a step this rule cannot name, the fix is the loop,
-## not a wider rule here.
+## the walk would spin -- no static scan can follow values through a dictionary,
+## and none can tell a live `has` guard from a dead one. The seed and the guard
+## are EVIDENCE read from the text, not proofs. A DISJUNCTION is declined:
+## `cursor != from or flag` keeps the loop alive after the sentinel and walks
+## into a key the map never placed, whereas every `and` clause can only end the
+## loop earlier. The rule is also deliberately narrow about spelling: the
+## sentinel must be on the right of `!=`, the lookup must be a direct `[` read
+## (not `get()`), and the cap must be the final term of the condition. If a loop
+## wants a step this rule cannot name, the fix is the loop, not a wider rule.
 func _walk_follows_capped_map(source: String, condition: String) -> bool:
 	if condition.contains(" or "):
 		return false

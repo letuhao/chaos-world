@@ -297,6 +297,68 @@ func test_a_walk_the_evidence_cannot_support_still_fails_the_whole_predicate() -
 		assert_eq(_walk_is_bounded(source), false, "the walk is still refused as unbounded")
 
 
+# ── The RED proof: the rules that WOULD have accepted every defect ───────────
+
+
+## The two naive rules `test_drain_rule_shape.gd` transcribes for its own rule,
+## here for rules 7 and 8: a read accepted on ANY `get_*` call, and a walk
+## accepted because the body changed the cursor. Both are tautologically true of
+## the reject fixtures above, which is the point -- the shipped rules must not be
+## those rules.
+func test_the_naive_rules_accepted_every_one_of_these_defects() -> void:
+	assert_eq(
+		_naive_read_accepts(FILE_READ_STANDING_STILL),
+		true,
+		"a `get_*` wildcard accepted the loop that reads one position forever",
+	)
+	assert_eq(
+		_naive_read_accepts(FILE_READ_OTHER_HANDLE),
+		true,
+		"and the loop whose advancing read is on another handle",
+	)
+	assert_eq(
+		_naive_read_accepts(FILE_READ_BEHIND_BRANCH),
+		true,
+		"and the one whose read never runs",
+	)
+	for source in [
+		WALK_REPARENTING_BUILD,
+		WALK_UNCAPPED_BUILD,
+		WALK_FILL_ELSEWHERE,
+		WALK_WITHOUT_A_LOOKUP,
+		WALK_LOOKUP_BEHIND_BRANCH
+	]:
+		assert_eq(
+			_naive_walk_accepts(source),
+			true,
+			"a bare `cursor = ` accepted the walk, whatever the map behind it was",
+		)
+
+
+## The rule the reader list replaced: a body testing `eof_reached()` that calls
+## any `get_*` at all read as an advancing read. `get_position()` is a `get_*`,
+## which is why the wildcard was the defect.
+func _naive_read_accepts(source: String) -> bool:
+	for condition in _while_conditions(source):
+		if String(condition).contains("eof_reached()"):
+			return _loop_body(source, String(condition)).contains(".get_")
+	return false
+
+
+## The rule the four evidences replaced: the body reassigns the tested cursor, so
+## "the loop moves something" and call it bounded. WALK_WITHOUT_A_LOOKUP is the
+## fixture that shows how little that proves.
+func _naive_walk_accepts(source: String) -> bool:
+	var condition := _walk_condition(source)
+	if condition == "":
+		return false
+	for entry in _loop_body_lines(source, condition):
+		var parts := entry.split("|", true, 1)
+		if String(parts[1]).contains("cursor = "):
+			return true
+	return false
+
+
 # ── What the new rules must not have broken ──────────────────────────────────
 
 

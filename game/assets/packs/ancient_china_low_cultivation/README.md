@@ -446,27 +446,39 @@ Inspection of failed generation batches in `medieval_western` revealed four stru
 
 ---
 
-### 8.2 The 4 Golden Rules of Game-Ready Asset Isolation
+### 8.2 The 7 Master Guardrails (Solving the 7 Audited Gaps)
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
-│                   THE 4 GOLDEN RULES OF SPRITE ISOLATION               │
+│                   THE 7 MASTER ISOLATION & PIPELINE GUARDRAILS         │
 ├────────────────────────────────────────────────────────────────────────┤
-│ 1. SURFACE MODULATION, NOT SCENE MODULATION                            │
-│    Variants modify the object's texture, patina, and wear.             │
-│    Never describe weather on the terrain, sky, or background.          │
+│ 1. STRUCTURAL GEOMETRY ANCHORS & 2-STAGE VARIANT PIPELINE              │
+│    Lock base geometry in prompt. Variants use Img2Img (denoise 0.35)   │
+│    or fixed seeds to prevent morphing between seasons/states.          │
 │ ────────────────────────────────────────────────────────────────────── │
-│ 2. ZERO PEDESTAL GUARANTEE                                             │
-│    No floating islands, no dirt slabs, no cutaway turf, no display base.│
-│    Props touch the ground plane solely at their bottom contact pivot.  │
+│ 2. ADAPTIVE CONTRAST KEYING (NO WHITE-ON-WHITE ERASURE)                │
+│    Snow, white crane, jade use neutral grey/olive background so        │
+│    RMBG-2.0 doesn't clip white asset edges. Standard items use white.  │
 │ ────────────────────────────────────────────────────────────────────── │
-│ 3. STRICT ARCHETYPE SEPARATION                                         │
-│    Tools/Weapons ≠ Workstations/Machines ≠ Buildings ≠ Flora ≠ Fauna.  │
-│    Each archetype uses a distinct framing, camera, and negative clause.│
+│ 3. LUMINANCE-TO-ALPHA FOR VFX (BYPASS REMBG)                           │
+│    VFX renders on pure black (#000000) and converts luminance to       │
+│    alpha directly. Never pass soft spiritual motes through RemBG.      │
 │ ────────────────────────────────────────────────────────────────────── │
-│ 4. AGGRESSIVE NEGATIVE FILTERING                                       │
-│    Every generation must enforce an archetype-tailored negative prompt │
-│    blocking dioramas, cutaways, surrounding scenery, and human hands.  │
+│ 4. ALBEDO PURITY (NO DOUBLE-DARKENING NIGHT SPRITES)                   │
+│    Never bake midnight darkness into albedo. Only add window/lantern   │
+│    glow; let Godot's CanvasModulate handle world night shading.        │
+│ ────────────────────────────────────────────────────────────────────── │
+│ 5. ZERO DIRECTIONAL SHADOWS (MICRO CONTACT OCCLUSION ONLY)             │
+│    No cast drop shadows on white background. Ground contact only at    │
+│    feet/base. Godot runtime handles directional shadow decals.         │
+│ ────────────────────────────────────────────────────────────────────── │
+│ 6. CULTURAL ANTI-DRIFT GUARD (NO JAPANESE/WESTERN CONFUSION)           │
+│    Enforce Chinese Tang-Song/Xianxia architectural & weapon terms.     │
+│    Block torii, katana, samurai, gothic stone castles, witch cauldrons.│
+│ ────────────────────────────────────────────────────────────────────── │
+│ 7. SCALE-AWARE LINE WEIGHT (AVOID 128px DOWNSCALING MUSH)              │
+│    1x1 cell items use bold chunky value planes and heavy contours;     │
+│    large 4x4 buildings carry intricate architectural micro-detail.     │
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -474,39 +486,49 @@ Inspection of failed generation batches in `medieval_western` revealed four stru
 
 ### 8.3 Archetype-Specific Prompt Recipes with Variant Awareness
 
+#### Common Cultural Anti-Drift Clause (Appended to All Negative Prompts)
+```text
+Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires.
+```
+
+---
+
 #### Archetype 1: Items, Handheld Tools, Weapons & Pickups (`item_tool`, `weapon`, `talisman`)
-- **Engine Role**: Inventory icons, dropped loot on ground, equipable weapons, alchemical materials.
-- **Framing & Projection**: Macro product shot, centered, floating against pure solid white background. No ground shadow, no pedestal.
+- **Engine Role**: Inventory icons, dropped ground loot, equipped artifacts, alchemical reagents.
+- **Framing & Projection**: Macro product shot, centered, floating against contrast background. Zero ground shadow, zero pedestal.
 - **Canvas / Footprint**: 1x1 cell (`128x128` or `256x256` px), `alpha: cutout`, `pivot: center`.
+- **Adaptive Background Rule**:
+  - Standard items: `centered on solid pure white background (#FFFFFF)`.
+  - Pale/White items (white jade, silver swords, snow talismans, frost ginseng): `centered on solid neutral contrast grey background (#D0D0D0)` to prevent RMBG-2.0 edge clipping.
 - **Master Positive Formula**:
   ```text
-  Single isolated 2D game asset of {item_name}, {material_workmanship}, {variant_surface_state}, Ancient Chinese Xianxia cultivation mortal realm aesthetic, fine ink contours, gouache hand-painted, clean crisp silhouette, centered on solid pure white background.
+  Single isolated 2D game asset of {item_name}, {material_and_workmanship}, {variant_surface_state}, Ancient Chinese Xianxia cultivation mortal realm aesthetic, double-edged Chinese straight sword or authentic Daoist implement, bold readable silhouette, clean grouped value planes, chunky stylized proportions for 2D icon clarity, fine dark #263A35 ink contours, gouache hand-painted, centered on {adaptive_background}.
   ```
 - **Master Negative Formula**:
   ```text
-  diorama, miniature scene, floating island, dirt slab, grass pedestal, ground plane, floor, surface, shadow on ground, building, house, cottage, farm, fence, landscape, trees, field, human hands, fingers, holding, multiple items, collection, collage, border, frame, UI, watermark, blurry edges.
+  diorama, miniature scene, floating island, dirt slab, grass pedestal, ground plane, floor, surface, shadow on ground, building, house, cottage, farm, fence, landscape, trees, field, human hands, fingers, holding, multiple items, collection, collage, border, frame, UI, watermark, blurry edges, microscopic high-frequency noise, {anti_drift_clause}
   ```
 - **Variant Awareness Matrix for Items**:
   - `pristine`: `"immaculate polished cold iron blade, unblemished dark rosewood grip wrapped in tight clean black silk cord"`.
   - `weathered`: `"faint grey patina on bronze fuller, slightly softened edges, seasoned aged bamboo grip"`.
   - `rain_soaked`: `"wet glistening metallic surface with micro water droplets, darkened damp rosewood grip, high surface sheen"`.
   - `winter_frost`: `"delicate rim of white rime ice along cutting edge, pale frosted wood grain"`.
-  - `damaged_chipped`: `"nicked cutting edge with several small notches, splintered pommel, frayed bindings"`.
+  - `damaged_chipped`: `"nicked cutting edge with several small notches, splintered pommel, fraying cord bindings"`.
   - `qi_resonating`: `"subtle ethereal cyan spiritual glow running along engraved talismanic blade fuller"`.
 
 ---
 
 #### Archetype 2: Workstations, Heavy Apparatus & Functional Props (`prop_workstation`, `apparatus`)
 - **Engine Role**: Interactive crafting stations, pill furnaces, anvils, looms, mining carts, tea tables.
-- **Framing & Projection**: 2D orthographic top-down 45-degree angle RPG map view. Bottom ground contact shadow only (for Y-sorting).
+- **Framing & Projection**: 2D orthographic top-down 45-degree angle RPG map view. Micro ambient contact occlusion directly under feet/wheels only. Zero directional cast shadow.
 - **Canvas / Footprint**: 1x1 to 2x2 cells (`128x128` to `256x256` px), `alpha: cutout`, `pivot: bottom_center`.
 - **Master Positive Formula**:
   ```text
-  Single isolated 2D RPG game prop of {prop_name}, {material_and_structure}, {variant_state}, Ancient Chinese Xianxia cultivation aesthetic, gouache hand-painted with crisp dark #263A35 ink contours, bottom ground contact shadow only, isolated on solid plain white background.
+  Single isolated 2D RPG game prop of {prop_name}, {immutable_geometry_anchor}, {material_and_structure}, {variant_state}, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.
   ```
 - **Master Negative Formula**:
   ```text
-  diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame.
+  diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, {anti_drift_clause}
   ```
 - **Variant Awareness Matrix for Workstations**:
   - `idle_dormant`: `"cold dark cast-bronze surface with pale verdigris patina, extinguished dark combustion vents, closed iron flue"`.
@@ -521,20 +543,20 @@ Inspection of failed generation batches in `medieval_western` revealed four stru
 
 #### Archetype 3: Architecture, Sect Facilities & Gateways (`structure_building`, `gateway`)
 - **Engine Role**: Sect gates, pill refinement halls, scripture towers, mortal inns, hermit cottages, cave portals.
-- **Framing & Projection**: 2D orthographic top-down 45-degree RPG building facade. Clear horizontal baseline for Godot Y-sort anchoring.
+- **Framing & Projection**: 2D orthographic top-down 45-degree RPG building facade. Clear horizontal baseline for Godot Y-sort anchoring. Micro ambient occlusion at foundation base only.
 - **Canvas / Footprint**: 2x2 to 4x4 cells (`256x256` to `512x512` px), `alpha: cutout`, `pivot: bottom_center`.
 - **Master Positive Formula**:
   ```text
-  Single isolated 2D RPG architectural building sprite of {building_name}, {architectural_features_and_materials}, {variant_state}, Ancient Chinese Tang-Song Xianxia architectural style, glazed ceramic roof tiles, carved timber joinery, gouache hand-painted with dark #263A35 ink contours, crisp ground contact base line, isolated on solid plain white background.
+  Single isolated 2D RPG architectural building sprite of {building_name}, {immutable_geometry_anchor}, {architectural_features_and_materials}, {variant_state}, Ancient Chinese Tang-Song Xianxia architectural style, upturned dougong bracket eaves, glazed ceramic roof tiles, carved timber joinery, vermilion columns, gouache hand-painted with dark #263A35 ink contours, clean horizontal ground contact baseline, micro contact shadow only, isolated on solid plain white background.
   ```
 - **Master Negative Formula**:
   ```text
-  diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, human figures, isometric box frame, cutout diorama base.
+  diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, human figures, isometric box frame, cutout diorama base, directional drop shadow, {anti_drift_clause}
   ```
 - **Variant Awareness Matrix for Buildings**:
-  - `day_pristine`: `"crisp daylight, vibrant vermilion timber columns, immaculate emerald glazed roof tiles, clean white rice-paper lattice windows"`.
-  - `night_lit`: `"warm amber candle glow shining through lattice paper windows, illuminated crimson eaves lanterns, timber structure in deep midnight indigo shadow"`.
-  - `night_dark`: `"abandoned unlit dark facade, cold paper windows, moonlight edge sheen on roof ridge"`.
+  - `day_pristine`: `"crisp daylight, vibrant vermilion timber columns, immaculate emerald glazed roof tiles, clean white rice-paper lattice windows, pure albedo exposure"`.
+  - `night_lit`: `"pure daylight albedo base materials, warm golden candlelight glowing through rice-paper lattice windows, lit crimson eaves lanterns emitting soft light, no artificial dark blue tinting on walls"`.
+  - `night_dark`: `"abandoned unlit facade, cold translucent paper windows, dark unlit lanterns, unpainted timber"`.
   - `spring_blossom`: `"delicate pink peach blossom petal drifts scattered along curved roof valleys and entryway steps"`.
   - `autumn_decay`: `"golden ginkgo leaves accumulated in roof gutters, faded vermilion pillar lacquer"`.
   - `winter_snow`: `"heavy thick white snow blanket settled on curved eaves, delicate hanging icicles along gutters, frosted stone steps"`.
@@ -550,11 +572,11 @@ Inspection of failed generation batches in `medieval_western` revealed four stru
 - **Canvas / Footprint**: 1x1 to 2x2 cells (`128x128` to `256x256` px), `alpha: cutout`, `pivot: bottom_center`.
 - **Master Positive Formula**:
   ```text
-  Single isolated 2D RPG plant sprite of {flora_name}, {botanical_traits}, {variant_state}, Ancient Chinese herbal lore aesthetic, gouache hand-painted with dark ink contours, ground root base contact only, isolated on solid plain white background.
+  Single isolated 2D RPG plant sprite of {flora_name}, {botanical_traits}, {variant_state}, Ancient Chinese herbal lore aesthetic, traditional Bencao Gangmu medicinal plant style, gouache hand-painted with dark ink contours, ground root base contact only, zero terrain mound, isolated on solid plain white background.
   ```
 - **Master Negative Formula**:
   ```text
-  diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, trowel.
+  diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, trowel, {anti_drift_clause}
   ```
 - **Variant Awareness Matrix for Flora**:
   - `spring_sprout`: `"tender pale-emerald shoots, fresh budding floral calyxes, delicate glistening dew drops"`.
@@ -570,13 +592,14 @@ Inspection of failed generation batches in `medieval_western` revealed four stru
 - **Engine Role**: Roaming wild beasts, sect guardian mounts, demonic invaders, wandering Daoist NPCs.
 - **Framing & Projection**: 2D orthographic top-down 45-degree RPG creature sprite. Foot contact shadow only.
 - **Canvas / Footprint**: 1x1 to 3x3 cells (`128x128` to `384x384` px), `alpha: cutout`, `pivot: bottom_center`.
+- **Adaptive Background Rule**: White beasts (White Tiger, Crane, Nine-Tailed White Fox) use neutral grey `#D0D0D0` background.
 - **Master Positive Formula**:
   ```text
-  Single isolated 2D game creature sprite of {creature_name}, {anatomical_traits}, {variant_posture_and_mood}, Shan Hai Jing ancient Chinese mythological bestiary style, gouache painted with dark ink contours, ground foot contact shadow only, isolated on solid plain white background.
+  Single isolated 2D game creature sprite of {creature_name}, {anatomical_traits}, {variant_posture_and_mood}, Shan Hai Jing ancient Chinese mythological bestiary style, gouache painted with dark ink contours, ground foot contact shadow only, zero directional drop shadow, isolated on {adaptive_background}.
   ```
 - **Master Negative Formula**:
   ```text
-  diorama, cage, stable, pen, pasture, fence, saddle, reins, rider, trainer, human hands, background scenery, landscape, grass chunk, multiple animals, herd, UI healthbar, floating icons.
+  diorama, cage, stable, pen, pasture, fence, saddle, reins, rider, trainer, human hands, background scenery, landscape, grass chunk, multiple animals, herd, UI healthbar, floating icons, {anti_drift_clause}
   ```
 - **Variant Awareness Matrix for Creatures**:
   - `idle_peaceful`: `"relaxed four-legged standing stance, calm neutral head position, softly curved tail"`.
@@ -599,7 +622,7 @@ Inspection of failed generation batches in `medieval_western` revealed four stru
   ```
 - **Master Negative Formula**:
   ```text
-  perspective, 45-degree angle, isometric, horizon, 3D elevation, relief shading, trees, plants, buildings, houses, fences, focal object, standalone prop, pedestal, frame, borders.
+  perspective, 45-degree angle, isometric, horizon, 3D elevation, relief shading, trees, plants, buildings, houses, fences, focal object, standalone prop, pedestal, frame, borders, {anti_drift_clause}
   ```
 - **Variant Awareness Matrix for Terrains**:
   - `dry_temperate`: `"fine pale loess dust, dry cracked clay fissures, scattered small weathered pebbles"`.
@@ -612,11 +635,12 @@ Inspection of failed generation batches in `medieval_western` revealed four stru
 
 #### Archetype 7: Atmospheric VFX & Overlay Particle Sheets (`vfx_particle`, `overlay`)
 - **Engine Role**: Particle emitters, weather overlays, protective formation barriers, spiritual auras.
-- **Framing & Projection**: Planar 2D VFX sprite against solid pitch black `#000000` background (for Godot additive blend modes) or transparent alpha.
+- **Framing & Projection**: Planar 2D VFX sprite against solid pitch black `#000000` background.
+- **Pipeline Pipeline Rule**: **BYPASSES RMBG-2.0**. Converted to transparent RGBA via luminance mapping ($\text{Alpha} = \max(R, G, B)$) or imported as additive canvas material in Godot.
 - **Canvas / Footprint**: 1x1 to 4x4 cells (`128x128` to `512x512` px), `alpha: transparent` or `opaque_additive`.
 - **Master Positive Formula**:
   ```text
-  2D game particle VFX sprite of {vfx_name}, {particle_dynamics_and_motion}, {variant_intensity}, luminous spiritual motes, soft radiant glow edges, glowing magical energy, isolated on solid pure black background for additive alpha blending.
+  2D game particle VFX sprite of {vfx_name}, {particle_dynamics_and_motion}, {variant_intensity}, luminous spiritual motes, soft radiant glow edges, glowing magical energy, isolated on solid pure black background (#000000) for additive alpha blending.
   ```
 - **Master Negative Formula**:
   ```text
@@ -630,17 +654,22 @@ Inspection of failed generation batches in `medieval_western` revealed four stru
 ---
 
 ### 8.4 Verification Checklist for Pipeline Testing
-Before approving any generated asset wave into the game pack, each output file must pass this 4-step checklist:
+Before approving any generated asset wave into the game pack, each output file must pass this 7-step quality gate:
 
 1. **Alpha Cutout Purity (`rembg_transparency_check`)**:
    - The sprite must have 0% alpha across all border pixels.
    - No residual gray halo or white fringing around the silhouette (`#263A35` ink contour intact).
-2. **Pedestal & Diorama Absence (`no_diorama_guard`)**:
+2. **White Asset Edge Integrity (`white_on_white_guard`)**:
+   - White assets (snow, cranes, white jade) must show zero clipping holes or jagged bite marks on white elements.
+3. **Pedestal & Diorama Absence (`no_diorama_guard`)**:
    - The sprite must NOT sit upon an artificial dirt slab, grass circle, stone plate, or floating island.
-   - For props and structures, the bottom-most non-transparent pixel row must correspond strictly to the physical ground-contact point (feet, base timber, wheel tread).
-3. **Scale & Context Isolation (`single_subject_guard`)**:
-   - Small items (tools, talismans) must contain 0 background buildings, 0 terrain patches, and 0 human limbs.
-   - Structures must contain 0 landscape horizons and 0 attached village clusters.
-4. **Variant Alignment (`pivot_consistency_check`)**:
-   - When switching between variants (`pristine` -> `damaged` -> `winter`), the bottom pivot and primary bounding box center must stay within 4 pixels of the base archetype, ensuring seamless in-game variant crossfading without visual jitter.
+   - For props and structures, the bottom-most non-transparent pixel row must correspond strictly to the physical ground-contact point.
+4. **Zero Directional Cast Shadow (`zero_drop_shadow_guard`)**:
+   - No directional diagonal shadows cast onto the background; only tight ambient contact occlusion under feet.
+5. **Cultural Authenticity (`anti_drift_cultural_guard`)**:
+   - Zero Japanese Torii gates, zero Katana curved blades, zero Western Gothic masonry, zero witch cauldrons.
+6. **Variant Morphological Consistency (`geometry_anchor_check`)**:
+   - When switching between variants (`pristine` -> `damaged` -> `winter`), the primary silhouette, legs, and bounding footprint must maintain $\le 4$ px drift from the base archetype.
+7. **Downscaling Silhouette Legibility (`128px_readability_check`)**:
+   - 1x1 cell items downscaled to 128x128 px must maintain high-contrast silhouette clarity without turning into unreadable micro-noise.
 

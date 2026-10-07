@@ -294,10 +294,17 @@ def get_asset_paths(domain: str, sub_domain: str, asset_slug: str, variant_slug:
     }
 
 
+ANTI_DRIFT_CLAUSE = (
+    "Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, "
+    "western gothic castle, medieval stone fortress, European church, witch cauldron, "
+    "laboratory glassware, modern objects, anime mech, sci-fi wires"
+)
+
+
 def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
     """
     Construct game-ready positive prompt and negative prompt based on the 7 Archetypes
-    defined in Section 8 of README.md, strictly preventing diorama and chimera bleeding.
+    defined in Section 8 of README.md, strictly preventing diorama, chimera, and cultural drift.
     """
     asset_class = (
         asset.get("asset_class")
@@ -308,18 +315,29 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
     asset_name = asset.get("name") or asset.get("id", "cultivation_asset")
     material = asset.get("material", "carved wood and polished bronze")
     var_mod = var.get("prompt_modifier") or var.get("prompt") or ""
+    var_slug = var.get("variant_slug", "")
+
+    # Adaptive background contrast keying: prevent white/snow assets from being clipped by RMBG-2.0
+    is_pale = (
+        "winter" in var_slug
+        or "snow" in var_slug
+        or any(w in asset_name.lower() for w in ("white", "crane", "snow", "jade", "frost", "silver", "pale"))
+    )
+    adaptive_bg = "solid neutral contrast grey background (#D0D0D0)" if is_pale else "solid pure white background (#FFFFFF)"
 
     # Archetype 1: Items, Handheld Tools, Weapons & Pickups
     if any(k in asset_class for k in ("item", "tool", "weapon", "talisman", "consumable", "icon")):
         pos = (
             f"Single isolated 2D game asset of {asset_name.lower()}, {material}, {var_mod}, "
-            "Ancient Chinese Xianxia cultivation mortal realm aesthetic, fine ink contours, "
-            "gouache hand-painted, clean crisp silhouette, centered on solid pure white background."
+            "Ancient Chinese Xianxia cultivation mortal realm aesthetic, double-edged Chinese straight sword or authentic Daoist implement, "
+            "bold readable silhouette, clean grouped value planes, chunky stylized proportions for 2D icon clarity, "
+            f"fine dark #263A35 ink contours, gouache hand-painted, centered on {adaptive_bg}."
         )
         neg = (
             "diorama, miniature scene, floating island, dirt slab, grass pedestal, ground plane, "
             "floor, surface, shadow on ground, building, house, cottage, farm, fence, landscape, "
-            "trees, field, human hands, fingers, holding, multiple items, collection, collage, border, frame, UI"
+            "trees, field, human hands, fingers, holding, multiple items, collection, collage, border, "
+            f"frame, UI, watermark, blurry edges, microscopic high-frequency noise, {ANTI_DRIFT_CLAUSE}"
         )
         return pos, neg
 
@@ -333,16 +351,16 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
         )
         neg = (
             "perspective, 45-degree angle, isometric, horizon, 3D elevation, relief shading, trees, "
-            "plants, buildings, houses, fences, focal object, standalone prop, pedestal, frame, borders"
+            f"plants, buildings, houses, fences, focal object, standalone prop, pedestal, frame, borders, {ANTI_DRIFT_CLAUSE}"
         )
         return pos, neg
 
-    # Archetype 7: Atmospheric VFX & Overlay Particle Sheets
+    # Archetype 7: Atmospheric VFX & Overlay Particle Sheets (Bypasses RemBG in post-process)
     if any(k in asset_class for k in ("vfx", "particle", "overlay", "phenomena")):
         pos = (
             f"2D game particle VFX sprite of {asset_name.lower()}, {var_mod}, "
             "luminous spiritual motes, soft radiant glow edges, glowing magical energy, "
-            "isolated on solid pure black background for additive alpha blending."
+            "isolated on solid pure black background (#000000) for additive alpha blending."
         )
         neg = "white background, opaque solid shapes, opaque borders, ground, floor, landscape, characters, buildings, terrain, solid geometry, ui frames"
         return pos, neg
@@ -351,10 +369,14 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
     if any(k in asset_class for k in ("flora", "herb", "tree", "plant")):
         pos = (
             f"Single isolated 2D RPG plant sprite of {asset_name.lower()}, {material}, {var_mod}, "
-            "Ancient Chinese herbal lore aesthetic, gouache hand-painted with dark ink contours, "
-            "ground root base contact only, isolated on solid plain white background."
+            "Ancient Chinese herbal lore aesthetic, traditional Bencao Gangmu medicinal plant style, "
+            "gouache hand-painted with dark ink contours, ground root base contact only, zero terrain mound, "
+            "isolated on solid plain white background."
         )
-        neg = "diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands"
+        neg = (
+            "diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, "
+            f"surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, {ANTI_DRIFT_CLAUSE}"
+        )
         return pos, neg
 
     # Archetype 5: Fauna, Spirit Beasts, Demons & Denizens
@@ -362,28 +384,41 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
         pos = (
             f"Single isolated 2D game creature sprite of {asset_name.lower()}, {material}, {var_mod}, "
             "Shan Hai Jing ancient Chinese mythological bestiary style, gouache painted with dark ink contours, "
-            "ground foot contact shadow only, isolated on solid plain white background."
+            f"ground foot contact shadow only, zero directional drop shadow, isolated on {adaptive_bg}."
         )
-        neg = "diorama, cage, stable, pen, pasture, fence, saddle, reins, rider, trainer, human hands, background scenery, landscape, grass chunk, multiple animals, herd, UI healthbar"
+        neg = (
+            "diorama, cage, stable, pen, pasture, fence, saddle, reins, rider, trainer, human hands, "
+            f"background scenery, landscape, grass chunk, multiple animals, herd, UI healthbar, floating icons, {ANTI_DRIFT_CLAUSE}"
+        )
         return pos, neg
 
     # Archetype 3: Architecture, Sect Facilities & Gateways
     if any(k in asset_class for k in ("structure", "building", "architecture", "gateway", "gate", "pagoda", "pavilion", "tower", "hall")):
         pos = (
             f"Single isolated 2D RPG architectural building sprite of {asset_name.lower()}, {material}, {var_mod}, "
-            "Ancient Chinese Tang-Song Xianxia architectural style, glazed ceramic roof tiles, carved timber joinery, "
-            "gouache hand-painted with dark #263A35 ink contours, crisp ground contact base line, isolated on solid plain white background."
+            "Ancient Chinese Tang-Song Xianxia architectural style, upturned dougong bracket eaves, glazed ceramic roof tiles, "
+            "carved timber joinery, vermilion columns, gouache hand-painted with dark #263A35 ink contours, "
+            "clean horizontal ground contact baseline, micro contact shadow only, isolated on solid plain white background."
         )
-        neg = "diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, human figures, isometric box frame"
+        neg = (
+            "diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, "
+            "garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, "
+            f"human figures, isometric box frame, cutout diorama base, directional drop shadow, {ANTI_DRIFT_CLAUSE}"
+        )
         return pos, neg
 
     # Default / Archetype 2: Workstations, Heavy Apparatus & Functional Props
     pos = (
         f"Single isolated 2D RPG game prop of {asset_name.lower()}, {material}, {var_mod}, "
-        "Ancient Chinese Xianxia cultivation aesthetic, gouache hand-painted with crisp dark #263A35 ink contours, "
-        "bottom ground contact shadow only, isolated on solid plain white background."
+        "Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, "
+        "gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, "
+        "micro ambient contact occlusion directly under feet only, isolated on solid plain white background."
     )
-    neg = "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame"
+    neg = (
+        "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, "
+        "room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, "
+        f"multiple objects, human operator, worker, collage, frame, directional cast shadow, {ANTI_DRIFT_CLAUSE}"
+    )
     return pos, neg
 
 

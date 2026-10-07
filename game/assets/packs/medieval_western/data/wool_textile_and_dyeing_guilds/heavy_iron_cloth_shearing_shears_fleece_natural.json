@@ -1,0 +1,110 @@
+{
+  "id": "medieval_western.wool_textile_and_dyeing_guilds.heavy_iron_cloth_shearing_shears_fleece_natural",
+  "name": "Raw Wool Ecru Massive Spring Shears for Cropping Nap",
+  "vietnamese_name": "Kéo Cắt Lông Vải Nặng Bằng Thép Lò Xo (Màu Len Tự Nhiên)",
+  "category": "wool_textile_and_dyeing_guilds",
+  "sub_category": "teasel_raising_and_shearing_table",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "shear_nap",
+  "gameplay_role": "Supply chain industry element (Massive Spring Shears for Cropping Nap).",
+  "destructible": false,
+  "material": "iron",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of raw wool ecru massive spring shears for cropping nap, creamy natural unbleached wool tones, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/wool_textile_and_dyeing_guilds/heavy_iron_cloth_shearing_shears_fleece_natural.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.wool_textile_and_dyeing_guilds.heavy_iron_cloth_shearing_shears_fleece_natural:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.812
+      ]
+    ],
+    "frac_zero": 0.6104,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.66,
+        0.852,
+        0.583
+      ],
+      [
+        0.93,
+        1.0,
+        0.835
+      ],
+      [
+        0.701,
+        0.902,
+        0.637
+      ]
+    ],
+    "crop_offset": [
+      24,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 71,
+    "contact_reference_px": 71.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
