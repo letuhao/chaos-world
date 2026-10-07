@@ -42,9 +42,10 @@ not renamed; the per-category resist cap is declined; the 12→15 re-key is out 
 7. **Mind tree (T7).** The mind defs (`res://src/data/mind_statuses` — their own roles, shapes, steepness,
    refresh-only stacking) are NOT gated by the new mechanisms: no family term, no status ICD, no counter
    store copy. Their lock guards stay as shipped; sharing is limited to pure helpers.
-8. **Persistence (T13).** Expected transient: counters, meters, grants and ICD are combat-runtime state.
-   T13 measures the save boundary; if any field survives, the schema grows with old-save defaults and a
-   round-trip test; otherwise "transient" is recorded here as the finding.
+8. **Persistence (T13).** MEASURED: statuses do not ride the actor save at all (ADR 0089 — `Actor.to_dict`
+   emits no `statuses` key), so counters, meters, grant handles and the ICD clock are transient WITH them,
+   and the blessing tree's own save carries only its blessing records. No schema change; the evidence is
+   `test_status_persistence.gd` beside `test_status_round_trip.gd`.
 
 **Payload mapping (declined rename).** Their `PulseHp` → our per-tick pool writes; `ModifyStat` → our payload
 modifiers; `UnityCc` → `control` + the CC flag; `Spread` → P9 (`BL-0925`). Our mechanics vocabulary is the
