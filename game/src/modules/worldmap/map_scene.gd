@@ -86,20 +86,29 @@ func player_cell() -> Vector2i:
 
 
 ## Step one cell. Moves only onto standable ground; a portal edge on the
-## destination cell travels instead of staying. Returns `{moved, traveled}`.
+## destination cell travels instead of staying. Returns `{moved, traveled}`
+## plus `reason` naming a refused gate (empty otherwise).
 func step(dx: int, dy: int) -> Dictionary:
 	var target := _player_cell + Vector2i(dx, dy)
 	var cc := _chunk_coords(target)
 	_streamer.chunk_data(_node_id, cc.x, cc.y, _size, _seed)
 	if not _standable(target):
-		return {"moved": false, "traveled": false}
+		return {"moved": false, "traveled": false, "reason": ""}
 	_player_cell = target
 	refresh_around(_chunk_of(target))
 	_place_player()
 	var edge := _portal_at(target)
 	if not edge.is_empty():
-		return {"moved": true, "traveled": _travel(edge)}
-	return {"moved": true, "traveled": false}
+		# Spelled out rather than `merged()`: merge keeps the receiver's
+		# keys and only adds the crossing's, so the report would always read
+		# `traveled: false` on top of a crossing that happened.
+		var sailed := _travel(edge)
+		return {
+			"moved": true,
+			"traveled": bool(sailed.get("traveled", false)),
+			"reason": String(sailed.get("reason", "")),
+		}
+	return {"moved": true, "traveled": false, "reason": ""}
 
 
 ## Destroy whatever the given map cell masks: records a mutation, so leaving
@@ -254,13 +263,17 @@ func _portal_at(cell: Vector2i) -> Dictionary:
 ## Travel an edge: switch node, stand on its far cell, stream around it.
 ## Works for a door in the same world, a portal to another universe, and a
 ## descent into a nested domain — the scene never asks which, because the
-## edge already said.
-func _travel(edge: Dictionary) -> bool:
+## edge already said. The gate is asked FIRST, before any state moves: a
+## refused crossing leaves the player exactly where they stood.
+func _travel(edge: Dictionary) -> Dictionary:
+	var gate := WorldmapApi.can_traverse(edge)
+	if not bool(gate.get("ok", false)):
+		return {"traveled": false, "reason": String(gate.get("reason", ""))}
 	var to_node := String(edge.get("to", ""))
 	if _graph == null or _graph.node(to_node).is_empty():
-		return false
+		return {"traveled": false, "reason": "unknown_node"}
 	if not _node_configs.has(to_node):
-		return false
+		return {"traveled": false, "reason": "unknown_node"}
 	_node_id = to_node
 	_player_cell = edge.get("to_cell", Vector2i.ZERO) as Vector2i
 	_config = (_node_configs[to_node] as Dictionary).duplicate(true)
@@ -270,7 +283,7 @@ func _travel(edge: Dictionary) -> bool:
 	_clear_holders()
 	refresh_around(_chunk_of(_player_cell))
 	_place_player()
-	return true
+	return {"traveled": true, "reason": ""}
 
 
 func _clear_holders() -> void:

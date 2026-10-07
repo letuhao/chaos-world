@@ -44,6 +44,7 @@ func add_edge(edge: Dictionary) -> Dictionary:
 				"from_cell": edge.get("from_cell", Vector2i(-1, -1)),
 				"to_cell": edge.get("to_cell", Vector2i(-1, -1)),
 				"two_way": bool(edge.get("two_way", true)),
+				"hook": String(edge.get("hook", "")),
 			}
 		)
 	)

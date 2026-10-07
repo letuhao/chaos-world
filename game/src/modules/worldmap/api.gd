@@ -64,6 +64,13 @@ static func node(node_id: String) -> Dictionary:
 	return _graph.node(node_id)
 
 
+## Whether an edge may be crossed under `context`. No hook passes; a hook
+## asks its installed evaluator; an unwired hook refuses by name (see
+## `WorldmapGates`). The one verb a scene asks before traveling.
+static func can_traverse(edge: Dictionary, context: Dictionary = {}) -> Dictionary:
+	return WorldmapGates.evaluate(edge, context)
+
+
 ## Generate one chunk through the standard pass set. Pure data: no nodes,
 ## no scenes, reproducible from the same inputs.
 static func generate_chunk(
