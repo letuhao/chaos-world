@@ -1,6 +1,6 @@
 extends TestCase
 
-## ADR 0902 (P10/P11/P15): the apply-chance shape and the authored tuning keys.
+## ADR 0902 (P10/P15): the apply-chance shape and the authored tuning keys.
 ##
 ## The SHAPE claim is byte-identity: with the shipped `combat_damage.tres` the linear
 ## default must reproduce the pre-shape formula exactly — `clampf(0.5 + delta / (2 *
@@ -15,7 +15,6 @@ const REQUIRED_KEYS: Array[String] = [
 	"status_apply_steepness",
 	"status_apply_scale_by_category",
 	"status_apply_steepness_by_category",
-	"status_tier_power_weight",
 ]
 const TUNING_PATH := "res://src/modules/combat_engine/combat_damage.tres"
 
@@ -72,7 +71,6 @@ func test_the_shipped_defaults_are_the_realm_invariant_linear_reading() -> void:
 	assert_eq(tuning.status_apply_shape, &"linear", "the shipped shape is the linear parity-half")
 	assert_almost_eq(tuning.status_apply_offset, 0.0, "no offset is authored", 1e-9)
 	assert_almost_eq(tuning.status_apply_steepness, 1.0, "the sigmoid dial starts neutral", 1e-9)
-	assert_almost_eq(tuning.status_tier_power_weight, 0.0, "the tier knob is off", 1e-9)
 	assert_eq(tuning.status_apply_scale_by_category.is_empty(), true, "no category overrides")
 	assert_eq(tuning.status_apply_steepness_by_category.is_empty(), true, "and none for steepness")
 
@@ -125,17 +123,3 @@ func test_a_category_override_replaces_the_scale_for_its_category() -> void:
 	assert_almost_eq(
 		_chance(tuning, -0.1, [&"chilling"]), 0.4, "an absent category keeps the base", 1e-9
 	)
-
-
-## The tier knob is OFF and the gap it would fold is zero for two realmless actors —
-## so the shipped reading cannot move, and the cross-realm MEASUREMENT (T10) owns any
-## nonzero weight.
-func test_the_tier_knob_is_off_and_folds_no_gap_without_realm_power() -> void:
-	var tuning := _shipped()
-	assert_almost_eq(tuning.status_tier_power_weight, 0.0, "off by default", 1e-9)
-	tuning.status_tier_power_weight = 1.0
-	var attacker := CombatTestKit.actor(&"tier_a")
-	var target := CombatTestKit.actor(&"tier_b")
-	var plain := StatusApply.apply_chance(attacker, target, _shipped(), 1.0, &"", &"", &"", 0.0)
-	var weighted := StatusApply.apply_chance(attacker, target, tuning, 1.0, &"", &"", &"", 0.0)
-	assert_almost_eq(weighted, plain, "two realmless actors have no gap to fold", 1e-9)

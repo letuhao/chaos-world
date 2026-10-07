@@ -624,11 +624,10 @@ static func apply_chance(
 	# ADR 0902 (P10): `shifted = delta - offset`. The shipped offset is 0.0, and
 	# `delta - 0.0` is exact in IEEE, so the shipped numbers are reproduced bit for bit.
 	var delta := power - resist
-	# ADR 0902 (P11): the default-off tier-power knob. 0.0 is the shipped realm-invariant
-	# reading; a nonzero weight folds the realm power GAP into the delta.
-	var tier_weight := _finite(tuning.status_tier_power_weight)
-	if tier_weight != 0.0 and attacker != null and target != null:
-		delta += tier_weight * _realm_power_gap(attacker, target)
+	# The realm power GAP is deliberately NOT folded here (ADR 0906): the cross-realm
+	# measurement showed the raw gap (R1 -> R30 at 1 -> 551x) saturates the 0..1 delta at
+	# any live weight, so a gap term is either dead or a cliff. Realm-invariance is the
+	# design, and the knob that measured it is deleted rather than left default-off.
 	var shifted := delta - _finite(tuning.status_apply_offset)
 	# A non-positive scale cannot say how much advantage is decisive, and the honest
 	# answer for a contest with no exchange rate is parity rather than a division.
@@ -659,21 +658,6 @@ static func _category_float(by_category: Dictionary, categories: Array, base: fl
 		if by_category.has(StringName(named)):
 			return _finite(float(by_category[StringName(named)]))
 	return base
-
-
-## The realm power GAP between two actors, for the default-off tier knob (ADR 0902, P11).
-## `RealmScaling.highest_realm` is core's own read of an actor's realm; an actor with no
-## realm def reads 0.0 and the gap is the other side's power.
-static func _realm_power_gap(attacker: Actor, target: Actor) -> float:
-	var attacker_power := 0.0
-	var target_power := 0.0
-	var attacker_realm := RealmScaling.highest_realm(attacker)
-	if attacker_realm != null:
-		attacker_power = _finite(attacker_realm.power)
-	var target_realm := RealmScaling.highest_realm(target)
-	if target_realm != null:
-		target_power = _finite(target_realm.power)
-	return attacker_power - target_power
 
 
 ## One side's authored channel total (ADR 0884): `prefix + "omni"` always, plus

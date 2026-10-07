@@ -380,10 +380,6 @@ extends Resource
 ## category falls back to `status_rate_scale` / `status_apply_steepness`.
 @export var status_apply_scale_by_category: Dictionary = {}
 @export var status_apply_steepness_by_category: Dictionary = {}
-## ADR 0902 (P11): the tier-power-in-delta WEIGHT. 0.0 is the shipped realm-invariant
-## reading; a nonzero weight folds `weight * (attacker realm power - defender realm power)`
-## into the delta. Default-off pending the cross-realm measurement (T10).
-@export var status_tier_power_weight: float = 0.0
 ## Coefficient from the attacker's `element_power_<e>` onto the applied status's
 ## potency. Potency REUSES that id rather than adding an `element_status_power_<e>`
 ## sibling (ADR 0088), so it inherits ADR 0069's realm-invariance fix with no new stat

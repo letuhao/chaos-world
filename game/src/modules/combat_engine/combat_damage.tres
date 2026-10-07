@@ -124,14 +124,13 @@ status_icd_default = 0.0
 ; (byte-identical); "sigmoid" is Keepverse's shape, 0.5 at its own zero. status_apply_offset
 ; shifts the neutral point (the measured CC-lock dial), status_apply_steepness steepens the
 ; sigmoid, and the two *_by_category maps override scale/steepness per authored category.
-; ADR 0902 (P11). status_tier_power_weight folds the realm power gap into the delta; 0.0 is
-; the shipped realm-invariant reading (the cross-realm measurement picks any other value).
+; The realm power gap is deliberately NOT a term here (ADR 0906): the measured raw gap
+; saturates the 0..1 delta at any live weight, so the knob was deleted, not defaulted.
 status_apply_shape = &"linear"
 status_apply_offset = 0.0
 status_apply_steepness = 1.0
 status_apply_scale_by_category = {}
 status_apply_steepness_by_category = {}
-status_tier_power_weight = 0.0
 status_power_prefix = "status.power."
 status_resist_prefix = "status.resist."
 status_rate_scale = 0.5
