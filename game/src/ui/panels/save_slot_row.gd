@@ -89,7 +89,7 @@ func _bind_nodes() -> void:
 
 func _render() -> void:
 	if _status_label != null:
-		_status_label.text = _status_text()
+		_status_label.text = L.t(_status_text())
 	if _load_button != null:
 		_load_button.disabled = not can_load()
 	if _erase_button != null:
@@ -103,8 +103,8 @@ func _status_text() -> String:
 		return ""
 	var title := String(_view.get("title", ""))
 	if not bool(_view.get("exists", false)):
-		return "%s: empty." % title
-	var line := "%s: generation %d" % [title, int(_view.get("generation", 0))]
+		return L.t("LOC_UI_PANELS_DDD9458E61") % title
+	var line := L.t("LOC_UI_PANELS_D63E8CC16A") % [title, int(_view.get("generation", 0))]
 	var hero := String(_view.get("display_name", ""))
 	if not hero.is_empty():
 		line += ", %s" % hero

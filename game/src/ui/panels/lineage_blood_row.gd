@@ -34,14 +34,14 @@ extends PanelContainer
 ## The tier name a row reads as. Authored constants rather than prose, so a test can
 ## compare the string a player sees against the one the facade published.
 const TIER_DORMANT := "dormant"
-const NONE_CARRIED := "No blood carried"
-const DORMANT_NOTE := "carried and below its bar: the trait stays, the grants do not"
-const AWAKE_NOTE := "awake: its grants apply"
-const UNKNOWN_LINEAGE := "Lineage this build does not ship"
-const NO_THRESHOLD := "no bar authored"
-const CROSSES_RACES := "crosses races"
+const NONE_CARRIED := "LOC_UI_PANELS_E100DFB0F5"
+const DORMANT_NOTE := "LOC_UI_PANELS_BFA543BE74"
+const AWAKE_NOTE := "LOC_UI_PANELS_302BFD6803"
+const UNKNOWN_LINEAGE := "LOC_UI_PANELS_10B1395A1D"
+const NO_THRESHOLD := "LOC_UI_PANELS_679AF9ABCB"
+const CROSSES_RACES := "LOC_UI_PANELS_DB63BEF781"
 const GRANTS := "grants"
-const NOTHING_GRANTED := "nothing granted"
+const NOTHING_GRANTED := "LOC_UI_PANELS_B0386472CE"
 
 var _view: Dictionary = {}
 var _catalog: Dictionary = {}
@@ -155,12 +155,12 @@ func _render() -> void:
 	if not visible:
 		return
 	_compute_lines()
-	_name_label.text = _name_line
+	_name_label.text = L.t(_name_line)
 	_name_label.theme_type_variation = _head_tone()
-	_purity_label.text = _purity_line
-	_state_label.text = _state_line
-	_grant_label.text = _grant_line
-	_meta_label.text = _meta
+	_purity_label.text = L.t(_purity_line)
+	_state_label.text = L.t(_state_line)
+	_grant_label.text = L.t(_grant_line)
+	_meta_label.text = L.t(_meta)
 	_meta_label.visible = _meta != ""
 
 
@@ -182,10 +182,10 @@ func _name_line_of() -> String:
 	if authored != "":
 		return authored
 	if lineage_id == "":
-		return UNKNOWN_LINEAGE
+		return L.t(UNKNOWN_LINEAGE)
 	if lineage_id != "" and bool(_view.get("known", false)):
 		return lineage_id
-	return UNKNOWN_LINEAGE
+	return L.t(UNKNOWN_LINEAGE)
 
 
 ## Purity as a percentage, plus the tier the facade named and the bar it has to
@@ -208,8 +208,8 @@ func _purity_text() -> String:
 ## The one sentence a player must be able to read: awake, or carried and asleep.
 func _state_text() -> String:
 	if bool(_view.get("awake", false)):
-		return AWAKE_NOTE
-	return DORMANT_NOTE
+		return L.t(AWAKE_NOTE)
+	return L.t(DORMANT_NOTE)
 
 
 ## What the lineage grants, named whether or not they apply. Printing them live
@@ -218,8 +218,8 @@ func _state_text() -> String:
 func _grant_text() -> String:
 	var traits := _string_list(_catalog_entry().get("traits", []))
 	if traits.is_empty():
-		return "%s %s" % [GRANTS, NOTHING_GRANTED]
-	return "%s: %s" % [GRANTS, ", ".join(traits)]
+		return L.t("LOC_UI_PANELS_265FC52551") % [L.t(GRANTS), L.t(NOTHING_GRANTED)]
+	return L.t("LOC_UI_PANELS_D9CD377026") % [L.t(GRANTS), ", ".join(traits)]
 
 
 func _meta_text() -> String:

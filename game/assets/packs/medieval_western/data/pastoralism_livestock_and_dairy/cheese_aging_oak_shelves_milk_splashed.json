@@ -1,0 +1,154 @@
+{
+  "id": "medieval_western.pastoralism_livestock_and_dairy.cheese_aging_oak_shelves_milk_splashed",
+  "name": "Creamery-Fresh Tiered Shelves of Aging Hard Cheese Wheels",
+  "vietnamese_name": "Kệ Gỗ Sồi Xếp Tầng Các Bánh Phô Mai Ủ (Thơm Mùi Bơ Sữa)",
+  "category": "pastoralism_livestock_and_dairy",
+  "sub_category": "dairy_churn_and_cheese_press",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "taste_cheese",
+  "gameplay_role": "Pastoral manorial farming element (Tiered Shelves of Aging Hard Cheese Wheels).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of creamery-fresh tiered shelves of aging hard cheese wheels, spilled milk patina on clean scrubbed pine, Medieval pastoral livestock and dairy farming style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/pastoralism_livestock_and_dairy/cheese_aging_oak_shelves_milk_splashed.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.pastoralism_livestock_and_dairy.cheese_aging_oak_shelves_milk_splashed:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.487,
+        0.496
+      ]
+    ],
+    "frac_zero": 0.7159,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.004,
+        0.005,
+        0.504,
+        0.334,
+        0.004,
+        0.005
+      ],
+      [
+        0.759,
+        0.938,
+        0.998,
+        0.989,
+        0.942,
+        0.742
+      ],
+      [
+        0.28,
+        0.486,
+        0.496,
+        0.382,
+        0.537,
+        0.375
+      ]
+    ],
+    "crop_offset": [
+      34,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 20,
+    "contact_reference_px": 20.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

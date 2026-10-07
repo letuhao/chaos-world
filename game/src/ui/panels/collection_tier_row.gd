@@ -64,14 +64,14 @@ func _render() -> void:
 	visible = is_filled()
 	if not visible:
 		return
-	_head_label.text = "Tier %d" % int(_view.get("tier_id", 0))
-	_reward_label.text = String(_view.get("reward_fate", ""))
-	_status_label.text = _status_text()
+	_head_label.text = L.t("LOC_UI_PANELS_655881B54F") % int(_view.get("tier_id", 0))
+	_reward_label.text = L.t(String(_view.get("reward_fate", "")))
+	_status_label.text = L.t(_status_text())
 
 
 func _status_text() -> String:
 	if bool(_view.get("claimed", false)):
-		return "Claimed"
+		return L.t("LOC_UI_PANELS_83C87884B0")
 	if bool(_view.get("can_claim", false)):
-		return "Ready to claim"
-	return "Locked"
+		return L.t("LOC_UI_PANELS_77FF149A02")
+	return L.t("LOC_UI_PANELS_A798882F1C")

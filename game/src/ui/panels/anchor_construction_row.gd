@@ -32,30 +32,30 @@ extends PanelContainer
 ## The press. Carries the anchor id ONLY.
 signal raise_requested(anchor_id: StringName)
 
-const RAISE_TEXT := "Raise this"
-const RAISED_TEXT := "Raised"
+const RAISE_TEXT := "LOC_UI_PANELS_8A418BF331"
+const RAISED_TEXT := "LOC_UI_PANELS_2745A2A7B9"
 ## Wording for the module's own named refusals, kept here beside this row's other
 ## vocabulary so a caller renders the constant rather than composing prose about it.
 const REFUSAL_TEXT := {
-	"": "Ready to raise where you stand.",
-	"already_raised": "Already raised in this world, and a rival cannot raise a second.",
-	"cannot_afford": "You are short of what it takes. What is owed is recorded, not lost.",
-	"realm_floor": "Your formation is below the floor this anchor is authored at.",
-	"unknown_anchor": "No such anchor is authored, so nothing was called.",
-	"no_anchor_seam": "No raise is wired to this page, so nothing here can be raised.",
-	"no_actor": "There is no one here to raise it for.",
+	"": "LOC_UI_PANELS_015178DD05",
+	"already_raised": "LOC_UI_PANELS_4270FF53DF",
+	"cannot_afford": "LOC_UI_PANELS_6892995C3C",
+	"realm_floor": "LOC_UI_PANELS_B64550EF50",
+	"unknown_anchor": "LOC_UI_PANELS_AF2DAC071D",
+	"no_anchor_seam": "LOC_UI_PANELS_8AD66DAB05",
+	"no_actor": "LOC_UI_PANELS_78FD30D264",
 }
-const COIN_TEXT := "%d coin"
-const COIN_TEXT_PLURAL := "%d coin recorded as the price, unsettled"
-const ITEM_TEXT := "%d %s"
-const MISSING_TEXT := "short %d"
-const NO_ITEMS := "no items"
-const REPAIRS_TEXT := "repairs %s per season"
-const SHELTERS_TEXT := "shelters the next death"
-const FLOOR_TEXT := "needs formation %s"
-const NO_FLOOR := "no formation floor"
-const RAISED_MARK := "Raised. It has repaired %d integrity in total."
-const OWE_MARK := "%d still owed on this."
+const COIN_TEXT := "LOC_UI_PANELS_2ED4D9295E"
+const COIN_TEXT_PLURAL := "LOC_UI_PANELS_DB978840D7"
+const ITEM_TEXT := "LOC_UI_PANELS_DDA1409C53"
+const MISSING_TEXT := "LOC_UI_PANELS_9F6ED35671"
+const NO_ITEMS := "LOC_UI_PANELS_1281D50929"
+const REPAIRS_TEXT := "LOC_UI_PANELS_D265FFED4E"
+const SHELTERS_TEXT := "LOC_UI_PANELS_359202A634"
+const FLOOR_TEXT := "LOC_UI_PANELS_CC45C410E4"
+const NO_FLOOR := "LOC_UI_PANELS_1A5685A75E"
+const RAISED_MARK := "LOC_UI_PANELS_5F0A197DF2"
+const OWE_MARK := "LOC_UI_PANELS_0869D5930F"
 
 var _view: Dictionary = {}
 var _cost: Dictionary = {}
@@ -196,15 +196,15 @@ func _render() -> void:
 	visible = is_filled()
 	if not visible:
 		return
-	_head_label.text = _head
-	_promise_label.text = _promise_line
-	_cost_label.text = _cost_line
-	_state_label.text = _state_line
-	_refusal_label.text = _refusal_line
+	_head_label.text = L.t(_head)
+	_promise_label.text = L.t(_promise_line)
+	_cost_label.text = L.t(_cost_line)
+	_state_label.text = L.t(_state_line)
+	_refusal_label.text = L.t(_refusal_line)
 	_refusal_label.visible = not _refusal_line.is_empty()
 	_refusal_label.theme_type_variation = &"WarnLabel" if _last_reason != "" else &"MetaLabel"
 	_raise_button.disabled = not can_raise()
-	_raise_button.text = _button_text()
+	_raise_button.text = L.t(_button_text())
 
 
 ## What the anchor DOES, in the two authored shapes ADR 0146 allows: a hearth
@@ -233,8 +233,12 @@ func _promise_text() -> String:
 ## a season for must never be rounded down into "nothing happens" on the page.
 func _rate_text(rate: float) -> String:
 	if not is_finite(rate) or rate < 0.0:
-		return "an unmeasured amount"
-	return ("%d" % int(roundf(rate))) if is_equal_approx(rate, roundf(rate)) else "%.1f" % rate
+		return L.t("LOC_UI_PANELS_539AEE417B")
+	return (
+		("%d" % int(roundf(rate)))
+		if is_equal_approx(rate, roundf(rate))
+		else L.t("LOC_UI_PANELS_16B5D7DF20") % rate
+	)
 
 
 ## The price: the authored coin figure and every item requirement, each with what is
@@ -263,7 +267,7 @@ func _state_text() -> String:
 		return ""
 	if is_raised():
 		var healed := int(_view.get("raised_integrity", 0))
-		return RAISED_MARK % healed
+		return L.t(RAISED_MARK) % healed
 	var floor := String(_view.get("realm_floor", ""))
 	var line := (
 		FLOOR_TEXT % floor
@@ -271,7 +275,7 @@ func _state_text() -> String:
 		else NO_FLOOR
 	)
 	var owed := int(_view.get("owed", 0))
-	return line if owed <= 0 else "%s  %s" % [line, OWE_MARK % owed]
+	return line if owed <= 0 else "%s  %s" % [line, L.t(OWE_MARK) % owed]
 
 
 ## The module's refusal, verbatim. `""` before any press, so a row nobody has pressed

@@ -25,13 +25,13 @@ extends PanelContainer
 ## The press. Carries the quest id ONLY.
 signal accept_requested(quest_id: StringName)
 
-const ACCEPT_TEXT := "Take this quest"
-const ACTIVE_TEXT := "In flight"
-const DONE_TEXT := "Finished"
-const LOCKED_TEXT := "Closed to you"
-const GATE_OK_TEXT := "The gate is open."
-const GATE_SHUT_TEXT := "Waiting on: %s"
-const STEP_DONE_MARK := " [done]"
+const ACCEPT_TEXT := "LOC_UI_PANELS_A15091658E"
+const ACTIVE_TEXT := "LOC_UI_PANELS_58B6DC18CF"
+const DONE_TEXT := "LOC_UI_PANELS_355BCC577D"
+const LOCKED_TEXT := "LOC_UI_PANELS_6399983D50"
+const GATE_OK_TEXT := "LOC_UI_PANELS_4F811D330C"
+const GATE_SHUT_TEXT := "LOC_UI_PANELS_12FF38AFD1"
+const STEP_DONE_MARK := "LOC_UI_PANELS_C34B2FECB0"
 
 var _view: Dictionary = {}
 var _head: String = ""
@@ -157,22 +157,22 @@ func _render() -> void:
 	visible = is_filled()
 	if not visible:
 		return
-	_head_label.text = _head
-	_description_label.text = _description
+	_head_label.text = L.t(_head)
+	_description_label.text = L.t(_description)
 	_description_label.visible = not _description.is_empty()
-	_kind_label.text = _kind_line
-	_state_label.text = _state_line
+	_kind_label.text = L.t(_kind_line)
+	_state_label.text = L.t(_state_line)
 	_state_label.theme_type_variation = _state_tone()
-	_steps_label.text = _steps_line
+	_steps_label.text = L.t(_steps_line)
 	_steps_label.visible = not _steps_line.is_empty()
-	_gate_label.text = _gate_line
+	_gate_label.text = L.t(_gate_line)
 	_gate_label.visible = not _gate_line.is_empty()
 	_gate_label.theme_type_variation = (
 		&"OkLabel" if bool(_view.get("gate_ok", true)) else &"WarnLabel"
 	)
 	if _accept_button != null:
 		_accept_button.disabled = not can_accept()
-		_accept_button.text = _accept_text()
+		_accept_button.text = L.t(_accept_text())
 
 
 ## Which origin this quest came from, in a player's words, with its tier.
@@ -181,7 +181,7 @@ func _kind_text(view: Dictionary) -> String:
 	var kind := String(view.get("kind", ""))
 	if authored.is_empty():
 		return ""
-	return "%s quest, tier %d" % [_kind_word(kind), int(view.get("tier", 0))]
+	return L.t("LOC_UI_PANELS_3A9253B1B7") % [_kind_word(kind), int(view.get("tier", 0))]
 
 
 ## The one word a player reads for the three kinds BL-0053 names. The id is the
@@ -204,7 +204,7 @@ func _kind_word(kind: String) -> String:
 func _state_text(view: Dictionary) -> String:
 	match String(view.get("state", "")):
 		QuestScreen.ROW_STATE_OFFERED:
-			return "Offered to you."
+			return L.t("LOC_UI_PANELS_3ACFF69DC4")
 		QuestScreen.ROW_STATE_ACTIVE:
 			return (
 				"In flight: %d of %d steps read from the world's memory."
@@ -214,7 +214,7 @@ func _state_text(view: Dictionary) -> String:
 				]
 			)
 		QuestScreen.ROW_STATE_DONE:
-			return "Finished. Its grants were paid once and never again."
+			return L.t("LOC_UI_PANELS_8D714B0A29")
 	return ""
 
 
@@ -226,7 +226,7 @@ func _steps_text(view: Dictionary) -> String:
 		var step := entry as Dictionary
 		var label := String(step.get("label", String(step.get("step_id", ""))))
 		var text := (
-			"%s (%d/%d)"
+			L.t("LOC_UI_PANELS_A1F15EC3EF")
 			% [
 				label,
 				int(step.get("have", 0)),
@@ -249,11 +249,11 @@ func _gate_text(view: Dictionary) -> String:
 	if not bool(view.get("gated", false)):
 		return ""
 	if bool(view.get("gate_ok", true)):
-		return GATE_OK_TEXT
+		return L.t(GATE_OK_TEXT)
 	var unmet := _strings(view.get("gate_unmet", []))
 	if unmet.is_empty():
-		return LOCKED_TEXT
-	return GATE_SHUT_TEXT % ", ".join(unmet)
+		return L.t(LOCKED_TEXT)
+	return L.t(GATE_SHUT_TEXT) % ", ".join(unmet)
 
 
 func _accept_text() -> String:
@@ -261,9 +261,9 @@ func _accept_text() -> String:
 		QuestScreen.ROW_STATE_OFFERED:
 			return ACCEPT_TEXT if can_accept() else LOCKED_TEXT
 		QuestScreen.ROW_STATE_ACTIVE:
-			return ACTIVE_TEXT
+			return L.t(ACTIVE_TEXT)
 		QuestScreen.ROW_STATE_DONE:
-			return DONE_TEXT
+			return L.t(DONE_TEXT)
 	return ""
 
 

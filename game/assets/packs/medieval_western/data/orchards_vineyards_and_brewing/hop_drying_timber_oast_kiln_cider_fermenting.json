@@ -1,0 +1,203 @@
+{
+  "id": "medieval_western.orchards_vineyards_and_brewing.hop_drying_timber_oast_kiln_cider_fermenting",
+  "name": "Cider-Fermenting Conical Brick Hop-Drying Oast House",
+  "vietnamese_name": "Lò Sấy Hoa Bia Hình Nón Mái Ngói Đỏ (Thơm Mùi Rượu Táo)",
+  "category": "orchards_vineyards_and_brewing",
+  "sub_category": "brewhouse_mash_tun_and_copper",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "dry_hops",
+  "gameplay_role": "Supply chain industry element (Conical Brick Hop-Drying Oast House).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of cider-fermenting conical brick hop-drying oast house, sweet aroma of crushed apples and fermenting must, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/orchards_vineyards_and_brewing/hop_drying_timber_oast_kiln_cider_fermenting.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.orchards_vineyards_and_brewing.hop_drying_timber_oast_kiln_cider_fermenting:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.448,
+        0.4
+      ],
+      [
+        0.798,
+        0.554
+      ]
+    ],
+    "frac_zero": 0.6064,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.275,
+        0.314,
+        0.311,
+        0.028,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.673,
+        0.726,
+        0.438,
+        0.0,
+        0.0
+      ],
+      [
+        0.43,
+        0.73,
+        0.991,
+        0.998,
+        0.768,
+        0.236,
+        0.0
+      ],
+      [
+        0.562,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.658,
+        0.031
+      ],
+      [
+        0.896,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.644,
+        0.281
+      ],
+      [
+        0.619,
+        1.0,
+        1.0,
+        1.0,
+        0.909,
+        0.188,
+        0.0
+      ],
+      [
+        0.052,
+        0.458,
+        0.912,
+        0.498,
+        0.085,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      26,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3
+    ],
+    "contact_px": 56,
+    "contact_reference_px": 56.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

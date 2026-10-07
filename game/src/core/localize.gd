@@ -74,7 +74,7 @@ const PLURAL_FORMS := {
 ## a CJK locale resolves an OS font instead of drawing boxes, and `allow_system_fallback` covers
 ## a machine whose named families all miss. A shipped font asset would supersede this, not
 ## replace the mechanism.
-const SCRIPT_FONT_FAMILIES := [
+const SCRIPT_FONT_FAMILIES := [  # i18n:off — OS font NAMES, not player-facing text
 	"Noto Sans CJK SC",
 	"Source Han Sans SC",
 	"Noto Sans SC",
@@ -88,7 +88,7 @@ const SCRIPT_FONT_FAMILIES := [
 ]
 
 ## The script prefixes that need [constant SCRIPT_FONT_FAMILIES] rather than the engine default.
-const SCRIPT_FONT_PREFIXES := ["zh", "ja", "ko"]
+const SCRIPT_FONT_PREFIXES := ["zh", "ja", "ko"]  # i18n:off — ISO codes, not text
 
 static var _installed_base := false
 static var _extra_roots: Array[String] = []
@@ -207,9 +207,7 @@ static func _longest_resolving(text: String, start: int) -> String:
 	var limit := mini(text.length(), start + MAX_KEY_LENGTH)
 	var stop := start
 	while stop < limit:
-		var code := text.unicode_at(stop)
-		var is_key_char := (code >= 65 and code <= 90) or (code >= 48 and code <= 57) or code == 95  # A-Z  # 0-9  # _
-		if not is_key_char:
+		if not _is_key_char(text.unicode_at(stop)):
 			break
 		stop += 1
 	var length := stop - start
@@ -219,6 +217,12 @@ static func _longest_resolving(text: String, start: int) -> String:
 			return key
 		length -= 1
 	return ""
+
+
+## Whether a key may contain this character: `A-Z`, `0-9` or `_`. A key is the whole run of
+## such characters after `LOC_`, and the split inside a run is found by trying prefixes.
+static func _is_key_char(code: int) -> bool:
+	return (code >= 65 and code <= 90) or (code >= 48 and code <= 57) or code == 95
 
 
 ## Resolve every key declared in a SCENE, under `root`. A `.tscn` literal has no call site, so

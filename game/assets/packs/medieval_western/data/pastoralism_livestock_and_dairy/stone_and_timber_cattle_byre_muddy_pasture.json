@@ -1,0 +1,205 @@
+{
+  "id": "medieval_western.pastoralism_livestock_and_dairy.stone_and_timber_cattle_byre_muddy_pasture",
+  "name": "Muddy Meadow Slated Roof Cattle Byre & Stalls",
+  "vietnamese_name": "Chuồng Nuôi Bò Đực Lát Đá Có Mái Che (Lầy Bùn Đồng Cỏ)",
+  "category": "pastoralism_livestock_and_dairy",
+  "sub_category": "ox_stable_manger_and_byre",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "enter",
+  "gameplay_role": "Pastoral manorial farming element (Slated Roof Cattle Byre & Stalls).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of muddy meadow slated roof cattle byre & stalls, churned hooves mud and damp clover, Medieval pastoral livestock and dairy farming style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/pastoralism_livestock_and_dairy/stone_and_timber_cattle_byre_muddy_pasture.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.pastoralism_livestock_and_dairy.stone_and_timber_cattle_byre_muddy_pasture:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.665,
+        0.764
+      ],
+      [
+        0.823,
+        0.893
+      ]
+    ],
+    "frac_zero": 0.3984,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.051,
+        0.064,
+        0.13,
+        0.643,
+        0.083,
+        0.528,
+        0.275
+      ],
+      [
+        0.517,
+        0.748,
+        0.838,
+        1.0,
+        0.969,
+        1.0,
+        0.788
+      ],
+      [
+        0.875,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.636
+      ],
+      [
+        0.893,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.839
+      ],
+      [
+        0.931,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.935
+      ],
+      [
+        0.671,
+        0.685,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.861
+      ],
+      [
+        0.217,
+        0.506,
+        0.892,
+        0.956,
+        0.832,
+        0.71,
+        0.267
+      ]
+    ],
+    "crop_offset": [
+      19,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 152,
+    "contact_reference_px": 152.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

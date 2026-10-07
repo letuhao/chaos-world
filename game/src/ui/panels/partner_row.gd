@@ -76,10 +76,10 @@ func _render() -> void:
 	if not visible:
 		return
 	theme_type_variation = _card_variation()
-	_head_label.text = String(_view.get("display_name", ""))
-	_bond_label.text = String(_view.get("bond_class", ""))
-	_signature_label.text = String(_view.get("emotional_signature", ""))
-	_meta_label.text = _meta()
+	_head_label.text = L.t(String(_view.get("display_name", "")))
+	_bond_label.text = L.t(String(_view.get("bond_class", "")))
+	_signature_label.text = L.t(String(_view.get("emotional_signature", "")))
+	_meta_label.text = L.t(_meta())
 
 
 func _card_variation() -> StringName:

@@ -1,0 +1,204 @@
+{
+  "id": "medieval_western.orchards_vineyards_and_brewing.hop_drying_timber_oast_kiln_barrel_bunged",
+  "name": "Oak-Casked Conical Brick Hop-Drying Oast House",
+  "vietnamese_name": "Lò Sấy Hoa Bia Hình Nón Mái Ngói Đỏ (Ủ Thùng Gỗ Sồi)",
+  "category": "orchards_vineyards_and_brewing",
+  "sub_category": "brewhouse_mash_tun_and_copper",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "dry_hops",
+  "gameplay_role": "Supply chain industry element (Conical Brick Hop-Drying Oast House).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of oak-casked conical brick hop-drying oast house, thick iron hoops and oak stave grain, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/orchards_vineyards_and_brewing/hop_drying_timber_oast_kiln_barrel_bunged.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.orchards_vineyards_and_brewing.hop_drying_timber_oast_kiln_barrel_bunged:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.564,
+        0.567
+      ],
+      [
+        0.797,
+        0.812
+      ]
+    ],
+    "frac_zero": 0.5034,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.704,
+        0.937,
+        0.279,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.215,
+        1.0,
+        1.0,
+        0.721,
+        0.007,
+        0.0
+      ],
+      [
+        0.171,
+        0.993,
+        1.0,
+        1.0,
+        0.999,
+        0.634,
+        0.033
+      ],
+      [
+        0.898,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.861
+      ],
+      [
+        0.854,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.986,
+        0.656
+      ],
+      [
+        0.547,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.99,
+        0.242
+      ],
+      [
+        0.008,
+        0.479,
+        0.878,
+        0.956,
+        0.775,
+        0.232,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      24,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 113,
+    "contact_reference_px": 113.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

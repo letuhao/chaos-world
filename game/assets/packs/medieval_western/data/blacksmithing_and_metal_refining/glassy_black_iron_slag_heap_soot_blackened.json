@@ -1,0 +1,125 @@
+{
+  "id": "medieval_western.blacksmithing_and_metal_refining.glassy_black_iron_slag_heap_soot_blackened",
+  "name": "Soot-Blackened Forge Mound of Vitrified Black Forge Slag",
+  "vietnamese_name": "Đống Xỉ Sắt Thủy Tinh Đen Thải Sau Khi Luyện (Bám Muội Than Đen)",
+  "category": "blacksmithing_and_metal_refining",
+  "sub_category": "iron_bloomery_furnace_and_slag_heap",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "inspect_slag",
+  "gameplay_role": "Supply chain industry element (Mound of Vitrified Black Forge Slag).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of soot-blackened forge mound of vitrified black forge slag, thick black carbon layer and ash smudges, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/blacksmithing_and_metal_refining/glassy_black_iron_slag_heap_soot_blackened.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.blacksmithing_and_metal_refining.glassy_black_iron_slag_heap_soot_blackened:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.529,
+        0.579
+      ]
+    ],
+    "frac_zero": 0.6893,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.182,
+        0.627,
+        0.427,
+        0.045,
+        0.0
+      ],
+      [
+        0.225,
+        0.977,
+        1.0,
+        1.0,
+        0.726,
+        0.0
+      ],
+      [
+        0.363,
+        0.7,
+        0.885,
+        0.99,
+        0.965,
+        0.55
+      ]
+    ],
+    "crop_offset": [
+      38,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 174,
+    "contact_reference_px": 174.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

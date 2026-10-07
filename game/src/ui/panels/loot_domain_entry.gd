@@ -11,7 +11,7 @@ extends VBoxContainer
 ## Contract: `summary()` is the testable surface.
 
 ## Wording for a domain that declares no key gate at all (ADR 0033).
-const GATE_OPEN := "Open domain"
+const GATE_OPEN := "LOC_UI_PANELS_4708400A59"
 
 var _required_reach: float = 0.0
 var _carried_reach: float = 0.0
@@ -79,15 +79,15 @@ func _bind_nodes() -> void:
 func _render() -> void:
 	if _gate_label == null:
 		return
-	_gate_label.text = _gate_text()
-	_bonus_label.text = _bonus_text()
+	_gate_label.text = L.t(_gate_text())
+	_bonus_label.text = L.t(_bonus_text())
 
 
 func _gate_text() -> String:
 	if satisfied():
-		return GATE_OPEN
-	return "Needs key reach %d, carrying %d" % [int(_required_reach), int(_carried_reach)]
+		return L.t(GATE_OPEN)
+	return L.t("LOC_UI_PANELS_B94EC87E2E") % [int(_required_reach), int(_carried_reach)]
 
 
 func _bonus_text() -> String:
-	return "Loot bonus %.2f" % _loot_bonus
+	return L.t("LOC_UI_PANELS_90D7240F83") % _loot_bonus

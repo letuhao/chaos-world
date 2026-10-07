@@ -1,0 +1,129 @@
+{
+  "id": "medieval_western.pastoralism_livestock_and_dairy.hollow_log_acorn_swill_trough_muddy_pasture",
+  "name": "Muddy Meadow Dugout Oak Log Pig Swill Trough",
+  "vietnamese_name": "Máng Cho Lợn Ăn Khoét Bằng Thân Cây Sồi (Lầy Bùn Đồng Cỏ)",
+  "category": "pastoralism_livestock_and_dairy",
+  "sub_category": "pigsty_troughs_and_swill_buckets",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "fill_trough",
+  "gameplay_role": "Pastoral manorial farming element (Dugout Oak Log Pig Swill Trough).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of muddy meadow dugout oak log pig swill trough, churned hooves mud and damp clover, Medieval pastoral livestock and dairy farming style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/pastoralism_livestock_and_dairy/hollow_log_acorn_swill_trough_muddy_pasture.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.pastoralism_livestock_and_dairy.hollow_log_acorn_swill_trough_muddy_pasture:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.653,
+        0.655
+      ]
+    ],
+    "frac_zero": 0.5801,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.152,
+        0.239,
+        0.416,
+        0.937,
+        0.396,
+        0.223,
+        0.171
+      ],
+      [
+        0.888,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.902
+      ],
+      [
+        0.435,
+        0.585,
+        0.713,
+        0.911,
+        0.707,
+        0.575,
+        0.412
+      ]
+    ],
+    "crop_offset": [
+      17,
+      22
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 198,
+    "contact_reference_px": 198.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

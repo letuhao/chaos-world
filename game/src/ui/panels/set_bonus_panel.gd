@@ -9,7 +9,7 @@ extends PanelContainer
 ## reaches into a module, never resolves a definition, and owns every number
 ## format the row does not. `summary()` is the testable surface.
 
-const NO_SET_TEXT := "No set selected"
+const NO_SET_TEXT := "LOC_UI_PANELS_C69BE29D86"
 const ROW_SCENE := "res://src/ui/panels/set_threshold_row.tscn"
 
 var _snapshot: Dictionary = {}
@@ -223,7 +223,7 @@ func _member_line(entry: Dictionary) -> String:
 		else "not worn"
 	)
 	var line := (
-		"%s [%s] %s / %s — %s"
+		L.t("LOC_UI_PANELS_BEF18247FE")
 		% [
 			String(entry.get("display_name", entry.get("def_id", ""))),
 			String(entry.get("kind", "")),
@@ -288,13 +288,13 @@ func _rows(box: VBoxContainer) -> Array:
 func _render() -> void:
 	if _header_label == null:
 		return
-	_header_label.text = _header if _header != "" else NO_SET_TEXT
-	_meta_label.text = _meta
-	_member_title.text = "Members (%d)" % _view.get("members", []).size()
-	_threshold_title.text = "Thresholds (%d)" % _view.get("thresholds", []).size()
-	_unique_title.text = "Unique signatures"
+	_header_label.text = L.t(_header if _header != "" else NO_SET_TEXT)
+	_meta_label.text = L.t(_meta)
+	_member_title.text = L.t("LOC_UI_PANELS_3268390E1F") % _view.get("members", []).size()
+	_threshold_title.text = L.t("LOC_UI_PANELS_0BEB04D6C9") % _view.get("thresholds", []).size()
+	_unique_title.text = L.t("LOC_UI_PANELS_D5CE62639E")
 	_unique_title.visible = not _unique_lines.is_empty()
-	_unique_label.text = "\n".join(_unique_lines)
+	_unique_label.text = L.t("\n".join(_unique_lines))
 	_unique_label.visible = not _unique_lines.is_empty()
 	_fill_labels(_member_rows, _member_lines)
 	_fill_rows(_view.get("thresholds", []))
@@ -310,7 +310,7 @@ func _fill_labels(box: VBoxContainer, lines: Array) -> void:
 		child.free()
 	for line in lines:
 		var label := Label.new()
-		label.text = String(line)
+		label.text = L.t(String(line))
 		label.theme_type_variation = &"EffectLabel"
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		box.add_child(label)

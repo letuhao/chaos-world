@@ -1,0 +1,110 @@
+{
+  "id": "medieval_western.orchards_vineyards_and_brewing.windfall_fruit_ground_scatter_sun_ripened_grape",
+  "name": "Sun-Drenched Scatter of Windfall Apples on Grass",
+  "vietnamese_name": "Táo Chín Rụng Rơi Vãi Trên Thảm Cỏ (Nắng Nở Vườn Nho)",
+  "category": "orchards_vineyards_and_brewing",
+  "sub_category": "espalier_apple_and_pear_orchard",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "gather_windfalls",
+  "gameplay_role": "Supply chain industry element (Scatter of Windfall Apples on Grass).",
+  "destructible": false,
+  "material": "organic",
+  "feudal_culture": "french_capetian",
+  "prompt_summary": "2D orthographic top-down game sprite of sun-drenched scatter of windfall apples on grass, dusted purple grapes and emerald vine leaves, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/orchards_vineyards_and_brewing/windfall_fruit_ground_scatter_sun_ripened_grape.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.orchards_vineyards_and_brewing.windfall_fruit_ground_scatter_sun_ripened_grape:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.732
+      ]
+    ],
+    "frac_zero": 0.6052,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.437,
+        0.739,
+        0.417
+      ],
+      [
+        0.812,
+        1.0,
+        0.772
+      ],
+      [
+        0.706,
+        0.952,
+        0.624
+      ]
+    ],
+    "crop_offset": [
+      21,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 76,
+    "contact_reference_px": 76.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

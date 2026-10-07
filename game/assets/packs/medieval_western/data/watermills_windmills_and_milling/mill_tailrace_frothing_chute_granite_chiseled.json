@@ -1,0 +1,120 @@
+{
+  "id": "medieval_western.watermills_windmills_and_milling.mill_tailrace_frothing_chute_granite_chiseled",
+  "name": "Chiseled Granite Frothing Stone Tailrace Drainage Chute",
+  "vietnamese_name": "Rãnh Đá Xả Nước Sau Khi Quay Cối (Đá Hoa Cương Đục Nhám)",
+  "category": "watermills_windmills_and_milling",
+  "sub_category": "overshot_timber_waterwheel",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "water",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": null,
+  "gameplay_role": "Supply chain industry element (Frothing Stone Tailrace Drainage Chute).",
+  "destructible": false,
+  "material": "water",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of chiseled granite frothing stone tailrace drainage chute, sharp dress grooves chiseled into grinding face, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/watermills_windmills_and_milling/mill_tailrace_frothing_chute_granite_chiseled.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.watermills_windmills_and_milling.mill_tailrace_frothing_chute_granite_chiseled:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.512,
+        0.514
+      ]
+    ],
+    "frac_zero": 0.7611,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      2
+    ],
+    "sub_fill": [
+      [
+        0.28,
+        0.281,
+        0.425,
+        0.926,
+        0.435,
+        0.281,
+        0.281
+      ],
+      [
+        0.51,
+        0.531,
+        0.619,
+        0.947,
+        0.625,
+        0.531,
+        0.509
+      ]
+    ],
+    "crop_offset": [
+      16,
+      47
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 210,
+    "contact_reference_px": 210.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

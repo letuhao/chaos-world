@@ -1,0 +1,139 @@
+{
+  "id": "medieval_western.forestry_timber_and_cooperage.long_whip_pit_saw_blade_shaved_oak",
+  "name": "Oak-Curled Six-Foot Tiller & Box Pit Saw Blade",
+  "vietnamese_name": "Lưỡi Cưa Xẻ Gỗ Hai Đầu Dài Sáu Bộ (Bào Gỗ Sồi Cuộn)",
+  "category": "forestry_timber_and_cooperage",
+  "sub_category": "two_man_pit_saw_and_sawpit",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "take_saw",
+  "gameplay_role": "Supply chain industry element (Six-Foot Tiller & Box Pit Saw Blade).",
+  "destructible": false,
+  "material": "iron",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of oak-curled six-foot tiller & box pit saw blade, curled pale shavings and smooth planed oak, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/forestry_timber_and_cooperage/long_whip_pit_saw_blade_shaved_oak.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.forestry_timber_and_cooperage.long_whip_pit_saw_blade_shaved_oak:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.109
+      ],
+      [
+        0.488
+      ]
+    ],
+    "frac_zero": 0.8063,
+    "blocks": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.245,
+        0.0
+      ],
+      [
+        0.0,
+        0.228,
+        0.0
+      ],
+      [
+        0.0,
+        0.365,
+        0.0
+      ],
+      [
+        0.0,
+        0.775,
+        0.0
+      ],
+      [
+        0.24,
+        1.0,
+        0.263
+      ],
+      [
+        0.309,
+        1.0,
+        0.322
+      ],
+      [
+        0.496,
+        0.939,
+        0.573
+      ]
+    ],
+    "crop_offset": [
+      17,
+      32
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 94,
+    "contact_reference_px": 94.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

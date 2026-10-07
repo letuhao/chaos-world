@@ -18,10 +18,10 @@ extends PanelContainer
 ## The press. Carries the portrait id only. The screen decides what to do with it.
 signal chosen(portrait_id: StringName)
 
-const EMPTY_TEXT := "No face is offered."
-const TAKE_TEXT := "Wear this face"
-const WORN_TEXT := "Worn"
-const NO_NAME := "Unnamed face"
+const EMPTY_TEXT := "LOC_UI_PANELS_DFC6C5C708"
+const TAKE_TEXT := "LOC_UI_PANELS_D47965AB1E"
+const WORN_TEXT := "LOC_UI_PANELS_CAFE5884FE"
+const NO_NAME := "LOC_UI_PANELS_9CA8E487DB"
 
 var _view: Dictionary = {}
 var _portrait_id: StringName = &""
@@ -124,12 +124,12 @@ func _render() -> void:
 	visible = not _view.is_empty()
 	if not visible:
 		return
-	_head_label.text = _head
-	_meta_label.text = _meta
+	_head_label.text = L.t(_head)
+	_meta_label.text = L.t(_meta)
 	if _take_button == null:
 		return
 	_take_button.disabled = not can_take()
-	_take_button.text = _button_text()
+	_take_button.text = L.t(_button_text())
 	# The plain `Button` variation for an offered face and `PrimaryButton` for the
 	# chosen one: the selected row is the one action this panel is about, and the
 	# theme's own base button needs no new variation invented for it.
@@ -145,7 +145,7 @@ func _head_text() -> String:
 	if not authored.is_empty():
 		return authored
 	if _portrait_id.is_empty():
-		return NO_NAME
+		return L.t(NO_NAME)
 	return String(_portrait_id)
 
 
@@ -161,13 +161,13 @@ func _meta_text() -> String:
 	if not form.is_empty():
 		parts.append("form %s" % form)
 	if parts.is_empty():
-		return EMPTY_TEXT
+		return L.t(EMPTY_TEXT)
 	return "  ".join(parts)
 
 
 func _button_text() -> String:
 	if not can_take():
-		return EMPTY_TEXT
+		return L.t(EMPTY_TEXT)
 	return WORN_TEXT if bool(_view.get("selected", false)) else TAKE_TEXT
 
 

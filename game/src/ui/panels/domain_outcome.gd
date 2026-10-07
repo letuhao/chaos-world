@@ -39,21 +39,21 @@ extends RefCounted
 ## stay because the fixture line still has to word a trap the player triggered elsewhere, and
 ## a wording invented here would be a second account of the module's.
 const OUTCOME_TEXT := {
-	"telegraphing": "telegraphing — leave before the window closes",
+	"telegraphing": "LOC_UI_PANELS_5846F5E8A0",
 	"fired": "fired",
 	"advanced": "advanced",
-	"wrong_node": "wrong node — the sequence resets",
+	"wrong_node": "LOC_UI_PANELS_4AAEE427FE",
 	"claimed": "claimed",
 }
 
 ## What a FREE read says it did. Its own sentence rather than an `OUTCOME_TEXT` row,
 ## because `inspect` answers with an EMPTY reason (`domain_fixtures.gd:533`): nothing
 ## happened, no state moved, nothing is owed.
-const READ_TEXT := "read — nothing was touched"
+const READ_TEXT := "LOC_UI_PANELS_E6033C333B"
 
 ## The prefix a refusal carries, so a player can tell a refusal from an acceptance without
 ## reading the tone colour (which is the theme's, not this program's).
-const REJECTED_PREFIX := "Rejected:"
+const REJECTED_PREFIX := "LOC_UI_PANELS_E2A3E17593"
 
 
 ## The player-facing sentence for a reason id, as `DomainBridge.REASON_TEXT` words it.

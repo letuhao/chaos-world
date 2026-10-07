@@ -231,11 +231,11 @@ func test_a_missing_or_non_array_effects_field_degrades_rather_than_crashing() -
 	panel.show_hit(
 		{"landed": true, "crit": false, "parried": false, "blocked": false, "clean": true}
 	)
-	assert_eq(panel.effects_text(), CombatReadoutPanel.NO_EFFECTS, "no effects key at all")
+	assert_eq(panel.effects_text(), L.t(CombatReadoutPanel.NO_EFFECTS), "no effects key at all")
 	panel.show_hit({"landed": true, "effects": "not an array"})
 	assert_eq(
 		panel.effects_text(),
-		CombatReadoutPanel.NO_EFFECTS,
+		L.t(CombatReadoutPanel.NO_EFFECTS),
 		"and an effects field that is not an Array reads as no effects"
 	)
 
@@ -282,7 +282,9 @@ func test_each_channel_is_its_own_row_and_the_flag_is_per_channel() -> void:
 func test_a_ledger_with_a_non_dictionary_severity_map_degrades_to_no_wound() -> void:
 	var panel := _panel()
 	panel.show_wounds(_corrupt_ledger("not a dictionary", {}))
-	assert_eq(panel.wounds_text(), CombatReadoutPanel.NO_WOUNDS, "severity must be a Dictionary")
+	assert_eq(
+		panel.wounds_text(), L.t(CombatReadoutPanel.NO_WOUNDS), "severity must be a Dictionary"
+	)
 	panel.show_wounds(_corrupt_ledger({"lung": 0.05}, "not a dictionary"))
 	assert_eq(
 		panel.wounds_text(),
@@ -390,7 +392,7 @@ func test_clearing_forgets_the_last_blow_and_the_hit_count() -> void:
 	assert_eq(bool(view["last_ok"]), false, "and the outcome is forgotten")
 	assert_eq(
 		String((view["readout"] as Dictionary)["verdict_line"]),
-		CombatReadoutPanel.NO_DATA,
+		L.t(CombatReadoutPanel.NO_DATA),
 		"the panel falls back to saying nothing has been struck"
 	)
 

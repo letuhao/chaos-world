@@ -1,0 +1,140 @@
+{
+  "id": "medieval_western.blacksmithing_and_metal_refining.horned_cast_iron_anvil_on_stump_soot_blackened",
+  "name": "Soot-Blackened Forge Horned Smith's Anvil on Oak Tree Stump",
+  "vietnamese_name": "Đe Sắt Có Mũi Nhọn Đặt Trên Khúc Gỗ Sồi (Bám Muội Than Đen)",
+  "category": "blacksmithing_and_metal_refining",
+  "sub_category": "iron_anvil_and_water_swage_block",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "low",
+  "interactive_verb": "hammer_iron",
+  "gameplay_role": "Supply chain industry element (Horned Smith's Anvil on Oak Tree Stump).",
+  "destructible": false,
+  "material": "iron",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of soot-blackened forge horned smith's anvil on oak tree stump, thick black carbon layer and ash smudges, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/blacksmithing_and_metal_refining/horned_cast_iron_anvil_on_stump_soot_blackened.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.blacksmithing_and_metal_refining.horned_cast_iron_anvil_on_stump_soot_blackened:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.595
+      ]
+    ],
+    "frac_zero": 0.6615,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.444,
+        0.819,
+        0.411
+      ],
+      [
+        0.604,
+        1.0,
+        0.549
+      ],
+      [
+        0.353,
+        0.711,
+        0.413
+      ]
+    ],
+    "crop_offset": [
+      17,
+      18
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 59,
+    "contact_reference_px": 59.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

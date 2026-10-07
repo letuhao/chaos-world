@@ -1,0 +1,190 @@
+{
+  "id": "medieval_western.watermills_windmills_and_milling.round_stone_tower_mill_body_creaking_timber",
+  "name": "Creaking Oak Brick Cylindrical Tower Windmill Body",
+  "vietnamese_name": "Tháp Gạch Tròn Cối Xay Gió Kiểu Hà Lan (Gỗ Sồi Kêu Cọt Kẹt)",
+  "category": "watermills_windmills_and_milling",
+  "sub_category": "post_mill_and_tower_windmill_sails",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "enter_mill",
+  "gameplay_role": "Supply chain industry element (Brick Cylindrical Tower Windmill Body).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of creaking oak brick cylindrical tower windmill body, massive weathered oak beams stressed by river torque, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/watermills_windmills_and_milling/round_stone_tower_mill_body_creaking_timber.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.watermills_windmills_and_milling.round_stone_tower_mill_body_creaking_timber:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.732,
+        0.737
+      ],
+      [
+        0.753,
+        0.845
+      ]
+    ],
+    "frac_zero": 0.5835,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.062,
+        0.557,
+        0.781,
+        0.505,
+        0.046
+      ],
+      [
+        0.646,
+        1.0,
+        1.0,
+        1.0,
+        0.619
+      ],
+      [
+        0.767,
+        1.0,
+        1.0,
+        1.0,
+        0.758
+      ],
+      [
+        0.507,
+        1.0,
+        1.0,
+        1.0,
+        0.436
+      ],
+      [
+        0.601,
+        1.0,
+        1.0,
+        1.0,
+        0.504
+      ],
+      [
+        0.745,
+        1.0,
+        1.0,
+        1.0,
+        0.883
+      ],
+      [
+        0.128,
+        0.73,
+        0.895,
+        0.936,
+        0.512
+      ]
+    ],
+    "crop_offset": [
+      50,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 109,
+    "contact_reference_px": 109.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

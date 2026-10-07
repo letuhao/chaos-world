@@ -33,17 +33,17 @@ extends PanelContainer
 ## the player-facing sentences for them, kept here beside the rest of this panel's
 ## vocabulary rather than invented by the screen.
 const DEATH_TEXT := {
-	"": "This soul has never fallen.",
-	"guardian_spent": "A guardian was spent, so the body was kept and the soul untouched.",
-	"soul_spent": "The soul spent its last life, and no body was owed back.",
+	"": "LOC_UI_PANELS_A2424EE2DA",
+	"guardian_spent": "LOC_UI_PANELS_855545B38F",
+	"soul_spent": "LOC_UI_PANELS_772EDF6B62",
 }
 
-const UNWIRED_TEXT := "Nothing is wired to this panel, so it has nothing to report."
-const NOT_WIRED_TEXT := "The soul is not reported here, and no save status is wired."
+const UNWIRED_TEXT := "LOC_UI_PANELS_1F2F1D7A1A"
+const NOT_WIRED_TEXT := "LOC_UI_PANELS_1B05FC45FE"
 const GENERATION_UNITS := 1
-const BACKUP_LINE := "A spare copy of an earlier generation is on disk."
-const NO_BACKUP_LINE := "No spare copy exists yet: the first save leaves none behind."
-const NO_SAVE_LINE := "Nothing has been written yet."
+const BACKUP_LINE := "LOC_UI_PANELS_D42FFDB129"
+const NO_BACKUP_LINE := "LOC_UI_PANELS_9FE76A110C"
+const NO_SAVE_LINE := "LOC_UI_PANELS_C505A9C232"
 
 var _soul: Dictionary = {}
 var _death: Dictionary = {}
@@ -176,13 +176,13 @@ func _bind_nodes() -> void:
 func _render() -> void:
 	if _soul_label == null:
 		return
-	_soul_label.text = _integrity_line if _soul_wired else NOT_WIRED_TEXT
-	_lives_label.text = _lives_line
-	_incarnation_label.text = _incarnation_line
-	_arrival_label.text = _arrival_line
-	_death_label.text = _death_line
-	_save_label.text = _save_line if _save_wired else UNWIRED_TEXT
-	_backup_label.text = _backup_line
+	_soul_label.text = L.t(_integrity_line if _soul_wired else NOT_WIRED_TEXT)
+	_lives_label.text = L.t(_lives_line)
+	_incarnation_label.text = L.t(_incarnation_line)
+	_arrival_label.text = L.t(_arrival_line)
+	_death_label.text = L.t(_death_line)
+	_save_label.text = L.t(_save_line if _save_wired else UNWIRED_TEXT)
+	_backup_label.text = L.t(_backup_line)
 	_death_label.theme_type_variation = &"WarnLabel" if _soul_wired else &"MetaLabel"
 
 
@@ -192,7 +192,7 @@ func _integrity_text() -> String:
 	if not _soul_wired:
 		return ""
 	if int(_soul.get("integrity_max", 0)) <= 0:
-		return "Integrity is not measured."
+		return L.t("LOC_UI_PANELS_6F57C0912E")
 	return (
 		"Integrity %d/%d"
 		% [
@@ -208,7 +208,7 @@ func _lives_text() -> String:
 	if not _soul_wired:
 		return ""
 	var line := (
-		"Lives %d/%d"
+		L.t("LOC_UI_PANELS_838832184A")
 		% [
 			int(_soul.get("lives", 0)),
 			int(_soul.get("lives_max", 0)),
@@ -241,7 +241,10 @@ func _arrival_text() -> String:
 	if not _soul_wired:
 		return ""
 	var arrival := String(_soul.get("arrival", ""))
-	var line := "Arrival: %s" % ("unnamed yet" if arrival.is_empty() else arrival)
+	var line := (
+		L.t("LOC_UI_PANELS_C8826882FE")
+		% (L.t("LOC_UI_PANELS_7CCDA90FFE") if arrival.is_empty() else arrival)
+	)
 	var next_arrival := String(_soul.get("next_arrival", ""))
 	if next_arrival.is_empty():
 		return line + " - and no further arrival is owed."
@@ -263,10 +266,10 @@ func _death_text() -> String:
 	if _death.is_empty():
 		return String(DEATH_TEXT.get("", "This soul has never fallen."))
 	var reason := String(_death.get("reason", ""))
-	var line := String(DEATH_TEXT.get(reason, "The last death is unresolved: %s" % reason))
+	var line := String(DEATH_TEXT.get(reason, L.t("LOC_UI_PANELS_4C98696F4A") % reason))
 	if not bool(_death.get("died", false)):
 		return line
-	return "%s Cost %d integrity." % [line, int(_death.get("damage", 0))]
+	return L.t("LOC_UI_PANELS_33668915DA") % [line, int(_death.get("damage", 0))]
 
 
 ## The save's condition: how many generations have been written, and whether the
@@ -277,7 +280,7 @@ func _save_text() -> String:
 	if not _save_wired:
 		return ""
 	if not bool(_save.get("primary_present", false)):
-		return NO_SAVE_LINE
+		return L.t(NO_SAVE_LINE)
 	return (
 		"Saved - generation %d is the live slot."
 		% [int(_save.get("generation", 0)) * GENERATION_UNITS]

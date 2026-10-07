@@ -24,11 +24,11 @@ extends PanelContainer
 ## Stands in for a shop the build has not realized. A word, never the id and never a
 ## dash: an absent counter is a value that is ABSENT, and "-" would read as an
 ## authored value.
-const NO_COUNTER_TEXT := "No counter here"
+const NO_COUNTER_TEXT := "LOC_UI_PANELS_FE93D4A93E"
 ## "buys" is authored policy, so the row says who it deals with rather than leaving a
 ## player to discover it by a refusal.
-const BUYS_TEXT := "buys %d kinds"
-const NO_BUYS_TEXT := "buys nothing"
+const BUYS_TEXT := "LOC_UI_PANELS_7DF30180DB"
+const NO_BUYS_TEXT := "LOC_UI_PANELS_E8C64463BD"
 ## The separator between the three segments of the rates line, borrowed from the
 ## module's own vocabulary so the two rows read the same way.
 const META_SEP := " · "
@@ -160,11 +160,11 @@ func _render() -> void:
 	visible = is_filled()
 	if not visible:
 		return
-	_head_label.text = _head
-	_afford_label.text = _afford_line
+	_head_label.text = L.t(_head)
+	_afford_label.text = L.t(_afford_line)
 	_afford_label.theme_type_variation = _afford_tone()
-	_shelf_label.text = _shelf_line
-	_purse_label.text = _purse_line
+	_shelf_label.text = L.t(_shelf_line)
+	_purse_label.text = L.t(_purse_line)
 
 
 ## "You can afford the cheapest of these" or "Out of reach of the cheapest of these".
@@ -172,12 +172,12 @@ func _render() -> void:
 ## the facade — this row only decides which sentence is true.
 func _afford_text() -> String:
 	if not bool(_view.get("ok", false)):
-		return NO_COUNTER_TEXT
+		return L.t(NO_COUNTER_TEXT)
 	if (_view.get("shelf", []) as Array).is_empty():
-		return "Nothing on the shelf"
+		return L.t("LOC_UI_PANELS_EEB9DC9FBF")
 	if can_buy():
-		return "You can afford the cheapest of these"
-	return "Out of reach of the cheapest of these"
+		return L.t("LOC_UI_PANELS_0898B9878E")
+	return L.t("LOC_UI_PANELS_66D779EE1D")
 
 
 ## The full priced shelf on one line: "herb ×10 — 24 · pill ×4 — 40". Every figure is
@@ -186,7 +186,7 @@ func _afford_text() -> String:
 func _shelf_text() -> String:
 	var rows := _view.get("shelf", []) as Array
 	if rows.is_empty():
-		return "No stock"
+		return L.t("LOC_UI_PANELS_902CE3EF84")
 	var parts: Array[String] = []
 	for entry in rows:
 		var row := entry as Dictionary

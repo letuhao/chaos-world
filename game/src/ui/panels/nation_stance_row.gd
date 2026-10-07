@@ -21,8 +21,8 @@ extends PanelContainer
 ##
 ## `summary()` is the testable surface.
 
-const UNKNOWN_TEXT := "stance unread"
-const PARTNER_SUFFIX := "in a stance"
+const UNKNOWN_TEXT := "LOC_UI_PANELS_E34009A152"
+const PARTNER_SUFFIX := "LOC_UI_PANELS_C8EBF99DFA"
 const IDENTITY_TEXT := "against"
 
 var _view: Dictionary = {}
@@ -131,10 +131,10 @@ func _render() -> void:
 	theme_type_variation = _card_tone()
 	if not visible:
 		return
-	_head_label.text = _head
+	_head_label.text = L.t(_head)
 	_head_label.theme_type_variation = _head_tone()
-	_partner_label.text = _partner
-	_meta_label.text = _meta
+	_partner_label.text = L.t(_partner)
+	_meta_label.text = L.t(_meta)
 
 
 ## War is the only stance with a standoff attached, so it is the only one that gets

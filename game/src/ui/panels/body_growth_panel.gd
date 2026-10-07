@@ -28,20 +28,20 @@ extends PanelContainer
 ## One row per stat, in reading order: the three attributes a breakthrough pays,
 ## then the two magnitudes they compose into.
 const ROWS: Array = [
-	{"id": &"bone_density", "label": "Bone density", "decimals": 1},
-	{"id": &"muscle_fiber", "label": "Muscle fibre", "decimals": 1},
-	{"id": &"organ_vitality", "label": "Organ vitality", "decimals": 1},
-	{"id": &"carry_capacity", "label": "Carrying capacity", "decimals": 0},
-	{"id": &"body_cultivation_power", "label": "Cultivation power", "decimals": 2},
-	{"id": &"regeneration", "label": "Regeneration", "decimals": 2},
+	{"id": &"bone_density", "label": "LOC_UI_PANELS_86D9C2A21A", "decimals": 1},
+	{"id": &"muscle_fiber", "label": "LOC_UI_PANELS_38D4D0B298", "decimals": 1},
+	{"id": &"organ_vitality", "label": "LOC_UI_PANELS_3B9662A9C6", "decimals": 1},
+	{"id": &"carry_capacity", "label": "LOC_UI_PANELS_1D9FA56700", "decimals": 0},
+	{"id": &"body_cultivation_power", "label": "LOC_UI_PANELS_C06C5596E2", "decimals": 2},
+	{"id": &"regeneration", "label": "LOC_UI_PANELS_506EB98F49", "decimals": 2},
 ]
 
 ## What a row says when the body does not carry the stat at all. Distinct from a
 ## rendered zero on purpose: one is a measurement, the other is an absence.
-const UNEARNED := " — not yet gained"
+const UNEARNED := "LOC_UI_PANELS_2A4101BA47"
 
-const _TITLE := "Body growth"
-const _NO_BODY := "No body path"
+const _TITLE := "LOC_UI_PANELS_071D25A1CB"
+const _NO_BODY := "LOC_UI_PANELS_356CFE27B0"
 ## Row labels are numbered after this prefix, one per entry in `ROWS`. Built with
 ## `%s` rather than inlined into the format string: `"%GrowthLabel%d"` is a `%G`
 ## conversion, which GDScript rejects — and it rejects it by leaving every label
@@ -135,12 +135,12 @@ func _render() -> void:
 		return
 	if _surface.is_empty():
 		_title_label.theme_type_variation = &"MetaLabel"
-		_title_label.text = _NO_BODY
+		_title_label.text = L.t(_NO_BODY)
 		for index in ROWS.size():
 			_set_label(index, "")
 		return
 	_title_label.theme_type_variation = &"SectionTitle"
-	_title_label.text = _TITLE
+	_title_label.text = L.t(_TITLE)
 	for index in ROWS.size():
 		_set_label(index, _row_text(index))
 
@@ -150,7 +150,7 @@ func _set_label(index: int, text: String) -> void:
 		return
 	var label := _row_labels[index]
 	if label != null:
-		label.text = text
+		label.text = L.t(text)
 
 
 ## One row's line. A stat the surface does not carry says so; anything else is
@@ -158,11 +158,14 @@ func _set_label(index: int, text: String) -> void:
 func _row_text(index: int) -> String:
 	var spec: Dictionary = ROWS[index]
 	var id := StringName(spec["id"])
+	# `ROWS` holds KEYS and so does `UNEARNED`, so both resolve here — the row's line is the
+	# one place the pair becomes text, and `summary()` publishes what this returns.
+	var label := L.t(String(spec["label"]))
 	if not _surface.has(String(id)):
-		return "%s%s" % [String(spec["label"]), UNEARNED]
+		return L.t("LOC_UI_PANELS_9BDA272DBC") % [label, L.t(UNEARNED)]
 	return (
-		"%s %s"
-		% [String(spec["label"]), _number(float(_surface[String(id)]), int(spec["decimals"]))]
+		L.t("LOC_UI_PANELS_265FC52551")
+		% [label, _number(float(_surface[String(id)]), int(spec["decimals"]))]
 	)
 
 

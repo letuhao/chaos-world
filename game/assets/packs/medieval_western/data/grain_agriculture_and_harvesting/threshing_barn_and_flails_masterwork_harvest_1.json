@@ -1,0 +1,205 @@
+{
+  "id": "medieval_western.grain_agriculture_and_harvesting.threshing_barn_and_flails_masterwork_harvest_1",
+  "name": "Bountiful Harvest Threshing Barn And Flails #1",
+  "vietnamese_name": "Vụ Mùa Bội Thu Threshing Barn And Flails #1",
+  "category": "grain_agriculture_and_harvesting",
+  "sub_category": "threshing_barn_and_flails",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "celebrate_harvest",
+  "gameplay_role": "Bountiful harvest manorial centerpiece.",
+  "destructible": false,
+  "material": "organic",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "Bountiful harvest festival centerpiece of threshing_barn_and_flails, golden wheat and harvest garlands, medieval style.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/grain_agriculture_and_harvesting/threshing_barn_and_flails_masterwork_harvest_1.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.grain_agriculture_and_harvesting.threshing_barn_and_flails_masterwork_harvest_1:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.428,
+        0.424
+      ],
+      [
+        0.815,
+        0.81
+      ]
+    ],
+    "frac_zero": 0.5164,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.004,
+        0.021,
+        0.331,
+        0.198,
+        0.029,
+        0.0
+      ],
+      [
+        0.018,
+        0.277,
+        0.481,
+        0.805,
+        0.426,
+        0.071,
+        0.008
+      ],
+      [
+        0.156,
+        0.935,
+        1.0,
+        1.0,
+        1.0,
+        0.808,
+        0.037
+      ],
+      [
+        0.416,
+        0.989,
+        1.0,
+        1.0,
+        1.0,
+        0.932,
+        0.262
+      ],
+      [
+        0.915,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.811
+      ],
+      [
+        0.65,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.583
+      ],
+      [
+        0.083,
+        0.523,
+        0.887,
+        0.935,
+        0.811,
+        0.461,
+        0.012
+      ]
+    ],
+    "crop_offset": [
+      18,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 138,
+    "contact_reference_px": 138.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

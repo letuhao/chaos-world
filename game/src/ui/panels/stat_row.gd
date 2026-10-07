@@ -119,7 +119,7 @@ func ratio() -> float:
 ## Value with its unit and precision. The single formatting rule every row uses.
 func value_text() -> String:
 	if _maximum > 0.0:
-		return "%s/%s" % [_number(_current), _number(_maximum)]
+		return L.t("LOC_UI_PANELS_B9884E384D") % [_number(_current), _number(_maximum)]
 	return _number(_current)
 
 
@@ -171,10 +171,10 @@ func _render() -> void:
 	if _value == null:
 		return
 	visible = not _name.is_empty()
-	_label.text = _name
+	_label.text = L.t(_name)
 	var text_only := _mode == MODE_TEXT
 	_value.visible = not text_only
-	_value.text = value_text()
+	_value.text = L.t(value_text())
 	if _bar != null:
 		_visible_bar = _mode == MODE_BAR
 		_bar.visible = _visible_bar

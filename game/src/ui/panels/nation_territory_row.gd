@@ -17,11 +17,11 @@ extends PanelContainer
 ##
 ## `summary()` is the testable surface. Every format is the row's own.
 
-const NO_CHALLENGER := "Uncontested"
-const NO_HOLDER := "Unheld ground"
-const HOLDER_PREFIX := "Held by"
-const CHALLENGER_PREFIX := "Contested by"
-const UNKNOWN_TEXT := "Claim unnamed"
+const NO_CHALLENGER := "LOC_UI_PANELS_381F54ABB8"
+const NO_HOLDER := "LOC_UI_PANELS_E1F5215ABF"
+const HOLDER_PREFIX := "LOC_UI_PANELS_0D4A738829"
+const CHALLENGER_PREFIX := "LOC_UI_PANELS_B0B2F4EB2A"
+const UNKNOWN_TEXT := "LOC_UI_PANELS_CFBBE0095D"
 const TIER_PREFIX := "tier"
 
 var _view: Dictionary = {}
@@ -141,13 +141,13 @@ func _render() -> void:
 	theme_type_variation = _card_tone()
 	if not visible:
 		return
-	_head_label.text = _head
+	_head_label.text = L.t(_head)
 	_head_label.theme_type_variation = _head_tone()
-	_holder_label.text = _holder
-	_challenge_label.text = _challenge
+	_holder_label.text = L.t(_holder)
+	_challenge_label.text = L.t(_challenge)
 	_challenge_label.theme_type_variation = _challenge_tone()
 	_challenge_label.visible = is_contested()
-	_meta_label.text = _meta
+	_meta_label.text = L.t(_meta)
 
 
 func _card_tone() -> StringName:

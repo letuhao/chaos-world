@@ -1,0 +1,123 @@
+{
+  "id": "medieval_western.watermills_windmills_and_milling.bolting_cloth_flour_sifter_rig_river_splashed",
+  "name": "River-Misted Hand-Cranked Linen Flour Sifting Chest",
+  "vietnamese_name": "Thùng Rây Bột Mì Quay Tay Bọc Vải Lanh (Bọt Nước Sông Bắn)",
+  "category": "watermills_windmills_and_milling",
+  "sub_category": "millers_flour_sacks_and_chute",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "sift_flour",
+  "gameplay_role": "Supply chain industry element (Hand-Cranked Linen Flour Sifting Chest).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of river-misted hand-cranked linen flour sifting chest, wet splashing water drops and mossy paddles, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/watermills_windmills_and_milling/bolting_cloth_flour_sifter_rig_river_splashed.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.watermills_windmills_and_milling.bolting_cloth_flour_sifter_rig_river_splashed:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.565,
+        0.621
+      ]
+    ],
+    "frac_zero": 0.6543,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.014,
+        0.143,
+        0.516,
+        0.488,
+        0.369,
+        0.03
+      ],
+      [
+        0.884,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.827
+      ],
+      [
+        0.179,
+        0.472,
+        0.896,
+        0.927,
+        0.682,
+        0.204
+      ]
+    ],
+    "crop_offset": [
+      33,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 104,
+    "contact_reference_px": 104.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

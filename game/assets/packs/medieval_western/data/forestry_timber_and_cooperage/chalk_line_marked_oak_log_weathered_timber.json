@@ -1,0 +1,153 @@
+{
+  "id": "medieval_western.forestry_timber_and_cooperage.chalk_line_marked_oak_log_weathered_timber",
+  "name": "Weathered Timber Heavy Hewn Oak Log Marked with Chalk",
+  "vietnamese_name": "Thân Cây Sồi Búng Mực Trắng Chuẩn Bị Xẻ (Gỗ Phong Hóa)",
+  "category": "forestry_timber_and_cooperage",
+  "sub_category": "two_man_pit_saw_and_sawpit",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "low",
+  "interactive_verb": "saw_plank",
+  "gameplay_role": "Supply chain industry element (Heavy Hewn Oak Log Marked with Chalk).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of weathered timber heavy hewn oak log marked with chalk, silvered grain and drying shrinkage checks, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/forestry_timber_and_cooperage/chalk_line_marked_oak_log_weathered_timber.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.forestry_timber_and_cooperage.chalk_line_marked_oak_log_weathered_timber:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.682,
+        0.691
+      ]
+    ],
+    "frac_zero": 0.6358,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.714,
+        0.773,
+        0.656,
+        0.656,
+        0.664,
+        0.807,
+        0.7
+      ],
+      [
+        0.851,
+        0.906,
+        0.844,
+        0.844,
+        0.844,
+        0.934,
+        0.838
+      ],
+      [
+        0.023,
+        0.261,
+        0.0,
+        0.0,
+        0.0,
+        0.355,
+        0.036
+      ]
+    ],
+    "crop_offset": [
+      17,
+      28
+    ],
+    "trunk_columns": [
+      5
+    ],
+    "contact_px": 53,
+    "contact_reference_px": 53.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

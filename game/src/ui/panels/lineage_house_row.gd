@@ -28,20 +28,18 @@ extends PanelContainer
 ## a fact, and hiding it would read as a missing widget.
 
 ## The facade's own empty-clan answer, spelled out here rather than as `""`.
-const NO_HOUSE := "No house"
-const NO_HOUSE_NOTE := (
-	"an ordinary hero, not a defect: a house is something you are born to or " + "admitted to"
-)
-const NO_POSITION := "No position held"
-const FOUNDED_ON := "Founded on"
-const RANK_LINE := "Position"
-const STANDING_LINE := "Standing"
-const RECOGNITION_LINE := "Recognised at"
-const PATRONAGE_HEAD := "The house owes you"
-const DUTY_HEAD := "You owe the house"
-const NOTHING_PUBLISHED := "nothing published"
-const UNKNOWN_HOUSE := "House unnamed"
-const BAND_HINT := "the band this standing publishes"
+const NO_HOUSE := "LOC_UI_PANELS_9817BF5C60"
+const NO_HOUSE_NOTE := "LOC_UI_PANELS_694FAF9838" + "LOC_UI_PANELS_2FEC71C85D"
+const NO_POSITION := "LOC_UI_PANELS_39A8D71F21"
+const FOUNDED_ON := "LOC_UI_PANELS_59AF7CBB9A"
+const RANK_LINE := "LOC_UI_PANELS_CF1C85ADBA"
+const STANDING_LINE := "LOC_UI_PANELS_742F03C37A"
+const RECOGNITION_LINE := "LOC_UI_PANELS_2D2111FA1D"
+const PATRONAGE_HEAD := "LOC_UI_PANELS_3BA227C31E"
+const DUTY_HEAD := "LOC_UI_PANELS_7EF42D3F64"
+const NOTHING_PUBLISHED := "LOC_UI_PANELS_7F1F670A84"
+const UNKNOWN_HOUSE := "LOC_UI_PANELS_3A1492F09A"
+const BAND_HINT := "LOC_UI_PANELS_94FD10FEAB"
 
 var _view: Dictionary = {}
 ## The facade's `clans` catalog, set by `show_house` alongside the actor block. A
@@ -154,11 +152,11 @@ func _render() -> void:
 	if not visible:
 		return
 	_compute_lines()
-	_name_label.text = _name_line
-	_position_label.text = _position_line
-	_standing_label.text = _standing_line
-	_terms_label.text = _terms_line
-	_meta_label.text = _meta
+	_name_label.text = L.t(_name_line)
+	_position_label.text = L.t(_position_line)
+	_standing_label.text = L.t(_standing_line)
+	_terms_label.text = L.t(_terms_line)
+	_meta_label.text = L.t(_meta)
 	_meta_label.visible = _meta != ""
 
 
@@ -175,7 +173,7 @@ func _compute_lines() -> void:
 func _name_line_of() -> String:
 	var clan_id := String(_view.get("clan", ""))
 	if clan_id == "":
-		return NO_HOUSE
+		return L.t(NO_HOUSE)
 	var authored := String(_view.get("display_name", ""))
 	if authored != "":
 		return authored
@@ -188,17 +186,17 @@ func _position_text() -> String:
 	var index := int(_view.get("rank_index", -1))
 	var count := int(_view.get("rank_count", 0))
 	if rank == "":
-		return "%s: %s" % [RANK_LINE, NO_POSITION]
+		return L.t("LOC_UI_PANELS_D9CD377026") % [L.t(RANK_LINE), L.t(NO_POSITION)]
 	if count > 0 and index >= 0:
-		return "%s: %s (%d of %d)" % [RANK_LINE, rank, index + 1, count]
-	return "%s: %s" % [RANK_LINE, rank]
+		return L.t("LOC_UI_PANELS_3DE33305A6") % [L.t(RANK_LINE), rank, index + 1, count]
+	return L.t("LOC_UI_PANELS_D9CD377026") % [L.t(RANK_LINE), rank]
 
 
 ## The standing, the recognition it publishes, and the band it falls in. Three
 ## numbers kept apart because ADR 0064 keeps them apart.
 func _standing_text() -> String:
 	var band := String(_view.get("band_rank", ""))
-	var band_text := "" if band == "" else " · %s" % band
+	var band_text := "" if band == "" else L.t("LOC_UI_PANELS_CF8832D9E0") % band
 	return (
 		"%s %d · %s %.1f%s"
 		% [
@@ -231,7 +229,7 @@ func _terms_text() -> String:
 ## a member of a high-standing house can be recognised without being weightier.
 func _meta_text() -> String:
 	if String(_view.get("clan", "")) == "":
-		return NO_HOUSE_NOTE
+		return L.t(NO_HOUSE_NOTE)
 	var parts: Array[String] = []
 	var founding := String(_view.get("founding_bloodline", ""))
 	if founding != "":

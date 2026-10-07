@@ -1,0 +1,103 @@
+{
+  "id": "medieval_western.grain_agriculture_and_harvesting.clay_clapper_bird_scarer_cord_rain_soaked_crop",
+  "name": "Rain-Flattened Rope Strung with Clattering Pot Shards",
+  "vietnamese_name": "Dây Giật Nối Mảnh Gốm Khua Đuổi Chim Sẻ (Mưa Rạp Thân Cây)",
+  "category": "grain_agriculture_and_harvesting",
+  "sub_category": "gleaning_and_autumn_field_scarecrows",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "scare_birds",
+  "gameplay_role": "Manorial agrarian supply chain element (Rope Strung with Clattering Pot Shards).",
+  "destructible": false,
+  "material": "organic",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of rain-flattened rope strung with clattering pot shards, damp autumn mud and rain-bowed heavy grain stalks, Medieval open field agriculture and grain harvest style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/grain_agriculture_and_harvesting/clay_clapper_bird_scarer_cord_rain_soaked_crop.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.grain_agriculture_and_harvesting.clay_clapper_bird_scarer_cord_rain_soaked_crop:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.497
+      ]
+    ],
+    "frac_zero": 0.6778,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.192,
+        0.495,
+        0.037
+      ],
+      [
+        0.812,
+        0.997,
+        0.726
+      ],
+      [
+        0.213,
+        0.78,
+        0.177
+      ]
+    ],
+    "crop_offset": [
+      17,
+      17
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 37,
+    "contact_reference_px": 37.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

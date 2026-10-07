@@ -1,0 +1,109 @@
+{
+  "id": "medieval_western.blacksmithing_and_metal_refining.oil_quenching_iron_vat_tray_coal_glowing",
+  "name": "Coal-Glowing Ember Stone Trough of Mineral Tempering Oil",
+  "vietnamese_name": "Máng Đá Chứa Dầu Khoáng Tôi Lưỡi Kiếm (Than Đỏ Rực Lửa)",
+  "category": "blacksmithing_and_metal_refining",
+  "sub_category": "tempering_water_trough_and_quench_barrel",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "temper_blade",
+  "gameplay_role": "Supply chain industry element (Stone Trough of Mineral Tempering Oil).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of coal-glowing ember stone trough of mineral tempering oil, intense glowing orange embers and coal dust, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/blacksmithing_and_metal_refining/oil_quenching_iron_vat_tray_coal_glowing.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.blacksmithing_and_metal_refining.oil_quenching_iron_vat_tray_coal_glowing:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.626
+      ]
+    ],
+    "frac_zero": 0.6662,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.294,
+        0.755,
+        0.217
+      ],
+      [
+        0.816,
+        1.0,
+        0.832
+      ],
+      [
+        0.398,
+        0.832,
+        0.332
+      ]
+    ],
+    "crop_offset": [
+      20,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 54,
+    "contact_reference_px": 54.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

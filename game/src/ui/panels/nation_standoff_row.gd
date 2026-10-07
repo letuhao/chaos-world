@@ -22,10 +22,10 @@ extends PanelContainer
 ##
 ## `summary()` is the testable surface.
 
-const OPEN_TEXT := "Open"
+const OPEN_TEXT := "LOC_UI_PANELS_CF9B77061F"
 const NO_WINNER := "undecided"
 const CLAIMED_OVER := "over"
-const NO_PRIZE_TEXT := "no prize declared"
+const NO_PRIZE_TEXT := "LOC_UI_PANELS_63669548C7"
 const PRIZE_LABEL := "prize"
 const VERDICT_TEXT := "verdicts"
 
@@ -158,13 +158,13 @@ func _render() -> void:
 	theme_type_variation = _card_tone()
 	if not visible:
 		return
-	_head_label.text = _head
+	_head_label.text = L.t(_head)
 	_head_label.theme_type_variation = _head_tone()
-	_prize_label.text = _prize
-	_tally_label.text = _tally
-	_outcome_label.text = _outcome
+	_prize_label.text = L.t(_prize)
+	_tally_label.text = L.t(_tally)
+	_outcome_label.text = L.t(_outcome)
 	_outcome_label.theme_type_variation = _outcome_tone()
-	_meta_label.text = _meta
+	_meta_label.text = L.t(_meta)
 
 
 ## An open standoff is the loudest thing on the board: it has a prize at stake and
@@ -193,12 +193,12 @@ func _prize_text() -> String:
 	var prize: Dictionary = _view.get("prize", {}) as Dictionary
 	var transfer := String(prize.get("transfer", ""))
 	if transfer == "":
-		return "%s: %s" % [PRIZE_LABEL, NO_PRIZE_TEXT]
+		return L.t("LOC_UI_PANELS_D9CD377026") % [L.t(PRIZE_LABEL), L.t(NO_PRIZE_TEXT)]
 	var parts: Array = [transfer]
 	var deltas := _prize_standing()
 	for side_id in deltas.keys():
 		parts.append("%s %+d" % [String(side_id), int(deltas[side_id])])
-	return "%s: %s" % [PRIZE_LABEL, ", ".join(parts)]
+	return L.t("LOC_UI_PANELS_D9CD377026") % [L.t(PRIZE_LABEL), ", ".join(parts)]
 
 
 ## "3 / 3 verdicts". The tally is a COUNT of verdicts decided elsewhere — there is no
@@ -208,21 +208,24 @@ func _tally_text() -> String:
 	var sides: Dictionary = _view.get("sides", {}) as Dictionary
 	for side in sides.values():
 		tally += int((side as Dictionary).get("won", 0))
-	return "%d / %d %s" % [tally, int(_view.get("quota", 0)), VERDICT_TEXT]
+	return L.t("LOC_UI_PANELS_37FB1129D0") % [tally, int(_view.get("quota", 0)), L.t(VERDICT_TEXT)]
 
 
 func _outcome_text() -> String:
 	if is_open():
-		return OPEN_TEXT
+		return L.t(OPEN_TEXT)
 	var outcome := String(_view.get("outcome", ""))
 	var winner := String(_view.get("winner_id", ""))
 	if outcome == "":
-		return OPEN_TEXT
-	return "%s · %s" % [outcome, winner if winner != "" else NO_WINNER]
+		return L.t(OPEN_TEXT)
+	return L.t("LOC_UI_PANELS_C59A938FCC") % [outcome, winner if winner != "" else L.t(NO_WINNER)]
 
 
 func _meta_text() -> String:
-	return "%s · %s" % [String(_view.get("standoff_id", "")), String(_view.get("other_id", ""))]
+	return (
+		L.t("LOC_UI_PANELS_C59A938FCC")
+		% [String(_view.get("standoff_id", "")), String(_view.get("other_id", ""))]
+	)
 
 
 func _prize_standing() -> Dictionary:

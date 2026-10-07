@@ -34,10 +34,10 @@ extends PanelContainer
 
 ## What the panel says when it has been handed nothing. "Nothing is wired" and "this
 ## fixture is not a trap" are different facts, so they get different sentences.
-const NOTHING_TEXT := "Read a fixture to see what it would cost."
+const NOTHING_TEXT := "LOC_UI_PANELS_8C32D606BB"
 
 ## The heading, so a player knows what the block they are reading IS.
-const TITLE_TEXT := "Telegraph"
+const TITLE_TEXT := "LOC_UI_PANELS_BAF062AB02"
 
 ## The three-state vocabulary, from the module's own ledger. A trap is never re-armed
 ## within a run (`domain_fixtures.gd:394`), so `spent` is terminal and says so in words
@@ -49,8 +49,8 @@ const STATE_SPENT := "spent"
 ## How a magnitude is rendered. `%s` rather than `%d`: the authored share is a
 ## FRACTION of a health pool, and rounding it to an integer on a 100-point hero reads
 ## as a different number than the one the module published.
-const MAGNITUDE_TEMPLATE := "%.1f"
-const WINDOW_TEMPLATE := "%.1fs"
+const MAGNITUDE_TEMPLATE := "LOC_UI_PANELS_16B5D7DF20"
+const WINDOW_TEMPLATE := "LOC_UI_PANELS_B9C4E4A2BE"
 
 ## The whole payload, held so `summary()` answers before any frame runs. Never mutated:
 ## the caller may hand the same dictionary to two panels.
@@ -162,11 +162,11 @@ func _bind_nodes() -> void:
 func _render() -> void:
 	if _state_label == null:
 		return
-	_boundary_label.text = _boundary_text()
-	_harm_label.text = _harm_text()
-	_window_label.text = _window_text()
-	_levers_label.text = _levers_text()
-	_state_label.text = _state_text()
+	_boundary_label.text = L.t(_boundary_text())
+	_harm_label.text = L.t(_harm_text())
+	_window_label.text = L.t(_window_text())
+	_levers_label.text = L.t(_levers_text())
+	_state_label.text = L.t(_state_text())
 	# THEME VARIATIONS, never `theme_override_*` (AGENTS.md, UI standard): a spent trap
 	# is the one state where the panel is reporting a past consequence, and the ink is the
 	# theme's to choose.
@@ -198,7 +198,7 @@ func _boundary_text() -> String:
 	if _payload.is_empty():
 		return ""
 	if _bounds.size() < 4:
-		return "its reach is not authored"
+		return L.t("LOC_UI_PANELS_1E53323563")
 	return (
 		"reach: %d,%d %dx%d tiles"
 		% [int(_bounds[0]), int(_bounds[1]), int(_bounds[2]), int(_bounds[3])]
@@ -220,8 +220,8 @@ func _harm_text() -> String:
 		return ""
 	var share := MAGNITUDE_TEMPLATE % _damage_share
 	if _status_id.is_empty():
-		return "%s, harm %s" % [_kind_name(), share]
-	return "%s: %s, harm %s" % [_kind_name(), _status_id, share]
+		return L.t("LOC_UI_PANELS_2A19B25A84") % [_kind_name(), share]
+	return L.t("LOC_UI_PANELS_50ABC461B3") % [_kind_name(), _status_id, share]
 
 
 ## The authored window and how long the harm then lasts. The window is the number that
@@ -243,8 +243,8 @@ func _levers_text() -> String:
 	if _payload.is_empty():
 		return ""
 	if _levers.is_empty():
-		return "nothing blunts this"
-	return "blunted by: %s" % ", ".join(_levers)
+		return L.t("LOC_UI_PANELS_00879DEA99")
+	return L.t("LOC_UI_PANELS_7D079853CB") % ", ".join(_levers)
 
 
 ## The ledger state, in words. `spent` is terminal within a run (ADR 0211's one-way
@@ -252,14 +252,14 @@ func _levers_text() -> String:
 ## to wonder whether walking back across it is free.
 func _state_text() -> String:
 	if _payload.is_empty():
-		return NOTHING_TEXT
+		return L.t(NOTHING_TEXT)
 	match _state:
 		STATE_SPENT:
-			return "already fired this run — the floor is spent"
+			return L.t("LOC_UI_PANELS_D895E653CB")
 		STATE_ARMED:
-			return "telegraphing — leave before the window closes"
+			return L.t("LOC_UI_PANELS_5846F5E8A0")
 		_:
-			return "quiet — it fires only if you step inside"
+			return L.t("LOC_UI_PANELS_52E6906A36")
 
 
 func _kind_name() -> String:

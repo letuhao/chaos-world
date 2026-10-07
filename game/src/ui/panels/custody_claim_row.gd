@@ -33,10 +33,10 @@ extends PanelContainer
 ## Stands in for a released claim's holder. A word, never the id and never a dash:
 ## an absent holder is a value that is ABSENT (ADR 0083), and "-" would read as an
 ## authored value.
-const VACANT_TEXT := "Vacant"
+const VACANT_TEXT := "LOC_UI_PANELS_1966F9678D"
 ## A claim whose subject id this build's record does not name. Said in words rather
 ## than rendered as an empty card.
-const UNNAMED_SUBJECT := "Subject unnamed"
+const UNNAMED_SUBJECT := "LOC_UI_PANELS_8A399E7C59"
 ## The two statuses `CustodyState` publishes, read off the record and never
 ## composed: a panel that paraphrased them would be describing a rule the module
 ## did not write.
@@ -189,12 +189,12 @@ func _render() -> void:
 	theme_type_variation = _card_tone()
 	if not visible:
 		return
-	_head_label.text = _subject
+	_head_label.text = L.t(_subject)
 	_head_label.theme_type_variation = _head_tone()
-	_holder_label.text = _holder
+	_holder_label.text = L.t(_holder)
 	_holder_label.theme_type_variation = _holder_tone()
-	_term_label.text = _term
-	_status_label.text = _status
+	_term_label.text = L.t(_term)
+	_status_label.text = L.t(_status)
 	_status_label.theme_type_variation = _status_tone()
 
 
@@ -229,11 +229,11 @@ func _status_tone() -> StringName:
 func _holder_text() -> String:
 	var holder: Dictionary = _view.get("holder", {}) as Dictionary
 	if holder.is_empty() or OwnerRef.is_vacant(holder):
-		return VACANT_TEXT
+		return L.t(VACANT_TEXT)
 	var kind := String(holder.get("kind", ""))
 	var id := String(holder.get("id", ""))
 	if kind == "" and id == "":
-		return VACANT_TEXT
+		return L.t(VACANT_TEXT)
 	return kind if id == "" else "%s %s" % [kind, id]
 
 

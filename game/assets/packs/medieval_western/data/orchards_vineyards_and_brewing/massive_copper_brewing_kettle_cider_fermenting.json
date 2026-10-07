@@ -1,0 +1,207 @@
+{
+  "id": "medieval_western.orchards_vineyards_and_brewing.massive_copper_brewing_kettle_cider_fermenting",
+  "name": "Cider-Fermenting Brick-Set Hammered Copper Mash Kettle",
+  "vietnamese_name": "Nồi Nấu Bia Bằng Đồng Đỏ Khổng Lồ (Thơm Mùi Rượu Táo)",
+  "category": "orchards_vineyards_and_brewing",
+  "sub_category": "brewhouse_mash_tun_and_copper",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "brew_beer",
+  "gameplay_role": "Supply chain industry element (Brick-Set Hammered Copper Mash Kettle).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of cider-fermenting brick-set hammered copper mash kettle, sweet aroma of crushed apples and fermenting must, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/orchards_vineyards_and_brewing/massive_copper_brewing_kettle_cider_fermenting.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.orchards_vineyards_and_brewing.massive_copper_brewing_kettle_cider_fermenting:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.269,
+        0.262
+      ],
+      [
+        0.695,
+        0.689
+      ]
+    ],
+    "frac_zero": 0.6262,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.192,
+        0.965,
+        0.078,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.18,
+        1.0,
+        0.079,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.021,
+        0.642,
+        1.0,
+        0.566,
+        0.005,
+        0.0
+      ],
+      [
+        0.0,
+        0.601,
+        1.0,
+        1.0,
+        1.0,
+        0.638,
+        0.0
+      ],
+      [
+        0.0,
+        0.826,
+        1.0,
+        1.0,
+        1.0,
+        0.794,
+        0.025
+      ],
+      [
+        0.155,
+        0.874,
+        1.0,
+        1.0,
+        1.0,
+        0.757,
+        0.085
+      ],
+      [
+        0.374,
+        0.798,
+        0.898,
+        0.976,
+        0.885,
+        0.795,
+        0.387
+      ]
+    ],
+    "crop_offset": [
+      16,
+      19
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 218,
+    "contact_reference_px": 218.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

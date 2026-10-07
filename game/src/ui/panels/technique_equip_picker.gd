@@ -19,8 +19,8 @@ signal equip_requested(technique_id: StringName)
 ## Rows the scene mounts; the pool grows to fit a codex larger than that.
 const OFFER_ROWS := 4
 const OFFER_SCENE := "res://src/ui/panels/technique_equip_row.tscn"
-const NOTHING_LEFT := "Every technique you know is already bound."
-const NOTHING_KNOWN := "No technique learned yet."
+const NOTHING_LEFT := "LOC_UI_PANELS_FA33E9E496"
+const NOTHING_KNOWN := "LOC_UI_PANELS_186D7AD2C0"
 
 var _entries: Array = []
 var _rows: Array = []
@@ -177,7 +177,7 @@ func _feed() -> void:
 func _render() -> void:
 	if _empty_label == null:
 		return
-	_empty_label.text = _empty_text()
+	_empty_label.text = L.t(_empty_text())
 	_empty_label.visible = _entries.is_empty()
 
 
@@ -186,7 +186,7 @@ func _render() -> void:
 ## next moves — learn one, or change a binding.
 func _empty_text() -> String:
 	if _entries.is_empty():
-		return NOTHING_KNOWN
+		return L.t(NOTHING_KNOWN)
 	var offers := 0
 	for entry in _entries:
 		if _offerable(entry as Dictionary):

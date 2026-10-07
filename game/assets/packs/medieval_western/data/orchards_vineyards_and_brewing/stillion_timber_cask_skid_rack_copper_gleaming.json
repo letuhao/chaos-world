@@ -1,0 +1,158 @@
+{
+  "id": "medieval_western.orchards_vineyards_and_brewing.stillion_timber_cask_skid_rack_copper_gleaming",
+  "name": "Copper-Polished Oak Timber Stillion Ale Cask Rack",
+  "vietnamese_name": "Giá Gỗ Kê Thùng Rượu Bia Đỡ Đáy (Đồng Đỏ Sáng Bóng)",
+  "category": "orchards_vineyards_and_brewing",
+  "sub_category": "alehouse_cellar_casks_and_stillions",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "low",
+  "interactive_verb": "inspect_casks",
+  "gameplay_role": "Supply chain industry element (Oak Timber Stillion Ale Cask Rack).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of copper-polished oak timber stillion ale cask rack, burnished bright copper brewing vessels, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/orchards_vineyards_and_brewing/stillion_timber_cask_skid_rack_copper_gleaming.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.orchards_vineyards_and_brewing.stillion_timber_cask_skid_rack_copper_gleaming:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.602,
+        0.609
+      ]
+    ],
+    "frac_zero": 0.5986,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.1,
+        0.136,
+        0.426,
+        0.701,
+        0.463,
+        0.153,
+        0.096
+      ],
+      [
+        0.783,
+        0.96,
+        0.997,
+        1.0,
+        1.0,
+        0.989,
+        0.767
+      ],
+      [
+        0.36,
+        0.598,
+        0.707,
+        0.809,
+        0.695,
+        0.594,
+        0.329
+      ]
+    ],
+    "crop_offset": [
+      17,
+      19
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 188,
+    "contact_reference_px": 188.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

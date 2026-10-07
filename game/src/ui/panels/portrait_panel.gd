@@ -22,17 +22,17 @@ extends PanelContainer
 ##
 ## Contract: `summary()` is the testable surface, primitives only.
 
-const NO_ACTOR := "No face is resolved, because no hero is bound."
-const PLACEHOLDER_MARK := "This is the placeholder every actor resolves to."
+const NO_ACTOR := "LOC_UI_PANELS_630E8F16CA"
+const PLACEHOLDER_MARK := "LOC_UI_PANELS_6054405DA4"
 ## The header prefix per `source`. Named here because the vocabulary is the
 ## resolver's, and the panel must not invent a fourth word for it.
 const SOURCE_LABEL := {
-	"chosen": "Chosen at creation",
-	"race": "The face of this body plan",
-	"generated": "The generated face for this body plan",
-	"placeholder": "The fallback face",
-	"none": "Nothing",
-	"": "Unresolved",
+	"chosen": "LOC_UI_PANELS_6649C373FE",
+	"race": "LOC_UI_PANELS_33E6FFF270",
+	"generated": "LOC_UI_PANELS_56B86DDF86",
+	"placeholder": "LOC_UI_PANELS_ADF0AB8BBF",
+	"none": "LOC_UI_PANELS_4481948392",
+	"": "LOC_UI_PANELS_EECCD83BEF",
 }
 
 var _view: Dictionary = {}
@@ -130,12 +130,12 @@ func _bind_nodes() -> void:
 func _render() -> void:
 	if _id_label == null:
 		return
-	_name_label.text = _display_name()
-	_id_label.text = _id_line
-	_source_label.text = _source_line
+	_name_label.text = L.t(_display_name())
+	_id_label.text = L.t(_id_line)
+	_source_label.text = L.t(_source_line)
 	_source_label.theme_type_variation = &"WarnLabel" if is_placeholder() else &"MetaLabel"
-	_layer_label.text = _layer_line
-	_missing_label.text = _missing_line
+	_layer_label.text = L.t(_layer_line)
+	_missing_label.text = L.t(_missing_line)
 	_missing_label.visible = not _missing_line.is_empty()
 	_paint()
 
@@ -234,11 +234,11 @@ func _display_name() -> String:
 
 func _id_text() -> String:
 	if _view.is_empty():
-		return NO_ACTOR
+		return L.t(NO_ACTOR)
 	var id := portrait_id()
 	if id.is_empty():
-		return NO_ACTOR
-	return "Portrait %s" % id
+		return L.t(NO_ACTOR)
+	return L.t("LOC_UI_PANELS_7CB0A03A48") % id
 
 
 ## Which of the resolver's three named steps answered, in the resolver's own words.
@@ -247,9 +247,12 @@ func _source_text() -> String:
 	if _view.is_empty():
 		return ""
 	var source := String(_view.get("source", ""))
-	var line := "%s." % String(SOURCE_LABEL.get(source, "Unresolved"))
+	var line := (
+		L.t("LOC_UI_PANELS_A1F0E99AF8")
+		% String(SOURCE_LABEL.get(source, L.t("LOC_UI_PANELS_EECCD83BEF")))
+	)
 	if is_placeholder():
-		return "%s %s" % [line, PLACEHOLDER_MARK]
+		return L.t("LOC_UI_PANELS_265FC52551") % [line, L.t(PLACEHOLDER_MARK)]
 	return line
 
 

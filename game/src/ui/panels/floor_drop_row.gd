@@ -30,17 +30,17 @@ extends PanelContainer
 ## Stands in for a drop the floor does not hold. A word, never the id and never a
 ## dash: an absent entry is a value that is ABSENT, and "-" would read as an
 ## authored value.
-const NO_DROP_TEXT := "No drop here"
+const NO_DROP_TEXT := "LOC_UI_PANELS_2CF643A24E"
 ## What an entry that never decays says. `decay_periods == 0` means "never", and
 ## printing "held 0 of 0 periods" would read as an expiry rather than as an
 ## exemption.
-const NO_DECAY_TEXT := "does not decay"
+const NO_DECAY_TEXT := "LOC_UI_PANELS_EB3EE593ED"
 ## "held 2 of 5 periods" — the module's own word for time, so the row uses it rather
 ## than inventing a unit.
-const DECAY_TEXT := "held %d of %d periods"
+const DECAY_TEXT := "LOC_UI_PANELS_231EA55D03"
 ## "left: hero". Who put it down is the only fact about a drop the row carries that
 ## the goods themselves do not.
-const BY_TEXT := "left by: %s"
+const BY_TEXT := "LOC_UI_PANELS_1C4127654C"
 const META_SEP := " · "
 
 var _view: Dictionary = {}
@@ -180,18 +180,18 @@ func _render() -> void:
 	visible = is_filled()
 	if not visible:
 		return
-	_head_label.text = _head
-	_good_label.text = _good_line
-	_decay_label.text = _decay_line
+	_head_label.text = L.t(_head)
+	_good_label.text = L.t(_good_line)
+	_decay_label.text = L.t(_decay_line)
 	_decay_label.theme_type_variation = _decay_tone()
-	_by_label.text = _by_line
+	_by_label.text = L.t(_by_line)
 
 
 ## "on the floor x3" — how many of the good this entry holds, in the module's own
 ## noun. `MarketApi.take` delivers the whole `quantity`, so this is the figure the
 ## take will hand the player rather than one per unit.
 func _good_text() -> String:
-	return "on the floor x%d" % int(_view.get("quantity", 0))
+	return L.t("LOC_UI_PANELS_8971F03E54") % int(_view.get("quantity", 0))
 
 
 ## "held 2 of 5 periods" or "does not decay". The two are different sentences, not
@@ -199,8 +199,8 @@ func _good_text() -> String:
 ## an exemption from one.
 func _decay_text() -> String:
 	if not decays():
-		return NO_DECAY_TEXT
-	return DECAY_TEXT % [int(_view.get("periods_held", 0)), int(_view.get("decay_periods", 0))]
+		return L.t(NO_DECAY_TEXT)
+	return L.t(DECAY_TEXT) % [int(_view.get("periods_held", 0)), int(_view.get("decay_periods", 0))]
 
 
 ## "left by: hero". Whose it was matters on a floor several people share, and
@@ -209,7 +209,7 @@ func _by_text() -> String:
 	var dropped_by := String(_view.get("dropped_by", ""))
 	if dropped_by == "":
 		return ""
-	return BY_TEXT % dropped_by
+	return L.t(BY_TEXT) % dropped_by
 
 
 ## An entry on its last period is the loud card and one that never decays is the

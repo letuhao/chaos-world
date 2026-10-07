@@ -22,6 +22,7 @@ func _actor() -> Actor:
 
 # --- RelationshipScreen --------------------------------------------------------------
 
+
 func test_relationship_screen_summary_is_empty_without_actor() -> void:
 	var screen := RelationshipScreen.new()
 	assert_eq(screen.summary(), {}, "no actor, no summary")
@@ -50,6 +51,7 @@ func test_relationship_screen_has_actions() -> void:
 
 
 # --- DualCultivationScreen --------------------------------------------------------------
+
 
 func test_dual_cultivation_screen_summary_is_empty_without_actor() -> void:
 	var screen := DualCultivationScreen.new()
@@ -80,6 +82,7 @@ func test_dual_cultivation_screen_has_actions() -> void:
 
 
 # --- CollectionScreen -----------------------------------------------------------------
+
 
 func test_collection_screen_summary_is_empty_without_actor() -> void:
 	var screen := CollectionScreen.new()
@@ -120,6 +123,7 @@ func test_collection_screen_next_tier_is_zero_when_all_claimed() -> void:
 
 # --- HeterosisScreen ---------------------------------------------------------------------
 
+
 func test_heterosis_screen_summary_is_empty_without_actor() -> void:
 	var screen := HeterosisScreen.new()
 	assert_eq(screen.summary(), {}, "no actor, no summary")
@@ -147,6 +151,7 @@ func test_heterosis_screen_has_no_actions() -> void:
 
 
 # --- Panel summaries ---------------------------------------------------------------------
+
 
 func test_partner_row_summary_is_empty_when_cleared() -> void:
 	var row := PartnerRow.new()

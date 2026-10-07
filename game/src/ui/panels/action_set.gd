@@ -133,7 +133,7 @@ func _ensure_buttons() -> void:
 			continue
 		var button := Button.new()
 		button.name = "%sButton" % id.to_pascal_case()
-		button.text = String(_labels.get(id, id))
+		button.text = L.t(String(_labels.get(id, id)))
 		if action == _primary:
 			button.theme_type_variation = &"PrimaryButton"
 		button.pressed.connect(_on_pressed.bind(action))
@@ -143,7 +143,7 @@ func _ensure_buttons() -> void:
 
 func _render() -> void:
 	if _message_label != null:
-		_message_label.text = _message
+		_message_label.text = L.t(_message)
 		_message_label.theme_type_variation = _tone_variation()
 	for action in _actions:
 		var button: Button = _buttons.get(String(action))

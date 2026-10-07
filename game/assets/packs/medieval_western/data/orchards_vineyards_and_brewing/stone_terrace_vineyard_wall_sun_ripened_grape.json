@@ -1,0 +1,150 @@
+{
+  "id": "medieval_western.orchards_vineyards_and_brewing.stone_terrace_vineyard_wall_sun_ripened_grape",
+  "name": "Sun-Drenched Drystone Retaining Hillside Vineyard Wall",
+  "vietnamese_name": "Bờ Kè Đá Giữ Đất Ruộng Bậc Thang Trồng Nho (Nắng Nở Vườn Nho)",
+  "category": "orchards_vineyards_and_brewing",
+  "sub_category": "terrace_vineyard_grape_trellis",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "low",
+  "interactive_verb": null,
+  "gameplay_role": "Supply chain industry element (Drystone Retaining Hillside Vineyard Wall).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "french_capetian",
+  "prompt_summary": "2D orthographic top-down game sprite of sun-drenched drystone retaining hillside vineyard wall, dusted purple grapes and emerald vine leaves, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/orchards_vineyards_and_brewing/stone_terrace_vineyard_wall_sun_ripened_grape.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.orchards_vineyards_and_brewing.stone_terrace_vineyard_wall_sun_ripened_grape:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.662,
+        0.671
+      ]
+    ],
+    "frac_zero": 0.6933,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      2
+    ],
+    "sub_fill": [
+      [
+        0.344,
+        0.463,
+        0.714,
+        0.718,
+        0.708,
+        0.427,
+        0.379
+      ],
+      [
+        0.734,
+        0.799,
+        0.843,
+        0.815,
+        0.891,
+        0.827,
+        0.729
+      ]
+    ],
+    "crop_offset": [
+      16,
+      49
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 208,
+    "contact_reference_px": 208.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

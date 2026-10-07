@@ -1,0 +1,197 @@
+{
+  "id": "medieval_western.watermills_windmills_and_milling.paired_furrowed_grindstones_tarred_cloth",
+  "name": "Canvas-Sail Rigged Paired French Burr Granite Millstones",
+  "vietnamese_name": "Cặp Đá Xay Bột Mì Rãnh Khía Hoa Cương (Căng Cánh Bồm Bạt)",
+  "category": "watermills_windmills_and_milling",
+  "sub_category": "granite_millstones_and_hopper",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "low",
+  "interactive_verb": "grind_flour",
+  "gameplay_role": "Supply chain industry element (Paired French Burr Granite Millstones).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "flemish_hanseatic",
+  "prompt_summary": "2D orthographic top-down game sprite of canvas-sail rigged paired french burr granite millstones, heavy sail canvas and hemp rigging lines, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/watermills_windmills_and_milling/paired_furrowed_grindstones_tarred_cloth.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.watermills_windmills_and_milling.paired_furrowed_grindstones_tarred_cloth:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.439,
+        0.323
+      ],
+      [
+        0.791,
+        0.822
+      ]
+    ],
+    "frac_zero": 0.5969,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.08,
+        0.279,
+        0.276,
+        0.112,
+        0.0,
+        0.0
+      ],
+      [
+        0.025,
+        0.817,
+        0.838,
+        0.307,
+        0.031,
+        0.0
+      ],
+      [
+        0.024,
+        0.58,
+        0.995,
+        0.958,
+        0.604,
+        0.148
+      ],
+      [
+        0.397,
+        0.839,
+        0.933,
+        1.0,
+        0.988,
+        0.306
+      ],
+      [
+        0.766,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.787
+      ],
+      [
+        0.395,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.744
+      ],
+      [
+        0.093,
+        0.767,
+        0.996,
+        0.96,
+        0.657,
+        0.076
+      ]
+    ],
+    "crop_offset": [
+      33,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 118,
+    "contact_reference_px": 118.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

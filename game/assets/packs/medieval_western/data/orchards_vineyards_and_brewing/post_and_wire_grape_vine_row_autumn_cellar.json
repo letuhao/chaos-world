@@ -1,0 +1,120 @@
+{
+  "id": "medieval_western.orchards_vineyards_and_brewing.post_and_wire_grape_vine_row_autumn_cellar",
+  "name": "Cellar-Chilled Chestnut Post Grapevine Trellis Row",
+  "vietnamese_name": "Hàng Cọc Gỗ Cây Dẻ Căng Dây Leo Nho (Hầm Rượu Mát Lạnh)",
+  "category": "orchards_vineyards_and_brewing",
+  "sub_category": "terrace_vineyard_grape_trellis",
+  "type": "flora",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": true,
+  "vision_mode": "low",
+  "interactive_verb": "pick_grapes",
+  "gameplay_role": "Supply chain industry element (Chestnut Post Grapevine Trellis Row).",
+  "destructible": false,
+  "material": "plant",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of cellar-chilled chestnut post grapevine trellis row, cool stone vault humidity and cobwebs, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/orchards_vineyards_and_brewing/post_and_wire_grape_vine_row_autumn_cellar.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.orchards_vineyards_and_brewing.post_and_wire_grape_vine_row_autumn_cellar:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.744,
+        0.745
+      ]
+    ],
+    "frac_zero": 0.6794,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      2
+    ],
+    "sub_fill": [
+      [
+        0.62,
+        0.726,
+        0.732,
+        0.893,
+        0.731,
+        0.725,
+        0.618
+      ],
+      [
+        0.664,
+        0.773,
+        0.781,
+        0.931,
+        0.784,
+        0.792,
+        0.656
+      ]
+    ],
+    "crop_offset": [
+      17,
+      50
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 212,
+    "contact_reference_px": 212.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

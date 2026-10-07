@@ -65,9 +65,9 @@ func _render() -> void:
 	visible = is_filled()
 	if not visible:
 		return
-	_head_label.text = String(_view.get("display_name", ""))
-	_value_label.text = _value_text()
-	_stage_label.text = _stage_text()
+	_head_label.text = L.t(String(_view.get("display_name", "")))
+	_value_label.text = L.t(_value_text())
+	_stage_label.text = L.t(_stage_text())
 
 
 func _value_text() -> String:

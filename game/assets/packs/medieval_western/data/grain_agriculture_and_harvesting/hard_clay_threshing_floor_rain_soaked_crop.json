@@ -1,0 +1,177 @@
+{
+  "id": "medieval_western.grain_agriculture_and_harvesting.hard_clay_threshing_floor_rain_soaked_crop",
+  "name": "Rain-Flattened Hardened Clay Barn Threshing Floor",
+  "vietnamese_name": "Sàn Đất Nện Đập Lúa Trong Nhà Kho (Mưa Rạp Thân Cây)",
+  "category": "grain_agriculture_and_harvesting",
+  "sub_category": "threshing_barn_and_flails",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "thresh_grain",
+  "gameplay_role": "Manorial agrarian supply chain element (Hardened Clay Barn Threshing Floor).",
+  "destructible": false,
+  "material": "earth",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of rain-flattened hardened clay barn threshing floor, damp autumn mud and rain-bowed heavy grain stalks, Medieval open field agriculture and grain harvest style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/grain_agriculture_and_harvesting/hard_clay_threshing_floor_rain_soaked_crop.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.grain_agriculture_and_harvesting.hard_clay_threshing_floor_rain_soaked_crop:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.809,
+        0.793
+      ],
+      [
+        0.94,
+        0.945
+      ]
+    ],
+    "frac_zero": 0.3302,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.228,
+        0.557,
+        0.657,
+        0.515,
+        0.57,
+        0.583,
+        0.152
+      ],
+      [
+        0.705,
+        1.0,
+        0.995,
+        0.998,
+        1.0,
+        1.0,
+        0.578
+      ],
+      [
+        0.88,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.802
+      ],
+      [
+        0.878,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.831
+      ],
+      [
+        0.903,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.911
+      ],
+      [
+        0.932,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.955
+      ],
+      [
+        0.6,
+        0.922,
+        0.988,
+        0.935,
+        0.969,
+        0.883,
+        0.619
+      ]
+    ],
+    "crop_offset": [
+      17,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 204,
+    "contact_reference_px": 204.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

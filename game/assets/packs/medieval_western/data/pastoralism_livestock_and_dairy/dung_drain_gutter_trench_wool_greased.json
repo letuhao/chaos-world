@@ -1,0 +1,124 @@
+{
+  "id": "medieval_western.pastoralism_livestock_and_dairy.dung_drain_gutter_trench_wool_greased",
+  "name": "Lanolin-Greased Flagstone Floor Liquid Manure Gutter",
+  "vietnamese_name": "Rãnh Đá Dẫn Nước Thải & Phân Chuồng (Bám Mỡ Cừu Lanolin)",
+  "category": "pastoralism_livestock_and_dairy",
+  "sub_category": "ox_stable_manger_and_byre",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Pastoral manorial farming element (Flagstone Floor Liquid Manure Gutter).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of lanolin-greased flagstone floor liquid manure gutter, sticky lanolin sheep fleece grease on timber bars, Medieval pastoral livestock and dairy farming style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/pastoralism_livestock_and_dairy/dung_drain_gutter_trench_wool_greased.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.pastoralism_livestock_and_dairy.dung_drain_gutter_trench_wool_greased:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.499,
+        0.469
+      ]
+    ],
+    "frac_zero": 0.737,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.057,
+        0.002,
+        0.56,
+        0.8,
+        0.507,
+        0.0,
+        0.0
+      ],
+      [
+        0.801,
+        0.616,
+        0.931,
+        1.0,
+        0.9,
+        0.624,
+        0.666
+      ],
+      [
+        0.154,
+        0.0,
+        0.328,
+        0.664,
+        0.359,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      36
+    ],
+    "trunk_columns": [
+      3,
+      4
+    ],
+    "contact_px": 79,
+    "contact_reference_px": 79.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

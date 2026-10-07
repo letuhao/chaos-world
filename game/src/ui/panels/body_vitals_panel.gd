@@ -71,7 +71,7 @@ func _render() -> void:
 	if _realm_label == null:
 		return
 	if _state.is_empty():
-		_realm_label.text = "No body path"
+		_realm_label.text = L.t("LOC_UI_PANELS_356CFE27B0")
 		_realm_label.theme_type_variation = &"MetaLabel"
 		_integrity_label.text = ""
 		_acupoint_label.text = ""
@@ -103,7 +103,7 @@ func _render() -> void:
 			float(_state.get("average_quality", 0.0)),
 		]
 	)
-	_channel_label.text = "Channels %s" % _channel_text()
+	_channel_label.text = L.t("LOC_UI_PANELS_6AF9D73707") % _channel_text()
 	if bool(_state.get("ready", false)):
 		_condition_label.theme_type_variation = &"OkLabel"
 		_condition_label.text = (
@@ -111,7 +111,7 @@ func _render() -> void:
 		)
 	else:
 		_condition_label.theme_type_variation = &"WarnLabel"
-		_condition_label.text = "Blocked · %s" % ", ".join(_unmet())
+		_condition_label.text = L.t("LOC_UI_PANELS_7B49050CD4") % ", ".join(_unmet())
 
 
 func _channels() -> Array:

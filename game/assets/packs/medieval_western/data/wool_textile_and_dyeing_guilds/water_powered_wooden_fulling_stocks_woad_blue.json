@@ -1,0 +1,201 @@
+{
+  "id": "medieval_western.wool_textile_and_dyeing_guilds.water_powered_wooden_fulling_stocks_woad_blue",
+  "name": "Woad-Indigo Dyed Triphammer Heavy Oak Fulling Stocks",
+  "vietnamese_name": "Chày Gỗ Nặng Dập Vải Bằng Sức Nước (Nhuộm Chàm Woad Xanh)",
+  "category": "wool_textile_and_dyeing_guilds",
+  "sub_category": "fulling_mill_water_powered_stocks",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "full_cloth",
+  "gameplay_role": "Supply chain industry element (Triphammer Heavy Oak Fulling Stocks).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "flemish_hanseatic",
+  "prompt_summary": "2D orthographic top-down game sprite of woad-indigo dyed triphammer heavy oak fulling stocks, vibrant rich blue woad dye colors, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/wool_textile_and_dyeing_guilds/water_powered_wooden_fulling_stocks_woad_blue.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.wool_textile_and_dyeing_guilds.water_powered_wooden_fulling_stocks_woad_blue:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.61,
+        0.599
+      ],
+      [
+        0.735,
+        0.706
+      ]
+    ],
+    "frac_zero": 0.495,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.573,
+        0.734,
+        0.451,
+        0.002,
+        0.0
+      ],
+      [
+        0.132,
+        0.391,
+        0.936,
+        0.999,
+        0.883,
+        0.509,
+        0.019
+      ],
+      [
+        0.515,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.299
+      ],
+      [
+        0.794,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.681
+      ],
+      [
+        0.647,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.542
+      ],
+      [
+        0.399,
+        0.998,
+        0.996,
+        0.958,
+        1.0,
+        0.97,
+        0.433
+      ],
+      [
+        0.047,
+        0.569,
+        0.347,
+        0.374,
+        0.305,
+        0.298,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      19,
+      17
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 22,
+    "contact_reference_px": 22.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

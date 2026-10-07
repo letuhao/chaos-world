@@ -1,0 +1,151 @@
+{
+  "id": "medieval_western.pastoralism_livestock_and_dairy.cheese_aging_oak_shelves_weathered_wood",
+  "name": "Weathered Paling Tiered Shelves of Aging Hard Cheese Wheels",
+  "vietnamese_name": "Kệ Gỗ Sồi Xếp Tầng Các Bánh Phô Mai Ủ (Gỗ Mộc Phong Hóa)",
+  "category": "pastoralism_livestock_and_dairy",
+  "sub_category": "dairy_churn_and_cheese_press",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "taste_cheese",
+  "gameplay_role": "Pastoral manorial farming element (Tiered Shelves of Aging Hard Cheese Wheels).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of weathered paling tiered shelves of aging hard cheese wheels, silvered split oak palings and hazel rods, Medieval pastoral livestock and dairy farming style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/pastoralism_livestock_and_dairy/cheese_aging_oak_shelves_weathered_wood.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.pastoralism_livestock_and_dairy.cheese_aging_oak_shelves_weathered_wood:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.636,
+        0.648
+      ]
+    ],
+    "frac_zero": 0.6766,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.638,
+        0.625,
+        0.716,
+        0.629,
+        0.734,
+        0.648,
+        0.659
+      ],
+      [
+        0.6,
+        0.719,
+        0.781,
+        0.719,
+        0.777,
+        0.719,
+        0.621
+      ],
+      [
+        0.169,
+        0.0,
+        0.144,
+        0.0,
+        0.163,
+        0.0,
+        0.174
+      ]
+    ],
+    "crop_offset": [
+      16,
+      43
+    ],
+    "trunk_columns": [],
+    "contact_px": 202,
+    "contact_reference_px": 202.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

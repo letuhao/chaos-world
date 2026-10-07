@@ -43,8 +43,8 @@ extends PanelContainer
 signal chosen(portrait_id: StringName)
 
 const ROW_SCENE := "res://src/ui/panels/portrait_picker_row.tscn"
-const HEADER := "Choose a face, or arrive as you are."
-const OPTIONAL_NOTE := "Optional. Leave it and you are given your body's own face."
+const HEADER := "LOC_UI_PANELS_08EB656D90"
+const OPTIONAL_NOTE := "LOC_UI_PANELS_22A00F0E37"
 
 ## One face, as primitives, in the shape `resolve` publishes. Every option has
 ## `honoured == true` by construction (see [method _is_honoured]), so a caller can
@@ -169,8 +169,8 @@ func _bind_nodes() -> void:
 func _render() -> void:
 	if _header_label == null:
 		return
-	_header_label.text = HEADER
-	_note_label.text = OPTIONAL_NOTE
+	_header_label.text = L.t(HEADER)
+	_note_label.text = L.t(OPTIONAL_NOTE)
 	# A fixed pass over the POOL, and the pool is already bounded by `RowBudget` in
 	# `_rows_in`. Every spare row is fed `{}` rather than skipped, so a stale face
 	# from a previous race cannot stay on screen.

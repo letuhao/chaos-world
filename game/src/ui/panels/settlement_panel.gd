@@ -46,10 +46,10 @@ extends PanelContainer
 ## What the readout says when no settlement bridge is wired. Named rather than blank,
 ## because "this room is not a settlement" and "this panel cannot ask" are different
 ## facts and a player must be able to tell them apart.
-const UNWIRED_TEXT := "No settlement is wired to this screen."
+const UNWIRED_TEXT := "LOC_UI_PANELS_07B18D6E6F"
 ## What the readout says for a room that is not a settlement. Not "empty" — the room
 ## simply is not one, and saying so is the honest reading.
-const NOT_A_SETTLEMENT_TEXT := "This room is not a settlement."
+const NOT_A_SETTLEMENT_TEXT := "LOC_UI_PANELS_BABB8335AD"
 
 ## How many residents one row is worth naming. The module already caps its own read and
 ## says so with `truncated`; this bounds the RENDERED rows, and the note below names how
@@ -59,11 +59,11 @@ const MAX_RESIDENTS := 8
 ## One resident row. `%s - %s x%d`, with a leading count only when the group is bigger
 ## than one, so a group of three reads as three people and a group of one reads as a
 ## person rather than as "1 mob".
-const ROW_TEMPLATE := "%s%s"
+const ROW_TEMPLATE := "LOC_UI_PANELS_9BDA272DBC"
 
 ## The suffix naming the rest. A separate sentence rather than a bare number, because a
 ## number with no unit on a resident list reads as a page count.
-const TRUNCATED_SUFFIX := "and others this panel does not name."
+const TRUNCATED_SUFFIX := "LOC_UI_PANELS_75654D2B1E"
 
 ## Every `%d`/`%s` and every sentence on this surface. The screen hands raw primitives
 ## from the bridge and formats nothing (AGENTS.md, UI standard).
@@ -166,15 +166,15 @@ func _bind_nodes() -> void:
 func _render() -> void:
 	if _building_label == null:
 		return
-	_building_label.text = _building_text()
-	_institution_label.text = _institution_text()
+	_building_label.text = L.t(_building_text())
+	_institution_label.text = L.t(_institution_text())
 	# A refusal is painted in the ERROR ink and nothing else on this panel is a
 	# failure, so the tone is this panel's own and the theme owns the colour.
 	if not _ok and _shown:
 		_institution_label.theme_type_variation = &"WarnLabel"
 	else:
 		_institution_label.theme_type_variation = &"MetaLabel"
-	_resident_label.text = _resident_text()
+	_resident_label.text = L.t(_resident_text())
 
 
 ## The building's own name and kind. A castle is a settlement with nothing named, and it
@@ -182,12 +182,12 @@ func _render() -> void:
 ## the handle a driver and a test match on, and the display name is what a player reads.
 func _building_text() -> String:
 	if not _shown:
-		return UNWIRED_TEXT
+		return L.t(UNWIRED_TEXT)
 	if _room_id.is_empty():
-		return NOT_A_SETTLEMENT_TEXT
+		return L.t(NOT_A_SETTLEMENT_TEXT)
 	if _display_name.is_empty():
-		return "%s (%s)" % [_room_id, _kind]
-	return "%s (%s, %s)" % [_display_name, _room_id, _kind]
+		return L.t("LOC_UI_PANELS_D5E99A8A81") % [_room_id, _kind]
+	return L.t("LOC_UI_PANELS_2F987739AC") % [_display_name, _room_id, _kind]
 
 
 ## The institution the room names, or the REFUSAL ID VERBATIM.
@@ -203,7 +203,7 @@ func _institution_text() -> String:
 		return _reason
 	if _institution.is_empty():
 		return _ref_id
-	return "%s %s" % [_institution, _ref_id]
+	return L.t("LOC_UI_PANELS_265FC52551") % [_institution, _ref_id]
 
 
 ## Who stands here. The room's OWN `actor_spawn_refs` — never a sect roster, because a
@@ -229,7 +229,9 @@ func _row_text(row: Dictionary) -> String:
 	if role.is_empty():
 		role = String(row.get("ref_id", "someone"))
 	var count := int(row.get("count", 1))
-	return String(ROW_TEMPLATE) % [role, "" if count <= 1 else " x%d" % count]
+	return (
+		String(ROW_TEMPLATE) % [role, "" if count <= 1 else L.t("LOC_UI_PANELS_41A5BD8512") % count]
+	)
 
 
 ## The rows to paint: the module's own rows, in its own order, cut to

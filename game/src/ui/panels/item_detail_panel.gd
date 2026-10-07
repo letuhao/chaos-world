@@ -14,10 +14,10 @@ const TARGET_PROPERTY := &"property"
 const TARGET_RESOURCE := &"resource"
 ## Rarity display vocabulary. Presentation only; gameplay reads the rarity id.
 const RARITY_LABELS := {
-	&"common": "Common",
-	&"magic": "Magic",
-	&"rare": "Rare",
-	&"legendary": "Legendary",
+	&"common": "LOC_UI_PANELS_7DE90A6524",
+	&"magic": "LOC_UI_PANELS_E6791BE7EE",
+	&"rare": "LOC_UI_PANELS_CCE370D2F9",
+	&"legendary": "LOC_UI_PANELS_B7E8916505",
 }
 
 var _fixed_lines: Array = []
@@ -199,7 +199,10 @@ func _line(effect: Dictionary) -> String:
 	var rendered := "%s  %.2f" % [label, float(effect.get("value", 0.0))]
 	if not effect.has("value_min") or not effect.has("value_max"):
 		return rendered
-	return "%s  (%.2f - %.2f)" % [rendered, float(effect["value_min"]), float(effect["value_max"])]
+	return (
+		L.t("LOC_UI_PANELS_BE5189DF00")
+		% [rendered, float(effect["value_min"]), float(effect["value_max"])]
+	)
 
 
 ## One-shot restorations and numeric item properties the selection carries. Both
@@ -242,16 +245,16 @@ func _rarity_label(rarity: StringName) -> String:
 func _render() -> void:
 	if _name_label == null:
 		return
-	_name_label.text = _header if _header != "" else "No item selected"
-	_meta_label.text = _meta
-	_instance_label.text = _instance_text()
+	_name_label.text = L.t(_header if _header != "" else "No item selected")
+	_meta_label.text = L.t(_meta)
+	_instance_label.text = L.t(_instance_text())
 	_fill(_fixed_rows, _fixed_lines)
 	_fill(_rolled_rows, _rolled_lines)
-	_fixed_title.text = "Fixed options (%d)" % _fixed_lines.size()
-	_rolled_title.text = "Rolled affixes (%d)" % _rolled_lines.size()
+	_fixed_title.text = L.t("LOC_UI_PANELS_DBB9ED6843") % _fixed_lines.size()
+	_rolled_title.text = L.t("LOC_UI_PANELS_B7F3769602") % _rolled_lines.size()
 	var use_text := _use_text()
 	_use_title.visible = not use_text.is_empty()
-	_use_label.text = use_text
+	_use_label.text = L.t(use_text)
 
 
 func _instance_text() -> String:
@@ -284,6 +287,6 @@ func _fill(box: VBoxContainer, lines: Array) -> void:
 		child.free()
 	for line in lines:
 		var label := Label.new()
-		label.text = line
+		label.text = L.t(line)
 		label.theme_type_variation = &"EffectLabel"
 		box.add_child(label)

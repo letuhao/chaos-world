@@ -1,0 +1,129 @@
+{
+  "id": "medieval_western.forestry_timber_and_cooperage.heavy_timber_ox_skidding_sled_firewood_seasoned",
+  "name": "Seasoned Dry Split-Oak Log Hauling Sled (Tumble)",
+  "vietnamese_name": "Xe Trượt Gỗ Sồi Kéo Bằng Trâu Bò Rừng (Gỗ Khô Đạt Chuẩn)",
+  "category": "forestry_timber_and_cooperage",
+  "sub_category": "timber_sled_and_ox_skidding_trail",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "haul_logs",
+  "gameplay_role": "Supply chain industry element (Split-Oak Log Hauling Sled (Tumble)).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of seasoned dry split-oak log hauling sled (tumble), crackling dry split seasoned firewood, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/forestry_timber_and_cooperage/heavy_timber_ox_skidding_sled_firewood_seasoned.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.forestry_timber_and_cooperage.heavy_timber_ox_skidding_sled_firewood_seasoned:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.516,
+        0.562
+      ]
+    ],
+    "frac_zero": 0.6571,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.021,
+        0.212,
+        0.726,
+        0.175,
+        0.0,
+        0.009
+      ],
+      [
+        0.37,
+        0.96,
+        0.992,
+        1.0,
+        0.956,
+        0.896,
+        0.684
+      ],
+      [
+        0.418,
+        0.575,
+        0.658,
+        0.913,
+        0.726,
+        0.613,
+        0.616
+      ]
+    ],
+    "crop_offset": [
+      16,
+      25
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 212,
+    "contact_reference_px": 212.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -58,167 +58,167 @@ const EXACT := -1
 ## as 154%, which is a worse lie than a decimal. The label carries the unit instead.
 const TABLE: Dictionary = {
 	# --- base attributes -------------------------------------------------------
-	&"physique": ["Physique", 0],
-	&"spirit": ["Spirit", 0],
+	&"physique": ["LOC_UI_PANELS_393BC0E140", 0],
+	&"spirit": ["LOC_UI_PANELS_FE1E1FC935", 0],
 	# ADR 0890: "Aptitude" names the twelve-point SOURCE layer now, so this stored
 	# attribute reads as what it is — Talent.
-	&"aptitude": ["Talent", 0],
-	&"comprehension": ["Comprehension", 0],
-	&"agility": ["Agility", 0],
-	&"will": ["Will", 0],
-	&"fortune": ["Fortune", 0],
+	&"aptitude": ["LOC_UI_PANELS_AE362087AB", 0],
+	&"comprehension": ["LOC_UI_PANELS_C7A91540E6", 0],
+	&"agility": ["LOC_UI_PANELS_0FC9A6EDB3", 0],
+	&"will": ["LOC_UI_PANELS_3E3E5802BD", 0],
+	&"fortune": ["LOC_UI_PANELS_7517BDA593", 0],
 	# --- resources -------------------------------------------------------------
-	&"max_health": ["Max health", 0],
-	&"max_qi": ["Max qi", 0],
-	&"max_stamina": ["Max stamina", 0],
-	&"health_regen": ["Health regen", 1],
-	&"qi_regen": ["Qi regen", 1],
-	&"stamina_regen": ["Stamina regen", 1],
+	&"max_health": ["LOC_UI_PANELS_3DFBCDB809", 0],
+	&"max_qi": ["LOC_UI_PANELS_6697E28CD8", 0],
+	&"max_stamina": ["LOC_UI_PANELS_F2F5823524", 0],
+	&"health_regen": ["LOC_UI_PANELS_B25C25E91A", 1],
+	&"qi_regen": ["LOC_UI_PANELS_747CDA1BE1", 1],
+	&"stamina_regen": ["LOC_UI_PANELS_707634C8FC", 1],
 	# --- offence ---------------------------------------------------------------
-	&"attack_physical": ["Physical attack", 0],
-	&"attack_spiritual": ["Spiritual attack", 0],
+	&"attack_physical": ["LOC_UI_PANELS_E2C3B5A7A1", 0],
+	&"attack_spiritual": ["LOC_UI_PANELS_0398D277F2", 0],
 	# Fraction. 0.05 must never print as 0.
-	&"crit_chance": ["Crit chance", 3],
+	&"crit_chance": ["LOC_UI_PANELS_7586544DC7", 3],
 	# ADR 0877 made `crit_damage` a `0.0`-baseline MAGNITUDE in rate-space rather than the
 	# multiplier the old comment described, so the whole crit family prints at 3: one
 	# point of comprehension is 0.004 and must not round to "0.00".
-	&"crit_damage": ["Crit damage", 3],
+	&"crit_damage": ["LOC_UI_PANELS_1CA68A1AA1", 3],
 	# ADR 0215: the DEFENCE halves of the crit contest, presented beside their offence
 	# twins. `crit_resist` answers `crit_chance`, `crit_resist_damage` answers
 	# `crit_damage`; one point of will is 0.003.
-	&"crit_resist": ["Crit resist", 3],
-	&"crit_resist_damage": ["Crit resist damage", 3],
-	&"penetration": ["Penetration", 1],
+	&"crit_resist": ["LOC_UI_PANELS_3C4006D9A8", 3],
+	&"crit_resist_damage": ["LOC_UI_PANELS_37183522D8", 3],
+	&"penetration": ["LOC_UI_PANELS_D091C0C3C9", 1],
 	# Multiplier: 1.0 means no change from base speed.
-	&"attack_speed": ["Attack speed", 2],
+	&"attack_speed": ["LOC_UI_PANELS_0E3525A8D2", 2],
 	# --- defence ---------------------------------------------------------------
-	&"defense_physical": ["Physical defence", 0],
-	&"defense_spiritual": ["Spiritual defence", 0],
-	&"evasion": ["Evasion", 3],
-	&"poise": ["Poise", 0],
+	&"defense_physical": ["LOC_UI_PANELS_44D83A89D6", 0],
+	&"defense_spiritual": ["LOC_UI_PANELS_BBD51128C0", 0],
+	&"evasion": ["LOC_UI_PANELS_BCE8CF9905", 3],
+	&"poise": ["LOC_UI_PANELS_2A8E07CC3B", 0],
 	# ADR 0200: the will-derived MAGNITUDE the status gate actually reads (`will * 0.003`
 	# through the mitigation ratio). The retired `status_resistance` spelling held this
 	# seat until 2026-10-07; it is deliberately NOT declared here, because it resolves to
 	# nothing on every actor and a label would print a stat nobody can move.
-	&"status_defense": ["Status defense", 3],
-	&"damage_reduction": ["Damage reduction", 3],
+	&"status_defense": ["LOC_UI_PANELS_188A390D87", 3],
+	&"damage_reduction": ["LOC_UI_PANELS_1E294FA339", 3],
 	# --- pace and cost ---------------------------------------------------------
-	&"move_speed": ["Move speed", 0],
+	&"move_speed": ["LOC_UI_PANELS_411D2E1AE0", 0],
 	# Multiplier: 1.0 is the uninvested reading, not zero.
-	&"cultivation_rate": ["Cultivation rate", 2],
-	&"qi_absorption": ["Qi absorption", 1],
-	&"loot_bonus": ["Loot bonus", 3],
-	&"cooldown_reduction": ["Cooldown reduction", 3],
-	&"qi_cost_reduction": ["Qi cost reduction", 3],
+	&"cultivation_rate": ["LOC_UI_PANELS_387008023B", 2],
+	&"qi_absorption": ["LOC_UI_PANELS_9257538930", 1],
+	&"loot_bonus": ["LOC_UI_PANELS_9C8E614F1E", 3],
+	&"cooldown_reduction": ["LOC_UI_PANELS_0128E84B58", 3],
+	&"qi_cost_reduction": ["LOC_UI_PANELS_BB5F7BC336", 3],
 	# Fraction, and the one the player acts on: 0.2 printed as "0" told a hero his
 	# breakthrough was free.
-	&"breakthrough_chance": ["Breakthrough chance", 3],
+	&"breakthrough_chance": ["LOC_UI_PANELS_B4A20AD258", 3],
 	# --- cultivation -----------------------------------------------------------
-	&"dao_heart": ["Dao heart", 0],
+	&"dao_heart": ["LOC_UI_PANELS_399F9C8C8D", 0],
 	# Multiplier.
-	&"insight_gain": ["Insight gain", 2],
+	&"insight_gain": ["LOC_UI_PANELS_467E6901F7", 2],
 	# --- body path -------------------------------------------------------------
-	&"bone_density": ["Bone density", 1],
-	&"muscle_fiber": ["Muscle fibre", 1],
-	&"organ_vitality": ["Organ vitality", 1],
-	&"carry_capacity": ["Carrying capacity", 0],
-	&"body_cultivation_power": ["Cultivation power", 2],
-	&"regeneration": ["Regeneration", 2],
-	&"acupoint_quality": ["Huyệt quality", 2],
-	&"acupoint_count": ["Open huyệt", 0],
-	&"acupoint_blocked_count": ["Jammed huyệt", 0],
-	&"body_integrity": ["Body integrity", 0],
+	&"bone_density": ["LOC_UI_PANELS_86D9C2A21A", 1],
+	&"muscle_fiber": ["LOC_UI_PANELS_38D4D0B298", 1],
+	&"organ_vitality": ["LOC_UI_PANELS_3B9662A9C6", 1],
+	&"carry_capacity": ["LOC_UI_PANELS_1D9FA56700", 0],
+	&"body_cultivation_power": ["LOC_UI_PANELS_C06C5596E2", 2],
+	&"regeneration": ["LOC_UI_PANELS_506EB98F49", 2],
+	&"acupoint_quality": ["LOC_UI_PANELS_3259BBD1B6", 2],
+	&"acupoint_count": ["LOC_UI_PANELS_909E25C44F", 0],
+	&"acupoint_blocked_count": ["LOC_UI_PANELS_A2C37943F9", 0],
+	&"body_integrity": ["LOC_UI_PANELS_EAF394ACEB", 0],
 	# --- qi path ---------------------------------------------------------------
-	&"qi_affinity": ["Qi affinity", 1],
-	&"qi_control": ["Qi control", 1],
-	&"dantian_capacity": ["Dantian capacity", 1],
-	&"dantian_quality": ["Dantian quality", 2],
-	&"dantian_full": ["Dantian full", 0],
-	&"qi_regen_rate": ["Qi regen rate", 2],
-	&"technique_cost_reduction": ["Technique cost reduction", 3],
-	&"technique_power": ["Technique power", 1],
-	&"flight_speed": ["Flight speed", 0],
-	&"qi_sense_range": ["Qi sense range", 1],
+	&"qi_affinity": ["LOC_UI_PANELS_4F6D9B5525", 1],
+	&"qi_control": ["LOC_UI_PANELS_D602C2046A", 1],
+	&"dantian_capacity": ["LOC_UI_PANELS_1C24900750", 1],
+	&"dantian_quality": ["LOC_UI_PANELS_C3339E79E8", 2],
+	&"dantian_full": ["LOC_UI_PANELS_9F8E3CF309", 0],
+	&"qi_regen_rate": ["LOC_UI_PANELS_DCC7372830", 2],
+	&"technique_cost_reduction": ["LOC_UI_PANELS_4057A64E8E", 3],
+	&"technique_power": ["LOC_UI_PANELS_8A33D527FD", 1],
+	&"flight_speed": ["LOC_UI_PANELS_182CD42AD4", 0],
+	&"qi_sense_range": ["LOC_UI_PANELS_41F2957D22", 1],
 	# --- mind path -------------------------------------------------------------
-	&"perception": ["Perception", 1],
-	&"mental_attack": ["Mental attack", 0],
-	&"mental_defense": ["Mental defence", 0],
-	&"spiritual_sense_range": ["Spiritual sense range", 1],
+	&"perception": ["LOC_UI_PANELS_C0FFA17BF7", 1],
+	&"mental_attack": ["LOC_UI_PANELS_91A58DCF15", 0],
+	&"mental_defense": ["LOC_UI_PANELS_247E2ECD4F", 0],
+	&"spiritual_sense_range": ["LOC_UI_PANELS_EEA2CF6C88", 1],
 	# Renamed by ADR 0215 (the stats were `mind_focus_chance`/`mind_avoidance`). The
 	# labels move with the ids on purpose: a stat called "Critical chance" that is read
 	# ONLY by the mind mechanism would tell a player their qi crits are 0.05 higher,
 	# which is exactly the misreading this table exists to prevent.
-	&"mind_clarity": ["Clarity", 3],
-	&"mind_veil": ["Veil", 3],
-	&"illusion_resistance": ["Illusion resistance", 3],
-	&"mind_technique_power": ["Mind technique power", 1],
-	&"comprehension_bonus": ["Comprehension bonus", 2],
-	&"sea_capacity": ["Sea capacity", 1],
-	&"sea_clarity": ["Sea clarity", 2],
-	&"sea_turbulence": ["Sea turbulence", 3],
-	&"sea_full": ["Sea full", 0],
-	&"mind_power": ["Mind power", 0],
-	&"awareness": ["Awareness", 0],
+	&"mind_clarity": ["LOC_UI_PANELS_03543111F1", 3],
+	&"mind_veil": ["LOC_UI_PANELS_3A35139C55", 3],
+	&"illusion_resistance": ["LOC_UI_PANELS_1FB0579D9B", 3],
+	&"mind_technique_power": ["LOC_UI_PANELS_F0FD2903EE", 1],
+	&"comprehension_bonus": ["LOC_UI_PANELS_537EFBD1A9", 2],
+	&"sea_capacity": ["LOC_UI_PANELS_9210A7E16F", 1],
+	&"sea_clarity": ["LOC_UI_PANELS_D65FD55F90", 2],
+	&"sea_turbulence": ["LOC_UI_PANELS_BBDEC08181", 3],
+	&"sea_full": ["LOC_UI_PANELS_0046E0D362", 0],
+	&"mind_power": ["LOC_UI_PANELS_D836128935", 0],
+	&"awareness": ["LOC_UI_PANELS_2D35FD0096", 0],
 	# The mind status contest (MindVocabulary): every control shape and expression channel
 	# has an OFFENCE half (`mind_status_mastery_*`) and a DEFENCE half
 	# (`mind_composure_*`). Rate-shaped, so 3 decimals like every other contest half.
-	&"mind_status_mastery_slow": ["Slow mastery", 3],
-	&"mind_status_mastery_cost": ["Cost mastery", 3],
-	&"mind_status_mastery_falsify": ["Falsify mastery", 3],
-	&"mind_status_mastery_invert": ["Invert mastery", 3],
-	&"mind_status_mastery_voice": ["Voice mastery", 3],
-	&"mind_status_mastery_intent": ["Intent mastery", 3],
-	&"mind_composure_slow": ["Slow composure", 3],
-	&"mind_composure_cost": ["Cost composure", 3],
-	&"mind_composure_falsify": ["Falsify composure", 3],
-	&"mind_composure_invert": ["Invert composure", 3],
-	&"mind_composure_voice": ["Voice composure", 3],
-	&"mind_composure_intent": ["Intent composure", 3],
+	&"mind_status_mastery_slow": ["LOC_UI_PANELS_E7131AE58C", 3],
+	&"mind_status_mastery_cost": ["LOC_UI_PANELS_F8CA96926E", 3],
+	&"mind_status_mastery_falsify": ["LOC_UI_PANELS_E3B88CE0DF", 3],
+	&"mind_status_mastery_invert": ["LOC_UI_PANELS_6EA72C0AEC", 3],
+	&"mind_status_mastery_voice": ["LOC_UI_PANELS_61C1A4942D", 3],
+	&"mind_status_mastery_intent": ["LOC_UI_PANELS_B86D7FC2A7", 3],
+	&"mind_composure_slow": ["LOC_UI_PANELS_3740698F7E", 3],
+	&"mind_composure_cost": ["LOC_UI_PANELS_C210B4D4C1", 3],
+	&"mind_composure_falsify": ["LOC_UI_PANELS_BABB7B6275", 3],
+	&"mind_composure_invert": ["LOC_UI_PANELS_DFA0FF8D1E", 3],
+	&"mind_composure_voice": ["LOC_UI_PANELS_3D8B2BBAA0", 3],
+	&"mind_composure_intent": ["LOC_UI_PANELS_AFBEE82DD0", 3],
 	# --- combat-owned rates ----------------------------------------------------
 	# These reach the sheet through the same "a modifier with no baseline is backed
 	# at 0.0" path `actor_stats.gd` documents, so they are listed here to be read
 	# rather than to be registered (ADR 0022/0068: never add them to `RATE_STATS`).
-	&"accuracy": ["Accuracy", 3],
-	&"absorption": ["Absorption", 3],
-	&"parry.rate": ["Parry rate", 3],
-	&"parry.strength": ["Parry strength", 3],
-	&"block.rate": ["Block rate", 3],
-	&"block.strength": ["Block strength", 3],
-	&"reflect.rate": ["Reflect rate", 3],
-	&"reflect.resist.rate": ["Reflect resist rate", 3],
-	&"lifesteal.health": ["Leech health", 3],
-	&"leech_resist.health": ["Leech resist health", 3],
-	&"lifesteal.qi": ["Leech qi", 3],
-	&"leech_resist.qi": ["Leech resist qi", 3],
-	&"lifesteal.stamina": ["Leech stamina", 3],
-	&"leech_resist.stamina": ["Leech resist stamina", 3],
+	&"accuracy": ["LOC_UI_PANELS_12A3A4F498", 3],
+	&"absorption": ["LOC_UI_PANELS_C5D50E840F", 3],
+	&"parry.rate": ["LOC_UI_PANELS_60FBC06B56", 3],
+	&"parry.strength": ["LOC_UI_PANELS_02886A6AC8", 3],
+	&"block.rate": ["LOC_UI_PANELS_BD135A3F40", 3],
+	&"block.strength": ["LOC_UI_PANELS_080DC2FA3C", 3],
+	&"reflect.rate": ["LOC_UI_PANELS_103DF54D3A", 3],
+	&"reflect.resist.rate": ["LOC_UI_PANELS_E6815FB07A", 3],
+	&"lifesteal.health": ["LOC_UI_PANELS_F61805F6A5", 3],
+	&"leech_resist.health": ["LOC_UI_PANELS_502C72F67F", 3],
+	&"lifesteal.qi": ["LOC_UI_PANELS_809FC486FA", 3],
+	&"leech_resist.qi": ["LOC_UI_PANELS_0E2FE64187", 3],
+	&"lifesteal.stamina": ["LOC_UI_PANELS_C4562AA0C0", 3],
+	&"leech_resist.stamina": ["LOC_UI_PANELS_FCD8CC0CAB", 3],
 	# --- the twelve aptitudes (ADR 0881/0890) ----------------------------------
 	# The SOURCE layer's ids. `agility` is ALREADY declared above: it is the one id the
 	# stored attribute and the roster deliberately share (`core/aptitude.gd`). Its entry
 	# keeps the attribute's precision 0 while the sheet prints an aptitude point EXACT,
 	# because a point can be fractional and the attribute cannot.
-	&"might": ["Might", EXACT],
-	&"fortitude": ["Fortitude", EXACT],
-	&"vigor": ["Vigor", EXACT],
-	&"onslaught": ["Onslaught", EXACT],
-	&"composure": ["Composure", EXACT],
-	&"pierce": ["Pierce", EXACT],
-	&"focus": ["Focus", EXACT],
-	&"bulwark": ["Bulwark", EXACT],
-	&"retribution": ["Retribution", EXACT],
-	&"precision": ["Precision", EXACT],
-	&"ferocity": ["Ferocity", EXACT],
+	&"might": ["LOC_UI_PANELS_9DA77C5E49", EXACT],
+	&"fortitude": ["LOC_UI_PANELS_FD78CEDEE2", EXACT],
+	&"vigor": ["LOC_UI_PANELS_F3BCD176B1", EXACT],
+	&"onslaught": ["LOC_UI_PANELS_0CDBF51EA7", EXACT],
+	&"composure": ["LOC_UI_PANELS_56EA925EF3", EXACT],
+	&"pierce": ["LOC_UI_PANELS_1B02FC48CB", EXACT],
+	&"focus": ["LOC_UI_PANELS_FE7F55B8BF", EXACT],
+	&"bulwark": ["LOC_UI_PANELS_0D4FC55958", EXACT],
+	&"retribution": ["LOC_UI_PANELS_8366443A86", EXACT],
+	&"precision": ["LOC_UI_PANELS_3DD4DB5CE7", EXACT],
+	&"ferocity": ["LOC_UI_PANELS_D8B36CAB95", EXACT],
 }
 
 
 ## The label a player reads. An unlisted id falls back to the id itself: never a
 ## blank row (which reads as a stat the hero does not have) and never a silent
-## substitution.
+## substitution. The table holds the KEY, so this is the single place that resolves it.
 static func label_for(id: StringName) -> String:
 	var entry: Array = TABLE.get(id, [])
 	if entry.is_empty():
 		return String(id)
-	return String(entry[0])
+	return L.t(String(entry[0]))
 
 
 ## How many decimal places this id is printed at, or `EXACT` when the id is not in

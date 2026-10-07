@@ -26,10 +26,10 @@ extends PanelContainer
 ## The panel's own lines for the states it must say out loud rather than print zeros
 ## for. `NO_FIGHT` and `FIGHT_OVER` are different words on purpose: "you have not
 ## started" and "you have finished" are the two answers a player acts on differently.
-const NO_FIGHT := "No fight is under way."
-const NO_HERO := "No hero bound."
-const FIGHT_WON := "The fight is won."
-const FIGHT_LOST := "The fight is lost."
+const NO_FIGHT := "LOC_UI_PANELS_4FD205D6BD"
+const NO_HERO := "LOC_UI_PANELS_6E9BC19A74"
+const FIGHT_WON := "LOC_UI_PANELS_88B76393FF"
+const FIGHT_LOST := "LOC_UI_PANELS_A3620DB3E3"
 
 ## One bar: a name, its health and the share of it that is left. A local shape rather
 ## than a class because a row is a figure, not a behaviour.
@@ -102,8 +102,8 @@ func header_text() -> String:
 	if _fight.is_empty():
 		return NO_HERO if _fight.get("hero_id", "") == "" else NO_FIGHT
 	if String(_fight.get("opponent_id", "")).is_empty():
-		return NO_FIGHT
-	return "Fighting %s" % String(_fight.get("opponent_id", ""))
+		return L.t(NO_FIGHT)
+	return L.t("LOC_UI_PANELS_671B66CC9A") % String(_fight.get("opponent_id", ""))
 
 
 ## The blow tally and the rate that produced it, which is the pair a player builds
@@ -169,10 +169,10 @@ func verdict_text() -> String:
 func wounds_text() -> String:
 	var wounds: Variant = _fight.get("wounds", {})
 	if not (wounds is Dictionary) or (wounds as Dictionary).is_empty():
-		return "No meridian carries a wound."
+		return L.t("LOC_UI_PANELS_1189B575CB")
 	var severity: Variant = (wounds as Dictionary).get("severity", {})
 	if not (severity is Dictionary):
-		return "No meridian carries a wound."
+		return L.t("LOC_UI_PANELS_1189B575CB")
 	var flags: Variant = (wounds as Dictionary).get("necrotic", {})
 	var necrotic: Dictionary = flags if flags is Dictionary else {}
 	var parts: Array[String] = []
@@ -198,7 +198,7 @@ func _pool_text(label: String, current: Variant, maximum: Variant) -> String:
 	var now := float(current)
 	var top := float(maximum)
 	if top <= 0.0:
-		return "%s: no health pool" % label
+		return L.t("LOC_UI_PANELS_1936244C0F") % label
 	var filled := clampi(int(round((now / top) * float(HEALTH_BAR))), 0, HEALTH_BAR)
 	return (
 		"%s: %.1f / %.1f  %s%s"
@@ -230,7 +230,7 @@ func _bind_nodes() -> void:
 func _render() -> void:
 	if _header_label == null:
 		return
-	_header_label.text = header_text()
+	_header_label.text = L.t(header_text())
 	if _hero_label != null:
 		_hero_label.text = _pool_text(
 			"You", _fight.get("hero_health", 0.0), _fight.get("hero_health_max", 0.0)
@@ -240,16 +240,16 @@ func _render() -> void:
 			"Foe", _fight.get("opponent_health", 0.0), _fight.get("opponent_health_max", 0.0)
 		)
 	if _blows_label != null:
-		_blows_label.text = blows_text()
+		_blows_label.text = L.t(blows_text())
 		_blows_label.theme_type_variation = &"MetaLabel"
 	if _verdict_label != null:
-		_verdict_label.text = verdict_text()
+		_verdict_label.text = L.t(verdict_text())
 		# Style by VARIATION only — `theme_override_*` is banned (AGENTS.md). A won
 		# fight and a lost one must not read the same, because they are the two
 		# answers a player acts on differently.
 		_verdict_label.theme_type_variation = _verdict_variation()
 	if _wounds_label != null:
-		_wounds_label.text = wounds_text()
+		_wounds_label.text = L.t(wounds_text())
 		_wounds_label.theme_type_variation = _wounds_variation()
 
 

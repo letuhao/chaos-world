@@ -1,0 +1,118 @@
+{
+  "id": "medieval_western.pastoralism_livestock_and_dairy.low_timber_shearing_trestle_muddy_pasture",
+  "name": "Muddy Meadow Low Oak Sheepshearing Table Trestle",
+  "vietnamese_name": "Bàn Gỗ Thấp Dùng Đặt Cừu Để Xén Lông (Lầy Bùn Đồng Cỏ)",
+  "category": "pastoralism_livestock_and_dairy",
+  "sub_category": "sheepshearing_bench_and_fleeces",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "shear_sheep",
+  "gameplay_role": "Pastoral manorial farming element (Low Oak Sheepshearing Table Trestle).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of muddy meadow low oak sheepshearing table trestle, churned hooves mud and damp clover, Medieval pastoral livestock and dairy farming style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/pastoralism_livestock_and_dairy/low_timber_shearing_trestle_muddy_pasture.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.pastoralism_livestock_and_dairy.low_timber_shearing_trestle_muddy_pasture:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.501,
+        0.531
+      ]
+    ],
+    "frac_zero": 0.8157,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      2
+    ],
+    "sub_fill": [
+      [
+        0.312,
+        0.527,
+        0.738,
+        0.827,
+        0.694,
+        0.551,
+        0.253
+      ],
+      [
+        0.156,
+        0.358,
+        0.409,
+        0.63,
+        0.688,
+        0.438,
+        0.122
+      ]
+    ],
+    "crop_offset": [
+      18,
+      67
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 221,
+    "contact_reference_px": 221.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

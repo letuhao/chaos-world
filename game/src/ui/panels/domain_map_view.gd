@@ -124,7 +124,7 @@ const LAYERS := ["corridors", "room_fills", "room_outlines", "zones", "markers",
 ## What the legend says when no map has been handed over. Named rather than blank,
 ## because an empty legend reads as "this map has no markers" and the truth is that
 ## this panel is not connected to anything.
-const LEGEND_UNWIRED_TEXT := "The floor plan is not wired to a domain."
+const LEGEND_UNWIRED_TEXT := "LOC_UI_PANELS_46EF1DBA6A"
 
 ## Outline width, in pixels. Named because art owns it, and a number in a draw call is
 ## a number a reader cannot retune.
@@ -588,7 +588,7 @@ func _draw_room_chip(room: Dictionary, drawn: Rect2) -> void:
 	var tier := String(room.get("tier", ""))
 	if tier.is_empty() or tier == TIER_PLAIN:
 		return
-	var label := "%s %s" % [String(room.get("room_id", "")), tier]
+	var label := L.t("LOC_UI_PANELS_265FC52551") % [String(room.get("room_id", "")), tier]
 	var font := _chip_font()
 	if font == null:
 		return
@@ -820,14 +820,14 @@ func _bind_nodes() -> void:
 func _render() -> void:
 	if _legend_label == null:
 		return
-	_legend_label.text = _legend_text()
+	_legend_label.text = L.t(_legend_text())
 
 
 func _legend_text() -> String:
 	if not _bound:
-		return LEGEND_UNWIRED_TEXT
+		return L.t(LEGEND_UNWIRED_TEXT)
 	if _legend.is_empty():
-		return "No marker vocabulary in this floor plan yet."
+		return L.t("LOC_UI_PANELS_41ACF5FF56")
 	var lines: Array[String] = []
 	for row in _legend:
 		(

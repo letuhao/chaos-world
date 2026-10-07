@@ -54,6 +54,7 @@ SCOPES: dict[str, frozenset[str]] = {
         {
             "gd_prop_lit",
             "gd_prop_expr",
+            "gd_format_expr",
             "gd_return_lit",
             "gd_const_key",
         }
@@ -148,7 +149,7 @@ def scan_all(repo_root: Path) -> list[tuple[str, Scan]]:
 
 def _replacement(finding: Finding, original: str) -> str:
     """The text a sink is rewritten to. `original` is the current source slice of the span."""
-    if finding.kind == "gd_prop_expr":
+    if finding.kind in ("gd_prop_expr", "gd_format_expr"):
         return f"{policy.RESOLVER}({original})"
     slug = finding.key or catalog.slug_for(finding.prefix, finding.english)
     if finding.kind in ("tscn_lit", "tres_lit", "gd_const_key"):

@@ -1,0 +1,109 @@
+{
+  "id": "medieval_western.blacksmithing_and_metal_refining.whetstone_slanted_sharpening_rig_iron_rusted",
+  "name": "Weather-Oxidized Trough-Mounted Water Wheel Grindstone",
+  "vietnamese_name": "Bàn Mài Đá Ngâm Nước Quay Tay Mài Dao (Gỉ Sét Bề Mặt)",
+  "category": "blacksmithing_and_metal_refining",
+  "sub_category": "tempering_water_trough_and_quench_barrel",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "sharpen_tool",
+  "gameplay_role": "Supply chain industry element (Trough-Mounted Water Wheel Grindstone).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of weather-oxidized trough-mounted water wheel grindstone, red-brown iron rust crust on rough forgings, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/blacksmithing_and_metal_refining/whetstone_slanted_sharpening_rig_iron_rusted.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.blacksmithing_and_metal_refining.whetstone_slanted_sharpening_rig_iron_rusted:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.637
+      ]
+    ],
+    "frac_zero": 0.7161,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.389,
+        0.606,
+        0.0
+      ],
+      [
+        0.765,
+        0.909,
+        0.121
+      ],
+      [
+        0.673,
+        0.854,
+        0.076
+      ]
+    ],
+    "crop_offset": [
+      28,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 54,
+    "contact_reference_px": 54.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

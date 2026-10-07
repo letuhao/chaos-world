@@ -1,0 +1,195 @@
+{
+  "id": "medieval_western.watermills_windmills_and_milling.overshot_wooden_bucket_wheel_tarred_cloth",
+  "name": "Canvas-Sail Rigged Monumental Overshot Timber Waterwheel",
+  "vietnamese_name": "Bánh Xe Nước Gỗ Sồi Hứng Nước Từ Trên (Căng Cánh Bồm Bạt)",
+  "category": "watermills_windmills_and_milling",
+  "sub_category": "overshot_timber_waterwheel",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "inspect_wheel",
+  "gameplay_role": "Supply chain industry element (Monumental Overshot Timber Waterwheel).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "flemish_hanseatic",
+  "prompt_summary": "2D orthographic top-down game sprite of canvas-sail rigged monumental overshot timber waterwheel, heavy sail canvas and hemp rigging lines, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/watermills_windmills_and_milling/overshot_wooden_bucket_wheel_tarred_cloth.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.watermills_windmills_and_milling.overshot_wooden_bucket_wheel_tarred_cloth:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.472,
+        0.389
+      ],
+      [
+        0.699,
+        0.608
+      ]
+    ],
+    "frac_zero": 0.6796,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.206,
+        0.046,
+        0.31,
+        0.012,
+        0.0,
+        0.0
+      ],
+      [
+        0.496,
+        0.869,
+        0.72,
+        0.206,
+        0.018,
+        0.0
+      ],
+      [
+        0.24,
+        0.772,
+        0.991,
+        0.97,
+        0.595,
+        0.125
+      ],
+      [
+        0.174,
+        0.423,
+        0.84,
+        0.873,
+        0.224,
+        0.0
+      ],
+      [
+        0.632,
+        0.967,
+        0.98,
+        0.964,
+        0.396,
+        0.0
+      ],
+      [
+        0.627,
+        1.0,
+        1.0,
+        1.0,
+        0.429,
+        0.0
+      ],
+      [
+        0.134,
+        0.545,
+        0.984,
+        0.347,
+        0.082,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      47,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 56,
+    "contact_reference_px": 56.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

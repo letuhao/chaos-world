@@ -163,13 +163,13 @@ func _render() -> void:
 	visible = present
 	if not present:
 		return
-	_head_label.text = String(_state["head"])
-	_kind_label.text = String(_state["kind_line"])
-	_imprint_title.text = "Slot modifiers (%d)" % int(_state["imputed_count"])
+	_head_label.text = L.t(String(_state["head"]))
+	_kind_label.text = L.t(String(_state["kind_line"]))
+	_imprint_title.text = L.t("LOC_UI_PANELS_17069FE731") % int(_state["imputed_count"])
 	_fill(_imprint_rows, _state["imputed_lines"])
-	_gem_title.text = "Socket item modifiers (%d)" % int(_state["gem_effect_count"])
+	_gem_title.text = L.t("LOC_UI_PANELS_436076DFC2") % int(_state["gem_effect_count"])
 	_fill(_gem_rows, _state["gem_lines"])
-	_gem_enchant_label.text = String(_state["gem_enchantment_line"])
+	_gem_enchant_label.text = L.t(String(_state["gem_enchantment_line"]))
 	_gem_enchant_title.visible = String(_state["gem_enchantment_line"]) != ""
 	_gem_enchant_label.visible = String(_state["gem_enchantment_line"]) != ""
 	_empty_label.visible = not bool(_state["occupied"])
@@ -183,6 +183,6 @@ func _fill(box: VBoxContainer, lines: Array) -> void:
 		child.free()
 	for line in lines:
 		var label := Label.new()
-		label.text = String(line)
+		label.text = L.t(String(line))
 		label.theme_type_variation = &"EffectLabel"
 		box.add_child(label)

@@ -18,7 +18,7 @@ extends VBoxContainer
 signal reward_selected(encounter_id: String)
 
 ## Shown when nothing is waiting to be taken.
-const NONE_TEXT := "No reward waiting"
+const NONE_TEXT := "LOC_UI_PANELS_96BD396630"
 
 var _rewards: Array = []
 var _encounter_id: String = ""
@@ -92,7 +92,7 @@ func _bind_nodes() -> void:
 func _render() -> void:
 	if _title_label == null:
 		return
-	_title_label.text = _title_text()
+	_title_label.text = L.t(_title_text())
 	if _reward_option == null:
 		return
 	_reward_option.clear()
@@ -149,8 +149,8 @@ func _label_for(reward: Dictionary) -> String:
 
 func _title_text() -> String:
 	if _rewards.is_empty():
-		return NONE_TEXT
-	return "Rewards waiting (%d)" % _rewards.size()
+		return L.t(NONE_TEXT)
+	return L.t("LOC_UI_PANELS_C9D541E5FE") % _rewards.size()
 
 
 func _pending_total() -> int:

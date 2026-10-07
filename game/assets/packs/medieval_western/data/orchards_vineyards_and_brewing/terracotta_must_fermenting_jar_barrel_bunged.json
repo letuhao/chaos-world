@@ -1,0 +1,109 @@
+{
+  "id": "medieval_western.orchards_vineyards_and_brewing.terracotta_must_fermenting_jar_barrel_bunged",
+  "name": "Oak-Casked Earthenware Wine Must Storage Amphora",
+  "vietnamese_name": "Bình Gốm Lớn Ủ Nước Nho Lên Men (Ủ Thùng Gỗ Sồi)",
+  "category": "orchards_vineyards_and_brewing",
+  "sub_category": "grape_treading_vat_and_press",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "sample_must",
+  "gameplay_role": "Supply chain industry element (Earthenware Wine Must Storage Amphora).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of oak-casked earthenware wine must storage amphora, thick iron hoops and oak stave grain, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/orchards_vineyards_and_brewing/terracotta_must_fermenting_jar_barrel_bunged.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.orchards_vineyards_and_brewing.terracotta_must_fermenting_jar_barrel_bunged:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.788
+      ]
+    ],
+    "frac_zero": 0.6605,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.565,
+        0.759,
+        0.031
+      ],
+      [
+        0.958,
+        1.0,
+        0.786
+      ],
+      [
+        0.784,
+        0.946,
+        0.232
+      ]
+    ],
+    "crop_offset": [
+      28,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 57,
+    "contact_reference_px": 57.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

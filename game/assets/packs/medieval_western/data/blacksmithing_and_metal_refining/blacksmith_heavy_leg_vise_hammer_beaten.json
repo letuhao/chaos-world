@@ -1,0 +1,106 @@
+{
+  "id": "medieval_western.blacksmithing_and_metal_refining.blacksmith_heavy_leg_vise_hammer_beaten",
+  "name": "Anvil-Hammered Bench-Mounted Wrought Iron Leg Vise",
+  "vietnamese_name": "Ê-Tô Bằng Sắt Có Chân Đứng Kẹp Đồ (Rèn Đập Nhẵn Mặt)",
+  "category": "blacksmithing_and_metal_refining",
+  "sub_category": "blacksmith_tongs_hammers_chisel_rack",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "clamp_work",
+  "gameplay_role": "Supply chain industry element (Bench-Mounted Wrought Iron Leg Vise).",
+  "destructible": false,
+  "material": "iron",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of anvil-hammered bench-mounted wrought iron leg vise, chiseled texture and forged hammer facet planes, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/blacksmithing_and_metal_refining/blacksmith_heavy_leg_vise_hammer_beaten.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.blacksmithing_and_metal_refining.blacksmith_heavy_leg_vise_hammer_beaten:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.535
+      ]
+    ],
+    "frac_zero": 0.7923,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      2,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.459,
+        0.414
+      ],
+      [
+        0.725,
+        0.558
+      ],
+      [
+        0.61,
+        0.419
+      ]
+    ],
+    "crop_offset": [
+      34,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 54,
+    "contact_reference_px": 54.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

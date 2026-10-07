@@ -189,7 +189,7 @@ func _render() -> void:
 			extra.set_state({})
 		index += 1
 	if _header != null:
-		_header.text = "Channels (%d shown)" % visible_ids().size()
+		_header.text = L.t("LOC_UI_PANELS_7010CB4227") % visible_ids().size()
 
 
 ## A row was pressed: emit the selection. The panel owns only the fact that a row was
@@ -214,4 +214,4 @@ func _label_for(entry: Dictionary, required: bool, injured: bool) -> String:
 	elif required:
 		suffix = " (required)"
 	var name := String(entry.get("name", meridian_id))
-	return "%s %s d%d%s" % [name, state, refinement, suffix]
+	return L.t("LOC_UI_PANELS_074157672D") % [name, state, refinement, suffix]

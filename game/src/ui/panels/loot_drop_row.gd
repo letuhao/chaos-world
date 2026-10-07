@@ -15,18 +15,18 @@ signal action_requested(drop_id: String)
 
 ## Rarity display vocabulary. Presentation only; the facade speaks rarity ids.
 const RARITY_LABELS := {
-	&"common": "Common",
-	&"magic": "Magic",
-	&"rare": "Rare",
-	&"legendary": "Legendary",
+	&"common": "LOC_UI_PANELS_7DE90A6524",
+	&"magic": "LOC_UI_PANELS_E6791BE7EE",
+	&"rare": "LOC_UI_PANELS_CCE370D2F9",
+	&"legendary": "LOC_UI_PANELS_B7E8916505",
 }
 
 ## Wording for each status a drop can be in. The row owns it so a screen reports
 ## the same words for the same state.
 const STATUS_TEXT := {
-	&"claimed": "Taken",
-	&"stashed": "In the world",
-	&"pending": "Waiting",
+	&"claimed": "LOC_UI_PANELS_C66C12B988",
+	&"stashed": "LOC_UI_PANELS_3992533BD0",
+	&"pending": "LOC_UI_PANELS_33D3063284",
 }
 
 var _state: Dictionary = {}
@@ -142,7 +142,8 @@ func _status_of(row: Dictionary) -> StringName:
 
 
 func _rarity_label(rarity: String) -> String:
-	return String(RARITY_LABELS.get(StringName(rarity), String(RARITY_LABELS[&"common"])))
+	# The vocabulary holds KEYS, so this is where they resolve — one place, before `summary()`.
+	return L.t(String(RARITY_LABELS.get(StringName(rarity), String(RARITY_LABELS[&"common"]))))
 
 
 func _render() -> void:
@@ -154,11 +155,11 @@ func _render() -> void:
 		if drop_id.is_empty()
 		else "%s  x%d" % [String(_state.get("display_name", drop_id)), int(_state["quantity"])]
 	)
-	_meta_label.text = "" if drop_id.is_empty() else _meta_text()
-	_instance_label.text = "" if drop_id.is_empty() else _instance_text()
-	_status_label.text = String(STATUS_TEXT.get(StringName(_state.get("status", "")), ""))
+	_meta_label.text = L.t("" if drop_id.is_empty() else _meta_text())
+	_instance_label.text = L.t("" if drop_id.is_empty() else _instance_text())
+	_status_label.text = L.t(String(STATUS_TEXT.get(StringName(_state.get("status", "")), "")))
 	_status_label.theme_type_variation = _status_variation()
-	_action_button.text = String(_state.get("action", ""))
+	_action_button.text = L.t(String(_state.get("action", "")))
 	# `.get`, not `[]`: `_ready` renders before any `bind()` has run, so `_state` is
 	# still the empty default and every key here is absent. The two reads above
 	# already tolerate that; this one did not, so a pooled row -- created fresh and
@@ -206,7 +207,7 @@ func _fill_effects() -> void:
 		child.free()
 	for line in _effect_lines:
 		var label := Label.new()
-		label.text = line
+		label.text = L.t(line)
 		label.theme_type_variation = &"EffectLabel"
 		_effect_rows.add_child(label)
 

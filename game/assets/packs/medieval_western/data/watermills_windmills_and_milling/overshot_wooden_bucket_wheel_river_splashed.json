@@ -1,0 +1,188 @@
+{
+  "id": "medieval_western.watermills_windmills_and_milling.overshot_wooden_bucket_wheel_river_splashed",
+  "name": "River-Misted Monumental Overshot Timber Waterwheel",
+  "vietnamese_name": "Bánh Xe Nước Gỗ Sồi Hứng Nước Từ Trên (Bọt Nước Sông Bắn)",
+  "category": "watermills_windmills_and_milling",
+  "sub_category": "overshot_timber_waterwheel",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "inspect_wheel",
+  "gameplay_role": "Supply chain industry element (Monumental Overshot Timber Waterwheel).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of river-misted monumental overshot timber waterwheel, wet splashing water drops and mossy paddles, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/watermills_windmills_and_milling/overshot_wooden_bucket_wheel_river_splashed.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.watermills_windmills_and_milling.overshot_wooden_bucket_wheel_river_splashed:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.611,
+        0.341
+      ],
+      [
+        0.799,
+        0.723
+      ]
+    ],
+    "frac_zero": 0.6812,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.608,
+        0.509,
+        0.0,
+        0.0
+      ],
+      [
+        0.165,
+        0.942,
+        0.768,
+        0.0,
+        0.0
+      ],
+      [
+        0.416,
+        0.982,
+        0.892,
+        0.275,
+        0.096
+      ],
+      [
+        0.689,
+        0.976,
+        0.94,
+        0.842,
+        0.375
+      ],
+      [
+        0.729,
+        0.964,
+        1.0,
+        0.96,
+        0.399
+      ],
+      [
+        0.793,
+        1.0,
+        1.0,
+        0.96,
+        0.623
+      ],
+      [
+        0.241,
+        0.933,
+        0.942,
+        0.289,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      55,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 83,
+    "contact_reference_px": 83.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

@@ -44,6 +44,8 @@ _USE2 = re.compile(r'L\.t\(\s*"(LOC_[^"]+)"\s*,\s*"((?:[^"\\]|\\.)*)"\s*\)')
 ## nothing references is an orphan, and matching only the wrapped form called every
 ## const-held key one — which `extract` would then prune while the source still used it.
 _USE_ANY = re.compile(r'"(LOC_[A-Z0-9_]+)"')
+## A CONSTANT-shaped identifier: the name a keyed `const` is spelled with.
+_KEYED_ARG = re.compile(r"(?<![\w.])[A-Z][A-Z0-9_]*")
 _TRES_ROW = re.compile(
     r'^\s*"?(?P<field>'
     + "|".join(policy.CONTENT_FIELDS)
@@ -57,7 +59,7 @@ _TSCN_ROW = re.compile(
 LIT_KINDS = frozenset({"gd_prop_lit", "gd_return_lit", "gd_const_key"})
 ## Kinds the tool rewrites. `gd_const_key` leaves a `const` a `const` holding a bare KEY; the
 ## reader resolves it, because a `var REASON_TEXT` is a `class-variable-name` lint error.
-REWRITABLE = LIT_KINDS | {"gd_prop_expr"}
+REWRITABLE = LIT_KINDS | {"gd_prop_expr", "gd_format_expr"}
 
 
 @dataclass
@@ -127,6 +129,17 @@ def _comment_index(line: str) -> int:
         elif char == "#":
             return index
     return len(line)
+
+
+def _in_comment(text: str, position: int) -> bool:
+    """Whether `position` falls inside a `#` comment on its own line.
+
+    A declaration's initializer SPAN crosses lines for a dict or array, so the span scan can
+    reach a literal written inside a COMMENT below it — a quoted English word in prose. Keying
+    that corrupts the comment and mints a row nothing derives, so it is checked here.
+    """
+    start = text.rfind("\n", 0, position) + 1
+    return position >= start + _comment_index(text[start:])
 
 
 def _balanced(expr: str) -> bool:
@@ -203,6 +216,8 @@ def scan_gd(rel: str, text: str, prefix: str, catalog: str) -> Scan:
     uses: list[Use] = []
     unsupported: list[Unsupported] = []
     regions: list[tuple[int, int]] = []
+    ## The consts THIS file holds a bare KEY in, so a `return CONST` can be seen as the leak it is.
+    keyed: set[str] = set()
     current_func = ""
     offset = 0
     line_no = 0
@@ -226,12 +241,22 @@ def scan_gd(rel: str, text: str, prefix: str, catalog: str) -> Scan:
 
         if any(start <= line_start < end for start, end in regions):
             continue
-        _scan_assign(rel, line_no, line_start, code, prefix, catalog, findings, unsupported)
+        _scan_assign(rel, line_no, line_start, code, prefix, catalog, findings, unsupported, keyed)
         _scan_decl(
-            rel, line_no, line_start, code, text, prefix, catalog, findings, regions, unsupported
+            rel,
+            line_no,
+            line_start,
+            code,
+            text,
+            prefix,
+            catalog,
+            findings,
+            regions,
+            unsupported,
+            keyed,
         )
         if policy.has_display_token(current_func):
-            _scan_return(rel, line_no, line_start, code, prefix, catalog, findings)
+            _scan_return(rel, line_no, line_start, code, prefix, catalog, findings, keyed)
     return Scan(findings, uses, unsupported, "L.t(" in text)
 
 
@@ -291,7 +316,7 @@ def _format_operator(rhs: str) -> int:
     return -1
 
 
-def _key_format(rel, line_no, base, rhs, prefix, catalog, kind, findings) -> bool:
+def _key_format(rel, line_no, base, rhs, prefix, catalog, kind, findings, keyed) -> bool:
     """Key a `%`-format expression: its MESSAGE literal and every prose literal in ARGUMENTS.
 
     `"%s - %s" % [fact, "heard" if ok else "not yet"]` holds three messages — the template and
@@ -310,6 +335,24 @@ def _key_format(rel, line_no, base, rhs, prefix, catalog, kind, findings) -> boo
             findings.append(
                 Finding(rel, line_no, base, base + message.end(), english, prefix, catalog, kind)
             )
+    else:
+        # `CONST % args` where CONST holds a KEY: a key is not a template, so the format would
+        # run on `LOC_…` and raise. Resolving the head first is the only correct rewrite.
+        head = rhs[:operator].strip()
+        offset = rhs.index(head) if head else 0
+        if re.fullmatch(r"[A-Za-z_][A-Za-z0-9_.]*", head) and not head.startswith(policy.RESOLVER):
+            findings.append(
+                Finding(
+                    rel,
+                    line_no,
+                    base + offset,
+                    base + offset + len(head),
+                    "",
+                    prefix,
+                    catalog,
+                    "gd_format_expr",
+                )
+            )
     arguments = rhs[operator + 1 :]
     offset = base + operator + 1
     wrapped = _wrapped_spans(arguments, 0, len(arguments))
@@ -319,29 +362,38 @@ def _key_format(rel, line_no, base, rhs, prefix, catalog, kind, findings) -> boo
         english = decode(literal.group(0)[1:-1])
         if not policy.is_player_text(english):
             continue
+    # A CONST the file holds a KEY in, used as an ARGUMENT, is a message fragment too:
+    # `"%s %s" % [LABEL, UNEARNED]` renders both slugs unless each is resolved first.
+    for token in _KEYED_ARG.finditer(arguments):
+        if token.group(0) not in keyed:
+            continue
+        if any(begin <= token.start() and token.end() <= stop for begin, stop in wrapped):
+            continue
         findings.append(
             Finding(
                 rel,
                 line_no,
-                offset + literal.start(),
-                offset + literal.end(),
-                english,
+                offset + token.start(),
+                offset + token.end(),
+                "",
                 prefix,
                 catalog,
-                kind,
+                "gd_format_expr",
             )
         )
     return True
 
 
-def _scan_assign(rel, line_no, line_start, code, prefix, catalog, findings, unsupported) -> None:
+def _scan_assign(
+    rel, line_no, line_start, code, prefix, catalog, findings, unsupported, keyed
+) -> None:
     match = _GD_ASSIGN.search(code)
     if match is None:
         return
     rhs = match.group("rhs")
     start = line_start + match.start("rhs")
     end = line_start + match.end("rhs")
-    if _key_format(rel, line_no, start, rhs, prefix, catalog, "gd_prop_lit", findings):
+    if _key_format(rel, line_no, start, rhs, prefix, catalog, "gd_prop_lit", findings, keyed):
         return
     literal = STRING_LIT.fullmatch(rhs)
     if literal is not None:
@@ -372,7 +424,7 @@ def _is_dict_key(text: str, end: int, limit: int) -> bool:
 
 
 def _scan_decl(
-    rel, line_no, line_start, code, text, prefix, catalog, findings, regions, unsupported
+    rel, line_no, line_start, code, text, prefix, catalog, findings, regions, unsupported, keyed
 ) -> None:
     match = _GD_DECL.match(code)
     if match is None:
@@ -394,6 +446,8 @@ def _scan_decl(
     for literal in STRING_LIT.finditer(text, span_start, span_end):
         if _is_dict_key(text, literal.end(), span_end):
             continue
+        if _in_comment(text, literal.start()):
+            continue  # a quoted word in a comment is prose about the code, not a sink
         if any(begin <= literal.start() and literal.end() <= stop for begin, stop in wrapped):
             continue  # already inside an L.t(...) call
         english = decode(literal.group(0)[1:-1])
@@ -414,15 +468,33 @@ def _scan_decl(
                 )
             )
     findings.extend(literals)
+    if is_const:
+        keyed.add(match.group("name"))
 
 
-def _scan_return(rel, line_no, line_start, code, prefix, catalog, findings) -> None:
+def _scan_return(rel, line_no, line_start, code, prefix, catalog, findings, keyed) -> None:
     match = _GD_RETURN.match(code)
     if match is None:
         return
     rhs = match.group("rhs")
     start = line_start + match.start("rhs")
-    if _key_format(rel, line_no, start, rhs, prefix, catalog, "gd_return_lit", findings):
+    if _key_format(rel, line_no, start, rhs, prefix, catalog, "gd_return_lit", findings, keyed):
+        return
+    # A helper that returns a const holding a KEY hands a slug to its caller, whose `summary()`
+    # then publishes it. The scanner knows the file's keyed consts, so this is visible.
+    if rhs.strip() in keyed:
+        findings.append(
+            Finding(
+                rel,
+                line_no,
+                start,
+                line_start + match.end("rhs"),
+                "",
+                prefix,
+                catalog,
+                "gd_prop_expr",
+            )
+        )
         return
     literal = STRING_LIT.fullmatch(rhs)
     if literal is not None:

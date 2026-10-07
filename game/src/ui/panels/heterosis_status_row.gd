@@ -63,9 +63,9 @@ func _render() -> void:
 	visible = is_filled()
 	if not visible:
 		return
-	_head_label.text = "Heterosis"
-	_spike_label.text = _spike_text()
-	_status_label.text = _status_text()
+	_head_label.text = L.t("LOC_UI_PANELS_D6B312D7A5")
+	_spike_label.text = L.t(_spike_text())
+	_status_label.text = L.t(_status_text())
 
 
 func _spike_text() -> String:
@@ -80,5 +80,5 @@ func _spike_text() -> String:
 
 func _status_text() -> String:
 	if bool(_view.get("carrier_state", false)):
-		return "Carrier · Generation %d" % int(_view.get("generation", 0))
-	return "Not a carrier"
+		return L.t("LOC_UI_PANELS_3E46D01E6D") % int(_view.get("generation", 0))
+	return L.t("LOC_UI_PANELS_B52F443364")

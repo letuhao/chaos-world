@@ -1,0 +1,174 @@
+{
+  "id": "medieval_western.watermills_windmills_and_milling.millpond_placid_reedy_surface_tarred_cloth",
+  "name": "Canvas-Sail Rigged Placid Millpond Water with Reeds",
+  "vietnamese_name": "Mặt Nước Hồ Cối Xay Yên Bình Ven Bờ Sậy (Căng Cánh Bồm Bạt)",
+  "category": "watermills_windmills_and_milling",
+  "sub_category": "millpond_weir_and_sluice_gates",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "water",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "fish",
+  "gameplay_role": "Supply chain industry element (Placid Millpond Water with Reeds).",
+  "destructible": false,
+  "material": "water",
+  "feudal_culture": "flemish_hanseatic",
+  "prompt_summary": "2D orthographic top-down game sprite of canvas-sail rigged placid millpond water with reeds, heavy sail canvas and hemp rigging lines, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/watermills_windmills_and_milling/millpond_placid_reedy_surface_tarred_cloth.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.watermills_windmills_and_milling.millpond_placid_reedy_surface_tarred_cloth:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.446,
+        0.328
+      ],
+      [
+        0.822,
+        0.823
+      ]
+    ],
+    "frac_zero": 0.552,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.128,
+        0.04,
+        0.308,
+        0.003,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.59,
+        0.724,
+        0.586,
+        0.087,
+        0.0,
+        0.0
+      ],
+      [
+        0.042,
+        0.639,
+        1.0,
+        0.981,
+        0.847,
+        0.29,
+        0.0
+      ],
+      [
+        0.538,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.935,
+        0.178
+      ],
+      [
+        0.948,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.844
+      ],
+      [
+        0.557,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.981,
+        0.402
+      ],
+      [
+        0.054,
+        0.612,
+        0.942,
+        0.952,
+        0.8,
+        0.253,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      24,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 124,
+    "contact_reference_px": 124.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

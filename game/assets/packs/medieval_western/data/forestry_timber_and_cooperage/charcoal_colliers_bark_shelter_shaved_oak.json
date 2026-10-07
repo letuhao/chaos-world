@@ -1,0 +1,202 @@
+{
+  "id": "medieval_western.forestry_timber_and_cooperage.charcoal_colliers_bark_shelter_shaved_oak",
+  "name": "Oak-Curled Collier's Conical Bark Lean-To Shack",
+  "vietnamese_name": "Túp Lều Bằng Vỏ Cây Của Người Đốt Than Rừng (Bào Gỗ Sồi Cuộn)",
+  "category": "forestry_timber_and_cooperage",
+  "sub_category": "charcoal_burners_earthen_kiln",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "rest",
+  "gameplay_role": "Supply chain industry element (Collier's Conical Bark Lean-To Shack).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of oak-curled collier's conical bark lean-to shack, curled pale shavings and smooth planed oak, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/forestry_timber_and_cooperage/charcoal_colliers_bark_shelter_shaved_oak.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.forestry_timber_and_cooperage.charcoal_colliers_bark_shelter_shaved_oak:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.512,
+        0.495
+      ],
+      [
+        0.774,
+        0.797
+      ]
+    ],
+    "frac_zero": 0.5245,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.438,
+        0.778,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.017,
+        0.064,
+        0.889,
+        1.0,
+        0.49,
+        0.166,
+        0.0
+      ],
+      [
+        0.274,
+        0.964,
+        1.0,
+        1.0,
+        0.999,
+        0.585,
+        0.019
+      ],
+      [
+        0.688,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.987,
+        0.557
+      ],
+      [
+        0.782,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        0.635
+      ],
+      [
+        0.596,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.956,
+        0.208
+      ],
+      [
+        0.156,
+        0.627,
+        0.561,
+        0.339,
+        0.768,
+        0.666,
+        0.027
+      ]
+    ],
+    "crop_offset": [
+      22,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 57,
+    "contact_reference_px": 57.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

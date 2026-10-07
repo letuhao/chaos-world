@@ -13,9 +13,9 @@ extends PanelContainer
 
 signal equip_requested(technique_id: StringName)
 
-const EMPTY_TEXT := "Empty"
-const ALREADY_BOUND := "Already bound"
-const NO_SLOT_TEXT := "No free slot in its pool"
+const EMPTY_TEXT := "LOC_UI_PANELS_3159FE421B"
+const ALREADY_BOUND := "LOC_UI_PANELS_2A3490429D"
+const NO_SLOT_TEXT := "LOC_UI_PANELS_AC7B427CC2"
 const POOL_UNKNOWN := "untyped"
 
 var _view: Dictionary = {}
@@ -120,10 +120,10 @@ func _render() -> void:
 	visible = is_filled()
 	if not visible:
 		return
-	_head_label.text = _head
+	_head_label.text = L.t(_head)
 	_head_label.theme_type_variation = _head_variation()
-	_body_label.text = _body
-	_gate_label.text = _gate
+	_body_label.text = L.t(_body)
+	_gate_label.text = L.t(_gate)
 	if _equip_button != null:
 		# Disabled rather than hidden: a player can see a technique exists and learn
 		# WHY it will not bind, which is the half a hidden button takes away.
@@ -155,7 +155,7 @@ func _body_text(view: Dictionary) -> String:
 ## module's own `equip_unmet` labels, so this panel never restates a rule.
 func _gate_text(view: Dictionary) -> String:
 	if bool(view.get("equipped", false)):
-		return ALREADY_BOUND
+		return L.t(ALREADY_BOUND)
 	var slots := _string_list(view.get("claimable_slots", []))
 	if slots.is_empty():
 		var blocked := _string_list(view.get("equip_unmet", []))
@@ -163,8 +163,8 @@ func _gate_text(view: Dictionary) -> String:
 	var pools := _string_list(view.get("paths", []))
 	var where := "" if pools.is_empty() else " (%s)" % " + ".join(pools)
 	if slots.size() == 1:
-		return "%s%s" % [slots[0], where]
-	return "%d slots%s" % [slots.size(), where]
+		return L.t("LOC_UI_PANELS_9BDA272DBC") % [slots[0], where]
+	return L.t("LOC_UI_PANELS_2846597234") % [slots.size(), where]
 
 
 ## The pool this technique draws from, in the module's vocabulary: `ui/` names the

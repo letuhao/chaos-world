@@ -40,11 +40,11 @@ extends PanelContainer
 ## What the roster says when the composition root wired nothing. A missing seam is
 ## named on the row rather than painted as an empty room, because "nobody is here" and
 ## "this panel is not connected" are different facts and a player must be able to tell.
-const UNWIRED_TEXT := "The roster of this place is not wired to anything."
+const UNWIRED_TEXT := "LOC_UI_PANELS_FEBCB8D5F9"
 ## A place the player has not been placed in. Not "empty" — there is no place at all.
-const NOWHERE_TEXT := "You are standing nowhere in particular."
+const NOWHERE_TEXT := "LOC_UI_PANELS_E2DB991EEF"
 ## An empty room. The honest reading, and the one that must never be a neighbour's cast.
-const EMPTY_ROOM_TEXT := "Nobody else stands here."
+const EMPTY_ROOM_TEXT := "LOC_UI_PANELS_287D4CDFE4"
 
 ## How many people one row is worth naming. The read model already caps the list and
 ## says so with `truncated`; this bounds the RENDERED rows so a busy settlement does not
@@ -53,7 +53,7 @@ const MAX_ROWS := 8
 
 ## What each roster row reads. The columns are the module's own read-model keys — a row
 ## invents no field, so the panel cannot show a thing the module does not track.
-const ROW_TEMPLATE := "%s - %s%s"
+const ROW_TEMPLATE := "LOC_UI_PANELS_943F916207"
 
 var _wired: bool = false
 var _located: bool = false
@@ -143,8 +143,8 @@ func _bind_nodes() -> void:
 func _render() -> void:
 	if _room_label == null:
 		return
-	_room_label.text = _room_text()
-	_roster_label.text = _roster_text()
+	_room_label.text = L.t(_room_text())
+	_roster_label.text = L.t(_roster_text())
 
 
 ## The room's identity, in the module's own words. An authored `location_id` is printed
@@ -152,12 +152,12 @@ func _render() -> void:
 ## the handle a driver and a test match on while the name is what a player reads.
 func _room_text() -> String:
 	if not _wired:
-		return UNWIRED_TEXT
+		return L.t(UNWIRED_TEXT)
 	if not _located or _location_id.is_empty():
-		return NOWHERE_TEXT
+		return L.t(NOWHERE_TEXT)
 	if _display_name.is_empty():
-		return "This place: %s" % _location_id
-	return "This place: %s (%s)" % [_display_name, _location_id]
+		return L.t("LOC_UI_PANELS_AABDFE2BAF") % _location_id
+	return L.t("LOC_UI_PANELS_118F2BB152") % [_display_name, _location_id]
 
 
 ## The cast, one row each, or the honest sentence for an empty room. Never borrowed:
@@ -168,7 +168,7 @@ func _roster_text() -> String:
 	if not _located:
 		return ""
 	if _rows.is_empty():
-		return EMPTY_ROOM_TEXT
+		return L.t(EMPTY_ROOM_TEXT)
 	var lines: Array[String] = []
 	# Each `for` walks `_rows`, which was built BEFORE this loop and which this loop
 	# never appends to — the shape `tests/arch_rules/test_no_unbounded_wait.gd` accepts.

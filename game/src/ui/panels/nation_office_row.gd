@@ -22,11 +22,11 @@ extends PanelContainer
 
 ## Stands in for a seat's holder. A word, never the id and never a dash: an empty
 ## `holder_id` is a value that is ABSENT, and "-" would read as an authored value.
-const VACANT_TEXT := "Vacant"
-const UNFILLED_TEXT := "Unfilled"
-const UNKNOWN_TEXT := "Seat unnamed"
-const HOLDER_PREFIX := "Held by"
-const METHOD_UNKNOWN := "succession unwritten"
+const VACANT_TEXT := "LOC_UI_PANELS_1966F9678D"
+const UNFILLED_TEXT := "LOC_UI_PANELS_A7A330AC1B"
+const UNKNOWN_TEXT := "LOC_UI_PANELS_407C9D860C"
+const HOLDER_PREFIX := "LOC_UI_PANELS_0D4A738829"
+const METHOD_UNKNOWN := "LOC_UI_PANELS_1677AB1003"
 
 var _view: Dictionary = {}
 var _head: String = ""
@@ -162,12 +162,12 @@ func _render() -> void:
 	theme_type_variation = _card_tone()
 	if not visible:
 		return
-	_head_label.text = _head
+	_head_label.text = L.t(_head)
 	_head_label.theme_type_variation = _head_tone()
-	_holder_label.text = _holder
+	_holder_label.text = L.t(_holder)
 	_holder_label.theme_type_variation = _holder_tone()
-	_method_label.text = _method
-	_meta_label.text = _meta
+	_method_label.text = L.t(_method)
+	_meta_label.text = L.t(_meta)
 
 
 ## The card a filled seat paints itself with, and the card a VACANT one paints
@@ -193,8 +193,8 @@ func _holder_tone() -> StringName:
 ## the row; the screen passes raw values and formats nothing.
 func _meta_text() -> String:
 	if is_vacant():
-		return "vacant · %d seat(s) · to be filled by %s" % [int(_view.get("capacity", 0)), _method]
-	return "%d seat(s) · filled by %s" % [int(_view.get("capacity", 0)), _method]
+		return L.t("LOC_UI_PANELS_C3165CE47C") % [int(_view.get("capacity", 0)), _method]
+	return L.t("LOC_UI_PANELS_3522BFD967") % [int(_view.get("capacity", 0)), _method]
 
 
 func _string_list(values: Variant) -> Array:

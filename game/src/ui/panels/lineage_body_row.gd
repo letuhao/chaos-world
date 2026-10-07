@@ -25,15 +25,15 @@ extends PanelContainer
 
 ## What a body with no authored race is called. A word, never `""` and never a
 ## dash: an absent race is a fact about the world, not a missing widget.
-const NO_RACE := "Body unnamed"
+const NO_RACE := "LOC_UI_PANELS_FF5695E571"
 ## `realm_ceiling` is 0 on a body with NO ceiling, which is the opposite of a
 ## ceiling of zero. Spelled out so the two can never read alike.
-const NO_CEILING := "No ceiling"
-const OPEN_ALL_PATHS := "Closes no path"
-const PATHS_CLOSED := "Paths closed"
-const BASELINE_NOTE := "the fallback body, born before the world has an opinion about you"
+const NO_CEILING := "LOC_UI_PANELS_D8E5CCCE3A"
+const OPEN_ALL_PATHS := "LOC_UI_PANELS_5EFC30B9B9"
+const PATHS_CLOSED := "LOC_UI_PANELS_407CCE7513"
+const BASELINE_NOTE := "LOC_UI_PANELS_C51E70C964"
 const DAYS := "days"
-const REALM_SUFFIX := "R"
+const REALM_SUFFIX := "LOC_UI_PANELS_06576556D1"
 
 var _view: Dictionary = {}
 var _catalog: Dictionary = {}
@@ -137,12 +137,12 @@ func _render() -> void:
 	if not visible:
 		return
 	_compute_lines()
-	_name_label.text = _name_line
-	_refusal_label.text = _refusal_line
-	_ceiling_label.text = _ceiling_line
-	_affinity_label.text = _affinity_line
+	_name_label.text = L.t(_name_line)
+	_refusal_label.text = L.t(_refusal_line)
+	_ceiling_label.text = L.t(_ceiling_line)
+	_affinity_label.text = L.t(_affinity_line)
 	_affinity_label.visible = _affinity_line != ""
-	_meta_label.text = _meta
+	_meta_label.text = L.t(_meta)
 	_meta_label.visible = _meta != ""
 
 
@@ -161,7 +161,7 @@ func _compute_lines() -> void:
 func _name_line_of() -> String:
 	var race_id := String(_view.get("race", ""))
 	if race_id == "":
-		return NO_RACE
+		return L.t(NO_RACE)
 	var authored := String((_catalog.get(race_id, {}) as Dictionary).get("display_name", ""))
 	return authored if authored != "" else race_id
 
@@ -172,15 +172,17 @@ func _refusal_text() -> String:
 	var closed := _string_list(_view.get("closed_paths", []))
 	var open := int(_view.get("open_path_count", 0))
 	if closed.is_empty():
-		return "%s · %d open" % [OPEN_ALL_PATHS, open]
-	return "%s: %s · %d open" % [PATHS_CLOSED, ", ".join(closed), open]
+		return L.t("LOC_UI_PANELS_5D002D2A3C") % [L.t(OPEN_ALL_PATHS), open]
+	return L.t("LOC_UI_PANELS_03C6D78056") % [L.t(PATHS_CLOSED), ", ".join(closed), open]
 
 
 ## The ceiling as a realm ordinal and the lifespan in days. A ceiling of 0 is "no
 ## ceiling" and is never printed as `R0`.
 func _ceiling_text() -> String:
 	var ceiling := int(_view.get("realm_ceiling", 0))
-	var ceiling_text := NO_CEILING if ceiling <= 0 else "%s%d" % [REALM_SUFFIX, ceiling]
+	var ceiling_text := (
+		NO_CEILING if ceiling <= 0 else L.t("LOC_UI_PANELS_38F8FB8209") % [REALM_SUFFIX, ceiling]
+	)
 	return (
 		"Ceiling %s · reached R%d · %d %s"
 		% [
@@ -204,7 +206,7 @@ func _affinity_text() -> String:
 	var parts: Array[String] = []
 	for key in keys:
 		parts.append("%s %.1f" % [String(key), float(affinities[key])])
-	return "Affinities: %s" % ", ".join(parts)
+	return L.t("LOC_UI_PANELS_BC67AC535D") % ", ".join(parts)
 
 
 ## One quiet line of provenance, and the only thing on this row that is not a fact

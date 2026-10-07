@@ -32,16 +32,16 @@ extends HBoxContainer
 ## Contract: `summary()` is the testable surface.
 
 ## Shown when nobody is inside a domain.
-const OUTSIDE := "Outside a domain"
+const OUTSIDE := "LOC_UI_PANELS_7F6FF1B33D"
 ## Shown before the player has lost anything.
-const NO_LOSSES := "No losses yet"
+const NO_LOSSES := "LOC_UI_PANELS_17F1E9199E"
 ## Shown when the player is carrying nothing that is eating them. An empty line would
 ## read as a row the panel forgot to fill, so the absence is stated instead.
-const NO_STATUSES := "No statuses"
+const NO_STATUSES := "LOC_UI_PANELS_2D76FBC05C"
 ## The gate line when nothing is shut. Also the wording for a domain that declares no
 ## gate at all -- "open" and "ungated" are the same thing to act on, and saying so is
 ## what stops a satisfied gate reading as a refusal.
-const OPEN_DOMAIN := "Open domain"
+const OPEN_DOMAIN := "LOC_UI_PANELS_4708400A59"
 
 var _in_domain: bool = false
 var _boss_id: String = ""
@@ -128,10 +128,10 @@ func show_statuses(statuses: Array) -> void:
 ## row's layout -- what a panel owns is the wording, not where a Label is declared.
 func gate_text(required: float, carrying: float) -> String:
 	if required <= 0.0:
-		return OPEN_DOMAIN
+		return L.t(OPEN_DOMAIN)
 	if carrying >= required:
-		return OPEN_DOMAIN
-	return "Needs key reach %d, carrying %d" % [int(required), int(carrying)]
+		return L.t(OPEN_DOMAIN)
+	return L.t("LOC_UI_PANELS_B94EC87E2E") % [int(required), int(carrying)]
 
 
 ## The player's own loot bonus, to two decimals.
@@ -140,7 +140,7 @@ func gate_text(required: float, carrying: float) -> String:
 ## multiplier on drop rolls (`fortune * 0.01`), so 0.10 is "a 10% better roll", not
 ## "10%". Printing it as a decimal keeps the number and its meaning the same thing.
 func bonus_text(bonus: float) -> String:
-	return "Loot bonus %.2f" % bonus
+	return L.t("LOC_UI_PANELS_90D7240F83") % bonus
 
 
 ## The status line as the player reads it. Safe to call before `_render()`.
@@ -215,40 +215,40 @@ func _bind_nodes() -> void:
 func _render() -> void:
 	if _boss_label == null:
 		return
-	_boss_label.text = _boss_text()
+	_boss_label.text = L.t(_boss_text())
 	_vitality_bar.max_value = _vitality_max
 	_vitality_bar.value = clampf(_vitality, 0.0, _vitality_max)
-	_vitality_label.text = _vitality_text()
+	_vitality_label.text = L.t(_vitality_text())
 	_player_bar.max_value = _health_max
 	_player_bar.value = clampf(_health, 0.0, _health_max)
-	_player_label.text = _player_text()
-	_defeat_label.text = _defeat_text()
-	_status_label.text = _status_text()
+	_player_label.text = L.t(_player_text())
+	_defeat_label.text = L.t(_defeat_text())
+	_status_label.text = L.t(_status_text())
 
 
 func _boss_text() -> String:
 	if not _in_domain:
-		return OUTSIDE
+		return L.t(OUTSIDE)
 	return _boss_id if _tier_label.is_empty() else "%s (%s)" % [_boss_id, _tier_label]
 
 
 func _vitality_text() -> String:
 	if not _in_domain:
 		return ""
-	return "%d / %d vitality" % [int(_vitality), int(_vitality_max)]
+	return L.t("LOC_UI_PANELS_A8A829082C") % [int(_vitality), int(_vitality_max)]
 
 
 ## The player's health is always shown: it is their own pool, and a run they are about to
 ## lose is exactly when they need to see it.
 func _player_text() -> String:
-	return "%d / %d health" % [int(_health), int(_health_max)]
+	return L.t("LOC_UI_PANELS_4A0E611723") % [int(_health), int(_health_max)]
 
 
 ## The loss count, and what beat them the last time. Empty until they have lost something,
 ## so "no losses" and "lost to nothing yet" are not the same sentence.
 func _defeat_text() -> String:
 	if _defeats <= 0:
-		return NO_LOSSES
+		return L.t(NO_LOSSES)
 	var base := "Defeated %d time%s" % [_defeats, "" if _defeats == 1 else "s"]
 	return base if _last_boss.is_empty() else "%s — last to %s" % [base, _last_boss]
 
@@ -266,7 +266,7 @@ func _defeat_text() -> String:
 ## only thing the facade hands over that the player can read.
 func _status_text() -> String:
 	if _statuses.is_empty():
-		return NO_STATUSES
+		return L.t(NO_STATUSES)
 	var parts: Array[String] = []
 	for entry in _statuses:
 		var status := entry as Dictionary
@@ -286,7 +286,7 @@ func _status_line(status: Dictionary) -> String:
 	)
 	var magnitude := float(status.get("magnitude", 0.0))
 	var pulses := int(status.get("ticks_elapsed", 0))
-	var text := "%s %s x%.1f" % [name, timer, magnitude]
+	var text := L.t("LOC_UI_PANELS_59A3F19AD7") % [name, timer, magnitude]
 	if pulses > 0:
 		text += " (%d pulse%s)" % [pulses, "" if pulses == 1 else "s"]
 	return text

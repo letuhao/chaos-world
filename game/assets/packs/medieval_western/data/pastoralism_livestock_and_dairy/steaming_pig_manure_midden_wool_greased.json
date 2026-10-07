@@ -1,0 +1,125 @@
+{
+  "id": "medieval_western.pastoralism_livestock_and_dairy.steaming_pig_manure_midden_wool_greased",
+  "name": "Lanolin-Greased High Steaming Muck Heap with Straw",
+  "vietnamese_name": "Đống Phân Lợn Ủ Hoai Mục Bốc Khói Mùn (Bám Mỡ Cừu Lanolin)",
+  "category": "pastoralism_livestock_and_dairy",
+  "sub_category": "pigsty_troughs_and_swill_buckets",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "shovel_muck",
+  "gameplay_role": "Pastoral manorial farming element (High Steaming Muck Heap with Straw).",
+  "destructible": false,
+  "material": "earth",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of lanolin-greased high steaming muck heap with straw, sticky lanolin sheep fleece grease on timber bars, Medieval pastoral livestock and dairy farming style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/pastoralism_livestock_and_dairy/steaming_pig_manure_midden_wool_greased.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.pastoralism_livestock_and_dairy.steaming_pig_manure_midden_wool_greased:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.607,
+        0.64
+      ]
+    ],
+    "frac_zero": 0.6509,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.01,
+        0.063,
+        0.49,
+        0.519,
+        0.025,
+        0.009
+      ],
+      [
+        0.773,
+        0.991,
+        1.0,
+        1.0,
+        0.99,
+        0.634
+      ],
+      [
+        0.604,
+        0.758,
+        0.957,
+        0.899,
+        0.726,
+        0.511
+      ]
+    ],
+    "crop_offset": [
+      38,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 167,
+    "contact_reference_px": 167.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -39,10 +39,10 @@ const KIND_INSTANCE := "instance"
 const KIND_STACK := "stack"
 ## Rarity display names. Presentation vocabulary only; gameplay reads the id.
 const RARITY_LABELS := {
-	&"common": "Common",
-	&"magic": "Magic",
-	&"rare": "Rare",
-	&"legendary": "Legendary",
+	&"common": "LOC_UI_PANELS_7DE90A6524",
+	&"magic": "LOC_UI_PANELS_E6791BE7EE",
+	&"rare": "LOC_UI_PANELS_CCE370D2F9",
+	&"legendary": "LOC_UI_PANELS_B7E8916505",
 }
 
 ## The items module's option target vocabulary, spelled out here exactly as
@@ -87,16 +87,16 @@ const DIRECTION_FLAT := "flat"
 ## Wording for each state. This panel owns every `%s` and every `%d` in it — the
 ## screen hands raw values and never formats one.
 const COMPARE_TEXT := {
-	STATE_NONE: "No item selected",
-	STATE_EMPTY_SLOT: "%s is empty — nothing to compare against",
-	STATE_COMPARABLE: "Against %s in %s",
-	STATE_DIFFERENT_SUBTYPE: "%s holds a different kind of item — not a like-for-like swap",
-	STATE_WRONG_SLOT: "%s cannot be worn in %s",
-	STATE_NOT_EQUIPPABLE: "Cannot be equipped",
-	STATE_UNWEARABLE: "Cannot be worn",
-	STATE_GRADE_GATED: "Grade %s needs a higher realm",
-	STATE_BOUND_TO_OTHER: "Bound to another",
-	STATE_NO_SLOT: "No slot chosen",
+	STATE_NONE: "LOC_UI_PANELS_74539C002D",
+	STATE_EMPTY_SLOT: "LOC_UI_PANELS_A7FA79BE54",
+	STATE_COMPARABLE: "LOC_UI_PANELS_120FD3E3C5",
+	STATE_DIFFERENT_SUBTYPE: "LOC_UI_PANELS_35789B325D",
+	STATE_WRONG_SLOT: "LOC_UI_PANELS_543932CBC8",
+	STATE_NOT_EQUIPPABLE: "LOC_UI_PANELS_13586D6A52",
+	STATE_UNWEARABLE: "LOC_UI_PANELS_0DDBB1292B",
+	STATE_GRADE_GATED: "LOC_UI_PANELS_73319D3B51",
+	STATE_BOUND_TO_OTHER: "LOC_UI_PANELS_D60E22AF2A",
+	STATE_NO_SLOT: "LOC_UI_PANELS_594E691ACD",
 }
 
 ## Why the lock control is dark. `lock_unsupported` is the honest one today: the
@@ -186,7 +186,7 @@ func refresh() -> void:
 	_select_key(keep)
 	_suppress = false
 	if _header != null:
-		_header.text = _header_text()
+		_header.text = L.t(_header_text())
 
 
 ## The selected row, or an empty dictionary when nothing is selected. Carries
@@ -352,11 +352,11 @@ func _row(
 
 func _row_text(row: Dictionary) -> String:
 	var rarity := String(RARITY_LABELS.get(StringName(row["rarity"]), "Common"))
-	return "%-26s x%-4d %s" % [row["display_name"], int(row["quantity"]), rarity]
+	return L.t("LOC_UI_PANELS_646340D28C") % [row["display_name"], int(row["quantity"]), rarity]
 
 
 func _header_text() -> String:
-	return "Inventory  %d / %d slots" % [_used_slots(), _capacity()]
+	return L.t("LOC_UI_PANELS_54885601F8") % [_used_slots(), _capacity()]
 
 
 func _slot_of(instance_id: StringName) -> String:

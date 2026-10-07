@@ -631,7 +631,7 @@ func test_an_unpublished_roster_is_its_own_state_and_not_a_succession() -> void:
 		)
 		assert_eq(bool(unknown["vacant"]), false, "%s is emphatically not vacant" % office_id)
 		assert_ne(
-			String(unknown["line"]).find(InstitutionCard.HOLDER_UNKNOWN),
+			String(unknown["line"]).find(L.t(InstitutionCard.HOLDER_UNKNOWN)),
 			-1,
 			"%s names the gap in words rather than asserting a holder" % office_id
 		)
@@ -924,7 +924,7 @@ func test_an_unbound_claim_reader_leaves_the_holder_unknown_rather_than_empty() 
 	assert_eq(bool(clerk["vacant"]), false, "an office with no roster is not called vacant")
 	assert_eq(int(clerk["held"]), 0, "and no holder is counted")
 	assert_ne(
-		String(clerk["line"]).find(InstitutionCard.HOLDER_UNKNOWN),
+		String(clerk["line"]).find(L.t(InstitutionCard.HOLDER_UNKNOWN)),
 		-1,
 		"and the line says the holder is unpublished rather than absent"
 	)

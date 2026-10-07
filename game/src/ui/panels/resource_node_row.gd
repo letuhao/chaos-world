@@ -30,14 +30,14 @@ extends PanelContainer
 
 ## Stands in for a node the hero holds. A word, never the id and never a dash: an
 ## absent holder is a value that is ABSENT, and "-" would read as an authored value.
-const VACANT_TEXT := "Vacant"
-const UNKNOWN_TEXT := "Node unnamed"
-const HELD_PREFIX := "Yours"
-const CONTESTED_SUFFIX := "· contested"
+const VACANT_TEXT := "LOC_UI_PANELS_1966F9678D"
+const UNKNOWN_TEXT := "LOC_UI_PANELS_70CA95AB53"
+const HELD_PREFIX := "LOC_UI_PANELS_755844BC39"
+const CONTESTED_SUFFIX := "LOC_UI_PANELS_AB9302DA1F"
 ## A node the catalog does not author and the yield table does not name, so the
 ## row is asked about something this build does not ship. Said in words rather than
 ## rendered as an empty card.
-const UNKNOWN_KIND := "Not in this build"
+const UNKNOWN_KIND := "LOC_UI_PANELS_E0D21B1EA6"
 ## "yields 5 a period · keeps 5 more". `periods` is the module's word (DEF-0111), so
 ## the row uses it rather than inventing a unit.
 const META_SEP := "·"
@@ -196,12 +196,12 @@ func _render() -> void:
 	theme_type_variation = _card_tone()
 	if not visible:
 		return
-	_head_label.text = _head
+	_head_label.text = L.t(_head)
 	_head_label.theme_type_variation = _head_tone()
-	_custody_label.text = _custody
+	_custody_label.text = L.t(_custody)
 	_custody_label.theme_type_variation = _custody_tone()
-	_rates_label.text = _rates
-	_meta_label.text = _meta
+	_rates_label.text = L.t(_rates)
+	_meta_label.text = L.t(_meta)
 
 
 ## The card this node paints itself with. A standoff is its OWN card rather than a
@@ -236,12 +236,15 @@ func _custody_tone() -> StringName:
 ## goods".
 func _custody_text() -> String:
 	if is_contested():
-		return "%s %s %s" % [VACANT_TEXT, META_SEP, CONTESTED_SUFFIX.strip_edges()]
+		return (
+			L.t("LOC_UI_PANELS_D342B2A250")
+			% [VACANT_TEXT, META_SEP, CONTESTED_SUFFIX.strip_edges()]
+		)
 	if is_vacant():
-		return VACANT_TEXT
+		return L.t(VACANT_TEXT)
 	if not bool(_view.get("permits", false)):
-		return "%s %s %s" % [HELD_PREFIX, META_SEP, _realm_line()]
-	return HELD_PREFIX
+		return L.t("LOC_UI_PANELS_D342B2A250") % [L.t(HELD_PREFIX), L.t(META_SEP), _realm_line()]
+	return L.t(HELD_PREFIX)
 
 
 ## The yield and the upkeep, both raw figures, both this row's. Upkeep is printed
@@ -249,7 +252,7 @@ func _custody_text() -> String:
 ## upkeep is what makes a claim a decision rather than a free grab (ADR 0097) and a
 ## player should read the price before taking the ground.
 func _rates_text() -> String:
-	var line := "yields %d a period" % int(_view.get("yield_per_period", 0))
+	var line := L.t("LOC_UI_PANELS_A1ADBE4E4C") % int(_view.get("yield_per_period", 0))
 	if String(_view.get("item_id", "")) == "":
 		line = "%s %s %s" % [line, META_SEP, UNKNOWN_KIND]
 	var upkeep := int(_view.get("upkeep_per_period", 0))
@@ -282,4 +285,6 @@ func _meta_text() -> String:
 ## module's; a screen that printed an index would be restating a rule it cannot read.
 func _realm_line() -> String:
 	var realm := String(_view.get("realm", ""))
-	return "%s is beyond you" % realm if realm != "" else "beyond you"
+	return (
+		L.t("LOC_UI_PANELS_F5541C0CA4") % realm if realm != "" else L.t("LOC_UI_PANELS_3321009C6D")
+	)

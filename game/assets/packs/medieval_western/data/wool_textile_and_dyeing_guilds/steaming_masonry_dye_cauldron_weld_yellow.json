@@ -1,0 +1,197 @@
+{
+  "id": "medieval_western.wool_textile_and_dyeing_guilds.steaming_masonry_dye_cauldron_weld_yellow",
+  "name": "Weld-Plant Gold Brick-Enclosed Bronze Dye Vat over Fire",
+  "vietnamese_name": "Vạc Nhuộm Đồng Lớn Xây Bao Gạch Đun Lửa (Nhuộm Cây Weld Vàng)",
+  "category": "wool_textile_and_dyeing_guilds",
+  "sub_category": "dye_vats_woad_madder_and_weld",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "dye_wool",
+  "gameplay_role": "Supply chain industry element (Brick-Enclosed Bronze Dye Vat over Fire).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of weld-plant gold brick-enclosed bronze dye vat over fire, brilliant clear golden yellow plant dye, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/wool_textile_and_dyeing_guilds/steaming_masonry_dye_cauldron_weld_yellow.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.wool_textile_and_dyeing_guilds.steaming_masonry_dye_cauldron_weld_yellow:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.617,
+        0.622
+      ],
+      [
+        0.839,
+        0.848
+      ]
+    ],
+    "frac_zero": 0.5272,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.589,
+        0.414,
+        0.0,
+        0.0
+      ],
+      [
+        0.444,
+        0.702,
+        1.0,
+        0.979,
+        0.677,
+        0.405
+      ],
+      [
+        0.567,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.508
+      ],
+      [
+        0.795,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.758
+      ],
+      [
+        0.771,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.769
+      ],
+      [
+        0.745,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.735
+      ],
+      [
+        0.331,
+        0.7,
+        0.782,
+        0.771,
+        0.723,
+        0.235
+      ]
+    ],
+    "crop_offset": [
+      34,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 147,
+    "contact_reference_px": 147.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

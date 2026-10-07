@@ -1,6 +1,6 @@
 {
   "schema": "mapdata/pack_registry@1",
-  "total_packs": 22,
+  "total_packs": 23,
   "total_assets": 9355,
   "packs": [
     {
@@ -111,6 +111,11 @@
     {
       "pack_id": "medieval_western",
       "asset_count": 5600,
+      "has_manifest": true
+    },
+    {
+      "pack_id": "ancient_china_low_cultivation",
+      "asset_count": 0,
       "has_manifest": true
     }
   ]

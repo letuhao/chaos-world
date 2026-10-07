@@ -37,7 +37,7 @@ extends PanelContainer
 
 ## A seat exists and nobody holds it. The WORD, never `0` and never a dash: an unfilled
 ## authored office is a fact about the world, and `0` reads as a count somebody kept.
-const VACANT_TEXT := "VACANT"
+const VACANT_TEXT := "LOC_UI_PANELS_B0A2574528"
 ## The same fact in the payload, so a test asserts a value rather than a sentence.
 const STATE_VACANT := "vacant"
 const STATE_HELD := "held"
@@ -46,15 +46,15 @@ const STATE_HELD := "held"
 ## a succession nobody published. It is also not `vacant` -- the vacancy is a claim about
 ## the world, and nobody has made it.
 const STATE_UNKNOWN := "unknown"
-const HELD_PREFIX := "held by"
-const HOLDER_UNKNOWN := "holders not published"
-const NO_OFFICE := "no office held"
-const NOT_A_MEMBER := "belonging to nothing"
-const NOTHING_OWED := "nothing owed"
-const OWE_PREFIX := "Owes"
-const UNNAMED := "Organization unnamed"
-const OFFICE_UNNAMED := "Office unnamed"
-const NO_OFFICES_AUTHORED := "this organization authors no office at all"
+const HELD_PREFIX := "LOC_UI_PANELS_7E3D175AB7"
+const HOLDER_UNKNOWN := "LOC_UI_PANELS_EB889D30D8"
+const NO_OFFICE := "LOC_UI_PANELS_CE86120BDF"
+const NOT_A_MEMBER := "LOC_UI_PANELS_AE66822023"
+const NOTHING_OWED := "LOC_UI_PANELS_A4B07A8D2E"
+const OWE_PREFIX := "LOC_UI_PANELS_194E59F2BC"
+const UNNAMED := "LOC_UI_PANELS_364BE025F8"
+const OFFICE_UNNAMED := "LOC_UI_PANELS_EEFD106570"
+const NO_OFFICES_AUTHORED := "LOC_UI_PANELS_7620B9095E"
 const PERCENT_SUFFIX := "%"
 ## The claim's own two-state refusal, aliased rather than restated: a panel renders a
 ## reason it did not have to invent (ADR 0083's third state).
@@ -249,13 +249,13 @@ func _render() -> void:
 	theme_type_variation = _card_tone()
 	if not visible:
 		return
-	_head_label.text = _head
+	_head_label.text = L.t(_head)
 	_head_label.theme_type_variation = _head_tone()
-	_position_label.text = _position_line()
+	_position_label.text = L.t(_position_line())
 	_position_label.visible = not _positions.is_empty()
-	_standing_label.text = _standing_line
-	_obligation_label.text = _obligation_line
-	_meta_label.text = _meta_line
+	_standing_label.text = L.t(_standing_line)
+	_obligation_label.text = L.t(_obligation_line)
+	_meta_label.text = L.t(_meta_line)
 	_render_positions()
 
 
@@ -406,21 +406,21 @@ func _position_line_of(view: Dictionary) -> String:
 ## whose meaning the reader has to guess.
 func _capacity_text(capacity: int) -> String:
 	if capacity <= 0:
-		return "unbounded room"
+		return L.t("LOC_UI_PANELS_0F71BB0D3D")
 	if capacity == 1:
-		return "1 seat"
-	return "%d seats" % capacity
+		return L.t("LOC_UI_PANELS_0C4B9B3A09")
+	return L.t("LOC_UI_PANELS_CB094EAE4F") % capacity
 
 
 ## Who holds it. A vacancy is `VACANT`, a published holder is named, and a roster nobody
 ## published says SO -- never `0`, which would read as a count kept.
 func _holder_text(view: Dictionary) -> String:
 	if bool(view.get("vacant", false)):
-		return VACANT_TEXT
+		return L.t(VACANT_TEXT)
 	var holders := String(view.get("holders", ""))
 	if holders == "":
-		return HOLDER_UNKNOWN
-	return "%s %s" % [HELD_PREFIX, holders]
+		return L.t(HOLDER_UNKNOWN)
+	return L.t("LOC_UI_PANELS_265FC52551") % [L.t(HELD_PREFIX), holders]
 
 
 ## Every office on one line, so the card shows its offices even where the office box has
@@ -429,7 +429,7 @@ func _holder_text(view: Dictionary) -> String:
 ## than an empty gap.
 func _position_line() -> String:
 	if _positions.is_empty():
-		return NO_OFFICES_AUTHORED
+		return L.t(NO_OFFICES_AUTHORED)
 	var parts: Array = []
 	for position in _positions:
 		parts.append(_position_line_of(position as Dictionary))
@@ -441,7 +441,7 @@ func _position_line() -> String:
 ## which is exactly the spreadsheet ADR 0064's split exists to prevent.
 func _standing_text() -> String:
 	if not is_member():
-		return NOT_A_MEMBER
+		return L.t(NOT_A_MEMBER)
 	var claim := _claim()
 	var office := String(claim.get("position", ""))
 	var numbers := (
@@ -462,18 +462,18 @@ func _obligation_text() -> String:
 	var claim := _claim()
 	var owed := _obligations(claim.get("obligations", {}))
 	if owed.is_empty():
-		return NOTHING_OWED
+		return L.t(NOTHING_OWED)
 	var terms: Array = []
 	for term_id in InstitutionLedger.sorted_keys(owed):
 		terms.append("%s %d" % [term_id, int(owed[term_id])])
-	return "%s: %s" % [OWE_PREFIX, ", ".join(PackedStringArray(terms))]
+	return L.t("LOC_UI_PANELS_D9CD377026") % [L.t(OWE_PREFIX), ", ".join(PackedStringArray(terms))]
 
 
 ## The card's meta line: the KIND, the authored founding price and what this kind may do.
 ## Raw integers reach this row; the words are the row's own.
 func _meta_text() -> String:
 	if _reason != "":
-		return "refused · %s" % _reason
+		return L.t("LOC_UI_PANELS_F0FF73704E") % _reason
 	var parts: Array = []
 	if _kind != "":
 		parts.append(_kind)
@@ -510,7 +510,7 @@ func _render_positions() -> void:
 		if not shown:
 			continue
 		var view := _positions[index] as Dictionary
-		label.text = _position_line_of(view)
+		label.text = L.t(_position_line_of(view))
 		label.theme_type_variation = _position_line_tone(bool(view.get("vacant", false)))
 
 

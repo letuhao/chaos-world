@@ -30,19 +30,19 @@ extends PanelContainer
 ## The press. Carries the preset id ONLY.
 signal select_requested(difficulty_id: StringName)
 
-const SELECT_TEXT := "Play under this"
-const SELECTED_TEXT := "This run"
+const SELECT_TEXT := "LOC_UI_PANELS_A0D3387DE3"
+const SELECTED_TEXT := "LOC_UI_PANELS_251EFC8086"
 ## The scalar column this row leads with, and the label it reads under. The whole
 ## scalar set is printed; this one is the sentence a player reads first.
 const LEAD_SCALAR := "soul_damage_share"
-const LEAD_LABEL := "Soul damage"
+const LEAD_LABEL := "LOC_UI_PANELS_438C01D936"
 ## A share of one, printed as a whole percent. The fraction is `ADR 0129`'s rule —
 ## every scalar is a fraction of what the player already holds — so the row says so
 ## rather than printing a raw multiplier and letting a player read 1.0 as "double".
 const PERCENT_SCALE := 100.0
-const SHARE_SUFFIX := "x what a death takes"
-const NEUTRAL_MARK := " - the shipped baseline, and arithmetically a no-op"
-const NO_PRESETS := "No difficulty preset is authored, so nothing here can be selected."
+const SHARE_SUFFIX := "LOC_UI_PANELS_F82303A8D4"
+const NEUTRAL_MARK := "LOC_UI_PANELS_FD8C0CB415"
+const NO_PRESETS := "LOC_UI_PANELS_8B2CDAD798"
 
 var _view: Dictionary = {}
 var _head: String = ""
@@ -153,13 +153,13 @@ func _render() -> void:
 	visible = is_filled()
 	if not visible:
 		return
-	_head_label.text = _head.capitalize()
-	_scalars_label.text = _scalars_line
-	_lead_label.text = _lead_line
-	_state_label.text = _state_line
+	_head_label.text = L.t(_head.capitalize())
+	_scalars_label.text = L.t(_scalars_line)
+	_lead_label.text = L.t(_lead_line)
+	_state_label.text = L.t(_state_line)
 	_state_label.theme_type_variation = &"OkLabel" if is_selected() else &"MetaLabel"
 	_select_button.disabled = not can_select()
-	_select_button.text = _button_text()
+	_select_button.text = L.t(_button_text())
 	_select_button.theme_type_variation = &"PrimaryButton"
 
 
@@ -174,7 +174,7 @@ func _render() -> void:
 ## test_no_unbounded_wait.gd` exists to fail.
 func _scalars_text() -> String:
 	if _view.is_empty():
-		return NO_PRESETS
+		return L.t(NO_PRESETS)
 	var parts: Array[String] = []
 	for key in _view.keys():
 		var name := String(key)
@@ -196,13 +196,13 @@ func _lead_text() -> String:
 	# shipped preset, so the row used to promise a ceiling the arithmetic never applied — a
 	# player reading "capped at 150%" while paying 150% either way was told a fact about the
 	# game that was not true. The share alone is now the whole of what a death costs.
-	return "%s %s" % [LEAD_LABEL, _share_text(LEAD_SCALAR, share)]
+	return L.t("LOC_UI_PANELS_265FC52551") % [L.t(LEAD_LABEL), _share_text(L.t(LEAD_SCALAR), share)]
 
 
 ## Whether this row is the live preset, and whether selecting it would be a no-op.
 func _state_text() -> String:
 	if not is_selected():
-		return "Not the preset this run is under."
+		return L.t("LOC_UI_PANELS_129B5EA91D")
 	return "This is the preset this run is under." + _neutral_note()
 
 
@@ -212,14 +212,18 @@ func _share_text(name: String, value: float) -> String:
 	if not is_finite(value):
 		return "unmeasured"
 	var percent := int(roundf(value * PERCENT_SCALE))
-	return "%d%%" % percent if absf(percent - 100.0) > 0.001 else "100%" + _suffix(name)
+	return (
+		L.t("LOC_UI_PANELS_3701471B5E") % percent
+		if absf(percent - 100.0) > 0.001
+		else "100%" + _suffix(name)
+	)
 
 
 ## The suffix that says what a share is a share OF. Only the lead scalar a player feels on a
 ## death carries one; the rest are named by their own column.
 func _suffix(name: String) -> String:
 	if name == LEAD_SCALAR:
-		return SHARE_SUFFIX
+		return L.t(SHARE_SUFFIX)
 	return ""
 
 

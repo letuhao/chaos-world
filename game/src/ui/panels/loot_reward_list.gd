@@ -19,25 +19,25 @@ signal take_all_requested(encounter_id: String)
 ## One scene per row, composed in `loot_drop_row.tscn` rather than built in code.
 const ROW_SCENE := preload("res://src/ui/panels/loot_drop_row.tscn")
 
-const ACTION_PICKUP := "Pick up"
-const ACTION_RECLAIM := "Reclaim"
+const ACTION_PICKUP := "LOC_UI_PANELS_F236D05D93"
+const ACTION_RECLAIM := "LOC_UI_PANELS_6600D6E1E6"
 ## Wording for each reason the loot facade reports. The UI program owns no rule, so
 ## it only says what the facade decided.
 const REASON_TEXT := {
 	# An accepted claim carries no reason, so this is the only sentence the outcome
 	# line can be built from. Without it the line rendered as a bare "Name: " and the
 	# one action a player took to turn a boss into gear said nothing at all.
-	"": "Taken",
-	"inventory_full": "Inventory full - the drop is in the world and can be reclaimed",
-	"world_drops_full": "Inventory full and the world drops are full - make room, then take it",
-	"drop_already_claimed": "Already taken",
-	"drop_stashed_in_world": "Already in the world - reclaim it instead",
-	"claim_already_spent": "This encounter's reward is already spent",
-	"unknown_reward": "No reward for that encounter",
-	"unknown_drop": "That drop is no longer listed",
-	"no_inventory": "The actor has no inventory",
-	"unknown_definition": "The item is not defined in the content tree",
-	"unknown_stash": "That world drop is no longer listed",
+	"": "LOC_UI_PANELS_C66C12B988",
+	"inventory_full": "LOC_UI_PANELS_AF014816DA",
+	"world_drops_full": "LOC_UI_PANELS_828FED0BF0",
+	"drop_already_claimed": "LOC_UI_PANELS_00735887E8",
+	"drop_stashed_in_world": "LOC_UI_PANELS_49388AE8FF",
+	"claim_already_spent": "LOC_UI_PANELS_21CD41D7EE",
+	"unknown_reward": "LOC_UI_PANELS_5B46C8C092",
+	"unknown_drop": "LOC_UI_PANELS_3350ADE8A2",
+	"no_inventory": "LOC_UI_PANELS_C507199FC8",
+	"unknown_definition": "LOC_UI_PANELS_FB6395F291",
+	"unknown_stash": "LOC_UI_PANELS_576FC35464",
 }
 
 var _mode: StringName = &"reward"
@@ -231,7 +231,9 @@ func _build(entries: Array, action_label: String, enabled: bool, take_all: bool)
 		var row := _pooled_row(index)
 		var entry := ordered[index] as Dictionary
 		row.visible = true
-		row.show_drop(entry, action_label, enabled and _row_can_act(entry))
+		# The action word arrives as a KEY (`ACTION_PICKUP` / `ACTION_RECLAIM`), so it resolves
+		# here — the one place the row is handed it — rather than in every reader's summary.
+		row.show_drop(entry, L.t(action_label), enabled and _row_can_act(entry))
 		_rows.append(row)
 		index += 1
 	_hide_from(index)
@@ -313,7 +315,7 @@ func _row_label(drop_id: String) -> String:
 
 
 func _reason_text(reason: String) -> String:
-	return String(REASON_TEXT.get(reason, reason))
+	return L.t(String(REASON_TEXT.get(reason, reason)))
 
 
 func _render() -> void:
@@ -321,15 +323,15 @@ func _render() -> void:
 		return
 	_take_all_button.visible = _mode == &"reward"
 	_take_all_button.disabled = not _take_all_enabled
-	_message_label.text = _message
+	_message_label.text = L.t(_message)
 	_message_label.theme_type_variation = (
 		&"WarnLabel" if _tone == &"error" else &"OkLabel" if _tone == &"ok" else &"MetaLabel"
 	)
 	match _mode:
 		&"stashed":
-			_title_label.text = "In the world (%d)" % _rows.size()
+			_title_label.text = L.t("LOC_UI_PANELS_965770D3BB") % _rows.size()
 		_:
-			_title_label.text = "Reward - %d drop(s), %d waiting" % [_rows.size(), _pending()]
+			_title_label.text = L.t("LOC_UI_PANELS_FF7D5CC83D") % [_rows.size(), _pending()]
 
 
 func _pending() -> int:

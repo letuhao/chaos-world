@@ -1,0 +1,155 @@
+{
+  "id": "medieval_western.forestry_timber_and_cooperage.charcoal_burners_earthen_kiln_master_guild_22",
+  "name": "Guildmaster's Charcoal Burners Earthen Kiln #22",
+  "vietnamese_name": "Tuyệt Tác Phường Hội Charcoal Burners Earthen Kiln #22",
+  "category": "forestry_timber_and_cooperage",
+  "sub_category": "charcoal_burners_earthen_kiln",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "inspect_craft",
+  "gameplay_role": "Guildmaster crafted industry asset.",
+  "destructible": false,
+  "material": "iron",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "Guildmaster craft piece of charcoal_burners_earthen_kiln, historical medieval guild craftsmanship, gouache anime style.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/forestry_timber_and_cooperage/charcoal_burners_earthen_kiln_master_guild_22.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.forestry_timber_and_cooperage.charcoal_burners_earthen_kiln_master_guild_22:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.492,
+        0.513
+      ]
+    ],
+    "frac_zero": 0.7078,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.421,
+        0.24,
+        0.0,
+        0.0
+      ],
+      [
+        0.3,
+        0.727,
+        0.947,
+        0.924,
+        0.712,
+        0.282
+      ],
+      [
+        0.477,
+        0.768,
+        0.881,
+        0.998,
+        0.821,
+        0.454
+      ]
+    ],
+    "crop_offset": [
+      34,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 188,
+    "contact_reference_px": 188.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

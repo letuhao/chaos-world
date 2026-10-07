@@ -1,0 +1,118 @@
+{
+  "id": "medieval_western.pastoralism_livestock_and_dairy.low_timber_shearing_trestle_milk_splashed",
+  "name": "Creamery-Fresh Low Oak Sheepshearing Table Trestle",
+  "vietnamese_name": "Bàn Gỗ Thấp Dùng Đặt Cừu Để Xén Lông (Thơm Mùi Bơ Sữa)",
+  "category": "pastoralism_livestock_and_dairy",
+  "sub_category": "sheepshearing_bench_and_fleeces",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "shear_sheep",
+  "gameplay_role": "Pastoral manorial farming element (Low Oak Sheepshearing Table Trestle).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of creamery-fresh low oak sheepshearing table trestle, spilled milk patina on clean scrubbed pine, Medieval pastoral livestock and dairy farming style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/pastoralism_livestock_and_dairy/low_timber_shearing_trestle_milk_splashed.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.pastoralism_livestock_and_dairy.low_timber_shearing_trestle_milk_splashed:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.434,
+        0.434
+      ]
+    ],
+    "frac_zero": 0.7633,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.443,
+        0.699,
+        0.379,
+        0.556,
+        0.563,
+        0.562,
+        0.36
+      ],
+      [
+        0.272,
+        0.675,
+        0.344,
+        0.45,
+        0.353,
+        0.725,
+        0.218
+      ],
+      [
+        0.3,
+        0.309,
+        0.0,
+        0.0,
+        0.0,
+        0.403,
+        0.267
+      ]
+    ],
+    "crop_offset": [
+      17,
+      38
+    ],
+    "trunk_columns": [
+      5
+    ],
+    "contact_px": 14,
+    "contact_reference_px": 14.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

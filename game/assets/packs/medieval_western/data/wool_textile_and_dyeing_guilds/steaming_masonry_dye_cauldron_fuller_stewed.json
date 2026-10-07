@@ -1,0 +1,203 @@
+{
+  "id": "medieval_western.wool_textile_and_dyeing_guilds.steaming_masonry_dye_cauldron_fuller_stewed",
+  "name": "Fulling-Lye Soaked Brick-Enclosed Bronze Dye Vat over Fire",
+  "vietnamese_name": "Vạc Nhuộm Đồng Lớn Xây Bao Gạch Đun Lửa (Ngâm Nước Tro Giặt Dạ)",
+  "category": "wool_textile_and_dyeing_guilds",
+  "sub_category": "dye_vats_woad_madder_and_weld",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "dye_wool",
+  "gameplay_role": "Supply chain industry element (Brick-Enclosed Bronze Dye Vat over Fire).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of fulling-lye soaked brick-enclosed bronze dye vat over fire, steaming soapy lye fulling water, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/wool_textile_and_dyeing_guilds/steaming_masonry_dye_cauldron_fuller_stewed.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.wool_textile_and_dyeing_guilds.steaming_masonry_dye_cauldron_fuller_stewed:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.636,
+        0.62
+      ],
+      [
+        0.623,
+        0.807
+      ]
+    ],
+    "frac_zero": 0.5036,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.093,
+        0.837,
+        0.497,
+        0.817,
+        0.068,
+        0.0
+      ],
+      [
+        0.262,
+        0.61,
+        1.0,
+        1.0,
+        0.864,
+        0.44,
+        0.0
+      ],
+      [
+        0.386,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.752,
+        0.008
+      ],
+      [
+        0.692,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.995,
+        0.395
+      ],
+      [
+        0.737,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.65
+      ],
+      [
+        0.195,
+        0.621,
+        0.83,
+        1.0,
+        1.0,
+        1.0,
+        0.648
+      ],
+      [
+        0.0,
+        0.0,
+        0.394,
+        0.944,
+        0.648,
+        0.21,
+        0.145
+      ]
+    ],
+    "crop_offset": [
+      22,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 65,
+    "contact_reference_px": 65.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

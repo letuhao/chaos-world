@@ -36,11 +36,11 @@ extends PanelContainer
 ## The engine's own empty-miss convention, stated rather than left blank: a swing that
 ## never arrived has nothing to decompose, and printing `0` for it would teach the reader
 ## that a whiff and a gut-punch are the same event.
-const MISS_TEXT := "The blow never arrived. Nothing was spent."
+const MISS_TEXT := "LOC_UI_PANELS_B9D230EA1C"
 ## A payload that is not a `to_dict()` result at all — nothing has been struck yet.
-const NO_DATA := "No blow has been struck yet."
-const NO_EFFECTS := "The blow changed nothing beyond the damage itself."
-const NO_WOUNDS := "No meridian carries a wound."
+const NO_DATA := "LOC_UI_PANELS_CA25BFB32A"
+const NO_EFFECTS := "LOC_UI_PANELS_BB429A3DB0"
+const NO_WOUNDS := "LOC_UI_PANELS_1189B575CB"
 
 ## The three `effects[]` kinds the shipped mechanisms emit. See the module docblock for
 ## why these are restated rather than imported.
@@ -164,11 +164,11 @@ func summary() -> Dictionary:
 func mechanism_text() -> String:
 	match _mechanism:
 		MECHANISM_QI:
-			return "elemental share (qi)"
+			return L.t("LOC_UI_PANELS_F2E2D9BE82")
 		MECHANISM_BODY:
-			return "flat subtraction at a meridian (body)"
+			return L.t("LOC_UI_PANELS_DB9A290C91")
 		MECHANISM_MIND:
-			return "sea erosion (mind)"
+			return L.t("LOC_UI_PANELS_E43E18F169")
 		&"":
 			return ""
 		_:
@@ -181,9 +181,9 @@ func mechanism_text() -> String:
 ## nothing" is the fact a player acts on.
 func verdict_text() -> String:
 	if _outcome.is_empty():
-		return NO_DATA
+		return L.t(NO_DATA)
 	if not bool(_outcome.get("landed", false)):
-		return MISS_TEXT
+		return L.t(MISS_TEXT)
 	var parts: Array[String] = ["hit"]
 	var named := mechanism_text()
 	if not named.is_empty():
@@ -236,7 +236,7 @@ func stages_text() -> String:
 func effects_text() -> String:
 	var rows := _effects()
 	if rows.is_empty():
-		return NO_EFFECTS
+		return L.t(NO_EFFECTS)
 	var parts: Array[String] = []
 	for entry in rows:
 		var effect := entry as Dictionary
@@ -260,7 +260,7 @@ func effects_text() -> String:
 ## think will fade.
 func wounds_text() -> String:
 	if _wounds.is_empty():
-		return NO_WOUNDS
+		return L.t(NO_WOUNDS)
 	var parts: Array[String] = []
 	for entry in _wounds:
 		var row := entry as Dictionary
@@ -318,15 +318,15 @@ func _bind_nodes() -> void:
 func _render() -> void:
 	if _verdict_label == null:
 		return
-	_verdict_label.text = verdict_text()
+	_verdict_label.text = L.t(verdict_text())
 	_verdict_label.theme_type_variation = _verdict_variation()
-	_stages_label.text = stages_text()
+	_stages_label.text = L.t(stages_text())
 	_stages_label.theme_type_variation = &"MetaLabel"
-	_effects_label.text = effects_text()
+	_effects_label.text = L.t(effects_text())
 	_effects_label.theme_type_variation = &"EffectLabel"
-	_wounds_label.text = wounds_text()
+	_wounds_label.text = L.t(wounds_text())
 	_wounds_label.theme_type_variation = _wounds_variation()
-	_actor_label.text = actor_text()
+	_actor_label.text = L.t(actor_text())
 	_actor_label.theme_type_variation = &"MetaLabel"
 
 
@@ -415,7 +415,7 @@ func _erosion_line(effect: Dictionary) -> String:
 ## than flattened into "nothing happened".
 func _status_line(effect: Dictionary) -> String:
 	if not bool(effect.get("applied", false)):
-		return "status withheld: %s" % String(effect.get("refused", "")).replace("_", " ")
+		return L.t("LOC_UI_PANELS_F08CE3BD52") % String(effect.get("refused", "")).replace("_", " ")
 	return (
 		"status %s potency %.2f"
 		% [

@@ -100,7 +100,7 @@ func test_the_unwired_line_names_the_missing_seam() -> void:
 	panel.show_room({})
 	var summary := panel.summary()
 	assert_eq(String(summary["roster_line"]), "", "an unbound panel paints no roster line")
-	assert_eq(String(summary["room_line"]), NpcRosterPanel.UNWIRED_TEXT, "and names why")
+	assert_eq(String(summary["room_line"]), L.t(NpcRosterPanel.UNWIRED_TEXT), "and names why")
 
 
 # ── Honesty: the roster is the CURRENT room's ─────────────────────────────────
@@ -135,7 +135,7 @@ func test_the_panel_shows_the_cast_of_the_room_the_player_stands_in() -> void:
 	assert_eq(int(moved["count"]), 0, "and the room nobody is standing in shows nobody")
 	assert_eq(
 		String(moved["roster_line"]),
-		NpcRosterPanel.EMPTY_ROOM_TEXT,
+		L.t(NpcRosterPanel.EMPTY_ROOM_TEXT),
 		"rather than the room the hero just left"
 	)
 

@@ -11,8 +11,8 @@ extends PanelContainer
 ## Decimals per magnitude unit. Rates and fractions need a third to stay
 ## readable at the widths the catalog allows them.
 const DECIMALS := {"magnitude": 2, "rate": 3, "fraction": 3}
-const ACTIVE_TEXT := "ACTIVE"
-const INACTIVE_TEXT := "not reached"
+const ACTIVE_TEXT := "LOC_UI_PANELS_C72633F673"
+const INACTIVE_TEXT := "LOC_UI_PANELS_BE51277BFD"
 const TONE_ACTIVE := &"OkLabel"
 const TONE_INACTIVE := &"MetaLabel"
 
@@ -109,8 +109,8 @@ func _headline() -> String:
 func _requires_line() -> String:
 	var needed := _required()
 	if bool(_threshold.get("active", false)):
-		return "%d of %d members" % [needed, needed]
-	return "needs %d" % needed
+		return L.t("LOC_UI_PANELS_B0F437BE30") % [needed, needed]
+	return L.t("LOC_UI_PANELS_585DB56920") % needed
 
 
 func _required() -> int:
@@ -167,7 +167,7 @@ func _option_values(options: Array) -> Array:
 func _render() -> void:
 	if _count_label == null:
 		return
-	_count_label.text = _headline() if not _threshold.is_empty() else "no thresholds"
-	_effect_label.text = _effect_line
-	_state_label.text = _state_line
+	_count_label.text = L.t(_headline() if not _threshold.is_empty() else "no thresholds")
+	_effect_label.text = L.t(_effect_line)
+	_state_label.text = L.t(_state_line)
 	_state_label.theme_type_variation = _tone

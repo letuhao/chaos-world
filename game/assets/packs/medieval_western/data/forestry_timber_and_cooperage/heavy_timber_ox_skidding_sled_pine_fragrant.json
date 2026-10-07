@@ -1,0 +1,118 @@
+{
+  "id": "medieval_western.forestry_timber_and_cooperage.heavy_timber_ox_skidding_sled_pine_fragrant",
+  "name": "Pine-Resinous Split-Oak Log Hauling Sled (Tumble)",
+  "vietnamese_name": "Xe Trượt Gỗ Sồi Kéo Bằng Trâu Bò Rừng (Thơm Nhựa Thông)",
+  "category": "forestry_timber_and_cooperage",
+  "sub_category": "timber_sled_and_ox_skidding_trail",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "haul_logs",
+  "gameplay_role": "Supply chain industry element (Split-Oak Log Hauling Sled (Tumble)).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of pine-resinous split-oak log hauling sled (tumble), fresh sticky amber pine resin beads, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/forestry_timber_and_cooperage/heavy_timber_ox_skidding_sled_pine_fragrant.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.forestry_timber_and_cooperage.heavy_timber_ox_skidding_sled_pine_fragrant:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.476,
+        0.473
+      ]
+    ],
+    "frac_zero": 0.7277,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.059,
+        0.023,
+        0.253,
+        0.761,
+        0.239,
+        0.023,
+        0.072
+      ],
+      [
+        0.864,
+        0.827,
+        0.944,
+        1.0,
+        0.953,
+        0.823,
+        0.85
+      ],
+      [
+        0.098,
+        0.0,
+        0.196,
+        0.362,
+        0.172,
+        0.0,
+        0.094
+      ]
+    ],
+    "crop_offset": [
+      16,
+      34
+    ],
+    "trunk_columns": [
+      3
+    ],
+    "contact_px": 62,
+    "contact_reference_px": 62.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

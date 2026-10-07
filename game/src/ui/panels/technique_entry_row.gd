@@ -58,36 +58,36 @@ extends PanelContainer
 
 ## Stands in for a technique whose name the catalog could not resolve. A marker,
 ## never the raw id.
-const UNNAMED_HEAD := "Unnamed technique"
-const EMPTY_TEXT := "Empty"
-const SUSPENDED_TEXT := "SUSPENDED"
-const MASTERY_TEXT := "Mastery"
-const KNOWN_TEXT := "Known"
+const UNNAMED_HEAD := "LOC_UI_PANELS_16D73D1C0A"
+const EMPTY_TEXT := "LOC_UI_PANELS_3159FE421B"
+const SUSPENDED_TEXT := "LOC_UI_PANELS_ED8EF01F1E"
+const MASTERY_TEXT := "LOC_UI_PANELS_696E319194"
+const KNOWN_TEXT := "LOC_UI_PANELS_28D7146C1D"
 
 ## The study statements. Every `%d` is a module figure; this panel formats
 ## them and never produces one.
-const UNKNOWN_TEXT := "Not learned"
-const COST_TEXT := "Not learned - costs %d progress"
-const FREE_TEXT := "Not learned - free to learn"
-const GATE_MARK := " (gated)"
-const SHORT_TEXT := "Short on %s: needs %d, held %d"
-const GATE_TEXT := "Not yet: %s"
+const UNKNOWN_TEXT := "LOC_UI_PANELS_EB500E66A6"
+const COST_TEXT := "LOC_UI_PANELS_74BC0B927A"
+const FREE_TEXT := "LOC_UI_PANELS_8BE98ABC6B"
+const GATE_MARK := "LOC_UI_PANELS_923EC2E778"
+const SHORT_TEXT := "LOC_UI_PANELS_468EA9540E"
+const GATE_TEXT := "LOC_UI_PANELS_547EFA12DE"
 
 ## The margin line. `%.2f` because the band is a MULTIPLIER on an authored figure,
 ## not a figure itself — it is printed to two decimals so `0.75` never reads as
 ## `0.8` next to a six-point option.
-const BAND_TEXT := "This sheet says %s; a copy may read %s"
-const NOTHING_AUTHORED := "no inscribed figure"
+const BAND_TEXT := "LOC_UI_PANELS_008E5B5437"
+const NOTHING_AUTHORED := "LOC_UI_PANELS_A5FA9EFA1E"
 
 ## The path ids a shortfall is reported against, in a hero's words rather than the
 ## module's. `qi_cultivation` is machine vocabulary; "the qi path" is not, and a
 ## shortfall a hero cannot name is a shortfall they cannot act on. Same mapping
 ## `technique_slot_row.gd` uses for its pools.
 const POOL_TEXT := {
-	"qi_cultivation": "the qi path",
-	"body_cultivation": "the body path",
-	"mind_cultivation": "the mind path",
-	"universal": "the universal pool",
+	"qi_cultivation": "LOC_UI_PANELS_A94501A16E",
+	"body_cultivation": "LOC_UI_PANELS_7EACE30B51",
+	"mind_cultivation": "LOC_UI_PANELS_43FF0F4B28",
+	"universal": "LOC_UI_PANELS_30AA4EDFBC",
 }
 
 var _view: Dictionary = {}
@@ -227,19 +227,19 @@ func _render() -> void:
 	visible = is_filled()
 	if not visible:
 		return
-	_head_label.text = _head
+	_head_label.text = L.t(_head)
 	_head_label.theme_type_variation = _head_variation()
-	_meta_label.text = _meta
+	_meta_label.text = L.t(_meta)
 	_meta_label.theme_type_variation = &"EffectLabel" if known_entry() else &"MetaLabel"
-	_mastery_label.text = _mastery
-	_price_label.text = _price
+	_mastery_label.text = L.t(_mastery)
+	_price_label.text = L.t(_price)
 	_price_label.theme_type_variation = &"MetaLabel" if known_entry() else &"EffectLabel"
 	if _band_label == null:
 		return
-	_band_label.text = _band
+	_band_label.text = L.t(_band)
 	if _note_label == null:
 		return
-	_note_label.text = _note
+	_note_label.text = L.t(_note)
 	# A shortfall is the one line here that is a refusal, so it takes the row's only
 	# alarming variation; a gate is a reason, and reads as one.
 	_note_label.theme_type_variation = &"WarnLabel" if not short_list().is_empty() else &"MetaLabel"
@@ -282,8 +282,8 @@ func _mastery_text(view: Dictionary) -> String:
 	var rung := int(view.get("rung", 0))
 	var reach := int(view.get("rung_count", 0))
 	if reach <= 0:
-		return "%s d%d" % [MASTERY_TEXT, rung]
-	return "%s d%d/%d" % [MASTERY_TEXT, rung, reach]
+		return L.t("LOC_UI_PANELS_2E94935FA3") % [L.t(MASTERY_TEXT), rung]
+	return L.t("LOC_UI_PANELS_392B9240ED") % [L.t(MASTERY_TEXT), rung, reach]
 
 
 ## The study price, or the fact that there is nothing left to pay.
@@ -295,7 +295,7 @@ func _mastery_text(view: Dictionary) -> String:
 ## conflating them would hide one.
 func _price_text(view: Dictionary) -> String:
 	if known_entry():
-		return KNOWN_TEXT
+		return L.t(KNOWN_TEXT)
 	var price := float(view.get("learn_price", 0.0))
 	var quoted := FREE_TEXT if price <= 0.0 else COST_TEXT % int(round(price))
 	if bool(view.get("can_learn", false)):
@@ -326,7 +326,9 @@ func _band_text(view: Dictionary) -> String:
 	var figures := band_figures()
 	if figures.is_empty():
 		return ""
-	return BAND_TEXT % [_sheet_text(figures), _edges_text(figures, band_view())]
+	# `BAND_TEXT` holds a KEY, so it resolves before the format runs: a key is not a template
+	# and `"LOC_…" % [a, b]` is a runtime error, not a translated line.
+	return L.t(BAND_TEXT) % [_sheet_text(figures), _edges_text(figures, band_view())]
 
 
 ## The sheet's own column, quoted from the module's figures rather than recomputed
@@ -355,7 +357,7 @@ func _edges_text(figures: Array, band: Dictionary) -> String:
 	var ceiling_edge := float(band["ceiling"])
 	if floor_edge == 1.0 and ceiling_edge == 1.0:
 		return " ".join(parts)
-	return "%s (x%.2f-x%.2f)" % [" ".join(parts), floor_edge, ceiling_edge]
+	return L.t("LOC_UI_PANELS_DC9664F4D7") % [" ".join(parts), floor_edge, ceiling_edge]
 
 
 ## The module's per-option range, normalised to primitives so a `summary()` consumer
@@ -455,7 +457,7 @@ func _note_text(view: Dictionary) -> String:
 	var unmet := _string_list(view.get("learn_unmet", []))
 	if unmet.is_empty():
 		return ""
-	return GATE_TEXT % ", ".join(unmet)
+	return L.t(GATE_TEXT) % ", ".join(unmet)
 
 
 ## What the hero is short of, in the module's own `{resource, required, current}`

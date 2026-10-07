@@ -1,0 +1,126 @@
+{
+  "id": "medieval_western.forestry_timber_and_cooperage.shavehorse_drawknife_clamping_bench_firewood_seasoned",
+  "name": "Seasoned Dry Foot-Operated Shavehorse Clamping Bench",
+  "vietnamese_name": "Ngựa Bào Gỗ Đạp Chân Dùng Dao Kéo Hai Tay (Gỗ Khô Đạt Chuẩn)",
+  "category": "forestry_timber_and_cooperage",
+  "sub_category": "broadaxe_adzes_and_hewing_benches",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "drawknife_shave",
+  "gameplay_role": "Supply chain industry element (Foot-Operated Shavehorse Clamping Bench).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of seasoned dry foot-operated shavehorse clamping bench, crackling dry split seasoned firewood, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/forestry_timber_and_cooperage/shavehorse_drawknife_clamping_bench_firewood_seasoned.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.forestry_timber_and_cooperage.shavehorse_drawknife_clamping_bench_firewood_seasoned:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.434,
+        0.452
+      ]
+    ],
+    "frac_zero": 0.7261,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.001,
+        0.24,
+        0.369,
+        0.026,
+        0.0,
+        0.0
+      ],
+      [
+        0.536,
+        0.808,
+        0.952,
+        0.971,
+        0.835,
+        0.667,
+        0.087
+      ],
+      [
+        0.355,
+        0.336,
+        0.591,
+        0.648,
+        0.4,
+        0.437,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      29,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 69,
+    "contact_reference_px": 69.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

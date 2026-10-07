@@ -448,12 +448,12 @@ func _render_events() -> void:
 ##     plainly.
 func _events_title_text() -> String:
 	if not _events_wired:
-		return EVENTS_TITLE_UNWIRED
+		return L.t(EVENTS_TITLE_UNWIRED)
 	if _open_events.is_empty():
-		return EVENTS_TITLE_EMPTY
+		return L.t(EVENTS_TITLE_EMPTY)
 	if _unnamed_events >= _open_events.size():
-		return EVENTS_TITLE_UNNAMED
-	return EVENTS_TITLE_OPEN
+		return L.t(EVENTS_TITLE_UNNAMED)
+	return L.t(EVENTS_TITLE_OPEN)
 
 
 ## The lines under the heading: one per open event, or the ONE line that stands in for an
@@ -577,7 +577,7 @@ func _event_rows_of(rows: Array) -> Array[Dictionary]:
 ## one of them and a single number would hide that.
 func _clock_text() -> String:
 	if not _wired:
-		return UNWIRED_CLOCK
+		return L.t(UNWIRED_CLOCK)
 	if _periods <= 0 and _period_count <= 0:
 		return L.t("LOC_UI_PANELS_2948F603C6")
 	return L.t("LOC_UI_PANELS_E4F495B812") % [_periods, _period_count]
@@ -587,7 +587,7 @@ func _clock_text() -> String:
 func _cadence_text() -> String:
 	var seconds := _period_seconds
 	if not _wired or seconds <= 0.0:
-		return UNWIRED_CADENCE
+		return L.t(UNWIRED_CADENCE)
 	return L.t("LOC_UI_PANELS_A35F241E6C") % _duration_text(seconds)
 
 
@@ -644,7 +644,7 @@ func _retreat_cost_text() -> String:
 	if _retreat_spans.is_empty():
 		return RETREAT_EMPTY if _can_retreat else UNWIRED_CLOCK
 	if chosen.is_empty():
-		return RETREAT_NO_COST
+		return L.t(RETREAT_NO_COST)
 	var crossed := _crossed_of(chosen)
 	var parts: Array[String] = ["%d periods" % int(chosen.get("periods", 0))]
 	for entry in crossed:

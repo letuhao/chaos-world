@@ -14,7 +14,7 @@ extends PanelContainer
 ## Shown when a fight was survived and paid nothing. A blank line would read as a row
 ## the panel forgot to fill, and "the absence is stated" is the same rule the loot
 ## readout's `NO_STATUSES` follows.
-const NO_BLESSING := "No blessing earned"
+const NO_BLESSING := "LOC_UI_PANELS_5544EA6F0B"
 
 var _target_label: Label = null
 var _kind_label: Label = null
@@ -119,7 +119,7 @@ func _render() -> void:
 	if _target_label == null:
 		return
 	if _state.is_empty():
-		_target_label.text = "No tribulation"
+		_target_label.text = L.t("LOC_UI_PANELS_8A69C51FF6")
 		_target_label.theme_type_variation = &"MetaLabel"
 		_kind_label.text = ""
 		_wave_label.text = ""
@@ -137,7 +137,10 @@ func _render() -> void:
 	_kind_label.text = (
 		"" if kind.is_empty() else "%s · %s" % [kind.capitalize(), String(_state.get("phase", ""))]
 	)
-	_wave_label.text = "Wave %d/%d" % [int(_state.get("wave", 0)), int(_state.get("max_waves", 0))]
+	_wave_label.text = (
+		L.t("LOC_UI_PANELS_CE0861C131")
+		% [int(_state.get("wave", 0)), int(_state.get("max_waves", 0))]
+	)
 	_rating_label.text = (
 		"Rating %.2f · survival %d%%"
 		% [float(_state.get("difficulty", 0.0)), int(float(_state.get("chance", 0.0)) * 100.0)]
@@ -178,7 +181,7 @@ func _render_blessing() -> void:
 	_blessing_label.theme_type_variation = (
 		&"OkLabel" if bool(_blessing.get("ok", false)) else &"WarnLabel"
 	)
-	_blessing_label.text = blessing_text()
+	_blessing_label.text = L.t(blessing_text())
 
 
 ## The blessing line as the player reads it. Safe to call before `_render()`.
@@ -187,7 +190,7 @@ func blessing_text() -> String:
 		return ""
 	var status_id := String(_blessing.get("id", ""))
 	if bool(_blessing.get("ok", false)) and not status_id.is_empty():
-		return "Blessing earned: %s" % status_id.replace("_", " ")
+		return L.t("LOC_UI_PANELS_16C140C375") % status_id.replace("_", " ")
 	var reason := String(_blessing.get("reason", ""))
 	return NO_BLESSING if reason.is_empty() else "No blessing · %s" % reason
 
@@ -197,20 +200,20 @@ func _render_verdict() -> void:
 	match outcome:
 		"survived":
 			_verdict_label.theme_type_variation = &"OkLabel"
-			_verdict_label.text = "Survived · the gate for this realm is open"
+			_verdict_label.text = L.t("LOC_UI_PANELS_B7D6B234B3")
 		"failed":
 			_verdict_label.theme_type_variation = &"WarnLabel"
-			_verdict_label.text = "Broken · repair the body and fight it again"
+			_verdict_label.text = L.t("LOC_UI_PANELS_A825A97331")
 		_:
 			_verdict_label.theme_type_variation = &"MetaLabel"
-			_verdict_label.text = _pending_text()
+			_verdict_label.text = L.t(_pending_text())
 
 
 func _pending_text() -> String:
 	if not bool(_state.get("owed", false)):
-		return "No tribulation is owed below the Immortal tier"
+		return L.t("LOC_UI_PANELS_BB6FFA8C7C")
 	if bool(_state.get("gate_open", false)):
-		return "The gate is open; break through"
+		return L.t("LOC_UI_PANELS_AF8ABF858B")
 	if bool(_state.get("has_record", false)):
-		return "A tribulation is in progress"
-	return "A tribulation is owed · face it"
+		return L.t("LOC_UI_PANELS_10AE906044")
+	return L.t("LOC_UI_PANELS_EF1C286DD4")

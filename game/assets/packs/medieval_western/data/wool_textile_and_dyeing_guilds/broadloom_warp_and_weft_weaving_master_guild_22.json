@@ -1,0 +1,153 @@
+{
+  "id": "medieval_western.wool_textile_and_dyeing_guilds.broadloom_warp_and_weft_weaving_master_guild_22",
+  "name": "Guildmaster's Broadloom Warp And Weft Weaving #22",
+  "vietnamese_name": "Tuyệt Tác Phường Hội Broadloom Warp And Weft Weaving #22",
+  "category": "wool_textile_and_dyeing_guilds",
+  "sub_category": "broadloom_warp_and_weft_weaving",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "inspect_craft",
+  "gameplay_role": "Guildmaster crafted industry asset.",
+  "destructible": false,
+  "material": "iron",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "Guildmaster craft piece of broadloom_warp_and_weft_weaving, historical medieval guild craftsmanship, gouache anime style.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/wool_textile_and_dyeing_guilds/broadloom_warp_and_weft_weaving_master_guild_22.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.wool_textile_and_dyeing_guilds.broadloom_warp_and_weft_weaving_master_guild_22:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.434,
+        0.422
+      ]
+    ],
+    "frac_zero": 0.7427,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.141,
+        0.099,
+        0.24,
+        0.602,
+        0.244,
+        0.099,
+        0.143
+      ],
+      [
+        0.656,
+        0.77,
+        0.97,
+        1.0,
+        0.869,
+        0.759,
+        0.705
+      ],
+      [
+        0.0,
+        0.0,
+        0.158,
+        0.574,
+        0.051,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      28
+    ],
+    "trunk_columns": [
+      3
+    ],
+    "contact_px": 52,
+    "contact_reference_px": 52.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

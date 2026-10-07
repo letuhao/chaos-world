@@ -1,0 +1,202 @@
+{
+  "id": "medieval_western.forestry_timber_and_cooperage.elevated_timber_sawpit_trestle_firewood_seasoned",
+  "name": "Seasoned Dry High Timber Trestle Sawpit Framing",
+  "vietnamese_name": "Khung Gỗ Xẻ Gỗ Hố Đôi Cao Trên Mặt Đất (Gỗ Khô Đạt Chuẩn)",
+  "category": "forestry_timber_and_cooperage",
+  "sub_category": "two_man_pit_saw_and_sawpit",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "saw_timber",
+  "gameplay_role": "Supply chain industry element (High Timber Trestle Sawpit Framing).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of seasoned dry high timber trestle sawpit framing, crackling dry split seasoned firewood, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/forestry_timber_and_cooperage/elevated_timber_sawpit_trestle_firewood_seasoned.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.forestry_timber_and_cooperage.elevated_timber_sawpit_trestle_firewood_seasoned:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.714,
+        0.686
+      ],
+      [
+        0.625,
+        0.661
+      ]
+    ],
+    "frac_zero": 0.4838,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.324,
+        0.687,
+        0.519,
+        0.505,
+        0.521,
+        0.717,
+        0.159
+      ],
+      [
+        0.287,
+        0.934,
+        0.923,
+        0.945,
+        0.955,
+        0.938,
+        0.038
+      ],
+      [
+        0.546,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.991,
+        0.213
+      ],
+      [
+        0.292,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.15
+      ],
+      [
+        0.593,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.532
+      ],
+      [
+        0.123,
+        1.0,
+        0.644,
+        0.31,
+        0.818,
+        1.0,
+        0.272
+      ],
+      [
+        0.0,
+        0.686,
+        0.376,
+        0.0,
+        0.486,
+        0.603,
+        0.086
+      ]
+    ],
+    "crop_offset": [
+      18,
+      18
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 21,
+    "contact_reference_px": 21.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

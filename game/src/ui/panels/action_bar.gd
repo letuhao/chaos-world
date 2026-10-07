@@ -36,12 +36,12 @@ const TONE_OK := &"ok"
 ## Wording for each successful outcome. The screen hands raw values; this panel
 ## owns every `%s`/`%d` and the width of the message.
 const OUTCOME_TEXT := {
-	&"used": "Used %s",
-	&"equipped": "Equipped %s into %s",
-	&"unequipped": "Unequipped %s",
-	&"generated": "Generated one %s",
-	&"saved": "Saved %d item slot(s)",
-	&"loaded": "Loaded %d item slot(s)",
+	&"used": "LOC_UI_PANELS_21550AD71D",
+	&"equipped": "LOC_UI_PANELS_B77339B967",
+	&"unequipped": "LOC_UI_PANELS_BA64D822BA",
+	&"generated": "LOC_UI_PANELS_42A8FBA959",
+	&"saved": "LOC_UI_PANELS_82FCF35221",
+	&"loaded": "LOC_UI_PANELS_D32EC875C9",
 }
 
 var _enabled: Dictionary = {}
@@ -115,13 +115,13 @@ func _outcome_text() -> String:
 	var template: String = OUTCOME_TEXT.get(_outcome, "")
 	match _outcome:
 		&"equipped":
-			return template % [_outcome_name, _outcome_slot]
+			return L.t(template) % [_outcome_name, _outcome_slot]
 		&"unequipped":
-			return template % _outcome_slot
+			return L.t(template) % _outcome_slot
 		&"saved", &"loaded":
-			return template % _outcome_count
+			return L.t(template) % _outcome_count
 		&"used", &"generated":
-			return template % _outcome_name
+			return L.t(template) % _outcome_name
 		_:
 			return ""
 
@@ -244,7 +244,7 @@ func _render() -> void:
 	_save_button.disabled = not _is_enabled(&"save")
 	_load_button.disabled = not _is_enabled(&"load")
 	var outcome := _outcome_text()
-	_message_label.text = outcome if outcome != "" else _message
+	_message_label.text = L.t(outcome if outcome != "" else _message)
 	_message_label.theme_type_variation = _tone_variation()
 
 

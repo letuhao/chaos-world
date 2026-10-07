@@ -142,7 +142,7 @@ func test_the_fight_screen_shows_what_is_on_the_player() -> void:
 	var screen := _screen(actor)
 	assert_eq(
 		String(screen.summary()["status_label"]),
-		LootBossPanel.NO_STATUSES,
+		L.t(LootBossPanel.NO_STATUSES),
 		"a fresh player is told they are carrying nothing"
 	)
 	# Applied the way a hit applies one — through the facade, not by hand — then the
@@ -218,7 +218,7 @@ func test_the_readout_clears_when_the_status_is_gone() -> void:
 	assert_eq(_holds(screen.summary(), "metal_sever"), false, "and gone once combat purged it")
 	assert_eq(
 		String(screen.summary()["status_label"]),
-		LootBossPanel.NO_STATUSES,
+		L.t(LootBossPanel.NO_STATUSES),
 		"with the line saying so rather than left holding a stale row"
 	)
 
@@ -293,7 +293,7 @@ func test_ending_a_fight_purges_the_debuff_that_fight_inflicted() -> void:
 	screen.refresh()
 	assert_eq(
 		String(screen.summary()["status_label"]),
-		LootBossPanel.NO_STATUSES,
+		L.t(LootBossPanel.NO_STATUSES),
 		"the readout repaints to match — no stale row the player learns to ignore"
 	)
 

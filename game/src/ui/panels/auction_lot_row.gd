@@ -28,18 +28,18 @@ extends PanelContainer
 signal bid_requested(lot_id: String)
 
 ## Stands in for a lot the read model does not name. A word, never a dash.
-const NO_LOT_TEXT := "No lot here"
+const NO_LOT_TEXT := "LOC_UI_PANELS_89F19EECD5"
 ## What a lot with nobody on it says. A word, never "0" — a zero bidder count reads
 ## as a measured fact rather than as an absence.
-const NO_HIGH_TEXT := "No bids yet"
+const NO_HIGH_TEXT := "LOC_UI_PANELS_A7C9CE8E97"
 ## What the high bidder's line reads when there IS one.
-const HIGH_TEXT := "High: %s at %d"
+const HIGH_TEXT := "LOC_UI_PANELS_C2AC3B81A0"
 ## "closes in 3 periods" — the module's word for time (`AuctionState.closes_after`),
 ## so the row uses it rather than inventing a unit.
-const CLOSES_TEXT := "closes in %d periods"
+const CLOSES_TEXT := "LOC_UI_PANELS_6CA3DA47AC"
 ## "seller: shop_x". An auction house lists through the market, so the seller is
 ## often a counter rather than a person.
-const SELLER_TEXT := "seller: %s"
+const SELLER_TEXT := "LOC_UI_PANELS_B84F412ECD"
 const META_SEP := " · "
 
 var _view: Dictionary = {}
@@ -191,11 +191,11 @@ func _render() -> void:
 	visible = is_filled()
 	if not visible:
 		return
-	_head_label.text = _head
-	_state_label.text = _state_line
+	_head_label.text = L.t(_head)
+	_state_label.text = L.t(_state_line)
 	_state_label.theme_type_variation = _state_tone()
-	_high_label.text = _high_line
-	_meta_label.text = _meta
+	_high_label.text = L.t(_high_line)
+	_meta_label.text = L.t(_meta)
 
 
 ## "open · bid ≥ 90" or "sold" / "unsold". `required_bid` is the lot's own next legal
@@ -221,8 +221,8 @@ func _state_text() -> String:
 func _high_text() -> String:
 	var high := String(_view.get("high_bid", ""))
 	if high == "":
-		return NO_HIGH_TEXT
-	return HIGH_TEXT % [high, int(_view.get("high_bid_amount", 0))]
+		return L.t(NO_HIGH_TEXT)
+	return L.t(HIGH_TEXT) % [high, int(_view.get("high_bid_amount", 0))]
 
 
 ## "rarity: rare · closes in 3 periods · seller: shop_x". The rarity and the seller

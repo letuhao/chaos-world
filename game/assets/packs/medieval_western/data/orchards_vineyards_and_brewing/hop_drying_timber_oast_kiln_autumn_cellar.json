@@ -1,0 +1,203 @@
+{
+  "id": "medieval_western.orchards_vineyards_and_brewing.hop_drying_timber_oast_kiln_autumn_cellar",
+  "name": "Cellar-Chilled Conical Brick Hop-Drying Oast House",
+  "vietnamese_name": "Lò Sấy Hoa Bia Hình Nón Mái Ngói Đỏ (Hầm Rượu Mát Lạnh)",
+  "category": "orchards_vineyards_and_brewing",
+  "sub_category": "brewhouse_mash_tun_and_copper",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "dry_hops",
+  "gameplay_role": "Supply chain industry element (Conical Brick Hop-Drying Oast House).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of cellar-chilled conical brick hop-drying oast house, cool stone vault humidity and cobwebs, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/orchards_vineyards_and_brewing/hop_drying_timber_oast_kiln_autumn_cellar.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.orchards_vineyards_and_brewing.hop_drying_timber_oast_kiln_autumn_cellar:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.473,
+        0.482
+      ],
+      [
+        0.725,
+        0.763
+      ]
+    ],
+    "frac_zero": 0.5517,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.312,
+        0.937,
+        0.013,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.479,
+        1.0,
+        0.151,
+        0.0,
+        0.0
+      ],
+      [
+        0.633,
+        0.656,
+        0.9,
+        1.0,
+        0.791,
+        0.653,
+        0.639
+      ],
+      [
+        0.926,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.909
+      ],
+      [
+        0.836,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.755
+      ],
+      [
+        0.245,
+        0.844,
+        1.0,
+        1.0,
+        1.0,
+        0.684,
+        0.203
+      ],
+      [
+        0.0,
+        0.16,
+        0.734,
+        0.776,
+        0.84,
+        0.091,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      21,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 101,
+    "contact_reference_px": 101.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

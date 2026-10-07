@@ -1,0 +1,116 @@
+{
+  "id": "medieval_western.orchards_vineyards_and_brewing.post_and_wire_grape_vine_row_sun_ripened_grape",
+  "name": "Sun-Drenched Chestnut Post Grapevine Trellis Row",
+  "vietnamese_name": "Hàng Cọc Gỗ Cây Dẻ Căng Dây Leo Nho (Nắng Nở Vườn Nho)",
+  "category": "orchards_vineyards_and_brewing",
+  "sub_category": "terrace_vineyard_grape_trellis",
+  "type": "flora",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": true,
+  "vision_mode": "low",
+  "interactive_verb": "pick_grapes",
+  "gameplay_role": "Supply chain industry element (Chestnut Post Grapevine Trellis Row).",
+  "destructible": false,
+  "material": "plant",
+  "feudal_culture": "french_capetian",
+  "prompt_summary": "2D orthographic top-down game sprite of sun-drenched chestnut post grapevine trellis row, dusted purple grapes and emerald vine leaves, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/orchards_vineyards_and_brewing/post_and_wire_grape_vine_row_sun_ripened_grape.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.orchards_vineyards_and_brewing.post_and_wire_grape_vine_row_sun_ripened_grape:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.63,
+        0.643
+      ]
+    ],
+    "frac_zero": 0.5503,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.587,
+        0.736,
+        0.781,
+        0.679,
+        0.698,
+        0.732,
+        0.608
+      ],
+      [
+        0.779,
+        0.948,
+        0.925,
+        0.933,
+        0.927,
+        0.949,
+        0.838
+      ],
+      [
+        0.204,
+        0.213,
+        0.213,
+        0.285,
+        0.245,
+        0.28,
+        0.295
+      ]
+    ],
+    "crop_offset": [
+      17,
+      21
+    ],
+    "trunk_columns": [],
+    "contact_px": 14,
+    "contact_reference_px": 14.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

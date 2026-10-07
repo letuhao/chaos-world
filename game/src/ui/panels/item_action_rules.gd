@@ -40,12 +40,12 @@ const REASON_REALM_TIER_TOO_LOW := "realm_tier_too_low"
 ## `""` when the selected item may be used.
 static func use_block_reason(actor: Actor, row: Dictionary) -> String:
 	if row.is_empty() or row.get("def") == null:
-		return REASON_NO_SELECTION
+		return L.t(REASON_NO_SELECTION)
 	if not USABLE_ACTIVATIONS.has(StringName(row["def"].activation())):
-		return REASON_NOT_USABLE
+		return L.t(REASON_NOT_USABLE)
 	if actor == null or not ItemsApi.has_item(actor, StringName(row["def_id"])):
-		return REASON_NOT_CARRIED
-	return REASON_NONE
+		return L.t(REASON_NOT_CARRIED)
+	return L.t(REASON_NONE)
 
 
 ## `""` when the selected item may be equipped, combining shape and requirements.
@@ -59,42 +59,42 @@ static func equip_block_reason(actor: Actor, row: Dictionary) -> String:
 ## Whether the selection is an equippable thing the actor actually carries.
 static func equip_shape_reason(actor: Actor, row: Dictionary) -> String:
 	if row.is_empty() or row.get("def") == null:
-		return REASON_NO_SELECTION
+		return L.t(REASON_NO_SELECTION)
 	if not row["def"].is_equipment():
-		return REASON_NOT_EQUIPMENT
+		return L.t(REASON_NOT_EQUIPMENT)
 	if actor == null:
-		return REASON_NO_ACTOR
+		return L.t(REASON_NO_ACTOR)
 	var inventory := ItemsApi.inventory(actor)
 	if inventory == null or inventory.find_instance(StringName(row["def_id"])) == null:
-		return REASON_NOT_CARRIED
-	return REASON_NONE
+		return L.t(REASON_NOT_CARRIED)
+	return L.t(REASON_NONE)
 
 
 ## Whether the actor satisfies the requirements the equipment layer enforces: the
 ## grade gate and the item's binding.
 static func equip_requirement_reason(actor: Actor, row: Dictionary) -> String:
 	if actor == null:
-		return REASON_NO_ACTOR
+		return L.t(REASON_NO_ACTOR)
 	var gate := realm_block_reason(actor, row["def"])
 	if gate != REASON_NONE:
 		return gate
 	var bound := StringName(String(row.get("bound_to", "")))
 	if bound != &"" and bound != actor.id:
-		return REASON_BOUND_TO_OTHER
-	return REASON_NONE
+		return L.t(REASON_BOUND_TO_OTHER)
+	return L.t(REASON_NONE)
 
 
 ## `""` when the chosen slot can be emptied into the inventory.
 static func unequip_block_reason(actor: Actor, slot: StringName) -> String:
 	if actor == null:
-		return REASON_NO_ACTOR
+		return L.t(REASON_NO_ACTOR)
 	var equipment := ItemsApi.equipment(actor)
 	if equipment == null or equipment.definition(slot) == null:
-		return REASON_SLOT_EMPTY
+		return L.t(REASON_SLOT_EMPTY)
 	var inventory := ItemsApi.inventory(actor)
 	if inventory != null and inventory.is_full():
-		return REASON_INVENTORY_FULL
-	return REASON_NONE
+		return L.t(REASON_INVENTORY_FULL)
+	return L.t(REASON_NONE)
 
 
 ## The grade gate the equipment layer applies: the actor's realm tier must meet
@@ -102,11 +102,11 @@ static func unequip_block_reason(actor: Actor, slot: StringName) -> String:
 static func realm_block_reason(actor: Actor, def: Resource) -> String:
 	var realm: StringName = actor.realm()
 	if realm == &"":
-		return REASON_NONE
+		return L.t(REASON_NONE)
 	var tier := RealmDefaults.ladder().tier_of(realm)
 	if tier > 0 and tier < def.required_tier():
-		return REASON_REALM_TIER_TOO_LOW
-	return REASON_NONE
+		return L.t(REASON_REALM_TIER_TOO_LOW)
+	return L.t(REASON_NONE)
 
 
 ## The slot the selected row would go into: the slot its subtype authorises, the

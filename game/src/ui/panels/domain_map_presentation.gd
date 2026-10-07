@@ -54,11 +54,11 @@ const MARKER_GLYPHS := {
 ## One legend row per glyph, keyed by the same tag. A shape a player cannot decode is a
 ## lie about discoverability, so the legend is part of the promise, not an optional extra.
 const LEGEND_ROWS := [
-	{"tag": "refuge", "glyph": "open_circle", "promise": "somewhere safe to stand"},
-	{"tag": "treasure", "glyph": "diamond", "promise": "something is here to open"},
-	{"tag": "puzzle", "glyph": "nested", "promise": "something must be solved"},
-	{"tag": "elite_guard", "glyph": "chevron", "promise": "something is guarded"},
-	{"tag": "boss", "glyph": "boss_ring", "promise": "the run's climax"},
+	{"tag": "refuge", "glyph": "open_circle", "promise": "LOC_UI_PANELS_4FC01480DE"},
+	{"tag": "treasure", "glyph": "diamond", "promise": "LOC_UI_PANELS_AC754230B8"},
+	{"tag": "puzzle", "glyph": "nested", "promise": "LOC_UI_PANELS_23961188BD"},
+	{"tag": "elite_guard", "glyph": "chevron", "promise": "LOC_UI_PANELS_7E6BD7BB97"},
+	{"tag": "boss", "glyph": "boss_ring", "promise": "LOC_UI_PANELS_B91A697797"},
 ]
 
 ## The tier a room carries when it promises nothing, so a tier test is a comparison

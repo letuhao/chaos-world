@@ -1,0 +1,167 @@
+{
+  "id": "medieval_western.watermills_windmills_and_milling.millstone_crane_and_iron_bails_river_splashed",
+  "name": "River-Misted Screw Timber Crane for Lifting Stones",
+  "vietnamese_name": "Cần Cẩu Gỗ Nâng Phiến Đá Xay Để Đục Lại (Bọt Nước Sông Bắn)",
+  "category": "watermills_windmills_and_milling",
+  "sub_category": "granite_millstones_and_hopper",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "lift_stone",
+  "gameplay_role": "Supply chain industry element (Screw Timber Crane for Lifting Stones).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of river-misted screw timber crane for lifting stones, wet splashing water drops and mossy paddles, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/watermills_windmills_and_milling/millstone_crane_and_iron_bails_river_splashed.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.watermills_windmills_and_milling.millstone_crane_and_iron_bails_river_splashed:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.21
+      ],
+      [
+        0.806
+      ]
+    ],
+    "frac_zero": 0.6874,
+    "blocks": [
+      [
+        true
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.302,
+        0.0
+      ],
+      [
+        0.0,
+        0.33,
+        0.0
+      ],
+      [
+        0.191,
+        0.816,
+        0.161
+      ],
+      [
+        0.501,
+        0.95,
+        0.465
+      ],
+      [
+        0.967,
+        1.0,
+        0.903
+      ],
+      [
+        0.824,
+        1.0,
+        0.789
+      ],
+      [
+        0.184,
+        0.93,
+        0.105
+      ]
+    ],
+    "crop_offset": [
+      17,
+      39
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 76,
+    "contact_reference_px": 76.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      256
+    ]
+  }
+}

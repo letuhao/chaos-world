@@ -24,14 +24,14 @@ extends PanelContainer
 ##
 ## `summary()` is the testable surface. Every format is the row's own.
 
-const UNSWORN := "Sworn to nothing"
-const NO_POSITION := "No office held"
-const NO_DUTIES := "no duty authored"
-const OWE_PREFIX := "Owes"
-const NOTHING_OWED := "Nothing owed"
+const UNSWORN := "LOC_UI_PANELS_3221B2A48E"
+const NO_POSITION := "LOC_UI_PANELS_9066CF9FA5"
+const NO_DUTIES := "LOC_UI_PANELS_7041A839DB"
+const OWE_PREFIX := "LOC_UI_PANELS_194E59F2BC"
+const NOTHING_OWED := "LOC_UI_PANELS_40F3AB82C2"
 const PERCENT_SUFFIX := "%"
-const UNKNOWN_TEXT := "Institution unnamed"
-const UNKNOWN_POSITION := "Office unnamed"
+const UNKNOWN_TEXT := "LOC_UI_PANELS_35562BCB7A"
+const UNKNOWN_POSITION := "LOC_UI_PANELS_EEFD106570"
 ## The facade's own refusal constant for a hero sworn to nothing
 ## (`SectApi.NOT_A_MEMBER`). Named here rather than inlined so the row renders the
 ## MODULE's string, and a test greps the constant rather than a hand-typed copy.
@@ -167,13 +167,13 @@ func _render() -> void:
 	if not visible:
 		return
 	_compute_lines()
-	_institution_label.text = _institution
+	_institution_label.text = L.t(_institution)
 	_institution_label.theme_type_variation = _head_tone()
-	_position_label.text = _position
-	_standing_label.text = _standing
-	_duty_label.text = _duty
+	_position_label.text = L.t(_position)
+	_standing_label.text = L.t(_standing)
+	_duty_label.text = L.t(_duty)
 	_duty_label.visible = _duty != ""
-	_meta_label.text = _meta
+	_meta_label.text = L.t(_meta)
 
 
 ## Every line this row prints, computed once from the view. Split out so `summary()`
@@ -239,17 +239,17 @@ func _duty_text() -> String:
 	var position := String(_view.get("position_name", ""))
 	if position == "":
 		position = String(_view.get("position_id", UNKNOWN_POSITION))
-	return "%s: %s" % [position, ", ".join(duties)]
+	return L.t("LOC_UI_PANELS_D9CD377026") % [position, ", ".join(duties)]
 
 
 func _meta_text() -> String:
 	var obligations: Dictionary = _view.get("obligations", {}) as Dictionary
 	if obligations.is_empty():
-		return "%s · %s" % [NOTHING_OWED, NO_DUTIES]
+		return L.t("LOC_UI_PANELS_C59A938FCC") % [L.t(NOTHING_OWED), L.t(NO_DUTIES)]
 	var terms: Array = []
 	for term_id in obligations.keys():
 		terms.append("%s %d" % [String(term_id), int(obligations[term_id])])
-	return "%s: %s" % [OWE_PREFIX, ", ".join(terms)]
+	return L.t("LOC_UI_PANELS_D9CD377026") % [L.t(OWE_PREFIX), ", ".join(terms)]
 
 
 func _head_tone() -> StringName:

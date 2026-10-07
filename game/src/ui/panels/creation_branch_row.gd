@@ -23,9 +23,9 @@ extends PanelContainer
 ## `CharacterCreationFlow`, which is the single place a destiny is ever earned.
 signal committed(origin_id: StringName)
 
-const LOCKED_HEAD := "Closed"
-const OPEN_META := "This is how you arrive. The other two close for good."
-const LOCKED_META := "This arrival is closed and never reopens."
+const LOCKED_HEAD := "LOC_UI_PANELS_88D86B7721"
+const OPEN_META := "LOC_UI_PANELS_CB3FF6F8F9"
+const LOCKED_META := "LOC_UI_PANELS_319D05D730"
 
 var _view: Dictionary = {}
 var _head: String = ""
@@ -161,19 +161,19 @@ func _render() -> void:
 	visible = is_filled()
 	if not visible:
 		return
-	_head_label.text = _head
+	_head_label.text = L.t(_head)
 	_head_label.theme_type_variation = _head_tone()
-	_description_label.text = _description
+	_description_label.text = L.t(_description)
 	_description_label.visible = not _description.is_empty()
 	_description_label.theme_type_variation = &"EffectLabel"
-	_bearing_label.text = _bearing
+	_bearing_label.text = L.t(_bearing)
 	_bearing_label.visible = not _bearing.is_empty()
-	_body_label.text = _body_line
-	_paths_label.text = _paths_line
-	_meta_label.text = _meta
+	_body_label.text = L.t(_body_line)
+	_paths_label.text = L.t(_paths_line)
+	_meta_label.text = L.t(_meta)
 	if _choose_button != null:
 		_choose_button.disabled = not can_commit()
-		_choose_button.text = _choose_text()
+		_choose_button.text = L.t(_choose_text())
 
 
 ## The body this arrival arrives in, named as a player reads it. `race_name` is
@@ -182,7 +182,7 @@ func _render() -> void:
 func _body_text(view: Dictionary) -> String:
 	var named := String(view.get("race_name", ""))
 	var raw := String(view.get("race", ""))
-	return "Arrives in a %s body." % (named if named != "" else raw)
+	return L.t("LOC_UI_PANELS_FB9803DB3E") % (named if named != "" else raw)
 
 
 ## What that body costs, in the only vocabulary a player has. An arrival with no
@@ -190,14 +190,14 @@ func _body_text(view: Dictionary) -> String:
 func _paths_text(view: Dictionary) -> String:
 	var closed := _strings(view.get("closed_paths", []))
 	if closed.is_empty():
-		return "This body closes no cultivation path."
-	return "This body cannot cultivate: %s." % ", ".join(closed)
+		return L.t("LOC_UI_PANELS_C1FB715A3E")
+	return L.t("LOC_UI_PANELS_EAABBE33E3") % ", ".join(closed)
 
 
 func _choose_text() -> String:
 	if not can_commit():
-		return "Closed"
-	return "Arrive this way"
+		return L.t("LOC_UI_PANELS_88D86B7721")
+	return L.t("LOC_UI_PANELS_02AD3B27AB")
 
 
 func _head_tone() -> StringName:

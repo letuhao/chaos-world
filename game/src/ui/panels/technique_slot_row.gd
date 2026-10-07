@@ -33,11 +33,11 @@ extends PanelContainer
 signal unequip_requested(technique_id: StringName)
 signal cast_requested(technique_id: StringName)
 
-const EMPTY_TEXT := "Empty"
-const SUSPENDED_TEXT := "SUSPENDED"
+const EMPTY_TEXT := "LOC_UI_PANELS_3159FE421B"
+const SUSPENDED_TEXT := "LOC_UI_PANELS_ED8EF01F1E"
 const POOL_UNKNOWN := "untyped"
-const READY_TEXT := "Ready"
-const NO_TARGET_TEXT := "No target"
+const READY_TEXT := "LOC_UI_PANELS_20C7C5522F"
+const NO_TARGET_TEXT := "LOC_UI_PANELS_F919B8900C"
 
 var _view: Dictionary = {}
 var _head: String = ""
@@ -166,12 +166,12 @@ func _render() -> void:
 	visible = is_filled()
 	if not visible:
 		return
-	_pool_label.text = _pool
-	_head_label.text = _head
+	_pool_label.text = L.t(_pool)
+	_head_label.text = L.t(_head)
 	_head_label.theme_type_variation = _head_variation()
-	_body_label.text = _body
+	_body_label.text = L.t(_body)
 	if _ready_label != null:
-		_ready_label.text = _readiness
+		_ready_label.text = L.t(_readiness)
 		# A bound technique on cooldown is a fact about this moment, not an error:
 		# `WarnLabel` would paint a technique that is simply resting as a refusal.
 		_ready_label.theme_type_variation = _ready_variation()
@@ -187,7 +187,7 @@ func _render() -> void:
 		# it is bound and ready, and the reason it cannot be thrown is one line above.
 		_cast_button.disabled = not bool(summary().get("can_fire", false))
 		if _castable():
-			_cast_button.tooltip_text = _readiness
+			_cast_button.tooltip_text = L.t(_readiness)
 
 
 ## `Ready`, or `Ready in 7s`. Absent for a passive, which has no cooldown to wait
@@ -206,11 +206,11 @@ func _ready_text(_view: Dictionary) -> String:
 	if not _castable():
 		return ""
 	if not _has_target():
-		return NO_TARGET_TEXT
+		return L.t(NO_TARGET_TEXT)
 	var left := _cooldown()
 	if left <= 0.0:
-		return READY_TEXT
-	return "%s in %ds" % [READY_TEXT, int(ceil(left))]
+		return L.t(READY_TEXT)
+	return L.t("LOC_UI_PANELS_E67C51E08F") % [L.t(READY_TEXT), int(ceil(left))]
 
 
 ## Off cooldown is only readiness when there is somewhere to land the blow, so a
@@ -249,14 +249,14 @@ func _castable() -> bool:
 func _pool_text(view: Dictionary) -> String:
 	match String(view.get("kind", "")):
 		PathState.QI:
-			return "Qi path pool"
+			return L.t("LOC_UI_PANELS_82CB4054EB")
 		PathState.BODY:
-			return "Body path pool"
+			return L.t("LOC_UI_PANELS_5DFD8EEAB6")
 		PathState.MIND:
-			return "Mind path pool"
+			return L.t("LOC_UI_PANELS_BA72057795")
 		&"universal":
-			return "Universal pool"
-	return POOL_UNKNOWN
+			return L.t("LOC_UI_PANELS_904B524A95")
+	return L.t(POOL_UNKNOWN)
 
 
 ## The slot's own key, with the machine prefix stripped: `slot_path_qi_cultivation2`
@@ -264,7 +264,7 @@ func _pool_text(view: Dictionary) -> String:
 func _head_text(view: Dictionary) -> String:
 	var key := String(view.get("slot", ""))
 	var tail := key.get_slice("_", 2) if key.begins_with("slot_") else key
-	return "%s slot %s" % [_pool_short(view), tail]
+	return L.t("LOC_UI_PANELS_2CC658D2B1") % [_pool_short(view), tail]
 
 
 func _pool_short(view: Dictionary) -> String:
@@ -284,7 +284,7 @@ func _pool_short(view: Dictionary) -> String:
 ## suspension mark when the slot is filled but the technique cannot pay upkeep.
 func _body_text(view: Dictionary) -> String:
 	if not bool(view.get("filled", false)):
-		return EMPTY_TEXT
+		return L.t(EMPTY_TEXT)
 	var name := String(view.get("display_name", ""))
 	var text := name if not name.is_empty() else String(view.get("technique_id", ""))
 	if bool(view.get("suspended", false)):
