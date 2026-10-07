@@ -267,6 +267,28 @@ static func total_mastery(actor: Actor) -> float:
 	return ElementMastery.total_mastery(actor)
 
 
+## Every element a screen renders, one row each, as primitives: the id, the authored
+## display name, the tier, the actor's mastery, whether the body carries a SPARK for it
+## (the practice gate), and whether it is USABLE right now (the rank+realm door). The
+## screen passes these raw values to its rows; it never reaches into `ElementDefaults`.
+static func roster(actor: Actor) -> Array:
+	var rules := default_rules()
+	var out: Array = []
+	for entry in ElementDefaults.all():
+		var def := entry as ElementDef
+		out.append(
+			{
+				"id": String(def.id),
+				"name": def.display_name,
+				"tier": def.tier,
+				"mastery": ElementMastery.mastery_of(actor, def.id),
+				"spark": ElementTraining.can_practise(actor, def.id, rules),
+				"usable": ElementMastery.usable(actor, def.id, rules),
+			}
+		)
+	return out
+
+
 ## Open an element the body was not born with: a rare resource raises the AFFINITY
 ## itself, and the practice gate follows.
 static func awaken(actor: Actor, element_id: StringName, amount: float) -> bool:

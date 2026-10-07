@@ -466,6 +466,18 @@ const ROUTES: Array[Dictionary] = [
 		"key": "p",
 		"root": false,
 	},
+	{
+		# The elements/mastery screen (ADR 0004, BL-0095). Key `a`: the only
+		# printable key left once every other route claimed one, and the one
+		# that reads as Affinity/Awaken.
+		"id": &"elements",
+		"node": "ElementsScreen",
+		"label": "Elements",
+		"hint": "Master an element: practise, infuse, and rise by mastering.",
+		"scene": "res://src/ui/screens/elements_screen.tscn",
+		"key": "a",
+		"root": false,
+	},
 ]
 
 
