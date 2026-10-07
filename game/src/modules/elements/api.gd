@@ -273,6 +273,14 @@ static func awaken(actor: Actor, element_id: StringName, amount: float) -> bool:
 	return ElementTraining.awaken(actor, element_id, amount)
 
 
+## Drink the element's authored mastery elixir (ADR 0917): the ELIXIR door of the
+## mastery loop — "practice, domains and elixirs". Consumes one item and raises the
+## element's mastery by the element's tier's gain; returns a named refusal dictionary,
+## never a silent no-op.
+static func use_elixir(actor: Actor, element_id: StringName) -> Dictionary:
+	return ElementTraining.use_elixir(actor, element_id)
+
+
 ## ## The elemental path's doors (ADR 0004): enroll, read, advance
 ##
 ## The Awaken action is the ENROLLMENT (explicit, never implicit), and the threshold

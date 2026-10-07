@@ -142,7 +142,8 @@
     "elements": {
       "deps": [
         "contracts",
-        "core"
+        "core",
+        "items"
       ]
     },
     "encounter": {

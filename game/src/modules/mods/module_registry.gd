@@ -34,7 +34,7 @@ const BASE_DEPS := {
 	"domain": ["status"],
 	"dual_cultivation": [],
 	"economy": ["items"],
-	"elements": [],
+	"elements": ["items"],
 	"encounter": ["destiny"],
 	"event": ["destiny", "nation", "npc", "world"],
 	"fertility": ["bloodline", "dual_cultivation", "race", "social"],

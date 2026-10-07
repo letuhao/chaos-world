@@ -30,6 +30,11 @@ extends RefCounted
 ## feeds is a magnitude the provider multiplies (ADR 0200's rule — the OUTPUT is what
 ## is bounded, never the input).
 
+## The items facade, for the elixir door's ONE spend (`has_item` + `consume_item`).
+## A facade preload rather than a bare class reference, the same shape every other
+## module edge in this tree uses.
+const _ITEMS := preload("res://src/modules/items/api.gd")
+
 
 ## Whether `actor` may practise `element_id`: the element must exist in the rules and
 ## the body must carry a SPARK for it (`affinity > 0.0`).
@@ -56,6 +61,58 @@ static func practise(actor: Actor, element_id: StringName, amount: float) -> boo
 		ElementMastery.mastery_of(actor, element_id) + amount * RealmRate.factor(rank)
 	)
 	return true
+
+
+# --- the elixir door (ADR 0917) -------------------------------------------------
+
+## The mastery an elixir of an element's TIER is worth, keyed by tier and never by the
+## element: the family is two tiers of one item kind, and a per-element table would be
+## ten numbers to keep in step with a five-row one.
+##
+## Tier 1 pays four practise sittings and tier 2 pays nine-plus — `PRACTICE_STEP` is
+## `25.0` and an R1 sitting is exactly `25.0` at `RealmRate`'s factor of `1.0`, so
+## `100.0` is four sittings by construction. The elixir does NOT ride the realm rate
+## the way a sitting does: a sitting is labour and scales with the cultivator, an elixir
+## is a RESOURCE and grants what it says, which is what makes one worth carrying to
+## depth rather than a rounding error there. A tier the table does not name (tier 3,
+## reserved for ADR 0004's later elements) reads the tier-1 figure rather than failing,
+## because a missing row must not make an elixir un-drinkable.
+const ELIXIR_GAIN_BY_TIER := {1: 100.0, 2: 240.0}
+
+
+## What one elixir of `element_id` grants, from the element's authored tier.
+static func elixir_gain(element_id: StringName) -> float:
+	var entry := ElementDefaults.rules().element(element_id)
+	if entry == null:
+		return 0.0
+	return float(ELIXIR_GAIN_BY_TIER.get(maxi(1, entry.tier), ELIXIR_GAIN_BY_TIER[1]))
+
+
+## Drink the element's authored mastery elixir: consume ONE from the pack and raise
+## `element_mastery_<e>` by [method elixir_gain]. The price is content — the id is
+## [method ElementStats.mastery_elixir_id] and nothing here invents an item the corpus
+## does not ship.
+##
+## Refusals are named dictionaries, the module's usual shape: `unknown_element`,
+## `no_spark` (the practice gate's own rule — a body refines what it can sense),
+## `no_elixir` (the pack holds none), `refused` (the inventory would not spend it).
+## Nothing is consumed unless the mastery moved.
+static func use_elixir(actor: Actor, element_id: StringName) -> Dictionary:
+	if actor == null:
+		return {"ok": false, "reason": "no_actor"}
+	var rules := ElementDefaults.rules()
+	if rules == null or rules.element(element_id) == null:
+		return {"ok": false, "reason": "unknown_element"}
+	if not can_practise(actor, element_id):
+		return {"ok": false, "reason": "no_spark"}
+	var elixir := ElementStats.mastery_elixir_id(element_id)
+	if not _ITEMS.has_item(actor, elixir):
+		return {"ok": false, "reason": "no_elixir", "item": String(elixir)}
+	if not _ITEMS.consume_item(actor, elixir):
+		return {"ok": false, "reason": "refused", "item": String(elixir)}
+	var gain := elixir_gain(element_id)
+	_set_mastery(actor, element_id, ElementMastery.mastery_of(actor, element_id) + gain)
+	return {"ok": true, "gain": gain, "item": String(elixir)}
 
 
 ## Raise the actor's AFFINITY for `element_id` — the innate channel, opened by a rare
