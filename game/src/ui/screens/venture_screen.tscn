@@ -1,0 +1,89 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/ui/screens/venture_screen.gd" id="1"]
+[ext_resource type="Theme" path="res://src/ui/theme/chaos_world_theme.tres" id="2"]
+
+[node name="VentureScreen" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2")
+script = ExtResource("1")
+
+[node name="Layout" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="HeaderLabel" type="Label" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"ScreenTitle"
+text = "Venture"
+
+[node name="StatusLabel" type="Label" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MetaLabel"
+text = "No venture is standing."
+
+[node name="Row" type="HBoxContainer" parent="Layout"]
+layout_mode = 2
+
+[node name="NodeOption" type="OptionButton" parent="Layout/Row"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="OpenButton" type="Button" parent="Layout/Row"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"PrimaryButton"
+text = "Open"
+
+[node name="CloseButton" type="Button" parent="Layout/Row"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Close"
+
+[node name="Move" type="HBoxContainer" parent="Layout"]
+layout_mode = 2
+
+[node name="NorthButton" type="Button" parent="Layout/Move"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "North"
+
+[node name="SouthButton" type="Button" parent="Layout/Move"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "South"
+
+[node name="WestButton" type="Button" parent="Layout/Move"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "West"
+
+[node name="EastButton" type="Button" parent="Layout/Move"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "East"
+
+[node name="DestroyButton" type="Button" parent="Layout/Move"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"DangerButton"
+text = "Break"
+
+[node name="WorldHolder" type="Control" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(0, 256)
+size_flags_vertical = 3
+
+[node name="MessageLabel" type="Label" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MetaLabel"
+autowrap_mode = 2
+text = ""

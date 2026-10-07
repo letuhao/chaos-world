@@ -75,6 +75,11 @@ const ROUTE_SETTINGS := &"settings"
 ## The save menu (saves slice): every journey with load and erase verbs.
 const ROUTE_SAVE := &"save"
 const ROUTE_SET_BONUS := &"set_bonus"
+## The venture route (worldmap slice 1). The walkable generated scene: the
+## screen is a pure consumer holding Callables, and the verbs below are the
+## composition root's own doors into the boot seam — the ADR 0143 shape every
+## other bound route uses.
+const ROUTE_VENTURE := &"venture"
 
 ## The soul and hearth page. `soul` and `save` are not (and for `save` must never be)
 ## reachable from `ui/`, so its four verbs arrive as Callables in `_bind_route_screen`
@@ -1453,6 +1458,21 @@ func _bind_route_screen(route_id: StringName, screen: Control) -> void:
 				"res://assets/loading/sword.png"
 			)
 			screen.call("begin_load", _route_scene_paths())
+		ROUTE_VENTURE:
+			# The venture screen walks a generated place. The screen holds
+			# Callables and plain nodes; the verbs below are this root's own
+			# doors into the boot seam, and the screen passes itself on every
+			# call so each verb finds the world that screen is showing. The
+			# boot keeps no handle: freeing the screen frees the world with it.
+			screen.call("setup", _actor)
+			screen.call(
+				"bind_venture",
+				Callable(VentureBoot, "open"),
+				Callable(VentureBoot, "close"),
+				Callable(VentureBoot, "step"),
+				Callable(VentureBoot, "destroy"),
+				Callable(VentureBoot, "read")
+			)
 		_:
 			screen.call("setup", _actor)
 

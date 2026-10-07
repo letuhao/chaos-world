@@ -454,6 +454,18 @@ const ROUTES: Array[Dictionary] = [
 		"key": "z",
 		"root": false,
 	},
+	{
+		# The venture route (worldmap slice 1). The walkable generated scene:
+		# open a place, step cell by cell, break ground, travel a doorway or
+		# a portal. Last in tab order, so every feature route keeps its key.
+		"id": &"venture",
+		"node": "VentureScreen",
+		"label": "Venture",
+		"hint": "Walk a generated place, and break ground that stays broken.",
+		"scene": "res://src/ui/screens/venture_screen.tscn",
+		"key": "p",
+		"root": false,
+	},
 ]
 
 
