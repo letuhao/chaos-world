@@ -1,0 +1,119 @@
+{
+  "id": "medieval_western.city_gates_bridges_and_portals.toll_barrier_pivoting_boom_heraldic_painted",
+  "name": "Town-Arms Painted Iron-Counterweighted Timber Toll Bar",
+  "vietnamese_name": "Thanh Chắn Cần Cẩu Thu Phí Đường (Vẽ Huy Hiệu Thành Thị)",
+  "category": "city_gates_bridges_and_portals",
+  "sub_category": "curfew_bell_and_toll_station",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": true,
+  "vision_mode": "low",
+  "interactive_verb": "lift_barrier",
+  "gameplay_role": "City gate and river crossing element (Iron-Counterweighted Timber Toll Bar).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "flemish_hanseatic",
+  "prompt_summary": "2D orthographic top-down game sprite of town-arms painted iron-counterweighted timber toll bar, bright civic heraldry shields and banners, Medieval city gates and river bridges style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/city_gates_bridges_and_portals/toll_barrier_pivoting_boom_heraldic_painted.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.city_gates_bridges_and_portals.toll_barrier_pivoting_boom_heraldic_painted:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.487,
+        0.459
+      ]
+    ],
+    "frac_zero": 0.669,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.312,
+        0.049,
+        0.025,
+        0.379,
+        0.041,
+        0.068,
+        0.288
+      ],
+      [
+        0.893,
+        0.938,
+        0.709,
+        0.745,
+        0.766,
+        0.969,
+        0.667
+      ],
+      [
+        0.462,
+        0.536,
+        0.319,
+        0.34,
+        0.442,
+        0.621,
+        0.31
+      ]
+    ],
+    "crop_offset": [
+      17,
+      22
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 36,
+    "contact_reference_px": 36.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

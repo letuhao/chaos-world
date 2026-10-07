@@ -135,6 +135,14 @@ static func strike(
 		state, actor, damage, seed_value, afflict_gate_open, afflict_magnitude
 	)
 	_save(actor, state)
+	# ADR 0919: a CLEARED elemental domain pays its element's cultivation blessing. The
+	# award runs HERE, once per clear, because `LootState` is a pure state machine that
+	# names no module, and the status side is reached through its facade like every
+	# other cross-module call in this file. A domain that is not elemental answers
+	# `unknown_domain` and pays nothing.
+	var cleared := String(result.get("cleared", ""))
+	if cleared != "":
+		result["blessing"] = StatusApi.apply_domain_blessing(actor, StringName(cleared))
 	return result
 
 

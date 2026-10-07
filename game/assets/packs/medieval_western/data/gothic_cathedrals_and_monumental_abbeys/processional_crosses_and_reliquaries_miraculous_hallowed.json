@@ -1,0 +1,197 @@
+{
+  "id": "medieval_western.gothic_cathedrals_and_monumental_abbeys.processional_crosses_and_reliquaries_miraculous_hallowed",
+  "name": "Miraculous Hallowed Processional Crosses And Reliquaries",
+  "vietnamese_name": "Thánh Tích Phép Màu Processional Crosses And Reliquaries",
+  "category": "gothic_cathedrals_and_monumental_abbeys",
+  "sub_category": "processional_crosses_and_reliquaries",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "venerate",
+  "gameplay_role": "Miraculous hallowed cathedral treasure.",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "french_capetian",
+  "prompt_summary": "Miraculous hallowed cathedral treasure of processional_crosses_and_reliquaries, holy divine aura, Gothic abbey, gouache anime style.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/gothic_cathedrals_and_monumental_abbeys/processional_crosses_and_reliquaries_miraculous_hallowed.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.gothic_cathedrals_and_monumental_abbeys.processional_crosses_and_reliquaries_miraculous_hallowed:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.529,
+        0.524
+      ],
+      [
+        0.705,
+        0.718
+      ]
+    ],
+    "frac_zero": 0.5916,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.063,
+        0.0,
+        0.206,
+        0.058,
+        0.0,
+        0.08
+      ],
+      [
+        0.51,
+        0.056,
+        0.75,
+        0.562,
+        0.108,
+        0.544
+      ],
+      [
+        0.816,
+        0.858,
+        0.988,
+        0.983,
+        0.85,
+        0.755
+      ],
+      [
+        0.928,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.873
+      ],
+      [
+        0.487,
+        0.909,
+        1.0,
+        1.0,
+        0.857,
+        0.439
+      ],
+      [
+        0.071,
+        0.815,
+        1.0,
+        1.0,
+        0.59,
+        0.005
+      ],
+      [
+        0.048,
+        0.74,
+        0.983,
+        1.0,
+        0.724,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      36,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 129,
+    "contact_reference_px": 129.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

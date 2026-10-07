@@ -41,39 +41,50 @@ extends RefCounted
 ##
 ## ## Why the REST of the pair is refused BY NAME
 ##
-## Every element ships TWO statuses (twenty defs against a closed ten-name
-## `StatusDef.MECHANICS` vocabulary), and exactly one of each pair is CULTIVATION scope. A
-## permanent blessing must be ONE: paying the whole pair hands out a burn AND its brace for
-## one fight survived. So the blessing is taken off the pair by SCOPE — the COMBAT-scope
-## member is what a blow inflicts, the CULTIVATION-scope member is what a fight can pay.
-## That is the same split `StatusDef.on_landed_blow` already draws, applied to the other
-## axis rather than authored a second time.
+## Every element ships TWO defs plus, where the pair's second member is not already the
+## blessing, a THIRD cultivation def (twenty-seven defs: the closed pair content plus
+## the ten blessings — ADR 0919). The blessing is taken off the element by SCOPE — the
+## CULTIVATION-scope member is what a fight or a cleared domain can pay — so a fight
+## never hands out a burn AND its brace for one survived bout.
 ##
 ## An element with no CULTIVATION-scope def pays nothing. That is a NORMAL answer with a
-## named reason, never a guess: metal and water ship no blessing today, so a lightning-
-## rooted cultivator who survives a `karmic` trial gets essence and insight and no status.
-## Inventing one would be authoring a def nobody reviewed.
+## named reason, never a guess. Since ADR 0919 all ten elements ship one, so the
+## refusal is a broken-authoring case rather than a shipped state; it is kept because a
+## row pointed at an element nobody authored a blessing for must still SAY SO.
 
 # --- the six authored trial types ------------------------------------------------
 
 ## One row per authored `Tribulation.TYPE_PRESSURE` entry, `type -> element`. The type
 ## chooses the ELEMENT and the element's CULTIVATION-scope def is the blessing, so this
-## table is six authored numbers rather than twenty-one.
+## table is six authored numbers rather than twenty-seven.
 ##
-## Every element below MUST ship a CULTIVATION-scope def, or the row pays nothing. Only
-## THREE do today — `earth_bulwark`, `light_halo`, `wood_bloom` — so the table maps
-## onto those three and the other three trial types deliberately resolve to an element
-## with no blessing. That is the named refusal `NO_BLESSING` existing for: a
-## cultivator who survives a `temporal` trial gets essence and insight and no status.
-## Pointing a row at an element that ships no blessing would be a table that silently
-## never pays, which is worse than one that visibly declines.
+## Together with [constant DOMAIN_TABLE] this covers all TEN elements: the rows pay
+## metal, wood, ice, dark, earth and lightning, and the six elemental domains pay fire,
+## water, wind, earth, lightning and light — so every element has at least one producer
+## and no blessing is orphaned (asserted by `test_status_cultivation_reach.gd`).
 const REWARD_TABLE: Dictionary = {
-	Tribulation.LIGHTNING: &"light",
+	Tribulation.LIGHTNING: &"lightning",
 	Tribulation.HEART_DEMON: &"wood",
 	Tribulation.KARMIC: &"earth",
-	Tribulation.ELEMENTAL: &"earth",
-	Tribulation.SPATIAL: &"wood",
-	Tribulation.TEMPORAL: &"light",
+	Tribulation.ELEMENTAL: &"metal",
+	Tribulation.SPATIAL: &"ice",
+	Tribulation.TEMPORAL: &"dark",
+}
+
+## One row per elemental DOMAIN, `domain -> element`: the SECOND producer (ADR 0919).
+## A cleared elemental domain pays its element's blessing through [method award_domain],
+## so the domains that already drop the element's mastery elixir also bless the body that
+## survived them. Keyed by the domain id the run reports.
+##
+## Six domains cover six elements and the trial rows cover metal, wood, ice and dark, so
+## every element has at least one producer and no element depends on one alone.
+const DOMAIN_TABLE: Dictionary = {
+	&"elemental_mortal_domain": &"fire",
+	&"elemental_spirit_domain": &"water",
+	&"elemental_immortal_domain": &"wind",
+	&"elemental_earth_domain": &"earth",
+	&"elemental_heaven_domain": &"lightning",
+	&"elemental_transcendent_domain": &"light",
 }
 
 ## The refusal reasons, named rather than inferred from an empty id. Every one is an
@@ -81,6 +92,8 @@ const REWARD_TABLE: Dictionary = {
 const NO_SURVIVOR := &"not_a_survivor"
 const NO_RECORD := &"no_tribulation"
 const UNKNOWN_TYPE := &"unauthored_trial_type"
+const UNKNOWN_DOMAIN := &"unknown_domain"
+const NO_ACTOR := &"no_actor"
 const NO_BLESSING := &"no_cultivation_blessing_for_element"
 const NOT_APPLIED := &"the blessing was refused"
 const ALREADY_REWARDED := &"already_rewarded"
@@ -153,6 +166,29 @@ static func award(actor: Actor) -> Dictionary:
 		applied["id"] = status_id
 		return applied
 	_mark_rewarded(actor, status_id)
+	return applied
+
+
+## Hand the blessing a CLEARED elemental domain pays, keyed by the domain id (ADR 0919).
+##
+## No session once-guard here, unlike [method award]: the loot module's own rule E2
+## refuses a re-entered cleared band, so a clear is already once-only — and a second BAND
+## of the same domain re-paying is a REFRESH of the same permanent status, not a second
+## blessing. The refusal reasons are named: `no_actor`, `unknown_domain`, `no_blessing`.
+static func award_domain(actor: Actor, domain_id: StringName) -> Dictionary:
+	if actor == null:
+		return _refused(NO_ACTOR)
+	var element := StringName(DOMAIN_TABLE.get(domain_id, &""))
+	if element == &"":
+		return _refused(UNKNOWN_DOMAIN)
+	var status_id := blessing_for(element)
+	if status_id == &"":
+		return _refused(NO_BLESSING)
+	var applied := StatusApi.apply_cultivation(actor, status_id, 1.0)
+	if not bool(applied.get("ok", false)):
+		applied["reason"] = NOT_APPLIED
+		applied["id"] = status_id
+		return applied
 	return applied
 
 

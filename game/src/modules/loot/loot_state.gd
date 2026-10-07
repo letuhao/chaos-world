@@ -407,6 +407,11 @@ static func _defeat(
 		rewards[encounter] = payload
 	state["rewards"] = rewards
 	_advance(state)
+	# The domain a clear just recorded, read and ERASED here: it is a fact about THIS
+	# strike (rule E3 -> `_clear`), never saved state, so a re-entered domain cannot pay
+	# its ADR 0919 blessing a second time.
+	var cleared := String(state.get("cleared_now", ""))
+	state.erase("cleared_now")
 	return {
 		"ok": true,
 		"reason": OK_DEFEATED if not drops.is_empty() else OK_NO_DROP,
@@ -420,6 +425,7 @@ static func _defeat(
 		# did to you" must not have to have read the state before this call.
 		"affliction": affliction,
 		"active": LootRewards.active_view(state["active"]),
+		"cleared": cleared,
 	}
 
 
@@ -768,6 +774,10 @@ static func _clear(state: Dictionary, domain_id: String, tier_index: int) -> voi
 	runs[band] = record
 	state["runs"] = runs
 	state["active"] = {}
+	# The clear is reported ONCE, through this strike's own result: `_defeat` reads and
+	# erases it, so the transient never reaches a save and a re-entered domain cannot pay
+	# its blessing a second time (ADR 0919's domain producer).
+	state["cleared_now"] = domain_id
 
 
 ## First boss index at or after `from_index` with no reward and no spent claim.

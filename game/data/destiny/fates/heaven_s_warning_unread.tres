@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_fate")
 id = &"heaven_s_warning_unread"
-display_name = "An Unread Instruction"
-description = "Received a communication the heavens do not explain and did not carry out. The sect logs the delay and leaves the item open."
+display_name = "LOC_DESTINY_HEAVEN_S_WARNING_UNREAD_DISPLAY_NAME"
+description = "LOC_DESTINY_HEAVEN_S_WARNING_UNREAD_DESCRIPTION"
 category = &"heaven"
 tier = 0
 visibility = &"teaser"

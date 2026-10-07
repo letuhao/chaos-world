@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_fate")
 id = &"the_third_man_spared"
-display_name = "The Third Man Spared"
-description = "Stood at killing distance with the advantage held and did not close. The sect files this as an incomplete hunt, not as mercy."
+display_name = "LOC_DESTINY_THE_THIRD_MAN_SPARED_DISPLAY_NAME"
+description = "LOC_DESTINY_THE_THIRD_MAN_SPARED_DESCRIPTION"
 category = &"blood"
 tier = 1
 visibility = &"hidden"

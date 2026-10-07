@@ -1,0 +1,193 @@
+{
+  "id": "medieval_western.city_gates_bridges_and_portals.overhead_curfew_portcullis_slot_lantern_lit",
+  "name": "Torch-Illuminated Iron-Banded Oak Night Curfew Grate",
+  "vietnamese_name": "Cổng Sắt Hạ Ban Đêm Giới Nghiêm (Soi Sáng Ánh Đuốc)",
+  "category": "city_gates_bridges_and_portals",
+  "sub_category": "twin_towered_city_gatehouse",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "low",
+  "interactive_verb": "lower_gate",
+  "gameplay_role": "City gate and river crossing element (Iron-Banded Oak Night Curfew Grate).",
+  "destructible": false,
+  "material": "iron",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of torch-illuminated iron-banded oak night curfew grate, iron-framed grease lanterns casting warm glow, Medieval city gates and river bridges style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/city_gates_bridges_and_portals/overhead_curfew_portcullis_slot_lantern_lit.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.city_gates_bridges_and_portals.overhead_curfew_portcullis_slot_lantern_lit:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.71,
+        0.709
+      ],
+      [
+        0.685,
+        0.696
+      ]
+    ],
+    "frac_zero": 0.556,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.276,
+        0.523,
+        0.263,
+        0.505,
+        0.321,
+        0.478,
+        0.267
+      ],
+      [
+        0.801,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.779
+      ],
+      [
+        0.658,
+        1.0,
+        0.852,
+        0.728,
+        0.875,
+        1.0,
+        0.67
+      ],
+      [
+        0.414,
+        1.0,
+        0.878,
+        0.913,
+        0.894,
+        1.0,
+        0.421
+      ],
+      [
+        0.189,
+        1.0,
+        0.98,
+        0.943,
+        0.992,
+        1.0,
+        0.18
+      ],
+      [
+        0.108,
+        0.694,
+        0.448,
+        0.142,
+        0.481,
+        0.666,
+        0.105
+      ]
+    ],
+    "crop_offset": [
+      17,
+      60
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 55,
+    "contact_reference_px": 55.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

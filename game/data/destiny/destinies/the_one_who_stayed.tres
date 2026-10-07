@@ -6,8 +6,8 @@
 script = ExtResource("1_destiny")
 group = &"origin"
 id = &"the_one_who_stayed"
-display_name = "The One Who Stayed"
-description = "Held a post through the full rotation, alone, without relief and without complaint. The register shows a blank where a rotation should read. That blank is the record."
+display_name = "LOC_DESTINY_THE_ONE_WHO_STAYED_DISPLAY_NAME"
+description = "LOC_DESTINY_THE_ONE_WHO_STAYED_DESCRIPTION"
 bearing = "You did not become anything. You simply never left, and the sect now finds it cheaper to build on you than to replace."
 tier = 1
 visibility = &"revealed"

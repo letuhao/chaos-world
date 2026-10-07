@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_fate")
 id = &"soul_marked_once"
-display_name = "Soul Marked Once"
-description = "The first time the body stopped and something kept going. Nobody witnessed it. The record of it is a single line, and the line has your name on it."
+display_name = "LOC_DESTINY_SOUL_MARKED_ONCE_DISPLAY_NAME"
+description = "LOC_DESTINY_SOUL_MARKED_ONCE_DESCRIPTION"
 category = &"rebirth"
 tier = 1
 visibility = &"revealed"

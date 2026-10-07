@@ -1,0 +1,192 @@
+{
+  "id": "medieval_western.city_gates_bridges_and_portals.ribbed_arch_bridge_span_heraldic_painted",
+  "name": "Town-Arms Painted Masonry Barrel Arch River Span",
+  "vietnamese_name": "Nhịp Cầu Đá Vòm Vượt Sông Kiểu Norman (Vẽ Huy Hiệu Thành Thị)",
+  "category": "city_gates_bridges_and_portals",
+  "sub_category": "norman_barrel_arch_stone_bridge",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "cross_bridge",
+  "gameplay_role": "City gate and river crossing element (Masonry Barrel Arch River Span).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "flemish_hanseatic",
+  "prompt_summary": "2D orthographic top-down game sprite of town-arms painted masonry barrel arch river span, bright civic heraldry shields and banners, Medieval city gates and river bridges style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/city_gates_bridges_and_portals/ribbed_arch_bridge_span_heraldic_painted.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.city_gates_bridges_and_portals.ribbed_arch_bridge_span_heraldic_painted:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.705,
+        0.465,
+        0.713
+      ],
+      [
+        0.769,
+        0.306,
+        0.77
+      ]
+    ],
+    "frac_zero": 0.5859,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      9,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.517,
+        0.884,
+        0.064,
+        0.0,
+        0.0,
+        0.0,
+        0.132,
+        0.888,
+        0.478
+      ],
+      [
+        0.463,
+        1.0,
+        0.544,
+        0.14,
+        0.156,
+        0.138,
+        0.625,
+        1.0,
+        0.485
+      ],
+      [
+        0.56,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.6
+      ],
+      [
+        0.843,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.778
+      ],
+      [
+        0.629,
+        1.0,
+        1.0,
+        0.458,
+        0.229,
+        0.521,
+        1.0,
+        1.0,
+        0.611
+      ],
+      [
+        0.288,
+        1.0,
+        1.0,
+        0.121,
+        0.0,
+        0.215,
+        1.0,
+        1.0,
+        0.242
+      ],
+      [
+        0.191,
+        0.9,
+        0.542,
+        0.023,
+        0.0,
+        0.03,
+        0.535,
+        0.957,
+        0.178
+      ]
+    ],
+    "crop_offset": [
+      48,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 61,
+    "contact_reference_px": 61.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

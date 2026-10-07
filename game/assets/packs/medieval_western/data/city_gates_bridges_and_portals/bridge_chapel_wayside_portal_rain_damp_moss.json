@@ -1,0 +1,204 @@
+{
+  "id": "medieval_western.city_gates_bridges_and_portals.bridge_chapel_wayside_portal_rain_damp_moss",
+  "name": "River-Misted Small Arched Bridge Sentry Chapel",
+  "vietnamese_name": "Nhà Nguyện Nhỏ Xây Trên Trụ Cầu Đá (Sương Sông Ẩm Ướt)",
+  "category": "city_gates_bridges_and_portals",
+  "sub_category": "norman_barrel_arch_stone_bridge",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "pray",
+  "gameplay_role": "City gate and river crossing element (Small Arched Bridge Sentry Chapel).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of river-misted small arched bridge sentry chapel, slick green water-spray moss on lower piers, Medieval city gates and river bridges style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/city_gates_bridges_and_portals/bridge_chapel_wayside_portal_rain_damp_moss.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.city_gates_bridges_and_portals.bridge_chapel_wayside_portal_rain_damp_moss:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.635,
+        0.649
+      ],
+      [
+        0.779,
+        0.811
+      ]
+    ],
+    "frac_zero": 0.4698,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.378,
+        0.197,
+        0.39,
+        0.313,
+        0.301,
+        0.0
+      ],
+      [
+        0.068,
+        0.864,
+        1.0,
+        1.0,
+        1.0,
+        0.683,
+        0.034
+      ],
+      [
+        0.578,
+        0.991,
+        1.0,
+        1.0,
+        1.0,
+        0.925,
+        0.281
+      ],
+      [
+        0.808,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.605
+      ],
+      [
+        0.794,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.642
+      ],
+      [
+        0.409,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.979,
+        0.158
+      ],
+      [
+        0.008,
+        0.376,
+        0.851,
+        1.0,
+        0.919,
+        0.332,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      22,
+      18
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 117,
+    "contact_reference_px": 117.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

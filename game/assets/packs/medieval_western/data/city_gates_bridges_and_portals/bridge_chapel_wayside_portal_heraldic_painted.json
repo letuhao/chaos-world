@@ -1,0 +1,204 @@
+{
+  "id": "medieval_western.city_gates_bridges_and_portals.bridge_chapel_wayside_portal_heraldic_painted",
+  "name": "Town-Arms Painted Small Arched Bridge Sentry Chapel",
+  "vietnamese_name": "Nhà Nguyện Nhỏ Xây Trên Trụ Cầu Đá (Vẽ Huy Hiệu Thành Thị)",
+  "category": "city_gates_bridges_and_portals",
+  "sub_category": "norman_barrel_arch_stone_bridge",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "pray",
+  "gameplay_role": "City gate and river crossing element (Small Arched Bridge Sentry Chapel).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "flemish_hanseatic",
+  "prompt_summary": "2D orthographic top-down game sprite of town-arms painted small arched bridge sentry chapel, bright civic heraldry shields and banners, Medieval city gates and river bridges style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/city_gates_bridges_and_portals/bridge_chapel_wayside_portal_heraldic_painted.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.city_gates_bridges_and_portals.bridge_chapel_wayside_portal_heraldic_painted:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.447,
+        0.445
+      ],
+      [
+        0.814,
+        0.841
+      ]
+    ],
+    "frac_zero": 0.5508,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.005,
+        0.061,
+        0.193,
+        0.021,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.393,
+        0.829,
+        0.911,
+        0.579,
+        0.021,
+        0.0
+      ],
+      [
+        0.267,
+        0.649,
+        1.0,
+        1.0,
+        0.757,
+        0.364,
+        0.0
+      ],
+      [
+        0.784,
+        0.997,
+        1.0,
+        1.0,
+        1.0,
+        0.935,
+        0.508
+      ],
+      [
+        0.791,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.983,
+        0.371
+      ],
+      [
+        0.628,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.873,
+        0.414
+      ],
+      [
+        0.062,
+        0.571,
+        0.931,
+        1.0,
+        0.737,
+        0.204,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      27,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 117,
+    "contact_reference_px": 117.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

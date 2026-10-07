@@ -1,0 +1,201 @@
+{
+  "id": "medieval_western.city_gates_bridges_and_portals.heavy_timber_trestle_pier_iron_spiked",
+  "name": "Iron-Spiked Defense Cross-Braced Oak Trestle River Pier",
+  "vietnamese_name": "Trụ Cầu Gỗ Sồi Khung Giằng Chữ X (Cọc Sắt Chống Xâm Nhập)",
+  "category": "city_gates_bridges_and_portals",
+  "sub_category": "timber_oxcart_trestle_bridge",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": null,
+  "gameplay_role": "City gate and river crossing element (Cross-Braced Oak Trestle River Pier).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of iron-spiked defense cross-braced oak trestle river pier, sharp iron caltrops and spiked gate collars, Medieval city gates and river bridges style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/city_gates_bridges_and_portals/heavy_timber_trestle_pier_iron_spiked.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.city_gates_bridges_and_portals.heavy_timber_trestle_pier_iron_spiked:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.47,
+        0.457
+      ],
+      [
+        0.38,
+        0.384
+      ]
+    ],
+    "frac_zero": 0.6628,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.203,
+        0.66,
+        0.023,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.009,
+        0.585,
+        0.996,
+        0.413,
+        0.0,
+        0.0
+      ],
+      [
+        0.508,
+        0.644,
+        0.991,
+        1.0,
+        0.96,
+        0.654,
+        0.457
+      ],
+      [
+        0.885,
+        0.945,
+        0.944,
+        1.0,
+        0.943,
+        0.97,
+        0.827
+      ],
+      [
+        0.195,
+        0.281,
+        0.514,
+        1.0,
+        0.395,
+        0.293,
+        0.189
+      ],
+      [
+        0.0,
+        0.0,
+        0.294,
+        1.0,
+        0.193,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.347,
+        0.827,
+        0.293,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      18,
+      19
+    ],
+    "trunk_columns": [
+      3
+    ],
+    "contact_px": 65,
+    "contact_reference_px": 65.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

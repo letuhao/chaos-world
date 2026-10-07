@@ -1,0 +1,118 @@
+{
+  "id": "medieval_western.gothic_cathedrals_and_monumental_abbeys.pierced_quatrefoil_parapet_candle_soot",
+  "name": "Incense-Darkened Quatrefoil Pierced Gallery Balustrade",
+  "vietnamese_name": "Lan Can Đá Chạm Trổ Bốn Cánh Hoa (Ám Khói Hương Trầm)",
+  "category": "gothic_cathedrals_and_monumental_abbeys",
+  "sub_category": "flying_buttress_and_pinacle",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": null,
+  "gameplay_role": "Cathedral architecture component (Quatrefoil Pierced Gallery Balustrade).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "french_capetian",
+  "prompt_summary": "2D orthographic top-down game sprite of incense-darkened quatrefoil pierced gallery balustrade, deep grey incense and wax patina, High Gothic cathedral and monumental abbey style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/gothic_cathedrals_and_monumental_abbeys/pierced_quatrefoil_parapet_candle_soot.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.gothic_cathedrals_and_monumental_abbeys.pierced_quatrefoil_parapet_candle_soot:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.506,
+        0.523
+      ]
+    ],
+    "frac_zero": 0.6918,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.104,
+        0.071,
+        0.369,
+        0.256,
+        0.072,
+        0.13
+      ],
+      [
+        0.782,
+        0.944,
+        0.962,
+        0.958,
+        0.933,
+        0.792
+      ],
+      [
+        0.32,
+        0.375,
+        0.719,
+        0.717,
+        0.385,
+        0.288
+      ]
+    ],
+    "crop_offset": [
+      35,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 53,
+    "contact_reference_px": 53.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

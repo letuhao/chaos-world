@@ -1,0 +1,167 @@
+{
+  "id": "medieval_western.gothic_cathedrals_and_monumental_abbeys.great_rose_stained_glass_window_caen_limestone",
+  "name": "Caen Limestone Radiant Rose Stained Glass Window",
+  "vietnamese_name": "Cửa Sổ Hoa Hồng Kính Màu Lộng Lẫy (Đá Vôi Caen Sáng)",
+  "category": "gothic_cathedrals_and_monumental_abbeys",
+  "sub_category": "rose_window_and_lancet_glass",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "admire",
+  "gameplay_role": "Cathedral architecture component (Radiant Rose Stained Glass Window).",
+  "destructible": false,
+  "material": "glass",
+  "feudal_culture": "french_capetian",
+  "prompt_summary": "2D orthographic top-down game sprite of caen limestone radiant rose stained glass window, creamy pale fine-grained French ashlar, High Gothic cathedral and monumental abbey style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/gothic_cathedrals_and_monumental_abbeys/great_rose_stained_glass_window_caen_limestone.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.gothic_cathedrals_and_monumental_abbeys.great_rose_stained_glass_window_caen_limestone:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.539,
+        0.544
+      ],
+      [
+        0.792,
+        0.785
+      ]
+    ],
+    "frac_zero": 0.5536,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.128,
+        0.212,
+        0.19,
+        0.128,
+        0.0
+      ],
+      [
+        0.114,
+        0.549,
+        0.852,
+        0.835,
+        0.546,
+        0.113
+      ],
+      [
+        0.667,
+        0.76,
+        1.0,
+        1.0,
+        0.73,
+        0.684
+      ],
+      [
+        0.879,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.859
+      ],
+      [
+        0.719,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.674
+      ],
+      [
+        0.648,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.585
+      ],
+      [
+        0.104,
+        0.493,
+        0.917,
+        0.903,
+        0.491,
+        0.095
+      ]
+    ],
+    "crop_offset": [
+      32,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 108,
+    "contact_reference_px": 108.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

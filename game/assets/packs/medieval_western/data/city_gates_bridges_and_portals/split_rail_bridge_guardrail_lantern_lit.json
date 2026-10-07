@@ -1,0 +1,120 @@
+{
+  "id": "medieval_western.city_gates_bridges_and_portals.split_rail_bridge_guardrail_lantern_lit",
+  "name": "Torch-Illuminated Rustic Split-Rail Bridge Parapet",
+  "vietnamese_name": "Lan Can Cầu Bằng Cây Gỗ Tự Nhiên (Soi Sáng Ánh Đuốc)",
+  "category": "city_gates_bridges_and_portals",
+  "sub_category": "timber_oxcart_trestle_bridge",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": null,
+  "gameplay_role": "City gate and river crossing element (Rustic Split-Rail Bridge Parapet).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of torch-illuminated rustic split-rail bridge parapet, iron-framed grease lanterns casting warm glow, Medieval city gates and river bridges style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/city_gates_bridges_and_portals/split_rail_bridge_guardrail_lantern_lit.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.city_gates_bridges_and_portals.split_rail_bridge_guardrail_lantern_lit:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.616,
+        0.644
+      ]
+    ],
+    "frac_zero": 0.6247,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.629,
+        0.128,
+        0.232,
+        0.235,
+        0.124,
+        0.666
+      ],
+      [
+        0.762,
+        0.962,
+        0.97,
+        0.971,
+        0.966,
+        0.839
+      ],
+      [
+        0.54,
+        0.616,
+        0.708,
+        0.703,
+        0.626,
+        0.666
+      ]
+    ],
+    "crop_offset": [
+      31,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 36,
+    "contact_reference_px": 36.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,21 +1,22 @@
-"""The i18n engine: inventory the display strings, assign slugs, and gate consistency.
-
-Four jobs, and no fifth:
+"""The i18n engine: inventory the display strings, assign keys, gate consistency, translate.
 
 - `report`   — read-only inventory of every player-facing string in scope, by domain and
                kind; `--gaps` lists each remaining sink as `path:line kind`.
-- `extract`  — assign every rewritable sink a stable slug and (with `--write`) rewrite it to
+- `extract`  — assign every rewritable sink a stable key and (with `--write`) rewrite it to
                `L.t(...)` and refresh the `en` catalogs. Dry-run by default, because the
                rewrite is the one step that touches shipped source.
 - `baseline` — record the current per-file sink counts so `check` can fail on GROWTH.
-- `check`    — the gate. It asserts the catalogs agree with the source, every key's hash
-               matches its English, a file that already uses `L.t` carries no rewritten-away
-               sink, and no UI file gained a sink since the baseline. It does not demand the
-               whole tree be migrated at once: unmigrated files are inventoried, not failed.
+- `check`    — the gate. Every referenced key resolves to a row (en exact, locale a subset),
+               no catalog holds an orphan, and no UI file gained a sink since the baseline.
+               Unmigrated files are inventoried, not failed.
+- `export`   — write a per-locale translator template under `build/` (key + English to fill).
+- `import`   — turn a filled template into `<owner>.<locale>.tres` subset catalogs.
 """
 
 from __future__ import annotations
 
+import csv
+import io
 import json
 import os
 import re
@@ -50,7 +51,10 @@ SCOPES: dict[str, frozenset[str]] = {
     "content": frozenset({"tres_lit"}),
 }
 SCOPES["all"] = frozenset().union(*SCOPES.values())
-UNSAFE_SCOPES = frozenset({"scenes", "content", "all"})
+## `scenes` rewrites a `.tscn` whose text has no call site, so it refuses a write until a panel
+## resolves the key at display. `sinks` and `content` both rewrite safely: both put a KEY in
+## the source and the English in that owner's catalog.
+UNSAFE_SCOPES = frozenset({"scenes", "all"})
 
 ## Every file `extract --write` is about to touch is copied here first, so a botched run is
 ## restorable without git — the tree is shared with live agents and a path-wide revert is
@@ -137,7 +141,7 @@ def _replacement(finding: Finding, original: str) -> str:
         return "var"
     if finding.kind == "gd_prop_expr":
         return f"{policy.RESOLVER}({original})"
-    slug = catalog.slug_for(finding.prefix, finding.english)
+    slug = finding.key or catalog.slug_for(finding.prefix, finding.english)
     if finding.kind in ("tscn_lit", "tres_lit"):
         # A scene value or a data field holds the bare key; the reader (a panel via L.t, or a
         # Control's auto-translate at draw) is what resolves it.
@@ -180,20 +184,22 @@ def _write_baseline(repo_root: Path, scans: list[tuple[str, Scan]]) -> bool:
     return True
 
 
-def _key_owner(key: str) -> str | None:
-    """The owner a key names: `LOC_<OWNER>_<HASH>` -> `<owner>` lower-cased, or None."""
-    match = re.match(r"^LOC_(?P<prefix>.+)_[0-9A-F]{10}$", key)
-    return match.group("prefix").lower() if match else None
-
-
 def _load_catalogs(repo_root: Path) -> dict[str, dict[str, str]]:
-    """Every `game/locale/<owner>.tres`, keyed by owner."""
+    """Every catalog under `game/locale`, keyed by stem (`<owner>` or `<owner>.<locale>`)."""
     out: dict[str, dict[str, str]] = {}
     locale_dir = repo_root / catalog.CATALOG_DIR
     if locale_dir.is_dir():
         for path in sorted(locale_dir.glob("*.tres")):
             out[path.stem] = catalog.load(path)
     return out
+
+
+def _catalog_parts(stem: str) -> tuple[str, str]:
+    """`<owner>.<locale>` -> `(owner, locale)`; `<owner>` -> `(owner, "en")`."""
+    if "." in stem:
+        owner, _dot, locale = stem.rpartition(".")
+        return owner, locale
+    return stem, "en"
 
 
 def _report(args) -> int:
@@ -244,26 +250,30 @@ def _extract(args) -> int:
     kinds = SCOPES[scope]
     if write and scope in UNSAFE_SCOPES and not getattr(args, "unsafe", False):
         raise ToolError(
-            f"refusing to --write scope '{scope}': a .tres display field is read by gameplay "
-            "(167 non-UI readers of display_name) and a .tscn literal has no call site to "
-            "carry the English, so summary() would publish a slug. Migrate it only after the "
-            "reader-side work lands, then pass --unsafe."
+            f"refusing to --write scope '{scope}': a .tscn literal has no call site to carry "
+            "the English, so a panel's summary() would publish a key. Move the scene text into "
+            "the panel first, then pass --unsafe."
         )
     scans = scan_all(repo_root)
     existing = _load_catalogs(repo_root)
     rows: dict[str, dict[str, str]] = {}
-    for _rel, result in scans:
+    for rel, result in scans:
+        domain = policy.domain_of(rel)
+        if domain is None:
+            continue
         for use in result.uses:
-            owner = _key_owner(use.key)
-            if owner is None:
-                continue
-            # A 1-arg call has no English in source (ADR 0918); its row already lives in the
-            # owner catalog, so preserve it rather than dropping it as an orphan.
+            # The OWNER comes from the file that references the key, never from the key text:
+            # `LOC_UI_PANELS_…` and `LOC_DESTINY_<id>_<field>` both carry underscores, so a key
+            # cannot be split back into (owner, rest). The path is authoritative.
+            owner = domain.catalog
+            # A 1-arg call has no English in source; its row already lives in the owner catalog,
+            # so preserve it rather than dropping it as an orphan.
             english = use.english or existing.get(owner, {}).get(use.key, "")
             if english:
                 rows.setdefault(owner, {})[use.key] = english
     planned: list[tuple[str, Path, str, list[Finding]]] = []
     total = 0
+    files = 0
     for rel, result in scans:
         if only and not any(needle in rel for needle in only):
             continue
@@ -271,12 +281,23 @@ def _extract(args) -> int:
         if not targets:
             continue
         total += len(targets)
+        files += 1
+        rewrites: list[Finding] = []
         for finding in targets:
             if finding.english:
-                key = catalog.slug_for(finding.prefix, finding.english)
-                rows.setdefault(finding.catalog, {})[key] = finding.english
-        planned.append((rel, repo_root / rel, read_text(repo_root / rel), targets))
-    info(f"[{scope}] {total} sink(s) in {len(planned)} file(s)")
+                owner = finding.catalog
+                taken = dict(existing.get(owner, {}))
+                taken.update(rows.get(owner, {}))
+                if not finding.key:
+                    # A `.gd`/`.tscn` key is assigned here; a `.tres` content key was already
+                    # DERIVED from the def id + field by the scanner, so the row and the data
+                    # agree without reading the catalog.
+                    finding.key = catalog.assign_key(finding.prefix, finding.english, taken)
+                rows.setdefault(owner, {})[finding.key] = finding.english
+            rewrites.append(finding)
+        if rewrites:
+            planned.append((rel, repo_root / rel, read_text(repo_root / rel), rewrites))
+    info(f"[{scope}] {total} string(s) in {files} file(s)")
     if not write:
         if getattr(args, "preview", False):
             for rel, _path, text, targets in planned:
@@ -286,7 +307,9 @@ def _extract(args) -> int:
         else:
             for rel, _path, _text, targets in planned:
                 info(f"  {rel}  {len(targets)} sink(s)")
-        info("dry run: pass --write to rewrite and refresh the en catalogs")
+        for owner, values in sorted(rows.items()):
+            info(f"  catalog {owner}.tres  {len(values)} row(s)")
+        info("dry run: pass --write to rewrite source (sinks) and refresh the catalogs")
         return 0
     for rel, path, text, targets in planned:
         _backup(repo_root, rel, text)
@@ -329,7 +352,8 @@ def _check(args) -> int:
     catalogs = _load_catalogs(repo_root)
     referenced: dict[str, set[str]] = {}
     for rel, result in scans:
-        if policy.domain_of(rel) is None:
+        domain = policy.domain_of(rel)
+        if domain is None:
             continue
         if result.migrated:
             leftover = [f for f in result.findings if f.kind in REWRITABLE]
@@ -340,30 +364,28 @@ def _check(args) -> int:
                 )
                 problems += 1
         for use in result.uses:
-            owner = _key_owner(use.key)
-            if owner is None:
-                warn(f"{rel}:{use.line}: '{use.key}' is not a LOC_<OWNER>_<HASH> key")
-                problems += 1
-                continue
-            referenced.setdefault(owner, set()).add(use.key)
+            # The owner is the REFERENCING file's owner, never parsed from the key text — both
+            # `LOC_UI_PANELS_…` and `LOC_DESTINY_<id>_<field>` contain underscores.
+            referenced.setdefault(domain.catalog, set()).add(use.key)
             if use.english and not _key_matches(use.key, use.english):
                 warn(f"{rel}:{use.line}: key {use.key} does not hash {use.english!r}")
                 problems += 1
+        # A `.tres` FIELD still holding English is a migration gap, not a gate failure: like an
+        # unmigrated UI sink it is inventoried by `report --gaps`, and once the field holds a
+        # KEY it arrives above as a `use` and is verified. `check` fails only what is migrated.
 
-    # Every referenced key has a row in ITS OWNER's catalog, and that row's English hashes
-    # back to the key (a typo'd key or a hand-edited row is caught here, not on screen).
+    # Every referenced owner must have an EN catalog carrying its keys exactly. A LOCALE catalog
+    # may be a SUBSET — an untranslated key is owner-demand work, not a failure — but holds no
+    # orphan. A row is not required to hash to its key (the key is stable, ADR 0918).
     for owner, keys in sorted(referenced.items()):
         on_disk = catalogs.get(owner, {})
-        for key in sorted(keys):
-            if key not in on_disk:
-                warn(f"{owner}.tres is missing {key} - run extract --write")
-                problems += 1
-            elif not _key_matches(key, on_disk[key]):
-                warn(f"{owner}.tres has {key} as {on_disk[key]!r}, which does not hash to the key")
-                problems += 1
-    for owner, rows in sorted(catalogs.items()):
+        for key in sorted(keys - set(on_disk)):
+            warn(f"{owner}.tres is missing {key} - run extract --write")
+            problems += 1
+    for stem, rows in sorted(catalogs.items()):
+        owner, _locale = _catalog_parts(stem)
         for key in sorted(set(rows) - referenced.get(owner, set())):
-            warn(f"{owner}.tres has orphan row {key} that no source uses - drop it")
+            warn(f"{stem}.tres has orphan row {key} that no source derives - drop it")
             problems += 1
 
     problems += _check_growth(repo_root, scans)
@@ -396,6 +418,74 @@ def _check_growth(repo_root: Path, scans: list[tuple[str, Scan]]) -> int:
     return problems
 
 
+def _export(args) -> int:
+    """Write a translator template for one locale into `build/` — the list of strings to fill.
+
+    A TEMPLATE, not a committed catalog: it carries every key with its English so a translator
+    can fill the `translation` column. It lives under the gitignored `build/` so the repo never
+    grows a per-language copy of the English. The result comes back through [func _import].
+    """
+    repo_root = Path(args.repo_root)
+    locale = args.locale
+    scans = scan_all(repo_root)
+    catalogs = _load_catalogs(repo_root)
+    reference: dict[str, dict[str, str]] = {}
+    for rel, result in scans:
+        domain = policy.domain_of(rel)
+        if domain is None:
+            continue
+        for use in result.uses:
+            owner = domain.catalog
+            english = use.english or catalogs.get(owner, {}).get(use.key, "")
+            if english:
+                reference.setdefault(owner, {})[use.key] = english
+        for finding in result.findings:
+            # An UNMIGRATED content field: include it so a translator sees the whole list,
+            # even before the sweep has written the key into the data.
+            if finding.kind == "tres_lit" and finding.english:
+                reference.setdefault(finding.catalog, {})[finding.key] = finding.english
+    target = repo_root / "build" / "i18n" / f"{locale}.csv"
+    target.parent.mkdir(parents=True, exist_ok=True)
+    buffer = io.StringIO()
+    writer = csv.writer(buffer)
+    writer.writerow(["key", "owner", "english", "translation"])
+    count = 0
+    for owner in sorted(reference):
+        for key in sorted(reference[owner]):
+            writer.writerow([key, owner, reference[owner][key], ""])
+            count += 1
+    write_text(target, buffer.getvalue())
+    ok(f"wrote {target.relative_to(repo_root).as_posix()} ({count} string(s) for '{locale}')")
+    return 0
+
+
+def _import(args) -> int:
+    """Apply a filled template: every row with a non-empty `translation` becomes a row in
+    `<owner>.<locale>.tres`. An untranslated row is left out, so the file stays a subset."""
+    repo_root = Path(args.repo_root)
+    locale = args.locale
+    source = Path(args.csv)
+    if not source.is_file():
+        raise ToolError(f"{source} not found")
+    by_owner: dict[str, dict[str, str]] = {}
+    with source.open("r", encoding="utf-8", newline="") as handle:
+        for row in csv.DictReader(handle):
+            key = (row.get("key") or "").strip()
+            owner = (row.get("owner") or "").strip()
+            value = (row.get("translation") or "").strip()
+            if not key or not owner or not value:
+                continue
+            by_owner.setdefault(owner, {})[key] = value
+    for owner, values in sorted(by_owner.items()):
+        target = catalog.catalog_path(repo_root, owner, locale)
+        merged = catalog.load(target)
+        merged.update(values)
+        if catalog.save(target, merged, locale):
+            info(f"wrote {target.relative_to(repo_root).as_posix()} ({len(merged)})")
+    ok(f"imported {len(by_owner)} catalog(s) for '{locale}'")
+    return 0
+
+
 def _preflight(args) -> int:
     """Whether the migration's target files are safe to rewrite right now.
 
@@ -424,18 +514,25 @@ def _preflight(args) -> int:
 
 def register(subparsers) -> None:
     parser = subparsers.add_parser(
-        "i18n", help="translation catalogs: report, extract, baseline, check"
+        "i18n",
+        help="translation catalogs: report, extract, baseline, check, export, import",
     )
     actions = parser.add_subparsers(dest="action", required=True)
     for name, help_text in (
         ("report", "inventory player-facing strings (read-only)"),
         ("preflight", "check the target files are clean before a migration"),
-        ("extract", "assign slugs and rewrite call sites"),
+        ("extract", "assign keys and rewrite call sites"),
         ("baseline", "record sink counts so check fails on growth"),
         ("check", "gate: catalogs agree with source, and no sink grew"),
+        ("export", "write a translator template for a locale (build/i18n/<loc>.csv)"),
+        ("import", "apply a filled template into <owner>.<locale>.tres"),
     ):
         action = actions.add_parser(name, help=help_text)
         action.add_argument("--repo-root", default=str(REPO_ROOT), help="repository root")
+        if name in ("export", "import"):
+            action.add_argument("--locale", required=True, help="locale code, e.g. vi")
+        if name == "import":
+            action.add_argument("csv", help="a filled template from `i18n export`")
         if name in ("report", "preflight", "extract"):
             action.add_argument(
                 "--scope",
@@ -472,4 +569,8 @@ def run(args) -> int:
         return _baseline(args)
     if args.action == "check":
         return _check(args)
+    if args.action == "export":
+        return _export(args)
+    if args.action == "import":
+        return _import(args)
     raise ToolError(f"unknown i18n action: {args.action}")

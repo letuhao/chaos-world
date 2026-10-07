@@ -1,0 +1,137 @@
+{
+  "id": "medieval_western.gothic_cathedrals_and_monumental_abbeys.jeweled_processional_cross_crucifix_caen_limestone",
+  "name": "Caen Limestone Gold Jeweled Crux Gemmata Cross",
+  "vietnamese_name": "Thánh Giá Rước Lễ Nạm Ngọc Vàng (Đá Vôi Caen Sáng)",
+  "category": "gothic_cathedrals_and_monumental_abbeys",
+  "sub_category": "processional_crosses_and_reliquaries",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "lift",
+  "gameplay_role": "Cathedral religious component (Gold Jeweled Crux Gemmata Cross).",
+  "destructible": false,
+  "material": "iron",
+  "feudal_culture": "french_capetian",
+  "prompt_summary": "2D orthographic top-down game sprite of caen limestone gold jeweled crux gemmata cross, creamy pale fine-grained French ashlar, Gothic monumental cathedral ecclesiastical feature, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/gothic_cathedrals_and_monumental_abbeys/jeweled_processional_cross_crucifix_caen_limestone.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.gothic_cathedrals_and_monumental_abbeys.jeweled_processional_cross_crucifix_caen_limestone:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.347
+      ],
+      [
+        0.275
+      ]
+    ],
+    "frac_zero": 0.8007,
+    "blocks": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.599,
+        0.0
+      ],
+      [
+        0.557,
+        0.889,
+        0.556
+      ],
+      [
+        0.034,
+        0.548,
+        0.035
+      ],
+      [
+        0.0,
+        0.438,
+        0.0
+      ],
+      [
+        0.005,
+        0.738,
+        0.003
+      ],
+      [
+        0.059,
+        0.943,
+        0.046
+      ],
+      [
+        0.188,
+        1.0,
+        0.173
+      ]
+    ],
+    "crop_offset": [
+      16,
+      37
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 44,
+    "contact_reference_px": 44.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

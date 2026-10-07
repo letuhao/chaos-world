@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_fate")
 id = &"one_hundredth_slain"
-display_name = "The Hundredth"
-description = "One hundred dead, counted by the sect and not by the hand. The record closes a ledger nobody asked it to open. It takes no further note."
+display_name = "LOC_DESTINY_ONE_HUNDREDTH_SLAIN_DISPLAY_NAME"
+description = "LOC_DESTINY_ONE_HUNDREDTH_SLAIN_DESCRIPTION"
 category = &"blood"
 tier = 2
 visibility = &"revealed"

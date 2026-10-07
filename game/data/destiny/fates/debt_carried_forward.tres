@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_fate")
 id = &"debt_carried_forward"
-display_name = "Debt Carried Forward"
-description = "This body did not walk here under its own power. Somebody else finished the journey, and the account of it did not close with them. It is still open, and the name on it is still yours."
+display_name = "LOC_DESTINY_DEBT_CARRIED_FORWARD_DISPLAY_NAME"
+description = "LOC_DESTINY_DEBT_CARRIED_FORWARD_DESCRIPTION"
 category = &"rebirth"
 tier = 2
 visibility = &"revealed"

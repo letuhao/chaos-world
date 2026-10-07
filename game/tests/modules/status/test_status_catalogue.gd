@@ -59,6 +59,33 @@ const TIER_TWO_IDS: Array[StringName] = [
 ## twenty-first def fails loudly and a substituted one fails just as loudly.
 const EXPECTED_IDS: Array[StringName] = TIER_ONE_IDS + TIER_TWO_IDS
 
+## The seven CULTIVATION blessings authored by ADR 0919, one per element that shipped
+## none, so every element now pays exactly ONE permanent blessing. Kept separate from
+## [constant EXPECTED_IDS] because the ADR 0090/0110 pairing claims below are about the
+## element's ORIGINAL pair, and a blessing is a THIRD def wherever the pair's second
+## member is not already the blessing (`wood`, `earth` and `light` ship theirs inside
+## the pair, which is why seven ids are new rather than ten).
+const BLESSING_IDS: Array[StringName] = [
+	&"metal_temper",
+	&"water_wellspring",
+	&"fire_forge",
+	&"lightning_quicken",
+	&"ice_stillness",
+	&"wind_stride",
+	&"dark_veil",
+]
+
+## Everything the catalogue publishes: the closed pair content plus the blessings.
+const ALL_IDS: Array[StringName] = EXPECTED_IDS + BLESSING_IDS
+
+## The four blessings whose elements are ADVANCED, for the tier-2 id-set pin.
+const ADVANCED_BLESSING_IDS: Array[StringName] = [
+	&"lightning_quicken",
+	&"ice_stillness",
+	&"wind_stride",
+	&"dark_veil",
+]
+
 ## The `mechanic` each tier-1 element's pair is built from. ADR 0090's claim was "ten
 ## distinct mechanics" — ten shapes because ten were authored, against a closed ten-name
 ## vocabulary (`StatusDef.MECHANICS`). ADR 0110's ten REUSE those shapes rather than
@@ -198,12 +225,27 @@ func _mechanics_of(pair: Array) -> Array[String]:
 	return out
 
 
-func test_the_catalogue_publishes_exactly_the_twenty_authored_statuses() -> void:
-	# ADR 0110 publishes the ten new defs rather than refusing them, so the catalogue's
-	# whole content is now its twenty. The id SET is pinned and every element's slot is
-	# read through the LOOK-UP, because a size would be true of any twenty at all.
+## The element's ADR 0090/0110 PAIR: its authored defs minus the seven blessings ADR 0919
+## added. The three ORIGINAL blessings (`wood_bloom`, `earth_bulwark`, `light_halo`) are
+## pair members and stay, so this filter is exactly the new set — the pairing claims are
+## about the pair the two ADRs authored, and a blessing is a third def wherever one was
+## added.
+func _pair_without_blessings(defs: Array) -> Array:
+	var out: Array = []
+	for def in defs:
+		if BLESSING_IDS.has((def as StatusDef).id):
+			continue
+		out.append(def)
+	return out
+
+
+func test_the_catalogue_publishes_exactly_the_authored_statuses() -> void:
+	# ADR 0110 publishes the ten new pair defs rather than refusing them, and ADR 0919
+	# adds the seven blessings whose elements shipped none, so the catalogue's whole
+	# content is its twenty-seven. The id SET is pinned and every element's slot is read
+	# through the LOOK-UP, because a size would be true of any set at all.
 	var ids := _catalog().status_ids()
-	assert_eq(_sorted(ids), _sorted(EXPECTED_IDS), "exactly the twenty authored ids")
+	assert_eq(_sorted(ids), _sorted(ALL_IDS), "exactly the authored ids")
 	for element in _all_elements():
 		assert_eq(
 			StatusApi.status_for_element(element, 1.0),
@@ -233,7 +275,7 @@ func test_every_published_def_is_well_formed() -> void:
 	# all, which is the refusal path's mirror image.
 	assert_eq(_catalog().problems(), [], "no published def reports an authoring problem")
 	assert_eq(_refused_reasons(), {}, "and no authored def was refused at load")
-	assert_eq(_authored().size(), EXPECTED_IDS.size(), "twenty defs are on disk to publish")
+	assert_eq(_authored().size(), ALL_IDS.size(), "every authored def is on disk to publish")
 
 
 func test_every_tier_two_def_validates_clean_and_publishes() -> void:
@@ -326,7 +368,7 @@ func test_ids_are_unique_and_the_file_name_is_not_the_key() -> void:
 	for key in _authored().keys():
 		assert_eq(seen.has(StringName(key)), false, "id %s is authored once" % String(key))
 		seen[StringName(key)] = true
-	assert_eq(_sorted(seen.keys()), _sorted(EXPECTED_IDS), "twenty distinct authored ids")
+	assert_eq(_sorted(seen.keys()), _sorted(ALL_IDS), "distinct authored ids")
 	# Resolution is by id, so a def is found by the id a save would store, not by the
 	# filename it happens to live under.
 	assert_eq(StatusApi.definition(&"fire_pyre").id, &"fire_pyre", "resolved by id")
@@ -354,7 +396,18 @@ func test_every_status_rides_an_element_that_exists() -> void:
 	# status is one a landed blow could never inflict, which was `lightning`'s state for
 	# the whole of ADR 0090 and is no longer any element's.
 	for element in _all_elements():
-		assert_eq(_ids_on(element).size(), 2, "%s ships exactly two statuses" % String(element))
+		var on_element := _ids_on(element)
+		assert_eq(
+			on_element.size() >= 2 and on_element.size() <= 3,
+			true,
+			"%s ships its pair plus at most one blessing" % String(element)
+		)
+		var blessings := 0
+		for id in on_element:
+			var def := StatusApi.definition(StringName(id)) as StatusDef
+			if def != null and not def.is_combat_scope():
+				blessings += 1
+		assert_eq(blessings, 1, "%s ships exactly one cultivation blessing" % String(element))
 
 
 func test_every_status_publishes_non_empty_mitigation_tags() -> void:
@@ -364,7 +417,7 @@ func test_every_status_publishes_non_empty_mitigation_tags() -> void:
 	# ship a status nothing answered to without the loader's gate hiding the fact. ADR 0110
 	# lifted the gate, so those ten are on the same footing as the tier-1 ten.
 	var authored := _authored()
-	assert_eq(authored.size(), EXPECTED_IDS.size(), "twenty authored defs (ADR 0110)")
+	assert_eq(authored.size(), ALL_IDS.size(), "every authored def (ADR 0110/0919)")
 	for key in authored.keys():
 		var def := authored[key] as StatusDef
 		assert_ne(def.mitigation_tags.size(), 0, "%s publishes mitigation_tags" % key)
@@ -387,8 +440,8 @@ func test_each_element_ships_two_statuses_with_different_mechanics() -> void:
 	# beside one control/modifier/amplifier.
 	var per_element := _per_element(_authored())
 	for element in _all_elements():
-		var pair: Array = per_element.get(element, [])
-		assert_eq(pair.size(), 2, "%s ships two" % String(element))
+		var pair: Array = _pair_without_blessings(per_element.get(element, []))
+		assert_eq(pair.size(), 2, "%s ships its two pair defs" % String(element))
 		var first := pair[0] as StatusDef
 		var second := pair[1] as StatusDef
 		assert_ne(first.mechanic(), second.mechanic(), "%s names two mechanics" % String(element))
@@ -403,7 +456,7 @@ func test_each_element_ships_two_statuses_with_different_mechanics() -> void:
 	# mechanics" and that is the whole of what tier-1 promised; one-channel-beside-one-
 	# control is what ADR 0110 adds for the ten new statuses.
 	for element in ElementStats.ADVANCED_ELEMENTS:
-		var pair: Array = per_element.get(element, [])
+		var pair: Array = _pair_without_blessings(per_element.get(element, []))
 		var channels := 0
 		var units: Array[StringName] = []
 		for def in pair as Array:
@@ -435,7 +488,7 @@ func test_the_closed_mechanic_vocabulary_is_used_whole() -> void:
 	var tier_one_mechanics: Dictionary = {}
 	for element in ElementStats.BASE_ELEMENTS:
 		assert_eq(
-			_mechanics_of(per_element.get(element, []) as Array),
+			_mechanics_of(_pair_without_blessings(per_element.get(element, []) as Array)),
 			_sorted(TIER_ONE_MECHANICS[element] as Array),
 			"%s keeps ADR 0090's two mechanics" % String(element)
 		)
@@ -443,7 +496,9 @@ func test_the_closed_mechanic_vocabulary_is_used_whole() -> void:
 			tier_one_mechanics[StringName(name)] = true
 
 	for element in ElementStats.ADVANCED_ELEMENTS:
-		var names: Array[String] = _mechanics_of(per_element.get(element, []) as Array)
+		var names: Array[String] = _mechanics_of(
+			_pair_without_blessings(per_element.get(element, []) as Array)
+		)
 		for name in names:
 			assert_eq(
 				tier_one_mechanics.has(StringName(name)),
@@ -486,7 +541,7 @@ func test_a_status_screen_row_is_primitives_only() -> void:
 	# and an error, because that constructor takes a String or an int, never the int's
 	# boxed Variant as handed out of a Dictionary read.
 	assert_eq(typeof(report["count"]), TYPE_INT, "count is a plain int")
-	assert_eq(report["count"], EXPECTED_IDS.size(), "and it agrees with the catalogue")
+	assert_eq(report["count"], ALL_IDS.size(), "and it agrees with the catalogue")
 	# The row has the same shape for a tier-1 and a tier-2 def — the contract ADR 0110
 	# needs, since lifting the gate changed WHICH rows a screen can reach, and a row whose
 	# shape depended on the tier would have shipped a screen that broke on `dark_wane`.
@@ -534,7 +589,7 @@ func test_the_catalogue_reaches_through_the_facade_only() -> void:
 	# violation `tools arch` cannot see, so the shape is pinned here instead.
 	assert_eq(
 		_sorted(StatusApi.status_ids()),
-		_sorted(EXPECTED_IDS),
+		_sorted(ALL_IDS),
 		"every authored id is reachable from the facade"
 	)
 	assert_eq(StatusApi.has_status(&"fire_pyre"), true, "existence check on the facade")
@@ -583,4 +638,8 @@ func test_every_authored_status_publishes_and_every_published_status_is_authored
 		var def := StatusApi.definition(status_id)
 		if ElementStats.ADVANCED_ELEMENTS.has(def.element):
 			on_tier_two.append(String(status_id))
-	assert_eq(_sorted(on_tier_two), _sorted(TIER_TWO_IDS), "exactly the tier-2 ids are tier-2")
+	assert_eq(
+		_sorted(on_tier_two),
+		_sorted(TIER_TWO_IDS + ADVANCED_BLESSING_IDS),
+		"exactly the tier-2 ids are tier-2"
+	)

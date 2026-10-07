@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_fate")
 id = &"heaven_eye_circled_once"
-display_name = "The Circled Eye"
-description = "Counted once among the marked. The count is per lifetime, not per attempt. Whether it is a rank or an observation is a matter the archive declines to settle."
+display_name = "LOC_DESTINY_HEAVEN_EYE_CIRCLED_ONCE_DISPLAY_NAME"
+description = "LOC_DESTINY_HEAVEN_EYE_CIRCLED_ONCE_DESCRIPTION"
 category = &"heaven"
 tier = 1
 visibility = &"revealed"

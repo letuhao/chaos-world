@@ -1,0 +1,197 @@
+{
+  "id": "medieval_western.garrisons_barracks_and_watchtowers.elevated_signal_wood_pyre_alert_ready",
+  "name": "Combat-Ready Timber-Framed High Signal Wood Pyre",
+  "vietnamese_name": "Giàn Gỗ Chất Đầy Củi Khô Đốt Lửa Hiệu (Sẵn Sàng Chiến Đấu)",
+  "category": "garrisons_barracks_and_watchtowers",
+  "sub_category": "signal_fire_beacon_turret",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "light_pyre",
+  "gameplay_role": "Garrison defense element (Timber-Framed High Signal Wood Pyre).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of combat-ready timber-framed high signal wood pyre, strung bows, racked weapons, and primed torches, Medieval garrison barracks and watchtower style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/garrisons_barracks_and_watchtowers/elevated_signal_wood_pyre_alert_ready.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.garrisons_barracks_and_watchtowers.elevated_signal_wood_pyre_alert_ready:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.5,
+        0.504
+      ],
+      [
+        0.805,
+        0.819
+      ]
+    ],
+    "frac_zero": 0.5515,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.72,
+        0.648,
+        0.0,
+        0.0
+      ],
+      [
+        0.002,
+        0.111,
+        0.975,
+        0.915,
+        0.102,
+        0.109
+      ],
+      [
+        0.221,
+        0.945,
+        0.942,
+        0.945,
+        0.954,
+        0.317
+      ],
+      [
+        0.83,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.771
+      ],
+      [
+        0.937,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.913
+      ],
+      [
+        0.627,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.667
+      ],
+      [
+        0.067,
+        0.508,
+        0.822,
+        0.823,
+        0.581,
+        0.148
+      ]
+    ],
+    "crop_offset": [
+      32,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 103,
+    "contact_reference_px": 103.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

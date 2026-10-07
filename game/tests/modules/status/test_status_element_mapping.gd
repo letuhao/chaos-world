@@ -156,7 +156,7 @@ func test_the_element_alone_does_not_decide_the_answer() -> void:
 		var def := StatusApi.definition(status_id)
 		if def != null and def.element == &"fire":
 			on_fire.append(status_id)
-	assert_eq(on_fire.size(), 2, "fire ships two statuses")
+	assert_eq(on_fire.size(), 3, "fire ships its pair plus the forge blessing")
 	assert_eq(
 		StatusApi.status_for_element(&"fire", 1.0) in on_fire,
 		true,

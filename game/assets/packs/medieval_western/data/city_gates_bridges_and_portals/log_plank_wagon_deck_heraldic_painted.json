@@ -1,0 +1,172 @@
+{
+  "id": "medieval_western.city_gates_bridges_and_portals.log_plank_wagon_deck_heraldic_painted",
+  "name": "Town-Arms Painted Heavy Hewn Log Plank Bridge Deck",
+  "vietnamese_name": "Mặt Cầu Lát Ván Gỗ Cho Xe Bò Đi (Vẽ Huy Hiệu Thành Thị)",
+  "category": "city_gates_bridges_and_portals",
+  "sub_category": "timber_oxcart_trestle_bridge",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "drive_cart",
+  "gameplay_role": "City gate and river crossing element (Heavy Hewn Log Plank Bridge Deck).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "flemish_hanseatic",
+  "prompt_summary": "2D orthographic top-down game sprite of town-arms painted heavy hewn log plank bridge deck, bright civic heraldry shields and banners, Medieval city gates and river bridges style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/city_gates_bridges_and_portals/log_plank_wagon_deck_heraldic_painted.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.city_gates_bridges_and_portals.log_plank_wagon_deck_heraldic_painted:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.487,
+        0.391
+      ],
+      [
+        0.684,
+        0.706
+      ]
+    ],
+    "frac_zero": 0.5779,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.329,
+        0.157,
+        0.149,
+        0.354,
+        0.008,
+        0.0
+      ],
+      [
+        0.04,
+        0.701,
+        0.801,
+        0.81,
+        0.687,
+        0.044,
+        0.0
+      ],
+      [
+        0.032,
+        0.864,
+        1.0,
+        1.0,
+        0.836,
+        0.037,
+        0.0
+      ],
+      [
+        0.322,
+        0.849,
+        1.0,
+        1.0,
+        0.891,
+        0.29,
+        0.0
+      ],
+      [
+        0.542,
+        0.992,
+        1.0,
+        1.0,
+        0.998,
+        0.565,
+        0.039
+      ],
+      [
+        0.729,
+        1.0,
+        0.856,
+        0.848,
+        1.0,
+        0.856,
+        0.016
+      ],
+      [
+        0.165,
+        0.623,
+        0.229,
+        0.234,
+        0.988,
+        0.91,
+        0.062
+      ]
+    ],
+    "crop_offset": [
+      23,
+      16
+    ],
+    "trunk_columns": [
+      4,
+      5
+    ],
+    "contact_px": 67,
+    "contact_reference_px": 67.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

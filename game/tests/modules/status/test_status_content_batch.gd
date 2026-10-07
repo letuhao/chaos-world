@@ -22,7 +22,11 @@ const FAMILY_BY_ELEMENT := {
 
 func test_every_shipped_def_carries_its_family_and_categories() -> void:
 	var ids := StatusCatalog.instance().status_ids()
-	assert_eq(ids.size(), 20, "the closed twenty")
+	# Twenty pair defs plus the seven ADR 0919 blessings. Pinned as a number rather than
+	# imported from the catalogue suite because this file's claim is that the TREE's
+	# content is what the catalogue publishes, and a shared constant would make both
+	# sides move together.
+	assert_eq(ids.size(), 27, "the pair content plus the seven blessings")
 	for status_id in ids:
 		var def := StatusCatalog.instance().definition(status_id)
 		assert_ne(def, null, "%s resolves" % String(status_id))

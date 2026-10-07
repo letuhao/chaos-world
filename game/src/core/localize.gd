@@ -28,13 +28,19 @@ const BASE_ROOT := "res://locale"
 ## Only `Translation` resources; `gaps.json` and any other sibling is ignored by suffix.
 const CATALOG_SUFFIX := ".tres"
 
+## Every catalog key starts with this — `LOC_<OWNER>_<NAME>`.
+const SLUG_PREFIX := "LOC_"
+
 static var _installed_base := false
 static var _extra_roots: Array[String] = []
 
 
-## The resolved string for `key`. Returns the base/other-locale row when one resolves, else
-## `source` (when given), else the key — which is why `check` must keep a row for every key
-## in source.
+## The resolved text for `key`.
+##
+## The game's DATA holds keys, not English (`display_name = "LOC_ITEM_JADE_PENDANT_NAME"`), and
+## one item is defined once for every language. This is the single point that turns a key into
+## the current locale's text at display time. `source` is an optional fallback for a caller that
+## genuinely has a default in hand; the catalogs are the real source.
 static func t(key: String, source: String = "") -> String:
 	install()
 	var resolved := TranslationServer.translate(key)

@@ -1,0 +1,138 @@
+{
+  "id": "medieval_western.gothic_cathedrals_and_monumental_abbeys.cathedral_bell_chamber_and_carillon_ancient_archbishop",
+  "name": "Archbishop's Consecrated Cathedral Bell Chamber And Carillon",
+  "vietnamese_name": "Đức Tổng Giám Mục Tận Hiến Cathedral Bell Chamber And Carillon",
+  "category": "gothic_cathedrals_and_monumental_abbeys",
+  "sub_category": "cathedral_bell_chamber_and_carillon",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "inspect",
+  "gameplay_role": "Archbishop's consecrated sacred ecclesiastical item.",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "french_capetian",
+  "prompt_summary": "Archbishop's consecrated sacred item of cathedral_bell_chamber_and_carillon, gold embroidery, Gothic cathedral, gouache style.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/gothic_cathedrals_and_monumental_abbeys/cathedral_bell_chamber_and_carillon_ancient_archbishop.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.gothic_cathedrals_and_monumental_abbeys.cathedral_bell_chamber_and_carillon_ancient_archbishop:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.269
+      ],
+      [
+        0.806
+      ]
+    ],
+    "frac_zero": 0.6636,
+    "blocks": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.417,
+        0.0
+      ],
+      [
+        0.017,
+        0.902,
+        0.0
+      ],
+      [
+        0.036,
+        0.972,
+        0.019
+      ],
+      [
+        0.512,
+        0.989,
+        0.482
+      ],
+      [
+        0.809,
+        1.0,
+        0.785
+      ],
+      [
+        0.879,
+        1.0,
+        0.86
+      ],
+      [
+        0.369,
+        0.997,
+        0.327
+      ]
+    ],
+    "crop_offset": [
+      16,
+      37
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 78,
+    "contact_reference_px": 78.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

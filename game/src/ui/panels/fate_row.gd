@@ -15,11 +15,11 @@ extends PanelContainer
 ## screen never renders a number. `summary()` is the testable surface.
 
 ## Stands in for a hidden fate's name. A marker, never the name and never the id.
-const UNNAMED_HEAD := "Unnamed"
-const EARNED_TEXT := "Earned"
-const LOCKED_META := "Not yet earned."
-const SECTION_PREFIX := "Locked"
-const SECTION_TAIL := "still out of reach"
+var UNNAMED_HEAD := L.t("LOC_UI_PANELS_9B115C99B1")
+var EARNED_TEXT := L.t("LOC_UI_PANELS_257F305B04")
+var LOCKED_META := L.t("LOC_UI_PANELS_2EAAB6910F")
+var SECTION_PREFIX := L.t("LOC_UI_PANELS_A798882F1C")
+var SECTION_TAIL := L.t("LOC_UI_PANELS_63CFEB1E46")
 ## The row doubles as the heading between the earned and the locked entries, so
 ## the count it shows belongs to the row rather than to the screen.
 const CATEGORY_UNKNOWN := "uncategorised"
@@ -164,12 +164,12 @@ func _render() -> void:
 	theme_type_variation = _card_variation()
 	if not visible:
 		return
-	_head_label.text = _head
+	_head_label.text = L.t(_head)
 	_head_label.theme_type_variation = _head_tone()
-	_description_label.text = _description
+	_description_label.text = L.t(_description)
 	_description_label.visible = not _description.is_empty()
 	_description_label.theme_type_variation = _body_tone()
-	_meta_label.text = _meta
+	_meta_label.text = L.t(_meta)
 
 
 ## Whether the entry is allowed to show a name. A hidden fate is never one, so

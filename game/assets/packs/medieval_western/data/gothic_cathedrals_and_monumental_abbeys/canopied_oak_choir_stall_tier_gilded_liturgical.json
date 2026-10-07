@@ -1,0 +1,205 @@
+{
+  "id": "medieval_western.gothic_cathedrals_and_monumental_abbeys.canopied_oak_choir_stall_tier_gilded_liturgical",
+  "name": "Gold-Leaf Traced Two-Tiered Canopied Oak Choir Stalls",
+  "vietnamese_name": "Hàng Ghế Gỗ Sồi Có Mái Dành Cho Ca Đoàn (Dát Vàng Phụng Vụ)",
+  "category": "gothic_cathedrals_and_monumental_abbeys",
+  "sub_category": "carved_choir_stalls_and_misericord",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "sit",
+  "gameplay_role": "Cathedral religious component (Two-Tiered Canopied Oak Choir Stalls).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "french_capetian",
+  "prompt_summary": "2D orthographic top-down game sprite of gold-leaf traced two-tiered canopied oak choir stalls, gleaming church gold-leaf highlights, Gothic monumental cathedral ecclesiastical feature, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/gothic_cathedrals_and_monumental_abbeys/canopied_oak_choir_stall_tier_gilded_liturgical.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.gothic_cathedrals_and_monumental_abbeys.canopied_oak_choir_stall_tier_gilded_liturgical:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.574,
+        0.565
+      ],
+      [
+        0.788,
+        0.782
+      ]
+    ],
+    "frac_zero": 0.484,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.102,
+        0.491,
+        0.047,
+        0.0,
+        0.0
+      ],
+      [
+        0.08,
+        0.516,
+        0.831,
+        1.0,
+        0.747,
+        0.421,
+        0.043
+      ],
+      [
+        0.633,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.526
+      ],
+      [
+        0.941,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.9
+      ],
+      [
+        0.712,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.613
+      ],
+      [
+        0.48,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.323
+      ],
+      [
+        0.163,
+        0.355,
+        0.744,
+        0.971,
+        0.634,
+        0.367,
+        0.097
+      ]
+    ],
+    "crop_offset": [
+      19,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 82,
+    "contact_reference_px": 82.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

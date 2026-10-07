@@ -14,9 +14,9 @@ extends PanelContainer
 ## selection and offers nothing to press, because a destiny is earned and cannot
 ## be chosen or equipped (ADR 0065). `summary()` is the testable surface.
 
-const UNNAMED_HEAD := "Unnamed"
-const HELD_META := "Held for good."
-const LOCKED_META := "Not yet earned."
+var UNNAMED_HEAD := L.t("LOC_UI_PANELS_9B115C99B1")
+var HELD_META := L.t("LOC_UI_PANELS_85EBF36150")
+var LOCKED_META := L.t("LOC_UI_PANELS_2EAAB6910F")
 
 var _view: Dictionary = {}
 var _head: String = ""
@@ -137,16 +137,16 @@ func _render() -> void:
 	theme_type_variation = _card_variation()
 	if not visible:
 		return
-	_head_label.text = _head
+	_head_label.text = L.t(_head)
 	_head_label.theme_type_variation = _head_tone()
-	_description_label.text = _description
+	_description_label.text = L.t(_description)
 	_description_label.visible = not _description.is_empty()
 	_description_label.theme_type_variation = (
 		&"EffectLabel" if bool(_view.get("held", false)) else &"LockedLabel"
 	)
-	_bearing_label.text = _bearing
+	_bearing_label.text = L.t(_bearing)
 	_bearing_label.visible = _bearing != ""
-	_meta_label.text = _meta
+	_meta_label.text = L.t(_meta)
 
 
 ## Whether the entry is allowed to show a name. A hidden destiny is never one, so

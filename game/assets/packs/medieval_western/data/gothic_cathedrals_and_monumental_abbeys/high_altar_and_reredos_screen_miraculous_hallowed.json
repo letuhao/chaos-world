@@ -1,0 +1,203 @@
+{
+  "id": "medieval_western.gothic_cathedrals_and_monumental_abbeys.high_altar_and_reredos_screen_miraculous_hallowed",
+  "name": "Miraculous Hallowed High Altar And Reredos Screen",
+  "vietnamese_name": "Thánh Tích Phép Màu High Altar And Reredos Screen",
+  "category": "gothic_cathedrals_and_monumental_abbeys",
+  "sub_category": "high_altar_and_reredos_screen",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "venerate",
+  "gameplay_role": "Miraculous hallowed cathedral treasure.",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "french_capetian",
+  "prompt_summary": "Miraculous hallowed cathedral treasure of high_altar_and_reredos_screen, holy divine aura, Gothic abbey, gouache anime style.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/gothic_cathedrals_and_monumental_abbeys/high_altar_and_reredos_screen_miraculous_hallowed.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.gothic_cathedrals_and_monumental_abbeys.high_altar_and_reredos_screen_miraculous_hallowed:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.486,
+        0.471
+      ],
+      [
+        0.865,
+        0.718
+      ]
+    ],
+    "frac_zero": 0.5516,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.011,
+        0.0,
+        0.151,
+        0.194,
+        0.091,
+        0.013,
+        0.0
+      ],
+      [
+        0.197,
+        0.162,
+        0.903,
+        0.904,
+        0.258,
+        0.306,
+        0.0
+      ],
+      [
+        0.287,
+        0.953,
+        1.0,
+        1.0,
+        0.95,
+        0.477,
+        0.055
+      ],
+      [
+        0.75,
+        0.946,
+        0.992,
+        1.0,
+        0.933,
+        0.826,
+        0.562
+      ],
+      [
+        0.81,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.985,
+        0.234
+      ],
+      [
+        0.896,
+        1.0,
+        1.0,
+        1.0,
+        0.929,
+        0.687,
+        0.0
+      ],
+      [
+        0.198,
+        0.727,
+        0.957,
+        0.911,
+        0.098,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      28,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3
+    ],
+    "contact_px": 97,
+    "contact_reference_px": 97.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

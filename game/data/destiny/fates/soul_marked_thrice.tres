@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_fate")
 id = &"soul_marked_thrice"
-display_name = "Soul Marked Thrice"
-description = "Three bodies, three lines in the same column, written in an order only you can reconstruct. The record of what you were now outlives the body doing the recording, and the two are no longer the same size."
+display_name = "LOC_DESTINY_SOUL_MARKED_THRICE_DISPLAY_NAME"
+description = "LOC_DESTINY_SOUL_MARKED_THRICE_DESCRIPTION"
 category = &"rebirth"
 tier = 3
 visibility = &"revealed"

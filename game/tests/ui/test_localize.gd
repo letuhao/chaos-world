@@ -46,4 +46,4 @@ func test_a_mod_locale_root_layers_over_the_base() -> void:
 	var key := "LOC_TESTPROBE_KEY"
 	assert_eq(L.t(key), key, "before the mod root is installed the key is unresolved")
 	L.install_roots(["res://tests/ui/fixtures/locale"])
-	assert_eq(L.t(key), "Mod override", "the mod catalog resolves it")
+	assert_eq(L.t(key), "Mod override", "the mod catalog resolves the key")

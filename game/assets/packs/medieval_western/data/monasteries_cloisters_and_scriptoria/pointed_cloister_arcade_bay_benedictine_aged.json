@@ -1,0 +1,175 @@
+{
+  "id": "medieval_western.monasteries_cloisters_and_scriptoria.pointed_cloister_arcade_bay_benedictine_aged",
+  "name": "Benedictine Aged Monastic Cloister Vaulted Walk Bay",
+  "vietnamese_name": "Dãy Hành Lang Vòm Cuốn Quanh Vườn Tu Viện (Benedictine Cổ Kính)",
+  "category": "monasteries_cloisters_and_scriptoria",
+  "sub_category": "cloister_quadrangle_arcaded_walk",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "walk_contemplate",
+  "gameplay_role": "Monastic cloister life element (Monastic Cloister Vaulted Walk Bay).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of benedictine aged monastic cloister vaulted walk bay, aged brown oak timbers and wax polished surfaces, Monastic abbey cloister and scriptorium style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/monasteries_cloisters_and_scriptoria/pointed_cloister_arcade_bay_benedictine_aged.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.monasteries_cloisters_and_scriptoria.pointed_cloister_arcade_bay_benedictine_aged:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.629,
+        0.618
+      ],
+      [
+        0.829,
+        0.832
+      ]
+    ],
+    "frac_zero": 0.4855,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.242,
+        0.52,
+        0.021,
+        0.0,
+        0.0
+      ],
+      [
+        0.155,
+        0.757,
+        0.975,
+        0.997,
+        0.807,
+        0.42,
+        0.0
+      ],
+      [
+        0.842,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.931,
+        0.659
+      ],
+      [
+        0.797,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.43
+      ],
+      [
+        0.804,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.456
+      ],
+      [
+        0.814,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.518
+      ],
+      [
+        0.252,
+        0.453,
+        0.876,
+        0.931,
+        0.621,
+        0.439,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      26,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 84,
+    "contact_reference_px": 84.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

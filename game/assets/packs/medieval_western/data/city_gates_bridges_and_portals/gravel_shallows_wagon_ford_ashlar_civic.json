@@ -1,0 +1,175 @@
+{
+  "id": "medieval_western.city_gates_bridges_and_portals.gravel_shallows_wagon_ford_ashlar_civic",
+  "name": "Civic Limestone Pebble Shallows Ox-Cart Ford Track",
+  "vietnamese_name": "Đoạn Lội Nước Nông Cho Xe Ngựa Bò Lội (Đá Vôi Đô Thị)",
+  "category": "city_gates_bridges_and_portals",
+  "sub_category": "river_ford_and_stepping_stones",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "ford_river",
+  "gameplay_role": "City gate and river crossing element (Pebble Shallows Ox-Cart Ford Track).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of civic limestone pebble shallows ox-cart ford track, neat civic limestone ashlar masonry, Medieval city gates and river bridges style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/city_gates_bridges_and_portals/gravel_shallows_wagon_ford_ashlar_civic.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.city_gates_bridges_and_portals.gravel_shallows_wagon_ford_ashlar_civic:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.727,
+        0.718
+      ],
+      [
+        0.788,
+        0.781
+      ]
+    ],
+    "frac_zero": 0.4668,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.347,
+        0.809,
+        0.628,
+        0.553,
+        0.891,
+        0.438,
+        0.128
+      ],
+      [
+        0.721,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.925,
+        0.219
+      ],
+      [
+        0.175,
+        0.917,
+        1.0,
+        1.0,
+        0.998,
+        0.491,
+        0.0
+      ],
+      [
+        0.031,
+        0.945,
+        1.0,
+        1.0,
+        0.993,
+        0.189,
+        0.0
+      ],
+      [
+        0.288,
+        0.953,
+        1.0,
+        1.0,
+        1.0,
+        0.433,
+        0.082
+      ],
+      [
+        0.826,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.985,
+        0.531
+      ],
+      [
+        0.236,
+        0.84,
+        0.996,
+        1.0,
+        0.985,
+        0.529,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      26,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 158,
+    "contact_reference_px": 158.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

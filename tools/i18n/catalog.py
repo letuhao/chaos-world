@@ -1,18 +1,25 @@
 """Slug derivation and the text `Translation` catalogs under `game/locale/`.
 
-A catalog is a Godot text resource holding `slug -> translation` for ONE locale:
+A catalog is a Godot text resource holding `key -> text` for ONE locale and ONE owner:
 
     [gd_resource type="Translation" format=3]
 
     [resource]
     locale = "en"
     messages = {
-    "LOC_UI_AB12CD34": "Wait a season",
+    "LOC_UI_PANELS_AB12CD34": "Wait a season",
     }
 
-It is loaded by `core/localize.gd`, which registers every `res://locale/*.tres` on the
-server. The `en` catalog mirrors the call-site English; `<stem>.<locale>.tres` holds a real
-locale. Both are written sorted so a diff names one string per line.
+It is loaded by `core/localize.gd`, which registers every `res://locale/**/*.tres`. The `en`
+catalog holds the source English; `<owner>.<locale>.tres` holds a real locale. All rows are
+written sorted so a diff names one string per line.
+
+## The key is STABLE once assigned, not a re-derivation of the text
+
+`assign_key` picks a key the first time a string is extracted and it is **opaque from then
+on**. Editing the English is then a one-row data edit that never re-keys and never orphans a
+translation — the reason a slug exists at all. The content hash is only the *generator*, and
+`check` therefore does NOT require a row to hash to its key.
 """
 
 from __future__ import annotations
@@ -21,21 +28,50 @@ import hashlib
 import re
 from pathlib import Path
 
+from ..common import ToolError
 from .policy import CATALOG_DIR, SLUG_HASH_LEN, SLUG_PREFIX
 
 ## The header of every generated catalog. `format=3` is Godot 4's text-resource version.
 _HEADER = '[gd_resource type="Translation" format=3]\n\n[resource]\n'
 _ROW = re.compile(r'^"(?P<key>[^"]+)"\s*:\s*"(?P<value>(?:[^"\\]|\\.)*)"\s*,?\s*$')
 
+## Bound on the collision nonce. Two distinct texts sharing a hash is a 40-bit coincidence, so
+## reaching this is a bug in the derivation, not a busy key space — fail loudly rather than spin.
+MAX_KEY_ATTEMPTS = 64
+
 
 def slug_for(prefix: str, english: str) -> str:
-    """The stable id for `english` within `prefix`: `LOC_<prefix>_<hash>`.
+    """The base id for `english` within `prefix`: `LOC_<prefix>_<hash>`.
 
-    The hash is over the exact source text, so two files that spell a line the same share
-    one translation and an edit produces a new id rather than re-pointing the old one.
+    A *generator*, not the identity: use [func assign_key] to pick a key, which keeps the
+    id stable when the text changes.
     """
     digest = hashlib.sha1(english.encode("utf-8")).hexdigest()[:SLUG_HASH_LEN].upper()
     return f"{SLUG_PREFIX}_{prefix}_{digest}"
+
+
+def assign_key(prefix: str, english: str, taken: dict[str, str]) -> str:
+    """A STABLE key for `english` within `prefix`, given the rows `taken` ({key: text}).
+
+    - An existing row that already holds this exact text is REUSED, so a duplicate string
+      shares one row and one translation.
+    - Otherwise the content hash is minted. If that key is already taken by DIFFERENT text —
+      the row was edited in place — a deterministic nonce is appended until a free key is
+      found. `taken` is read in sorted order so the choice never depends on dict order.
+    """
+    for key in sorted(taken):
+        if taken[key] == english:
+            return key
+    base = slug_for(prefix, english)
+    if base not in taken:
+        return base
+    for nonce in range(1, MAX_KEY_ATTEMPTS + 1):
+        candidate = slug_for(prefix, f"{english}\x00{nonce}")
+        if candidate not in taken:
+            return candidate
+    raise ToolError(
+        f"could not assign a free key for {english!r} in {prefix} after {MAX_KEY_ATTEMPTS} attempts"
+    )
 
 
 def escape(value: str) -> str:

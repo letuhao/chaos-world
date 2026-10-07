@@ -6,8 +6,8 @@
 script = ExtResource("1_destiny")
 group = &"origin"
 id = &"the_chosen_instrument"
-display_name = "The Chosen Instrument"
-description = "Heaven named a tool and the tool was made of you. The sect trains you accordingly, on the assumption that the instruction will not be withdrawn."
+display_name = "LOC_DESTINY_THE_CHOSEN_INSTRUMENT_DISPLAY_NAME"
+description = "LOC_DESTINY_THE_CHOSEN_INSTRUMENT_DESCRIPTION"
 bearing = "You are not a disciple who earned a title. You are equipment the sky requisitioned, and you have started answering to the requisition."
 tier = 2
 visibility = &"revealed"

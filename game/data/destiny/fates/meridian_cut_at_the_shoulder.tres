@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_fate")
 id = &"meridian_cut_at_the_shoulder"
-display_name = "Cut at the Shoulder"
-description = "A channel opened in order to be carried, then closed at the shoulder. The method is permanent, repeatable and widely documented. It is performed anyway."
+display_name = "LOC_DESTINY_MERIDIAN_CUT_AT_THE_SHOULDER_DISPLAY_NAME"
+description = "LOC_DESTINY_MERIDIAN_CUT_AT_THE_SHOULDER_DESCRIPTION"
 category = &"severance"
 tier = 2
 visibility = &"revealed"

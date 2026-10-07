@@ -5,5 +5,12 @@ locale = "en"
 messages = {
 "LOC_UI_SCREENS_1BADD5A415": "Inputs unknown",
 "LOC_UI_SCREENS_20C7C5522F": "Ready",
+"LOC_UI_SCREENS_328078C42D": "Earned, never chosen. Fate and destiny are owed for good.",
+"LOC_UI_SCREENS_41A5FB5302": "An earn announced for another hero is counted, never painted",
+"LOC_UI_SCREENS_43B2043F11": "A destiny settles, and it cannot be undone:",
+"LOC_UI_SCREENS_6E9BC19A74": "No hero bound.",
 "LOC_UI_SCREENS_975C3AAE95": "No recipe selected",
+"LOC_UI_SCREENS_9F67364101": " onto this ledger.",
+"LOC_UI_SCREENS_D42CA15044": "Read-only: nothing here is chosen, equipped or given up.",
+"LOC_UI_SCREENS_E8AB972321": "Earned, and yours for good:",
 }

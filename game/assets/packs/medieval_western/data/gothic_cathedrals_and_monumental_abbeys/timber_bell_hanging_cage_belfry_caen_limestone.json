@@ -1,0 +1,201 @@
+{
+  "id": "medieval_western.gothic_cathedrals_and_monumental_abbeys.timber_bell_hanging_cage_belfry_caen_limestone",
+  "name": "Caen Limestone Massive Oak Timber Bellframe Yoke",
+  "vietnamese_name": "Khung Gỗ Sồi Khổng Lồ Treo Đại Hồng Chung (Đá Vôi Caen Sáng)",
+  "category": "gothic_cathedrals_and_monumental_abbeys",
+  "sub_category": "cathedral_bell_chamber_and_carillon",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": null,
+  "gameplay_role": "Cathedral religious component (Massive Oak Timber Bellframe Yoke).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "french_capetian",
+  "prompt_summary": "2D orthographic top-down game sprite of caen limestone massive oak timber bellframe yoke, creamy pale fine-grained French ashlar, Gothic monumental cathedral ecclesiastical feature, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/gothic_cathedrals_and_monumental_abbeys/timber_bell_hanging_cage_belfry_caen_limestone.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.gothic_cathedrals_and_monumental_abbeys.timber_bell_hanging_cage_belfry_caen_limestone:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.48,
+        0.473
+      ],
+      [
+        0.482,
+        0.477
+      ]
+    ],
+    "frac_zero": 0.6318,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.031,
+        0.591,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.176,
+        0.416,
+        0.341,
+        0.873,
+        0.275,
+        0.468,
+        0.156
+      ],
+      [
+        0.837,
+        1.0,
+        0.918,
+        0.935,
+        0.929,
+        1.0,
+        0.841
+      ],
+      [
+        0.438,
+        1.0,
+        0.121,
+        0.421,
+        0.18,
+        1.0,
+        0.415
+      ],
+      [
+        0.437,
+        1.0,
+        0.62,
+        0.55,
+        0.633,
+        1.0,
+        0.407
+      ],
+      [
+        0.215,
+        1.0,
+        0.22,
+        0.0,
+        0.219,
+        1.0,
+        0.169
+      ],
+      [
+        0.087,
+        0.943,
+        0.046,
+        0.0,
+        0.068,
+        0.962,
+        0.094
+      ]
+    ],
+    "crop_offset": [
+      17,
+      24
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 42,
+    "contact_reference_px": 42.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

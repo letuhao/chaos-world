@@ -1,0 +1,128 @@
+{
+  "id": "medieval_western.city_gates_bridges_and_portals.granite_river_stepping_stones_heraldic_painted",
+  "name": "Town-Arms Painted Line of Flat Granite Stepping Stones",
+  "vietnamese_name": "Dãy Phiến Đá Hoa Cương Băng Qua Suối (Vẽ Huy Hiệu Thành Thị)",
+  "category": "city_gates_bridges_and_portals",
+  "sub_category": "river_ford_and_stepping_stones",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "step_across",
+  "gameplay_role": "City gate and river crossing element (Line of Flat Granite Stepping Stones).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "flemish_hanseatic",
+  "prompt_summary": "2D orthographic top-down game sprite of town-arms painted line of flat granite stepping stones, bright civic heraldry shields and banners, Medieval city gates and river bridges style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/city_gates_bridges_and_portals/granite_river_stepping_stones_heraldic_painted.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.city_gates_bridges_and_portals.granite_river_stepping_stones_heraldic_painted:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.638,
+        0.643
+      ]
+    ],
+    "frac_zero": 0.6071,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.203,
+        0.239,
+        0.723,
+        0.737,
+        0.272,
+        0.225,
+        0.0
+      ],
+      [
+        0.739,
+        0.903,
+        1.0,
+        1.0,
+        0.918,
+        0.827,
+        0.156
+      ],
+      [
+        0.405,
+        0.524,
+        0.962,
+        0.953,
+        0.615,
+        0.503,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      30,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 112,
+    "contact_reference_px": 112.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "id": "medieval_western.gothic_cathedrals_and_monumental_abbeys.satirical_carved_misericord_seat_gilded_liturgical",
+  "name": "Gold-Leaf Traced Tipped Misericord Carved Wooden Ledge",
+  "vietnamese_name": "Bệ Ghế Gỗ Chạm Khắc Châm Biếm Misericord (Dát Vàng Phụng Vụ)",
+  "category": "gothic_cathedrals_and_monumental_abbeys",
+  "sub_category": "carved_choir_stalls_and_misericord",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "inspect_carving",
+  "gameplay_role": "Cathedral religious component (Tipped Misericord Carved Wooden Ledge).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "french_capetian",
+  "prompt_summary": "2D orthographic top-down game sprite of gold-leaf traced tipped misericord carved wooden ledge, gleaming church gold-leaf highlights, Gothic monumental cathedral ecclesiastical feature, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/gothic_cathedrals_and_monumental_abbeys/satirical_carved_misericord_seat_gilded_liturgical.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.gothic_cathedrals_and_monumental_abbeys.satirical_carved_misericord_seat_gilded_liturgical:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.631
+      ]
+    ],
+    "frac_zero": 0.6562,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.348,
+        0.64,
+        0.31
+      ],
+      [
+        0.867,
+        1.0,
+        0.825
+      ],
+      [
+        0.546,
+        0.561,
+        0.508
+      ]
+    ],
+    "crop_offset": [
+      19,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 67,
+    "contact_reference_px": 67.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

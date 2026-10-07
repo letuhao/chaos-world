@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_fate")
 id = &"oath_of_the_empty_hand"
-display_name = "Oath of the Empty Hand"
-description = "Sworn on a blade turned flat-side up, before witnesses, to strike nothing that has asked for mercy. The oath does not check whether the world agrees."
+display_name = "LOC_DESTINY_OATH_OF_THE_EMPTY_HAND_DISPLAY_NAME"
+description = "LOC_DESTINY_OATH_OF_THE_EMPTY_HAND_DESCRIPTION"
 category = &"oath"
 tier = 1
 visibility = &"revealed"

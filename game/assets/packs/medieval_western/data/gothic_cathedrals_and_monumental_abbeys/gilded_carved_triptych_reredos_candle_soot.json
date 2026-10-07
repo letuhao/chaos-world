@@ -1,0 +1,203 @@
+{
+  "id": "medieval_western.gothic_cathedrals_and_monumental_abbeys.gilded_carved_triptych_reredos_candle_soot",
+  "name": "Incense-Darkened Gilded Wooden Passion Triptych Reredos",
+  "vietnamese_name": "Bức Bình Phong Ba Tấm Gỗ Dát Vàng Khắc Tích (Ám Khói Hương Trầm)",
+  "category": "gothic_cathedrals_and_monumental_abbeys",
+  "sub_category": "high_altar_and_reredos_screen",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "venerate",
+  "gameplay_role": "Cathedral religious component (Gilded Wooden Passion Triptych Reredos).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "french_capetian",
+  "prompt_summary": "2D orthographic top-down game sprite of incense-darkened gilded wooden passion triptych reredos, deep grey incense and wax patina, Gothic monumental cathedral ecclesiastical feature, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/gothic_cathedrals_and_monumental_abbeys/gilded_carved_triptych_reredos_candle_soot.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.gothic_cathedrals_and_monumental_abbeys.gilded_carved_triptych_reredos_candle_soot:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.55,
+        0.506
+      ],
+      [
+        0.721,
+        0.704
+      ]
+    ],
+    "frac_zero": 0.5408,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.08,
+        0.079,
+        0.339,
+        0.087,
+        0.0,
+        0.0
+      ],
+      [
+        0.115,
+        0.353,
+        0.745,
+        0.931,
+        0.521,
+        0.147,
+        0.094
+      ],
+      [
+        0.703,
+        0.977,
+        1.0,
+        1.0,
+        0.976,
+        0.758,
+        0.574
+      ],
+      [
+        0.77,
+        1.0,
+        1.0,
+        1.0,
+        0.956,
+        0.779,
+        0.461
+      ],
+      [
+        0.471,
+        1.0,
+        1.0,
+        1.0,
+        0.987,
+        0.896,
+        0.014
+      ],
+      [
+        0.342,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.807,
+        0.0
+      ],
+      [
+        0.076,
+        0.189,
+        0.866,
+        0.972,
+        0.53,
+        0.181,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      24,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 81,
+    "contact_reference_px": 81.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

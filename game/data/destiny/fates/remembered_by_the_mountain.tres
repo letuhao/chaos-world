@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_fate")
 id = &"remembered_by_the_mountain"
-display_name = "Remembered by the Mountain"
-description = "Walked into a forbidden ridge and came back with the ridge's name in your mouth. Nobody has asked where you learned it. You have not offered."
+display_name = "LOC_DESTINY_REMEMBERED_BY_THE_MOUNTAIN_DISPLAY_NAME"
+description = "LOC_DESTINY_REMEMBERED_BY_THE_MOUNTAIN_DESCRIPTION"
 category = &"rebirth"
 tier = 1
 visibility = &"revealed"

@@ -1,0 +1,198 @@
+{
+  "id": "medieval_western.city_gates_bridges_and_portals.heavy_timber_trestle_pier_wagon_scarred",
+  "name": "Cart-Rut Scratched Cross-Braced Oak Trestle River Pier",
+  "vietnamese_name": "Trụ Cầu Gỗ Sồi Khung Giằng Chữ X (Xước Vết Trục Xe)",
+  "category": "city_gates_bridges_and_portals",
+  "sub_category": "timber_oxcart_trestle_bridge",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": null,
+  "gameplay_role": "City gate and river crossing element (Cross-Braced Oak Trestle River Pier).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of cart-rut scratched cross-braced oak trestle river pier, worn corner guard stones and iron wheel scrape grooves, Medieval city gates and river bridges style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/city_gates_bridges_and_portals/heavy_timber_trestle_pier_wagon_scarred.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.city_gates_bridges_and_portals.heavy_timber_trestle_pier_wagon_scarred:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.663,
+        0.64
+      ],
+      [
+        0.742,
+        0.735
+      ]
+    ],
+    "frac_zero": 0.574,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.417,
+        0.742,
+        0.71,
+        0.749,
+        0.641,
+        0.0
+      ],
+      [
+        0.66,
+        0.938,
+        1.0,
+        0.974,
+        0.901,
+        0.149
+      ],
+      [
+        0.351,
+        0.65,
+        0.995,
+        0.86,
+        0.452,
+        0.0
+      ],
+      [
+        0.0,
+        0.559,
+        1.0,
+        0.901,
+        0.004,
+        0.0
+      ],
+      [
+        0.473,
+        0.749,
+        1.0,
+        0.925,
+        0.586,
+        0.26
+      ],
+      [
+        0.858,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.591
+      ],
+      [
+        0.539,
+        0.724,
+        0.952,
+        0.828,
+        0.648,
+        0.283
+      ]
+    ],
+    "crop_offset": [
+      42,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 154,
+    "contact_reference_px": 154.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

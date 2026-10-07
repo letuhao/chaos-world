@@ -396,6 +396,17 @@ static func apply_cultivation(
 	}
 
 
+## Hand the blessing a CLEARED elemental domain pays (ADR 0919): the loot module's verb
+## for the second producer. `domain_id` is the run's own domain id; the status module
+## owns the domain→element mapping (`TribulationBlessing.DOMAIN_TABLE`) so the producer
+## list has ONE home and the loot side never names an element.
+##
+## Answers the same earned/refused dictionary [method apply_cultivation] does, with the
+## refusals named by `TribulationBlessing` (`unknown_domain`, `no_blessing`, `no_actor`).
+static func apply_domain_blessing(actor: Actor, domain_id: StringName) -> Dictionary:
+	return TribulationBlessing.award_domain(actor, domain_id)
+
+
 ## Register the `StatusEffect` a CALLER built — an ADR 0075 environment zone, an
 ## ADR 0073 trap — so it actually pays under [method tick_statuses]. Returns the same
 ## `{ok, id, magnitude, duration}` shape [method apply] answers with.

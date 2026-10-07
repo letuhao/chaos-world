@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_fate")
 id = &"vigil_broken_by_hand"
-display_name = "Vigil Broken by Hand"
-description = "Came off the wall mid-watch to settle a private matter. The wall held. Two of its dead were not the reason anyone remembers you."
+display_name = "LOC_DESTINY_VIGIL_BROKEN_BY_HAND_DISPLAY_NAME"
+description = "LOC_DESTINY_VIGIL_BROKEN_BY_HAND_DESCRIPTION"
 category = &"debauch"
 tier = 2
 visibility = &"revealed"

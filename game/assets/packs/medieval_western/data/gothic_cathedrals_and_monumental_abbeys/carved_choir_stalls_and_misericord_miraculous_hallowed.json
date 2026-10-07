@@ -1,0 +1,205 @@
+{
+  "id": "medieval_western.gothic_cathedrals_and_monumental_abbeys.carved_choir_stalls_and_misericord_miraculous_hallowed",
+  "name": "Miraculous Hallowed Carved Choir Stalls And Misericord",
+  "vietnamese_name": "Thánh Tích Phép Màu Carved Choir Stalls And Misericord",
+  "category": "gothic_cathedrals_and_monumental_abbeys",
+  "sub_category": "carved_choir_stalls_and_misericord",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "venerate",
+  "gameplay_role": "Miraculous hallowed cathedral treasure.",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "french_capetian",
+  "prompt_summary": "Miraculous hallowed cathedral treasure of carved_choir_stalls_and_misericord, holy divine aura, Gothic abbey, gouache anime style.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/gothic_cathedrals_and_monumental_abbeys/carved_choir_stalls_and_misericord_miraculous_hallowed.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.gothic_cathedrals_and_monumental_abbeys.carved_choir_stalls_and_misericord_miraculous_hallowed:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.493,
+        0.478
+      ],
+      [
+        0.824,
+        0.811
+      ]
+    ],
+    "frac_zero": 0.5126,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.021,
+        0.001,
+        0.106,
+        0.398,
+        0.06,
+        0.024,
+        0.0
+      ],
+      [
+        0.153,
+        0.181,
+        0.666,
+        0.991,
+        0.284,
+        0.323,
+        0.0
+      ],
+      [
+        0.344,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.898,
+        0.043
+      ],
+      [
+        0.774,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.988,
+        0.594
+      ],
+      [
+        0.798,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.631
+      ],
+      [
+        0.594,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.257
+      ],
+      [
+        0.309,
+        0.419,
+        0.852,
+        0.968,
+        0.63,
+        0.449,
+        0.204
+      ]
+    ],
+    "crop_offset": [
+      21,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 79,
+    "contact_reference_px": 79.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

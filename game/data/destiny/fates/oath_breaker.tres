@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_fate")
 id = &"oath_breaker"
-display_name = "Oath-Breaker"
-description = "Witnessed swearing an oath and witnessed breaking it, both in the same quarter hour. The sect records the second event. It keeps no file on the first."
+display_name = "LOC_DESTINY_OATH_BREAKER_DISPLAY_NAME"
+description = "LOC_DESTINY_OATH_BREAKER_DESCRIPTION"
 category = &"oath"
 tier = 2
 visibility = &"revealed"

@@ -1,0 +1,218 @@
+{
+  "id": "medieval_western.city_gates_bridges_and_portals.twin_drum_city_gate_portal_iron_spiked",
+  "name": "Iron-Spiked Defense Twin-Drum Vaulted City Entrance Gate",
+  "vietnamese_name": "Cổng Thành Vòm Đôi Hai Tháp Tròn Đô Thị (Cọc Sắt Chống Xâm Nhập)",
+  "category": "city_gates_bridges_and_portals",
+  "sub_category": "twin_towered_city_gatehouse",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "pass_gate",
+  "gameplay_role": "City gate and river crossing element (Twin-Drum Vaulted City Entrance Gate).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of iron-spiked defense twin-drum vaulted city entrance gate, sharp iron caltrops and spiked gate collars, Medieval city gates and river bridges style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/city_gates_bridges_and_portals/twin_drum_city_gate_portal_iron_spiked.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.city_gates_bridges_and_portals.twin_drum_city_gate_portal_iron_spiked:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.408,
+        0.731,
+        0.418
+      ],
+      [
+        0.666,
+        0.982,
+        0.7
+      ]
+    ],
+    "frac_zero": 0.6583,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      8,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.245,
+        0.231,
+        0.458,
+        0.208,
+        0.255,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.503,
+        0.39,
+        1.0,
+        0.36,
+        0.52,
+        0.0,
+        0.0
+      ],
+      [
+        0.177,
+        0.976,
+        0.973,
+        1.0,
+        0.959,
+        0.991,
+        0.26,
+        0.0
+      ],
+      [
+        0.88,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.913,
+        0.062
+      ],
+      [
+        0.538,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.602,
+        0.0
+      ],
+      [
+        0.42,
+        0.97,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.536,
+        0.0
+      ],
+      [
+        0.0,
+        0.393,
+        0.86,
+        0.968,
+        0.846,
+        0.523,
+        0.018,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      79,
+      18
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 131,
+    "contact_reference_px": 131.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

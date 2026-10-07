@@ -1,0 +1,204 @@
+{
+  "id": "medieval_western.gothic_cathedrals_and_monumental_abbeys.great_bourdon_bronze_bell_candle_soot",
+  "name": "Incense-Darkened Ten-Ton Bronze Bourdon Cathedral Bell",
+  "vietnamese_name": "Đại Hồng Chung Đồng Mười Tấn Bourdon (Ám Khói Hương Trầm)",
+  "category": "gothic_cathedrals_and_monumental_abbeys",
+  "sub_category": "cathedral_bell_chamber_and_carillon",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "ring_bourdon",
+  "gameplay_role": "Cathedral religious component (Ten-Ton Bronze Bourdon Cathedral Bell).",
+  "destructible": false,
+  "material": "iron",
+  "feudal_culture": "french_capetian",
+  "prompt_summary": "2D orthographic top-down game sprite of incense-darkened ten-ton bronze bourdon cathedral bell, deep grey incense and wax patina, Gothic monumental cathedral ecclesiastical feature, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/gothic_cathedrals_and_monumental_abbeys/great_bourdon_bronze_bell_candle_soot.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.gothic_cathedrals_and_monumental_abbeys.great_bourdon_bronze_bell_candle_soot:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.596,
+        0.591
+      ],
+      [
+        0.811,
+        0.817
+      ]
+    ],
+    "frac_zero": 0.4941,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.01,
+        0.439,
+        0.732,
+        0.169,
+        0.0,
+        0.0
+      ],
+      [
+        0.006,
+        0.552,
+        1.0,
+        1.0,
+        0.928,
+        0.127,
+        0.0
+      ],
+      [
+        0.509,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.904,
+        0.16
+      ],
+      [
+        0.928,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.832
+      ],
+      [
+        0.913,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.857
+      ],
+      [
+        0.496,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.937,
+        0.201
+      ],
+      [
+        0.01,
+        0.49,
+        0.912,
+        0.985,
+        0.753,
+        0.189,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      24,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 114,
+    "contact_reference_px": 114.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

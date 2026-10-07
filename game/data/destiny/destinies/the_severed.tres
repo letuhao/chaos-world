@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_destiny")
 id = &"the_severed"
-display_name = "The Severed"
-description = "Carried a channel that was not yours to close, and closed it. The lineage that taught you the technique is no longer able to teach it."
+display_name = "LOC_DESTINY_THE_SEVERED_DISPLAY_NAME"
+description = "LOC_DESTINY_THE_SEVERED_DESCRIPTION"
 bearing = "You are the last copy of a method whose authors are gone, and the method is only in you."
 tier = 2
 visibility = &"hidden"

@@ -1,0 +1,175 @@
+{
+  "id": "medieval_western.gothic_cathedrals_and_monumental_abbeys.great_rose_stained_glass_window_candle_soot",
+  "name": "Incense-Darkened Radiant Rose Stained Glass Window",
+  "vietnamese_name": "Cửa Sổ Hoa Hồng Kính Màu Lộng Lẫy (Ám Khói Hương Trầm)",
+  "category": "gothic_cathedrals_and_monumental_abbeys",
+  "sub_category": "rose_window_and_lancet_glass",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "admire",
+  "gameplay_role": "Cathedral architecture component (Radiant Rose Stained Glass Window).",
+  "destructible": false,
+  "material": "glass",
+  "feudal_culture": "french_capetian",
+  "prompt_summary": "2D orthographic top-down game sprite of incense-darkened radiant rose stained glass window, deep grey incense and wax patina, High Gothic cathedral and monumental abbey style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/gothic_cathedrals_and_monumental_abbeys/great_rose_stained_glass_window_candle_soot.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.gothic_cathedrals_and_monumental_abbeys.great_rose_stained_glass_window_candle_soot:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.461,
+        0.467
+      ],
+      [
+        0.823,
+        0.834
+      ]
+    ],
+    "frac_zero": 0.5441,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.116,
+        0.162,
+        0.393,
+        0.062,
+        0.057,
+        0.0
+      ],
+      [
+        0.0,
+        0.74,
+        0.895,
+        0.985,
+        0.739,
+        0.199,
+        0.0
+      ],
+      [
+        0.0,
+        0.807,
+        1.0,
+        1.0,
+        1.0,
+        0.101,
+        0.0
+      ],
+      [
+        0.315,
+        0.852,
+        1.0,
+        1.0,
+        0.986,
+        0.452,
+        0.0
+      ],
+      [
+        0.793,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.909,
+        0.538
+      ],
+      [
+        0.756,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.964,
+        0.25
+      ],
+      [
+        0.306,
+        0.623,
+        0.849,
+        0.772,
+        0.782,
+        0.572,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      27,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 99,
+    "contact_reference_px": 99.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,197 @@
+{
+  "id": "medieval_western.gothic_cathedrals_and_monumental_abbeys.arch_flying_buttress_pier_polychrome_painted",
+  "name": "Polychrome Painted Double-Tiered Flying Buttress Arch",
+  "vietnamese_name": "Vòm Bay Đỡ Tường Đôi (Flying Buttress) (Sơn Màu Thánh Tượng)",
+  "category": "gothic_cathedrals_and_monumental_abbeys",
+  "sub_category": "flying_buttress_and_pinacle",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": null,
+  "gameplay_role": "Cathedral architecture component (Double-Tiered Flying Buttress Arch).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "french_capetian",
+  "prompt_summary": "2D orthographic top-down game sprite of polychrome painted double-tiered flying buttress arch, rich medieval tempera pigment traces, High Gothic cathedral and monumental abbey style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/gothic_cathedrals_and_monumental_abbeys/arch_flying_buttress_pier_polychrome_painted.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.gothic_cathedrals_and_monumental_abbeys.arch_flying_buttress_pier_polychrome_painted:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.629,
+        0.63
+      ],
+      [
+        0.776,
+        0.792
+      ]
+    ],
+    "frac_zero": 0.5708,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.064,
+        0.005,
+        0.509,
+        0.126,
+        0.062,
+        0.009
+      ],
+      [
+        0.562,
+        0.764,
+        1.0,
+        0.874,
+        0.813,
+        0.179
+      ],
+      [
+        0.63,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.172
+      ],
+      [
+        0.743,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.431
+      ],
+      [
+        0.842,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.757
+      ],
+      [
+        0.305,
+        1.0,
+        1.0,
+        1.0,
+        0.73,
+        0.025
+      ],
+      [
+        0.212,
+        0.631,
+        0.977,
+        0.79,
+        0.572,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      41,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 95,
+    "contact_reference_px": 95.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

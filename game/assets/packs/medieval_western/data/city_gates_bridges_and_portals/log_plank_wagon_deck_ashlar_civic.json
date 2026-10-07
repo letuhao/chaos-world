@@ -1,0 +1,168 @@
+{
+  "id": "medieval_western.city_gates_bridges_and_portals.log_plank_wagon_deck_ashlar_civic",
+  "name": "Civic Limestone Heavy Hewn Log Plank Bridge Deck",
+  "vietnamese_name": "Mặt Cầu Lát Ván Gỗ Cho Xe Bò Đi (Đá Vôi Đô Thị)",
+  "category": "city_gates_bridges_and_portals",
+  "sub_category": "timber_oxcart_trestle_bridge",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "drive_cart",
+  "gameplay_role": "City gate and river crossing element (Heavy Hewn Log Plank Bridge Deck).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of civic limestone heavy hewn log plank bridge deck, neat civic limestone ashlar masonry, Medieval city gates and river bridges style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/city_gates_bridges_and_portals/log_plank_wagon_deck_ashlar_civic.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.city_gates_bridges_and_portals.log_plank_wagon_deck_ashlar_civic:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.651,
+        0.697
+      ],
+      [
+        0.736,
+        0.737
+      ]
+    ],
+    "frac_zero": 0.603,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.155,
+        0.771,
+        1.0,
+        0.703,
+        0.14,
+        0.0
+      ],
+      [
+        0.513,
+        1.0,
+        1.0,
+        1.0,
+        0.461,
+        0.0
+      ],
+      [
+        0.274,
+        0.958,
+        1.0,
+        1.0,
+        0.652,
+        0.0
+      ],
+      [
+        0.0,
+        0.558,
+        1.0,
+        0.898,
+        0.012,
+        0.0
+      ],
+      [
+        0.478,
+        0.799,
+        1.0,
+        0.979,
+        0.499,
+        0.0
+      ],
+      [
+        0.858,
+        1.0,
+        1.0,
+        1.0,
+        0.887,
+        0.094
+      ],
+      [
+        0.507,
+        0.94,
+        0.581,
+        0.698,
+        0.516,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      47,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 67,
+    "contact_reference_px": 67.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="StatusDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/status/status_def.gd" id="1_status"]
+
+[resource]
+script = ExtResource("1_status")
+id = &"ice_stillness"
+element = &"ice"
+kind = &"stat_modifier"
+family = &"frost"
+categories = Array[StringName]([&"stat_modifier"])
+scope = &"cultivation"
+stacking = &"refresh"
+duration = -1.0
+magnitude_unit = &"stat_modifier"
+magnitude_cap = 1.0
+tick_interval = 1.0
+mitigation_tags = Array[StringName]([&"affinity", &"pill", &"gear"])
+payload = {
+"mechanic": &"brace",
+"text": "Frost settled where the nerves used to rush. The mind reads what moves and does not move first.",
+"modifiers": [
+{"stat": &"insight_gain", "op": &"percent", "value": 0.15},
+{"stat": &"poise", "op": &"percent", "value": 0.1}
+]
+}

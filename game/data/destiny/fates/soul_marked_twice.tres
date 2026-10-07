@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_fate")
 id = &"soul_marked_twice"
-display_name = "Soul Marked Twice"
-description = "Twice now the line has been written, and written by the same hand each time. The second mark is not the first one again; it is the first one acknowledged."
+display_name = "LOC_DESTINY_SOUL_MARKED_TWICE_DISPLAY_NAME"
+description = "LOC_DESTINY_SOUL_MARKED_TWICE_DESCRIPTION"
 category = &"rebirth"
 tier = 2
 visibility = &"revealed"

@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_fate")
 id = &"oath_kept_under_witness"
-display_name = "Kept Under Witness"
-description = "Three sworn terms discharged in full with named witnesses standing by. No clerk had to intervene. The body settles into a discipline the mind did not ask for."
+display_name = "LOC_DESTINY_OATH_KEPT_UNDER_WITNESS_DISPLAY_NAME"
+description = "LOC_DESTINY_OATH_KEPT_UNDER_WITNESS_DESCRIPTION"
 category = &"oath"
 tier = 0
 visibility = &"revealed"

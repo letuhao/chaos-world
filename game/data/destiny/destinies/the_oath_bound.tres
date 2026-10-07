@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_destiny")
 id = &"the_oath_bound"
-display_name = "The Oath-Bound"
-description = "Sworn into an order whose terms outlive the person who wrote them. Where the order's clerks remain, you remain."
+display_name = "LOC_DESTINY_THE_OATH_BOUND_DISPLAY_NAME"
+description = "LOC_DESTINY_THE_OATH_BOUND_DESCRIPTION"
 bearing = "Your decisions were made once, in a room, in front of witnesses. Everything since has been compliance."
 tier = 1
 visibility = &"revealed"

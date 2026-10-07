@@ -1,0 +1,125 @@
+{
+  "id": "medieval_western.gothic_cathedrals_and_monumental_abbeys.pierced_quatrefoil_parapet_polychrome_painted",
+  "name": "Polychrome Painted Quatrefoil Pierced Gallery Balustrade",
+  "vietnamese_name": "Lan Can Đá Chạm Trổ Bốn Cánh Hoa (Sơn Màu Thánh Tượng)",
+  "category": "gothic_cathedrals_and_monumental_abbeys",
+  "sub_category": "flying_buttress_and_pinacle",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": null,
+  "gameplay_role": "Cathedral architecture component (Quatrefoil Pierced Gallery Balustrade).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "french_capetian",
+  "prompt_summary": "2D orthographic top-down game sprite of polychrome painted quatrefoil pierced gallery balustrade, rich medieval tempera pigment traces, High Gothic cathedral and monumental abbey style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/gothic_cathedrals_and_monumental_abbeys/pierced_quatrefoil_parapet_polychrome_painted.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.gothic_cathedrals_and_monumental_abbeys.pierced_quatrefoil_parapet_polychrome_painted:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.431,
+        0.433
+      ]
+    ],
+    "frac_zero": 0.7446,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.124,
+        0.173,
+        0.207,
+        0.568,
+        0.204,
+        0.175,
+        0.128
+      ],
+      [
+        0.739,
+        0.669,
+        0.604,
+        0.514,
+        0.596,
+        0.675,
+        0.763
+      ],
+      [
+        0.452,
+        0.413,
+        0.416,
+        0.192,
+        0.438,
+        0.425,
+        0.457
+      ]
+    ],
+    "crop_offset": [
+      16,
+      35
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 90,
+    "contact_reference_px": 90.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

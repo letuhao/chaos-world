@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_fate")
 id = &"night_off_the_rotation"
-display_name = "Night off the Rotation"
-description = "Left the post you were assigned and did not return to it. The roster carries the gap. It has not been reassigned."
+display_name = "LOC_DESTINY_NIGHT_OFF_THE_ROTATION_DISPLAY_NAME"
+description = "LOC_DESTINY_NIGHT_OFF_THE_ROTATION_DESCRIPTION"
 category = &"debauch"
 tier = 1
 visibility = &"revealed"

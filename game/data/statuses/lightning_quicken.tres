@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="StatusDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/status/status_def.gd" id="1_status"]
+
+[resource]
+script = ExtResource("1_status")
+id = &"lightning_quicken"
+element = &"lightning"
+kind = &"stat_modifier"
+family = &"spark"
+categories = Array[StringName]([&"stat_modifier"])
+scope = &"cultivation"
+stacking = &"refresh"
+duration = -1.0
+magnitude_unit = &"stat_modifier"
+magnitude_cap = 1.0
+tick_interval = 1.0
+mitigation_tags = Array[StringName]([&"affinity", &"gear", &"pill"])
+payload = {
+"mechanic": &"brace",
+"text": "The body moves on its own spark now. Hands and feet arrive before thought finishes.",
+"modifiers": [
+{"stat": &"attack_speed", "op": &"percent", "value": 0.1},
+{"stat": &"move_speed", "op": &"flat", "value": 6.0}
+]
+}

@@ -10,6 +10,7 @@ not just asserted. Nothing here touches the real repository.
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import tempfile
 from pathlib import Path
@@ -21,14 +22,14 @@ _MIGRATED = """extends Control
 
 
 func _hint_text() -> String:
-\treturn L.t("%s", "Okay")
+\treturn L.t("%s")
 """
 
 _LEFTOVER = """extends Control
 
 
 func _hint_text() -> String:
-\treturn L.t("%s", "Okay")
+\treturn L.t("%s")
 \treturn "Leftover"
 """
 
@@ -43,7 +44,7 @@ _CONST_DICT = """extends Control
 
 
 var REASON_TEXT := {
-\t"no_actor": L.t("%s", "The world has no one"),
+\t"no_actor": L.t("%s"),
 }
 """
 
@@ -74,10 +75,26 @@ def _check(root: Path) -> int:
     return engine._check(argparse.Namespace(repo_root=str(root), action="check"))
 
 
-def _extract(root: Path, write_mode: bool = True) -> int:
+def _extract(root: Path, write_mode: bool = True, scope: str = "sinks") -> int:
     return engine._extract(
-        argparse.Namespace(repo_root=str(root), action="extract", write=write_mode, only=[])
+        argparse.Namespace(
+            repo_root=str(root), action="extract", write=write_mode, only=[], scope=scope
+        )
     )
+
+
+def _content_tree(root: Path, tres_text: str) -> None:
+    """A minimal `game/data` content tree. NO catalog: content English lives in the `.tres`."""
+    write(root / "game" / "data" / "items" / "probe.tres", tres_text)
+    write(root / "game" / "locale" / "gaps.json", "{}")
+
+
+def _export(root: Path, locale: str) -> int:
+    return engine._export(argparse.Namespace(repo_root=str(root), locale=locale))
+
+
+def _import(root: Path, locale: str, csv_path: Path) -> int:
+    return engine._import(argparse.Namespace(repo_root=str(root), locale=locale, csv=str(csv_path)))
 
 
 @case("i18n: slug is deterministic and prefix-scoped")
@@ -135,16 +152,39 @@ def _orphan_is_red() -> None:
         expect(_check(root) == 1, "a catalog row no source uses must fail")
 
 
-@case("i18n check: a key whose hash does not match its English is RED")
-def _wrong_hash_is_red() -> None:
+@case("i18n check: editing a catalog's English is GREEN (the key is stable)")
+def _edited_english_is_green() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         root = Path(tmp)
-        _tree(
-            root,
-            _MIGRATED % "LOC_UI_DEADBEEF01",
-            catalog.render("en", {"LOC_UI_DEADBEEF01": "Okay"}),
+        key = _slug("Ready")
+        # The row was copy-edited in place. The key is unchanged and opaque, so the gate must
+        # pass: this is the whole point of a stable key over a content hash (ADR 0918).
+        _tree(root, _MIGRATED % key, catalog.render("en", {key: "Ready to go"}))
+        expect(_check(root) == 0, "a stable key survives an English edit with no re-key")
+
+
+@case("i18n: assign_key reuses a key for the same text and mints a distinct one after an edit")
+def _assign_key_is_stable() -> None:
+    base = catalog.slug_for("UI", "Ready")
+    expect(
+        catalog.assign_key("UI", "Ready", {base: "Ready"}) == base,
+        "the same text reuses its existing key",
+    )
+    fresh = catalog.assign_key("UI", "Ready", {base: "Ready to go"})
+    expect(fresh != base, "a row edited away from that text forces a NEW key, not a clobber")
+    expect(fresh not in {base}, "and the new key is free")
+
+
+@case("i18n check: a 2-arg key that does not hash its inline English is RED")
+def _inline_english_mismatch_is_red() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        source = (
+            "extends Control\n\n\nfunc _hint_text() -> String:\n"
+            '\treturn L.t("LOC_UI_DEADBEEF01", "Okay")\n'
         )
-        expect(_check(root) == 1, "a hand-edited key that does not hash its English must fail")
+        _tree(root, source, catalog.render("en", {"LOC_UI_DEADBEEF01": "Okay"}))
+        expect(_check(root) == 1, "a 2-arg key must hash the English it carries in source")
 
 
 @case("i18n check: a UI script that GAINED a sink since the baseline is RED")
@@ -193,3 +233,61 @@ def _static_const_is_skipped() -> None:
             any("static func" in item.reason for item in result.unsupported),
             "instead it is reported for a human",
         )
+
+
+_CONTENT_TRES = """[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[resource]
+id = &"probe"
+display_name = "Jade Pendant"
+"""
+
+
+@case("i18n: content migrates the .tres field to a KEY and fills the owner catalog")
+def _content_migrates_to_a_key() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        _content_tree(root, _CONTENT_TRES)
+        expect(_check(root) == 0, "an unmigrated field is a GAP, not a gate failure")
+        _extract(root, scope="content")
+        text = (root / "game" / "data" / "items" / "probe.tres").read_text(encoding="utf-8")
+        expect(
+            'display_name = "LOC_ITEMS_PROBE_DISPLAY_NAME"' in text,
+            "the field now holds a readable key derived from the def id + field",
+        )
+        rows = catalog.load(root / "game" / "locale" / "items.tres")
+        expect(rows.get("LOC_ITEMS_PROBE_DISPLAY_NAME") == "Jade Pendant", "and its English row")
+        expect(_check(root) == 0, "the migrated tree passes the gate")
+
+
+@case("i18n check: a migrated content key with no catalog row is RED")
+def _content_key_without_a_row_is_red() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        _content_tree(root, _CONTENT_TRES.replace("Jade Pendant", "LOC_ITEMS_PROBE_DISPLAY_NAME"))
+        expect(_check(root) == 1, "the .tres holds a key no owner catalog carries")
+
+
+@case("i18n export/import: a filled template becomes a subset locale catalog")
+def _export_import_round_trip() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        _content_tree(root, _CONTENT_TRES)
+        _extract(root, scope="content")  # the en catalog must exist before a locale subset
+        _export(root, "vi")
+        template = root / "build" / "i18n" / "vi.csv"
+        rows = list(csv.DictReader(template.read_text(encoding="utf-8").splitlines()))
+        expect(len(rows) == 1, "the template carries the one string to translate")
+        expect(rows[0]["english"] == "Jade Pendant", "with its English for reference")
+        # A translator fills the `translation` column and hands the file back.
+        filled = root / "filled.csv"
+        write(
+            filled,
+            "key,owner,english,translation\n"
+            + ",".join([rows[0]["key"], rows[0]["owner"], rows[0]["english"], "Ngoc Bi"])
+            + "\n",
+        )
+        _import(root, "vi", filled)
+        expect(_check(root) == 0, "the imported locale catalog is a valid subset")
+        translated = catalog.load(root / "game" / "locale" / "items.vi.tres")
+        expect(list(translated.values()) == ["Ngoc Bi"], "the row landed under the derived key")

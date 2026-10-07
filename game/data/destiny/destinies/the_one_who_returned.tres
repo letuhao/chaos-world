@@ -6,8 +6,8 @@
 script = ExtResource("1_destiny")
 group = &"origin"
 id = &"the_one_who_returned"
-display_name = "The One Who Returned"
-description = "Walked into a place the register does not admit and came back out with a working method and no account of how long the absence lasted."
+display_name = "LOC_DESTINY_THE_ONE_WHO_RETURNED_DISPLAY_NAME"
+description = "LOC_DESTINY_THE_ONE_WHO_RETURNED_DESCRIPTION"
 bearing = "Everything you now know arrived with you. Nobody else came back to compare notes, so there is no way to check."
 tier = 2
 visibility = &"revealed"

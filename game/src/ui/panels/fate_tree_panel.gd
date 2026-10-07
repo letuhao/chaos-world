@@ -144,9 +144,7 @@ func _render() -> void:
 			_graph.add_child(node)
 
 
-func _make_node(
-	fate_id: String, view: Dictionary, layer_index: int, node_index: int
-) -> Control:
+func _make_node(fate_id: String, view: Dictionary, layer_index: int, node_index: int) -> Control:
 	var held := bool(view.get("held", false))
 	var node := PanelContainer.new()
 	node.name = "FateNode%s" % fate_id
@@ -154,11 +152,17 @@ func _make_node(
 	var vbox := VBoxContainer.new()
 	node.add_child(vbox)
 	var head := Label.new()
-	head.text = String(view.get("display_name", "")) if held or String(view.get("display_name", "")) != "" else "Unnamed"
+	head.text = L.t(
+		(
+			String(view.get("display_name", ""))
+			if held or String(view.get("display_name", "")) != ""
+			else "Unnamed"
+		)
+	)
 	head.theme_type_variation = &"EarnedLabel" if held else &"LockedLabel"
 	vbox.add_child(head)
 	var meta := Label.new()
-	meta.text = _meta(view)
+	meta.text = L.t(_meta(view))
 	meta.theme_type_variation = &"EffectLabel" if held else &"LockedLabel"
 	vbox.add_child(meta)
 	# Position in the layered layout.

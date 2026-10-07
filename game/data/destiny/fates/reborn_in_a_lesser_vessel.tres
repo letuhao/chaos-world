@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_fate")
 id = &"reborn_in_a_lesser_vessel"
-display_name = "Reborn in a Lesser Vessel"
-description = "Came back after a failure at the barrier in a body the sect records as a downgrade. The technique survived. The archive notes the discrepancy and declines to reconcile it."
+display_name = "LOC_DESTINY_REBORN_IN_A_LESSER_VESSEL_DISPLAY_NAME"
+description = "LOC_DESTINY_REBORN_IN_A_LESSER_VESSEL_DESCRIPTION"
 category = &"rebirth"
 tier = 2
 visibility = &"revealed"

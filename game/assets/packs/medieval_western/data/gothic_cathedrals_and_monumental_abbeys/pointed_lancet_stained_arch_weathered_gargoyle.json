@@ -1,0 +1,139 @@
+{
+  "id": "medieval_western.gothic_cathedrals_and_monumental_abbeys.pointed_lancet_stained_arch_weathered_gargoyle",
+  "name": "Gargoyle-Rainwashed Tall Pointed Lancet Saint Glass Window",
+  "vietnamese_name": "Cửa Sổ Vòm Nhọn Kính Màu Hình Thánh (Xói Mòn Mưa Nước)",
+  "category": "gothic_cathedrals_and_monumental_abbeys",
+  "sub_category": "rose_window_and_lancet_glass",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "pray",
+  "gameplay_role": "Cathedral architecture component (Tall Pointed Lancet Saint Glass Window).",
+  "destructible": false,
+  "material": "glass",
+  "feudal_culture": "french_capetian",
+  "prompt_summary": "2D orthographic top-down game sprite of gargoyle-rainwashed tall pointed lancet saint glass window, dark runnels from rainwater spouts, High Gothic cathedral and monumental abbey style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/gothic_cathedrals_and_monumental_abbeys/pointed_lancet_stained_arch_weathered_gargoyle.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.gothic_cathedrals_and_monumental_abbeys.pointed_lancet_stained_arch_weathered_gargoyle:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.571
+      ],
+      [
+        0.816
+      ]
+    ],
+    "frac_zero": 0.6223,
+    "blocks": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.136,
+        0.354,
+        0.0
+      ],
+      [
+        0.686,
+        0.992,
+        0.031
+      ],
+      [
+        0.694,
+        0.995,
+        0.084
+      ],
+      [
+        0.77,
+        1.0,
+        0.296
+      ],
+      [
+        0.849,
+        1.0,
+        0.536
+      ],
+      [
+        0.869,
+        1.0,
+        0.644
+      ],
+      [
+        0.63,
+        0.911,
+        0.402
+      ]
+    ],
+    "crop_offset": [
+      25,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 58,
+    "contact_reference_px": 58.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

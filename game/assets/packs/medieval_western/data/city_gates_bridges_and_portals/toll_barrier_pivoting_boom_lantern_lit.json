@@ -1,0 +1,123 @@
+{
+  "id": "medieval_western.city_gates_bridges_and_portals.toll_barrier_pivoting_boom_lantern_lit",
+  "name": "Torch-Illuminated Iron-Counterweighted Timber Toll Bar",
+  "vietnamese_name": "Thanh Chắn Cần Cẩu Thu Phí Đường (Soi Sáng Ánh Đuốc)",
+  "category": "city_gates_bridges_and_portals",
+  "sub_category": "curfew_bell_and_toll_station",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": true,
+  "vision_mode": "low",
+  "interactive_verb": "lift_barrier",
+  "gameplay_role": "City gate and river crossing element (Iron-Counterweighted Timber Toll Bar).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of torch-illuminated iron-counterweighted timber toll bar, iron-framed grease lanterns casting warm glow, Medieval city gates and river bridges style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/city_gates_bridges_and_portals/toll_barrier_pivoting_boom_lantern_lit.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.city_gates_bridges_and_portals.toll_barrier_pivoting_boom_lantern_lit:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.5,
+        0.516
+      ]
+    ],
+    "frac_zero": 0.6941,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.006,
+        0.186,
+        0.319,
+        0.285,
+        0.157,
+        0.0
+      ],
+      [
+        0.618,
+        0.917,
+        0.825,
+        0.806,
+        0.922,
+        0.607
+      ],
+      [
+        0.093,
+        0.686,
+        0.896,
+        0.92,
+        0.744,
+        0.109
+      ]
+    ],
+    "crop_offset": [
+      32,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 125,
+    "contact_reference_px": 125.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

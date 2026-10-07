@@ -67,6 +67,9 @@ class Finding:
     prefix: str
     catalog: str
     kind: str
+    ## Filled in by `extract` when it assigns a stable key. Empty on a read-only scan, and
+    ## never re-derived from the text — see `catalog.assign_key`.
+    key: str = ""
 
 
 @dataclass
@@ -412,8 +415,65 @@ def _scan_rows(rel, text, prefix, catalog, kind, pattern) -> list[Finding]:
     return findings
 
 
+_TRES_ID = re.compile(r'^id\s*[:=]\s*&?"(?P<id>[^"]+)"', re.MULTILINE)
+
+
+def _token(value: str) -> str:
+    """A key fragment: upper-case, non-alphanumeric runs collapsed to `_`."""
+    return re.sub(r"[^A-Za-z0-9]+", "_", value).strip("_").upper() or "X"
+
+
 def scan_tres(rel: str, text: str, prefix: str, catalog: str) -> Scan:
-    return Scan(_scan_rows(rel, text, prefix, catalog, "tres_lit", _TRES_ROW), [], [], False)
+    """Find every player-facing `.tres` field and give it an EXPLICIT, readable key.
+
+    The game's data holds the KEY, not the English (`display_name = "LOC_ITEMS_X_NAME"`), and
+    one def is defined once for every language. The key derives from the def's own `id` (or the
+    file stem when it has none) plus the field name — stable across an English edit, which is
+    the whole point — and a positional suffix when a field repeats in one file.
+    """
+    ident = _TRES_ID.search(text)
+    stem = rel.rsplit("/", 1)[-1].rsplit(".", 1)[0]
+    token = _token(ident.group("id")) if ident else _token(stem)
+    collected: list[tuple[int, int, int, str, str]] = []
+    uses: list[Use] = []
+    offset = 0
+    line_no = 0
+    for raw_line in text.splitlines(keepends=True):
+        line_no += 1
+        line_start = offset
+        offset += len(raw_line)
+        match = _TRES_ROW.match(raw_line)
+        if match is None:
+            continue
+        value = decode(match.group("lit"))
+        if value.startswith(policy.SLUG_PREFIX):
+            # Already migrated: the field holds the KEY, so this is a reference to resolve.
+            uses.append(Use(rel, line_no, value, ""))
+            continue
+        if not policy.is_player_text(value):
+            continue
+        start = line_start + match.start("lit") - 1  # include the opening quote
+        collected.append(
+            (
+                start,
+                start + len(match.group("lit")) + 2,
+                line_no,
+                match.group("field").upper(),
+                value,
+            )
+        )
+    counts: dict[str, int] = {}
+    for _start, _end, _line, field, _value in collected:
+        counts[field] = counts.get(field, 0) + 1
+    seen: dict[str, int] = {}
+    findings: list[Finding] = []
+    for start, end, line, field, value in collected:
+        seen[field] = seen.get(field, 0) + 1
+        key = f"{policy.SLUG_PREFIX}_{prefix}_{token}_{field}"
+        if counts[field] > 1:
+            key = f"{key}_{seen[field]}"
+        findings.append(Finding(rel, line, start, end, value, prefix, catalog, "tres_lit", key))
+    return Scan(findings, uses, [], False)
 
 
 def scan_tscn(rel: str, text: str, prefix: str, catalog: str) -> Scan:

@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_fate")
 id = &"first_blood_duel"
-display_name = "First Blood"
-description = "Opened a duel and closed it, alone, without assistance. The sect's record names no second party because the second party filed nothing."
+display_name = "LOC_DESTINY_FIRST_BLOOD_DUEL_DISPLAY_NAME"
+description = "LOC_DESTINY_FIRST_BLOOD_DUEL_DESCRIPTION"
 category = &"blood"
 tier = 1
 visibility = &"revealed"

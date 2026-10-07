@@ -1,0 +1,229 @@
+{
+  "id": "medieval_western.city_gates_bridges_and_portals.twin_drum_city_gate_portal_ashlar_civic",
+  "name": "Civic Limestone Twin-Drum Vaulted City Entrance Gate",
+  "vietnamese_name": "Cổng Thành Vòm Đôi Hai Tháp Tròn Đô Thị (Đá Vôi Đô Thị)",
+  "category": "city_gates_bridges_and_portals",
+  "sub_category": "twin_towered_city_gatehouse",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "pass_gate",
+  "gameplay_role": "City gate and river crossing element (Twin-Drum Vaulted City Entrance Gate).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of civic limestone twin-drum vaulted city entrance gate, neat civic limestone ashlar masonry, Medieval city gates and river bridges style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/city_gates_bridges_and_portals/twin_drum_city_gate_portal_ashlar_civic.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.city_gates_bridges_and_portals.twin_drum_city_gate_portal_ashlar_civic:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.835,
+        0.776,
+        0.838
+      ],
+      [
+        0.55,
+        0.302,
+        0.564
+      ]
+    ],
+    "frac_zero": 0.562,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      10,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.401,
+        0.888,
+        0.759,
+        0.315,
+        0.312,
+        0.311,
+        0.69,
+        0.928,
+        0.531,
+        0.0
+      ],
+      [
+        0.925,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.997,
+        0.643
+      ],
+      [
+        0.659,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.882,
+        0.04
+      ],
+      [
+        0.236,
+        1.0,
+        1.0,
+        0.778,
+        0.261,
+        0.67,
+        1.0,
+        1.0,
+        0.439,
+        0.0
+      ],
+      [
+        0.021,
+        0.952,
+        1.0,
+        0.662,
+        0.0,
+        0.512,
+        1.0,
+        1.0,
+        0.159,
+        0.0
+      ],
+      [
+        0.0,
+        0.792,
+        1.0,
+        0.66,
+        0.0,
+        0.355,
+        0.997,
+        0.973,
+        0.002,
+        0.0
+      ],
+      [
+        0.0,
+        0.236,
+        0.534,
+        0.328,
+        0.0,
+        0.0,
+        0.447,
+        0.586,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      44,
+      17
+    ],
+    "trunk_columns": [
+      6,
+      7
+    ],
+    "contact_px": 39,
+    "contact_reference_px": 39.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

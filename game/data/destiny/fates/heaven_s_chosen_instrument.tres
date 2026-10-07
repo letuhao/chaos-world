@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_fate")
 id = &"heaven_s_chosen_instrument"
-display_name = "Heaven's Chosen Instrument"
-description = "Marked from outside by a discipline the sect does not teach. The mark reads as an instruction. It has never been explained and does not answer to argument."
+display_name = "LOC_DESTINY_HEAVEN_S_CHOSEN_INSTRUMENT_DISPLAY_NAME"
+description = "LOC_DESTINY_HEAVEN_S_CHOSEN_INSTRUMENT_DESCRIPTION"
 category = &"heaven"
 tier = 2
 visibility = &"revealed"

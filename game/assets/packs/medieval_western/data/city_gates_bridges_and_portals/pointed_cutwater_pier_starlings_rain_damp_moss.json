@@ -1,0 +1,169 @@
+{
+  "id": "medieval_western.city_gates_bridges_and_portals.pointed_cutwater_pier_starlings_rain_damp_moss",
+  "name": "River-Misted Pointed Triangular River Cutwater",
+  "vietnamese_name": "Mũi Rẽ Nước Bằng Đá Bảo Vệ Trụ Cầu (Sương Sông Ẩm Ướt)",
+  "category": "city_gates_bridges_and_portals",
+  "sub_category": "norman_barrel_arch_stone_bridge",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": null,
+  "gameplay_role": "City gate and river crossing element (Pointed Triangular River Cutwater).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of river-misted pointed triangular river cutwater, slick green water-spray moss on lower piers, Medieval city gates and river bridges style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/city_gates_bridges_and_portals/pointed_cutwater_pier_starlings_rain_damp_moss.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.city_gates_bridges_and_portals.pointed_cutwater_pier_starlings_rain_damp_moss:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.375
+      ],
+      [
+        0.834
+      ]
+    ],
+    "frac_zero": 0.614,
+    "blocks": [
+      [
+        true
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.013,
+        0.437,
+        0.007
+      ],
+      [
+        0.102,
+        0.994,
+        0.065
+      ],
+      [
+        0.305,
+        1.0,
+        0.263
+      ],
+      [
+        0.493,
+        1.0,
+        0.477
+      ],
+      [
+        0.776,
+        1.0,
+        0.773
+      ],
+      [
+        0.915,
+        1.0,
+        0.881
+      ],
+      [
+        0.74,
+        0.957,
+        0.802
+      ]
+    ],
+    "crop_offset": [
+      16,
+      29
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 90,
+    "contact_reference_px": 90.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      256
+    ]
+  }
+}

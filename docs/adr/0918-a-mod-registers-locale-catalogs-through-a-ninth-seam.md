@@ -30,6 +30,17 @@ interface"), so this is a reviewed change to that surface, not an ad-hoc read.
   English): a text change is then a DATA change, which is what makes the split meaningful and
   what a mod can override. `L.t(key, source)` keeps the optional `source` for a caller that
   genuinely has the English in hand; core UI passes none.
+- **The key is STABLE and opaque once assigned.** `assign_key` mints it once — content hash,
+  with a deterministic nonce when that hash is already taken by edited text — and never
+  re-derives it, so `check` requires a row to EXIST, not to hash to its key. Editing the
+  English is therefore a one-row data edit that leaves every other locale's translation in
+  place; a content hash that `check` re-verified would have made every copy edit a re-key.
+- **Authored content holds KEYS, like every other string.** `extract --scope content` rewrites
+  a `.tres` display field to a readable key derived from the def's own `id` + field name
+  (`LOC_DESTINY_OATH_BREAKER_DISPLAY_NAME`) and fills that owner's en catalog — so the key is
+  stable across an English edit, one def is defined once for every language, and no per-language
+  copy of the content exists. A reader that COMPOSES a sentence from fields must resolve each
+  field (`L.t(field)`), because a whole composed string is not a key.
 
 ## Consequences
 

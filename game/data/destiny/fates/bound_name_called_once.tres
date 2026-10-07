@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_fate")
 id = &"bound_name_called_once"
-display_name = "The Name Spoken Once"
-description = "Bound another's cultivation to your own, and that person died before the term expired. The binding resolved as written, which the sect regards as the least remarkable possible outcome."
+display_name = "LOC_DESTINY_BOUND_NAME_CALLED_ONCE_DISPLAY_NAME"
+description = "LOC_DESTINY_BOUND_NAME_CALLED_ONCE_DESCRIPTION"
 category = &"severance"
 tier = 2
 visibility = &"hidden"
