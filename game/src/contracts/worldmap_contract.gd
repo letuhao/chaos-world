@@ -16,8 +16,10 @@ extends RefCounted
 ## ## Edge shape (TravelConnection)
 ##
 ## `{"from": String, "to": String, "kind": StringName, "from_cell": Vector2i,
-## "to_cell": Vector2i, "two_way": bool}`. `kind` is open (doorway, portal,
-## road, ship, world_transfer...). Containment and travel are independent:
+## "to_cell": Vector2i, "two_way": bool, "hook": String, "toll": Dictionary}`.
+## `kind` is open (doorway, portal, road, ship, world_transfer...). `hook`
+## names a gate evaluator (absent means open); `toll` is `{amount}` with a
+## non-negative int or `{}` for free. Containment and travel are independent:
 ## an edge may join nodes that share no parent, and a child may have no edge
 ## to its parent at all.
 ##

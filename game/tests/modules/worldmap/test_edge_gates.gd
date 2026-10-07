@@ -10,6 +10,7 @@ extends TestCase
 const ENV := "mortal_greenwood"
 
 var _scene: WorldmapScene = null
+var _born: Array = []
 
 
 func setup() -> void:
@@ -24,6 +25,9 @@ func teardown() -> void:
 			_scene.get_parent().remove_child(_scene)
 		_scene.free()
 	_scene = null
+	for actor in _born:
+		(actor as Actor).resources.clear()
+	_born.clear()
 
 
 func test_an_edge_without_a_hook_passes() -> void:
@@ -159,3 +163,64 @@ func _open_gated() -> void:
 	_scene = WorldmapScene.new()
 	var outcome := _scene.open(graph, "overworld", _configs())
 	assert_eq(bool(outcome.get("ok", false)), true, "the gated node opens")
+
+
+func test_a_toll_is_stored_and_malformed_tolls_repair_to_free() -> void:
+	var graph := WorldmapGraph.new()
+	graph.add_node({"id": "a", "kind": &"town", "parent": ""})
+	graph.add_node({"id": "b", "kind": &"town", "parent": ""})
+	graph.add_edge({"from": "a", "to": "b", "kind": &"road", "toll": {"amount": 5}})
+	graph.add_edge({"from": "b", "to": "a", "kind": &"road", "toll": {"amount": -3}})
+	graph.add_edge({"from": "a", "to": "b", "kind": &"road", "toll": "five"})
+	var edges := graph.edges_from("a")
+	assert_eq((edges[0] as Dictionary).get("toll", {}), {"amount": 5}, "a real toll is stored")
+	assert_eq(
+		(graph.edges_from("b")[0] as Dictionary).get("toll", {"x": 1}),
+		{},
+		"a negative toll repairs to free"
+	)
+	assert_eq((edges[1] as Dictionary).get("toll", {"x": 1}), {}, "and so does a malformed one")
+
+
+func test_a_toll_collecting_evaluator_spends_for_real() -> void:
+	_toll_hero = _funded(12)
+	WorldmapGates.register("toll_bridge", Callable(self, "_collect"))
+	var edge := {
+		"from": "a", "to": "b", "kind": &"portal", "hook": "toll_bridge", "toll": {"amount": 5}
+	}
+	var paid := WorldmapApi.can_traverse(edge, {})
+	assert_eq(bool(paid.get("ok", false)), true, "twelve coins open the way")
+	assert_eq(EconomyApi.purse(_toll_hero), 7, "leaving seven")
+	_toll_hero = _funded(3)
+	var refused := WorldmapApi.can_traverse(edge, {})
+	assert_eq(bool(refused.get("ok", false)), false, "three coins do not")
+	assert_eq(String(refused.get("reason", "")), "unpaid_toll", "by name")
+	assert_eq(EconomyApi.purse(_toll_hero), 3, "with every coin untouched")
+
+
+var _toll_hero: Actor = null
+
+
+func _funded(coins: int) -> Actor:
+	var body := Actor.new(&"hero", {Stat.PHYSIQUE: 10.0})
+	ItemsApi.attach(body)
+	EconomyApi.attach(body)
+	var def := Crafting.resolve(EconomyValuation.numeraire_id())
+	ItemsApi.inventory(body).add(def, coins)
+	_born.append(body)
+	return body
+
+
+func _collect(edge: Dictionary, _context: Dictionary) -> Dictionary:
+	var amount := int((edge as Dictionary).get("toll", {}).get("amount", 0))
+	if amount <= 0:
+		return {"ok": true, "reason": ""}
+	if _toll_hero == null:
+		return {"ok": false, "reason": "no_actor"}
+	EconomyApi.attach(_toll_hero)
+	var coin := EconomyValuation.numeraire_id()
+	if EconomyApi.purse(_toll_hero) < amount:
+		return {"ok": false, "reason": "unpaid_toll"}
+	if not ItemsApi.consume_item(_toll_hero, coin, amount):
+		return {"ok": false, "reason": "unpaid_toll"}
+	return {"ok": true, "reason": "", "paid": amount}

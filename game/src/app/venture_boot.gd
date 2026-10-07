@@ -395,6 +395,8 @@ static func _demo_graph() -> WorldmapGraph:
 				"kind": &"portal",
 				"from_cell": Vector2i(5, 5),
 				"to_cell": Vector2i(2, 1),
+				"hook": "toll_bridge",
+				"toll": {"amount": 5},
 			}
 		)
 	)

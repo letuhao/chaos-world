@@ -1497,6 +1497,10 @@ func _bind_route_screen(route_id: StringName, screen: Control) -> void:
 			# method carries the live screen in, because a lambda cannot and
 			# the seam takes only the crossing.
 			WorldmapApi.install_transition(Callable(self, "_venture_transition"))
+			# DEF-0372: tolls spend for real. The evaluator reads the edge
+			# price and charges this root's actor; a short purse refuses
+			# with the coins untouched.
+			WorldmapGates.register("toll_bridge", Callable(self, "_venture_toll"))
 		_:
 			screen.call("setup", _actor)
 
@@ -1526,6 +1530,27 @@ func _venture_domain_leave() -> Dictionary:
 	if _actor == null:
 		return {"ok": false, "reason": "no_actor"}
 	return DomainBoot.leave_domain(_actor)
+
+
+## The toll evaluator (DEF-0372). Reads the edge's `toll.amount` and spends
+## numeraire from THIS root's actor, atomically: `consume_item` is
+## all-or-nothing, so a short purse refuses with the coins untouched. No toll
+## means free passage; no actor means no one to charge. Installed for the
+## `toll_bridge` hook, where the gate table's contract (bool or `{ok}`)
+## already covers the verdict shape.
+func _venture_toll(edge: Dictionary, _context: Dictionary):
+	var amount := int((edge as Dictionary).get("toll", {}).get("amount", 0))
+	if amount <= 0:
+		return {"ok": true, "reason": ""}
+	if _actor == null:
+		return {"ok": false, "reason": "no_actor"}
+	EconomyApi.attach(_actor)
+	var coin := EconomyValuation.numeraire_id()
+	if EconomyApi.purse(_actor) < amount:
+		return {"ok": false, "reason": "unpaid_toll"}
+	if not ItemsApi.consume_item(_actor, coin, amount):
+		return {"ok": false, "reason": "unpaid_toll"}
+	return {"ok": true, "reason": "", "paid": amount}
 
 
 ## The venture transition seam (DEF-0374). Carries the live screen into the

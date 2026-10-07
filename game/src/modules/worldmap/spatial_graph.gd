@@ -45,10 +45,24 @@ func add_edge(edge: Dictionary) -> Dictionary:
 				"to_cell": edge.get("to_cell", Vector2i(-1, -1)),
 				"two_way": bool(edge.get("two_way", true)),
 				"hook": String(edge.get("hook", "")),
+				"toll": _normalize_toll(edge.get("toll", {})),
 			}
 		)
 	)
 	return {"ok": true, "reason": ""}
+
+
+## The price of crossing, repaired never believed: `{amount}` with a
+## non-negative int, or `{}` for a free crossing. A malformed toll is a free
+## crossing rather than a corrupt edge — the gate still decides, and a gate
+## with no price to read leaves the purse alone.
+static func _normalize_toll(toll: Variant) -> Dictionary:
+	if not (toll is Dictionary):
+		return {}
+	var amount = (toll as Dictionary).get("amount", 0)
+	if (amount is int or amount is float) and not (amount is bool) and int(amount) > 0:
+		return {"amount": int(amount)}
+	return {}
 
 
 ## The node, or `{}` when no such place exists.

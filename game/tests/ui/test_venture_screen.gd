@@ -381,6 +381,8 @@ func test_the_far_arrival_plays_the_loading_screen() -> void:
 	if screen == null:
 		return
 	screen.call("act_open")
+	_fund(_harness.actor, 10)
+	var before := EconomyApi.purse(_harness.actor)
 	assert_eq(_walk_to_far(screen), true, "the far pad is reachable on foot")
 	var view := screen.call("summary") as Dictionary
 	assert_eq(String(view.get("node", "")), "far", "through the portal to the far side")
@@ -388,3 +390,82 @@ func test_the_far_arrival_plays_the_loading_screen() -> void:
 		screen.get_node_or_null("VentureTransition"), null, "with the overlay freed afterwards"
 	)
 	assert_eq((view.get("holders", []) as Array).is_empty(), false, "and the far side rendered")
+	assert_eq(EconomyApi.purse(_harness.actor), before - 5, "having paid the five-coin toll")
+
+
+func test_a_broke_hero_is_refused_with_coins_untouched() -> void:
+	var screen := _venture_screen()
+	if screen == null:
+		return
+	screen.call("act_open")
+	var coin := EconomyValuation.numeraire_id()
+	while EconomyApi.purse(_harness.actor) > 0:
+		if not ItemsApi.consume_item(_harness.actor, coin, 1):
+			break
+	assert_eq(EconomyApi.purse(_harness.actor), 0, "genuinely broke")
+	assert_eq(_walk_to_pad(screen), true, "an approach cell is reachable")
+	var cur := _cell_of(screen.call("summary") as Dictionary)
+	var last := Vector2i(5, 5) - cur
+	var verb := "act_east"
+	if last.x < 0:
+		verb = "act_west"
+	elif last.y > 0:
+		verb = "act_south"
+	elif last.y < 0:
+		verb = "act_north"
+	assert_eq(bool(screen.call(verb)), true, "the last step moves onto the pad")
+	assert_eq(
+		String((screen.call("summary") as Dictionary).get("node", "")),
+		"overworld",
+		"but broke heroes stay home"
+	)
+	assert_eq(EconomyApi.purse(_harness.actor), 0, "with nothing taken")
+
+
+## Walk to a pad approach cell WITHOUT stepping on any travel cell: stops
+## adjacent, for the refusal case. Pad cells and the cave door are forbidden;
+## arrival is any approach cell of the far pad. Bounded like the door walk.
+func _walk_to_pad(screen: Control) -> bool:
+	return _dfs_cell(
+		screen, {}, 0, [Vector2i(4, 5), Vector2i(5, 4)], [Vector2i(5, 5), Vector2i(3, 1)]
+	)
+
+
+func _dfs_cell(
+	screen: Control, seen: Dictionary, depth: int, targets: Array, forbid: Array
+) -> bool:
+	var view := screen.call("summary") as Dictionary
+	var node := String(view.get("node", ""))
+	if node != "overworld":
+		return false
+	var cur := _cell_of(view)
+	if cur in targets:
+		return true
+	var key := _key_of(view)
+	if depth >= WALK_DEPTH or seen.has(key):
+		return false
+	seen[key] = true
+	var size := int(view.get("chunk_size", 8))
+	for verb in ["act_east", "act_north", "act_south", "act_west"]:
+		if depth + 1 >= WALK_DEPTH:
+			break
+		var target := cur + _delta_of(verb)
+		if target.x < 0 or target.y < 0 or target.x >= size or target.y >= size:
+			continue
+		if target in forbid:
+			continue
+		if not bool(screen.call(verb)):
+			continue
+		if String((screen.call("summary") as Dictionary).get("node", "")) != "overworld":
+			return false
+		if _dfs_cell(screen, seen, depth + 1, targets, forbid):
+			return true
+		screen.call(_backtrack_of(verb))
+	return false
+
+
+func _fund(actor: Actor, coins: int) -> void:
+	ItemsApi.attach(actor)
+	EconomyApi.attach(actor)
+	var def := Crafting.resolve(EconomyValuation.numeraire_id())
+	ItemsApi.inventory(actor).add(def, coins)
