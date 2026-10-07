@@ -138,6 +138,7 @@ Design principles to apply:
 - **Dependency inversion.** Modules depend on `contracts` interfaces, not concrete siblings; `app/` injects implementations.
 - **Event-driven decoupling.** Cross-module communication uses typed signals/events defined in `contracts`, not direct node lookups.
 - **Minimal autoloads.** Keep them to documented infrastructure declared in `game/project.godot`, never feature logic. No cross-module `get_node("/root/...")`.
+- **Tiered tracking.** Only the bodies the game REMEMBERS are tracked — the player and the roster's entries; minor, spawned and lost npcs mint no roster entry and carry no per-frame system (ADR 0092). A mechanism gates on the ENTRY, never on a tier name, and a per-frame system that would otherwise run for every actor obeys this (the age projection's sync is the first): the cost the tiering exists to bound is CPU and RAM.
 - One module = one reason to change. If two modules need each other's internals, the boundary is wrong: move the shared part to `contracts`/`core`.
 
 ## Realm scale: a magnitude and a rate, never one number

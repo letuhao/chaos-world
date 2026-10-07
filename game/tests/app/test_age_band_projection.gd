@@ -16,12 +16,15 @@ func teardown() -> void:
 
 ## An actor whose lifespan is authored by the TEST: a flat on the zero-baseline
 ## `race_lifespan` stat, so the band thresholds are deterministic and no factory wiring
-## decides them.
-func _actor(id: StringName) -> Actor:
+## decides them. `tracked` attaches the npc roster to the actor (ADR 0092's tiering:
+## only the player or a roster entry gets the age track).
+func _actor(id: StringName, tracked: bool = true) -> Actor:
 	var actor := ActorFactory.build(id, {Stat.PHYSIQUE: 20.0, Stat.SPIRIT: 20.0})
 	actor.stats.add_modifier(
 		StatModifier.new(&"race_lifespan", Stat.Op.FLAT, YEARS * 365.0, &"test")
 	)
+	if tracked:
+		NpcApi.attach(actor)
 	return actor
 
 
@@ -72,3 +75,13 @@ func test_an_unchanged_band_does_not_re_apply() -> void:
 	for status in actor.statuses:
 		after.append(status.instance_id)
 	assert_eq(after, handles, "and the same instances are still live, not fresh ones")
+
+
+## TIERED TRACKING (ADR 0092): a body the roster does not carry gets NO age track —
+## the projection's cost stays off the bodies the game forgets.
+func test_an_untracked_body_gets_no_age_track() -> void:
+	var actor := _actor(&"age_wire_untracked", false)
+	_loop = StatusLoop.new(actor)
+	var result := _loop.tick(1.0)
+	assert_eq(String(result.get("age_band", "")), "first_ash", "the band is still reported")
+	assert_eq(actor.statuses.size(), 0, "but no pair is installed on an untracked body")

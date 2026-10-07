@@ -213,9 +213,31 @@ func _sync_age_band() -> String:
 	var band := AgeBands.band_for(_actor)
 	if band == _band:
 		return String(band)
+	# TIERED TRACKING (ADR 0092, AGENTS.md): only a body the game REMEMBERS gets the
+	# age track — the player, or a roster-tracked npc. A transient/minor body mints no
+	# roster entry, and projecting onto it would spend permanent statuses and a
+	# per-band check on somebody the game forgets. The band is remembered either way,
+	# so an untracked actor pays the gate ONCE per transition, never per frame.
 	_band = band
+	if not _age_tracked():
+		return String(band)
 	StatusApi.sync_age_band(_actor)
 	return String(band)
+
+
+## Whether `_actor` is tracked (ADR 0092): the attached player, or an id the roster
+## carries. The TIER is never compared — the roster ENTRY is the fact a mechanism may
+## read ("a mechanism never compares a tier", ADR 0092).
+func _age_tracked() -> bool:
+	if _actor == null:
+		return false
+	var player := NpcApi._player()
+	if player == null:
+		return false
+	if _actor == player:
+		return true
+	var tracked: Array = NpcApi.state(player).get("tracked_ids", [])
+	return tracked.has(String(_actor.id))
 
 
 ## The three combat ticks, reported under their own keys so a readout and a test read
