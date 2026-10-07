@@ -361,6 +361,25 @@ func test_answering_a_fate_earns_it_and_clears_the_offer() -> void:
 	assert_ne(String(view.get("message_text", "")), "", "with the earned fate named")
 
 
+func test_raising_ground_seals_it_across_reopen() -> void:
+	var screen := _venture_screen()
+	if screen == null:
+		return
+	screen.call("act_open")
+	screen.call("act_east")
+	var raised := _cell_of(screen.call("summary") as Dictionary)
+	assert_eq(screen.call("act_build"), true, "raising answers true")
+	screen.call("act_west")
+	assert_eq(bool(screen.call("act_east")), false, "the raised cell no longer admits")
+	screen.call("act_open")
+	assert_eq(
+		_cell_of(screen.call("summary") as Dictionary),
+		Vector2i(0, 1),
+		"reopening falls back to the entry: the resume cell is sealed by its own wall"
+	)
+	assert_eq(bool(screen.call("act_east")), false, "the raised cell no longer admits")
+
+
 func test_walking_away_dismisses_without_earning() -> void:
 	var screen := _venture_screen()
 	if screen == null:

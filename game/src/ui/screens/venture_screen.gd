@@ -29,6 +29,7 @@ var _return_call: Callable = Callable()
 var _debug_call: Callable = Callable()
 var _answer_call: Callable = Callable()
 var _dismiss_call: Callable = Callable()
+var _build_call: Callable = Callable()
 var _debug := false
 var _pending_encounter := ""
 var _pending_fates: Array = []
@@ -81,6 +82,14 @@ func bind_venture(
 func bind_encounter(answer_call: Callable, dismiss_call: Callable) -> void:
 	_answer_call = answer_call
 	_dismiss_call = dismiss_call
+	_bind_nodes()
+	refresh()
+
+
+## Inject the build seam. Separate bind like the encounter seam: raising
+## ground is its own question with its own refusal.
+func bind_build(build_call: Callable) -> void:
+	_build_call = build_call
 	_bind_nodes()
 	refresh()
 
@@ -211,6 +220,21 @@ func act_dismiss() -> bool:
 	return true
 
 
+## Raise a blocker where the player stands. Answers what the seam sealed.
+func act_build() -> bool:
+	_bind_nodes()
+	if not _build_call.is_valid():
+		set_message("No venture seam is bound.", TONE_ERROR)
+		return false
+	var outcome := _build_call.call(self) as Dictionary
+	refresh()
+	if not bool(outcome.get("ok", false)):
+		set_message("Nothing rises here: %s." % String(outcome.get("reason", "")), TONE_ERROR)
+		return false
+	set_message("A ward stone rises.", TONE_OK)
+	return true
+
+
 func act_north() -> bool:
 	return _act_step(0, -1)
 
@@ -333,6 +357,10 @@ func _render() -> void:
 		get_node_or_null("%ReturnButton") as Button, not (inside and _return_call.is_valid())
 	)
 	_set_disabled(
+		get_node_or_null("%BuildButton") as Button,
+		not (standing and not inside and _build_call.is_valid())
+	)
+	_set_disabled(
 		get_node_or_null("%DebugButton") as Button, not (standing and _debug_call.is_valid())
 	)
 	_set_text(_debug_label, _debug_text(view))
@@ -444,6 +472,7 @@ func _bind_nodes() -> void:
 	_connect_once("%FateFirstButton", "pressed", act_fate_first)
 	_connect_once("%FateSecondButton", "pressed", act_fate_second)
 	_connect_once("%DismissButton", "pressed", act_dismiss)
+	_connect_once("%BuildButton", "pressed", act_build)
 
 
 ## Guarded like the composition root's own connections: a reused screen that

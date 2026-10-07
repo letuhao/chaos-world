@@ -1487,6 +1487,8 @@ func _bind_route_screen(route_id: StringName, screen: Control) -> void:
 				Callable(VentureBoot, "answer_fate"),
 				Callable(VentureBoot, "dismiss_encounter")
 			)
+			# Raising ground is its own seam with its own refusal.
+			screen.call("bind_build", Callable(VentureBoot, "build"))
 			# Slice 3: the descent seam. The scene asks it when a node names
 			# a domain template; the actor it enters onto is this root's own,
 			# which is why the seam is installed here and not in the boot.

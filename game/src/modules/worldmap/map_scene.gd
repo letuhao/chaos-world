@@ -150,8 +150,35 @@ func destroy_at(cell: Vector2i) -> Dictionary:
 					if not chunk.standable(wx, wy):
 						_streamer.mutate(_node_id, cc.x, cc.y, wx, wy, false)
 						freed += 1
+	if freed == 0:
+		# A raised cell has no prop to credit: its seal is a `blocked: true`
+		# mutation and nothing else, so breaking it clears exactly that.
+		var key := "%d,%d" % [local.x, local.y]
+		var overlay = _streamer.export_mutations().get(_chunk_id_of(cell), {})
+		if bool((overlay as Dictionary).get(key, {}).get("blocked", false)):
+			_streamer.mutate(_node_id, cc.x, cc.y, local.x, local.y, false)
+			freed += 1
 	refresh_chunk(_chunk_id_of(cell))
 	return {"ok": freed > 0, "freed": freed}
+
+
+## Raise a blocker on an open ground cell: records a `blocked: true`
+## mutation, so leaving and returning keeps it. Refuses water, sealed ground
+## and portal cells by name — a wall on a doorway is a lock with no key, and
+## the gate already owns that question. Inside a domain node there is no
+## chunk to build on. mirrored with `destroy_at`: one verb seals, one frees.
+func build_at(cell: Vector2i) -> Dictionary:
+	if WorldmapApi.return_depth() > 0:
+		return {"ok": false, "reason": "inside_domain"}
+	if not _standable(cell):
+		return {"ok": false, "reason": "no_ground"}
+	if not _portal_at(cell).is_empty():
+		return {"ok": false, "reason": "sealed_way"}
+	var cc := _chunk_coords(cell)
+	var local := _local_of(cell)
+	_streamer.mutate(_node_id, cc.x, cc.y, local.x, local.y, true)
+	refresh_chunk(_chunk_id_of(cell))
+	return {"ok": true, "reason": ""}
 
 
 ## Render every chunk in the scene range, drop holders outside it, and hide

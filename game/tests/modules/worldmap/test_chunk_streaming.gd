@@ -320,3 +320,58 @@ func test_four_chunks_merge_into_one_region() -> void:
 		true,
 		"which the streaming sweep does not free"
 	)
+
+
+# --- Building ---------------------------------------------------------------------------
+
+
+func test_building_seals_open_ground_and_frees_again() -> void:
+	_open()
+	var cell := Vector2i(3, 0)
+	assert_eq(_scene.is_standable(cell), true, "open ground to raise on")
+	var raised := _scene.build_at(cell)
+	assert_eq(bool(raised.get("ok", false)), true, "raising answers true")
+	assert_eq(_scene.is_standable(cell), false, "and the cell seals")
+	var again := _scene.build_at(cell)
+	assert_eq(bool(again.get("ok", false)), false, "twice is refused")
+	assert_eq(String(again.get("reason", "")), "no_ground", "as already sealed")
+	var freed := _scene.destroy_at(cell)
+	assert_eq(bool(freed.get("ok", false)), true, "while breaking a raised cell frees it")
+	assert_eq(_scene.is_standable(cell), true, "open again")
+
+
+func test_building_refuses_water_and_doorways() -> void:
+	_open()
+	var wet := Vector2i(2, 1)
+	assert_eq(_scene.is_standable(wet), false, "water to refuse")
+	var outcome := _scene.build_at(wet)
+	assert_eq(bool(outcome.get("ok", false)), false, "water refuses")
+	assert_eq(String(outcome.get("reason", "")), "no_ground", "by name")
+	_graph.add_edge(
+		{
+			"from": "overworld",
+			"to": "far",
+			"kind": &"portal",
+			"from_cell": Vector2i(4, 4),
+			"to_cell": Vector2i(2, 1)
+		}
+	)
+	assert_eq(_scene.is_standable(Vector2i(4, 4)), true, "a doorway to protect")
+	var sealed := _scene.build_at(Vector2i(4, 4))
+	assert_eq(bool(sealed.get("ok", false)), false, "doorways refuse")
+	assert_eq(String(sealed.get("reason", "")), "sealed_way", "by name")
+
+
+func test_a_raised_cell_survives_unload_and_return() -> void:
+	_open()
+	var cell := Vector2i(3, 0)
+	_scene.build_at(cell)
+	_scene.refresh_around(Vector2i(4, 4))
+	_scene.refresh_around(Vector2i(0, 0))
+	assert_eq(_scene.is_standable(cell), false, "still sealed after unload and return")
+	var overlay := _scene.streamer().export_mutations()
+	assert_eq(
+		(overlay.get("overworld:0,0", {}) as Dictionary).has("3,0"),
+		true,
+		"recorded in the overlay the envelope carries"
+	)

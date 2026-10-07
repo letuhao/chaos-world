@@ -174,6 +174,20 @@ static func destroy(screen: Control) -> Dictionary:
 	return outcome
 
 
+## Raise a blocker where the player stands. The overlay rides out to the
+## ledger at once, like a hole: what is built must outlive the visit.
+## Unopened refuses by the same name.
+static func build(screen: Control) -> Dictionary:
+	var scene := _scene_of(screen)
+	if scene == null:
+		return {"ok": false, "reason": "unopened"}
+	var outcome := scene.build_at(scene.player_cell())
+	if bool(outcome.get("ok", false)):
+		_persist(scene)
+		_record_position(scene)
+	return outcome
+
+
 ## Leave the domain node and stand back on the exact cell left from.
 ## Records the resume point: the return is a move. Unopened refuses by the
 ## same name; above ground refuses `not_inside`.

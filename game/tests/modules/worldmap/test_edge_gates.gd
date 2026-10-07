@@ -11,6 +11,7 @@ const ENV := "mortal_greenwood"
 
 var _scene: WorldmapScene = null
 var _born: Array = []
+var _toll_hero: Actor = null
 
 
 func setup() -> void:
@@ -196,9 +197,6 @@ func test_a_toll_collecting_evaluator_spends_for_real() -> void:
 	assert_eq(bool(refused.get("ok", false)), false, "three coins do not")
 	assert_eq(String(refused.get("reason", "")), "unpaid_toll", "by name")
 	assert_eq(EconomyApi.purse(_toll_hero), 3, "with every coin untouched")
-
-
-var _toll_hero: Actor = null
 
 
 func _funded(coins: int) -> Actor:
