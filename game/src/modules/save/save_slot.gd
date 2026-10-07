@@ -44,6 +44,7 @@ const WORLD_KEYS: Array[String] = [
 	"anchor",
 	"polity",
 	"world_time",
+	"worldmap",
 ]
 
 

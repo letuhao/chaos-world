@@ -89,3 +89,25 @@ func summary() -> Dictionary:
 		"data_radius": data_radius,
 		"scene_radius": scene_radius,
 	}
+
+
+## The mutation overlay as the save envelope should carry it: chunk id ->
+## cell key -> `{"blocked": bool}`. Untouched chunks are absent, never empty:
+## regeneration reproduces them from the seed, so persisting them would be a
+## second copy of the world that could disagree with the first.
+func export_mutations() -> Dictionary:
+	return _mutations.duplicate(true)
+
+
+## Restore an overlay a previous session exported. Replaces the live overlay
+## wholesale and drops the data cache, so cached chunks regenerated under the
+## old overlay cannot disagree with the restored one. The cache is knowledge,
+## not state: it rebuilds from seed plus overlay on next read.
+func import_mutations(overlay: Dictionary) -> void:
+	var kept := {}
+	for chunk_id in (overlay as Dictionary).keys():
+		var cells = overlay.get(chunk_id)
+		if cells is Dictionary:
+			kept[String(chunk_id)] = (cells as Dictionary).duplicate(true)
+	_mutations = kept
+	_data_cache.clear()

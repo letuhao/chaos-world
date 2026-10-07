@@ -80,6 +80,13 @@ const _KEY_CONTAINERS := {
 	# clock stores periods and nothing else — a `years` or `seconds` container would be a
 	# ratio living in the save format (ADR 0259 clause 4).
 	"world_time": ["periods"],
+	# ADR 0905. `worldmap` is the chunk-mutation overlay for exactly the same
+	# reason `polity` and `world_time` are here: `core/worldmap_ledger.gd` may
+	# not name this store and this store may not name that file, so the
+	# container is AUTHORED here and asserted equal to
+	# `WorldmapLedger.CONTAINERS` by test. ONE container, because seeds
+	# regenerate everything else — only changed cells ride the envelope.
+	"worldmap": ["mutations"],
 }
 
 ## The one envelope key this view reads and writes. Fixed at construction, never a field a
