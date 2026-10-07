@@ -56,7 +56,11 @@ func test_the_bundle_is_deterministic_in_the_seed() -> void:
 func test_a_different_seed_can_draw_differently() -> void:
 	var actor := _hero()
 	var opened := ItemsApi.open_chest(actor, CHEST, 7)
-	assert_eq((opened["granted"] as Array).has(String(GUARANTEED)), true, "the guarantee is seed-independent")
+	assert_eq(
+		(opened["granted"] as Array).has(String(GUARANTEED)),
+		true,
+		"the guarantee is seed-independent"
+	)
 
 
 # --- refusals ---------------------------------------------------------------

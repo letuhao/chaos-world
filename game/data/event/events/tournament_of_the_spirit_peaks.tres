@@ -26,6 +26,7 @@ display_name = "The Final"
 requires = {"verb": &"fact", "id": &"tournament_rounds_fought", "need": 1}
 duration_periods = 1
 on_enter = [{"fact": &"tournament_final_fought", "amount": 1}]
+resolves = {"war_id": &"war_of_the_nine_fords", "winner_id": &"court_of_the_star"}
 
 [resource]
 script = ExtResource("1_event")

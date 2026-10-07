@@ -244,6 +244,11 @@ static func advance(actor: Actor, periods: int) -> Dictionary:
 	var advanced: Array[Dictionary] = []
 	var resolved: Array[Dictionary] = []
 	var held: Array[Dictionary] = []
+	## Verdicts a stage authored for ANOTHER event (DEF-0315). Collected here and delivered
+	## at the END of this method, never inside the loop: `resolve` re-reads the ledger and
+	## persists its own result, so a call from inside the loop would be clobbered by this
+	## method's final `_persist`.
+	var pending_verdicts: Array[Dictionary] = []
 	for step in periods:
 		# The world's own period counter moves once per elapsed period, BEFORE any
 		# event is consulted — so `period` is what the caller said happened even when
@@ -330,6 +335,11 @@ static func advance(actor: Actor, periods: int) -> Dictionary:
 			entry["periods_held"] = 0
 			(ledger["active"] as Dictionary)[String(event_id)] = entry
 			var beats := _offer_beats(actor, ledger, def, following.on_enter)
+			# A stage that DECIDES another event queues its verdict; it is delivered after
+			# this advance's write, below (DEF-0315).
+			var pending := _pending_verdict(following)
+			if not pending.is_empty() and not _has_verdict(pending_verdicts, String(pending["war_id"])):
+				pending_verdicts.append(pending)
 			# **The settlement happens, and only then is it announced.**
 			# `world_upkeep_paid` used to fire here with two numbers and no write behind
 			# them, because `EventPrize.settle_period` — the only thing in the repository
@@ -377,8 +387,35 @@ static func advance(actor: Actor, periods: int) -> Dictionary:
 				)
 			)
 	_persist(actor, ledger)
+	# ## The verdicts, delivered AFTER this advance's own write is on the ledger (DEF-0315)
+	#
+	# A stage that decides another event (a tournament's final ruling on a war) authored a
+	# verdict, and this is where it lands. It runs here rather than inside the loop because
+	# `resolve` re-reads and re-persists the ledger — a call from inside would be overwritten
+	# by the `_persist` above. The order is the one the rest of this module holds: the stage
+	# is RECORDED first, then the contest it decided is resolved.
+	var verdicts: Array[Dictionary] = []
+	for pending in pending_verdicts:
+		var delivered := resolve(
+			actor, StringName(pending["war_id"]), String(pending["winner_id"])
+		)
+		verdicts.append(
+			{
+				"war_id": String(pending["war_id"]),
+				"winner_id": String(pending["winner_id"]),
+				"outcome": delivered,
+			}
+		)
+	# The ledger is re-read because a delivered verdict mutated it through its own writer.
 	return _ok(
-		ledger, {"periods": periods, "advanced": advanced, "resolved": resolved, "held": held}
+		_ledger(actor) if not verdicts.is_empty() else ledger,
+		{
+			"periods": periods,
+			"advanced": advanced,
+			"resolved": resolved,
+			"held": held,
+			"verdicts": verdicts,
+		}
 	)
 
 
@@ -554,6 +591,28 @@ static func _ok(ledger: Dictionary, detail: Dictionary = {}) -> Dictionary:
 
 static func _triggered(actor: Actor, def: EventDef) -> bool:
 	return bool(EventGate.evaluate(actor, def.trigger).get("ok", false))
+
+
+## The verdict a stage authors, as `{war_id, winner_id}`, or `{}` when it authors none or
+## names an incomplete one (DEF-0315). Both halves are required: a war id with no winner is
+## a withdrawal, and a winner with no war is nothing to resolve.
+static func _pending_verdict(stage: EventStageDef) -> Dictionary:
+	if stage == null or stage.resolves.is_empty():
+		return {}
+	var war_id := StringName(stage.resolves.get("war_id", &""))
+	var winner := String(stage.resolves.get("winner_id", ""))
+	if war_id == &"" or winner == "":
+		return {}
+	return {"war_id": String(war_id), "winner_id": winner}
+
+
+## Whether `war_id` is already queued this advance. One advance delivers a war's verdict
+## ONCE, so two stages naming the same war do not resolve it twice.
+static func _has_verdict(queue: Array[Dictionary], war_id: String) -> bool:
+	for row in queue:
+		if String(row.get("war_id", "")) == war_id:
+			return true
+	return false
 
 
 ## A history row, built rather than shared. Every active row carries its OWN copy:
