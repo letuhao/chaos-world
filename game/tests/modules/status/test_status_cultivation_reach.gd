@@ -33,8 +33,20 @@ extends TestCase
 ## through the module's own `begin`, which prices the fight the same way a player's does,
 ## and reports what it is told rather than assuming a verdict.
 
-## The three CULTIVATION-scope defs the producer is expected to reach.
-const CULTIVATION_IDS: Array[StringName] = [&"earth_bulwark", &"light_halo", &"wood_bloom"]
+## Every CULTIVATION-scope def the catalogue ships. ADR 0920 authored a blessing for each
+## of the seven elements that shipped none, so this is all ten elements.
+const CULTIVATION_IDS: Array[StringName] = [
+	&"wood_bloom",
+	&"earth_bulwark",
+	&"light_halo",
+	&"metal_temper",
+	&"water_wellspring",
+	&"fire_forge",
+	&"lightning_quicken",
+	&"ice_stillness",
+	&"wind_stride",
+	&"dark_veil",
+]
 
 
 func _gate_index() -> int:
@@ -130,6 +142,39 @@ func _types_paying(status_id: StringName) -> Array[StringName]:
 	return out
 
 
+## The domain ids whose `DOMAIN_TABLE` row resolves to `status_id`.
+func _domains_paying(status_id: StringName) -> Array[StringName]:
+	var out: Array[StringName] = []
+	for domain_id in TribulationBlessing.DOMAIN_TABLE.keys():
+		var element := TribulationBlessing.DOMAIN_TABLE[domain_id] as StringName
+		if TribulationBlessing.blessing_for(element) == status_id:
+			out.append(StringName(domain_id))
+	return out
+
+
+## Drive `domain_id` to a CLEAR through the loot facade's own verbs: enter, then spend
+## one overwhelming hit per authored boss. Bounded by a fixed count, so a domain that
+## will not advance reports the shortfall instead of spinning.
+##
+## The tier index is 1 because the encounters AUTHOR tier values 1 and 2, and
+## `LootEncounterDef.tier_at` matches by that value rather than by array position — the
+## same reason the loot screen rig enters at `EMBER_TIER := 1`.
+func _clear_domain(actor: Actor, domain_id: StringName) -> Dictionary:
+	var entered := LootApi.enter_domain(actor, domain_id, 1, 7)
+	if not bool(entered.get("ok", false)):
+		return {"ok": false, "reason": String(entered.get("reason", ""))}
+	var result: Dictionary = {}
+	# The elemental encounters ship two bosses; one strike each defeats and spawns the
+	# next, and the last defeat clears the band and answers `cleared`.
+	for _hit in 8:
+		result = LootApi.strike(actor, 1.0e9, 11)
+		if not bool(result.get("ok", false)):
+			return result
+		if String(result.get("cleared", "")) != "":
+			return result
+	return result
+
+
 # --- the facade refuses the wrong scope in both directions -----------------------
 
 
@@ -157,9 +202,10 @@ func test_the_landed_blow_rule_still_refuses_cultivation_scope() -> void:
 			true,
 			"%s is the COMBAT member; the cultivation member never rides a blow" % String(claimed)
 		)
-	# And a blow carrying an element whose COMBAT member does not exist still gets the
-	# COMBAT id, never the cultivation one. `metal` ships no cultivation def at all, so
-	# this is the element where confusing the two would be visible.
+	# And a blow carrying an element whose COMBAT member is not the one the mapping names
+	# still gets the COMBAT id, never the cultivation one. `metal` ships its blessing
+	# (`metal_temper`) beside two combat defs, so this is an element where confusing the
+	# two would be visible.
 	assert_eq(
 		StatusApi.status_for_element(&"metal", 1.0),
 		&"metal_sever",
@@ -262,31 +308,32 @@ func test_the_blessing_is_paid_once_and_a_loss_pays_nothing() -> void:
 
 
 func test_each_cultivation_status_is_reachable_through_the_producer() -> void:
-	# The claim the audit could not make: all THREE authored cultivation defs have a
-	# producer row, so none is orphaned. Each is driven through the SAME production path
-	# — a real fight decided by the module's own verb — rather than by calling
-	# `apply_cultivation` directly, which would prove only that the verb exists.
+	# The claim the audit could not make: every authored cultivation def has a producer,
+	# so none is orphaned. Since ADR 0920 there are TWO producers — the six trial rows and
+	# the six elemental domains — and each blessing needs at least one: the trial-paid
+	# ones are driven through a real fight, the domain-paid ones through a real clear,
+	# rather than by calling `apply_cultivation` directly, which would prove only that the
+	# verb exists.
 	#
-	# The fixture must produce AT LEAST ONE trial type per status; when it produces none,
-	# the loop below would pass silently on an empty set and the suite would go green with
-	# all three statuses unreachable. That is asserted FIRST, and it is the assertion the
-	# original file got backwards.
+	# The emptiness check comes FIRST: when a blessing had neither producer, the loops
+	# below would pass silently on an empty set and the suite would go green with the
+	# status unreachable. That is the assertion the original file got backwards.
+	for status_id in CULTIVATION_IDS:
+		# `assert_eq(x, false)`, NOT `assert_ne(x, false)`: the latter passes when its
+		# first argument DIFFERS from `false`, so it would assert "this status has NO
+		# producer" under a label reading "has at least one".
+		assert_eq(
+			_types_paying(status_id).is_empty() and _domains_paying(status_id).is_empty(),
+			false,
+			"%s has at least one producer (a trial row or a domain)" % String(status_id)
+		)
+	# Trial-paid blessings, through a real fight decided by the module's own verb.
 	for status_id in CULTIVATION_IDS:
 		var trial_types := _types_paying(status_id)
-		# `assert_eq(is_empty(), false)`, NOT `assert_ne(is_empty(), false)`. `assert_ne`
-		# passes when its first argument DIFFERS from the second, so `assert_ne(x, false)`
-		# succeeds only when `x` is true — it asserted "this status has NO producer row"
-		# under a label reading "has at least one producer row". It passed for every one of
-		# the three ids that DO have rows, and would have passed just as happily against an
-		# orphaned `.tres`, which is the exact defect this assertion exists to catch.
-		assert_eq(
-			trial_types.is_empty(),
-			false,
-			"%s has at least one producer row in REWARD_TABLE" % String(status_id)
-		)
-	for status_id in CULTIVATION_IDS:
+		if trial_types.is_empty():
+			continue
 		var paid_through := 0
-		for trial_type in _types_paying(status_id):
+		for trial_type in trial_types:
 			var hero := _hero()
 			var began := _begin_as(hero, trial_type)
 			assert_eq(
@@ -324,15 +371,42 @@ func test_each_cultivation_status_is_reachable_through_the_producer() -> void:
 			true,
 			"%s was paid by at least one real trial type" % String(status_id)
 		)
+	# Domain-paid blessings, through a real CLEAR driven through the loot facade.
+	for status_id in CULTIVATION_IDS:
+		if not _types_paying(status_id).is_empty():
+			continue
+		for domain_id in _domains_paying(status_id):
+			var hero := _hero()
+			var outcome := _clear_domain(hero, domain_id)
+			var blessing := outcome.get("blessing", {}) as Dictionary
+			assert_eq(
+				bool(blessing.get("ok", false)),
+				true,
+				(
+					"%s: a %s clear paid (%s) | clear outcome %s"
+					% [String(status_id), String(domain_id), str(blessing), str(outcome)]
+				)
+			)
+			assert_eq(
+				StringName(blessing.get("id", "")),
+				status_id,
+				"a %s clear pays %s" % [String(domain_id), String(status_id)]
+			)
+			assert_eq(hero.has_status(status_id), true, "%s is on the actor" % String(status_id))
 
 
 func test_every_authored_cultivation_def_has_a_producer_row() -> void:
 	# The COMPLETENESS claim, and the one that keeps this defect from returning: any
-	# CULTIVATION-scope def in the catalogue that no trial type pays is an orphan, which
-	# is exactly what these three were.
+	# CULTIVATION-scope def in the catalogue that no producer pays is an orphan. The
+	# producers are the trial rows and the elemental domains (ADR 0920).
 	var paid: Dictionary = {}
 	for trial_type in TribulationBlessing.REWARD_TABLE.keys():
 		var element := TribulationBlessing.REWARD_TABLE[trial_type] as StringName
+		var status_id := TribulationBlessing.blessing_for(element)
+		if status_id != &"":
+			paid[String(status_id)] = true
+	for domain_id in TribulationBlessing.DOMAIN_TABLE.keys():
+		var element := TribulationBlessing.DOMAIN_TABLE[domain_id] as StringName
 		var status_id := TribulationBlessing.blessing_for(element)
 		if status_id != &"":
 			paid[String(status_id)] = true
@@ -343,9 +417,9 @@ func test_every_authored_cultivation_def_has_a_producer_row() -> void:
 		assert_eq(
 			paid.has(String(status_id)),
 			true,
-			"%s is a cultivation def with no producer row" % String(status_id)
+			"%s is a cultivation def with no producer" % String(status_id)
 		)
-	# And the three this suite is about, named — so a def that silently changed scope is
+	# And the ten this suite is about, named — so a def that silently changed scope is
 	# reported by id rather than by a shrinking loop.
 	for status_id in CULTIVATION_IDS:
 		assert_eq(
@@ -356,11 +430,17 @@ func test_every_authored_cultivation_def_has_a_producer_row() -> void:
 
 
 func test_an_element_with_no_cultivation_def_pays_nothing_and_says_why() -> void:
-	# `metal` and `water` ship no blessing today. The refusal must be NAMED, not a silent
-	# nothing — a producer that quietly paid the wrong element would otherwise be
-	# indistinguishable from one that paid none.
-	assert_eq(TribulationBlessing.blessing_for(&"metal"), &"", "metal ships no blessing")
-	assert_eq(TribulationBlessing.blessing_for(&"water"), &"", "water ships no blessing")
+	# ADR 0920 gave every AUTHORED element a blessing, so the "no blessing" refusal is
+	# now the broken-authoring case: an element nobody authored. The refusal must be
+	# NAMED, not a silent nothing — a producer that quietly paid the wrong element would
+	# otherwise be indistinguishable from one that paid none.
+	assert_eq(TribulationBlessing.blessing_for(&"no_such_element"), &"", "nothing ships a blessing")
+	# The domain producer refuses an unknown domain by name as well.
+	assert_eq(
+		String(TribulationBlessing.award_domain(_hero(), &"no_such_domain").get("reason", "")),
+		String(TribulationBlessing.UNKNOWN_DOMAIN),
+		"an unknown domain is refused by name"
+	)
 	# And the refusal reaches the CALLER with its reason intact. `award` is driven
 	# through an AUTHORED row that names a real element, so this exercises the
 	# survived/decided path rather than the table-lookup refusal above — a status the
@@ -410,6 +490,15 @@ func test_the_producer_is_a_production_caller_not_only_a_test() -> void:
 		blessing.contains("StatusApi.apply_cultivation("),
 		true,
 		"and the award reaches the facade verb"
+	)
+	# The second producer (ADR 0920): a cleared elemental domain pays through the loot
+	# module's own call site, so deleting that wiring fails here rather than only in a
+	# test that drove the same verb.
+	var loot := FileAccess.get_file_as_string("res://src/modules/loot/api.gd")
+	assert_eq(
+		loot.contains("StatusApi.apply_domain_blessing("),
+		true,
+		"and a cleared domain pays through the facade too"
 	)
 	# The module edge is declared, so `tools arch` can see the reference rather than
 	# treating it as an invisible bare dependency (AGENTS.md:140).

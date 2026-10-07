@@ -59,7 +59,7 @@ const TIER_TWO_IDS: Array[StringName] = [
 ## twenty-first def fails loudly and a substituted one fails just as loudly.
 const EXPECTED_IDS: Array[StringName] = TIER_ONE_IDS + TIER_TWO_IDS
 
-## The seven CULTIVATION blessings authored by ADR 0919, one per element that shipped
+## The seven CULTIVATION blessings authored by ADR 0920, one per element that shipped
 ## none, so every element now pays exactly ONE permanent blessing. Kept separate from
 ## [constant EXPECTED_IDS] because the ADR 0090/0110 pairing claims below are about the
 ## element's ORIGINAL pair, and a blessing is a THIRD def wherever the pair's second
@@ -225,7 +225,7 @@ func _mechanics_of(pair: Array) -> Array[String]:
 	return out
 
 
-## The element's ADR 0090/0110 PAIR: its authored defs minus the seven blessings ADR 0919
+## The element's ADR 0090/0110 PAIR: its authored defs minus the seven blessings ADR 0920
 ## added. The three ORIGINAL blessings (`wood_bloom`, `earth_bulwark`, `light_halo`) are
 ## pair members and stay, so this filter is exactly the new set — the pairing claims are
 ## about the pair the two ADRs authored, and a blessing is a third def wherever one was
@@ -240,7 +240,7 @@ func _pair_without_blessings(defs: Array) -> Array:
 
 
 func test_the_catalogue_publishes_exactly_the_authored_statuses() -> void:
-	# ADR 0110 publishes the ten new pair defs rather than refusing them, and ADR 0919
+	# ADR 0110 publishes the ten new pair defs rather than refusing them, and ADR 0920
 	# adds the seven blessings whose elements shipped none, so the catalogue's whole
 	# content is its twenty-seven. The id SET is pinned and every element's slot is read
 	# through the LOOK-UP, because a size would be true of any set at all.
@@ -417,7 +417,7 @@ func test_every_status_publishes_non_empty_mitigation_tags() -> void:
 	# ship a status nothing answered to without the loader's gate hiding the fact. ADR 0110
 	# lifted the gate, so those ten are on the same footing as the tier-1 ten.
 	var authored := _authored()
-	assert_eq(authored.size(), ALL_IDS.size(), "every authored def (ADR 0110/0919)")
+	assert_eq(authored.size(), ALL_IDS.size(), "every authored def (ADR 0110/0920)")
 	for key in authored.keys():
 		var def := authored[key] as StatusDef
 		assert_ne(def.mitigation_tags.size(), 0, "%s publishes mitigation_tags" % key)

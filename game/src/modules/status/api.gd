@@ -396,7 +396,7 @@ static func apply_cultivation(
 	}
 
 
-## Hand the blessing a CLEARED elemental domain pays (ADR 0919): the loot module's verb
+## Hand the blessing a CLEARED elemental domain pays (ADR 0920): the loot module's verb
 ## for the second producer. `domain_id` is the run's own domain id; the status module
 ## owns the domain→element mapping (`TribulationBlessing.DOMAIN_TABLE`) so the producer
 ## list has ONE home and the loot side never names an element.

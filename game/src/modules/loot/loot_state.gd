@@ -409,7 +409,7 @@ static func _defeat(
 	_advance(state)
 	# The domain a clear just recorded, read and ERASED here: it is a fact about THIS
 	# strike (rule E3 -> `_clear`), never saved state, so a re-entered domain cannot pay
-	# its ADR 0919 blessing a second time.
+	# its ADR 0920 blessing a second time.
 	var cleared := String(state.get("cleared_now", ""))
 	state.erase("cleared_now")
 	return {
@@ -776,7 +776,7 @@ static func _clear(state: Dictionary, domain_id: String, tier_index: int) -> voi
 	state["active"] = {}
 	# The clear is reported ONCE, through this strike's own result: `_defeat` reads and
 	# erases it, so the transient never reaches a save and a re-entered domain cannot pay
-	# its blessing a second time (ADR 0919's domain producer).
+	# its blessing a second time (ADR 0920's domain producer).
 	state["cleared_now"] = domain_id
 
 

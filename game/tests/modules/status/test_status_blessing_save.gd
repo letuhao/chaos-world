@@ -34,7 +34,18 @@ extends TestCase
 ## the shape the ADR 0061 defect took, and it is the one ADR 0186 promises still cannot
 ## happen in a session.
 
-const CULTIVATION_IDS: Array[StringName] = [&"earth_bulwark", &"light_halo", &"wood_bloom"]
+const CULTIVATION_IDS: Array[StringName] = [
+	&"earth_bulwark",
+	&"light_halo",
+	&"wood_bloom",
+	&"metal_temper",
+	&"water_wellspring",
+	&"fire_forge",
+	&"lightning_quicken",
+	&"ice_stillness",
+	&"wind_stride",
+	&"dark_veil",
+]
 
 
 func setup() -> void:
@@ -106,7 +117,7 @@ func _survivor_with_blessing(hero_id: StringName = &"save_guard_hero") -> Array:
 	assert_eq(
 		CULTIVATION_IDS.has(status_id),
 		true,
-		"and it is one of the three permanent cultivation defs, not %s" % String(status_id)
+		"and it is one of the permanent cultivation blessings, not %s" % String(status_id)
 	)
 	assert_eq(actor.has_status(status_id), true, "the status is on the actor")
 	return [actor, status_id]

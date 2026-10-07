@@ -43,12 +43,12 @@ extends RefCounted
 ##
 ## Every element ships TWO defs plus, where the pair's second member is not already the
 ## blessing, a THIRD cultivation def (twenty-seven defs: the closed pair content plus
-## the ten blessings — ADR 0919). The blessing is taken off the element by SCOPE — the
+## the ten blessings — ADR 0920). The blessing is taken off the element by SCOPE — the
 ## CULTIVATION-scope member is what a fight or a cleared domain can pay — so a fight
 ## never hands out a burn AND its brace for one survived bout.
 ##
 ## An element with no CULTIVATION-scope def pays nothing. That is a NORMAL answer with a
-## named reason, never a guess. Since ADR 0919 all ten elements ship one, so the
+## named reason, never a guess. Since ADR 0920 all ten elements ship one, so the
 ## refusal is a broken-authoring case rather than a shipped state; it is kept because a
 ## row pointed at an element nobody authored a blessing for must still SAY SO.
 
@@ -71,7 +71,7 @@ const REWARD_TABLE: Dictionary = {
 	Tribulation.TEMPORAL: &"dark",
 }
 
-## One row per elemental DOMAIN, `domain -> element`: the SECOND producer (ADR 0919).
+## One row per elemental DOMAIN, `domain -> element`: the SECOND producer (ADR 0920).
 ## A cleared elemental domain pays its element's blessing through [method award_domain],
 ## so the domains that already drop the element's mastery elixir also bless the body that
 ## survived them. Keyed by the domain id the run reports.
@@ -169,7 +169,7 @@ static func award(actor: Actor) -> Dictionary:
 	return applied
 
 
-## Hand the blessing a CLEARED elemental domain pays, keyed by the domain id (ADR 0919).
+## Hand the blessing a CLEARED elemental domain pays, keyed by the domain id (ADR 0920).
 ##
 ## No session once-guard here, unlike [method award]: the loot module's own rule E2
 ## refuses a re-entered cleared band, so a clear is already once-only — and a second BAND

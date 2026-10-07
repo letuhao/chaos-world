@@ -93,7 +93,7 @@ class CoverageError(Exception):
 def register(subparsers) -> None:
     parser = subparsers.add_parser(
         "element_coverage",
-        help="assert every element ships two reachable statuses and an obtainable ward",
+        help="assert every element ships its pair, one blessing and an obtainable ward",
     )
     parser.add_argument(
         "--json",
@@ -192,10 +192,20 @@ def authored_elements() -> tuple[tuple[str, ...], tuple[str, ...], tuple[str, ..
 
 
 def blessing_elements() -> tuple[str, ...]:
-    """Every element a `TribulationBlessing.REWARD_TABLE` row can pay."""
+    """Every element a producer row can pay.
+
+    TWO tables since ADR 0920: `TribulationBlessing.REWARD_TABLE` (a survived trial)
+    and `DOMAIN_TABLE` (a cleared elemental domain). Both are read from source, so a
+    table that stops naming an element fails this check rather than reading as a
+    prose claim nothing verifies.
+    """
     text = _read(GAME_DIR / BLESSING_RELATIVE)
-    match = re.search(r"const REWARD_TABLE: Dictionary = \{(.*?)\n\}", text, re.S)
-    return tuple(re.findall(r'&"([^"]+)"', match.group(1))) if match else ()
+    out: list[str] = []
+    for name in ("REWARD_TABLE", "DOMAIN_TABLE"):
+        match = re.search(rf"const {name}: Dictionary = \{{(.*?)\n\}}", text, re.S)
+        if match:
+            out.extend(re.findall(r'&"([^"]+)"', match.group(1)))
+    return tuple(out)
 
 
 def boss_afflictions() -> tuple[str, ...]:
@@ -384,12 +394,16 @@ def check_element(element: str, row: dict | None, tree: dict) -> dict:
     for field in ("statuses", "combat_status", "cultivation_status", "ward_item", "ward_recipe"):
         require(field in row, f"row has no {field!r} field")
 
-    # 3. exactly two authored statuses, and the row names those two
+    # 3. the element's pair plus at most one blessing, and the row names them all
     authored = sorted(
         status_id for status_id, def_ in tree["statuses"].items() if def_["element"] == element
     )
     verdict["statuses"] = authored
-    require(len(authored) == 2, f"has {len(authored)} authored status(es) {authored}, expected 2")
+    require(
+        2 <= len(authored) <= 3,
+        f"has {len(authored)} authored status(es) {authored}, expected its pair plus at most "
+        f"one blessing (ADR 0920)",
+    )
     declared = sorted(str(status_id) for status_id in row["statuses"])
     require(
         declared == authored,
@@ -412,7 +426,18 @@ def check_element(element: str, row: dict | None, tree: dict) -> dict:
     combat = [s for s in authored if tree["statuses"][s]["scope"] == "combat"]
     cultivation = [s for s in authored if tree["statuses"][s]["scope"] == "cultivation"]
     require(bool(combat), "ships no COMBAT-scope status, so no landed blow can inflict one")
-    # ADR 0105: a blow carries ONE element and every element ships TWO statuses, so
+    # ADR 0920: every element ships exactly ONE blessing, and the row must name it.
+    require(cultivation, "ships no CULTIVATION-scope blessing (ADR 0920)")
+    require(
+        len(cultivation) == 1,
+        f"ships {len(cultivation)} cultivation defs {cultivation}; exactly one blessing",
+    )
+    row_cultivation_named = str(row["cultivation_status"] or "")
+    require(
+        bool(row_cultivation_named),
+        "leaves cultivation_status empty; every element ships one (ADR 0920)",
+    )
+    # ADR 0105: a blow carries ONE element and every element ships TWO combat defs, so
     # EXACTLY ONE of the pair may claim `on_landed_blow`. StatusCatalog refuses a second
     # claimer at load rather than tie-breaking on catalogue order, so demanding that
     # every combat status claim the blow would assert the opposite of the design.
@@ -425,8 +450,8 @@ def check_element(element: str, row: dict | None, tree: dict) -> dict:
     if cultivation:
         require(
             element in tree["blessing_elements"],
-            f"ships a cultivation status but no TribulationBlessing.REWARD_TABLE row "
-            f"names {element}, so nothing ever pays it",
+            f"ships a cultivation status but no producer row (TribulationBlessing."
+            f"REWARD_TABLE or DOMAIN_TABLE) names {element}, so nothing ever pays it",
         )
     afflictions = tree["boss_afflictions"]
     verdict["reachable"] = sorted(
@@ -640,7 +665,7 @@ def run(args) -> int:
     if problems:
         fail(f"element coverage failed: {len(problems)} gap(s)")
         return 1
-    ok("every element ships two reachable statuses and an obtainable elemental ward")
+    ok("every element ships its pair, one blessing and an obtainable elemental ward")
     return 0
 
 
