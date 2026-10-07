@@ -201,6 +201,34 @@ static func return_from_domain(screen: Control) -> Dictionary:
 	return outcome
 
 
+## Trade one blow with the live boss through the production exchange. The
+## seed derives from the player's cell, so the same cell is the same fight
+## and two cells are not handed the same roll. Unopened refuses by the same
+## name; outside a band the module names why.
+static func strike(screen: Control) -> Dictionary:
+	var scene := _scene_of(screen)
+	if scene == null:
+		return {"ok": false, "reason": "unopened"}
+	var actor := screen.call("actor") as Actor
+	if actor == null:
+		return {"ok": false, "reason": "no_actor"}
+	var cell := scene.player_cell()
+	return CombatApi.exchange(actor, hash("%d,%d" % [cell.x, cell.y]))
+
+
+## Take every claimable drop of a defeated boss. The encounter id arrives
+## from the strike that felled it; the screen holds it, this only spends it.
+## Unopened refuses by the same name.
+static func take(screen: Control, encounter_id: String) -> Dictionary:
+	var scene := _scene_of(screen)
+	if scene == null:
+		return {"ok": false, "reason": "unopened"}
+	var actor := screen.call("actor") as Actor
+	if actor == null:
+		return {"ok": false, "status": "refused", "reason": "no_actor"}
+	return LootApi.pickup_all(actor, StringName(encounter_id))
+
+
 ## Show or hide the debug painting on the world under the screen. Unopened
 ## refuses by the same name as every other verb here.
 static func set_debug(screen: Control, enabled: bool) -> Dictionary:
@@ -467,8 +495,12 @@ static func _demo_configs() -> Dictionary:
 			# Slice 3: the cave is a REAL run, not painted ground. Arriving
 			# here descends through the installed seam into this template at
 			# this seed; the chunks above stay the threshold a direct open shows.
+			# Boss runtime: the same descent enters the storm-phoenix band at
+			# tier 1, so the cave holds a fight that pays.
 			"domain_template": "ember_grotto",
 			"domain_seed": 20261003,
+			"loot_domain": "amulet_storm_phoenix_domain",
+			"loot_tier": 1,
 		},
 		"far":
 		# A second environment across the portal: the far side renders

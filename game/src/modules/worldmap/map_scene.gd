@@ -410,7 +410,10 @@ func _travel(edge: Dictionary) -> Dictionary:
 ## remember the exact cell to return to, and stand on the far side with no
 ## chunks rendered — rooms are walked on the domain's own surface. The run
 ## starts before any scene state moves, so a refused entry leaves the player
-## where they stood; the return is pushed only once the run exists.
+## where they stood; the return is pushed only once the run exists. A node
+## naming `loot_domain` also enters the boss band through the loot seam; a
+## refused band unwinds the just-entered run, so a descent never strands a
+## run with no fight in it.
 func _descend(
 	edge: Dictionary, to_node: String, target_config: Dictionary, template_id: String
 ) -> Dictionary:
@@ -419,7 +422,17 @@ func _descend(
 	)
 	if not bool(entered.get("ok", false)):
 		return {"traveled": false, "reason": String(entered.get("reason", ""))}
-	WorldmapApi.push_return(_node_id, _player_cell)
+	var loot_domain := String(target_config.get("loot_domain", ""))
+	var band := false
+	if not loot_domain.is_empty():
+		var bound := WorldmapApi.enter_loot_band(
+			loot_domain, int(target_config.get("loot_tier", 1)), int(target_config.get("domain_seed", 0))
+		)
+		if not bool(bound.get("ok", false)):
+			WorldmapApi.leave_domain_run()
+			return {"traveled": false, "reason": String(bound.get("reason", ""))}
+		band = true
+	WorldmapApi.push_return(_node_id, _player_cell, band)
 	_node_id = to_node
 	_player_cell = edge.get("to_cell", Vector2i.ZERO) as Vector2i
 	_config = target_config
@@ -430,15 +443,23 @@ func _descend(
 
 ## Leave the domain node and stand back on the exact cell left from. The
 ## overworld was never unloaded — only unrendered — so its mutations, cache
-## and rendered range are exactly as the descent found them. Refuses
-## `not_inside` above ground and passes a refused leave through untouched.
+## and rendered range are exactly as the descent found them. A band entered
+## for the descent is abandoned first (rewards kept by the module); a cleared
+## band reports `not_in_domain`, which is the honest "nothing to leave" and
+## does not hold the return. Refuses `not_inside` above ground and passes a
+## refused leave through untouched.
 func return_from_domain() -> Dictionary:
 	if WorldmapApi.return_depth() == 0:
 		return {"ok": false, "reason": "not_inside"}
+	var back := WorldmapApi.peek_return()
+	if bool(back.get("band", false)):
+		var left_band := WorldmapApi.leave_loot_band()
+		if not bool(left_band.get("ok", false)) and String(left_band.get("reason", "")) != "not_in_domain":
+			return {"ok": false, "reason": String(left_band.get("reason", ""))}
 	var left := WorldmapApi.leave_domain_run()
 	if not bool(left.get("ok", false)):
 		return {"ok": false, "reason": String(left.get("reason", ""))}
-	var back := WorldmapApi.pop_return()
+	back = WorldmapApi.pop_return()
 	_node_id = String(back.get("node", ""))
 	_player_cell = back.get("cell", Vector2i.ZERO) as Vector2i
 	_config = (_node_configs.get(_node_id, {}) as Dictionary).duplicate(true)

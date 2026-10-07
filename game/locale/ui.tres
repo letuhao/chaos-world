@@ -1,9 +1,0 @@
-[gd_resource type="Translation" format=3]
-
-[resource]
-locale = "en"
-messages = {
-"LOC_UI_1BADD5A415": "Inputs unknown",
-"LOC_UI_20C7C5522F": "Ready",
-"LOC_UI_975C3AAE95": "No recipe selected",
-}

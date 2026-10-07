@@ -1,0 +1,110 @@
+{
+  "id": "medieval_western.palace_keeps_and_royal_chambers.rotating_spit_clockwork_roaster_candlelit_ceremonial",
+  "name": "Candlelit Ceremonial Weight-Driven Iron Meat Roasting Spit",
+  "vietnamese_name": "Trục Quay Thịt Bằng Sắt Chạy Quả Lắc (Nến Sáp Nghi Lễ)",
+  "category": "palace_keeps_and_royal_chambers",
+  "sub_category": "monumental_carved_stone_hearth",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "roast",
+  "gameplay_role": "Palace keep and royal court element (Weight-Driven Iron Meat Roasting Spit).",
+  "destructible": false,
+  "material": "iron",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of candlelit ceremonial weight-driven iron meat roasting spit, gleaming beeswax candle wax drippings and brass glow, High medieval royal palace and keep court style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/palace_keeps_and_royal_chambers/rotating_spit_clockwork_roaster_candlelit_ceremonial.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.palace_keeps_and_royal_chambers.rotating_spit_clockwork_roaster_candlelit_ceremonial:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.689
+      ]
+    ],
+    "frac_zero": 0.6127,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.421,
+        0.715,
+        0.4
+      ],
+      [
+        0.864,
+        1.0,
+        0.839
+      ],
+      [
+        0.557,
+        0.917,
+        0.431
+      ]
+    ],
+    "crop_offset": [
+      18,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 72,
+    "contact_reference_px": 72.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

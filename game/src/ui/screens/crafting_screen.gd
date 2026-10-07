@@ -251,12 +251,12 @@ func _fill_rows() -> void:
 func _row_hint(recipe_id: StringName) -> String:
 	match _craft_state(recipe_id):
 		CRAFT_READY:
-			return L.t("LOC_UI_20C7C5522F", "Ready")
+			return L.t("LOC_UI_SCREENS_20C7C5522F")
 		CRAFT_SHORT:
 			var missing := _missing_of(recipe_id)
 			return "Missing %s" % ", ".join(_display_names(missing))
 		_:
-			return L.t("LOC_UI_1BADD5A415", "Inputs unknown")
+			return L.t("LOC_UI_SCREENS_1BADD5A415")
 
 
 ## The selected recipe's inputs and outputs, and what is missing, in one block.
@@ -264,7 +264,7 @@ func _row_hint(recipe_id: StringName) -> String:
 func _detail_text() -> String:
 	var recipe := _recipe(_selected)
 	if recipe.is_empty():
-		return L.t("LOC_UI_975C3AAE95", "No recipe selected")
+		return L.t("LOC_UI_SCREENS_975C3AAE95")
 	var parts: Array[String] = []
 	parts.append("Station: %s" % recipe.get("station", ""))
 	parts.append("Makes: %s" % ", ".join(_display_names(recipe.get("outputs", []))))

@@ -1,0 +1,207 @@
+{
+  "id": "medieval_western.castles_curtain_walls_and_bastions.d_shaped_open_gorge_bastion_reinforced_iron",
+  "name": "Iron-Portcullis Braced D-Shaped Open-Gorge Flanker Bastion",
+  "vietnamese_name": "Pháo Đài Bán Nguyệt Hình Chữ D (Gia Cố Sắt Thép)",
+  "category": "castles_curtain_walls_and_bastions",
+  "sub_category": "round_drum_and_square_tower",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "patrol",
+  "gameplay_role": "Concentric stone castle defensive element (D-Shaped Open-Gorge Flanker Bastion).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "anglo_norman",
+  "prompt_summary": "2D orthographic top-down game sprite of iron-portcullis braced d-shaped open-gorge flanker bastion, heavy iron studs, iron grilles and forged braces, Concentric stone castle fortification style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/castles_curtain_walls_and_bastions/d_shaped_open_gorge_bastion_reinforced_iron.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.castles_curtain_walls_and_bastions.d_shaped_open_gorge_bastion_reinforced_iron:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.782,
+        0.769
+      ],
+      [
+        0.844,
+        0.838
+      ]
+    ],
+    "frac_zero": 0.3851,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.005,
+        0.517,
+        0.914,
+        0.893,
+        0.881,
+        0.377,
+        0.0
+      ],
+      [
+        0.261,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.993,
+        0.109
+      ],
+      [
+        0.822,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.741
+      ],
+      [
+        0.78,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.706
+      ],
+      [
+        0.631,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.497
+      ],
+      [
+        0.88,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.837
+      ],
+      [
+        0.541,
+        0.718,
+        0.649,
+        0.589,
+        0.571,
+        0.896,
+        0.49
+      ]
+    ],
+    "crop_offset": [
+      18,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 96,
+    "contact_reference_px": 96.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

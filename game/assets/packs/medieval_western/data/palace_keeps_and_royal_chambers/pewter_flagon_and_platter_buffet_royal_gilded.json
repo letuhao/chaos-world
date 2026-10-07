@@ -1,0 +1,155 @@
+{
+  "id": "medieval_western.palace_keeps_and_royal_chambers.pewter_flagon_and_platter_buffet_royal_gilded",
+  "name": "Royal Gilded Standing Sideboard Buffet of Flagons",
+  "vietnamese_name": "Tủ Kệ Trưng Bày Đĩa Bạc & Bình Rượu (Dát Vàng Hoàng Gia)",
+  "category": "palace_keeps_and_royal_chambers",
+  "sub_category": "great_hall_feasting_trestles",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "loot",
+  "gameplay_role": "Palace keep and royal court element (Standing Sideboard Buffet of Flagons).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "french_capetian",
+  "prompt_summary": "2D orthographic top-down game sprite of royal gilded standing sideboard buffet of flagons, regal gold leaf gilding and lapis lazuli accents, High medieval royal palace and keep court style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/palace_keeps_and_royal_chambers/pewter_flagon_and_platter_buffet_royal_gilded.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.palace_keeps_and_royal_chambers.pewter_flagon_and_platter_buffet_royal_gilded:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.594,
+        0.6
+      ]
+    ],
+    "frac_zero": 0.6549,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.289,
+        0.659,
+        0.562,
+        0.191,
+        0.0
+      ],
+      [
+        0.301,
+        0.653,
+        1.0,
+        1.0,
+        0.55,
+        0.23
+      ],
+      [
+        0.791,
+        0.909,
+        0.897,
+        0.899,
+        0.91,
+        0.791
+      ]
+    ],
+    "crop_offset": [
+      35,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 181,
+    "contact_reference_px": 181.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

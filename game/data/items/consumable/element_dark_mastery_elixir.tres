@@ -7,7 +7,7 @@ script = ExtResource("1_item")
 id = &"element_dark_mastery_elixir"
 display_name = "Dark Mastery Elixir"
 category = &"consumable"
-rarity = &"uncommon"
+rarity = &"magic"
 realm = &"spirit_condensation"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"restore_health", "value": 24},

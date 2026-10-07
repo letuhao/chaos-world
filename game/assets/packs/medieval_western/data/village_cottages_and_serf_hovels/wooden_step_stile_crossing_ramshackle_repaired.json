@@ -1,0 +1,103 @@
+{
+  "id": "medieval_western.village_cottages_and_serf_hovels.wooden_step_stile_crossing_ramshackle_repaired",
+  "name": "Rough-Mended Pasture Boundary Timber Stile Steps",
+  "vietnamese_name": "Bậc Thang Gỗ Vượt Tường Bờ Ruộng (Stile) (Chắp Vá Vội)",
+  "category": "village_cottages_and_serf_hovels",
+  "sub_category": "drystone_boundary_wall_and_stile",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "step_over",
+  "gameplay_role": "Peasant homestead vernacular element (Pasture Boundary Timber Stile Steps).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of rough-mended pasture boundary timber stile steps, hastily lashed wattle hurdles and driftwood mends, Medieval peasant village and serf hovel vernacular style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/village_cottages_and_serf_hovels/wooden_step_stile_crossing_ramshackle_repaired.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.village_cottages_and_serf_hovels.wooden_step_stile_crossing_ramshackle_repaired:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.506
+      ]
+    ],
+    "frac_zero": 0.7032,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.664,
+        0.549,
+        0.579
+      ],
+      [
+        0.225,
+        0.999,
+        0.405
+      ],
+      [
+        0.066,
+        0.883,
+        0.086
+      ]
+    ],
+    "crop_offset": [
+      16,
+      21
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 38,
+    "contact_reference_px": 38.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

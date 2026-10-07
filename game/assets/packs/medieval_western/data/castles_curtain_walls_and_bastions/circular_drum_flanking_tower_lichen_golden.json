@@ -1,0 +1,205 @@
+{
+  "id": "medieval_western.castles_curtain_walls_and_bastions.circular_drum_flanking_tower_lichen_golden",
+  "name": "Golden Lichen Round Stone Flanking Drum Tower",
+  "vietnamese_name": "Tháp Trống Tròn Bọc Sườn Tường Thành (Địa Y Vàng)",
+  "category": "castles_curtain_walls_and_bastions",
+  "sub_category": "round_drum_and_square_tower",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "enter",
+  "gameplay_role": "Concentric stone castle defensive element (Round Stone Flanking Drum Tower).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of golden lichen round stone flanking drum tower, crust of golden yellow and orange sun lichen, Concentric stone castle fortification style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/castles_curtain_walls_and_bastions/circular_drum_flanking_tower_lichen_golden.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.castles_curtain_walls_and_bastions.circular_drum_flanking_tower_lichen_golden:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.689,
+        0.678
+      ],
+      [
+        0.819,
+        0.856
+      ]
+    ],
+    "frac_zero": 0.4333,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.264,
+        0.765,
+        0.965,
+        0.658,
+        0.091,
+        0.0
+      ],
+      [
+        0.043,
+        0.957,
+        1.0,
+        1.0,
+        1.0,
+        0.725,
+        0.0
+      ],
+      [
+        0.394,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.968,
+        0.197
+      ],
+      [
+        0.806,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.714
+      ],
+      [
+        0.854,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.811
+      ],
+      [
+        0.46,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.566
+      ],
+      [
+        0.005,
+        0.621,
+        0.988,
+        1.0,
+        0.966,
+        0.62,
+        0.01
+      ]
+    ],
+    "crop_offset": [
+      19,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 153,
+    "contact_reference_px": 153.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

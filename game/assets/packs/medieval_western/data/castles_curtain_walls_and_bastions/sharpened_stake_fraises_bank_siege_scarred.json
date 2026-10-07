@@ -1,0 +1,155 @@
+{
+  "id": "medieval_western.castles_curtain_walls_and_bastions.sharpened_stake_fraises_bank_siege_scarred",
+  "name": "Siege-Battered Inclined Sharpened Fraise Stakes",
+  "vietnamese_name": "Bãi Cọc Nhọn Nghiêng Cắm Bờ Hào (Vết Đá Bắn Phá)",
+  "category": "castles_curtain_walls_and_bastions",
+  "sub_category": "moat_ditch_and_sloping_bank",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "low",
+  "interactive_verb": null,
+  "gameplay_role": "Concentric stone castle defensive element (Inclined Sharpened Fraise Stakes).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of siege-battered inclined sharpened fraise stakes, cracked masonry from catapult impacts and repaired breaches, Concentric stone castle fortification style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/castles_curtain_walls_and_bastions/sharpened_stake_fraises_bank_siege_scarred.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.castles_curtain_walls_and_bastions.sharpened_stake_fraises_bank_siege_scarred:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.641,
+        0.674
+      ]
+    ],
+    "frac_zero": 0.6309,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.22,
+        0.074,
+        0.547,
+        0.456,
+        0.097,
+        0.215
+      ],
+      [
+        0.831,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.809
+      ],
+      [
+        0.395,
+        0.764,
+        1.0,
+        1.0,
+        1.0,
+        0.376
+      ]
+    ],
+    "crop_offset": [
+      34,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 157,
+    "contact_reference_px": 157.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

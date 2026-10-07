@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="TechniqueDef" format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_def"]
+[resource]
+script = ExtResource("1_def")
+id = &"qi_stoneheart_grasp"
+delivered_by = &"scroll_stoneheart_grasp"
+display_name = "Stoneheart Grasp"
+description = "Closes a fist of packed earth around a single foe. Wood pries it apart; water runs around it and survives less well than it hoped."
+tags = Array[StringName]([&"technique", &"earth", &"single_target"])
+grade = &"spirit"
+rarity = &"magic"
+element = &"earth"
+schools = Array[StringName]([&"emitting", &"elemental"])
+active = true
+path = &"qi_cultivation"
+min_path_realm = {&"qi_cultivation": 9}
+qi_cost = 42.0
+stamina_cost = 12.0
+cooldown = 8.0
+mastery_rungs = 5
+magnitude = 1.1
+element_share = 0.85

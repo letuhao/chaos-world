@@ -358,6 +358,8 @@ func _attach_body_modules(actor: Actor) -> void:
 	ScreenRegistry.register_from_contexts(ModBoot.active_contexts)
 	# Wire content roots into catalogs (ADR 0184 §5).
 	_wire_content_roots(registrations.get("content_roots", {}))
+	# Layer mod string catalogs over the base ones (ADR 0918).
+	_wire_locale_roots(registrations.get("locale_roots", []))
 	# Attach mod modules after all base phases (ADR 0184).
 	_attach_mod_modules(pipeline, actor, registrations.get("modules", {}))
 	# Wire mod event subscriptions onto the events buses (ADR 0184).
@@ -448,6 +450,15 @@ func _wire_content_roots(content_roots: Dictionary) -> void:
 						% String(family_name)
 					)
 				)
+
+
+## Layer every mod's string catalogs over the base ones (ADR 0918). Roots arrive in mod load
+## order, so a later mod overrides an earlier one, and any of them overrides a core key — the
+## only way a mod changes core wording is by shipping the same key, never by editing `src/`.
+## Idempotent: `L.install_roots` records each root once, and a re-run of the boot pass is a
+## no-op rather than a doubled translation.
+func _wire_locale_roots(locale_roots: Array) -> void:
+	L.install_roots(locale_roots)
 
 
 ## Attach mod modules after all base phases (ADR 0184). Each module name is

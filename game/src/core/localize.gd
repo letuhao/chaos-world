@@ -1,37 +1,40 @@
 class_name L
 extends RefCounted
 
-## Localization entry point (ADR 0290-like: one shared resolver, never a per-module copy).
+## The one localization resolver (ADR 0916). Every player-facing string is a key:
 ##
-## ## Why a helper and not a bare `tr()`
+##   label.text = L.t("LOC_UI_PANELS_AB12CD34")
 ##
-## The repo's UI contract is `summary()`: tests assert the exact wording a panel renders,
-## and `Label.text` stores and returns the RAW key, not the resolved string (measured on
-## 4.7.2). So every string a player reads is resolved where it is produced, and the source
-## language (English) is carried AT THE CALL SITE:
+## ## Where the English lives, and why it is not at the call site
 ##
-##   label.text = L.t("LOC_UI_AB12CD34", "Wait a season")
+## The English is the base catalog's `en` row (`game/locale/<owner>.tres`), not an argument
+## on the call. That keeps a text change a DATA change — a mod, a translator, or a copy edit
+## never has to touch `src/`, and two owners never collide on one shared file. The cost is
+## that a key with no row resolves to the KEY itself, so a missing row would leak a slug to a
+## player; `tools i18n check` is what refuses to ship one. `source` stays as an optional
+## second argument for a caller that genuinely has the English in hand (a derived content
+## key); core UI passes none.
 ##
-## `L.t` returns the catalog translation when one resolves, and otherwise the call-site
-## English — so a test run needs no catalog registered at all, and English is the default
-## by construction. The slug is the stable translation key: editing the English never
-## orphans a translation, because the key does not move.
+## ## Roots, not one directory
 ##
-## ## What is NOT here
-##
-## `.tscn` literal text and authored content (`.tres` display fields) cannot call a helper;
-## they are a later phase and are only inventoried by `tools i18n`. See the ADR.
+## Catalogs are per OWNER (`ui_panels`, `ui_screens`, `items`, …), so a change to one area
+## touches one file. The base pass loads `res://locale`; a mod registers its own root through
+## the `locale_roots` seam and it is layered on top, later-wins, exactly like a content root
+## overlay. See the ADR for the seam.
 
-## Catalogs live beside the project, one text `Translation` resource per domain.
-const CATALOG_DIR := "res://locale"
+## First-party catalogs. One file per owner, discovered recursively.
+const BASE_ROOT := "res://locale"
 
-## Installed exactly once per process, so a per-call scan never happens and a second
-## `install()` is free. Idempotent by construction: the guard is set before the scan.
-static var _installed := false
+## Only `Translation` resources; `gaps.json` and any other sibling is ignored by suffix.
+const CATALOG_SUFFIX := ".tres"
+
+static var _installed_base := false
+static var _extra_roots: Array[String] = []
 
 
-## The resolved string for `key`, falling back to `source` (the call-site English) when no
-## catalog resolves it. `source` empty means "the key IS the text" and it is returned as-is.
+## The resolved string for `key`. Returns the base/other-locale row when one resolves, else
+## `source` (when given), else the key — which is why `check` must keep a row for every key
+## in source.
 static func t(key: String, source: String = "") -> String:
 	install()
 	var resolved := TranslationServer.translate(key)
@@ -40,24 +43,34 @@ static func t(key: String, source: String = "") -> String:
 	return source if not source.is_empty() else key
 
 
-## Load every `res://locale/*.tres` `Translation` and register it. The project-settings
-## startup load does not run before the resource loaders exist headless, so this is the
-## one place translations enter the server. Idempotent, and a missing directory is an
-## ordinary "no catalogs yet" rather than a fault.
+## Install the base catalogs once, lazily, on the first call. A `t()` anywhere — a panel, a
+## headless test — is what installs them, so no boot step or test-harness hook is required.
 static func install() -> void:
-	if _installed:
+	if _installed_base:
 		return
-	_installed = true
-	var dir := DirAccess.open(CATALOG_DIR)
-	if dir == null:
-		return
-	dir.list_dir_begin()
-	var entry := dir.get_next()
-	# A directory walk terminates on the empty entry this API returns at the end.
-	while entry != "":
-		if entry.ends_with(".tres"):
-			var resource := ResourceLoader.load("%s/%s" % [CATALOG_DIR, entry])
-			if resource is Translation:
-				TranslationServer.add_translation(resource)
-		entry = dir.get_next()
-	dir.list_dir_end()
+	_installed_base = true
+	_load_root(BASE_ROOT)
+	for root in _extra_roots:
+		_load_root(root)
+
+
+## Register a mod's catalog root, layering it over the base. Idempotent per root: a second
+## boot pass re-registers nothing. Roots registered BEFORE the first `t()` are deferred and
+## loaded by `install()`, so ordering does not matter.
+static func install_roots(roots: Array) -> void:
+	for entry in roots:
+		var root := String(entry)
+		if root.is_empty() or _extra_roots.has(root):
+			continue
+		_extra_roots.append(root)
+		if _installed_base:
+			_load_root(root)
+
+
+## Every `.tres` under `root`, registered in load order. A missing directory is an ordinary
+## "no catalogs here" rather than a fault: `ContentScan` opens nothing.
+static func _load_root(root: String) -> void:
+	for path in ContentScan.files_under(root, CATALOG_SUFFIX):
+		var resource := ResourceLoader.load(path)
+		if resource is Translation:
+			TranslationServer.add_translation(resource)

@@ -1,0 +1,110 @@
+{
+  "id": "medieval_western.palace_keeps_and_royal_chambers.royal_sword_of_state_cushion_somber_feudal_oak",
+  "name": "Dark Polished Oak Gold-Fringed State Sword Velvet Cushion",
+  "vietnamese_name": "Gối Nhung Đặt Thanh Kiếm Trấn Quốc (Gỗ Sồi Đen Đánh Bóng)",
+  "category": "palace_keeps_and_royal_chambers",
+  "sub_category": "throne_dais_and_royal_canopy",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "admire",
+  "gameplay_role": "Palace keep and royal court element (Gold-Fringed State Sword Velvet Cushion).",
+  "destructible": false,
+  "material": "cloth",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of dark polished oak gold-fringed state sword velvet cushion, centuries-old hand-rubbed beeswax finish, High medieval royal palace and keep court style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/palace_keeps_and_royal_chambers/royal_sword_of_state_cushion_somber_feudal_oak.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.palace_keeps_and_royal_chambers.royal_sword_of_state_cushion_somber_feudal_oak:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.72
+      ]
+    ],
+    "frac_zero": 0.5912,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.42,
+        0.694,
+        0.415
+      ],
+      [
+        0.785,
+        1.0,
+        0.761
+      ],
+      [
+        0.708,
+        0.972,
+        0.705
+      ]
+    ],
+    "crop_offset": [
+      17,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 77,
+    "contact_reference_px": 77.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

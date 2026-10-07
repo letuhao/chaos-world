@@ -1,0 +1,205 @@
+{
+  "id": "medieval_western.palace_keeps_and_royal_chambers.brocade_canopied_four_poster_bed_candlelit_ceremonial",
+  "name": "Candlelit Ceremonial Four-Poster Carved Oak State Bed",
+  "vietnamese_name": "Giường Gỗ Bốn Cột Có Mái Trướng Gấm (Nến Sáp Nghi Lễ)",
+  "category": "palace_keeps_and_royal_chambers",
+  "sub_category": "four_poster_oak_bedchamber",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "sleep",
+  "gameplay_role": "Palace keep and royal court element (Four-Poster Carved Oak State Bed).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of candlelit ceremonial four-poster carved oak state bed, gleaming beeswax candle wax drippings and brass glow, High medieval royal palace and keep court style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/palace_keeps_and_royal_chambers/brocade_canopied_four_poster_bed_candlelit_ceremonial.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.palace_keeps_and_royal_chambers.brocade_canopied_four_poster_bed_candlelit_ceremonial:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.541,
+        0.542
+      ],
+      [
+        0.735,
+        0.722
+      ]
+    ],
+    "frac_zero": 0.5308,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.007,
+        0.38,
+        0.38,
+        0.545,
+        0.292,
+        0.212,
+        0.0
+      ],
+      [
+        0.063,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.447,
+        0.0
+      ],
+      [
+        0.0,
+        0.753,
+        1.0,
+        1.0,
+        0.902,
+        0.249,
+        0.0
+      ],
+      [
+        0.172,
+        0.623,
+        1.0,
+        1.0,
+        0.842,
+        0.382,
+        0.099
+      ],
+      [
+        0.594,
+        0.758,
+        1.0,
+        1.0,
+        0.964,
+        0.602,
+        0.5
+      ],
+      [
+        0.529,
+        0.935,
+        1.0,
+        1.0,
+        1.0,
+        0.716,
+        0.368
+      ],
+      [
+        0.291,
+        0.886,
+        0.667,
+        0.667,
+        0.799,
+        0.367,
+        0.11
+      ]
+    ],
+    "crop_offset": [
+      25,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 158,
+    "contact_reference_px": 158.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

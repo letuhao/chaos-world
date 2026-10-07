@@ -1,0 +1,137 @@
+{
+  "id": "medieval_western.palace_keeps_and_royal_chambers.long_lordly_trestle_banquet_table_somber_feudal_oak",
+  "name": "Dark Polished Oak High Table Lordly Feasting Trestle",
+  "vietnamese_name": "Bàn Tiệc Gỗ Dài Cho Lãnh Chúa & Quý Tộc (Gỗ Sồi Đen Đánh Bóng)",
+  "category": "palace_keeps_and_royal_chambers",
+  "sub_category": "great_hall_feasting_trestles",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "dine",
+  "gameplay_role": "Palace keep and royal court element (High Table Lordly Feasting Trestle).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of dark polished oak high table lordly feasting trestle, centuries-old hand-rubbed beeswax finish, High medieval royal palace and keep court style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/palace_keeps_and_royal_chambers/long_lordly_trestle_banquet_table_somber_feudal_oak.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.palace_keeps_and_royal_chambers.long_lordly_trestle_banquet_table_somber_feudal_oak:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.421,
+        0.484,
+        0.43
+      ]
+    ],
+    "frac_zero": 0.7031,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      10,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.361,
+        0.0,
+        0.0,
+        0.0,
+        0.594,
+        0.307,
+        0.0,
+        0.0,
+        0.0,
+        0.542
+      ],
+      [
+        0.553,
+        0.572,
+        0.688,
+        0.473,
+        0.935,
+        0.784,
+        0.509,
+        0.773,
+        0.464,
+        0.701
+      ],
+      [
+        0.606,
+        0.471,
+        0.659,
+        0.273,
+        0.6,
+        0.543,
+        0.247,
+        0.791,
+        0.431,
+        0.677
+      ]
+    ],
+    "crop_offset": [
+      37,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 195,
+    "contact_reference_px": 195.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,203 @@
+{
+  "id": "medieval_western.palace_keeps_and_royal_chambers.hooded_heraldic_palace_chimneypiece_royal_gilded",
+  "name": "Royal Gilded Monumental Hooded Stone Fireplace",
+  "vietnamese_name": "Lò Sưởi Đá Lớn Có Mái Chóp Phù Hiệu (Dát Vàng Hoàng Gia)",
+  "category": "palace_keeps_and_royal_chambers",
+  "sub_category": "monumental_carved_stone_hearth",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "warm_hands",
+  "gameplay_role": "Palace keep and royal court element (Monumental Hooded Stone Fireplace).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "french_capetian",
+  "prompt_summary": "2D orthographic top-down game sprite of royal gilded monumental hooded stone fireplace, regal gold leaf gilding and lapis lazuli accents, High medieval royal palace and keep court style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/palace_keeps_and_royal_chambers/hooded_heraldic_palace_chimneypiece_royal_gilded.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.palace_keeps_and_royal_chambers.hooded_heraldic_palace_chimneypiece_royal_gilded:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.428,
+        0.427
+      ],
+      [
+        0.726,
+        0.726
+      ]
+    ],
+    "frac_zero": 0.5549,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.411,
+        0.593,
+        0.349,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.034,
+        0.601,
+        1.0,
+        0.527,
+        0.004,
+        0.0
+      ],
+      [
+        0.09,
+        0.466,
+        0.861,
+        1.0,
+        0.868,
+        0.343,
+        0.088
+      ],
+      [
+        0.852,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.808
+      ],
+      [
+        0.482,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.388
+      ],
+      [
+        0.249,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.1
+      ],
+      [
+        0.036,
+        0.097,
+        0.815,
+        0.978,
+        0.841,
+        0.097,
+        0.023
+      ]
+    ],
+    "crop_offset": [
+      18,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 94,
+    "contact_reference_px": 94.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

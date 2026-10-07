@@ -1,0 +1,155 @@
+{
+  "id": "medieval_western.village_cottages_and_serf_hovels.wattle_hurdle_windbreak_fence_weathered_thatch",
+  "name": "Weathered Thatch Woven Hazel Hurdle Windbreak",
+  "vietnamese_name": "Vách Đan Cành Phỉ Chắn Gió Bấc (Tranh Phong Hóa Xám)",
+  "category": "village_cottages_and_serf_hovels",
+  "sub_category": "peasant_turf_roofed_hovel",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "low",
+  "interactive_verb": null,
+  "gameplay_role": "Peasant homestead vernacular element (Woven Hazel Hurdle Windbreak).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of weathered thatch woven hazel hurdle windbreak, silvered decaying wheat straw thatch, Medieval peasant village and serf hovel vernacular style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/village_cottages_and_serf_hovels/wattle_hurdle_windbreak_fence_weathered_thatch.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.village_cottages_and_serf_hovels.wattle_hurdle_windbreak_fence_weathered_thatch:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.422,
+        0.501
+      ]
+    ],
+    "frac_zero": 0.6824,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.093,
+        0.092,
+        0.223,
+        0.733,
+        0.188,
+        0.104,
+        0.128
+      ],
+      [
+        0.532,
+        0.89,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.654
+      ],
+      [
+        0.001,
+        0.047,
+        0.38,
+        0.773,
+        0.532,
+        0.154,
+        0.005
+      ]
+    ],
+    "crop_offset": [
+      18,
+      18
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 46,
+    "contact_reference_px": 46.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

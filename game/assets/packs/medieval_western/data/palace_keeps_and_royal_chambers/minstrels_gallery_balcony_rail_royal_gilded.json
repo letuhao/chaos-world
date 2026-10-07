@@ -1,0 +1,125 @@
+{
+  "id": "medieval_western.palace_keeps_and_royal_chambers.minstrels_gallery_balcony_rail_royal_gilded",
+  "name": "Royal Gilded Carved Minstrels' Music Gallery Balcony",
+  "vietnamese_name": "Ban Công Gỗ Cho Ban Nhạc Biểu Diễn (Dát Vàng Hoàng Gia)",
+  "category": "palace_keeps_and_royal_chambers",
+  "sub_category": "great_hall_feasting_trestles",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "play_music",
+  "gameplay_role": "Palace keep and royal court element (Carved Minstrels' Music Gallery Balcony).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "french_capetian",
+  "prompt_summary": "2D orthographic top-down game sprite of royal gilded carved minstrels' music gallery balcony, regal gold leaf gilding and lapis lazuli accents, High medieval royal palace and keep court style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/palace_keeps_and_royal_chambers/minstrels_gallery_balcony_rail_royal_gilded.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.palace_keeps_and_royal_chambers.minstrels_gallery_balcony_rail_royal_gilded:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.727,
+        0.728
+      ]
+    ],
+    "frac_zero": 0.6001,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.193,
+        0.267,
+        0.674,
+        0.514,
+        0.267,
+        0.178
+      ],
+      [
+        0.896,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.868
+      ],
+      [
+        0.623,
+        1.0,
+        1.0,
+        1.0,
+        0.997,
+        0.485
+      ]
+    ],
+    "crop_offset": [
+      36,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 162,
+    "contact_reference_px": 162.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,158 @@
+{
+  "id": "medieval_western.castles_curtain_walls_and_bastions.chemise_low_outer_apron_wall_banner_flown",
+  "name": "Heraldic-Hung Outer Low Chemise Stone Wall",
+  "vietnamese_name": "Tường Thành Đá Thấp Vòng Ngoài Chemise (Treo Cờ Hiệu)",
+  "category": "castles_curtain_walls_and_bastions",
+  "sub_category": "ashlar_curtain_wall_and_talus",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "low",
+  "interactive_verb": null,
+  "gameplay_role": "Concentric stone castle defensive element (Outer Low Chemise Stone Wall).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "anglo_norman",
+  "prompt_summary": "2D orthographic top-down game sprite of heraldic-hung outer low chemise stone wall, fluttering heraldic banners and painted shields, Concentric stone castle fortification style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/castles_curtain_walls_and_bastions/chemise_low_outer_apron_wall_banner_flown.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.castles_curtain_walls_and_bastions.chemise_low_outer_apron_wall_banner_flown:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.497,
+        0.5
+      ]
+    ],
+    "frac_zero": 0.6859,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.104,
+        0.004,
+        0.217,
+        0.491,
+        0.108,
+        0.048,
+        0.069
+      ],
+      [
+        0.767,
+        0.699,
+        0.998,
+        1.0,
+        0.74,
+        0.797,
+        0.347
+      ],
+      [
+        0.402,
+        0.378,
+        0.78,
+        0.871,
+        0.413,
+        0.458,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      27,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 60,
+    "contact_reference_px": 60.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

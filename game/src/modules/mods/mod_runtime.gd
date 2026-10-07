@@ -50,6 +50,7 @@ extends RefCounted
 ##   def_patches: Array[{family, id, field, value, operation, mod_id}] — def patches
 static func finalize(contexts: Array, registry: ModuleRegistry) -> Dictionary:
 	var content_roots := {}
+	var locale_roots: Array[String] = []
 	var screens: Array[Dictionary] = []
 	var attach_hooks: Array[Dictionary] = []
 	var subscriptions: Array[Dictionary] = []
@@ -66,6 +67,9 @@ static func finalize(contexts: Array, registry: ModuleRegistry) -> Dictionary:
 				content_roots[family] = []
 			for row in ctx.content_roots[family]:
 				(content_roots[family] as Array).append(row)
+		# Load order, not sorted: a later mod's catalog must layer over an earlier one's.
+		for root in ctx.locale_roots:
+			locale_roots.append(String(root))
 		for row in ctx.screens:
 			(
 				screens
@@ -133,6 +137,7 @@ static func finalize(contexts: Array, registry: ModuleRegistry) -> Dictionary:
 	)
 	return {
 		"content_roots": content_roots,
+		"locale_roots": locale_roots,
 		"modules": registry.order(),
 		"screens": screens,
 		"attach_hooks": attach_hooks,

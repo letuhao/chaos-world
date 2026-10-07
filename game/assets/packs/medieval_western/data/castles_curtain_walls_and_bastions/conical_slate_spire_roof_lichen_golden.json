@@ -1,0 +1,189 @@
+{
+  "id": "medieval_western.castles_curtain_walls_and_bastions.conical_slate_spire_roof_lichen_golden",
+  "name": "Golden Lichen Conical Slate Tower Roof Cap",
+  "vietnamese_name": "Mái Chóp Nhọn Đá Phiến Đỉnh Tháp (Địa Y Vàng)",
+  "category": "castles_curtain_walls_and_bastions",
+  "sub_category": "round_drum_and_square_tower",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": null,
+  "gameplay_role": "Concentric stone castle defensive element (Conical Slate Tower Roof Cap).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of golden lichen conical slate tower roof cap, crust of golden yellow and orange sun lichen, Concentric stone castle fortification style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/castles_curtain_walls_and_bastions/conical_slate_spire_roof_lichen_golden.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.castles_curtain_walls_and_bastions.conical_slate_spire_roof_lichen_golden:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.629,
+        0.619
+      ],
+      [
+        0.794,
+        0.798
+      ]
+    ],
+    "frac_zero": 0.6306,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.021,
+        0.417,
+        0.0,
+        0.0
+      ],
+      [
+        0.317,
+        0.881,
+        0.983,
+        0.711,
+        0.17
+      ],
+      [
+        0.905,
+        1.0,
+        1.0,
+        1.0,
+        0.854
+      ],
+      [
+        0.87,
+        1.0,
+        1.0,
+        1.0,
+        0.792
+      ],
+      [
+        0.569,
+        1.0,
+        1.0,
+        1.0,
+        0.321
+      ],
+      [
+        0.785,
+        1.0,
+        1.0,
+        1.0,
+        0.631
+      ],
+      [
+        0.236,
+        0.838,
+        0.984,
+        0.732,
+        0.11
+      ]
+    ],
+    "crop_offset": [
+      53,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3
+    ],
+    "contact_px": 100,
+    "contact_reference_px": 100.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

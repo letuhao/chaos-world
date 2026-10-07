@@ -1,0 +1,169 @@
+{
+  "id": "medieval_western.castles_curtain_walls_and_bastions.potern_sally_iron_studded_door_siege_scarred",
+  "name": "Siege-Battered Sally Port Iron-Bolted Oak Door",
+  "vietnamese_name": "Cửa Xuất Kích Bí Mật Nạm Đinh Sắt (Vết Đá Bắn Phá)",
+  "category": "castles_curtain_walls_and_bastions",
+  "sub_category": "arrow_slit_and_intramural_stairs",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "sneak_out",
+  "gameplay_role": "Concentric stone castle defensive element (Sally Port Iron-Bolted Oak Door).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of siege-battered sally port iron-bolted oak door, cracked masonry from catapult impacts and repaired breaches, Concentric stone castle fortification style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/castles_curtain_walls_and_bastions/potern_sally_iron_studded_door_siege_scarred.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.castles_curtain_walls_and_bastions.potern_sally_iron_studded_door_siege_scarred:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.825
+      ],
+      [
+        0.799
+      ]
+    ],
+    "frac_zero": 0.4966,
+    "blocks": [
+      [
+        true
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.677,
+        0.926,
+        0.659
+      ],
+      [
+        0.843,
+        1.0,
+        0.812
+      ],
+      [
+        0.694,
+        1.0,
+        0.695
+      ],
+      [
+        0.843,
+        1.0,
+        0.853
+      ],
+      [
+        0.656,
+        1.0,
+        0.655
+      ],
+      [
+        0.766,
+        1.0,
+        0.8
+      ],
+      [
+        0.478,
+        0.884,
+        0.527
+      ]
+    ],
+    "crop_offset": [
+      17,
+      30
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 79,
+    "contact_reference_px": 79.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      256
+    ]
+  }
+}

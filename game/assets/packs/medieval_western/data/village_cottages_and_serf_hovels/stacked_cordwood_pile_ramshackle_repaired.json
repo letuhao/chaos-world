@@ -1,0 +1,116 @@
+{
+  "id": "medieval_western.village_cottages_and_serf_hovels.stacked_cordwood_pile_ramshackle_repaired",
+  "name": "Rough-Mended Neat Stacked Split Firewood Cord",
+  "vietnamese_name": "Đống Củi Gỗ Chẻ Xếp Ngăn Nắp (Chắp Vá Vội)",
+  "category": "village_cottages_and_serf_hovels",
+  "sub_category": "homestead_woodpile_and_shed",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": true,
+  "vision_mode": "low",
+  "interactive_verb": "harvest_wood",
+  "gameplay_role": "Peasant homestead vernacular element (Neat Stacked Split Firewood Cord).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of rough-mended neat stacked split firewood cord, hastily lashed wattle hurdles and driftwood mends, Medieval peasant village and serf hovel vernacular style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/village_cottages_and_serf_hovels/stacked_cordwood_pile_ramshackle_repaired.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.village_cottages_and_serf_hovels.stacked_cordwood_pile_ramshackle_repaired:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.594,
+        0.592
+      ]
+    ],
+    "frac_zero": 0.6921,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.507,
+        0.672,
+        0.697,
+        0.651,
+        0.689,
+        0.675,
+        0.529
+      ],
+      [
+        0.493,
+        0.729,
+        0.76,
+        0.72,
+        0.72,
+        0.728,
+        0.475
+      ],
+      [
+        0.0,
+        0.0,
+        0.057,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      42
+    ],
+    "trunk_columns": [],
+    "contact_px": 16,
+    "contact_reference_px": 16.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

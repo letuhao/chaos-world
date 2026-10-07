@@ -1,0 +1,170 @@
+{
+  "id": "medieval_western.palace_keeps_and_royal_chambers.knightly_quest_woven_hanging_somber_feudal_oak",
+  "name": "Dark Polished Oak Chivalric Grail Quest Woven Hanging",
+  "vietnamese_name": "Tấm Thảm Thêu Tích Hiệp Sĩ Tìm Chén Thánh (Gỗ Sồi Đen Đánh Bóng)",
+  "category": "palace_keeps_and_royal_chambers",
+  "sub_category": "chivalric_heraldic_tapestry",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "read_story",
+  "gameplay_role": "Palace keep and royal court element (Chivalric Grail Quest Woven Hanging).",
+  "destructible": false,
+  "material": "cloth",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of dark polished oak chivalric grail quest woven hanging, centuries-old hand-rubbed beeswax finish, High medieval royal palace and keep court style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/palace_keeps_and_royal_chambers/knightly_quest_woven_hanging_somber_feudal_oak.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.palace_keeps_and_royal_chambers.knightly_quest_woven_hanging_somber_feudal_oak:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.657,
+        0.666
+      ],
+      [
+        0.76,
+        0.767
+      ]
+    ],
+    "frac_zero": 0.477,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.161,
+        0.0,
+        0.157,
+        0.577,
+        0.037,
+        0.106,
+        0.094
+      ],
+      [
+        0.566,
+        0.861,
+        0.951,
+        1.0,
+        0.898,
+        0.906,
+        0.359
+      ],
+      [
+        0.57,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.286
+      ],
+      [
+        0.863,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.763
+      ],
+      [
+        0.753,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.61
+      ],
+      [
+        0.429,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.958,
+        0.14
+      ],
+      [
+        0.099,
+        0.358,
+        0.75,
+        0.614,
+        0.449,
+        0.423,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      22,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 31,
+    "contact_reference_px": 31.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

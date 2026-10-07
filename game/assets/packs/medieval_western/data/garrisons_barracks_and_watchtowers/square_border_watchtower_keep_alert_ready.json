@@ -1,0 +1,204 @@
+{
+  "id": "medieval_western.garrisons_barracks_and_watchtowers.square_border_watchtower_keep_alert_ready",
+  "name": "Combat-Ready Isolated Square Border Stone Sentry Tower",
+  "vietnamese_name": "Tháp Canh Đá Đơn Độc Biên Giới (Sẵn Sàng Chiến Đấu)",
+  "category": "garrisons_barracks_and_watchtowers",
+  "sub_category": "border_stone_watchtower",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "enter",
+  "gameplay_role": "Garrison defense element (Isolated Square Border Stone Sentry Tower).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of combat-ready isolated square border stone sentry tower, strung bows, racked weapons, and primed torches, Medieval garrison barracks and watchtower style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/garrisons_barracks_and_watchtowers/square_border_watchtower_keep_alert_ready.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.garrisons_barracks_and_watchtowers.square_border_watchtower_keep_alert_ready:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.698,
+        0.651
+      ],
+      [
+        0.743,
+        0.713
+      ]
+    ],
+    "frac_zero": 0.5153,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.09,
+        0.658,
+        0.581,
+        0.591,
+        0.636,
+        0.097,
+        0.0
+      ],
+      [
+        0.267,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.282,
+        0.036
+      ],
+      [
+        0.546,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.593,
+        0.0
+      ],
+      [
+        0.301,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.351,
+        0.0
+      ],
+      [
+        0.505,
+        0.999,
+        1.0,
+        1.0,
+        1.0,
+        0.556,
+        0.0
+      ],
+      [
+        0.305,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.423,
+        0.0
+      ],
+      [
+        0.059,
+        0.667,
+        0.971,
+        0.971,
+        0.707,
+        0.155,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      28,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 132,
+    "contact_reference_px": 132.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

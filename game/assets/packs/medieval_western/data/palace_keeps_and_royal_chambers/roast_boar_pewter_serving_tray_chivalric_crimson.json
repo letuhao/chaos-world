@@ -1,0 +1,110 @@
+{
+  "id": "medieval_western.palace_keeps_and_royal_chambers.roast_boar_pewter_serving_tray_chivalric_crimson",
+  "name": "Chivalric Crimson Silver Serving Platter Roasted Boar",
+  "vietnamese_name": "Mâm Bạc Lớn Đựng Thịt Heo Rừng Quay (Nhung Đỏ Thêu Hoa)",
+  "category": "palace_keeps_and_royal_chambers",
+  "sub_category": "great_hall_feasting_trestles",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "feast",
+  "gameplay_role": "Palace keep and royal court element (Silver Serving Platter Roasted Boar).",
+  "destructible": false,
+  "material": "iron",
+  "feudal_culture": "anglo_norman",
+  "prompt_summary": "2D orthographic top-down game sprite of chivalric crimson silver serving platter roasted boar, deep crimson velvet with heraldic lion embroidery, High medieval royal palace and keep court style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/palace_keeps_and_royal_chambers/roast_boar_pewter_serving_tray_chivalric_crimson.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.palace_keeps_and_royal_chambers.roast_boar_pewter_serving_tray_chivalric_crimson:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.712
+      ]
+    ],
+    "frac_zero": 0.6174,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.488,
+        0.722,
+        0.454
+      ],
+      [
+        0.836,
+        1.0,
+        0.781
+      ],
+      [
+        0.593,
+        0.917,
+        0.522
+      ]
+    ],
+    "crop_offset": [
+      20,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 75,
+    "contact_reference_px": 75.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

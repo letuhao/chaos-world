@@ -76,16 +76,39 @@ class Domain:
     catalog: str
 
 
-def domain_of(rel: str) -> Domain | None:
-    """The domain a repo-relative path belongs to, or None when out of scope."""
+def owner_of(rel: str) -> str | None:
+    """The owner a path belongs to: the area whose catalog file holds its strings.
+
+    An owner names BOTH the slug prefix and the catalog file (`game/locale/<owner>.tres`), so
+    a key is recoverable to its file — `tools i18n check` requires it there. Split by area,
+    not one shared file, so two owners never collide, and a mod ships its own owners.
+    """
     path = rel.replace("\\", "/")
-    if path.startswith("game/src/ui/") or path.startswith("game/scenes/"):
-        return Domain("UI", "ui")
+    if path.startswith("game/src/ui/"):
+        rest = path[len("game/src/ui/") :]
+        if "/" not in rest:
+            return "ui"
+        return _owner("ui", rest.split("/", 1)[0])
+    if path.startswith("game/scenes/"):
+        return "scenes"
     if path.startswith("game/data/"):
         sub = path[len("game/data/") :].split("/", 1)[0]
         if sub:
-            return Domain(sub.upper().replace("-", "_"), "content")
+            return _owner("", sub)
     return None
+
+
+def _owner(prefix: str, name: str) -> str:
+    token = name.lower().replace("-", "_")
+    return f"{prefix}_{token}" if prefix else token
+
+
+def domain_of(rel: str) -> Domain | None:
+    """The domain a repo-relative path belongs to, or None when out of scope."""
+    owner = owner_of(rel)
+    if owner is None:
+        return None
+    return Domain(owner.upper(), owner)
 
 
 def scope_kind(rel: str) -> str | None:
@@ -129,5 +152,9 @@ def is_player_text(value: str) -> bool:
     if "_" in text and " " not in text:
         return False
     if re.fullmatch(r"[a-z0-9_.]+", text):
+        return False
+    # A single CamelCase token with no space is a code value (`QiDamage`, `GrowthLabel`),
+    # not a label: "Settings"/"Ready" have no lower->upper seam, those do.
+    if " " not in text and re.search(r"[a-z][A-Z]", text):
         return False
     return True

@@ -125,10 +125,58 @@ static func leave_domain_run() -> Dictionary:
 	return _domain_exit.call() as Dictionary
 
 
+## The loot-band seam: who enters and abandons boss bands. Installed by `app/`
+## (the composition root owns the actor a band is written onto), read by the
+## scene when a node config names a `loot_domain`. Same shape as the domain
+## seam; a different question, so a different pair. Tests reset through
+## `clear_loot`.
+static var _loot_entry: Callable = Callable()
+static var _loot_exit: Callable = Callable()
+
+
+## Install the band entry and exit. Refuses a dead Callable by name;
+## re-installing replaces, so a boot re-mount never stacks.
+static func install_loot(entry: Callable, exit: Callable) -> Dictionary:
+	if not entry.is_valid() or not exit.is_valid():
+		return {"ok": false, "reason": "dead_loot_seam"}
+	_loot_entry = entry
+	_loot_exit = exit
+	return {"ok": true, "reason": ""}
+
+
+## Forget the seam. Tests only: production installs once at boot.
+static func clear_loot() -> void:
+	_loot_entry = Callable()
+	_loot_exit = Callable()
+
+
+## Whether a loot seam is installed.
+static func has_loot() -> bool:
+	return _loot_entry.is_valid() and _loot_exit.is_valid()
+
+
+## Enter the band for `domain_id` at `tier` with `seed`. No seam refuses by
+## name; a seam's own refusal passes through untouched.
+static func enter_loot_band(domain_id: String, tier: int, seed: int) -> Dictionary:
+	if not has_loot():
+		return {"ok": false, "reason": "no_loot_seam"}
+	return _loot_entry.call(domain_id, tier, seed) as Dictionary
+
+
+## Abandon the current band. Unclaimed rewards are kept by the module, so
+## walking out never loses what fell. Same contract as entry.
+static func leave_loot_band() -> Dictionary:
+	if not has_loot():
+		return {"ok": false, "reason": "no_loot_seam"}
+	return _loot_exit.call() as Dictionary
+
+
 ## Remember where a descent left from. The scene pushes once the run exists.
 ## (Statics live beside `_graph` above.)
-static func push_return(node_id: String, cell: Vector2i) -> void:
-	_returns.append({"node": node_id, "cell": cell})
+## `band` records whether a loot band was entered for this descent, so the
+## return knows whether there is a band to abandon.
+static func push_return(node_id: String, cell: Vector2i, band: bool = false) -> void:
+	_returns.append({"node": node_id, "cell": cell, "band": band})
 
 
 ## Take the newest return, or `{}` when above ground.

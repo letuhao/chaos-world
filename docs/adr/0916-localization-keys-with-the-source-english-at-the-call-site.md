@@ -1,6 +1,8 @@
 # 0916 Localization keys with the source English at the call site
 
-- Status: Accepted
+- Status: Accepted. The **call-site English is superseded by ADR 0918** — the English now
+  lives in a per-owner catalog, so a text change is a data change. The resolver, the slug
+  shape and the measured engine facts below still stand.
 - Date: 2026-10-07
 
 ## Context
@@ -26,20 +28,25 @@ UI test contract) would read a slug instead of English.
 - **The key is a stable slug:** `LOC_<AREA>_<sha1(english)[:10]>`. The area prefix is
   readable; the hash keeps the id stable across file moves and stops an English edit from
   silently re-pointing an old translation.
-- **Catalogs are text `Translation` resources** at `game/locale/<stem>.tres` (`ui`,
-  `content`), written only by `tools i18n extract` and registered by `L.install()` — never by
-  `project.godot`, whose startup load is unreliable.
-- **One tool, three jobs:** `tools i18n report|extract|check`. `check` runs in `tools check`
-  and fails on any catalog/source disagreement, a reused slug, an orphan row, or a literal
-  left in a file that already adopted `L.t`.
-- **Scope for the first wave:** `.gd` display sinks. Display `const`s, `.tscn` literal
-  `text`, and authored content (`.tres`) are inventoried by `report` and migrate later.
+- **Catalogs are text `Translation` resources** at `game/locale/<stem>.tres`, written only by
+  `tools i18n extract` and registered by `L.install()` — never by `project.godot`, whose
+  startup load is unreliable. **Only `en` ships; any other locale is owner-demand work** (a
+  `<stem>.<locale>.tres` appears only when the owner asks for that locale), never
+  machine-authored.
+- **One tool:** `tools i18n report|extract|baseline|check`; `check` runs in `tools check`.
+- **Every `.gd` sink is rewritten:** a literal to `L.t(slug, "literal")`, an expression to
+  `L.t(expr)` (a no-op unless it is a content slug), and a display `const` to
+  `var NAME := L.t(...)` — a `const` cannot hold a function call, so the keyword changes.
+- **Enforcement is a growth baseline, not a big bang.** `game/locale/gaps.json` records each
+  UI script's sink count, and `check` fails a script that GAINED a sink — so new text must use
+  `L.t` while the existing sinks migrate in later waves.
 
 ## Consequences
 
 - English needs no catalog and tests need no registration; an English edit produces a new
   slug rather than orphaning a translation.
-- A display `const` cannot hold `L.t(...)` (no function calls in a constant expression), so
-  consts and scenes/content are a later wave, not silently half-done.
+- A display `const` becomes `var`, which is why a prose `const` is not left as a constant.
+- `.tscn` literal `text` and authored `.tres` content cannot call a helper; they are
+  inventoried by `report` and remain a later wave, not silently half-done.
 - The `en` catalog restates the source English; it is a generated artifact whose equality
-  with source is enforced by `i18n check`, not a second source of truth.
+  with source is enforced by `check`, not a second source of truth.

@@ -1,0 +1,203 @@
+{
+  "id": "medieval_western.castles_curtain_walls_and_bastions.iron_shod_oak_portcullis_weathered_mossy",
+  "name": "Moss-Veined Iron-Spiked Oak Grate Portcullis",
+  "vietnamese_name": "Cửa Sập Gỗ Bọc Sắt Portcullis Chặn Cổng (Gân Rêu Xanh)",
+  "category": "castles_curtain_walls_and_bastions",
+  "sub_category": "gatehouse_barbican_and_portcullis",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "low",
+  "interactive_verb": "lower_portcullis",
+  "gameplay_role": "Concentric stone castle defensive element (Iron-Spiked Oak Grate Portcullis).",
+  "destructible": false,
+  "material": "iron",
+  "feudal_culture": "anglo_norman",
+  "prompt_summary": "2D orthographic top-down game sprite of moss-veined iron-spiked oak grate portcullis, centuries of rain weathering and moss in joints, Concentric stone castle fortification style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/castles_curtain_walls_and_bastions/iron_shod_oak_portcullis_weathered_mossy.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.castles_curtain_walls_and_bastions.iron_shod_oak_portcullis_weathered_mossy:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.799,
+        0.811
+      ],
+      [
+        0.678,
+        0.683
+      ]
+    ],
+    "frac_zero": 0.4185,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.557,
+        0.707,
+        0.982,
+        0.687,
+        0.545,
+        0.0
+      ],
+      [
+        0.562,
+        0.997,
+        1.0,
+        1.0,
+        1.0,
+        0.992,
+        0.558
+      ],
+      [
+        0.882,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.904
+      ],
+      [
+        0.799,
+        1.0,
+        0.913,
+        0.76,
+        0.932,
+        1.0,
+        0.815
+      ],
+      [
+        0.451,
+        1.0,
+        0.808,
+        0.71,
+        0.787,
+        1.0,
+        0.429
+      ],
+      [
+        0.435,
+        1.0,
+        0.715,
+        0.585,
+        0.733,
+        1.0,
+        0.452
+      ],
+      [
+        0.419,
+        0.872,
+        0.436,
+        0.005,
+        0.266,
+        0.949,
+        0.515
+      ]
+    ],
+    "crop_offset": [
+      17,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 59,
+    "contact_reference_px": 59.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

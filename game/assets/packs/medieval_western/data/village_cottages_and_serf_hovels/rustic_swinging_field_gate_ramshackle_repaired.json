@@ -1,0 +1,149 @@
+{
+  "id": "medieval_western.village_cottages_and_serf_hovels.rustic_swinging_field_gate_ramshackle_repaired",
+  "name": "Rough-Mended Five-Bar Oak Field Gate with Latch",
+  "vietnamese_name": "Cổng Đồng Gỗ Năm Thanh Kèm Then Cài (Chắp Vá Vội)",
+  "category": "village_cottages_and_serf_hovels",
+  "sub_category": "drystone_boundary_wall_and_stile",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "low",
+  "interactive_verb": "open_gate",
+  "gameplay_role": "Peasant homestead vernacular element (Five-Bar Oak Field Gate with Latch).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of rough-mended five-bar oak field gate with latch, hastily lashed wattle hurdles and driftwood mends, Medieval peasant village and serf hovel vernacular style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/village_cottages_and_serf_hovels/rustic_swinging_field_gate_ramshackle_repaired.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.village_cottages_and_serf_hovels.rustic_swinging_field_gate_ramshackle_repaired:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.405,
+        0.484
+      ]
+    ],
+    "frac_zero": 0.8254,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      2
+    ],
+    "sub_fill": [
+      [
+        0.157,
+        0.298,
+        0.644,
+        0.543,
+        0.641,
+        0.318,
+        0.297
+      ],
+      [
+        0.166,
+        0.555,
+        0.604,
+        0.354,
+        0.771,
+        0.611,
+        0.471
+      ]
+    ],
+    "crop_offset": [
+      17,
+      64
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 182,
+    "contact_reference_px": 182.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

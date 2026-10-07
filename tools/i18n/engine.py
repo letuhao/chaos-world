@@ -19,11 +19,12 @@ from __future__ import annotations
 import json
 import os
 import re
+import subprocess
 from pathlib import Path
 
 from ..common import REPO_ROOT, ToolError, info, ok, warn
 from . import catalog, policy
-from .scan import LIT_KINDS, REWRITABLE, Finding, Scan, scan_file
+from .scan import REWRITABLE, Finding, Scan, Unsupported, scan_file
 
 SCOPE_ROOTS = ("game/src/ui", "game/scenes", "game/data")
 
@@ -32,6 +33,29 @@ SCOPE_ROOTS = ("game/src/ui", "game/scenes", "game/data")
 ## failure with no recourse.
 GUARD_ROOT = "game/src/ui"
 GAPS_REL = "game/locale/gaps.json"
+
+## Surfaces a dry run can target, keyed by the kind each produces.
+##
+## **`sinks` is the only surface safe to `--write`.** A `.tres` display field is READ BY
+## GAMEPLAY (`display_name` alone is read in 167 non-UI files — save, socket, settlement, read
+## models), so replacing it with a slug corrupts behaviour, not just tests. A `.tscn` literal
+## has no call site to carry the English, so `Label.text` returns the raw slug and a panel's
+## `summary()` — the repo's UI test contract — would publish a slug. Both stay inventoried and
+## are rewritten only with an explicit `--unsafe`, after the reader-side work lands.
+SCOPES: dict[str, frozenset[str]] = {
+    "sinks": frozenset(
+        {"gd_prop_lit", "gd_prop_expr", "gd_return_lit", "gd_const_lit", "gd_const_kw"}
+    ),
+    "scenes": frozenset({"tscn_lit"}),
+    "content": frozenset({"tres_lit"}),
+}
+SCOPES["all"] = frozenset().union(*SCOPES.values())
+UNSAFE_SCOPES = frozenset({"scenes", "content", "all"})
+
+## Every file `extract --write` is about to touch is copied here first, so a botched run is
+## restorable without git — the tree is shared with live agents and a path-wide revert is
+## forbidden. Gitignored, under `build/`.
+BACKUP_ROOT = "build/i18n-backup"
 
 
 def iter_files(repo_root: Path):
@@ -66,6 +90,38 @@ def write_text(path: Path, text: str) -> None:
         handle.write(text)
 
 
+def _backup(repo_root: Path, rel: str, text: str) -> None:
+    """Copy a file's current bytes under `build/` before the rewrite touches it."""
+    target = repo_root / BACKUP_ROOT / rel
+    target.parent.mkdir(parents=True, exist_ok=True)
+    write_text(target, text)
+
+
+def _dirty(repo_root: Path, rels: list[str]) -> list[str]:
+    """Target files with uncommitted changes.
+
+    A claimed path is not a CLEAN path (INC-0041): rewriting a dirty one sweeps a concurrent
+    agent's work, so a migration reports these and refuses rather than losing someone's edits.
+    """
+    if not rels:
+        return []
+    result = subprocess.run(
+        ["git", "status", "--porcelain", "--", *rels],
+        cwd=str(repo_root),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        return []
+    dirty: list[str] = []
+    for line in result.stdout.splitlines():
+        path = line[3:].strip().strip('"')
+        if path:
+            dirty.append(path)
+    return dirty
+
+
 def scan_all(repo_root: Path) -> list[tuple[str, Scan]]:
     out: list[tuple[str, Scan]] = []
     for rel, path in iter_files(repo_root):
@@ -82,7 +138,13 @@ def _replacement(finding: Finding, original: str) -> str:
     if finding.kind == "gd_prop_expr":
         return f"{policy.RESOLVER}({original})"
     slug = catalog.slug_for(finding.prefix, finding.english)
-    return f'{policy.RESOLVER}("{slug}", "{catalog.escape(finding.english)}")'
+    if finding.kind in ("tscn_lit", "tres_lit"):
+        # A scene value or a data field holds the bare key; the reader (a panel via L.t, or a
+        # Control's auto-translate at draw) is what resolves it.
+        return f'"{slug}"'
+    # The English lives in the catalog, not at the call site (ADR 0918), so a text change is
+    # a data change and a mod can override the key without editing src.
+    return f'{policy.RESOLVER}("{slug}")'
 
 
 def _apply(text: str, findings: list[Finding]) -> str:
@@ -118,33 +180,59 @@ def _write_baseline(repo_root: Path, scans: list[tuple[str, Scan]]) -> bool:
     return True
 
 
+def _key_owner(key: str) -> str | None:
+    """The owner a key names: `LOC_<OWNER>_<HASH>` -> `<owner>` lower-cased, or None."""
+    match = re.match(r"^LOC_(?P<prefix>.+)_[0-9A-F]{10}$", key)
+    return match.group("prefix").lower() if match else None
+
+
+def _load_catalogs(repo_root: Path) -> dict[str, dict[str, str]]:
+    """Every `game/locale/<owner>.tres`, keyed by owner."""
+    out: dict[str, dict[str, str]] = {}
+    locale_dir = repo_root / catalog.CATALOG_DIR
+    if locale_dir.is_dir():
+        for path in sorted(locale_dir.glob("*.tres")):
+            out[path.stem] = catalog.load(path)
+    return out
+
+
 def _report(args) -> int:
     repo_root = Path(args.repo_root)
+    scope = getattr(args, "scope", "sinks")
     by_kind: dict[str, int] = {}
     by_domain: dict[str, int] = {}
     unsupported = 0
     migrated = 0
     gaps: list[Finding] = []
+    manual: list[Unsupported] = []
     for _rel, result in scan_all(repo_root):
         if result.migrated:
             migrated += 1
         unsupported += len(result.unsupported)
+        manual.extend(result.unsupported)
         for finding in result.findings:
             by_kind[finding.kind] = by_kind.get(finding.kind, 0) + 1
             by_domain[finding.prefix] = by_domain.get(finding.prefix, 0) + 1
-            if getattr(args, "gaps", False) and finding.kind in REWRITABLE:
+            if getattr(args, "gaps", False) and finding.kind in SCOPES[scope]:
                 gaps.append(finding)
     info(f"in scope: {migrated} file(s) already use {policy.RESOLVER}")
     for kind in sorted(by_kind):
         info(f"  {kind:<14} {by_kind[kind]}")
     for domain in sorted(by_domain):
         info(f"  {domain:<14} {by_domain[domain]}")
-    info(f"  unsupported (continued expressions): {unsupported}")
+    info(f"  unsupported (needs a human): {unsupported}")
+    for name in ("sinks", "scenes", "content"):
+        total = sum(count for kind, count in by_kind.items() if kind in SCOPES[name])
+        info(f"  surface {name:<8} {total}")
     if getattr(args, "gaps", False):
-        info(f"rewritable gaps: {len(gaps)}")
+        info(f"[{scope}] gaps: {len(gaps)}")
         for finding in sorted(gaps, key=lambda f: (f.rel, f.line)):
             label = finding.english or "L.t(...)"
             info(f"  {finding.rel}:{finding.line}  {finding.kind}  {label}")
+        manual_sinks = [item for item in manual if item.rel.startswith("game/src/ui/")]
+        info(f"[manual] {len(manual_sinks)} UI sink(s) the tool will not rewrite:")
+        for item in sorted(manual_sinks, key=lambda u: (u.rel, u.line)):
+            info(f"  {item.rel}:{item.line}  {item.reason}")
     return 0
 
 
@@ -152,41 +240,64 @@ def _extract(args) -> int:
     repo_root = Path(args.repo_root)
     write = bool(args.write)
     only = tuple(getattr(args, "only", []) or [])
+    scope = getattr(args, "scope", "sinks")
+    kinds = SCOPES[scope]
+    if write and scope in UNSAFE_SCOPES and not getattr(args, "unsafe", False):
+        raise ToolError(
+            f"refusing to --write scope '{scope}': a .tres display field is read by gameplay "
+            "(167 non-UI readers of display_name) and a .tscn literal has no call site to "
+            "carry the English, so summary() would publish a slug. Migrate it only after the "
+            "reader-side work lands, then pass --unsafe."
+        )
     scans = scan_all(repo_root)
-    rows: dict[tuple[str, str], dict[str, str]] = {}
-    for rel, result in scans:
-        domain = policy.domain_of(rel)
-        if domain is None:
-            continue
+    existing = _load_catalogs(repo_root)
+    rows: dict[str, dict[str, str]] = {}
+    for _rel, result in scans:
         for use in result.uses:
-            rows.setdefault((domain.catalog, "en"), {})[use.key] = use.english
+            owner = _key_owner(use.key)
+            if owner is None:
+                continue
+            # A 1-arg call has no English in source (ADR 0918); its row already lives in the
+            # owner catalog, so preserve it rather than dropping it as an orphan.
+            english = use.english or existing.get(owner, {}).get(use.key, "")
+            if english:
+                rows.setdefault(owner, {})[use.key] = english
     planned: list[tuple[str, Path, str, list[Finding]]] = []
     total = 0
     for rel, result in scans:
         if only and not any(needle in rel for needle in only):
             continue
-        targets = [f for f in result.findings if f.kind in REWRITABLE]
+        targets = [f for f in result.findings if f.kind in kinds]
         if not targets:
             continue
         total += len(targets)
         for finding in targets:
-            if finding.kind in LIT_KINDS:
+            if finding.english:
                 key = catalog.slug_for(finding.prefix, finding.english)
-                rows.setdefault((finding.catalog, "en"), {})[key] = finding.english
+                rows.setdefault(finding.catalog, {})[key] = finding.english
         planned.append((rel, repo_root / rel, read_text(repo_root / rel), targets))
-    info(f"{total} sink(s) in {len(planned)} file(s)")
+    info(f"[{scope}] {total} sink(s) in {len(planned)} file(s)")
     if not write:
-        info("dry run: pass --write to rewrite source and refresh the en catalogs")
+        if getattr(args, "preview", False):
+            for rel, _path, text, targets in planned:
+                for finding in sorted(targets, key=lambda f: f.start):
+                    before = text[finding.start : finding.end]
+                    info(f"  {rel}:{finding.line}  {before} -> {_replacement(finding, before)}")
+        else:
+            for rel, _path, _text, targets in planned:
+                info(f"  {rel}  {len(targets)} sink(s)")
+        info("dry run: pass --write to rewrite and refresh the en catalogs")
         return 0
     for rel, path, text, targets in planned:
+        _backup(repo_root, rel, text)
         write_text(path, _apply(text, targets))
         info(f"rewrote {rel} ({len(targets)})")
     # The catalog is exactly what the tree references: every existing `L.t` plus every row
     # this rewrite introduced. An English edit therefore drops the dead row on the next run
     # rather than leaving an orphan `check` would flag.
-    for (stem, locale), values in sorted(rows.items()):
-        target = catalog.catalog_path(repo_root, stem, locale)
-        if catalog.save(target, values, locale):
+    for owner, values in sorted(rows.items()):
+        target = catalog.catalog_path(repo_root, owner)
+        if catalog.save(target, values):
             info(f"wrote {target.relative_to(repo_root).as_posix()} ({len(values)})")
     if _write_baseline(repo_root, scan_all(repo_root)):
         info(f"refreshed {GAPS_REL}")
@@ -215,11 +326,10 @@ def _check(args) -> int:
     repo_root = Path(args.repo_root)
     problems = 0
     scans = scan_all(repo_root)
-    uses_by_stem: dict[str, dict[str, str]] = {}
-    seen: dict[str, str] = {}
+    catalogs = _load_catalogs(repo_root)
+    referenced: dict[str, set[str]] = {}
     for rel, result in scans:
-        domain = policy.domain_of(rel)
-        if domain is None:
+        if policy.domain_of(rel) is None:
             continue
         if result.migrated:
             leftover = [f for f in result.findings if f.kind in REWRITABLE]
@@ -230,27 +340,30 @@ def _check(args) -> int:
                 )
                 problems += 1
         for use in result.uses:
-            previous = seen.get(use.key)
-            if previous is not None and previous != use.english:
-                warn(f"{rel}:{use.line}: key {use.key} is reused for different text")
+            owner = _key_owner(use.key)
+            if owner is None:
+                warn(f"{rel}:{use.line}: '{use.key}' is not a LOC_<OWNER>_<HASH> key")
                 problems += 1
-            seen[use.key] = use.english
+                continue
+            referenced.setdefault(owner, set()).add(use.key)
             if use.english and not _key_matches(use.key, use.english):
                 warn(f"{rel}:{use.line}: key {use.key} does not hash {use.english!r}")
                 problems += 1
-            uses_by_stem.setdefault(domain.catalog, {})[use.key] = use.english
 
-    for stem, expected in sorted(uses_by_stem.items()):
-        on_disk = catalog.load(catalog.catalog_path(repo_root, stem))
-        for key, english in sorted(expected.items()):
+    # Every referenced key has a row in ITS OWNER's catalog, and that row's English hashes
+    # back to the key (a typo'd key or a hand-edited row is caught here, not on screen).
+    for owner, keys in sorted(referenced.items()):
+        on_disk = catalogs.get(owner, {})
+        for key in sorted(keys):
             if key not in on_disk:
-                warn(f"{stem}.tres is missing {key} ({english!r}) - run extract --write")
+                warn(f"{owner}.tres is missing {key} - run extract --write")
                 problems += 1
-            elif on_disk[key] != english:
-                warn(f"{stem}.tres has {key} as {on_disk[key]!r}, source says {english!r}")
+            elif not _key_matches(key, on_disk[key]):
+                warn(f"{owner}.tres has {key} as {on_disk[key]!r}, which does not hash to the key")
                 problems += 1
-        for key in sorted(set(on_disk) - set(expected)):
-            warn(f"{stem}.tres has orphan row {key} that no source uses - drop it")
+    for owner, rows in sorted(catalogs.items()):
+        for key in sorted(set(rows) - referenced.get(owner, set())):
+            warn(f"{owner}.tres has orphan row {key} that no source uses - drop it")
             problems += 1
 
     problems += _check_growth(repo_root, scans)
@@ -283,6 +396,32 @@ def _check_growth(repo_root: Path, scans: list[tuple[str, Scan]]) -> int:
     return problems
 
 
+def _preflight(args) -> int:
+    """Whether the migration's target files are safe to rewrite right now.
+
+    Fails when any target carries uncommitted changes, so a migration never sweeps a
+    concurrent agent's in-flight edit (INC-0041). Run this before every `extract --write`.
+    """
+    repo_root = Path(args.repo_root)
+    scope = getattr(args, "scope", "sinks")
+    kinds = SCOPES[scope]
+    planned = [
+        (rel, [finding for finding in result.findings if finding.kind in kinds])
+        for rel, result in scan_all(repo_root)
+    ]
+    planned = [(rel, targets) for rel, targets in planned if targets]
+    total = sum(len(targets) for _rel, targets in planned)
+    info(f"[{scope}] {total} sink(s) in {len(planned)} file(s)")
+    dirty = _dirty(repo_root, [rel for rel, _targets in planned])
+    if dirty:
+        warn(f"{len(dirty)} target file(s) carry uncommitted changes - do NOT migrate them:")
+        for rel in dirty:
+            warn(f"  {rel}")
+        return 1
+    ok(f"every target file is clean against HEAD; --write is safe ({len(planned)} files)")
+    return 0
+
+
 def register(subparsers) -> None:
     parser = subparsers.add_parser(
         "i18n", help="translation catalogs: report, extract, baseline, check"
@@ -290,16 +429,30 @@ def register(subparsers) -> None:
     actions = parser.add_subparsers(dest="action", required=True)
     for name, help_text in (
         ("report", "inventory player-facing strings (read-only)"),
+        ("preflight", "check the target files are clean before a migration"),
         ("extract", "assign slugs and rewrite call sites"),
         ("baseline", "record sink counts so check fails on growth"),
         ("check", "gate: catalogs agree with source, and no sink grew"),
     ):
         action = actions.add_parser(name, help=help_text)
         action.add_argument("--repo-root", default=str(REPO_ROOT), help="repository root")
+        if name in ("report", "preflight", "extract"):
+            action.add_argument(
+                "--scope",
+                choices=sorted(SCOPES),
+                default="sinks",
+                help="surface: sinks (safe to write), scenes, content, all",
+            )
         if name == "report":
-            action.add_argument("--gaps", action="store_true", help="list each rewritable sink")
+            action.add_argument("--gaps", action="store_true", help="list each gap")
         if name == "extract":
             action.add_argument("--write", action="store_true", help="apply the rewrite")
+            action.add_argument("--preview", action="store_true", help="print every change")
+            action.add_argument(
+                "--unsafe",
+                action="store_true",
+                help="allow --write on scenes/content (see the refusal message)",
+            )
             action.add_argument(
                 "--only",
                 action="append",
@@ -311,6 +464,8 @@ def register(subparsers) -> None:
 def run(args) -> int:
     if args.action == "report":
         return _report(args)
+    if args.action == "preflight":
+        return _preflight(args)
     if args.action == "extract":
         return _extract(args)
     if args.action == "baseline":

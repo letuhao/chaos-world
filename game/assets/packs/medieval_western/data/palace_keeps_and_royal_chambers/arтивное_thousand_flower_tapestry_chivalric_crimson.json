@@ -1,0 +1,173 @@
+{
+  "id": "medieval_western.palace_keeps_and_royal_chambers.arтивное_thousand_flower_tapestry_chivalric_crimson",
+  "name": "Chivalric Crimson Millefleurs Unicorn Wall Tapestry",
+  "vietnamese_name": "Thảm Treo Tường Ngàn Hoa Millefleurs (Nhung Đỏ Thêu Hoa)",
+  "category": "palace_keeps_and_royal_chambers",
+  "sub_category": "chivalric_heraldic_tapestry",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "admire",
+  "gameplay_role": "Palace keep and royal court element (Millefleurs Unicorn Wall Tapestry).",
+  "destructible": false,
+  "material": "cloth",
+  "feudal_culture": "anglo_norman",
+  "prompt_summary": "2D orthographic top-down game sprite of chivalric crimson millefleurs unicorn wall tapestry, deep crimson velvet with heraldic lion embroidery, High medieval royal palace and keep court style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/palace_keeps_and_royal_chambers/arтивное_thousand_flower_tapestry_chivalric_crimson.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.palace_keeps_and_royal_chambers.arтивное_thousand_flower_tapestry_chivalric_crimson:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.661,
+        0.65
+      ],
+      [
+        0.729,
+        0.736
+      ]
+    ],
+    "frac_zero": 0.4651,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.022,
+        0.445,
+        0.758,
+        0.399,
+        0.012,
+        0.0
+      ],
+      [
+        0.27,
+        0.725,
+        0.978,
+        1.0,
+        0.942,
+        0.732,
+        0.213
+      ],
+      [
+        0.687,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.633
+      ],
+      [
+        0.765,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.718
+      ],
+      [
+        0.477,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.419
+      ],
+      [
+        0.312,
+        0.958,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.287
+      ],
+      [
+        0.0,
+        0.224,
+        0.755,
+        0.997,
+        0.772,
+        0.239,
+        0.033
+      ]
+    ],
+    "crop_offset": [
+      17,
+      18
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 112,
+    "contact_reference_px": 112.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

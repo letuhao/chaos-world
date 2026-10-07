@@ -1,0 +1,129 @@
+{
+  "id": "medieval_western.castles_curtain_walls_and_bastions.crenellated_merlon_walk_reinforced_iron",
+  "name": "Iron-Portcullis Braced Stone Merlon Battlements Wall Walk",
+  "vietnamese_name": "Lỗ Châu Mai & Bờ Tường Đứng Bắn Tên (Gia Cố Sắt Thép)",
+  "category": "castles_curtain_walls_and_bastions",
+  "sub_category": "crenellation_and_hoarding_crest",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": true,
+  "vision_mode": "low",
+  "interactive_verb": "defend",
+  "gameplay_role": "Concentric stone castle defensive element (Stone Merlon Battlements Wall Walk).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "anglo_norman",
+  "prompt_summary": "2D orthographic top-down game sprite of iron-portcullis braced stone merlon battlements wall walk, heavy iron studs, iron grilles and forged braces, Concentric stone castle fortification style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/castles_curtain_walls_and_bastions/crenellated_merlon_walk_reinforced_iron.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.castles_curtain_walls_and_bastions.crenellated_merlon_walk_reinforced_iron:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.664,
+        0.618
+      ]
+    ],
+    "frac_zero": 0.5712,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.388,
+        0.313,
+        0.415,
+        0.715,
+        0.427,
+        0.32,
+        0.394
+      ],
+      [
+        0.798,
+        1.0,
+        1.0,
+        0.98,
+        1.0,
+        1.0,
+        0.818
+      ],
+      [
+        0.352,
+        0.918,
+        0.679,
+        0.497,
+        0.495,
+        0.553,
+        0.351
+      ]
+    ],
+    "crop_offset": [
+      16,
+      18
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 90,
+    "contact_reference_px": 90.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

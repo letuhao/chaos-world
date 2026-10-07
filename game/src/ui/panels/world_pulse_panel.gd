@@ -46,23 +46,23 @@ signal retreat_requested(periods: int)
 
 ## Wording for each reason a caller can hand back. The UI program owns no rule, so it
 ## only says what was reported.
-const REASON_TEXT := {
-	"": "A season passes",
-	"no_actor": "The world has no one to remember it",
-	"no_director": "No one is listening for what happens",
-	"no_world": "The world has no clock",
-	"no_world_clock": "This screen is not wired to the world clock",
-	"no_retreat": "This screen cannot ask for a longer sit",
-	"unplannable_span": "The clock cannot cover a sit that long, and will not shorten it",
+var REASON_TEXT := {
+	"": L.t("LOC_UI_PANELS_EE322903D3"),
+	"no_actor": L.t("LOC_UI_PANELS_8C6B2C3AB4"),
+	"no_director": L.t("LOC_UI_PANELS_C0199FC7CA"),
+	"no_world": L.t("LOC_UI_PANELS_17753763A2"),
+	"no_world_clock": L.t("LOC_UI_PANELS_6B48266C7B"),
+	"no_retreat": L.t("LOC_UI_PANELS_6476B66F57"),
+	"unplannable_span": L.t("LOC_UI_PANELS_EE78098BE8"),
 }
 
 ## What the readout says when no clock is wired. Named rather than blank so the missing
 ## seam is visible on the screen instead of being an empty row a player reads as "zero".
-const UNWIRED_CLOCK := "No world clock is wired to this screen."
-const UNWIRED_CADENCE := "The world's cadence is not published here."
-const EMPTY_MEMORY := "The world remembers nothing yet."
-const WAIT_LABEL := "Wait a season"
-const UNAVAILABLE_SUFFIX := " (unavailable)"
+var UNWIRED_CLOCK := L.t("LOC_UI_PANELS_C9D9CF171D")
+var UNWIRED_CADENCE := L.t("LOC_UI_PANELS_BAD9895BED")
+var EMPTY_MEMORY := L.t("LOC_UI_PANELS_8208317A74")
+var WAIT_LABEL := L.t("LOC_UI_PANELS_9C7608368A")
+var UNAVAILABLE_SUFFIX := L.t("LOC_UI_PANELS_DFE3923CC6")
 
 ## ## The open-event heading, and the sentence under it
 ##
@@ -73,23 +73,23 @@ const UNAVAILABLE_SUFFIX := " (unavailable)"
 ## which is the exact failure the bridge slot exists to make visible. A third, middle
 ## wording covers the case a panel cannot honestly call either: rows published, none of
 ## them nameable.
-const EVENTS_TITLE_OPEN := "What is happening in the world"
-const EVENTS_TITLE_EMPTY := "Nothing is happening in the world right now"
-const EVENTS_TITLE_UNWIRED := "The world's events are not published to this screen"
-const EVENTS_TITLE_UNNAMED := "Something is open, and this screen cannot name it"
-const EVENTS_EMPTY_LINE := "No event is open. The world is waiting on its next one."
-const EVENTS_UNWIRED_LINE := "No world event row reaches this screen; it cannot say what is open."
-const EVENTS_UNNAMED_LINE := "An open event arrived with no name. This screen cannot say which."
+var EVENTS_TITLE_OPEN := L.t("LOC_UI_PANELS_18FEB73E8B")
+var EVENTS_TITLE_EMPTY := L.t("LOC_UI_PANELS_AB0911EF8D")
+var EVENTS_TITLE_UNWIRED := L.t("LOC_UI_PANELS_1230074BDC")
+var EVENTS_TITLE_UNNAMED := L.t("LOC_UI_PANELS_A0D1357B51")
+var EVENTS_EMPTY_LINE := L.t("LOC_UI_PANELS_66222545E1")
+var EVENTS_UNWIRED_LINE := L.t("LOC_UI_PANELS_AA1371E549")
+var EVENTS_UNNAMED_LINE := L.t("LOC_UI_PANELS_A870B91DB2")
 
 ## The heading over the season-scale control. Named rather than inlined so the wording a
 ## player reads is one string a test can pin.
-const RETREAT_TITLE := "Sit (the world moves while you do)"
-const RETREAT_LABEL := "Sit for this long"
-const RETREAT_EMPTY := "No sit length is published by the clock."
+var RETREAT_TITLE := L.t("LOC_UI_PANELS_6A5ACB6459")
+var RETREAT_LABEL := L.t("LOC_UI_PANELS_9D2BC3DE40")
+var RETREAT_EMPTY := L.t("LOC_UI_PANELS_0C5D8C6003")
 ## Shown instead of a cost line when nothing is selected or no clock is wired — an empty
 ## line under a selector reads as "free", which is the one thing this control must never
 ## suggest.
-const RETREAT_NO_COST := "Choose how long to sit."
+var RETREAT_NO_COST := L.t("LOC_UI_PANELS_7B66B4A655")
 
 var _wired: bool = false
 var _can_advance: bool = false
@@ -310,19 +310,19 @@ func _bind_nodes() -> void:
 func _render() -> void:
 	if _title_label == null:
 		return
-	_clock_label.text = _clock_text()
-	_cadence_label.text = _cadence_text()
-	_news_title.text = _news_title_text()
+	_clock_label.text = L.t(_clock_text())
+	_cadence_label.text = L.t(_cadence_text())
+	_news_title.text = L.t(_news_title_text())
 	_render_news()
 	# The event rows render AFTER the news and BEFORE the pulse tally, so a player reads
 	# "what is happening" above the counters that describe how it got there — the same
 	# order the beat tally has always been in, with the thing it counts moved up.
 	if _events_title != null:
-		_events_title.text = _events_title_text()
+		_events_title.text = L.t(_events_title_text())
 	_render_events()
-	_pulse_label.text = _pulse_text()
+	_pulse_label.text = L.t(_pulse_text())
 	_wait_button.disabled = not _can_advance
-	_wait_button.text = WAIT_LABEL + ("" if _can_advance else UNAVAILABLE_SUFFIX)
+	_wait_button.text = L.t(WAIT_LABEL + ("" if _can_advance else UNAVAILABLE_SUFFIX))
 	_render_retreat()
 	# The panel's own tone is only its own: a refusal the caller reported is painted
 	# in the error ink, and nothing else here is a failure.
@@ -330,7 +330,7 @@ func _render() -> void:
 		_message_label.theme_type_variation = &"WarnLabel"
 	else:
 		_message_label.theme_type_variation = &"MetaLabel"
-	_message_label.text = _message
+	_message_label.text = L.t(_message)
 
 
 ## ## The season-scale row, and why the choice lives on the PANEL
@@ -358,7 +358,7 @@ func _render() -> void:
 func _render_retreat() -> void:
 	if _retreat_option == null:
 		return
-	_retreat_title_label.text = RETREAT_TITLE
+	_retreat_title_label.text = L.t(RETREAT_TITLE)
 	_restoring_selection = true
 	_retreat_option.clear()
 	for label in _retreat_labels():
@@ -367,9 +367,9 @@ func _render_retreat() -> void:
 	if _retreat_index >= 0:
 		_retreat_option.select(_retreat_index)
 	_restoring_selection = false
-	_retreat_cost_label.text = _retreat_cost_text()
+	_retreat_cost_label.text = L.t(_retreat_cost_text())
 	_retreat_button.disabled = not _can_retreat or _retreat_index < 0
-	_retreat_button.text = RETREAT_LABEL + ("" if _can_retreat else UNAVAILABLE_SUFFIX)
+	_retreat_button.text = L.t(RETREAT_LABEL + ("" if _can_retreat else UNAVAILABLE_SUFFIX))
 
 
 ## One label per news row, rebuilt from scratch.
@@ -390,7 +390,7 @@ func _render_news() -> void:
 		label.theme_type_variation = (
 			&"EffectLabel" if bool(row.get("recorded", false)) else &"MetaLabel"
 		)
-		label.text = _news_line(row)
+		label.text = L.t(_news_line(row))
 		_news_box.add_child(label)
 
 
@@ -415,7 +415,7 @@ func _render_events() -> void:
 	for line in _event_lines():
 		var label := Label.new()
 		label.theme_type_variation = &"EffectLabel"
-		label.text = line
+		label.text = L.t(line)
 		_events_box.add_child(label)
 
 
@@ -568,7 +568,7 @@ func _clock_text() -> String:
 	if not _wired:
 		return UNWIRED_CLOCK
 	if _periods <= 0 and _period_count <= 0:
-		return "No period has passed yet."
+		return L.t("LOC_UI_PANELS_2948F603C6")
 	return "Period %d passed - %d recorded in the world's memory" % [_periods, _period_count]
 
 
@@ -582,7 +582,7 @@ func _cadence_text() -> String:
 
 func _news_title_text() -> String:
 	if _news.is_empty():
-		return "The world's news (nothing heard)"
+		return L.t("LOC_UI_PANELS_5ACDF79B27")
 	return "The world's news (%d/%d heard)" % [_heard(), _news.size()]
 
 
@@ -784,4 +784,4 @@ func _on_span_selected(index: int) -> void:
 	if index >= 0 and index < _retreat_spans.size():
 		_retreat_index = index
 	if _retreat_cost_label != null:
-		_retreat_cost_label.text = _retreat_cost_text()
+		_retreat_cost_label.text = L.t(_retreat_cost_text())

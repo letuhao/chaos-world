@@ -27,6 +27,18 @@ guaranteed = false
 quantity = 1
 rarity_floor = &"common"
 
+[sub_resource type="Resource" id="entry_1"]
+script = ExtResource("2_entry")
+id = &"elemental_spirit_guardian_foundation_1"
+kind = &"item"
+item_id = &"element_water_mastery_elixir"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"magic"
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_elemental_spirit_guardian_pool_foundation"
@@ -37,5 +49,6 @@ rolls = 1
 allow_empty = false
 entries = Array[LootEntry]([
 	SubResource("entry_0"),
+	SubResource("entry_1"),
 	SubResource("entry_1")
 ])

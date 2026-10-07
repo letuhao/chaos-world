@@ -7,5 +7,5 @@ script = ExtResource("1_recipe")
 id = &"element_water_mastery_elixir_recipe"
 display_name = "Water Mastery Elixir Formula"
 station = &"alchemy"
-inputs = Array[StringName]([&"bangle_moon_essence", &"bangle_moon_essence"])
+inputs = Array[StringName]([&"talisman_cinnabar_ore", &"bangle_moon_essence"])
 outputs = Array[StringName]([&"element_water_mastery_elixir"])

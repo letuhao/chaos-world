@@ -1495,6 +1495,12 @@ func _bind_route_screen(route_id: StringName, screen: Control) -> void:
 			WorldmapApi.install_domain(
 				Callable(self, "_venture_domain_enter"), Callable(self, "_venture_domain_leave")
 			)
+			# Boss runtime: the same actor's band. Entered when a descended
+			# node names a loot domain, abandoned on the way back with
+			# rewards kept — so a boss fought underground still pays.
+			WorldmapApi.install_loot(
+				Callable(self, "_venture_loot_enter"), Callable(self, "_venture_loot_leave")
+			)
 			# DEF-0374: the far arrival plays the loading screen. A named root
 			# method carries the live screen in, because a lambda cannot and
 			# the seam takes only the crossing.
@@ -1532,6 +1538,22 @@ func _venture_domain_leave() -> Dictionary:
 	if _actor == null:
 		return {"ok": false, "reason": "no_actor"}
 	return DomainBoot.leave_domain(_actor)
+
+
+## The venture loot-band seam. Entered when a descended node names a loot
+## domain, abandoned on the way back; the module keeps unclaimed rewards, so
+## walking out never loses what fell. Same actor, same reason as the domain
+## seam above: the run is written onto this root's body.
+func _venture_loot_enter(domain_id: String, tier: int, seed: int) -> Dictionary:
+	if _actor == null:
+		return {"ok": false, "reason": "no_actor"}
+	return LootApi.enter_domain(_actor, StringName(domain_id), tier, seed)
+
+
+func _venture_loot_leave() -> Dictionary:
+	if _actor == null:
+		return {"ok": false, "reason": "no_actor"}
+	return LootApi.abandon(_actor)
 
 
 ## The toll evaluator (DEF-0372). Reads the edge's `toll.amount` and spends

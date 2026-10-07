@@ -1,0 +1,201 @@
+{
+  "id": "medieval_western.village_cottages_and_serf_hovels.half_cruck_peasant_cottage_weathered_thatch",
+  "name": "Weathered Thatch Thatched Yeoman Cottage Bay",
+  "vietnamese_name": "Gian Nhà Tranh Nông Dân Tự Do (Tranh Phong Hóa Xám)",
+  "category": "village_cottages_and_serf_hovels",
+  "sub_category": "wattle_thatched_cottage_dwelling",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "enter",
+  "gameplay_role": "Peasant homestead vernacular element (Thatched Yeoman Cottage Bay).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of weathered thatch thatched yeoman cottage bay, silvered decaying wheat straw thatch, Medieval peasant village and serf hovel vernacular style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/village_cottages_and_serf_hovels/half_cruck_peasant_cottage_weathered_thatch.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.village_cottages_and_serf_hovels.half_cruck_peasant_cottage_weathered_thatch:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.512,
+        0.593
+      ],
+      [
+        0.773,
+        0.626
+      ]
+    ],
+    "frac_zero": 0.522,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.08,
+        0.781,
+        0.16,
+        0.009,
+        0.0
+      ],
+      [
+        0.021,
+        0.354,
+        0.807,
+        1.0,
+        0.866,
+        0.639,
+        0.036
+      ],
+      [
+        0.349,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.526
+      ],
+      [
+        0.523,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.74
+      ],
+      [
+        0.866,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.823
+      ],
+      [
+        0.579,
+        1.0,
+        1.0,
+        1.0,
+        0.922,
+        0.266,
+        0.109
+      ],
+      [
+        0.025,
+        0.572,
+        0.317,
+        0.466,
+        0.264,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      21
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 28,
+    "contact_reference_px": 28.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

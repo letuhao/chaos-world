@@ -1,0 +1,167 @@
+{
+  "id": "medieval_western.castles_curtain_walls_and_bastions.potern_sally_iron_studded_door_weathered_mossy",
+  "name": "Moss-Veined Sally Port Iron-Bolted Oak Door",
+  "vietnamese_name": "Cửa Xuất Kích Bí Mật Nạm Đinh Sắt (Gân Rêu Xanh)",
+  "category": "castles_curtain_walls_and_bastions",
+  "sub_category": "arrow_slit_and_intramural_stairs",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "sneak_out",
+  "gameplay_role": "Concentric stone castle defensive element (Sally Port Iron-Bolted Oak Door).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "anglo_norman",
+  "prompt_summary": "2D orthographic top-down game sprite of moss-veined sally port iron-bolted oak door, centuries of rain weathering and moss in joints, Concentric stone castle fortification style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/castles_curtain_walls_and_bastions/potern_sally_iron_studded_door_weathered_mossy.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.castles_curtain_walls_and_bastions.potern_sally_iron_studded_door_weathered_mossy:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.823
+      ],
+      [
+        0.726
+      ]
+    ],
+    "frac_zero": 0.5397,
+    "blocks": [
+      [
+        true
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.618,
+        0.955,
+        0.626
+      ],
+      [
+        0.875,
+        1.0,
+        0.891
+      ],
+      [
+        0.718,
+        1.0,
+        0.739
+      ],
+      [
+        0.564,
+        1.0,
+        0.602
+      ],
+      [
+        0.639,
+        1.0,
+        0.703
+      ],
+      [
+        0.614,
+        1.0,
+        0.615
+      ],
+      [
+        0.044,
+        0.719,
+        0.156
+      ]
+    ],
+    "crop_offset": [
+      16,
+      43
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 66,
+    "contact_reference_px": 66.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      256
+    ]
+  }
+}

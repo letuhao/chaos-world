@@ -8,7 +8,7 @@ id = &"element_water_mastery_elixir"
 display_name = "Water Mastery Elixir"
 category = &"consumable"
 rarity = &"common"
-realm = &"qi_refining"
+realm = &"foundation"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"restore_health", "value": 6},
 ])

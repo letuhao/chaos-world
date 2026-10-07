@@ -1,0 +1,128 @@
+{
+  "id": "medieval_western.castles_curtain_walls_and_bastions.crenellated_merlon_walk_weathered_mossy",
+  "name": "Moss-Veined Stone Merlon Battlements Wall Walk",
+  "vietnamese_name": "Lỗ Châu Mai & Bờ Tường Đứng Bắn Tên (Gân Rêu Xanh)",
+  "category": "castles_curtain_walls_and_bastions",
+  "sub_category": "crenellation_and_hoarding_crest",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": true,
+  "vision_mode": "low",
+  "interactive_verb": "defend",
+  "gameplay_role": "Concentric stone castle defensive element (Stone Merlon Battlements Wall Walk).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "anglo_norman",
+  "prompt_summary": "2D orthographic top-down game sprite of moss-veined stone merlon battlements wall walk, centuries of rain weathering and moss in joints, Concentric stone castle fortification style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/castles_curtain_walls_and_bastions/crenellated_merlon_walk_weathered_mossy.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.castles_curtain_walls_and_bastions.crenellated_merlon_walk_weathered_mossy:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.747,
+        0.777
+      ]
+    ],
+    "frac_zero": 0.5291,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.778,
+        0.764,
+        0.633,
+        0.66,
+        0.654,
+        0.785,
+        0.663
+      ],
+      [
+        0.683,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.754
+      ],
+      [
+        0.298,
+        0.838,
+        0.588,
+        0.508,
+        0.518,
+        0.751,
+        0.859
+      ]
+    ],
+    "crop_offset": [
+      16,
+      24
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 207,
+    "contact_reference_px": 207.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

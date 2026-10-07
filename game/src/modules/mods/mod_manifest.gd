@@ -63,6 +63,11 @@ static func parse(text: String, source_path: String = "") -> Dictionary:
 	var roots := _parse_content_roots(raw.get("content_roots", []), source_path)
 	if not roots[0]:
 		return roots[1]
+	var locale_roots := _parse_string_array(
+		raw.get("locale_roots", []), "locale_roots", source_path
+	)
+	if not locale_roots[0]:
+		return locale_roots[1]
 	var modules := _parse_modules(raw.get("modules", []), source_path)
 	if not modules[0]:
 		return modules[1]
@@ -117,6 +122,7 @@ static func parse(text: String, source_path: String = "") -> Dictionary:
 			"provides": provides[1],
 			"overrides": overrides[1],
 			"content_roots": roots[1],
+			"locale_roots": locale_roots[1],
 			"modules": modules[1],
 			"attach_hooks": hooks[1],
 			"screens": screens[1],

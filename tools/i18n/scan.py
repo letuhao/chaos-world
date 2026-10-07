@@ -26,6 +26,9 @@ from .catalog import unescape
 ## A GDScript string literal, escapes included. The alternation handles `\"`.
 STRING_LIT = re.compile(r'"(?:[^"\\]|\\.)*"')
 
+## The resolver call, for finding literals already wrapped (idempotence).
+_LT_CALL = re.compile(r"L\.t\(")
+
 _GD_ASSIGN = re.compile(
     r"\.(?P<prop>" + "|".join(policy.TEXT_PROPERTIES) + r")\s*(?<![=!<>])=(?!=)\s*(?P<rhs>.+?)\s*$"
 )
@@ -199,12 +202,12 @@ def scan_gd(rel: str, text: str, prefix: str, catalog: str) -> Scan:
         line_no += 1
         line_start = offset
         offset += len(raw_line)
-        if any(start <= line_start < end for start, end in regions):
-            continue
         if policy.IGNORE_MARKER in raw_line:
             continue
         code = raw_line[: _comment_index(raw_line)]
 
+        # Uses are collected before the region skip: a `const` dictionary's wrapped values
+        # are uses too, and missing them would let `extract` prune live catalog rows.
         matched_func = _GD_FUNC.match(code)
         if matched_func:
             current_func = matched_func.group("name")
@@ -213,11 +216,45 @@ def scan_gd(rel: str, text: str, prefix: str, catalog: str) -> Scan:
         for use in _USE1.finditer(code):
             uses.append(Use(rel, line_no, use.group(1), ""))
 
+        if any(start <= line_start < end for start, end in regions):
+            continue
         _scan_assign(rel, line_no, line_start, code, prefix, catalog, findings, unsupported)
-        _scan_decl(rel, line_no, line_start, code, text, prefix, catalog, findings, regions)
+        _scan_decl(
+            rel, line_no, line_start, code, text, prefix, catalog, findings, regions, unsupported
+        )
         if policy.has_display_token(current_func):
             _scan_return(rel, line_no, line_start, code, prefix, catalog, findings)
     return Scan(findings, uses, unsupported, "L.t(" in text)
+
+
+def _wrapped_spans(text: str, start: int, end: int) -> list[tuple[int, int]]:
+    """Spans of every existing `L.t(...)` call in `[start, end)`, brackets balanced.
+
+    A literal inside one is already translated; wrapping it again would nest the call. This
+    is what makes `extract` idempotent.
+    """
+    spans: list[tuple[int, int]] = []
+    for match in _LT_CALL.finditer(text, start, end):
+        depth = 1
+        cursor = match.end()
+        while cursor < end:
+            char = text[cursor]
+            if char == '"':
+                cursor += 1
+                while cursor < end and text[cursor] != '"':
+                    if text[cursor] == "\\":
+                        cursor += 1
+                    cursor += 1
+            elif char in "([{":
+                depth += 1
+            elif char in ")]}":
+                depth -= 1
+                if depth == 0:
+                    cursor += 1
+                    break
+            cursor += 1
+        spans.append((match.start(), cursor))
+    return spans
 
 
 def _scan_assign(rel, line_no, line_start, code, prefix, catalog, findings, unsupported) -> None:
@@ -234,6 +271,8 @@ def _scan_assign(rel, line_no, line_start, code, prefix, catalog, findings, unsu
             findings.append(
                 Finding(rel, line_no, start, end, english, prefix, catalog, "gd_prop_lit")
             )
+        return
+    if rhs.strip().startswith(("L.t(", "tr(", "tr_n(")):
         return
     if _wrappable(rhs):
         findings.append(Finding(rel, line_no, start, end, "", prefix, catalog, "gd_prop_expr"))
@@ -253,9 +292,17 @@ def _is_dict_key(text: str, end: int, limit: int) -> bool:
     return cursor < limit and text[cursor] == ":"
 
 
-def _scan_decl(rel, line_no, line_start, code, text, prefix, catalog, findings, regions) -> None:
+def _scan_decl(
+    rel, line_no, line_start, code, text, prefix, catalog, findings, regions, unsupported
+) -> None:
     match = _GD_DECL.match(code)
-    if match is None or not policy.has_display_token(match.group("name")):
+    if match is None:
+        return
+    is_const = match.group("kw") == "const"
+    # A `const` holding a prose literal is configuration wording (`UNWIRED_CLOCK`), whatever
+    # its name — gate on the value, not the name. A local `var` is noisier (log strings,
+    # scratch text), so it still needs a display token in its name.
+    if not is_const and not policy.has_display_token(match.group("name")):
         return
     equals = code.find("=", match.end("name"))
     if equals < 0:
@@ -263,10 +310,13 @@ def _scan_decl(rel, line_no, line_start, code, text, prefix, catalog, findings, 
     span_start = line_start + equals + 1
     span_end = _initializer_span(text, span_start)
     regions.append((line_start + match.start("kw"), span_end))
+    wrapped = _wrapped_spans(text, span_start, span_end)
     literals: list[Finding] = []
     for literal in STRING_LIT.finditer(text, span_start, span_end):
         if _is_dict_key(text, literal.end(), span_end):
             continue
+        if any(begin <= literal.start() and literal.end() <= stop for begin, stop in wrapped):
+            continue  # already inside an L.t(...) call
         english = decode(literal.group(0)[1:-1])
         if policy.is_player_text(english):
             literals.append(
@@ -283,8 +333,16 @@ def _scan_decl(rel, line_no, line_start, code, text, prefix, catalog, findings, 
             )
     if not literals:
         return
+    if is_const and "static func" in text:
+        # A `var` is not reachable from a `static func`, so `DomainOutcome.outcome_text`
+        # reading its own `OUTCOME_TEXT` would stop compiling. Leave the const's wording
+        # alone and report it; a human migrates the file (see the ADR's reader-side note).
+        unsupported.append(
+            Unsupported(rel, line_no, f"{match.group('name')} (const, file has a static func)")
+        )
+        return
     findings.extend(literals)
-    if match.group("kw") == "const":
+    if is_const:
         findings.append(
             Finding(
                 rel,

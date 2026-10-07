@@ -39,6 +39,26 @@ func _hint_text() -> String:
 \treturn "Ready"
 """
 
+_CONST_DICT = """extends Control
+
+
+var REASON_TEXT := {
+\t"no_actor": L.t("%s", "The world has no one"),
+}
+"""
+
+_STATIC_CONST = """extends RefCounted
+
+
+const OUTCOME_TEXT := {
+\t"fired": "the trap fired",
+}
+
+
+static func outcome_text(reason: String) -> String:
+\treturn String(OUTCOME_TEXT.get(reason, reason))
+"""
+
 
 def _slug(english: str) -> str:
     return catalog.slug_for("UI", english)
@@ -147,3 +167,29 @@ def _extract_round_trip() -> None:
         expect(_check(root) == 0, "the rewritten tree passes the gate")
         _extract(root)
         expect(source.read_text(encoding="utf-8") == rewritten, "a second extract changes nothing")
+
+
+@case("i18n: a wrapped const dictionary is seen as a USE, not pruned as an orphan")
+def _const_dict_is_a_use() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        key = _slug("The world has no one")
+        _tree(root, _CONST_DICT % key, catalog.render("en", {key: "The world has no one"}))
+        expect(_check(root) == 0, "the dict's L.t row is a use, so it is not an orphan")
+        _extract(root)
+        expect(_check(root) == 0, "extract keeps the row: the use is found inside the region")
+
+
+@case("i18n: a const in a file with a static func is left alone (a var would not compile)")
+def _static_const_is_skipped() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        _tree(root, _STATIC_CONST, catalog.render("en", {}))
+        result = engine.scan_all(Path(root))[0][1]
+        kinds = {finding.kind for finding in result.findings}
+        expect("gd_const_kw" not in kinds, "the const is not turned into a var")
+        expect("gd_const_lit" not in kinds, "and its wording is not wrapped")
+        expect(
+            any("static func" in item.reason for item in result.unsupported),
+            "instead it is reported for a human",
+        )

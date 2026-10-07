@@ -1,0 +1,168 @@
+{
+  "id": "medieval_western.palace_keeps_and_royal_chambers.canopied_gilded_high_throne_somber_feudal_oak",
+  "name": "Dark Polished Oak Carved Lion Royal Oak Throne",
+  "vietnamese_name": "Ngai Vàng Khắc Sư Tử Hoàng Gia (Gỗ Sồi Đen Đánh Bóng)",
+  "category": "palace_keeps_and_royal_chambers",
+  "sub_category": "throne_dais_and_royal_canopy",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "sit_throne",
+  "gameplay_role": "Palace keep and royal court element (Carved Lion Royal Oak Throne).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of dark polished oak carved lion royal oak throne, centuries-old hand-rubbed beeswax finish, High medieval royal palace and keep court style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/palace_keeps_and_royal_chambers/canopied_gilded_high_throne_somber_feudal_oak.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.palace_keeps_and_royal_chambers.canopied_gilded_high_throne_somber_feudal_oak:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.753
+      ],
+      [
+        0.775
+      ]
+    ],
+    "frac_zero": 0.6319,
+    "blocks": [
+      [
+        true
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.422,
+        0.519,
+        0.141
+      ],
+      [
+        0.919,
+        1.0,
+        0.422
+      ],
+      [
+        0.843,
+        0.974,
+        0.0
+      ],
+      [
+        0.771,
+        0.909,
+        0.0
+      ],
+      [
+        0.723,
+        0.866,
+        0.0
+      ],
+      [
+        0.896,
+        0.984,
+        0.344
+      ],
+      [
+        0.659,
+        0.752,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      30,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 59,
+    "contact_reference_px": 59.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      256
+    ]
+  }
+}

@@ -62,6 +62,12 @@ var mod_id: String = ""
 ## ctxs in load order without re-shaping.
 var content_roots: Dictionary = {}
 
+## Catalog roots this mod ships, in DECLARATION order (ADR 0918). A `Translation` catalog
+## directory (`<mod_root>/locale`, say). `ModRuntime.finalize` collects them in load order and
+## `L.install_roots` layers them over the base, later-wins — the same overlay idea as
+## `content_roots`, applied to strings.
+var locale_roots: Array[String] = []
+
 ## Module declarations recorded through `register_module`, with the registry's
 ## verdict appended so a caller can see what the runtime accepted.
 var modules: Array[Dictionary] = []
@@ -159,6 +165,15 @@ func add_content_root(family: String, dir: String, id_field: String = "id") -> A
 	for entry in list:
 		out.append(entry)
 	return out
+
+
+## Register one catalog root this mod ships (ADR 0918). The ninth seam: strings are content
+## too, and without it a mod's screen had no place to put its own wording. `finalize` collects
+## the roots in load order and the app layers them over the base catalogs, later-wins, so a
+## mod OVERRIDES a core string by shipping the same key — never by editing core.
+func add_locale_root(dir: String) -> Array[String]:
+	locale_roots.append(dir)
+	return locale_roots
 
 
 ## Register one module facade: the `api.gd` a sibling module may reference,
@@ -331,7 +346,9 @@ func set_config(key: String, value: Variant) -> Dictionary:
 				return {"ok": false, "reason": reason, "detail": ""}
 			_config_values[key] = value
 			return ModConfigStore.save(mod_id, _config_values)
-	return {"ok": false, "reason": "unknown_key", "detail": "'%s' is not in the config schema" % key}
+	return {
+		"ok": false, "reason": "unknown_key", "detail": "'%s' is not in the config schema" % key
+	}
 
 
 ## THE EIGHTH SEAM — lifecycle hooks. Register a callable for an event.
@@ -412,6 +429,7 @@ func registrations() -> Dictionary:
 	return {
 		"mod_id": mod_id,
 		"content_roots": content_roots,
+		"locale_roots": locale_roots,
 		"modules": modules,
 		"attach_hooks": attach_hooks,
 		"screens": screens,

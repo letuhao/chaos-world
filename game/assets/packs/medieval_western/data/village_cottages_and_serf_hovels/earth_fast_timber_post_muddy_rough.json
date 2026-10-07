@@ -1,0 +1,168 @@
+{
+  "id": "medieval_western.village_cottages_and_serf_hovels.earth_fast_timber_post_muddy_rough",
+  "name": "Mud-Splattered Earth-Fast Split Oak Wall Post",
+  "vietnamese_name": "Cột Gỗ Sồi Chôn Thẳng Xuống Đất (Bám Bùn Đất Thô)",
+  "category": "village_cottages_and_serf_hovels",
+  "sub_category": "peasant_turf_roofed_hovel",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": null,
+  "gameplay_role": "Peasant homestead vernacular element (Earth-Fast Split Oak Wall Post).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of mud-splattered earth-fast split oak wall post, coarse dried clay mud and soil splashes, Medieval peasant village and serf hovel vernacular style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/village_cottages_and_serf_hovels/earth_fast_timber_post_muddy_rough.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.village_cottages_and_serf_hovels.earth_fast_timber_post_muddy_rough:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.476
+      ],
+      [
+        0.467
+      ]
+    ],
+    "frac_zero": 0.7336,
+    "blocks": [
+      [
+        true
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.299,
+        0.509,
+        0.0
+      ],
+      [
+        0.568,
+        0.691,
+        0.016
+      ],
+      [
+        0.601,
+        0.759,
+        0.069
+      ],
+      [
+        0.302,
+        0.506,
+        0.0
+      ],
+      [
+        0.299,
+        0.555,
+        0.013
+      ],
+      [
+        0.486,
+        0.9,
+        0.091
+      ],
+      [
+        0.433,
+        0.653,
+        0.053
+      ]
+    ],
+    "crop_offset": [
+      25,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 43,
+    "contact_reference_px": 43.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      256
+    ]
+  }
+}

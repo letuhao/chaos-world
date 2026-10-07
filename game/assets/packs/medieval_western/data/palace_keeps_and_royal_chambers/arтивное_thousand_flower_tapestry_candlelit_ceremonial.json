@@ -1,0 +1,174 @@
+{
+  "id": "medieval_western.palace_keeps_and_royal_chambers.arтивное_thousand_flower_tapestry_candlelit_ceremonial",
+  "name": "Candlelit Ceremonial Millefleurs Unicorn Wall Tapestry",
+  "vietnamese_name": "Thảm Treo Tường Ngàn Hoa Millefleurs (Nến Sáp Nghi Lễ)",
+  "category": "palace_keeps_and_royal_chambers",
+  "sub_category": "chivalric_heraldic_tapestry",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "admire",
+  "gameplay_role": "Palace keep and royal court element (Millefleurs Unicorn Wall Tapestry).",
+  "destructible": false,
+  "material": "cloth",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of candlelit ceremonial millefleurs unicorn wall tapestry, gleaming beeswax candle wax drippings and brass glow, High medieval royal palace and keep court style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/palace_keeps_and_royal_chambers/arтивное_thousand_flower_tapestry_candlelit_ceremonial.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.palace_keeps_and_royal_chambers.arтивное_thousand_flower_tapestry_candlelit_ceremonial:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.785,
+        0.783
+      ],
+      [
+        0.714,
+        0.742
+      ]
+    ],
+    "frac_zero": 0.4418,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.093,
+        0.679,
+        0.766,
+        0.746,
+        0.803,
+        0.481,
+        0.014
+      ],
+      [
+        0.691,
+        0.899,
+        1.0,
+        1.0,
+        1.0,
+        0.896,
+        0.529
+      ],
+      [
+        0.79,
+        0.895,
+        1.0,
+        1.0,
+        1.0,
+        0.888,
+        0.758
+      ],
+      [
+        0.478,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.302
+      ],
+      [
+        0.312,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        0.062
+      ],
+      [
+        0.289,
+        0.94,
+        1.0,
+        1.0,
+        1.0,
+        0.926,
+        0.197
+      ],
+      [
+        0.0,
+        0.402,
+        0.887,
+        0.994,
+        0.847,
+        0.328,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      20,
+      20
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 124,
+    "contact_reference_px": 124.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
