@@ -46,7 +46,10 @@ func _context(base: Dictionary = {}) -> StatContext:
 	return StatContext.new(base, {}, NameList.new(), AffinityMap.new(), {}, {}, null)
 
 
-## The published ids for one element, in the order the provider writes them.
+## The published ids for one element, in the order the provider writes them: the
+## power/defense pair. Deliberately NOT the ADR 0215 crit pair — the zero-reading case
+## below asserts every id here reads `0.0` on an untrained body, and the crit pair has
+## a non-zero BASE by design (`CRIT_BASE`).
 func _ids_for(element: StringName) -> Array[StringName]:
 	var out: Array[StringName] = []
 	out.append(ElementStats.power_id(element))
@@ -74,12 +77,14 @@ func test_the_provider_publishes_a_power_and_a_defense_id_for_every_element_it_k
 					% [id, element, str(published.keys())]
 				)
 			)
-	# MEASURED, not asserted per element: publishing the two ids and nothing else is the
-	# contract, so a stray third id per element is a finding rather than a free extra.
+	# MEASURED, not asserted per element: the four ids above and nothing else is the
+	# contract, plus the OMNI crit pair, which the provider publishes on the same rule
+	# (`ElementStats.all_ids()` carries OMNI) rather than as a special case. A stray
+	# fifth id per element is a finding rather than a free extra.
 	assert_eq(
 		published.size(),
-		rules.ids().size() * 2,
-		"the provider publishes exactly two ids per element and nothing else"
+		rules.ids().size() * 4 + 2,
+		"the provider publishes four ids per element plus the omni pair, and nothing else"
 	)
 
 

@@ -217,3 +217,29 @@ static func strip_realm_modifiers(actor: Actor, rules: ElementRules = null) -> v
 
 static func multiplier(rules: ElementRules, attacker: StringName, defender: StringName) -> float:
 	return rules.multiplier(attacker, defender)
+
+
+## ## The mastery loop's doors (ADR 0004's second half)
+##
+## The practice STEP is owned here, the way `QiCultivationApi` owns its
+## `CULTIVATE_STEP`: a caller passes a time unit and the module prices it, so no
+## screen carries a balance number of its own.
+const PRACTICE_STEP := 25.0
+
+
+static func can_practise(actor: Actor, element_id: StringName) -> bool:
+	return ElementTraining.can_practise(actor, element_id)
+
+
+static func practise(actor: Actor, element_id: StringName, amount: float = PRACTICE_STEP) -> bool:
+	return ElementTraining.practise(actor, element_id, amount)
+
+
+static func mastery_of(actor: Actor, element_id: StringName) -> float:
+	return ElementTraining.mastery_of(actor, element_id)
+
+
+## Open an element the body was not born with: a rare resource raises the AFFINITY
+## itself, and the practice gate follows.
+static func awaken(actor: Actor, element_id: StringName, amount: float) -> bool:
+	return ElementTraining.awaken(actor, element_id, amount)
