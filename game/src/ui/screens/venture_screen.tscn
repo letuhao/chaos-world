@@ -56,6 +56,31 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Debug"
 
+[node name="EncounterRow" type="HBoxContainer" parent="Layout"]
+layout_mode = 2
+
+[node name="EncounterLabel" type="Label" parent="Layout/EncounterRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"MetaLabel"
+text = ""
+
+[node name="FateFirstButton" type="Button" parent="Layout/EncounterRow"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Fate"
+
+[node name="FateSecondButton" type="Button" parent="Layout/EncounterRow"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Fate"
+
+[node name="DismissButton" type="Button" parent="Layout/EncounterRow"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Walk on"
+
 [node name="Move" type="HBoxContainer" parent="Layout"]
 layout_mode = 2
 

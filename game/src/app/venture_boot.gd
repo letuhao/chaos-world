@@ -72,6 +72,13 @@ static func close(screen: Control) -> Dictionary:
 
 ## Step the player one cell. Records the resume point afterwards: a step is
 ## the one verb that always moves it. Unopened reads as refused, not a crash.
+## A step onto an encounter marker rolls the encounter module (location is
+## the node id; the marker says WHERE, the module decides WHAT): the outcome
+## carries an `encounter` block (`{id, fates}`) or `{}` when the wild stays
+## quiet. Rolls use a per-cell deterministic seed, so the same cell offers
+## the same encounter on every visit — farmable only as far as the module's
+## seen/cooldown ledgers allow (all three authored defs are unique: once ever
+## each).
 static func step(screen: Control, dx: int, dy: int) -> Dictionary:
 	var scene := _scene_of(screen)
 	if scene == null:
@@ -79,7 +86,79 @@ static func step(screen: Control, dx: int, dy: int) -> Dictionary:
 	var outcome := scene.step(dx, dy)
 	if bool(outcome.get("moved", false)):
 		_record_position(scene)
+	if bool(outcome.get("moved", false)) and not bool(outcome.get("traveled", false)):
+		outcome["encounter"] = _maybe_encounter(screen, scene)
+	else:
+		outcome["encounter"] = {}
 	return outcome
+
+
+## Roll an encounter when the player's cell carries a marker. Returns `{}` or
+## `{id, fates}` with fate ids as Strings. No actor, no marker, no roll:
+## each refusal is silent, because an empty cell owes no explanation.
+static func _maybe_encounter(screen: Control, scene: WorldmapScene) -> Dictionary:
+	var actor := screen.call("actor") as Actor
+	if actor == null:
+		return {}
+	var summary := scene.debug_summary()
+	if not (summary.get("domain", {}) as Dictionary).is_empty():
+		return {}
+	var node := String(summary.get("node", ""))
+	var cell := scene.player_cell()
+	if not _marked(scene, node, cell):
+		return {}
+	EncounterApi.attach(actor)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash("%s:%d,%d" % [node, cell.x, cell.y])
+	var rolled := EncounterApi.trigger_encounter(actor, StringName(node), 0, rng)
+	if not bool(rolled.get("triggered", false)):
+		return {}
+	var fates: Array = []
+	for fate in rolled.get("fate_choices", []) as Array:
+		fates.append(String(fate))
+	return {"id": String(rolled.get("encounter_id", "")), "fates": fates}
+
+
+## Whether the map cell carries an encounter marker. Reads the metadata POIs
+## of the player's chunk from the data cache — generating nothing, since a
+## stood-on chunk is always cached.
+static func _marked(scene: WorldmapScene, node: String, cell: Vector2i) -> bool:
+	var streamer := scene.streamer()
+	if streamer == null:
+		return false
+	var size := int(scene.debug_summary().get("chunk_size", 8))
+	var cc := Vector2i(floori(float(cell.x) / size), floori(float(cell.y) / size))
+	var chunk := streamer.chunk_data(
+		node, cc.x, cc.y, size, int(scene.debug_summary().get("seed", 0))
+	)
+	var meta := chunk.layers.get("metadata", {}) as Dictionary
+	for poi in meta.get("pois", []) as Array:
+		var row := poi as Dictionary
+		if String(row.get("kind", "")) != "encounter":
+			continue
+		var at := row.get("cell", []) as Array
+		if int(at[0]) == cell.x - cc.x * size and int(at[1]) == cell.y - cc.y * size:
+			return true
+	return false
+
+
+## Answer a pending encounter with a fate choice, or walk away from it.
+## Returns the module's own verdict; clearing the pending offer is the
+## screen's half, which is why this answers rather than stores.
+static func answer_fate(screen: Control, encounter_id: String, fate_index: int) -> Dictionary:
+	var actor := screen.call("actor") as Actor
+	if actor == null:
+		return {"ok": false, "reason": "no_actor"}
+	return EncounterApi.resolve_encounter(actor, StringName(encounter_id), fate_index)
+
+
+## Walk away from a pending encounter without choosing. The module records
+## the dismissal; a unique encounter will not offer again.
+static func dismiss_encounter(screen: Control, encounter_id: String) -> Dictionary:
+	var actor := screen.call("actor") as Actor
+	if actor == null:
+		return {"ok": false, "reason": "no_actor"}
+	return EncounterApi.dismiss_encounter(actor, StringName(encounter_id))
 
 
 ## Destroy whatever the player's cell masks. Mutations ride out to the ledger
@@ -292,6 +371,9 @@ static func _demo_configs() -> Dictionary:
 				{"archetype": "flora.shrub", "density": 0.05, "blocking": true},
 				{"archetype": "flora.flower_cluster", "density": 0.08, "blocking": false},
 			],
+			# Wild ground: markers the step answers with real encounter rolls.
+			"encounter_tables": [{"id": "wilds", "weight": 1.0}],
+			"encounter_density": 0.25,
 		},
 		"cave":
 		{

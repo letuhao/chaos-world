@@ -1480,6 +1480,13 @@ func _bind_route_screen(route_id: StringName, screen: Control) -> void:
 				Callable(VentureBoot, "return_from_domain"),
 				Callable(VentureBoot, "set_debug")
 			)
+			# Encounters answer through their own seam: walking offers through
+			# `step`, and fate answers here, so each half degrades alone.
+			screen.call(
+				"bind_encounter",
+				Callable(VentureBoot, "answer_fate"),
+				Callable(VentureBoot, "dismiss_encounter")
+			)
 			# Slice 3: the descent seam. The scene asks it when a node names
 			# a domain template; the actor it enters onto is this root's own,
 			# which is why the seam is installed here and not in the boot.

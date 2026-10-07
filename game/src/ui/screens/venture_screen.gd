@@ -27,7 +27,11 @@ var _destroy_call: Callable = Callable()
 var _read_call: Callable = Callable()
 var _return_call: Callable = Callable()
 var _debug_call: Callable = Callable()
+var _answer_call: Callable = Callable()
+var _dismiss_call: Callable = Callable()
 var _debug := false
+var _pending_encounter := ""
+var _pending_fates: Array = []
 
 var _header_label: Label = null
 var _status_label: Label = null
@@ -67,6 +71,16 @@ func bind_venture(
 	_read_call = read_call
 	_return_call = return_call
 	_debug_call = debug_call
+	_bind_nodes()
+	refresh()
+
+
+## Inject the encounter-answer seam. Separate bind because answering is a
+## different question from walking: the screen walks through one seam and
+## answers fate through another, and each degrades to its own refusal.
+func bind_encounter(answer_call: Callable, dismiss_call: Callable) -> void:
+	_answer_call = answer_call
+	_dismiss_call = dismiss_call
 	_bind_nodes()
 	refresh()
 
@@ -155,6 +169,48 @@ func act_debug() -> bool:
 	return true
 
 
+## Answer the pending encounter with a fate choice, or walk away from it.
+## Refuses with no pending offer rather than answering thin air.
+func act_fate(fate_index: int) -> bool:
+	_bind_nodes()
+	if _pending_encounter.is_empty():
+		set_message("No encounter awaits an answer.", TONE_ERROR)
+		return false
+	if not _answer_call.is_valid():
+		set_message("No venture seam is bound.", TONE_ERROR)
+		return false
+	var outcome := _answer_call.call(self, _pending_encounter, fate_index) as Dictionary
+	refresh()
+	if not bool(outcome.get("ok", false)):
+		set_message("The fates refuse: %s." % String(outcome.get("reason", "")), TONE_ERROR)
+		return false
+	set_message("Fate earned: %s." % String(outcome.get("fate_id", "")), TONE_OK)
+	_pending_encounter = ""
+	_pending_fates = []
+	refresh()
+	return true
+
+
+func act_dismiss() -> bool:
+	_bind_nodes()
+	if _pending_encounter.is_empty():
+		set_message("Nothing to walk away from.", TONE_ERROR)
+		return false
+	if not _dismiss_call.is_valid():
+		set_message("No venture seam is bound.", TONE_ERROR)
+		return false
+	var outcome := _dismiss_call.call(self, _pending_encounter) as Dictionary
+	refresh()
+	if not bool(outcome.get("ok", false)):
+		set_message("It will not let you pass: %s." % String(outcome.get("reason", "")), TONE_ERROR)
+		return false
+	set_message("You walk on, unmarked.", TONE_OK)
+	_pending_encounter = ""
+	_pending_fates = []
+	refresh()
+	return true
+
+
 func act_north() -> bool:
 	return _act_step(0, -1)
 
@@ -165,6 +221,14 @@ func act_south() -> bool:
 
 func act_west() -> bool:
 	return _act_step(-1, 0)
+
+
+func act_fate_first() -> bool:
+	return act_fate(0)
+
+
+func act_fate_second() -> bool:
+	return act_fate(1)
 
 
 func act_east() -> bool:
@@ -183,6 +247,17 @@ func _act_step(dx: int, dy: int) -> bool:
 		return false
 	if bool(outcome.get("traveled", false)):
 		set_message("The way carried you elsewhere.", TONE_OK)
+		_pending_encounter = ""
+		_pending_fates = []
+		return true
+	var meeting := outcome.get("encounter", {}) as Dictionary
+	if not meeting.is_empty():
+		_pending_encounter = String(meeting.get("id", ""))
+		_pending_fates = (meeting.get("fates", []) as Array).duplicate()
+		set_message(
+			"A wild %s bars the way — choose a fate or walk on." % _pending_encounter, TONE_OK
+		)
+		refresh()
 	return true
 
 
@@ -200,6 +275,9 @@ func _summary() -> Dictionary:
 	view["status"] = _text_of(_status_label)
 	view["message_text"] = _text_of(_message_label)
 	view["debug_text"] = _text_of(_debug_label)
+	view["pending_encounter"] = _pending_encounter
+	view["pending_fates"] = _pending_fates.duplicate()
+	view["encounter_text"] = _text_of(get_node_or_null("%EncounterLabel") as Label)
 	view["selected"] = _selected_node()
 	return view
 
@@ -258,12 +336,35 @@ func _render() -> void:
 		get_node_or_null("%DebugButton") as Button, not (standing and _debug_call.is_valid())
 	)
 	_set_text(_debug_label, _debug_text(view))
+	_render_encounter()
 
 
 func _read_view() -> Dictionary:
 	if not _read_call.is_valid():
 		return {"nodes": [], "open": false}
 	return _read_call.call(self) as Dictionary
+
+
+## Paint the pending encounter: its name, its fates on the buttons, and the
+## walk-away door. Empty pending darkens the row rather than hiding it, so
+## the layout never jumps under the player's thumb.
+func _render_encounter() -> void:
+	var label := get_node_or_null("%EncounterLabel") as Label
+	var first := get_node_or_null("%FateFirstButton") as Button
+	var second := get_node_or_null("%FateSecondButton") as Button
+	var leave := get_node_or_null("%DismissButton") as Button
+	var live := not _pending_encounter.is_empty() and _answer_call.is_valid()
+	_set_text(
+		label,
+		"" if _pending_encounter.is_empty() else "A wild %s awaits answer." % _pending_encounter
+	)
+	_set_disabled(first, not live)
+	_set_disabled(second, not (live and _pending_fates.size() > 1))
+	_set_disabled(leave, not (live and _dismiss_call.is_valid()))
+	if first != null:
+		first.text = String(_pending_fates[0]) if _pending_fates.size() > 0 else "Fate"
+	if second != null:
+		second.text = String(_pending_fates[1]) if _pending_fates.size() > 1 else "Fate"
 
 
 ## The debug overlay as text: node and seed, player cell, holders, loaded and
@@ -340,6 +441,9 @@ func _bind_nodes() -> void:
 	_connect_once("%CloseButton", "pressed", act_close)
 	_connect_once("%ReturnButton", "pressed", act_return)
 	_connect_once("%DebugButton", "pressed", act_debug)
+	_connect_once("%FateFirstButton", "pressed", act_fate_first)
+	_connect_once("%FateSecondButton", "pressed", act_fate_second)
+	_connect_once("%DismissButton", "pressed", act_dismiss)
 
 
 ## Guarded like the composition root's own connections: a reused screen that

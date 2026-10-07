@@ -277,3 +277,56 @@ func test_reopening_resumes_where_the_player_stood() -> void:
 	assert_eq(
 		_cell_of(screen.call("summary") as Dictionary), cell, "and reopening resumes the cell"
 	)
+
+
+## Walk the open ground until the wild answers, bounded: marker density
+## makes this a short stroll, and the cap makes sealed ground an answer
+## rather than a spin.
+func _walk_till_encounter(screen: Control) -> String:
+	var verbs := ["act_east", "act_south", "act_west", "act_north"]
+	for attempt in 48:
+		screen.call(verbs[attempt % verbs.size()])
+		var pending := String((screen.call("summary") as Dictionary).get("pending_encounter", ""))
+		if not pending.is_empty():
+			return pending
+	return ""
+
+
+func test_stepping_on_wild_ground_offers_a_real_encounter() -> void:
+	var screen := _venture_screen()
+	if screen == null:
+		return
+	screen.call("act_open")
+	var pending := _walk_till_encounter(screen)
+	assert_ne(pending, "", "the wild answered with a real encounter id")
+	var view := screen.call("summary") as Dictionary
+	assert_eq((view.get("pending_fates", []) as Array).is_empty(), false, "carrying fate choices")
+	assert_ne(String(view.get("encounter_text", "")), "", "and the row says so")
+
+
+func test_answering_a_fate_earns_it_and_clears_the_offer() -> void:
+	var screen := _venture_screen()
+	if screen == null:
+		return
+	screen.call("act_open")
+	if _walk_till_encounter(screen).is_empty():
+		return
+	assert_eq(screen.call("act_fate_first"), true, "the first fate answers")
+	var view := screen.call("summary") as Dictionary
+	assert_eq(String(view.get("pending_encounter", "x")), "", "clearing the offer")
+	assert_ne(String(view.get("message_text", "")), "", "with the earned fate named")
+
+
+func test_walking_away_dismisses_without_earning() -> void:
+	var screen := _venture_screen()
+	if screen == null:
+		return
+	screen.call("act_open")
+	if _walk_till_encounter(screen).is_empty():
+		return
+	assert_eq(screen.call("act_dismiss"), true, "walking away answers true")
+	assert_eq(
+		String((screen.call("summary") as Dictionary).get("pending_encounter", "x")),
+		"",
+		"clearing the offer without a fate"
+	)
