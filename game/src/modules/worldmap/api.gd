@@ -143,4 +143,6 @@ static func default_generator() -> WorldmapGenerator:
 	generator.register_pass(WorldmapEncountersPass.new())
 	generator.register_pass(WorldmapNpcsPass.new())
 	generator.register_pass(WorldmapCollisionPass.new())
+	generator.register_pass(WorldmapNavigationPass.new())
+	generator.register_pass(WorldmapMetadataPass.new())
 	return generator

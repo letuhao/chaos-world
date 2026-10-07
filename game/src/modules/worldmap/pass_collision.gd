@@ -3,10 +3,12 @@ extends WorldmapContract
 
 ## Collision: the walkable grid from water terrain and blocking footprints.
 ## Requires every props writer (`terrain`, `scatter`, `roads`, `resources`,
-## `structures`, `landmarks`) and runs LAST by construction — anything placed
-## after it would stand on cells already judged walkable, which is how a prop
-## ends up inside a wall. Water blocks by archetype prefix; props block their
-## footprint cells when the placement says `blocking`.
+## `structures`, `landmarks`) and runs last among the WRITERS — anything
+## placed after it would stand on cells already judged walkable, which is how
+## a prop ends up inside a wall. `navigation` and `metadata` read after it;
+## both are readers, and nothing may require them. Water blocks by archetype
+## prefix; props block their footprint cells when the placement says
+## `blocking`.
 
 
 func pass_id() -> StringName:

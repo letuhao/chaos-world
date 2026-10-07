@@ -47,6 +47,8 @@ func test_the_standard_set_registers_every_layer() -> void:
 			"elevation",
 			"encounters",
 			"landmarks",
+			"metadata",
+			"navigation",
 			"npc_spawns",
 			"resources",
 			"roads",
