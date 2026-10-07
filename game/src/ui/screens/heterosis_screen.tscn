@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://src/ui/screens/heterosis_screen.gd" id="1"]
 [ext_resource type="Theme" path="res://src/ui/theme/chaos_world_theme.tres" id="2"]
+[ext_resource type="PackedScene" path="res://src/ui/panels/heterosis_status_row.tscn" id="10"]
 
 [node name="HeterosisScreen" type="Control"]
 anchors_preset = 15
@@ -30,7 +31,7 @@ text = "No hero bound."
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Status" parent="Layout/Scroll" instance=ExtResource("res://src/ui/panels/heterosis_status_row.tscn")]
+[node name="Status" parent="Layout/Scroll" instance=ExtResource("10")]
 unique_name_in_owner = true
 
 [node name="FooterLabel" type="Label" parent="Layout"]

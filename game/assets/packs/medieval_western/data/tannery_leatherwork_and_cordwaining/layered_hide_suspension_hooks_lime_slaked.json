@@ -1,0 +1,167 @@
+{
+  "id": "medieval_western.tannery_leatherwork_and_cordwaining.layered_hide_suspension_hooks_lime_slaked",
+  "name": "Quicklime-Dehaired Suspended Hides on Oak Plunging Sticks",
+  "vietnamese_name": "Tấm Da Treo Trên Thanh Gỗ Nhúng Bể Nước (Ngâm Vôi Rụng Lông)",
+  "category": "tannery_leatherwork_and_cordwaining",
+  "sub_category": "tanbark_liquor_vats_and_crushers",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "agitate_hides",
+  "gameplay_role": "Supply chain industry element (Suspended Hides on Oak Plunging Sticks).",
+  "destructible": false,
+  "material": "organic",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of quicklime-dehaired suspended hides on oak plunging sticks, chalky white lime slurry splashes, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/tannery_leatherwork_and_cordwaining/layered_hide_suspension_hooks_lime_slaked.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.tannery_leatherwork_and_cordwaining.layered_hide_suspension_hooks_lime_slaked:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.237
+      ],
+      [
+        0.656
+      ]
+    ],
+    "frac_zero": 0.7154,
+    "blocks": [
+      [
+        true
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.269,
+        0.0
+      ],
+      [
+        0.026,
+        0.459,
+        0.024
+      ],
+      [
+        0.182,
+        0.935,
+        0.099
+      ],
+      [
+        0.256,
+        0.881,
+        0.097
+      ],
+      [
+        0.617,
+        1.0,
+        0.595
+      ],
+      [
+        0.813,
+        1.0,
+        0.717
+      ],
+      [
+        0.266,
+        0.92,
+        0.107
+      ]
+    ],
+    "crop_offset": [
+      17,
+      33
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 65,
+    "contact_reference_px": 65.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      256
+    ]
+  }
+}

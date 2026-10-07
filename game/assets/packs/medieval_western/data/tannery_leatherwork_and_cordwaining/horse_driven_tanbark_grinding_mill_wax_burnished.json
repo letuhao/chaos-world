@@ -1,0 +1,203 @@
+{
+  "id": "medieval_western.tannery_leatherwork_and_cordwaining.horse_driven_tanbark_grinding_mill_wax_burnished",
+  "name": "Beeswax-Burnished Edge-Runner Granite Tanbark Millstone",
+  "vietnamese_name": "Cối Đá Tròn Lăn Nghiền Vỏ Cây Sồi Lấy Tanin (Đánh Bóng Sáp Ong)",
+  "category": "tannery_leatherwork_and_cordwaining",
+  "sub_category": "tanbark_liquor_vats_and_crushers",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "crush_bark",
+  "gameplay_role": "Supply chain industry element (Edge-Runner Granite Tanbark Millstone).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of beeswax-burnished edge-runner granite tanbark millstone, gleaming glossy smooth brown leather sheen, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/tannery_leatherwork_and_cordwaining/horse_driven_tanbark_grinding_mill_wax_burnished.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.tannery_leatherwork_and_cordwaining.horse_driven_tanbark_grinding_mill_wax_burnished:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.577,
+        0.568
+      ],
+      [
+        0.702,
+        0.738
+      ]
+    ],
+    "frac_zero": 0.5376,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.29,
+        0.563,
+        0.016,
+        0.0,
+        0.0
+      ],
+      [
+        0.018,
+        0.66,
+        1.0,
+        1.0,
+        0.867,
+        0.177,
+        0.0
+      ],
+      [
+        0.385,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.782,
+        0.0
+      ],
+      [
+        0.813,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.994,
+        0.615
+      ],
+      [
+        0.592,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.998,
+        0.185
+      ],
+      [
+        0.191,
+        0.982,
+        1.0,
+        1.0,
+        1.0,
+        0.656,
+        0.002
+      ],
+      [
+        0.0,
+        0.312,
+        0.729,
+        0.865,
+        0.56,
+        0.204,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      25,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 89,
+    "contact_reference_px": 89.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

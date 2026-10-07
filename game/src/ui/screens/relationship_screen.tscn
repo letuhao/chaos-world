@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://src/ui/screens/relationship_screen.gd" id="1"]
 [ext_resource type="Theme" path="res://src/ui/theme/chaos_world_theme.tres" id="2"]
+[ext_resource type="PackedScene" path="res://src/ui/panels/partner_row.tscn" id="10"]
 
 [node name="RelationshipScreen" type="Control"]
 anchors_preset = 15
@@ -34,16 +35,16 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Partner0" parent="Layout/Scroll/Partners" instance=ExtResource("res://src/ui/panels/partner_row.tscn")]
+[node name="Partner0" parent="Layout/Scroll/Partners" instance=ExtResource("10")]
 unique_name_in_owner = true
 
-[node name="Partner1" parent="Layout/Scroll/Partners" instance=ExtResource("res://src/ui/panels/partner_row.tscn")]
+[node name="Partner1" parent="Layout/Scroll/Partners" instance=ExtResource("10")]
 unique_name_in_owner = true
 
-[node name="Partner2" parent="Layout/Scroll/Partners" instance=ExtResource("res://src/ui/panels/partner_row.tscn")]
+[node name="Partner2" parent="Layout/Scroll/Partners" instance=ExtResource("10")]
 unique_name_in_owner = true
 
-[node name="Partner3" parent="Layout/Scroll/Partners" instance=ExtResource("res://src/ui/panels/partner_row.tscn")]
+[node name="Partner3" parent="Layout/Scroll/Partners" instance=ExtResource("10")]
 unique_name_in_owner = true
 
 [node name="HistoryTitle" type="Label" parent="Layout/Scroll"]

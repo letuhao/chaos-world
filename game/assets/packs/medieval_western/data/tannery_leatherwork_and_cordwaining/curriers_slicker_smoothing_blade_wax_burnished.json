@@ -1,0 +1,103 @@
+{
+  "id": "medieval_western.tannery_leatherwork_and_cordwaining.curriers_slicker_smoothing_blade_wax_burnished",
+  "name": "Beeswax-Burnished Glass Slicker Tool for Polishing Soles",
+  "vietnamese_name": "Miếng Thủy Tinh Chà Bóng Đế Giày Da (Đánh Bóng Sáp Ong)",
+  "category": "tannery_leatherwork_and_cordwaining",
+  "sub_category": "cordwainers_shoemaking_last_and_awls",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "burnish_leather",
+  "gameplay_role": "Supply chain industry element (Glass Slicker Tool for Polishing Soles).",
+  "destructible": false,
+  "material": "glass",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of beeswax-burnished glass slicker tool for polishing soles, gleaming glossy smooth brown leather sheen, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/tannery_leatherwork_and_cordwaining/curriers_slicker_smoothing_blade_wax_burnished.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.tannery_leatherwork_and_cordwaining.curriers_slicker_smoothing_blade_wax_burnished:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.529
+      ]
+    ],
+    "frac_zero": 0.78,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.702,
+        0.755,
+        0.24
+      ],
+      [
+        0.525,
+        0.624,
+        0.125
+      ],
+      [
+        0.293,
+        0.389,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      30,
+      16
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 27,
+    "contact_reference_px": 27.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

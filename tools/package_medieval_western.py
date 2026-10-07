@@ -386,10 +386,24 @@ def run_single_batch(
         else:
             raise ValueError(f"Unknown batch or sphere: {batch_name}. Available: {list(SPHERES.keys())}")
 
-    target_assets = [
-        a for a in assets
-        if a.get("category") in target_cats and a.get("status") == "planned"
-    ]
+    target_assets = []
+    already_installed = 0
+    for a in assets:
+        if a.get("category") in target_cats:
+            slug = a["id"].split(".")[-1]
+            cat = a.get("category", "misc")
+            if (RUNTIME_DIR / cat / f"{slug}.png").is_file() and (DATA_DIR / cat / f"{slug}.json").is_file():
+                if a.get("status") != "generated":
+                    a["status"] = "generated"
+                    a["path"] = f"res://assets/packs/medieval_western/runtime/{cat}/{slug}.png"
+                    already_installed += 1
+            elif a.get("status") == "planned":
+                target_assets.append(a)
+
+    if already_installed > 0:
+        save_manifest(pack)
+        print(f"Synced {already_installed} already-installed assets to manifest.")
+
     if limit:
         target_assets = target_assets[:limit]
 
@@ -486,49 +500,54 @@ def run_single_batch(
             failed_count += 1
             continue
 
-        # 1. Archive original raw image
-        orig_dest = orig_cat_dir / generated_source.name
-        if not orig_dest.is_file():
-            shutil.copy2(generated_source, orig_dest)
+        try:
+            # 1. Archive original raw image
+            orig_dest = orig_cat_dir / generated_source.name
+            if not orig_dest.is_file():
+                shutil.copy2(generated_source, orig_dest)
 
-        # 2. Normalize runtime PNG
-        normalize_image(
-            generated_source,
-            runtime_png,
-            (canvas_px[0], canvas_px[1]),
-            alpha_mode,
-            pivot=pivot,
-            margin=16,
-        )
+            # 2. Normalize runtime PNG
+            normalize_image(
+                generated_source,
+                runtime_png,
+                (canvas_px[0], canvas_px[1]),
+                alpha_mode,
+                pivot=pivot,
+                margin=16,
+            )
 
-        # 3. Compute diagnostic geometry matrix_data
-        matrix_data = compute_matrix_data(
-            runtime_png,
-            footprint,
-            alpha_mode,
-            collision_type,
-            pivot=pivot,
-            interactive_verb=interactive_verb,
-        )
+            # 3. Compute diagnostic geometry matrix_data
+            matrix_data = compute_matrix_data(
+                runtime_png,
+                footprint,
+                alpha_mode,
+                collision_type,
+                pivot=pivot,
+                interactive_verb=interactive_verb,
+            )
 
-        # 4. Update asset metadata
-        rel_runtime_path = f"res://assets/packs/medieval_western/runtime/{category}/{slug}.png"
-        asset.update({
-            "status": "generated",
-            "path": rel_runtime_path,
-            "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
-            "license": "Generated locally; source checkpoint license terms apply",
-            "generated_on": time.strftime("%Y-%m-%d"),
-            "prompt_ref": f"comfyui-map-v1:{asset_id}:auto",
-            "matrix_data": matrix_data,
-        })
+            # 4. Update asset metadata
+            rel_runtime_path = f"res://assets/packs/medieval_western/runtime/{category}/{slug}.png"
+            asset.update({
+                "status": "generated",
+                "path": rel_runtime_path,
+                "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+                "license": "Generated locally; source checkpoint license terms apply",
+                "generated_on": time.strftime("%Y-%m-%d"),
+                "prompt_ref": f"comfyui-map-v1:{asset_id}:auto",
+                "matrix_data": matrix_data,
+            })
 
-        # 5. Emit individual asset data JSON
-        data_json.write_text(json.dumps(asset, indent=2, ensure_ascii=False), encoding="utf-8")
+            # 5. Emit individual asset data JSON
+            data_json.write_text(json.dumps(asset, indent=2, ensure_ascii=False), encoding="utf-8")
 
-        elapsed_asset = time.time() - t_asset_start
-        print(f"  -> SUCCESS ({elapsed_asset:.1f}s): {rel_runtime_path}")
-        success_count += 1
+            elapsed_asset = time.time() - t_asset_start
+            print(f"  -> SUCCESS ({elapsed_asset:.1f}s): {rel_runtime_path}")
+            success_count += 1
+        except Exception as err:
+            print(f"  ERROR processing asset {asset_id}: {err}")
+            failed_count += 1
+            continue
 
         # Periodic manifest checkpoint every 5 items
         if success_count % 5 == 0:

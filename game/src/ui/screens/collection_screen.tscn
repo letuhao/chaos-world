@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://src/ui/screens/collection_screen.gd" id="1"]
 [ext_resource type="Theme" path="res://src/ui/theme/chaos_world_theme.tres" id="2"]
+[ext_resource type="PackedScene" path="res://src/ui/panels/collection_tier_row.tscn" id="10"]
 
 [node name="CollectionScreen" type="Control"]
 anchors_preset = 15
@@ -34,40 +35,40 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Tier0" parent="Layout/Scroll/Tiers" instance=ExtResource("res://src/ui/panels/collection_tier_row.tscn")]
+[node name="Tier0" parent="Layout/Scroll/Tiers" instance=ExtResource("10")]
 unique_name_in_owner = true
 
-[node name="Tier1" parent="Layout/Scroll/Tiers" instance=ExtResource("res://src/ui/panels/collection_tier_row.tscn")]
+[node name="Tier1" parent="Layout/Scroll/Tiers" instance=ExtResource("10")]
 unique_name_in_owner = true
 
-[node name="Tier2" parent="Layout/Scroll/Tiers" instance=ExtResource("res://src/ui/panels/collection_tier_row.tscn")]
+[node name="Tier2" parent="Layout/Scroll/Tiers" instance=ExtResource("10")]
 unique_name_in_owner = true
 
-[node name="Tier3" parent="Layout/Scroll/Tiers" instance=ExtResource("res://src/ui/panels/collection_tier_row.tscn")]
+[node name="Tier3" parent="Layout/Scroll/Tiers" instance=ExtResource("10")]
 unique_name_in_owner = true
 
-[node name="Tier4" parent="Layout/Scroll/Tiers" instance=ExtResource("res://src/ui/panels/collection_tier_row.tscn")]
+[node name="Tier4" parent="Layout/Scroll/Tiers" instance=ExtResource("10")]
 unique_name_in_owner = true
 
-[node name="Tier5" parent="Layout/Scroll/Tiers" instance=ExtResource("res://src/ui/panels/collection_tier_row.tscn")]
+[node name="Tier5" parent="Layout/Scroll/Tiers" instance=ExtResource("10")]
 unique_name_in_owner = true
 
-[node name="Tier6" parent="Layout/Scroll/Tiers" instance=ExtResource("res://src/ui/panels/collection_tier_row.tscn")]
+[node name="Tier6" parent="Layout/Scroll/Tiers" instance=ExtResource("10")]
 unique_name_in_owner = true
 
-[node name="Tier7" parent="Layout/Scroll/Tiers" instance=ExtResource("res://src/ui/panels/collection_tier_row.tscn")]
+[node name="Tier7" parent="Layout/Scroll/Tiers" instance=ExtResource("10")]
 unique_name_in_owner = true
 
-[node name="Tier8" parent="Layout/Scroll/Tiers" instance=ExtResource("res://src/ui/panels/collection_tier_row.tscn")]
+[node name="Tier8" parent="Layout/Scroll/Tiers" instance=ExtResource("10")]
 unique_name_in_owner = true
 
-[node name="Tier9" parent="Layout/Scroll/Tiers" instance=ExtResource("res://src/ui/panels/collection_tier_row.tscn")]
+[node name="Tier9" parent="Layout/Scroll/Tiers" instance=ExtResource("10")]
 unique_name_in_owner = true
 
-[node name="Tier10" parent="Layout/Scroll/Tiers" instance=ExtResource("res://src/ui/panels/collection_tier_row.tscn")]
+[node name="Tier10" parent="Layout/Scroll/Tiers" instance=ExtResource("10")]
 unique_name_in_owner = true
 
-[node name="Tier11" parent="Layout/Scroll/Tiers" instance=ExtResource("res://src/ui/panels/collection_tier_row.tscn")]
+[node name="Tier11" parent="Layout/Scroll/Tiers" instance=ExtResource("10")]
 unique_name_in_owner = true
 
 [node name="FooterLabel" type="Label" parent="Layout"]
