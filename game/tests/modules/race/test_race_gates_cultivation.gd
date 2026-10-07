@@ -288,7 +288,7 @@ func _prepare_qi(actor: Actor) -> void:
 	actor.meridians.unlock_for_realm(target)
 	_stock(actor, seed.breakthrough_item)
 	_stock(actor, source.training_item)
-	var dantian := QiAccess.dantian(actor)
+	var dantian := QiTestKit.dantian(actor)
 	if dantian == null:
 		return
 	dantian.set_structural_capacity(seed.dantian_capacity)

@@ -172,7 +172,7 @@ func test_attaching_the_path_attaches_the_dantian() -> void:
 	# `synchronize` is void, so the claim is on what it left behind: the dantian
 	# sealed at the realm's own capacity, with the reservoir re-sealed to match.
 	QiTraining.synchronize(actor)
-	var dantian := QiAccess.dantian(actor)
+	var dantian := QiTestKit.dantian(actor)
 	assert_almost_eq(
 		dantian.structural_capacity,
 		QiRealmSeed.for_realm(&"qi_refining").dantian_capacity,

@@ -96,3 +96,43 @@ func test_the_screen_reports_channel_training_as_unavailable_without_the_elixir(
 	screen.setup(actor)
 	assert_eq(screen.act_train_next_channel(), false, "nothing to spend, nothing trained")
 	screen.free()
+
+
+func test_a_pressed_channel_row_is_the_one_the_screen_trains() -> void:
+	## The player action that reaches `train_channel` (ADR 0188): pressing a row in the
+	## channel list selects it, and the train action spends on the SELECTION rather than
+	## on the first owed channel.
+	var actor := _actor()
+	var seed := QiRealmSeed.for_realm(&"qi_refining")
+	_stock(actor, seed.training_item)
+	var screen := _screen()
+	screen.setup(actor)
+	screen.refresh()
+	var list := screen.get_node_or_null("%Channels") as ChannelList
+	assert_ne(list, null, "the channel list is mounted")
+	if list == null:
+		screen.free()
+		return
+	var visible := list.visible_ids()
+	assert_eq(visible.is_empty(), false, "the gate's channels are listed")
+	var chosen := StringName(visible[visible.size() - 1])
+	var row: StatRow = (list.get("_rows") as Dictionary).get(chosen)
+	assert_ne(row, null, "the chosen channel has a row")
+	if row == null:
+		screen.free()
+		return
+	var press := InputEventMouseButton.new()
+	press.button_index = MOUSE_BUTTON_LEFT
+	press.pressed = true
+	list.call("_on_row_gui_input", press, row)
+	assert_eq(
+		StringName(screen.get("_selected_channel")), chosen, "the press selected the row's channel"
+	)
+	var before := actor.meridians.get_meridian(chosen).state
+	assert_eq(screen.act_train_next_channel(), true, "the screen trained the selected channel")
+	assert_ne(
+		actor.meridians.get_meridian(chosen).state,
+		before,
+		"the SELECTED channel advanced, not the first owed one"
+	)
+	screen.free()

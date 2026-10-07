@@ -38,7 +38,7 @@ func test_an_overflowing_sitting_spends_the_dantian_catalyst() -> void:
 	var next_seed := QiRealmSeed.for_realm(Probe.target_after(&"qi_refining").id)
 	assert_ne(next_seed, null, "R2 has a seed")
 	var seed := QiRealmSeed.for_realm(&"qi_refining")
-	var dantian := QiAccess.dantian(actor)
+	var dantian := QiTestKit.dantian(actor)
 	assert_eq(Probe.fill_and_refine(actor, next_seed), true, "the dantian is full and at the floor")
 	var quality_before := dantian.quality
 	var inventory := ItemsApi.inventory(actor)
@@ -67,7 +67,7 @@ func test_without_a_catalyst_the_sitting_is_accepted_and_stops_at_the_ceiling() 
 	var actor := Probe.fresh_actor(&"qi_refining")
 	var next_seed := QiRealmSeed.for_realm(Probe.target_after(&"qi_refining").id)
 	assert_ne(next_seed, null, "R2 has a seed")
-	var dantian := QiAccess.dantian(actor)
+	var dantian := QiTestKit.dantian(actor)
 	assert_eq(Probe.fill_and_refine(actor, next_seed), true, "the dantian is full and at the floor")
 	var quality_before := dantian.quality
 	var inventory := ItemsApi.inventory(actor)

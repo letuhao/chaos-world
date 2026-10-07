@@ -57,7 +57,7 @@ func test_npc_qi_state_follows_the_realm_it_was_minted_at() -> void:
 	## The dantian is the path's vessel; `synchronize` sizes it from the seed and
 	## scales it by the meridian network's capacity bonus, so the two halves move
 	## together and an unsynchronized actor has the wrong one by construction.
-	var dantian := QiAccess.dantian(actor)
+	var dantian := QiTestKit.dantian(actor)
 	assert_ne(dantian, null, "the npc carries a dantian")
 	if seed == null or dantian == null:
 		return
@@ -146,7 +146,7 @@ func test_npc_channel_refinement_cap_is_the_realm_cap_on_read() -> void:
 ## synchronize additive would stack a second copy silently.
 func test_synchronizing_twice_changes_nothing() -> void:
 	var actor := _npc()
-	var dantian := QiAccess.dantian(actor)
+	var dantian := QiTestKit.dantian(actor)
 	var meridians := actor.meridians.get_all_meridians().size()
 	var capacity: float = dantian.structural_capacity
 	var ceiling: float = actor.resource(QiStats.QI).maximum

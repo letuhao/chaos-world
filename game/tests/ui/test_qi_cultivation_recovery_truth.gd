@@ -121,7 +121,7 @@ func test_a_refused_recovery_names_the_price_when_the_dantian_is_scarred() -> vo
 	var screen := _screen()
 	var actor := _actor()
 	screen.setup(actor)
-	var dantian := QiAccess.dantian(actor)
+	var dantian := QiTestKit.dantian(actor)
 	assert_ne(dantian, null, "the dantian is attached")
 	dantian.damage(actor)
 	assert_eq(screen.act_recover(), false, "no elixir, no repair")
@@ -160,10 +160,10 @@ func test_the_denial_sentence_is_unreachable_wherever_damage_exists() -> void:
 			&"burned_channel":
 				_burn_every_channel(actor)
 			&"scarred_dantian":
-				QiAccess.dantian(actor).damage(actor)
+				QiTestKit.dantian(actor).damage(actor)
 			&"scar_and_burn":
 				_burn_every_channel(actor)
-				QiAccess.dantian(actor).damage(actor)
+				QiTestKit.dantian(actor).damage(actor)
 		assert_eq(screen.act_recover(), false, "%s refuses an empty pack" % state)
 		if state != &"healthy":
 			assert_eq(_message(screen) == DENIAL, false, "%s must not be told %s" % [state, DENIAL])

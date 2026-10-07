@@ -28,6 +28,10 @@ var _required: Array[StringName] = []
 var _show_all := false
 var _rows_box: VBoxContainer = null
 var _header: Label = null
+## row -> meridian id, so a press can name what was chosen without a bound Callable per
+## render; `_wired` is the once-per-child guard, because the rows are REUSED children.
+var _row_owner: Dictionary = {}
+var _wired: Dictionary = {}
 
 
 func _ready() -> void:
@@ -168,6 +172,13 @@ func _render() -> void:
 		var known := state_rank(StringName(entry.get("state", ""))) >= 0
 		row.set_state({"name": _label_for(entry, required, injured), "mode": StatRow.MODE_TEXT})
 		row.visible = _show_all or required or (injured and known)
+		# Guarded wiring: the rows are reused across renders, so the press handler is
+		# connected exactly once per child (AGENTS: every connect is guarded).
+		if not _wired.has(row):
+			_wired[row] = true
+			row.mouse_filter = Control.MOUSE_FILTER_STOP
+			row.gui_input.connect(_on_row_gui_input.bind(row))
+		_row_owner[row] = meridian_id
 		index += 1
 	# Any leftover rows from a longer previous render are hidden, never destroyed.
 	while index < capacity:
@@ -178,6 +189,18 @@ func _render() -> void:
 		index += 1
 	if _header != null:
 		_header.text = "Channels (%d shown)" % visible_ids().size()
+
+
+## A row was pressed: emit the selection. The panel owns only the fact that a row was
+## chosen; what a selection MEANS belongs to the screen (ADR 0188: the verb that trains
+## one channel needs a production caller, and this press is that player action).
+func _on_row_gui_input(event: InputEvent, row: StatRow) -> void:
+	var press := event as InputEventMouseButton
+	if press == null or not press.pressed or press.button_index != MOUSE_BUTTON_LEFT:
+		return
+	var meridian_id: StringName = _row_owner.get(row, &"")
+	if meridian_id != &"":
+		channel_selected.emit(meridian_id)
 
 
 func _label_for(entry: Dictionary, required: bool, injured: bool) -> String:

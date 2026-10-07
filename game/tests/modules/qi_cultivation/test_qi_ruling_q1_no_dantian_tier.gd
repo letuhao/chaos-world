@@ -243,7 +243,7 @@ func test_qi_stats_declares_no_dantian_tier_constant() -> void:
 ## ruling's record.
 
 
-## The live half of the guarantee. `QiAccess.dantian()` returns a statically typed
+## The live half of the guarantee. `QiTestKit.dantian()` returns a statically typed
 ## `Dantian`, so a read of a member it does not declare is a COMPILE error and the
 ## suite fails to LOAD — loud, named, and fatal to the whole file. That only holds
 ## while `Dantian` exposes no dynamic property surface: `_get`/`_set` would answer a

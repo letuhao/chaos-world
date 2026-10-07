@@ -18,6 +18,9 @@ var _actions: ActionSet = null
 var _conditions_label: Label = null
 var _realm_label: Label = null
 var _channels: ChannelList = null
+## The channel the player last pressed in the list. The train action spends on it, so
+## the specific verb has a production caller (ADR 0188); empty means the next-owed form.
+var _selected_channel: StringName = &""
 
 
 ## Everything this screen displays, normalized to the shared vocabulary.
@@ -317,6 +320,14 @@ func act_train_next_channel() -> bool:
 		return false
 	var owed := int(live.get("owed_channels", 0))
 	var price := String(live.get("training_price", ""))
+	# A SELECTED channel is the one trained: the row press is the player action that
+	# reaches the specific verb. Without a selection the next-owed form is the fallback,
+	# so the button still works for a player who never pressed a row.
+	var selected := _selected_channel
+	if selected != &"" and QiCultivationApi.train_channel(_actor, selected):
+		set_message("Trained %s" % String(selected), TONE_OK)
+		refresh()
+		return true
 	var trained := QiCultivationApi.train_next_channel(_actor)
 	if not trained.is_empty():
 		set_message("Trained %s" % trained, TONE_OK)
@@ -528,6 +539,15 @@ func _bind_nodes() -> void:
 		_rows[key] = _find_row(key)
 	if _actions != null and not _actions.action_requested.is_connected(_on_action):
 		_actions.action_requested.connect(_on_action)
+	if _channels != null and not _channels.channel_selected.is_connected(_on_channel_selected):
+		_channels.channel_selected.connect(_on_channel_selected)
+
+
+## The list's press: remember WHICH channel the player chose. The train action spends
+## on the selection, so `train_channel` is reached by a player action rather than the
+## screen only ever training the first owed channel.
+func _on_channel_selected(meridian_id: StringName) -> void:
+	_selected_channel = meridian_id
 
 
 func _find_row(key: StringName) -> StatRow:

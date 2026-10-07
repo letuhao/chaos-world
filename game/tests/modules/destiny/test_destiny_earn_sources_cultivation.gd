@@ -591,7 +591,7 @@ func test_the_prepared_qi_hero_is_a_legal_prior_state() -> void:
 		)
 	)
 	assert_eq(bool(preview["can_attempt"]), true, "and it would attempt")
-	var dantian := QiAccess.dantian(hero)
+	var dantian := QiTestKit.dantian(hero)
 	assert_eq(
 		float(preview["chance"]),
 		clampf(

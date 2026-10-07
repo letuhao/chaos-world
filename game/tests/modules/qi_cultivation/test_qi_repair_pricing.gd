@@ -230,7 +230,7 @@ func test_a_burn_is_recoverable_at_the_same_realm_for_the_recovery_elixir_price(
 func test_the_delegated_repair_also_heals_the_scar_the_same_deviation_left() -> void:
 	var actor := _actor_at(_first_realm())
 	var seed := _seed(actor)
-	var dantian := QiAccess.dantian(actor)
+	var dantian := QiTestKit.dantian(actor)
 	assert_ne(dantian, null, "the dantian is attached")
 	dantian.damage(actor)
 	var burned := _channel(actor)

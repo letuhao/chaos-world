@@ -52,7 +52,7 @@ func _prepare(actor: Actor) -> QiRealmSeed:
 	_stock(actor, seed.training_item)
 	assert_eq(Probe.train_gate_channels(actor, seed), true, "channels trained for %s" % target.id)
 	Probe.recover_all(actor)
-	var dantian := QiAccess.dantian(actor)
+	var dantian := QiTestKit.dantian(actor)
 	dantian.set_structural_capacity(seed.dantian_capacity)
 	dantian.set_quality(seed.dantian_quality_required)
 	QiTraining.synchronize(actor)
@@ -87,7 +87,7 @@ func test_execute_refuses_when_the_dantian_is_not_full() -> void:
 	_prepare(actor)
 	var pool := actor.resource(QiStats.QI)
 	pool.current = 0.0
-	QiAccess.dantian(actor).damage(actor)
+	QiTestKit.dantian(actor).damage(actor)
 	assert_eq(QiBreakthroughTransaction.execute(actor, _rng()), false, "no advance")
 	assert_eq(actor.path(PATH).rank_id, &"qi_refining", "realm unchanged")
 

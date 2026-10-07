@@ -29,8 +29,8 @@ func _dantian_at(quality: float) -> Dantian:
 func test_the_chance_never_reaches_the_ceiling() -> void:
 	var actor := Probe.fresh_actor(&"qi_refining")
 	for quality in [0.0, 0.25, 0.5, 0.75, 1.0]:
-		QiAccess.dantian(actor).set_quality(quality)
-		var chance := QiChance.of(QiAccess.dantian(actor))
+		QiTestKit.dantian(actor).set_quality(quality)
+		var chance := QiChance.of(QiTestKit.dantian(actor))
 		assert_eq(chance < QiChance.MAX_CHANCE, true, "chance %f at quality %f" % [chance, quality])
 		assert_eq(chance >= QiChance.MIN_CHANCE, true, "chance %f is above the floor" % chance)
 
@@ -39,9 +39,9 @@ func test_the_chance_never_reaches_the_ceiling() -> void:
 ## it — including a dantian that has been halved to nothing by one.
 func test_the_chance_never_falls_below_the_floor() -> void:
 	var actor := Probe.fresh_actor(&"qi_refining")
-	QiAccess.dantian(actor).set_quality(0.0)
+	QiTestKit.dantian(actor).set_quality(0.0)
 	assert_eq(
-		QiChance.of(QiAccess.dantian(actor)), QiChance.MIN_CHANCE, "the floor at zero quality"
+		QiChance.of(QiTestKit.dantian(actor)), QiChance.MIN_CHANCE, "the floor at zero quality"
 	)
 
 
@@ -56,7 +56,7 @@ func test_no_boundary_on_the_ladder_is_a_guaranteed_success() -> void:
 		if target == null:
 			continue
 		var actor := Probe.prepared(realm.id, target)
-		var dantian := QiAccess.dantian(actor)
+		var dantian := QiTestKit.dantian(actor)
 		assert_ne(dantian, null, "dantian at %s" % realm.id)
 		if dantian == null:
 			continue
@@ -80,8 +80,8 @@ func test_the_chance_does_not_move_with_comprehension_past_the_gate() -> void:
 	var actor := Probe.fresh_actor(&"qi_refining")
 	var seed := Probe.target_seed_after(&"qi_refining")
 	assert_ne(seed, null, "target seed")
-	QiAccess.dantian(actor).set_quality(seed.dantian_quality_required)
-	var before := QiChance.of(QiAccess.dantian(actor))
+	QiTestKit.dantian(actor).set_quality(seed.dantian_quality_required)
+	var before := QiChance.of(QiTestKit.dantian(actor))
 	for _step in 200:
 		assert_eq(
 			QiCultivationApi.meditate(actor, QiCultivationApi.MEDITATE_STEP), true, "meditated"
@@ -91,9 +91,9 @@ func test_the_chance_does_not_move_with_comprehension_past_the_gate() -> void:
 		true,
 		"comprehension is far past the floor"
 	)
-	assert_eq(QiChance.of(QiAccess.dantian(actor)), before, "and the roll did not move with it")
+	assert_eq(QiChance.of(QiTestKit.dantian(actor)), before, "and the roll did not move with it")
 	assert_eq(
-		QiChance.of(QiAccess.dantian(actor)),
+		QiChance.of(QiTestKit.dantian(actor)),
 		clampf(
 			QiChance.MIN_CHANCE + seed.dantian_quality_required * QiChance.QUALITY_TO_CHANCE,
 			QiChance.MIN_CHANCE,
@@ -108,8 +108,8 @@ func test_the_chance_does_not_move_with_comprehension_past_the_gate() -> void:
 ## comprehension and a huge will, and the chance must not budge.
 func test_a_pinned_core_stat_cannot_decide_the_qi_roll() -> void:
 	var actor := Probe.fresh_actor(&"qi_refining")
-	QiAccess.dantian(actor).set_quality(0.6)
-	var quiet := QiChance.of(QiAccess.dantian(actor))
+	QiTestKit.dantian(actor).set_quality(0.6)
+	var quiet := QiChance.of(QiTestKit.dantian(actor))
 	actor.stats.set_base(Stat.COMPREHENSION, 400.0)
 	actor.stats.set_base(Stat.WILL, 400.0)
 	actor.mark_stats_dirty()
@@ -118,7 +118,7 @@ func test_a_pinned_core_stat_cannot_decide_the_qi_roll() -> void:
 		true,
 		"the core stat really is saturated here, so this test would catch a read"
 	)
-	assert_eq(QiChance.of(QiAccess.dantian(actor)), quiet, "the qi roll ignored it")
+	assert_eq(QiChance.of(QiTestKit.dantian(actor)), quiet, "the qi roll ignored it")
 	assert_eq(QiAdvancement.chance(actor), quiet, "and so did the facade's view of it")
 
 
@@ -130,8 +130,8 @@ func test_circulating_raises_the_chance_and_stops_at_the_next_floors_floor() -> 
 	var target := Probe.target_seed_after(realm_id)
 	assert_ne(target, null, "target seed")
 	var actor := Probe.fresh_actor(realm_id)
-	var dantian := QiAccess.dantian(actor)
-	QiAccess.dantian(actor).set_quality(0.0)
+	var dantian := QiTestKit.dantian(actor)
+	QiTestKit.dantian(actor).set_quality(0.0)
 	var low := QiChance.of(dantian)
 	var waited := 0
 	while waited < Probe.FILL_BOUND and dantian.quality < target.dantian_quality_required:

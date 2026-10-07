@@ -120,7 +120,7 @@ func test_a_failed_roll_still_deviates() -> void:
 	var hero := Probe.prepared(&"qi_refining", seed)
 	assert_ne(hero, null, "a fully prepared actor standing before the boundary")
 	var state := hero.path(QiPath.PATH_ID)
-	var dantian := QiAccess.dantian(hero)
+	var dantian := QiTestKit.dantian(hero)
 	assert_ne(dantian, null, "and a dantian")
 	var progress_at_gate: float = state.progress
 	assert_eq(

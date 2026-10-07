@@ -76,7 +76,7 @@ func test_dantian_capacity_is_the_authored_value_and_nothing_else() -> void:
 		QiCultivationApi.attach(actor)
 		actor.set_path(PathState.new(QiPath.PATH_ID, realm.id))
 		QiTraining.synchronize(actor)
-		var dantian := QiAccess.dantian(actor)
+		var dantian := QiTestKit.dantian(actor)
 		assert_ne(dantian, null, "dantian at %s" % realm.id)
 		if dantian == null:
 			continue

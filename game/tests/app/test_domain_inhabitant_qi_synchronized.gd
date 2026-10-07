@@ -82,7 +82,7 @@ func test_a_shipped_cultivating_species_carries_a_qi_rig() -> void:
 
 	var seed := QiRealmSeed.for_realm(REALM)
 	assert_ne(seed, null, "and that realm publishes a qi seed to synchronize against")
-	var dantian := QiAccess.dantian(actor)
+	var dantian := QiTestKit.dantian(actor)
 	assert_ne(dantian, null, "a dantian: the vessel every qi verb refuses without")
 	if seed == null or dantian == null:
 		return
@@ -194,7 +194,7 @@ func test_every_shipped_cultivating_species_answers_with_a_rig() -> void:
 		if actor == null:
 			continue
 		assert_ne(
-			QiAccess.dantian(actor),
+			QiTestKit.dantian(actor),
 			null,
 			"'%s' declares it cultivates, so it HAS a dantian" % file_name
 		)
@@ -202,7 +202,7 @@ func test_every_shipped_cultivating_species_answers_with_a_rig() -> void:
 		assert_ne(
 			actor.meridians.get_all_meridians().size(), 0, "'%s' has unlocked channels" % file_name
 		)
-	assert_eq(checked, 6, "all six shipped species that declare cultivates were checked")
+	assert_eq(checked, 9, "all nine shipped species that declare cultivates were checked")
 
 
 ## The authored decision still gates, and nothing leaked into the mobs. `cinder_hound`
@@ -240,8 +240,8 @@ func test_each_instance_is_enrolled_exactly_once() -> void:
 	assert_eq(_qi_providers(first), 1, "the first carries one qi provider")
 	assert_eq(_qi_providers(second), 1, "and so does the second, minted from the same def")
 	assert_ne(
-		QiAccess.dantian(first),
-		QiAccess.dantian(second),
+		QiTestKit.dantian(first),
+		QiTestKit.dantian(second),
 		"each carries its OWN dantian, not a component shared through the loaded .tres"
 	)
 

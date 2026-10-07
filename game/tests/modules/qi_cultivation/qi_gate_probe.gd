@@ -127,7 +127,7 @@ static func earn_progress(actor: Actor, seed: QiRealmSeed) -> bool:
 ## Cultivate until the dantian is full and carries the next realm's quality.
 ## `dantian.is_full` and `dantian.quality` are the conditions.
 static func fill_and_refine(actor: Actor, seed: QiRealmSeed) -> bool:
-	var dantian := QiAccess.dantian(actor)
+	var dantian := QiTestKit.dantian(actor)
 	if dantian == null or seed == null:
 		return false
 	var waited := 0
@@ -294,7 +294,7 @@ static func recover_all(actor: Actor) -> bool:
 		stock(actor, seed.recovery_item, 8)
 	var waited := 0
 	while waited < 64:
-		var dantian := QiAccess.dantian(actor)
+		var dantian := QiTestKit.dantian(actor)
 		var wounded := dantian != null and dantian.injured
 		for channel in actor.meridians.get_all_meridians():
 			wounded = wounded or channel.is_injured()

@@ -41,7 +41,7 @@ func _open_required_channels(actor: Actor, seed: QiRealmSeed) -> void:
 ## agree: this is the test that fails without the `_dantian_ready` injury check.
 func test_a_scarred_dantian_cannot_be_spent_on_a_breakthrough() -> void:
 	var actor := _actor()
-	var dantian := QiAccess.dantian(actor)
+	var dantian := QiTestKit.dantian(actor)
 	var target := RealmDefaults.ladder().next(&"qi_refining")
 	var seed := QiRealmSeed.for_realm(target.id)
 	_open_required_channels(actor, seed)
@@ -76,7 +76,7 @@ func test_a_scarred_dantian_cannot_be_spent_on_a_breakthrough() -> void:
 ## some other gate quietly refusing.
 func test_a_healed_dantian_is_spendable_again() -> void:
 	var actor := _actor()
-	var dantian := QiAccess.dantian(actor)
+	var dantian := QiTestKit.dantian(actor)
 	var target := RealmDefaults.ladder().next(&"qi_refining")
 	var seed := QiRealmSeed.for_realm(target.id)
 	_open_required_channels(actor, seed)
@@ -104,7 +104,7 @@ func test_a_healed_dantian_is_spendable_again() -> void:
 
 func test_recover_heals_the_scarred_dantian() -> void:
 	var actor := _actor()
-	var dantian := QiAccess.dantian(actor)
+	var dantian := QiTestKit.dantian(actor)
 	dantian.damage(actor)
 	assert_eq(dantian.injured, true, "dantian scarred")
 	_stock(actor, _recovery_id())
@@ -136,10 +136,10 @@ func test_recover_is_a_noop_on_a_healthy_actor() -> void:
 
 func test_recover_rejects_an_unknown_channel() -> void:
 	var actor := _actor()
-	QiAccess.dantian(actor).damage(actor)
+	QiTestKit.dantian(actor).damage(actor)
 	_stock(actor, _recovery_id())
 	assert_eq(QiTraining.recover(actor, &"not_a_meridian"), false, "unknown channel")
-	assert_eq(QiAccess.dantian(actor).injured, true, "dantian untouched")
+	assert_eq(QiTestKit.dantian(actor).injured, true, "dantian untouched")
 
 
 func test_recover_heals_structural_damage_but_leaves_quality_to_circulation() -> void:
@@ -147,7 +147,7 @@ func test_recover_heals_structural_damage_but_leaves_quality_to_circulation() ->
 	# retrained by `cultivate`, which is why the traversal test circulates again
 	# after every recovery. It deliberately does *not* restore quality itself.
 	var actor := _actor()
-	var dantian := QiAccess.dantian(actor)
+	var dantian := QiTestKit.dantian(actor)
 	dantian.set_quality(0.8)
 	dantian.damage(actor)
 	dantian.set_quality(0.4)
