@@ -27,9 +27,11 @@ extends RefCounted
 ## and the projection's suites (`test_status_projection.gd`,
 ## `tests/app/test_age_band_projection.gd`) assert the pair installs and swaps as ONE unit:
 ## a band transition that wrote one half without the other fails there. The STRICT
-## behavioural ordering the pairing deserves (wear-only must leave a long-lived hero worse
-## than clarity-only does) is tracked in the deferred ledger — this docblock named a suite
-## for it that was never authored.
+## behavioural ordering the pairing deserves lives in
+## `tests/modules/status/test_age_band_statuses.gd`: on every band whose wear half is a
+## cost, clarity-only strictly dominates wear-only on every authored axis, and the
+## first-ash asymmetry is asserted in the direction that band authors rather than one
+## direction for all four.
 ##
 ## ## Why the status ids are derived from the BAND NAME rather than authored beside it
 ##
