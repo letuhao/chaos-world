@@ -11,6 +11,14 @@ extends TestCase
 const VENTURE_ROUTE := &"venture"
 const VENTURE_NODE := "VentureScreen"
 const WORLD_NODE := "VentureWorld"
+## The demo doorway in the overworld, read off the boot's own graph rather
+## than restated — a second copy of the graph is a second thing that can be wrong.
+const DOOR := Vector2i(3, 1)
+## Depth ceiling for the walk below. Two planes (8x8 overworld, 12x12 far)
+## plus a portal bounce between them; this is slack with a visited set behind
+## it, and it is what keeps the walk from being an unbounded loop the moment
+## the ground seals.
+const WALK_DEPTH := 160
 
 var _harness: SeamHarness = null
 
@@ -124,3 +132,89 @@ func test_closing_frees_the_world() -> void:
 		false,
 		"and the read says so"
 	)
+
+
+func test_stepping_through_the_doorway_descends_into_a_real_run() -> void:
+	var screen := _venture_screen()
+	if screen == null:
+		return
+	screen.call("act_open")
+	assert_eq(_walk_to_door(screen), true, "the demo doorway is reachable on foot")
+	var view := screen.call("summary") as Dictionary
+	assert_eq(String(view.get("node", "")), "cave", "through the doorway into the cave node")
+	assert_eq(
+		String((view.get("domain", {}) as Dictionary).get("template", "")),
+		"ember_grotto",
+		"which is a run in the authored template, not painted ground"
+	)
+	assert_eq(
+		DomainApi.rooms(_harness.actor).is_empty(),
+		false,
+		"and the run is REAL: rooms stand on the root's own actor"
+	)
+
+
+func test_returning_stands_back_on_the_doorway_cell() -> void:
+	var screen := _venture_screen()
+	if screen == null:
+		return
+	screen.call("act_open")
+	if not _walk_to_door(screen):
+		return
+	assert_eq(screen.call("act_return"), true, "Return answers true")
+	var view := screen.call("summary") as Dictionary
+	assert_eq(String(view.get("node", "")), "overworld", "back above ground")
+	assert_eq(_cell_of(view), DOOR, "on the exact doorway cell left from")
+	assert_eq(DomainApi.rooms(_harness.actor).is_empty(), true, "with the run gone from the actor")
+
+
+## Depth-first walk to the demo doorway through the screen's own step verbs.
+## Arrival READS as the cave node (the step that lands on the door descends),
+## so reaching is the assertion and no route is precomputed. Seen is keyed by
+## node AND cell: the far portal is a round trip, so the same coordinates recur
+## on two planes and a cell-only key would close the far side unvisited.
+## Bounded by `WALK_DEPTH`: sealed ground answers false, never spins.
+func _walk_to_door(screen: Control) -> bool:
+	return _dfs(screen, {}, 0)
+
+
+func _dfs(screen: Control, seen: Dictionary, depth: int) -> bool:
+	var view := screen.call("summary") as Dictionary
+	if String(view.get("node", "")) == "cave":
+		return true
+	var cur := _key_of(view)
+	if depth >= WALK_DEPTH or seen.has(cur):
+		return false
+	seen[cur] = true
+	for verb in ["act_east", "act_north", "act_south", "act_west"]:
+		if depth + 1 >= WALK_DEPTH:
+			break
+		if not bool(screen.call(verb)):
+			continue
+		if String((screen.call("summary") as Dictionary).get("node", "")) == "cave":
+			return true
+		if _dfs(screen, seen, depth + 1):
+			return true
+		screen.call(_backtrack_of(verb))
+	return false
+
+
+func _key_of(view: Dictionary) -> String:
+	var cell := view.get("player_cell", [0, 0]) as Array
+	return "%s:%d,%d" % [String(view.get("node", "")), int(cell[0]), int(cell[1])]
+
+
+func _backtrack_of(verb: String) -> StringName:
+	match verb:
+		"act_east":
+			return &"act_west"
+		"act_west":
+			return &"act_east"
+		"act_south":
+			return &"act_north"
+	return &"act_south"
+
+
+func _cell_of(view: Dictionary) -> Vector2i:
+	var cell := view.get("player_cell", [0, 0]) as Array
+	return Vector2i(int(cell[0]), int(cell[1]))

@@ -1471,7 +1471,14 @@ func _bind_route_screen(route_id: StringName, screen: Control) -> void:
 				Callable(VentureBoot, "close"),
 				Callable(VentureBoot, "step"),
 				Callable(VentureBoot, "destroy"),
-				Callable(VentureBoot, "read")
+				Callable(VentureBoot, "read"),
+				Callable(VentureBoot, "return_from_domain")
+			)
+			# Slice 3: the descent seam. The scene asks it when a node names
+			# a domain template; the actor it enters onto is this root's own,
+			# which is why the seam is installed here and not in the boot.
+			WorldmapApi.install_domain(
+				Callable(self, "_venture_domain_enter"), Callable(self, "_venture_domain_leave")
 			)
 		_:
 			screen.call("setup", _actor)
@@ -1485,6 +1492,23 @@ func _bind_route_screen(route_id: StringName, screen: Control) -> void:
 ## has no closure environment to get wrong.
 func _capturable_cast() -> Array:
 	return NpcApi.presence_here().get("capturable", []) as Array
+
+
+## The venture descent seam (worldmap slice 3). The scene asks it when a node
+## names a domain template; the run is entered onto THIS root's actor through
+## the same production entry point the domain route uses, so a descent and an
+## Enter press mint the same kind of run. A leave passes straight through:
+## the discovered set the module keeps is the state the return preserves.
+func _venture_domain_enter(template_id: String, seed: int) -> Dictionary:
+	if _actor == null:
+		return {"ok": false, "reason": "no_actor"}
+	return DomainBoot.enter_domain(_actor, StringName(template_id), seed)
+
+
+func _venture_domain_leave() -> Dictionary:
+	if _actor == null:
+		return {"ok": false, "reason": "no_actor"}
+	return DomainBoot.leave_domain(_actor)
 
 
 ## Free everything this root built that is not a node the stack owns. Idempotent, and

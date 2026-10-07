@@ -25,6 +25,7 @@ var _close_call: Callable = Callable()
 var _step_call: Callable = Callable()
 var _destroy_call: Callable = Callable()
 var _read_call: Callable = Callable()
+var _return_call: Callable = Callable()
 
 var _header_label: Label = null
 var _status_label: Label = null
@@ -46,19 +47,21 @@ func on_screen_hidden() -> void:
 	pass
 
 
-## Inject the four seams. Safe to call again; the screen re-reads and repaints.
+## Inject the five seams. Safe to call again; the screen re-reads and repaints.
 func bind_venture(
 	open_call: Callable,
 	close_call: Callable,
 	step_call: Callable,
 	destroy_call: Callable,
-	read_call: Callable
+	read_call: Callable,
+	return_call: Callable
 ) -> void:
 	_open_call = open_call
 	_close_call = close_call
 	_step_call = step_call
 	_destroy_call = destroy_call
 	_read_call = read_call
+	_return_call = return_call
 	_bind_nodes()
 	refresh()
 
@@ -110,6 +113,22 @@ func act_destroy() -> bool:
 		set_message("Nothing here breaks: %s." % String(outcome.get("reason", "")), TONE_ERROR)
 		return false
 	set_message("Broke %d cell(s) open." % int(outcome.get("freed", 0)), TONE_OK)
+	return true
+
+
+## Leave the domain node and stand back where the descent began. Above
+## ground this refuses rather than moving: return is the way back, not a step.
+func act_return() -> bool:
+	_bind_nodes()
+	if not _return_call.is_valid():
+		set_message("No venture seam is bound.", TONE_ERROR)
+		return false
+	var outcome := _return_call.call(self) as Dictionary
+	refresh()
+	if not bool(outcome.get("ok", false)):
+		set_message("No way back: %s." % String(outcome.get("reason", "")), TONE_ERROR)
+		return false
+	set_message("Back where the descent began.", TONE_OK)
 	return true
 
 
@@ -165,11 +184,27 @@ func _refresh_view() -> void:
 	_fill_nodes()
 	var view := _read_view()
 	if bool(view.get("open", false)):
-		var cell := view.get("player_cell", [0, 0]) as Array
-		_set_text(
-			_status_label,
-			"In %s at (%d, %d)." % [String(view.get("node", "")), int(cell[0]), int(cell[1])]
-		)
+		var domain := view.get("domain", {}) as Dictionary
+		if not domain.is_empty():
+			var back := domain.get("return_cell", [0, 0]) as Array
+			_set_text(
+				_status_label,
+				(
+					"Inside %s; return stands at %s (%d, %d)."
+					% [
+						String(domain.get("template", "")),
+						String(domain.get("return_node", "")),
+						int(back[0]),
+						int(back[1])
+					]
+				)
+			)
+		else:
+			var cell := view.get("player_cell", [0, 0]) as Array
+			_set_text(
+				_status_label,
+				"In %s at (%d, %d)." % [String(view.get("node", "")), int(cell[0]), int(cell[1])]
+			)
 	else:
 		_set_text(_status_label, "No venture is standing.")
 	_render()
@@ -191,6 +226,10 @@ func _render() -> void:
 	]:
 		var control := get_node_or_null(path) as Button
 		_set_disabled(control, not (standing and _step_call.is_valid()))
+	var inside := not (view.get("domain", {}) as Dictionary).is_empty()
+	_set_disabled(
+		get_node_or_null("%ReturnButton") as Button, not (inside and _return_call.is_valid())
+	)
 
 
 func _read_view() -> Dictionary:
@@ -231,6 +270,7 @@ func _bind_nodes() -> void:
 	_connect_once("%DestroyButton", "pressed", act_destroy)
 	_connect_once("%OpenButton", "pressed", act_open)
 	_connect_once("%CloseButton", "pressed", act_close)
+	_connect_once("%ReturnButton", "pressed", act_return)
 
 
 ## Guarded like the composition root's own connections: a reused screen that

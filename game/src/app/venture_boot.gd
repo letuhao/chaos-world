@@ -80,6 +80,15 @@ static func destroy(screen: Control) -> Dictionary:
 	return scene.destroy_at(scene.player_cell())
 
 
+## Leave the domain node and stand back on the exact cell left from.
+## Unopened refuses by the same name; above ground refuses `not_inside`.
+static func return_from_domain(screen: Control) -> Dictionary:
+	var scene := _scene_of(screen)
+	if scene == null:
+		return {"ok": false, "reason": "unopened"}
+	return scene.return_from_domain()
+
+
 ## The venture read model, primitives only: demo nodes, open state, and the
 ## live world's own debug summary with edges trimmed to strings. `{}`
 ## answers nothing: an unopened screen reports its nodes and `open: false`.
@@ -105,6 +114,7 @@ static func read(screen: Control) -> Dictionary:
 	view["loaded"] = (
 		((summary.get("streamer", {}) as Dictionary).get("loaded", []) as Array).duplicate()
 	)
+	view["domain"] = (summary.get("domain", {}) as Dictionary).duplicate(true)
 	return view
 
 
@@ -148,6 +158,20 @@ static func _demo_graph() -> WorldmapGraph:
 			}
 		)
 	)
+	# The way back: portals are round trips at the same pads, so no walk can
+	# strand the player on the far side with no way home.
+	(
+		graph
+		. add_edge(
+			{
+				"from": "far",
+				"to": "overworld",
+				"kind": &"portal",
+				"from_cell": Vector2i(2, 1),
+				"to_cell": Vector2i(5, 5),
+			}
+		)
+	)
 	return graph
 
 
@@ -181,6 +205,11 @@ static func _demo_configs() -> Dictionary:
 			[
 				{"archetype": "stone_and_ore.small_rock", "density": 0.3, "blocking": true},
 			],
+			# Slice 3: the cave is a REAL run, not painted ground. Arriving
+			# here descends through the installed seam into this template at
+			# this seed; the chunks above stay the threshold a direct open shows.
+			"domain_template": "ember_grotto",
+			"domain_seed": 20261003,
 		},
 		"far":
 		{

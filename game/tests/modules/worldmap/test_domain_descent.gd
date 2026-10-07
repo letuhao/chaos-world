@@ -1,0 +1,209 @@
+extends TestCase
+
+## THE DESCENT: a node naming a domain template enters a REAL run, and the
+## return stands on the exact cell left from.
+##
+## The seam doubles below call the REAL `DomainApi` on a REAL actor — a mock
+## run would prove the scene remembers a cell and nothing about the run being
+## one. Every claim about the run (rooms stand, discovered is kept) reads the
+## module's own answers, never the double's.
+
+const ENV := "mortal_greenwood"
+const TEMPLATE := &"ember_grotto"
+const SEED := 20261003
+
+var _scene: WorldmapScene = null
+var _hero: Actor = null
+var _born: Array = []
+var _entered: Array = []
+var _exits := 0
+
+
+func setup() -> void:
+	WorldmapApi.clear_domain()
+	_scene = null
+	_hero = null
+	_entered.clear()
+	_exits = 0
+
+
+func teardown() -> void:
+	WorldmapApi.clear_domain()
+	if _scene != null and is_instance_valid(_scene):
+		if _scene.get_parent() != null:
+			_scene.get_parent().remove_child(_scene)
+		_scene.free()
+	_scene = null
+	for actor in _born:
+		(actor as Actor).resources.clear()
+	_born.clear()
+
+
+func _actor() -> Actor:
+	var body := Actor.new(&"hero", {Stat.PHYSIQUE: 10.0})
+	body.attach_core_resources()
+	_born.append(body)
+	return body
+
+
+func _entry(template_id: String, seed: int) -> Dictionary:
+	_entered.append({"template": template_id, "seed": seed})
+	if _hero == null:
+		return {"ok": false, "reason": "no_actor"}
+	return DomainApi.generate_and_enter(_hero, StringName(template_id), seed)
+
+
+func _exit() -> Dictionary:
+	_exits += 1
+	if _hero == null:
+		return {"ok": false, "reason": "no_actor"}
+	return DomainApi.leave(_hero)
+
+
+func _install() -> void:
+	var outcome := WorldmapApi.install_domain(Callable(self, "_entry"), Callable(self, "_exit"))
+	assert_eq(bool(outcome.get("ok", false)), true, "the seam installs")
+
+
+func _configs() -> Dictionary:
+	return {
+		"overworld":
+		{
+			"environment": ENV,
+			"chunk_size": 8,
+			"seed": 1234,
+			"entry_row": 1,
+			"data_radius": 1,
+			"scene_radius": 1,
+			"scatter":
+			[
+				{"archetype": "flora.shrub", "density": 0.05, "blocking": true},
+				{"archetype": "flora.flower_cluster", "density": 0.08, "blocking": false},
+			],
+		},
+		"cave":
+		{
+			"environment": ENV,
+			"chunk_size": 6,
+			"seed": 99,
+			"entry_row": 1,
+			"data_radius": 1,
+			"scene_radius": 1,
+			"water": false,
+			"authored_terrain": [],
+			"scatter": [],
+			"domain_template": String(TEMPLATE),
+			"domain_seed": SEED,
+		},
+	}
+
+
+func _open() -> void:
+	var graph := WorldmapGraph.new()
+	graph.add_node({"id": "overworld", "kind": &"wilderness", "parent": ""})
+	graph.add_node({"id": "cave", "kind": &"dungeon", "parent": "overworld"})
+	(
+		graph
+		. add_edge(
+			{
+				"from": "overworld",
+				"to": "cave",
+				"kind": &"doorway",
+				"from_cell": Vector2i(1, 1),
+				"to_cell": Vector2i(1, 1),
+			}
+		)
+	)
+	_scene = WorldmapScene.new()
+	var outcome := _scene.open(graph, "overworld", _configs())
+	assert_eq(bool(outcome.get("ok", false)), true, "the overworld opens")
+
+
+func test_a_descent_with_no_seam_refuses_by_name() -> void:
+	_open()
+	var outcome := _scene.step(1, 0)
+	assert_eq(bool(outcome.get("traveled", false)), false, "nothing installed, nothing entered")
+	assert_eq(String(outcome.get("reason", "")), "no_domain_seam", "and it says so")
+	assert_eq(_scene.debug_summary().get("node"), "overworld", "on the same node")
+
+
+func test_a_refused_entry_leaves_the_player_where_they_stood() -> void:
+	WorldmapApi.install_domain(Callable(self, "_entry_refused"), Callable(self, "_exit"))
+	_open()
+	var outcome := _scene.step(1, 0)
+	assert_eq(bool(outcome.get("traveled", false)), false, "a refused run is not entered")
+	assert_eq(String(outcome.get("reason", "")), "sealed", "passing the refusal through")
+	assert_eq(_scene.player_cell(), Vector2i(1, 1), "on the gate cell, above ground")
+
+
+func _entry_refused(_template_id: String, _seed: int) -> Dictionary:
+	return {"ok": false, "reason": "sealed"}
+
+
+func test_descending_enters_a_real_run_and_freezes_the_feet() -> void:
+	_hero = _actor()
+	_install()
+	_open()
+	var outcome := _scene.step(1, 0)
+	assert_eq(bool(outcome.get("traveled", false)), true, "the doorway descends")
+	assert_eq(_entered.size(), 1, "through the installed seam once")
+	assert_eq(
+		String((_entered[0] as Dictionary).get("template", "")),
+		String(TEMPLATE),
+		"naming the template"
+	)
+	assert_eq(int((_entered[0] as Dictionary).get("seed", 0)), SEED, "at the authored seed")
+	assert_eq(_scene.debug_summary().get("node"), "cave", "on the domain node")
+	assert_eq(
+		String((_scene.debug_summary().get("domain", {}) as Dictionary).get("template", "")),
+		String(TEMPLATE),
+		"which the summary owns"
+	)
+	assert_eq(
+		DomainApi.rooms(_hero).is_empty(), false, "and the run is REAL: rooms stand on the actor"
+	)
+	var step := _scene.step(1, 0)
+	assert_eq(String(step.get("reason", "")), "inside_domain", "while the feet stay still")
+	var broken := _scene.destroy_at(Vector2i(1, 1))
+	assert_eq(String(broken.get("reason", "")), "inside_domain", "and nothing breaks in a room")
+
+
+func test_the_return_stands_on_the_exact_cell_with_the_overworld_intact() -> void:
+	_hero = _actor()
+	_install()
+	_open()
+	var victim := _blocking_cell()
+	_scene.streamer().mutate("overworld", 0, 0, victim.x, victim.y, false)
+	assert_eq(_scene.is_standable(victim), true, "ground broken before the descent")
+	_scene.step(1, 0)
+	assert_eq(_scene.debug_summary().get("node"), "cave", "inside")
+	var back := _scene.return_from_domain()
+	assert_eq(bool(back.get("ok", false)), true, "the way back opens")
+	assert_eq(_exits, 1, "leaving the run through the seam")
+	assert_eq(_scene.debug_summary().get("node"), "overworld", "on the overworld again")
+	assert_eq(_scene.player_cell(), Vector2i(1, 1), "on the exact cell left from")
+	assert_eq(_scene.is_standable(victim), true, "with the broken ground still broken")
+	assert_eq(DomainApi.rooms(_hero).is_empty(), true, "and the run gone from the actor")
+
+
+func test_returning_above_ground_refuses() -> void:
+	_install()
+	_open()
+	var back := _scene.return_from_domain()
+	assert_eq(bool(back.get("ok", false)), false, "nothing to return from")
+	assert_eq(String(back.get("reason", "")), "not_inside", "by name")
+	assert_eq(_exits, 0, "without touching the seam")
+
+
+func _blocking_cell() -> Vector2i:
+	var chunk := _scene.streamer().chunk_data("overworld", 0, 0, 8, 1234)
+	for prop in chunk.props:
+		var placement := prop as Dictionary
+		if not bool(placement.get("blocking", false)):
+			continue
+		var base := placement.get("cell", Vector2i(-1, -1)) as Vector2i
+		if chunk.standable(base.x, base.y):
+			continue
+		return Vector2i(base.x, base.y)
+	assert_eq(true, false, "the config grows a blocking prop to break")
+	return Vector2i(-1, -1)

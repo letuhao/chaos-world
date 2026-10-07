@@ -40,6 +40,10 @@ var _player: Node2D = null
 var _holders: Dictionary = {}
 var _textures: Dictionary = {}
 var _debug_borders := false
+## Return cells for domain descents, outermost first. Non-empty means the
+## player stands inside a domain node: the one flag both `step` and
+## `destroy_at` read, so there is no second "am I inside" to disagree.
+var _returns: Array = []
 
 
 ## Open a node: build the streamer, generate the entry chunk, render the
@@ -87,8 +91,13 @@ func player_cell() -> Vector2i:
 
 ## Step one cell. Moves only onto standable ground; a portal edge on the
 ## destination cell travels instead of staying. Returns `{moved, traveled}`
-## plus `reason` naming a refused gate (empty otherwise).
+## plus `reason` naming a refused gate (empty otherwise). Inside a domain
+## node the feet stay still: rooms are walked on the domain's own surface,
+## so a step here refuses `inside_domain` rather than striding through walls
+## the scene cannot see.
 func step(dx: int, dy: int) -> Dictionary:
+	if not _returns.is_empty():
+		return {"moved": false, "traveled": false, "reason": "inside_domain"}
 	var target := _player_cell + Vector2i(dx, dy)
 	var cc := _chunk_coords(target)
 	_streamer.chunk_data(_node_id, cc.x, cc.y, _size, _seed)
@@ -112,8 +121,11 @@ func step(dx: int, dy: int) -> Dictionary:
 
 
 ## Destroy whatever the given map cell masks: records a mutation, so leaving
-## and returning keeps it. Returns how many cells were freed.
+## and returning keeps it. Returns how many cells were freed. Inside a domain
+## node there is no chunk to break: rooms keep their own state on the run.
 func destroy_at(cell: Vector2i) -> Dictionary:
+	if not _returns.is_empty():
+		return {"ok": false, "freed": 0, "reason": "inside_domain"}
 	var cc := _chunk_coords(cell)
 	var local := _local_of(cell)
 	var chunk := _streamer.chunk_data(_node_id, cc.x, cc.y, _size, _seed)
@@ -192,12 +204,23 @@ func render_region(region_id: String, coords: Array) -> Dictionary:
 
 
 ## Primitives only: player, loaded holders with seeds and mutation counts,
-## streamer state, and this node's travel edges.
+## streamer state, this node's travel edges, and the domain descent (empty
+## above ground). The descent block is the scene's own record — template,
+## return node and cell — never the run, which lives on the actor.
 func debug_summary() -> Dictionary:
 	var holders: Array = []
 	for id in _holders.keys():
 		holders.append(String(id))
 	holders.sort()
+	var domain := {}
+	if not _returns.is_empty():
+		var back := _returns[_returns.size() - 1] as Dictionary
+		var cell := back.get("cell", Vector2i.ZERO) as Vector2i
+		domain = {
+			"template": String(_config.get("domain_template", "")),
+			"return_node": String(back.get("node", "")),
+			"return_cell": [cell.x, cell.y],
+		}
 	return {
 		"node": _node_id,
 		"player_cell": [_player_cell.x, _player_cell.y],
@@ -206,6 +229,7 @@ func debug_summary() -> Dictionary:
 		"streamer": _streamer.summary() if _streamer != null else {},
 		"edges": _graph.edges_from(_node_id) if _graph != null else [],
 		"debug_borders": _debug_borders,
+		"domain": domain,
 	}
 
 
@@ -274,9 +298,13 @@ func _travel(edge: Dictionary) -> Dictionary:
 		return {"traveled": false, "reason": "unknown_node"}
 	if not _node_configs.has(to_node):
 		return {"traveled": false, "reason": "unknown_node"}
+	var target_config := (_node_configs[to_node] as Dictionary).duplicate(true)
+	var template_id := String(target_config.get("domain_template", ""))
+	if not template_id.is_empty():
+		return _descend(edge, to_node, target_config, template_id)
 	_node_id = to_node
 	_player_cell = edge.get("to_cell", Vector2i.ZERO) as Vector2i
-	_config = (_node_configs[to_node] as Dictionary).duplicate(true)
+	_config = target_config
 	_size = maxi(2, int(_config.get("chunk_size", _size)))
 	_seed = int(_config.get("seed", _seed))
 	_streamer.configure(WorldmapApi.default_generator(), _config)
@@ -284,6 +312,50 @@ func _travel(edge: Dictionary) -> Dictionary:
 	refresh_around(_chunk_of(_player_cell))
 	_place_player()
 	return {"traveled": true, "reason": ""}
+
+
+## Descend into a domain node: enter a REAL run through the installed seam,
+## remember the exact cell to return to, and stand on the far side with no
+## chunks rendered — rooms are walked on the domain's own surface. The run
+## starts before any scene state moves, so a refused entry leaves the player
+## where they stood; the return is pushed only once the run exists.
+func _descend(
+	edge: Dictionary, to_node: String, target_config: Dictionary, template_id: String
+) -> Dictionary:
+	var entered := WorldmapApi.enter_domain_run(
+		template_id, int(target_config.get("domain_seed", 0))
+	)
+	if not bool(entered.get("ok", false)):
+		return {"traveled": false, "reason": String(entered.get("reason", ""))}
+	_returns.append({"node": _node_id, "cell": _player_cell})
+	_node_id = to_node
+	_player_cell = edge.get("to_cell", Vector2i.ZERO) as Vector2i
+	_config = target_config
+	_clear_holders()
+	_place_player()
+	return {"traveled": true, "reason": ""}
+
+
+## Leave the domain node and stand back on the exact cell left from. The
+## overworld was never unloaded — only unrendered — so its mutations, cache
+## and rendered range are exactly as the descent found them. Refuses
+## `not_inside` above ground and passes a refused leave through untouched.
+func return_from_domain() -> Dictionary:
+	if _returns.is_empty():
+		return {"ok": false, "reason": "not_inside"}
+	var left := WorldmapApi.leave_domain_run()
+	if not bool(left.get("ok", false)):
+		return {"ok": false, "reason": String(left.get("reason", ""))}
+	var back := _returns.pop_back() as Dictionary
+	_node_id = String(back.get("node", ""))
+	_player_cell = back.get("cell", Vector2i.ZERO) as Vector2i
+	_config = (_node_configs.get(_node_id, {}) as Dictionary).duplicate(true)
+	_size = maxi(2, int(_config.get("chunk_size", _size)))
+	_seed = int(_config.get("seed", _seed))
+	_streamer.configure(WorldmapApi.default_generator(), _config)
+	refresh_around(_chunk_of(_player_cell))
+	_place_player()
+	return {"ok": true, "reason": ""}
 
 
 func _clear_holders() -> void:

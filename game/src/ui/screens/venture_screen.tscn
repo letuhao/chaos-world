@@ -46,6 +46,11 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Close"
 
+[node name="ReturnButton" type="Button" parent="Layout/Row"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Return"
+
 [node name="Move" type="HBoxContainer" parent="Layout"]
 layout_mode = 2
 
