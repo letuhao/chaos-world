@@ -43,3 +43,78 @@ func test_element_tier_gating() -> void:
 		"tier 2 at spirit"
 	)
 	assert_eq(ElementMastery.can_use(rules, &"spirit_sea", &"void"), false, "unknown element")
+
+
+# --- the path's doors (S2) ------------------------------------------------------
+
+
+func _actor(id: StringName) -> Actor:
+	return ActorFactory.build(id, {Stat.PHYSIQUE: 20.0, Stat.SPIRIT: 20.0})
+
+
+func _qi_threshold(realm_id: StringName) -> float:
+	return QiRealmSeed.for_realm(realm_id).progress_required
+
+
+func test_awaken_enrolls_the_path_explicitly_and_only_once() -> void:
+	var actor := _actor(&"element_path")
+	assert_eq(ElementMastery.enrolled(actor), false, "nothing enrolls implicitly")
+	var begun := ElementsApi.begin(actor)
+	assert_eq(bool(begun.get("ok", false)), true, "the Awaken action enrolls")
+	assert_eq(String(begun.get("rank", "")), "qi_refining", "at the first rung")
+	assert_eq(ElementMastery.enrolled(actor), true, "and the path is open")
+	assert_eq(
+		String(ElementsApi.begin(actor).get("reason", "")), "already_enrolled", "and only once"
+	)
+
+
+func test_advance_is_paid_in_mastery_against_the_injected_curve() -> void:
+	var actor := _actor(&"element_advance")
+	assert_eq(bool(ElementsApi.begin(actor).get("ok", false)), true, "enrolled")
+	var target := RealmDefaults.ladder().next(&"qi_refining")
+	assert_almost_eq(
+		ElementMastery.threshold_for(target.id),
+		_qi_threshold(target.id),
+		"the injected curve is the qi ladder's own authored labour",
+		1e-6
+	)
+	var preview := ElementsApi.preview(actor)
+	assert_almost_eq(
+		float(preview.get("threshold", -1.0)), _qi_threshold(target.id), "the read carries it", 1e-6
+	)
+	assert_eq(
+		String(ElementsApi.advance(actor).get("reason", "")),
+		"insufficient_mastery",
+		"no mastery, no rung"
+	)
+	actor.set_affinity(ElementStats.FIRE, 5.0)
+	var guard := 0
+	while ElementMastery.total_mastery(actor) < _qi_threshold(target.id) and guard < 400:
+		guard += 1
+		assert_eq(ElementsApi.practise(actor, ElementStats.FIRE), true, "a sitting")
+	var advanced := ElementsApi.advance(actor)
+	assert_eq(bool(advanced.get("ok", false)), true, "the rung is paid")
+	assert_eq(String(advanced.get("rank", "")), String(target.id), "and the rank moved")
+	assert_eq(
+		float(ElementsApi.preview(actor).get("mastery", 0.0)) >= _qi_threshold(target.id),
+		true,
+		"with the mastery that paid it still on the books"
+	)
+
+
+func test_can_use_needs_both_the_elemental_rank_and_the_qi_realm() -> void:
+	var actor := _actor(&"element_use")
+	assert_eq(ElementsApi.can_use(actor, ElementStats.FIRE), true, "tier 1 is the base spark")
+	assert_eq(ElementsApi.can_use(actor, ElementStats.LIGHTNING), false, "tier 2 needs awakening")
+	assert_eq(bool(ElementsApi.begin(actor).get("ok", false)), true, "awakened")
+	# The RANK half: an elemental rank at R1 gates tier 2 even with the qi realm high.
+	actor.set_path(PathState.new(PathState.QI, &"spirit_sea"))
+	assert_eq(ElementsApi.can_use(actor, ElementStats.LIGHTNING), false, "the rank still gates")
+	# The REALM half: an elemental rank at spirit is not enough while qi sits at R1.
+	actor.set_path(PathState.new(ElementMastery.PATH_ID, &"spirit_sea"))
+	actor.set_path(PathState.new(PathState.QI, &"qi_refining"))
+	assert_eq(ElementsApi.can_use(actor, ElementStats.LIGHTNING), false, "the qi realm still gates")
+	actor.set_path(PathState.new(PathState.QI, &"spirit_sea"))
+	assert_eq(
+		ElementsApi.can_use(actor, ElementStats.LIGHTNING), true, "both halves met, tier 2 opens"
+	)

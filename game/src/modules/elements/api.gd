@@ -3,13 +3,11 @@ extends RefCounted
 
 ## Public facade for the `elements` module (ADR 0004).
 
-static var _default_rules: ElementRules
-
 
 static func default_rules() -> ElementRules:
-	if _default_rules == null:
-		_default_rules = ElementRules.new(ElementDefaults.all())
-	return _default_rules
+	# The module's ONE rules cache lives on `ElementDefaults`, so the path and training
+	# files reach it without naming this facade.
+	return ElementDefaults.rules()
 
 
 ## Attach the element provider, and the REALM modifier that keeps `element_power_<e>`
@@ -236,10 +234,46 @@ static func practise(actor: Actor, element_id: StringName, amount: float = PRACT
 
 
 static func mastery_of(actor: Actor, element_id: StringName) -> float:
-	return ElementTraining.mastery_of(actor, element_id)
+	return ElementMastery.mastery_of(actor, element_id)
 
 
 ## Open an element the body was not born with: a rare resource raises the AFFINITY
 ## itself, and the practice gate follows.
 static func awaken(actor: Actor, element_id: StringName, amount: float) -> bool:
 	return ElementTraining.awaken(actor, element_id, amount)
+
+
+## ## The elemental path's doors (ADR 0004): enroll, read, advance
+##
+## The Awaken action is the ENROLLMENT (explicit, never implicit), and the threshold
+## the next rung costs is the authored labour curve for that realm — INJECTED by the
+## composition root (`set_progress_source`), because this module may not read another
+## path's seeds. An uninstalled source refuses advancement with a named reason instead
+## of inventing a number.
+static func set_progress_source(source: Callable) -> void:
+	ElementMastery.set_progress_source(source)
+
+
+static func begin(actor: Actor) -> Dictionary:
+	if actor == null:
+		return {"ok": false, "reason": "no_actor"}
+	if ElementMastery.enrolled(actor):
+		return {"ok": false, "reason": "already_enrolled"}
+	var first := RealmDefaults.ladder().realms()[0]
+	actor.set_path(PathState.new(ElementMastery.PATH_ID, first.id))
+	attach(actor)
+	return {"ok": true, "rank": String(first.id)}
+
+
+static func preview(actor: Actor) -> Dictionary:
+	return ElementMastery.preview(actor)
+
+
+static func advance(actor: Actor) -> Dictionary:
+	return ElementMastery.advance(actor)
+
+
+## Whether `actor` may USE `element_id` right now: the elemental rank must reach the
+## element's tier AND the actor's realm must allow it (both, deliberately).
+static func can_use(actor: Actor, element_id: StringName) -> bool:
+	return ElementMastery.usable(actor, element_id)

@@ -36,7 +36,7 @@ extends RefCounted
 static func can_practise(actor: Actor, element_id: StringName, rules: ElementRules = null) -> bool:
 	if actor == null:
 		return false
-	var resolved := rules if rules != null else ElementsApi.default_rules()
+	var resolved := rules if rules != null else ElementDefaults.rules()
 	if resolved == null or resolved.element(element_id) == null:
 		return false
 	return actor.affinities.get_value(element_id) > 0.0
@@ -50,16 +50,12 @@ static func practise(actor: Actor, element_id: StringName, amount: float) -> boo
 	if not can_practise(actor, element_id):
 		return false
 	var rank := _rank_of(actor)
-	_set_mastery(actor, element_id, mastery_of(actor, element_id) + amount * RealmRate.factor(rank))
+	_set_mastery(
+		actor,
+		element_id,
+		ElementMastery.mastery_of(actor, element_id) + amount * RealmRate.factor(rank)
+	)
 	return true
-
-
-## The mastery this actor has earned on `element_id`, from the BASE layer the provider
-## reads.
-static func mastery_of(actor: Actor, element_id: StringName) -> float:
-	if actor == null or actor.stats == null:
-		return 0.0
-	return maxf(0.0, actor.stats.get_base(ElementStats.mastery_id(element_id)))
 
 
 ## Raise the actor's AFFINITY for `element_id` — the innate channel, opened by a rare
@@ -69,7 +65,7 @@ static func mastery_of(actor: Actor, element_id: StringName) -> float:
 static func awaken(actor: Actor, element_id: StringName, amount: float) -> bool:
 	if actor == null or amount <= 0.0 or not is_finite(amount):
 		return false
-	var rules := ElementsApi.default_rules()
+	var rules := ElementDefaults.rules()
 	if rules == null or rules.element(element_id) == null:
 		return false
 	actor.set_affinity(element_id, actor.affinities.get_value(element_id) + amount)

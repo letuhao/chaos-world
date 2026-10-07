@@ -56,6 +56,11 @@ static func build(id: StringName, base: Dictionary = {}) -> Actor:
 	# twice would stack two providers (`ActorStats.add_provider` appends unguarded,
 	# ADR 0069), which is why the enrolment verbs refresh and never re-attach.
 	ElementsApi.attach(actor)
+	# The elemental path's labour curve is the qi ladder's OWN authored
+	# `progress_required`, handed to the module through its injected source (ADR 0173's
+	# pattern): the module never reads another path's seeds, and the tree keeps ONE
+	# curve. Idempotent, so every build may install it.
+	ElementsApi.set_progress_source(Callable(ActorFactory, "_element_progress_for"))
 	# High-tier readouts, for the same reason the element provider is attached
 	# here rather than in a cultivation enrolment: a provider mounted only by the
 	# paths that reach R19+ is a provider no other actor has, so `inside_world_stability`,
@@ -312,6 +317,14 @@ static func _attach_body(actor: Actor) -> Actor:
 	BodyTraining.synchronize(actor)
 	_refresh_element_realm(actor)
 	return actor
+
+
+## The threshold the elemental path's next rung costs, for the injected source: the qi
+## realm's own authored `progress_required`. `-1.0` for a realm with no seed, which
+## refuses advancement by name rather than inventing a number.
+static func _element_progress_for(realm_id: StringName) -> float:
+	var seed := QiRealmSeed.for_realm(realm_id)
+	return -1.0 if seed == null else seed.progress_required
 
 
 static func _attach_qi(actor: Actor) -> Actor:

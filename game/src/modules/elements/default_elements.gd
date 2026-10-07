@@ -41,6 +41,19 @@ static func all() -> Array[ElementDef]:
 	return out
 
 
+## The shipped rules table, built ONCE. `ElementsApi.default_rules()` forwards here so
+## the module has one cache, and the path/training files can reach the rules without
+## naming the facade — a two-way class reference between a facade and its own module
+## files breaks compilation (the edge `ActorAffinity` documents).
+static var _rules: ElementRules = null
+
+
+static func rules() -> ElementRules:
+	if _rules == null:
+		_rules = ElementRules.new(all())
+	return _rules
+
+
 static func _make(
 	id: StringName, display_name: String, tier: int, generates: Array, overcomes: Array
 ) -> ElementDef:
