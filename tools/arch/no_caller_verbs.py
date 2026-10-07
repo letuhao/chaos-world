@@ -795,6 +795,17 @@ def register_selftest_cases(case, expect, write) -> None:
         "static func offered(actor) -> Array[Dictionary]:\n\treturn []\n"
     )
 
+    def _isolated(root: Path) -> Path:
+        """A fixture guards path that does not exist.
+
+        The DEFAULT guards dir is the repository's own `tools/`, and `tools/data.py`
+        names `QuestApi.complete` — so a case that does not pass its own guards path
+        measures the real tree's keeper, and the pass becomes an accident of the
+        checkout rather than of the fixture. A path that is not a directory makes
+        `_guard_callers` return `{}`, which is its own contract.
+        """
+        return root / "no_guards"
+
     @case("no_caller_verbs: a published VERB with NO production caller FAILS")
     def _caller_less_fails() -> None:
         with tempfile.TemporaryDirectory() as raw:
@@ -804,7 +815,7 @@ def register_selftest_cases(case, expect, write) -> None:
                 root / "tests" / "test_quest.gd",
                 "extends TestCase\n\n\nfunc it() -> void:\n\tpass\n",
             )
-            problems, report = evaluate(root / "src", root / "tests")
+            problems, report = evaluate(root / "src", root / "tests", None, _isolated(root))
             expect(
                 any("QuestApi.complete" in p for p in problems),
                 f"a published facade VERB that no production file calls was accepted: "
@@ -816,9 +827,9 @@ def register_selftest_cases(case, expect, write) -> None:
                 "the case is not testing what it claims",
             )
             expect(
-                not any("QuestApi.offered" in p for p in problems),
-                "the second fixture verb was reported too, which means the case cannot tell "
-                f"the two verbs apart: {problems!r}",
+                any("QuestApi.offered" in p for p in problems),
+                "the second caller-less fixture verb was NOT reported, so the case cannot "
+                f"tell the two verbs apart and one of them is being special-cased: {problems!r}",
             )
 
     @case("no_caller_verbs: a TEST-only caller does not clear a verb")
@@ -830,7 +841,7 @@ def register_selftest_cases(case, expect, write) -> None:
                 root / "tests" / "test_quest.gd",
                 'extends TestCase\n\n\nfunc it() -> void:\n\tQuestApi.complete(null, &"q")\n',
             )
-            problems, _ = evaluate(root / "src", root / "tests")
+            problems, _ = evaluate(root / "src", root / "tests", None, _isolated(root))
             expect(
                 any("QuestApi.complete" in p for p in problems),
                 f"a verb reached only from res://tests was accepted: {problems!r}. A suite that "
@@ -849,7 +860,7 @@ def register_selftest_cases(case, expect, write) -> None:
                 '\tWorldStage.set_commit(Callable(QuestApi, "complete"))\n',
             )
             write(root / "tests" / "t.gd", "extends TestCase\n\n\nfunc it() -> void:\n\tpass\n")
-            problems, report = evaluate(root / "src", root / "tests")
+            problems, report = evaluate(root / "src", root / "tests", None, _isolated(root))
             expect(
                 not any("QuestApi.complete" in p for p in problems),
                 f'a verb wired through Callable(Api, "name") was reported dead: {problems!r}. '
@@ -879,11 +890,12 @@ def register_selftest_cases(case, expect, write) -> None:
                 '\tprint(QuestApi.complete(_actor, &"first_light"))\n',
             )
             write(root / "tests" / "t.gd", "extends TestCase\n\n\nfunc it() -> void:\n\tpass\n")
-            problems, _ = evaluate(root / "src", root / "tests")
+            problems, _ = evaluate(root / "src", root / "tests", None, _isolated(root))
             expect(
-                not problems,
+                not any("QuestApi.complete" in p for p in problems),
                 f"a verb a screen calls through the facade was reported dead: {problems!r}. "
-                "ui/ reaching a module only through api.gd is the RULE, not a violation",
+                "ui/ reaching a module only through api.gd is the RULE, not a violation "
+                "(`offered` is reported on purpose: nothing in the fixture names it)",
             )
 
     @case("no_caller_verbs: a declaration is not a caller of ITSELF")
@@ -897,7 +909,7 @@ def register_selftest_cases(case, expect, write) -> None:
             root = Path(raw)
             _fixture(root, write, body=PUBLISHED)
             write(root / "tests" / "t.gd", "extends TestCase\n\n\nfunc it() -> void:\n\tpass\n")
-            problems, report = evaluate(root / "src", root / "tests")
+            problems, report = evaluate(root / "src", root / "tests", None, _isolated(root))
             expect(
                 not report.callers.get("QuestApi.complete"),
                 "a verb's own `static func` header was counted as its caller, so this guard is "
@@ -928,7 +940,7 @@ def register_selftest_cases(case, expect, write) -> None:
                 ],
             )
             write(root / "tests" / "t.gd", "extends TestCase\n\n\nfunc it() -> void:\n\tpass\n")
-            problems, report = evaluate(root / "src", root / "tests")
+            problems, report = evaluate(root / "src", root / "tests", None, _isolated(root))
             expect(
                 not report.callers.get("AnchorApi.complete"),
                 "a comment naming the verb was counted as a caller, so this guard could never "
@@ -952,7 +964,7 @@ def register_selftest_cases(case, expect, write) -> None:
                 '{"entries": {"QuestApi.complete": {"reason": "DEF-0315: the moment that '
                 'settles a verdict does not ship yet", "ticket": "DEF-0315"}}}\n',
             )
-            problems, report = evaluate(root / "src", root / "tests", allow)
+            problems, report = evaluate(root / "src", root / "tests", allow, _isolated(root))
             expect(
                 "QuestApi.complete" in report.allowlist,
                 "the declared entry was not loaded, so the pass below proves nothing",
@@ -975,7 +987,7 @@ def register_selftest_cases(case, expect, write) -> None:
             _fixture(root, write, body=PUBLISHED)
             write(root / "tests" / "t.gd", "extends TestCase\n\n\nfunc it() -> void:\n\tpass\n")
             allow = write(root / "allow.json", '{"entries": {"QuestApi.complete": {}}}\n')
-            problems, _ = evaluate(root / "src", root / "tests", allow)
+            problems, _ = evaluate(root / "src", root / "tests", allow, _isolated(root))
             expect(
                 any("carries no reason" in p for p in problems),
                 f"an entry with no reason was accepted: {problems!r}. An unexplained exception "
@@ -997,7 +1009,7 @@ def register_selftest_cases(case, expect, write) -> None:
                 root / "allow.json",
                 '{"entries": {"QuestApi.complete": {"reason": "was deliberate"}}}\n',
             )
-            problems, _ = evaluate(root / "src", root / "tests", allow)
+            problems, _ = evaluate(root / "src", root / "tests", allow, _isolated(root))
             expect(
                 any("stale" in p for p in problems),
                 f"an entry whose verb has since found a caller was silently accepted: "
@@ -1010,7 +1022,7 @@ def register_selftest_cases(case, expect, write) -> None:
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)
             write(root / "src" / "ui" / "screen.gd", "extends Control\n")
-            problems, report = evaluate(root / "src")
+            problems, report = evaluate(root / "src", root / "tests", None, _isolated(root))
             expect(
                 report.facades == 0,
                 "fixture did start with no facades, so the pass below would be vacuous",
@@ -1056,7 +1068,7 @@ def register_selftest_cases(case, expect, write) -> None:
                 ],
             )
             write(root / "tests" / "t.gd", "extends TestCase\n\n\nfunc it() -> void:\n\tpass\n")
-            problems, report = evaluate(root / "src", root / "tests")
+            problems, report = evaluate(root / "src", root / "tests", None, _isolated(root))
             expect(
                 any("EventApi.events" in p for p in problems),
                 f"a namesake bare call cleared the verb: {problems!r}. `mods` declaring its "
@@ -1085,13 +1097,16 @@ def register_selftest_cases(case, expect, write) -> None:
             root = Path(raw)
             _fixture(root, write, body=PUBLISHED)
             write(root / "tests" / "t.gd", "extends TestCase\n\n\nfunc it() -> void:\n\tpass\n")
-            guards = write(
+            write(
                 root / "tools" / "data.py",
-                'ROUTES = [("quest", "res://src/modules/quest/api.gd", ["complete"], '
-                '["src/app/quest_program.gd"]), ("quest", "other", ["offered"], '
+                'ROUTES = [("quest", "res://src/modules/quest/api.gd", "QuestApi.complete", '
+                '["src/app/quest_program.gd"]), ("quest", "other", "offered", '
                 '["src/app/x.gd"])]\n',
             )
-            problems, report = evaluate(root / "src", root / "tests", None, guards)
+            # The guards source is the DIRECTORY, not the file: `_guard_callers` reads a
+            # tree (`is_dir()` is its own contract), and the real invocation passes
+            # `repo / "tools"`.
+            problems, report = evaluate(root / "src", root / "tests", None, root / "tools")
             expect(
                 report.guards.get("QuestApi.complete"),
                 "the fixture's committed guard naming the verb was not registered, so the pass "
@@ -1121,7 +1136,7 @@ def register_selftest_cases(case, expect, write) -> None:
                 '\t_sink.call("complete")\n\tprint(_sink.has_signal("offered"))\n',
             )
             write(root / "tests" / "t.gd", "extends TestCase\n\n\nfunc it() -> void:\n\tpass\n")
-            problems, report = evaluate(root / "src", root / "tests")
+            problems, report = evaluate(root / "src", root / "tests", None, _isolated(root))
             expect(
                 not any("QuestApi.complete" in p for p in problems),
                 f"a verb reached through a dispatch seam was reported dead: {problems!r}. A "
@@ -1186,7 +1201,10 @@ def register_selftest_cases(case, expect, write) -> None:
             repo / "game" / "src",
             repo / "game" / "tests",
             None,
-            Path(""),  # no tools/ guard may keep it
+            # No tools/ guard may keep it: a path that is not a directory reads as no
+            # guards at all (`_guard_callers` returns {}), where `Path("")` would mean
+            # the CWD and scan the WHOLE repository for a keeper.
+            Path("no_such_guards_dir_for_this_case"),
             DEFAULT_MODULES,
         )
         expect(
@@ -1219,7 +1237,7 @@ def register_selftest_cases(case, expect, write) -> None:
         )
         for qualified in ("EventApi.set_location", "NpcApi.set_minter"):
             expect(
-                not report.reached.get(qualified),
+                report.reached.get(qualified),
                 f"{qualified} is reported caller-less on the real tree, and it is installed "
                 'through Callable(Api, "name"). A reader that cannot see a Callable seam '
                 "reports four shipped triggers as dead — INC-0012",
@@ -1277,7 +1295,13 @@ def register_selftest_cases(case, expect, write) -> None:
             root = Path(raw)
             _fixture(root, write, body=PUBLISHED)
             write(root / "tests" / "t.gd", "extends TestCase\n\n\nfunc it() -> void:\n\tpass\n")
-            problems, _ = evaluate(root / "src", root / "tests", None, None, frozenset({"event"}))
+            problems, _ = evaluate(
+                root / "src",
+                root / "tests",
+                None,
+                _isolated(root),
+                frozenset({"quest", "event"}),
+            )
             expect(
                 any("no facade provides" in p for p in problems),
                 f"a scope naming a module directory that does not exist reported clean: "

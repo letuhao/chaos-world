@@ -91,23 +91,29 @@ def _tree(adr_body: str, waivers: dict | None = None) -> Iterator[Path]:
 
 
 def _verdict(root: Path, adr: Path) -> int:
-    return adr_cite.report(adr_cite.audit(adr.parent, root), as_json=False)
+    """The gate's own exit code, through the STRICT path.
+
+    `report` is report-only by default (DEF-0285: a permanently red gate is a gate
+    nobody reads), so the cases assert the exit code CI actually gates on.
+    """
+    return adr_cite.report(adr_cite.audit(adr.parent, root), as_json=False, strict=True)
 
 
 @case("adr-cite: a citation whose line exists but names nothing there STILL fails")
 def _right_line_wrong_symbol_fails() -> None:
     """The shape the existence-only audit scored 0 of 86 on.
 
-    Line 4 is real, in range, and holds the word `earn_fate` — but only inside a
-    docstring, never as the decision. An existence-only checker passes this; a content
-    checker must not, and that difference is the entire reason this tool exists.
+    The cited line is real and in range, and `earn_oath` is nowhere within the checker's
+    ±3 tolerance window of it — the tolerance is the design (a decision that moved a line
+    or two is not drift), so the case points far enough away that only a content check
+    can tell this apart from a correct citation. An existence-only checker passes it.
     """
-    body = _FIXTURE_ADR.replace("fixture.gd:6 earn_oath", "fixture.gd:4 earn_oath")
+    body = _FIXTURE_ADR.replace("fixture.gd:6 earn_oath", "fixture.gd:1 earn_oath")
     with _tree(body) as root, _quiet():
         code = _verdict(root, root / "docs/adr/0001-fixture.md")
     expect(
         code != 0,
-        "a citation pointing at a docstring line instead of the decision passed; line "
+        "a citation pointing at a line whose whole ±3 window holds nothing passed; line "
         "EXISTENCE is the check that cannot fail, and this is the drift it misses",
     )
 
@@ -239,8 +245,12 @@ def _json_report_names_the_findings() -> None:
         findings = adr_cite.audit(root / "docs/adr", root)
         sink = io.StringIO()
         with contextlib.redirect_stdout(sink), contextlib.redirect_stderr(sink):
-            code = adr_cite.report(findings, as_json=True)
-    payload = json.loads(sink.getvalue())
+            code = adr_cite.report(findings, as_json=True, strict=True)
+    text = sink.getvalue()
+    # The JSON is one indented block; the fail/warn lines follow it, so the payload is
+    # extracted by braces rather than by parsing the whole sink (the tool's contract is
+    # "the JSON block is in the output", not "the output is only JSON").
+    payload = json.loads(text[text.index("{") : text.rindex("}") + 1])
     expect(code != 0, "a past-EOF citation passed the JSON report path")
     expect(
         any(f["verdict"] == "line_past_eof" for f in payload["findings"]),
