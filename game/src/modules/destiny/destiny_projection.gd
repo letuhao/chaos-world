@@ -55,6 +55,26 @@ const COUNTER_FACTS: Array[Dictionary] = [
 	{"fact": &"hundredth_beast_slain", "counter": &"kills"},
 ]
 
+## Facts the shipped tree PRODUCES and no authored fate reads — deliberately unmapped.
+##
+## ## BL-0600's decision, written down rather than left to look like an oversight
+##
+## `sect_post_held` is a real world fact with a real producer (`SectFacts.record_post_held`)
+## and four shipped quest steps watch it. It is NOT in [constant COUNTER_FACTS], and that is
+## a DECISION: no authored `FateDef.counters` names a counter a held office should move.
+## Adding a row would move a counter no fate reads, which
+## `test_every_wired_counter_is_one_the_shipped_tree_declares` refuses, and picking one of
+## the existing counters (say `oaths_sworn`) would change a shipped fate's progress as a
+## side effect of a wiring fix — a balance change dressed as a bug fix.
+##
+## ## Why a named list and not a comment
+##
+## The census in `tests/modules/destiny/test_destiny_unmapped_facts.gd` asserts this list
+## EQUALS what it finds, so a fact that gains or loses a mapping must be moved here in the
+## same change. Without the list, the next reader cannot tell "deliberately unmapped" from
+## "somebody forgot", which is exactly the ambiguity BL-0600 recorded.
+const FACTS_NO_FATE_READS: Array[StringName] = [&"sect_post_held"]
+
 ## The module's signal bus. It lives HERE because a GDScript signal belongs to an
 ## instance and a facade is a namespace of statics — but it is REACHED through the
 ## facade, as [method DestinyApi.events], because `ui/` is a pure consumer and may

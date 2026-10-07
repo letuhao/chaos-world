@@ -38,11 +38,15 @@ const KINDS: Array[StringName] = [KIND_AUTHORED, KIND_SYSTEMIC, KIND_EMERGENT]
 ##   `item`    — an authored `ItemDef` id, delivered into the bag through
 ##               `ItemsApi.generate` by `QuestGrants.pay`. A grant the game cannot
 ##               deliver is recorded as unspent WITH ITS REASON, never dropped.
+##   `chest`   — an authored `ChestDef` id, opened into the bag through
+##               `ItemsApi.open_chest` (a bundle of random items). Same unspent rule:
+##               a chest nobody can open is recorded with its reason.
 const GRANT_FATE := &"fate"
 const GRANT_DESTINY := &"destiny"
 const GRANT_ITEM := &"item"
+const GRANT_CHEST := &"chest"
 
-const GRANT_KINDS: Array[StringName] = [GRANT_FATE, GRANT_DESTINY, GRANT_ITEM]
+const GRANT_KINDS: Array[StringName] = [GRANT_FATE, GRANT_DESTINY, GRANT_ITEM, GRANT_CHEST]
 
 @export var id: StringName = &""
 @export var display_name: String = ""

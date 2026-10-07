@@ -124,6 +124,12 @@ static func pay(actor: Actor, def: QuestDef, quest_id: StringName) -> Dictionary
 					paid.append(entry)
 				else:
 					unspent.append(_with_reason(entry, String(delivered["reason"])))
+			QuestDef.GRANT_CHEST:
+				var opened := _open_chest(actor, entry, quest_id)
+				if bool(opened["ok"]):
+					paid.append(entry)
+				else:
+					unspent.append(_with_reason(entry, String(opened["reason"])))
 	return {"paid": paid, "unspent": unspent}
 
 
@@ -180,6 +186,34 @@ static func _deliver(actor: Actor, entry: Dictionary, quest_id: StringName) -> D
 ## reroll.
 static func _seed(quest_id: StringName, def_id: StringName) -> int:
 	return hash("%s%s:%s" % [FATE_SOURCE_PREFIX, String(quest_id), String(def_id)])
+
+
+## Open one authored `chest` grant into `actor`'s bag, or name why it could not open.
+##
+## Same determinism rule as [method _deliver]: the seed is derived from the quest and the
+## chest id, so one quest always pays the same bundle rather than a reroll. Returns
+## `{ok, reason}`; the caller owns `paid`/`unspent`, and the entry is left untouched
+## because what the quest OWED is `{kind, id, amount}` whether or not it opened.
+##
+## The bundle itself is the `items` module's to draw — this verb asks the facade and reads
+## its answer, so a second bundle shape (a loot table, a mod's own chest) needs no change
+## here.
+static func _open_chest(actor: Actor, entry: Dictionary, quest_id: StringName) -> Dictionary:
+	if int(entry["amount"]) > 1:
+		# `open_chest` opens one bundle; a grant asking for two is a shape this path does
+		# not have, refused by name rather than looped over a request it cannot honour.
+		return {"ok": false, "reason": ITEM_AMOUNT_UNSUPPORTED}
+	var chest_id := StringName(entry["id"])
+	var opened := ItemsApi.open_chest(actor, chest_id, _seed(quest_id, chest_id))
+	if not bool(opened.get("ok", false)):
+		return {"ok": false, "reason": String(opened.get("reason", ItemsApi.CHEST_UNKNOWN))}
+	# A refused ROW (an unknown item id, a full bag) means the chest did not deliver
+	# everything it promised, so the grant is unspent and carries the first row's reason
+	# rather than reporting a clean payout.
+	var refused := opened.get("refused", []) as Array
+	if not refused.is_empty():
+		return {"ok": false, "reason": String((refused[0] as Dictionary).get("reason", ""))}
+	return {"ok": true, "reason": ""}
 
 
 ## One grant as `{kind: StringName, id: StringName, amount: int}`. A grant whose

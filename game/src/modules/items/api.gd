@@ -33,6 +33,17 @@ const SCHEMA_VERSION := 3
 ## `registry.json` declares `destiny` so the edge is declared rather than merely present.
 const DESTINY_FACADE := preload("res://src/modules/destiny/api.gd")
 
+# --- chest open refusals. Named, so a caller reports WHICH row failed --------------
+
+## The named chest id is not one the catalog defines.
+const CHEST_UNKNOWN := "unknown_chest"
+## The actor has no inventory component, so there is nowhere to put a bundle.
+const CHEST_NO_INVENTORY := "no_inventory"
+## A pool or guaranteed row names an item the content tree does not define.
+const CHEST_UNKNOWN_ITEM := "unknown_item"
+## The bag had no room for a drawn row. The rest of the bundle is still attempted.
+const CHEST_INVENTORY_FULL := "inventory_full"
+
 
 static func attach(actor: Actor, capacity: int = DEFAULT_CAPACITY) -> void:
 	actor.set_component(INVENTORY_COMPONENT, Inventory.new(capacity))
@@ -194,6 +205,107 @@ static func generate(actor: Actor, def: ItemDef, seed_value: int) -> ItemInstanc
 		if inv.add_instance(instance) != 0:
 			return null
 	return instance
+
+
+## Open the authored chest `chest_id` into `actor`'s bag and report what it paid.
+##
+## ## Deterministic, from one seed
+##
+## Every draw — the weighted pool picks and the per-item realization seeds — comes from
+## ONE `RandomNumberGenerator` seeded with `seed_value`, so the same chest opened with the
+## same seed yields the same bundle every time. That is what makes a reward auditable and
+## a test stable (ADR 0025: no delivery path reads an unseeded RNG).
+##
+## ## Guarantees then draws, and a full bag never aborts the bundle
+##
+## `guaranteed` rows are delivered first, then `rolls` weighted picks from `rows`. A row
+## the bag cannot hold is recorded under `refused` with its reason and the rest of the
+## bundle is still attempted — a full bag must not silently drop the guarantees behind a
+## failed draw.
+##
+## Returns `{ok, reason, chest_id, granted: [item_id], refused: [{id, reason}]}`. A row
+## naming an item the tree does not define is REFUSED by name, never dropped.
+static func open_chest(actor: Actor, chest_id: StringName, seed_value: int) -> Dictionary:
+	var def := ChestCatalog.instance().definition(chest_id)
+	if def == null:
+		return _chest_refuse(CHEST_UNKNOWN, chest_id)
+	var inv := inventory(actor)
+	if inv == null:
+		return _chest_refuse(CHEST_NO_INVENTORY, chest_id)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed_value
+	var granted: Array[String] = []
+	var refused: Array[Dictionary] = []
+	for item_id in def.guaranteed:
+		_deliver_row(actor, inv, StringName(item_id), rng, granted, refused)
+	var total := def.total_weight()
+	# The bound is SNAPSHOT before the loop: `def.rolls` is authored and `_deliver_row`
+	# neither reads nor grows it, so the loop is bounded by content, not by its own body.
+	for index in def.rolls:
+		if total <= 0:
+			break
+		var picked := _weighted_pick(def, total, rng)
+		if picked != &"":
+			_deliver_row(actor, inv, picked, rng, granted, refused)
+	return {
+		"ok": true,
+		"reason": "",
+		"chest_id": String(chest_id),
+		"granted": granted,
+		"refused": refused,
+	}
+
+
+# --- chest internals -------------------------------------------------------------
+
+
+## One weighted pick from `def.rows`, using `rng`. Empty when the pool is empty.
+##
+## The cumulative walk is bounded by the authored row count — never an unbounded search —
+## and reads `total` (snapshotted by the caller) rather than re-summing the pool it walks.
+static func _weighted_pick(def: ChestDef, total: int, rng: RandomNumberGenerator) -> StringName:
+	if total <= 0 or def.rows.is_empty():
+		return &""
+	var roll := rng.randi_range(1, total)
+	var running := 0
+	for row in def.rows:
+		running += maxi(1, int((row as Dictionary).get("weight", 1)))
+		if roll <= running:
+			return StringName((row as Dictionary).get("item_id", ""))
+	return &""
+
+
+## Deliver one item id into the bag, appending to `granted` or `refused`. Inert on every
+## refusal: nothing is acquired unless `generate` succeeds, so a refused row cannot
+## half-deliver.
+static func _deliver_row(
+	actor: Actor,
+	inv: Inventory,
+	item_id: StringName,
+	rng: RandomNumberGenerator,
+	granted: Array[String],
+	refused: Array[Dictionary]
+) -> void:
+	if item_id == &"":
+		refused.append({"id": "", "reason": CHEST_UNKNOWN_ITEM})
+		return
+	var item_def := Crafting.resolve(item_id)
+	if item_def == null:
+		refused.append({"id": String(item_id), "reason": CHEST_UNKNOWN_ITEM})
+		return
+	if inv.is_full():
+		refused.append({"id": String(item_id), "reason": CHEST_INVENTORY_FULL})
+		return
+	# The realization seed comes FROM this rng, so the whole bundle is a pure function of
+	# the chest's one seed and a reroll cannot creep in through the per-item path.
+	if generate(actor, item_def, rng.randi()) == null:
+		refused.append({"id": String(item_id), "reason": CHEST_INVENTORY_FULL})
+		return
+	granted.append(String(item_id))
+
+
+static func _chest_refuse(reason: String, chest_id: StringName) -> Dictionary:
+	return {"ok": false, "reason": reason, "chest_id": String(chest_id), "granted": [], "refused": []}
 
 
 ## Use (consume/learn) one unit of `def_id`. All-or-nothing: consumes nothing

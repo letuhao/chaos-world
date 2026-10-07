@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ChestDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/chest_def.gd" id="1_chest"]
+
+[resource]
+script = ExtResource("1_chest")
+id = &"field_camp_supplies"
+display_name = "A Camp Chest"
+rolls = 2
+rows = Array[Dictionary]([{"item_id": &"domain_rations", "weight": 3}, {"item_id": &"domain_torch", "weight": 2}, {"item_id": &"domain_waterskin", "weight": 1}])
+guaranteed = Array[StringName]([&"domain_survival_kit"])
