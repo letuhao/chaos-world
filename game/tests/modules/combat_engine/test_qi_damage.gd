@@ -45,12 +45,12 @@ func test_the_worked_numeric_table() -> void:
 	var rows := [
 		_row(ElementStats.FIRE, ElementStats.WOOD, 0.8),
 		_row(ElementStats.FIRE, ElementStats.METAL, 0.8),
-		_row(ElementStats.FIRE, ElementStats.EARTH, 0.0),
+		_row(ElementStats.FIRE, ElementStats.EARTH, 0.8),
 		_row(ElementStats.FIRE, ElementStats.WATER, 1.0),
 		_row(ElementStats.FIRE, ElementStats.FIRE, 1.0),
-		_row(ElementStats.WATER, ElementStats.METAL, 0.0),
+		_row(ElementStats.WATER, ElementStats.METAL, 0.8),
 		_row(ElementStats.FIRE, ElementStats.WATER, 0.75),
-		_row(&"void", ElementStats.FIRE, 0.8),
+		_row(&"no_such_element", ElementStats.FIRE, 0.8),
 	]
 	# Every row: magnitude 100.0, elemental power 10.0, raw attack 25.0, elemental defense
 	# 50 points in the ATTACKER's element, and a 0.5 flat reduction.
@@ -83,9 +83,13 @@ func test_the_worked_numeric_table() -> void:
 		float(_row(ElementStats.WATER, ElementStats.METAL, 0.0)["divisor_k"]), 4.5, "K"
 	)
 # `t_e = 1000 * share * matchup * mit`, `t_0 = 2500 * (1 - share)`, `total = sum * 0.5`.
-	# Row 2's authored share is 0.0, which means "use the tuning default" (0.8), and row 7's
-	# element is unknown to the rules, so it degrades to the raw-only hit and pays no
-	# mitigation at all.
+	# Rows 2 and 5 author their share EXPLICITLY: they used to author `0.0` and lean on
+	# the tuning default, which was `0.8` until BL-0348's ruling set it to `0.0` — a test
+	# whose value depended on a default the owner has since ruled away is a test of the
+	# default rather than of the matchup it is here to price. Row 7's element is unknown
+	# to the rules, so it degrades to the raw-only hit and pays no mitigation at all.
+	# (`void` used to fill that slot; ADR 0921 made it a real element, so the row names a
+	# genuinely unknown id rather than an element that now resolves.)
 	#
 	# ## ADR 0200 + the element-defense ladder: rows 2, 3 and 6 were NOT under-mitigated —
 	# they were using the WRONG MATCHUP, and the terms missing were `NOURISH` and `WEAK`
