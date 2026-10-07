@@ -17,8 +17,19 @@ const WIND := &"wind"
 const LIGHT := &"light"
 const DARK := &"dark"
 
+# Tier 3 — the primordial triad (ADR 0921)
+const VOID := &"void"
+const CHAOS := &"chaos"
+const TIME := &"time"
+
 const BASE_ELEMENTS := [METAL, WOOD, WATER, FIRE, EARTH]
 const ADVANCED_ELEMENTS := [LIGHTNING, ICE, WIND, LIGHT, DARK]
+## Tier 3 (ADR 0004's reserved triad, authored by ADR 0921). A SEPARATE list rather
+## than merged into `ADVANCED_ELEMENTS`: the status catalogue's ten-name vocabulary
+## (`StatusDef.AUTHORED_ELEMENTS`) and the tools that read these two lists are about the
+## ten the ladder has always shipped, and a tier-3 element that ships no status must not
+## be demanded one by a reader that assumes every element is in the status set.
+const TIER_THREE_ELEMENTS := [VOID, CHAOS, TIME]
 
 const MASTERY_PREFIX := "element_mastery_"
 const POWER_PREFIX := "element_power_"
@@ -56,13 +67,17 @@ const OMNI := ""
 
 
 ## Every element id the per-element stat families are generated over: the five base
-## elements, the five advanced ones, and [constant OMNI]. Derived from the two tier lists
-## rather than restated, so an element added to either list joins every family here.
+## elements, the five advanced ones, the three tier-3 ones, and [constant OMNI]. Derived
+## from the tier lists rather than restated, so an element added to any list joins every
+## family here — which is what gives a tier-3 element its `element_power_<e>` /
+## `element_defense_<e>` / `element_crit_<e>` channels the moment it is authored.
 static func all_ids() -> Array[StringName]:
 	var out: Array[StringName] = []
 	for element in BASE_ELEMENTS:
 		out.append(element)
 	for element in ADVANCED_ELEMENTS:
+		out.append(element)
+	for element in TIER_THREE_ELEMENTS:
 		out.append(element)
 	out.append(OMNI)
 	return out

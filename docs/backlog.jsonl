@@ -18,7 +18,7 @@
 {"id": "BL-0018", "area": "data", "title": "Item generation batches", "status": "done", "source": "ADR 0010", "completed": "2026-10-01"}
 {"id": "BL-0019", "area": "infra", "title": "CI workflow", "status": "done", "source": "DEF-0011", "completed": "2026-10-01"}
 {"id": "BL-0020", "area": "combat", "title": "Elemental damage and combat layer", "status": "todo", "source": "DEF-0007", "next": "Damage pipeline consuming ElementRules.multiplier + element_resistance + element_power; then action combat layer (movement, dodging, techniques, ultimates)"}
-{"id": "BL-0021", "area": "elements", "title": "Tier-3 elements (void/chaos/time)", "status": "todo", "source": "DEF-0008", "next": "Author tier-3 ElementDefs and gate behind immortal/transcendent realms"}
+{"id": "BL-0021", "area": "elements", "title": "Tier-3 elements (void/chaos/time)", "status": "done", "source": "DEF-0008", "next": "CLOSED 2026-10-08 (ADR 0921): tier-3 void/chaos/time ship as defs and open at the IMMORTAL realm through ElementMastery.max_tier - DEF-0008 closed on the same evidence.", "completed": "2026-10-08"}
 {"id": "BL-0022", "area": "core", "title": "Observable tags and relationships", "status": "todo", "source": "DEF-0009", "next": "Apply NameList/observable pattern if a provider starts reading them"}
 {"id": "BL-0023", "area": "app", "title": "2D Godot adapter for Actor", "status": "todo", "source": "DEF-0010", "next": "CharacterBody2D/Node wrapper owning an Actor, wired in app/"}
 {"id": "BL-0024", "area": "core", "title": "Progression model variants (Collection/Sequence/Node)", "status": "todo", "source": "DEF-0012", "next": "Implement when a system needs them"}

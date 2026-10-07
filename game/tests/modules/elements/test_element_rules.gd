@@ -43,11 +43,35 @@ func test_light_and_dark_mutual_counter() -> void:
 
 func test_custom_element_is_easy_to_add() -> void:
 	var defs := ElementDefaults.all()
-	var void_def := ElementDef.new()
-	void_def.id = &"void"
-	void_def.tier = 3
-	void_def.overcomes.append(ElementStats.FIRE)
-	defs.append(void_def)
+	var custom := ElementDef.new()
+	custom.id = &"custom_shadow"
+	custom.tier = 3
+	custom.overcomes.append(ElementStats.FIRE)
+	defs.append(custom)
 	var rules := ElementRules.new(defs)
-	assert_eq(rules.overcomes(&"void", ElementStats.FIRE), true, "custom overcomes")
-	assert_almost_eq(rules.multiplier(&"void", ElementStats.FIRE), 1.5, "custom element works")
+	assert_eq(rules.overcomes(&"custom_shadow", ElementStats.FIRE), true, "custom overcomes")
+	assert_almost_eq(
+		rules.multiplier(&"custom_shadow", ElementStats.FIRE), 1.5, "custom element works"
+	)
+
+
+## ADR 0921: the tier-3 triad is a CLOSED cycle — void > chaos > time > void — and
+## neutral against every tier-1/2 element. The closed cycle is what keeps a tier-3
+## element from being a strict best response, and the neutral lower rows are what leave
+## the measured ten-element table exactly where ADR 0069 pinned it.
+func test_the_tier_three_triad_is_a_closed_cycle() -> void:
+	var rules := _rules()
+	assert_almost_eq(rules.multiplier(ElementStats.VOID, ElementStats.CHAOS), 1.5, "void > chaos")
+	assert_almost_eq(rules.multiplier(ElementStats.CHAOS, ElementStats.VOID), 0.5, "chaos < void")
+	assert_almost_eq(rules.multiplier(ElementStats.CHAOS, ElementStats.TIME), 1.5, "chaos > time")
+	assert_almost_eq(rules.multiplier(ElementStats.TIME, ElementStats.CHAOS), 0.5, "time < chaos")
+	assert_almost_eq(rules.multiplier(ElementStats.TIME, ElementStats.VOID), 1.5, "time > void")
+	assert_almost_eq(rules.multiplier(ElementStats.VOID, ElementStats.TIME), 0.5, "void < time")
+	for lower in ElementStats.BASE_ELEMENTS + ElementStats.ADVANCED_ELEMENTS:
+		for triad in ElementStats.TIER_THREE_ELEMENTS:
+			assert_almost_eq(
+				rules.multiplier(triad, lower), 1.0, "%s is neutral against %s" % [triad, lower]
+			)
+			assert_almost_eq(
+				rules.multiplier(lower, triad), 1.0, "%s is neutral against %s" % [lower, triad]
+			)

@@ -119,6 +119,34 @@ func test_the_tier_two_tax_is_one_relationship_across_every_advanced_element() -
 	)
 
 
+# --- tier 3 pays the same tax one step further ---------------------------------------
+
+
+## ADR 0921's triad is tier 3, so it carries the divisor one step past the advanced ten:
+## exactly the taxed figure, and strictly below tier 2's for the same numbers. Asserted
+## as a relationship rather than a pinned constant, so retuning `TIER_MASTERY_STEP`
+## stays a balance decision.
+func test_tier_three_element_power_is_strictly_reduced_again() -> void:
+	var rules := ElementsApi.default_rules()
+	for element in ElementStats.TIER_THREE_ELEMENTS:
+		var tier_three := _power(rules, element, 10.0, 5.0)
+		var tier_two := 10.0 * (1.0 + BASE_MASTERY_RATE * 5.0 / _divisor(2))
+		assert_almost_eq(
+			tier_three,
+			10.0 * (1.0 + BASE_MASTERY_RATE * 5.0 / _divisor(3)),
+			"%s pays exactly the tier-3 divisor" % element,
+			1e-6
+		)
+		assert_eq(
+			tier_three < tier_two,
+			true,
+			(
+				"%s read %s, which is not strictly below the tier-2 %s"
+				% [element, tier_three, tier_two]
+			)
+		)
+
+
 # --- the tax rides the MASTERY term, never the affinity ----------------------------
 
 
@@ -129,7 +157,12 @@ func test_the_tier_two_tax_is_one_relationship_across_every_advanced_element() -
 ## affinity to the bit.
 func test_zero_mastery_pays_no_tax_at_any_tier() -> void:
 	var rules := ElementsApi.default_rules()
-	for element in ElementStats.BASE_ELEMENTS + ElementStats.ADVANCED_ELEMENTS:
+	var every_element: Array = (
+		ElementStats.BASE_ELEMENTS
+		+ ElementStats.ADVANCED_ELEMENTS
+		+ ElementStats.TIER_THREE_ELEMENTS
+	)
+	for element in every_element:
 		assert_almost_eq(
 			_power(rules, element, 10.0, 0.0),
 			10.0,

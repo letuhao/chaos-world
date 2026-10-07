@@ -42,7 +42,25 @@ func test_element_tier_gating() -> void:
 		true,
 		"tier 2 at spirit"
 	)
-	assert_eq(ElementMastery.can_use(rules, &"spirit_sea", &"void"), false, "unknown element")
+	# Tier 3 (ADR 0921) opens at the IMMORTAL tier of the realm ladder and nowhere below.
+	assert_eq(
+		ElementMastery.can_use(rules, &"spirit_sea", ElementStats.VOID),
+		false,
+		"tier 3 blocked at spirit"
+	)
+	assert_eq(
+		ElementMastery.can_use(rules, &"earth_immortal", ElementStats.VOID),
+		true,
+		"tier 3 at immortal"
+	)
+	assert_eq(
+		ElementMastery.can_use(rules, &"dao_ancestor", ElementStats.TIME),
+		true,
+		"and the cap holds at transcendent"
+	)
+	assert_eq(
+		ElementMastery.can_use(rules, &"spirit_sea", &"no_such_element"), false, "unknown element"
+	)
 
 
 # --- the path's doors (S2) ------------------------------------------------------

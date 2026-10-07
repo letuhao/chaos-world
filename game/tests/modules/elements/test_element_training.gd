@@ -36,9 +36,9 @@ func test_no_spark_no_sitting() -> void:
 
 func test_an_unknown_element_is_refused() -> void:
 	var actor := _actor()
-	actor.set_affinity(&"void", 5.0)
-	assert_eq(ElementsApi.can_practise(actor, &"void"), false, "not in the rules")
-	assert_eq(ElementsApi.practise(actor, &"void"), false, "so no sitting")
+	actor.set_affinity(&"no_such_element", 5.0)
+	assert_eq(ElementsApi.can_practise(actor, &"no_such_element"), false, "not in the rules")
+	assert_eq(ElementsApi.practise(actor, &"no_such_element"), false, "so no sitting")
 
 
 func test_the_elemental_paths_own_rank_prices_the_sitting() -> void:

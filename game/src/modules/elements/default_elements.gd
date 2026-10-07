@@ -35,9 +35,25 @@ static func advanced() -> Array[ElementDef]:
 	]
 
 
+## The tier-3 triad (ADR 0921): void, chaos and time form a CLOSED cycle among
+## themselves — `void` overcomes `chaos`, `chaos` overcomes `time`, `time` overcomes
+## `void` — and interact with tiers 1-2 not at all. The closed cycle is what keeps a
+## tier-3 element from being a strict best response: each is strong against exactly one
+## sibling and weak to the other, so the counterplay is the PICK rather than the
+## element. A matchup against a lower tier is NEUTRAL by omission, which leaves the
+## measured 0.95 mean of the ten-element table exactly where ADR 0069 pinned it.
+static func tier_three() -> Array[ElementDef]:
+	return [
+		_make(ElementStats.VOID, "Void", 3, [], [ElementStats.CHAOS]),
+		_make(ElementStats.CHAOS, "Chaos", 3, [], [ElementStats.TIME]),
+		_make(ElementStats.TIME, "Time", 3, [], [ElementStats.VOID]),
+	]
+
+
 static func all() -> Array[ElementDef]:
 	var out := base()
 	out.append_array(advanced())
+	out.append_array(tier_three())
 	return out
 
 
