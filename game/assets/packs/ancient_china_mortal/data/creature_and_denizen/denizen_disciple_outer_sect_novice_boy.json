@@ -1,0 +1,103 @@
+{
+  "id": "ancient_china_mortal.creature_and_denizen.denizen_disciple_outer_sect_novice_boy",
+  "name": "Outer Sect Novice Boy Sweeping Ground",
+  "vietnamese_name": "Tiểu Đệ Tử Ngoại Môn Cầm Chổi Quét Sân",
+  "hanzi": "外门扫地青衣小童",
+  "category": "creature_and_denizen",
+  "sub_category": "low_qi_disciple",
+  "type": "character_sprite",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "talk",
+  "gameplay_role": "Cultivation Novice NPC",
+  "destructible": false,
+  "material": "flesh",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Youth in plain grey linen sect tunic sweeping temple courtyard with bamboo broom.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "npc_type": "cultivator"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/creature_and_denizen/denizen_disciple_outer_sect_novice_boy.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.creature_and_denizen.denizen_disciple_outer_sect_novice_boy:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.45
+      ]
+    ],
+    "frac_zero": 0.8569,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      2,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.454,
+        0.264
+      ],
+      [
+        0.624,
+        0.545
+      ],
+      [
+        0.458,
+        0.14
+      ]
+    ],
+    "crop_offset": [
+      42,
+      18
+    ],
+    "trunk_columns": [
+      0
+    ],
+    "contact_px": 14,
+    "contact_reference_px": 14.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

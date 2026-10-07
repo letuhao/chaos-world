@@ -1,0 +1,205 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.col_grey_carved_stone_open_gateway_frame_skeleton",
+  "name": "Carved Grey Granite Column Open Two-Pillar Structural Gateway Portal",
+  "vietnamese_name": "Khung Cửa Trụ Đôi Đứng Mở (Cột Đá Hoa Cương Chạm)",
+  "hanzi": "雕纹青石双柱歇山门架",
+  "category": "modular_architecture_timber",
+  "sub_category": "pillar_beam_and_dougong",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "pass_under_portal",
+  "gameplay_role": "portal_frame",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese timber frame architecture component: Carved Grey Granite Column Open Two-Pillar Structural Gateway Portal. Traditional mortise and tenon craftsmanship, ink contours, top-down orthographic sprite on clean transparent alpha background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "pillar_beam",
+    "style": "grey_carved_stone"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/col_grey_carved_stone_open_gateway_frame_skeleton.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.col_grey_carved_stone_open_gateway_frame_skeleton:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.588,
+        0.586
+      ],
+      [
+        0.214,
+        0.213
+      ]
+    ],
+    "frac_zero": 0.7179,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.092,
+        0.292,
+        0.343,
+        0.785,
+        0.304,
+        0.282,
+        0.069
+      ],
+      [
+        0.572,
+        0.97,
+        0.84,
+        0.94,
+        0.844,
+        0.978,
+        0.612
+      ],
+      [
+        0.261,
+        0.928,
+        0.754,
+        0.613,
+        0.761,
+        0.926,
+        0.239
+      ],
+      [
+        0.0,
+        0.628,
+        0.0,
+        0.0,
+        0.0,
+        0.628,
+        0.0
+      ],
+      [
+        0.0,
+        0.562,
+        0.062,
+        0.0,
+        0.057,
+        0.548,
+        0.0
+      ],
+      [
+        0.0,
+        0.666,
+        0.324,
+        0.0,
+        0.376,
+        0.605,
+        0.0
+      ],
+      [
+        0.0,
+        0.51,
+        0.281,
+        0.0,
+        0.292,
+        0.708,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      44
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 35,
+    "contact_reference_px": 35.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

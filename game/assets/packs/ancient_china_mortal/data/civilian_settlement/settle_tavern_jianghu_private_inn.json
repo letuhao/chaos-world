@@ -1,0 +1,321 @@
+{
+  "id": "ancient_china_mortal.civilian_settlement.settle_tavern_jianghu_private_inn",
+  "name": "Jianghu Wilderness Tavern & Stables",
+  "vietnamese_name": "Quán Rượu Giang Hồ Sân Buộc Ngựa",
+  "hanzi": "江湖黑店",
+  "category": "civilian_settlement",
+  "sub_category": "tavern_and_teahouse",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    4,
+    3
+  ],
+  "canvas_px": [
+    512,
+    384
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "enter",
+  "gameplay_role": "Remote roadside inn known for secret martial encounters, weapon racks, and horse stables.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Top-down rugged compound tavern with dark heavy timber walls, fortified door, attached open horse stable with straw racks, outdoor knife-throwing target, and fluttering frayed wine flag.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "martial_arts_duels": true,
+    "mount_stabling": 6,
+    "secret_black_market": 0.4
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/civilian_settlement/settle_tavern_jianghu_private_inn.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.civilian_settlement.settle_tavern_jianghu_private_inn:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.079,
+        0.358,
+        0.425,
+        0.157
+      ],
+      [
+        0.672,
+        1.0,
+        1.0,
+        0.738
+      ],
+      [
+        0.615,
+        0.948,
+        0.917,
+        0.588
+      ]
+    ],
+    "frac_zero": 0.606,
+    "blocks": [
+      [
+        false,
+        true,
+        true,
+        false
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 10,
+    "anchor_cell": [
+      2,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.401,
+        0.246,
+        0.018,
+        0.009,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.077,
+        0.574,
+        0.214,
+        0.113,
+        0.027,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.002,
+        0.033,
+        0.154,
+        0.865,
+        1.0,
+        0.7,
+        0.005,
+        0.469,
+        0.147,
+        0.0
+      ],
+      [
+        0.0,
+        0.563,
+        0.934,
+        0.938,
+        1.0,
+        1.0,
+        1.0,
+        0.99,
+        1.0,
+        0.519,
+        0.0
+      ],
+      [
+        0.005,
+        0.893,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.739,
+        0.221
+      ],
+      [
+        0.286,
+        0.997,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.896,
+        0.647
+      ],
+      [
+        0.268,
+        0.951,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.888,
+        0.305
+      ],
+      [
+        0.799,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.556
+      ],
+      [
+        0.455,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.469
+      ],
+      [
+        0.053,
+        0.975,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.657,
+        0.0
+      ],
+      [
+        0.0,
+        0.097,
+        0.495,
+        0.717,
+        0.847,
+        0.959,
+        0.599,
+        0.622,
+        0.311,
+        0.005,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      83,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 183,
+    "contact_reference_px": 183.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      384
+    ]
+  }
+}

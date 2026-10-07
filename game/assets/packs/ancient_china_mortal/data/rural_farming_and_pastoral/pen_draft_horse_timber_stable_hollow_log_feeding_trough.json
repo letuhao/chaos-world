@@ -1,0 +1,156 @@
+{
+  "id": "ancient_china_mortal.rural_farming_and_pastoral.pen_draft_horse_timber_stable_hollow_log_feeding_trough",
+  "name": "Working Draft Horse Post & Manger Long Hollow-Log Grain & Mash Manger",
+  "vietnamese_name": "Máng Ăn Bằng Thân Cây Đục Rỗng (Chuồng Ngựa Thồ Bằng Gỗ)",
+  "hanzi": "挽马歇草架木厩整木挖凿长条饲料槽",
+  "category": "rural_farming_and_pastoral",
+  "sub_category": "homestead_pen_and_coop",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "fill_feeding_trough",
+  "gameplay_role": "feeding_trough",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "fire",
+  "prompt_summary": "Ancient Chinese farm homestead animal husbandry prop: Working Draft Horse Post & Manger Long Hollow-Log Grain & Mash Manger. Rustic peasant craftsmanship, gouache textures with ink outlines, top-down orthographic game sprite, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "animal_housing": "draft_horse_timber_stable"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/rural_farming_and_pastoral/pen_draft_horse_timber_stable_hollow_log_feeding_trough.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.rural_farming_and_pastoral.pen_draft_horse_timber_stable_hollow_log_feeding_trough:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.441,
+        0.442
+      ]
+    ],
+    "frac_zero": 0.7703,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.038,
+        0.0,
+        0.219,
+        0.736,
+        0.198,
+        0.0,
+        0.041
+      ],
+      [
+        0.682,
+        0.685,
+        0.8,
+        1.0,
+        0.778,
+        0.685,
+        0.674
+      ],
+      [
+        0.0,
+        0.0,
+        0.131,
+        0.512,
+        0.138,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      43
+    ],
+    "trunk_columns": [
+      3
+    ],
+    "contact_px": 218,
+    "contact_reference_px": 218.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

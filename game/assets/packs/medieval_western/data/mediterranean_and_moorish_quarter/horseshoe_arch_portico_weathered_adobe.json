@@ -1,0 +1,166 @@
+{
+  "id": "medieval_western.mediterranean_and_moorish_quarter.horseshoe_arch_portico_weathered_adobe",
+  "name": "Stucco-Weathered Moorish Horseshoe Arch Columnade",
+  "vietnamese_name": "Dãy Vòm Cửa Móng Ngựa Moorish (Vữa Trát Phong Hóa)",
+  "category": "mediterranean_and_moorish_quarter",
+  "sub_category": "arcaded_patio_courtyard",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "walk_under",
+  "gameplay_role": "Mediterranean Moorish quarter feature (Moorish Horseshoe Arch Columnade).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "mediterranean_moorish",
+  "prompt_summary": "2D orthographic top-down game sprite of stucco-weathered moorish horseshoe arch columnade, flaking white stucco revealing baked red clay brick, Mediterranean Moorish Al-Andalus style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/mediterranean_and_moorish_quarter/horseshoe_arch_portico_weathered_adobe.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.mediterranean_and_moorish_quarter.horseshoe_arch_portico_weathered_adobe:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.841,
+        0.79
+      ],
+      [
+        0.263,
+        0.376
+      ]
+    ],
+    "frac_zero": 0.5941,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.604,
+        0.969,
+        0.936,
+        0.969,
+        0.948,
+        0.962,
+        0.258
+      ],
+      [
+        0.842,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.525
+      ],
+      [
+        0.805,
+        0.74,
+        0.867,
+        0.634,
+        0.853,
+        0.793,
+        0.756
+      ],
+      [
+        0.619,
+        0.421,
+        0.442,
+        0.02,
+        0.429,
+        0.519,
+        0.904
+      ],
+      [
+        0.446,
+        0.511,
+        0.271,
+        0.003,
+        0.268,
+        0.561,
+        0.701
+      ],
+      [
+        0.174,
+        0.145,
+        0.083,
+        0.006,
+        0.076,
+        0.323,
+        0.52
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.203,
+        0.371
+      ]
+    ],
+    "crop_offset": [
+      16,
+      37
+    ],
+    "trunk_columns": [
+      6
+    ],
+    "contact_px": 22,
+    "contact_reference_px": 22.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,216 @@
+{
+  "id": "ancient_china_mortal.civilian_settlement.settle_cottage_potter_drying_shed",
+  "name": "Village Potter Cottage",
+  "vietnamese_name": "Nhà Thợ Gốm Phơi Lu Vại",
+  "hanzi": "窑工茅居",
+  "category": "civilian_settlement",
+  "sub_category": "peasant_thatched_cottage",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "enter",
+  "gameplay_role": "Craftsman home with outdoor open timber shed housing drying unglazed pottery jars.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "earth",
+  "prompt_summary": "Top-down sprite of peasant cottage with open-sided timber drying shelter displaying rows of unglazed red clay water jugs, urns, and a manual foot-kick pottery wheel.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "housing_capacity": 3,
+    "profession": "potter",
+    "clay_ware_production": 20,
+    "pottery_wheel_speed": 1.2
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/civilian_settlement/settle_cottage_potter_drying_shed.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.civilian_settlement.settle_cottage_potter_drying_shed:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.633,
+        0.78,
+        0.518
+      ],
+      [
+        0.803,
+        0.974,
+        0.68
+      ]
+    ],
+    "frac_zero": 0.6325,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.004,
+        0.576,
+        0.394,
+        0.219,
+        0.225,
+        0.196,
+        0.0
+      ],
+      [
+        0.209,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.707,
+        0.0
+      ],
+      [
+        0.557,
+        1.0,
+        1.0,
+        1.0,
+        0.941,
+        0.912,
+        0.375
+      ],
+      [
+        0.816,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.674
+      ],
+      [
+        0.858,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.98,
+        0.911
+      ],
+      [
+        0.765,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.732,
+        0.421
+      ],
+      [
+        0.148,
+        0.713,
+        0.926,
+        0.884,
+        0.781,
+        0.198,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      83,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 140,
+    "contact_reference_px": 140.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

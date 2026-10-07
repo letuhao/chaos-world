@@ -1,0 +1,209 @@
+{
+  "id": "ancient_china_mortal.civilian_settlement.settle_mill_grain_sacking_measuring_yard",
+  "name": "Grain Measuring & Sacking Station",
+  "vietnamese_name": "Trạm Đong Thóc Thùng Đấu Gỗ",
+  "hanzi": "称粮秤台",
+  "category": "civilian_settlement",
+  "sub_category": "watermill_and_grainstore",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "trade",
+  "gameplay_role": "Weighing station with calibrated wooden dou (peck) boxes and balance steelyards.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Top-down outdoor grain processing area with large wooden measuring boxes, hanging balance beam scale on timber tripod, open grain sacks, and wooden scoops.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "grain_tax_collection": true,
+    "accurate_measure_steelyard": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/civilian_settlement/settle_mill_grain_sacking_measuring_yard.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.civilian_settlement.settle_mill_grain_sacking_measuring_yard:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.455,
+        0.389
+      ],
+      [
+        0.83,
+        0.839
+      ]
+    ],
+    "frac_zero": 0.5045,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.068,
+        0.368,
+        0.422,
+        0.089,
+        0.0
+      ],
+      [
+        0.139,
+        0.415,
+        0.603,
+        0.375,
+        0.299,
+        0.136,
+        0.0
+      ],
+      [
+        0.119,
+        0.905,
+        1.0,
+        1.0,
+        0.969,
+        0.658,
+        0.008
+      ],
+      [
+        0.539,
+        0.956,
+        1.0,
+        1.0,
+        1.0,
+        0.996,
+        0.591
+      ],
+      [
+        0.879,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.879
+      ],
+      [
+        0.599,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.566
+      ],
+      [
+        0.05,
+        0.598,
+        0.93,
+        0.957,
+        0.911,
+        0.658,
+        0.019
+      ]
+    ],
+    "crop_offset": [
+      17,
+      18
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 144,
+    "contact_reference_px": 144.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

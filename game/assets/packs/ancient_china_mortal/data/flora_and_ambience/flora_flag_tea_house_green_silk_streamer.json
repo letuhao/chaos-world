@@ -1,0 +1,161 @@
+{
+  "id": "ancient_china_mortal.flora_and_ambience.flora_flag_tea_house_green_silk_streamer",
+  "name": "Delicate Green Silk Teahouse Banner",
+  "vietnamese_name": "Lá Cờ Trà Quán Xanh Lục Dịu Mát",
+  "hanzi": "淡青茶肆引风幡",
+  "category": "flora_and_ambience",
+  "sub_category": "wine_tavern_flag_banner",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Slender pale green silk banner with white character 'Cha' fluttering.",
+  "destructible": true,
+  "material": "silk",
+  "cultivation_element": "wind",
+  "prompt_summary": "Slender pale green silk pennant painted with elegant black brush character 'Tea' flapping over teahouse gate.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "landmark": "teahouse"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_ambience/flora_flag_tea_house_green_silk_streamer.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_ambience.flora_flag_tea_house_green_silk_streamer:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.568
+      ],
+      [
+        0.315
+      ]
+    ],
+    "frac_zero": 0.7977,
+    "blocks": [
+      [
+        false
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      2,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.481,
+        0.39
+      ],
+      [
+        0.676,
+        0.671
+      ],
+      [
+        0.642,
+        0.569
+      ],
+      [
+        0.618,
+        0.417
+      ],
+      [
+        0.611,
+        0.438
+      ],
+      [
+        0.192,
+        0.312
+      ],
+      [
+        0.084,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      34,
+      17
+    ],
+    "trunk_columns": [],
+    "contact_px": 3,
+    "contact_reference_px": 3.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

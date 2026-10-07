@@ -1,0 +1,154 @@
+{
+  "id": "ancient_china_mortal.outlaw_and_jianghu.outlaw_den_paigow_bone_dominoes_table",
+  "name": "Pai Gow Bone Dominoes Table & Counters",
+  "vietnamese_name": "Bàn Đánh Bài Cẩu Bằng Xương Đen",
+  "hanzi": "骨牌牌九圆毡桌",
+  "category": "outlaw_and_jianghu",
+  "sub_category": "underworld_gambling_den",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "play_paigow",
+  "gameplay_role": "Green felt table with 32 black bone domino tiles and chips.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Round wooden gaming table with green felt cloth, black bone Pai Gow tiles, and wooden counter chips.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "game": "pai_gow"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/outlaw_and_jianghu/outlaw_den_paigow_bone_dominoes_table.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.outlaw_and_jianghu.outlaw_den_paigow_bone_dominoes_table:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.447,
+        0.457
+      ]
+    ],
+    "frac_zero": 0.7268,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.062,
+        0.086,
+        0.564,
+        0.481,
+        0.062,
+        0.074
+      ],
+      [
+        0.707,
+        0.893,
+        1.0,
+        1.0,
+        0.909,
+        0.686
+      ],
+      [
+        0.111,
+        0.177,
+        0.523,
+        0.469,
+        0.151,
+        0.122
+      ]
+    ],
+    "crop_offset": [
+      34,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 14,
+    "contact_reference_px": 14.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

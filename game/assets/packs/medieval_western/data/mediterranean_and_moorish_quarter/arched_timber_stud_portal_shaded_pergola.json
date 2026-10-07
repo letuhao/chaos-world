@@ -1,0 +1,206 @@
+{
+  "id": "medieval_western.mediterranean_and_moorish_quarter.arched_timber_stud_portal_shaded_pergola",
+  "name": "Vine-Shaded Studded Cedarwood Courtyard Gate",
+  "vietnamese_name": "Cổng Gỗ Tuyết Tùng Tán Đinh Đồng (Bóng Râm Giàn Nho)",
+  "category": "mediterranean_and_moorish_quarter",
+  "sub_category": "terracotta_stucco_villa_wall",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "open",
+  "gameplay_role": "Mediterranean Moorish quarter feature (Studded Cedarwood Courtyard Gate).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "mediterranean_moorish",
+  "prompt_summary": "2D orthographic top-down game sprite of vine-shaded studded cedarwood courtyard gate, cool dappled shadows and leafy grape tendrils, Mediterranean Moorish Al-Andalus style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/mediterranean_and_moorish_quarter/arched_timber_stud_portal_shaded_pergola.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.mediterranean_and_moorish_quarter.arched_timber_stud_portal_shaded_pergola:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.809,
+        0.781
+      ],
+      [
+        0.845,
+        0.89
+      ]
+    ],
+    "frac_zero": 0.4098,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.281,
+        0.804,
+        0.701,
+        0.629,
+        0.743,
+        0.46,
+        0.003
+      ],
+      [
+        0.688,
+        1.0,
+        0.962,
+        0.978,
+        1.0,
+        0.896,
+        0.034
+      ],
+      [
+        0.688,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.909,
+        0.091
+      ],
+      [
+        0.698,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.923,
+        0.047
+      ],
+      [
+        0.895,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.531
+      ],
+      [
+        0.719,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.309
+      ],
+      [
+        0.105,
+        0.667,
+        0.996,
+        1.0,
+        0.809,
+        0.665,
+        0.463
+      ]
+    ],
+    "crop_offset": [
+      27,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 171,
+    "contact_reference_px": 171.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

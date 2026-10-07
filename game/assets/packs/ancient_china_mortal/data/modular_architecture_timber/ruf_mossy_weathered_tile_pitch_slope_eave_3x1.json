@@ -1,0 +1,158 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.ruf_mossy_weathered_tile_pitch_slope_eave_3x1",
+  "name": "Moss-Covered Hundred-Year Temple Tile Sloping Tile Eaves Bay (3x1)",
+  "vietnamese_name": "Mái Ngói Dốc Xuống (3x1) (Ngói Cổ Trăm Năm Rêu Bám)",
+  "hanzi": "百岁苍苔老瓦三步顺坡披檐",
+  "category": "modular_architecture_timber",
+  "sub_category": "modular_roof_and_flying_eaves",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "inspect_eave_slope",
+  "gameplay_role": "roof_slope",
+  "destructible": false,
+  "material": "tile",
+  "cultivation_element": "yin",
+  "prompt_summary": "Ancient Chinese modular roof and eaves component: Moss-Covered Hundred-Year Temple Tile Sloping Tile Eaves Bay (3x1). Intricate clay tiles, sweeping silhouette, gouache rendering with ink contours, orthographic top-down view, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "roof",
+    "style": "mossy_weathered_tile"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/ruf_mossy_weathered_tile_pitch_slope_eave_3x1.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.ruf_mossy_weathered_tile_pitch_slope_eave_3x1:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.383,
+        0.836,
+        0.403
+      ]
+    ],
+    "frac_zero": 0.7861,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.011,
+        0.042,
+        0.683,
+        0.688,
+        0.052,
+        0.011
+      ],
+      [
+        0.898,
+        0.988,
+        1.0,
+        1.0,
+        0.988,
+        0.912
+      ],
+      [
+        0.126,
+        0.231,
+        0.821,
+        0.826,
+        0.285,
+        0.168
+      ]
+    ],
+    "crop_offset": [
+      95,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 84,
+    "contact_reference_px": 84.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      128
+    ]
+  }
+}

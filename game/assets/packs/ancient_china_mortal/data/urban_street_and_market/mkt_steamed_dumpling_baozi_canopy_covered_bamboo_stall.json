@@ -1,0 +1,202 @@
+{
+  "id": "ancient_china_mortal.urban_street_and_market.mkt_steamed_dumpling_baozi_canopy_covered_bamboo_stall",
+  "name": "Steamed Bun & Dumpling Stall Stall with Striped Hemp Sunshade Canopy (2x2)",
+  "vietnamese_name": "Sạp Hàng Có Mái Bạt Che Nắng (2x2) (Sạp Bánh Bao Nóng Hổi)",
+  "hanzi": "热腾包子蒸笼档麻布撑顶四方小货摊",
+  "category": "urban_street_and_market",
+  "sub_category": "market_stall_and_hawker_booth",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "browse_canopy_stall",
+  "gameplay_role": "canopy_stall",
+  "destructible": false,
+  "material": "cloth",
+  "cultivation_element": "fire",
+  "prompt_summary": "Ancient Chinese urban street market asset: Steamed Bun & Dumpling Stall Stall with Striped Hemp Sunshade Canopy (2x2). Detailed mercantile props, gouache textures with ink line accents, orthographic top-down view, clean transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "market_genre": "steamed_dumpling_baozi"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/urban_street_and_market/mkt_steamed_dumpling_baozi_canopy_covered_bamboo_stall.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.urban_street_and_market.mkt_steamed_dumpling_baozi_canopy_covered_bamboo_stall:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.665,
+        0.663
+      ],
+      [
+        0.657,
+        0.688
+      ]
+    ],
+    "frac_zero": 0.5343,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.348,
+        0.771,
+        0.688,
+        0.78,
+        0.23,
+        0.0
+      ],
+      [
+        0.219,
+        0.797,
+        1.0,
+        0.919,
+        1.0,
+        0.732,
+        0.218
+      ],
+      [
+        0.627,
+        0.972,
+        1.0,
+        0.994,
+        1.0,
+        0.965,
+        0.613
+      ],
+      [
+        0.291,
+        0.978,
+        1.0,
+        1.0,
+        1.0,
+        0.966,
+        0.295
+      ],
+      [
+        0.123,
+        0.822,
+        1.0,
+        0.997,
+        1.0,
+        0.879,
+        0.072
+      ],
+      [
+        0.062,
+        0.702,
+        0.774,
+        0.554,
+        0.848,
+        0.923,
+        0.11
+      ],
+      [
+        0.0,
+        0.062,
+        0.0,
+        0.0,
+        0.0,
+        0.094,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      45
+    ],
+    "trunk_columns": [],
+    "contact_px": 73,
+    "contact_reference_px": 73.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

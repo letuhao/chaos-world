@@ -1,0 +1,158 @@
+{
+  "id": "ancient_china_mortal.rural_farming_and_pastoral.trp_braided_garlic_onions_straight_pole_climber_row_2x1",
+  "name": "Braided White Garlic & Shallot Strings A-Frame Wooden Pole Climbing Row (2x1)",
+  "vietnamese_name": "Giàn Cọc Gỗ Chữ A Trồng Cây (2x1) (Tỏi Trắng Thắt Bím Dưới Mái)",
+  "hanzi": "编结整齐白大蒜辫人字绑竿攀附长架",
+  "category": "rural_farming_and_pastoral",
+  "sub_category": "crop_trellis_and_hanging_harvest",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect_pole_trellis",
+  "gameplay_role": "pole_trellis",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "metal",
+  "prompt_summary": "Ancient Chinese farm crop harvest display: Braided White Garlic & Shallot Strings A-Frame Wooden Pole Climbing Row (2x1). Golden rustic farm aesthetic, ink contours, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "crop_type": "braided_garlic_onions"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/rural_farming_and_pastoral/trp_braided_garlic_onions_straight_pole_climber_row_2x1.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.rural_farming_and_pastoral.trp_braided_garlic_onions_straight_pole_climber_row_2x1:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.65,
+        0.671
+      ]
+    ],
+    "frac_zero": 0.6273,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.51,
+        0.513,
+        0.472,
+        0.606,
+        0.492,
+        0.549,
+        0.558
+      ],
+      [
+        0.701,
+        0.975,
+        0.959,
+        0.96,
+        0.971,
+        0.963,
+        0.751
+      ],
+      [
+        0.0,
+        0.163,
+        0.444,
+        0.764,
+        0.622,
+        0.007,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      39
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 206,
+    "contact_reference_px": 206.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "id": "medieval_western.nordic_and_norse_coastal.tar_pot_cauldron_brazier_smoke_stained",
+  "name": "Longhouse Peat-Smoked Boiling Pine-Tar Iron Cauldron",
+  "vietnamese_name": "Vạc Sắt Nấu Nhựa Hắc Ín Quét Thuyền (Ám Khói Bếp Than)",
+  "category": "nordic_and_norse_coastal",
+  "sub_category": "boathouse_naust_and_skiff",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "boil_tar",
+  "gameplay_role": "Nordic coastal cultural feature (Boiling Pine-Tar Iron Cauldron).",
+  "destructible": false,
+  "material": "iron",
+  "feudal_culture": "nordic_norse",
+  "prompt_summary": "2D orthographic top-down game sprite of longhouse peat-smoked boiling pine-tar iron cauldron, sooty golden patina from indoor turf fires, Nordic Norse coastal settlement style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/nordic_and_norse_coastal/tar_pot_cauldron_brazier_smoke_stained.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.nordic_and_norse_coastal.tar_pot_cauldron_brazier_smoke_stained:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.641
+      ]
+    ],
+    "frac_zero": 0.6716,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.206,
+        0.761,
+        0.102
+      ],
+      [
+        0.816,
+        1.0,
+        0.738
+      ],
+      [
+        0.512,
+        0.901,
+        0.455
+      ]
+    ],
+    "crop_offset": [
+      22,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 51,
+    "contact_reference_px": 51.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

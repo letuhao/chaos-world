@@ -1,0 +1,119 @@
+{
+  "id": "medieval_western.slavic_eastern_taiga_and_logcraft.timber_crenellated_tier_red_painted",
+  "name": "Folk Red Ochre Covered Wooden Wall Walk Gallery",
+  "vietnamese_name": "Hành Lang Gỗ Có Mái Bắn Tên (Sơn Đỏ Dân Gian)",
+  "category": "slavic_eastern_taiga_and_logcraft",
+  "sub_category": "wooden_kremlin_rampart_wall",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "patrol",
+  "gameplay_role": "Slavic taiga cultural feature (Covered Wooden Wall Walk Gallery).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "slavic_rus",
+  "prompt_summary": "2D orthographic top-down game sprite of folk red ochre covered wooden wall walk gallery, traditional red ochre painted motifs, Slavic Kievan Rus taiga style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/slavic_eastern_taiga_and_logcraft/timber_crenellated_tier_red_painted.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.slavic_eastern_taiga_and_logcraft.timber_crenellated_tier_red_painted:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.638,
+        0.623
+      ]
+    ],
+    "frac_zero": 0.7266,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      2
+    ],
+    "sub_fill": [
+      [
+        0.693,
+        0.722,
+        0.731,
+        0.871,
+        0.729,
+        0.721,
+        0.675
+      ],
+      [
+        0.381,
+        0.519,
+        0.568,
+        0.81,
+        0.623,
+        0.395,
+        0.275
+      ]
+    ],
+    "crop_offset": [
+      17,
+      52
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 159,
+    "contact_reference_px": 159.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

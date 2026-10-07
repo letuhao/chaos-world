@@ -1,0 +1,185 @@
+{
+  "id": "medieval_western.wayfarers_nomads_and_tinker_camps.bow_top_painted_living_wagon_festive_ribbon",
+  "name": "Ribbon-Adorned Painted Bow-Top Living Vardo Wagon",
+  "vietnamese_name": "Xe Ngựa Mui Cong Vardo Vẽ Hoa Văn (Buộc Dải Ruy Băng)",
+  "category": "wayfarers_nomads_and_tinker_camps",
+  "sub_category": "barrel_top_wooden_vardo_wagon",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "enter",
+  "gameplay_role": "Wayfarer nomad campsite feature (Painted Bow-Top Living Vardo Wagon).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "wayfarer_nomad",
+  "prompt_summary": "2D orthographic top-down game sprite of ribbon-adorned painted bow-top living vardo wagon, brightly dyed festive ribbons and brass jingle bells, Medieval itinerant wayfarer nomad camp style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/wayfarers_nomads_and_tinker_camps/bow_top_painted_living_wagon_festive_ribbon.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.wayfarers_nomads_and_tinker_camps.bow_top_painted_living_wagon_festive_ribbon:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.412,
+        0.266
+      ],
+      [
+        0.539,
+        0.323
+      ]
+    ],
+    "frac_zero": 0.7917,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.104,
+        0.29,
+        0.081,
+        0.004
+      ],
+      [
+        0.0,
+        0.366,
+        0.294,
+        0.098,
+        0.023
+      ],
+      [
+        0.327,
+        0.928,
+        0.895,
+        0.337,
+        0.102
+      ],
+      [
+        0.558,
+        1.0,
+        1.0,
+        0.211,
+        0.082
+      ],
+      [
+        0.318,
+        1.0,
+        0.994,
+        0.23,
+        0.0
+      ],
+      [
+        0.271,
+        0.891,
+        0.874,
+        0.207,
+        0.0
+      ],
+      [
+        0.106,
+        0.312,
+        0.26,
+        0.077,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      56,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 6,
+    "contact_reference_px": 6.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

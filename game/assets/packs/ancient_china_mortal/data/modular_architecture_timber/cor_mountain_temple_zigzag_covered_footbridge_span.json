@@ -1,0 +1,141 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.cor_mountain_temple_zigzag_covered_footbridge_span",
+  "name": "Mountain Monastery Stepped Walkway Covered Wooden Arch Bridge Walkway Span",
+  "vietnamese_name": "Nhịp Cầu Gỗ Có Mái Che Vượt Nước (Hành Lang Ziczac Quanh Núi)",
+  "hanzi": "依山曲折栈廊风雨廊桥木步跨",
+  "category": "modular_architecture_timber",
+  "sub_category": "covered_corridor_and_veranda",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "cross_covered_bridge",
+  "gameplay_role": "covered_bridge",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese covered garden corridor module: Mountain Monastery Stepped Walkway Covered Wooden Arch Bridge Walkway Span. Traditional tiled wooden gallery, balustrade railing, top-down orthographic game sprite, transparent alpha cutout.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "corridor",
+    "style": "mountain_temple_zigzag"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/cor_mountain_temple_zigzag_covered_footbridge_span.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.cor_mountain_temple_zigzag_covered_footbridge_span:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.562,
+        0.631,
+        0.56
+      ]
+    ],
+    "frac_zero": 0.6432,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      10,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.138,
+        0.149,
+        0.065,
+        0.481,
+        0.863,
+        0.714,
+        0.115,
+        0.107,
+        0.209,
+        0.0
+      ],
+      [
+        0.754,
+        0.969,
+        0.96,
+        0.969,
+        0.923,
+        0.984,
+        0.953,
+        0.968,
+        0.99,
+        0.333
+      ],
+      [
+        0.545,
+        0.827,
+        0.636,
+        0.329,
+        0.133,
+        0.249,
+        0.61,
+        0.729,
+        0.901,
+        0.003
+      ]
+    ],
+    "crop_offset": [
+      42,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 89,
+    "contact_reference_px": 89.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

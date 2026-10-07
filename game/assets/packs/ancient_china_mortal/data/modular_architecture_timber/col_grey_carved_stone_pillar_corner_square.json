@@ -1,0 +1,142 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.col_grey_carved_stone_pillar_corner_square",
+  "name": "Carved Grey Granite Column Square Corner Pillar Assembly",
+  "vietnamese_name": "Cột Vuông Chân Góc (Cột Đá Hoa Cương Chạm)",
+  "hanzi": "雕纹青石角隅方柱",
+  "category": "modular_architecture_timber",
+  "sub_category": "pillar_beam_and_dougong",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect_pillar",
+  "gameplay_role": "corner_support",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese timber frame architecture component: Carved Grey Granite Column Square Corner Pillar Assembly. Traditional mortise and tenon craftsmanship, ink contours, top-down orthographic sprite on clean transparent alpha background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "pillar_beam",
+    "style": "grey_carved_stone"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/col_grey_carved_stone_pillar_corner_square.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.col_grey_carved_stone_pillar_corner_square:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.377
+      ]
+    ],
+    "frac_zero": 0.7958,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.669,
+        0.516,
+        0.716
+      ],
+      [
+        0.142,
+        0.627,
+        0.102
+      ],
+      [
+        0.016,
+        0.486,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      22,
+      16
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 27,
+    "contact_reference_px": 27.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

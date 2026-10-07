@@ -1,0 +1,124 @@
+{
+  "id": "ancient_china_mortal.flora_and_ambience.flora_scarecrow_sunflowers_tall_golden_patch",
+  "name": "Patch of Towering Ripe Giant Sunflowers",
+  "vietnamese_name": "Bụi Hoa Hướng Dương Vàng Rực Hạt Đầy",
+  "hanzi": "高挺结籽大向日葵",
+  "category": "flora_and_ambience",
+  "sub_category": "scarecrow_and_drying_corn",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "harvest_sunflower_seeds",
+  "gameplay_role": "Three tall thick-stemmed sunflowers with heavy seed heads.",
+  "destructible": true,
+  "material": "plant",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Three towering yellow sunflowers with thick hairy green stalks and heavy dark seed-laden circular faces.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "harvest_seeds": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_ambience/flora_scarecrow_sunflowers_tall_golden_patch.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_ambience.flora_scarecrow_sunflowers_tall_golden_patch:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.504,
+        0.526
+      ]
+    ],
+    "frac_zero": 0.6987,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      5,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.376,
+        0.42,
+        0.688,
+        0.451,
+        0.46
+      ],
+      [
+        0.446,
+        0.508,
+        0.61,
+        0.542,
+        0.359
+      ],
+      [
+        0.454,
+        0.58,
+        0.729,
+        0.664,
+        0.36
+      ]
+    ],
+    "crop_offset": [
+      52,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 149,
+    "contact_reference_px": 149.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

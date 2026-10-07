@@ -58,8 +58,12 @@ A local generation request uses the configured ComfyUI workflow. Do not silently
 
 Use a fixed seed for comparable candidates. Set `--target-size` deliberately for direct installation: it defaults to `--size`, which can otherwise install a 1024 px prop. Use the selected record's intended runtime canvas; this flag accepts a square side, a multiple of 16 in 64–2048. `install` uses the record's existing canvas and also supports rectangular records. Resolution never determines `footprint_cells`.
 
+Specify model checkpoints by name using `--checkpoint`:
+* Default anime checkpoint: `krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors`
+* Grounded Asian / Chinese historical model: `krea2/raySemiReal_krea2TurboV1Nsfw.safetensors` (recommended for Ancient Chinese Mortal World)
+
 ```text
-uv run python -m tools assets map generate --asset-id <catalog-id> --prompt "<subject brief>" --seed <seed> --size 1024 --target-size <runtime-side> --preview-only
+uv run python -m tools assets map generate --asset-id <catalog-id> --checkpoint "krea2/raySemiReal_krea2TurboV1Nsfw.safetensors" --prompt "<subject brief>" --seed <seed> --size 1024 --target-size <runtime-side> --preview-only
 ```
 
 The placeholders above are a command template. `--preview-only` creates a source under `build/map-generated/` and leaves the catalog unchanged. Use it for experiments and replacement candidates. For an established recipe and a new `planned` asset, direct `generate` may install a provisional `generated` result; review that installed result before calling it accepted.

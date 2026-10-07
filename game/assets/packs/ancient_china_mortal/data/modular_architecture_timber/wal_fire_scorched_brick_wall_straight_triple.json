@@ -1,0 +1,172 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.wal_fire_scorched_brick_wall_straight_triple",
+  "name": "Battle-Scorched Cracked Brick Straight Solid Wall (3x1)",
+  "vietnamese_name": "Tường Đặc Thẳng (3x1) (Gạch Nứt Cháy Xém Khói Lửa)",
+  "hanzi": "兵火焦黑残垣三步院墙",
+  "category": "modular_architecture_timber",
+  "sub_category": "wall_and_lattice_window",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "knock_wall",
+  "gameplay_role": "wall_segment",
+  "destructible": false,
+  "material": "brick",
+  "cultivation_element": "fire",
+  "prompt_summary": "Ancient Chinese vernacular building wall module: Battle-Scorched Cracked Brick Straight Solid Wall (3x1). Authentic materials, crisp dark ink outlines, orthographic top-down world-map view, isolated cleanly on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "wall",
+    "style": "fire_scorched_brick"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/wal_fire_scorched_brick_wall_straight_triple.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.wal_fire_scorched_brick_wall_straight_triple:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.624,
+        0.724,
+        0.66
+      ]
+    ],
+    "frac_zero": 0.6557,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      9,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.769,
+        0.697,
+        0.65,
+        0.716,
+        0.729,
+        0.774,
+        0.623,
+        0.88,
+        0.292
+      ],
+      [
+        0.451,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.642,
+        0.0
+      ],
+      [
+        0.053,
+        0.472,
+        0.529,
+        0.418,
+        0.418,
+        0.414,
+        0.473,
+        0.461,
+        0.006
+      ]
+    ],
+    "crop_offset": [
+      60,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 24,
+    "contact_reference_px": 24.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      128
+    ]
+  }
+}

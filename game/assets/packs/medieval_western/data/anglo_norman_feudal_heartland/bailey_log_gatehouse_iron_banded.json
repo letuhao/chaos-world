@@ -1,0 +1,190 @@
+{
+  "id": "medieval_western.anglo_norman_feudal_heartland.bailey_log_gatehouse_iron_banded",
+  "name": "Iron-Banded Bailey Log Gatehouse Portal",
+  "vietnamese_name": "Cổng Gỗ Doanh Trại Bailey (Bọc Sắt Kiên Cố)",
+  "category": "anglo_norman_feudal_heartland",
+  "sub_category": "motte_and_bailey_earthwork",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "open",
+  "gameplay_role": "Feudal Anglo-Norman component (Bailey Log Gatehouse Portal).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "anglo_norman",
+  "prompt_summary": "2D orthographic top-down game sprite of iron-banded bailey log gatehouse portal, heavy forged iron reinforcement straps and studs, Anglo-Norman medieval feudal style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/anglo_norman_feudal_heartland/bailey_log_gatehouse_iron_banded.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.anglo_norman_feudal_heartland.bailey_log_gatehouse_iron_banded:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.853,
+        0.854
+      ],
+      [
+        0.685,
+        0.686
+      ]
+    ],
+    "frac_zero": 0.5645,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.397,
+        0.85,
+        0.854,
+        0.762,
+        0.856,
+        0.843,
+        0.374
+      ],
+      [
+        0.75,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.748
+      ],
+      [
+        0.822,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.839
+      ],
+      [
+        0.358,
+        1.0,
+        0.961,
+        0.705,
+        0.978,
+        1.0,
+        0.341
+      ],
+      [
+        0.097,
+        0.926,
+        0.774,
+        0.159,
+        0.782,
+        0.926,
+        0.07
+      ],
+      [
+        0.0,
+        0.219,
+        0.234,
+        0.0,
+        0.25,
+        0.219,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      78
+    ],
+    "trunk_columns": [],
+    "contact_px": 62,
+    "contact_reference_px": 62.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

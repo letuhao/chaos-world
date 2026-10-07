@@ -1,0 +1,209 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.gat_imperial_residence_overgrown_ancient_arch_ruin",
+  "name": "Imperial Official Residence Collapsed Ruined Stone Gateway with Vines",
+  "vietnamese_name": "Cổng Đá Cổ Đổ Nát Dây Leo Quấn Kín (Dinh Thự Quyền Quý)",
+  "hanzi": "王府官邸藤萝缠绕坍塌古门",
+  "category": "modular_architecture_timber",
+  "sub_category": "moon_gate_and_archway",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "scramble_over_ruin",
+  "gameplay_role": "ruined_arch",
+  "destructible": true,
+  "material": "stone",
+  "cultivation_element": "yin",
+  "prompt_summary": "Ancient Chinese architectural entrance portal: Imperial Official Residence Collapsed Ruined Stone Gateway with Vines. Ornate joinery, traditional aesthetic, top-down orthographic view for 2D RPG, clear transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "gateway",
+    "style": "imperial_residence"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/gat_imperial_residence_overgrown_ancient_arch_ruin.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.gat_imperial_residence_overgrown_ancient_arch_ruin:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.573,
+        0.615
+      ],
+      [
+        0.759,
+        0.825
+      ]
+    ],
+    "frac_zero": 0.4683,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.211,
+        0.739,
+        0.728,
+        0.681,
+        0.139,
+        0.0
+      ],
+      [
+        0.062,
+        0.764,
+        1.0,
+        1.0,
+        1.0,
+        0.594,
+        0.055
+      ],
+      [
+        0.125,
+        0.878,
+        0.945,
+        0.698,
+        0.991,
+        0.811,
+        0.376
+      ],
+      [
+        0.538,
+        1.0,
+        0.821,
+        0.081,
+        0.978,
+        1.0,
+        0.525
+      ],
+      [
+        0.546,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.69
+      ],
+      [
+        0.748,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.814
+      ],
+      [
+        0.038,
+        0.498,
+        0.821,
+        0.864,
+        0.898,
+        0.631,
+        0.081
+      ]
+    ],
+    "crop_offset": [
+      20,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 120,
+    "contact_reference_px": 120.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

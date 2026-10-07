@@ -1,0 +1,114 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.pin_huangshan_guest_pine_pine_cone_drop_scatter",
+  "name": "Huangshan Welcoming Pine Ground Drift of Fallen Needles & Pine Cones",
+  "vietnamese_name": "Thảm Kim Tùng & Quả Thông Rơi Đầy Đất (Hoàng Sơn Nghênh Khách Tùng)",
+  "hanzi": "黄山迎客松满地松针黄叶与干松果",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "ancient_pine_and_conifer",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "gather_pine_cones",
+  "gameplay_role": "pine_litter",
+  "destructible": false,
+  "material": "plant",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese pine tree landscape asset: Huangshan Welcoming Pine Ground Drift of Fallen Needles & Pine Cones. Evergreen needle tufts, rough peeling bark, dark ink contours, top-down orthographic RPG sprite on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "tree_family": "conifer",
+    "variety": "huangshan_guest_pine"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/pin_huangshan_guest_pine_pine_cone_drop_scatter.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.pin_huangshan_guest_pine_pine_cone_drop_scatter:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.515
+      ]
+    ],
+    "frac_zero": 0.6703,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.171,
+        0.719,
+        0.177
+      ],
+      [
+        0.467,
+        0.604,
+        0.469
+      ],
+      [
+        0.522,
+        0.977,
+        0.489
+      ]
+    ],
+    "crop_offset": [
+      17,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 72,
+    "contact_reference_px": 72.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

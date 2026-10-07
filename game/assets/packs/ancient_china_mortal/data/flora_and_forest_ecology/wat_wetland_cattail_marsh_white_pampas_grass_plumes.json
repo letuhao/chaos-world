@@ -1,0 +1,157 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.wat_wetland_cattail_marsh_white_pampas_grass_plumes",
+  "name": "River Delta Cattail Reed Marsh Flowering White Feathered Reed Plumes",
+  "vietnamese_name": "Bông Lau Trắng Bay Theo Gió Chiều (Đầm Lầy Lau Sậy Đầy Nước)",
+  "hanzi": "水泽香蒲丰茂苇荡迎风飘洒白茫茫芦花",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "aquatic_lotus_and_wetland_reed",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "watch_pampas_in_wind",
+  "gameplay_role": "pampas_plumes",
+  "destructible": false,
+  "material": "plant",
+  "cultivation_element": "wind",
+  "prompt_summary": "Ancient Chinese wetland aquatic flora: River Delta Cattail Reed Marsh Flowering White Feathered Reed Plumes. Delicate water reflection, ink outlines, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "wetland_type": "wetland_cattail_marsh"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/wat_wetland_cattail_marsh_white_pampas_grass_plumes.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.wat_wetland_cattail_marsh_white_pampas_grass_plumes:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.596,
+        0.576
+      ]
+    ],
+    "frac_zero": 0.6494,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.201,
+        0.416,
+        0.008,
+        0.032,
+        0.303,
+        0.061
+      ],
+      [
+        0.593,
+        0.971,
+        0.975,
+        0.975,
+        0.924,
+        0.561
+      ],
+      [
+        0.487,
+        0.809,
+        0.97,
+        0.938,
+        0.819,
+        0.343
+      ]
+    ],
+    "crop_offset": [
+      36,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 155,
+    "contact_reference_px": 155.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

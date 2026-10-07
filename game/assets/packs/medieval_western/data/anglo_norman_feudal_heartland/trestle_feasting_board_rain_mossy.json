@@ -1,0 +1,118 @@
+{
+  "id": "medieval_western.anglo_norman_feudal_heartland.trestle_feasting_board_rain_mossy",
+  "name": "Mossy Damp Long Trestle Dining Board",
+  "vietnamese_name": "Bàn Tiệc Gỗ Dài Trestle (Phủ Rêu Ẩm)",
+  "category": "anglo_norman_feudal_heartland",
+  "sub_category": "great_hall_oak_dais",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "inspect",
+  "gameplay_role": "Feudal Anglo-Norman component (Long Trestle Dining Board).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "anglo_norman",
+  "prompt_summary": "2D orthographic top-down game sprite of mossy damp long trestle dining board, deep forest moss and rain-slicked dark patches, Anglo-Norman medieval feudal style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/anglo_norman_feudal_heartland/trestle_feasting_board_rain_mossy.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.anglo_norman_feudal_heartland.trestle_feasting_board_rain_mossy:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.623,
+        0.639
+      ]
+    ],
+    "frac_zero": 0.6169,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.301,
+        0.698,
+        0.546,
+        0.588,
+        0.535,
+        0.713,
+        0.317
+      ],
+      [
+        0.781,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.79
+      ],
+      [
+        0.156,
+        0.49,
+        0.012,
+        0.526,
+        0.003,
+        0.47,
+        0.334
+      ]
+    ],
+    "crop_offset": [
+      16,
+      28
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 42,
+    "contact_reference_px": 42.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

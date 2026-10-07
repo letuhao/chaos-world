@@ -1,0 +1,127 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.fnd_rustic_fieldstone_double_step_stair",
+  "name": "Rustic Dry Fieldstone Two-Tier Entrance Steps",
+  "vietnamese_name": "Bậc Thềm Đôi Hai Cấp (Đá Cuội Đồng Quê Thô Mộc)",
+  "hanzi": "质朴乱石砌双层如意石阶",
+  "category": "modular_architecture_timber",
+  "sub_category": "foundation_and_plinth_tai_ji",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "climb_steps",
+  "gameplay_role": "step",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese modular architectural foundation: Rustic Dry Fieldstone Two-Tier Entrance Steps. Rustic Dry Fieldstone texture with dark ink contours, top-down orthographic angle, isolated game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "foundation",
+    "style": "rustic_fieldstone"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/fnd_rustic_fieldstone_double_step_stair.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.fnd_rustic_fieldstone_double_step_stair:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.604,
+        0.639
+      ]
+    ],
+    "frac_zero": 0.6405,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.174,
+        0.405,
+        0.636,
+        0.648,
+        0.376,
+        0.169
+      ],
+      [
+        0.861,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.861
+      ],
+      [
+        0.08,
+        0.461,
+        0.88,
+        0.91,
+        0.55,
+        0.054
+      ]
+    ],
+    "crop_offset": [
+      34,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 93,
+    "contact_reference_px": 93.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

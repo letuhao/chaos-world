@@ -1,0 +1,157 @@
+{
+  "id": "ancient_china_mortal.trade_craft_industry.ind_salt_white_mound_drying_heap",
+  "name": "Pure White Refined Salt Pyramid Mound",
+  "vietnamese_name": "Đụn Muối Trắng Tinh Phơi Nắng",
+  "hanzi": "洁白日晒盐堆",
+  "category": "trade_craft_industry",
+  "sub_category": "salt_evaporation_pan",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "shovel_salt",
+  "gameplay_role": "Pyramid mound of coarse white sea salt drying in breeze.",
+  "destructible": true,
+  "material": "salt",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Cone pyramid mound of sparkling coarse white sea salt crystals on hard earth.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "resource": "refined_salt"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/trade_craft_industry/ind_salt_white_mound_drying_heap.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.trade_craft_industry.ind_salt_white_mound_drying_heap:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.652,
+        0.626
+      ]
+    ],
+    "frac_zero": 0.6668,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.021,
+        0.262,
+        0.803,
+        0.385,
+        0.106,
+        0.0
+      ],
+      [
+        0.833,
+        1.0,
+        1.0,
+        1.0,
+        0.954,
+        0.509
+      ],
+      [
+        0.463,
+        0.837,
+        0.935,
+        0.882,
+        0.545,
+        0.111
+      ]
+    ],
+    "crop_offset": [
+      42,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 130,
+    "contact_reference_px": 130.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

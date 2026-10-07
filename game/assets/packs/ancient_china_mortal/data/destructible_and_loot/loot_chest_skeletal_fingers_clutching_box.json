@@ -1,0 +1,142 @@
+{
+  "id": "ancient_china_mortal.destructible_and_loot.loot_chest_skeletal_fingers_clutching_box",
+  "name": "Skeletal Hands Clasping Iron Strongbox",
+  "vietnamese_name": "Khung Xương Tay Ôm Chặt Rương Báu",
+  "hanzi": "枯骨死抱黄金小铁匣",
+  "category": "destructible_and_loot",
+  "sub_category": "bandit_iron_chest",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "pry_fingers",
+  "gameplay_role": "Bleached skeleton ribs and arms locked around heavy coffer.",
+  "destructible": false,
+  "material": "bone",
+  "cultivation_element": "yin",
+  "prompt_summary": "Bleached human skeletal ribcage and arm bones tenaciously clutching a locked iron strongbox in weeds.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "grim_loot": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/destructible_and_loot/loot_chest_skeletal_fingers_clutching_box.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.destructible_and_loot.loot_chest_skeletal_fingers_clutching_box:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.521
+      ]
+    ],
+    "frac_zero": 0.6852,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.184,
+        0.708,
+        0.07
+      ],
+      [
+        0.469,
+        0.857,
+        0.421
+      ],
+      [
+        0.716,
+        0.773,
+        0.296
+      ]
+    ],
+    "crop_offset": [
+      22,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 58,
+    "contact_reference_px": 58.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

@@ -1,0 +1,133 @@
+"""i18n policy: what is in scope, which strings are player-facing, and the slug shape.
+
+Policy lives here (it changes when the standard changes). The catalogs under
+`game/locale/` are state, written by the tool. A finding is a string in a DISPLAY SINK: a
+place the game hands text to a player.
+"""
+
+from __future__ import annotations
+
+import re
+from dataclasses import dataclass
+
+## Every slug is `LOC_<DOMAIN>_<HASH>`: a readable area prefix plus a content hash, so the
+## id is stable across file moves and an English edit yields a new id rather than silently
+## re-pointing an old translation (the reason slugs exist at all).
+SLUG_PREFIX = "LOC"
+SLUG_HASH_LEN = 10
+
+CATALOG_DIR = "game/locale"
+
+## Control properties that carry player-facing text, in `.gd` and `.tscn`.
+TEXT_PROPERTIES = ("text", "tooltip_text", "placeholder_text")
+
+## Authored-content fields (`.tres`) that carry player-facing text.
+CONTENT_FIELDS = (
+    "display_name",
+    "description",
+    "title",
+    "text",
+    "line",
+    "prompt",
+    "flavor",
+    "blurb",
+    "caption",
+    "label",
+    "summary",
+)
+
+## Whole-word tokens a GDScript identifier must contain to be a display sink: a `const`/`var`
+## holding text, or a function returning text. Splitting on `_` and matching whole words is
+## what keeps `NO_SELECT_SEAM` and `PRESET_SCENE` out while `EVENTS_TITLE_UNWIRED` is in.
+DISPLAY_TOKENS = frozenset(
+    {
+        "TEXT",
+        "LABEL",
+        "TITLE",
+        "LINE",
+        "MESSAGE",
+        "WORDING",
+        "SUFFIX",
+        "HEADING",
+        "PROMPT",
+        "HINT",
+        "TOOLTIP",
+        "REASON",
+        "CAPTION",
+        "FOOTER",
+        "HEADER",
+        "REPLY",
+        "GREETING",
+    }
+)
+
+## A trailing `# i18n:off` on a line exempts that line's strings from extraction.
+IGNORE_MARKER = "i18n:off"
+
+## The resolver call the tool writes and reads (must match `core/localize.gd`).
+RESOLVER = "L.t"
+
+
+@dataclass(frozen=True)
+class Domain:
+    """The slug prefix and catalog file a path belongs to."""
+
+    prefix: str
+    catalog: str
+
+
+def domain_of(rel: str) -> Domain | None:
+    """The domain a repo-relative path belongs to, or None when out of scope."""
+    path = rel.replace("\\", "/")
+    if path.startswith("game/src/ui/") or path.startswith("game/scenes/"):
+        return Domain("UI", "ui")
+    if path.startswith("game/data/"):
+        sub = path[len("game/data/") :].split("/", 1)[0]
+        if sub:
+            return Domain(sub.upper().replace("-", "_"), "content")
+    return None
+
+
+def scope_kind(rel: str) -> str | None:
+    """The file kind a path is scanned as, or None when it is not in scope."""
+    path = rel.replace("\\", "/")
+    if path.startswith("game/src/ui/") and path.endswith(".gd"):
+        return "gd"
+    if (path.startswith("game/src/ui/") or path.startswith("game/scenes/")) and path.endswith(
+        ".tscn"
+    ):
+        return "tscn"
+    if path.startswith("game/data/") and path.endswith(".tres"):
+        return "tres"
+    return None
+
+
+def has_display_token(name: str) -> bool:
+    """Whether an identifier names a text sink (any `_`-separated word is a display token)."""
+    return any(part.upper() in DISPLAY_TOKENS for part in name.split("_"))
+
+
+def is_player_text(value: str) -> bool:
+    """Whether a string literal is a candidate for translation.
+
+    Not a space heuristic: single-word UI text ("Settings") is legitimate. What is excluded
+    is what cannot be prose — empty strings, strings with no letter, resource paths, node
+    paths, already-slugged values, and code tokens (`no_actor`, `display_name`, `crit_chance`)
+    which are dictionary keys and lookups, not text.
+    """
+    text = value.strip()
+    if not text:
+        return False
+    if not any(ch.isalpha() for ch in text):
+        return False
+    if text.startswith(("res://", "user://", "/", "%", "uid://")):
+        return False
+    if text.startswith(f"{SLUG_PREFIX}_"):
+        return False
+    # `snake_case` with no space is an identifier (`display_name`, `no_actor`), and an all
+    # lower-case dotted token (`api.gd`, `kind`) is a code value — neither is player text.
+    if "_" in text and " " not in text:
+        return False
+    if re.fullmatch(r"[a-z0-9_.]+", text):
+        return False
+    return True

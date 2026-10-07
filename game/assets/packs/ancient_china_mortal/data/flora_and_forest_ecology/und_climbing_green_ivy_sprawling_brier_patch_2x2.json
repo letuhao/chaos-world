@@ -1,0 +1,210 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.und_climbing_green_ivy_sprawling_brier_patch_2x2",
+  "name": "Climbing Wall Ivy & Creepers Sprawling Thorny Thicket Patch (2x2)",
+  "vietnamese_name": "Vạt Cây Bụi Lan Rộng (2x2) (Dây Thường Xuân Leo Tường Đá)",
+  "hanzi": "络石爬藤绿蔓四方盘结大蓬灌木丛",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "underbrush_fern_and_creeper",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "navigate_brier_patch",
+  "gameplay_role": "underbrush",
+  "destructible": false,
+  "material": "plant",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese forest underbrush vegetation: Climbing Wall Ivy & Creepers Sprawling Thorny Thicket Patch (2x2). Organic foliage, delicate leaves and flowers, ink outlines, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "foliage_group": "climbing_green_ivy"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/und_climbing_green_ivy_sprawling_brier_patch_2x2.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.und_climbing_green_ivy_sprawling_brier_patch_2x2:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.513,
+        0.686
+      ],
+      [
+        0.746,
+        0.65
+      ]
+    ],
+    "frac_zero": 0.4727,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.146,
+        0.49,
+        0.42,
+        0.396,
+        0.527,
+        0.532,
+        0.172
+      ],
+      [
+        0.27,
+        1.0,
+        0.823,
+        0.964,
+        1.0,
+        0.994,
+        0.343
+      ],
+      [
+        0.181,
+        0.924,
+        0.219,
+        0.697,
+        1.0,
+        1.0,
+        0.218
+      ],
+      [
+        0.117,
+        0.996,
+        0.758,
+        0.917,
+        0.976,
+        1.0,
+        0.166
+      ],
+      [
+        0.097,
+        1.0,
+        1.0,
+        0.886,
+        0.194,
+        0.991,
+        0.145
+      ],
+      [
+        0.181,
+        1.0,
+        1.0,
+        0.983,
+        0.756,
+        1.0,
+        0.178
+      ],
+      [
+        0.42,
+        0.811,
+        0.911,
+        0.924,
+        0.841,
+        0.772,
+        0.365
+      ]
+    ],
+    "crop_offset": [
+      17,
+      21
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 221,
+    "contact_reference_px": 221.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

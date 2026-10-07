@@ -1,0 +1,151 @@
+{
+  "id": "ancient_china_mortal.urban_street_and_market.mkt_ceramic_crockery_merchant_portable_shoulder_yoke_baskets",
+  "name": "Glazed Ceramics & Pottery Stand Pair of Woven Baskets on Bamboo Shoulder Yoke",
+  "vietnamese_name": "Cặp Gánh Tre Đan Trên Đòn Gánh (Sạp Bát Đĩa Gốm Sứ Bày Bán)",
+  "hanzi": "瓷碗陶壶日用铺挑担前后双竹篾筐",
+  "category": "urban_street_and_market",
+  "sub_category": "market_stall_and_hawker_booth",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect_yoke_baskets",
+  "gameplay_role": "hawker_yoke",
+  "destructible": false,
+  "material": "bamboo",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese urban street market asset: Glazed Ceramics & Pottery Stand Pair of Woven Baskets on Bamboo Shoulder Yoke. Detailed mercantile props, gouache textures with ink line accents, orthographic top-down view, clean transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "market_genre": "ceramic_crockery_merchant"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/urban_street_and_market/mkt_ceramic_crockery_merchant_portable_shoulder_yoke_baskets.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.urban_street_and_market.mkt_ceramic_crockery_merchant_portable_shoulder_yoke_baskets:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.559,
+        0.515
+      ]
+    ],
+    "frac_zero": 0.7552,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      2
+    ],
+    "sub_fill": [
+      [
+        0.684,
+        0.43,
+        0.581,
+        0.469,
+        0.469,
+        0.503,
+        0.701
+      ],
+      [
+        0.251,
+        0.536,
+        0.799,
+        0.756,
+        0.666,
+        0.397,
+        0.262
+      ]
+    ],
+    "crop_offset": [
+      17,
+      53
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 128,
+    "contact_reference_px": 128.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

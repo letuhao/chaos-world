@@ -1,0 +1,223 @@
+{
+  "id": "ancient_china_mortal.path_and_way.way_bridge_three_arch_grand",
+  "name": "Three-Arch Grand Stone River Bridge",
+  "vietnamese_name": "Cầu Đá Ba Nhịp Long Trọng",
+  "hanzi": "三孔长虹桥",
+  "category": "path_and_way",
+  "sub_category": "stone_arched_bridge",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    4,
+    2
+  ],
+  "canvas_px": [
+    512,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Imposing multi-span bridge supporting heavy cart convoys with water-deflecting piers.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Top-down long three-arch masonry bridge with sharp triangular cutwater piers facing upstream, carved relief dragons.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "nav_surface": "walk_surface",
+    "heavy_wagon_convoy": true,
+    "durability": "indestructible"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/path_and_way/way_bridge_three_arch_grand.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.path_and_way.way_bridge_three_arch_grand:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.758,
+        0.619,
+        0.619,
+        0.389
+      ],
+      [
+        0.738,
+        0.363,
+        0.368,
+        0.38
+      ]
+    ],
+    "frac_zero": 0.6325,
+    "blocks": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      2,
+      1
+    ],
+    "sub_grid": [
+      15,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.651,
+        0.558,
+        0.058,
+        0.012,
+        0.009,
+        0.039,
+        0.01,
+        0.0,
+        0.012,
+        0.039,
+        0.012,
+        0.012,
+        0.03,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        1.0,
+        0.931,
+        0.895,
+        0.895,
+        0.906,
+        0.894,
+        0.86,
+        0.881,
+        0.907,
+        0.898,
+        0.903,
+        0.863,
+        0.429,
+        0.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.743,
+        0.068
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        0.428,
+        0.456,
+        0.996,
+        0.634,
+        0.226,
+        0.672,
+        0.995,
+        0.453,
+        0.478,
+        1.0,
+        0.653,
+        0.117
+      ],
+      [
+        1.0,
+        0.998,
+        0.924,
+        0.101,
+        0.0,
+        0.845,
+        0.348,
+        0.0,
+        0.362,
+        0.847,
+        0.0,
+        0.131,
+        0.843,
+        0.074,
+        0.415
+      ],
+      [
+        0.97,
+        0.493,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.072
+      ]
+    ],
+    "crop_offset": [
+      16,
+      56
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 46,
+    "contact_reference_px": 46.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

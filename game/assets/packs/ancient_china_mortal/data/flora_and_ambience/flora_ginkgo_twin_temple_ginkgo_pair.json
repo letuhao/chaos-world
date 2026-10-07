@@ -1,0 +1,216 @@
+{
+  "id": "ancient_china_mortal.flora_and_ambience.flora_ginkgo_twin_temple_ginkgo_pair",
+  "name": "Temple Courtyard Symmetrical Ginkgo Pair",
+  "vietnamese_name": "Cặp Cây Bạch Quả Đối Xứng Sân Chùa",
+  "hanzi": "寺前并立双株银杏",
+  "category": "flora_and_ambience",
+  "sub_category": "ginkgo_and_peach_tree",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "walk_between",
+  "gameplay_role": "Two matching ancient ginkgoes framing stone temple gate.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "wood",
+  "prompt_summary": "Pair of majestic golden ginkgo trees planted symmetrically flanking a paved stone temple pathway.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "temple_gate": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_ambience/flora_ginkgo_twin_temple_ginkgo_pair.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_ambience.flora_ginkgo_twin_temple_ginkgo_pair:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.524,
+        0.607,
+        0.567
+      ],
+      [
+        0.783,
+        0.992,
+        0.786
+      ]
+    ],
+    "frac_zero": 0.6231,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.01,
+        0.603,
+        0.185,
+        0.0,
+        0.274,
+        0.546,
+        0.003
+      ],
+      [
+        0.182,
+        0.902,
+        0.727,
+        0.418,
+        0.846,
+        0.909,
+        0.249
+      ],
+      [
+        0.426,
+        0.734,
+        0.994,
+        1.0,
+        0.885,
+        0.799,
+        0.361
+      ],
+      [
+        0.232,
+        0.871,
+        1.0,
+        1.0,
+        0.999,
+        0.809,
+        0.326
+      ],
+      [
+        0.439,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.343
+      ],
+      [
+        0.702,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.637
+      ],
+      [
+        0.626,
+        0.949,
+        0.981,
+        0.968,
+        0.981,
+        0.962,
+        0.588
+      ]
+    ],
+    "crop_offset": [
+      82,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 210,
+    "contact_reference_px": 210.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "id": "ancient_china_mortal.war_and_battlefield.war_barricade_iron_wire_trip_snare",
+  "name": "Low Iron Tripwire & Bell Snare Post",
+  "vietnamese_name": "Dây Thép Giăng Ngầm Gắn Chuông Báo Động",
+  "hanzi": "绊马索挂铜铃",
+  "category": "war_and_battlefield",
+  "sub_category": "spiked_barricade_cheval_de_frise",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "disarm",
+  "gameplay_role": "Taut iron wire ankle-height strung between stakes with small bells.",
+  "destructible": true,
+  "material": "iron",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Taut iron tripwire stretched ankle-high across dirt track between wooden pegs, small bronze bells attached.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "trips_runners": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/war_and_battlefield/war_barricade_iron_wire_trip_snare.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.war_and_battlefield.war_barricade_iron_wire_trip_snare:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.127,
+        0.11
+      ]
+    ],
+    "frac_zero": 0.9361,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      2
+    ],
+    "sub_fill": [
+      [
+        0.377,
+        0.091,
+        0.069,
+        0.054,
+        0.043,
+        0.062,
+        0.403
+      ],
+      [
+        0.202,
+        0.001,
+        0.026,
+        0.04,
+        0.0,
+        0.0,
+        0.205
+      ]
+    ],
+    "crop_offset": [
+      17,
+      36
+    ],
+    "trunk_columns": [],
+    "contact_px": 7,
+    "contact_reference_px": 7.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

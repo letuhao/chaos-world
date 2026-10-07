@@ -1,0 +1,143 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.cav_bandit_lair_camp_fire_ash_hearth_cave",
+  "name": "Bandit Mountain Lair Stone Fire Hearth inside Cave Mouth",
+  "vietnamese_name": "Bếp Lửa Sưởi Ấm Trong Hang (Hang Ổ Sơn Tặc)",
+  "hanzi": "匪寨幽洞洞口背风篝火灰烬坑",
+  "category": "mountain_cliff_geology",
+  "sub_category": "cave_mouth_and_grotto",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "warm_at_cave_hearth",
+  "gameplay_role": "cave_hearth",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "fire",
+  "prompt_summary": "Ancient Chinese mountain cave entrance landscape: Bandit Mountain Lair Stone Fire Hearth inside Cave Mouth. Mysterious shadowy depths, rugged stone edges, ink outlines, top-down orthographic RPG sprite, transparent cutout.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "cave_archetype": "bandit_lair"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/cav_bandit_lair_camp_fire_ash_hearth_cave.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.cav_bandit_lair_camp_fire_ash_hearth_cave:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.637
+      ]
+    ],
+    "frac_zero": 0.6245,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.198,
+        0.777,
+        0.122
+      ],
+      [
+        0.689,
+        1.0,
+        0.642
+      ],
+      [
+        0.678,
+        0.965,
+        0.644
+      ]
+    ],
+    "crop_offset": [
+      17,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 87,
+    "contact_reference_px": 87.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

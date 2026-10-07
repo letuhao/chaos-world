@@ -1,0 +1,156 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.wat_autumn_withered_lotus_white_pampas_grass_plumes",
+  "name": "Autumn Rain Withered Lotus Lake Flowering White Feathered Reed Plumes",
+  "vietnamese_name": "Bông Lau Trắng Bay Theo Gió Chiều (Đầm Sen Tàn Lá Rách Mùa Thu)",
+  "hanzi": "秋雨听残破荷枯叶迎风飘洒白茫茫芦花",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "aquatic_lotus_and_wetland_reed",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "watch_pampas_in_wind",
+  "gameplay_role": "pampas_plumes",
+  "destructible": false,
+  "material": "plant",
+  "cultivation_element": "wind",
+  "prompt_summary": "Ancient Chinese wetland aquatic flora: Autumn Rain Withered Lotus Lake Flowering White Feathered Reed Plumes. Delicate water reflection, ink outlines, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "wetland_type": "autumn_withered_lotus"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/wat_autumn_withered_lotus_white_pampas_grass_plumes.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.wat_autumn_withered_lotus_white_pampas_grass_plumes:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.583,
+        0.587
+      ]
+    ],
+    "frac_zero": 0.6517,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.157,
+        0.338,
+        0.131,
+        0.235,
+        0.311,
+        0.071
+      ],
+      [
+        0.588,
+        0.984,
+        1.0,
+        0.998,
+        0.914,
+        0.548
+      ],
+      [
+        0.347,
+        0.837,
+        0.925,
+        0.89,
+        0.77,
+        0.217
+      ]
+    ],
+    "crop_offset": [
+      37,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 141,
+    "contact_reference_px": 141.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

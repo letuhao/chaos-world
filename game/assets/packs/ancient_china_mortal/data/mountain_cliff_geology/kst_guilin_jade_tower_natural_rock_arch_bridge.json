@@ -1,0 +1,186 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.kst_guilin_jade_tower_natural_rock_arch_bridge",
+  "name": "Guilin Verdant Karst Spire Natural Eroded Karst Bridge over Void",
+  "vietnamese_name": "Cầu Vòm Đá Tự Nhiên Bắc Qua Vực (Trụ Đỉnh Quế Lâm Xanh Biếc)",
+  "hanzi": "桂林叠翠秀峰天生石拱仙人桥",
+  "category": "mountain_cliff_geology",
+  "sub_category": "karst_spire_and_pinnacle",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "solid",
+  "interactive_verb": "cross_natural_bridge",
+  "gameplay_role": "natural_bridge",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "wood",
+  "prompt_summary": "Ancient Chinese karst pinnacle mountain landscape: Guilin Verdant Karst Spire Natural Eroded Karst Bridge over Void. Towering verticality, poetic gouache shading, dark ink contour lines, top-down orthographic sprite on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "geology_layer": "karst",
+    "region": "guilin_jade_tower"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/kst_guilin_jade_tower_natural_rock_arch_bridge.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.kst_guilin_jade_tower_natural_rock_arch_bridge:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.068,
+        0.633,
+        0.099
+      ],
+      [
+        0.564,
+        0.871,
+        0.543
+      ]
+    ],
+    "frac_zero": 0.7509,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        true,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.033,
+        0.681,
+        0.014,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.247,
+        0.971,
+        0.113,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.198,
+        0.664,
+        1.0,
+        0.746,
+        0.108,
+        0.0
+      ],
+      [
+        0.0,
+        0.359,
+        0.977,
+        1.0,
+        1.0,
+        0.44,
+        0.0
+      ],
+      [
+        0.145,
+        0.604,
+        0.994,
+        0.416,
+        0.994,
+        0.615,
+        0.175
+      ],
+      [
+        0.497,
+        0.985,
+        1.0,
+        0.69,
+        1.0,
+        0.897,
+        0.346
+      ],
+      [
+        0.353,
+        0.73,
+        0.892,
+        0.981,
+        0.87,
+        0.508,
+        0.343
+      ]
+    ],
+    "crop_offset": [
+      81,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 138,
+    "contact_reference_px": 138.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

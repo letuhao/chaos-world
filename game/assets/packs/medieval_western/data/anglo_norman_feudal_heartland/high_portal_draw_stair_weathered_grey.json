@@ -1,0 +1,123 @@
+{
+  "id": "medieval_western.anglo_norman_feudal_heartland.high_portal_draw_stair_weathered_grey",
+  "name": "Weathered Grey First-Floor Defense Portal Stair",
+  "vietnamese_name": "Cầu Thang Rút Cửa Tầng Hai (Phong Hóa Xám)",
+  "category": "anglo_norman_feudal_heartland",
+  "sub_category": "square_norman_donjon_keep",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "climb",
+  "gameplay_role": "Feudal Anglo-Norman component (First-Floor Defense Portal Stair).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "anglo_norman",
+  "prompt_summary": "2D orthographic top-down game sprite of weathered grey first-floor defense portal stair, silvered weathered grain with aged surface, Anglo-Norman medieval feudal style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/anglo_norman_feudal_heartland/high_portal_draw_stair_weathered_grey.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.anglo_norman_feudal_heartland.high_portal_draw_stair_weathered_grey:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.601,
+        0.618
+      ]
+    ],
+    "frac_zero": 0.6434,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.005,
+        0.201,
+        0.778,
+        0.771,
+        0.201,
+        0.006
+      ],
+      [
+        0.73,
+        0.993,
+        1.0,
+        1.0,
+        0.994,
+        0.768
+      ],
+      [
+        0.303,
+        0.498,
+        0.899,
+        0.972,
+        0.564,
+        0.282
+      ]
+    ],
+    "crop_offset": [
+      32,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 92,
+    "contact_reference_px": 92.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

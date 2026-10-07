@@ -1,0 +1,128 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.wat_wetland_cattail_marsh_submerged_water_celery_patch",
+  "name": "River Delta Cattail Reed Marsh Shallow Riverbed Water Celery & Lily Patch",
+  "vietnamese_name": "Vạt Rau Cần Nước & Hoa Súng Cạn (Đầm Lầy Lau Sậy Đầy Nước)",
+  "hanzi": "水泽香蒲丰茂苇荡清流见底水芹与萍蓬",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "aquatic_lotus_and_wetland_reed",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "gather_water_celery",
+  "gameplay_role": "water_herbs",
+  "destructible": false,
+  "material": "plant",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese wetland aquatic flora: River Delta Cattail Reed Marsh Shallow Riverbed Water Celery & Lily Patch. Delicate water reflection, ink outlines, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "wetland_type": "wetland_cattail_marsh"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/wat_wetland_cattail_marsh_submerged_water_celery_patch.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.wat_wetland_cattail_marsh_submerged_water_celery_patch:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.624,
+        0.603
+      ]
+    ],
+    "frac_zero": 0.6346,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.135,
+        0.278,
+        0.219,
+        0.154,
+        0.294,
+        0.129
+      ],
+      [
+        0.809,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.768
+      ],
+      [
+        0.431,
+        0.833,
+        0.94,
+        0.839,
+        0.794,
+        0.444
+      ]
+    ],
+    "crop_offset": [
+      32,
+      18
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 164,
+    "contact_reference_px": 164.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

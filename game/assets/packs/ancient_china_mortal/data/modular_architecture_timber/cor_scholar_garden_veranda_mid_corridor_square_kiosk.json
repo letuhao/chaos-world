@@ -1,0 +1,174 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.cor_scholar_garden_veranda_mid_corridor_square_kiosk",
+  "name": "Classical Garden Cloister Walkway Square Viewing Pavilion on Corridor",
+  "vietnamese_name": "Đình Nghỉ Chân Vuông Giữa Hành Lang (Hành Lang Vườn Cảnh Giang Nam)",
+  "hanzi": "苏式游廊廊中方角停歇亭",
+  "category": "modular_architecture_timber",
+  "sub_category": "covered_corridor_and_veranda",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "rest_at_kiosk",
+  "gameplay_role": "rest_kiosk",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "wood",
+  "prompt_summary": "Ancient Chinese covered garden corridor module: Classical Garden Cloister Walkway Square Viewing Pavilion on Corridor. Traditional tiled wooden gallery, balustrade railing, top-down orthographic game sprite, transparent alpha cutout.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "corridor",
+    "style": "scholar_garden_veranda"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/cor_scholar_garden_veranda_mid_corridor_square_kiosk.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.cor_scholar_garden_veranda_mid_corridor_square_kiosk:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.73,
+        0.72
+      ],
+      [
+        0.748,
+        0.749
+      ]
+    ],
+    "frac_zero": 0.435,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.312,
+        0.757,
+        0.739,
+        0.74,
+        0.739,
+        0.784,
+        0.115
+      ],
+      [
+        0.365,
+        0.979,
+        0.688,
+        0.686,
+        0.731,
+        1.0,
+        0.161
+      ],
+      [
+        0.452,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.302
+      ],
+      [
+        0.553,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.453
+      ],
+      [
+        0.771,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.737
+      ],
+      [
+        0.2,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.996,
+        0.041
+      ],
+      [
+        0.134,
+        0.483,
+        0.627,
+        0.871,
+        0.559,
+        0.522,
+        0.036
+      ]
+    ],
+    "crop_offset": [
+      18,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 61,
+    "contact_reference_px": 61.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

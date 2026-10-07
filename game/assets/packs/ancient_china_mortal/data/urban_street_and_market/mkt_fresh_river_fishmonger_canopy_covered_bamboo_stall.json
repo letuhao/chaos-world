@@ -1,0 +1,206 @@
+{
+  "id": "ancient_china_mortal.urban_street_and_market.mkt_fresh_river_fishmonger_canopy_covered_bamboo_stall",
+  "name": "Fresh Fish & Seafood Monger Stall with Striped Hemp Sunshade Canopy (2x2)",
+  "vietnamese_name": "Sạp Hàng Có Mái Bạt Che Nắng (2x2) (Sạp Bán Cá Tươi Sống)",
+  "hanzi": "活水鱼鲜海味摊麻布撑顶四方小货摊",
+  "category": "urban_street_and_market",
+  "sub_category": "market_stall_and_hawker_booth",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "browse_canopy_stall",
+  "gameplay_role": "canopy_stall",
+  "destructible": false,
+  "material": "cloth",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese urban street market asset: Fresh Fish & Seafood Monger Stall with Striped Hemp Sunshade Canopy (2x2). Detailed mercantile props, gouache textures with ink line accents, orthographic top-down view, clean transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "market_genre": "fresh_river_fishmonger"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/urban_street_and_market/mkt_fresh_river_fishmonger_canopy_covered_bamboo_stall.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.urban_street_and_market.mkt_fresh_river_fishmonger_canopy_covered_bamboo_stall:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.661,
+        0.635
+      ],
+      [
+        0.705,
+        0.747
+      ]
+    ],
+    "frac_zero": 0.4719,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.014,
+        0.653,
+        0.642,
+        0.606,
+        0.549,
+        0.598,
+        0.021
+      ],
+      [
+        0.147,
+        0.94,
+        0.996,
+        0.737,
+        0.971,
+        0.989,
+        0.247
+      ],
+      [
+        0.235,
+        0.885,
+        0.99,
+        0.889,
+        0.78,
+        0.801,
+        0.374
+      ],
+      [
+        0.681,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.479
+      ],
+      [
+        0.465,
+        0.895,
+        1.0,
+        0.871,
+        1.0,
+        0.958,
+        0.633
+      ],
+      [
+        0.354,
+        0.905,
+        1.0,
+        0.654,
+        1.0,
+        0.921,
+        0.357
+      ],
+      [
+        0.212,
+        0.279,
+        0.312,
+        0.251,
+        0.353,
+        0.917,
+        0.368
+      ]
+    ],
+    "crop_offset": [
+      16,
+      24
+    ],
+    "trunk_columns": [
+      4,
+      5,
+      6
+    ],
+    "contact_px": 32,
+    "contact_reference_px": 32.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

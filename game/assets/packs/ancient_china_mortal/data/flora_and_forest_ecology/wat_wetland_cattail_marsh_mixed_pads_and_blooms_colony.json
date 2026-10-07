@@ -1,0 +1,182 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.wat_wetland_cattail_marsh_mixed_pads_and_blooms_colony",
+  "name": "River Delta Cattail Reed Marsh Dense Colony of Intermingled Pads and Blooms",
+  "vietnamese_name": "Thảm Sen Rậm Rạp Hoa Lá Chen Chúc (3x2) (Đầm Lầy Lau Sậy Đầy Nước)",
+  "hanzi": "水泽香蒲丰茂苇荡接天莲叶映日大荷塘",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "aquatic_lotus_and_wetland_reed",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "survey_lotus_colony",
+  "gameplay_role": "lotus_colony",
+  "destructible": false,
+  "material": "plant",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese wetland aquatic flora: River Delta Cattail Reed Marsh Dense Colony of Intermingled Pads and Blooms. Delicate water reflection, ink outlines, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "wetland_type": "wetland_cattail_marsh"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/wat_wetland_cattail_marsh_mixed_pads_and_blooms_colony.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.wat_wetland_cattail_marsh_mixed_pads_and_blooms_colony:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.468,
+        0.725,
+        0.461
+      ],
+      [
+        0.598,
+        0.945,
+        0.663
+      ]
+    ],
+    "frac_zero": 0.6606,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.004,
+        0.02,
+        0.155,
+        0.099,
+        0.01,
+        0.062,
+        0.0
+      ],
+      [
+        0.121,
+        0.585,
+        0.913,
+        0.974,
+        0.845,
+        0.522,
+        0.018
+      ],
+      [
+        0.458,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.458
+      ],
+      [
+        0.792,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.708
+      ],
+      [
+        0.4,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.708
+      ],
+      [
+        0.311,
+        0.974,
+        1.0,
+        1.0,
+        1.0,
+        0.961,
+        0.261
+      ],
+      [
+        0.0,
+        0.253,
+        0.7,
+        0.886,
+        0.65,
+        0.336,
+        0.045
+      ]
+    ],
+    "crop_offset": [
+      82,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 78,
+    "contact_reference_px": 78.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

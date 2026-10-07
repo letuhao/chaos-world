@@ -1,0 +1,143 @@
+{
+  "id": "ancient_china_mortal.trade_craft_industry.ind_forge_heavy_forged_iron_anvil",
+  "name": "Heavy Block Iron Anvil on Tree Stump",
+  "vietnamese_name": "Đe Sắt Đúc Nặng Trên Gốc Cây",
+  "hanzi": "老铁砧木底座",
+  "category": "trade_craft_industry",
+  "sub_category": "iron_smithy_forge",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "strike_iron",
+  "gameplay_role": "Massive cast-iron anvil with horn set into banded oak block.",
+  "destructible": false,
+  "material": "iron",
+  "cultivation_element": "metal",
+  "prompt_summary": "Heavy dark iron anvil with horn resting on steel-banded solid tree trunk block, hammer resting on top.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "smithing_station": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/trade_craft_industry/ind_forge_heavy_forged_iron_anvil.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.trade_craft_industry.ind_forge_heavy_forged_iron_anvil:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.619
+      ]
+    ],
+    "frac_zero": 0.6514,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.3,
+        0.755,
+        0.184
+      ],
+      [
+        0.465,
+        0.971,
+        0.294
+      ],
+      [
+        0.778,
+        0.946,
+        0.738
+      ]
+    ],
+    "crop_offset": [
+      19,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 86,
+    "contact_reference_px": 86.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

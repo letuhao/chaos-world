@@ -1,0 +1,162 @@
+{
+  "id": "medieval_western.anglo_norman_feudal_heartland.ditched_rampart_embankment_pristine_hewn",
+  "name": "Hewn Oak Ditched Earthwork Rampart",
+  "vietnamese_name": "Gờ Đất Hào Phòng Thủ (Gỗ Đẽo Mới)",
+  "category": "anglo_norman_feudal_heartland",
+  "sub_category": "motte_and_bailey_earthwork",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": null,
+  "gameplay_role": "Feudal Anglo-Norman component (Ditched Earthwork Rampart).",
+  "destructible": false,
+  "material": "earth",
+  "feudal_culture": "anglo_norman",
+  "prompt_summary": "2D orthographic top-down game sprite of hewn oak ditched earthwork rampart, clean freshly worked wood and sharp chisel marks, Anglo-Norman medieval feudal style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/anglo_norman_feudal_heartland/ditched_rampart_embankment_pristine_hewn.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.anglo_norman_feudal_heartland.ditched_rampart_embankment_pristine_hewn:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.791,
+        0.746
+      ],
+      [
+        0.819,
+        0.841
+      ]
+    ],
+    "frac_zero": 0.5211,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.008,
+        0.773,
+        0.803,
+        0.75,
+        0.811,
+        0.627,
+        0.001
+      ],
+      [
+        0.653,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.984,
+        0.493
+      ],
+      [
+        0.876,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.683
+      ],
+      [
+        0.926,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.858
+      ],
+      [
+        0.933,
+        0.915,
+        0.893,
+        0.808,
+        0.899,
+        1.0,
+        0.868
+      ],
+      [
+        0.19,
+        0.0,
+        0.0,
+        0.0,
+        0.096,
+        0.727,
+        0.247
+      ]
+    ],
+    "crop_offset": [
+      17,
+      67
+    ],
+    "trunk_columns": [
+      5
+    ],
+    "contact_px": 66,
+    "contact_reference_px": 66.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

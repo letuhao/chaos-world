@@ -1,0 +1,113 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.hrb_cliff_iron_skin_dendrobium_trampled_damaged_herb",
+  "name": "Cliff Iron-Skin Dendrobium Orchid Herb Bruised by Mountain Beast Hooves",
+  "vietnamese_name": "Cây Thuốc Bị Thú Dẫm Gãy Cành (Thạch Hộc Thiết Bì Mọc Vách Đá)",
+  "hanzi": "雁荡绝壁铁皮石斛兽蹄踩折残损药草丛",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "mountain_medicinal_herb_wild",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "salvage_damaged_herb",
+  "gameplay_role": "damaged_herb",
+  "destructible": true,
+  "material": "plant",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese valuable mountain medicinal herb: Cliff Iron-Skin Dendrobium Orchid Herb Bruised by Mountain Beast Hooves. Botanical accuracy, luminous gouache accents, ink contours, top-down orthographic game prop on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "species": "cliff_iron_skin_dendrobium"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/hrb_cliff_iron_skin_dendrobium_trampled_damaged_herb.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.hrb_cliff_iron_skin_dendrobium_trampled_damaged_herb:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.617
+      ]
+    ],
+    "frac_zero": 0.6458,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.149,
+        0.678,
+        0.184
+      ],
+      [
+        0.612,
+        0.979,
+        0.395
+      ],
+      [
+        0.785,
+        0.972,
+        0.661
+      ]
+    ],
+    "crop_offset": [
+      19,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 80,
+    "contact_reference_px": 80.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

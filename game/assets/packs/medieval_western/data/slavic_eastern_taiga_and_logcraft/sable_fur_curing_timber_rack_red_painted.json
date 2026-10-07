@@ -1,0 +1,139 @@
+{
+  "id": "medieval_western.slavic_eastern_taiga_and_logcraft.sable_fur_curing_timber_rack_red_painted",
+  "name": "Folk Red Ochre Sable & Fox Fur Drying Stretcher",
+  "vietnamese_name": "Khung Căng Da Chồn Zibellin & Cáo (Sơn Đỏ Dân Gian)",
+  "category": "slavic_eastern_taiga_and_logcraft",
+  "sub_category": "taiga_fur_trappers_post",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "harvest_fur",
+  "gameplay_role": "Slavic taiga cultural feature (Sable & Fox Fur Drying Stretcher).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "slavic_rus",
+  "prompt_summary": "2D orthographic top-down game sprite of folk red ochre sable & fox fur drying stretcher, traditional red ochre painted motifs, Slavic Kievan Rus taiga style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/slavic_eastern_taiga_and_logcraft/sable_fur_curing_timber_rack_red_painted.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.slavic_eastern_taiga_and_logcraft.sable_fur_curing_timber_rack_red_painted:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.23
+      ],
+      [
+        0.72
+      ]
+    ],
+    "frac_zero": 0.725,
+    "blocks": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.052,
+        0.38,
+        0.0
+      ],
+      [
+        0.083,
+        0.543,
+        0.0
+      ],
+      [
+        0.1,
+        0.551,
+        0.0
+      ],
+      [
+        0.107,
+        0.517,
+        0.0
+      ],
+      [
+        0.649,
+        0.939,
+        0.338
+      ],
+      [
+        0.914,
+        1.0,
+        0.795
+      ],
+      [
+        0.76,
+        0.884,
+        0.611
+      ]
+    ],
+    "crop_offset": [
+      24,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 63,
+    "contact_reference_px": 63.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.ruf_golden_glazed_tile_straight_ridge_3x1",
+  "name": "Imperial Gilded Yellow Glazed Tile Straight Roof Ridge Strip (3x1)",
+  "vietnamese_name": "Sống Nóc Mái Thẳng (3x1) (Ngói Lưu Ly Vàng Hoàng Cung)",
+  "hanzi": "明黄琉璃金顶三步正脊",
+  "category": "modular_architecture_timber",
+  "sub_category": "modular_roof_and_flying_eaves",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "inspect_roof_ridge",
+  "gameplay_role": "roof_ridge",
+  "destructible": false,
+  "material": "tile",
+  "cultivation_element": "yang",
+  "prompt_summary": "Ancient Chinese modular roof and eaves component: Imperial Gilded Yellow Glazed Tile Straight Roof Ridge Strip (3x1). Intricate clay tiles, sweeping silhouette, gouache rendering with ink contours, orthographic top-down view, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "roof",
+    "style": "golden_glazed_tile"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/ruf_golden_glazed_tile_straight_ridge_3x1.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.ruf_golden_glazed_tile_straight_ridge_3x1:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.407,
+        0.9,
+        0.515
+      ]
+    ],
+    "frac_zero": 0.7182,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      8,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.255,
+        0.275,
+        0.675,
+        0.705,
+        0.768,
+        0.279,
+        0.277,
+        0.172
+      ],
+      [
+        0.665,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.832,
+        0.25
+      ],
+      [
+        0.004,
+        0.034,
+        0.606,
+        1.0,
+        1.0,
+        0.558,
+        0.064,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      76,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 92,
+    "contact_reference_px": 92.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      128
+    ]
+  }
+}

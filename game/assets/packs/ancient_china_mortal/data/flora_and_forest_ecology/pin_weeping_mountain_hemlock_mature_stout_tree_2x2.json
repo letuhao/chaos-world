@@ -1,0 +1,207 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.pin_weeping_mountain_hemlock_mature_stout_tree_2x2",
+  "name": "Weeping Hemlock Needles Mature Stout Mountain Pine (2x2)",
+  "vietnamese_name": "Cây Tùng Trưởng Thành Vững Chãi (2x2) (Tùng Kim Rủ Giọt Sương Rừng)",
+  "hanzi": "幽谷垂针铁杉双格健硕山崖成年松",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "ancient_pine_and_conifer",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "rest_under_pine_shade",
+  "gameplay_role": "forest_tree",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese pine tree landscape asset: Weeping Hemlock Needles Mature Stout Mountain Pine (2x2). Evergreen needle tufts, rough peeling bark, dark ink contours, top-down orthographic RPG sprite on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "tree_family": "conifer",
+    "variety": "weeping_mountain_hemlock"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/pin_weeping_mountain_hemlock_mature_stout_tree_2x2.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.pin_weeping_mountain_hemlock_mature_stout_tree_2x2:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.352,
+        0.43
+      ],
+      [
+        0.431,
+        0.286
+      ]
+    ],
+    "frac_zero": 0.6949,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.37,
+        0.786,
+        0.216,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.255,
+        0.896,
+        0.883,
+        0.928,
+        0.228,
+        0.0
+      ],
+      [
+        0.045,
+        0.724,
+        0.554,
+        0.541,
+        0.629,
+        0.539,
+        0.0
+      ],
+      [
+        0.302,
+        0.693,
+        0.268,
+        0.581,
+        0.406,
+        0.905,
+        0.498
+      ],
+      [
+        0.521,
+        0.851,
+        0.655,
+        0.619,
+        0.06,
+        0.296,
+        0.114
+      ],
+      [
+        0.0,
+        0.016,
+        0.438,
+        0.443,
+        0.019,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.072,
+        0.841,
+        0.855,
+        0.547,
+        0.007,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      22,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 95,
+    "contact_reference_px": 95.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

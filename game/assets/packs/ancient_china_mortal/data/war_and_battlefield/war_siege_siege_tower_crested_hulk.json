@@ -1,0 +1,370 @@
+{
+  "id": "ancient_china_mortal.war_and_battlefield.war_siege_siege_tower_crested_hulk",
+  "name": "Mobile Siege Assault Tower (Jinglan)",
+  "vietnamese_name": "Tháp Gỗ Tiến Thành Cao Vút (Tỉnh Lan)",
+  "hanzi": "木质井阑攻城塔",
+  "category": "war_and_battlefield",
+  "sub_category": "siege_engine_and_catapult",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    4,
+    4
+  ],
+  "canvas_px": [
+    512,
+    512
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "climb_tower",
+  "gameplay_role": "Colossal multi-story timber tower rolling on 8 wheels with archer platforms.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Colossal multi-tiered timber siege watchtower on heavy wheels with rope ladders and sheltered archer slits.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "height_advantage": 15.0
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/war_and_battlefield/war_siege_siege_tower_crested_hulk.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.war_and_battlefield.war_siege_siege_tower_crested_hulk:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.201,
+        0.835,
+        0.834,
+        0.166
+      ],
+      [
+        0.338,
+        1.0,
+        0.994,
+        0.288
+      ],
+      [
+        0.544,
+        1.0,
+        1.0,
+        0.524
+      ],
+      [
+        0.54,
+        0.794,
+        0.796,
+        0.553
+      ]
+    ],
+    "frac_zero": 0.641,
+    "blocks": [
+      [
+        true,
+        true,
+        true,
+        false
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 15,
+    "anchor_cell": [
+      2,
+      3
+    ],
+    "sub_grid": [
+      10,
+      15
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.271,
+        0.439,
+        0.344,
+        0.442,
+        0.363,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.254,
+        0.917,
+        1.0,
+        1.0,
+        1.0,
+        0.938,
+        0.341,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.242,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.388,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.518,
+        0.976,
+        1.0,
+        1.0,
+        1.0,
+        0.997,
+        0.688,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.012,
+        0.94,
+        1.0,
+        1.0,
+        1.0,
+        0.984,
+        0.146,
+        0.0,
+        0.0
+      ],
+      [
+        0.017,
+        0.256,
+        0.994,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.378,
+        0.018,
+        0.0
+      ],
+      [
+        0.025,
+        0.988,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.997,
+        1.0,
+        0.072,
+        0.0
+      ],
+      [
+        0.113,
+        0.801,
+        0.961,
+        1.0,
+        1.0,
+        1.0,
+        0.958,
+        0.819,
+        0.193,
+        0.0
+      ],
+      [
+        0.21,
+        0.798,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.843,
+        0.286,
+        0.0
+      ],
+      [
+        0.424,
+        0.882,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.911,
+        0.557,
+        0.0
+      ],
+      [
+        0.155,
+        0.575,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.898,
+        0.271,
+        0.0
+      ],
+      [
+        0.314,
+        0.483,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.599,
+        0.445,
+        0.0
+      ],
+      [
+        0.72,
+        0.937,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.95,
+        0.932,
+        0.229
+      ],
+      [
+        0.627,
+        0.678,
+        0.62,
+        0.928,
+        0.688,
+        0.86,
+        0.739,
+        0.6,
+        0.907,
+        0.094
+      ],
+      [
+        0.226,
+        0.06,
+        0.408,
+        0.446,
+        0.0,
+        0.199,
+        0.688,
+        0.0,
+        0.318,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      107,
+      18
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 31,
+    "contact_reference_px": 31.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        3
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      3
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      512
+    ]
+  }
+}

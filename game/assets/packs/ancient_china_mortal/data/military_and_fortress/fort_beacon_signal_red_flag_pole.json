@@ -1,0 +1,139 @@
+{
+  "id": "ancient_china_mortal.military_and_fortress.fort_beacon_signal_red_flag_pole",
+  "name": "Daytime Flag Signal Hoist Post",
+  "vietnamese_name": "Cột Thao Cờ Hiệu Ban Ngày",
+  "hanzi": "白天号旗升降杆",
+  "category": "military_and_fortress",
+  "sub_category": "signal_beacon_tower",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "raise_flag",
+  "gameplay_role": "Tall mast hoisting red, yellow, and black flags to indicate enemy counts.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Tall slender wooden pole with crossbar and pulleys hoisting colored swallowtail signal flags.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "enemy_count_signal": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/military_and_fortress/fort_beacon_signal_red_flag_pole.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.military_and_fortress.fort_beacon_signal_red_flag_pole:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.335
+      ]
+    ],
+    "frac_zero": 0.8931,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      2,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.307,
+        0.018
+      ],
+      [
+        0.166,
+        0.018
+      ],
+      [
+        0.654,
+        0.42
+      ]
+    ],
+    "crop_offset": [
+      44,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 38,
+    "contact_reference_px": 38.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "id": "ancient_china_mortal.low_realm_cultivation.cult_sand_bamboo_sand_scoop_ladle",
+  "name": "Large Bamboo Iron-Sand Shovel Ladle",
+  "vietnamese_name": "Gáo Tre Lớn Xúc Cát Sắt",
+  "hanzi": "竹制长柄大砂勺",
+  "category": "low_realm_cultivation",
+  "sub_category": "iron_sand_training_pan",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "take_scoop",
+  "gameplay_role": "Deep carved bamboo scoop for handling burning hot mineral grains.",
+  "destructible": true,
+  "material": "bamboo",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Deep ladle carved from giant bamboo node with wooden handle for scooping hot sand into pans.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "tool": "sand_scoop"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/low_realm_cultivation/cult_sand_bamboo_sand_scoop_ladle.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.low_realm_cultivation.cult_sand_bamboo_sand_scoop_ladle:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.519
+      ]
+    ],
+    "frac_zero": 0.7043,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.076,
+        0.316,
+        0.236
+      ],
+      [
+        0.559,
+        0.921,
+        0.282
+      ],
+      [
+        0.707,
+        0.954,
+        0.528
+      ]
+    ],
+    "crop_offset": [
+      19,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 76,
+    "contact_reference_px": 76.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

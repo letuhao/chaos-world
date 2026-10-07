@@ -1,0 +1,129 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.clf_yellow_loess_bluff_shandao_timber_plank_road",
+  "name": "Yellow Loess Terraced Bluff Cliff-Hanging Wooden Plank Road (2x1)",
+  "vietnamese_name": "Cầu Sạn Đạo Gỗ Bám Vách Núi (2x1) (Vách Đất Vàng Hoàng Thổ Phù Sa)",
+  "hanzi": "黄土塬高崖险峻绝壁悬木栈道",
+  "category": "mountain_cliff_geology",
+  "sub_category": "cliff_face_and_bluff",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "solid",
+  "interactive_verb": "traverse_plank_road",
+  "gameplay_role": "plank_road",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "wind",
+  "prompt_summary": "Ancient Chinese mountainous geology landscape: Yellow Loess Terraced Bluff Cliff-Hanging Wooden Plank Road (2x1). Realistic rock textures, ink contours, orthographic top-down world-map view, transparent alpha background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "geology_layer": "cliff",
+    "strata": "yellow_loess_bluff"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/clf_yellow_loess_bluff_shandao_timber_plank_road.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.clf_yellow_loess_bluff_shandao_timber_plank_road:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.647,
+        0.744
+      ]
+    ],
+    "frac_zero": 0.5966,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.163,
+        0.067,
+        0.109,
+        0.44,
+        0.579,
+        0.156
+      ],
+      [
+        0.807,
+        0.983,
+        0.999,
+        1.0,
+        0.999,
+        0.814
+      ],
+      [
+        0.803,
+        0.944,
+        0.958,
+        0.92,
+        0.938,
+        0.785
+      ]
+    ],
+    "crop_offset": [
+      34,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 184,
+    "contact_reference_px": 184.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

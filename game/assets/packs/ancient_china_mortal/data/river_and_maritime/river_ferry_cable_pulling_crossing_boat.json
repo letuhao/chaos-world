@@ -1,0 +1,220 @@
+{
+  "id": "ancient_china_mortal.river_and_maritime.river_ferry_cable_pulling_crossing_boat",
+  "name": "Cable-Guided River Ferry Platform",
+  "vietnamese_name": "Phà Kéo Dây Cáp Qua Sông Lớn",
+  "hanzi": "拉索大木渡船",
+  "category": "river_and_maritime",
+  "sub_category": "ferry_crossing_station",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    4,
+    2
+  ],
+  "canvas_px": [
+    512,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "solid",
+  "interactive_verb": "pull_cable",
+  "gameplay_role": "Broad flat ferry guided across wide river by hemp tow cable.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "water",
+  "prompt_summary": "Broad heavy timber river ferry platform with railing, carrying passengers and carts via overhead hemp cable.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "transit_hub": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/river_and_maritime/river_ferry_cable_pulling_crossing_boat.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.river_and_maritime.river_ferry_cable_pulling_crossing_boat:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.433,
+        0.503,
+        0.487,
+        0.437
+      ],
+      [
+        0.572,
+        0.592,
+        0.572,
+        0.589
+      ]
+    ],
+    "frac_zero": 0.6668,
+    "blocks": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      2,
+      1
+    ],
+    "sub_grid": [
+      15,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.024,
+        0.489,
+        0.052,
+        0.081,
+        0.044,
+        0.032,
+        0.041,
+        0.046,
+        0.082,
+        0.488,
+        0.019,
+        0.0,
+        0.0
+      ],
+      [
+        0.13,
+        0.442,
+        0.59,
+        0.95,
+        0.741,
+        0.653,
+        0.531,
+        0.536,
+        0.572,
+        0.539,
+        0.708,
+        0.981,
+        0.555,
+        0.422,
+        0.11
+      ],
+      [
+        0.545,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.516
+      ],
+      [
+        0.536,
+        0.942,
+        1.0,
+        1.0,
+        1.0,
+        0.912,
+        0.844,
+        0.88,
+        0.844,
+        0.865,
+        1.0,
+        1.0,
+        1.0,
+        0.94,
+        0.566
+      ],
+      [
+        0.0,
+        0.015,
+        0.515,
+        0.557,
+        0.423,
+        0.044,
+        0.0,
+        0.013,
+        0.0,
+        0.024,
+        0.357,
+        0.58,
+        0.524,
+        0.018,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.328,
+        0.208,
+        0.198,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.156,
+        0.245,
+        0.401,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      74
+    ],
+    "trunk_columns": [
+      12
+    ],
+    "contact_px": 17,
+    "contact_reference_px": 17.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

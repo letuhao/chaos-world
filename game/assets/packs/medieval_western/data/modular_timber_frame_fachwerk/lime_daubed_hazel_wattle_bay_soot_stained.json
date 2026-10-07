@@ -1,0 +1,164 @@
+{
+  "id": "medieval_western.modular_timber_frame_fachwerk.lime_daubed_hazel_wattle_bay_soot_stained",
+  "name": "Soot-Darkened Lime-Plastered Wattle & Daub Wall",
+  "vietnamese_name": "Vách Đan Nan Cây Phỉ Trát Vôi Rơm (Ám Khói Bếp)",
+  "category": "modular_timber_frame_fachwerk",
+  "sub_category": "wattle_daub_and_brick_infill",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": null,
+  "gameplay_role": "Fachwerk timber-frame modular element (Lime-Plastered Wattle & Daub Wall).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "germanic_holy_roman",
+  "prompt_summary": "2D orthographic top-down game sprite of soot-darkened lime-plastered wattle & daub wall, hearth chimney soot patina, Fachwerk half-timbering architecture style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/modular_timber_frame_fachwerk/lime_daubed_hazel_wattle_bay_soot_stained.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.modular_timber_frame_fachwerk.lime_daubed_hazel_wattle_bay_soot_stained:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.29
+      ],
+      [
+        0.758
+      ]
+    ],
+    "frac_zero": 0.6956,
+    "blocks": [
+      [
+        true
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.009,
+        0.875,
+        0.002
+      ],
+      [
+        0.0,
+        0.852,
+        0.0
+      ],
+      [
+        0.012,
+        0.862,
+        0.005
+      ],
+      [
+        0.556,
+        1.0,
+        0.517
+      ],
+      [
+        0.813,
+        1.0,
+        0.797
+      ],
+      [
+        0.595,
+        0.965,
+        0.604
+      ]
+    ],
+    "crop_offset": [
+      16,
+      50
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 79,
+    "contact_reference_px": 79.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      256
+    ]
+  }
+}

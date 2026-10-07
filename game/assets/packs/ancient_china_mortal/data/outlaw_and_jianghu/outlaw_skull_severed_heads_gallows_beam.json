@@ -1,0 +1,204 @@
+{
+  "id": "ancient_china_mortal.outlaw_and_jianghu.outlaw_skull_severed_heads_gallows_beam",
+  "name": "Iron Hook Gallows with Severed Heads",
+  "vietnamese_name": "Khung Gỗ Treo Thủ Cấp Bị Chém",
+  "hanzi": "挂首示众木桁",
+  "category": "outlaw_and_jianghu",
+  "sub_category": "skull_boundary_pole",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect",
+  "gameplay_role": "Overhead crossbeam with dangling iron meat hooks and cages.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Rough wooden crossbeam scaffold with rusted iron chains hanging iron gibbet cages and dried bones.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "dread_aura": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/outlaw_and_jianghu/outlaw_skull_severed_heads_gallows_beam.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.outlaw_and_jianghu.outlaw_skull_severed_heads_gallows_beam:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.345,
+        0.416
+      ],
+      [
+        0.182,
+        0.276
+      ]
+    ],
+    "frac_zero": 0.7432,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        false,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.616,
+        0.345,
+        0.32,
+        0.346,
+        0.323,
+        0.474,
+        0.489
+      ],
+      [
+        0.415,
+        0.553,
+        0.209,
+        0.357,
+        0.308,
+        0.683,
+        0.254
+      ],
+      [
+        0.218,
+        0.319,
+        0.123,
+        0.627,
+        0.46,
+        0.542,
+        0.024
+      ],
+      [
+        0.051,
+        0.337,
+        0.147,
+        0.221,
+        0.826,
+        0.603,
+        0.026
+      ],
+      [
+        0.0,
+        0.463,
+        0.096,
+        0.265,
+        0.52,
+        0.559,
+        0.0
+      ],
+      [
+        0.038,
+        0.749,
+        0.0,
+        0.0,
+        0.038,
+        0.693,
+        0.0
+      ],
+      [
+        0.157,
+        0.3,
+        0.0,
+        0.0,
+        0.0,
+        0.455,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      20,
+      16
+    ],
+    "trunk_columns": [
+      5
+    ],
+    "contact_px": 17,
+    "contact_reference_px": 17.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "id": "medieval_western.byzantine_and_crusader_frontier.machicolation_corbel_overhang_siege_scarred",
+  "name": "Arrow-Pocked Overhanging Stone Machicolation",
+  "vietnamese_name": "Lỗ Đổ Dầu Nhô Ra Đỡ Bằng Giá Đá (Vết Tên Công Thành)",
+  "category": "byzantine_and_crusader_frontier",
+  "sub_category": "crusader_limestone_curtain_wall",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "defend",
+  "gameplay_role": "Byzantine Crusader frontier feature (Overhanging Stone Machicolation).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "byzantine_crusader",
+  "prompt_summary": "2D orthographic top-down game sprite of arrow-pocked overhanging stone machicolation, impact craters from ballista bolts and catapult stones, Byzantine Crusader frontier outpost style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/byzantine_and_crusader_frontier/machicolation_corbel_overhang_siege_scarred.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.byzantine_and_crusader_frontier.machicolation_corbel_overhang_siege_scarred:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.764
+      ]
+    ],
+    "frac_zero": 0.6107,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.723,
+        0.902,
+        0.63
+      ],
+      [
+        0.932,
+        1.0,
+        0.9
+      ],
+      [
+        0.523,
+        0.708,
+        0.413
+      ]
+    ],
+    "crop_offset": [
+      22,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 70,
+    "contact_reference_px": 70.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

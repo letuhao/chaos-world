@@ -1,0 +1,113 @@
+{
+  "id": "ancient_china_mortal.imperial_and_law.law_drum_petitioners_kneeling_stone",
+  "name": "Petitioner Worn Kneeling Stone Paver",
+  "vietnamese_name": "Phiến Đá Quỳ Khóc Kêu Oan",
+  "hanzi": "告状跪石",
+  "category": "imperial_and_law",
+  "sub_category": "drum_of_grievance",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "kneel",
+  "gameplay_role": "Smooth concave stone worn down by thousands of weeping petitioners.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Worn grey stone slab paver ground insert with concave indentation from years of kneeling petitioners.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "supplication": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/imperial_and_law/law_drum_petitioners_kneeling_stone.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.imperial_and_law.law_drum_petitioners_kneeling_stone:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.785
+      ]
+    ],
+    "frac_zero": 0.593,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.47,
+        0.56,
+        0.646
+      ],
+      [
+        0.884,
+        1.0,
+        0.868
+      ],
+      [
+        0.895,
+        0.957,
+        0.918
+      ]
+    ],
+    "crop_offset": [
+      17,
+      20
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 94,
+    "contact_reference_px": 94.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

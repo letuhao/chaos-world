@@ -1,0 +1,180 @@
+{
+  "id": "ancient_china_mortal.rural_farming_and_pastoral.trp_golden_maize_corn_cobs_solar_grain_drying_tarpaulin",
+  "name": "Golden Sun-Cured Corn on the Cob Coarse Hemp Sheet Spread with Golden Harvest",
+  "vietnamese_name": "Tấm Bạt Vải Thô Trải Phơi Thóc Vàng (2x2) (Bắp Ngô Vàng Óng Buộc Chùm)",
+  "hanzi": "金黄饱满玉米棒挂铺地粗麻布摊晒稻谷片",
+  "category": "rural_farming_and_pastoral",
+  "sub_category": "crop_trellis_and_hanging_harvest",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "rake_solar_drying_grain",
+  "gameplay_role": "drying_sheet",
+  "destructible": false,
+  "material": "cloth",
+  "cultivation_element": "yang",
+  "prompt_summary": "Ancient Chinese farm crop harvest display: Golden Sun-Cured Corn on the Cob Coarse Hemp Sheet Spread with Golden Harvest. Golden rustic farm aesthetic, ink contours, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "crop_type": "golden_maize_corn_cobs"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/rural_farming_and_pastoral/trp_golden_maize_corn_cobs_solar_grain_drying_tarpaulin.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.rural_farming_and_pastoral.trp_golden_maize_corn_cobs_solar_grain_drying_tarpaulin:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.801,
+        0.781
+      ],
+      [
+        0.929,
+        0.919
+      ]
+    ],
+    "frac_zero": 0.3674,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.385,
+        0.47,
+        0.459,
+        0.456,
+        0.442,
+        0.572,
+        0.054
+      ],
+      [
+        0.756,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.479
+      ],
+      [
+        0.862,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.616
+      ],
+      [
+        0.906,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.701
+      ],
+      [
+        0.851,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.7
+      ],
+      [
+        0.804,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.785
+      ],
+      [
+        0.645,
+        0.97,
+        0.969,
+        0.932,
+        0.879,
+        0.899,
+        0.453
+      ]
+    ],
+    "crop_offset": [
+      23,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 192,
+    "contact_reference_px": 192.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

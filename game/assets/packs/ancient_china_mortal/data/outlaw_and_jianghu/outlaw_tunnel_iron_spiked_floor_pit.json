@@ -1,0 +1,111 @@
+{
+  "id": "ancient_china_mortal.outlaw_and_jianghu.outlaw_tunnel_iron_spiked_floor_pit",
+  "name": "Underground False-Floor Pit Trap",
+  "vietnamese_name": "Hầm Chông Sắt Đáy Sâu Bẫy Sập",
+  "hanzi": "翻板落坑铁刺陷阱",
+  "category": "outlaw_and_jianghu",
+  "sub_category": "secret_tunnel_trapdoor",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "disarm_trap",
+  "gameplay_role": "Pivoting floor slab dropping unsuspecting intruders onto spikes.",
+  "destructible": true,
+  "material": "iron",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Concealed pivoting flagstone floor hatch revealing deep pit of rusty iron spikes below.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "fatal_trap": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/outlaw_and_jianghu/outlaw_tunnel_iron_spiked_floor_pit.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.outlaw_and_jianghu.outlaw_tunnel_iron_spiked_floor_pit:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.769
+      ]
+    ],
+    "frac_zero": 0.6154,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.613,
+        0.988,
+        0.651
+      ],
+      [
+        0.864,
+        1.0,
+        0.875
+      ],
+      [
+        0.323,
+        0.976,
+        0.333
+      ]
+    ],
+    "crop_offset": [
+      16,
+      24
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 69,
+    "contact_reference_px": 69.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

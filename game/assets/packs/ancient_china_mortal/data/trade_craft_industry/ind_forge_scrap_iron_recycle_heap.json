@@ -1,0 +1,142 @@
+{
+  "id": "ancient_china_mortal.trade_craft_industry.ind_forge_scrap_iron_recycle_heap",
+  "name": "Rusted Scrap Iron & Broken Armor Barrel",
+  "vietnamese_name": "Thùng Sắt Vụn Chờ Nấu Lại",
+  "hanzi": "废铁回收熔炼篓",
+  "category": "trade_craft_industry",
+  "sub_category": "iron_smithy_forge",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "scavenge_iron",
+  "gameplay_role": "Barrel filled with horse shoes, bent sword tips, and chain links.",
+  "destructible": true,
+  "material": "iron",
+  "cultivation_element": "metal",
+  "prompt_summary": "Wooden barrel overflowing with tangled rusted iron chain links, bent horseshoes, and dull knives.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "scrap_yield": 15
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/trade_craft_industry/ind_forge_scrap_iron_recycle_heap.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.trade_craft_industry.ind_forge_scrap_iron_recycle_heap:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.664
+      ]
+    ],
+    "frac_zero": 0.6805,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.498,
+        0.707,
+        0.183
+      ],
+      [
+        0.888,
+        1.0,
+        0.794
+      ],
+      [
+        0.426,
+        0.852,
+        0.156
+      ]
+    ],
+    "crop_offset": [
+      24,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 45,
+    "contact_reference_px": 45.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

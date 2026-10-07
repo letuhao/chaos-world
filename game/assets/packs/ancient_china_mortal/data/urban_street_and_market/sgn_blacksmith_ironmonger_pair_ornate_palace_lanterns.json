@@ -1,0 +1,155 @@
+{
+  "id": "ancient_china_mortal.urban_street_and_market.sgn_blacksmith_ironmonger_pair_ornate_palace_lanterns",
+  "name": "Blacksmith & Weapon Armory Pair of Octagonal Gilded Horn Palace Lanterns",
+  "vietnamese_name": "Cặp Đèn Lồng Cung Đình Bát Giác (Tiệm Rèn Đao Kiếm Binh Khí)",
+  "hanzi": "神锋百炼铁铺门前悬挂双八角雕宫灯",
+  "category": "urban_street_and_market",
+  "sub_category": "shop_sign_board_and_banner",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect_palace_lanterns",
+  "gameplay_role": "palace_lanterns",
+  "destructible": false,
+  "material": "silk",
+  "cultivation_element": "yang",
+  "prompt_summary": "Ancient Chinese commercial street sign asset: Blacksmith & Weapon Armory Pair of Octagonal Gilded Horn Palace Lanterns. Traditional calligraphy, vibrant cloth or weathered timber, ink outlines, top-down orthographic game sprite, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "business_type": "blacksmith_ironmonger"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/urban_street_and_market/sgn_blacksmith_ironmonger_pair_ornate_palace_lanterns.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.urban_street_and_market.sgn_blacksmith_ironmonger_pair_ornate_palace_lanterns:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.44,
+        0.52
+      ]
+    ],
+    "frac_zero": 0.7103,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.124,
+        0.067,
+        0.113,
+        0.34,
+        0.333,
+        0.135
+      ],
+      [
+        0.635,
+        0.71,
+        1.0,
+        1.0,
+        0.771,
+        0.647
+      ],
+      [
+        0.014,
+        0.325,
+        1.0,
+        1.0,
+        0.396,
+        0.015
+      ]
+    ],
+    "crop_offset": [
+      32,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 92,
+    "contact_reference_px": 92.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      1,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      128,
+      0,
+      256,
+      128
+    ]
+  }
+}

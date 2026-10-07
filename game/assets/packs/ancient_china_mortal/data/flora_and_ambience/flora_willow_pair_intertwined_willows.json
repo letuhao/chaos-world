@@ -1,0 +1,213 @@
+{
+  "id": "ancient_china_mortal.flora_and_ambience.flora_willow_pair_intertwined_willows",
+  "name": "Pair of Intertwined Riverbank Willows",
+  "vietnamese_name": "Cặp Cây Liễu Quấn Quýt Bên Bờ Kênh",
+  "hanzi": "并蒂双生依水柳",
+  "category": "flora_and_ambience",
+  "sub_category": "weeping_willow_tree",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Two curved willow trunks arching over path creating natural bower.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "wood",
+  "prompt_summary": "Two intertwined gnarled willow tree trunks arching gracefully over ground, lush green cascading tendrils.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "canopy_shade": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_ambience/flora_willow_pair_intertwined_willows.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_ambience.flora_willow_pair_intertwined_willows:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.408,
+        0.731,
+        0.426
+      ],
+      [
+        0.406,
+        0.675,
+        0.337
+      ]
+    ],
+    "frac_zero": 0.7225,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.045,
+        0.495,
+        0.649,
+        0.215,
+        0.003,
+        0.0
+      ],
+      [
+        0.067,
+        0.421,
+        0.966,
+        0.984,
+        0.881,
+        0.116,
+        0.004
+      ],
+      [
+        0.657,
+        0.924,
+        0.813,
+        0.791,
+        0.751,
+        0.896,
+        0.193
+      ],
+      [
+        0.586,
+        0.476,
+        0.767,
+        0.411,
+        0.521,
+        0.772,
+        0.309
+      ],
+      [
+        0.261,
+        0.662,
+        0.505,
+        0.183,
+        0.454,
+        0.402,
+        0.123
+      ],
+      [
+        0.072,
+        0.215,
+        0.927,
+        0.857,
+        0.465,
+        0.098,
+        0.0
+      ],
+      [
+        0.207,
+        0.766,
+        0.944,
+        0.976,
+        0.764,
+        0.33,
+        0.012
+      ]
+    ],
+    "crop_offset": [
+      87,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 191,
+    "contact_reference_px": 191.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

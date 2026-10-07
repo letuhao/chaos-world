@@ -1,0 +1,148 @@
+{
+  "id": "ancient_china_mortal.creature_and_denizen.denizen_soldier_mounted_general_armor",
+  "name": "Armored General on Armored Steed",
+  "vietnamese_name": "Tướng Quân Mặc Thiết Giáp Cưỡi Chiến Mã",
+  "hanzi": "顶盔贯甲大将军",
+  "category": "creature_and_denizen",
+  "sub_category": "imperial_soldier_and_bailiff",
+  "type": "character_sprite",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "talk",
+  "gameplay_role": "Military Guard NPC",
+  "destructible": false,
+  "material": "flesh",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Commanding officer in gilded dragon-crest armor mounted on barded black warhorse.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "npc_type": "guard"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/creature_and_denizen/denizen_soldier_mounted_general_armor.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.creature_and_denizen.denizen_soldier_mounted_general_armor:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.523,
+        0.411
+      ],
+      [
+        0.385,
+        0.297
+      ]
+    ],
+    "frac_zero": 0.8389,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      4,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.212,
+        0.199,
+        0.021,
+        0.0
+      ],
+      [
+        0.394,
+        0.887,
+        0.342,
+        0.0
+      ],
+      [
+        0.499,
+        0.978,
+        0.682,
+        0.132
+      ],
+      [
+        0.548,
+        1.0,
+        0.676,
+        0.0
+      ],
+      [
+        0.357,
+        1.0,
+        0.369,
+        0.0
+      ],
+      [
+        0.04,
+        0.56,
+        0.046,
+        0.0
+      ],
+      [
+        0.0,
+        0.367,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      74,
+      17
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 11,
+    "contact_reference_px": 11.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

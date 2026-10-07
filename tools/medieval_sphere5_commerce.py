@@ -1,0 +1,275 @@
+# -*- coding: utf-8 -*-
+"""Sphere V: Commerce, Urban Life & Hanseatic Ports (5 Categories, 590 Assets).
+
+Categories:
+1. urban_street_markets_and_civic_life (130: 5 subs * 26)
+2. taverns_coaching_inns_and_alehouses (120: 5 subs * 24)
+3. harbors_quays_and_hanseatic_cogs (130: 5 subs * 26)
+4. river_fisheries_waterways_and_ferries (100: 5 subs * 20)
+5. fairs_festivals_and_carnivals (110: 5 subs * 22)
+"""
+
+from __future__ import annotations
+from typing import Callable
+
+
+def generate_sphere5(make_asset: Callable) -> list[dict]:
+    items: list[dict] = []
+
+    def build_cat_subs(category_id: str, subs_defs: list[tuple[str, list[tuple]]], variants: list[tuple], target_per_sub: int):
+        for sub_id, archetypes in subs_defs:
+            sub_items = []
+            for a_slug, a_name, a_vn, fp, col, blk, vis, vrb, atype, mat in archetypes:
+                for v_slug, v_name, v_vn, cult, desc in variants:
+                    slug = f"{a_slug}_{v_slug}"
+                    name = f"{v_name} {a_name}"
+                    vn = f"{a_vn} ({v_vn})"
+                    prompt = (
+                        f"2D orthographic top-down game sprite of {name.lower()}, {desc}, "
+                        f"Medieval urban commerce market and port life style, gouache hand-painted, ink contours, isolated on white background."
+                    )
+                    sub_items.append(make_asset(
+                        category_id, slug, name, vn, sub_id, fp, col, blk, vis, vrb,
+                        f"Commerce and urban life element ({a_name}).", False, mat, cult, prompt,
+                        asset_type=atype
+                    ))
+            while len(sub_items) < target_per_sub:
+                idx = len(sub_items) + 1
+                h_slug = f"{sub_id}_burgher_civic_{idx}"
+                h_name = f"Burgher's Pride {sub_id.replace('_', ' ').title()} #{idx}"
+                h_vn = f"Đô Thị Phồn Vinh {sub_id.replace('_', ' ').title()} #{idx}"
+                sub_items.append(make_asset(
+                    category_id, h_slug, h_name, h_vn, sub_id, [2, 1], "solid", True, "opaque",
+                    "trade", "Burgher merchant urban asset.", False, "wood", "universal_feudal",
+                    f"Burgher civic commercial asset of {sub_id}, Hanseatic merchant town, gouache style."
+                ))
+            items.extend(sub_items[:target_per_sub])
+
+    # =========================================================================
+    # 1. urban_street_markets_and_civic_life (130 assets: 5 subs * 26)
+    # =========================================================================
+    var_market = [
+        ("busy_daylight", "Market-Day Busy", "Ngày Phiên Nhộn Nhịp", "universal_feudal", "bustling trade crowds and colorful awnings"),
+        ("rain_slicked", "Rain-Glistening", "Mưa Ướt Lát Đá", "universal_feudal", "dark wet cobblestones and dripping canvas eaves"),
+        ("lantern_lit", "Torch-Illuminated", "Đuốc Đêm Soi Sáng", "universal_feudal", "warm yellow lanterns and tallow torches"),
+        ("civic_chartered", "Guild-Chartered", "Phường Hội Cấp Phép", "flemish_hanseatic", "official guild markings and sealed weights"),
+        ("mud_trodden", "Mud-Trodden", "Bùn Lầy Dẫm Đạp", "universal_feudal", "churned street mud and vegetable scrap debris"),
+        ("festive_bunting", "Bunting-Adorned", "Treo Cờ Hội", "universal_feudal", "colorful festive pennants and woven ribbons"),
+    ]
+    subs_market = [
+        ("canvas_roofed_market_stalls", [
+            ("striped_canvas_butchers_stall", "Butcher's Meat Hook Shambles Stall", "Quầy Thịt Của Thợ Mổ Mái Bạt Kèm Móc Sắt", [2, 1], "cover", False, "low", "buy_meat", "structure", "wood"),
+            ("fishmonger_slanted_ice_plank", "Fishmonger's Slanted Drainage Counter", "Bàn Gỗ Nghiêng Bán Cá Rút Nước Ra Phố", [2, 1], "cover", False, "low", "buy_fish", "prop", "wood"),
+            ("greengrocer_tiered_produce_crate", "Greengrocer's Tiered Vegetable Baskets", "Kệ Gỗ Xếp Tầng Sọt Đựng Củ Cải & Bắp Cải", [1, 1], "cover", False, "low", "buy_vegetables", "prop", "organic"),
+            ("cloth_merchant_sheltered_booth", "Draper's Canvas Shaded Display Booth", "Gian Hàng Bán Vải Dạ Có Mái Che Rộng", [2, 2], "solid", True, "opaque", "browse_cloth", "structure", "cloth"),
+        ]),
+        ("civic_market_cross_and_pillory", [
+            ("octagonal_stone_market_cross", "Stepped Civic Market Cross Monument", "Cột Thánh Giá Đá Giữa Chợ Bệ Tám Cạnh", [2, 2], "solid", True, "opaque", "gather_news", "structure", "stone"),
+            ("wooden_neck_and_wrist_pillory", "Heavy Oak Punitive Pillory on Platform", "Gông Cổ & Cổ Tay Bằng Gỗ Sồi Trên Bục Phạt", [1, 2], "solid", True, "low", "inspect_criminal", "prop", "wood"),
+            ("public_flogging_whipping_post", "Iron-Ringed Whipping Post on Cobbles", "Cột Gỗ Buộc Tội Nhân Chịu Đánh Roi", [1, 1], "solid", True, "opaque", "witness_justice", "prop", "wood"),
+            ("charter_scroll_iron_cage_pole", "Market Charter Iron Display Cage", "Lồng Sắt Treo Hiến Chương Miễn Thuế Chợ", [1, 1], "cover", False, "low", "read_charter", "prop", "iron"),
+        ]),
+        ("swinging_wrought_iron_inn_signs", [
+            ("gilded_boars_head_hanging_sign", "Gilded Boar's Head Wrought Iron Sign", "Biển Hiệu Đầu Heo Rừng Mạ Vàng Treo Giá Sắt", [1, 1], "cover", False, "transparent", "read_sign", "prop", "iron"),
+            ("crowned_swan_painted_trade_board", "Painted Crowned Swan Trade Board", "Biển Gỗ Hình Thiên Nga Đội Vương Miện", [1, 1], "cover", False, "transparent", "inspect_sign", "prop", "wood"),
+            ("golden_fleece_guild_signboard", "Guild of Weavers Golden Fleece Emblem", "Biển Hiệu Lông Cừu Vàng Của Phường Dệt", [1, 1], "cover", False, "transparent", "read_guild", "prop", "iron"),
+            ("creaking_iron_bracket_lantern", "Projecting Wall Bracket Iron Lantern", "Đèn Lồng Treo Giá Sắt Nhô Ra Mặt Đường", [1, 1], "cover", False, "transparent", "light_lantern", "prop", "iron"),
+        ]),
+        ("town_well_and_water_conduit", [
+            ("hexagonal_ashlar_parapet_well", "Hexagonal Limestone Town Well Canopy", "Giếng Nước Công Cộng Đá Lục Giác Có Mái", [2, 2], "solid", True, "low", "draw_water", "structure", "stone"),
+            ("cast_lead_spouting_conduit_head", "Lead Cistern Conduit Water Spout (Lavoir)", "Máng Nước Dẫn Bằng Chì Của Thành Phố", [1, 2], "solid", True, "opaque", "wash", "structure", "iron"),
+            ("peasant_women_laundry_troughs", "Stone Laundry Rinsing Trough Row", "Dãy Máng Đá Giặt Quần Áo Của Phụ Nữ", [2, 1], "water", False, "low", "wash_laundry", "structure", "stone"),
+            ("counterweighted_iron_well_crank", "Iron Windlass Crank & Oak Water Pail", "Trục Sắt Quay Tay Kéo Thùng Nước Gỗ Sồi", [1, 1], "cover", False, "low", "haul_bucket", "prop", "iron"),
+        ]),
+        ("muddy_cart_ruts_and_street_gutters", [
+            ("parallel_iron_tire_cart_ruts", "Deep Paved Street Iron Cartwheel Ruts", "Vệt Lún Bánh Xe Ngựa Bọc Sắt Trên Mặt Đường", [2, 1], "walk_surface", False, "transparent", None, "structure", "stone"),
+            ("central_kennel_waste_gutter", "Cobblestoned Central Sewage Kennel Ditch", "Rãnh Nước Thải Rác Rưởi Giữa Lòng Đường Phố", [2, 1], "walk_surface", False, "transparent", "avoid_filth", "structure", "stone"),
+            ("wooden_plank_street_crossing", "Raised Oak Footbridge over Street Sludge", "Cầu Ván Gỗ Cho Người Đi Bộ Băng Qua Vũng Bùn", [1, 1], "walk_surface", False, "transparent", "cross_clean", "structure", "wood"),
+            ("curbside_rubbish_and_straw_pile", "Curbside Heap of Manure & Rotten Straw", "Đống Rơm Mục & Rác Thải Đổ Ven Lề Đường", [1, 1], "cover", False, "low", "search_rubbish", "prop", "organic"),
+        ]),
+    ]
+    build_cat_subs("urban_street_markets_and_civic_life", subs_market, var_market, 26)
+
+    # =========================================================================
+    # 2. taverns_coaching_inns_and_alehouses (120 assets: 5 subs * 24)
+    # =========================================================================
+    var_inn = [
+        ("warm_firelight", "Hearth-Warmed", "Lửa Bếp Ấm Áp", "universal_feudal", "warm golden flickering firelight and roasted savory aroma"),
+        ("spilled_ale", "Ale-Stained", "Loang Lổ Bọt Bia", "universal_feudal", "dark beer-stained timber and pewter tankard rings"),
+        ("tobacco_peat_smoke", "Pipe-Smoked", "Nghi Ngút Khói Thuốc", "universal_feudal", "hazy aromatic pipeweed and peat fire smoke"),
+        ("brawl_battered", "Brawl-Scarred", "Vết Tích Đánh Nhau", "universal_feudal", "notched table edges and cracked tankard dents"),
+        ("candlelit_snug", "Tallow-Gleaming", "Ánh Nến Mờ Ảo", "universal_feudal", "soft candle tallow glow in cozy corners"),
+        ("rainy_haven", "Rain-Sheltered", "Trú Mưa Ấm Áp", "universal_feudal", "wet coats steaming before the fire"),
+    ]
+    subs_inn = [
+        ("heavy_oak_tavern_bar_counter", [
+            ("thick_oak_plank_taproom_counter", "Massive Slab Oak Tavern Serving Bar", "Quầy Rượu Gỗ Sồi Dày Tấm Gian Nhà Trọ", [2, 1], "solid", True, "low", "order_drink", "structure", "wood"),
+            ("brass_tap_cask_rack_behind_bar", "Tiered Ale Casks with Turnable Brass Taps", "Kệ Gỗ Đỡ Thùng Rượu Có Vòi Đồng Rót Bia", [2, 2], "solid", True, "opaque", "draw_ale", "structure", "wood"),
+            ("pewter_tankards_draining_shelf", "Slatted Draining Rack for Pewter Flagons", "Giá Gỗ Úp Cốc Bia Bằng Thiếc Sau Khi Rửa", [1, 1], "cover", False, "low", "take_tankard", "prop", "iron"),
+            ("innkeepers_locked_coin_till", "Iron-Banded Oak Counter Money Drawer", "Hộc Bàn Thu Tiền Bằng Gỗ Nẹp Sắt Khóa Chặt", [1, 1], "cover", False, "low", "loot_coin", "prop", "wood"),
+        ]),
+        ("common_room_bench_and_trestles", [
+            ("long_knotty_pine_trestle_table", "Long Taproom Drinking Trestle & Benches", "Bàn Gỗ Thông Dài Uống Rượu Kèm Băng Ghế", [2, 1], "cover", False, "low", "sit_drink", "prop", "wood"),
+            ("round_three_legged_tavern_stool", "Rough Three-Legged Oak Drinking Stool", "Ghế Đẩu Ba Chân Bằng Gỗ Sồi Thô Sơ", [1, 1], "cover", False, "low", "sit", "prop", "wood"),
+            ("grease_candle_chची_iron_cresset", "Suspended Iron Hoop Chandelier with Tallow", "Vòng Sắt Treo Trần Cắm Nến Mỡ Soi Bàn Tiệc", [1, 1], "cover", False, "transparent", "light", "prop", "iron"),
+            ("bone_dice_and_wooden_cup_game", "Carved Bone Dice & Leather Shaking Cup", "Xúc Xắc Bằng Xương & Ống Da Lắc Đổ Bác", [1, 1], "cover", False, "low", "gamble_dice", "prop", "organic"),
+        ]),
+        ("coaching_inn_courtyard_and_stables", [
+            ("cobblestoned_coaching_yard", "Enclosed Inn Cobblestone Carriage Yard", "Sân Nhà Trọ Lát Đá Cuội Cho Cỗ Xe Dừng Đỗ", [2, 2], "walk_surface", False, "transparent", "park_wagon", "structure", "stone"),
+            ("guest_horse_timber_stables", "Row of Weatherboard Guest Horse Stalls", "Dãy Chuồng Ngựa Bằng Gỗ Dành Cho Khách Trọ", [2, 2], "solid", True, "opaque", "stable_mount", "structure", "wood"),
+            ("hostlers_hay_loft_pulley_bay", "Gable-Mounted Haycock Hoist Pulley", "Ròng Rọc Kéo Cỏ Khô Lên Gác Xép Nhà Trọ", [1, 2], "solid", True, "opaque", "hoist_hay", "structure", "wood"),
+            ("water_trough_for_stage_horses", "Hollow Stone Roadside Horse Water Trough", "Máng Đá Cho Ngựa Kéo Xe Uống Nước Ven Đường", [2, 1], "water", False, "low", "water_horse", "prop", "stone"),
+        ]),
+        ("taproom_hearth_and_roast_spit", [
+            ("open_stone_taproom_fireplace", "Broad Inglenook Taproom Stone Hearth", "Lò Sưởi Đá Rộng Có Chỗ Ngồi Tránh Gió", [2, 2], "solid", True, "opaque", "sit_by_hearth", "structure", "stone"),
+            ("turnspit_dog_wheel_rotisserie", "Timber Dog-Wheel Spit Turning Mechanism", "Bánh Xe Gỗ Cho Chó Chạy Xoay Trục Nướng Thịt", [1, 2], "solid", True, "low", "roast_meat", "prop", "wood"),
+            ("iron_hanging_stew_cauldron", "Simmering Pot of Peasant Barley Broth", "Nồi Sắt Treo Đun Canh Lúa Mạch & Thịt Hầm", [1, 1], "cover", False, "low", "eat_stew", "prop", "iron"),
+            ("leather_fire_screen_settle_bench", "High-Backed Oak Settle Draft-Screen Bench", "Ghế Dài Lưng Cao Chắn Gió Bấc Bên Bếp Lò", [2, 1], "cover", False, "low", "rest", "prop", "wood"),
+        ]),
+        ("guest_chamber_pallet_beds", [
+            ("shared_dormitory_straw_mattress", "Common Room Straw-Filled Burlap Pallet", "Nệm Rơm Trải Sàn Phòng Trọ Ngủ Tập Thể", [1, 2], "walk_surface", False, "low", "sleep", "prop", "organic"),
+            ("chamber_pot_and_wash_stand", "Pewter Chamber Pot & Earthenware Pitcher", "Bô Thiếc Dưới Gầm Giường & Bình Nước Rửa Mặt", [1, 1], "cover", False, "low", "use_basin", "prop", "stone"),
+            ("wood_shuttered_garret_window", "Small Attic Eaves Diamond Shutter Window", "Cửa Sổ Mái Gác Xép Nan Gỗ Chắn Gió Đêm", [1, 1], "cover", True, "transparent", "open_window", "prop", "wood"),
+            ("travelers_heavy_iron_strongbox", "Iron-Banded Travel Trunk with Padlock", "Rương Gỗ Nẹp Sắt Của Khách Trọ Khóa Ổ", [1, 1], "cover", False, "low", "unlock_chest", "prop", "iron"),
+        ]),
+    ]
+    build_cat_subs("taverns_coaching_inns_and_alehouses", subs_inn, var_inn, 24)
+
+    # =========================================================================
+    # 3. harbors_quays_and_hanseatic_cogs (130 assets: 5 subs * 26)
+    # =========================================================================
+    var_harbor = [
+        ("salt_crusted", "Sea-Salt Crusted", "Đọng Muối Biển Trắng", "universal_feudal", "white brine salt crust and seaweed clinging to timber"),
+        ("pitch_blackened", "Ship-Pitch Tarred", "Quét Hắc Ín Thuyền", "flemish_hanseatic", "heavy glossy waterproof black pitch seams"),
+        ("cargo_heaped", "Trade-Heaped", "Chất Đầy Hàng Hóa", "flemish_hanseatic", "bulging crates, barrels, and sacks of Baltic rye"),
+        ("tide_washed", "High-Tide Slime", "Rong Rêu Thủy Triều", "universal_feudal", "green slippery sea-lettuce and barnacles at waterline"),
+        ("gale_weathered", "Atlantic Gale-Worn", "Gió Bão Biển Bắc", "nordic_norse", "bleached driftwood grey and wind-scoured surfaces"),
+        ("gilded_ensign", "Hanse-Flagged", "Treo Cờ Hanseatic", "flemish_hanseatic", "red-and-white Hanseatic League maritime banners"),
+    ]
+    subs_harbor = [
+        ("heavy_timber_wharf_and_quays", [
+            ("creosote_timber_piling_wharf_deck", "Heavy Oak Pile Quay Waterfront Deck", "Cầu Tàu Lát Ván Gỗ Sồi Đóng Cọc Xuống Nước", [2, 2], "walk_surface", False, "low", "walk_quay", "structure", "wood"),
+            ("squared_granite_harbor_seawall", "Massive Granite Ashlar Harbor Breakwater", "Đê Chắn Sóng Bến Cảng Xây Bằng Đá Hoa Cương", [2, 2], "solid", True, "low", None, "structure", "stone"),
+            ("mooring_iron_bitt_and_hemp_line", "Cast Iron Mooring Bollard with Hawser", "Cột Bích Sắt Buộc Dây Thừng Neo Thuyền", [1, 1], "cover", False, "low", "tie_ship", "prop", "iron"),
+            ("stone_harbor_water_landing_stairs", "Low Tide Sea-Algae Wet Landing Slip", "Bậc Đá Lên Xuống Thuyền Dính Rong Rêu Trơn", [1, 2], "walk_surface", False, "low", "step_ashore", "structure", "stone"),
+        ]),
+        ("hanseatic_single_masted_cog", [
+            ("clinker_built_cog_hull_broadside", "Clinker-Planked Baltic Cog Ship Hull", "Thân Thuyền Buôn Cog Ván Gỗ Chồng Mép", [3, 2], "solid", True, "opaque", "board_ship", "structure", "wood"),
+            ("forecastle_raised_archers_fighting_deck", "Elevated Square Forecastle Battle Deck", "Sàn Chiến Đấu Mũi Thuyền Nhô Cao (Forecastle)", [2, 2], "solid", True, "opaque", "climb_forecastle", "structure", "wood"),
+            ("stern_rudder_and_tiller_assembly", "Stern-Hung Pintle Rudder & Oak Tiller", "Bánh Lái Đuôi Thuyền Treo Bản Lề & Cần Lái", [1, 2], "cover", False, "low", "steer_vessel", "prop", "wood"),
+            ("square_rigged_single_mast_yardarm", "Single Pine Mast with Furled Square Sail", "Cột Buồm Gỗ Thông Kèm Cánh Buồm Vuông Cuộn Lại", [1, 3], "solid", True, "opaque", "unfurl_sail", "structure", "wood"),
+        ]),
+        ("treadwheel_harbor_hoisting_crane", [
+            ("round_timber_treadwheel_crane_house", "Dual-Man Human Treadwheel Harbor Crane", "Cần Cẩu Cảng Bằng Gỗ Chạy Bằng Bánh Xe Người", [2, 2], "solid", True, "opaque", "operate_crane", "structure", "wood"),
+            ("iron_cargo_swiveling_jib_boom", "Cantilevered Oak Crane Jib with Iron Hook", "Cần Cẩu Gỗ Nhô Ra Mặt Nước Kèm Móc Sắt", [2, 1], "cover", False, "transparent", "hoist_cargo", "prop", "iron"),
+            ("cargo_sling_braided_rope_basket", "Heavy Rope Net Sling Full of Baltic Casks", "Lưới Thừng Cẩu Hàng Đựng Thùng Rượu Baltic", [1, 1], "cover", False, "low", "loot_cargo", "prop", "organic"),
+            ("crane_operators_counterweight_bin", "Stone-Ballasted Counterweight Box", "Thùng Đựng Đá Hộc Cân Bằng Trọng Lực Cần Cẩu", [1, 1], "solid", True, "low", None, "prop", "wood"),
+        ]),
+        ("herring_salting_barrels_and_wharf", [
+            ("open_oak_tub_salting_herring", "Brine Vat Full of Fresh Salted Herrings", "Thùng Gỗ Muối Cá Trích Đầy Nước Muối Mặn", [1, 1], "cover", False, "low", "salt_fish", "prop", "wood"),
+            ("gutting_bench_fishwives_slanted_board", "Slanted Fish Gutting Table with Knives", "Bàn Gỗ Nghiêng Mổ Cá Trích Của Thợ Đánh Cá", [2, 1], "cover", False, "low", "gut_fish", "prop", "wood"),
+            ("stack_of_cured_herring_casks", "Row of Hanseatic Branded Herring Barrels", "Chồng Thùng Gỗ Đóng Dấu Phường Cá Hanse", [2, 1], "solid", True, "low", "inspect_casks", "prop", "wood"),
+            ("coarse_salt_measuring_shovel", "Wooden Salt Shovel & Measuring Bucket", "Xẻng Gỗ Xúc Muối & Thùng Đong Muối Biển", [1, 1], "cover", False, "low", "take_salt", "prop", "wood"),
+        ]),
+        ("customs_tollhouse_and_weighing_scale", [
+            ("timber_frame_customs_tollhouse_pier", "Quayside Customs Toll Collector Office", "Văn Phòng Thu Thuế Cảng Bằng Gỗ Khung", [2, 2], "solid", True, "opaque", "enter_customs", "structure", "wood"),
+            ("harbor_steelyard_suspended_balance", "Great Quayside Suspended Balance Beam", "Cân Đòn Treo Lớn Kiểm Tra Trọng Lượng Hàng", [1, 2], "solid", True, "low", "weigh_goods", "prop", "iron"),
+            ("merchant_cargo_manifest_desk", "Clerk's Desk with Inkpot & Wax Seals", "Bàn Kê Khai Hàng Hóa Có Lọ Mực & Dấu Sáp", [1, 1], "cover", False, "low", "inspect_manifest", "prop", "wood"),
+            ("smugglers_confiscated_contraband_pile", "Seized Contraband Spices & Silk Bales", "Đống Hàng Buôn Lậu Bị Tịch Thu Gồm Hồ Tiêu & Lụa", [1, 1], "cover", False, "low", "steal_contraband", "prop", "cloth"),
+        ]),
+    ]
+    build_cat_subs("harbors_quays_and_hanseatic_cogs", subs_harbor, var_harbor, 26)
+
+    # =========================================================================
+    # 4. river_fisheries_waterways_and_ferries (100 assets: 5 subs * 20)
+    # =========================================================================
+    var4_river = [
+        ("river_soaked", "River-Damp Reed", "Sậy Ướt Nước Sông", "universal_feudal", "fresh river silt and waterweed aroma"),
+        ("driftwood_weathered", "Driftwood-Scoured", "Gỗ Trôi Sông Bạc Màu", "universal_feudal", "bleached pale river driftwood timbers"),
+        ("pitch_sealed", "Pitch-Caulked", "Trét Nhựa Chống Thấm", "universal_feudal", "waterproof tar smeared along bottom seams"),
+        ("mossy_submerged", "Waterline Algae", "Rong Rêu Nước Ngọt", "universal_feudal", "slick green trailing river algae and silt"),
+    ]
+    subs_river = [
+        ("cable_guided_river_punting_ferry", [
+            ("flat_bottom_timber_cable_ferry", "Flat-Bottomed Heavy Oak Ferry Barge", "Phà Gỗ Đáy Bằng Kéo Cáp Vượt Sông", [2, 2], "walk_surface", False, "low", "board_ferry", "structure", "wood"),
+            ("overhead_hemp_guiding_cable", "Moored River Crossing Guide Rope Cable", "Dây Cáp Dẫn Đường Kéo Phà Căng Qua Sông", [2, 1], "walk_surface", False, "transparent", "pull_cable", "prop", "organic"),
+            ("ashwood_punting_pole_rack", "Pair of Long Forked Ashwood Punting Poles", "Cặp Sào Đẩy Phà Bằng Gỗ Tần Bì Dài Đầu Chẽ", [1, 1], "cover", False, "low", "take_pole", "prop", "wood"),
+            ("ferrymans_shelter_thatched_shack", "Wayside Ferryman's Small Toll Hut", "Chòi Tranh Thu Tiền Của Người Lái Đò", [2, 1], "solid", True, "opaque", "pay_fare", "structure", "wood"),
+            ("riverbank_winch_anchor_bollard", "Timber Winch Drum Anchored on Bank", "Trục Tời Gỗ Neo Dây Phà Đầu Bến Sông", [1, 1], "cover", False, "low", "operate_winch", "prop", "wood"),
+        ]),
+        ("wicker_fish_weir_and_eel_traps", [
+            ("woven_wattle_river_fish_weir", "V-Shaped Hazel Fish Weir Palisade", "Đập Ngăn Cá Bằng Nan Cành Phỉ Hình Chữ V", [2, 2], "solid", True, "low", "inspect_weir", "structure", "wood"),
+            ("long_wicker_conical_eel_basket", "Conical Wicker River Eel Trap (Kype)", "Dớn Đan Nan Bắt Cá Chình Hình Nón (Kype)", [1, 1], "cover", False, "low", "harvest_fish", "prop", "wood"),
+            ("submerged_fish_keep_timber_cage", "Perforated Live Fish Storage Corf Box", "Lồng Gỗ Đục Lỗ Ngâm Dưới Nước Nhốt Cá Sống", [1, 1], "water", False, "low", "retrieve_fish", "prop", "wood"),
+            ("willow_withy_binding_line", "Bundle of Fresh Pliant Willow Withies", "Bó Nan Cây Liễu Dẻo Dùng Đan Lưới Bắt Cá", [1, 1], "cover", False, "transparent", "weave_trap", "prop", "organic"),
+            ("fisherman_drying_net_timber_trestle", "High Timber Trestle for Drying Hemp Nets", "Giàn Gỗ Cao Phơi Lưới Đánh Cá Sợi Gai", [2, 1], "cover", False, "low", "dry_nets", "prop", "wood"),
+        ]),
+        ("coracle_skiffs_and_flat_bottom_punts", [
+            ("oval_hide_covered_coracle_boat", "River Coracle Covered in Tarred Bull-Hide", "Thuyền Thúng Bọc Da Bò Quét Hắc Ín (Coracle)", [1, 1], "cover", False, "low", "paddle_coracle", "prop", "organic"),
+            ("narrow_clinker_river_punt_boat", "Narrow Flat-Bottomed Marshland Punt Skiff", "Thuyền Gỗ Đáy Bằng Đi Vùng Đầm Lầy", [2, 1], "cover", False, "low", "punt_boat", "prop", "wood"),
+            ("beaver_tail_ash_paddle_pair", "Pair of Carved Leaf-Blade River Paddles", "Cặp Mái Chèo Gỗ Tần Bì Hình Lá", [1, 1], "cover", False, "low", "take_paddle", "prop", "wood"),
+            ("reed_anchored_fisherman_cane_pole", "Split Cane River Fishing Rod Stuck in Mud", "Cần Câu Cá Bằng Trúc Cắm Bờ Bùn Ven Sông", [1, 1], "cover", False, "transparent", "fish_rod", "prop", "organic"),
+            ("woven_rush_fish_creel_basket", "Rush Creel Basket Overflowing with Perch", "Giỏ Đan Cỏ Lác Đầy Cá Vược Sông Mới Bắt", [1, 1], "cover", False, "low", "take_perch", "prop", "organic"),
+        ]),
+        ("river_lock_flash_gate_sluice", [
+            ("timber_flash_lock_movable_paddles", "Single-Gate Flash Lock with Removable Rymers", "Cửa Cống Gỗ Rút Xà Ngăn Nước Lũ (Flash Lock)", [2, 2], "solid", True, "opaque", "pull_rymer", "structure", "wood"),
+            ("sloping_timber_boat_slide_ramp", "Greased Wooden Boat Hauling Slide Ramp", "Máng Trượt Gỗ Bôi Mỡ Kéo Thuyền Qua Đập", [2, 1], "walk_surface", False, "low", "slide_boat", "structure", "wood"),
+            ("stone_abutment_masonry_pier", "Ashlar Masonry River Lock Abutment Pier", "Trụ Đá Vôi Kè Bờ Khóa Cửa Cống Sông", [1, 2], "solid", True, "opaque", None, "structure", "stone"),
+            ("iron_sluice_windlass_winch_drum", "Heavy Chain Hand Windlass for Sluice Gate", "Trục Tời Xích Sắt Nâng Cửa Xả Nước", [1, 1], "cover", False, "low", "wind_sluice", "prop", "iron"),
+            ("sluice_keeper_stone_lodge", "Single-Room Stone Lock Keeper's Cottage", "Nhà Tranh Nhỏ Bằng Đá Của Người Trông Coi Cống", [2, 2], "solid", True, "opaque", "enter_lodge", "structure", "stone"),
+        ]),
+        ("watercress_beds_and_reedy_channels", [
+            ("gravel_channel_watercress_plot", "Clean Springwater Watercress Bed Plot", "Luống Rau Xà Lách Xoong Nước Suối Trong Vắt", [2, 1], "water", False, "transparent", "harvest_cress", "flora", "plant"),
+            ("wicker_lined_shallow_irrigation_rill", "Willow Hurdle Lined Irrigation Channel", "Mương Dẫn Nước Nhỏ Kè Nan Liễu Ven Ruộng", [2, 1], "water", False, "transparent", "step_over", "structure", "wood"),
+            ("cress_gatherers_wicker_basket", "Round Shallow Basket of Crisp Fresh Cress", "Rổ Cạn Đan Nan Đựng Rau Cải Xoong Tươi", [1, 1], "cover", False, "low", "take_cress", "prop", "wood"),
+            ("dense_cattail_and_bulrush_thicket", "Thicket of Broad-Leaved Cattails & Bulrushes", "Bụi Cỏ Nến & Cây Bồn Bồn Rậm Ven Bờ Nước", [1, 1], "cover", True, "low", "gather_reeds", "flora", "plant"),
+            ("muddy_riverbank_otter_holt_log", "Hollow River Willow Log Otter Den", "Khúc Cây Liễu Rỗng Nơi Rái Cá Làm Tổ", [1, 1], "cover", False, "low", "search_den", "prop", "wood"),
+        ]),
+    ]
+    build_cat_subs("river_fisheries_waterways_and_ferries", subs_river, var4_river, 20)
+
+    # =========================================================================
+    # 5. fairs_festivals_and_carnivals (110 assets: 5 subs * 22)
+    # =========================================================================
+    var_fair = [
+        ("festive_bright", "Carnival-Bright", "Lễ Hội Sặc Sỡ", "universal_feudal", "bright primary dyed wool fabrics and ribbons"),
+        ("candlelit_evening", "Torchlit-Evening", "Đêm Hội Ánh Đuốc", "universal_feudal", "glowing bonfire embers and pitch flare torches"),
+        ("confetti_flower", "Flower-Strewn", "Rải Hoa Lễ Hội", "universal_feudal", "scattered rose petals and sweet rushes underfoot"),
+        ("weather_faded", "Fairground-Weathered", "Gió Bụi Hội Chợ", "universal_feudal", "sun-bleached awning canvas and dusty road flags"),
+        ("gilded_pageant", "Pageant-Gilded", "Dát Vàng Trình Diễn", "universal_feudal", "gold-foil stars and painted theatrical props"),
+    ]
+    subs_fair = [
+        ("striped_pageant_and_charter_pavilions", [
+            ("conical_striped_tournament_pavilion", "High Conical Red & White Striped Tent", "Lều Bạt Dáng Nón Sọc Đỏ Trắng Lễ Hội", [2, 2], "solid", True, "opaque", "enter_tent", "structure", "cloth"),
+            ("heraldic_pennon_crowned_centerpole", "Tall Centerpole with Fluttering Banners", "Cột Cờ Trung Tâm Lều Cắm Cờ Phướn Tung Bay", [1, 2], "solid", True, "opaque", None, "structure", "wood"),
+            ("carved_gilded_festival_portal_arch", "Temporary Timber Festival Triumphal Arch", "Cổng Chào Lễ Hội Bằng Gỗ Sơn Son Thiếp Vàng", [2, 2], "walk_surface", False, "transparent", "pass_under", "structure", "wood"),
+            ("velvet_draped_visiting_dignitary_podium", "Raised Wooden Viewing Dais with Drapery", "Bục Khán Đài Bằng Gỗ Trải Vải Nhung Đỏ", [2, 1], "walk_surface", False, "low", "ascend_dais", "structure", "wood"),
+        ]),
+        ("minstrels_stage_and_puppets", [
+            ("timber_trestle_actors_stage", "Plank Stage on Barrels for Mystery Plays", "Sân Khấu Kịch Dựng Trên Thùng Rượu Gỗ", [2, 2], "walk_surface", False, "low", "perform", "structure", "wood"),
+            ("glove_puppet_booth_painted_canvas", "Narrow Puppet Theater Booth with Curtains", "Rạp Múa Rối Cầm Tay Mái Bạt Thu Nhỏ", [1, 2], "solid", True, "opaque", "watch_puppet", "structure", "cloth"),
+            ("wooden_stage_props_dragon_head", "Painted Paper & Wood Dragon Head Puppet", "Đầu Rồng Bằng Gỗ & Giấy Biểu Diễn Lễ Hội", [1, 1], "cover", False, "low", "wield_dragon", "prop", "wood"),
+            ("costume_trunk_and_fool_caps", "Open Trunk of Masks & Jester Belled Caps", "Rương Quần Áo Mặt Nạ & Mũ Hề Đính Chuông", [1, 1], "cover", False, "low", "don_costume", "prop", "cloth"),
+        ]),
+        ("maypole_ribbons_and_green_man", [
+            ("ribbon_draped_tall_maypole", "Birch Maypole Hung with Colorful Ribbons", "Cột Gỗ Bạch Dương Treo Dải Ruy Băng Lễ Hội Xuân", [1, 3], "solid", True, "low", "dance_maypole", "structure", "wood"),
+            ("carved_green_man_foliage_mask", "Carved Oak Green Man Mask with Leaves", "Mặt Nạ Người Rừng Green Man Khắc Bằng Gỗ Sồi", [1, 1], "cover", False, "transparent", "inspect_mask", "prop", "wood"),
+            ("spring_floral_garland_archway", "Bent Willow Floral Garland Archway", "Vòm Cổng Cành Liễu Kết Hoa Mùa Xuân", [2, 1], "walk_surface", False, "transparent", "walk_through", "structure", "plant"),
+            ("hobby_horse_straw_dancer_rig", "Woven Wicker Hobby-Horse Dancer Rig", "Ngựa Gỗ Nan Thắt Lưng Của Người Múa Hội", [1, 1], "cover", False, "low", "ride_hobby_horse", "prop", "wood"),
+        ]),
+        ("games_of_chance_and_archery_prizes", [
+            ("quill_and_target_apple_shooting_post", "Apple Balanced on Post for Archer Contest", "Quả Táo Đặt Trên Đầu Cọc Cho Thi Bắn Cung", [1, 2], "cover", False, "low", "shoot_apple", "prop", "wood"),
+            ("greased_pole_prize_climbing_rig", "Greased Pine Pole with Smoked Ham Prize", "Cột Mỡ Bôi Trơn Treo Đùi Lợn Hun Khói Treo Đỉnh", [1, 3], "solid", True, "opaque", "climb_pole", "structure", "wood"),
+            ("wooden_skittles_bowling_lane", "Clay Pitch Ninepin Skittles Alley & Ball", "Sân Ném Gỗ Chín Ki Đất Nện Kèm Quả Cầu Gỗ", [2, 1], "walk_surface", False, "transparent", "bowl_skittles", "structure", "wood"),
+            ("cake_and_ale_wager_table", "Fairground Betting Table with Coin Piles", "Bàn Đặt Cược Hội Chợ Xếp Đầy Tiền Xu & Bánh", [2, 1], "cover", False, "low", "place_bet", "prop", "wood"),
+        ]),
+        ("roasting_ox_open_pit_and_cider_tents", [
+            ("open_trench_whole_ox_roasting_pit", "Monumental Iron Spit Roasting Whole Ox", "Hố Đào Quay Cả Con Bò Lớn Trên Lửa Than", [2, 2], "solid", True, "low", "carve_roast", "structure", "iron"),
+            ("wooden_cider_press_fair_tent", "Mobile Cider Press & Tasting Barrel Booth", "Quầy Gỗ Bán Rượu Táo Ép Tươi Tại Hội Chợ", [2, 1], "solid", True, "opaque", "drink_cider", "structure", "wood"),
+            ("spiced_gingerbread_guild_stall", "Stall of Gilded Honey Gingerbread Shapes", "Quầy Bán Bánh Quy Gừng Mật Ong Dát Vàng", [1, 1], "cover", False, "low", "buy_gingerbread", "prop", "organic"),
+            ("wooden_picnic_plank_tables_long", "Rows of Long Pine Benches & Feasting Boards", "Dãy Bàn Ghế Gỗ Thông Dài Dành Cho Dân Ăn Tiệc", [2, 1], "cover", False, "low", "sit_feast", "prop", "wood"),
+        ]),
+    ]
+    build_cat_subs("fairs_festivals_and_carnivals", subs_fair, var_fair, 22)
+
+    return items

@@ -1,0 +1,144 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.wal_fire_scorched_brick_window_sliding_shutter_open",
+  "name": "Battle-Scorched Cracked Brick Wall with Open Wooden Shutter Window",
+  "vietnamese_name": "Tường Có Khung Cửa Sổ Gỗ Chống Mở (Gạch Nứt Cháy Xém Khói Lửa)",
+  "hanzi": "兵火焦黑残垣推板支摘木窗",
+  "category": "modular_architecture_timber",
+  "sub_category": "wall_and_lattice_window",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "unlatch_shutter",
+  "gameplay_role": "open_window",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "wind",
+  "prompt_summary": "Ancient Chinese vernacular building wall module: Battle-Scorched Cracked Brick Wall with Open Wooden Shutter Window. Authentic materials, crisp dark ink outlines, orthographic top-down world-map view, isolated cleanly on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "wall",
+    "style": "fire_scorched_brick"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/wal_fire_scorched_brick_window_sliding_shutter_open.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.wal_fire_scorched_brick_window_sliding_shutter_open:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.768
+      ]
+    ],
+    "frac_zero": 0.5563,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.835,
+        0.705,
+        0.8
+      ],
+      [
+        0.726,
+        0.934,
+        0.681
+      ],
+      [
+        0.679,
+        0.89,
+        0.648
+      ]
+    ],
+    "crop_offset": [
+      17,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 87,
+    "contact_reference_px": 87.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

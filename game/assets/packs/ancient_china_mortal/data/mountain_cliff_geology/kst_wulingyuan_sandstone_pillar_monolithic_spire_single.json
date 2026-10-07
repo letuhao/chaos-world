@@ -1,0 +1,209 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.kst_wulingyuan_sandstone_pillar_monolithic_spire_single",
+  "name": "Zhangjiajie Towering Sandstone Monolith Solitary Karst Tower Monolith",
+  "vietnamese_name": "Trụ Núi Độc Đỉnh Thẳng Đứng (2x2) (Trụ Cột Trương Gia Giới Cao Vút)",
+  "hanzi": "武陵源砂岩天柱独立插天石笋峰",
+  "category": "mountain_cliff_geology",
+  "sub_category": "karst_spire_and_pinnacle",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "gaze_at_spire",
+  "gameplay_role": "karst_peak",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese karst pinnacle mountain landscape: Zhangjiajie Towering Sandstone Monolith Solitary Karst Tower Monolith. Towering verticality, poetic gouache shading, dark ink contour lines, top-down orthographic sprite on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "geology_layer": "karst",
+    "region": "wulingyuan_sandstone_pillar"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/kst_wulingyuan_sandstone_pillar_monolithic_spire_single.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.kst_wulingyuan_sandstone_pillar_monolithic_spire_single:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.301,
+        0.249
+      ],
+      [
+        0.71,
+        0.72
+      ]
+    ],
+    "frac_zero": 0.6088,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.249,
+        0.796,
+        0.029,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.02,
+        0.533,
+        0.991,
+        0.227,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.228,
+        0.569,
+        1.0,
+        0.407,
+        0.004,
+        0.0
+      ],
+      [
+        0.014,
+        0.724,
+        0.607,
+        1.0,
+        0.662,
+        0.368,
+        0.0
+      ],
+      [
+        0.176,
+        0.955,
+        0.978,
+        1.0,
+        0.953,
+        0.795,
+        0.233
+      ],
+      [
+        0.576,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.998,
+        0.62
+      ],
+      [
+        0.168,
+        0.62,
+        0.878,
+        0.863,
+        0.895,
+        0.587,
+        0.06
+      ]
+    ],
+    "crop_offset": [
+      18,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 146,
+    "contact_reference_px": 146.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

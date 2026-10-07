@@ -1,0 +1,178 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.wat_gentle_cascades_mist_cloud_splash_spray",
+  "name": "Gentle Stepped Rocky Cascade Rising Dense Mist Spray Fog Decal (2x2)",
+  "vietnamese_name": "Màn Sương Nước Bốc Lên Từ Chân Thác (Dòng Thác Bậc Thang Êm Đềm)",
+  "hanzi": "清平迭级叠翠流飞沫如烟腾空水雾团",
+  "category": "mountain_cliff_geology",
+  "sub_category": "waterfall_stream_and_cascade",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "feel_water_spray",
+  "gameplay_role": "mist_decal",
+  "destructible": false,
+  "material": "water",
+  "cultivation_element": "wind",
+  "prompt_summary": "Ancient Chinese mountainous water feature: Gentle Stepped Rocky Cascade Rising Dense Mist Spray Fog Decal (2x2). Flowing crystal water with gouache splashes, dark ink outlines, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "water_scale": "gentle_cascades"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/wat_gentle_cascades_mist_cloud_splash_spray.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.wat_gentle_cascades_mist_cloud_splash_spray:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.548,
+        0.62
+      ],
+      [
+        0.754,
+        0.793
+      ]
+    ],
+    "frac_zero": 0.4889,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.214,
+        0.419,
+        0.629,
+        0.506,
+        0.046,
+        0.0
+      ],
+      [
+        0.044,
+        0.731,
+        0.977,
+        0.986,
+        0.928,
+        0.661,
+        0.0
+      ],
+      [
+        0.303,
+        0.694,
+        1.0,
+        1.0,
+        0.967,
+        0.731,
+        0.087
+      ],
+      [
+        0.249,
+        0.883,
+        1.0,
+        1.0,
+        1.0,
+        0.691,
+        0.388
+      ],
+      [
+        0.477,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.942,
+        0.301
+      ],
+      [
+        0.591,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.513
+      ],
+      [
+        0.078,
+        0.579,
+        0.96,
+        0.995,
+        0.84,
+        0.419,
+        0.044
+      ]
+    ],
+    "crop_offset": [
+      22,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 119,
+    "contact_reference_px": 119.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

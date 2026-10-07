@@ -1,0 +1,201 @@
+{
+  "id": "ancient_china_mortal.civilian_settlement.settle_mill_trip_hammer_husking",
+  "name": "Water-Driven Stone Trip-Hammer Husker",
+  "vietnamese_name": "Cối Giã Gạo Nước Chày Đá",
+  "hanzi": "水碓春米",
+  "category": "civilian_settlement",
+  "sub_category": "watermill_and_grainstore",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "craft",
+  "gameplay_role": "Cam-driven wooden lever raising and dropping heavy stone hammers into grain mortars.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "earth",
+  "prompt_summary": "Top-down wooden mechanism with rotating cam shaft repeatedly lifting two long wooden hammer beams with stone heads into recessed stone mortars filled with white rice.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "automated_husking_rate": "100_kg_per_hour",
+    "rice_processing": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/civilian_settlement/settle_mill_trip_hammer_husking.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.civilian_settlement.settle_mill_trip_hammer_husking:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.462,
+        0.42
+      ],
+      [
+        0.851,
+        0.859
+      ]
+    ],
+    "frac_zero": 0.6018,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.273,
+        0.754,
+        0.425,
+        0.0,
+        0.0
+      ],
+      [
+        0.003,
+        0.394,
+        0.851,
+        0.565,
+        0.146,
+        0.0
+      ],
+      [
+        0.129,
+        0.823,
+        0.918,
+        0.896,
+        0.397,
+        0.0
+      ],
+      [
+        0.425,
+        0.995,
+        0.987,
+        1.0,
+        0.761,
+        0.071
+      ],
+      [
+        0.873,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.683
+      ],
+      [
+        0.795,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.674
+      ],
+      [
+        0.232,
+        0.847,
+        0.995,
+        0.915,
+        0.641,
+        0.01
+      ]
+    ],
+    "crop_offset": [
+      41,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 127,
+    "contact_reference_px": 127.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

@@ -13,6 +13,7 @@ duties = Array[StringName]([&"walk_the_horizon", &"report_a_sighting"])
 authorities = Array[StringName]([&"claim_a_carcass"])
 duty_per_period = 1
 patronage_per_period = 0
+standing_percent_stats = {"agility": 0.0, "stamina_regen": 0.0}
 
 [sub_resource type="Resource" id="position_quartermaster"]
 script = ExtResource("2_position")
@@ -24,6 +25,7 @@ duties = Array[StringName]([&"strip_and_sell", &"settle_the_writs"])
 authorities = Array[StringName]([&"issue_a_writ", &"price_a_carcass"])
 duty_per_period = 2
 patronage_per_period = 2
+standing_percent_stats = {"physique": 0.0, "comprehension": 0.0}
 
 [sub_resource type="Resource" id="position_warden"]
 script = ExtResource("2_position")
@@ -35,6 +37,7 @@ duties = Array[StringName]([&"hold_the_range", &"judge_a_claim"])
 authorities = Array[StringName]([&"name_a_quartermaster", &"expel", &"release_a_range"])
 duty_per_period = 3
 patronage_per_period = 3
+standing_percent_stats = {"will": 0.0, "poise": 0.0}
 
 [resource]
 script = ExtResource("1_def")

@@ -1,0 +1,208 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.cav_volcanic_fissure_shallow_rock_shelter_niche",
+  "name": "Sulfur Mineral Fissure Vent Shallow Cliff Undercut Camp Shelter",
+  "vietnamese_name": "Hốc Đá Nông Che Mưa Cắm Trại (Khe Nứt Địa Nhiệt Lưu Huỳnh)",
+  "hanzi": "硫磺火穴凹坑避雨猎人浅龛",
+  "category": "mountain_cliff_geology",
+  "sub_category": "cave_mouth_and_grotto",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "shelter_from_rain",
+  "gameplay_role": "rock_shelter",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "fire",
+  "prompt_summary": "Ancient Chinese mountain cave entrance landscape: Sulfur Mineral Fissure Vent Shallow Cliff Undercut Camp Shelter. Mysterious shadowy depths, rugged stone edges, ink outlines, top-down orthographic RPG sprite, transparent cutout.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "cave_archetype": "volcanic_fissure"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/cav_volcanic_fissure_shallow_rock_shelter_niche.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.cav_volcanic_fissure_shallow_rock_shelter_niche:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.49,
+        0.486
+      ],
+      [
+        0.791,
+        0.799
+      ]
+    ],
+    "frac_zero": 0.4977,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.03,
+        0.241,
+        0.729,
+        0.138,
+        0.001,
+        0.0
+      ],
+      [
+        0.0,
+        0.191,
+        0.864,
+        1.0,
+        0.726,
+        0.223,
+        0.031
+      ],
+      [
+        0.168,
+        0.843,
+        1.0,
+        1.0,
+        1.0,
+        0.904,
+        0.108
+      ],
+      [
+        0.161,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.167
+      ],
+      [
+        0.515,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.523
+      ],
+      [
+        0.816,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.832
+      ],
+      [
+        0.089,
+        0.573,
+        0.887,
+        0.969,
+        0.837,
+        0.554,
+        0.063
+      ]
+    ],
+    "crop_offset": [
+      18,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 139,
+    "contact_reference_px": 139.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

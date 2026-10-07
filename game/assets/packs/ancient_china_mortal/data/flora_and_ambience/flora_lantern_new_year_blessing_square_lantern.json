@@ -1,0 +1,142 @@
+{
+  "id": "ancient_china_mortal.flora_and_ambience.flora_lantern_new_year_blessing_square_lantern",
+  "name": "Spring Festival Square Blessing Box Lantern",
+  "vietnamese_name": "Đèn Lồng Hộp Vuông Chữ Phúc Đỏ",
+  "hanzi": "方框金字福寿灯",
+  "category": "flora_and_ambience",
+  "sub_category": "festival_red_lantern",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "read_blessing",
+  "gameplay_role": "Square wooden frame lantern with golden character 'Fu' (Fortune).",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Square wooden lantern with red gauze panels painted with large shimmering gold calligraphy character 'Fortune'.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "blessing_fu": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_ambience/flora_lantern_new_year_blessing_square_lantern.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_ambience.flora_lantern_new_year_blessing_square_lantern:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.765
+      ]
+    ],
+    "frac_zero": 0.6818,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.77,
+        0.843,
+        0.008
+      ],
+      [
+        0.846,
+        0.906,
+        0.188
+      ],
+      [
+        0.706,
+        0.776,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      30,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 53,
+    "contact_reference_px": 53.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

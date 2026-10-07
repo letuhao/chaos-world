@@ -1,0 +1,208 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.cav_water_karst_subterranean_shallow_rock_shelter_niche",
+  "name": "Water-Dripping Karst Sinkhole Shallow Cliff Undercut Camp Shelter",
+  "vietnamese_name": "Hốc Đá Nông Che Mưa Cắm Trại (Hang Karst Nước Chảy Ngầm)",
+  "hanzi": "溶水漏斗凹坑避雨猎人浅龛",
+  "category": "mountain_cliff_geology",
+  "sub_category": "cave_mouth_and_grotto",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "shelter_from_rain",
+  "gameplay_role": "rock_shelter",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese mountain cave entrance landscape: Water-Dripping Karst Sinkhole Shallow Cliff Undercut Camp Shelter. Mysterious shadowy depths, rugged stone edges, ink outlines, top-down orthographic RPG sprite, transparent cutout.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "cave_archetype": "water_karst_subterranean"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/cav_water_karst_subterranean_shallow_rock_shelter_niche.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.cav_water_karst_subterranean_shallow_rock_shelter_niche:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.619,
+        0.561
+      ],
+      [
+        0.82,
+        0.832
+      ]
+    ],
+    "frac_zero": 0.4418,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.378,
+        0.17,
+        0.674,
+        0.075,
+        0.013,
+        0.0
+      ],
+      [
+        0.129,
+        0.888,
+        0.949,
+        1.0,
+        0.9,
+        0.593,
+        0.255
+      ],
+      [
+        0.269,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.993,
+        0.299
+      ],
+      [
+        0.413,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.409
+      ],
+      [
+        0.667,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.646
+      ],
+      [
+        0.763,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.839
+      ],
+      [
+        0.147,
+        0.64,
+        0.886,
+        0.955,
+        0.858,
+        0.621,
+        0.193
+      ]
+    ],
+    "crop_offset": [
+      16,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 144,
+    "contact_reference_px": 144.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "id": "ancient_china_mortal.river_and_maritime.river_boat_lotus_harvesting_coracle",
+  "name": "Round Lotus Seed Harvesting Coracle",
+  "vietnamese_name": "Thuyền Thúng Tròn Thu Hoạch Hạt Sen",
+  "hanzi": "采莲圆形木盆舟",
+  "category": "river_and_maritime",
+  "sub_category": "fishing_sampan_and_houseboat",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "gather_lotus",
+  "gameplay_role": "Circular tub boat used to navigate dense lotus marshes.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "water",
+  "prompt_summary": "Round wooden washtub boat filled with fresh green lotus seed pods and pink flowers.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "gather_speed": 1.2
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/river_and_maritime/river_boat_lotus_harvesting_coracle.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.river_and_maritime.river_boat_lotus_harvesting_coracle:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.73
+      ]
+    ],
+    "frac_zero": 0.5927,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.474,
+        0.773,
+        0.42
+      ],
+      [
+        0.949,
+        1.0,
+        0.944
+      ],
+      [
+        0.521,
+        0.959,
+        0.482
+      ]
+    ],
+    "crop_offset": [
+      18,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 66,
+    "contact_reference_px": 66.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

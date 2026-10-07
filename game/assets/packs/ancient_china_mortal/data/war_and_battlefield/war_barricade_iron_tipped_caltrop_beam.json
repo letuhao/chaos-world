@@ -1,0 +1,165 @@
+{
+  "id": "ancient_china_mortal.war_and_battlefield.war_barricade_iron_tipped_caltrop_beam",
+  "name": "Iron-Tipped Heavy Timber Road Barrier",
+  "vietnamese_name": "Thanh Gỗ Đinh Nhọn Bọc Sắt Chặn Đường",
+  "hanzi": "铁头拒马长木",
+  "category": "war_and_battlefield",
+  "sub_category": "spiked_barricade_cheval_de_frise",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Long square beam fitted with vicious four-pointed forged iron caltrops.",
+  "destructible": true,
+  "material": "iron",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Long heavy timber road barrier bristling with thick forged black iron pike spikes pointing in four directions.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "pierce_damage": 200
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/war_and_battlefield/war_barricade_iron_tipped_caltrop_beam.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.war_and_battlefield.war_barricade_iron_tipped_caltrop_beam:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.465,
+        0.453,
+        0.477
+      ]
+    ],
+    "frac_zero": 0.7245,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      9,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.312,
+        0.271,
+        0.123,
+        0.306,
+        0.12,
+        0.33,
+        0.11,
+        0.312,
+        0.292
+      ],
+      [
+        0.717,
+        1.0,
+        0.928,
+        0.952,
+        0.949,
+        0.96,
+        0.952,
+        0.992,
+        0.724
+      ],
+      [
+        0.046,
+        0.673,
+        0.084,
+        0.143,
+        0.086,
+        0.152,
+        0.104,
+        0.715,
+        0.043
+      ]
+    ],
+    "crop_offset": [
+      49,
+      18
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 25,
+    "contact_reference_px": 25.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      128
+    ]
+  }
+}

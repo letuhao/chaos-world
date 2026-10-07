@@ -1,0 +1,221 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.cav_bandit_lair_cave_mouth_with_log_gate",
+  "name": "Bandit Mountain Lair Cavern Entrance Fortified with Log Gate",
+  "vietnamese_name": "Cửa Hang Gia Cố Cổng Gỗ Cọc Nhọn (Hang Ổ Sơn Tặc)",
+  "hanzi": "匪寨幽洞木栅堵门隐蔽洞口",
+  "category": "mountain_cliff_geology",
+  "sub_category": "cave_mouth_and_grotto",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "breach_log_gate",
+  "gameplay_role": "fortified_cave",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "metal",
+  "prompt_summary": "Ancient Chinese mountain cave entrance landscape: Bandit Mountain Lair Cavern Entrance Fortified with Log Gate. Mysterious shadowy depths, rugged stone edges, ink outlines, top-down orthographic RPG sprite, transparent cutout.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "cave_archetype": "bandit_lair"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/cav_bandit_lair_cave_mouth_with_log_gate.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.cav_bandit_lair_cave_mouth_with_log_gate:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.262,
+        0.806,
+        0.32
+      ],
+      [
+        0.693,
+        0.979,
+        0.69
+      ]
+    ],
+    "frac_zero": 0.6618,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      8,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.134,
+        0.773,
+        0.124,
+        0.238,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.123,
+        0.802,
+        1.0,
+        0.672,
+        0.432,
+        0.126,
+        0.0
+      ],
+      [
+        0.147,
+        0.618,
+        1.0,
+        1.0,
+        1.0,
+        0.686,
+        0.0,
+        0.0
+      ],
+      [
+        0.219,
+        0.839,
+        1.0,
+        1.0,
+        1.0,
+        0.942,
+        0.201,
+        0.0
+      ],
+      [
+        0.437,
+        0.998,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.466,
+        0.0
+      ],
+      [
+        0.705,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.828,
+        0.078
+      ],
+      [
+        0.16,
+        0.707,
+        0.856,
+        0.979,
+        0.91,
+        0.615,
+        0.127,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      79,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 150,
+    "contact_reference_px": 150.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "id": "ancient_china_mortal.rural_farming_and_pastoral.trp_golden_maize_corn_cobs_woven_wicker_drying_basket",
+  "name": "Golden Sun-Cured Corn on the Cob Shallow Woven Wicker Basket of Sliced Produce",
+  "vietnamese_name": "Rổ Rảo Tre Đan Phơi Thái Lát Nông Sản (Bắp Ngô Vàng Óng Buộc Chùm)",
+  "hanzi": "金黄饱满玉米棒挂浅口篾盘晒切片干货",
+  "category": "rural_farming_and_pastoral",
+  "sub_category": "crop_trellis_and_hanging_harvest",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "gather_dried_crop",
+  "gameplay_role": "drying_basket",
+  "destructible": false,
+  "material": "bamboo",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese farm crop harvest display: Golden Sun-Cured Corn on the Cob Shallow Woven Wicker Basket of Sliced Produce. Golden rustic farm aesthetic, ink contours, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "crop_type": "golden_maize_corn_cobs"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/rural_farming_and_pastoral/trp_golden_maize_corn_cobs_woven_wicker_drying_basket.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.rural_farming_and_pastoral.trp_golden_maize_corn_cobs_woven_wicker_drying_basket:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.717
+      ]
+    ],
+    "frac_zero": 0.6037,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.432,
+        0.748,
+        0.38
+      ],
+      [
+        0.793,
+        1.0,
+        0.799
+      ],
+      [
+        0.668,
+        0.965,
+        0.593
+      ]
+    ],
+    "crop_offset": [
+      18,
+      18
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 76,
+    "contact_reference_px": 76.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

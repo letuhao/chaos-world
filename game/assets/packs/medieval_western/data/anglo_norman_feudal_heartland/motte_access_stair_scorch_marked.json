@@ -1,0 +1,132 @@
+{
+  "id": "medieval_western.anglo_norman_feudal_heartland.motte_access_stair_scorch_marked",
+  "name": "Scorched Defense Motte Timber Ascending Stair",
+  "vietnamese_name": "Bậc Gỗ Leo Gò Motte (Ám Khói Chiến Trận)",
+  "category": "anglo_norman_feudal_heartland",
+  "sub_category": "motte_and_bailey_earthwork",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "climb",
+  "gameplay_role": "Feudal Anglo-Norman component (Motte Timber Ascending Stair).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "anglo_norman",
+  "prompt_summary": "2D orthographic top-down game sprite of scorched defense motte timber ascending stair, soot stains and charred defensive timber, Anglo-Norman medieval feudal style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/anglo_norman_feudal_heartland/motte_access_stair_scorch_marked.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.anglo_norman_feudal_heartland.motte_access_stair_scorch_marked:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.778
+      ],
+      [
+        0.403
+      ]
+    ],
+    "frac_zero": 0.637,
+    "blocks": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true
+      ],
+      [
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.521,
+        0.933,
+        0.419
+      ],
+      [
+        0.725,
+        1.0,
+        0.636
+      ],
+      [
+        0.847,
+        1.0,
+        0.79
+      ],
+      [
+        0.652,
+        0.993,
+        0.655
+      ],
+      [
+        0.001,
+        0.847,
+        0.01
+      ],
+      [
+        0.025,
+        0.835,
+        0.0
+      ],
+      [
+        0.175,
+        0.716,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      34
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 36,
+    "contact_reference_px": 36.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

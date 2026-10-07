@@ -1,0 +1,128 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.und_flowering_wild_azalea_trampled_flattened_foliage",
+  "name": "Flowering Mountain Azalea Shrubs Trampled Wildlife Trail through Underbrush",
+  "vietnamese_name": "Vạt Cây Bụi Bị Thú Rừng Giẫm Bẹp (Bụi Hoa Đỗ Quyên Rừng Nở Rực)",
+  "hanzi": "艳红高山映山红野兽践踏踏平踩道草丛",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "underbrush_fern_and_creeper",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "track_wildlife_trail",
+  "gameplay_role": "animal_trail",
+  "destructible": false,
+  "material": "plant",
+  "cultivation_element": "fire",
+  "prompt_summary": "Ancient Chinese forest underbrush vegetation: Flowering Mountain Azalea Shrubs Trampled Wildlife Trail through Underbrush. Organic foliage, delicate leaves and flowers, ink outlines, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "foliage_group": "flowering_wild_azalea"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/und_flowering_wild_azalea_trampled_flattened_foliage.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.und_flowering_wild_azalea_trampled_flattened_foliage:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.667,
+        0.67
+      ]
+    ],
+    "frac_zero": 0.5995,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.127,
+        0.502,
+        0.188,
+        0.329,
+        0.523,
+        0.179
+      ],
+      [
+        0.816,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.814
+      ],
+      [
+        0.517,
+        0.886,
+        0.98,
+        0.929,
+        0.831,
+        0.385
+      ]
+    ],
+    "crop_offset": [
+      33,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 162,
+    "contact_reference_px": 162.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

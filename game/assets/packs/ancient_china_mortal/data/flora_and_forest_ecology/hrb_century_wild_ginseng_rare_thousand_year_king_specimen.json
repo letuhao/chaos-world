@@ -1,0 +1,208 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.hrb_century_wild_ginseng_rare_thousand_year_king_specimen",
+  "name": "Mountain Century Wild Ginseng Legendary Thousand-Year Herb King Specimen (2x2)",
+  "vietnamese_name": "Vua Thuốc Ngàn Năm Tỏa Ánh Linh Quang (2x2) (Nhân Sâm Núi Trăm Năm)",
+  "hanzi": "长白山百年野山参千年成精宝光药王桩",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "mountain_medicinal_herb_wild",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "harvest_immortal_king_herb",
+  "gameplay_role": "legendary_herb",
+  "destructible": false,
+  "material": "plant",
+  "cultivation_element": "yang",
+  "prompt_summary": "Ancient Chinese valuable mountain medicinal herb: Mountain Century Wild Ginseng Legendary Thousand-Year Herb King Specimen (2x2). Botanical accuracy, luminous gouache accents, ink contours, top-down orthographic game prop on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "species": "century_wild_ginseng"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/hrb_century_wild_ginseng_rare_thousand_year_king_specimen.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.hrb_century_wild_ginseng_rare_thousand_year_king_specimen:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.407,
+        0.499
+      ],
+      [
+        0.784,
+        0.778
+      ]
+    ],
+    "frac_zero": 0.5047,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.178,
+        0.785,
+        0.206,
+        0.464,
+        0.034
+      ],
+      [
+        0.0,
+        0.044,
+        0.73,
+        1.0,
+        0.491,
+        0.384,
+        0.403
+      ],
+      [
+        0.051,
+        0.304,
+        1.0,
+        1.0,
+        0.944,
+        0.294,
+        0.062
+      ],
+      [
+        0.407,
+        0.827,
+        1.0,
+        1.0,
+        1.0,
+        0.695,
+        0.302
+      ],
+      [
+        0.181,
+        0.913,
+        1.0,
+        1.0,
+        1.0,
+        0.739,
+        0.221
+      ],
+      [
+        0.715,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.591
+      ],
+      [
+        0.316,
+        0.77,
+        0.952,
+        0.969,
+        0.844,
+        0.689,
+        0.261
+      ]
+    ],
+    "crop_offset": [
+      19,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 164,
+    "contact_reference_px": 164.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

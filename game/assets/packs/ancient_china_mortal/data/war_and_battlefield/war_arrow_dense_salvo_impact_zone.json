@@ -1,0 +1,178 @@
+{
+  "id": "ancient_china_mortal.war_and_battlefield.war_arrow_dense_salvo_impact_zone",
+  "name": "Ground Peppered with Dense Arrow Volley",
+  "vietnamese_name": "Bãi Đất Cắm Dày Đặc Mũi Tên",
+  "hanzi": "箭雨密布冲击面",
+  "category": "war_and_battlefield",
+  "sub_category": "battlefield_arrow_cluster",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "gather_arrows",
+  "gameplay_role": "Dozens of white and black fletched arrow shafts stuck at steep angles.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Patch of churned earth and crushed grass densely bristling with forty sticking arrow shafts angled from volley arc.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "salvage_arrows": 20
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/war_and_battlefield/war_arrow_dense_salvo_impact_zone.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.war_and_battlefield.war_arrow_dense_salvo_impact_zone:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.46,
+        0.441
+      ],
+      [
+        0.826,
+        0.826
+      ]
+    ],
+    "frac_zero": 0.4974,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.113,
+        0.129,
+        0.277,
+        0.122,
+        0.027,
+        0.0
+      ],
+      [
+        0.106,
+        0.235,
+        0.471,
+        0.377,
+        0.407,
+        0.196,
+        0.03
+      ],
+      [
+        0.324,
+        0.879,
+        1.0,
+        1.0,
+        1.0,
+        0.907,
+        0.311
+      ],
+      [
+        0.817,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.768
+      ],
+      [
+        0.874,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.908
+      ],
+      [
+        0.592,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.574
+      ],
+      [
+        0.064,
+        0.436,
+        0.902,
+        0.97,
+        0.737,
+        0.469,
+        0.033
+      ]
+    ],
+    "crop_offset": [
+      17,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 79,
+    "contact_reference_px": 79.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

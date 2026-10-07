@@ -1,0 +1,278 @@
+# -*- coding: utf-8 -*-
+"""Sphere VI: War, Siege, Crime & Underworld (5 Categories, 540 Assets).
+
+Categories:
+1. knighthood_tournaments_and_chivalry (110: 5 subs * 22)
+2. siege_engines_and_heavy_artillery (120: 5 subs * 24)
+3. military_camps_and_field_works (110: 5 subs * 22)
+4. battlefield_aftermath_and_ruins (90: 5 subs * 18)
+5. outlaws_bandits_and_dungeon_depths (110: 5 subs * 22)
+"""
+
+from __future__ import annotations
+from typing import Callable
+
+
+def generate_sphere6(make_asset: Callable) -> list[dict]:
+    items: list[dict] = []
+
+    def build_cat_subs(category_id: str, subs_defs: list[tuple[str, list[tuple]]], variants: list[tuple], target_per_sub: int):
+        for sub_id, archetypes in subs_defs:
+            sub_items = []
+            for a_slug, a_name, a_vn, fp, col, blk, vis, vrb, atype, mat in archetypes:
+                for v_slug, v_name, v_vn, cult, desc in variants:
+                    slug = f"{a_slug}_{v_slug}"
+                    name = f"{v_name} {a_name}"
+                    vn = f"{a_vn} ({v_vn})"
+                    prompt = (
+                        f"2D orthographic top-down game sprite of {name.lower()}, {desc}, "
+                        f"Medieval warfare chivalry siege and underworld style, gouache hand-painted, ink contours, isolated on white background."
+                    )
+                    sub_items.append(make_asset(
+                        category_id, slug, name, vn, sub_id, fp, col, blk, vis, vrb,
+                        f"Warfare and martial life element ({a_name}).", False, mat, cult, prompt,
+                        asset_type=atype
+                    ))
+            while len(sub_items) < target_per_sub:
+                idx = len(sub_items) + 1
+                h_slug = f"{sub_id}_martial_hero_{idx}"
+                h_name = f"Chivalric Valor {sub_id.replace('_', ' ').title()} #{idx}"
+                h_vn = f"Hào Khí Hiệp Sĩ {sub_id.replace('_', ' ').title()} #{idx}"
+                sub_items.append(make_asset(
+                    category_id, h_slug, h_name, h_vn, sub_id, [2, 1], "solid", True, "opaque",
+                    "salute", "Martial heraldic military centerpiece.", False, "iron", "universal_feudal",
+                    f"Chivalric martial military asset of {sub_id}, heraldic feudal warfare, gouache style."
+                ))
+            items.extend(sub_items[:target_per_sub])
+
+    # =========================================================================
+    # 1. knighthood_tournaments_and_chivalry (110 assets: 5 subs * 22)
+    # =========================================================================
+    var_joust = [
+        ("heraldic_splendor", "Heraldic Polychrome", "Huy Hiệu Rực Rỡ", "anglo_norman", "bright armorial colors of azure, gules, and or"),
+        ("lance_splintered", "Joust-Splintered", "Mảnh Gỗ Thương Vỡ", "anglo_norman", "splintered ashwood lance tips and flying chips"),
+        ("sunlit_pageant", "Sunlit Pageant", "Nắng Rực Khán Đài", "french_capetian", "flapping silk pennons and polished steel plate armor"),
+        ("mud_trodden_tilt", "Turf-Rutted Tilt", "Đất Nện Lún Bùn", "universal_feudal", "churned warhorse turf and flying clods"),
+        ("gilded_chivalric", "Gilded Chivalric", "Dát Vàng Hiệp Sĩ", "anglo_norman", "fine gold-leaf trim on heraldic crests and caparisons"),
+    ]
+    subs_joust = [
+        ("jousting_tilt_barrier_and_rails", [
+            ("padded_cloth_draped_tilt_barrier", "Cloth-Draped Wooden Jousting Tilt Barrier", "Hàng Rào Gỗ Ngăn Đường Cưỡi Ngựa Đấu Thương", [3, 1], "solid", True, "low", "charge_lance", "structure", "wood"),
+            ("lance_rest_rack_at_tilt_end", "Ashwood Jousting Lance Rest Rack", "Giá Đỡ Thương Gỗ Tần Bì Đặt Đầu Đường Chạy", [1, 2], "solid", True, "low", "take_lance", "prop", "wood"),
+            ("splintered_lance_shattered_debris", "Scatter of Broken Coronel Lance Tips", "Mảnh Vụn Đầu Thương Sắt Rơi Vãi Sau Va Chạm", [1, 1], "walk_surface", False, "transparent", "collect_splinters", "prop", "wood"),
+            ("heraldic_barrier_end_pennon_post", "Tilt Barrier Post Hung with Lion Banner", "Cọc Gỗ Cuối Đường Rào Treo Cờ Hiệu Sư Tử", [1, 2], "solid", True, "opaque", None, "structure", "wood"),
+        ]),
+        ("royal_heraldic_viewing_stand", [
+            ("canopied_royal_tournament_box", "Draped Velvet Royal Viewing Gallery Box", "Khán Đài Hoàng Gia Mái Vòm Nhung Đỏ Xem Đấu", [3, 2], "solid", True, "opaque", "view_joust", "structure", "wood"),
+            ("herald_proclamation_rostrum_stand", "Carved Trumpeter & Herald Stand", "Bục Hiệu Kèn Của Sứ Giả Tuyên Đọc Tên Hiệp Sĩ", [1, 1], "cover", False, "low", "sound_trumpet", "prop", "wood"),
+            ("queen_of_love_and_beauty_wreath_chair", "Queen of Beauty Flower Wreath Chair", "Ghế Ngồi Của Nữ Hoàng Sắc Đẹp Trao Vòng Hoa", [1, 1], "cover", False, "low", "crown_champion", "prop", "wood"),
+            ("tiered_timber_bleacher_benches", "Peasant Timber Tournament Spectator Stand", "Khán Đài Bằng Ván Gỗ Dành Cho Dân Thường", [2, 2], "walk_surface", False, "low", "cheer", "structure", "wood"),
+        ]),
+        ("rotating_quintain_training_target", [
+            ("spinning_crossarm_mannequin_quintain", "Rotating Wooden Shield & Sandbag Quintain", "Bù Nhìn Xoay Đấu Thương Có Bao Cát Đập Lưng", [1, 2], "solid", True, "opaque", "strike_quintain", "prop", "wood"),
+            ("iron_counterweighted_sandbag_flail", "Swinging Sandbag on Chain of Quintain", "Bao Cát Nặng Treo Dây Xích Vung Trúng Lưng", [1, 1], "cover", False, "low", "dodge_flail", "prop", "organic"),
+            ("squires_blunt_training_lance_stand", "Rack of Blunt Tipped Practice Lances", "Giá Treo Thương Tập Đầu Tù Dành Cho Thị Đồng", [1, 1], "cover", False, "low", "equip_practice_lance", "prop", "wood"),
+            ("wooden_horse_tilting_rig_rails", "Wooden Dummy Horse on Rollers for Training", "Ngựa Gỗ Có Bánh Xe Trượt Luyện Đấu Thương", [2, 1], "cover", False, "low", "ride_dummy", "prop", "wood"),
+        ]),
+        ("knightly_armory_and_plate_armor", [
+            ("full_fluted_milanese_harness_stand", "Full Steel Knightly Plate Armor on Stand", "Bộ Áo Giáp Sắt Toàn Thân Kiểu Milan Trên Giá", [1, 2], "solid", True, "opaque", "don_armor", "prop", "iron"),
+            ("winged_great_helm_crest_pedestal", "Tournament Great Helm with Swan Crest", "Mũ Sắt Đại Hiệp Sĩ Có Mào Thiên Nga Gỗ", [1, 1], "cover", False, "low", "equip_helm", "prop", "iron"),
+            ("broadsword_and_estoc_racks", "Polished Arming Swords & Estoc Rack", "Giá Treo Kiếm Dài & Kiếm Xuyên Giáp Estoc", [1, 1], "cover", False, "low", "take_blade", "prop", "iron"),
+            ("knight_caparison_horse_cloth_stand", "Embroidered Warhorse Caparison Barding", "Giáp Ngựa Thêu Gia Huy Đặt Trên Khung Đỡ", [1, 2], "solid", True, "opaque", "barde_steed", "prop", "cloth"),
+        ]),
+        ("knights_heraldic_camp_pavilions", [
+            ("round_bell_canvas_knights_pavilion", "Conical Silk-Lined Knight's Campaign Tent", "Lều Vải Bạt Dáng Chuông Của Hiệp Sĩ", [2, 2], "solid", True, "opaque", "enter_pavilion", "structure", "cloth"),
+            ("lance_planted_before_pavilion", "Planted Tournament Lance with Pennon", "Ngọn Thương Cắm Xuống Đất Treo Cờ Trước Lều", [1, 2], "solid", True, "low", "challenge_knight", "prop", "wood"),
+            ("painted_heater_shield_door_marker", "Heater Shield with Coat of Arms Hung Outside", "Khiên Gia Huy Treo Trước Cửa Thách Đấu", [1, 1], "cover", False, "transparent", "inspect_arms", "prop", "wood"),
+            ("squires_chainmail_greasing_trough", "Barrel of Sand for Polishing Mail Hauberk", "Thùng Cát Lắc Đánh Bóng Áo Giáp Lưới", [1, 1], "cover", False, "low", "polish_mail", "prop", "wood"),
+        ]),
+    ]
+    build_cat_subs("knighthood_tournaments_and_chivalry", subs_joust, var_joust, 22)
+
+    # =========================================================================
+    # 2. siege_engines_and_heavy_artillery (120 assets: 5 subs * 24)
+    # =========================================================================
+    var_siege = [
+        ("field_hewn", "Field-Hewn Timber", "Gỗ Rừng Đốn Vội", "universal_feudal", "rough green freshly felled oak beams and bark edges"),
+        ("iron_strapped", "Iron-Plated Siege", "Bọc Bản Thép", "universal_feudal", "heavy riveted iron reinforcing straps and spikes"),
+        ("pitch_scorch", "Pitch-Scorched Defense", "Ám Nhựa Cháy Khét", "universal_feudal", "charred black timber and sulfur flame stains"),
+        ("boulder_dusted", "Limestone-Dusted", "Bụi Đá Đập Vỡ", "universal_feudal", "white limestone dust from cracked ammunition stones"),
+        ("wet_hide", "Rawhide-Protected", "Bọc Da Bò Ngâm Nước", "universal_feudal", "greasy fresh rawhides protecting against fire arrows"),
+        ("muddy_wheels", "Mud-Choked Wheels", "Bánh Xe Lún Bùn", "universal_feudal", "heavy iron-tired wheels clogged with siege ditch mud"),
+    ]
+    subs_siege = [
+        ("counterweight_trebuchet_warwolf", [
+            ("massive_trebuchet_timber_frame", "Monumental Counterweight Trebuchet Engine", "Máy Bắn Đá Trebuchet Đối Trọng Khổng Lồ", [3, 2], "solid", True, "opaque", "launch_stone", "structure", "wood"),
+            ("hinged_lead_counterweight_box", "Suspended Iron Box Filled with Earth & Rocks", "Thùng Đối Trọng Treo Chứa Đầy Đá Nặng", [2, 1], "solid", True, "low", "load_counterweight", "structure", "iron"),
+            ("split_oak_throwing_beam_and_sling", "Laminated Timber Throwing Beam & Leather Sling", "Cần Phóng Gỗ Ghép Kèm Dây Da Bắn Đá", [2, 1], "cover", False, "transparent", None, "prop", "wood"),
+            ("trebuchet_trigger_slip_hook_windlass", "Release Trigger Rope & Iron Slip-Hook", "Dây Giật Cò Khóa Bằng Sắt Phóng Đá", [1, 1], "cover", False, "low", "pull_trigger", "prop", "iron"),
+        ]),
+        ("covered_battering_ram_and_cat", [
+            ("iron_headed_wheeled_battering_ram", "Iron Ram's Head Suspended in Thatched Shed", "Cỗ Xe Công Thành Đầu Cừu Bằng Sắt Treo Xích", [3, 2], "solid", True, "opaque", "ram_gate", "structure", "wood"),
+            ("wet_rawhide_fireproof_roof_tier", "Double Rawhide Sapping Cat Mantlet Roof", "Mái Che Bọc Da Bò Chống Tên Lửa Công Thành", [2, 1], "cover", True, "low", None, "structure", "organic"),
+            ("spoke_wheel_axles_and_haul_ropes", "Heavy Timber Solid Wheeled Ram Carriage", "Khung Bánh Xe Gỗ Đúc Dày Xe Phá Cổng", [2, 1], "solid", True, "low", "push_ram", "structure", "wood"),
+            ("hanging_chain_cradle_for_ram_beam", "Wrought Iron Chains Suspending Oak Log", "Dây Xích Sắt Treo Thân Cây Sồi Đục Cổng", [1, 1], "cover", False, "low", "swing_ram", "prop", "iron"),
+        ]),
+        ("torsion_ballista_and_springald", [
+            ("heavy_wheeled_siege_ballista_engine", "Wheeled Torsion Skein Siege Ballista", "Cỗ Xe Máy Bắn Tên Khổng Lồ Ballista Có Bánh", [2, 2], "solid", True, "opaque", "crank_ballista", "structure", "wood"),
+            ("twisted_sinew_skein_tension_cylinder", "Iron Cylinder of Twisted Horsehair Skeins", "Ống Sắt Cuộn Gân Ngựa Xoắn Tích Lực Bắn", [1, 1], "cover", False, "low", "tension_skein", "prop", "iron"),
+            ("grooved_launching_slide_trough", "Dovetail Slide Trough for Heavy Iron Bolt", "Rãnh Gỗ Dẫn Hướng Mũi Tên Sắt Khổng Lồ", [2, 1], "cover", False, "low", "load_bolt", "prop", "wood"),
+            ("windlass_cranking_spoke_wheels", "Twin Ratchet Hand Wheel Windlass Span", "Bánh Răng Quay Tay Lên Dây Máy Bắn Tên", [1, 1], "cover", False, "low", "span_ballista", "prop", "iron"),
+        ]),
+        ("wooden_siege_tower_belfry", [
+            ("three_tier_wheeled_siege_belfry", "Three-Storey Wheeled Siege Assault Tower", "Tháp Công Thành Ba Tầng Có Bánh Xe (Belfry)", [3, 3], "solid", True, "opaque", "advance_belfry", "structure", "wood"),
+            ("counterweighted_drop_drawbridge", "Iron-Chained Drop Drawbridge Gangplank", "Cầu Đổ Bộ Thả Sập Lên Tường Thành Đối Phương", [2, 1], "walk_surface", False, "low", "drop_gangplank", "structure", "wood"),
+            ("archer_arrow_slit_timber_shutter", "Loopholes Fitted with Leather Wall Screens", "Lỗ Châu Mai Bọc Da Trên Vách Tháp Công Thành", [1, 1], "cover", True, "transparent", "shoot_loophole", "prop", "wood"),
+            ("under_carriage_lever_pushing_bars", "Capstan Winch Under Siege Tower Platform", "Trục Tời Dưới Gầm Đẩy Tháp Về Phía Trước", [2, 1], "solid", True, "low", "haul_ropes", "structure", "wood"),
+        ]),
+        ("siege_ammunition_pyramids_and_pots", [
+            ("pyramid_of_carved_spherical_stones", "Pyramid of Chiseled Limestone Shot Balls", "Kim Tự Tháp Đạn Đá Đục Tròn Cho Máy Bắn", [1, 1], "cover", True, "low", "load_shot", "prop", "stone"),
+            ("ceramic_pitch_firepot_ammunition", "Clay Greek Fire Pitch Bomb with Fuse", "Bình Gốm Chứa Dầu Lửa Đốt Cháy Thành Trì", [1, 1], "cover", False, "low", "ignite_firepot", "prop", "stone"),
+            ("quiver_of_iron_headed_ballista_bolts", "Bundle of Massive Five-Foot Iron Bolts", "Bó Mũi Tên Sắt Dài Năm Bộ Của Ballista", [1, 1], "cover", False, "low", "loot_bolts", "prop", "iron"),
+            ("corpse_hurling_canvas_basket", "Wicker Basket for Hurling Diseased Carcasses", "Giỏ Bạt Ném Xác Chết Gây Dịch Vào Thành", [1, 1], "cover", False, "low", "inspect_grim", "prop", "organic"),
+        ]),
+    ]
+    build_cat_subs("siege_engines_and_heavy_artillery", subs_siege, var_siege, 24)
+
+    # =========================================================================
+    # 3. military_camps_and_field_works (110 assets: 5 subs * 22)
+    # =========================================================================
+    var_camp = [
+        ("muddy_trenches", "Ditch-Entrenched", "Hào Bùn Chiến Lũy", "universal_feudal", "churned brown clay and sharpened defensive stakes"),
+        ("canvas_bleached", "Rain-Worn Canvas", "Bạt Che Dầm Mưa", "universal_feudal", "weathered greying camp canvas and taught hemp cords"),
+        ("campfire_smoke", "Campfire-Smoked", "Khói Lửa Doanh Trại", "universal_feudal", "thick pungent birch smoke and roasted iron smell"),
+        ("disciplined_banner", "Standard-Flown", "Treo Cờ Quân Đội", "universal_feudal", "proud colored garrison standards fluttering"),
+        ("frosty_morning", "Dawn-Frosted", "Sương Đêm Lạnh Giá", "universal_feudal", "cold white rime dusting tents and gear"),
+    ]
+    subs_camp = [
+        ("soldiers_wedge_canvas_bell_tent", [
+            ("circular_conical_soldiers_bell_tent", "Conical Canvas Infantry Bell Tent", "Lều Vải Bạt Dáng Chuông Của Bộ Binh", [2, 2], "solid", True, "opaque", "enter_tent", "structure", "cloth"),
+            ("ashwood_centerpole_iron_spindle", "Center Pole with Iron Lantern Hanging Hook", "Cột Gỗ Giữa Lều Có Móc Sắt Treo Đèn Bão", [1, 2], "solid", True, "opaque", None, "structure", "wood"),
+            ("soldier_hemp_bedroll_on_canvas", "Rolled Wool Blanket & Oilcloth Groundsheet", "Cuộn Chăn Len & Tấm Bạt Trải Nằm Của Lính", [1, 1], "walk_surface", False, "transparent", "sleep", "prop", "cloth"),
+            ("pegged_canvas_wind_guyrope_line", "Line of Ash Tent Pegs Staked in Mud", "Hàng Cọc Gỗ Cắm Sâu Xuống Bùn Neo Dây Lều", [1, 1], "walk_surface", False, "transparent", None, "prop", "wood"),
+        ]),
+        ("spiked_chevaux_de_frise_barricade", [
+            ("four_way_sharpened_timber_caltrop", "Interlocking Timber Cheval-de-Frise Barrier", "Chướng Ngại Vật Cọc Gỗ Nhọn Chống Kỵ Binh", [2, 1], "solid", True, "low", "inspect_barrier", "structure", "wood"),
+            ("abatis_felled_thorn_tree_tangle", "Abatis Entangled Hawthorn Trees Defense", "Hàng Cây Gai Đốn Hạ Làm Rào Cản Abatis", [2, 1], "solid", True, "low", None, "structure", "plant"),
+            ("iron_ground_caltrop_scatter", "Scatter of Four-Pointed Forged Caltrops", "Bãi Chông Sắt Bốn Cạnh Rải Dưới Đất", [1, 1], "walk_surface", False, "transparent", "collect_caltrops", "prop", "iron"),
+            ("pointed_wooden_fraise_ditch_stake", "Deep Ditch Bank Spiked with Staves", "Bờ Hào Cắm Dày Đặc Cọc Gỗ Vót Nhọn", [2, 1], "solid", True, "low", None, "structure", "wood"),
+        ]),
+        ("military_camp_hearth_and_mess", [
+            ("iron_tripod_soldier_stew_pot", "Camp Cauldron on Iron Tripod over Embers", "Nồi Sắt Nấu Cháo Của Lính Trên Kiềng Ba Chân", [1, 1], "cover", False, "low", "eat_camp_stew", "prop", "iron"),
+            ("spitted_roast_mutton_carcass", "Crossbar Spit Roasting Sheep Carcass", "Trục Gỗ Quay Thịt Cừu Trên Đống Lửa Doanh Trại", [1, 1], "cover", False, "low", "carve_meat", "prop", "organic"),
+            ("hard_biscuit_hard_tack_barrel", "Open Barrel of Rock-Hard Weevil Ship Biscuit", "Thùng Gỗ Đựng Lương Khô Cứng Của Binh Lính", [1, 1], "cover", False, "low", "take_hardtack", "prop", "wood"),
+            ("sitting_log_circle_campfire", "Ring of Split Logs Around Smoldering Ashes", "Khúc Gỗ Chẻ Xếp Vòng Quanh Đống Tro Tàn", [2, 2], "walk_surface", False, "low", "sit_around_fire", "structure", "wood"),
+        ]),
+        ("pallisaded_camp_earthen_rampart", [
+            ("gabion_wicker_earth_filled_basket", "Soil-Filled Woven Hazel Gabion Basket", "Sọt Đan Nan Đổ Đầy Đất Làm Tường Lũy (Gabion)", [1, 1], "solid", True, "low", "take_cover", "structure", "earth"),
+            ("timber_parapet_sentry_firing_step", "Raised Plank Sentry Step Behind Earthwork", "Bậc Ván Gỗ Cho Lính Đứng Ngắm Bắn Sau Lũy", [2, 1], "walk_surface", False, "low", "aim_bow", "structure", "wood"),
+            ("entrenching_spade_and_mattock_pile", "Stack of Heavy Iron Military Sapping Shovels", "Đống Xẻng Sắt & Cuốc Chim Đào Hào Quân Đội", [1, 1], "cover", False, "low", "dig_trench", "prop", "iron"),
+            ("camp_boundary_ditch_trench", "Deep Dry Field Ditch with Sharpened Stakes", "Hào Sâu Cắm Cọc Nhọn Bảo Vệ Vòng Ngoài Doanh Trại", [2, 1], "walk_surface", False, "low", "step_in_trench", "structure", "earth"),
+        ]),
+        ("command_tent_and_war_council_map", [
+            ("double_pole_striped_marshals_marquee", "Grand Command Marquee Tent with Silk Trim", "Đại Lều Chỉ Huy Của Nguyên Soái Có Mái Che Rộng", [3, 2], "solid", True, "opaque", "enter_command_tent", "structure", "cloth"),
+            ("parchment_theater_map_table", "Camp Trestle with Ink Map & Lead Troops", "Bàn Gỗ Trải Bản Đồ Chiến Trận Kèm Tượng Chì", [2, 1], "cover", False, "low", "study_map", "prop", "wood"),
+            ("marshals_carved_field_chair", "Folding Iron Marshal's Campaign Chair", "Ghế Xếp Sắt Khảm Da Của Thống Soái", [1, 1], "cover", False, "low", "sit_marshal", "prop", "iron"),
+            ("heraldic_campaign_chest_registry", "Iron Chest Containing Muster Rolls & Coin", "Rương Sắt Chứa Danh Sách Điểm Quân & Tiền Lương", [1, 1], "solid", True, "low", "inspect_muster", "prop", "iron"),
+        ]),
+    ]
+    build_cat_subs("military_camps_and_field_works", subs_camp, var_camp, 22)
+
+    # =========================================================================
+    # 4. battlefield_aftermath_and_ruins (90 assets: 5 subs * 18)
+    # =========================================================================
+    var_aftermath = [
+        ("mud_churned", "Blood-Soaked Mud", "Bùn Lầy Nhuốm Máu", "universal_feudal", "dark blood-stained churned earth and stagnant pools"),
+        ("scorched_ember", "Smoldering Ruin", "Tàn Tích Bốc Khói", "universal_feudal", "blackened charred timbers and trailing smoke"),
+        ("carrion_crow", "Raven-Haunted", "Quạ Đen Rỉa Xác", "universal_feudal", "carrion birds circling and scattered feathers"),
+    ]
+    # 6 archetypes * 3 variants = 18 per subcat
+    subs_aftermath = [
+        ("broken_wagon_and_shattered_wheels", [
+            ("upturned_burnt_supply_wagon", "Overturned Scorched Baggage Train Cart", "Xe Chở Quân Lương Lật Úp Bị Thiêu Rụi", [2, 1], "solid", True, "low", "search_wagon", "structure", "wood"),
+            ("shattered_iron_tired_spoke_wheel", "Broken Splintered Wooden Spoked Cart Wheel", "Bánh Xe Gỗ Bọc Sắt Gãy Nan Hoa Rơi Dưới Bùn", [1, 1], "cover", False, "low", "salvage_iron", "prop", "wood"),
+            ("spilled_grain_and_supply_crates", "Smashed Cargo Crates Spilling Hardtack", "Thùng Hàng Vỡ Tung Đổ Vãi Lương Khô Bánh Mì", [1, 1], "cover", False, "low", "scavenge_rations", "prop", "wood"),
+            ("rotting_draft_ox_carcass_bones", "Fallen Draft Ox Skeletal Ribcage & Yoke", "Bộ Xương Bò Kéo Xe Gãy Ách Rơi Bên Vệ Đường", [2, 1], "cover", False, "low", "inspect_bones", "prop", "organic"),
+            ("arrow_pierced_canvas_wagon_cover", "Torn Linen Wagon Tilt Pierced by Arrows", "Mái Bạt Xe Ngựa Rách Bươm Bị Tên Bắn Thủng", [1, 1], "cover", False, "low", "tear_cloth", "prop", "cloth"),
+            ("charred_wagon_tongue_hitch", "Burnt Iron-Plated Wagon Draft Shaft", "Càng Xe Bằng Gỗ Bọc Sắt Bị Đốt Cháy Đen", [1, 1], "cover", False, "low", None, "prop", "wood"),
+        ]),
+        ("scattered_arms_and_dented_armor", [
+            ("broken_broadsword_in_blood_mud", "Snapped Steel Sword Blade Stuck in Mud", "Lưỡi Kiếm Sắt Gãy Đôi Cắm Sâu Vào Bùn Máu", [1, 1], "cover", False, "transparent", "salvage_steel", "prop", "iron"),
+            ("arrow_pierced_heater_shield_clump", "Split Wooden Shield Riddled with Fletched Arrows", "Tấm Khiên Gỗ Nứt Toác Cắm Đầy Mũi Tên", [1, 1], "cover", False, "low", "inspect_shield", "prop", "wood"),
+            ("dented_kettle_hat_helmet_in_grass", "Battered Iron Kettle Hat Helmet on Turf", "Nón Sắt Chiến Đấu Móp Méo Rơi Trên Bãi Cỏ", [1, 1], "cover", False, "low", "loot_helmet", "prop", "iron"),
+            ("rusted_chainmail_hauberk_torn", "Ripped Mail Shirt Stained with Rust & Blood", "Áo Giáp Xích Rách Nát Loang Lổ Vết Máu Rỉ", [1, 1], "cover", False, "low", "scavenge_mail", "prop", "iron"),
+            ("abandoned_heavy_halberd_shaft", "Upright Halberd Thrust into Ground", "Ngọn Kích Halberd Cắm Thẳng Đứng Trơ Trọi", [1, 2], "solid", True, "low", "pull_halberd", "prop", "iron"),
+            ("trampled_silk_heraldic_pennon", "Mud-Splattered Royal Pennon in Soil", "Lá Cờ Hiệu Hoàng Gia Bị Dẫm Đạp Dưới Bùn", [1, 1], "walk_surface", False, "transparent", "pick_up_banner", "prop", "cloth"),
+        ]),
+        ("burned_cottage_ruins_and_cinders", [
+            ("blackened_cruck_frame_ruin_skeleton", "Charred Skeleton of Burned Cruck House", "Khung Xương Gỗ Sồi Cháy Đen Của Ngôi Nhà Tranh", [2, 2], "solid", True, "opaque", "search_ruin", "structure", "wood"),
+            ("collapsed_thatched_roof_cinder_heap", "Smoldering Mound of Collapsed Roof Thatch", "Đống Mái Tranh Sập Xuống Bốc Khói Tàn Tro", [2, 1], "walk_surface", False, "low", "sift_ashes", "structure", "organic"),
+            ("isolated_standing_stone_chimney", "Lone Masonry Chimney Stack Among Ash", "Ống Khói Bằng Đá Đơn Độc Trơ Trọi Sau Đám Cháy", [1, 2], "solid", True, "opaque", None, "structure", "stone"),
+            ("melted_pewter_hearth_puddle", "Lump of Fire-Melted Pewter & Crockery", "Mẩu Thiếc Nóng Chảy Vón Cục Bên Mảnh Bát Vỡ", [1, 1], "cover", False, "low", "salvage_pewter", "prop", "iron"),
+            ("scorched_doorstep_and_iron_latch", "Scorched Stone Threshold & Broken Latch", "Bậc Cửa Đá Bị Lửa Liếm Cháy Kèm Chốt Cửa Gãy", [1, 1], "walk_surface", False, "transparent", None, "structure", "stone"),
+            ("dead_apple_tree_scorched_limbs", "Orchard Tree with Black Fire-Gouged Boughs", "Cây Ăn Quả Cành Cháy Đen Quắp Queo Bên Nhà", [2, 1], "solid", True, "low", None, "flora", "plant"),
+        ]),
+        ("carrion_birds_and_battlefield_piles", [
+            ("corpse_perched_black_raven", "Black Raven Perched on Overturned Shield", "Con Quạ Đen Đậu Trên Khiên Nhìn Xuống Chiến Trường", [1, 1], "cover", False, "low", "startle_raven", "prop", "organic"),
+            ("flock_of_wheeling_carrion_crows", "Flock of Carrion Crows Wheeling Overhead", "Đàn Quạ Bay Lượn Thành Vòng Tròn Trên Trời", [1, 1], "cover", False, "transparent", None, "prop", "organic"),
+            ("scavengers_bone_gnawed_remains", "Gnawed Cattle Bone Scattered in Grass", "Xương Gia Súc Bị Thú Hoang Gặm Nham Nhở", [1, 1], "walk_surface", False, "transparent", "inspect_carcass", "prop", "organic"),
+            ("carrion_swarm_flies_in_mud", "Swarm of Black Blowflies Over Mud Puddle", "Đàn Ruồi Xanh Bay Vo Ve Quanh Vũng Bùn Đen", [1, 1], "walk_surface", False, "transparent", None, "prop", "organic"),
+            ("looters_ransacked_corpse_pile", "Looted Armor Piles Stripped of Valuables", "Đống Binh Khí Bị Đạo Tặc Lục Soát Lột Sạch Vàng", [1, 1], "cover", False, "low", "search_remains", "prop", "cloth"),
+            ("mourning_weeping_woman_bundle", "Torn Shawl & Rosary Dropped on Turf", "Khăn Choàng Rách & Chuỗi Hạt Cầu Nguyện Bỏ Rơi", [1, 1], "cover", False, "transparent", "inspect_rosary", "prop", "cloth"),
+        ]),
+        ("looted_caravan_and_ransacked_chests", [
+            ("smashed_iron_studded_treasure_chest", "Pried-Open Oak Chest with Smashed Lock", "Rương Gỗ Nẹp Sắt Bị Bẩy Nắp Đập Vỡ Ổ Khóa", [1, 1], "cover", False, "low", "search_chest", "prop", "wood"),
+            ("torn_linen_bales_and_scattered_spices", "Ripped Canvas Bales Spilling Pepper Grain", "Kiện Hàng Rách Rưới Rơi Vãi Hạt Hồ Tiêu", [1, 1], "cover", False, "low", "gather_spices", "prop", "cloth"),
+            ("dead_mules_bones_in_harness", "Skeleton of Stricken Pack Mule with Straps", "Bộ Xương Con La Chết Vẫn Còn Dây Thồ Hàng", [2, 1], "cover", False, "low", "cut_straps", "prop", "organic"),
+            ("broken_wine_amphora_shards_blood", "Smashed Red Wine Jar Leaking on Soil", "Bình Gốm Đựng Rượu Nho Vỡ Tan Chảy Đỏ Đất", [1, 1], "cover", False, "low", "inspect_spill", "prop", "stone"),
+            ("highwaymens_snuffed_torch_stub", "Extinguished Pine Tar Torch Stuck in Earth", "Cây Đuốc Hắc Ín Dập Tắt Cắm Xuống Mặt Đất", [1, 1], "cover", False, "transparent", "loot_torch", "prop", "wood"),
+            ("dropped_silver_groat_in_puddle", "Glittering Silver Coin Half-Buried in Mud", "Đồng Tiền Bạc Sáng Lóe Nửa Chìm Dưới Bùn", [1, 1], "walk_surface", False, "transparent", "pickup_coin", "prop", "iron"),
+        ]),
+    ]
+    build_cat_subs("battlefield_aftermath_and_ruins", subs_aftermath, var_aftermath, 18)
+
+    # =========================================================================
+    # 5. outlaws_bandits_and_dungeon_depths (110 assets: 5 subs * 22)
+    # =========================================================================
+    var_bandit = [
+        ("mossy_ruin", "Ruin-Concealed", "Ẩn Trong Phế Tích", "universal_feudal", "crumbling mossy stone and creeping vines"),
+        ("damp_subterranean", "Cell-Damp Chilled", "Hầm Tối Lạnh Lẽo", "universal_feudal", "glistening damp stone vault walls and mold"),
+        ("torch_smoked", "Smoky Hideout", "Hang Ổ Khói Đuốc", "universal_feudal", "pitch torch soot and clandestine campfire smoke"),
+        ("iron_chained", "Iron-Chained", "Xích Sắt Xiềng Xích", "universal_feudal", "heavy iron shackles, manacles, and spiked grilles"),
+        ("blood_stained", "Gallows-Grim", "Ám Khí Giá Treo Cổ", "universal_feudal", "creaking gallows rope and somber warning marks"),
+    ]
+    subs_bandit = [
+        ("robber_barons_ruined_keep", [
+            ("crumbled_keep_corner_wall_ruin", "Crumbling Curtain Wall with Breached Arch", "Góc Tường Thành Lâu Đài Đổ Nát Có Lỗ Thủng", [2, 2], "solid", True, "opaque", "take_cover", "structure", "stone"),
+            ("rotting_timber_watch_floor_beams", "Precarious Floor Beams Over Dark Drop", "Dầm Gỗ Sàn Mục Nát Chênh Vênh Trên Vực", [2, 1], "walk_surface", False, "low", "walk_carefully", "structure", "wood"),
+            ("makeshift_firepit_in_keep_hearth", "Bandit Campfire Inside Ruined Fireplace", "Bếp Lửa Sơn Tặc Đốt Trong Lòng Lò Sưởi Đổ", [1, 1], "cover", False, "low", "warm_hands", "prop", "stone"),
+            ("lookout_crenellation_nest", "Straw Lookout Nest in High Broken Battlement", "Tổ Rơm Trinh Sát Trên Đỉnh Lỗ Châu Mai Vỡ", [1, 1], "cover", False, "low", "watch_road", "prop", "organic"),
+        ]),
+        ("forest_hideout_lean_to_shelters", [
+            ("bark_shingled_bandit_lean_to", "Low Spruce Branch Forest Bandit Lean-To", "Lán Trú Ẩn Bằng Cành Cây Vân Sam Giấu Trong Rừng", [2, 1], "cover", True, "low", "enter_hideout", "structure", "wood"),
+            ("camouflaged_pitfall_punji_trap", "Concealed Foliage Pit with Sharpened Stakes", "Hố Bẫy Chông Nhọn Ngụy Trang Bằng Cành Lá", [1, 1], "walk_surface", False, "transparent", "disarm_trap", "structure", "wood"),
+            ("hollow_tree_contraband_cache", "Hollow Oak Trunk Stuffed with Loot Sacks", "Thân Cây Sồi Rỗng Chứa Bao Tải Đồ Cướp", [1, 2], "solid", True, "opaque", "search_hollow", "prop", "wood"),
+            ("tripwire_warning_bell_line", "Hemp Tripwire Strung with Brass Sleigh Bells", "Bẫy Dây Chuông Báo Động Giăng Ven Lối Đi", [2, 1], "walk_surface", False, "transparent", "cut_tripwire", "prop", "organic"),
+        ]),
+        ("roadside_gallows_and_gibbets", [
+            ("heavy_timber_double_gallows", "Permanent Two-Beam Timber Town Gallows", "Giá Treo Cổ Bằng Gỗ Hai Xà Ngang Ngoại Ô", [2, 2], "solid", True, "opaque", "inspect_gallows", "structure", "wood"),
+            ("iron_hanging_cage_gibbet", "Wrought Iron Body-Shaped Hanging Gibbet Cage", "Lồng Sắt Treo Thi Thể Tội Nhân Ngoài Cửa Ô", [1, 2], "solid", True, "low", "inspect_bones", "prop", "iron"),
+            ("frayed_hemp_noose_and_drop_trap", "Swinging Knotted Hangman's Noose Rope", "Dây Thừng Thắt Nút Thòng Lọng Đung Đưa", [1, 1], "cover", False, "transparent", "touch_noose", "prop", "organic"),
+            ("warning_heads_on_iron_spikes", "Row of Severed Heads on Gate Wall Spikes", "Đầu Tội Nhân Cắm Trên Hàng Cọc Sắt Răn Đe", [2, 1], "solid", True, "low", "witness_warning", "prop", "iron"),
+        ]),
+        ("subterranean_oubliette_and_dungeon", [
+            ("circular_stone_oubliette_pit", "Bottle-Neck Subterranean Stone Oubliette", "Hầm Ngục Tối Cổ Chai Khoét Sâu Lòng Đất", [2, 2], "solid", True, "opaque", "peer_into_pit", "structure", "stone"),
+            ("iron_grate_oubliette_floor_cover", "Heavy Iron Barred Trapdoor with Padlock", "Cửa Sập Song Sắt Khóa Xích Đậy Miệng Hầm", [1, 1], "walk_surface", False, "low", "unlock_grate", "prop", "iron"),
+            ("wall_bolted_iron_manacles_shackles", "Rivet-Locked Iron Wrist & Ankle Chains", "Xiềng Xích Sắt Đóng Đinh Tán Gắn Vách Đá", [1, 1], "cover", False, "transparent", "shackle_prisoner", "prop", "iron"),
+            ("dungeon_torturers_rack_frame", "Wooden Stretching Rack with Windlass Roller", "Giàn Kéo Giãn Khung Gỗ Tra Tấn Tội Nhân", [2, 1], "solid", True, "low", "inspect_rack", "structure", "wood"),
+        ]),
+        ("smugglers_cave_and_concealed_trapdoors", [
+            ("sea_cave_hidden_tunnel_portal", "Tidal Sea-Cave Concealed Landing Mouth", "Cửa Hang Nước Thủy Triều Giấu Thuyền Buôn Lậu", [2, 2], "walk_surface", False, "low", "enter_cave", "structure", "stone"),
+            ("false_floor_cellar_trapdoor", "Oak Floorboard Concealing Smuggler Trapdoor", "Ván Sàn Gỗ Giấu Nắp Hầm Bí Mật Chứa Rượu", [1, 1], "walk_surface", False, "transparent", "open_trapdoor", "prop", "wood"),
+            ("smuggled_brandy_keg_hidden_pile", "Rope-Slung Kegs of Contraband Wine & Silk", "Thùng Rượu Buôn Lậu Buộc Dây Thừng Giấu Kín", [1, 1], "cover", False, "low", "loot_brandy", "prop", "wood"),
+            ("blind_alcove_signal_lantern_niche", "Shuttered Dark Lantern in Wall Recess", "Đèn Bão Có Màn Chắn Sáng Đánh Tín Hiệu Đêm", [1, 1], "cover", False, "transparent", "signal_ship", "prop", "iron"),
+        ]),
+    ]
+    build_cat_subs("outlaws_bandits_and_dungeon_depths", subs_bandit, var_bandit, 22)
+
+    return items

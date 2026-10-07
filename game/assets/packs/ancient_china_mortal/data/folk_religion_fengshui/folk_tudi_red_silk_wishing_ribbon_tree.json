@@ -1,0 +1,207 @@
+{
+  "id": "ancient_china_mortal.folk_religion_fengshui.folk_tudi_red_silk_wishing_ribbon_tree",
+  "name": "Folk Wishing Tree Draped with Red Ribbons",
+  "vietnamese_name": "Cây Cầu Nguyện Buộc Đầy Dải Lụa Đỏ",
+  "hanzi": "系满许愿红绸神树",
+  "category": "folk_religion_fengshui",
+  "sub_category": "earth_god_shrine_tudi",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "tie_ribbon",
+  "gameplay_role": "Sacred willow or ginkgo hung with thousands of red cloth strips.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Sprawling gnarled ginkgo tree draped in hundreds of fluttering red silk wishing ribbons and brass coins.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "wishing_well": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/folk_religion_fengshui/folk_tudi_red_silk_wishing_ribbon_tree.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.folk_religion_fengshui.folk_tudi_red_silk_wishing_ribbon_tree:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.39,
+        0.422
+      ],
+      [
+        0.431,
+        0.452
+      ]
+    ],
+    "frac_zero": 0.6423,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.001,
+        0.26,
+        0.69,
+        0.204,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.353,
+        0.659,
+        0.771,
+        0.619,
+        0.152,
+        0.0
+      ],
+      [
+        0.104,
+        0.477,
+        0.824,
+        0.902,
+        0.735,
+        0.314,
+        0.023
+      ],
+      [
+        0.47,
+        0.799,
+        0.724,
+        0.834,
+        0.606,
+        0.88,
+        0.255
+      ],
+      [
+        0.043,
+        0.188,
+        0.328,
+        0.818,
+        0.246,
+        0.188,
+        0.021
+      ],
+      [
+        0.0,
+        0.317,
+        0.741,
+        0.926,
+        0.557,
+        0.065,
+        0.0
+      ],
+      [
+        0.0,
+        0.645,
+        0.948,
+        0.998,
+        0.799,
+        0.166,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      22,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 120,
+    "contact_reference_px": 120.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

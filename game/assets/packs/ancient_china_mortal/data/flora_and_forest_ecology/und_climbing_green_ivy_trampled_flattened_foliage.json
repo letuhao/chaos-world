@@ -1,0 +1,128 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.und_climbing_green_ivy_trampled_flattened_foliage",
+  "name": "Climbing Wall Ivy & Creepers Trampled Wildlife Trail through Underbrush",
+  "vietnamese_name": "Vạt Cây Bụi Bị Thú Rừng Giẫm Bẹp (Dây Thường Xuân Leo Tường Đá)",
+  "hanzi": "络石爬藤绿蔓野兽践踏踏平踩道草丛",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "underbrush_fern_and_creeper",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "track_wildlife_trail",
+  "gameplay_role": "animal_trail",
+  "destructible": false,
+  "material": "plant",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese forest underbrush vegetation: Climbing Wall Ivy & Creepers Trampled Wildlife Trail through Underbrush. Organic foliage, delicate leaves and flowers, ink outlines, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "foliage_group": "climbing_green_ivy"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/und_climbing_green_ivy_trampled_flattened_foliage.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.und_climbing_green_ivy_trampled_flattened_foliage:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.609,
+        0.591
+      ]
+    ],
+    "frac_zero": 0.6292,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.169,
+        0.479,
+        0.194,
+        0.162,
+        0.47,
+        0.269,
+        0.0
+      ],
+      [
+        0.951,
+        1.0,
+        1.0,
+        0.999,
+        1.0,
+        0.993,
+        0.738
+      ],
+      [
+        0.526,
+        0.706,
+        0.476,
+        0.342,
+        0.613,
+        0.56,
+        0.18
+      ]
+    ],
+    "crop_offset": [
+      29,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 50,
+    "contact_reference_px": 50.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

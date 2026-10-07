@@ -1,0 +1,154 @@
+{
+  "id": "ancient_china_mortal.folk_religion_fengshui.folk_tudi_crop_fertility_altar_table",
+  "name": "Harvest Grain Offering Stone Table",
+  "vietnamese_name": "Bàn Đá Dâng Lễ Cúng Mùa Màng",
+  "hanzi": "五谷丰登供奉石案",
+  "category": "folk_religion_fengshui",
+  "sub_category": "earth_god_shrine_tudi",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "leave_grain_offering",
+  "gameplay_role": "Stone slab holding bowls of five grains and wine cups.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "earth",
+  "prompt_summary": "Carved stone offering table laden with red ceramic bowls of wheat, millet, rice, and three tiny wine cups.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "fertility_boost": 0.1
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/folk_religion_fengshui/folk_tudi_crop_fertility_altar_table.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.folk_religion_fengshui.folk_tudi_crop_fertility_altar_table:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.572,
+        0.56
+      ]
+    ],
+    "frac_zero": 0.6814,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.386,
+        0.463,
+        0.229,
+        0.231,
+        0.425,
+        0.248
+      ],
+      [
+        0.787,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.78
+      ],
+      [
+        0.355,
+        0.547,
+        0.289,
+        0.303,
+        0.622,
+        0.342
+      ]
+    ],
+    "crop_offset": [
+      33,
+      21
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 23,
+    "contact_reference_px": 23.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

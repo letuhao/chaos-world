@@ -1,0 +1,141 @@
+{
+  "id": "ancient_china_mortal.imperial_and_law.law_jail_fingerprint_confession_table",
+  "name": "Confession Desk with Red Inkpad",
+  "vietnamese_name": "Bàn Ký Điểm Chỉ Khai Khẩu",
+  "hanzi": "画押供词木案",
+  "category": "imperial_and_law",
+  "sub_category": "county_jail_and_pillory",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "interact",
+  "gameplay_role": "Small table with rolled confession scroll and cinnabar ink box.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Small wooden table holding open legal scroll and red cinnabar fingerprint inkpad box.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "confession_sign": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/imperial_and_law/law_jail_fingerprint_confession_table.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.imperial_and_law.law_jail_fingerprint_confession_table:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.614
+      ]
+    ],
+    "frac_zero": 0.6642,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.393,
+        0.531,
+        0.541
+      ],
+      [
+        0.886,
+        1.0,
+        0.896
+      ],
+      [
+        0.395,
+        0.294,
+        0.408
+      ]
+    ],
+    "crop_offset": [
+      16,
+      24
+    ],
+    "trunk_columns": [
+      0
+    ],
+    "contact_px": 12,
+    "contact_reference_px": 12.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

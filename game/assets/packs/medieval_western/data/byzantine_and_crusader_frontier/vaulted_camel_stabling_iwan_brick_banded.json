@@ -1,0 +1,168 @@
+{
+  "id": "medieval_western.byzantine_and_crusader_frontier.vaulted_camel_stabling_iwan_brick_banded",
+  "name": "Roman Brick-Banded Vaulted Stabling Bay & Manger",
+  "vietnamese_name": "Gian Chuồng Lạc Đà Vòm Cuốn Kèm Máng Ăn (Chèn Gạch Gốm La Mã)",
+  "category": "byzantine_and_crusader_frontier",
+  "sub_category": "caravanserai_walled_compound",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "stable_mount",
+  "gameplay_role": "Byzantine Crusader frontier feature (Vaulted Stabling Bay & Manger).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "byzantine_crusader",
+  "prompt_summary": "2D orthographic top-down game sprite of roman brick-banded vaulted stabling bay & manger, alternating layers of flat red Roman brick and ashlar, Byzantine Crusader frontier outpost style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/byzantine_and_crusader_frontier/vaulted_camel_stabling_iwan_brick_banded.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.byzantine_and_crusader_frontier.vaulted_camel_stabling_iwan_brick_banded:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.713,
+        0.693
+      ],
+      [
+        0.837,
+        0.842
+      ]
+    ],
+    "frac_zero": 0.5504,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.062,
+        0.572,
+        0.953,
+        0.706,
+        0.1,
+        0.0
+      ],
+      [
+        0.403,
+        1.0,
+        1.0,
+        1.0,
+        0.585,
+        0.0
+      ],
+      [
+        0.538,
+        1.0,
+        1.0,
+        1.0,
+        0.744,
+        0.0
+      ],
+      [
+        0.655,
+        1.0,
+        1.0,
+        1.0,
+        0.893,
+        0.0
+      ],
+      [
+        0.806,
+        1.0,
+        1.0,
+        1.0,
+        0.982,
+        0.305
+      ],
+      [
+        0.768,
+        1.0,
+        1.0,
+        1.0,
+        0.969,
+        0.285
+      ],
+      [
+        0.365,
+        0.738,
+        0.989,
+        0.773,
+        0.596,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      43,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 141,
+    "contact_reference_px": 141.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,217 @@
+{
+  "id": "ancient_china_mortal.outlaw_and_jianghu.outlaw_palisade_crude_timber_gate",
+  "name": "Fortified Mountain Stockade Double Gate",
+  "vietnamese_name": "Cổng Trại Sơn Tặc Gỗ Dày Khóa Xích",
+  "hanzi": "山寨重木吊门",
+  "category": "outlaw_and_jianghu",
+  "sub_category": "bandit_stockade_palisade",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "smash_gate",
+  "gameplay_role": "Heavy cross-braced timber gate reinforced with animal skulls.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Crude heavy wooden stockade gate with bone ornaments, crossbeams, and dangling warning ropes.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "gate_health": 800
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/outlaw_and_jianghu/outlaw_palisade_crude_timber_gate.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.outlaw_and_jianghu.outlaw_palisade_crude_timber_gate:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.561,
+        0.477,
+        0.516
+      ],
+      [
+        0.516,
+        0.11,
+        0.611
+      ]
+    ],
+    "frac_zero": 0.72,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        false,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 5,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      8,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.034,
+        0.707,
+        0.116,
+        0.0,
+        0.019,
+        0.591,
+        0.202,
+        0.0
+      ],
+      [
+        0.318,
+        0.979,
+        0.818,
+        0.563,
+        0.629,
+        0.994,
+        0.681,
+        0.0
+      ],
+      [
+        0.117,
+        0.716,
+        0.798,
+        0.948,
+        0.877,
+        0.867,
+        0.279,
+        0.102
+      ],
+      [
+        0.707,
+        0.854,
+        0.476,
+        0.12,
+        0.195,
+        0.847,
+        0.866,
+        0.395
+      ],
+      [
+        0.358,
+        0.631,
+        0.471,
+        0.046,
+        0.166,
+        0.78,
+        0.619,
+        0.006
+      ],
+      [
+        0.397,
+        0.754,
+        0.698,
+        0.0,
+        0.257,
+        0.991,
+        0.969,
+        0.773
+      ],
+      [
+        0.027,
+        0.407,
+        0.238,
+        0.0,
+        0.02,
+        0.666,
+        0.118,
+        0.063
+      ]
+    ],
+    "crop_offset": [
+      69,
+      17
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 25,
+    "contact_reference_px": 25.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

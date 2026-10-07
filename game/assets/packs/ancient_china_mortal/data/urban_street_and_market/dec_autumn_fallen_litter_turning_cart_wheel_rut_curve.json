@@ -1,0 +1,180 @@
+{
+  "id": "ancient_china_mortal.urban_street_and_market.dec_autumn_fallen_litter_turning_cart_wheel_rut_curve",
+  "name": "Autumn Fallen Leaves & Straw Curved Wheel Ruts Showing Turning Wagons",
+  "vietnamese_name": "Vết Hằn Bánh Xe Uốn Cong Lượn Lối (Lá Rụng Mùa Thu & Rơm Rạ Bẩn)",
+  "hanzi": "晚秋干草落转向交错弯曲泥辙",
+  "category": "urban_street_and_market",
+  "sub_category": "litter_wheel_rut_and_puddle",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect_cart_ruts",
+  "gameplay_role": "rut_decal",
+  "destructible": false,
+  "material": "earth",
+  "cultivation_element": "yin",
+  "prompt_summary": "Ancient Chinese street floor decal: Autumn Fallen Leaves & Straw Curved Wheel Ruts Showing Turning Wagons. Ground-level realistic grunge detail, ink outlines, top-down orthographic game decal on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "decal_condition": "autumn_fallen_litter"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/urban_street_and_market/dec_autumn_fallen_litter_turning_cart_wheel_rut_curve.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.urban_street_and_market.dec_autumn_fallen_litter_turning_cart_wheel_rut_curve:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.803,
+        0.802
+      ],
+      [
+        0.84,
+        0.827
+      ]
+    ],
+    "frac_zero": 0.4061,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.408,
+        0.656,
+        0.715,
+        0.674,
+        0.782,
+        0.774,
+        0.248
+      ],
+      [
+        0.665,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.921,
+        0.002
+      ],
+      [
+        0.627,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.984,
+        0.07
+      ],
+      [
+        0.563,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.469
+      ],
+      [
+        0.646,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.152
+      ],
+      [
+        0.727,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.25
+      ],
+      [
+        0.452,
+        0.727,
+        0.907,
+        0.814,
+        0.846,
+        0.531,
+        0.41
+      ]
+    ],
+    "crop_offset": [
+      23,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 174,
+    "contact_reference_px": 174.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

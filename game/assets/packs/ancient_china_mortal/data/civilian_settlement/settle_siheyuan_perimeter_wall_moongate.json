@@ -1,0 +1,164 @@
+{
+  "id": "ancient_china_mortal.civilian_settlement.settle_siheyuan_perimeter_wall_moongate",
+  "name": "Whitewashed Wall with Moon Gate",
+  "vietnamese_name": "Tường Vôi Trắng Cửa Nguyệt Môn",
+  "hanzi": "月洞粉墙",
+  "category": "civilian_settlement",
+  "sub_category": "courtyard_residence_siheyuan",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "enter",
+  "gameplay_role": "Elegant white plastered courtyard wall pierced by a circular moon-shaped passageway.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Top-down whitewashed masonry garden wall capped with black glazed tiles, featuring a perfect circular moon gate portal revealing garden bamboo foliage beyond.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "enclosure_wall": true,
+    "moon_gate_portal": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/civilian_settlement/settle_siheyuan_perimeter_wall_moongate.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.civilian_settlement.settle_siheyuan_perimeter_wall_moongate:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.58,
+        0.647,
+        0.647
+      ]
+    ],
+    "frac_zero": 0.7763,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.233,
+        0.308,
+        0.648,
+        0.661,
+        0.304,
+        0.249,
+        0.021
+      ],
+      [
+        0.76,
+        0.967,
+        0.455,
+        0.351,
+        1.0,
+        0.824,
+        0.073
+      ],
+      [
+        0.318,
+        0.899,
+        1.0,
+        1.0,
+        1.0,
+        0.866,
+        0.127
+      ]
+    ],
+    "crop_offset": [
+      92,
+      27
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 162,
+    "contact_reference_px": 162.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      128
+    ]
+  }
+}

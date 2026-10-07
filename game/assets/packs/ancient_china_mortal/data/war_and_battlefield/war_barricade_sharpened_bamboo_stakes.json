@@ -1,0 +1,156 @@
+{
+  "id": "ancient_china_mortal.war_and_battlefield.war_barricade_sharpened_bamboo_stakes",
+  "name": "Bamboo Pits & Pointed Stake Cluster",
+  "vietnamese_name": "Bụi Chông Tre Vót Nhọn Cắm Đất",
+  "hanzi": "尖头竹签陷阱排",
+  "category": "war_and_battlefield",
+  "sub_category": "spiked_barricade_cheval_de_frise",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Cluster of fire-hardened bamboo stakes angled 45 degrees towards enemy.",
+  "destructible": true,
+  "material": "bamboo",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Angled cluster of fire-hardened sharp yellow bamboo stakes driven firmly into muddy trench bank.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "bleed_hazard": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/war_and_battlefield/war_barricade_sharpened_bamboo_stakes.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.war_and_battlefield.war_barricade_sharpened_bamboo_stakes:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.357,
+        0.36
+      ]
+    ],
+    "frac_zero": 0.7574,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.024,
+        0.094,
+        0.31,
+        0.124,
+        0.085,
+        0.014
+      ],
+      [
+        0.432,
+        0.617,
+        0.751,
+        0.694,
+        0.588,
+        0.429
+      ],
+      [
+        0.137,
+        0.41,
+        0.552,
+        0.538,
+        0.464,
+        0.089
+      ]
+    ],
+    "crop_offset": [
+      34,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 6,
+    "contact_reference_px": 6.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        1,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      1,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      128,
+      0,
+      256,
+      128
+    ]
+  }
+}

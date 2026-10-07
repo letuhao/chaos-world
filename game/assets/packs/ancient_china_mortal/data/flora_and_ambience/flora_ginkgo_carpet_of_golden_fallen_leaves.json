@@ -1,0 +1,177 @@
+{
+  "id": "ancient_china_mortal.flora_and_ambience.flora_ginkgo_carpet_of_golden_fallen_leaves",
+  "name": "Carpet of Fallen Golden Ginkgo Leaves",
+  "vietnamese_name": "Thảm Lá Bạch Quả Vàng Rụng Khắp Mặt Đất",
+  "hanzi": "满地金黄银杏落叶毯",
+  "category": "flora_and_ambience",
+  "sub_category": "ginkgo_and_peach_tree",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "gather_leaves",
+  "gameplay_role": "Ground densely covered in brilliant yellow fan-shaped foliage.",
+  "destructible": false,
+  "material": "plant",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Ground surface covered in thick lush carpet of bright golden yellow fan-shaped ginkgo leaves.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "foliage_decal": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_ambience/flora_ginkgo_carpet_of_golden_fallen_leaves.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_ambience.flora_ginkgo_carpet_of_golden_fallen_leaves:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.643,
+        0.69
+      ],
+      [
+        0.773,
+        0.801
+      ]
+    ],
+    "frac_zero": 0.4409,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.055,
+        0.286,
+        0.334,
+        0.838,
+        0.183,
+        0.004
+      ],
+      [
+        0.174,
+        0.938,
+        1.0,
+        1.0,
+        1.0,
+        0.763,
+        0.177
+      ],
+      [
+        0.591,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.54
+      ],
+      [
+        0.931,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.867
+      ],
+      [
+        0.778,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.788
+      ],
+      [
+        0.401,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.985,
+        0.348
+      ],
+      [
+        0.0,
+        0.306,
+        0.814,
+        0.915,
+        0.863,
+        0.407,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      18,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 112,
+    "contact_reference_px": 112.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

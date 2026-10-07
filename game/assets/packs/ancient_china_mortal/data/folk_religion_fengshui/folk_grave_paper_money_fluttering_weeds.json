@@ -1,0 +1,113 @@
+{
+  "id": "ancient_china_mortal.folk_religion_fengshui.folk_grave_paper_money_fluttering_weeds",
+  "name": "White Joss Paper Strips Pinned by Stone",
+  "vietnamese_name": "Giấy Tiền Trắng Cắm Cành Cây Trên Mộ",
+  "hanzi": "坟头压纸挂白幡",
+  "category": "folk_religion_fengshui",
+  "sub_category": "ancestral_earthen_tumulus",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "pay_respects",
+  "gameplay_role": "Perforated white paper strings pinned on grave by pebble.",
+  "destructible": true,
+  "material": "paper",
+  "cultivation_element": "yin",
+  "prompt_summary": "Strips of pierced white tomb paper held down by a river stone atop grassy burial mound, fluttering in wind.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "swept_tomb": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/folk_religion_fengshui/folk_grave_paper_money_fluttering_weeds.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.folk_religion_fengshui.folk_grave_paper_money_fluttering_weeds:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.483
+      ]
+    ],
+    "frac_zero": 0.709,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.054,
+        0.411,
+        0.017
+      ],
+      [
+        0.421,
+        0.702,
+        0.283
+      ],
+      [
+        0.73,
+        0.957,
+        0.647
+      ]
+    ],
+    "crop_offset": [
+      20,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 78,
+    "contact_reference_px": 78.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

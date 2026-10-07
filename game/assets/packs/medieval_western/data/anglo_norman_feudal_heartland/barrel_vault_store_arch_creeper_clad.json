@@ -1,0 +1,155 @@
+{
+  "id": "medieval_western.anglo_norman_feudal_heartland.barrel_vault_store_arch_creeper_clad",
+  "name": "Ivy-Clothed Barrel-Vaulted Cellar Arch",
+  "vietnamese_name": "Vòm Đá Hầm Rượu Donjon (Dây Leo Bao Phủ)",
+  "category": "anglo_norman_feudal_heartland",
+  "sub_category": "square_norman_donjon_keep",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": null,
+  "gameplay_role": "Feudal Anglo-Norman component (Barrel-Vaulted Cellar Arch).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "anglo_norman",
+  "prompt_summary": "2D orthographic top-down game sprite of ivy-clothed barrel-vaulted cellar arch, creeping ivy tendrils and wild lichen crust, Anglo-Norman medieval feudal style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/anglo_norman_feudal_heartland/barrel_vault_store_arch_creeper_clad.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.anglo_norman_feudal_heartland.barrel_vault_store_arch_creeper_clad:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.632,
+        0.637
+      ]
+    ],
+    "frac_zero": 0.646,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.071,
+        0.72,
+        0.635,
+        0.019,
+        0.0
+      ],
+      [
+        0.653,
+        0.976,
+        1.0,
+        1.0,
+        0.978,
+        0.624
+      ],
+      [
+        0.712,
+        0.85,
+        0.838,
+        0.83,
+        0.847,
+        0.767
+      ]
+    ],
+    "crop_offset": [
+      34,
+      20
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 187,
+    "contact_reference_px": 187.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

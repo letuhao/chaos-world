@@ -1,0 +1,224 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.clf_yellow_loess_bluff_vertical_face_triple",
+  "name": "Yellow Loess Terraced Bluff Massive Mountain Bluff Wall (3x2)",
+  "vietnamese_name": "Vách Núi Dài Đứng Thẳng (3x2) (Vách Đất Vàng Hoàng Thổ Phù Sa)",
+  "hanzi": "黄土塬高崖宏伟三格大崖壁",
+  "category": "mountain_cliff_geology",
+  "sub_category": "cliff_face_and_bluff",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "inspect_cliff_face",
+  "gameplay_role": "cliff_barrier",
+  "destructible": false,
+  "material": "earth",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese mountainous geology landscape: Yellow Loess Terraced Bluff Massive Mountain Bluff Wall (3x2). Realistic rock textures, ink contours, orthographic top-down world-map view, transparent alpha background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "geology_layer": "cliff",
+    "strata": "yellow_loess_bluff"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/clf_yellow_loess_bluff_vertical_face_triple.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.clf_yellow_loess_bluff_vertical_face_triple:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.495,
+        0.833,
+        0.488
+      ],
+      [
+        0.902,
+        0.998,
+        0.915
+      ]
+    ],
+    "frac_zero": 0.5926,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      8,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.035,
+        0.484,
+        0.563,
+        0.091,
+        0.035,
+        0.004,
+        0.0
+      ],
+      [
+        0.123,
+        0.653,
+        1.0,
+        1.0,
+        0.972,
+        0.693,
+        0.194,
+        0.0
+      ],
+      [
+        0.488,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.493,
+        0.0
+      ],
+      [
+        0.628,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.689,
+        0.0
+      ],
+      [
+        0.678,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.793,
+        0.031
+      ],
+      [
+        0.831,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.908,
+        0.0
+      ],
+      [
+        0.9,
+        0.978,
+        0.987,
+        0.999,
+        0.982,
+        0.971,
+        0.95,
+        0.312
+      ]
+    ],
+    "crop_offset": [
+      79,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 226,
+    "contact_reference_px": 226.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

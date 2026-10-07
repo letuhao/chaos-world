@@ -1,0 +1,161 @@
+{
+  "id": "ancient_china_mortal.military_and_fortress.fort_gate_murder_hole_machicolation",
+  "name": "Gatehouse Murder Hole Overhang Chamber",
+  "vietnamese_name": "Lỗ Trút Đá & Đổ Dầu Nóng Trên Cổng",
+  "hanzi": "门洞泼油滚石槽",
+  "category": "military_and_fortress",
+  "sub_category": "city_gate_and_portcullis",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "drop_boiling_oil",
+  "gameplay_role": "Overhanging stone slits for pouring hot oil and stones onto attackers.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Stone defensive murder-hole machicolation jutting out from rampart parapet above gate passage.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "oil_trap": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/military_and_fortress/fort_gate_murder_hole_machicolation.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.military_and_fortress.fort_gate_murder_hole_machicolation:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.686,
+        0.7
+      ]
+    ],
+    "frac_zero": 0.5949,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.172,
+        0.215,
+        0.779,
+        0.824,
+        0.236,
+        0.182,
+        0.0
+      ],
+      [
+        0.794,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.886,
+        0.104
+      ],
+      [
+        0.393,
+        0.8,
+        1.0,
+        1.0,
+        0.883,
+        0.509,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      30,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 175,
+    "contact_reference_px": 175.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

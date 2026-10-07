@@ -1,0 +1,132 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.clf_mossy_ravine_slate_natural_rock_footpath",
+  "name": "Wet Mossy Ravine Dark Slate Natural Meandering Ridge Footpath",
+  "vietnamese_name": "Đường Mòn Đá Men Sườn Vách (Vách Đá Phiến Rêu Ướt Khe Suối)",
+  "hanzi": "湿滑苔藓黑板岩随形自然山径台",
+  "category": "mountain_cliff_geology",
+  "sub_category": "cliff_face_and_bluff",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "solid",
+  "interactive_verb": "walk_ridge_path",
+  "gameplay_role": "ridge_path",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese mountainous geology landscape: Wet Mossy Ravine Dark Slate Natural Meandering Ridge Footpath. Realistic rock textures, ink contours, orthographic top-down world-map view, transparent alpha background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "geology_layer": "cliff",
+    "strata": "mossy_ravine_slate"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/clf_mossy_ravine_slate_natural_rock_footpath.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.clf_mossy_ravine_slate_natural_rock_footpath:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.671,
+        0.604,
+        0.711
+      ]
+    ],
+    "frac_zero": 0.7384,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.314,
+        0.191,
+        0.027,
+        0.026,
+        0.401,
+        0.327
+      ],
+      [
+        0.854,
+        1.0,
+        0.794,
+        0.847,
+        1.0,
+        0.864
+      ],
+      [
+        0.697,
+        0.969,
+        0.962,
+        0.969,
+        0.967,
+        0.708
+      ]
+    ],
+    "crop_offset": [
+      96,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 182,
+    "contact_reference_px": 182.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

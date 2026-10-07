@@ -1,0 +1,155 @@
+{
+  "id": "medieval_western.modular_timber_frame_fachwerk.horizontal_tie_beam_collar_ivy_twined",
+  "name": "Ivy-Climbed Cross Tie-Beam Collar Assembly",
+  "vietnamese_name": "Xà Ngang Giằng Khung Tie-Beam (Dây Leo Quấn)",
+  "category": "modular_timber_frame_fachwerk",
+  "sub_category": "cruck_blade_and_tie_beam",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": null,
+  "gameplay_role": "Fachwerk timber-frame modular element (Cross Tie-Beam Collar Assembly).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "anglo_norman",
+  "prompt_summary": "2D orthographic top-down game sprite of ivy-climbed cross tie-beam collar assembly, delicate climbing ivy tendrils, Fachwerk half-timbering architecture style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/modular_timber_frame_fachwerk/horizontal_tie_beam_collar_ivy_twined.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.modular_timber_frame_fachwerk.horizontal_tie_beam_collar_ivy_twined:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.616,
+        0.63
+      ]
+    ],
+    "frac_zero": 0.64,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.077,
+        0.211,
+        0.561,
+        0.417,
+        0.205,
+        0.065
+      ],
+      [
+        0.874,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.868
+      ],
+      [
+        0.404,
+        0.627,
+        0.884,
+        0.872,
+        0.651,
+        0.419
+      ]
+    ],
+    "crop_offset": [
+      34,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 155,
+    "contact_reference_px": 155.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

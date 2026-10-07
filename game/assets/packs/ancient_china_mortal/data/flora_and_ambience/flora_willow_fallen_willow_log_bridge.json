@@ -1,0 +1,131 @@
+{
+  "id": "ancient_china_mortal.flora_and_ambience.flora_willow_fallen_willow_log_bridge",
+  "name": "Fallen Willow Trunk Crossing Stream",
+  "vietnamese_name": "Thân Cây Liễu Đổ Bắc Ngang Dòng Suối",
+  "hanzi": "倒伏老柳横溪木桥",
+  "category": "flora_and_ambience",
+  "sub_category": "weeping_willow_tree",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "cross_log",
+  "gameplay_role": "Uprooted willow trunk serving as natural footbridge over water.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "wood",
+  "prompt_summary": "Fallen mossy willow tree trunk spanning across a bubbling creek, acting as a natural walking bridge.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "natural_bridge": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_ambience/flora_willow_fallen_willow_log_bridge.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_ambience.flora_willow_fallen_willow_log_bridge:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.644,
+        0.596,
+        0.719
+      ]
+    ],
+    "frac_zero": 0.7337,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.106,
+        0.315,
+        0.081,
+        0.361,
+        0.523,
+        0.214
+      ],
+      [
+        0.971,
+        0.907,
+        0.556,
+        0.677,
+        0.949,
+        0.966
+      ],
+      [
+        0.616,
+        0.959,
+        0.923,
+        1.0,
+        0.98,
+        0.686
+      ]
+    ],
+    "crop_offset": [
+      96,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 192,
+    "contact_reference_px": 192.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

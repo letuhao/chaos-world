@@ -1,0 +1,178 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.wat_hidden_glen_creek_deep_tranquil_emerald_pool",
+  "name": "Shaded Forest Valley Stream Deep Emerald Green Mountain Pool (2x2)",
+  "vietnamese_name": "Hồ Nước Xanh Như Ngọc Bích (2x2) (Khe Suối Thung Lũng U Tịch)",
+  "hanzi": "幽谷盘石曲折溪深幽如玉清澈碧水潭",
+  "category": "mountain_cliff_geology",
+  "sub_category": "waterfall_stream_and_cascade",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "meditate_by_emerald_pool",
+  "gameplay_role": "calm_pool",
+  "destructible": false,
+  "material": "water",
+  "cultivation_element": "wood",
+  "prompt_summary": "Ancient Chinese mountainous water feature: Shaded Forest Valley Stream Deep Emerald Green Mountain Pool (2x2). Flowing crystal water with gouache splashes, dark ink outlines, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "water_scale": "hidden_glen_creek"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/wat_hidden_glen_creek_deep_tranquil_emerald_pool.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.wat_hidden_glen_creek_deep_tranquil_emerald_pool:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.676,
+        0.618
+      ],
+      [
+        0.845,
+        0.813
+      ]
+    ],
+    "frac_zero": 0.4408,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.584,
+        0.511,
+        0.201,
+        0.521,
+        0.585,
+        0.075
+      ],
+      [
+        0.269,
+        0.89,
+        0.956,
+        0.841,
+        0.777,
+        0.502,
+        0.513
+      ],
+      [
+        0.509,
+        0.989,
+        1.0,
+        1.0,
+        0.982,
+        0.728,
+        0.055
+      ],
+      [
+        0.696,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.446
+      ],
+      [
+        0.749,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.483
+      ],
+      [
+        0.701,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.992,
+        0.436
+      ],
+      [
+        0.189,
+        0.718,
+        0.896,
+        0.996,
+        0.901,
+        0.445,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      20,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 156,
+    "contact_reference_px": 156.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

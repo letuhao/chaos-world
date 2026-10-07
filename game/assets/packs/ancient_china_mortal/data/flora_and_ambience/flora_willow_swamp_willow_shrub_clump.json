@@ -1,0 +1,155 @@
+{
+  "id": "ancient_china_mortal.flora_and_ambience.flora_willow_swamp_willow_shrub_clump",
+  "name": "Dense Marsh Water Willow Shrub Cluster",
+  "vietnamese_name": "Bụi Cây Liễu Nước Mọc Đầm Lầy",
+  "hanzi": "沼泽从生水生丛柳",
+  "category": "flora_and_ambience",
+  "sub_category": "weeping_willow_tree",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Multiple slender trunks growing together from shallow water.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "wood",
+  "prompt_summary": "Cluster of multiple slender wetland willow stems growing together out of standing shallow water.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "marsh_vegetation": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_ambience/flora_willow_swamp_willow_shrub_clump.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_ambience.flora_willow_swamp_willow_shrub_clump:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.365,
+        0.315
+      ]
+    ],
+    "frac_zero": 0.7166,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.092,
+        0.144,
+        0.226,
+        0.183,
+        0.139,
+        0.079
+      ],
+      [
+        0.13,
+        0.633,
+        0.704,
+        0.642,
+        0.407,
+        0.096
+      ],
+      [
+        0.192,
+        0.391,
+        0.855,
+        0.723,
+        0.267,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      35,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3
+    ],
+    "contact_px": 73,
+    "contact_reference_px": 73.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

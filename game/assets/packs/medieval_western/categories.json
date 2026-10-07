@@ -1,0 +1,1041 @@
+[
+  {
+    "id": "anglo_norman_feudal_heartland",
+    "name": "Anglo-Norman Feudal Heartland",
+    "vietnamese_name": "Trọng Tâm Phong Kiến Anglo-Norman",
+    "sphere": "Cultural Crossroads",
+    "description": "Motte-and-bailey timber stockades, square keeps, Norman chevron arch carvings, heavy oak halls, chivalric court seats.",
+    "sub_categories": [
+      "motte_and_bailey_earthwork",
+      "square_norman_donjon_keep",
+      "chevron_carved_stone_archway",
+      "great_hall_oak_dais",
+      "feudal_homage_court_furnishing"
+    ],
+    "planned_count": 120,
+    "gameplay_gap_hooks": {
+      "culture_affinity": "anglo_norman",
+      "feudal_tier": "baronial_court",
+      "oath_system": "fealty_and_homage"
+    }
+  },
+  {
+    "id": "hanseatic_and_flemish_burgher",
+    "name": "Hanseatic & Flemish Burgher Town",
+    "vietnamese_name": "Đô Thị Phường Hội Hanseatic & Flanders",
+    "sphere": "Cultural Crossroads",
+    "description": "Backsteingotik red-brick stepped gables, canal lock gates, cloth halls, weighing houses (Waag), guild counting houses, leaded bay windows.",
+    "sub_categories": [
+      "stepped_gable_brick_facade",
+      "canal_water_lock_and_embankment",
+      "cloth_hall_and_weigh_house",
+      "guild_merchant_counting_room",
+      "belfry_curfew_bell_spire"
+    ],
+    "planned_count": 120,
+    "gameplay_gap_hooks": {
+      "culture_affinity": "flemish_hanseatic",
+      "merchant_banking": "letter_of_credit",
+      "guild_privilege": "hanseatic_charter"
+    }
+  },
+  {
+    "id": "nordic_and_norse_coastal",
+    "name": "Nordic & Norse Coastal Settlement",
+    "vietnamese_name": "Khu Định Cư Ven Biển Bắc Âu & Norse",
+    "sphere": "Cultural Crossroads",
+    "description": "Turf-roofed longhouses, dragon-carved stave pillars, runic memorial stones, boathouses (naust), whalebone arches, drying cod racks.",
+    "sub_categories": [
+      "turf_roofed_timber_longhouse",
+      "stave_pillar_dragon_carving",
+      "runestone_monument_and_grave",
+      "boathouse_naust_and_skiff",
+      "whalebone_arch_and_stockfish"
+    ],
+    "planned_count": 120,
+    "gameplay_gap_hooks": {
+      "culture_affinity": "nordic_norse",
+      "seafaring_weathering": "salt_and_frost_resistant",
+      "ancestral_rites": "runic_inscription"
+    }
+  },
+  {
+    "id": "mediterranean_and_moorish_quarter",
+    "name": "Mediterranean & Moorish Quarter",
+    "vietnamese_name": "Khu Phố Địa Trung Hải & Moorish (Al-Andalus)",
+    "sphere": "Cultural Crossroads",
+    "description": "Arcaded cool courtyards (patios), azulejo glazed tile fountains, terracotta tiled roofs, olive oil presses, spice souks, whitewashed stucco walls.",
+    "sub_categories": [
+      "arcaded_patio_courtyard",
+      "azulejo_glazed_tile_fountain",
+      "terracotta_stucco_villa_wall",
+      "olive_press_and_citrus_grove",
+      "spice_bazaar_and_silk_alcove"
+    ],
+    "planned_count": 120,
+    "gameplay_gap_hooks": {
+      "culture_affinity": "mediterranean_moorish",
+      "hydraulic_system": "cistern_and_aqueduct",
+      "exotic_trade": [
+        "spices",
+        "silk",
+        "olive_oil"
+      ]
+    }
+  },
+  {
+    "id": "slavic_eastern_taiga_and_logcraft",
+    "name": "Slavic Eastern Taiga & Logcraft",
+    "vietnamese_name": "Làng Gỗ Rừng Taiga Đông Slav (Kievan Rus)",
+    "sphere": "Cultural Crossroads",
+    "description": "Interlocking round-log cabins (izbas), wooden kremlins (gorodishche), carved window frames (nalichniki), onion-domed timber chapels, fur-trading posts.",
+    "sub_categories": [
+      "interlocking_log_izba_cabin",
+      "wooden_kremlin_rampart_wall",
+      "onion_domed_timber_chapel",
+      "carved_window_nalichniki_frame",
+      "taiga_fur_trappers_post"
+    ],
+    "planned_count": 110,
+    "gameplay_gap_hooks": {
+      "culture_affinity": "slavic_rus",
+      "winter_insulation": "russian_clay_stove",
+      "commodity_trade": "fine_furs_and_amber"
+    }
+  },
+  {
+    "id": "celtic_highland_and_atlantic_fringe",
+    "name": "Celtic Highland & Atlantic Fringe",
+    "vietnamese_name": "Vùng Cao Nguyên & Rìa Đại Tây Dương Celtic",
+    "sphere": "Cultural Crossroads",
+    "description": "Drystone broch towers, lake crannogs, turf beehive huts (clochán), high Celtic wheel crosses, peat fire hearths, holy wells with votive ribbons.",
+    "sub_categories": [
+      "circular_drystone_broch_tower",
+      "lake_dwelling_crannog_jetty",
+      "turf_beehive_clochan_hut",
+      "celtic_wheel_high_cross",
+      "peat_fire_hearth_and_well"
+    ],
+    "planned_count": 110,
+    "gameplay_gap_hooks": {
+      "culture_affinity": "celtic_gaelic",
+      "clan_structure": "highland_kinship",
+      "holy_sites": "cloutie_well_offering"
+    }
+  },
+  {
+    "id": "byzantine_and_crusader_frontier",
+    "name": "Byzantine & Crusader Outposts",
+    "vietnamese_name": "Tiền Đồn Byzantine & Thập Tự Quân",
+    "sphere": "Cultural Crossroads",
+    "description": "Rough limestone border watchtowers with stone hoardings, Byzantine brick-mortar layers, orthodox roadside icon shrines, caravanserai courtyards.",
+    "sub_categories": [
+      "crusader_limestone_curtain_wall",
+      "byzantine_brick_and_stone_band",
+      "roadside_iconostasis_shrine",
+      "caravanserai_walled_compound",
+      "border_beacon_watchtower"
+    ],
+    "planned_count": 100,
+    "gameplay_gap_hooks": {
+      "culture_affinity": "byzantine_crusader",
+      "fortification_type": "concentric_frontier_redoubt",
+      "caravan_rest": "caravanserai_hospitality"
+    }
+  },
+  {
+    "id": "wayfarers_nomads_and_tinker_camps",
+    "name": "Wayfarers, Nomads & Tinker Camps",
+    "vietnamese_name": "Khu Cắm Trại Dân Du Mục & Thợ Hàn Nồi",
+    "sphere": "Cultural Crossroads",
+    "description": "Barrel-top wooden vardo wagons, horse tether lines, tinker metalwork bellows, campfire fiddles, fortune-telling tapestries, wanderer canvas lean-tos.",
+    "sub_categories": [
+      "barrel_top_wooden_vardo_wagon",
+      "tinker_brazier_and_tin_pots",
+      "nomad_canvas_wedge_tent",
+      "horse_tether_line_and_saddles",
+      "campfire_circle_and_instruments"
+    ],
+    "planned_count": 100,
+    "gameplay_gap_hooks": {
+      "lifestyle": "itinerant_travelers",
+      "repair_services": "traveling_metal_tinker",
+      "folk_entertainment": "wandering_minstrels"
+    }
+  },
+  {
+    "id": "modular_timber_frame_fachwerk",
+    "name": "Modular Timber-Frame (Fachwerk)",
+    "vietnamese_name": "Kiến Trúc Khung Gỗ Fachwerk Lắp Ghép",
+    "sphere": "Built Architecture",
+    "description": "European half-timbering: cruck frames, jetty bays, wattle-daub, leaded diamond windows, thatch eaves, clay tile gables, dormers.",
+    "sub_categories": [
+      "cruck_blade_and_tie_beam",
+      "jetty_cantilever_bracket_bay",
+      "wattle_daub_and_brick_infill",
+      "leaded_diamond_casement_window",
+      "roof_gable_thatch_and_tile",
+      "veranda_porch_and_dormer"
+    ],
+    "planned_count": 160,
+    "gameplay_gap_hooks": {
+      "assembly_grid": "modular_building_snap_128",
+      "material_grades": [
+        "rustic_oak",
+        "dressed_timber",
+        "painted_fachwerk"
+      ],
+      "insulation_value": "temperate_climate"
+    }
+  },
+  {
+    "id": "village_cottages_and_serf_hovels",
+    "name": "Village Cottages & Serf Hovels",
+    "vietnamese_name": "Nhà Tranh Thôn Xóm & Túp Lều Nông Nô",
+    "sphere": "Built Architecture",
+    "description": "Peasant turf huts, smoke-hole thatch hovels, mud-cob walls, outdoor clay bread ovens, drystone dykes, dog kennels, woodpiles.",
+    "sub_categories": [
+      "peasant_turf_roofed_hovel",
+      "wattle_thatched_cottage_dwelling",
+      "outdoor_clay_bread_oven",
+      "drystone_boundary_wall_and_stile",
+      "homestead_woodpile_and_shed"
+    ],
+    "planned_count": 120,
+    "gameplay_gap_hooks": {
+      "social_tier": "serf_and_villager",
+      "manorial_rent": "labor_corvee",
+      "domestic_recovery": "straw_mattress_rest"
+    }
+  },
+  {
+    "id": "castles_curtain_walls_and_bastions",
+    "name": "Castles, Curtain Walls & Bastions",
+    "vietnamese_name": "Lâu Đài, Tường Thành Đá & Pháo Đài",
+    "sphere": "Built Architecture",
+    "description": "Ashlar curtain walls, sloped talus bases, battlements, machicolation overhangs, drum bastions, barbicans, portcullises, murder holes, moats.",
+    "sub_categories": [
+      "ashlar_curtain_wall_and_talus",
+      "crenellation_and_hoarding_crest",
+      "round_drum_and_square_tower",
+      "gatehouse_barbican_and_portcullis",
+      "moat_ditch_and_sloping_bank",
+      "arrow_slit_and_intramural_stairs"
+    ],
+    "planned_count": 180,
+    "gameplay_gap_hooks": {
+      "defense_rating": "heavy_concentric_fortress",
+      "breach_resistance": "siege_resistant",
+      "arrow_slits": "projectile_firing_port"
+    }
+  },
+  {
+    "id": "palace_keeps_and_royal_chambers",
+    "name": "Palace Keeps & Royal Chambers",
+    "vietnamese_name": "Đại Điện Cung Điện & Phòng Hoàng Gia",
+    "sphere": "Built Architecture",
+    "description": "Carved oak thrones, feasting trestle tables, heraldic tapestries, monumental fireplaces, four-poster canopy beds, chancery scriptoria.",
+    "sub_categories": [
+      "throne_dais_and_royal_canopy",
+      "great_hall_feasting_trestles",
+      "monumental_carved_stone_hearth",
+      "four_poster_oak_bedchamber",
+      "chivalric_heraldic_tapestry",
+      "chancery_and_treasury_chests"
+    ],
+    "planned_count": 120,
+    "gameplay_gap_hooks": {
+      "authority_zone": "monarch_and_high_lord",
+      "audience_diplomacy": "feudal_petition",
+      "treasury_storage": "royal_bullion_vault"
+    }
+  },
+  {
+    "id": "garrisons_barracks_and_watchtowers",
+    "name": "Garrisons, Barracks & Watchtowers",
+    "vietnamese_name": "Doanh Trại Đồn Trú & Tháp Canh Biên Giới",
+    "sphere": "Built Architecture",
+    "description": "Border stone watchtowers, garrison bunkhouses, armory weapon racks, archery shooting butts, signal beacon fire baskets.",
+    "sub_categories": [
+      "border_stone_watchtower",
+      "soldiers_timber_bunkhouse",
+      "armory_rack_spears_and_halberds",
+      "archery_practice_butt_range",
+      "signal_fire_beacon_turret"
+    ],
+    "planned_count": 100,
+    "gameplay_gap_hooks": {
+      "garrison_spawn": "feudal_men_at_arms",
+      "alarm_beacon": "signal_smoke_call",
+      "weapons_depot": "restock_munitions"
+    }
+  },
+  {
+    "id": "city_gates_bridges_and_portals",
+    "name": "City Gates, Bridges & Portals",
+    "vietnamese_name": "Cổng Thành, Cầu Đá & Trạm Thu Phí",
+    "sphere": "Built Architecture",
+    "description": "Twin-towered town gates, toll booths, curfew bell towers, Norman stone barrel-arch bridges, timber ox-cart trestles, river fords.",
+    "sub_categories": [
+      "twin_towered_city_gatehouse",
+      "norman_barrel_arch_stone_bridge",
+      "timber_oxcart_trestle_bridge",
+      "curfew_bell_and_toll_station",
+      "river_ford_and_stepping_stones"
+    ],
+    "planned_count": 120,
+    "gameplay_gap_hooks": {
+      "chokepoint_security": "gate_inspection_and_toll",
+      "river_transit": "high_load_bridge",
+      "curfew_rules": "night_closure"
+    }
+  },
+  {
+    "id": "gothic_cathedrals_and_monumental_abbeys",
+    "name": "Gothic Cathedrals & Monumental Abbeys",
+    "vietnamese_name": "Đại Giáo Đường Gothic & Tu Viện Kỳ Vĩ",
+    "sphere": "Faith & Mortality",
+    "description": "Pointed arch portals, carved tympanums, flying buttresses, rose stained glass windows, high marble altars, choir stalls, reliquary chasses.",
+    "sub_categories": [
+      "flying_buttress_and_pinacle",
+      "rose_window_and_lancet_glass",
+      "high_altar_and_reredos_screen",
+      "carved_choir_stalls_and_misericord",
+      "cathedral_bell_chamber_and_carillon",
+      "processional_crosses_and_reliquaries"
+    ],
+    "planned_count": 140,
+    "gameplay_gap_hooks": {
+      "sanctuary_law": "ecclesiastical_immunity",
+      "divine_favor": "cathedral_mass_buff",
+      "liturgical_calendar": "holy_feast_days"
+    }
+  },
+  {
+    "id": "monasteries_cloisters_and_scriptoria",
+    "name": "Monasteries, Cloisters & Scriptoria",
+    "vietnamese_name": "Hành Lang Tu Viện & Phòng Chép Kinh",
+    "sphere": "Faith & Mortality",
+    "description": "Arcaded cloister walks, lavabo fountains, scriptorium manuscript desks, herb drying ceiling racks, refectory tables, monk cell cots.",
+    "sub_categories": [
+      "cloister_quadrangle_arcaded_walk",
+      "monastic_scriptorium_desk",
+      "refectory_dining_and_pulpit",
+      "physic_garden_monastic_herbs",
+      "monastic_cell_and_dormitory"
+    ],
+    "planned_count": 120,
+    "gameplay_gap_hooks": {
+      "scholarly_craft": "manuscript_illumination",
+      "apothecary_brewing": "herbal_remedies",
+      "monastic_rule": "benedictine_routine"
+    }
+  },
+  {
+    "id": "parish_chapels_and_wayside_shrines",
+    "name": "Parish Chapels & Wayside Shrines",
+    "vietnamese_name": "Nhà Nguyện Giáo Xứ & Miếu Thờ Ven Đường",
+    "sphere": "Faith & Mortality",
+    "description": "Village stone chapels, thatched hermit huts, roadside Madonna shrines, holy wellsprings, penitent stone prayer benches.",
+    "sub_categories": [
+      "wayside_stone_cross_crucifix",
+      "thatched_field_chapel_building",
+      "pilgrims_sacred_spring_shrine",
+      "hollow_tree_saint_shrine",
+      "tithe_barn_parish_compound"
+    ],
+    "planned_count": 100,
+    "gameplay_gap_hooks": {
+      "pilgrim_waypoint": "blessing_of_safe_travel",
+      "confession": "forgive_sins_and_karma",
+      "communal_burial": "parish_record_keeping"
+    }
+  },
+  {
+    "id": "graveyards_crypts_and_charnel_houses",
+    "name": "Graveyards, Crypts & Charnel Houses",
+    "vietnamese_name": "Nghĩa Trang, Hầm Mộ & Nhà Chứa Xương",
+    "sphere": "Faith & Mortality",
+    "description": "Slate headstones, Celtic wheel crosses, knightly effigy sarcophagi (gisants), charnel house skull walls, weeping yew trees, lychgates.",
+    "sub_categories": [
+      "gothic_sarcophagus_and_tomb",
+      "charnel_house_ossuary_skull_wall",
+      "churchyard_standing_slate_headstones",
+      "ancient_churchyard_yew_tree",
+      "subterranean_catacomb_niches"
+    ],
+    "planned_count": 110,
+    "gameplay_gap_hooks": {
+      "spiritual_ground": "consecrated_vs_unconsecrated",
+      "undead_boundary": "ward_against_ghouls",
+      "mourning_rites": "grave_offerings"
+    }
+  },
+  {
+    "id": "medieval_alchemy_and_natural_philosophy",
+    "name": "Medieval Alchemy & Natural Philosophy",
+    "vietnamese_name": "Giả Kim Thuật & Triết Học Tự Nhiên",
+    "sphere": "Faith & Mortality",
+    "description": "Athanor slow-combustion ovens, glass alembics, retorts, brass armillary spheres, dried mandrake roots, celestial star charts.",
+    "sub_categories": [
+      "athanor_tower_furnace_and_alembic",
+      "astrolabe_armillary_sphere_and_charts",
+      "herbal_apothecary_drawers_and_jars",
+      "homunculus_jar_and_transmutation_crucible",
+      "scholars_reading_pulpit_and_codices"
+    ],
+    "planned_count": 100,
+    "gameplay_gap_hooks": {
+      "esoteric_crafting": "transmutation_and_tincture",
+      "astrological_alignment": "planetary_influence",
+      "philosophical_heresy": "inquisition_suspicion"
+    }
+  },
+  {
+    "id": "witchcraft_folklore_and_bog_magic",
+    "name": "Witchcraft, Folklore & Bog Magic",
+    "vietnamese_name": "Phù Thủy, Phong Tục Dân Gian & Phép Đầm Lầy",
+    "sphere": "Faith & Mortality",
+    "description": "Peat bog witch stilt huts, boiling iron cauldrons, animal skull charms, wicker effigies, cursed fairy rings, protective hex marks.",
+    "sub_categories": [
+      "bog_stilt_thatched_witch_hut",
+      "straw_corn_dolly_and_hex_poppets",
+      "poisonous_nightshade_and_fungi_ring",
+      "wyrd_standing_boulder_and_offerings",
+      "divination_table_and_bone_casting"
+    ],
+    "planned_count": 100,
+    "gameplay_gap_hooks": {
+      "folk_curses": "evil_eye_and_hex",
+      "forbidden_foraging": "black_henbane_and_nightshade",
+      "pagan_survivals": "seasonal_solstice_fire"
+    }
+  },
+  {
+    "id": "plague_lazarettos_and_quarantine",
+    "name": "Plague Lazarettos & Quarantine",
+    "vietnamese_name": "Trại Phong Hủi & Khu Cách Ly Dịch Bệnh",
+    "sphere": "Faith & Mortality",
+    "description": "Leper isolation wards, warning wooden clappers, plague quarantine chalk door crosses, aromatic herb burning pans, mass burial pits.",
+    "sub_categories": [
+      "lazaretto_pest_house_ward",
+      "plague_doctor_attire_and_station",
+      "quarantine_barrier_and_watch_line",
+      "mass_pestilence_trench_grave",
+      "fumigation_herbs_and_cleansing_fires"
+    ],
+    "planned_count": 90,
+    "gameplay_gap_hooks": {
+      "contagion_hazard": "black_death_infection",
+      "isolation_cordon": "quarantine_enforcement",
+      "penitence_movement": "flagellant_procession"
+    }
+  },
+  {
+    "id": "grain_agriculture_and_harvesting",
+    "name": "Grain Agriculture & Harvesting",
+    "vietnamese_name": "Canh Tác Lúa Mì & Thu Hoạch Mùa Màng",
+    "sphere": "Manorial Supply Chains",
+    "description": "Ridge-and-furrow wheat plots, barley rows, heavy wheeled moldboard plows, scythes, sickles, wheat sheaves, conical hayricks.",
+    "sub_categories": [
+      "ridge_and_furrow_open_fields",
+      "wheeled_moldboard_carruca_plow",
+      "reaping_scythes_sickles_and_stooks",
+      "threshing_barn_and_flails",
+      "thatched_hayrick_and_straw_stacks",
+      "gleaning_and_autumn_field_scarecrows"
+    ],
+    "planned_count": 130,
+    "gameplay_gap_hooks": {
+      "crop_cycle": "three_field_rotation",
+      "staple_yield": "flour_and_bread",
+      "tithe_fraction": "one_tenth_to_church"
+    }
+  },
+  {
+    "id": "pastoralism_livestock_and_dairy",
+    "name": "Pastoralism, Livestock & Dairy",
+    "vietnamese_name": "Chăn Thả Gia Súc & Chế Biến Bơ Sữa",
+    "sphere": "Manorial Supply Chains",
+    "description": "Hillside drystone sheepfolds, cattle feeding mangers, sheep shearing trestles, pig wallow pens, straw bee skeps, dairy butter churns.",
+    "sub_categories": [
+      "wattle_hurdle_sheep_pen",
+      "ox_stable_manger_and_byre",
+      "dairy_churn_and_cheese_press",
+      "pigsty_troughs_and_swill_buckets",
+      "sheepshearing_bench_and_fleeces",
+      "beehive_skeps_and_mead_vats"
+    ],
+    "planned_count": 130,
+    "gameplay_gap_hooks": {
+      "pastoral_products": [
+        "wool",
+        "cheese",
+        "butter",
+        "mutton",
+        "honey"
+      ],
+      "transhumance": "summer_upland_pasture"
+    }
+  },
+  {
+    "id": "orchards_vineyards_and_brewing",
+    "name": "Orchards, Vineyards & Brewing",
+    "vietnamese_name": "Vườn Cây Ăn Trái, Vườn Nho & Lò Nấu Rượu",
+    "sphere": "Manorial Supply Chains",
+    "description": "Apple espaliers, grape trellises, wooden screw wine presses, copper mash tuns, fermenting vats, stacked oak beer hogsheads.",
+    "sub_categories": [
+      "espalier_apple_and_pear_orchard",
+      "terrace_vineyard_grape_trellis",
+      "grape_treading_vat_and_press",
+      "brewhouse_mash_tun_and_copper",
+      "alehouse_cellar_casks_and_stillions"
+    ],
+    "planned_count": 120,
+    "gameplay_gap_hooks": {
+      "beverage_economy": [
+        "ale",
+        "cider",
+        "wine",
+        "mead"
+      ],
+      "seasonal_press": "grape_harvest_vendange"
+    }
+  },
+  {
+    "id": "watermills_windmills_and_milling",
+    "name": "Watermills, Windmills & Milling",
+    "vietnamese_name": "Cối Xay Nước, Cối Xay Gió & Xay Xát",
+    "sphere": "Manorial Supply Chains",
+    "description": "Overshot waterwheels, millraces, sluice gates, canvas-rigged post windmills, granite millstones in octagonal casings.",
+    "sub_categories": [
+      "overshot_timber_waterwheel",
+      "post_mill_and_tower_windmill_sails",
+      "granite_millstones_and_hopper",
+      "millers_flour_sacks_and_chute",
+      "millpond_weir_and_sluice_gates"
+    ],
+    "planned_count": 110,
+    "gameplay_gap_hooks": {
+      "manorial_monopoly": "lord_milling_ban",
+      "power_generation": [
+        "hydro_kinetic",
+        "aeolian_wind"
+      ],
+      "output_milling": "fine_white_and_whole_meal"
+    }
+  },
+  {
+    "id": "blacksmithing_and_metal_refining",
+    "name": "Blacksmithing & Metal Refining",
+    "vietnamese_name": "Rèn Đúc Sắt Thép & Tinh Luyện Kim Loại",
+    "sphere": "Manorial Supply Chains",
+    "description": "Hearth forges with leather bellows, heavy anvils, quench troughs, swage blocks, iron bloomery smelters, charcoal burner mounds.",
+    "sub_categories": [
+      "stone_forge_hearth_and_bellows",
+      "iron_anvil_and_water_swage_block",
+      "blacksmith_tongs_hammers_chisel_rack",
+      "tempering_water_trough_and_quench_barrel",
+      "iron_bloomery_furnace_and_slag_heap"
+    ],
+    "planned_count": 120,
+    "gameplay_gap_hooks": {
+      "metallurgy": "bloomery_wrought_iron",
+      "crafting_recipes": [
+        "plowshares",
+        "horseshoe",
+        "broadsword",
+        "armor_plate"
+      ],
+      "fuel_demand": "charcoal_burning"
+    }
+  },
+  {
+    "id": "forestry_timber_and_cooperage",
+    "name": "Forestry, Timber & Cooperage",
+    "vietnamese_name": "Lâm Nghiệp, Xẻ Gỗ & Đóng Thùng",
+    "sphere": "Manorial Supply Chains",
+    "description": "Sawpit trenches with two-man saws, shaving horses, cooper barrel-trussing braziers, iron barrel hoops, seasoning lumber stacks.",
+    "sub_categories": [
+      "two_man_pit_saw_and_sawpit",
+      "broadaxe_adzes_and_hewing_benches",
+      "cooper_cask_stave_bending_fire",
+      "charcoal_burners_earthen_kiln",
+      "timber_sled_and_ox_skidding_trail"
+    ],
+    "planned_count": 110,
+    "gameplay_gap_hooks": {
+      "timber_yield": [
+        "heart_oak",
+        "ash_shafts",
+        "yew_staves",
+        "pine_planks"
+      ],
+      "cooper_production": "watertight_casks_and_tuns"
+    }
+  },
+  {
+    "id": "wool_textile_and_dyeing_guilds",
+    "name": "Wool, Textile & Dyeing Guilds",
+    "vietnamese_name": "Phường Hội Dệt Nỉ, Nhuộm Màu & Kéo Sợi",
+    "sphere": "Manorial Supply Chains",
+    "description": "Drop spindles, horizontal treadle looms, woad/madder dye vats, tenter field drying frames, water-powered fulling stocks.",
+    "sub_categories": [
+      "broadloom_warp_and_weft_weaving",
+      "dye_vats_woad_madder_and_weld",
+      "fulling_mill_water_powered_stocks",
+      "teasel_raising_and_shearing_table",
+      "tentering_frame_meadow_stretching"
+    ],
+    "planned_count": 110,
+    "gameplay_gap_hooks": {
+      "textile_export": "flemish_broadcloth",
+      "dye_spectrum": [
+        "woad_blue",
+        "madder_red",
+        "weld_yellow"
+      ],
+      "guild_regulation": "staple_port_wool"
+    }
+  },
+  {
+    "id": "tannery_leatherwork_and_cordwaining",
+    "name": "Tannery, Leatherwork & Cordwaining",
+    "vietnamese_name": "Thuộc Da, Đóng Giày & Thuộc Bằng Vỏ Cây",
+    "sphere": "Manorial Supply Chains",
+    "description": "Oak-bark tanning pits, fleshing beams, hide stretching frames, lime slaking pits, cobbler lasts, leather currying tables.",
+    "sub_categories": [
+      "lime_pit_and_beaming_knives",
+      "tanbark_liquor_vats_and_crushers",
+      "cordwainers_shoemaking_last_and_awls",
+      "saddlery_harnesses_and_sheaths",
+      "tallow_renderers_vat_and_candles"
+    ],
+    "planned_count": 100,
+    "gameplay_gap_hooks": {
+      "leather_products": [
+        "cuirbouilli_armor",
+        "bridles",
+        "turnshoes",
+        "scabbards"
+      ],
+      "noxious_craft": "downwind_city_placement"
+    }
+  },
+  {
+    "id": "pottery_glassblowing_and_masonry",
+    "name": "Pottery, Glassblowing & Masonry",
+    "vietnamese_name": "Gốm Sứ, Thổi Thủy Tinh & Đẽo Đá",
+    "sphere": "Manorial Supply Chains",
+    "description": "Kick-wheel benches, beehive brick kilns, glassblower annealing furnaces, stonecutter banker benches, treadwheel lifting cranes.",
+    "sub_categories": [
+      "potters_wheel_and_updraft_kiln",
+      "stonemasons_banker_bench_and_mallet",
+      "glassblowers_potash_furnace_and_pipes",
+      "earthenware_storage_crocks_and_jugs",
+      "forest_glass_crown_window_disks"
+    ],
+    "planned_count": 110,
+    "gameplay_gap_hooks": {
+      "mineral_craft": [
+        "terracotta_roof_tile",
+        "stained_glass",
+        "dressed_ashlar"
+      ],
+      "fire_hazard": "furnace_spark_danger"
+    }
+  },
+  {
+    "id": "mining_quarries_and_lime_kilns",
+    "name": "Mining, Quarries & Lime Kilns",
+    "vietnamese_name": "Khai Mỏ, Mỏ Đá & Lò Nung Vôi",
+    "sphere": "Manorial Supply Chains",
+    "description": "Open limestone quarry faces, timber-shored mine adits, wooden ore carts, mine drainage troughs, calcining lime kilns.",
+    "sub_categories": [
+      "limestone_quarry_face_and_wedges",
+      "shored_timber_mine_adit_portal",
+      "flare_lime_kiln_and_quicklime_pit",
+      "alluvial_lead_and_tin_streaming",
+      "salt_pan_and_brine_evaporation"
+    ],
+    "planned_count": 100,
+    "gameplay_gap_hooks": {
+      "ore_extraction": [
+        "iron_bog_ore",
+        "lead_ore",
+        "silver_galena",
+        "building_chalk"
+      ],
+      "subterranean_hazards": "mine_flooding_and_cave_in"
+    }
+  },
+  {
+    "id": "urban_street_markets_and_civic_life",
+    "name": "Urban Street Markets & Civic Life",
+    "vietnamese_name": "Chợ Đường Phố & Đời Sống Dân Cư Đô Thị",
+    "sphere": "Commerce & Urban Life",
+    "description": "Striped canvas market booths, public steelyard scales, town market crosses, town hall noticeboards, pillories, foot stocks.",
+    "sub_categories": [
+      "canvas_roofed_market_stalls",
+      "civic_market_cross_and_pillory",
+      "swinging_wrought_iron_inn_signs",
+      "town_well_and_water_conduit",
+      "muddy_cart_ruts_and_street_gutters"
+    ],
+    "planned_count": 130,
+    "gameplay_gap_hooks": {
+      "market_days": "weekly_charter_fair",
+      "price_controls": "assize_of_bread_and_ale",
+      "public_order": "watch_and_ward"
+    }
+  },
+  {
+    "id": "taverns_coaching_inns_and_alehouses",
+    "name": "Taverns, Coaching Inns & Alehouses",
+    "vietnamese_name": "Quán Rượu, Trạm Cỗ Xe & Quán Bia Cỏ",
+    "sphere": "Commerce & Urban Life",
+    "description": "Heavy oak bar counters, pewter mugs, central roast hearths, gaming tables (dice & cards), horse coaching stables, straw sleeping lofts.",
+    "sub_categories": [
+      "heavy_oak_tavern_bar_counter",
+      "common_room_bench_and_trestles",
+      "coaching_inn_courtyard_and_stables",
+      "taproom_hearth_and_roast_spit",
+      "guest_chamber_pallet_beds"
+    ],
+    "planned_count": 120,
+    "gameplay_gap_hooks": {
+      "social_gathering": "rumor_and_bounty_leads",
+      "hospitality": "ale_and_stew_buffs",
+      "lodging_recovery": "inn_rest"
+    }
+  },
+  {
+    "id": "harbors_quays_and_hanseatic_cogs",
+    "name": "Harbors, Quays & Hanseatic Cogs",
+    "vietnamese_name": "Bến Cảng, Bờ Kè & Thuyền Buồm Cog",
+    "sphere": "Commerce & Urban Life",
+    "description": "Heavy oak timber quays, stone breakwaters, Hanseatic cogs, river punts, treadwheel harbor cranes, herring salting barrels, tollhouses.",
+    "sub_categories": [
+      "heavy_timber_wharf_and_quays",
+      "hanseatic_single_masted_cog",
+      "treadwheel_harbor_hoisting_crane",
+      "herring_salting_barrels_and_wharf",
+      "customs_tollhouse_and_weighing_scale"
+    ],
+    "planned_count": 130,
+    "gameplay_gap_hooks": {
+      "maritime_shipping": "bulk_grain_and_timber",
+      "customs_duty": "sound_toll_and_anchorage",
+      "naval_repairs": "careening_and_pitch"
+    }
+  },
+  {
+    "id": "river_fisheries_waterways_and_ferries",
+    "name": "River Fisheries, Waterways & Ferries",
+    "vietnamese_name": "Nghề Cá Sông, Kênh Đào & Phà Bến Nước",
+    "sphere": "Commerce & Urban Life",
+    "description": "Clinker fishing rowboats, fish-drying nets, reed fish weirs, cable ferry landings, river toll booms, boathouse sheds.",
+    "sub_categories": [
+      "cable_guided_river_punting_ferry",
+      "wicker_fish_weir_and_eel_traps",
+      "coracle_skiffs_and_flat_bottom_punts",
+      "river_lock_flash_gate_sluice",
+      "watercress_beds_and_reedy_channels"
+    ],
+    "planned_count": 100,
+    "gameplay_gap_hooks": {
+      "freshwater_harvest": [
+        "river_eel",
+        "salmon",
+        "pike"
+      ],
+      "ferry_transit": "cross_wide_estuary"
+    }
+  },
+  {
+    "id": "fairs_festivals_and_carnivals",
+    "name": "Fairs, Festivals & Carnivals",
+    "vietnamese_name": "Hội Chợ, Lễ Hội Mùa & Diễn Xướng",
+    "sphere": "Commerce & Urban Life",
+    "description": "Pageant miracle play wagons, puppet stages, flower-wound Maypoles, roasted whole ox spits, heraldic tournament lists, juggler props.",
+    "sub_categories": [
+      "striped_pageant_and_charter_pavilions",
+      "minstrels_stage_and_puppets",
+      "maypole_ribbons_and_green_man",
+      "games_of_chance_and_archery_prizes",
+      "roasting_ox_open_pit_and_cider_tents"
+    ],
+    "planned_count": 110,
+    "gameplay_gap_hooks": {
+      "community_morale": "festival_celebration_buff",
+      "mystery_plays": "religious_theatricals",
+      "annual_charter": "exemption_from_tolls"
+    }
+  },
+  {
+    "id": "knighthood_tournaments_and_chivalry",
+    "name": "Knighthood, Tournaments & Chivalry",
+    "vietnamese_name": "Đấu Thương Hiệp Sĩ & Tinh Thần Thượng Võ",
+    "sphere": "War & Underworld",
+    "description": "Jousting tilt barriers, velvet royal viewing boxes, rotating quintains, weapon racks, knightly heraldic pavilions.",
+    "sub_categories": [
+      "jousting_tilt_barrier_and_rails",
+      "royal_heraldic_viewing_stand",
+      "rotating_quintain_training_target",
+      "knightly_armory_and_plate_armor",
+      "knights_heraldic_camp_pavilions"
+    ],
+    "planned_count": 110,
+    "gameplay_gap_hooks": {
+      "chivalric_honor": "courtly_reputation",
+      "martial_contest": [
+        "joust_of_peace",
+        "melee_at_the_barriers"
+      ],
+      "ransom_system": "capture_knight_and_horse"
+    }
+  },
+  {
+    "id": "siege_engines_and_heavy_artillery",
+    "name": "Siege Engines & Heavy Artillery",
+    "vietnamese_name": "Máy Bắn Đá, Vũ Khí Công Thành & Đột Kích",
+    "sphere": "War & Underworld",
+    "description": "Counterweight trebuchets, heavy ballistas, covered battering rams, mangonels, wheeled mantlets (pavises), siege trenches.",
+    "sub_categories": [
+      "counterweight_trebuchet_warwolf",
+      "covered_battering_ram_and_cat",
+      "torsion_ballista_and_springald",
+      "wooden_siege_tower_belfry",
+      "siege_ammunition_pyramids_and_pots"
+    ],
+    "planned_count": 120,
+    "gameplay_gap_hooks": {
+      "siege_destruction": "wall_breach_mechanic",
+      "battering_gate": "destroy_portcullis",
+      "ammunition": [
+        "limestone_boulders",
+        "fire_pots",
+        "carcass_projectiles"
+      ]
+    }
+  },
+  {
+    "id": "military_camps_and_field_works",
+    "name": "Military Camps & Field Works",
+    "vietnamese_name": "Doanh Trại Quân Sự & Công Sự Dã Ngoại",
+    "sphere": "War & Underworld",
+    "description": "Conical canvas bell tents, officer marquees, camp cook cauldrons, weapon pyramids, chevaux-de-frise cavalry barriers, wicker gabions.",
+    "sub_categories": [
+      "soldiers_wedge_canvas_bell_tent",
+      "spiked_chevaux_de_frise_barricade",
+      "military_camp_hearth_and_mess",
+      "pallisaded_camp_earthen_rampart",
+      "command_tent_and_war_council_map"
+    ],
+    "planned_count": 110,
+    "gameplay_gap_hooks": {
+      "army_encampment": "mobilization_field_base",
+      "cavalry_obstacle": "caltrop_and_stake_slowdown",
+      "supply_attrition": "rations_and_forage"
+    }
+  },
+  {
+    "id": "battlefield_aftermath_and_ruins",
+    "name": "Battlefield Aftermath & Ruins",
+    "vietnamese_name": "Chiến Trường Tàn Tích & Dấu Vết Bại Trận",
+    "sphere": "War & Underworld",
+    "description": "Smashed wagons, stuck crossbow bolts, charred earth craters, tattered heraldic banners, broken polearms, open looting pits.",
+    "sub_categories": [
+      "broken_wagon_and_shattered_wheels",
+      "scattered_arms_and_dented_armor",
+      "burned_cottage_ruins_and_cinders",
+      "carrion_birds_and_battlefield_piles",
+      "looted_caravan_and_ransacked_chests"
+    ],
+    "planned_count": 90,
+    "gameplay_gap_hooks": {
+      "battlefield_scavenge": "broken_armor_and_salvage",
+      "desolation_hazard": "unburied_carrion_disease",
+      "war_trophies": "captured_standards"
+    }
+  },
+  {
+    "id": "outlaws_bandits_and_dungeon_depths",
+    "name": "Outlaws, Bandits & Dungeon Depths",
+    "vietnamese_name": "Sơn Tặc, Ngục Tối & Lòng Đất Hắc Ám",
+    "sphere": "War & Underworld",
+    "description": "Brushwood lean-tos, pitfall traps, roadside gallows, iron gibbets, hollow-tree caches, iron maiden, wall manacles, oubliette grates.",
+    "sub_categories": [
+      "robber_barons_ruined_keep",
+      "forest_hideout_lean_to_shelters",
+      "roadside_gallows_and_gibbets",
+      "subterranean_oubliette_and_dungeon",
+      "smugglers_cave_and_concealed_trapdoors"
+    ],
+    "planned_count": 110,
+    "gameplay_gap_hooks": {
+      "banditry": "highway_ambush",
+      "imprisonment": "dungeon_breakout",
+      "bounty_system": "outlaw_head_reward"
+    }
+  },
+  {
+    "id": "primeval_forests_ancient_oaks_and_woods",
+    "name": "Primeval Forests, Ancient Oaks & Woods",
+    "vietnamese_name": "Rừng Nguyên Sinh, Sồi Cổ Thụ & Dẻ Gai",
+    "sphere": "Ecology & Living Traces",
+    "description": "Gnarled Sherwood oaks, towering beeches, Scots pines, bracken ferns, wild blackberry brambles, hollow nurse logs, fairy rings.",
+    "sub_categories": [
+      "gnarled_english_oak_venerable",
+      "copper_beech_and_silver_birch",
+      "dense_bracken_and_bramble_thicket",
+      "nurse_logs_and_bracket_fungi",
+      "pollarded_willow_and_hazel_coppice"
+    ],
+    "planned_count": 130,
+    "gameplay_gap_hooks": {
+      "royal_forest_law": "verderer_and_venison_ban",
+      "foraging_yield": [
+        "truffles",
+        "boletus",
+        "wild_honey",
+        "bilberries"
+      ],
+      "canopy_occlusion": "dense_foliage_fade"
+    }
+  },
+  {
+    "id": "cliffs_highland_moors_and_waterfalls",
+    "name": "Cliffs, Highland Moors & Waterfalls",
+    "vietnamese_name": "Vách Đá Vôi, Cao Nguyên Than Bùn & Thác Nước",
+    "sphere": "Ecology & Living Traces",
+    "description": "Stratified limestone cliffs, granite tors, dark cavern mouths, purple heather moors, rushing waterfall drops, scree slopes.",
+    "sub_categories": [
+      "highland_granite_tor_outcrop",
+      "heather_and_peat_moorland_turf",
+      "mountain_waterfall_and_cascade",
+      "limestone_pavement_and_grykes",
+      "wind_bent_scots_pine_and_rowan"
+    ],
+    "planned_count": 120,
+    "gameplay_gap_hooks": {
+      "verticality": "climbing_and_ledges",
+      "cavern_exploration": "dungeon_entry_portal",
+      "water_physics": "flowing_torrents"
+    }
+  },
+  {
+    "id": "wetlands_bogs_fens_and_marshlands",
+    "name": "Wetlands, Bogs, Fens & Marshlands",
+    "vietnamese_name": "Đầm Lầy Than Bùn, Bãi Sậy & Nước Chua",
+    "sphere": "Ecology & Living Traces",
+    "description": "Spongy sphagnum peat bogs, dark fen sludge, willow carrs, cattail marshes, water iris clumps, peat cutting trenches.",
+    "sub_categories": [
+      "quaking_sphagnum_peat_bog",
+      "fenland_reed_beds_and_carrs",
+      "submerged_timber_causeway_track",
+      "peat_cutter_turf_stacks_and_spades",
+      "will_o_the_wisp_marsh_lights"
+    ],
+    "planned_count": 110,
+    "gameplay_gap_hooks": {
+      "movement_impediment": "mire_and_quagmire_slow",
+      "peat_fuel": "extract_turf_blocks",
+      "bog_preservation": "bog_body_archeology"
+    }
+  },
+  {
+    "id": "living_ground_pavements_and_tracks",
+    "name": "Living Ground, Pavements & Tracks",
+    "vietnamese_name": "Mặt Đất Đời Sống, Lối Đi & Vết Bánh Xe",
+    "sphere": "Ecology & Living Traces",
+    "description": "Roman paved highways, sunken holloways, cobblestone pavements, deep muddy cart ruts, puddle reflections, autumn leaf carpets, rime frost.",
+    "sub_categories": [
+      "worn_basalt_and_river_sett_paving",
+      "country_cart_ruts_and_churned_mud",
+      "flagstone_causeway_and_curbstones",
+      "village_green_turf_and_daisy_patches",
+      "puddle_strewn_cobbles_and_drainage",
+      "chalk_scree_and_limestone_shingle"
+    ],
+    "planned_count": 130,
+    "gameplay_gap_hooks": {
+      "terrain_nav": "walk_surface",
+      "footstep_acoustics": [
+        "stone_clatter",
+        "squelch_mud",
+        "crunch_leaves",
+        "splash_puddle"
+      ],
+      "wheel_traction": "weather_dependent_speed"
+    }
+  },
+  {
+    "id": "domesticity_chores_and_habitation_traces",
+    "name": "Domesticity, Chores & Habitation Traces",
+    "vietnamese_name": "Đời Sống Gia Đình, Việc Nhà & Dấu Vết Sinh Hoạt",
+    "sphere": "Ecology & Living Traces",
+    "description": "Hanging laundry lines, steaming cow dung heaps, butter churns, wash tubs, chimney smoke drifts, chamberpot slops.",
+    "sub_categories": [
+      "linen_washing_lines_and_bleaching_greens",
+      "manure_middens_and_muck_heaps",
+      "outdoor_chopping_blocks_and_axe_splits",
+      "muddy_cartwheel_ruts_and_puddles",
+      "hearth_ash_pits_and_charcoal_sweepings",
+      "thatched_eaves_drying_herbs_and_onions"
+    ],
+    "planned_count": 120,
+    "gameplay_gap_hooks": {
+      "ambient_habitation": "visual_life_indicator",
+      "sanitation_level": "smell_and_squalor_meter",
+      "domestic_chores": "daily_npc_animations"
+    }
+  },
+  {
+    "id": "wildlife_micro_fauna_birds_and_pests",
+    "name": "Wildlife, Micro-Fauna, Birds & Pests",
+    "vietnamese_name": "Động Vật Hoang Dã, Chim Muông & Thú Nhỏ",
+    "sphere": "Ecology & Living Traces",
+    "description": "Stork nests atop thatched chimneys, swallow barn nests, barn cats stalking mice, stray tavern curs, roosting pigeons, gallows crows.",
+    "sub_categories": [
+      "cathedral_roosting_pigeons_and_doves",
+      "gallows_carrion_crows_and_ravens",
+      "thatched_roof_barn_swallows",
+      "granary_rats_and_field_mice",
+      "timber_wall_geckos_and_spiders",
+      "fen_marsh_frogs_and_water_beetles"
+    ],
+    "planned_count": 120,
+    "gameplay_gap_hooks": {
+      "ecological_ambience": "organic_movement_sprites",
+      "omen_system": "stork_good_luck_vs_crows_ill_omen",
+      "pest_control": "cats_reduce_grain_loss"
+    }
+  },
+  {
+    "id": "denizens_burghers_peasants_and_beasts",
+    "name": "Denizens, Burghers, Peasants & Beasts",
+    "vietnamese_name": "Cư Dân, Thị Dân, Nông Dân & Súc Vật Kéo",
+    "sphere": "Ecology & Living Traces",
+    "description": "Serfs, milkmaids, blacksmiths, monks, friars, town watchmen, armored knights, highwaymen, heavy shire draft horses, oxen, sheep flocks.",
+    "sub_categories": [
+      "peasant_serfs_and_field_laborers",
+      "guild_artisans_and_master_craftsmen",
+      "burgher_merchants_and_civic_clerks",
+      "clergy_monks_friars_and_bishops",
+      "feudal_knights_men_at_arms_and_watch",
+      "domestic_draft_beasts_oxen_and_steeds"
+    ],
+    "planned_count": 140,
+    "gameplay_gap_hooks": {
+      "npc_routine": [
+        "day_labor",
+        "market_trading",
+        "night_curfew",
+        "tavern_leisure"
+      ],
+      "dialogue_hooks": "feudal_social_standing",
+      "draft_power": "pull_carts_and_heavy_plows"
+    }
+  }
+]

@@ -1,0 +1,135 @@
+{
+  "id": "ancient_china_mortal.trade_craft_industry.ind_dye_waste_rinse_drain_waterway",
+  "name": "Colorful Effluent Stone Rinse Canal",
+  "vietnamese_name": "Kênh Đá Xả Nước Nhuộm Nhiều Sắc",
+  "hanzi": "染坊洗布水渠石桥",
+  "category": "trade_craft_industry",
+  "sub_category": "dye_vat_and_silk_rack",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "rinse_cloth",
+  "gameplay_role": "Stone-lined drainage channel with purple and blue dyed running water.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "water",
+  "prompt_summary": "Stone-lined narrow water canal with vivid streaks of indigo and purple dye swirling past wooden washing platform.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "colorful_water": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/trade_craft_industry/ind_dye_waste_rinse_drain_waterway.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.trade_craft_industry.ind_dye_waste_rinse_drain_waterway:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.744,
+        0.582,
+        0.584
+      ]
+    ],
+    "frac_zero": 0.6882,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      8,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.397,
+        0.73,
+        0.575,
+        0.363,
+        0.32,
+        0.369,
+        0.535,
+        0.109
+      ],
+      [
+        0.853,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.844
+      ],
+      [
+        0.382,
+        0.948,
+        0.696,
+        0.369,
+        0.285,
+        0.304,
+        0.53,
+        0.292
+      ]
+    ],
+    "crop_offset": [
+      72,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "contact_px": 61,
+    "contact_reference_px": 61.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

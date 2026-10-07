@@ -1,0 +1,180 @@
+{
+  "id": "ancient_china_mortal.rural_farming_and_pastoral.trp_bottle_gourd_calabash_solar_grain_drying_tarpaulin",
+  "name": "Green Bottle Gourd & Calabash Coarse Hemp Sheet Spread with Golden Harvest",
+  "vietnamese_name": "Tấm Bạt Vải Thô Trải Phơi Thóc Vàng (2x2) (Dàn Bầu Hồ Lô Thả Trái)",
+  "hanzi": "如意大葫芦藤铺地粗麻布摊晒稻谷片",
+  "category": "rural_farming_and_pastoral",
+  "sub_category": "crop_trellis_and_hanging_harvest",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "rake_solar_drying_grain",
+  "gameplay_role": "drying_sheet",
+  "destructible": false,
+  "material": "cloth",
+  "cultivation_element": "yang",
+  "prompt_summary": "Ancient Chinese farm crop harvest display: Green Bottle Gourd & Calabash Coarse Hemp Sheet Spread with Golden Harvest. Golden rustic farm aesthetic, ink contours, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "crop_type": "bottle_gourd_calabash"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/rural_farming_and_pastoral/trp_bottle_gourd_calabash_solar_grain_drying_tarpaulin.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.rural_farming_and_pastoral.trp_bottle_gourd_calabash_solar_grain_drying_tarpaulin:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.712,
+        0.712
+      ],
+      [
+        0.912,
+        0.898
+      ]
+    ],
+    "frac_zero": 0.4033,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.151,
+        0.363,
+        0.238,
+        0.134,
+        0.361,
+        0.302,
+        0.0
+      ],
+      [
+        0.603,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.989,
+        0.396
+      ],
+      [
+        0.748,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.729
+      ],
+      [
+        0.775,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.522
+      ],
+      [
+        0.899,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.74
+      ],
+      [
+        0.798,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.735
+      ],
+      [
+        0.579,
+        0.862,
+        0.926,
+        0.864,
+        0.892,
+        0.846,
+        0.448
+      ]
+    ],
+    "crop_offset": [
+      21,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 195,
+    "contact_reference_px": 195.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

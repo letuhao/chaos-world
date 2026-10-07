@@ -1,0 +1,174 @@
+{
+  "id": "medieval_western.mediterranean_and_moorish_quarter.octagonal_star_water_basin_verdigris_copper",
+  "name": "Verdigris Patina Octagonal Geometric Tile Basin",
+  "vietnamese_name": "Bể Nước Bát Giác Lát Gạch Sao (Đồng Gỉ Xanh)",
+  "category": "mediterranean_and_moorish_quarter",
+  "sub_category": "azulejo_glazed_tile_fountain",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "water",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "drink",
+  "gameplay_role": "Mediterranean Moorish quarter feature (Octagonal Geometric Tile Basin).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "mediterranean_moorish",
+  "prompt_summary": "2D orthographic top-down game sprite of verdigris patina octagonal geometric tile basin, ancient green verdigris on beaten copper fittings, Mediterranean Moorish Al-Andalus style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/mediterranean_and_moorish_quarter/octagonal_star_water_basin_verdigris_copper.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.mediterranean_and_moorish_quarter.octagonal_star_water_basin_verdigris_copper:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.819,
+        0.819
+      ],
+      [
+        0.83,
+        0.831
+      ]
+    ],
+    "frac_zero": 0.4029,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.006,
+        0.553,
+        0.971,
+        0.975,
+        0.896,
+        0.183,
+        0.0
+      ],
+      [
+        0.569,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.939,
+        0.311
+      ],
+      [
+        0.874,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.73
+      ],
+      [
+        0.963,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.879
+      ],
+      [
+        0.976,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.941
+      ],
+      [
+        0.573,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.924,
+        0.34
+      ],
+      [
+        0.003,
+        0.572,
+        0.969,
+        0.969,
+        0.917,
+        0.186,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      23,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 117,
+    "contact_reference_px": 117.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

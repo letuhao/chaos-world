@@ -1,0 +1,106 @@
+{
+  "id": "ancient_china_mortal.creature_and_denizen.denizen_beast_flock_rooster_and_hens",
+  "name": "Rooster with Three Pecking Brown Hens",
+  "vietnamese_name": "Con Gà Trống Cùng Đàn Gà Mái Nhặt Thóc",
+  "hanzi": "雄鸡领母鸡啄谷",
+  "category": "creature_and_denizen",
+  "sub_category": "draft_beast_and_livestock",
+  "type": "character_sprite",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "interact_animal",
+  "gameplay_role": "Fauna Creature",
+  "destructible": true,
+  "material": "flesh",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Proud red-combed rooster with iridescent tail feathers standing over three pecking brown hens.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "npc_type": "animal"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/creature_and_denizen/denizen_beast_flock_rooster_and_hens.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.creature_and_denizen.denizen_beast_flock_rooster_and_hens:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.497
+      ]
+    ],
+    "frac_zero": 0.695,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.62,
+        0.374,
+        0.0
+      ],
+      [
+        0.578,
+        0.883,
+        0.567
+      ],
+      [
+        0.543,
+        0.317,
+        0.527
+      ]
+    ],
+    "crop_offset": [
+      19,
+      16
+    ],
+    "trunk_columns": [
+      0
+    ],
+    "contact_px": 35,
+    "contact_reference_px": 35.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

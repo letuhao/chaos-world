@@ -1,0 +1,214 @@
+{
+  "id": "ancient_china_mortal.flora_and_ambience.flora_peach_orchard_three_tree_grove",
+  "name": "Three-Tree Village Peach Orchard Grove",
+  "vietnamese_name": "Vườn Ba Cây Đào Đang Ra Hoa",
+  "hanzi": "三株连片桃花林",
+  "category": "flora_and_ambience",
+  "sub_category": "ginkgo_and_peach_tree",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "walk_orchard",
+  "gameplay_role": "Small grove of blooming peach trees forming canopy tunnel.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "wood",
+  "prompt_summary": "Small grove of three blossoming pink peach trees growing close together with intertwined flowering crowns.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "orchard": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_ambience/flora_peach_orchard_three_tree_grove.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_ambience.flora_peach_orchard_three_tree_grove:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.309,
+        0.727,
+        0.337
+      ],
+      [
+        0.522,
+        0.923,
+        0.526
+      ]
+    ],
+    "frac_zero": 0.7058,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.001,
+        0.396,
+        0.779,
+        0.206,
+        0.012,
+        0.0
+      ],
+      [
+        0.006,
+        0.543,
+        0.897,
+        0.868,
+        0.908,
+        0.203,
+        0.0
+      ],
+      [
+        0.068,
+        0.707,
+        0.691,
+        0.543,
+        0.81,
+        0.627,
+        0.001
+      ],
+      [
+        0.424,
+        0.719,
+        0.828,
+        0.798,
+        0.826,
+        0.827,
+        0.196
+      ],
+      [
+        0.311,
+        0.656,
+        0.886,
+        0.852,
+        0.795,
+        0.477,
+        0.398
+      ],
+      [
+        0.276,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.938,
+        0.067
+      ],
+      [
+        0.027,
+        0.605,
+        0.919,
+        0.971,
+        0.854,
+        0.378,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      84,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 131,
+    "contact_reference_px": 131.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "id": "ancient_china_mortal.flora_and_ambience.flora_bamboo_slender_three_stalk_cluster",
+  "name": "Slender Three-Stalk Bamboo Clump",
+  "vietnamese_name": "Khóm Trúc Ba Thân Thanh Nhã",
+  "hanzi": "三竿挺秀小竹丛",
+  "category": "flora_and_ambience",
+  "sub_category": "bamboo_cluster",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Delicate cluster of three graceful bamboo stems with lanceolate leaves.",
+  "destructible": false,
+  "material": "bamboo",
+  "cultivation_element": "wood",
+  "prompt_summary": "Graceful small cluster of three tall slender green bamboo stalks with feathery leaves swaying softly.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "garden_accent": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_ambience/flora_bamboo_slender_three_stalk_cluster.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_ambience.flora_bamboo_slender_three_stalk_cluster:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.272
+      ]
+    ],
+    "frac_zero": 0.8631,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      2,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.269,
+        0.103
+      ],
+      [
+        0.337,
+        0.228
+      ],
+      [
+        0.322,
+        0.132
+      ]
+    ],
+    "crop_offset": [
+      42,
+      17
+    ],
+    "trunk_columns": [],
+    "contact_px": 37,
+    "contact_reference_px": 37.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

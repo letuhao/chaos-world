@@ -1,0 +1,178 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.wat_gentle_cascades_river_whirlpool_eddy",
+  "name": "Gentle Stepped Rocky Cascade Swirling River Eddy Whirlpool Decal",
+  "vietnamese_name": "Vòng Xoáy Nước Xiết Nguy Hiểm (Dòng Thác Bậc Thang Êm Đềm)",
+  "hanzi": "清平迭级叠翠流江心回旋暗流吸人涡",
+  "category": "mountain_cliff_geology",
+  "sub_category": "waterfall_stream_and_cascade",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "avoid_whirlpool",
+  "gameplay_role": "water_hazard",
+  "destructible": false,
+  "material": "water",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese mountainous water feature: Gentle Stepped Rocky Cascade Swirling River Eddy Whirlpool Decal. Flowing crystal water with gouache splashes, dark ink outlines, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "water_scale": "gentle_cascades"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/wat_gentle_cascades_river_whirlpool_eddy.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.wat_gentle_cascades_river_whirlpool_eddy:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.655,
+        0.53
+      ],
+      [
+        0.805,
+        0.809
+      ]
+    ],
+    "frac_zero": 0.4669,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.767,
+        0.226,
+        0.009,
+        0.13,
+        0.027,
+        0.0
+      ],
+      [
+        0.169,
+        0.979,
+        0.908,
+        0.752,
+        0.941,
+        0.468,
+        0.036
+      ],
+      [
+        0.53,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.86,
+        0.275
+      ],
+      [
+        0.794,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.771
+      ],
+      [
+        0.843,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.759
+      ],
+      [
+        0.371,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        0.407
+      ],
+      [
+        0.071,
+        0.568,
+        0.852,
+        0.96,
+        0.808,
+        0.403,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      19,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 108,
+    "contact_reference_px": 108.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

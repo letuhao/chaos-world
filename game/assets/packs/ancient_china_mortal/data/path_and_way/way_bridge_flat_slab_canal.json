@@ -1,0 +1,120 @@
+{
+  "id": "ancient_china_mortal.path_and_way.way_bridge_flat_slab_canal",
+  "name": "Flat Granite Slab Canal Bridge",
+  "vietnamese_name": "Cầu Phiến Đá Liền Nhịp",
+  "hanzi": "平铺石板桥",
+  "category": "path_and_way",
+  "sub_category": "stone_arched_bridge",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Sturdy horizontal three-slab granite beam bridge spanning small canals.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Top-down flat horizontal three-piece granite beam bridge crossing water channel with simple square posts.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "nav_surface": "walk_surface",
+    "simple_crossing": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/path_and_way/way_bridge_flat_slab_canal.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.path_and_way.way_bridge_flat_slab_canal:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.612,
+        0.401
+      ]
+    ],
+    "frac_zero": 0.6991,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.675,
+        0.195,
+        0.063,
+        0.062,
+        0.266,
+        0.507
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.35
+      ],
+      [
+        0.999,
+        0.38,
+        0.194,
+        0.17,
+        0.172,
+        0.081
+      ]
+    ],
+    "crop_offset": [
+      32,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 42,
+    "contact_reference_px": 42.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

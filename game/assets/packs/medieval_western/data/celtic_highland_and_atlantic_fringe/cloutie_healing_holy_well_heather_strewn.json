@@ -1,0 +1,176 @@
+{
+  "id": "medieval_western.celtic_highland_and_atlantic_fringe.cloutie_healing_holy_well_heather_strewn",
+  "name": "Heather-Strewn Cloutie Tree & Sacred Stone Well",
+  "vietnamese_name": "Giếng Nước Thánh Buộc Vải Cầu Lành Bệnh (Phủ Hoa Thạch Nam)",
+  "category": "celtic_highland_and_atlantic_fringe",
+  "sub_category": "peat_fire_hearth_and_well",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "water",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "drink_holy_water",
+  "gameplay_role": "Celtic highland cultural feature (Cloutie Tree & Sacred Stone Well).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "celtic_gaelic",
+  "prompt_summary": "2D orthographic top-down game sprite of heather-strewn cloutie tree & sacred stone well, purple flowering moorland heather, Celtic highland and Atlantic fringe style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/celtic_highland_and_atlantic_fringe/cloutie_healing_holy_well_heather_strewn.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.celtic_highland_and_atlantic_fringe.cloutie_healing_holy_well_heather_strewn:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.366,
+        0.431
+      ],
+      [
+        0.657,
+        0.642
+      ]
+    ],
+    "frac_zero": 0.6076,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.104,
+        0.623,
+        0.758,
+        0.186,
+        0.0,
+        0.0
+      ],
+      [
+        0.015,
+        0.626,
+        0.796,
+        0.829,
+        0.79,
+        0.227,
+        0.0
+      ],
+      [
+        0.237,
+        0.708,
+        0.395,
+        0.557,
+        0.602,
+        0.396,
+        0.0
+      ],
+      [
+        0.006,
+        0.192,
+        0.491,
+        0.761,
+        0.5,
+        0.369,
+        0.0
+      ],
+      [
+        0.076,
+        0.654,
+        1.0,
+        1.0,
+        0.888,
+        0.013,
+        0.0
+      ],
+      [
+        0.352,
+        0.862,
+        1.0,
+        1.0,
+        0.897,
+        0.62,
+        0.016
+      ],
+      [
+        0.477,
+        0.776,
+        0.944,
+        0.978,
+        0.814,
+        0.633,
+        0.247
+      ]
+    ],
+    "crop_offset": [
+      27,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 183,
+    "contact_reference_px": 183.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

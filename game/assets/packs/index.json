@@ -1,7 +1,7 @@
 {
   "schema": "mapdata/pack_registry@1",
-  "total_packs": 20,
-  "total_assets": 1475,
+  "total_packs": 22,
+  "total_assets": 9355,
   "packs": [
     {
       "pack_id": "dao_fracture",
@@ -101,6 +101,16 @@
     {
       "pack_id": "yin-jian",
       "asset_count": 629,
+      "has_manifest": true
+    },
+    {
+      "pack_id": "ancient_china_mortal",
+      "asset_count": 2280,
+      "has_manifest": true
+    },
+    {
+      "pack_id": "medieval_western",
+      "asset_count": 5600,
       "has_manifest": true
     }
   ]

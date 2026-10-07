@@ -1,0 +1,207 @@
+{
+  "id": "ancient_china_mortal.civilian_settlement.settle_pharmacy_consultation_couch",
+  "name": "Physician Consultation Table & Cushion",
+  "vietnamese_name": "Phòng Khám Lương Y Bắt Mạch",
+  "hanzi": "诊室脉案",
+  "category": "civilian_settlement",
+  "sub_category": "herbal_pharmacy",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "heal",
+  "gameplay_role": "Private consulting office with silk wrist cushion for pulse diagnosis and calligraphy brush pot.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Top-down medical office interior with physician writing desk, embroidered yellow silk pulse-reading wrist cushion, inkstone with fresh black ink, and wooden display shelf of acupuncture needles.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "pulse_diagnosis": true,
+    "disease_detection": 0.95,
+    "healing_rate": 1.4
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/civilian_settlement/settle_pharmacy_consultation_couch.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.civilian_settlement.settle_pharmacy_consultation_couch:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.694,
+        0.66
+      ],
+      [
+        0.495,
+        0.498
+      ]
+    ],
+    "frac_zero": 0.5694,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.399,
+        0.3,
+        0.004,
+        0.0,
+        0.264,
+        0.252,
+        0.081
+      ],
+      [
+        0.529,
+        0.967,
+        0.926,
+        0.906,
+        0.933,
+        0.9,
+        0.033
+      ],
+      [
+        0.747,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.375
+      ],
+      [
+        0.914,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.789
+      ],
+      [
+        0.413,
+        0.875,
+        0.838,
+        0.988,
+        0.704,
+        0.837,
+        0.046
+      ],
+      [
+        0.018,
+        0.013,
+        0.743,
+        1.0,
+        0.325,
+        0.035,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.357,
+        0.702,
+        0.058,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      24,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 48,
+    "contact_reference_px": 48.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

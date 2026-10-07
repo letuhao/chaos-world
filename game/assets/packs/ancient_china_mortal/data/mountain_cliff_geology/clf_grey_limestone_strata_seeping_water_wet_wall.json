@@ -1,0 +1,209 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.clf_grey_limestone_strata_seeping_water_wet_wall",
+  "name": "Stratified Grey Limestone Cliff Weeping Water Mineral Seepage Wall",
+  "vietnamese_name": "Vách Đá Ngấm Nước Chảy Róc Rách (Vách Đá Vôi Xám Trầm Tích)",
+  "hanzi": "层状灰岩绝壁渗水潮湿挂水石壁",
+  "category": "mountain_cliff_geology",
+  "sub_category": "cliff_face_and_bluff",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "drink_mineral_seepage",
+  "gameplay_role": "wet_cliff",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese mountainous geology landscape: Stratified Grey Limestone Cliff Weeping Water Mineral Seepage Wall. Realistic rock textures, ink contours, orthographic top-down world-map view, transparent alpha background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "geology_layer": "cliff",
+    "strata": "grey_limestone_strata"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/clf_grey_limestone_strata_seeping_water_wet_wall.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.clf_grey_limestone_strata_seeping_water_wet_wall:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.586,
+        0.508
+      ],
+      [
+        0.816,
+        0.836
+      ]
+    ],
+    "frac_zero": 0.4698,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.345,
+        0.581,
+        0.163,
+        0.01,
+        0.0,
+        0.0
+      ],
+      [
+        0.061,
+        0.723,
+        1.0,
+        0.99,
+        0.912,
+        0.572,
+        0.002
+      ],
+      [
+        0.015,
+        0.925,
+        1.0,
+        1.0,
+        1.0,
+        0.99,
+        0.099
+      ],
+      [
+        0.452,
+        0.999,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        0.224
+      ],
+      [
+        0.665,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.751
+      ],
+      [
+        0.791,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.877
+      ],
+      [
+        0.084,
+        0.554,
+        0.946,
+        0.957,
+        0.934,
+        0.592,
+        0.071
+      ]
+    ],
+    "crop_offset": [
+      18,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 134,
+    "contact_reference_px": 134.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

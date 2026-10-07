@@ -1,0 +1,123 @@
+{
+  "id": "medieval_western.wayfarers_nomads_and_tinker_camps.open_awning_shade_shelter_patchwork_stitched",
+  "name": "Patchwork-Mended Pole-Propped Canvas Sun Awning",
+  "vietnamese_name": "Mái Che Bạt Chống Cột Tránh Nắng (Vá Víu Chắp Vá)",
+  "category": "wayfarers_nomads_and_tinker_camps",
+  "sub_category": "nomad_canvas_wedge_tent",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "rest",
+  "gameplay_role": "Wayfarer nomad campsite feature (Pole-Propped Canvas Sun Awning).",
+  "destructible": false,
+  "material": "cloth",
+  "feudal_culture": "wayfarer_nomad",
+  "prompt_summary": "2D orthographic top-down game sprite of patchwork-mended pole-propped canvas sun awning, colorful mismatched cloth and leather patch mends, Medieval itinerant wayfarer nomad camp style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/wayfarers_nomads_and_tinker_camps/open_awning_shade_shelter_patchwork_stitched.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.wayfarers_nomads_and_tinker_camps.open_awning_shade_shelter_patchwork_stitched:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.625,
+        0.618
+      ]
+    ],
+    "frac_zero": 0.6366,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.176,
+        0.479,
+        0.628,
+        0.649,
+        0.444,
+        0.152
+      ],
+      [
+        0.713,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.626
+      ],
+      [
+        0.327,
+        0.685,
+        0.624,
+        0.642,
+        0.743,
+        0.253
+      ]
+    ],
+    "crop_offset": [
+      33,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 63,
+    "contact_reference_px": 63.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "id": "ancient_china_mortal.creature_and_denizen.denizen_beast_village_watchdog_barking",
+  "name": "Alert Yellow Village Mastiff Watchdog",
+  "vietnamese_name": "Chó Vàng Canh Nhà Đứng Sủa Vang",
+  "hanzi": "看门土黄田园犬",
+  "category": "creature_and_denizen",
+  "sub_category": "draft_beast_and_livestock",
+  "type": "character_sprite",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "interact_animal",
+  "gameplay_role": "Fauna Creature",
+  "destructible": true,
+  "material": "flesh",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Alert curled-tail Chinese yellow village dog with pointed ears and black snout barking.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "npc_type": "animal"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/creature_and_denizen/denizen_beast_village_watchdog_barking.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.creature_and_denizen.denizen_beast_village_watchdog_barking:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.506
+      ]
+    ],
+    "frac_zero": 0.8689,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      2,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.476,
+        0.0
+      ],
+      [
+        0.848,
+        0.692
+      ],
+      [
+        0.34,
+        0.086
+      ]
+    ],
+    "crop_offset": [
+      45,
+      17
+    ],
+    "trunk_columns": [],
+    "contact_px": 6,
+    "contact_reference_px": 6.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

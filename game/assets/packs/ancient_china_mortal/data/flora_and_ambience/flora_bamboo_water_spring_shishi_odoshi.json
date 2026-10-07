@@ -1,0 +1,143 @@
+{
+  "id": "ancient_china_mortal.flora_and_ambience.flora_bamboo_water_spring_shishi_odoshi",
+  "name": "Tipping Bamboo Water Rocker (Shishi-Odoshi)",
+  "vietnamese_name": "Ống Nước Bập Bênh Đập Đá Đuổi Thú",
+  "hanzi": "竹添水自动击石器",
+  "category": "flora_and_ambience",
+  "sub_category": "bamboo_cluster",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "watch_rocker",
+  "gameplay_role": "Bamboo tube filling with water and pivoting to strike stone with clack.",
+  "destructible": false,
+  "material": "bamboo",
+  "cultivation_element": "water",
+  "prompt_summary": "Traditional hollow bamboo water rocker filling from mountain spring and pivoting down to strike hollow stone.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "peaceful_sound": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_ambience/flora_bamboo_water_spring_shishi_odoshi.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_ambience.flora_bamboo_water_spring_shishi_odoshi:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.557
+      ]
+    ],
+    "frac_zero": 0.7208,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.078,
+        0.398,
+        0.0
+      ],
+      [
+        0.613,
+        0.872,
+        0.261
+      ],
+      [
+        0.792,
+        0.946,
+        0.585
+      ]
+    ],
+    "crop_offset": [
+      25,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 68,
+    "contact_reference_px": 68.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

@@ -1,0 +1,157 @@
+{
+  "id": "ancient_china_mortal.urban_street_and_market.mkt_fresh_river_fishmonger_hanging_dried_produce_line",
+  "name": "Fresh Fish & Seafood Monger Overhead Line of Hanging Dried Goods",
+  "vietnamese_name": "Dây Treo Hàng Khô Ngang Trán (Sạp Bán Cá Tươi Sống)",
+  "hanzi": "活水鱼鲜海味摊摊顶横挂干货串排",
+  "category": "urban_street_and_market",
+  "sub_category": "market_stall_and_hawker_booth",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "examine_hanging_goods",
+  "gameplay_role": "hanging_goods",
+  "destructible": false,
+  "material": "plant",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese urban street market asset: Fresh Fish & Seafood Monger Overhead Line of Hanging Dried Goods. Detailed mercantile props, gouache textures with ink line accents, orthographic top-down view, clean transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "market_genre": "fresh_river_fishmonger"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/urban_street_and_market/mkt_fresh_river_fishmonger_hanging_dried_produce_line.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.urban_street_and_market.mkt_fresh_river_fishmonger_hanging_dried_produce_line:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.494,
+        0.531
+      ]
+    ],
+    "frac_zero": 0.7091,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.226,
+        0.249,
+        0.639,
+        0.844,
+        0.631,
+        0.251,
+        0.275
+      ],
+      [
+        0.38,
+        0.542,
+        0.846,
+        0.979,
+        0.879,
+        0.599,
+        0.428
+      ],
+      [
+        0.0,
+        0.0,
+        0.297,
+        0.352,
+        0.531,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      39
+    ],
+    "trunk_columns": [
+      3,
+      4
+    ],
+    "contact_px": 96,
+    "contact_reference_px": 96.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

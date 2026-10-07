@@ -1,0 +1,185 @@
+{
+  "id": "ancient_china_mortal.path_and_way.way_wood_bridge_zigzag_lotus",
+  "name": "Nine-Turn Zigzag Lotus Bridge",
+  "vietnamese_name": "Cầu Gỗ Cửu Khúc Ao Sen",
+  "hanzi": "九曲莲桥",
+  "category": "path_and_way",
+  "sub_category": "wooden_footbridge",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "rest",
+  "gameplay_role": "Decorative zig-zagging painted wooden walkway warding off straight-line evil spirits.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "water",
+  "prompt_summary": "Top-down red-lacquered wooden zigzag bridge turning at sharp 90-degree angles across calm lotus pool.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "evil_spirit_warding": 0.8,
+    "aesthetic_rating": 0.95,
+    "stroll_leisure": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/path_and_way/way_wood_bridge_zigzag_lotus.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.path_and_way.way_wood_bridge_zigzag_lotus:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.462,
+        0.808,
+        0.53
+      ],
+      [
+        0.782,
+        0.962,
+        0.66
+      ]
+    ],
+    "frac_zero": 0.6341,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.093,
+        0.273,
+        0.528,
+        0.323,
+        0.219,
+        0.007
+      ],
+      [
+        0.047,
+        0.626,
+        0.885,
+        0.999,
+        0.943,
+        0.575,
+        0.092
+      ],
+      [
+        0.337,
+        0.938,
+        1.0,
+        1.0,
+        1.0,
+        0.991,
+        0.611
+      ],
+      [
+        0.772,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.79
+      ],
+      [
+        0.787,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.792
+      ],
+      [
+        0.662,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        0.23
+      ],
+      [
+        0.106,
+        0.774,
+        0.946,
+        0.896,
+        0.657,
+        0.259,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      81,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 128,
+    "contact_reference_px": 128.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

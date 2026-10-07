@@ -1,0 +1,160 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.kst_charred_lightning_crag_spire_base_boulder_skirt",
+  "name": "Lightning-Struck Thunder Crag Spire Base Ring of Weathered Boulders",
+  "vietnamese_name": "Vành Đá Tảng Quanh Chân Núi (Đỉnh Sét Đánh Cháy Đen Đơn Độc)",
+  "hanzi": "遭雷劈裂焦黑孤崖石峰裙边堆叠乱矶",
+  "category": "mountain_cliff_geology",
+  "sub_category": "karst_spire_and_pinnacle",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "climb_spire_base",
+  "gameplay_role": "peak_base",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "yang",
+  "prompt_summary": "Ancient Chinese karst pinnacle mountain landscape: Lightning-Struck Thunder Crag Spire Base Ring of Weathered Boulders. Towering verticality, poetic gouache shading, dark ink contour lines, top-down orthographic sprite on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "geology_layer": "karst",
+    "region": "charred_lightning_crag"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/kst_charred_lightning_crag_spire_base_boulder_skirt.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.kst_charred_lightning_crag_spire_base_boulder_skirt:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.217,
+        0.641,
+        0.21
+      ]
+    ],
+    "frac_zero": 0.859,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.021,
+        0.372,
+        0.248,
+        0.044,
+        0.0
+      ],
+      [
+        0.108,
+        0.544,
+        0.876,
+        0.815,
+        0.416,
+        0.095
+      ],
+      [
+        0.176,
+        0.528,
+        0.802,
+        0.737,
+        0.5,
+        0.17
+      ]
+    ],
+    "crop_offset": [
+      97,
+      21
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 77,
+    "contact_reference_px": 77.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      128
+    ]
+  }
+}

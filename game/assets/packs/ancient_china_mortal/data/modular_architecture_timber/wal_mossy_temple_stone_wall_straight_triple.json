@@ -1,0 +1,170 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.wal_mossy_temple_stone_wall_straight_triple",
+  "name": "Mossy Sacred Mountain Masonry Straight Solid Wall (3x1)",
+  "vietnamese_name": "Tường Đặc Thẳng (3x1) (Đá Xếp Miếu Núi Rêu Phong)",
+  "hanzi": "古刹青苔乱石墙三步院墙",
+  "category": "modular_architecture_timber",
+  "sub_category": "wall_and_lattice_window",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "knock_wall",
+  "gameplay_role": "wall_segment",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "yin",
+  "prompt_summary": "Ancient Chinese vernacular building wall module: Mossy Sacred Mountain Masonry Straight Solid Wall (3x1). Authentic materials, crisp dark ink outlines, orthographic top-down world-map view, isolated cleanly on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "wall",
+    "style": "mossy_temple_stone"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/wal_mossy_temple_stone_wall_straight_triple.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.wal_mossy_temple_stone_wall_straight_triple:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.67,
+        0.709,
+        0.672
+      ]
+    ],
+    "frac_zero": 0.6428,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      11,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.786,
+        0.771,
+        0.754,
+        0.765,
+        0.86,
+        0.747,
+        0.778,
+        0.753,
+        0.747,
+        0.812,
+        0.791
+      ],
+      [
+        0.378,
+        0.918,
+        0.739,
+        0.737,
+        0.749,
+        0.775,
+        0.77,
+        0.752,
+        0.753,
+        0.864,
+        0.389
+      ],
+      [
+        0.0,
+        0.198,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.062,
+        0.005
+      ]
+    ],
+    "crop_offset": [
+      16,
+      40
+    ],
+    "trunk_columns": [],
+    "contact_px": 307,
+    "contact_reference_px": 307.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      128
+    ]
+  }
+}

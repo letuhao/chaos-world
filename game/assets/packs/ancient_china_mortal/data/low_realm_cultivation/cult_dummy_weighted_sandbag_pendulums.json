@@ -1,0 +1,204 @@
+{
+  "id": "ancient_china_mortal.low_realm_cultivation.cult_dummy_weighted_sandbag_pendulums",
+  "name": "Four Hanging Canvas Sandbags on Timber Gallows",
+  "vietnamese_name": "Bốn Bao Cát Treo Dưới Giá Gỗ",
+  "hanzi": "四方悬吊沙包阵",
+  "category": "low_realm_cultivation",
+  "sub_category": "wooden_training_dummy_mukren",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "punch_bags",
+  "gameplay_role": "Heavy hemp bags swinging from crossbars for evasion drills.",
+  "destructible": true,
+  "material": "canvas",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Sturdy timber gallows frame suspending four heavy swinging canvas sandbags on hemp cords.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "reaction_speed": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/low_realm_cultivation/cult_dummy_weighted_sandbag_pendulums.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.low_realm_cultivation.cult_dummy_weighted_sandbag_pendulums:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.353,
+        0.36
+      ],
+      [
+        0.429,
+        0.429
+      ]
+    ],
+    "frac_zero": 0.6738,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.716,
+        0.692,
+        0.723,
+        0.576,
+        0.726,
+        0.71,
+        0.697
+      ],
+      [
+        0.439,
+        0.206,
+        0.302,
+        0.0,
+        0.309,
+        0.334,
+        0.378
+      ],
+      [
+        0.324,
+        0.117,
+        0.182,
+        0.0,
+        0.191,
+        0.221,
+        0.251
+      ],
+      [
+        0.21,
+        0.276,
+        0.318,
+        0.071,
+        0.277,
+        0.345,
+        0.126
+      ],
+      [
+        0.136,
+        0.696,
+        0.886,
+        0.671,
+        0.893,
+        0.758,
+        0.036
+      ],
+      [
+        0.243,
+        0.762,
+        0.671,
+        0.711,
+        0.715,
+        0.838,
+        0.081
+      ],
+      [
+        0.392,
+        0.228,
+        0.0,
+        0.0,
+        0.0,
+        0.338,
+        0.378
+      ]
+    ],
+    "crop_offset": [
+      17,
+      17
+    ],
+    "trunk_columns": [
+      0
+    ],
+    "contact_px": 27,
+    "contact_reference_px": 27.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

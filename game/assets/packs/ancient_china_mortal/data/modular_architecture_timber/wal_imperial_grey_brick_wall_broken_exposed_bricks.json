@@ -1,0 +1,157 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.wal_imperial_grey_brick_wall_broken_exposed_bricks",
+  "name": "Imperial Dynasty Grey Brick Breached Wall with Spilling Broken Bricks",
+  "vietnamese_name": "Tường Sập Lộ Ruột Đất Đá Vỡ Vụn (Gạch Bát Tràng Xám Tro Triều Đình)",
+  "hanzi": "官造磨砖缝坍塌残缺裂口墙",
+  "category": "modular_architecture_timber",
+  "sub_category": "wall_and_lattice_window",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "search_rubble",
+  "gameplay_role": "damaged_wall",
+  "destructible": true,
+  "material": "brick",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Ancient Chinese vernacular building wall module: Imperial Dynasty Grey Brick Breached Wall with Spilling Broken Bricks. Authentic materials, crisp dark ink outlines, orthographic top-down world-map view, isolated cleanly on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "wall",
+    "style": "imperial_grey_brick"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/wal_imperial_grey_brick_wall_broken_exposed_bricks.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.wal_imperial_grey_brick_wall_broken_exposed_bricks:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.557,
+        0.584
+      ]
+    ],
+    "frac_zero": 0.6697,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.755,
+        0.787,
+        0.596,
+        0.133,
+        0.67,
+        0.8,
+        0.75
+      ],
+      [
+        0.457,
+        0.84,
+        0.786,
+        0.983,
+        0.891,
+        0.793,
+        0.433
+      ],
+      [
+        0.0,
+        0.02,
+        0.107,
+        0.354,
+        0.07,
+        0.043,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      31
+    ],
+    "trunk_columns": [
+      3
+    ],
+    "contact_px": 29,
+    "contact_reference_px": 29.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

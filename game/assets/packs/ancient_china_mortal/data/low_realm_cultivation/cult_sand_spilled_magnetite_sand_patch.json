@@ -1,0 +1,108 @@
+{
+  "id": "ancient_china_mortal.low_realm_cultivation.cult_sand_spilled_magnetite_sand_patch",
+  "name": "Spilled Black Iron Sand Scattering on Earth",
+  "vietnamese_name": "Vết Cát Sắt Đen Rơi Vãi Trên Đất",
+  "hanzi": "散落黑铁砂散落迹",
+  "category": "low_realm_cultivation",
+  "sub_category": "iron_sand_training_pan",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "gather_sand",
+  "gameplay_role": "Dark metallic powder ground stain where disciples trained.",
+  "destructible": false,
+  "material": "iron",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Ground patch of compacted earth dusted with glistening dark metallic black iron sand powder.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "magnetic_dust": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/low_realm_cultivation/cult_sand_spilled_magnetite_sand_patch.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.low_realm_cultivation.cult_sand_spilled_magnetite_sand_patch:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.752
+      ]
+    ],
+    "frac_zero": 0.6963,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      2
+    ],
+    "sub_fill": [
+      [
+        0.688,
+        0.984,
+        0.688
+      ],
+      [
+        0.569,
+        0.946,
+        0.635
+      ]
+    ],
+    "crop_offset": [
+      16,
+      31
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 76,
+    "contact_reference_px": 76.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

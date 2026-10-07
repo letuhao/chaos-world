@@ -1,0 +1,206 @@
+{
+  "id": "ancient_china_mortal.civilian_settlement.settle_clan_genealogy_scroll_archive",
+  "name": "Clan Genealogy Scroll Archive",
+  "vietnamese_name": "Lầu Gia Phả Lưu Giữ Sách Cổ",
+  "hanzi": "谱牒藏阁",
+  "category": "civilian_settlement",
+  "sub_category": "clan_ancestral_hall",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "inspect",
+  "gameplay_role": "Fireproof locked pavilion safeguarding silk-bound lineage family tree registers.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "wood",
+  "prompt_summary": "Top-down two-story stone archive pavilion with iron-reinforced shutters, housing tall camphor wood scroll cabinets holding boxed silk lineage genealogy records.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "lineage_verification": true,
+    "inheritance_rights_record": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/civilian_settlement/settle_clan_genealogy_scroll_archive.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.civilian_settlement.settle_clan_genealogy_scroll_archive:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.704,
+        0.697
+      ],
+      [
+        0.671,
+        0.672
+      ]
+    ],
+    "frac_zero": 0.4842,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.616,
+        0.74,
+        0.742,
+        0.746,
+        0.536,
+        0.0
+      ],
+      [
+        0.15,
+        0.869,
+        1.0,
+        1.0,
+        1.0,
+        0.803,
+        0.13
+      ],
+      [
+        0.449,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.394
+      ],
+      [
+        0.611,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.583
+      ],
+      [
+        0.699,
+        0.978,
+        0.999,
+        0.976,
+        1.0,
+        0.957,
+        0.704
+      ],
+      [
+        0.027,
+        0.599,
+        0.995,
+        0.954,
+        0.886,
+        0.586,
+        0.217
+      ],
+      [
+        0.0,
+        0.0,
+        0.509,
+        0.917,
+        0.305,
+        0.016,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      23
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 56,
+    "contact_reference_px": 56.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

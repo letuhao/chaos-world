@@ -1,0 +1,171 @@
+{
+  "id": "ancient_china_mortal.folk_religion_fengshui.folk_chenghuang_twenty_four_magistrates_statues",
+  "name": "Line of Ghostly Judge Official Statues",
+  "vietnamese_name": "Hàng Tượng Phán Quan Âm Giới Nghiêm Nghị",
+  "hanzi": "二十四司判官彩塑排",
+  "category": "folk_religion_fengshui",
+  "sub_category": "city_god_temple_chenghuang",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "examine_judges",
+  "gameplay_role": "Painted clay statues of underworld ministers holding scrolls and brushes.",
+  "destructible": false,
+  "material": "clay",
+  "cultivation_element": "yin",
+  "prompt_summary": "Row of solemn painted clay statues of Taoist underworld magistrates holding judgment scrolls and iron pens.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "lore_tribunal": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/folk_religion_fengshui/folk_chenghuang_twenty_four_magistrates_statues.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.folk_religion_fengshui.folk_chenghuang_twenty_four_magistrates_statues:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.393,
+        0.476,
+        0.402
+      ]
+    ],
+    "frac_zero": 0.6983,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      11,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.16,
+        0.246,
+        0.189,
+        0.145,
+        0.247,
+        0.449,
+        0.246,
+        0.158,
+        0.166,
+        0.236,
+        0.165
+      ],
+      [
+        0.715,
+        0.85,
+        0.882,
+        0.767,
+        0.847,
+        0.872,
+        0.876,
+        0.764,
+        0.886,
+        0.897,
+        0.446
+      ],
+      [
+        0.147,
+        0.18,
+        0.227,
+        0.198,
+        0.222,
+        0.394,
+        0.228,
+        0.177,
+        0.224,
+        0.205,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      26,
+      17
+    ],
+    "trunk_columns": [
+      5
+    ],
+    "contact_px": 15,
+    "contact_reference_px": 15.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      128
+    ]
+  }
+}

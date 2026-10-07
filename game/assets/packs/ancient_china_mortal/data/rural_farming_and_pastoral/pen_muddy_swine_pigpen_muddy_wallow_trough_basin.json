@@ -1,0 +1,131 @@
+{
+  "id": "ancient_china_mortal.rural_farming_and_pastoral.pen_muddy_swine_pigpen_muddy_wallow_trough_basin",
+  "name": "Wattle & Mud Peasant Pigsty Muddy Wallow Depression inside Pigsty",
+  "vietnamese_name": "Vũng Bùn Lầy Cho Heo Đầm Mình (Chuồng Heo Bằng Bùn & Tre)",
+  "hanzi": "泥抹围栏肥猪圈湿洼泛泡滚泥下洼处",
+  "category": "rural_farming_and_pastoral",
+  "sub_category": "homestead_pen_and_coop",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect_mud_wallow",
+  "gameplay_role": "mud_wallow",
+  "destructible": true,
+  "material": "earth",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese farm homestead animal husbandry prop: Wattle & Mud Peasant Pigsty Muddy Wallow Depression inside Pigsty. Rustic peasant craftsmanship, gouache textures with ink outlines, top-down orthographic game sprite, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "animal_housing": "muddy_swine_pigpen"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/rural_farming_and_pastoral/pen_muddy_swine_pigpen_muddy_wallow_trough_basin.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.rural_farming_and_pastoral.pen_muddy_swine_pigpen_muddy_wallow_trough_basin:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.718,
+        0.719
+      ]
+    ],
+    "frac_zero": 0.5694,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.135,
+        0.468,
+        0.813,
+        0.853,
+        0.479,
+        0.22,
+        0.0
+      ],
+      [
+        0.864,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.958,
+        0.425
+      ],
+      [
+        0.385,
+        0.765,
+        0.988,
+        0.99,
+        0.777,
+        0.5,
+        0.056
+      ]
+    ],
+    "crop_offset": [
+      29,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 157,
+    "contact_reference_px": 157.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

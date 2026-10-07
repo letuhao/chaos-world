@@ -1,0 +1,169 @@
+{
+  "id": "medieval_western.anglo_norman_feudal_heartland.limestone_corner_buttress_pristine_hewn",
+  "name": "Hewn Oak Norman Keep Pilaster Buttress",
+  "vietnamese_name": "Trụ Áp Tường Đá Vôi Donjon (Gỗ Đẽo Mới)",
+  "category": "anglo_norman_feudal_heartland",
+  "sub_category": "square_norman_donjon_keep",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": null,
+  "gameplay_role": "Feudal Anglo-Norman component (Norman Keep Pilaster Buttress).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "anglo_norman",
+  "prompt_summary": "2D orthographic top-down game sprite of hewn oak norman keep pilaster buttress, clean freshly worked wood and sharp chisel marks, Anglo-Norman medieval feudal style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/anglo_norman_feudal_heartland/limestone_corner_buttress_pristine_hewn.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.anglo_norman_feudal_heartland.limestone_corner_buttress_pristine_hewn:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.664
+      ],
+      [
+        0.722
+      ]
+    ],
+    "frac_zero": 0.5448,
+    "blocks": [
+      [
+        true
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.464,
+        0.9,
+        0.45
+      ],
+      [
+        0.651,
+        1.0,
+        0.644
+      ],
+      [
+        0.495,
+        1.0,
+        0.455
+      ],
+      [
+        0.397,
+        1.0,
+        0.341
+      ],
+      [
+        0.6,
+        1.0,
+        0.536
+      ],
+      [
+        0.788,
+        1.0,
+        0.733
+      ],
+      [
+        0.525,
+        0.932,
+        0.574
+      ]
+    ],
+    "crop_offset": [
+      17,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 81,
+    "contact_reference_px": 81.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      256
+    ]
+  }
+}

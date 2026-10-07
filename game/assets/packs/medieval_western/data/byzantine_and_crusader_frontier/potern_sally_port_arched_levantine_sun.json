@@ -1,0 +1,169 @@
+{
+  "id": "medieval_western.byzantine_and_crusader_frontier.potern_sally_port_arched_levantine_sun",
+  "name": "Sun-Bleached Reinforced Potern Sally Port",
+  "vietnamese_name": "Cửa Phụ Đột Kích Vòm Cung Gia Cố (Nắng Nở Vôi Trắng)",
+  "category": "byzantine_and_crusader_frontier",
+  "sub_category": "crusader_limestone_curtain_wall",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "open",
+  "gameplay_role": "Byzantine Crusader frontier feature (Reinforced Potern Sally Port).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "byzantine_crusader",
+  "prompt_summary": "2D orthographic top-down game sprite of sun-bleached reinforced potern sally port, sun-bleached limestone and warm sandstone, Byzantine Crusader frontier outpost style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/byzantine_and_crusader_frontier/potern_sally_port_arched_levantine_sun.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.byzantine_and_crusader_frontier.potern_sally_port_arched_levantine_sun:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.809
+      ],
+      [
+        0.809
+      ]
+    ],
+    "frac_zero": 0.5236,
+    "blocks": [
+      [
+        true
+      ],
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.749,
+        0.902,
+        0.5
+      ],
+      [
+        0.915,
+        1.0,
+        0.752
+      ],
+      [
+        0.734,
+        0.996,
+        0.472
+      ],
+      [
+        0.827,
+        0.998,
+        0.717
+      ],
+      [
+        0.684,
+        1.0,
+        0.427
+      ],
+      [
+        0.771,
+        1.0,
+        0.52
+      ],
+      [
+        0.724,
+        0.978,
+        0.755
+      ]
+    ],
+    "crop_offset": [
+      21,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 79,
+    "contact_reference_px": 79.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      256
+    ]
+  }
+}

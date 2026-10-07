@@ -1,0 +1,148 @@
+{
+  "id": "ancient_china_mortal.military_and_fortress.fort_barracks_drying_uniform_lines",
+  "name": "Soldiers Indigo Tunics Washing Line",
+  "vietnamese_name": "Dây Phơi Chiến Bào Binh Sĩ",
+  "hanzi": "晾衣麻绳战袍",
+  "category": "military_and_fortress",
+  "sub_category": "military_barracks",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Hemp rope strung between poles drying blue and red military tunics.",
+  "destructible": true,
+  "material": "fabric",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Rope strung between two wooden posts with drying indigo-dyed soldier jackets and white foot wraps.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "aesthetic": "lived_in"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/military_and_fortress/fort_barracks_drying_uniform_lines.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.military_and_fortress.fort_barracks_drying_uniform_lines:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.376,
+        0.364
+      ]
+    ],
+    "frac_zero": 0.812,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      2
+    ],
+    "sub_fill": [
+      [
+        0.536,
+        0.47,
+        0.386,
+        0.375,
+        0.409,
+        0.455,
+        0.554
+      ],
+      [
+        0.268,
+        0.175,
+        0.316,
+        0.39,
+        0.357,
+        0.216,
+        0.273
+      ]
+    ],
+    "crop_offset": [
+      17,
+      48
+    ],
+    "trunk_columns": [
+      3,
+      4
+    ],
+    "contact_px": 8,
+    "contact_reference_px": 8.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

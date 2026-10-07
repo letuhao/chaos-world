@@ -1,0 +1,157 @@
+{
+  "id": "ancient_china_mortal.low_realm_cultivation.cult_stele_disciple_registration_stone_desk",
+  "name": "Sect Entrance Disciple Registration Desk",
+  "vietnamese_name": "Bàn Đá Ghi Tên Đệ Tử Nhập Môn",
+  "hanzi": "招徒入门石案桌",
+  "category": "low_realm_cultivation",
+  "sub_category": "spirit_testing_stele",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "enroll_sect",
+  "gameplay_role": "Carved stone table with sect rolls, jade registration tokens, and brush.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Heavy carved stone registry desk with open parchment ledger scroll, cinnabar inkwell, and wooden apprentice tallies.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "sect_recruitment": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/low_realm_cultivation/cult_stele_disciple_registration_stone_desk.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.low_realm_cultivation.cult_stele_disciple_registration_stone_desk:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.571,
+        0.614
+      ]
+    ],
+    "frac_zero": 0.6502,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.149,
+        0.395,
+        0.37,
+        0.377,
+        0.629,
+        0.254,
+        0.0
+      ],
+      [
+        0.793,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.831,
+        0.156
+      ],
+      [
+        0.395,
+        0.772,
+        0.261,
+        0.263,
+        0.721,
+        0.508,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      31,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 36,
+    "contact_reference_px": 36.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

@@ -1,0 +1,208 @@
+{
+  "id": "ancient_china_mortal.folk_religion_fengshui.folk_tudi_village_communal_shrine_pavilion",
+  "name": "Village Communal Earth God Tiled Pavilion",
+  "vietnamese_name": "Đình Miếu Thổ Địa Của Thôn Làng",
+  "hanzi": "村口砖木土地祠",
+  "category": "folk_religion_fengshui",
+  "sub_category": "earth_god_shrine_tudi",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "doorway",
+  "gameplay_role": "Single-room tiled brick shrine building with offerings.",
+  "destructible": false,
+  "material": "brick",
+  "cultivation_element": "earth",
+  "prompt_summary": "Traditional Chinese village Earth God shrine building with flying eaves, carved ridge beasts, red banners, and stone incense burner.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "village_protection": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/folk_religion_fengshui/folk_tudi_village_communal_shrine_pavilion.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.folk_religion_fengshui.folk_tudi_village_communal_shrine_pavilion:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.549,
+        0.587
+      ],
+      [
+        0.856,
+        0.828
+      ]
+    ],
+    "frac_zero": 0.4598,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.013,
+        0.566,
+        0.592,
+        0.447,
+        0.009,
+        0.0
+      ],
+      [
+        0.0,
+        0.535,
+        0.986,
+        1.0,
+        0.938,
+        0.575,
+        0.221
+      ],
+      [
+        0.188,
+        0.847,
+        1.0,
+        1.0,
+        1.0,
+        0.847,
+        0.551
+      ],
+      [
+        0.513,
+        0.991,
+        1.0,
+        1.0,
+        1.0,
+        0.977,
+        0.359
+      ],
+      [
+        0.638,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.551
+      ],
+      [
+        0.848,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.77
+      ],
+      [
+        0.147,
+        0.703,
+        0.948,
+        0.994,
+        0.889,
+        0.631,
+        0.072
+      ]
+    ],
+    "crop_offset": [
+      17,
+      21
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 161,
+    "contact_reference_px": 161.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

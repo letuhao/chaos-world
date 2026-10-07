@@ -1,0 +1,138 @@
+{
+  "id": "ancient_china_mortal.flora_and_ambience.flora_scarecrow_hanging_red_chili_pepper_ropes",
+  "name": "Strings of Brilliant Red Sun-Drying Chilis",
+  "vietnamese_name": "Dây Ớt Đỏ Rực Phơi Nắng Dưới Mái Nhà",
+  "hanzi": "串挂鲜红干辣椒绳",
+  "category": "flora_and_ambience",
+  "sub_category": "scarecrow_and_drying_corn",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "take_chili",
+  "gameplay_role": "Braids of dried fiery red hot peppers hanging from roof eaves.",
+  "destructible": true,
+  "material": "plant",
+  "cultivation_element": "fire",
+  "prompt_summary": "Thick braided hemp rope laden with hundreds of dried vibrant scarlet hot chili peppers hanging vertically.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "spice_harvest": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_ambience/flora_scarecrow_hanging_red_chili_pepper_ropes.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_ambience.flora_scarecrow_hanging_red_chili_pepper_ropes:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.494
+      ]
+    ],
+    "frac_zero": 0.8612,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      2,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.516,
+        0.067
+      ],
+      [
+        0.754,
+        0.085
+      ],
+      [
+        0.501,
+        0.013
+      ]
+    ],
+    "crop_offset": [
+      44,
+      16
+    ],
+    "trunk_columns": [
+      0
+    ],
+    "contact_px": 25,
+    "contact_reference_px": 25.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

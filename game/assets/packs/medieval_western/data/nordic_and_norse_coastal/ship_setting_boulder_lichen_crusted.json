@@ -1,0 +1,173 @@
+{
+  "id": "medieval_western.nordic_and_norse_coastal.ship_setting_boulder_lichen_crusted",
+  "name": "Sea-Lichen Crusted Viking Ship-Setting Stone Ring",
+  "vietnamese_name": "Vòng Tròn Đá Mộ Hình Thuyền (Phủ Địa Y Biển)",
+  "category": "nordic_and_norse_coastal",
+  "sub_category": "runestone_monument_and_grave",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "inspect",
+  "gameplay_role": "Nordic coastal cultural feature (Viking Ship-Setting Stone Ring).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "nordic_norse",
+  "prompt_summary": "2D orthographic top-down game sprite of sea-lichen crusted viking ship-setting stone ring, yellow and green maritime lichen patches, Nordic Norse coastal settlement style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/nordic_and_norse_coastal/ship_setting_boulder_lichen_crusted.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.nordic_and_norse_coastal.ship_setting_boulder_lichen_crusted:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.562,
+        0.551
+      ],
+      [
+        0.537,
+        0.602
+      ]
+    ],
+    "frac_zero": 0.5612,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.234,
+        0.793,
+        0.998,
+        0.729,
+        0.205,
+        0.0
+      ],
+      [
+        0.176,
+        0.949,
+        0.99,
+        0.915,
+        0.999,
+        0.938,
+        0.161
+      ],
+      [
+        0.736,
+        0.953,
+        0.24,
+        0.001,
+        0.283,
+        0.996,
+        0.621
+      ],
+      [
+        0.864,
+        0.706,
+        0.0,
+        0.0,
+        0.0,
+        0.806,
+        0.9
+      ],
+      [
+        0.557,
+        0.936,
+        0.23,
+        0.002,
+        0.26,
+        0.985,
+        0.782
+      ],
+      [
+        0.158,
+        0.958,
+        1.0,
+        0.942,
+        1.0,
+        0.997,
+        0.389
+      ],
+      [
+        0.0,
+        0.191,
+        0.872,
+        0.844,
+        0.864,
+        0.312,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      19
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 107,
+    "contact_reference_px": 107.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

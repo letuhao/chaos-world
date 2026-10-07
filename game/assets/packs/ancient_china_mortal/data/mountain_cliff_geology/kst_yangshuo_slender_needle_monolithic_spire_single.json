@@ -1,0 +1,209 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.kst_yangshuo_slender_needle_monolithic_spire_single",
+  "name": "Yangshuo Razor Needle Peak Solitary Karst Tower Monolith",
+  "vietnamese_name": "Trụ Núi Độc Đỉnh Thẳng Đứng (2x2) (Đỉnh Kim Dương Sóc Nhọn Hoắt)",
+  "hanzi": "阳朔一线立独锥独立插天石笋峰",
+  "category": "mountain_cliff_geology",
+  "sub_category": "karst_spire_and_pinnacle",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "gaze_at_spire",
+  "gameplay_role": "karst_peak",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "metal",
+  "prompt_summary": "Ancient Chinese karst pinnacle mountain landscape: Yangshuo Razor Needle Peak Solitary Karst Tower Monolith. Towering verticality, poetic gouache shading, dark ink contour lines, top-down orthographic sprite on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "geology_layer": "karst",
+    "region": "yangshuo_slender_needle"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/kst_yangshuo_slender_needle_monolithic_spire_single.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.kst_yangshuo_slender_needle_monolithic_spire_single:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.256,
+        0.212
+      ],
+      [
+        0.673,
+        0.669
+      ]
+    ],
+    "frac_zero": 0.6376,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.104,
+        0.683,
+        0.019,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.023,
+        0.454,
+        0.984,
+        0.14,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.029,
+        0.518,
+        1.0,
+        0.33,
+        0.017,
+        0.0
+      ],
+      [
+        0.0,
+        0.506,
+        0.724,
+        1.0,
+        0.633,
+        0.296,
+        0.0
+      ],
+      [
+        0.144,
+        0.825,
+        0.997,
+        1.0,
+        0.99,
+        0.727,
+        0.131
+      ],
+      [
+        0.482,
+        0.999,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.544
+      ],
+      [
+        0.035,
+        0.548,
+        0.833,
+        0.933,
+        0.689,
+        0.562,
+        0.051
+      ]
+    ],
+    "crop_offset": [
+      17,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 142,
+    "contact_reference_px": 142.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

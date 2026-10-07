@@ -1,0 +1,211 @@
+{
+  "id": "ancient_china_mortal.imperial_and_law.law_jail_execution_platform_scaffold",
+  "name": "Marketplace Execution Platform",
+  "vietnamese_name": "Đài Hành Quyết Trảm Thủ Giữa Chợ",
+  "hanzi": "菜市口监斩台",
+  "category": "imperial_and_law",
+  "sub_category": "county_jail_and_pillory",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "core_ring",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "climb",
+  "gameplay_role": "Elevated wooden platform for public decapitations and pardons.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Elevated wooden scaffold stage with bloodstains, wooden execution block, judge supervisory desk behind.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "drama": "execution"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/imperial_and_law/law_jail_execution_platform_scaffold.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.imperial_and_law.law_jail_execution_platform_scaffold:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.492,
+        0.908,
+        0.489
+      ],
+      [
+        0.415,
+        0.833,
+        0.424
+      ]
+    ],
+    "frac_zero": 0.6874,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.273,
+        0.739,
+        0.657,
+        0.701,
+        0.132,
+        0.0
+      ],
+      [
+        0.141,
+        0.894,
+        1.0,
+        1.0,
+        1.0,
+        0.728,
+        0.036
+      ],
+      [
+        0.326,
+        0.653,
+        0.986,
+        1.0,
+        0.973,
+        0.619,
+        0.236
+      ],
+      [
+        0.641,
+        0.905,
+        0.992,
+        1.0,
+        0.99,
+        0.907,
+        0.549
+      ],
+      [
+        0.285,
+        0.876,
+        1.0,
+        1.0,
+        1.0,
+        0.799,
+        0.211
+      ],
+      [
+        0.05,
+        0.55,
+        0.72,
+        0.888,
+        0.623,
+        0.494,
+        0.025
+      ],
+      [
+        0.0,
+        0.161,
+        0.418,
+        0.684,
+        0.226,
+        0.135,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      83,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 44,
+    "contact_reference_px": 44.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

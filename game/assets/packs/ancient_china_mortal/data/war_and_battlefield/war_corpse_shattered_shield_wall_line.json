@@ -1,0 +1,124 @@
+{
+  "id": "ancient_china_mortal.war_and_battlefield.war_corpse_shattered_shield_wall_line",
+  "name": "Collapsed Rattan Shield Wall Defensive Line",
+  "vietnamese_name": "Dãy Khiên Mây Đổ Sập Vấy Máu",
+  "hanzi": "被破藤牌阵残线",
+  "category": "war_and_battlefield",
+  "sub_category": "corpse_trench",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "examine",
+  "gameplay_role": "Overlapping round shields broken in half where defensive line broke.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Line of smashed, bloodstained round rattan shields and broken pikes marking where a shield wall collapsed.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "breach_point": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/war_and_battlefield/war_corpse_shattered_shield_wall_line.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.war_and_battlefield.war_corpse_shattered_shield_wall_line:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.399,
+        0.315,
+        0.267
+      ]
+    ],
+    "frac_zero": 0.8537,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.089,
+        0.029,
+        0.026,
+        0.065,
+        0.057,
+        0.029
+      ],
+      [
+        0.612,
+        0.871,
+        0.888,
+        0.793,
+        0.807,
+        0.654,
+        0.425
+      ],
+      [
+        0.292,
+        0.511,
+        0.177,
+        0.012,
+        0.04,
+        0.041,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      89,
+      18
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 17,
+    "contact_reference_px": 17.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

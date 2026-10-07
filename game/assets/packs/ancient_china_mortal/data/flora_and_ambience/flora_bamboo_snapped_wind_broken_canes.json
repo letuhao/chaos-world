@@ -1,0 +1,157 @@
+{
+  "id": "ancient_china_mortal.flora_and_ambience.flora_bamboo_snapped_wind_broken_canes",
+  "name": "Storm-Snapped Splintered Bamboo Stalks",
+  "vietnamese_name": "Cụm Trúc Bị Bão Quật Gãy Tơi Tả",
+  "hanzi": "风暴折断裂竹丛",
+  "category": "flora_and_ambience",
+  "sub_category": "bamboo_cluster",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "harvest_splinters",
+  "gameplay_role": "Bamboo stalks bent and broken by storm with jagged pale edges.",
+  "destructible": true,
+  "material": "bamboo",
+  "cultivation_element": "wood",
+  "prompt_summary": "Group of storm-damaged green bamboo canes snapped in half with splintered fibrous edges and fallen tops.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "bamboo_salvage": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_ambience/flora_bamboo_snapped_wind_broken_canes.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_ambience.flora_bamboo_snapped_wind_broken_canes:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.364,
+        0.349
+      ]
+    ],
+    "frac_zero": 0.7545,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.001,
+        0.176,
+        0.393,
+        0.073,
+        0.107,
+        0.021,
+        0.0
+      ],
+      [
+        0.318,
+        0.547,
+        0.904,
+        0.938,
+        0.868,
+        0.502,
+        0.138
+      ],
+      [
+        0.036,
+        0.107,
+        0.714,
+        0.516,
+        0.25,
+        0.085,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      28,
+      20
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 48,
+    "contact_reference_px": 48.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

@@ -1,0 +1,208 @@
+{
+  "id": "ancient_china_mortal.low_realm_cultivation.cult_dummy_plum_blossom_stepping_poles",
+  "name": "Plum Blossom Balance Agility Poles (Meihua Zhuang)",
+  "vietnamese_name": "Mai Hoa Thung Cọc Gỗ Luyện Khinh Công",
+  "hanzi": "梅花桩高低木桩阵",
+  "category": "low_realm_cultivation",
+  "sub_category": "wooden_training_dummy_mukren",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "walk_poles",
+  "gameplay_role": "Set of nine varying height tree stumps driven into ground for footwork.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Arrangement of nine smooth timber poles of varying heights driven vertically into dirt for balance agility training.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "lightfoot_xp": 20
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/low_realm_cultivation/cult_dummy_plum_blossom_stepping_poles.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.low_realm_cultivation.cult_dummy_plum_blossom_stepping_poles:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.309,
+        0.315
+      ],
+      [
+        0.776,
+        0.828
+      ]
+    ],
+    "frac_zero": 0.5959,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.022,
+        0.179,
+        0.18,
+        0.499,
+        0.029,
+        0.14,
+        0.0
+      ],
+      [
+        0.333,
+        0.338,
+        0.268,
+        0.497,
+        0.392,
+        0.17,
+        0.0
+      ],
+      [
+        0.359,
+        0.305,
+        0.401,
+        0.547,
+        0.471,
+        0.389,
+        0.0
+      ],
+      [
+        0.138,
+        0.632,
+        0.607,
+        0.766,
+        0.678,
+        0.349,
+        0.0
+      ],
+      [
+        0.516,
+        0.999,
+        1.0,
+        1.0,
+        1.0,
+        0.77,
+        0.082
+      ],
+      [
+        0.814,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.645
+      ],
+      [
+        0.234,
+        0.758,
+        0.952,
+        0.955,
+        0.935,
+        0.653,
+        0.012
+      ]
+    ],
+    "crop_offset": [
+      28,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 155,
+    "contact_reference_px": 155.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

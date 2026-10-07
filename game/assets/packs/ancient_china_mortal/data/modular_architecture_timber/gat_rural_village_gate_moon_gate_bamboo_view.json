@@ -1,0 +1,210 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.gat_rural_village_gate_moon_gate_bamboo_view",
+  "name": "Rural Peasant Village Moon Gate Framing Green Bamboo Garden",
+  "vietnamese_name": "Nguyệt Môn Nhìn Ra Rừng Trúc (Cổng Thôn Trang Bình Dị)",
+  "hanzi": "乡野庄门漏景透竹月亮门",
+  "category": "modular_architecture_timber",
+  "sub_category": "moon_gate_and_archway",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "admire_framed_view",
+  "gameplay_role": "framed_view",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "wood",
+  "prompt_summary": "Ancient Chinese architectural entrance portal: Rural Peasant Village Moon Gate Framing Green Bamboo Garden. Ornate joinery, traditional aesthetic, top-down orthographic view for 2D RPG, clear transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "gateway",
+    "style": "rural_village_gate"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/gat_rural_village_gate_moon_gate_bamboo_view.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.gat_rural_village_gate_moon_gate_bamboo_view:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.535,
+        0.541
+      ],
+      [
+        0.753,
+        0.78
+      ]
+    ],
+    "frac_zero": 0.4985,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.041,
+        0.056,
+        0.674,
+        0.721,
+        0.562,
+        0.163,
+        0.003
+      ],
+      [
+        0.121,
+        0.691,
+        1.0,
+        1.0,
+        1.0,
+        0.695,
+        0.098
+      ],
+      [
+        0.253,
+        0.856,
+        0.851,
+        0.503,
+        0.923,
+        0.911,
+        0.161
+      ],
+      [
+        0.686,
+        1.0,
+        0.389,
+        0.0,
+        0.538,
+        1.0,
+        0.554
+      ],
+      [
+        0.57,
+        1.0,
+        0.928,
+        0.743,
+        0.967,
+        1.0,
+        0.468
+      ],
+      [
+        0.611,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.552
+      ],
+      [
+        0.054,
+        0.641,
+        0.963,
+        0.81,
+        0.698,
+        0.71,
+        0.794
+      ]
+    ],
+    "crop_offset": [
+      17,
+      27
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 180,
+    "contact_reference_px": 180.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

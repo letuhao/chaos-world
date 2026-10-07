@@ -1,0 +1,134 @@
+{
+  "id": "ancient_china_mortal.flora_and_ambience.flora_lantern_string_of_five_red_lanterns",
+  "name": "Festival Overhead String of Five Red Lanterns",
+  "vietnamese_name": "Dây Giăng Năm Đèn Lồng Đỏ Lễ Hội",
+  "hanzi": "横街五连串红灯笼",
+  "category": "flora_and_ambience",
+  "sub_category": "festival_red_lantern",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Festive horizontal garland of five glowing red paper spheres across street.",
+  "destructible": false,
+  "material": "paper",
+  "cultivation_element": "fire",
+  "prompt_summary": "Overhead horizontal hemp rope strung with five glowing red cylindrical paper festival lanterns.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "street_lighting": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_ambience/flora_lantern_string_of_five_red_lanterns.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_ambience.flora_lantern_string_of_five_red_lanterns:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.293,
+        0.176,
+        0.301
+      ]
+    ],
+    "frac_zero": 0.8178,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      11,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.501,
+        0.29,
+        0.328,
+        0.241,
+        0.229,
+        0.264,
+        0.211,
+        0.364,
+        0.251,
+        0.554,
+        0.167
+      ],
+      [
+        0.344,
+        0.329,
+        0.463,
+        0.353,
+        0.377,
+        0.472,
+        0.247,
+        0.573,
+        0.247,
+        0.464,
+        0.0
+      ],
+      [
+        0.0,
+        0.064,
+        0.027,
+        0.114,
+        0.037,
+        0.139,
+        0.04,
+        0.102,
+        0.068,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      30,
+      17
+    ],
+    "trunk_columns": [],
+    "contact_px": 5,
+    "contact_reference_px": 5.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "id": "ancient_china_mortal.rural_farming_and_pastoral.irg_bamboo_elevated_flume_muddy_drainage_dike_cutoff",
+  "name": "Elevated Split-Bamboo Aqueduct Flume Compacted Earth Irrigation Dike Border",
+  "vietnamese_name": "Bờ Đê Đất Nện Dẫn Nước Thửa Ruộng (Máng Tre Dẫn Nước Trên Giàn Cao)",
+  "hanzi": "竹制架空引水槽夯泥固土灌溉埂条",
+  "category": "rural_farming_and_pastoral",
+  "sub_category": "irrigation_flume_and_waterwheel",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "walk_dike_border",
+  "gameplay_role": "dike_border",
+  "destructible": false,
+  "material": "earth",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese agricultural irrigation system part: Elevated Split-Bamboo Aqueduct Flume Compacted Earth Irrigation Dike Border. Functional wooden hydraulics, ink contours, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "irrigation_tech": "bamboo_elevated_flume"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/rural_farming_and_pastoral/irg_bamboo_elevated_flume_muddy_drainage_dike_cutoff.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.rural_farming_and_pastoral.irg_bamboo_elevated_flume_muddy_drainage_dike_cutoff:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.572,
+        0.568
+      ]
+    ],
+    "frac_zero": 0.7537,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      2
+    ],
+    "sub_fill": [
+      [
+        0.368,
+        0.322,
+        0.499,
+        0.922,
+        0.598,
+        0.323,
+        0.317
+      ],
+      [
+        0.515,
+        0.653,
+        0.765,
+        0.983,
+        0.778,
+        0.608,
+        0.453
+      ]
+    ],
+    "crop_offset": [
+      16,
+      52
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 214,
+    "contact_reference_px": 214.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

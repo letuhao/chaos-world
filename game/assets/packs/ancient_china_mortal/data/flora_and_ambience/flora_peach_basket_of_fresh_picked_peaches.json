@@ -1,0 +1,143 @@
+{
+  "id": "ancient_china_mortal.flora_and_ambience.flora_peach_basket_of_fresh_picked_peaches",
+  "name": "Woven Basket Overflowing with Ripe Peaches",
+  "vietnamese_name": "Giỏ Tre Đựng Đầy Quả Đào Tiên Tươi Ngon",
+  "hanzi": "满筐新鲜熟蟠桃",
+  "category": "flora_and_ambience",
+  "sub_category": "ginkgo_and_peach_tree",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "eat_peach",
+  "gameplay_role": "Round woven basket brimming with rosy downy fresh peaches.",
+  "destructible": true,
+  "material": "bamboo",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Round woven bamboo fruit basket overflowing with plump rosy-cheeked fresh mountain peaches.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "food_peaches": 6
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_ambience/flora_peach_basket_of_fresh_picked_peaches.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_ambience.flora_peach_basket_of_fresh_picked_peaches:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.665
+      ]
+    ],
+    "frac_zero": 0.6317,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.331,
+        0.515,
+        0.276
+      ],
+      [
+        0.944,
+        0.999,
+        0.92
+      ],
+      [
+        0.545,
+        0.949,
+        0.429
+      ]
+    ],
+    "crop_offset": [
+      19,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 63,
+    "contact_reference_px": 63.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

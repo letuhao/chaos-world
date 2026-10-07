@@ -1,0 +1,159 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.col_vermilion_palace_dougong_multi_tier_grand",
+  "name": "Vermilion Lacquered Palace Multi-Tier Cluster Dougong Assembly",
+  "vietnamese_name": "Cụm Đẩu Củng Nhiều Tầng Tinh Xảo (Sơn Son Cung Đình)",
+  "hanzi": "朱红宫廷多层重昂大斗栱",
+  "category": "modular_architecture_timber",
+  "sub_category": "pillar_beam_and_dougong",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "admire_bracket_joinery",
+  "gameplay_role": "bracket_set",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "fire",
+  "prompt_summary": "Ancient Chinese timber frame architecture component: Vermilion Lacquered Palace Multi-Tier Cluster Dougong Assembly. Traditional mortise and tenon craftsmanship, ink contours, top-down orthographic sprite on clean transparent alpha background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "pillar_beam",
+    "style": "vermilion_palace"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/col_vermilion_palace_dougong_multi_tier_grand.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.col_vermilion_palace_dougong_multi_tier_grand:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.636,
+        0.635
+      ]
+    ],
+    "frac_zero": 0.6121,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.304,
+        0.177,
+        0.608,
+        0.816,
+        0.562,
+        0.2,
+        0.293
+      ],
+      [
+        0.81,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.792
+      ],
+      [
+        0.398,
+        0.301,
+        0.58,
+        0.909,
+        0.533,
+        0.344,
+        0.374
+      ]
+    ],
+    "crop_offset": [
+      17,
+      26
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 80,
+    "contact_reference_px": 80.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

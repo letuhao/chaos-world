@@ -1,0 +1,129 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.clf_red_sandstone_danxia_shandao_timber_plank_road",
+  "name": "Crimson Danxia Sandstone Gorge Cliff-Hanging Wooden Plank Road (2x1)",
+  "vietnamese_name": "Cầu Sạn Đạo Gỗ Bám Vách Núi (2x1) (Hẻm Núi Sa Thạch Đỏ Đan Hà)",
+  "hanzi": "赤壁丹霞峡谷险峻绝壁悬木栈道",
+  "category": "mountain_cliff_geology",
+  "sub_category": "cliff_face_and_bluff",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "solid",
+  "interactive_verb": "traverse_plank_road",
+  "gameplay_role": "plank_road",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "wind",
+  "prompt_summary": "Ancient Chinese mountainous geology landscape: Crimson Danxia Sandstone Gorge Cliff-Hanging Wooden Plank Road (2x1). Realistic rock textures, ink contours, orthographic top-down world-map view, transparent alpha background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "geology_layer": "cliff",
+    "strata": "red_sandstone_danxia"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/clf_red_sandstone_danxia_shandao_timber_plank_road.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.clf_red_sandstone_danxia_shandao_timber_plank_road:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.658,
+        0.691
+      ]
+    ],
+    "frac_zero": 0.6169,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.193,
+        0.438,
+        0.067,
+        0.177,
+        0.679,
+        0.034
+      ],
+      [
+        0.806,
+        1.0,
+        0.614,
+        0.799,
+        1.0,
+        0.84
+      ],
+      [
+        0.771,
+        0.988,
+        0.986,
+        0.996,
+        0.984,
+        0.689
+      ]
+    ],
+    "crop_offset": [
+      35,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 185,
+    "contact_reference_px": 185.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

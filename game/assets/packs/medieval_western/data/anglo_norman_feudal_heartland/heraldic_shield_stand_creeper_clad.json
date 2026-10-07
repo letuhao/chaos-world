@@ -1,0 +1,110 @@
+{
+  "id": "medieval_western.anglo_norman_feudal_heartland.heraldic_shield_stand_creeper_clad",
+  "name": "Ivy-Clothed Norman Kite Shield Display Rack",
+  "vietnamese_name": "Giá Treo Khiên Hình Diều Norman (Dây Leo Bao Phủ)",
+  "category": "anglo_norman_feudal_heartland",
+  "sub_category": "feudal_homage_court_furnishing",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "inspect",
+  "gameplay_role": "Feudal Anglo-Norman component (Norman Kite Shield Display Rack).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "anglo_norman",
+  "prompt_summary": "2D orthographic top-down game sprite of ivy-clothed norman kite shield display rack, creeping ivy tendrils and wild lichen crust, Anglo-Norman medieval feudal style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/anglo_norman_feudal_heartland/heraldic_shield_stand_creeper_clad.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.anglo_norman_feudal_heartland.heraldic_shield_stand_creeper_clad:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.655
+      ]
+    ],
+    "frac_zero": 0.609,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.503,
+        0.87,
+        0.43
+      ],
+      [
+        0.617,
+        1.0,
+        0.529
+      ],
+      [
+        0.451,
+        0.969,
+        0.416
+      ]
+    ],
+    "crop_offset": [
+      18,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 90,
+    "contact_reference_px": 90.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

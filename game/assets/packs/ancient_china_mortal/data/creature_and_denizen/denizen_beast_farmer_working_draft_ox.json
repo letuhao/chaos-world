@@ -1,0 +1,153 @@
+{
+  "id": "ancient_china_mortal.creature_and_denizen.denizen_beast_farmer_working_draft_ox",
+  "name": "Working Yellow Draft Ox with Wooden Yoke",
+  "vietnamese_name": "Con Bò Vàng Kéo Cày Cổ Mang Ách",
+  "hanzi": "耕田黄犍牛",
+  "category": "creature_and_denizen",
+  "sub_category": "draft_beast_and_livestock",
+  "type": "character_sprite",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "interact_animal",
+  "gameplay_role": "Fauna Creature",
+  "destructible": true,
+  "material": "flesh",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Muscular tan Chinese yellow ox with wooden neck yoke and hemp reins standing in plowed soil.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "npc_type": "animal"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/creature_and_denizen/denizen_beast_farmer_working_draft_ox.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.creature_and_denizen.denizen_beast_farmer_working_draft_ox:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.547,
+        0.557
+      ]
+    ],
+    "frac_zero": 0.7036,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.417,
+        0.674,
+        0.732,
+        0.63,
+        0.706,
+        0.475
+      ],
+      [
+        0.73,
+        0.926,
+        0.988,
+        0.931,
+        0.907,
+        0.472
+      ],
+      [
+        0.027,
+        0.085,
+        0.356,
+        0.009,
+        0.326,
+        0.184
+      ]
+    ],
+    "crop_offset": [
+      42,
+      16
+    ],
+    "trunk_columns": [
+      2
+    ],
+    "contact_px": 15,
+    "contact_reference_px": 15.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

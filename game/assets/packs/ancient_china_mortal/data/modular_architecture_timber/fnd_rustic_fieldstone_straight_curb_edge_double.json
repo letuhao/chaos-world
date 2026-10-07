@@ -1,0 +1,120 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.fnd_rustic_fieldstone_straight_curb_edge_double",
+  "name": "Rustic Dry Fieldstone Straight Base Curb Border (2x1)",
+  "vietnamese_name": "Gờ Đá Kê Chân Tường (2x1) (Đá Cuội Đồng Quê Thô Mộc)",
+  "hanzi": "质朴乱石砌双长阶条石",
+  "category": "modular_architecture_timber",
+  "sub_category": "foundation_and_plinth_tai_ji",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "step_on",
+  "gameplay_role": "edge_curb",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese modular architectural foundation: Rustic Dry Fieldstone Straight Base Curb Border (2x1). Rustic Dry Fieldstone texture with dark ink contours, top-down orthographic angle, isolated game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "foundation",
+    "style": "rustic_fieldstone"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/fnd_rustic_fieldstone_straight_curb_edge_double.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.fnd_rustic_fieldstone_straight_curb_edge_double:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.67,
+        0.689
+      ]
+    ],
+    "frac_zero": 0.6673,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.665,
+        0.841,
+        0.882,
+        0.855,
+        0.871,
+        0.844,
+        0.67
+      ],
+      [
+        0.535,
+        0.596,
+        0.71,
+        0.674,
+        0.786,
+        0.609,
+        0.562
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.016,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      43
+    ],
+    "trunk_columns": [],
+    "contact_px": 31,
+    "contact_reference_px": 31.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

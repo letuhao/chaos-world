@@ -1,0 +1,158 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.col_golden_nanmu_lintel_with_inscribed_plaque",
+  "name": "Lustrous Gilded Nanmu Door Lintel with Gold Lettering Plaque",
+  "vietnamese_name": "Hoành Phi Câu Đối Trên Khung Cửa (Gỗ Nam Mộc Quý Phái)",
+  "hanzi": "金丝楠木题字金匾门楣",
+  "category": "modular_architecture_timber",
+  "sub_category": "pillar_beam_and_dougong",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "read_lintel_inscription",
+  "gameplay_role": "door_lintel",
+  "destructible": false,
+  "material": "lacquer",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Ancient Chinese timber frame architecture component: Lustrous Gilded Nanmu Door Lintel with Gold Lettering Plaque. Traditional mortise and tenon craftsmanship, ink contours, top-down orthographic sprite on clean transparent alpha background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "pillar_beam",
+    "style": "golden_nanmu"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/col_golden_nanmu_lintel_with_inscribed_plaque.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.col_golden_nanmu_lintel_with_inscribed_plaque:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.469,
+        0.473
+      ]
+    ],
+    "frac_zero": 0.7086,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.335,
+        0.479,
+        0.71,
+        0.688,
+        0.733,
+        0.449,
+        0.348
+      ],
+      [
+        0.301,
+        0.79,
+        0.681,
+        0.281,
+        0.688,
+        0.802,
+        0.299
+      ],
+      [
+        0.0,
+        0.365,
+        0.384,
+        0.0,
+        0.384,
+        0.368,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      30
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 15,
+    "contact_reference_px": 15.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

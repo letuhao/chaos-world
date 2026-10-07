@@ -1,0 +1,205 @@
+{
+  "id": "medieval_western.celtic_highland_and_atlantic_fringe.broch_double_hollow_wall_ancient_granite",
+  "name": "Ancient Granite Drystone Broch Double Hollow Wall",
+  "vietnamese_name": "Tường Đá Đôi Không Vữa Tháp Broch (Đá Hoa Cương Cổ)",
+  "category": "celtic_highland_and_atlantic_fringe",
+  "sub_category": "circular_drystone_broch_tower",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": null,
+  "gameplay_role": "Celtic highland cultural feature (Drystone Broch Double Hollow Wall).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "celtic_gaelic",
+  "prompt_summary": "2D orthographic top-down game sprite of ancient granite drystone broch double hollow wall, weather-beaten rugged granite boulders, Celtic highland and Atlantic fringe style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/celtic_highland_and_atlantic_fringe/broch_double_hollow_wall_ancient_granite.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.celtic_highland_and_atlantic_fringe.broch_double_hollow_wall_ancient_granite:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.705,
+        0.686
+      ],
+      [
+        0.775,
+        0.811
+      ]
+    ],
+    "frac_zero": 0.4276,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.183,
+        0.741,
+        0.779,
+        0.569,
+        0.084,
+        0.0
+      ],
+      [
+        0.082,
+        0.919,
+        1.0,
+        1.0,
+        1.0,
+        0.798,
+        0.022
+      ],
+      [
+        0.669,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.656
+      ],
+      [
+        0.899,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.96
+      ],
+      [
+        0.879,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.89
+      ],
+      [
+        0.371,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.538
+      ],
+      [
+        0.0,
+        0.379,
+        0.723,
+        0.934,
+        0.764,
+        0.411,
+        0.014
+      ]
+    ],
+    "crop_offset": [
+      17,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 117,
+    "contact_reference_px": 117.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

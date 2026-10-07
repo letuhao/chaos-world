@@ -1,0 +1,310 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.kst_guilin_jade_tower_water_rooted_karst_island",
+  "name": "Guilin Verdant Karst Spire River-Emerging Karst Island Mountain",
+  "vietnamese_name": "Đảo Núi Đá Mọc Từ Lòng Sông (Trụ Đỉnh Quế Lâm Xanh Biếc)",
+  "hanzi": "桂林叠翠秀峰浮水立根碧水石洲",
+  "category": "mountain_cliff_geology",
+  "sub_category": "karst_spire_and_pinnacle",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "survey_karst_island",
+  "gameplay_role": "river_karst",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese karst pinnacle mountain landscape: Guilin Verdant Karst Spire River-Emerging Karst Island Mountain. Towering verticality, poetic gouache shading, dark ink contour lines, top-down orthographic sprite on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "geology_layer": "karst",
+    "region": "guilin_jade_tower"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/kst_guilin_jade_tower_water_rooted_karst_island.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.kst_guilin_jade_tower_water_rooted_karst_island:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.003,
+        0.531,
+        0.017
+      ],
+      [
+        0.397,
+        0.928,
+        0.336
+      ],
+      [
+        0.59,
+        0.953,
+        0.631
+      ]
+    ],
+    "frac_zero": 0.5755,
+    "blocks": [
+      [
+        false,
+        true,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 7,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.129,
+        0.792,
+        0.256,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.138,
+        0.604,
+        1.0,
+        0.389,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.562,
+        1.0,
+        0.663,
+        0.004,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.011,
+        0.217,
+        0.007,
+        0.642,
+        1.0,
+        0.684,
+        0.443,
+        0.063,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.093,
+        0.746,
+        0.163,
+        0.949,
+        1.0,
+        0.94,
+        0.421,
+        0.1,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.188,
+        0.943,
+        0.515,
+        1.0,
+        1.0,
+        1.0,
+        0.556,
+        0.657,
+        0.062,
+        0.0
+      ],
+      [
+        0.0,
+        0.517,
+        1.0,
+        0.918,
+        1.0,
+        1.0,
+        1.0,
+        0.933,
+        0.944,
+        0.438,
+        0.233
+      ],
+      [
+        0.315,
+        0.912,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.813,
+        0.241
+      ],
+      [
+        0.32,
+        0.98,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.573
+      ],
+      [
+        0.0,
+        0.672,
+        0.96,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.769,
+        0.072
+      ],
+      [
+        0.0,
+        0.043,
+        0.128,
+        0.741,
+        0.757,
+        0.866,
+        0.827,
+        0.601,
+        0.272,
+        0.01,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      17
+    ],
+    "trunk_columns": [
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 163,
+    "contact_reference_px": 163.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      384
+    ]
+  }
+}

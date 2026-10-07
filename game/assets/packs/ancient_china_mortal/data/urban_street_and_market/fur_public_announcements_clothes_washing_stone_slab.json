@@ -1,0 +1,113 @@
+{
+  "id": "ancient_china_mortal.urban_street_and_market.fur_public_announcements_clothes_washing_stone_slab",
+  "name": "Imperial Noticeboards & Steles Flat River Granite Slab for Beating Clothes",
+  "vietnamese_name": "Phiến Đá Giặt Giũ Quần Áo Ven Rãnh (Bảng Cáo Thị & Bia Đá)",
+  "hanzi": "告示公堂桩平滑捣衣青石板",
+  "category": "urban_street_and_market",
+  "sub_category": "street_furniture_and_wellhead",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "wash_clothes_on_slab",
+  "gameplay_role": "wash_slab",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese urban street furniture: Imperial Noticeboards & Steles Flat River Granite Slab for Beating Clothes. Realistic civic utility styling, ink outlines, top-down orthographic game asset, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "furniture_group": "public_announcements"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/urban_street_and_market/fur_public_announcements_clothes_washing_stone_slab.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.urban_street_and_market.fur_public_announcements_clothes_washing_stone_slab:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.673
+      ]
+    ],
+    "frac_zero": 0.6539,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.507,
+        0.826,
+        0.132
+      ],
+      [
+        0.574,
+        0.89,
+        0.566
+      ],
+      [
+        0.682,
+        0.948,
+        0.605
+      ]
+    ],
+    "crop_offset": [
+      22,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 81,
+    "contact_reference_px": 81.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

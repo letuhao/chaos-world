@@ -1,0 +1,109 @@
+{
+  "id": "medieval_western.wayfarers_nomads_and_tinker_camps.iron_curry_comb_and_hoof_pick_rain_soaked",
+  "name": "Rain-Drenched Grooming Box Hoof Pick & Brushes",
+  "vietnamese_name": "Hộp Bàn Chải & Móc Vệ Sinh Móng Ngựa (Mưa Ướt Sũng)",
+  "category": "wayfarers_nomads_and_tinker_camps",
+  "sub_category": "horse_tether_line_and_saddles",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "groom",
+  "gameplay_role": "Wayfarer nomad campsite feature (Grooming Box Hoof Pick & Brushes).",
+  "destructible": false,
+  "material": "iron",
+  "feudal_culture": "wayfarer_nomad",
+  "prompt_summary": "2D orthographic top-down game sprite of rain-drenched grooming box hoof pick & brushes, dark soaked wool canvas with water runoff streaks, Medieval itinerant wayfarer nomad camp style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/wayfarers_nomads_and_tinker_camps/iron_curry_comb_and_hoof_pick_rain_soaked.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.wayfarers_nomads_and_tinker_camps.iron_curry_comb_and_hoof_pick_rain_soaked:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.653
+      ]
+    ],
+    "frac_zero": 0.6744,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.388,
+        0.686,
+        0.065
+      ],
+      [
+        0.839,
+        1.0,
+        0.65
+      ],
+      [
+        0.56,
+        0.869,
+        0.344
+      ]
+    ],
+    "crop_offset": [
+      24,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 51,
+    "contact_reference_px": 51.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

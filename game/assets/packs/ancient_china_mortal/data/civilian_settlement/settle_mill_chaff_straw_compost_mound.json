@@ -1,0 +1,206 @@
+{
+  "id": "ancient_china_mortal.civilian_settlement.settle_mill_chaff_straw_compost_mound",
+  "name": "Threshed Chaff & Straw Rick Mound",
+  "vietnamese_name": "Đụn Rơm & Trấu Vàng Sau Mùa Gặt",
+  "hanzi": "麦草垛坪",
+  "category": "civilian_settlement",
+  "sub_category": "watermill_and_grainstore",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "scavenge",
+  "gameplay_role": "Large conical golden straw rick tied with ropes providing animal fodder and fuel.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Top-down large conical golden straw stack tied around center wooden pole with hemp ropes, surrounded by loose yellow chaff straw scatter on ground.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "straw_fuel_reserve": 80,
+    "mulch_compost": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/civilian_settlement/settle_mill_chaff_straw_compost_mound.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.civilian_settlement.settle_mill_chaff_straw_compost_mound:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.348,
+        0.332
+      ],
+      [
+        0.58,
+        0.601
+      ]
+    ],
+    "frac_zero": 0.6365,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.307,
+        0.811,
+        0.218,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.426,
+        1.0,
+        0.256,
+        0.0,
+        0.0
+      ],
+      [
+        0.012,
+        0.359,
+        0.821,
+        1.0,
+        0.577,
+        0.023,
+        0.0
+      ],
+      [
+        0.192,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        0.62,
+        0.027
+      ],
+      [
+        0.149,
+        0.979,
+        1.0,
+        1.0,
+        1.0,
+        0.937,
+        0.143
+      ],
+      [
+        0.086,
+        0.828,
+        1.0,
+        1.0,
+        1.0,
+        0.557,
+        0.023
+      ],
+      [
+        0.0,
+        0.072,
+        0.419,
+        0.588,
+        0.328,
+        0.064,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      20,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 16,
+    "contact_reference_px": 16.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

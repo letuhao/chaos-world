@@ -1,0 +1,198 @@
+{
+  "id": "ancient_china_mortal.military_and_fortress.fort_brick_covered_sentry_corridor",
+  "name": "Covered Timber Defense Gallery on Wall",
+  "vietnamese_name": "Hành Lang Gỗ Che Chắn Cung Tên",
+  "hanzi": "城头避雨战廊",
+  "category": "military_and_fortress",
+  "sub_category": "crenellated_brick_wall",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    4,
+    1
+  ],
+  "canvas_px": [
+    512,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "take_cover",
+  "gameplay_role": "Timber shingled roof sheltering defenders on wall from rain and trebuchets.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Timber covered corridor gallery running along brick parapet top with grey roof tiles protecting defenders.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "rain_cover": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/military_and_fortress/fort_brick_covered_sentry_corridor.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.military_and_fortress.fort_brick_covered_sentry_corridor:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.772,
+        0.895,
+        0.894,
+        0.759
+      ]
+    ],
+    "frac_zero": 0.4165,
+    "blocks": [
+      [
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      2,
+      0
+    ],
+    "sub_grid": [
+      15,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.502,
+        0.859,
+        0.838,
+        0.866,
+        0.832,
+        0.837,
+        0.871,
+        0.835,
+        0.87,
+        0.832,
+        0.838,
+        0.872,
+        0.844,
+        0.87,
+        0.443
+      ],
+      [
+        0.574,
+        0.98,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.529
+      ],
+      [
+        0.182,
+        0.89,
+        0.833,
+        0.833,
+        0.834,
+        0.833,
+        0.791,
+        0.836,
+        0.804,
+        0.833,
+        0.86,
+        0.833,
+        0.791,
+        0.868,
+        0.053
+      ]
+    ],
+    "crop_offset": [
+      17,
+      18
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "contact_px": 427,
+    "contact_reference_px": 427.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      128
+    ]
+  }
+}

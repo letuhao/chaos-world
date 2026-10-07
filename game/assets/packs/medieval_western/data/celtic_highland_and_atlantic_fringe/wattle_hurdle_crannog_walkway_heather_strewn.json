@@ -1,0 +1,120 @@
+{
+  "id": "medieval_western.celtic_highland_and_atlantic_fringe.wattle_hurdle_crannog_walkway_heather_strewn",
+  "name": "Heather-Strewn Woven Wattle Hurdle Lake Walkway",
+  "vietnamese_name": "Cầu Gỗ Đan Nan Lối Vào Đảo Crannog (Phủ Hoa Thạch Nam)",
+  "category": "celtic_highland_and_atlantic_fringe",
+  "sub_category": "lake_dwelling_crannog_jetty",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "walk",
+  "gameplay_role": "Celtic highland cultural feature (Woven Wattle Hurdle Lake Walkway).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "celtic_gaelic",
+  "prompt_summary": "2D orthographic top-down game sprite of heather-strewn woven wattle hurdle lake walkway, purple flowering moorland heather, Celtic highland and Atlantic fringe style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/celtic_highland_and_atlantic_fringe/wattle_hurdle_crannog_walkway_heather_strewn.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.celtic_highland_and_atlantic_fringe.wattle_hurdle_crannog_walkway_heather_strewn:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.538,
+        0.552
+      ]
+    ],
+    "frac_zero": 0.8018,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      2
+    ],
+    "sub_fill": [
+      [
+        0.367,
+        0.368,
+        0.526,
+        0.646,
+        0.512,
+        0.39,
+        0.362
+      ],
+      [
+        0.632,
+        0.708,
+        0.772,
+        0.807,
+        0.765,
+        0.717,
+        0.606
+      ]
+    ],
+    "crop_offset": [
+      17,
+      63
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 215,
+    "contact_reference_px": 215.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

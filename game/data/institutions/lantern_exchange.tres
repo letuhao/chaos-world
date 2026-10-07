@@ -13,6 +13,7 @@ duties = Array[StringName]([&"carry_the_seal", &"attend_the_roll"])
 authorities = Array[StringName]([&"use_the_commons"])
 duty_per_period = 1
 patronage_per_period = 0
+standing_percent_stats = {"fortune": 0.0, "loot_bonus": 0.0}
 
 [sub_resource type="Resource" id="position_factor"]
 script = ExtResource("2_position")
@@ -24,6 +25,7 @@ duties = Array[StringName]([&"price_a_lot", &"settle_a_credit"])
 authorities = Array[StringName]([&"extend_credit", &"call_a_lot"])
 duty_per_period = 2
 patronage_per_period = 2
+standing_percent_stats = {"comprehension": 0.0, "insight_gain": 0.0}
 
 [sub_resource type="Resource" id="position_first_ledger"]
 script = ExtResource("2_position")
@@ -35,6 +37,7 @@ duties = Array[StringName]([&"weigh_the_ledger", &"call_the_settlement"])
 authorities = Array[StringName]([&"name_a_factor", &"freeze_a_credit", &"expel"])
 duty_per_period = 3
 patronage_per_period = 3
+standing_percent_stats = {"poise": 0.0, "dao_heart": 0.0}
 
 [resource]
 script = ExtResource("1_def")

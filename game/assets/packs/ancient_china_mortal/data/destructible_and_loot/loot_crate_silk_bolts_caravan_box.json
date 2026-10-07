@@ -1,0 +1,154 @@
+{
+  "id": "ancient_china_mortal.destructible_and_loot.loot_crate_silk_bolts_caravan_box",
+  "name": "Caravan Painted Trunk for Fine Textiles",
+  "vietnamese_name": "Rương Gỗ Sơn Màu Đựng Lụa Tơ Tằm",
+  "hanzi": "漆画绸缎长运木箱",
+  "category": "destructible_and_loot",
+  "sub_category": "wooden_cargo_crate",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "open_trunk",
+  "gameplay_role": "Long black-lacquered wooden chest with bronze side handles.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Long black-lacquered wooden trunk with red painted borders, brass drop handles, and padlock hasp.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "luxury_silk_loot": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/destructible_and_loot/loot_crate_silk_bolts_caravan_box.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.destructible_and_loot.loot_crate_silk_bolts_caravan_box:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.866,
+        0.863
+      ]
+    ],
+    "frac_zero": 0.597,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.699,
+        0.947,
+        0.962,
+        0.963,
+        0.97,
+        0.97,
+        0.64
+      ],
+      [
+        0.754,
+        0.984,
+        0.988,
+        0.995,
+        0.986,
+        1.0,
+        0.725
+      ],
+      [
+        0.312,
+        0.052,
+        0.042,
+        0.0,
+        0.052,
+        0.042,
+        0.323
+      ]
+    ],
+    "crop_offset": [
+      17,
+      44
+    ],
+    "trunk_columns": [],
+    "contact_px": 202,
+    "contact_reference_px": 202.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

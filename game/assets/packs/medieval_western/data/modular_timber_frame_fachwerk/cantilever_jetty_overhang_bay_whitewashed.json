@@ -1,0 +1,203 @@
+{
+  "id": "medieval_western.modular_timber_frame_fachwerk.cantilever_jetty_overhang_bay_whitewashed",
+  "name": "Lime-Washed Cantilever Jetty Wall Overhang Bay",
+  "vietnamese_name": "Khối Tầng Nhô Công Xôn Jetty (Quét Vôi Trắng)",
+  "category": "modular_timber_frame_fachwerk",
+  "sub_category": "jetty_cantilever_bracket_bay",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": null,
+  "gameplay_role": "Fachwerk timber-frame modular element (Cantilever Jetty Wall Overhang Bay).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "anglo_norman",
+  "prompt_summary": "2D orthographic top-down game sprite of lime-washed cantilever jetty wall overhang bay, calcified white lime-wash coating, Fachwerk half-timbering architecture style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/modular_timber_frame_fachwerk/cantilever_jetty_overhang_bay_whitewashed.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.modular_timber_frame_fachwerk.cantilever_jetty_overhang_bay_whitewashed:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.665,
+        0.66
+      ],
+      [
+        0.663,
+        0.673
+      ]
+    ],
+    "frac_zero": 0.5151,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.085,
+        0.578,
+        0.375,
+        0.412,
+        0.003,
+        0.0
+      ],
+      [
+        0.278,
+        0.967,
+        1.0,
+        1.0,
+        1.0,
+        0.748,
+        0.0
+      ],
+      [
+        0.698,
+        1.0,
+        0.933,
+        0.783,
+        1.0,
+        1.0,
+        0.436
+      ],
+      [
+        0.739,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.419
+      ],
+      [
+        0.317,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.799,
+        0.0
+      ],
+      [
+        0.045,
+        0.962,
+        1.0,
+        1.0,
+        1.0,
+        0.558,
+        0.0
+      ],
+      [
+        0.0,
+        0.255,
+        0.778,
+        0.84,
+        0.62,
+        0.135,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      23,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 97,
+    "contact_reference_px": 97.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

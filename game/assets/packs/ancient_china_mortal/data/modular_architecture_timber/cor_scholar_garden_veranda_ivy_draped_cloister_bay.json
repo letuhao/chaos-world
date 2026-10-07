@@ -1,0 +1,132 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.cor_scholar_garden_veranda_ivy_draped_cloister_bay",
+  "name": "Classical Garden Cloister Walkway Corridor Draped in Lush Flowering Wisteria",
+  "vietnamese_name": "Hành Lang Phủ Hoa Tử Đằng Nở Rộ (Hành Lang Vườn Cảnh Giang Nam)",
+  "hanzi": "苏式游廊垂挂紫藤花影长廊",
+  "category": "modular_architecture_timber",
+  "sub_category": "covered_corridor_and_veranda",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "smell_wisteria_blooms",
+  "gameplay_role": "floral_corridor",
+  "destructible": false,
+  "material": "plant",
+  "cultivation_element": "wood",
+  "prompt_summary": "Ancient Chinese covered garden corridor module: Classical Garden Cloister Walkway Corridor Draped in Lush Flowering Wisteria. Traditional tiled wooden gallery, balustrade railing, top-down orthographic game sprite, transparent alpha cutout.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "corridor",
+    "style": "scholar_garden_veranda"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/cor_scholar_garden_veranda_ivy_draped_cloister_bay.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.cor_scholar_garden_veranda_ivy_draped_cloister_bay:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.584,
+        0.656
+      ]
+    ],
+    "frac_zero": 0.5662,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.304,
+        0.389,
+        0.479,
+        0.661,
+        0.62,
+        0.434,
+        0.3
+      ],
+      [
+        0.684,
+        0.874,
+        0.92,
+        0.961,
+        0.939,
+        0.896,
+        0.713
+      ],
+      [
+        0.137,
+        0.43,
+        0.691,
+        0.952,
+        0.646,
+        0.556,
+        0.391
+      ]
+    ],
+    "crop_offset": [
+      17,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 86,
+    "contact_reference_px": 86.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

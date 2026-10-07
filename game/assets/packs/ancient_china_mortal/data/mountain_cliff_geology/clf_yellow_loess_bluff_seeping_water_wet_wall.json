@@ -1,0 +1,209 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.clf_yellow_loess_bluff_seeping_water_wet_wall",
+  "name": "Yellow Loess Terraced Bluff Weeping Water Mineral Seepage Wall",
+  "vietnamese_name": "Vách Đá Ngấm Nước Chảy Róc Rách (Vách Đất Vàng Hoàng Thổ Phù Sa)",
+  "hanzi": "黄土塬高崖渗水潮湿挂水石壁",
+  "category": "mountain_cliff_geology",
+  "sub_category": "cliff_face_and_bluff",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "drink_mineral_seepage",
+  "gameplay_role": "wet_cliff",
+  "destructible": false,
+  "material": "earth",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese mountainous geology landscape: Yellow Loess Terraced Bluff Weeping Water Mineral Seepage Wall. Realistic rock textures, ink contours, orthographic top-down world-map view, transparent alpha background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "geology_layer": "cliff",
+    "strata": "yellow_loess_bluff"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/clf_yellow_loess_bluff_seeping_water_wet_wall.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.clf_yellow_loess_bluff_seeping_water_wet_wall:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.484,
+        0.493
+      ],
+      [
+        0.829,
+        0.827
+      ]
+    ],
+    "frac_zero": 0.4862,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.188,
+        0.244,
+        0.724,
+        0.132,
+        0.097,
+        0.0
+      ],
+      [
+        0.021,
+        0.437,
+        0.876,
+        1.0,
+        0.922,
+        0.32,
+        0.0
+      ],
+      [
+        0.021,
+        0.689,
+        1.0,
+        1.0,
+        1.0,
+        0.762,
+        0.004
+      ],
+      [
+        0.115,
+        0.98,
+        1.0,
+        1.0,
+        1.0,
+        0.955,
+        0.334
+      ],
+      [
+        0.572,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.504
+      ],
+      [
+        0.883,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.87
+      ],
+      [
+        0.225,
+        0.64,
+        0.951,
+        1.0,
+        0.965,
+        0.557,
+        0.154
+      ]
+    ],
+    "crop_offset": [
+      17,
+      20
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 151,
+    "contact_reference_px": 151.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

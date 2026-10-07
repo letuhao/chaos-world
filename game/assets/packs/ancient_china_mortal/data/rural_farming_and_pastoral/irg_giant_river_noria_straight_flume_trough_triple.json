@@ -1,0 +1,128 @@
+{
+  "id": "ancient_china_mortal.rural_farming_and_pastoral.irg_giant_river_noria_straight_flume_trough_triple",
+  "name": "Colossal Timber River Noria (Tongche) Long Bamboo Water Trough Span (3x1)",
+  "vietnamese_name": "Máng Tre Dẫn Nước Dài (3x1) (Cọn Nước Bờ Sông Khổng Lồ)",
+  "hanzi": "巨大江畔筒车三格凌空飞水长木枧",
+  "category": "rural_farming_and_pastoral",
+  "sub_category": "irrigation_flume_and_waterwheel",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "wash_in_flume_water",
+  "gameplay_role": "water_flume",
+  "destructible": false,
+  "material": "bamboo",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese agricultural irrigation system part: Colossal Timber River Noria (Tongche) Long Bamboo Water Trough Span (3x1). Functional wooden hydraulics, ink contours, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "irrigation_tech": "giant_river_noria"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/rural_farming_and_pastoral/irg_giant_river_noria_straight_flume_trough_triple.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.rural_farming_and_pastoral.irg_giant_river_noria_straight_flume_trough_triple:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.304,
+        0.517,
+        0.294
+      ]
+    ],
+    "frac_zero": 0.8033,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      8,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.007,
+        0.616,
+        0.264,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.678,
+        0.651,
+        0.654,
+        1.0,
+        0.859,
+        0.647,
+        0.704,
+        0.613
+      ],
+      [
+        0.361,
+        0.221,
+        0.118,
+        0.397,
+        0.363,
+        0.141,
+        0.336,
+        0.144
+      ]
+    ],
+    "crop_offset": [
+      71,
+      16
+    ],
+    "trunk_columns": [
+      3,
+      4
+    ],
+    "contact_px": 20,
+    "contact_reference_px": 20.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

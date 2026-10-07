@@ -1,0 +1,154 @@
+{
+  "id": "ancient_china_mortal.rural_farming_and_pastoral.pen_mountain_goat_brush_corral_hollow_log_feeding_trough",
+  "name": "Thorny Brush Mountain Goat Corral Long Hollow-Log Grain & Mash Manger",
+  "vietnamese_name": "Máng Ăn Bằng Thân Cây Đục Rỗng (Bãi Quây Dê Rừng Bằng Cành Gai)",
+  "hanzi": "干荆棘圈羊栅栏整木挖凿长条饲料槽",
+  "category": "rural_farming_and_pastoral",
+  "sub_category": "homestead_pen_and_coop",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "fill_feeding_trough",
+  "gameplay_role": "feeding_trough",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "metal",
+  "prompt_summary": "Ancient Chinese farm homestead animal husbandry prop: Thorny Brush Mountain Goat Corral Long Hollow-Log Grain & Mash Manger. Rustic peasant craftsmanship, gouache textures with ink outlines, top-down orthographic game sprite, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "animal_housing": "mountain_goat_brush_corral"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/rural_farming_and_pastoral/pen_mountain_goat_brush_corral_hollow_log_feeding_trough.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.rural_farming_and_pastoral.pen_mountain_goat_brush_corral_hollow_log_feeding_trough:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.477,
+        0.499
+      ]
+    ],
+    "frac_zero": 0.7459,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.203,
+        0.115,
+        0.159,
+        0.634,
+        0.131,
+        0.132,
+        0.211
+      ],
+      [
+        0.672,
+        0.811,
+        0.82,
+        0.973,
+        0.907,
+        0.837,
+        0.678
+      ],
+      [
+        0.05,
+        0.0,
+        0.0,
+        0.256,
+        0.106,
+        0.0,
+        0.047
+      ]
+    ],
+    "crop_offset": [
+      17,
+      43
+    ],
+    "trunk_columns": [],
+    "contact_px": 220,
+    "contact_reference_px": 220.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

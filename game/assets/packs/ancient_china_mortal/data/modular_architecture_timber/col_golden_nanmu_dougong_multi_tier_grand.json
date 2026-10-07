@@ -1,0 +1,162 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.col_golden_nanmu_dougong_multi_tier_grand",
+  "name": "Lustrous Gilded Nanmu Multi-Tier Cluster Dougong Assembly",
+  "vietnamese_name": "Cụm Đẩu Củng Nhiều Tầng Tinh Xảo (Gỗ Nam Mộc Quý Phái)",
+  "hanzi": "金丝楠木多层重昂大斗栱",
+  "category": "modular_architecture_timber",
+  "sub_category": "pillar_beam_and_dougong",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "admire_bracket_joinery",
+  "gameplay_role": "bracket_set",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "yang",
+  "prompt_summary": "Ancient Chinese timber frame architecture component: Lustrous Gilded Nanmu Multi-Tier Cluster Dougong Assembly. Traditional mortise and tenon craftsmanship, ink contours, top-down orthographic sprite on clean transparent alpha background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "pillar_beam",
+    "style": "golden_nanmu"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/col_golden_nanmu_dougong_multi_tier_grand.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.col_golden_nanmu_dougong_multi_tier_grand:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.659,
+        0.655
+      ]
+    ],
+    "frac_zero": 0.5796,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.3,
+        0.363,
+        0.669,
+        0.79,
+        0.619,
+        0.391,
+        0.27
+      ],
+      [
+        0.749,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.715
+      ],
+      [
+        0.369,
+        0.461,
+        0.623,
+        0.906,
+        0.556,
+        0.515,
+        0.337
+      ]
+    ],
+    "crop_offset": [
+      17,
+      21
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 85,
+    "contact_reference_px": 85.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

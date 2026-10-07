@@ -1,0 +1,129 @@
+{
+  "id": "ancient_china_mortal.path_and_way.way_bridge_ramp_lion_posts",
+  "name": "Bridge Ramp with Stone Lion Posts",
+  "vietnamese_name": "Dốc Đầu Cầu Trụ Sư Tử Đá",
+  "hanzi": "石狮引桥",
+  "category": "path_and_way",
+  "sub_category": "stone_arched_bridge",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Ascending stone ramp approach marked by miniature seated guardian lions.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Top-down stone bridge approach ramp flanked by a pair of miniature carved stone guardian lion plinths.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "bridge_approach": true,
+    "guardian_warding": 0.4
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/path_and_way/way_bridge_ramp_lion_posts.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.path_and_way.way_bridge_ramp_lion_posts:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.688,
+        0.707
+      ]
+    ],
+    "frac_zero": 0.5981,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.308,
+        0.448,
+        0.426,
+        0.405,
+        0.497,
+        0.275
+      ],
+      [
+        0.861,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.891
+      ],
+      [
+        0.803,
+        0.859,
+        0.476,
+        0.496,
+        0.964,
+        0.851
+      ]
+    ],
+    "crop_offset": [
+      33,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 59,
+    "contact_reference_px": 59.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

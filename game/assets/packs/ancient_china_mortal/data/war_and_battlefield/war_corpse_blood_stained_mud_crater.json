@@ -1,0 +1,178 @@
+{
+  "id": "ancient_china_mortal.war_and_battlefield.war_corpse_blood_stained_mud_crater",
+  "name": "Impact Crater with Dark Bloodstains",
+  "vietnamese_name": "Hố Đạn Pháo Nứt Nẻ Vấy Máu Tươi",
+  "hanzi": "带血炮弹坑积水",
+  "category": "war_and_battlefield",
+  "sub_category": "corpse_trench",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect",
+  "gameplay_role": "Explosion or catapult hollow filled with murky reddish stagnant rainwater.",
+  "destructible": false,
+  "material": "earth",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Deep jagged dirt crater filled with dark red murky stagnant water, scorched earth rim, broken arrows floating.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "battlefield_scar": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/war_and_battlefield/war_corpse_blood_stained_mud_crater.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.war_and_battlefield.war_corpse_blood_stained_mud_crater:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.722,
+        0.729
+      ],
+      [
+        0.834,
+        0.835
+      ]
+    ],
+    "frac_zero": 0.4023,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.003,
+        0.338,
+        0.518,
+        0.628,
+        0.546,
+        0.237,
+        0.147
+      ],
+      [
+        0.335,
+        0.997,
+        1.0,
+        1.0,
+        1.0,
+        0.983,
+        0.309
+      ],
+      [
+        0.758,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.751
+      ],
+      [
+        0.927,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.919
+      ],
+      [
+        0.706,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.734
+      ],
+      [
+        0.562,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.452
+      ],
+      [
+        0.274,
+        0.51,
+        0.721,
+        0.916,
+        0.762,
+        0.651,
+        0.175
+      ]
+    ],
+    "crop_offset": [
+      16,
+      18
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 158,
+    "contact_reference_px": 158.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

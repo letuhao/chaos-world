@@ -1,0 +1,113 @@
+{
+  "id": "ancient_china_mortal.creature_and_denizen.denizen_bandit_cross_bow_sniper_rock",
+  "name": "Hidden Sniper with Heavy Stirrup Crossbow",
+  "vietnamese_name": "Tên Cướp Bắn Nỏ Núp Sau Tảng Đá",
+  "hanzi": "岩后伏击重弩盗",
+  "category": "creature_and_denizen",
+  "sub_category": "mountain_bandit_raider",
+  "type": "character_sprite",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "attack",
+  "gameplay_role": "Bandit Hostile NPC",
+  "destructible": false,
+  "material": "flesh",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Bandit crouching behind boulder aiming iron-prodded crossbow with cocked lever.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "npc_type": "hostile_bandit"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/creature_and_denizen/denizen_bandit_cross_bow_sniper_rock.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.creature_and_denizen.denizen_bandit_cross_bow_sniper_rock:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.639
+      ]
+    ],
+    "frac_zero": 0.646,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.418,
+        0.522,
+        0.111
+      ],
+      [
+        0.752,
+        0.96,
+        0.504
+      ],
+      [
+        0.726,
+        0.956,
+        0.58
+      ]
+    ],
+    "crop_offset": [
+      21,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 72,
+    "contact_reference_px": 72.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

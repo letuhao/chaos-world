@@ -1,0 +1,186 @@
+{
+  "id": "ancient_china_mortal.river_and_maritime.river_toll_canal_barrier_log_boom",
+  "name": "Floating Iron-Chain Canal Defense Boom",
+  "vietnamese_name": "Dây Xích Nổi Ngăn Sông Thu Thuế",
+  "hanzi": "运河截船大浮索",
+  "category": "river_and_maritime",
+  "sub_category": "water_toll_checkpoint",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    4,
+    1
+  ],
+  "canvas_px": [
+    512,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "lower_chain",
+  "gameplay_role": "Heavy spiked floating logs chained across river channel.",
+  "destructible": false,
+  "material": "iron",
+  "cultivation_element": "water",
+  "prompt_summary": "Heavy line of floating spiked cedar logs linked with thick iron chains barring water passage across river.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "toll_gate": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/river_and_maritime/river_toll_canal_barrier_log_boom.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.river_and_maritime.river_toll_canal_barrier_log_boom:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.589,
+        0.55,
+        0.562,
+        0.597
+      ]
+    ],
+    "frac_zero": 0.5987,
+    "blocks": [
+      [
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      2,
+      0
+    ],
+    "sub_grid": [
+      15,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.079,
+        0.551,
+        0.274,
+        0.371,
+        0.489,
+        0.2,
+        0.529,
+        0.07,
+        0.545,
+        0.245,
+        0.413,
+        0.435,
+        0.245,
+        0.57,
+        0.056
+      ],
+      [
+        0.872,
+        0.884,
+        0.991,
+        0.883,
+        0.992,
+        0.867,
+        0.846,
+        0.128,
+        0.947,
+        0.881,
+        1.0,
+        0.898,
+        0.989,
+        0.931,
+        0.87
+      ],
+      [
+        0.68,
+        0.282,
+        0.74,
+        0.253,
+        0.698,
+        0.281,
+        0.669,
+        0.275,
+        0.708,
+        0.258,
+        0.718,
+        0.269,
+        0.76,
+        0.305,
+        0.675
+      ]
+    ],
+    "crop_offset": [
+      17,
+      22
+    ],
+    "trunk_columns": [
+      0
+    ],
+    "contact_px": 29,
+    "contact_reference_px": 29.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      128
+    ]
+  }
+}

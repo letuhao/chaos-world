@@ -1,0 +1,143 @@
+{
+  "id": "ancient_china_mortal.trade_craft_industry.ind_grain_measuring_bushel_baskets",
+  "name": "Woven Willow Grain Measuring Bushels",
+  "vietnamese_name": "Bồ Đựng Thóc Đan Bằng Liễu",
+  "hanzi": "盛粮柳条大粮筐",
+  "category": "trade_craft_industry",
+  "sub_category": "grain_threshing_floor",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "take_grain",
+  "gameplay_role": "Tall woven wicker baskets brimming with golden harvested wheat.",
+  "destructible": true,
+  "material": "bamboo",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Three large woven cylindrical willow baskets brimming with golden unhusked grain on straw mat.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "grain_loot": 50
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/trade_craft_industry/ind_grain_measuring_bushel_baskets.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.trade_craft_industry.ind_grain_measuring_bushel_baskets:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.745
+      ]
+    ],
+    "frac_zero": 0.5789,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.513,
+        0.801,
+        0.478
+      ],
+      [
+        0.839,
+        1.0,
+        0.854
+      ],
+      [
+        0.595,
+        0.927,
+        0.68
+      ]
+    ],
+    "crop_offset": [
+      17,
+      21
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 82,
+    "contact_reference_px": 82.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

@@ -1,0 +1,208 @@
+{
+  "id": "ancient_china_mortal.military_and_fortress.fort_drill_horse_turning_paddocks",
+  "name": "Cavalry Circle Maneuver Ring Marker",
+  "vietnamese_name": "Cọc Tròn Luyện Cưỡi Ngựa Chiến",
+  "hanzi": "骑兵绕桩木桩阵",
+  "category": "military_and_fortress",
+  "sub_category": "archery_range",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "ride_course",
+  "gameplay_role": "Arrangement of 8 low wooden posts driven in dirt for slalom riding.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Ring of smooth rounded timber poles driven into compacted dirt training ground for cavalry turning drills.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "horsemanship_training": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/military_and_fortress/fort_drill_horse_turning_paddocks.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.military_and_fortress.fort_drill_horse_turning_paddocks:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.664,
+        0.659
+      ],
+      [
+        0.822,
+        0.837
+      ]
+    ],
+    "frac_zero": 0.4242,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.001,
+        0.167,
+        0.387,
+        0.521,
+        0.417,
+        0.139,
+        0.0
+      ],
+      [
+        0.191,
+        0.851,
+        0.975,
+        1.0,
+        0.944,
+        0.863,
+        0.155
+      ],
+      [
+        0.625,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.577
+      ],
+      [
+        0.925,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.903
+      ],
+      [
+        0.88,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.934
+      ],
+      [
+        0.512,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.519
+      ],
+      [
+        0.023,
+        0.558,
+        0.862,
+        0.965,
+        0.848,
+        0.567,
+        0.001
+      ]
+    ],
+    "crop_offset": [
+      17,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 141,
+    "contact_reference_px": 141.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "id": "ancient_china_mortal.creature_and_denizen.denizen_soldier_magistrate_bodyguard_shield",
+  "name": "Elite Bodyguard with Rattan Shield & Saber",
+  "vietnamese_name": "Hộ Vệ Quan Tri Huyện Cầm Khiên Mây",
+  "hanzi": "县尊近身藤牌卫",
+  "category": "creature_and_denizen",
+  "sub_category": "imperial_soldier_and_bailiff",
+  "type": "character_sprite",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "talk",
+  "gameplay_role": "Military Guard NPC",
+  "destructible": false,
+  "material": "flesh",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Fierce bodyguard holding round painted tiger-face rattan shield and short thrusting sword.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "npc_type": "guard"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/creature_and_denizen/denizen_soldier_magistrate_bodyguard_shield.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.creature_and_denizen.denizen_soldier_magistrate_bodyguard_shield:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.37
+      ]
+    ],
+    "frac_zero": 0.815,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.096,
+        0.525,
+        0.0
+      ],
+      [
+        0.294,
+        0.982,
+        0.771
+      ],
+      [
+        0.027,
+        0.377,
+        0.039
+      ]
+    ],
+    "crop_offset": [
+      26,
+      18
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 8,
+    "contact_reference_px": 8.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

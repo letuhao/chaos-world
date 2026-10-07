@@ -1,0 +1,179 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.clf_red_sandstone_danxia_summit_lookout_pinnacle",
+  "name": "Crimson Danxia Sandstone Gorge High Clifftop Outlook Platform",
+  "vietnamese_name": "Mỏm Đá Đỉnh Vách Nhìn Ra Mây (Hẻm Núi Sa Thạch Đỏ Đan Hà)",
+  "hanzi": "赤壁丹霞峡谷登高远眺凸台峰头",
+  "category": "mountain_cliff_geology",
+  "sub_category": "cliff_face_and_bluff",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "solid",
+  "interactive_verb": "meditate_on_summit",
+  "gameplay_role": "lookout_point",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "wind",
+  "prompt_summary": "Ancient Chinese mountainous geology landscape: Crimson Danxia Sandstone Gorge High Clifftop Outlook Platform. Realistic rock textures, ink contours, orthographic top-down world-map view, transparent alpha background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "geology_layer": "cliff",
+    "strata": "red_sandstone_danxia"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/clf_red_sandstone_danxia_summit_lookout_pinnacle.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.clf_red_sandstone_danxia_summit_lookout_pinnacle:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.541,
+        0.447
+      ],
+      [
+        0.805,
+        0.811
+      ]
+    ],
+    "frac_zero": 0.4941,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.39,
+        0.411,
+        0.0,
+        0.149,
+        0.011,
+        0.0
+      ],
+      [
+        0.0,
+        0.652,
+        0.913,
+        0.376,
+        0.724,
+        0.295,
+        0.005
+      ],
+      [
+        0.233,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.992,
+        0.16
+      ],
+      [
+        0.203,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.338
+      ],
+      [
+        0.675,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.516
+      ],
+      [
+        0.813,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.806
+      ],
+      [
+        0.076,
+        0.708,
+        0.905,
+        0.764,
+        0.923,
+        0.667,
+        0.122
+      ]
+    ],
+    "crop_offset": [
+      16,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 166,
+    "contact_reference_px": 166.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

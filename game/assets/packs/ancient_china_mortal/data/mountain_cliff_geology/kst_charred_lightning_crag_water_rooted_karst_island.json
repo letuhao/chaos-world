@@ -1,0 +1,306 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.kst_charred_lightning_crag_water_rooted_karst_island",
+  "name": "Lightning-Struck Thunder Crag River-Emerging Karst Island Mountain",
+  "vietnamese_name": "Đảo Núi Đá Mọc Từ Lòng Sông (Đỉnh Sét Đánh Cháy Đen Đơn Độc)",
+  "hanzi": "遭雷劈裂焦黑孤崖浮水立根碧水石洲",
+  "category": "mountain_cliff_geology",
+  "sub_category": "karst_spire_and_pinnacle",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "survey_karst_island",
+  "gameplay_role": "river_karst",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese karst pinnacle mountain landscape: Lightning-Struck Thunder Crag River-Emerging Karst Island Mountain. Towering verticality, poetic gouache shading, dark ink contour lines, top-down orthographic sprite on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "geology_layer": "karst",
+    "region": "charred_lightning_crag"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/kst_charred_lightning_crag_water_rooted_karst_island.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.kst_charred_lightning_crag_water_rooted_karst_island:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.125,
+        0.576,
+        0.082
+      ],
+      [
+        0.574,
+        0.974,
+        0.558
+      ],
+      [
+        0.65,
+        0.945,
+        0.655
+      ]
+    ],
+    "frac_zero": 0.5658,
+    "blocks": [
+      [
+        false,
+        true,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 7,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.069,
+        0.501,
+        0.522,
+        0.043,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.258,
+        0.294,
+        0.974,
+        0.741,
+        0.447,
+        0.297,
+        0.008,
+        0.0,
+        0.0
+      ],
+      [
+        0.021,
+        0.306,
+        0.33,
+        0.348,
+        1.0,
+        0.954,
+        0.104,
+        0.257,
+        0.095,
+        0.0,
+        0.0
+      ],
+      [
+        0.013,
+        0.167,
+        0.41,
+        0.611,
+        1.0,
+        1.0,
+        0.251,
+        0.517,
+        0.011,
+        0.0,
+        0.0
+      ],
+      [
+        0.015,
+        0.492,
+        0.715,
+        0.922,
+        1.0,
+        1.0,
+        0.84,
+        0.881,
+        0.243,
+        0.104,
+        0.0
+      ],
+      [
+        0.141,
+        0.707,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.604,
+        0.397,
+        0.031
+      ],
+      [
+        0.481,
+        0.966,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.924,
+        0.344,
+        0.0
+      ],
+      [
+        0.753,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.945,
+        0.156
+      ],
+      [
+        0.369,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.369,
+        0.0
+      ],
+      [
+        0.01,
+        0.378,
+        0.678,
+        0.997,
+        1.0,
+        1.0,
+        0.998,
+        0.776,
+        0.277,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.323,
+        0.286,
+        0.773,
+        0.328,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      31,
+      35
+    ],
+    "trunk_columns": [
+      5
+    ],
+    "contact_px": 133,
+    "contact_reference_px": 133.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      384
+    ]
+  }
+}

@@ -1,0 +1,174 @@
+{
+  "id": "medieval_western.mediterranean_and_moorish_quarter.octagonal_star_water_basin_sun_baked_terracotta",
+  "name": "Sun-Baked Octagonal Geometric Tile Basin",
+  "vietnamese_name": "Bể Nước Bát Giác Lát Gạch Sao (Nắng Rám Địa Trung Hải)",
+  "category": "mediterranean_and_moorish_quarter",
+  "sub_category": "azulejo_glazed_tile_fountain",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "water",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "drink",
+  "gameplay_role": "Mediterranean Moorish quarter feature (Octagonal Geometric Tile Basin).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "mediterranean_moorish",
+  "prompt_summary": "2D orthographic top-down game sprite of sun-baked octagonal geometric tile basin, warm terracotta glow and chalky white plaster, Mediterranean Moorish Al-Andalus style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/mediterranean_and_moorish_quarter/octagonal_star_water_basin_sun_baked_terracotta.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.mediterranean_and_moorish_quarter.octagonal_star_water_basin_sun_baked_terracotta:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.845,
+        0.83
+      ],
+      [
+        0.801,
+        0.799
+      ]
+    ],
+    "frac_zero": 0.4347,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.022,
+        0.653,
+        1.0,
+        0.998,
+        0.806,
+        0.094,
+        0.0
+      ],
+      [
+        0.71,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.868,
+        0.236
+      ],
+      [
+        0.944,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.642
+      ],
+      [
+        0.971,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.823
+      ],
+      [
+        0.852,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.987,
+        0.451
+      ],
+      [
+        0.444,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.706,
+        0.0
+      ],
+      [
+        0.0,
+        0.535,
+        0.956,
+        0.912,
+        0.781,
+        0.037,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      27,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 109,
+    "contact_reference_px": 109.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

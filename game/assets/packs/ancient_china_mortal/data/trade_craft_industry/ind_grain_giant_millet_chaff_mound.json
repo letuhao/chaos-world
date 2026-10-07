@@ -1,0 +1,205 @@
+{
+  "id": "ancient_china_mortal.trade_craft_industry.ind_grain_giant_millet_chaff_mound",
+  "name": "Giant Pile of Winnowed Golden Chaff",
+  "vietnamese_name": "Đống Trấu Vàng Óng Cao Ngất",
+  "hanzi": "金黄谷壳大草垛",
+  "category": "trade_craft_industry",
+  "sub_category": "grain_threshing_floor",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "search_pile",
+  "gameplay_role": "Huge soft mound of dusty yellow husks and fine grain dust.",
+  "destructible": true,
+  "material": "straw",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Large soft dome mound of golden yellow winnowed rice chaff and grain husks with wooden rake stuck in top.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "hideout": "soft_straw"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/trade_craft_industry/ind_grain_giant_millet_chaff_mound.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.trade_craft_industry.ind_grain_giant_millet_chaff_mound:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.327,
+        0.318
+      ],
+      [
+        0.709,
+        0.675
+      ]
+    ],
+    "frac_zero": 0.6306,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.166,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.003,
+        0.252,
+        0.43,
+        0.015,
+        0.0,
+        0.0
+      ],
+      [
+        0.098,
+        0.747,
+        0.983,
+        1.0,
+        0.785,
+        0.211,
+        0.0
+      ],
+      [
+        0.666,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.827,
+        0.057
+      ],
+      [
+        0.798,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.981,
+        0.156
+      ],
+      [
+        0.306,
+        0.98,
+        1.0,
+        1.0,
+        1.0,
+        0.626,
+        0.0
+      ],
+      [
+        0.005,
+        0.202,
+        0.535,
+        0.506,
+        0.308,
+        0.026,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      26,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 16,
+    "contact_reference_px": 16.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

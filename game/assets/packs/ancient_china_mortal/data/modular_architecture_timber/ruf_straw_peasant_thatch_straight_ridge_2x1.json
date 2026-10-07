@@ -1,0 +1,158 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.ruf_straw_peasant_thatch_straight_ridge_2x1",
+  "name": "Thick Layered Golden Straw Thatch Straight Roof Ridge Strip (2x1)",
+  "vietnamese_name": "Sống Nóc Mái Thẳng (2x1) (Mái Tranh Đồng Quê Dày Rơm Vàng)",
+  "hanzi": "农家厚苫麦草双步正脊",
+  "category": "modular_architecture_timber",
+  "sub_category": "modular_roof_and_flying_eaves",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "inspect_roof_ridge",
+  "gameplay_role": "roof_ridge",
+  "destructible": false,
+  "material": "straw",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese modular roof and eaves component: Thick Layered Golden Straw Thatch Straight Roof Ridge Strip (2x1). Intricate clay tiles, sweeping silhouette, gouache rendering with ink contours, orthographic top-down view, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "roof",
+    "style": "straw_peasant_thatch"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/ruf_straw_peasant_thatch_straight_ridge_2x1.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.ruf_straw_peasant_thatch_straight_ridge_2x1:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.491,
+        0.508
+      ]
+    ],
+    "frac_zero": 0.6831,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.059,
+        0.069,
+        0.343,
+        0.666,
+        0.067,
+        0.085,
+        0.007
+      ],
+      [
+        0.854,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.683
+      ],
+      [
+        0.087,
+        0.153,
+        0.602,
+        0.907,
+        0.238,
+        0.179,
+        0.022
+      ]
+    ],
+    "crop_offset": [
+      25,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 48,
+    "contact_reference_px": 48.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

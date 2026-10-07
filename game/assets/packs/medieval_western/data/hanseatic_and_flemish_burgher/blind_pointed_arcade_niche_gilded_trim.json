@@ -1,0 +1,169 @@
+{
+  "id": "medieval_western.hanseatic_and_flemish_burgher.blind_pointed_arcade_niche_gilded_trim",
+  "name": "Guild Gilded Backsteingotik Blind Arch Niche",
+  "vietnamese_name": "Hốc Vòm Cuốn Gạch Đỏ Trang Trí (Dát Vàng Phường Hội)",
+  "category": "hanseatic_and_flemish_burgher",
+  "sub_category": "stepped_gable_brick_facade",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": null,
+  "gameplay_role": "Hanseatic urban burgher feature (Backsteingotik Blind Arch Niche).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "flemish_hanseatic",
+  "prompt_summary": "2D orthographic top-down game sprite of guild gilded backsteingotik blind arch niche, fine gold-leaf filigree and copper verge accents, Hanseatic Flemish burgher town style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/hanseatic_and_flemish_burgher/blind_pointed_arcade_niche_gilded_trim.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.hanseatic_and_flemish_burgher.blind_pointed_arcade_niche_gilded_trim:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.503
+      ],
+      [
+        0.744
+      ]
+    ],
+    "frac_zero": 0.6141,
+    "blocks": [
+      [
+        true
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.012,
+        0.248,
+        0.0
+      ],
+      [
+        0.36,
+        0.813,
+        0.007
+      ],
+      [
+        0.891,
+        1.0,
+        0.511
+      ],
+      [
+        0.88,
+        1.0,
+        0.557
+      ],
+      [
+        0.748,
+        1.0,
+        0.342
+      ],
+      [
+        0.738,
+        1.0,
+        0.346
+      ],
+      [
+        0.775,
+        0.851,
+        0.422
+      ]
+    ],
+    "crop_offset": [
+      21,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 71,
+    "contact_reference_px": 71.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      256
+    ]
+  }
+}

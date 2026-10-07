@@ -1,0 +1,119 @@
+{
+  "id": "ancient_china_mortal.path_and_way.way_village_stone_flag_lane",
+  "name": "Narrow Flagstone Passage",
+  "vietnamese_name": "Lối Đá Nhỏ Giữa Hai Tường",
+  "hanzi": "夹道石街",
+  "category": "path_and_way",
+  "sub_category": "village_alley",
+  "type": "tile",
+  "alpha": "opaque",
+  "pivot": "center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Dramatic narrow corridor flanked by high whitewashed plaster walls.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Top-down narrow urban pedestrian lane paved in long granite slabs between towering white courtyard walls.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "wall_shadow_occlusion": 0.7,
+    "stealth_footsteps": "echoes"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/path_and_way/way_village_stone_flag_lane.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.path_and_way.way_village_stone_flag_lane:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        1.0
+      ]
+    ],
+    "frac_zero": 0.0,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      4,
+      4
+    ],
+    "sub_fill": [
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    ],
+    "crop_offset": [
+      0,
+      0
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "contact_px": 128,
+    "contact_reference_px": 128.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

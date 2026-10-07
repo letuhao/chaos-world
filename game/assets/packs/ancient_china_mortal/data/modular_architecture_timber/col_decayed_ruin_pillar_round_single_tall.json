@@ -1,0 +1,171 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.col_decayed_ruin_pillar_round_single_tall",
+  "name": "Rotting Splintered Temple Timber Round Column Pillar (Tall 1x2)",
+  "vietnamese_name": "Cột Trụ Tròn Cao (1x2) (Gỗ Mục Đền Miếu Đổ Nát)",
+  "hanzi": "腐朽残断高耸通柱",
+  "category": "modular_architecture_timber",
+  "sub_category": "pillar_beam_and_dougong",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect_pillar",
+  "gameplay_role": "vertical_support",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "yin",
+  "prompt_summary": "Ancient Chinese timber frame architecture component: Rotting Splintered Temple Timber Round Column Pillar (Tall 1x2). Traditional mortise and tenon craftsmanship, ink contours, top-down orthographic sprite on clean transparent alpha background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "pillar_beam",
+    "style": "decayed_ruin"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/col_decayed_ruin_pillar_round_single_tall.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.col_decayed_ruin_pillar_round_single_tall:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.42
+      ],
+      [
+        0.194
+      ]
+    ],
+    "frac_zero": 0.7983,
+    "blocks": [
+      [
+        true
+      ],
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.136,
+        0.68,
+        0.102
+      ],
+      [
+        0.583,
+        0.896,
+        0.631
+      ],
+      [
+        0.058,
+        0.621,
+        0.163
+      ],
+      [
+        0.0,
+        0.531,
+        0.0
+      ],
+      [
+        0.0,
+        0.54,
+        0.0
+      ],
+      [
+        0.002,
+        0.604,
+        0.0
+      ],
+      [
+        0.101,
+        0.705,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      39
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 35,
+    "contact_reference_px": 35.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      256
+    ]
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "id": "medieval_western.slavic_eastern_taiga_and_logcraft.wooden_deadfall_bear_trap_red_painted",
+  "name": "Folk Red Ochre Taiga Heavy Log Deadfall Trap",
+  "vietnamese_name": "Bẫy Gỗ Đè Sập Săn Gấu Taiga (Sơn Đỏ Dân Gian)",
+  "category": "slavic_eastern_taiga_and_logcraft",
+  "sub_category": "taiga_fur_trappers_post",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "disarm",
+  "gameplay_role": "Slavic taiga cultural feature (Taiga Heavy Log Deadfall Trap).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "slavic_rus",
+  "prompt_summary": "2D orthographic top-down game sprite of folk red ochre taiga heavy log deadfall trap, traditional red ochre painted motifs, Slavic Kievan Rus taiga style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/slavic_eastern_taiga_and_logcraft/wooden_deadfall_bear_trap_red_painted.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.slavic_eastern_taiga_and_logcraft.wooden_deadfall_bear_trap_red_painted:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.463,
+        0.462
+      ]
+    ],
+    "frac_zero": 0.7334,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.133,
+        0.014,
+        0.096,
+        0.664,
+        0.091,
+        0.024,
+        0.135
+      ],
+      [
+        0.832,
+        0.703,
+        0.876,
+        1.0,
+        0.812,
+        0.771,
+        0.841
+      ],
+      [
+        0.342,
+        0.006,
+        0.342,
+        0.863,
+        0.246,
+        0.0,
+        0.342
+      ]
+    ],
+    "crop_offset": [
+      17,
+      32
+    ],
+    "trunk_columns": [
+      3
+    ],
+    "contact_px": 59,
+    "contact_reference_px": 59.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,128 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.wat_hidden_glen_creek_rock_choked_rapid_stream",
+  "name": "Shaded Forest Valley Stream White-Water Rapids between Jagged Rocks",
+  "vietnamese_name": "Ghềnh Nước Xiết Chen Giữa Đá Nhọn (Khe Suối Thung Lũng U Tịch)",
+  "hanzi": "幽谷盘石曲折溪暗礁阻截急流险滩",
+  "category": "mountain_cliff_geology",
+  "sub_category": "waterfall_stream_and_cascade",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "navigate_rapids",
+  "gameplay_role": "river_rapids",
+  "destructible": false,
+  "material": "water",
+  "cultivation_element": "yin",
+  "prompt_summary": "Ancient Chinese mountainous water feature: Shaded Forest Valley Stream White-Water Rapids between Jagged Rocks. Flowing crystal water with gouache splashes, dark ink outlines, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "water_scale": "hidden_glen_creek"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/wat_hidden_glen_creek_rock_choked_rapid_stream.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.wat_hidden_glen_creek_rock_choked_rapid_stream:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.72,
+        0.753
+      ]
+    ],
+    "frac_zero": 0.5719,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.266,
+        0.7,
+        0.208,
+        0.283,
+        0.662,
+        0.481
+      ],
+      [
+        0.835,
+        1.0,
+        0.98,
+        0.996,
+        1.0,
+        0.784
+      ],
+      [
+        0.54,
+        0.977,
+        0.946,
+        0.955,
+        0.969,
+        0.623
+      ]
+    ],
+    "crop_offset": [
+      34,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 169,
+    "contact_reference_px": 169.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

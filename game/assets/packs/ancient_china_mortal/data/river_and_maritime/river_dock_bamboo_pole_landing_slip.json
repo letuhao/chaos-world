@@ -1,0 +1,170 @@
+{
+  "id": "ancient_china_mortal.river_and_maritime.river_dock_bamboo_pole_landing_slip",
+  "name": "Sloping Bamboo Boat Launching Ramp",
+  "vietnamese_name": "Máng Trượt Đẩy Thuyền Bằng Tre",
+  "hanzi": "竹排滑道下水台",
+  "category": "river_and_maritime",
+  "sub_category": "wooden_dock_and_pier",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "slide_boat",
+  "gameplay_role": "Bamboo log slipway for launching small sampans.",
+  "destructible": false,
+  "material": "bamboo",
+  "cultivation_element": "water",
+  "prompt_summary": "Sloping boat ramp made of parallel split bamboo logs slick with river water and algae.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "boat_launch": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/river_and_maritime/river_dock_bamboo_pole_landing_slip.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.river_and_maritime.river_dock_bamboo_pole_landing_slip:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.665,
+        0.168
+      ],
+      [
+        0.369,
+        0.676
+      ]
+    ],
+    "frac_zero": 0.6297,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.208,
+        0.0,
+        0.219,
+        0.398,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.733,
+        0.927,
+        1.0,
+        0.693,
+        0.001,
+        0.0,
+        0.0
+      ],
+      [
+        0.433,
+        0.961,
+        1.0,
+        1.0,
+        0.636,
+        0.0,
+        0.0
+      ],
+      [
+        0.36,
+        0.617,
+        1.0,
+        1.0,
+        0.974,
+        0.207,
+        0.0
+      ],
+      [
+        0.0,
+        0.31,
+        0.976,
+        1.0,
+        1.0,
+        0.901,
+        0.413
+      ],
+      [
+        0.0,
+        0.017,
+        0.476,
+        1.0,
+        1.0,
+        1.0,
+        0.776
+      ],
+      [
+        0.0,
+        0.0,
+        0.098,
+        0.832,
+        0.565,
+        0.138,
+        0.045
+      ]
+    ],
+    "crop_offset": [
+      16,
+      18
+    ],
+    "trunk_columns": [
+      3,
+      4
+    ],
+    "contact_px": 56,
+    "contact_reference_px": 56.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

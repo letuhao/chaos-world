@@ -1,0 +1,107 @@
+{
+  "id": "medieval_western.wayfarers_nomads_and_tinker_camps.high_picket_rope_tether_line_patchwork_stitched",
+  "name": "Patchwork-Mended Braided Rope Horse Picket Line",
+  "vietnamese_name": "Dây Thừng Căng Buộc Đàn Ngựa (Vá Víu Chắp Vá)",
+  "category": "wayfarers_nomads_and_tinker_camps",
+  "sub_category": "horse_tether_line_and_saddles",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "tether",
+  "gameplay_role": "Wayfarer nomad campsite feature (Braided Rope Horse Picket Line).",
+  "destructible": false,
+  "material": "organic",
+  "feudal_culture": "wayfarer_nomad",
+  "prompt_summary": "2D orthographic top-down game sprite of patchwork-mended braided rope horse picket line, colorful mismatched cloth and leather patch mends, Medieval itinerant wayfarer nomad camp style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/wayfarers_nomads_and_tinker_camps/high_picket_rope_tether_line_patchwork_stitched.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.wayfarers_nomads_and_tinker_camps.high_picket_rope_tether_line_patchwork_stitched:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.298,
+        0.351
+      ]
+    ],
+    "frac_zero": 0.8928,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      2
+    ],
+    "sub_fill": [
+      [
+        0.439,
+        0.279,
+        0.311,
+        0.544,
+        0.32,
+        0.336,
+        0.529
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.129,
+        0.0,
+        0.0,
+        0.246
+      ]
+    ],
+    "crop_offset": [
+      17,
+      72
+    ],
+    "trunk_columns": [],
+    "contact_px": 19,
+    "contact_reference_px": 19.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

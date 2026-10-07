@@ -1,0 +1,209 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.gat_mountain_monastery_vase_shaped_peace_portal",
+  "name": "Mountain Daoist Monastery Auspicious Vase-Shaped Peace Gate (Ping'an)",
+  "vietnamese_name": "Cổng Hình Bình Hoa Chúc Bình An (Cổng Đạo Viện Núi Cao)",
+  "hanzi": "仙山道观吉祥净瓶吉庆门",
+  "category": "modular_architecture_timber",
+  "sub_category": "moon_gate_and_archway",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "enter_vase_portal",
+  "gameplay_role": "portal",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese architectural entrance portal: Mountain Daoist Monastery Auspicious Vase-Shaped Peace Gate (Ping'an). Ornate joinery, traditional aesthetic, top-down orthographic view for 2D RPG, clear transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "gateway",
+    "style": "mountain_monastery"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/gat_mountain_monastery_vase_shaped_peace_portal.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.gat_mountain_monastery_vase_shaped_peace_portal:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.523,
+        0.52
+      ],
+      [
+        0.77,
+        0.792
+      ]
+    ],
+    "frac_zero": 0.4922,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.067,
+        0.631,
+        0.595,
+        0.575,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.74,
+        1.0,
+        1.0,
+        0.979,
+        0.575,
+        0.0
+      ],
+      [
+        0.173,
+        0.894,
+        0.912,
+        0.74,
+        0.941,
+        0.852,
+        0.079
+      ],
+      [
+        0.576,
+        0.987,
+        0.509,
+        0.163,
+        0.649,
+        1.0,
+        0.491
+      ],
+      [
+        0.623,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.735
+      ],
+      [
+        0.683,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.634
+      ],
+      [
+        0.048,
+        0.507,
+        0.854,
+        0.903,
+        0.85,
+        0.583,
+        0.047
+      ]
+    ],
+    "crop_offset": [
+      18,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 139,
+    "contact_reference_px": 139.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

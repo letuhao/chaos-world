@@ -1,0 +1,140 @@
+{
+  "id": "ancient_china_mortal.civilian_settlement.settle_pharmacy_acupuncture_mannequin",
+  "name": "Bronze Acupuncture Chart & Mannequin",
+  "vietnamese_name": "Tượng Đồng Huyệt Đạo Châm Cứu",
+  "hanzi": "针灸铜人",
+  "category": "civilian_settlement",
+  "sub_category": "herbal_pharmacy",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "study",
+  "gameplay_role": "Life-sized bronze teaching sculpture drilled with body meridian points and channels.",
+  "destructible": false,
+  "material": "metal",
+  "cultivation_element": "metal",
+  "prompt_summary": "Top-down life-sized polished bronze human anatomical statue on stone pedestal inscribed with detailed meridian lines and puncture holes, with framed silk needle roll beside it.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "meridian_knowledge_study": true,
+    "qi_circulation_insight": 0.35
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/civilian_settlement/settle_pharmacy_acupuncture_mannequin.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.civilian_settlement.settle_pharmacy_acupuncture_mannequin:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.654
+      ]
+    ],
+    "frac_zero": 0.7849,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      2,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.596,
+        0.252
+      ],
+      [
+        0.756,
+        0.47
+      ],
+      [
+        0.893,
+        0.786
+      ]
+    ],
+    "crop_offset": [
+      36,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 48,
+    "contact_reference_px": 48.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

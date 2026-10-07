@@ -1,0 +1,206 @@
+{
+  "id": "ancient_china_mortal.military_and_fortress.fort_rampart_buttress_reinforcement",
+  "name": "Inclined Earth Slope Buttress Ramp",
+  "vietnamese_name": "Trụ Đất Nghiêng Gia Cố Chân Tường",
+  "hanzi": "夯土护坡马道",
+  "category": "military_and_fortress",
+  "sub_category": "rammed_earth_rampart",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": null,
+  "gameplay_role": "Sloping triangular earth support reinforcing weakened wall base.",
+  "destructible": false,
+  "material": "earth",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Massive sloping earth embankment buttress packed with river boulders bolstering outer wall face.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "stability": 150
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/military_and_fortress/fort_rampart_buttress_reinforcement.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.military_and_fortress.fort_rampart_buttress_reinforcement:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.708,
+        0.207
+      ],
+      [
+        0.647,
+        0.683
+      ]
+    ],
+    "frac_zero": 0.5788,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.148,
+        0.587,
+        0.838,
+        0.347,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.275,
+        1.0,
+        1.0,
+        0.923,
+        0.031,
+        0.0,
+        0.0
+      ],
+      [
+        0.258,
+        1.0,
+        1.0,
+        1.0,
+        0.379,
+        0.0,
+        0.0
+      ],
+      [
+        0.283,
+        1.0,
+        1.0,
+        1.0,
+        0.821,
+        0.002,
+        0.0
+      ],
+      [
+        0.728,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.692,
+        0.029
+      ],
+      [
+        0.144,
+        0.722,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.696
+      ],
+      [
+        0.0,
+        0.033,
+        0.559,
+        0.934,
+        0.825,
+        0.306,
+        0.001
+      ]
+    ],
+    "crop_offset": [
+      20,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 88,
+    "contact_reference_px": 88.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

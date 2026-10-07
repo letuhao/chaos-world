@@ -1,0 +1,207 @@
+{
+  "id": "ancient_china_mortal.river_and_maritime.river_fish_smoking_clay_smokehouse",
+  "name": "Conical Clay Fish Smoking Kiln",
+  "vietnamese_name": "Lò Đất Xông Khói Cá Hương Vị Đậm",
+  "hanzi": "圆锥熏鱼泥窑",
+  "category": "river_and_maritime",
+  "sub_category": "fish_drying_rack",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "smoke_fish",
+  "gameplay_role": "Clay dome smoker with fragrant wood smoke curling from apex.",
+  "destructible": false,
+  "material": "clay",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Conical clay smokehouse kiln with small wooden door and aromatic woodsmoke rising from chimney.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "food_quality": "smoked"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/river_and_maritime/river_fish_smoking_clay_smokehouse.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.river_and_maritime.river_fish_smoking_clay_smokehouse:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.207,
+        0.338
+      ],
+      [
+        0.723,
+        0.72
+      ]
+    ],
+    "frac_zero": 0.6565,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.143,
+        0.765,
+        0.771,
+        0.17,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.56,
+        0.594,
+        0.003,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.002,
+        0.845,
+        0.813,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.274,
+        1.0,
+        1.0,
+        0.341,
+        0.0,
+        0.0
+      ],
+      [
+        0.152,
+        0.764,
+        1.0,
+        1.0,
+        0.869,
+        0.105,
+        0.0
+      ],
+      [
+        0.841,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.86,
+        0.078
+      ],
+      [
+        0.34,
+        0.818,
+        0.979,
+        0.992,
+        0.831,
+        0.338,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      31,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 145,
+    "contact_reference_px": 145.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "id": "ancient_china_mortal.urban_street_and_market.fur_public_announcements_incense_burning_roadside_altar",
+  "name": "Imperial Noticeboards & Steles Small Brick Roadside Spirit Incense Niche",
+  "vietnamese_name": "Miếu Nhỏ Thắp Nhang Trừ Ma Ven Đường (Bảng Cáo Thị & Bia Đá)",
+  "hanzi": "告示公堂桩街角砖砌敬天香炉龛",
+  "category": "urban_street_and_market",
+  "sub_category": "street_furniture_and_wellhead",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "light_incense_altar",
+  "gameplay_role": "roadside_altar",
+  "destructible": false,
+  "material": "brick",
+  "cultivation_element": "yang",
+  "prompt_summary": "Ancient Chinese urban street furniture: Imperial Noticeboards & Steles Small Brick Roadside Spirit Incense Niche. Realistic civic utility styling, ink outlines, top-down orthographic game asset, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "furniture_group": "public_announcements"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/urban_street_and_market/fur_public_announcements_incense_burning_roadside_altar.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.urban_street_and_market.fur_public_announcements_incense_burning_roadside_altar:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.737
+      ]
+    ],
+    "frac_zero": 0.5925,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.582,
+        0.812,
+        0.516
+      ],
+      [
+        0.617,
+        1.0,
+        0.542
+      ],
+      [
+        0.786,
+        0.969,
+        0.744
+      ]
+    ],
+    "crop_offset": [
+      19,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 90,
+    "contact_reference_px": 90.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

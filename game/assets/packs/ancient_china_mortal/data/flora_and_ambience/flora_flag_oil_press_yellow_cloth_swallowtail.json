@@ -1,0 +1,168 @@
+{
+  "id": "ancient_china_mortal.flora_and_ambience.flora_flag_oil_press_yellow_cloth_swallowtail",
+  "name": "Cooking Oil Mill Sesame Seed Emblem Banner",
+  "vietnamese_name": "Cờ Xưởng Ép Dầu Vừng Thơm Nức",
+  "hanzi": "香油坊滴水黄旗",
+  "category": "flora_and_ambience",
+  "sub_category": "wine_tavern_flag_banner",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Warm ochre-yellow cloth banner showing dripping sesame oil pot.",
+  "destructible": true,
+  "material": "fabric",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Warm ochre-yellow vertical banner with bold red characters for Fragrant Sesame Oil hanging from post.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "landmark": "oil_press"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_ambience/flora_flag_oil_press_yellow_cloth_swallowtail.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_ambience.flora_flag_oil_press_yellow_cloth_swallowtail:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.603
+      ],
+      [
+        0.424
+      ]
+    ],
+    "frac_zero": 0.6682,
+    "blocks": [
+      [
+        false
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.421,
+        0.563,
+        0.395
+      ],
+      [
+        0.618,
+        1.0,
+        0.465
+      ],
+      [
+        0.519,
+        1.0,
+        0.303
+      ],
+      [
+        0.45,
+        1.0,
+        0.225
+      ],
+      [
+        0.405,
+        1.0,
+        0.195
+      ],
+      [
+        0.313,
+        0.958,
+        0.111
+      ],
+      [
+        0.002,
+        0.301,
+        0.03
+      ]
+    ],
+    "crop_offset": [
+      20,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 20,
+    "contact_reference_px": 20.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

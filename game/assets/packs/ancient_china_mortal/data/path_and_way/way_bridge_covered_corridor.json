@@ -1,0 +1,184 @@
+{
+  "id": "ancient_china_mortal.path_and_way.way_bridge_covered_corridor",
+  "name": "Covered Corridor Bridge Pavilion",
+  "vietnamese_name": "Cầu Mái Ngói Có Gian Nghỉ",
+  "hanzi": "风雨廊桥",
+  "category": "path_and_way",
+  "sub_category": "stone_arched_bridge",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "rest",
+  "gameplay_role": "Elaborate timber pavilion roof built atop stone bridge piers for shelter.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Top-down picturesque covered bridge with pitch grey tile roof, open wooden lattice windows, and built-in benches.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "storm_shelter": true,
+    "rest_spot": true,
+    "nav_surface": "walk_surface"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/path_and_way/way_bridge_covered_corridor.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.path_and_way.way_bridge_covered_corridor:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.344,
+        0.862,
+        0.347
+      ],
+      [
+        0.453,
+        0.906,
+        0.375
+      ]
+    ],
+    "frac_zero": 0.7089,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.288,
+        0.724,
+        0.287,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.629,
+        1.0,
+        0.641,
+        0.0,
+        0.0
+      ],
+      [
+        0.569,
+        0.891,
+        0.968,
+        1.0,
+        0.97,
+        0.883,
+        0.569
+      ],
+      [
+        0.822,
+        0.989,
+        0.994,
+        0.854,
+        1.0,
+        0.979,
+        0.842
+      ],
+      [
+        0.247,
+        0.577,
+        0.842,
+        1.0,
+        0.832,
+        0.578,
+        0.263
+      ],
+      [
+        0.129,
+        0.951,
+        1.0,
+        1.0,
+        0.813,
+        0.608,
+        0.188
+      ],
+      [
+        0.0,
+        0.179,
+        0.372,
+        0.969,
+        0.428,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      79,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 61,
+    "contact_reference_px": 61.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

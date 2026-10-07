@@ -1,0 +1,113 @@
+{
+  "id": "ancient_china_mortal.urban_street_and_market.dec_construction_rubble_discarded_frayed_straw_sandals",
+  "name": "Building Masonry & Sand Rubble Pair of Worn-Out Discarded Straw Sandals",
+  "vietnamese_name": "Đôi Dép Rơm Rách Rưới Bỏ Đi (Cát Sỏi Vật Liệu Xây Dựng)",
+  "hanzi": "泥水工匠渣磨破断带废弃草鞋两只",
+  "category": "urban_street_and_market",
+  "sub_category": "litter_wheel_rut_and_puddle",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect_straw_sandals",
+  "gameplay_role": "litter_decal",
+  "destructible": false,
+  "material": "straw",
+  "cultivation_element": "yin",
+  "prompt_summary": "Ancient Chinese street floor decal: Building Masonry & Sand Rubble Pair of Worn-Out Discarded Straw Sandals. Ground-level realistic grunge detail, ink outlines, top-down orthographic game decal on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "decal_condition": "construction_rubble"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/urban_street_and_market/dec_construction_rubble_discarded_frayed_straw_sandals.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.urban_street_and_market.dec_construction_rubble_discarded_frayed_straw_sandals:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.867
+      ]
+    ],
+    "frac_zero": 0.5157,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.851,
+        1.0,
+        0.803
+      ],
+      [
+        0.759,
+        1.0,
+        0.817
+      ],
+      [
+        0.731,
+        1.0,
+        0.829
+      ]
+    ],
+    "crop_offset": [
+      18,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 88,
+    "contact_reference_px": 88.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,155 @@
+{
+  "id": "ancient_china_mortal.military_and_fortress.fort_beacon_fuel_wood_pile_stack",
+  "name": "Dry Pine Torchwood & Reeds Pile",
+  "vietnamese_name": "Đống Củi Thông & Bó Sậy Bốc Lửa",
+  "hanzi": "烽火柴草堆",
+  "category": "military_and_fortress",
+  "sub_category": "signal_beacon_tower",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "ignite",
+  "gameplay_role": "Neatly stacked resinous pine logs and reed bundles for night flares.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Large square stack of dry resinous pine firewood logs and tied bundles of reeds for ignition.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "flammable": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/military_and_fortress/fort_beacon_fuel_wood_pile_stack.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.military_and_fortress.fort_beacon_fuel_wood_pile_stack:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.597,
+        0.585
+      ]
+    ],
+    "frac_zero": 0.6671,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.147,
+        0.333,
+        0.605,
+        0.462,
+        0.302,
+        0.109
+      ],
+      [
+        0.828,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.779
+      ],
+      [
+        0.274,
+        0.362,
+        0.925,
+        0.732,
+        0.307,
+        0.278
+      ]
+    ],
+    "crop_offset": [
+      36,
+      18
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3
+    ],
+    "contact_px": 64,
+    "contact_reference_px": 64.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

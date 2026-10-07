@@ -1,0 +1,121 @@
+{
+  "id": "ancient_china_mortal.outlaw_and_jianghu.outlaw_tunnel_wooden_shoring_tunnel_arch",
+  "name": "Heavy Timber Mine Shoring Support Arch",
+  "vietnamese_name": "Khung Gỗ Chống Đỡ Hầm Mỏ Tránh Sập",
+  "hanzi": "地道支护木柱排",
+  "category": "outlaw_and_jianghu",
+  "sub_category": "secret_tunnel_trapdoor",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "pass_under",
+  "gameplay_role": "Square timber post-and-beam frame keeping earth from caving.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Stout square oak post-and-lintel tunnel support arch shoring up cracked stone ceiling.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "structural_support": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/outlaw_and_jianghu/outlaw_tunnel_wooden_shoring_tunnel_arch.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.outlaw_and_jianghu.outlaw_tunnel_wooden_shoring_tunnel_arch:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.442,
+        0.428
+      ]
+    ],
+    "frac_zero": 0.7054,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.471,
+        0.288,
+        0.772,
+        0.723,
+        0.574,
+        0.267,
+        0.478
+      ],
+      [
+        0.605,
+        0.395,
+        0.674,
+        0.235,
+        0.692,
+        0.428,
+        0.609
+      ],
+      [
+        0.265,
+        0.16,
+        0.374,
+        0.0,
+        0.424,
+        0.251,
+        0.244
+      ]
+    ],
+    "crop_offset": [
+      17,
+      21
+    ],
+    "trunk_columns": [
+      2
+    ],
+    "contact_px": 17,
+    "contact_reference_px": 17.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

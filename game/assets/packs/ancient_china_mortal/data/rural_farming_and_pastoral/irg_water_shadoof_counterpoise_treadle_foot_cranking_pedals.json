@@ -1,0 +1,139 @@
+{
+  "id": "ancient_china_mortal.rural_farming_and_pastoral.irg_water_shadoof_counterpoise_treadle_foot_cranking_pedals",
+  "name": "Counterpoised Shadoof Water Lifter Dual Wooden Foot Treadle Cranks",
+  "vietnamese_name": "Bàn Đạp Hai Chân Quay Trục Nước (Cần Vọt Múc Nước Có Quả Đối Trọng)",
+  "hanzi": "桔槔杠杆汲水器双脚轮踏踏木曲柄",
+  "category": "rural_farming_and_pastoral",
+  "sub_category": "irrigation_flume_and_waterwheel",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "crank_dragonbone_pump",
+  "gameplay_role": "treadle_pedal",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Ancient Chinese agricultural irrigation system part: Counterpoised Shadoof Water Lifter Dual Wooden Foot Treadle Cranks. Functional wooden hydraulics, ink contours, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "irrigation_tech": "water_shadoof_counterpoise"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/rural_farming_and_pastoral/irg_water_shadoof_counterpoise_treadle_foot_cranking_pedals.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.rural_farming_and_pastoral.irg_water_shadoof_counterpoise_treadle_foot_cranking_pedals:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.566
+      ]
+    ],
+    "frac_zero": 0.7585,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.744,
+        0.778,
+        0.031
+      ],
+      [
+        0.613,
+        0.641,
+        0.0
+      ],
+      [
+        0.337,
+        0.332,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      31,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 16,
+    "contact_reference_px": 16.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

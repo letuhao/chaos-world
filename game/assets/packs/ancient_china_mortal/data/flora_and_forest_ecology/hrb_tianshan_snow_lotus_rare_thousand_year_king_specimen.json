@@ -1,0 +1,208 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.hrb_tianshan_snow_lotus_rare_thousand_year_king_specimen",
+  "name": "Tianshan Glacial Snow Lotus Legendary Thousand-Year Herb King Specimen (2x2)",
+  "vietnamese_name": "Vua Thuốc Ngàn Năm Tỏa Ánh Linh Quang (2x2) (Tuyết Liên Hoa Băng Đỉnh Thiên Sơn)",
+  "hanzi": "天山绝顶傲霜雪莲千年成精宝光药王桩",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "mountain_medicinal_herb_wild",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "harvest_immortal_king_herb",
+  "gameplay_role": "legendary_herb",
+  "destructible": false,
+  "material": "plant",
+  "cultivation_element": "yang",
+  "prompt_summary": "Ancient Chinese valuable mountain medicinal herb: Tianshan Glacial Snow Lotus Legendary Thousand-Year Herb King Specimen (2x2). Botanical accuracy, luminous gouache accents, ink contours, top-down orthographic game prop on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "species": "tianshan_snow_lotus"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/hrb_tianshan_snow_lotus_rare_thousand_year_king_specimen.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.hrb_tianshan_snow_lotus_rare_thousand_year_king_specimen:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.458,
+        0.422
+      ],
+      [
+        0.806,
+        0.743
+      ]
+    ],
+    "frac_zero": 0.5355,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.034,
+        0.23,
+        0.438,
+        0.151,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.36,
+        0.995,
+        0.992,
+        0.753,
+        0.067,
+        0.0
+      ],
+      [
+        0.0,
+        0.673,
+        1.0,
+        1.0,
+        0.95,
+        0.36,
+        0.12
+      ],
+      [
+        0.197,
+        0.91,
+        1.0,
+        1.0,
+        1.0,
+        0.635,
+        0.489
+      ],
+      [
+        0.489,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.87,
+        0.154
+      ],
+      [
+        0.812,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.556
+      ],
+      [
+        0.131,
+        0.692,
+        0.89,
+        0.93,
+        0.725,
+        0.474,
+        0.011
+      ]
+    ],
+    "crop_offset": [
+      20,
+      18
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 130,
+    "contact_reference_px": 130.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

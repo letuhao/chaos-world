@@ -1,0 +1,106 @@
+{
+  "id": "ancient_china_mortal.river_and_maritime.river_boat_submerged_live_fish_well",
+  "name": "Submerged Bamboo Live Fish Keep",
+  "vietnamese_name": "Giỏ Tre Ngâm Nước Nhốt Cá Sống",
+  "hanzi": "活鱼保鲜水笼",
+  "category": "river_and_maritime",
+  "sub_category": "fishing_sampan_and_houseboat",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "take_fish",
+  "gameplay_role": "Slotted floating wicker basket keeping catches fresh.",
+  "destructible": true,
+  "material": "bamboo",
+  "cultivation_element": "water",
+  "prompt_summary": "Woven cylindrical bamboo live-fish cage floating half-submerged in water tied to boat side.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "live_catch": 5
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/river_and_maritime/river_boat_submerged_live_fish_well.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.river_and_maritime.river_boat_submerged_live_fish_well:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.634
+      ]
+    ],
+    "frac_zero": 0.7205,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.693,
+        0.677,
+        0.102
+      ],
+      [
+        0.897,
+        0.926,
+        0.312
+      ],
+      [
+        0.335,
+        0.46,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      30,
+      16
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 13,
+    "contact_reference_px": 13.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

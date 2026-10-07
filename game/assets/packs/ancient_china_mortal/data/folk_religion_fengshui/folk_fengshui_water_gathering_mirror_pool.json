@@ -1,0 +1,184 @@
+{
+  "id": "ancient_china_mortal.folk_religion_fengshui.folk_fengshui_water_gathering_mirror_pool",
+  "name": "Semicircular Half-Moon Feng Shui Pond",
+  "vietnamese_name": "Hồ Bán Nguyệt Tụ Khí Trước Từ Đường",
+  "hanzi": "门前半月蓄水聚气塘",
+  "category": "folk_religion_fengshui",
+  "sub_category": "fengshui_geomancy_pillar",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "contemplate_water",
+  "gameplay_role": "Curved stone-lined pool reflecting sky and collecting wealth energy.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "water",
+  "prompt_summary": "Traditional Chinese half-moon shaped stone-bordered pond with clear still water and floating water lilies.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "wealth_blessing": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/folk_religion_fengshui/folk_fengshui_water_gathering_mirror_pool.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.folk_religion_fengshui.folk_fengshui_water_gathering_mirror_pool:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.504,
+        0.821,
+        0.534
+      ],
+      [
+        0.748,
+        0.987,
+        0.755
+      ]
+    ],
+    "frac_zero": 0.6254,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.027,
+        0.677,
+        0.149,
+        0.518,
+        0.261,
+        0.022
+      ],
+      [
+        0.047,
+        0.64,
+        1.0,
+        1.0,
+        0.993,
+        0.628,
+        0.047
+      ],
+      [
+        0.412,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.408
+      ],
+      [
+        0.9,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.874
+      ],
+      [
+        0.926,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.942
+      ],
+      [
+        0.491,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.472
+      ],
+      [
+        0.022,
+        0.54,
+        0.877,
+        0.966,
+        0.891,
+        0.551,
+        0.019
+      ]
+    ],
+    "crop_offset": [
+      82,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 147,
+    "contact_reference_px": 147.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        1,
+        2,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

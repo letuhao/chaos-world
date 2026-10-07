@@ -1,0 +1,203 @@
+{
+  "id": "ancient_china_mortal.civilian_settlement.settle_pharmacy_outdoor_drying_sieves",
+  "name": "Sun-Drying Herb Platforms & Sieves",
+  "vietnamese_name": "Sân Phơi Thuốc Sàng Tre Cắt Lát",
+  "hanzi": "药圃晾匾",
+  "category": "civilian_settlement",
+  "sub_category": "herbal_pharmacy",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "harvest",
+  "gameplay_role": "Tiered wooden trestle racks drying circular bamboo sieves filled with medicinal plant slices.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "wood",
+  "prompt_summary": "Top-down angled bamboo drying platform holding six large circular woven bamboo sieves filled with dried red wolfberries, yellow chrysanthemum flowers, sliced angelica root, and lotus seeds.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "drying_herbs_capacity": 6,
+    "herbal_quality_boost": 1.2
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/civilian_settlement/settle_pharmacy_outdoor_drying_sieves.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.civilian_settlement.settle_pharmacy_outdoor_drying_sieves:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.462,
+        0.562
+      ],
+      [
+        0.422,
+        0.256
+      ]
+    ],
+    "frac_zero": 0.6668,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.038,
+        0.425,
+        0.692,
+        0.027,
+        0.0
+      ],
+      [
+        0.0,
+        0.263,
+        0.807,
+        0.901,
+        0.916,
+        0.487,
+        0.003
+      ],
+      [
+        0.646,
+        0.979,
+        0.844,
+        0.752,
+        0.777,
+        1.0,
+        0.478
+      ],
+      [
+        0.445,
+        0.811,
+        0.736,
+        0.91,
+        0.979,
+        0.727,
+        0.551
+      ],
+      [
+        0.0,
+        0.562,
+        1.0,
+        0.817,
+        0.632,
+        0.114,
+        0.044
+      ],
+      [
+        0.0,
+        0.046,
+        0.767,
+        0.389,
+        0.018,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.344,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      27
+    ],
+    "trunk_columns": [],
+    "contact_px": 13,
+    "contact_reference_px": 13.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

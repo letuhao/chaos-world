@@ -1,0 +1,179 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.wat_rushing_torrents_deep_tranquil_emerald_pool",
+  "name": "High-Volume Mountain Torrent Deep Emerald Green Mountain Pool (2x2)",
+  "vietnamese_name": "Hồ Nước Xanh Như Ngọc Bích (2x2) (Dòng Thác Cuồn Cuộn Lưng Trời)",
+  "hanzi": "怒涛奔涌大悬瀑深幽如玉清澈碧水潭",
+  "category": "mountain_cliff_geology",
+  "sub_category": "waterfall_stream_and_cascade",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "meditate_by_emerald_pool",
+  "gameplay_role": "calm_pool",
+  "destructible": false,
+  "material": "water",
+  "cultivation_element": "wood",
+  "prompt_summary": "Ancient Chinese mountainous water feature: High-Volume Mountain Torrent Deep Emerald Green Mountain Pool (2x2). Flowing crystal water with gouache splashes, dark ink outlines, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "water_scale": "rushing_torrents"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/wat_rushing_torrents_deep_tranquil_emerald_pool.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.wat_rushing_torrents_deep_tranquil_emerald_pool:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.621,
+        0.556
+      ],
+      [
+        0.861,
+        0.862
+      ]
+    ],
+    "frac_zero": 0.4417,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.483,
+        0.473,
+        0.094,
+        0.313,
+        0.012,
+        0.0
+      ],
+      [
+        0.201,
+        0.773,
+        0.986,
+        0.976,
+        0.959,
+        0.506,
+        0.219
+      ],
+      [
+        0.268,
+        0.941,
+        1.0,
+        1.0,
+        1.0,
+        0.712,
+        0.31
+      ],
+      [
+        0.523,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.985,
+        0.352
+      ],
+      [
+        0.645,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.611
+      ],
+      [
+        0.725,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.751
+      ],
+      [
+        0.424,
+        0.828,
+        0.973,
+        1.0,
+        0.932,
+        0.73,
+        0.242
+      ]
+    ],
+    "crop_offset": [
+      19,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 175,
+    "contact_reference_px": 175.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

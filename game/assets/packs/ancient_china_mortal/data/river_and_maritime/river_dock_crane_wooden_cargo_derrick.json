@@ -1,0 +1,207 @@
+{
+  "id": "ancient_china_mortal.river_and_maritime.river_dock_crane_wooden_cargo_derrick",
+  "name": "Timber Pivot Cargo Derrick Crane",
+  "vietnamese_name": "Cần Cẩu Gỗ Bốc Dỡ Hàng Bến Sông",
+  "hanzi": "码头起重木吊杆",
+  "category": "river_and_maritime",
+  "sub_category": "wooden_dock_and_pier",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "operate_crane",
+  "gameplay_role": "Hand-cranked wooden derrick crane for loading cargo.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Hand-cranked wooden harbor crane with rope tackle and hemp cargo net suspended over dock.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "cargo_loader": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/river_and_maritime/river_dock_crane_wooden_cargo_derrick.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.river_and_maritime.river_dock_crane_wooden_cargo_derrick:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.323,
+        0.578
+      ],
+      [
+        0.541,
+        0.665
+      ]
+    ],
+    "frac_zero": 0.6152,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.204,
+        0.611,
+        0.069,
+        0.004,
+        0.045,
+        0.042,
+        0.0
+      ],
+      [
+        0.065,
+        0.414,
+        0.583,
+        0.744,
+        0.95,
+        0.411,
+        0.0
+      ],
+      [
+        0.111,
+        0.145,
+        0.618,
+        0.989,
+        1.0,
+        0.687,
+        0.109
+      ],
+      [
+        0.169,
+        0.38,
+        0.803,
+        0.995,
+        1.0,
+        0.743,
+        0.0
+      ],
+      [
+        0.395,
+        0.604,
+        0.852,
+        0.989,
+        0.858,
+        0.379,
+        0.0
+      ],
+      [
+        0.614,
+        0.654,
+        0.45,
+        0.84,
+        0.786,
+        0.082,
+        0.0
+      ],
+      [
+        0.048,
+        0.412,
+        0.813,
+        1.0,
+        0.776,
+        0.01,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      30,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 120,
+    "contact_reference_px": 120.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

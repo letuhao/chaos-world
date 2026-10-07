@@ -1,0 +1,163 @@
+{
+  "id": "ancient_china_mortal.war_and_battlefield.war_signal_five_elements_flag_cluster",
+  "name": "Five Elements Colorful Command Pennants",
+  "vietnamese_name": "Cụm Cờ Ngũ Hành Điều Động Trận Đồ",
+  "hanzi": "五行方阵号旗架",
+  "category": "war_and_battlefield",
+  "sub_category": "war_drum_and_signal_horn",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "signal_formation",
+  "gameplay_role": "Rack holding five colored swallowtail flags (Green, Red, Yellow, White, Black).",
+  "destructible": false,
+  "material": "fabric",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Wooden display rack bearing five triangular heraldic banners in green, red, yellow, white, and black for battlefield maneuvers.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "formation_tactics": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/war_and_battlefield/war_signal_five_elements_flag_cluster.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.war_and_battlefield.war_signal_five_elements_flag_cluster:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.474
+      ],
+      [
+        0.308
+      ]
+    ],
+    "frac_zero": 0.8142,
+    "blocks": [
+      [
+        false
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      2,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.407,
+        0.177
+      ],
+      [
+        0.692,
+        0.402
+      ],
+      [
+        0.616,
+        0.471
+      ],
+      [
+        0.552,
+        0.407
+      ],
+      [
+        0.479,
+        0.25
+      ],
+      [
+        0.245,
+        0.154
+      ],
+      [
+        0.384,
+        0.102
+      ]
+    ],
+    "crop_offset": [
+      34,
+      17
+    ],
+    "trunk_columns": [
+      0
+    ],
+    "contact_px": 35,
+    "contact_reference_px": 35.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

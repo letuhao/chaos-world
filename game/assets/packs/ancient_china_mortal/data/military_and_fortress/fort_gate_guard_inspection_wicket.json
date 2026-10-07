@@ -1,0 +1,170 @@
+{
+  "id": "ancient_china_mortal.military_and_fortress.fort_gate_guard_inspection_wicket",
+  "name": "Narrow Pedestrian Wicket Night Door",
+  "vietnamese_name": "Cửa Nách Đi Bộ Ban Đêm",
+  "hanzi": "便门小便道",
+  "category": "military_and_fortress",
+  "sub_category": "city_gate_and_portcullis",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "doorway",
+  "gameplay_role": "Small man-door built into main gate for night entry under lantern scrutiny.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Narrow iron-bound pedestrian wicket door inset into city wall flank with peephole grating.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "night_access": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/military_and_fortress/fort_gate_guard_inspection_wicket.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.military_and_fortress.fort_gate_guard_inspection_wicket:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.744
+      ],
+      [
+        0.512
+      ]
+    ],
+    "frac_zero": 0.6028,
+    "blocks": [
+      [
+        true
+      ],
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.749,
+        0.844,
+        0.652
+      ],
+      [
+        0.603,
+        1.0,
+        0.415
+      ],
+      [
+        0.595,
+        1.0,
+        0.56
+      ],
+      [
+        0.677,
+        1.0,
+        0.655
+      ],
+      [
+        0.183,
+        0.978,
+        0.176
+      ],
+      [
+        0.174,
+        0.976,
+        0.07
+      ],
+      [
+        0.212,
+        0.969,
+        0.287
+      ]
+    ],
+    "crop_offset": [
+      20,
+      17
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 54,
+    "contact_reference_px": 54.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      256
+    ]
+  }
+}

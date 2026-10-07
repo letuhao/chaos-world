@@ -1,0 +1,185 @@
+{
+  "id": "ancient_china_mortal.flora_and_ambience.flora_bamboo_curved_arching_path_tunnel",
+  "name": "Arching Bamboo Canopy Pathway Gate",
+  "vietnamese_name": "Cổng Vòm Trúc Uốn Cong Che Kín Lối Đi",
+  "hanzi": "弯竹合抱天然绿廊",
+  "category": "flora_and_ambience",
+  "sub_category": "bamboo_cluster",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "pass_under",
+  "gameplay_role": "Opposing bamboo stalks bending across path creating living tunnel.",
+  "destructible": false,
+  "material": "bamboo",
+  "cultivation_element": "wood",
+  "prompt_summary": "Natural archway tunnel formed by tall bamboo stalks on both sides bending across a stone path.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "shaded_walkway": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_ambience/flora_bamboo_curved_arching_path_tunnel.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_ambience.flora_bamboo_curved_arching_path_tunnel:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.538,
+        0.657,
+        0.53
+      ],
+      [
+        0.649,
+        0.772,
+        0.66
+      ]
+    ],
+    "frac_zero": 0.6673,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.124,
+        0.241,
+        0.499,
+        0.131,
+        0.206,
+        0.071,
+        0.125
+      ],
+      [
+        0.332,
+        0.822,
+        0.809,
+        0.623,
+        0.917,
+        0.662,
+        0.227
+      ],
+      [
+        0.459,
+        0.992,
+        0.997,
+        0.948,
+        1.0,
+        0.853,
+        0.131
+      ],
+      [
+        0.236,
+        0.953,
+        0.725,
+        0.227,
+        0.973,
+        0.721,
+        0.16
+      ],
+      [
+        0.169,
+        0.858,
+        0.727,
+        0.41,
+        0.974,
+        0.53,
+        0.048
+      ],
+      [
+        0.542,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.921,
+        0.329
+      ],
+      [
+        0.394,
+        0.807,
+        0.968,
+        0.958,
+        0.878,
+        0.573,
+        0.186
+      ]
+    ],
+    "crop_offset": [
+      88,
+      20
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 165,
+    "contact_reference_px": 165.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

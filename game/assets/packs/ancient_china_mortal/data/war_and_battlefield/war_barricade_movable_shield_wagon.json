@@ -1,0 +1,191 @@
+{
+  "id": "ancient_china_mortal.war_and_battlefield.war_barricade_movable_shield_wagon",
+  "name": "Mobile Defensive Mantlet Pavise Wagon",
+  "vietnamese_name": "Chiến Xa Khiên Gỗ Đẩy Tay",
+  "hanzi": "木幔偏厢防箭车",
+  "category": "war_and_battlefield",
+  "sub_category": "spiked_barricade_cheval_de_frise",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "push",
+  "gameplay_role": "Push-cart with solid wooden wall and arrow loopholes used to advance safely.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Heavy wooden battle cart with tall front-facing arrow-proof wooden mantlet shield, iron wheels, arrow slits.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "mobile_cover": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/war_and_battlefield/war_barricade_movable_shield_wagon.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.war_and_battlefield.war_barricade_movable_shield_wagon:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.393,
+        0.389
+      ],
+      [
+        0.704,
+        0.727
+      ]
+    ],
+    "frac_zero": 0.7239,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.209,
+        0.206,
+        0.004,
+        0.0
+      ],
+      [
+        0.228,
+        0.326,
+        0.241,
+        0.314,
+        0.065
+      ],
+      [
+        0.301,
+        1.0,
+        0.985,
+        0.619,
+        0.009
+      ],
+      [
+        0.5,
+        1.0,
+        1.0,
+        0.82,
+        0.134
+      ],
+      [
+        0.811,
+        1.0,
+        1.0,
+        0.97,
+        0.639
+      ],
+      [
+        0.489,
+        1.0,
+        1.0,
+        0.813,
+        0.213
+      ],
+      [
+        0.089,
+        0.515,
+        0.761,
+        0.208,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      58,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 46,
+    "contact_reference_px": 46.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

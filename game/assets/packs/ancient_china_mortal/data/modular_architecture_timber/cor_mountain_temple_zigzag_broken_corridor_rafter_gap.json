@@ -1,0 +1,125 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.cor_mountain_temple_zigzag_broken_corridor_rafter_gap",
+  "name": "Mountain Monastery Stepped Walkway War-Damaged Corridor with Collapsed Roof",
+  "vietnamese_name": "Hành Lang Gãy Đổ Mái Vì Đạn Tên (Hành Lang Ziczac Quanh Núi)",
+  "hanzi": "依山曲折栈廊兵燹断落残梁通廊",
+  "category": "modular_architecture_timber",
+  "sub_category": "covered_corridor_and_veranda",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "leap_across_broken_gap",
+  "gameplay_role": "damaged_corridor",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "yin",
+  "prompt_summary": "Ancient Chinese covered garden corridor module: Mountain Monastery Stepped Walkway War-Damaged Corridor with Collapsed Roof. Traditional tiled wooden gallery, balustrade railing, top-down orthographic game sprite, transparent alpha cutout.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "corridor",
+    "style": "mountain_temple_zigzag"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/cor_mountain_temple_zigzag_broken_corridor_rafter_gap.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.cor_mountain_temple_zigzag_broken_corridor_rafter_gap:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.605,
+        0.597
+      ]
+    ],
+    "frac_zero": 0.6039,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.381,
+        0.37,
+        0.375,
+        0.766,
+        0.304,
+        0.409,
+        0.334
+      ],
+      [
+        0.801,
+        0.946,
+        0.956,
+        1.0,
+        0.952,
+        0.953,
+        0.768
+      ],
+      [
+        0.363,
+        0.362,
+        0.41,
+        0.912,
+        0.345,
+        0.422,
+        0.336
+      ]
+    ],
+    "crop_offset": [
+      17,
+      20
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "contact_px": 50,
+    "contact_reference_px": 50.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

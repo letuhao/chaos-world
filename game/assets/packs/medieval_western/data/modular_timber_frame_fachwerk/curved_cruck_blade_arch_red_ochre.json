@@ -1,0 +1,202 @@
+{
+  "id": "medieval_western.modular_timber_frame_fachwerk.curved_cruck_blade_arch_red_ochre",
+  "name": "Red Ochre Stained Curved Oak Cruck Blade Arch",
+  "vietnamese_name": "Khung Gỗ Cong Cruck Blade Chịu Lực (Sơn Nâu Đỏ Ochre)",
+  "category": "modular_timber_frame_fachwerk",
+  "sub_category": "cruck_blade_and_tie_beam",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": null,
+  "gameplay_role": "Fachwerk timber-frame modular element (Curved Oak Cruck Blade Arch).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "flemish_hanseatic",
+  "prompt_summary": "2D orthographic top-down game sprite of red ochre stained curved oak cruck blade arch, traditional red ochre earth paint, Fachwerk half-timbering architecture style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/modular_timber_frame_fachwerk/curved_cruck_blade_arch_red_ochre.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.modular_timber_frame_fachwerk.curved_cruck_blade_arch_red_ochre:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.684,
+        0.71
+      ],
+      [
+        0.657,
+        0.661
+      ]
+    ],
+    "frac_zero": 0.487,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.078,
+        0.0,
+        0.048,
+        0.603,
+        0.001,
+        0.38,
+        0.087
+      ],
+      [
+        0.77,
+        0.948,
+        0.945,
+        1.0,
+        0.92,
+        0.979,
+        0.713
+      ],
+      [
+        0.704,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.625
+      ],
+      [
+        0.693,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.635
+      ],
+      [
+        0.429,
+        1.0,
+        0.996,
+        0.942,
+        1.0,
+        1.0,
+        0.278
+      ],
+      [
+        0.331,
+        1.0,
+        0.665,
+        0.002,
+        0.855,
+        1.0,
+        0.196
+      ],
+      [
+        0.0,
+        0.816,
+        0.616,
+        0.0,
+        0.755,
+        0.694,
+        0.004
+      ]
+    ],
+    "crop_offset": [
+      19,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 50,
+    "contact_reference_px": 50.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

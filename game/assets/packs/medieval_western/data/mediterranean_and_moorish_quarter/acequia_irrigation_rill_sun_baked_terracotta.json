@@ -1,0 +1,118 @@
+{
+  "id": "medieval_western.mediterranean_and_moorish_quarter.acequia_irrigation_rill_sun_baked_terracotta",
+  "name": "Sun-Baked Glazed Tile Garden Water Rill",
+  "vietnamese_name": "Mương Dẫn Nước Nhỏ Lát Gạch Men (Nắng Rám Địa Trung Hải)",
+  "category": "mediterranean_and_moorish_quarter",
+  "sub_category": "azulejo_glazed_tile_fountain",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "water",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "step_over",
+  "gameplay_role": "Mediterranean Moorish quarter feature (Glazed Tile Garden Water Rill).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "mediterranean_moorish",
+  "prompt_summary": "2D orthographic top-down game sprite of sun-baked glazed tile garden water rill, warm terracotta glow and chalky white plaster, Mediterranean Moorish Al-Andalus style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/mediterranean_and_moorish_quarter/acequia_irrigation_rill_sun_baked_terracotta.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.mediterranean_and_moorish_quarter.acequia_irrigation_rill_sun_baked_terracotta:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.656,
+        0.64
+      ]
+    ],
+    "frac_zero": 0.6591,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.724,
+        0.618,
+        0.598,
+        0.9,
+        0.595,
+        0.635,
+        0.722
+      ],
+      [
+        0.548,
+        0.818,
+        0.899,
+        1.0,
+        0.814,
+        0.729,
+        0.552
+      ],
+      [
+        0.0,
+        0.0,
+        0.309,
+        0.581,
+        0.144,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      37
+    ],
+    "trunk_columns": [
+      3
+    ],
+    "contact_px": 60,
+    "contact_reference_px": 60.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,172 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.und_climbing_green_ivy_climbing_creeper_on_tree",
+  "name": "Climbing Wall Ivy & Creepers Creepers Wrapping Around Tree Trunk",
+  "vietnamese_name": "Dây Leo Quấn Chặt Thân Cây Cổ (Dây Thường Xuân Leo Tường Đá)",
+  "hanzi": "络石爬藤绿蔓附木攀援老藤条缠树",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "underbrush_fern_and_creeper",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "climb_tree_creeper",
+  "gameplay_role": "tree_creeper",
+  "destructible": false,
+  "material": "plant",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese forest underbrush vegetation: Climbing Wall Ivy & Creepers Creepers Wrapping Around Tree Trunk. Organic foliage, delicate leaves and flowers, ink outlines, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "foliage_group": "climbing_green_ivy"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/und_climbing_green_ivy_climbing_creeper_on_tree.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.und_climbing_green_ivy_climbing_creeper_on_tree:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.446
+      ],
+      [
+        0.398
+      ]
+    ],
+    "frac_zero": 0.6947,
+    "blocks": [
+      [
+        false
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.289,
+        0.865,
+        0.331
+      ],
+      [
+        0.398,
+        0.88,
+        0.494
+      ],
+      [
+        0.018,
+        0.803,
+        0.142
+      ],
+      [
+        0.006,
+        0.695,
+        0.001
+      ],
+      [
+        0.007,
+        0.697,
+        0.042
+      ],
+      [
+        0.071,
+        0.843,
+        0.081
+      ],
+      [
+        0.586,
+        0.942,
+        0.525
+      ]
+    ],
+    "crop_offset": [
+      18,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 92,
+    "contact_reference_px": 92.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

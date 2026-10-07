@@ -1,0 +1,201 @@
+{
+  "id": "ancient_china_mortal.flora_and_ambience.flora_willow_bare_winter_willow_branches",
+  "name": "Bare Winter Willow Tree with Drooping Whips",
+  "vietnamese_name": "Cây Liễu Khẳng Khiu Trơ Cành Mùa Đông",
+  "hanzi": "落叶寒冬枯枝柳",
+  "category": "flora_and_ambience",
+  "sub_category": "weeping_willow_tree",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Leafless winter willow with weeping reddish bare whip branches.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "wood",
+  "prompt_summary": "Dormant winter weeping willow tree with bare drooping whip-like reddish-brown branches against sky.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "seasonal": "winter"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_ambience/flora_willow_bare_winter_willow_branches.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_ambience.flora_willow_bare_winter_willow_branches:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.207,
+        0.199
+      ],
+      [
+        0.414,
+        0.41
+      ]
+    ],
+    "frac_zero": 0.6859,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.021,
+        0.137,
+        0.118,
+        0.006,
+        0.0
+      ],
+      [
+        0.006,
+        0.146,
+        0.3,
+        0.231,
+        0.157,
+        0.023
+      ],
+      [
+        0.096,
+        0.406,
+        0.412,
+        0.395,
+        0.375,
+        0.146
+      ],
+      [
+        0.242,
+        0.315,
+        0.651,
+        0.509,
+        0.52,
+        0.273
+      ],
+      [
+        0.111,
+        0.367,
+        0.201,
+        0.438,
+        0.348,
+        0.288
+      ],
+      [
+        0.009,
+        0.261,
+        0.704,
+        0.257,
+        0.333,
+        0.022
+      ],
+      [
+        0.389,
+        0.889,
+        0.957,
+        0.916,
+        0.706,
+        0.275
+      ]
+    ],
+    "crop_offset": [
+      29,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 159,
+    "contact_reference_px": 159.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

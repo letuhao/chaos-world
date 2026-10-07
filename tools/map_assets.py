@@ -22,6 +22,10 @@ ORIGINAL_ROOT = REPO_ROOT / "art-source" / "map-originals"
 MIN_ASSETS = 1000
 GRID_UNIT_PX = map_layout.GRID_UNIT_PX
 ALPHA_CROP_THRESHOLD = 16
+MAX_RECOVERY_FILES = 5000
+MAX_RECOVERY_DIRECTORIES = 512
+MAX_RECOVERY_DEPTH = 10
+MAX_RECOVERY_ASSETS = 2000
 
 # Each environment gets one large terrain surface and a coherent 64-asset kit.
 # Region-specific art changes materials and silhouettes, not just hue.
@@ -288,6 +292,52 @@ def register(parent_parser) -> None:
         help="replace a previously generated asset after reviewing its preview",
     )
     install.add_argument("--reference-id", action="append", default=[])
+    preserve = actions.add_parser(
+        "preserve-original", help="archive and map a known source image for one asset"
+    )
+    preserve.add_argument("--asset-id", required=True)
+    preserve.add_argument("--source", required=True, help="verified original PNG")
+    preserve.add_argument("--source-name", help="defaults to the catalog's source")
+    preserve.add_argument("--license", help="defaults to the catalog's license")
+    preserve.add_argument("--generated-on", help="defaults to the catalog's generation date")
+    preserve.add_argument("--prompt-ref", help="defaults to the catalog's prompt reference")
+    preserve.add_argument("--prompt", help="defaults to the catalog's production prompt")
+    preserve.add_argument("--reference-id", action="append")
+    recover = actions.add_parser(
+        "recover-originals",
+        help="find legacy source PNGs by asset id, seed, date, and alpha profile",
+    )
+    recover.add_argument(
+        "--source-root",
+        action="append",
+        required=True,
+        help="source directory to scan (repeatable)",
+    )
+    recover.add_argument(
+        "--date-window-days", type=int, default=3, help="fallback modification-date window"
+    )
+    recover.add_argument(
+        "--alpha-tolerance",
+        type=float,
+        default=0.08,
+        help="fallback maximum difference in opaque-pixel ratio",
+    )
+    recover.add_argument(
+        "--exclude-prefix",
+        action="append",
+        default=[],
+        help="ignore source filenames from another asset pack (repeatable)",
+    )
+    recover.add_argument(
+        "--report",
+        default="build/map-original-recovery.jsonl",
+        help="JSONL report path (default: build/map-original-recovery.jsonl)",
+    )
+    recover.add_argument(
+        "--apply",
+        action="store_true",
+        help="archive only high-confidence source matches and map them into the index",
+    )
     generate = actions.add_parser(
         "generate", help="generate and index one map asset through local ComfyUI"
     )
@@ -316,25 +366,26 @@ def register(parent_parser) -> None:
         type=int,
         help="installed square canvas; defaults to --size to keep the high-resolution result",
     )
-    generate.add_argument("--steps", type=int, default=32)
-    generate.add_argument("--cfg", type=float, default=1.0)
-    generate.add_argument("--guidance", type=float, default=3.5)
-    generate.add_argument("--sampler", default="euler")
-    generate.add_argument("--scheduler", default="normal")
+    # Let map_generate's selected profile supply defaults; Flux values break Krea2.
+    generate.add_argument("--steps", type=int, default=None)
+    generate.add_argument("--cfg", type=float, default=None)
+    generate.add_argument("--guidance", type=float, default=None)
+    generate.add_argument("--sampler", default=None)
+    generate.add_argument("--scheduler", default=None)
     generate.add_argument(
         "--checkpoint",
-        default=map_generate.DEFAULT_CHECKPOINT,
+        default=None,
         help="ComfyUI checkpoint name; must match the loaded CLIP/VAE workflow",
     )
     generate.add_argument(
         "--lora",
-        default=map_generate.DEFAULT_LORA,
+        default=None,
         help="ComfyUI LoRA name for model and CLIP (default: selected 2D game-asset LoRA)",
     )
-    generate.add_argument("--lora-strength", type=float, default=0.8)
+    generate.add_argument("--lora-strength", type=float, default=None)
     generate.add_argument(
         "--rembg-model",
-        default=map_generate.DEFAULT_REMBG_MODEL,
+        default=None,
         help="cutout model (default: isnet-anime; --compare-rembg lists installed choices)",
     )
     generate.add_argument(
@@ -379,8 +430,7 @@ def run(args) -> int:
     selected_index = Path(args.index).expanduser().resolve()
     if selected_index.suffix.lower() != ".jsonl":
         raise ToolError(
-            "map asset management requires a JSONL catalog; "
-            "pack JSON is read by map_generate only"
+            "map asset management requires a JSONL catalog; pack JSON is read by map_generate only"
         )
     INDEX_PATH = selected_index
     action = args.map_assets_action
@@ -389,6 +439,8 @@ def run(args) -> int:
         return 0
 
     records = _load_index()
+    if action in {"migrate", "install", "preserve-original", "recover-originals", "generate"}:
+        _require_map_catalog(records)
     if action == "migrate":
         changed = 0
         for record in records:
@@ -429,6 +481,12 @@ def run(args) -> int:
         return 0
     if action == "install":
         _install(records, args)
+        return 0
+    if action == "preserve-original":
+        _preserve_original(records, args)
+        return 0
+    if action == "recover-originals":
+        _recover_originals(records, args)
         return 0
     if action == "generate":
         _generate(records, args)
@@ -516,6 +574,31 @@ def _load_index() -> list[dict]:
             raise ToolError(f"{INDEX_PATH.name}:{line_number}: each line must be an object")
         records.append(record)
     return records
+
+
+def _require_map_catalog(records: list[dict]) -> None:
+    """Reject a different JSONL catalog before a map command can rewrite it."""
+    environments = {environment[0] for environment in ENVIRONMENTS}
+    if not records:
+        raise ToolError(f"refusing to modify an empty map catalog: {INDEX_PATH}")
+    for line_number, record in enumerate(records, 1):
+        asset_id = record.get("id")
+        environment = record.get("environment")
+        category = record.get("category")
+        asset_path = record.get("path")
+        if (
+            not isinstance(asset_id, str)
+            or not isinstance(environment, str)
+            or environment not in environments
+            or not isinstance(category, str)
+            or category not in ASSET_ROLES
+            or not isinstance(asset_path, str)
+            or not asset_path.startswith("res://assets/world_map/")
+        ):
+            raise ToolError(
+                f"refusing to modify non-map catalog {INDEX_PATH.name}: "
+                f"row {line_number} lacks map asset identity"
+            )
 
 
 def _alpha_mode(category: str, suffix: str, kind: str) -> str:
@@ -738,9 +821,7 @@ def _install(records: list[dict], args) -> None:
     )
 
 
-def _validate(
-    records: list[dict], *, skip_source_images_for: set[str] | None = None
-) -> list[str]:
+def _validate(records: list[dict], *, skip_source_images_for: set[str] | None = None) -> list[str]:
     issues: list[str] = []
     seen_ids: set[str] = set()
     seen_paths: set[str] = set()
@@ -888,15 +969,15 @@ def _validate(
     return issues
 
 
-def _archive_source_image(
-    record: dict, source_path: Path, size_px: tuple[int, int], args
-) -> dict:
+def _archive_source_image(record: dict, source_path: Path, size_px: tuple[int, int], args) -> dict:
     source_bytes = source_path.read_bytes()
     digest = hashlib.sha256(source_bytes).hexdigest()
-    relative_path = Path("art-source") / "map-originals" / record["environment"] / record[
-        "category"
-    ] / (
-        f"{record['id'].replace('.', '__')}__{digest[:16]}.png"
+    relative_path = (
+        Path("art-source")
+        / "map-originals"
+        / record["environment"]
+        / record["category"]
+        / (f"{record['id'].replace('.', '__')}__{digest[:16]}.png")
     )
     archive_path = (REPO_ROOT / relative_path).resolve()
     if not archive_path.is_relative_to(ORIGINAL_ROOT.resolve()):
@@ -919,7 +1000,7 @@ def _archive_source_image(
             except OSError as exc:
                 raise ToolError(f"could not read concurrent source archive {archive_path}") from exc
             if existing_digest != digest:
-                raise ToolError(f"{args.asset_id}: source archive changed during install")
+                raise ToolError(f"{args.asset_id}: source archive changed during install") from None
         except OSError as exc:
             raise ToolError(f"could not archive source image to {archive_path}") from exc
     return {
@@ -933,6 +1014,408 @@ def _archive_source_image(
         "prompt": args.prompt.strip(),
         "reference_ids": sorted(set(args.reference_id)),
     }
+
+
+def _preserve_original(records: list[dict], args) -> None:
+    record = next((item for item in records if item.get("id") == args.asset_id), None)
+    if record is None:
+        raise ToolError(f"unknown map asset id '{args.asset_id}'")
+    if record.get("status") not in {"generated", "approved"}:
+        raise ToolError(
+            f"cannot preserve a source for '{args.asset_id}' with status '{record.get('status')}'"
+        )
+    source_path = Path(args.source).expanduser().resolve()
+    if not source_path.is_file() or source_path.suffix.lower() != ".png":
+        raise ToolError("--source must be an existing PNG")
+    try:
+        with Image.open(source_path) as image:
+            size_px = image.size
+    except OSError as exc:
+        raise ToolError(f"--source is not a readable PNG: {source_path}") from exc
+
+    source = record.setdefault("source_images", [])
+    if not isinstance(source, list):
+        raise ToolError(f"{args.asset_id}: source_images must be a list")
+    digest = hashlib.sha256(source_path.read_bytes()).hexdigest()
+    if any(isinstance(item, dict) and item.get("sha256") == digest for item in source):
+        ok(f"original already mapped for {args.asset_id}")
+        return
+
+    provenance = {
+        "asset_id": args.asset_id,
+        "source_name": args.source_name or record.get("source", ""),
+        "license": args.license or record.get("license", ""),
+        "generated_on": args.generated_on or record.get("generated_on", ""),
+        "prompt_ref": args.prompt_ref or record.get("prompt_ref", ""),
+        "prompt": args.prompt or record.get("prompt", ""),
+        "reference_id": args.reference_id
+        if args.reference_id is not None
+        else record.get("reference_ids", []),
+    }
+    missing = [
+        field
+        for field in ("source_name", "license", "generated_on", "prompt_ref", "prompt")
+        if not isinstance(provenance[field], str) or not provenance[field].strip()
+    ]
+    if missing:
+        raise ToolError(
+            f"{args.asset_id}: cannot archive source; missing provenance: {', '.join(missing)}"
+        )
+    record["source_images"].append(
+        _archive_source_image(record, source_path, size_px, argparse.Namespace(**provenance))
+    )
+    _atomic_write(
+        "".join(
+            json.dumps(item, ensure_ascii=False, separators=(",", ":")) + "\n" for item in records
+        )
+    )
+    ok(f"preserved source for {args.asset_id}")
+
+
+def _recovery_source_files(roots: list[Path]) -> list[tuple[Path, Path]]:
+    """Snapshot PNG candidates with explicit directory, depth, and file ceilings."""
+    found: list[tuple[Path, Path]] = []
+    directories_seen = 0
+    entries_seen = 0
+    for root in roots:
+        resolved = root.expanduser().resolve()
+        if not resolved.is_dir():
+            raise ToolError(f"source root is not a directory: {resolved}")
+        stack: list[tuple[Path, int]] = [(resolved, 0)]
+        while stack:
+            current, depth = stack.pop()
+            directories_seen += 1
+            if directories_seen > MAX_RECOVERY_DIRECTORIES:
+                raise ToolError(
+                    f"source scan exceeds {MAX_RECOVERY_DIRECTORIES} directories; "
+                    "narrow --source-root"
+                )
+            try:
+                entries = sorted(current.iterdir(), key=lambda path: path.name.casefold())
+            except OSError as exc:
+                raise ToolError(f"cannot scan source directory {current}: {exc}") from exc
+            for entry in entries:
+                entries_seen += 1
+                if entries_seen > MAX_RECOVERY_FILES * 4:
+                    raise ToolError(
+                        f"source scan exceeds {MAX_RECOVERY_FILES * 4} entries; "
+                        "narrow --source-root"
+                    )
+                if entry.is_symlink():
+                    continue
+                if entry.is_dir():
+                    if depth >= MAX_RECOVERY_DEPTH:
+                        raise ToolError(f"source scan exceeds depth {MAX_RECOVERY_DEPTH}: {entry}")
+                    stack.append((entry, depth + 1))
+                elif entry.suffix.lower() == ".png":
+                    found.append((resolved, entry))
+                    if len(found) > MAX_RECOVERY_FILES:
+                        raise ToolError(
+                            f"source scan exceeds {MAX_RECOVERY_FILES} PNGs; narrow --source-root"
+                        )
+    return sorted(set(found), key=lambda item: item[1].as_posix().casefold())
+
+
+def _source_profile(path: Path) -> tuple[tuple[int, int], float]:
+    try:
+        with Image.open(path) as image:
+            rgba = image.convert("RGBA")
+            width, height = rgba.size
+            histogram = rgba.getchannel("A").histogram()
+    except OSError as exc:
+        raise ToolError(f"source candidate is not a readable PNG: {path}") from exc
+    total = width * height
+    opaque = sum(histogram[ALPHA_CROP_THRESHOLD:])
+    return (width, height), opaque / total if total else 0.0
+
+
+def _cached_source_profile(
+    path: Path, cache: dict[Path, tuple[tuple[int, int], float]]
+) -> tuple[tuple[int, int], float]:
+    profile = cache.get(path)
+    if profile is None:
+        profile = _source_profile(path)
+        cache[path] = profile
+    return profile
+
+
+def _index_recovery_sources(
+    records: list[dict], sources: list[tuple[Path, Path]], exclude_prefixes: list[str]
+) -> tuple[dict[str, list[tuple[Path, Path]]], list[tuple[Path, Path]]]:
+    """Resolve named files to catalog IDs once; fallback never compares known siblings."""
+    tokens: list[tuple[str, str]] = []
+    short_names: dict[str, list[str]] = {}
+    known_environments: set[str] = set()
+    for record in records:
+        asset_id = record.get("id")
+        if isinstance(asset_id, str):
+            tokens.append((asset_id.replace(".", "_").casefold(), asset_id))
+            tokens.append((asset_id.replace(".", "__").casefold(), asset_id))
+            environment = str(record.get("environment", "")).casefold()
+            suffix = asset_id.rsplit(".", 1)[-1].casefold()
+            if environment:
+                known_environments.add(environment)
+                short_names.setdefault(f"{environment}_{suffix}", []).append(asset_id)
+                short_names.setdefault(f"{environment}__{suffix}", []).append(asset_id)
+    tokens.extend(
+        (short_name, asset_ids[0])
+        for short_name, asset_ids in short_names.items()
+        if len(asset_ids) == 1
+    )
+    tokens.sort(key=lambda pair: len(pair[0]), reverse=True)
+    source_by_id: dict[str, list[tuple[Path, Path]]] = {}
+    unidentified: list[tuple[Path, Path]] = []
+    prefixes = tuple(value.casefold() for value in exclude_prefixes if value.strip())
+    for root, path in sources:
+        if prefixes and path.name.casefold().startswith(prefixes):
+            continue
+        signatures = (
+            path.stem.casefold(),
+            path.relative_to(root).with_suffix("").as_posix().casefold().replace("/", "_"),
+        )
+        matched_id = ""
+        for signature in signatures:
+            for token, asset_id in tokens:
+                if signature == token or signature.startswith(
+                    (token + "-", token + "_", token + "__")
+                ):
+                    matched_id = asset_id
+                    break
+            if matched_id:
+                break
+        if matched_id:
+            source_by_id.setdefault(matched_id, []).append((root, path))
+        else:
+            prefix = path.stem.casefold()
+            relative_prefix = path.relative_to(root).as_posix().casefold()
+            if any(
+                prefix.startswith(environment + "_")
+                or relative_prefix.startswith(environment + "/")
+                for environment in known_environments
+            ):
+                continue
+            unidentified.append((root, path))
+    return source_by_id, unidentified
+
+
+def _record_seed(record: dict) -> str:
+    settings = record.get("generation_settings", {})
+    seed = settings.get("seed") if isinstance(settings, dict) else None
+    if seed is None:
+        prompt_ref = record.get("prompt_ref", "")
+        if isinstance(prompt_ref, str) and prompt_ref.startswith("comfyui-map-v1:"):
+            seed = prompt_ref.rsplit(":", 1)[-1]
+    return str(seed) if seed is not None else ""
+
+
+def _candidate_seed_match(path: Path, seed: str) -> bool:
+    if not seed:
+        return False
+    stem = path.stem.casefold()
+    return any(marker in stem for marker in (f"-{seed}-", f"_{seed}_", f"-{seed}.", f"_{seed}."))
+
+
+def _recovery_candidate(
+    record: dict,
+    exact: list[tuple[Path, Path]],
+    fallback_sources: list[tuple[Path, Path]],
+    args,
+    cache: dict,
+) -> dict:
+    seed = _record_seed(record)
+    exact_seed = [(root, path) for root, path in exact if _candidate_seed_match(path, seed)]
+    eligible = exact_seed
+    method = "asset_id_and_seed"
+    if not eligible and not seed and len(exact) == 1:
+        eligible = exact
+        method = "asset_id"
+    if (
+        not eligible
+        and exact
+        and all(path.resolve().is_relative_to(ORIGINAL_ROOT.resolve()) for _, path in exact)
+    ):
+        eligible = exact
+        method = "archived_asset_id"
+    if eligible:
+        settings = record.get("generation_settings", {})
+        remover = (
+            str(settings.get("rembg_model", "")).casefold() if isinstance(settings, dict) else ""
+        )
+        if remover:
+            matching_remover = [item for item in eligible if remover in item[1].stem.casefold()]
+            if matching_remover:
+                eligible = matching_remover
+        unique: dict[str, tuple[Path, Path]] = {}
+        for root, path in eligible:
+            digest = hashlib.sha256(path.read_bytes()).hexdigest()
+            unique.setdefault(digest, (root, path))
+        if len(unique) == 1:
+            root, path = next(iter(unique.values()))
+            profile = _cached_source_profile(path, cache)
+            modified = date.fromtimestamp(path.stat().st_mtime).isoformat()
+            generated = str(record.get("generated_on", ""))
+            try:
+                delta = abs((date.fromisoformat(modified) - date.fromisoformat(generated)).days)
+            except ValueError:
+                delta = None
+            return {
+                "status": "high_confidence",
+                "method": method,
+                "candidate": {
+                    "path": path.as_posix(),
+                    "size_px": list(profile[0]),
+                    "alpha_ratio": round(profile[1], 4),
+                    "modified_on": modified,
+                    "date_delta_days": delta,
+                },
+            }
+        return {
+            "status": "ambiguous",
+            "method": method,
+            "candidate_count": len(unique),
+            "candidates": [path.as_posix() for _, path in list(unique.values())[:20]],
+        }
+    if exact:
+        return {
+            "status": "ambiguous",
+            "method": "asset_id_without_matching_seed",
+            "candidate_count": len(exact),
+            "candidates": [path.as_posix() for _, path in exact[:20]],
+        }
+
+    runtime = GAME_DIR / record["path"].removeprefix("res://")
+    if not runtime.is_file():
+        return {"status": "no_candidate", "method": "date_alpha", "reason": "runtime_png_missing"}
+    runtime_profile = _cached_source_profile(runtime, cache)
+    try:
+        generated_on = date.fromisoformat(record.get("generated_on", ""))
+    except ValueError:
+        return {"status": "no_candidate", "method": "date_alpha", "reason": "invalid_generated_on"}
+
+    fallback: list[tuple[Path, tuple[int, int], float, int]] = []
+    for _root, path in fallback_sources:
+        modified = date.fromtimestamp(path.stat().st_mtime)
+        date_delta = abs((modified - generated_on).days)
+        if date_delta > args.date_window_days:
+            continue
+        profile = _cached_source_profile(path, cache)
+        if profile[0][0] < runtime_profile[0][0] or profile[0][1] < runtime_profile[0][1]:
+            continue
+        if abs(profile[1] - runtime_profile[1]) <= args.alpha_tolerance:
+            fallback.append((path, profile[0], profile[1], date_delta))
+    distinct = {path: (size, ratio, delta) for path, size, ratio, delta in fallback}
+    if len(distinct) == 1:
+        path, (size, ratio, delta) = next(iter(distinct.items()))
+        return {
+            "status": "needs_review",
+            "method": "unique_date_and_alpha_profile",
+            "candidate": {
+                "path": path.as_posix(),
+                "size_px": list(size),
+                "alpha_ratio": round(ratio, 4),
+                "date_delta_days": delta,
+            },
+        }
+    if distinct:
+        return {
+            "status": "ambiguous",
+            "method": "date_and_alpha_profile",
+            "candidate_count": len(distinct),
+            "candidates": [path.as_posix() for path in list(distinct)[:20]],
+        }
+    return {"status": "no_candidate", "method": "date_and_alpha_profile"}
+
+
+def _recover_originals(records: list[dict], args) -> None:
+    if len(records) > MAX_RECOVERY_ASSETS:
+        raise ToolError(
+            f"source recovery supports at most {MAX_RECOVERY_ASSETS} catalog assets; "
+            "use a narrower index"
+        )
+    if args.date_window_days < 0 or args.date_window_days > 30:
+        raise ToolError("--date-window-days must be between 0 and 30")
+    if not 0.0 <= args.alpha_tolerance <= 1.0:
+        raise ToolError("--alpha-tolerance must be between 0 and 1")
+    index_snapshot = hashlib.sha256(INDEX_PATH.read_bytes()).hexdigest()
+    roots = [Path(value).expanduser().resolve() for value in args.source_root]
+    sources = _recovery_source_files(roots)
+    source_by_id, fallback_sources = _index_recovery_sources(records, sources, args.exclude_prefix)
+    cache: dict[Path, tuple[tuple[int, int], float]] = {}
+    report: list[dict] = []
+    proposals: list[tuple[dict, Path, tuple[int, int]]] = []
+
+    for record in records:
+        asset_id = record.get("id", "")
+        if record.get("status") != "generated":
+            report.append({"asset_id": asset_id, "status": "not_generated"})
+            continue
+        if record.get("source_images"):
+            report.append({"asset_id": asset_id, "status": "already_mapped"})
+            continue
+        finding = _recovery_candidate(
+            record, source_by_id.get(asset_id, []), fallback_sources, args, cache
+        )
+        finding["asset_id"] = asset_id
+        report.append(finding)
+        if finding.get("status") == "high_confidence":
+            candidate = Path(finding["candidate"]["path"])
+            proposals.append((record, candidate, tuple(finding["candidate"]["size_px"])))
+
+    report_path = Path(args.report).expanduser().resolve()
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    if args.apply and proposals:
+        if hashlib.sha256(INDEX_PATH.read_bytes()).hexdigest() != index_snapshot:
+            raise ToolError(
+                f"map index changed during source scan; refusing stale write: {INDEX_PATH}"
+            )
+        applied: set[str] = set()
+        for record, candidate, size_px in proposals:
+            if not all(
+                record.get(field)
+                for field in ("source", "license", "generated_on", "prompt_ref", "prompt")
+            ):
+                raise ToolError(
+                    f"{record.get('id')}: cannot recover without complete catalog provenance"
+                )
+            source_images = record.setdefault("source_images", [])
+            if not isinstance(source_images, list):
+                raise ToolError(f"{record['id']}: source_images must be a list")
+            args_for_archive = argparse.Namespace(
+                asset_id=record["id"],
+                source_name=record["source"],
+                license=record["license"],
+                generated_on=record["generated_on"],
+                prompt_ref=record["prompt_ref"],
+                prompt=record["prompt"],
+                reference_id=record.get("reference_ids", []),
+            )
+            archived = _archive_source_image(record, candidate, size_px, args_for_archive)
+            if not any(item.get("sha256") == archived["sha256"] for item in source_images):
+                source_images.append(archived)
+            applied.add(record["id"])
+        _atomic_write(
+            "".join(
+                json.dumps(item, ensure_ascii=False, separators=(",", ":")) + "\n"
+                for item in records
+            )
+        )
+        for row in report:
+            if row.get("asset_id") in applied:
+                row["status"] = "applied"
+
+    report_path.write_text(
+        "".join(
+            json.dumps(item, ensure_ascii=False, separators=(",", ":")) + "\n" for item in report
+        ),
+        encoding="utf-8",
+    )
+    counts = Counter(row["status"] for row in report)
+    display_report_path = (
+        report_path.relative_to(REPO_ROOT).as_posix()
+        if report_path.is_relative_to(REPO_ROOT)
+        else report_path
+    )
+    ok(f"source recovery report: {display_report_path} ({len(sources)} PNGs, {dict(counts)})")
 
 
 def _source_image_findings(source_images: object) -> list[str]:
@@ -964,8 +1447,10 @@ def _source_image_findings(source_images: object) -> list[str]:
             findings.append(f"{label} archive file is missing")
             continue
         digest = source.get("sha256")
-        if not isinstance(digest, str) or len(digest) != 64 or any(
-            character not in "0123456789abcdef" for character in digest
+        if (
+            not isinstance(digest, str)
+            or len(digest) != 64
+            or any(character not in "0123456789abcdef" for character in digest)
         ):
             findings.append(f"{label}.sha256 must be a lowercase SHA-256 digest")
         elif hashlib.sha256(archive_path.read_bytes()).hexdigest() != digest:

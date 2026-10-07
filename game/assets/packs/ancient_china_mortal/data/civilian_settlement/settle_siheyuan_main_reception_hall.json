@@ -1,0 +1,330 @@
+{
+  "id": "ancient_china_mortal.civilian_settlement.settle_siheyuan_main_reception_hall",
+  "name": "Siheyuan Main Reception Hall",
+  "vietnamese_name": "Chính Phòng Tứ Hợp Viện",
+  "hanzi": "正厅堂堂",
+  "category": "civilian_settlement",
+  "sub_category": "courtyard_residence_siheyuan",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    4,
+    3
+  ],
+  "canvas_px": [
+    512,
+    384
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "enter",
+  "gameplay_role": "Northern grand hall where family patriarch welcomes guests, flanked by covered verandas.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Top-down grand Chinese residential main hall, dark grey pitched tile roof with upturned eaves, carved wood screen windows, vermilion columns, and white stone terrace foundation.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "patriarch_reception": true,
+    "banquet_capacity": 20,
+    "interior_map": "res://scenes/interiors/siheyuan_main_hall.tscn"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/civilian_settlement/settle_siheyuan_main_reception_hall.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.civilian_settlement.settle_siheyuan_main_reception_hall:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.328,
+        0.832,
+        0.83,
+        0.319
+      ],
+      [
+        0.754,
+        1.0,
+        1.0,
+        0.753
+      ],
+      [
+        0.43,
+        0.873,
+        0.878,
+        0.449
+      ]
+    ],
+    "frac_zero": 0.5351,
+    "blocks": [
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 12,
+    "anchor_cell": [
+      2,
+      2
+    ],
+    "sub_grid": [
+      12,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.195,
+        0.538,
+        0.35,
+        0.312,
+        0.312,
+        0.555,
+        0.223,
+        0.088,
+        0.0,
+        0.0
+      ],
+      [
+        0.002,
+        0.0,
+        0.693,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.998,
+        0.162,
+        0.0,
+        0.0
+      ],
+      [
+        0.029,
+        0.743,
+        0.892,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.715,
+        0.342,
+        0.0
+      ],
+      [
+        0.027,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.443,
+        0.0
+      ],
+      [
+        0.262,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.687,
+        0.0
+      ],
+      [
+        0.737,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.974,
+        0.398
+      ],
+      [
+        0.07,
+        0.968,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.547,
+        0.048
+      ],
+      [
+        0.226,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.736,
+        0.0
+      ],
+      [
+        0.174,
+        0.838,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.943,
+        0.549,
+        0.0
+      ],
+      [
+        0.0,
+        0.138,
+        1.0,
+        0.972,
+        1.0,
+        1.0,
+        1.0,
+        0.992,
+        0.978,
+        0.708,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.01,
+        0.05,
+        0.086,
+        0.841,
+        0.693,
+        0.713,
+        0.587,
+        0.029,
+        0.05,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      73,
+      18
+    ],
+    "trunk_columns": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 120,
+    "contact_reference_px": 120.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      384
+    ]
+  }
+}

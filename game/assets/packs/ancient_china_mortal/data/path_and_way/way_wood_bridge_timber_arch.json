@@ -1,0 +1,124 @@
+{
+  "id": "ancient_china_mortal.path_and_way.way_wood_bridge_timber_arch",
+  "name": "Curved Timber Arch Footbridge",
+  "vietnamese_name": "Cầu Vòm Gỗ Uốn Cong",
+  "hanzi": "木拱月桥",
+  "category": "path_and_way",
+  "sub_category": "wooden_footbridge",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Small traditional woven timber beam arch bridge painted in cinnabar lacquer.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Top-down graceful arched wooden rainbow bridge with interlocked woven timbers and curved low railings.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "interlocking_timber_joinery": true,
+    "arch_elevation": 1
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/path_and_way/way_wood_bridge_timber_arch.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.path_and_way.way_wood_bridge_timber_arch:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.608,
+        0.575
+      ]
+    ],
+    "frac_zero": 0.6058,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.059,
+        0.341,
+        0.707,
+        0.709,
+        0.578,
+        0.181,
+        0.0
+      ],
+      [
+        0.581,
+        0.988,
+        1.0,
+        1.0,
+        1.0,
+        0.931,
+        0.509
+      ],
+      [
+        0.839,
+        0.705,
+        0.26,
+        0.033,
+        0.511,
+        0.676,
+        0.414
+      ]
+    ],
+    "crop_offset": [
+      23,
+      16
+    ],
+    "trunk_columns": [
+      4,
+      5,
+      6
+    ],
+    "contact_px": 43,
+    "contact_reference_px": 43.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

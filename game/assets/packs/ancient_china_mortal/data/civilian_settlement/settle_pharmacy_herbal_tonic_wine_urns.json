@@ -1,0 +1,159 @@
+{
+  "id": "ancient_china_mortal.civilian_settlement.settle_pharmacy_herbal_tonic_wine_urns",
+  "name": "Medicinal Wine Infusion Urn Rack",
+  "vietnamese_name": "Kệ Ngâm Bình Rượu Thuốc Bổ",
+  "hanzi": "药酒瓮架",
+  "category": "civilian_settlement",
+  "sub_category": "herbal_pharmacy",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "drink",
+  "gameplay_role": "Timber shelving unit displaying clear glass and ceramic jars steeping snakes and herbs in alcohol.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "water",
+  "prompt_summary": "Top-down tiered wooden wall rack holding large translucent glass urns steeping wolfberry, sea horse, and herbal roots in golden liquor with spigots and measuring cups.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "tonic_wine_dispensing": true,
+    "vigor_restoration": 35
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/civilian_settlement/settle_pharmacy_herbal_tonic_wine_urns.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.civilian_settlement.settle_pharmacy_herbal_tonic_wine_urns:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.489,
+        0.505
+      ]
+    ],
+    "frac_zero": 0.7052,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.137,
+        0.498,
+        0.395,
+        0.043,
+        0.0
+      ],
+      [
+        0.434,
+        0.882,
+        0.774,
+        0.837,
+        0.789,
+        0.439
+      ],
+      [
+        0.647,
+        0.629,
+        0.516,
+        0.489,
+        0.688,
+        0.669
+      ]
+    ],
+    "crop_offset": [
+      35,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 175,
+    "contact_reference_px": 175.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

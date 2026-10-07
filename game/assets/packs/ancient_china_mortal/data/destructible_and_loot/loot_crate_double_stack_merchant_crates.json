@@ -1,0 +1,173 @@
+{
+  "id": "ancient_china_mortal.destructible_and_loot.loot_crate_double_stack_merchant_crates",
+  "name": "Double-Stacked Heavy Wooden Dray Boxes",
+  "vietnamese_name": "Chồng Hai Hòm Gỗ Chở Hàng",
+  "hanzi": "双层堆叠商运木箱",
+  "category": "destructible_and_loot",
+  "sub_category": "wooden_cargo_crate",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "smash_crates",
+  "gameplay_role": "Two mismatched crates stacked one above other tied with rope.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Two weathered timber shipping crates stacked vertically, secured by hemp rope with wooden cargo tags.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "loot_table": "double_supplies",
+    "destructible": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/destructible_and_loot/loot_crate_double_stack_merchant_crates.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.destructible_and_loot.loot_crate_double_stack_merchant_crates:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.867
+      ],
+      [
+        0.758
+      ]
+    ],
+    "frac_zero": 0.493,
+    "blocks": [
+      [
+        true
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.748,
+        0.909,
+        0.721
+      ],
+      [
+        0.862,
+        1.0,
+        0.861
+      ],
+      [
+        0.834,
+        1.0,
+        0.866
+      ],
+      [
+        0.765,
+        1.0,
+        0.784
+      ],
+      [
+        0.74,
+        1.0,
+        0.746
+      ],
+      [
+        0.755,
+        1.0,
+        0.769
+      ],
+      [
+        0.425,
+        0.699,
+        0.441
+      ]
+    ],
+    "crop_offset": [
+      19,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 69,
+    "contact_reference_px": 69.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      256
+    ]
+  }
+}

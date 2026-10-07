@@ -421,6 +421,19 @@ def _production_prompt(record: dict, subject: str) -> str:
             "jade, cloud, or lotus treatment across families. No text, labels, UI, frame, "
             "watermark, or unrelated objects."
         )
+    if record["type"] == "terrain_texture":
+        return (
+            f"{subject.strip()}\n\n"
+            f"Production ground terrain texture for Chaos World, a 2D top-down cultivation action RPG. "
+            f"Asset: {record['name']} ({record['id']}); environment motif: "
+            f"{record['environment_name']} in the {record['world_tier']}. "
+            f"Art style: {record['environment_theme']}. "
+            "Top-down view looking directly straight down at the ground, 90 degree perpendicular camera angle, flat 2D surface texture. "
+            "Completely flat 2D plane, orthographic top-down view, filling 100% of canvas edge-to-edge from corner to corner. "
+            "Zero perspective, no horizon, no vanishing point, no borders, no frames, no curbs, no walls, no focal object. "
+            "Anime-painted gouache style, dark #263A35 ink contours, broad readable value planes, uniform diffused overhead daylight. "
+            "No text, labels, UI, frame, watermark, or unrelated objects."
+        )
     if record["alpha"] == "opaque":
         return (
             f"{subject.strip()}\n\n"
@@ -489,7 +502,7 @@ def generate(
         )
     ):
         raise ToolError("alpha thresholds and erosion size must be between 0 and 255")
-    if getattr(args, "compare_rembg", False) and record["alpha"] != "transparent":
+    if getattr(args, "compare_rembg", False) and record["alpha"] not in ("transparent", "cutout"):
         raise ToolError("--compare-rembg only applies to transparent map assets")
 
     seed = args.seed if args.seed >= 0 else secrets.randbelow(2**31)
@@ -530,11 +543,32 @@ def generate(
         )
         graph["871"]["inputs"].update(
             model=args.rembg_model,
-            background="Alpha" if record["alpha"] == "transparent" else "Color",
+            background="Alpha" if record["alpha"] in ("transparent", "cutout") else "Color",
         )
         if record["alpha"] == "opaque":
             graph["732"]["inputs"]["images"] = ["829", 0]
-        if args.lora_strength != 0:
+        if args.lora.strip() and args.lora.strip().lower() not in ("none", "off"):
+            lora_specs: dict[str, float] = {}
+            for part in args.lora.split(","):
+                part = part.strip()
+                if not part:
+                    continue
+                if ":" in part:
+                    name, weight_str = part.split(":", 1)
+                    lora_specs[name.strip()] = float(weight_str)
+                else:
+                    lora_specs[part] = args.lora_strength if args.lora_strength != 0 else 1.0
+
+            for target_name, target_weight in lora_specs.items():
+                target_matched = False
+                for node_id, lora_name, key, _default in KREA2_LORAS:
+                    clean_name = lora_name.removeprefix("krea2/").removesuffix(".safetensors")
+                    if target_name.lower() in (key.lower(), lora_name.lower(), clean_name.lower()):
+                        graph[node_id]["inputs"]["strength_model"] = target_weight
+                        target_matched = True
+                if not target_matched:
+                    raise ToolError(f"unknown LoRA for krea2 profile: {target_name}")
+        elif args.lora_strength != 0:
             for node_id, _lora_name, _key, _default in KREA2_LORAS:
                 graph[node_id]["inputs"]["strength_model"] = args.lora_strength
     else:
@@ -565,7 +599,7 @@ def generate(
         )
         graph["15"]["inputs"].update(
             model=args.rembg_model,
-            transparency=record["alpha"] == "transparent",
+            transparency=record["alpha"] in ("transparent", "cutout"),
             post_processing=args.rembg_post_processing,
             alpha_matting=args.alpha_matting,
             alpha_matting_foreground_threshold=args.alpha_foreground_threshold,
@@ -601,10 +635,12 @@ def generate(
 
     rembg_slug = (
         args.rembg_model.replace("/", "_").replace(" ", "_")
-        if record["alpha"] == "transparent"
+        if record["alpha"] in ("transparent", "cutout")
         else "opaque"
     )
-    lora_slug = args.lora.strip().replace("/", "_").replace(" ", "_") or "base"
+    lora_slug = (
+        args.lora.strip().replace("/", "_").replace(" ", "_").replace(":", "-") or "base"
+    )
     lora_slug = f"{lora_slug}-s{args.lora_strength:g}"
     output = (
         REPO_ROOT

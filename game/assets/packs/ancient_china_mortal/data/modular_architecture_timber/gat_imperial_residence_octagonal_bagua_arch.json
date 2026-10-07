@@ -1,0 +1,208 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.gat_imperial_residence_octagonal_bagua_arch",
+  "name": "Imperial Official Residence Octagonal Feng Shui Bagua Courtyard Portal",
+  "vietnamese_name": "Cửa Vòm Bát Giác Phong Thủy (Dinh Thự Quyền Quý)",
+  "hanzi": "王府官邸八卦转运八角门洞",
+  "category": "modular_architecture_timber",
+  "sub_category": "moon_gate_and_archway",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "pass_bagua_arch",
+  "gameplay_role": "portal",
+  "destructible": false,
+  "material": "brick",
+  "cultivation_element": "yang",
+  "prompt_summary": "Ancient Chinese architectural entrance portal: Imperial Official Residence Octagonal Feng Shui Bagua Courtyard Portal. Ornate joinery, traditional aesthetic, top-down orthographic view for 2D RPG, clear transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "gateway",
+    "style": "imperial_residence"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/gat_imperial_residence_octagonal_bagua_arch.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.gat_imperial_residence_octagonal_bagua_arch:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.611,
+        0.603
+      ],
+      [
+        0.773,
+        0.776
+      ]
+    ],
+    "frac_zero": 0.4704,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.108,
+        0.81,
+        0.75,
+        0.823,
+        0.024,
+        0.0
+      ],
+      [
+        0.036,
+        0.588,
+        0.98,
+        0.867,
+        0.99,
+        0.509,
+        0.014
+      ],
+      [
+        0.436,
+        1.0,
+        0.943,
+        0.6,
+        0.952,
+        1.0,
+        0.367
+      ],
+      [
+        0.759,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.739
+      ],
+      [
+        0.682,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.658
+      ],
+      [
+        0.401,
+        0.994,
+        1.0,
+        1.0,
+        1.0,
+        0.985,
+        0.395
+      ],
+      [
+        0.0,
+        0.37,
+        0.784,
+        0.862,
+        0.773,
+        0.336,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      18
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 122,
+    "contact_reference_px": 122.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

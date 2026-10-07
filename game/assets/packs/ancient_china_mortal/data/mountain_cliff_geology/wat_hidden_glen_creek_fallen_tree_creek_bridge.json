@@ -1,0 +1,131 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.wat_hidden_glen_creek_fallen_tree_creek_bridge",
+  "name": "Shaded Forest Valley Stream Mossy Fallen Log Spanning Creek",
+  "vietnamese_name": "Thân Cây Đổ Bắc Ngang Khe Nước (Khe Suối Thung Lũng U Tịch)",
+  "hanzi": "幽谷盘石曲折溪青苔倒木天然跨溪桥",
+  "category": "mountain_cliff_geology",
+  "sub_category": "waterfall_stream_and_cascade",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "cross_log_bridge",
+  "gameplay_role": "log_bridge",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "wood",
+  "prompt_summary": "Ancient Chinese mountainous water feature: Shaded Forest Valley Stream Mossy Fallen Log Spanning Creek. Flowing crystal water with gouache splashes, dark ink outlines, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "water_scale": "hidden_glen_creek"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/wat_hidden_glen_creek_fallen_tree_creek_bridge.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.wat_hidden_glen_creek_fallen_tree_creek_bridge:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.653,
+        0.532,
+        0.669
+      ]
+    ],
+    "frac_zero": 0.7467,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.241,
+        0.521,
+        0.094,
+        0.198,
+        0.652,
+        0.101
+      ],
+      [
+        0.692,
+        0.746,
+        0.475,
+        0.653,
+        0.994,
+        0.489
+      ],
+      [
+        0.755,
+        0.969,
+        0.902,
+        0.93,
+        0.972,
+        0.621
+      ]
+    ],
+    "crop_offset": [
+      99,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 170,
+    "contact_reference_px": 170.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

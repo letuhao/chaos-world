@@ -1,0 +1,120 @@
+{
+  "id": "medieval_western.nordic_and_norse_coastal.carved_grave_slab_eski_lichen_crusted",
+  "name": "Sea-Lichen Crusted Serpent-Carved Flat Burial Slab",
+  "vietnamese_name": "Phiến Đá Nằm Chạm Hình Rắn Biển (Phủ Địa Y Biển)",
+  "category": "nordic_and_norse_coastal",
+  "sub_category": "runestone_monument_and_grave",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect",
+  "gameplay_role": "Nordic coastal cultural feature (Serpent-Carved Flat Burial Slab).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "nordic_norse",
+  "prompt_summary": "2D orthographic top-down game sprite of sea-lichen crusted serpent-carved flat burial slab, yellow and green maritime lichen patches, Nordic Norse coastal settlement style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/nordic_and_norse_coastal/carved_grave_slab_eski_lichen_crusted.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.nordic_and_norse_coastal.carved_grave_slab_eski_lichen_crusted:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.654,
+        0.68
+      ]
+    ],
+    "frac_zero": 0.7738,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      2
+    ],
+    "sub_fill": [
+      [
+        0.463,
+        0.535,
+        0.767,
+        0.934,
+        0.774,
+        0.548,
+        0.474
+      ],
+      [
+        0.35,
+        0.721,
+        0.91,
+        0.938,
+        0.923,
+        0.779,
+        0.398
+      ]
+    ],
+    "crop_offset": [
+      16,
+      65
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 223,
+    "contact_reference_px": 223.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,144 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.wal_mossy_temple_stone_window_plum_blossom_lattice",
+  "name": "Mossy Sacred Mountain Masonry Wall with Plum Blossom Lattice Window",
+  "vietnamese_name": "Tường Trổ Cửa Sổ Hoa Mai (Đá Xếp Miếu Núi Rêu Phong)",
+  "hanzi": "古刹青苔乱石墙梅花万字棂花窗",
+  "category": "modular_architecture_timber",
+  "sub_category": "wall_and_lattice_window",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "peer_through_window",
+  "gameplay_role": "lattice_window",
+  "destructible": false,
+  "material": "paper",
+  "cultivation_element": "wood",
+  "prompt_summary": "Ancient Chinese vernacular building wall module: Mossy Sacred Mountain Masonry Wall with Plum Blossom Lattice Window. Authentic materials, crisp dark ink outlines, orthographic top-down world-map view, isolated cleanly on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "wall",
+    "style": "mossy_temple_stone"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/wal_mossy_temple_stone_window_plum_blossom_lattice.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.wal_mossy_temple_stone_window_plum_blossom_lattice:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.76
+      ]
+    ],
+    "frac_zero": 0.6351,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.73,
+        0.815,
+        0.717
+      ],
+      [
+        0.729,
+        1.0,
+        0.803
+      ],
+      [
+        0.35,
+        0.888,
+        0.486
+      ]
+    ],
+    "crop_offset": [
+      16,
+      34
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 91,
+    "contact_reference_px": 91.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

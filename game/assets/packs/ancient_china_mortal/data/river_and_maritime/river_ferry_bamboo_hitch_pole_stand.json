@@ -1,0 +1,145 @@
+{
+  "id": "ancient_china_mortal.river_and_maritime.river_ferry_bamboo_hitch_pole_stand",
+  "name": "Cluster of River Passenger Hitching Rails",
+  "vietnamese_name": "Cọc Gỗ Buộc Ngựa Chờ Đò",
+  "hanzi": "等渡栓马排桩",
+  "category": "river_and_maritime",
+  "sub_category": "ferry_crossing_station",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "hitch_mount",
+  "gameplay_role": "Timber posts with cross rails where mules wait for ferry.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Low rustic timber rail with rope loops for hitching mules and horses waiting for river crossing.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "horse_hitch": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/river_and_maritime/river_ferry_bamboo_hitch_pole_stand.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.river_and_maritime.river_ferry_bamboo_hitch_pole_stand:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.431,
+        0.424
+      ]
+    ],
+    "frac_zero": 0.8521,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      2
+    ],
+    "sub_fill": [
+      [
+        0.543,
+        0.396,
+        0.515,
+        0.447,
+        0.451,
+        0.516,
+        0.521
+      ],
+      [
+        0.219,
+        0.172,
+        0.215,
+        0.207,
+        0.156,
+        0.227,
+        0.217
+      ]
+    ],
+    "crop_offset": [
+      17,
+      72
+    ],
+    "trunk_columns": [],
+    "contact_px": 214,
+    "contact_reference_px": 214.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

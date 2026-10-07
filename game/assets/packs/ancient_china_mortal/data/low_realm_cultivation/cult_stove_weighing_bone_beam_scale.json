@@ -1,0 +1,142 @@
+{
+  "id": "ancient_china_mortal.low_realm_cultivation.cult_stove_weighing_bone_beam_scale",
+  "name": "Precision Ivory & Brass Herbal Steelyard",
+  "vietnamese_name": "Cân Tiểu Ly Xương Ngà Cân Dược Liệu",
+  "hanzi": "象牙杆精密药厘秤",
+  "category": "low_realm_cultivation",
+  "sub_category": "bronze_medicinal_stove",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "weigh_reagent",
+  "gameplay_role": "Miniature balance beam with brass pan for measuring grains of medicine.",
+  "destructible": false,
+  "material": "bone",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Delicate bone-beam apothecary steelyard scale with small brass pan, counterweight, and velvet case.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "precision_measuring": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/low_realm_cultivation/cult_stove_weighing_bone_beam_scale.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.low_realm_cultivation.cult_stove_weighing_bone_beam_scale:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.381
+      ]
+    ],
+    "frac_zero": 0.7943,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.097,
+        0.312,
+        0.065
+      ],
+      [
+        0.428,
+        0.525,
+        0.397
+      ],
+      [
+        0.622,
+        0.584,
+        0.005
+      ]
+    ],
+    "crop_offset": [
+      25,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 37,
+    "contact_reference_px": 37.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

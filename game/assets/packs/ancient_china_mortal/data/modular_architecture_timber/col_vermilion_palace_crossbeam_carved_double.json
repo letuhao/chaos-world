@@ -1,0 +1,170 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.col_vermilion_palace_crossbeam_carved_double",
+  "name": "Vermilion Lacquered Palace Long Ceiling Tie-Beam (3x1)",
+  "vietnamese_name": "Xà Gồ Trần Dài (3x1) (Sơn Son Cung Đình)",
+  "hanzi": "朱红宫廷穿插长枋木",
+  "category": "modular_architecture_timber",
+  "sub_category": "pillar_beam_and_dougong",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "examine_ceiling_beam",
+  "gameplay_role": "horizontal_beam",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "fire",
+  "prompt_summary": "Ancient Chinese timber frame architecture component: Vermilion Lacquered Palace Long Ceiling Tie-Beam (3x1). Traditional mortise and tenon craftsmanship, ink contours, top-down orthographic sprite on clean transparent alpha background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "pillar_beam",
+    "style": "vermilion_palace"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/col_vermilion_palace_crossbeam_carved_double.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.col_vermilion_palace_crossbeam_carved_double:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.503,
+        0.591,
+        0.527
+      ]
+    ],
+    "frac_zero": 0.6781,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      11,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.596,
+        0.636,
+        0.519,
+        0.591,
+        0.645,
+        0.531,
+        0.629,
+        0.611,
+        0.521,
+        0.646,
+        0.596
+      ],
+      [
+        0.086,
+        0.688,
+        0.943,
+        0.912,
+        0.919,
+        0.281,
+        0.87,
+        0.921,
+        0.965,
+        0.688,
+        0.083
+      ],
+      [
+        0.0,
+        0.098,
+        0.083,
+        0.031,
+        0.333,
+        0.0,
+        0.268,
+        0.031,
+        0.266,
+        0.304,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      33
+    ],
+    "trunk_columns": [],
+    "contact_px": 24,
+    "contact_reference_px": 24.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      128
+    ]
+  }
+}

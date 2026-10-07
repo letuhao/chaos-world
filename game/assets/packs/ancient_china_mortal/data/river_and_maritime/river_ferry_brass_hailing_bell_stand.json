@@ -1,0 +1,143 @@
+{
+  "id": "ancient_china_mortal.river_and_maritime.river_ferry_brass_hailing_bell_stand",
+  "name": "Riverbank Brass Passenger Call Bell",
+  "vietnamese_name": "Chuông Đồng Gọi Đò Bên Kia Sông",
+  "hanzi": "唤渡小铜钟架",
+  "category": "river_and_maritime",
+  "sub_category": "ferry_crossing_station",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "ring_ferry",
+  "gameplay_role": "Small bell struck by travelers to summon boatman from far shore.",
+  "destructible": false,
+  "material": "bronze",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Small suspended bronze bell on weathered wooden post with dangling striker rope on riverbank.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "summon_ferry": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/river_and_maritime/river_ferry_brass_hailing_bell_stand.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.river_and_maritime.river_ferry_brass_hailing_bell_stand:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.494
+      ]
+    ],
+    "frac_zero": 0.7582,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.274,
+        0.379,
+        0.0
+      ],
+      [
+        0.375,
+        0.658,
+        0.078
+      ],
+      [
+        0.708,
+        0.871,
+        0.441
+      ]
+    ],
+    "crop_offset": [
+      27,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 64,
+    "contact_reference_px": 64.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

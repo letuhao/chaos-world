@@ -1,0 +1,203 @@
+{
+  "id": "medieval_western.modular_timber_frame_fachwerk.steep_pitched_clay_tile_gable_weathered_silver",
+  "name": "Silver-Grey Steep Plain Clay Tile Roof Gable",
+  "vietnamese_name": "Đầu Hồi Mái Ngói Đất Nung Dốc Đứng (Xám Phong Hóa)",
+  "category": "modular_timber_frame_fachwerk",
+  "sub_category": "roof_gable_thatch_and_tile",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": null,
+  "gameplay_role": "Fachwerk modular component (Steep Plain Clay Tile Roof Gable).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "germanic_holy_roman",
+  "prompt_summary": "2D orthographic top-down game sprite of silver-grey steep plain clay tile roof gable, aged silver-grey timber grain, Fachwerk half-timbering roof and porch element, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/modular_timber_frame_fachwerk/steep_pitched_clay_tile_gable_weathered_silver.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.modular_timber_frame_fachwerk.steep_pitched_clay_tile_gable_weathered_silver:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.523,
+        0.529
+      ],
+      [
+        0.745,
+        0.764
+      ]
+    ],
+    "frac_zero": 0.5217,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.044,
+        0.562,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.037,
+        0.021,
+        0.642,
+        1.0,
+        0.38,
+        0.0,
+        0.035
+      ],
+      [
+        0.906,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.878
+      ],
+      [
+        0.844,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.807
+      ],
+      [
+        0.771,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.731
+      ],
+      [
+        0.377,
+        0.907,
+        1.0,
+        1.0,
+        1.0,
+        0.925,
+        0.201
+      ],
+      [
+        0.0,
+        0.227,
+        0.887,
+        0.712,
+        0.905,
+        0.037,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      20,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 100,
+    "contact_reference_px": 100.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

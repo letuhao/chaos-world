@@ -1,0 +1,191 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.rck_weathered_sandstone_scree_slope_broad_fan",
+  "name": "Yellow Sun-Baked Sandstone Broad Talus Scree Avalanche Fan (3x2)",
+  "vietnamese_name": "Gò Đá Sỏi Tràn Sườn Dốc (3x2) (Đá Sa Thạch Nắng Dãi Vàng)",
+  "hanzi": "风蚀黄砂扇形倾泻倒石碎堆",
+  "category": "mountain_cliff_geology",
+  "sub_category": "boulder_scree_and_pebbles",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "solid",
+  "interactive_verb": "traverse_talus_fan",
+  "gameplay_role": "talus_fan",
+  "destructible": true,
+  "material": "stone",
+  "cultivation_element": "wind",
+  "prompt_summary": "Ancient Chinese geology boulder prop: Yellow Sun-Baked Sandstone Broad Talus Scree Avalanche Fan (3x2). Realistic mineral surface, ink contour line, top-down orthographic game asset, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "rock_type": "weathered_sandstone"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/rck_weathered_sandstone_scree_slope_broad_fan.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.rck_weathered_sandstone_scree_slope_broad_fan:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.261,
+        0.9,
+        0.398
+      ],
+      [
+        0.78,
+        0.971,
+        0.718
+      ]
+    ],
+    "frac_zero": 0.6426,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      8,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.068,
+        0.763,
+        0.916,
+        0.262,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.016,
+        0.848,
+        1.0,
+        1.0,
+        0.688,
+        0.0,
+        0.0
+      ],
+      [
+        0.088,
+        0.579,
+        1.0,
+        1.0,
+        1.0,
+        0.837,
+        0.016,
+        0.0
+      ],
+      [
+        0.51,
+        0.966,
+        1.0,
+        1.0,
+        1.0,
+        0.998,
+        0.565,
+        0.0
+      ],
+      [
+        0.841,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.995,
+        0.606
+      ],
+      [
+        0.832,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.78,
+        0.0
+      ],
+      [
+        0.125,
+        0.66,
+        0.91,
+        0.886,
+        0.805,
+        0.505,
+        0.05,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      77,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 138,
+    "contact_reference_px": 138.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

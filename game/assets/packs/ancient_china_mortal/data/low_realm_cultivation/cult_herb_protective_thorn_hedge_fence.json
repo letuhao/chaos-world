@@ -1,0 +1,157 @@
+{
+  "id": "ancient_china_mortal.low_realm_cultivation.cult_herb_protective_thorn_hedge_fence",
+  "name": "Woven Thorny Bramble Garden Enclosure",
+  "vietnamese_name": "Hàng Rào Gai Bụi Bảo Vệ Vườn Thuốc",
+  "hanzi": "防兽荆棘药园护栏",
+  "category": "low_realm_cultivation",
+  "sub_category": "low_grade_herb_patch",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Dense interlocking thorny wild rose hedge keeping rabbits from herbs.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "wood",
+  "prompt_summary": "Dense barrier hedge of interwoven sharp thorny acacia branches and wild briars protecting herb nursery.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "vermin_protection": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/low_realm_cultivation/cult_herb_protective_thorn_hedge_fence.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.low_realm_cultivation.cult_herb_protective_thorn_hedge_fence:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.432,
+        0.508,
+        0.414
+      ]
+    ],
+    "frac_zero": 0.7543,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.225,
+        0.335,
+        0.384,
+        0.458,
+        0.367,
+        0.382,
+        0.231
+      ],
+      [
+        0.479,
+        0.927,
+        0.93,
+        0.892,
+        0.818,
+        0.954,
+        0.367
+      ],
+      [
+        0.191,
+        0.316,
+        0.221,
+        0.164,
+        0.136,
+        0.192,
+        0.116
+      ]
+    ],
+    "crop_offset": [
+      85,
+      18
+    ],
+    "trunk_columns": [],
+    "contact_px": 22,
+    "contact_reference_px": 22.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      128
+    ]
+  }
+}

@@ -1,0 +1,174 @@
+{
+  "id": "ancient_china_mortal.military_and_fortress.fort_brick_moat_counterscarp_wall",
+  "name": "Outer Moat Revetment Retaining Wall",
+  "vietnamese_name": "Tường Kè Đá Bờ Hào Bên Ngoài",
+  "hanzi": "护城河外堤石砌坎",
+  "category": "military_and_fortress",
+  "sub_category": "crenellated_brick_wall",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": null,
+  "gameplay_role": "Low stone revetment wall lining the outer edge of the water ditch.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Low stone masonry retaining wall lining outer moat bank with damp green moss at waterline.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "water_barrier": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/military_and_fortress/fort_brick_moat_counterscarp_wall.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.military_and_fortress.fort_brick_moat_counterscarp_wall:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.452,
+        0.62,
+        0.464
+      ]
+    ],
+    "frac_zero": 0.6563,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      11,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.418,
+        0.366,
+        0.182,
+        0.175,
+        0.181,
+        0.182,
+        0.171,
+        0.18,
+        0.183,
+        0.301,
+        0.555
+      ],
+      [
+        0.704,
+        0.99,
+        0.999,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.793
+      ],
+      [
+        0.026,
+        0.0,
+        0.065,
+        0.388,
+        0.769,
+        0.798,
+        0.594,
+        0.325,
+        0.0,
+        0.0,
+        0.071
+      ]
+    ],
+    "crop_offset": [
+      17,
+      21
+    ],
+    "trunk_columns": [
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 123,
+    "contact_reference_px": 123.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      128
+    ]
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.hrb_century_wild_ginseng_wild_herb_drying_flat_rock",
+  "name": "Mountain Century Wild Ginseng Flat Sun-Warmed Rock with Freshly Plucked Herbs",
+  "vietnamese_name": "Phiến Đá Nắng Phơi Thuốc Vừa Hái (Nhân Sâm Núi Trăm Năm)",
+  "hanzi": "长白山百年野山参向阳温石摊晾鲜药草",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "mountain_medicinal_herb_wild",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "turn_drying_herbs",
+  "gameplay_role": "drying_herbs",
+  "destructible": false,
+  "material": "plant",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese valuable mountain medicinal herb: Mountain Century Wild Ginseng Flat Sun-Warmed Rock with Freshly Plucked Herbs. Botanical accuracy, luminous gouache accents, ink contours, top-down orthographic game prop on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "species": "century_wild_ginseng"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/hrb_century_wild_ginseng_wild_herb_drying_flat_rock.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.hrb_century_wild_ginseng_wild_herb_drying_flat_rock:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.586,
+        0.407
+      ]
+    ],
+    "frac_zero": 0.6939,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.041,
+        0.686,
+        0.261,
+        0.144,
+        0.182,
+        0.0
+      ],
+      [
+        0.351,
+        0.995,
+        1.0,
+        0.913,
+        0.698,
+        0.237
+      ],
+      [
+        0.291,
+        0.759,
+        0.896,
+        0.699,
+        0.498,
+        0.241
+      ]
+    ],
+    "crop_offset": [
+      32,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 91,
+    "contact_reference_px": 91.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,151 @@
+{
+  "id": "ancient_china_mortal.rural_farming_and_pastoral.trp_golden_maize_corn_cobs_straight_pole_climber_row_2x1",
+  "name": "Golden Sun-Cured Corn on the Cob A-Frame Wooden Pole Climbing Row (2x1)",
+  "vietnamese_name": "Giàn Cọc Gỗ Chữ A Trồng Cây (2x1) (Bắp Ngô Vàng Óng Buộc Chùm)",
+  "hanzi": "金黄饱满玉米棒挂人字绑竿攀附长架",
+  "category": "rural_farming_and_pastoral",
+  "sub_category": "crop_trellis_and_hanging_harvest",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect_pole_trellis",
+  "gameplay_role": "pole_trellis",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese farm crop harvest display: Golden Sun-Cured Corn on the Cob A-Frame Wooden Pole Climbing Row (2x1). Golden rustic farm aesthetic, ink contours, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "crop_type": "golden_maize_corn_cobs"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/rural_farming_and_pastoral/trp_golden_maize_corn_cobs_straight_pole_climber_row_2x1.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.rural_farming_and_pastoral.trp_golden_maize_corn_cobs_straight_pole_climber_row_2x1:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.522,
+        0.522
+      ]
+    ],
+    "frac_zero": 0.7681,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      2
+    ],
+    "sub_fill": [
+      [
+        0.488,
+        0.715,
+        0.665,
+        0.623,
+        0.633,
+        0.709,
+        0.541
+      ],
+      [
+        0.206,
+        0.4,
+        0.428,
+        0.445,
+        0.391,
+        0.392,
+        0.237
+      ]
+    ],
+    "crop_offset": [
+      16,
+      59
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 190,
+    "contact_reference_px": 190.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      1,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      128,
+      0,
+      256,
+      128
+    ]
+  }
+}

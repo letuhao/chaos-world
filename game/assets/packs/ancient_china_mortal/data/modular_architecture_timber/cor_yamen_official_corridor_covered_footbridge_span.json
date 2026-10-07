@@ -1,0 +1,143 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.cor_yamen_official_corridor_covered_footbridge_span",
+  "name": "Magistrate Complex Dignified Corridor Covered Wooden Arch Bridge Walkway Span",
+  "vietnamese_name": "Nhịp Cầu Gỗ Có Mái Che Vượt Nước (Hành Lang Nha Môn Uy Nghi)",
+  "hanzi": "官署通廊风雨廊桥木步跨",
+  "category": "modular_architecture_timber",
+  "sub_category": "covered_corridor_and_veranda",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "cross_covered_bridge",
+  "gameplay_role": "covered_bridge",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese covered garden corridor module: Magistrate Complex Dignified Corridor Covered Wooden Arch Bridge Walkway Span. Traditional tiled wooden gallery, balustrade railing, top-down orthographic game sprite, transparent alpha cutout.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "corridor",
+    "style": "yamen_official_corridor"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/cor_yamen_official_corridor_covered_footbridge_span.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.cor_yamen_official_corridor_covered_footbridge_span:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.587,
+        0.749,
+        0.608
+      ]
+    ],
+    "frac_zero": 0.6478,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      9,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.332,
+        0.383,
+        0.268,
+        0.492,
+        0.732,
+        0.276,
+        0.314,
+        0.488,
+        0.051
+      ],
+      [
+        0.771,
+        0.984,
+        0.982,
+        1.0,
+        1.0,
+        0.991,
+        0.983,
+        0.999,
+        0.471
+      ],
+      [
+        0.482,
+        0.597,
+        0.484,
+        0.652,
+        0.921,
+        0.56,
+        0.624,
+        0.803,
+        0.104
+      ]
+    ],
+    "crop_offset": [
+      57,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 68,
+    "contact_reference_px": 68.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

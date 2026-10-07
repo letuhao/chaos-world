@@ -1,0 +1,113 @@
+{
+  "id": "ancient_china_mortal.path_and_way.way_towpath_timber_trestle_bend",
+  "name": "Wooden Trestle Boardwalk on Bend",
+  "vietnamese_name": "Cầu Gỗ Dọc Kè Đầm Lầy",
+  "hanzi": "水滨栈道",
+  "category": "path_and_way",
+  "sub_category": "canal_towpath",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Cantilevered wooden boardwalk carrying the path over soft marshy canal corners.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "water",
+  "prompt_summary": "Top-down wooden plank boardwalk supported on driven timber piles projecting over canal shallows.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "cantilever_boardwalk": true,
+    "marsh_bypass": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/path_and_way/way_towpath_timber_trestle_bend.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.path_and_way.way_towpath_timber_trestle_bend:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.533,
+        0.547
+      ]
+    ],
+    "frac_zero": 0.764,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      2
+    ],
+    "sub_fill": [
+      [
+        0.643,
+        0.838,
+        0.787,
+        0.823,
+        0.788,
+        0.822,
+        0.638
+      ],
+      [
+        0.179,
+        0.331,
+        0.177,
+        0.28,
+        0.219,
+        0.367,
+        0.223
+      ]
+    ],
+    "crop_offset": [
+      16,
+      54
+    ],
+    "trunk_columns": [
+      5
+    ],
+    "contact_px": 10,
+    "contact_reference_px": 10.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

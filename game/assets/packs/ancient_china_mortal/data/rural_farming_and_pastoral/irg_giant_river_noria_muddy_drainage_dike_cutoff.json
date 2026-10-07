@@ -1,0 +1,121 @@
+{
+  "id": "ancient_china_mortal.rural_farming_and_pastoral.irg_giant_river_noria_muddy_drainage_dike_cutoff",
+  "name": "Colossal Timber River Noria (Tongche) Compacted Earth Irrigation Dike Border",
+  "vietnamese_name": "Bờ Đê Đất Nện Dẫn Nước Thửa Ruộng (Cọn Nước Bờ Sông Khổng Lồ)",
+  "hanzi": "巨大江畔筒车夯泥固土灌溉埂条",
+  "category": "rural_farming_and_pastoral",
+  "sub_category": "irrigation_flume_and_waterwheel",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "walk_dike_border",
+  "gameplay_role": "dike_border",
+  "destructible": false,
+  "material": "earth",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese agricultural irrigation system part: Colossal Timber River Noria (Tongche) Compacted Earth Irrigation Dike Border. Functional wooden hydraulics, ink contours, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "irrigation_tech": "giant_river_noria"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/rural_farming_and_pastoral/irg_giant_river_noria_muddy_drainage_dike_cutoff.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.rural_farming_and_pastoral.irg_giant_river_noria_muddy_drainage_dike_cutoff:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.502,
+        0.553
+      ]
+    ],
+    "frac_zero": 0.7348,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.455,
+        0.429,
+        0.554,
+        0.884,
+        0.584,
+        0.436,
+        0.5
+      ],
+      [
+        0.381,
+        0.433,
+        0.646,
+        0.931,
+        0.814,
+        0.485,
+        0.45
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.427,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      42
+    ],
+    "trunk_columns": [
+      3
+    ],
+    "contact_px": 58,
+    "contact_reference_px": 58.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

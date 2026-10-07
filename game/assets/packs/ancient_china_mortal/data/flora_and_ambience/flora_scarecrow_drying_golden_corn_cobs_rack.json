@@ -1,0 +1,154 @@
+{
+  "id": "ancient_china_mortal.flora_and_ambience.flora_scarecrow_drying_golden_corn_cobs_rack",
+  "name": "Wall Rack of Drying Golden Maize Ears",
+  "vietnamese_name": "Giàn Bắp Ngô Vàng Óng Phơi Trước Hiên",
+  "hanzi": "檐下整排挂晒金黄玉米",
+  "category": "flora_and_ambience",
+  "sub_category": "scarecrow_and_drying_corn",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "harvest_corn",
+  "gameplay_role": "Strings of dozens of bright yellow dried corn cobs hung on wall.",
+  "destructible": true,
+  "material": "plant",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Horizontal wooden drying pole hung with thick braids of dozens of bright golden yellow dried corn cobs.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "food_corn": 20
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_ambience/flora_scarecrow_drying_golden_corn_cobs_rack.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_ambience.flora_scarecrow_drying_golden_corn_cobs_rack:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.516,
+        0.521
+      ]
+    ],
+    "frac_zero": 0.6812,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.593,
+        0.692,
+        0.721,
+        0.751,
+        0.717,
+        0.722,
+        0.623
+      ],
+      [
+        0.348,
+        0.606,
+        0.62,
+        0.624,
+        0.604,
+        0.604,
+        0.378
+      ],
+      [
+        0.285,
+        0.162,
+        0.0,
+        0.0,
+        0.0,
+        0.195,
+        0.29
+      ]
+    ],
+    "crop_offset": [
+      16,
+      31
+    ],
+    "trunk_columns": [],
+    "contact_px": 22,
+    "contact_reference_px": 22.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

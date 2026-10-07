@@ -1,0 +1,204 @@
+{
+  "id": "medieval_western.celtic_highland_and_atlantic_fringe.broch_double_hollow_wall_cloutie_hung",
+  "name": "Cloutie-Blessed Drystone Broch Double Hollow Wall",
+  "vietnamese_name": "Tường Đá Đôi Không Vữa Tháp Broch (Buộc Vải Cầu May)",
+  "category": "celtic_highland_and_atlantic_fringe",
+  "sub_category": "circular_drystone_broch_tower",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": null,
+  "gameplay_role": "Celtic highland cultural feature (Drystone Broch Double Hollow Wall).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "celtic_gaelic",
+  "prompt_summary": "2D orthographic top-down game sprite of cloutie-blessed drystone broch double hollow wall, colorful rags of prayer fluttering in the wind, Celtic highland and Atlantic fringe style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/celtic_highland_and_atlantic_fringe/broch_double_hollow_wall_cloutie_hung.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.celtic_highland_and_atlantic_fringe.broch_double_hollow_wall_cloutie_hung:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.444,
+        0.463
+      ],
+      [
+        0.804,
+        0.817
+      ]
+    ],
+    "frac_zero": 0.5305,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.078,
+        0.36,
+        0.176,
+        0.044,
+        0.0
+      ],
+      [
+        0.0,
+        0.148,
+        0.745,
+        0.817,
+        0.531,
+        0.088,
+        0.0
+      ],
+      [
+        0.064,
+        0.939,
+        1.0,
+        1.0,
+        1.0,
+        0.543,
+        0.009
+      ],
+      [
+        0.743,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.543
+      ],
+      [
+        0.937,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.901
+      ],
+      [
+        0.575,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.98,
+        0.363
+      ],
+      [
+        0.041,
+        0.478,
+        0.794,
+        0.953,
+        0.683,
+        0.3,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      22,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 113,
+    "contact_reference_px": 113.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

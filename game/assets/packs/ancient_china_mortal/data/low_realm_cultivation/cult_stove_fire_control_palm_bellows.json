@@ -1,0 +1,136 @@
+{
+  "id": "ancient_china_mortal.low_realm_cultivation.cult_stove_fire_control_palm_bellows",
+  "name": "Silk-Pleated Fine Heat Control Fan",
+  "vietnamese_name": "Quạt Lụa Quạt Lửa Luyện Đan Dược",
+  "hanzi": "控温炼丹金丝扇",
+  "category": "low_realm_cultivation",
+  "sub_category": "bronze_medicinal_stove",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "fan_fire",
+  "gameplay_role": "Round silk fan used by apprentice to maintain delicate spiritual flame.",
+  "destructible": true,
+  "material": "silk",
+  "cultivation_element": "wind",
+  "prompt_summary": "Round wooden hand fan with fine painted silk face and red tassel used for fanning gentle cauldron fires.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "fire_control": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/low_realm_cultivation/cult_stove_fire_control_palm_bellows.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.low_realm_cultivation.cult_stove_fire_control_palm_bellows:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.406
+      ]
+    ],
+    "frac_zero": 0.8549,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      2,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.85,
+        0.8
+      ],
+      [
+        0.357,
+        0.235
+      ],
+      [
+        0.123,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      36,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 9,
+    "contact_reference_px": 9.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

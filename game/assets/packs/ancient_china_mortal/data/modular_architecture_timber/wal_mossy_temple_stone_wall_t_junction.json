@@ -1,0 +1,159 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.wal_mossy_temple_stone_wall_t_junction",
+  "name": "Mossy Sacred Mountain Masonry T-Junction Intersecting Wall",
+  "vietnamese_name": "Ngã Ba Tường Giao Nhau (Đá Xếp Miếu Núi Rêu Phong)",
+  "hanzi": "古刹青苔乱石墙丁字接交墙",
+  "category": "modular_architecture_timber",
+  "sub_category": "wall_and_lattice_window",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "inspect_junction",
+  "gameplay_role": "junction_wall",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "yin",
+  "prompt_summary": "Ancient Chinese vernacular building wall module: Mossy Sacred Mountain Masonry T-Junction Intersecting Wall. Authentic materials, crisp dark ink outlines, orthographic top-down world-map view, isolated cleanly on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "wall",
+    "style": "mossy_temple_stone"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/wal_mossy_temple_stone_wall_t_junction.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.wal_mossy_temple_stone_wall_t_junction:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.509,
+        0.502
+      ]
+    ],
+    "frac_zero": 0.6813,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.007,
+        0.022,
+        0.37,
+        0.588,
+        0.046,
+        0.024,
+        0.0
+      ],
+      [
+        0.785,
+        0.96,
+        1.0,
+        1.0,
+        0.959,
+        0.96,
+        0.421
+      ],
+      [
+        0.087,
+        0.255,
+        0.841,
+        0.913,
+        0.442,
+        0.196,
+        0.226
+      ]
+    ],
+    "crop_offset": [
+      26,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 77,
+    "contact_reference_px": 77.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

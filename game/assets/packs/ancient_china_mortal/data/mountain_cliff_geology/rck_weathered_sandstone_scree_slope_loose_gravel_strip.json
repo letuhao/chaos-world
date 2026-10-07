@@ -1,0 +1,128 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.rck_weathered_sandstone_scree_slope_loose_gravel_strip",
+  "name": "Yellow Sun-Baked Sandstone Loose Rock Scree Gravel Slip (2x1)",
+  "vietnamese_name": "Thảm Đá Dăm Trôi Dốc (2x1) (Đá Sa Thạch Nắng Dãi Vàng)",
+  "hanzi": "风蚀黄砂碎裂溜滑砂石滑带",
+  "category": "mountain_cliff_geology",
+  "sub_category": "boulder_scree_and_pebbles",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "solid",
+  "interactive_verb": "scramble_scree",
+  "gameplay_role": "scree_patch",
+  "destructible": true,
+  "material": "stone",
+  "cultivation_element": "wind",
+  "prompt_summary": "Ancient Chinese geology boulder prop: Yellow Sun-Baked Sandstone Loose Rock Scree Gravel Slip (2x1). Realistic mineral surface, ink contour line, top-down orthographic game asset, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "rock_type": "weathered_sandstone"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/rck_weathered_sandstone_scree_slope_loose_gravel_strip.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.rck_weathered_sandstone_scree_slope_loose_gravel_strip:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.744,
+        0.737
+      ]
+    ],
+    "frac_zero": 0.5731,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.286,
+        0.762,
+        0.511,
+        0.544,
+        0.491,
+        0.276
+      ],
+      [
+        0.866,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.858
+      ],
+      [
+        0.642,
+        0.873,
+        0.759,
+        0.874,
+        0.939,
+        0.609
+      ]
+    ],
+    "crop_offset": [
+      33,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 175,
+    "contact_reference_px": 175.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

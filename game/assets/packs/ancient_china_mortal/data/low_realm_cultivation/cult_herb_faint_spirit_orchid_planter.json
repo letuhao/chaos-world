@@ -1,0 +1,139 @@
+{
+  "id": "ancient_china_mortal.low_realm_cultivation.cult_herb_faint_spirit_orchid_planter",
+  "name": "Clay Pot Cultivating Faint Spirit Orchid",
+  "vietnamese_name": "Chậu Gốm Trồng Lan Tụ Linh Khí",
+  "hanzi": "素心聚气幽兰盆",
+  "category": "low_realm_cultivation",
+  "sub_category": "low_grade_herb_patch",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "admire_orchid",
+  "gameplay_role": "Glazed pot with slender white orchid emitting pale blue aura.",
+  "destructible": true,
+  "material": "ceramic",
+  "cultivation_element": "wood",
+  "prompt_summary": "Hexagonal brown glazed ceramic pot holding an elegant slender wild mountain orchid with pale glowing petals.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "calm_mind": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/low_realm_cultivation/cult_herb_faint_spirit_orchid_planter.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.low_realm_cultivation.cult_herb_faint_spirit_orchid_planter:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.382
+      ]
+    ],
+    "frac_zero": 0.8372,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      2,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.183,
+        0.208
+      ],
+      [
+        0.393,
+        0.401
+      ],
+      [
+        0.52,
+        0.598
+      ]
+    ],
+    "crop_offset": [
+      34,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 36,
+    "contact_reference_px": 36.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

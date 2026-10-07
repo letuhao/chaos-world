@@ -1,0 +1,167 @@
+{
+  "id": "medieval_western.modular_timber_frame_fachwerk.timber_roof_dormer_window_weather_bleached",
+  "name": "Sun-Bleached Gabled Timber Roof Dormer Window",
+  "vietnamese_name": "Cửa Sổ Mái Gác Gỗ Nhô Lên (Nắng Tẩy Trắng Bạc)",
+  "category": "modular_timber_frame_fachwerk",
+  "sub_category": "veranda_porch_and_dormer",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "peer_out",
+  "gameplay_role": "Fachwerk modular component (Gabled Timber Roof Dormer Window).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "germanic_holy_roman",
+  "prompt_summary": "2D orthographic top-down game sprite of sun-bleached gabled timber roof dormer window, pale bleached timber surface, Fachwerk half-timbering roof and porch element, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/modular_timber_frame_fachwerk/timber_roof_dormer_window_weather_bleached.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.modular_timber_frame_fachwerk.timber_roof_dormer_window_weather_bleached:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.527
+      ],
+      [
+        0.746
+      ]
+    ],
+    "frac_zero": 0.6158,
+    "blocks": [
+      [
+        true
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.444,
+        0.0
+      ],
+      [
+        0.285,
+        0.996,
+        0.239
+      ],
+      [
+        0.84,
+        1.0,
+        0.823
+      ],
+      [
+        0.903,
+        1.0,
+        0.899
+      ],
+      [
+        0.668,
+        1.0,
+        0.664
+      ],
+      [
+        0.479,
+        0.973,
+        0.467
+      ],
+      [
+        0.263,
+        0.272,
+        0.393
+      ]
+    ],
+    "crop_offset": [
+      16,
+      40
+    ],
+    "trunk_columns": [
+      2
+    ],
+    "contact_px": 56,
+    "contact_reference_px": 56.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      256
+    ]
+  }
+}

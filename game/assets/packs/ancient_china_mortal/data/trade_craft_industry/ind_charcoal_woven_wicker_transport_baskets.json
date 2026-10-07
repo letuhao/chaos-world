@@ -1,0 +1,142 @@
+{
+  "id": "ancient_china_mortal.trade_craft_industry.ind_charcoal_woven_wicker_transport_baskets",
+  "name": "Pair of Giant Charcoal Carrying Baskets",
+  "vietnamese_name": "Cặp Sọt Tre Đựng Than Củi Cỡ Lớn",
+  "hanzi": "大竹篓装炭筐",
+  "category": "trade_craft_industry",
+  "sub_category": "charcoal_burning_mound",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "carry_basket",
+  "gameplay_role": "Deep conical woven wicker panniers with shoulder pole.",
+  "destructible": true,
+  "material": "bamboo",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Pair of tall conical woven wicker baskets filled with black charcoal chunks with shoulder carrying yoke.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "container": "charcoal"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/trade_craft_industry/ind_charcoal_woven_wicker_transport_baskets.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.trade_craft_industry.ind_charcoal_woven_wicker_transport_baskets:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.537
+      ]
+    ],
+    "frac_zero": 0.7092,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.5,
+        0.326,
+        0.086
+      ],
+      [
+        0.843,
+        0.909,
+        0.811
+      ],
+      [
+        0.161,
+        0.659,
+        0.443
+      ]
+    ],
+    "crop_offset": [
+      21,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 30,
+    "contact_reference_px": 30.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

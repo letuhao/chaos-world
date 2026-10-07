@@ -1,0 +1,142 @@
+{
+  "id": "ancient_china_mortal.low_realm_cultivation.cult_sand_dit_da_jow_bruise_liniment_jugs",
+  "name": "Apothecary Dit Da Jow Herbal Liniment Jars",
+  "vietnamese_name": "Bình Gốm Đựng Rượu Xoa Bóp Điệt Đả",
+  "hanzi": "跌打损伤活血药酒坛",
+  "category": "low_realm_cultivation",
+  "sub_category": "iron_sand_training_pan",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "apply_liniment",
+  "gameplay_role": "Glazed ceramic jugs sealed with wax containing potent bruise wine.",
+  "destructible": true,
+  "material": "ceramic",
+  "cultivation_element": "wood",
+  "prompt_summary": "Group of brown glazed earthenware jars marked with red characters 'Tie Da Jiu' holding herbal bruise liniment.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "heal_bruises": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/low_realm_cultivation/cult_sand_dit_da_jow_bruise_liniment_jugs.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.low_realm_cultivation.cult_sand_dit_da_jow_bruise_liniment_jugs:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.634
+      ]
+    ],
+    "frac_zero": 0.6415,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.408,
+        0.741,
+        0.28
+      ],
+      [
+        0.855,
+        0.981,
+        0.818
+      ],
+      [
+        0.466,
+        0.76,
+        0.34
+      ]
+    ],
+    "crop_offset": [
+      18,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 28,
+    "contact_reference_px": 28.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

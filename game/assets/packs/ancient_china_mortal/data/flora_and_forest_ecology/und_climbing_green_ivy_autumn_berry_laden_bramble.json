@@ -1,0 +1,142 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.und_climbing_green_ivy_autumn_berry_laden_bramble",
+  "name": "Climbing Wall Ivy & Creepers Bramble Loaded with Ripe Wild Berries",
+  "vietnamese_name": "Bụi Cây Trĩu Quả Dại Chín Đỏ (Dây Thường Xuân Leo Tường Đá)",
+  "hanzi": "络石爬藤绿蔓挂满朱红多汁野果丛",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "underbrush_fern_and_creeper",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "gather_wild_berries",
+  "gameplay_role": "berry_bush",
+  "destructible": false,
+  "material": "plant",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese forest underbrush vegetation: Climbing Wall Ivy & Creepers Bramble Loaded with Ripe Wild Berries. Organic foliage, delicate leaves and flowers, ink outlines, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "foliage_group": "climbing_green_ivy"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/und_climbing_green_ivy_autumn_berry_laden_bramble.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.und_climbing_green_ivy_autumn_berry_laden_bramble:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.633
+      ]
+    ],
+    "frac_zero": 0.6505,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.344,
+        0.75,
+        0.478
+      ],
+      [
+        0.716,
+        1.0,
+        0.497
+      ],
+      [
+        0.718,
+        0.756,
+        0.229
+      ]
+    ],
+    "crop_offset": [
+      20,
+      21
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 62,
+    "contact_reference_px": 62.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

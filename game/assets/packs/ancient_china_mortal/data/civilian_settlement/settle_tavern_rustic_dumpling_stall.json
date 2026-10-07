@@ -1,0 +1,140 @@
+{
+  "id": "ancient_china_mortal.civilian_settlement.settle_tavern_rustic_dumpling_stall",
+  "name": "Steamed Bun & Dumpling Stall",
+  "vietnamese_name": "Quán Bánh Bao Xửng Tre Thôn Dã",
+  "hanzi": "炊饼小摊",
+  "category": "civilian_settlement",
+  "sub_category": "tavern_and_teahouse",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "eat",
+  "gameplay_role": "Street vendor cart with tiered round bamboo steamer baskets puffing aromatic steam.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "fire",
+  "prompt_summary": "Top-down compact street vendor station with wooden handcart, tall stack of five circular bamboo dumpling steamer baskets with rising steam, and jar of dipping vinegar.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "portable_provisions": true,
+    "baozi_purchase": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/civilian_settlement/settle_tavern_rustic_dumpling_stall.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.civilian_settlement.settle_tavern_rustic_dumpling_stall:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.549
+      ]
+    ],
+    "frac_zero": 0.7968,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      2,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.538,
+        0.277
+      ],
+      [
+        0.856,
+        0.663
+      ],
+      [
+        0.454,
+        0.439
+      ]
+    ],
+    "crop_offset": [
+      36,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 15,
+    "contact_reference_px": 15.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

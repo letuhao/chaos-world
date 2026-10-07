@@ -1,0 +1,142 @@
+{
+  "id": "ancient_china_mortal.low_realm_cultivation.cult_mat_soothing_tea_service_tray",
+  "name": "Clay Yixing Teapot & Twin Cups on Bamboo Tray",
+  "vietnamese_name": "Khay Tre Ấm Trà Tử Sa Thư Giãn Tinh Thần",
+  "hanzi": "紫砂一壶二杯茶具",
+  "category": "low_realm_cultivation",
+  "sub_category": "disciple_meditation_mat",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "drink_tea",
+  "gameplay_role": "Dark purple clay miniature teapot with steaming green tea.",
+  "destructible": true,
+  "material": "ceramic",
+  "cultivation_element": "water",
+  "prompt_summary": "Carved bamboo tea tray holding dark purple-clay Yixing teapot and two tiny celadon cups of steaming tea.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "calm_qi": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/low_realm_cultivation/cult_mat_soothing_tea_service_tray.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.low_realm_cultivation.cult_mat_soothing_tea_service_tray:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.653
+      ]
+    ],
+    "frac_zero": 0.6612,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.644,
+        0.874,
+        0.403
+      ],
+      [
+        0.74,
+        1.0,
+        0.832
+      ],
+      [
+        0.488,
+        0.449,
+        0.141
+      ]
+    ],
+    "crop_offset": [
+      16,
+      27
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 49,
+    "contact_reference_px": 49.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

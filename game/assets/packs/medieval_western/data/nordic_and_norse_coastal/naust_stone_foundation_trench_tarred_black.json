@@ -1,0 +1,166 @@
+{
+  "id": "medieval_western.nordic_and_norse_coastal.naust_stone_foundation_trench_tarred_black",
+  "name": "Pine-Tarred Naust Drystone Boat Slipway Trench",
+  "vietnamese_name": "Rãnh Đá Kéo Thuyền Tránh Bão (Quét Hắc Ín Gỗ)",
+  "category": "nordic_and_norse_coastal",
+  "sub_category": "boathouse_naust_and_skiff",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "launch_boat",
+  "gameplay_role": "Nordic coastal cultural feature (Naust Drystone Boat Slipway Trench).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "nordic_norse",
+  "prompt_summary": "2D orthographic top-down game sprite of pine-tarred naust drystone boat slipway trench, thick glossy black pine tar weatherproofing, Nordic Norse coastal settlement style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/nordic_and_norse_coastal/naust_stone_foundation_trench_tarred_black.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.nordic_and_norse_coastal.naust_stone_foundation_trench_tarred_black:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.472,
+        0.439
+      ],
+      [
+        0.795,
+        0.757
+      ]
+    ],
+    "frac_zero": 0.6368,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.5,
+        0.009,
+        0.0,
+        0.0
+      ],
+      [
+        0.003,
+        0.459,
+        0.999,
+        0.588,
+        0.041,
+        0.0
+      ],
+      [
+        0.299,
+        0.999,
+        1.0,
+        1.0,
+        0.485,
+        0.0
+      ],
+      [
+        0.554,
+        1.0,
+        1.0,
+        1.0,
+        0.779,
+        0.0
+      ],
+      [
+        0.52,
+        1.0,
+        1.0,
+        1.0,
+        0.771,
+        0.007
+      ],
+      [
+        0.751,
+        1.0,
+        1.0,
+        1.0,
+        0.949,
+        0.316
+      ],
+      [
+        0.293,
+        0.727,
+        0.997,
+        0.751,
+        0.181,
+        0.086
+      ]
+    ],
+    "crop_offset": [
+      43,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3
+    ],
+    "contact_px": 81,
+    "contact_reference_px": 81.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

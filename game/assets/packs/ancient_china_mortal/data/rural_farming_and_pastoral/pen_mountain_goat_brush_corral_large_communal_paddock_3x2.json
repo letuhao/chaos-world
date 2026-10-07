@@ -1,0 +1,211 @@
+{
+  "id": "ancient_china_mortal.rural_farming_and_pastoral.pen_mountain_goat_brush_corral_large_communal_paddock_3x2",
+  "name": "Thorny Brush Mountain Goat Corral Broad Communal Livestock Corral (3x2)",
+  "vietnamese_name": "Khu Rào Gia Súc Rộng Lớn (3x2) (Bãi Quây Dê Rừng Bằng Cành Gai)",
+  "hanzi": "干荆棘圈羊栅栏大间通开群牧栏栅",
+  "category": "rural_farming_and_pastoral",
+  "sub_category": "homestead_pen_and_coop",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect_communal_corral",
+  "gameplay_role": "livestock_corral",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "metal",
+  "prompt_summary": "Ancient Chinese farm homestead animal husbandry prop: Thorny Brush Mountain Goat Corral Broad Communal Livestock Corral (3x2). Rustic peasant craftsmanship, gouache textures with ink outlines, top-down orthographic game sprite, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "animal_housing": "mountain_goat_brush_corral"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/rural_farming_and_pastoral/pen_mountain_goat_brush_corral_large_communal_paddock_3x2.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.rural_farming_and_pastoral.pen_mountain_goat_brush_corral_large_communal_paddock_3x2:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.579,
+        0.864,
+        0.569
+      ],
+      [
+        0.609,
+        0.973,
+        0.566
+      ]
+    ],
+    "frac_zero": 0.6802,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.026,
+        0.251,
+        0.531,
+        0.553,
+        0.254,
+        0.026,
+        0.0
+      ],
+      [
+        0.424,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.787,
+        0.451
+      ],
+      [
+        0.612,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.606,
+        0.031
+      ],
+      [
+        0.486,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.551,
+        0.0
+      ],
+      [
+        0.662,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.782,
+        0.0
+      ],
+      [
+        0.624,
+        0.815,
+        1.0,
+        0.994,
+        0.819,
+        0.842,
+        0.04
+      ],
+      [
+        0.0,
+        0.206,
+        0.985,
+        0.908,
+        0.072,
+        0.039,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      92,
+      18
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 73,
+    "contact_reference_px": 73.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

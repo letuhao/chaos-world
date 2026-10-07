@@ -1,0 +1,127 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.cor_scholar_garden_veranda_bamboo_lattice_gallery",
+  "name": "Classical Garden Cloister Walkway Open Air Corridor with Carved Bamboo Tracing",
+  "vietnamese_name": "Hành Lang Thông Thoáng Khắc Cành Trúc (Hành Lang Vườn Cảnh Giang Nam)",
+  "hanzi": "苏式游廊透花镂空赏景长廊",
+  "category": "modular_architecture_timber",
+  "sub_category": "covered_corridor_and_veranda",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "peer_through_gallery",
+  "gameplay_role": "open_gallery",
+  "destructible": false,
+  "material": "bamboo",
+  "cultivation_element": "wind",
+  "prompt_summary": "Ancient Chinese covered garden corridor module: Classical Garden Cloister Walkway Open Air Corridor with Carved Bamboo Tracing. Traditional tiled wooden gallery, balustrade railing, top-down orthographic game sprite, transparent alpha cutout.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "corridor",
+    "style": "scholar_garden_veranda"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/cor_scholar_garden_veranda_bamboo_lattice_gallery.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.cor_scholar_garden_veranda_bamboo_lattice_gallery:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.641,
+        0.654
+      ]
+    ],
+    "frac_zero": 0.638,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.408,
+        0.499,
+        0.515,
+        0.801,
+        0.513,
+        0.5,
+        0.417
+      ],
+      [
+        0.691,
+        0.954,
+        0.988,
+        1.0,
+        0.993,
+        0.973,
+        0.723
+      ],
+      [
+        0.266,
+        0.228,
+        0.277,
+        0.908,
+        0.237,
+        0.228,
+        0.276
+      ]
+    ],
+    "crop_offset": [
+      16,
+      34
+    ],
+    "trunk_columns": [
+      3
+    ],
+    "contact_px": 200,
+    "contact_reference_px": 200.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

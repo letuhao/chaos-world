@@ -1,0 +1,205 @@
+{
+  "id": "medieval_western.slavic_eastern_taiga_and_logcraft.iron_studded_timber_gate_mossy_swamp",
+  "name": "Taiga Bog Mossy Log Fort Iron-Bolted Double Gate",
+  "vietnamese_name": "Cổng Thành Gỗ Rừng Đóng Đinh Sắt (Rêu Rừng Đầm Lầy)",
+  "category": "slavic_eastern_taiga_and_logcraft",
+  "sub_category": "wooden_kremlin_rampart_wall",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "open",
+  "gameplay_role": "Slavic taiga cultural feature (Log Fort Iron-Bolted Double Gate).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "slavic_rus",
+  "prompt_summary": "2D orthographic top-down game sprite of taiga bog mossy log fort iron-bolted double gate, thick northern peat moss and damp log bark, Slavic Kievan Rus taiga style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/slavic_eastern_taiga_and_logcraft/iron_studded_timber_gate_mossy_swamp.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.slavic_eastern_taiga_and_logcraft.iron_studded_timber_gate_mossy_swamp:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.729,
+        0.734
+      ],
+      [
+        0.831,
+        0.85
+      ]
+    ],
+    "frac_zero": 0.3906,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.1,
+        0.773,
+        0.539,
+        0.502,
+        0.554,
+        0.772,
+        0.041
+      ],
+      [
+        0.083,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.915,
+        0.096
+      ],
+      [
+        0.533,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.99,
+        0.62
+      ],
+      [
+        0.841,
+        1.0,
+        1.0,
+        0.971,
+        0.996,
+        1.0,
+        0.84
+      ],
+      [
+        0.819,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.825
+      ],
+      [
+        0.82,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.88
+      ],
+      [
+        0.121,
+        0.558,
+        0.76,
+        0.903,
+        0.787,
+        0.602,
+        0.1
+      ]
+    ],
+    "crop_offset": [
+      17,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 129,
+    "contact_reference_px": 129.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

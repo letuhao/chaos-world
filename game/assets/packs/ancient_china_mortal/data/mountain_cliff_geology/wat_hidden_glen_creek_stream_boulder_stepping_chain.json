@@ -1,0 +1,131 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.wat_hidden_glen_creek_stream_boulder_stepping_chain",
+  "name": "Shaded Forest Valley Stream Five Stepping Stones across Mountain Stream",
+  "vietnamese_name": "Chuỗi Năm Hòn Đá Vượt Dòng Suối (Khe Suối Thung Lũng U Tịch)",
+  "hanzi": "幽谷盘石曲折溪五步横渡流水碇步桥",
+  "category": "mountain_cliff_geology",
+  "sub_category": "waterfall_stream_and_cascade",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "cross_stepping_stones",
+  "gameplay_role": "stepping_stream",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese mountainous water feature: Shaded Forest Valley Stream Five Stepping Stones across Mountain Stream. Flowing crystal water with gouache splashes, dark ink outlines, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "water_scale": "hidden_glen_creek"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/wat_hidden_glen_creek_stream_boulder_stepping_chain.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.wat_hidden_glen_creek_stream_boulder_stepping_chain:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.68,
+        0.573,
+        0.695
+      ]
+    ],
+    "frac_zero": 0.7374,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.341,
+        0.304,
+        0.107,
+        0.17,
+        0.501,
+        0.271
+      ],
+      [
+        0.694,
+        0.98,
+        0.631,
+        0.527,
+        0.92,
+        0.747
+      ],
+      [
+        0.759,
+        0.999,
+        1.0,
+        1.0,
+        1.0,
+        0.731
+      ]
+    ],
+    "crop_offset": [
+      95,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 176,
+    "contact_reference_px": 176.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

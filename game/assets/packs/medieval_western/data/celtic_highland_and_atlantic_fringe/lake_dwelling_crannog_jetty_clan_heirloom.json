@@ -1,0 +1,202 @@
+{
+  "id": "medieval_western.celtic_highland_and_atlantic_fringe.lake_dwelling_crannog_jetty_clan_heirloom",
+  "name": "Highland Clan Heirloom Lake Dwelling Crannog Jetty",
+  "vietnamese_name": "Kỷ Vật Bộ Tộc Lake Dwelling Crannog Jetty",
+  "category": "celtic_highland_and_atlantic_fringe",
+  "sub_category": "lake_dwelling_crannog_jetty",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "inspect",
+  "gameplay_role": "Celtic clan sacred heirloom.",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "celtic_gaelic",
+  "prompt_summary": "Ancient Celtic highland clan heirloom of lake_dwelling_crannog_jetty, Gaelic mythology, gouache anime style.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/celtic_highland_and_atlantic_fringe/lake_dwelling_crannog_jetty_clan_heirloom.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.celtic_highland_and_atlantic_fringe.lake_dwelling_crannog_jetty_clan_heirloom:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.556,
+        0.562
+      ],
+      [
+        0.707,
+        0.715
+      ]
+    ],
+    "frac_zero": 0.5186,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.002,
+        0.022,
+        0.052,
+        0.523,
+        0.0,
+        0.032,
+        0.0
+      ],
+      [
+        0.217,
+        0.928,
+        0.932,
+        1.0,
+        0.888,
+        0.874,
+        0.004
+      ],
+      [
+        0.239,
+        0.999,
+        1.0,
+        1.0,
+        1.0,
+        0.949,
+        0.016
+      ],
+      [
+        0.297,
+        0.975,
+        1.0,
+        1.0,
+        1.0,
+        0.89,
+        0.078
+      ],
+      [
+        0.777,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.652
+      ],
+      [
+        0.512,
+        0.942,
+        0.694,
+        1.0,
+        0.73,
+        0.955,
+        0.432
+      ],
+      [
+        0.094,
+        0.283,
+        0.553,
+        0.875,
+        0.272,
+        0.288,
+        0.12
+      ]
+    ],
+    "crop_offset": [
+      21,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 60,
+    "contact_reference_px": 60.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

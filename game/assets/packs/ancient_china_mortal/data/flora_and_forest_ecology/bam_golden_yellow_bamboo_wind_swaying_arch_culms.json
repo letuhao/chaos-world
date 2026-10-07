@@ -1,0 +1,209 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.bam_golden_yellow_bamboo_wind_swaying_arch_culms",
+  "name": "Imperial Golden Stalk Bamboo Arched Bamboo Stalks Swaying in Wind",
+  "vietnamese_name": "Cành Tre Uốn Cong Đung Đưa Theo Gió (Tre Vàng Óng Quý Hiếm)",
+  "hanzi": "金黄名贵刚竹风动弯躬翠叶婆娑竹",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "bamboo_grove_and_thicket",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "listen_rustling_bamboo",
+  "gameplay_role": "bamboo_arch",
+  "destructible": false,
+  "material": "bamboo",
+  "cultivation_element": "wind",
+  "prompt_summary": "Ancient Chinese bamboo grove vegetation: Imperial Golden Stalk Bamboo Arched Bamboo Stalks Swaying in Wind. Slender culms with delicate fluttering green leaves, dark ink contours, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "bamboo_variety": "golden_yellow_bamboo"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/bam_golden_yellow_bamboo_wind_swaying_arch_culms.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.bam_golden_yellow_bamboo_wind_swaying_arch_culms:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.296,
+        0.257
+      ],
+      [
+        0.415,
+        0.374
+      ]
+    ],
+    "frac_zero": 0.6703,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.03,
+        0.103,
+        0.287,
+        0.197,
+        0.002,
+        0.0
+      ],
+      [
+        0.02,
+        0.328,
+        0.407,
+        0.749,
+        0.146,
+        0.055,
+        0.049
+      ],
+      [
+        0.076,
+        0.594,
+        0.778,
+        0.462,
+        0.301,
+        0.275,
+        0.068
+      ],
+      [
+        0.042,
+        0.558,
+        0.561,
+        0.219,
+        0.571,
+        0.365,
+        0.013
+      ],
+      [
+        0.058,
+        0.569,
+        0.243,
+        0.004,
+        0.479,
+        0.12,
+        0.0
+      ],
+      [
+        0.261,
+        0.462,
+        0.146,
+        0.0,
+        0.326,
+        0.432,
+        0.003
+      ],
+      [
+        0.67,
+        0.898,
+        0.798,
+        0.781,
+        0.919,
+        0.817,
+        0.247
+      ]
+    ],
+    "crop_offset": [
+      26,
+      18
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 194,
+    "contact_reference_px": 194.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

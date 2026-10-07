@@ -1,0 +1,216 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.pin_twisted_ridge_cypress_twin_intertwined_trunks",
+  "name": "Twisted Mountain Ridge Cypress Twin Pine Trunks Intertwined like Dragons",
+  "vietnamese_name": "Cặp Cây Tùng Đôi Quấn Nhau (Bách Xoắn Sườn Núi Gió Lộng)",
+  "hanzi": "苍龙盘旋老崖柏连理并蒂双生交缠木",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "ancient_pine_and_conifer",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "admire_twin_dragon_trunks",
+  "gameplay_role": "twin_tree",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "wind",
+  "prompt_summary": "Ancient Chinese pine tree landscape asset: Twisted Mountain Ridge Cypress Twin Pine Trunks Intertwined like Dragons. Evergreen needle tufts, rough peeling bark, dark ink contours, top-down orthographic RPG sprite on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "tree_family": "conifer",
+    "variety": "twisted_ridge_cypress"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/pin_twisted_ridge_cypress_twin_intertwined_trunks.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.pin_twisted_ridge_cypress_twin_intertwined_trunks:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.229,
+        0.581,
+        0.26
+      ],
+      [
+        0.378,
+        0.898,
+        0.344
+      ]
+    ],
+    "frac_zero": 0.7531,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.372,
+        0.863,
+        0.355,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.216,
+        0.604,
+        0.535,
+        0.765,
+        0.319,
+        0.001
+      ],
+      [
+        0.26,
+        0.65,
+        0.663,
+        0.558,
+        0.261,
+        0.445,
+        0.006
+      ],
+      [
+        0.139,
+        0.161,
+        0.689,
+        0.623,
+        0.344,
+        0.759,
+        0.52
+      ],
+      [
+        0.0,
+        0.307,
+        0.92,
+        0.863,
+        0.556,
+        0.067,
+        0.0
+      ],
+      [
+        0.026,
+        0.679,
+        0.999,
+        0.982,
+        0.594,
+        0.366,
+        0.0
+      ],
+      [
+        0.36,
+        0.867,
+        0.964,
+        0.979,
+        0.933,
+        0.734,
+        0.17
+      ]
+    ],
+    "crop_offset": [
+      83,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 210,
+    "contact_reference_px": 210.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

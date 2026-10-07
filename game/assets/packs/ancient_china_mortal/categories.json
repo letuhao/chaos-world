@@ -276,5 +276,104 @@
       "season_tint": ["spring_blossom", "summer_green", "autumn_gold", "winter_bare"],
       "ambience_occluder": "canopy_vision_fade"
     }
+  },
+  {
+    "id": "modular_architecture_timber",
+    "name": "Modular Timber Architecture Kits",
+    "vietnamese_name": "Bộ Lắp Ghép Kiến Trúc Gỗ & Ngõ Hẻm",
+    "description": "Modular foundations, plinths, dougong brackets, vermilion pillars, lattice windows, moon gates, grey tile flying eaves, and covered verandas for custom courtyards and compounds.",
+    "sub_categories": [
+      "foundation_and_plinth_tai_ji",
+      "pillar_beam_and_dougong",
+      "wall_and_lattice_window",
+      "moon_gate_and_archway",
+      "modular_roof_and_flying_eaves",
+      "covered_corridor_and_veranda"
+    ],
+    "planned_count": 450,
+    "gameplay_gap_hooks": {
+      "assembly_type": "modular_building_snap_grid",
+      "tile_snap_unit": 128,
+      "vertical_layering": ["foundation", "wall_pillar", "eave_roof", "finial"],
+      "compound_styles": ["siheyuan_courtyard", "magistrate_complex", "jiangnan_waterside", "mountain_temple"]
+    }
+  },
+  {
+    "id": "mountain_cliff_geology",
+    "name": "Mountain Geology, Cliffs & Waters",
+    "vietnamese_name": "Sơn Địa, Vách Đá, Thác Nước & Hang Động",
+    "description": "Stratified loess bluff walls, karst limestone peaks, jagged scree slopes, boulders, hidden grottos, waterfall drops, and mountain streams.",
+    "sub_categories": [
+      "cliff_face_and_bluff",
+      "karst_spire_and_pinnacle",
+      "boulder_scree_and_pebbles",
+      "cave_mouth_and_grotto",
+      "waterfall_stream_and_cascade"
+    ],
+    "planned_count": 350,
+    "gameplay_gap_hooks": {
+      "verticality": "cliff_elevation_layers",
+      "climbing_system": "rock_ledge_grab",
+      "water_physics": "flowing_stream_and_splash",
+      "hidden_chambers": "cavern_exploration"
+    }
+  },
+  {
+    "id": "flora_and_forest_ecology",
+    "name": "Forest Ecology, Ancient Trees & Undergrowth",
+    "vietnamese_name": "Thảm Thực Vật Rừng, Tùng Bách & Thảo Dược",
+    "description": "Ancient craggy Huangshan pines, bamboo grove thickets, climbing ivy, ferns, wetland cattails, lotus beds, and wild mountain medicinal herbs.",
+    "sub_categories": [
+      "ancient_pine_and_conifer",
+      "bamboo_grove_and_thicket",
+      "underbrush_fern_and_creeper",
+      "aquatic_lotus_and_wetland_reed",
+      "wild_medicinal_herb_patch"
+    ],
+    "planned_count": 250,
+    "gameplay_gap_hooks": {
+      "harvesting": "foraging_herbs_and_timber",
+      "occlusion": "dense_canopy_fade",
+      "wind_sway": true,
+      "herbal_quality": ["common_wild", "aged_50_year", "spirit_infused"]
+    }
+  },
+  {
+    "id": "urban_street_and_market",
+    "name": "Urban Street Life, Markets & Infrastructure",
+    "vietnamese_name": "Phố Xá, Chợ Búa, Biển Hiệu & Tiện Ích",
+    "description": "Hawker stalls, butcher tables, merchant awnings, hanging trade signs, tavern wine banners, stone wellheads, street braziers, and mud wheel ruts.",
+    "sub_categories": [
+      "market_stall_and_hawker_booth",
+      "shop_sign_board_and_banner",
+      "street_furniture_and_wellhead",
+      "litter_wheel_rut_and_puddle"
+    ],
+    "planned_count": 250,
+    "gameplay_gap_hooks": {
+      "vendor_interaction": "open_merchant_shop",
+      "foot_traffic_density": 1.5,
+      "water_reflection": "puddle_sky_reflection",
+      "night_lighting": "street_lantern_illumination"
+    }
+  },
+  {
+    "id": "rural_farming_and_pastoral",
+    "name": "Rural Farming, Irrigation & Homestead",
+    "vietnamese_name": "Nông Thôn, Thủy Lợi, Chuồng Trại & Điền Viên",
+    "description": "Wooden noria waterwheels, bamboo irrigation flumes, animal coops and pig pens, vegetable trellises, hanging garlic/chili braids, and grain haystacks.",
+    "sub_categories": [
+      "irrigation_flume_and_waterwheel",
+      "homestead_pen_and_coop",
+      "crop_trellis_and_hanging_harvest",
+      "farming_implement_and_haystack"
+    ],
+    "planned_count": 200,
+    "gameplay_gap_hooks": {
+      "agrarian_cycle": "seasonal_crop_growth",
+      "livestock_rearing": "domestic_animal_pens",
+      "water_flow": "irrigation_canal_feed",
+      "compost_fertility": "soil_enrichment"
+    }
   }
 ]

@@ -1,0 +1,139 @@
+{
+  "id": "ancient_china_mortal.river_and_maritime.river_ferry_sandbank_stepping_board",
+  "name": "Shallow Water Long Planking Approach",
+  "vietnamese_name": "Cầu Ván Gỗ Dài Đi Ra Bãi Cát Lên Đò",
+  "hanzi": "浅滩长木踏板",
+  "category": "river_and_maritime",
+  "sub_category": "ferry_crossing_station",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "walk",
+  "gameplay_role": "Plank walkway spanning muddy shallows to deep ferry channel.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "water",
+  "prompt_summary": "Long narrow wooden boardwalk resting on low wooden trestles crossing marshy river shallows.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "mud_walk": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/river_and_maritime/river_ferry_sandbank_stepping_board.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.river_and_maritime.river_ferry_sandbank_stepping_board:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.672,
+        0.633,
+        0.692
+      ]
+    ],
+    "frac_zero": 0.6591,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      8,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.248,
+        0.566,
+        0.208,
+        0.085,
+        0.056,
+        0.275,
+        0.586,
+        0.176
+      ],
+      [
+        0.838,
+        1.0,
+        1.0,
+        0.995,
+        0.989,
+        1.0,
+        1.0,
+        0.841
+      ],
+      [
+        0.483,
+        0.853,
+        0.84,
+        0.826,
+        0.805,
+        0.847,
+        0.894,
+        0.554
+      ]
+    ],
+    "crop_offset": [
+      65,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 230,
+    "contact_reference_px": 230.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

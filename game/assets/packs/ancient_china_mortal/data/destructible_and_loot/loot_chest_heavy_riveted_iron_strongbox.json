@@ -1,0 +1,143 @@
+{
+  "id": "ancient_china_mortal.destructible_and_loot.loot_chest_heavy_riveted_iron_strongbox",
+  "name": "Bandit Riveted Black Iron Lockbox",
+  "vietnamese_name": "Rương Sắt Tán Đinh Của Tướng Cướp",
+  "hanzi": "盗匪铆接沉重黑铁箱",
+  "category": "destructible_and_loot",
+  "sub_category": "bandit_iron_chest",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "pick_bandit_lock",
+  "gameplay_role": "Heavy black forged iron chest covered in rivets and padlock.",
+  "destructible": false,
+  "material": "iron",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Heavy medieval Chinese black iron strongbox with criss-cross riveted bands, massive keyhole, and ring handles.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "loot_tier": "bandit_hoard"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/destructible_and_loot/loot_chest_heavy_riveted_iron_strongbox.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.destructible_and_loot.loot_chest_heavy_riveted_iron_strongbox:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.825
+      ]
+    ],
+    "frac_zero": 0.6129,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.776,
+        0.969,
+        0.777
+      ],
+      [
+        0.854,
+        1.0,
+        0.866
+      ],
+      [
+        0.56,
+        0.615,
+        0.579
+      ]
+    ],
+    "crop_offset": [
+      16,
+      35
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 79,
+    "contact_reference_px": 79.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

@@ -213,9 +213,9 @@ func _refresh_view() -> void:
 	_stock_cache.clear()
 	_fill_rows()
 	if _detail != null:
-		_detail.text = _detail_text()
+		_detail.text = L.t(_detail_text())
 	if _status != null:
-		_status.text = _message
+		_status.text = L.t(_message)
 
 
 ## One row per offered recipe, composed in the scene and reused across refreshes.
@@ -232,9 +232,9 @@ func _fill_rows() -> void:
 		var recipe: Dictionary = _recipes[index]
 		var recipe_id := StringName(recipe.get("id", ""))
 		var label := String(recipe.get("display_name", ""))
-		row.text = label if not label.is_empty() else String(recipe_id)
+		row.text = L.t(label if not label.is_empty() else String(recipe_id))
 		row.disabled = false
-		row.tooltip_text = _row_hint(recipe_id)
+		row.tooltip_text = L.t(_row_hint(recipe_id))
 		row.button_pressed = recipe_id == _selected
 		index += 1
 	# Leftover rows from a longer previous offer are hidden, never destroyed.
@@ -251,12 +251,12 @@ func _fill_rows() -> void:
 func _row_hint(recipe_id: StringName) -> String:
 	match _craft_state(recipe_id):
 		CRAFT_READY:
-			return "Ready"
+			return L.t("LOC_UI_20C7C5522F", "Ready")
 		CRAFT_SHORT:
 			var missing := _missing_of(recipe_id)
 			return "Missing %s" % ", ".join(_display_names(missing))
 		_:
-			return "Inputs unknown"
+			return L.t("LOC_UI_1BADD5A415", "Inputs unknown")
 
 
 ## The selected recipe's inputs and outputs, and what is missing, in one block.
@@ -264,7 +264,7 @@ func _row_hint(recipe_id: StringName) -> String:
 func _detail_text() -> String:
 	var recipe := _recipe(_selected)
 	if recipe.is_empty():
-		return "No recipe selected"
+		return L.t("LOC_UI_975C3AAE95", "No recipe selected")
 	var parts: Array[String] = []
 	parts.append("Station: %s" % recipe.get("station", ""))
 	parts.append("Makes: %s" % ", ".join(_display_names(recipe.get("outputs", []))))

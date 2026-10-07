@@ -1,0 +1,143 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.wat_rushing_torrents_bamboo_flume_spring_capture",
+  "name": "High-Volume Mountain Torrent Mountain Spring Captured in Bamboo Spout",
+  "vietnamese_name": "Máng Tre Hứng Nước Suối Đầu Nguồn (Dòng Thác Cuồn Cuộn Lưng Trời)",
+  "hanzi": "怒涛奔涌大悬瀑破竹引泉清甜出水口",
+  "category": "mountain_cliff_geology",
+  "sub_category": "waterfall_stream_and_cascade",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "drink_sweet_spring",
+  "gameplay_role": "spring_spout",
+  "destructible": false,
+  "material": "bamboo",
+  "cultivation_element": "wood",
+  "prompt_summary": "Ancient Chinese mountainous water feature: High-Volume Mountain Torrent Mountain Spring Captured in Bamboo Spout. Flowing crystal water with gouache splashes, dark ink outlines, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "water_scale": "rushing_torrents"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/wat_rushing_torrents_bamboo_flume_spring_capture.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.wat_rushing_torrents_bamboo_flume_spring_capture:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.597
+      ]
+    ],
+    "frac_zero": 0.6441,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.12,
+        0.642,
+        0.183
+      ],
+      [
+        0.612,
+        1.0,
+        0.486
+      ],
+      [
+        0.655,
+        0.975,
+        0.62
+      ]
+    ],
+    "crop_offset": [
+      18,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 76,
+    "contact_reference_px": 76.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

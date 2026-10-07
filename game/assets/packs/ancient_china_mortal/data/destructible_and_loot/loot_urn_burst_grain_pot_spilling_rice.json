@@ -1,0 +1,112 @@
+{
+  "id": "ancient_china_mortal.destructible_and_loot.loot_urn_burst_grain_pot_spilling_rice",
+  "name": "Cracked Pottery Urn Spilling White Rice",
+  "vietnamese_name": "Chum Gạo Nứt Vỡ Tràn Hạt Trắng Tinh",
+  "hanzi": "开裂溢米破土罐",
+  "category": "destructible_and_loot",
+  "sub_category": "clay_grain_urn",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "gather_rice",
+  "gameplay_role": "Cracked pot with large mound of clean white milled rice spilling.",
+  "destructible": true,
+  "material": "clay",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Cracked earthenware jar lying tilted with clean white rice spilling out in generous fan across floor.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "rice_yield": 20
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/destructible_and_loot/loot_urn_burst_grain_pot_spilling_rice.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.destructible_and_loot.loot_urn_burst_grain_pot_spilling_rice:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.619
+      ]
+    ],
+    "frac_zero": 0.718,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.808,
+        0.739,
+        0.003
+      ],
+      [
+        0.738,
+        0.887,
+        0.019
+      ],
+      [
+        0.165,
+        0.803,
+        0.448
+      ]
+    ],
+    "crop_offset": [
+      26,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 47,
+    "contact_reference_px": 47.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

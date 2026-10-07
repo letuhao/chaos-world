@@ -1,0 +1,136 @@
+{
+  "id": "ancient_china_mortal.low_realm_cultivation.cult_dummy_blade_scarred_ruined_dummy",
+  "name": "Splintered Slashed Discarded Dummy Trunk",
+  "vietnamese_name": "Mộc Nhân Thung Bị Chém Nát Vụn Bỏ Đi",
+  "hanzi": "千刀万剐残破木人",
+  "category": "low_realm_cultivation",
+  "sub_category": "wooden_training_dummy_mukren",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "salvage_splinters",
+  "gameplay_role": "Wooden dummy chopped almost in two by Qi sword aura.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Weathered splintered wooden dummy scarred with dozens of deep saber gouges and missing one arm.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "salvage": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/low_realm_cultivation/cult_dummy_blade_scarred_ruined_dummy.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.low_realm_cultivation.cult_dummy_blade_scarred_ruined_dummy:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.408
+      ]
+    ],
+    "frac_zero": 0.8293,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      2,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.071,
+        0.353
+      ],
+      [
+        0.66,
+        0.709
+      ],
+      [
+        0.323,
+        0.332
+      ]
+    ],
+    "crop_offset": [
+      32,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 32,
+    "contact_reference_px": 32.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

@@ -1,0 +1,207 @@
+{
+  "id": "ancient_china_mortal.military_and_fortress.fort_gate_capstan_winch_chamber",
+  "name": "Portcullis Iron Chain Capstan Winch",
+  "vietnamese_name": "Tời Trục Xích Sắt Kéo Cửa Thành",
+  "hanzi": "绞盘起闭机",
+  "category": "military_and_fortress",
+  "sub_category": "city_gate_and_portcullis",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "turn_winch",
+  "gameplay_role": "Heavy geared wooden and bronze windlass spooling portcullis chains.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Heavy four-spoke wooden and bronze geared capstan winch mounted on timber floor with thick iron chains.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "gate_lever": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/military_and_fortress/fort_gate_capstan_winch_chamber.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.military_and_fortress.fort_gate_capstan_winch_chamber:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.368,
+        0.472
+      ],
+      [
+        0.779,
+        0.753
+      ]
+    ],
+    "frac_zero": 0.5762,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.124,
+        0.53,
+        0.053,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.325,
+        0.771,
+        0.808,
+        0.757,
+        0.072,
+        0.0
+      ],
+      [
+        0.292,
+        0.727,
+        0.688,
+        0.987,
+        0.608,
+        0.622,
+        0.399
+      ],
+      [
+        0.101,
+        0.757,
+        0.899,
+        1.0,
+        0.719,
+        0.466,
+        0.028
+      ],
+      [
+        0.661,
+        1.0,
+        1.0,
+        1.0,
+        0.971,
+        0.566,
+        0.0
+      ],
+      [
+        0.676,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.892,
+        0.0
+      ],
+      [
+        0.104,
+        0.683,
+        0.996,
+        0.966,
+        0.863,
+        0.31,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      27,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 138,
+    "contact_reference_px": 138.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

@@ -1,0 +1,179 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.cor_yamen_official_corridor_t_junction_crossway",
+  "name": "Magistrate Complex Dignified Corridor T-Junction Corridor Intersection Hub",
+  "vietnamese_name": "Ngã Ba Hành Lang Giao Nhau (Hành Lang Nha Môn Uy Nghi)",
+  "hanzi": "官署通廊三向交会丁字廊亭",
+  "category": "modular_architecture_timber",
+  "sub_category": "covered_corridor_and_veranda",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "walk_along",
+  "gameplay_role": "corridor_junction",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Ancient Chinese covered garden corridor module: Magistrate Complex Dignified Corridor T-Junction Corridor Intersection Hub. Traditional tiled wooden gallery, balustrade railing, top-down orthographic game sprite, transparent alpha cutout.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "corridor",
+    "style": "yamen_official_corridor"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/cor_yamen_official_corridor_t_junction_crossway.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.cor_yamen_official_corridor_t_junction_crossway:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.524,
+        0.579
+      ],
+      [
+        0.77,
+        0.774
+      ]
+    ],
+    "frac_zero": 0.4925,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.282,
+        0.715,
+        0.223,
+        0.0,
+        0.0
+      ],
+      [
+        0.162,
+        0.345,
+        0.611,
+        1.0,
+        0.799,
+        0.486,
+        0.093
+      ],
+      [
+        0.361,
+        0.988,
+        0.998,
+        1.0,
+        0.942,
+        0.981,
+        0.376
+      ],
+      [
+        0.465,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.551
+      ],
+      [
+        0.627,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.517
+      ],
+      [
+        0.591,
+        0.994,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.494
+      ],
+      [
+        0.192,
+        0.387,
+        0.711,
+        0.938,
+        0.676,
+        0.392,
+        0.14
+      ]
+    ],
+    "crop_offset": [
+      18,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 77,
+    "contact_reference_px": 77.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

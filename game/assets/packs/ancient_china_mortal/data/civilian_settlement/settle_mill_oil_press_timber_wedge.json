@@ -1,0 +1,159 @@
+{
+  "id": "ancient_china_mortal.civilian_settlement.settle_mill_oil_press_timber_wedge",
+  "name": "Heavy Timber Wedge Oil Press",
+  "vietnamese_name": "Máy Ép Dầu Hạt Cải Nêm Gỗ",
+  "hanzi": "重木榨油",
+  "category": "civilian_settlement",
+  "sub_category": "watermill_and_grainstore",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "craft",
+  "gameplay_role": "Hollowed colossal tree trunk press driven by hammer-driven wooden wedges extracting oil.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "metal",
+  "prompt_summary": "Top-down massive horizontal hollowed oak trunk oil press with heavy wooden wedges, overhead swinging log hammer, and terracotta jar catching dripping golden rapeseed oil.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "oil_extraction_rate": "25_liters_day",
+    "press_wedge_force": 5000
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/civilian_settlement/settle_mill_oil_press_timber_wedge.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.civilian_settlement.settle_mill_oil_press_timber_wedge:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.41,
+        0.483,
+        0.565
+      ]
+    ],
+    "frac_zero": 0.8107,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.101,
+        0.0,
+        0.0,
+        0.54,
+        0.564,
+        0.118
+      ],
+      [
+        0.825,
+        0.83,
+        0.781,
+        0.923,
+        0.834,
+        0.48
+      ],
+      [
+        0.38,
+        0.312,
+        0.323,
+        0.456,
+        0.669,
+        0.582
+      ]
+    ],
+    "crop_offset": [
+      97,
+      16
+    ],
+    "trunk_columns": [
+      3,
+      4,
+      5
+    ],
+    "contact_px": 50,
+    "contact_reference_px": 50.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        2,
+        0,
+        2,
+        0
+      ],
+      "1.15": [
+        2,
+        0,
+        2,
+        0
+      ],
+      "1.35": [
+        2,
+        0,
+        2,
+        0
+      ],
+      "1.6": [
+        2,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": [
+      2,
+      0,
+      2,
+      0
+    ],
+    "block_rect_px": [
+      256,
+      0,
+      384,
+      128
+    ]
+  }
+}

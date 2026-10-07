@@ -1,0 +1,177 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.wat_hidden_glen_creek_brook_split_pebble_island",
+  "name": "Shaded Forest Valley Stream Shallow Stream Dividing around Pebble Island",
+  "vietnamese_name": "Suối Cạn Chẻ Đôi Quanh Cồn Cát (Khe Suối Thung Lũng U Tịch)",
+  "hanzi": "幽谷盘石曲折溪中流击石分叉卵石洲",
+  "category": "mountain_cliff_geology",
+  "sub_category": "waterfall_stream_and_cascade",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "explore_pebble_island",
+  "gameplay_role": "braided_stream",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese mountainous water feature: Shaded Forest Valley Stream Shallow Stream Dividing around Pebble Island. Flowing crystal water with gouache splashes, dark ink outlines, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "water_scale": "hidden_glen_creek"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/wat_hidden_glen_creek_brook_split_pebble_island.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.wat_hidden_glen_creek_brook_split_pebble_island:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.64,
+        0.607
+      ],
+      [
+        0.748,
+        0.812
+      ]
+    ],
+    "frac_zero": 0.4912,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.28,
+        0.664,
+        0.237,
+        0.322,
+        0.349,
+        0.0
+      ],
+      [
+        0.115,
+        0.748,
+        0.993,
+        0.838,
+        0.733,
+        0.521,
+        0.278
+      ],
+      [
+        0.519,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.625,
+        0.0
+      ],
+      [
+        0.595,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.958,
+        0.401
+      ],
+      [
+        0.646,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.537
+      ],
+      [
+        0.344,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.914,
+        0.074
+      ],
+      [
+        0.02,
+        0.511,
+        0.915,
+        0.97,
+        0.752,
+        0.146,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      26,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 110,
+    "contact_reference_px": 110.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,205 @@
+{
+  "id": "ancient_china_mortal.rural_farming_and_pastoral.gra_earthen_walled_barn_round_thatched_conical_haystack",
+  "name": "Communal Earthen Village Barn Round Thatched Conical Field Haystack (2x2)",
+  "vietnamese_name": "Đụn Rơm Tròn Đội Mũ Tranh Đồ Sộ (2x2) (Nhà Kho Thôn Trang Tường Đất Rơm)",
+  "hanzi": "庄稼大聚落土打公仓大号厚密圆锥稻草堆",
+  "category": "rural_farming_and_pastoral",
+  "sub_category": "grain_granary_and_haystack",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "hide_in_haystack",
+  "gameplay_role": "haystack",
+  "destructible": false,
+  "material": "straw",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Ancient Chinese farm grain storage asset: Communal Earthen Village Barn Round Thatched Conical Field Haystack (2x2). Peasant pastoral atmosphere, ink outlines, top-down orthographic game sprite, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "farm_archetype": "earthen_walled_barn"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/rural_farming_and_pastoral/gra_earthen_walled_barn_round_thatched_conical_haystack.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.rural_farming_and_pastoral.gra_earthen_walled_barn_round_thatched_conical_haystack:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.499,
+        0.589
+      ],
+      [
+        0.84,
+        0.575
+      ]
+    ],
+    "frac_zero": 0.514,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.078,
+        0.658,
+        0.073,
+        0.505,
+        0.071
+      ],
+      [
+        0.124,
+        0.337,
+        0.742,
+        1.0,
+        0.769,
+        0.454,
+        0.312
+      ],
+      [
+        0.34,
+        0.731,
+        1.0,
+        1.0,
+        1.0,
+        0.88,
+        0.26
+      ],
+      [
+        0.771,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.769
+      ],
+      [
+        0.938,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.946
+      ],
+      [
+        0.637,
+        1.0,
+        1.0,
+        0.753,
+        0.565,
+        0.437,
+        0.149
+      ],
+      [
+        0.065,
+        0.567,
+        0.916,
+        0.321,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      20
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 65,
+    "contact_reference_px": 65.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

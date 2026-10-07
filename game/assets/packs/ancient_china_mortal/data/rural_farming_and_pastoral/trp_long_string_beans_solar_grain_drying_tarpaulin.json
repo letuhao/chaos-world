@@ -1,0 +1,170 @@
+{
+  "id": "ancient_china_mortal.rural_farming_and_pastoral.trp_long_string_beans_solar_grain_drying_tarpaulin",
+  "name": "Climbing Long Pole Green Beans Coarse Hemp Sheet Spread with Golden Harvest",
+  "vietnamese_name": "Tấm Bạt Vải Thô Trải Phơi Thóc Vàng (2x2) (Giàn Đậu Cô Ve Dài Leo Cọc)",
+  "hanzi": "青长豆角藤架铺地粗麻布摊晒稻谷片",
+  "category": "rural_farming_and_pastoral",
+  "sub_category": "crop_trellis_and_hanging_harvest",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "rake_solar_drying_grain",
+  "gameplay_role": "drying_sheet",
+  "destructible": false,
+  "material": "cloth",
+  "cultivation_element": "yang",
+  "prompt_summary": "Ancient Chinese farm crop harvest display: Climbing Long Pole Green Beans Coarse Hemp Sheet Spread with Golden Harvest. Golden rustic farm aesthetic, ink contours, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "crop_type": "long_string_beans"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/rural_farming_and_pastoral/trp_long_string_beans_solar_grain_drying_tarpaulin.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.rural_farming_and_pastoral.trp_long_string_beans_solar_grain_drying_tarpaulin:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.591,
+        0.611
+      ],
+      [
+        0.653,
+        0.749
+      ]
+    ],
+    "frac_zero": 0.5077,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.109,
+        0.335,
+        0.029,
+        0.07,
+        0.059,
+        0.425,
+        0.008
+      ],
+      [
+        0.129,
+        0.945,
+        1.0,
+        1.0,
+        1.0,
+        0.905,
+        0.064
+      ],
+      [
+        0.428,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.429
+      ],
+      [
+        0.096,
+        0.983,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.641
+      ],
+      [
+        0.229,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.799
+      ],
+      [
+        0.605,
+        0.878,
+        0.883,
+        0.974,
+        0.546,
+        0.834,
+        0.66
+      ],
+      [
+        0.21,
+        0.304,
+        0.0,
+        0.266,
+        0.0,
+        0.442,
+        0.573
+      ]
+    ],
+    "crop_offset": [
+      17,
+      25
+    ],
+    "trunk_columns": [
+      5,
+      6
+    ],
+    "contact_px": 40,
+    "contact_reference_px": 40.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

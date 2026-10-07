@@ -1,0 +1,101 @@
+{
+  "id": "ancient_china_mortal.creature_and_denizen.denizen_peasant_blacksmith_apprentice",
+  "name": "Sweating Blacksmith Apprentice",
+  "vietnamese_name": "Thợ Phụ Lò Rèn Cơ Bắp Đứng Kẹp Sắt",
+  "hanzi": "精壮铁匠学徒",
+  "category": "creature_and_denizen",
+  "sub_category": "peasant_farmer_and_artisan",
+  "type": "character_sprite",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "talk",
+  "gameplay_role": "Civilian NPC",
+  "destructible": false,
+  "material": "flesh",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Bare-chested young smith apprentice in leather apron holding iron tongs.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "npc_type": "civilian"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/creature_and_denizen/denizen_peasant_blacksmith_apprentice.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.creature_and_denizen.denizen_peasant_blacksmith_apprentice:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.41
+      ]
+    ],
+    "frac_zero": 0.8561,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      2,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.408,
+        0.161
+      ],
+      [
+        0.659,
+        0.556
+      ],
+      [
+        0.263,
+        0.333
+      ]
+    ],
+    "crop_offset": [
+      38,
+      17
+    ],
+    "trunk_columns": [],
+    "contact_px": 7,
+    "contact_reference_px": 7.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

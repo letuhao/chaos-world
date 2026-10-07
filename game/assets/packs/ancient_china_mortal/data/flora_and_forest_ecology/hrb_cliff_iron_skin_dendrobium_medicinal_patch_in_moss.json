@@ -1,0 +1,155 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.hrb_cliff_iron_skin_dendrobium_medicinal_patch_in_moss",
+  "name": "Cliff Iron-Skin Dendrobium Orchid Dense Medicinal Cluster Nestled in Green Moss",
+  "vietnamese_name": "Khóm Thuốc Nhỏ Giữa Thảm Rêu Ẩm (Thạch Hộc Thiết Bì Mọc Vách Đá)",
+  "hanzi": "雁荡绝壁铁皮石斛青苔湿润护持小药圃",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "mountain_medicinal_herb_wild",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "gather_moss_herb_patch",
+  "gameplay_role": "herb_patch",
+  "destructible": false,
+  "material": "plant",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese valuable mountain medicinal herb: Cliff Iron-Skin Dendrobium Orchid Dense Medicinal Cluster Nestled in Green Moss. Botanical accuracy, luminous gouache accents, ink contours, top-down orthographic game prop on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "species": "cliff_iron_skin_dendrobium"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/hrb_cliff_iron_skin_dendrobium_medicinal_patch_in_moss.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.hrb_cliff_iron_skin_dendrobium_medicinal_patch_in_moss:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.481,
+        0.5
+      ]
+    ],
+    "frac_zero": 0.706,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.053,
+        0.143,
+        0.619,
+        0.424,
+        0.244,
+        0.003
+      ],
+      [
+        0.595,
+        0.831,
+        0.986,
+        0.984,
+        0.885,
+        0.438
+      ],
+      [
+        0.065,
+        0.505,
+        0.721,
+        0.717,
+        0.332,
+        0.031
+      ]
+    ],
+    "crop_offset": [
+      36,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3
+    ],
+    "contact_px": 63,
+    "contact_reference_px": 63.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        1,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      1,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      128,
+      0,
+      256,
+      128
+    ]
+  }
+}

@@ -1,0 +1,163 @@
+{
+  "id": "ancient_china_mortal.folk_religion_fengshui.folk_fengshui_spirit_wall_brick_screen",
+  "name": "Curved Brick Feng Shui Dragon Screen",
+  "vietnamese_name": "Bức Tường Bình Phong Phong Thủy Chắn Gió",
+  "hanzi": "风水照壁九龙影壁",
+  "category": "folk_religion_fengshui",
+  "sub_category": "fengshui_geomancy_pillar",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": null,
+  "gameplay_role": "Ornate curved brick wall blocking malign wind leylines.",
+  "destructible": false,
+  "material": "brick",
+  "cultivation_element": "earth",
+  "prompt_summary": "Curved imperial grey brick Feng Shui screen wall with decorative carved cloud patterns blocking negative energy.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "qi_barrier": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/folk_religion_fengshui/folk_fengshui_spirit_wall_brick_screen.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.folk_religion_fengshui.folk_fengshui_spirit_wall_brick_screen:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.575,
+        0.562,
+        0.583
+      ]
+    ],
+    "frac_zero": 0.717,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      8,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.16,
+        0.655,
+        0.884,
+        0.985,
+        0.959,
+        0.826,
+        0.544,
+        0.061
+      ],
+      [
+        0.755,
+        0.999,
+        0.823,
+        0.677,
+        0.709,
+        0.915,
+        1.0,
+        0.679
+      ],
+      [
+        0.605,
+        0.25,
+        0.0,
+        0.0,
+        0.0,
+        0.017,
+        0.487,
+        0.569
+      ]
+    ],
+    "crop_offset": [
+      68,
+      16
+    ],
+    "trunk_columns": [
+      6,
+      7
+    ],
+    "contact_px": 26,
+    "contact_reference_px": 26.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      128
+    ]
+  }
+}

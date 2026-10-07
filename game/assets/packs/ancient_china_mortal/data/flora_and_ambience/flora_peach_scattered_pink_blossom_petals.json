@@ -1,0 +1,113 @@
+{
+  "id": "ancient_china_mortal.flora_and_ambience.flora_peach_scattered_pink_blossom_petals",
+  "name": "Ground Drift of Fallen Pink Peach Petals",
+  "vietnamese_name": "Cánh Hoa Đào Hồng Rơi Rụng Rải Rác",
+  "hanzi": "随风飘零桃花瓣毯",
+  "category": "flora_and_ambience",
+  "sub_category": "ginkgo_and_peach_tree",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "admire_petals",
+  "gameplay_role": "Delicate pink petals scattered across dirt path by wind.",
+  "destructible": false,
+  "material": "plant",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Ground patch scattered with delicate fallen pink and white peach blossom petals floating on puddle.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "petals_decal": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_ambience/flora_peach_scattered_pink_blossom_petals.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_ambience.flora_peach_scattered_pink_blossom_petals:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.701
+      ]
+    ],
+    "frac_zero": 0.6215,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.394,
+        0.848,
+        0.475
+      ],
+      [
+        0.87,
+        1.0,
+        0.902
+      ],
+      [
+        0.391,
+        0.885,
+        0.418
+      ]
+    ],
+    "crop_offset": [
+      16,
+      21
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 75,
+    "contact_reference_px": 75.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

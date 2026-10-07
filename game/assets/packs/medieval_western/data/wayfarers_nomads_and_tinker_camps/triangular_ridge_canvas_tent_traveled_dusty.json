@@ -1,0 +1,175 @@
+{
+  "id": "medieval_western.wayfarers_nomads_and_tinker_camps.triangular_ridge_canvas_tent_traveled_dusty",
+  "name": "Dust-Covered Low Wedge Ridge Canvas Traveler Tent",
+  "vietnamese_name": "Lều Vải Hình Tam Giác Du Mục (Bụi Đường Xa)",
+  "category": "wayfarers_nomads_and_tinker_camps",
+  "sub_category": "nomad_canvas_wedge_tent",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": true,
+  "vision_mode": "low",
+  "interactive_verb": "rest",
+  "gameplay_role": "Wayfarer nomad campsite feature (Low Wedge Ridge Canvas Traveler Tent).",
+  "destructible": false,
+  "material": "cloth",
+  "feudal_culture": "wayfarer_nomad",
+  "prompt_summary": "2D orthographic top-down game sprite of dust-covered low wedge ridge canvas traveler tent, worn canvas and dust-stained road timber, Medieval itinerant wayfarer nomad camp style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/wayfarers_nomads_and_tinker_camps/triangular_ridge_canvas_tent_traveled_dusty.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.wayfarers_nomads_and_tinker_camps.triangular_ridge_canvas_tent_traveled_dusty:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.479,
+        0.436
+      ],
+      [
+        0.798,
+        0.826
+      ]
+    ],
+    "frac_zero": 0.5126,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.022,
+        0.512,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.194,
+        0.619,
+        0.988,
+        0.293,
+        0.1,
+        0.0
+      ],
+      [
+        0.324,
+        0.965,
+        1.0,
+        1.0,
+        0.996,
+        0.817,
+        0.156
+      ],
+      [
+        0.785,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.786
+      ],
+      [
+        0.71,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.795
+      ],
+      [
+        0.469,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.576
+      ],
+      [
+        0.036,
+        0.547,
+        0.844,
+        0.957,
+        0.79,
+        0.456,
+        0.054
+      ]
+    ],
+    "crop_offset": [
+      18,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 131,
+    "contact_reference_px": 131.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

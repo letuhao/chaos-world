@@ -1,0 +1,159 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.und_fragrant_wild_camellia_broad_undergrowth_patch_2x1",
+  "name": "Fragrant Wild Winter Camellia Broad Underbrush Foliage Strip (2x1)",
+  "vietnamese_name": "Dải Cây Bụi Dày Liền Nhau (2x1) (Trà My Rừng Mùa Đông Tỏa Hương)",
+  "hanzi": "耐冬傲霜野山茶双格横生低矮灌木带",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "underbrush_fern_and_creeper",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect_undergrowth",
+  "gameplay_role": "underbrush",
+  "destructible": false,
+  "material": "plant",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese forest underbrush vegetation: Fragrant Wild Winter Camellia Broad Underbrush Foliage Strip (2x1). Organic foliage, delicate leaves and flowers, ink outlines, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "foliage_group": "fragrant_wild_camellia"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/und_fragrant_wild_camellia_broad_undergrowth_patch_2x1.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.und_fragrant_wild_camellia_broad_undergrowth_patch_2x1:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.474,
+        0.478
+      ]
+    ],
+    "frac_zero": 0.6829,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.122,
+        0.389,
+        0.102,
+        0.173,
+        0.181,
+        0.295,
+        0.194
+      ],
+      [
+        0.435,
+        0.945,
+        0.976,
+        0.999,
+        0.993,
+        0.718,
+        0.216
+      ],
+      [
+        0.177,
+        0.342,
+        0.49,
+        0.632,
+        0.7,
+        0.481,
+        0.132
+      ]
+    ],
+    "crop_offset": [
+      20,
+      29
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 161,
+    "contact_reference_px": 161.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

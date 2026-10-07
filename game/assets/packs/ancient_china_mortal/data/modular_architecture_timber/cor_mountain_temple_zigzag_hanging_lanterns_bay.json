@@ -1,0 +1,122 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.cor_mountain_temple_zigzag_hanging_lanterns_bay",
+  "name": "Mountain Monastery Stepped Walkway Corridor Bay Hung with Festive Red Lanterns",
+  "vietnamese_name": "Hành Lang Treo Đèn Lồng Đỏ Lễ Hội (Hành Lang Ziczac Quanh Núi)",
+  "hanzi": "依山曲折栈廊挂双红纱灯连廊",
+  "category": "modular_architecture_timber",
+  "sub_category": "covered_corridor_and_veranda",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "gaze_at_lanterns",
+  "gameplay_role": "lantern_corridor",
+  "destructible": false,
+  "material": "silk",
+  "cultivation_element": "yang",
+  "prompt_summary": "Ancient Chinese covered garden corridor module: Mountain Monastery Stepped Walkway Corridor Bay Hung with Festive Red Lanterns. Traditional tiled wooden gallery, balustrade railing, top-down orthographic game sprite, transparent alpha cutout.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "corridor",
+    "style": "mountain_temple_zigzag"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/cor_mountain_temple_zigzag_hanging_lanterns_bay.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.cor_mountain_temple_zigzag_hanging_lanterns_bay:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.589,
+        0.582
+      ]
+    ],
+    "frac_zero": 0.6229,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.375,
+        0.455,
+        0.514,
+        0.79,
+        0.476,
+        0.463,
+        0.35
+      ],
+      [
+        0.777,
+        0.924,
+        0.942,
+        1.0,
+        0.94,
+        0.948,
+        0.747
+      ],
+      [
+        0.288,
+        0.157,
+        0.225,
+        0.889,
+        0.102,
+        0.287,
+        0.265
+      ]
+    ],
+    "crop_offset": [
+      17,
+      22
+    ],
+    "trunk_columns": [
+      3
+    ],
+    "contact_px": 34,
+    "contact_reference_px": 34.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,279 @@
+{
+  "id": "ancient_china_mortal.rural_farming_and_pastoral.gra_round_clay_granary_circular_stone_threshing_floor",
+  "name": "Peasant Round Mud Silo Granary Paved Circular Granite Threshing Floor (3x3)",
+  "vietnamese_name": "Sân Đập Lúa Lát Đá Tròn (3x3) (Bồ Thóc Tròn Đất Nện Nông Thôn)",
+  "hanzi": "农家圆顶泥抹谷仓平整青石圆盘大晒谷场",
+  "category": "rural_farming_and_pastoral",
+  "sub_category": "grain_granary_and_haystack",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "thresh_grain_on_floor",
+  "gameplay_role": "threshing_floor",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "yang",
+  "prompt_summary": "Ancient Chinese farm grain storage asset: Peasant Round Mud Silo Granary Paved Circular Granite Threshing Floor (3x3). Peasant pastoral atmosphere, ink outlines, top-down orthographic game sprite, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "farm_archetype": "round_clay_granary"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/rural_farming_and_pastoral/gra_round_clay_granary_circular_stone_threshing_floor.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.rural_farming_and_pastoral.gra_round_clay_granary_circular_stone_threshing_floor:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.533,
+        0.964,
+        0.618
+      ],
+      [
+        0.953,
+        1.0,
+        0.947
+      ],
+      [
+        0.582,
+        0.973,
+        0.601
+      ]
+    ],
+    "frac_zero": 0.3346,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.078,
+        0.577,
+        0.882,
+        0.987,
+        0.862,
+        0.498,
+        0.352,
+        0.004,
+        0.0
+      ],
+      [
+        0.0,
+        0.45,
+        0.879,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.992,
+        0.775,
+        0.098
+      ],
+      [
+        0.157,
+        0.942,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.936,
+        0.247
+      ],
+      [
+        0.632,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.635
+      ],
+      [
+        0.813,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.738
+      ],
+      [
+        0.946,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.942
+      ],
+      [
+        0.789,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.844
+      ],
+      [
+        0.581,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.574
+      ],
+      [
+        0.13,
+        0.958,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.972,
+        0.173
+      ],
+      [
+        0.0,
+        0.373,
+        0.966,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.996,
+        0.37,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.145,
+        0.716,
+        0.914,
+        0.98,
+        0.845,
+        0.547,
+        0.199,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      20
+    ],
+    "trunk_columns": [
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 156,
+    "contact_reference_px": 156.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        2,
+        1,
+        2
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

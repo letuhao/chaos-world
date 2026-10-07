@@ -1,0 +1,226 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.gat_mountain_monastery_paifang_two_pillar_memorial",
+  "name": "Mountain Daoist Monastery Two-Pillar Carved Memorial Archway (Paifang)",
+  "vietnamese_name": "Cổng Nghi Môn Hai Trụ Đứng (Cổng Đạo Viện Núi Cao)",
+  "hanzi": "仙山道观二柱单间雕花牌坊",
+  "category": "modular_architecture_timber",
+  "sub_category": "moon_gate_and_archway",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "pass_memorial_arch",
+  "gameplay_role": "memorial_arch",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Ancient Chinese architectural entrance portal: Mountain Daoist Monastery Two-Pillar Carved Memorial Archway (Paifang). Ornate joinery, traditional aesthetic, top-down orthographic view for 2D RPG, clear transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "gateway",
+    "style": "mountain_monastery"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/gat_mountain_monastery_paifang_two_pillar_memorial.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.gat_mountain_monastery_paifang_two_pillar_memorial:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.482,
+        0.841,
+        0.485
+      ],
+      [
+        0.321,
+        0.323,
+        0.347
+      ]
+    ],
+    "frac_zero": 0.7093,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      9,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.022,
+        0.362,
+        0.392,
+        0.388,
+        0.389,
+        0.036,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.324,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.418,
+        0.025,
+        0.0
+      ],
+      [
+        0.431,
+        0.992,
+        0.988,
+        0.966,
+        0.969,
+        0.982,
+        1.0,
+        0.532,
+        0.031
+      ],
+      [
+        0.486,
+        0.969,
+        0.982,
+        0.868,
+        0.832,
+        0.997,
+        0.966,
+        0.606,
+        0.297
+      ],
+      [
+        0.024,
+        0.576,
+        0.606,
+        0.055,
+        0.001,
+        0.567,
+        0.568,
+        0.063,
+        0.0
+      ],
+      [
+        0.0,
+        0.401,
+        0.402,
+        0.035,
+        0.0,
+        0.437,
+        0.399,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.592,
+        0.453,
+        0.197,
+        0.008,
+        0.61,
+        0.569,
+        0.01,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      61,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 25,
+    "contact_reference_px": 25.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

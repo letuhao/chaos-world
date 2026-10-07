@@ -15,11 +15,18 @@ extends RefCounted
 ##
 ## ## FOUR TYPES, NAMED
 ##
-## [constant TYPE_BOOL] `bool` · [constant TYPE_INT] `int` · [constant TYPE_FLOAT]
-## `float` · [constant TYPE_STRING] `String`. Primitives ONLY, so the whole store
+## [constant KIND_BOOL] `bool` · [constant KIND_INT] `int` · [constant KIND_FLOAT]
+## `float` · [constant KIND_STRING] `String`. Primitives ONLY, so the whole store
 ## round-trips through `module_data` with no `Vector2`, no `StringName` and no engine
 ## type anywhere in it — the rule `DomainFixtures`' ledger docblock states and the one
 ## that makes `Actor.to_dict` the entire save.
+##
+## The names are `KIND_*` and NOT `TYPE_*` on purpose: `TYPE_BOOL` is Godot's own global
+## enum constant (the `Variant.Type` values `typeof()` returns), so a local `TYPE_BOOL`
+## SHADOWS it and `typeof(value) == TYPE_BOOL` silently compares an `int` to a `String`.
+## That is a compile error Godot reports as "Invalid operands int and String for ==",
+## which is exactly how this file was found: nothing loaded the module, so it had never
+## been compiled.
 ##
 ## `StringName` is NOT a stored type even though the authored keys are `StringName`: a
 ## `StringName` in a save is a reference the loader resolves by name, so a save written
@@ -33,13 +40,13 @@ const MODULE_KEY := &"dialogue_state"
 const STATE_KEY := "variables"
 const SCHEMA_VERSION := 1
 
-const TYPE_BOOL := "bool"
-const TYPE_INT := "int"
-const TYPE_FLOAT := "float"
-const TYPE_STRING := "string"
+const KIND_BOOL := "bool"
+const KIND_INT := "int"
+const KIND_FLOAT := "float"
+const KIND_STRING := "string"
 ## CLOSED, so a save carrying an unknown type is refused rather than read as a String
 ## and quietly compared against a float.
-const TYPES: Array[String] = [TYPE_BOOL, TYPE_INT, TYPE_FLOAT, TYPE_STRING]
+const TYPES: Array[String] = [KIND_BOOL, KIND_INT, KIND_FLOAT, KIND_STRING]
 
 ## Rows this store may hold. A conversation cannot grow a save without limit, so a
 ## store past the cap REFUSES the write and reports it rather than dropping the oldest
@@ -63,11 +70,11 @@ func get_value(key: StringName) -> Variant:
 	var raw: Variant = _rows[String(key)]["value"]
 	# Read back through the DECLARED type rather than handing the payload out as it
 	# arrived, so `1.0` from a JSON bool reads as `true` on every load and not once.
-	if kind == TYPE_BOOL:
+	if kind == KIND_BOOL:
 		return _as_bool(raw)
-	if kind == TYPE_INT:
+	if kind == KIND_INT:
 		return int(raw)
-	if kind == TYPE_FLOAT:
+	if kind == KIND_FLOAT:
 		return float(raw)
 	return String(raw)
 
@@ -100,15 +107,15 @@ func matches_type(key: StringName, candidate: Variant) -> bool:
 ## equality — because a caller must have run `matches_type` to get here, and a gate
 ## that asked without checking gets "not met" rather than an exception.
 func compare(key: StringName, candidate: Variant) -> int:
-	var held := get_value(key)
+	var held: Variant = get_value(key)
 	if held == null or not matches_type(key, candidate):
 		return 0
 	match type_of(key):
-		TYPE_BOOL, TYPE_INT:
+		KIND_BOOL, KIND_INT:
 			return _sign(int(held) - int(candidate))
-		TYPE_FLOAT:
+		KIND_FLOAT:
 			return _sign(float(held) - float(candidate))
-		TYPE_STRING:
+		KIND_STRING:
 			return _sign(float(String(held).naturalnocasecmp_to(String(candidate))))
 	return 0
 
@@ -239,13 +246,13 @@ func _type_of_value(value: Variant) -> String:
 	if value == null:
 		return ""
 	if typeof(value) == TYPE_BOOL:
-		return TYPE_BOOL
+		return KIND_BOOL
 	if typeof(value) == TYPE_INT:
-		return TYPE_INT
+		return KIND_INT
 	if typeof(value) == TYPE_FLOAT:
-		return TYPE_FLOAT
+		return KIND_FLOAT
 	if typeof(value) == TYPE_STRING or typeof(value) == TYPE_STRING_NAME:
-		return TYPE_STRING
+		return KIND_STRING
 	return ""
 
 
@@ -254,13 +261,13 @@ func _type_of_value(value: Variant) -> String:
 ## in and read back through the same type, and the two never disagree.
 func _normalize(kind: String, value: Variant) -> Variant:
 	match kind:
-		TYPE_BOOL:
+		KIND_BOOL:
 			return _as_bool(value)
-		TYPE_INT:
+		KIND_INT:
 			return int(value)
-		TYPE_FLOAT:
+		KIND_FLOAT:
 			return float(value)
-		TYPE_STRING:
+		KIND_STRING:
 			return String(value)
 	return null
 

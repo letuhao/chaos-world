@@ -1,0 +1,161 @@
+{
+  "id": "medieval_western.wayfarers_nomads_and_tinker_camps.triangular_ridge_canvas_tent_festive_ribbon",
+  "name": "Ribbon-Adorned Low Wedge Ridge Canvas Traveler Tent",
+  "vietnamese_name": "Lều Vải Hình Tam Giác Du Mục (Buộc Dải Ruy Băng)",
+  "category": "wayfarers_nomads_and_tinker_camps",
+  "sub_category": "nomad_canvas_wedge_tent",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": true,
+  "vision_mode": "low",
+  "interactive_verb": "rest",
+  "gameplay_role": "Wayfarer nomad campsite feature (Low Wedge Ridge Canvas Traveler Tent).",
+  "destructible": false,
+  "material": "cloth",
+  "feudal_culture": "wayfarer_nomad",
+  "prompt_summary": "2D orthographic top-down game sprite of ribbon-adorned low wedge ridge canvas traveler tent, brightly dyed festive ribbons and brass jingle bells, Medieval itinerant wayfarer nomad camp style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/wayfarers_nomads_and_tinker_camps/triangular_ridge_canvas_tent_festive_ribbon.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.wayfarers_nomads_and_tinker_camps.triangular_ridge_canvas_tent_festive_ribbon:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.375,
+        0.459
+      ],
+      [
+        0.735,
+        0.742
+      ]
+    ],
+    "frac_zero": 0.6511,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.405,
+        0.228,
+        0.104,
+        0.0
+      ],
+      [
+        0.0,
+        0.079,
+        0.93,
+        0.488,
+        0.046,
+        0.0
+      ],
+      [
+        0.158,
+        0.883,
+        1.0,
+        0.96,
+        0.414,
+        0.016
+      ],
+      [
+        0.442,
+        1.0,
+        1.0,
+        1.0,
+        0.873,
+        0.35
+      ],
+      [
+        0.823,
+        1.0,
+        1.0,
+        1.0,
+        0.988,
+        0.553
+      ],
+      [
+        0.399,
+        1.0,
+        1.0,
+        1.0,
+        0.757,
+        0.022
+      ],
+      [
+        0.215,
+        0.688,
+        0.434,
+        0.471,
+        0.34,
+        0.057
+      ]
+    ],
+    "crop_offset": [
+      43,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3
+    ],
+    "contact_px": 25,
+    "contact_reference_px": 25.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

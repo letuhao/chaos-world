@@ -1,0 +1,190 @@
+{
+  "id": "medieval_western.hanseatic_and_flemish_burgher.crow_stepped_roofline_soot_merchant",
+  "name": "Chimney-Sooted Crow-Stepped Red Brick Gable",
+  "vietnamese_name": "Đầu Hồi Bậc Thang Gạch Đỏ (Bám Muội Khói)",
+  "category": "hanseatic_and_flemish_burgher",
+  "sub_category": "stepped_gable_brick_facade",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": null,
+  "gameplay_role": "Hanseatic urban burgher feature (Crow-Stepped Red Brick Gable).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "flemish_hanseatic",
+  "prompt_summary": "2D orthographic top-down game sprite of chimney-sooted crow-stepped red brick gable, urban coal smoke smudges on masonry corners, Hanseatic Flemish burgher town style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/hanseatic_and_flemish_burgher/crow_stepped_roofline_soot_merchant.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.hanseatic_and_flemish_burgher.crow_stepped_roofline_soot_merchant:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.641,
+        0.755
+      ],
+      [
+        0.853,
+        0.889
+      ]
+    ],
+    "frac_zero": 0.6297,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.395,
+        0.612,
+        0.464,
+        0.286
+      ],
+      [
+        0.308,
+        0.901,
+        0.97,
+        0.771,
+        0.027
+      ],
+      [
+        0.836,
+        1.0,
+        1.0,
+        0.926,
+        0.272
+      ],
+      [
+        0.863,
+        1.0,
+        1.0,
+        1.0,
+        0.634
+      ],
+      [
+        0.764,
+        1.0,
+        1.0,
+        0.997,
+        0.147
+      ],
+      [
+        0.812,
+        1.0,
+        1.0,
+        0.997,
+        0.527
+      ],
+      [
+        0.551,
+        0.901,
+        0.847,
+        0.839,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      60,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "contact_px": 109,
+    "contact_reference_px": 109.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

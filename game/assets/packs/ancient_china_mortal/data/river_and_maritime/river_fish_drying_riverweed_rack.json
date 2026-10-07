@@ -1,0 +1,154 @@
+{
+  "id": "ancient_china_mortal.river_and_maritime.river_fish_drying_riverweed_rack",
+  "name": "Hanging Dark River Edible Weed Racks",
+  "vietnamese_name": "Giàn Phơi Rong Biển Rong Sông Khô",
+  "hanzi": "晾晒水生野菜架",
+  "category": "river_and_maritime",
+  "sub_category": "fish_drying_rack",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "gather_weeds",
+  "gameplay_role": "Bamboo racks draped with dark olive-green drying edible river greens.",
+  "destructible": true,
+  "material": "bamboo",
+  "cultivation_element": "mortal",
+  "prompt_summary": "A-frame bamboo rack hung with dripping dark olive-green river algae ribbons curing in sun.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "vegetable_yield": 15
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/river_and_maritime/river_fish_drying_riverweed_rack.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.river_and_maritime.river_fish_drying_riverweed_rack:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.333,
+        0.339
+      ]
+    ],
+    "frac_zero": 0.7231,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.339,
+        0.3,
+        0.278,
+        0.528,
+        0.294,
+        0.295,
+        0.369
+      ],
+      [
+        0.41,
+        0.556,
+        0.535,
+        0.601,
+        0.507,
+        0.646,
+        0.396
+      ],
+      [
+        0.144,
+        0.044,
+        0.269,
+        0.084,
+        0.2,
+        0.044,
+        0.22
+      ]
+    ],
+    "crop_offset": [
+      19,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 10,
+    "contact_reference_px": 10.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

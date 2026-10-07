@@ -1,0 +1,151 @@
+{
+  "id": "ancient_china_mortal.path_and_way.way_wood_bridge_rope_plank_sway",
+  "name": "Swaying Rope Suspension Bridge",
+  "vietnamese_name": "Cầu Treo Dây Thừng Ván Nhún",
+  "hanzi": "悬空索桥",
+  "category": "path_and_way",
+  "sub_category": "wooden_footbridge",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Thrilling mountain ravine crossing made of thick hemp ropes and spaced wooden slats.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Top-down narrow swaying rope suspension bridge spanning gorge, wooden planks spaced across two thick hemp cables.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "ravine_crossing": true,
+    "sway_vertigo_check": 0.45
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/path_and_way/way_wood_bridge_rope_plank_sway.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.path_and_way.way_wood_bridge_rope_plank_sway:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.461,
+        0.469,
+        0.461
+      ]
+    ],
+    "frac_zero": 0.6625,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      11,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.259,
+        0.237,
+        0.118,
+        0.106,
+        0.051,
+        0.05,
+        0.099,
+        0.128,
+        0.159,
+        0.365,
+        0.0
+      ],
+      [
+        0.285,
+        0.896,
+        0.695,
+        0.591,
+        0.548,
+        0.578,
+        0.565,
+        0.641,
+        0.877,
+        0.353,
+        0.348
+      ],
+      [
+        0.435,
+        0.529,
+        0.671,
+        0.739,
+        0.833,
+        0.792,
+        0.763,
+        0.711,
+        0.635,
+        0.518,
+        0.04
+      ]
+    ],
+    "crop_offset": [
+      27,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "contact_px": 135,
+    "contact_reference_px": 135.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

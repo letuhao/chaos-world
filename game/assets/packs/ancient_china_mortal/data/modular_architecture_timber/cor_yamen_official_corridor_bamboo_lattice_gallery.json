@@ -1,0 +1,127 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.cor_yamen_official_corridor_bamboo_lattice_gallery",
+  "name": "Magistrate Complex Dignified Corridor Open Air Corridor with Carved Bamboo Tracing",
+  "vietnamese_name": "Hành Lang Thông Thoáng Khắc Cành Trúc (Hành Lang Nha Môn Uy Nghi)",
+  "hanzi": "官署通廊透花镂空赏景长廊",
+  "category": "modular_architecture_timber",
+  "sub_category": "covered_corridor_and_veranda",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "peer_through_gallery",
+  "gameplay_role": "open_gallery",
+  "destructible": false,
+  "material": "bamboo",
+  "cultivation_element": "wind",
+  "prompt_summary": "Ancient Chinese covered garden corridor module: Magistrate Complex Dignified Corridor Open Air Corridor with Carved Bamboo Tracing. Traditional tiled wooden gallery, balustrade railing, top-down orthographic game sprite, transparent alpha cutout.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "corridor",
+    "style": "yamen_official_corridor"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/cor_yamen_official_corridor_bamboo_lattice_gallery.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.cor_yamen_official_corridor_bamboo_lattice_gallery:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.609,
+        0.617
+      ]
+    ],
+    "frac_zero": 0.6468,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.354,
+        0.417,
+        0.424,
+        0.77,
+        0.409,
+        0.434,
+        0.341
+      ],
+      [
+        0.739,
+        0.95,
+        0.95,
+        1.0,
+        0.958,
+        0.963,
+        0.731
+      ],
+      [
+        0.347,
+        0.338,
+        0.18,
+        0.882,
+        0.215,
+        0.34,
+        0.341
+      ]
+    ],
+    "crop_offset": [
+      17,
+      31
+    ],
+    "trunk_columns": [
+      3
+    ],
+    "contact_px": 66,
+    "contact_reference_px": 66.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

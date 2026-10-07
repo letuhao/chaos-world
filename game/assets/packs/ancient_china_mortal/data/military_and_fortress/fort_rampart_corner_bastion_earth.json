@@ -1,0 +1,292 @@
+{
+  "id": "ancient_china_mortal.military_and_fortress.fort_rampart_corner_bastion_earth",
+  "name": "Rammed-Earth Angular Corner Bastion",
+  "vietnamese_name": "Góc Thành Đất Nện Vuông Vức",
+  "hanzi": "夯土城墙拐角",
+  "category": "military_and_fortress",
+  "sub_category": "rammed_earth_rampart",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": null,
+  "gameplay_role": "Right-angle defensive corner anchor with reinforced clay core.",
+  "destructible": false,
+  "material": "earth",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Projecting angular corner bastion made of compacted yellow earth and dry timber binders, sheer defensive face.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "coverage_angle": 270
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/military_and_fortress/fort_rampart_corner_bastion_earth.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.military_and_fortress.fort_rampart_corner_bastion_earth:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.621,
+        0.461,
+        0.514
+      ],
+      [
+        0.818,
+        1.0,
+        0.852
+      ],
+      [
+        0.097,
+        0.827,
+        0.284
+      ]
+    ],
+    "frac_zero": 0.5663,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        false,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 8,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      11,
+      10
+    ],
+    "sub_fill": [
+      [
+        0.044,
+        0.551,
+        0.259,
+        0.02,
+        0.0,
+        0.0,
+        0.0,
+        0.211,
+        0.586,
+        0.096,
+        0.0
+      ],
+      [
+        0.444,
+        1.0,
+        0.86,
+        0.556,
+        0.352,
+        0.224,
+        0.506,
+        0.874,
+        1.0,
+        0.678,
+        0.0
+      ],
+      [
+        0.554,
+        1.0,
+        1.0,
+        0.979,
+        0.9,
+        0.886,
+        0.967,
+        1.0,
+        1.0,
+        0.791,
+        0.0
+      ],
+      [
+        0.767,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.962,
+        0.191
+      ],
+      [
+        0.726,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.909
+      ],
+      [
+        0.164,
+        0.57,
+        0.96,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.967,
+        0.293
+      ],
+      [
+        0.0,
+        0.0,
+        0.211,
+        0.956,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.972,
+        0.389,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.782,
+        1.0,
+        1.0,
+        1.0,
+        0.94,
+        0.6,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.055,
+        0.721,
+        0.937,
+        0.517,
+        0.027,
+        0.031,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.081,
+        0.425,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      74
+    ],
+    "trunk_columns": [
+      5
+    ],
+    "contact_px": 59,
+    "contact_reference_px": 59.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      384
+    ]
+  }
+}

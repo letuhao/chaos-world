@@ -1,0 +1,208 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.ruf_charcoal_grey_tile_gable_end_stepped_wall",
+  "name": "Imperial Charcoal Grey Clay Tile Stepped Horse-Head Gable End (Matouqiang)",
+  "vietnamese_name": "Đầu Hồi Tường Bậc Đầu Ngựa (Mã Đầu Tường) (Ngói Xám Tro Cung Đình)",
+  "hanzi": "官造青灰瓦徽派马头山墙顶",
+  "category": "modular_architecture_timber",
+  "sub_category": "modular_roof_and_flying_eaves",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "admire_matouqiang",
+  "gameplay_role": "gable_end",
+  "destructible": false,
+  "material": "brick",
+  "cultivation_element": "fire",
+  "prompt_summary": "Ancient Chinese modular roof and eaves component: Imperial Charcoal Grey Clay Tile Stepped Horse-Head Gable End (Matouqiang). Intricate clay tiles, sweeping silhouette, gouache rendering with ink contours, orthographic top-down view, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "roof",
+    "style": "charcoal_grey_tile"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/ruf_charcoal_grey_tile_gable_end_stepped_wall.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.ruf_charcoal_grey_tile_gable_end_stepped_wall:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.534,
+        0.527
+      ],
+      [
+        0.761,
+        0.731
+      ]
+    ],
+    "frac_zero": 0.517,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.013,
+        0.45,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.459,
+        0.489,
+        0.698,
+        0.987,
+        0.554,
+        0.525,
+        0.396
+      ],
+      [
+        0.37,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.156
+      ],
+      [
+        0.308,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.072
+      ],
+      [
+        0.412,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.219
+      ],
+      [
+        0.783,
+        0.997,
+        1.0,
+        1.0,
+        1.0,
+        0.99,
+        0.704
+      ],
+      [
+        0.019,
+        0.391,
+        0.967,
+        0.674,
+        0.844,
+        0.126,
+        0.023
+      ]
+    ],
+    "crop_offset": [
+      20,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 112,
+    "contact_reference_px": 112.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

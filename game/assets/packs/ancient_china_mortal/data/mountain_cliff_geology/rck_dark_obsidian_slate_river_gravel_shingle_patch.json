@@ -1,0 +1,127 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.rck_dark_obsidian_slate_river_gravel_shingle_patch",
+  "name": "Dark Iron Mineral Slate Riverbank Oval Pebble Shingle Bed (2x1)",
+  "vietnamese_name": "Bãi Sỏi Tròn Rải Rác Ven Bờ (Đá Phiến Đen Chứa Quặng Sắt)",
+  "hanzi": "玄黑铁矿水畔椭圆鹅卵石滩",
+  "category": "mountain_cliff_geology",
+  "sub_category": "boulder_scree_and_pebbles",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "walk_on_pebbles",
+  "gameplay_role": "gravel_bed",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese geology boulder prop: Dark Iron Mineral Slate Riverbank Oval Pebble Shingle Bed (2x1). Realistic mineral surface, ink contour line, top-down orthographic game asset, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "rock_type": "dark_obsidian_slate"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/rck_dark_obsidian_slate_river_gravel_shingle_patch.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.rck_dark_obsidian_slate_river_gravel_shingle_patch:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.702,
+        0.773
+      ]
+    ],
+    "frac_zero": 0.5701,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.14,
+        0.574,
+        0.742,
+        0.892,
+        0.761,
+        0.233
+      ],
+      [
+        0.83,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.898
+      ],
+      [
+        0.32,
+        0.806,
+        0.902,
+        0.91,
+        0.896,
+        0.363
+      ]
+    ],
+    "crop_offset": [
+      31,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 144,
+    "contact_reference_px": 144.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

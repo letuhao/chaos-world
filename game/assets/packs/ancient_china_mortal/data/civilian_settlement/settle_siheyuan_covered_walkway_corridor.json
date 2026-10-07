@@ -1,0 +1,146 @@
+{
+  "id": "ancient_china_mortal.civilian_settlement.settle_siheyuan_covered_walkway_corridor",
+  "name": "Covered Veranda Corridor",
+  "vietnamese_name": "Hành Lang Mái Ngói Nối Các Gian",
+  "hanzi": "抄手游廊",
+  "category": "civilian_settlement",
+  "sub_category": "courtyard_residence_siheyuan",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Elevated open-air covered walkway connecting living halls to protect from rain and snow.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Top-down straight segment of traditional covered wooden walkway corridor, red lacquered posts, carved decorative ceiling beams, and low bench railings on sides.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "weatherproof_walkway": true,
+    "bench_seating": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/civilian_settlement/settle_siheyuan_covered_walkway_corridor.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.civilian_settlement.settle_siheyuan_covered_walkway_corridor:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.619,
+        0.755,
+        0.615
+      ]
+    ],
+    "frac_zero": 0.5823,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      10,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.649,
+        0.712,
+        0.718,
+        0.75,
+        0.76,
+        0.766,
+        0.694,
+        0.702,
+        0.761,
+        0.398
+      ],
+      [
+        0.309,
+        0.722,
+        0.801,
+        0.797,
+        0.552,
+        0.764,
+        0.726,
+        0.739,
+        0.587,
+        0.0
+      ],
+      [
+        0.297,
+        0.65,
+        0.701,
+        0.724,
+        0.909,
+        0.801,
+        0.679,
+        0.668,
+        0.506,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      43,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "contact_px": 262,
+    "contact_reference_px": 262.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

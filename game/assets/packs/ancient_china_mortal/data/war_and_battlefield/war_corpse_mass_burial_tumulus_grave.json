@@ -1,0 +1,213 @@
+{
+  "id": "ancient_china_mortal.war_and_battlefield.war_corpse_mass_burial_tumulus_grave",
+  "name": "Battlefield Mass Burial Earthen Mound",
+  "vietnamese_name": "Gò Đất Chôn Chung Liệt Sĩ Trận Vong",
+  "hanzi": "阵亡将士万人坑土冢",
+  "category": "war_and_battlefield",
+  "sub_category": "corpse_trench",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "pay_respects",
+  "gameplay_role": "Long low earthen mound marked by broken swords and joss paper.",
+  "destructible": false,
+  "material": "earth",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Low elongated earthen burial mound covered in rough stone markers, stuck broken swords, and burnt yellow joss paper ash.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "karma_site": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/war_and_battlefield/war_corpse_mass_burial_tumulus_grave.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.war_and_battlefield.war_corpse_mass_burial_tumulus_grave:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.36,
+        0.811,
+        0.372
+      ],
+      [
+        0.646,
+        0.951,
+        0.695
+      ]
+    ],
+    "frac_zero": 0.7027,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.121,
+        0.455,
+        0.551,
+        0.183,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.313,
+        0.81,
+        0.869,
+        0.383,
+        0.001,
+        0.0
+      ],
+      [
+        0.248,
+        0.986,
+        1.0,
+        1.0,
+        1.0,
+        0.571,
+        0.0
+      ],
+      [
+        0.783,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.904,
+        0.161
+      ],
+      [
+        0.535,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.95,
+        0.229
+      ],
+      [
+        0.449,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.724,
+        0.0
+      ],
+      [
+        0.016,
+        0.438,
+        0.783,
+        0.855,
+        0.568,
+        0.044,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      92,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 101,
+    "contact_reference_px": 101.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

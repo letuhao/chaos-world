@@ -1,0 +1,128 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.cor_lake_waterside_gallery_broken_corridor_rafter_gap",
+  "name": "Lakeside Pierced Viewing Gallery War-Damaged Corridor with Collapsed Roof",
+  "vietnamese_name": "Hành Lang Gãy Đổ Mái Vì Đạn Tên (Hành Lang Bến Nước Ngắm Cảnh)",
+  "hanzi": "水阁临波水廊兵燹断落残梁通廊",
+  "category": "modular_architecture_timber",
+  "sub_category": "covered_corridor_and_veranda",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "leap_across_broken_gap",
+  "gameplay_role": "damaged_corridor",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "yin",
+  "prompt_summary": "Ancient Chinese covered garden corridor module: Lakeside Pierced Viewing Gallery War-Damaged Corridor with Collapsed Roof. Traditional tiled wooden gallery, balustrade railing, top-down orthographic game sprite, transparent alpha cutout.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "corridor",
+    "style": "lake_waterside_gallery"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/cor_lake_waterside_gallery_broken_corridor_rafter_gap.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.cor_lake_waterside_gallery_broken_corridor_rafter_gap:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.598,
+        0.569
+      ]
+    ],
+    "frac_zero": 0.6415,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.303,
+        0.361,
+        0.39,
+        0.777,
+        0.43,
+        0.365,
+        0.277
+      ],
+      [
+        0.697,
+        0.987,
+        0.893,
+        1.0,
+        0.886,
+        0.957,
+        0.666
+      ],
+      [
+        0.185,
+        0.231,
+        0.749,
+        0.896,
+        0.32,
+        0.232,
+        0.192
+      ]
+    ],
+    "crop_offset": [
+      17,
+      26
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 68,
+    "contact_reference_px": 68.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

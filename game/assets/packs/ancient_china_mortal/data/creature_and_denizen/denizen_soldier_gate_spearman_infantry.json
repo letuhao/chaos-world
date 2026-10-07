@@ -1,0 +1,104 @@
+{
+  "id": "ancient_china_mortal.creature_and_denizen.denizen_soldier_gate_spearman_infantry",
+  "name": "City Gate Spear Guard in Lamellar",
+  "vietnamese_name": "Lính Gác Cổng Thành Cầm Giáo Dài",
+  "hanzi": "守城重甲长枪兵",
+  "category": "creature_and_denizen",
+  "sub_category": "imperial_soldier_and_bailiff",
+  "type": "character_sprite",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "talk",
+  "gameplay_role": "Military Guard NPC",
+  "destructible": false,
+  "material": "flesh",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Imperial soldier in red-trimmed leather lamellar cuirass with conical helmet holding spear.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "npc_type": "guard"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/creature_and_denizen/denizen_soldier_gate_spearman_infantry.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.creature_and_denizen.denizen_soldier_gate_spearman_infantry:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.405
+      ]
+    ],
+    "frac_zero": 0.8794,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      2,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.171,
+        0.0
+      ],
+      [
+        0.733,
+        0.636
+      ],
+      [
+        0.381,
+        0.37
+      ]
+    ],
+    "crop_offset": [
+      43,
+      18
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 8,
+    "contact_reference_px": 8.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

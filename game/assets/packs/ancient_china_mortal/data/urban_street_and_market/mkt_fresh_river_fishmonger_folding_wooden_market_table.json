@@ -1,0 +1,162 @@
+{
+  "id": "ancient_china_mortal.urban_street_and_market.mkt_fresh_river_fishmonger_folding_wooden_market_table",
+  "name": "Fresh Fish & Seafood Monger Low Folding Wooden Trestle Table with Goods",
+  "vietnamese_name": "Bàn Gỗ Xếp Bày Hàng Chợ (Sạp Bán Cá Tươi Sống)",
+  "hanzi": "活水鱼鲜海味摊支腿木质平摆案板",
+  "category": "urban_street_and_market",
+  "sub_category": "market_stall_and_hawker_booth",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "browse_market_table",
+  "gameplay_role": "market_table",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese urban street market asset: Fresh Fish & Seafood Monger Low Folding Wooden Trestle Table with Goods. Detailed mercantile props, gouache textures with ink line accents, orthographic top-down view, clean transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "market_genre": "fresh_river_fishmonger"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/urban_street_and_market/mkt_fresh_river_fishmonger_folding_wooden_market_table.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.urban_street_and_market.mkt_fresh_river_fishmonger_folding_wooden_market_table:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.479,
+        0.484
+      ]
+    ],
+    "frac_zero": 0.6551,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.001,
+        0.16,
+        0.64,
+        0.142,
+        0.0,
+        0.0
+      ],
+      [
+        0.502,
+        0.712,
+        0.817,
+        1.0,
+        0.768,
+        0.733,
+        0.489
+      ],
+      [
+        0.416,
+        0.497,
+        0.828,
+        0.691,
+        0.821,
+        0.491,
+        0.434
+      ]
+    ],
+    "crop_offset": [
+      17,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 59,
+    "contact_reference_px": 59.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

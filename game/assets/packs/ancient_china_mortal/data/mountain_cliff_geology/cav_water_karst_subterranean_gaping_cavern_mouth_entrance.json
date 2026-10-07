@@ -1,0 +1,216 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.cav_water_karst_subterranean_gaping_cavern_mouth_entrance",
+  "name": "Water-Dripping Karst Sinkhole Dark Gaping Cavern Mouth Entrance (3x2)",
+  "vietnamese_name": "Cửa Hang Tối Om Rộng Lớn (3x2) (Hang Karst Nước Chảy Ngầm)",
+  "hanzi": "溶水漏斗幽黑张口深岩洞门",
+  "category": "mountain_cliff_geology",
+  "sub_category": "cave_mouth_and_grotto",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "solid",
+  "interactive_verb": "enter_cavern_depths",
+  "gameplay_role": "dungeon_entrance",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese mountain cave entrance landscape: Water-Dripping Karst Sinkhole Dark Gaping Cavern Mouth Entrance (3x2). Mysterious shadowy depths, rugged stone edges, ink outlines, top-down orthographic RPG sprite, transparent cutout.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "cave_archetype": "water_karst_subterranean"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/cav_water_karst_subterranean_gaping_cavern_mouth_entrance.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.cav_water_karst_subterranean_gaping_cavern_mouth_entrance:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.626,
+        0.782,
+        0.597
+      ],
+      [
+        0.857,
+        0.994,
+        0.849
+      ]
+    ],
+    "frac_zero": 0.5981,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.177,
+        0.639,
+        0.288,
+        0.193,
+        0.333,
+        0.413,
+        0.006
+      ],
+      [
+        0.333,
+        0.957,
+        1.0,
+        1.0,
+        1.0,
+        0.922,
+        0.288
+      ],
+      [
+        0.345,
+        0.998,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.372
+      ],
+      [
+        0.535,
+        0.983,
+        1.0,
+        1.0,
+        1.0,
+        0.995,
+        0.498
+      ],
+      [
+        0.665,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.561
+      ],
+      [
+        0.8,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.762
+      ],
+      [
+        0.678,
+        0.954,
+        0.977,
+        0.993,
+        0.967,
+        0.882,
+        0.64
+      ]
+    ],
+    "crop_offset": [
+      81,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 220,
+    "contact_reference_px": 220.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

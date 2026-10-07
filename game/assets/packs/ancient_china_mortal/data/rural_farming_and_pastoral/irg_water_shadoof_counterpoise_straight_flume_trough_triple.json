@@ -1,0 +1,126 @@
+{
+  "id": "ancient_china_mortal.rural_farming_and_pastoral.irg_water_shadoof_counterpoise_straight_flume_trough_triple",
+  "name": "Counterpoised Shadoof Water Lifter Long Bamboo Water Trough Span (3x1)",
+  "vietnamese_name": "Máng Tre Dẫn Nước Dài (3x1) (Cần Vọt Múc Nước Có Quả Đối Trọng)",
+  "hanzi": "桔槔杠杆汲水器三格凌空飞水长木枧",
+  "category": "rural_farming_and_pastoral",
+  "sub_category": "irrigation_flume_and_waterwheel",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "wash_in_flume_water",
+  "gameplay_role": "water_flume",
+  "destructible": false,
+  "material": "bamboo",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese agricultural irrigation system part: Counterpoised Shadoof Water Lifter Long Bamboo Water Trough Span (3x1). Functional wooden hydraulics, ink contours, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "irrigation_tech": "water_shadoof_counterpoise"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/rural_farming_and_pastoral/irg_water_shadoof_counterpoise_straight_flume_trough_triple.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.rural_farming_and_pastoral.irg_water_shadoof_counterpoise_straight_flume_trough_triple:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.242,
+        0.702,
+        0.254
+      ]
+    ],
+    "frac_zero": 0.828,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.285,
+        0.615,
+        0.119,
+        0.0,
+        0.0
+      ],
+      [
+        0.441,
+        0.536,
+        0.963,
+        0.999,
+        0.728,
+        0.448,
+        0.341
+      ],
+      [
+        0.091,
+        0.283,
+        0.62,
+        0.705,
+        0.576,
+        0.078,
+        0.042
+      ]
+    ],
+    "crop_offset": [
+      89,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 34,
+    "contact_reference_px": 34.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

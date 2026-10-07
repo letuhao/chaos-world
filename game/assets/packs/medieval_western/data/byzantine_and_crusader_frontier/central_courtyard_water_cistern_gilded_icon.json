@@ -1,0 +1,173 @@
+{
+  "id": "medieval_western.byzantine_and_crusader_frontier.central_courtyard_water_cistern_gilded_icon",
+  "name": "Byzantine Gilded Covered Central Fountain Cistern",
+  "vietnamese_name": "Bể Chứa Nước Mái Vòm Giữa Sân Trạm (Dát Vàng Byzantine)",
+  "category": "byzantine_and_crusader_frontier",
+  "sub_category": "caravanserai_walled_compound",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "water",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "drink",
+  "gameplay_role": "Byzantine Crusader frontier feature (Covered Central Fountain Cistern).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "byzantine_crusader",
+  "prompt_summary": "2D orthographic top-down game sprite of byzantine gilded covered central fountain cistern, gold-leaf mosaics and orthodox iconographic trims, Byzantine Crusader frontier outpost style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/byzantine_and_crusader_frontier/central_courtyard_water_cistern_gilded_icon.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.byzantine_and_crusader_frontier.central_courtyard_water_cistern_gilded_icon:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.575,
+        0.599
+      ],
+      [
+        0.768,
+        0.786
+      ]
+    ],
+    "frac_zero": 0.5307,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.059,
+        0.387,
+        0.539,
+        0.091,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.803,
+        1.0,
+        1.0,
+        1.0,
+        0.046,
+        0.0
+      ],
+      [
+        0.322,
+        0.97,
+        1.0,
+        1.0,
+        1.0,
+        0.62,
+        0.0
+      ],
+      [
+        0.866,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.998,
+        0.422
+      ],
+      [
+        0.799,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.976,
+        0.25
+      ],
+      [
+        0.451,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.71,
+        0.0
+      ],
+      [
+        0.013,
+        0.304,
+        0.889,
+        0.942,
+        0.474,
+        0.062,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      28,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 94,
+    "contact_reference_px": 94.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

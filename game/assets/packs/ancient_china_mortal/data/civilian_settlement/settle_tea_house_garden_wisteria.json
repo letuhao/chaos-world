@@ -1,0 +1,311 @@
+{
+  "id": "ancient_china_mortal.civilian_settlement.settle_tea_house_garden_wisteria",
+  "name": "Tea Tasting Garden with Wisteria",
+  "vietnamese_name": "Trà Quán Vườn Hoa Giàn Đậu Tía",
+  "hanzi": "紫藤茶社",
+  "category": "civilian_settlement",
+  "sub_category": "tavern_and_teahouse",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "rest",
+  "gameplay_role": "Refined scholar tea retreat under purple blossoming wisteria pergolas with zither table.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "wood",
+  "prompt_summary": "Top-down serene teahouse garden courtyard shaded by dense flowering purple wisteria trellis, round carved stone tables with green celadon tea sets, and small babbling bamboo water fountain.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "mind_cultivation_calm": true,
+    "tea_culture_tier": "masterwork"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/civilian_settlement/settle_tea_house_garden_wisteria.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.civilian_settlement.settle_tea_house_garden_wisteria:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.563,
+        0.753,
+        0.572
+      ],
+      [
+        0.667,
+        0.843,
+        0.6
+      ],
+      [
+        0.652,
+        0.978,
+        0.667
+      ]
+    ],
+    "frac_zero": 0.4078,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.018,
+        0.12,
+        0.45,
+        0.829,
+        0.773,
+        0.494,
+        0.123,
+        0.084,
+        0.0,
+        0.0
+      ],
+      [
+        0.036,
+        0.459,
+        0.995,
+        1.0,
+        1.0,
+        0.995,
+        1.0,
+        1.0,
+        0.915,
+        0.282,
+        0.003
+      ],
+      [
+        0.455,
+        0.985,
+        0.999,
+        0.831,
+        0.911,
+        0.648,
+        0.811,
+        0.956,
+        1.0,
+        0.975,
+        0.347
+      ],
+      [
+        0.762,
+        0.966,
+        0.961,
+        0.512,
+        0.312,
+        0.267,
+        0.426,
+        0.536,
+        0.919,
+        0.976,
+        0.567
+      ],
+      [
+        0.327,
+        0.74,
+        0.527,
+        0.742,
+        0.565,
+        0.625,
+        0.942,
+        0.288,
+        0.621,
+        0.645,
+        0.01
+      ],
+      [
+        0.028,
+        0.549,
+        0.994,
+        1.0,
+        0.981,
+        1.0,
+        1.0,
+        0.946,
+        0.619,
+        0.372,
+        0.0
+      ],
+      [
+        0.229,
+        0.917,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.689,
+        0.087
+      ],
+      [
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.971,
+        0.23
+      ],
+      [
+        0.427,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.924,
+        0.28
+      ],
+      [
+        0.069,
+        0.846,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.975,
+        0.548,
+        0.0
+      ],
+      [
+        0.0,
+        0.062,
+        0.441,
+        0.818,
+        0.959,
+        0.968,
+        0.851,
+        0.735,
+        0.327,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      22,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 182,
+    "contact_reference_px": 182.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.0": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.15": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.35": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.6": [
+        0,
+        2,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      1,
+      2,
+      1,
+      2
+    ],
+    "block_rect_px": [
+      128,
+      256,
+      256,
+      384
+    ]
+  }
+}

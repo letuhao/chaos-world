@@ -1,0 +1,198 @@
+{
+  "id": "ancient_china_mortal.low_realm_cultivation.cult_mat_cave_mouth_flat_boulder_seat",
+  "name": "Natural Cliff-Mouth Smooth Meditation Rock",
+  "vietnamese_name": "Phiến Đá Nhẵn Đầu Hang Ngồi Tĩnh Tâm",
+  "hanzi": "崖口吸霞向阳石",
+  "category": "low_realm_cultivation",
+  "sub_category": "disciple_meditation_mat",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "absorb_sunrise_qi",
+  "gameplay_role": "Weathered flat granite rock facing east towards rising sun.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "earth",
+  "prompt_summary": "Large flat smooth granite boulder perched on cliff edge overlooking mountain valley, worn shiny by sitting.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "sunrise_qi_bonus": 1.5
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/low_realm_cultivation/cult_mat_cave_mouth_flat_boulder_seat.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.low_realm_cultivation.cult_mat_cave_mouth_flat_boulder_seat:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.423,
+        0.715
+      ],
+      [
+        0.822,
+        0.768
+      ]
+    ],
+    "frac_zero": 0.5811,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.116,
+        0.727,
+        0.989,
+        0.521,
+        0.002
+      ],
+      [
+        0.0,
+        0.341,
+        0.934,
+        1.0,
+        1.0,
+        0.744,
+        0.492
+      ],
+      [
+        0.267,
+        0.902,
+        1.0,
+        1.0,
+        1.0,
+        0.903,
+        0.514
+      ],
+      [
+        0.638,
+        0.998,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.768
+      ],
+      [
+        0.634,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.879,
+        0.181
+      ],
+      [
+        0.013,
+        0.483,
+        0.875,
+        0.863,
+        0.796,
+        0.11,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      64
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 148,
+    "contact_reference_px": 148.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

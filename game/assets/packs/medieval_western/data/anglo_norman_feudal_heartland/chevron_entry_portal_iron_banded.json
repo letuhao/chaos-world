@@ -1,0 +1,166 @@
+{
+  "id": "medieval_western.anglo_norman_feudal_heartland.chevron_entry_portal_iron_banded",
+  "name": "Iron-Banded Chevron Zigzag Carved Portal",
+  "vietnamese_name": "Vòm Cửa Chạm Họa Tiết Răng Cưa (Bọc Sắt Kiên Cố)",
+  "category": "anglo_norman_feudal_heartland",
+  "sub_category": "chevron_carved_stone_archway",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "open",
+  "gameplay_role": "Feudal Anglo-Norman component (Chevron Zigzag Carved Portal).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "anglo_norman",
+  "prompt_summary": "2D orthographic top-down game sprite of iron-banded chevron zigzag carved portal, heavy forged iron reinforcement straps and studs, Anglo-Norman medieval feudal style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/anglo_norman_feudal_heartland/chevron_entry_portal_iron_banded.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.anglo_norman_feudal_heartland.chevron_entry_portal_iron_banded:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.62,
+        0.612
+      ],
+      [
+        0.743,
+        0.741
+      ]
+    ],
+    "frac_zero": 0.5651,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.006,
+        0.362,
+        0.817,
+        0.34,
+        0.006,
+        0.0
+      ],
+      [
+        0.352,
+        0.638,
+        1.0,
+        1.0,
+        1.0,
+        0.631,
+        0.331
+      ],
+      [
+        0.865,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.854
+      ],
+      [
+        0.512,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.513
+      ],
+      [
+        0.078,
+        0.998,
+        1.0,
+        1.0,
+        1.0,
+        0.992,
+        0.071
+      ],
+      [
+        0.014,
+        0.923,
+        0.728,
+        0.625,
+        0.691,
+        0.953,
+        0.012
+      ]
+    ],
+    "crop_offset": [
+      16,
+      56
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 161,
+    "contact_reference_px": 161.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "id": "ancient_china_mortal.folk_religion_fengshui.folk_paper_swirling_ash_cyclone_pillar",
+  "name": "Swirling Dust Devil of Charred Paper Ash",
+  "vietnamese_name": "Cơn Lốc Nhỏ Cuốn Tro Giấy Đen Bay Lên",
+  "hanzi": "盘旋黑灰冥纸旋风",
+  "category": "folk_religion_fengshui",
+  "sub_category": "paper_money_brazier",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "watch_smoke",
+  "gameplay_role": "Spiraling thermal updraft carrying black charred paper flakes to heavens.",
+  "destructible": false,
+  "material": "wind",
+  "cultivation_element": "yin",
+  "prompt_summary": "Spiraling whirlwind mini-cyclone of black and grey charred paper ash flakes dancing above burned ashes.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "spirit_transference": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/folk_religion_fengshui/folk_paper_swirling_ash_cyclone_pillar.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.folk_religion_fengshui.folk_paper_swirling_ash_cyclone_pillar:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.548
+      ]
+    ],
+    "frac_zero": 0.6756,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.69,
+        0.928,
+        0.544
+      ],
+      [
+        0.43,
+        0.943,
+        0.315
+      ],
+      [
+        0.1,
+        0.721,
+        0.092
+      ]
+    ],
+    "crop_offset": [
+      19,
+      17
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 39,
+    "contact_reference_px": 39.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

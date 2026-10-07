@@ -1,0 +1,131 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.wat_hidden_glen_creek_gravel_bank_shallows",
+  "name": "Shaded Forest Valley Stream Gentle River Gravel Shallows (3x1)",
+  "vietnamese_name": "Bãi Nước Nông Cát Sỏi Dễ Lội Qua (Khe Suối Thung Lũng U Tịch)",
+  "hanzi": "幽谷盘石曲折溪可徒步涉水碎石浅滩",
+  "category": "mountain_cliff_geology",
+  "sub_category": "waterfall_stream_and_cascade",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "wade_through_shallows",
+  "gameplay_role": "shallow_crossing",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese mountainous water feature: Shaded Forest Valley Stream Gentle River Gravel Shallows (3x1). Flowing crystal water with gouache splashes, dark ink outlines, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "water_scale": "hidden_glen_creek"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/wat_hidden_glen_creek_gravel_bank_shallows.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.wat_hidden_glen_creek_gravel_bank_shallows:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.723,
+        0.703,
+        0.717
+      ]
+    ],
+    "frac_zero": 0.7268,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.453,
+        0.439,
+        0.134,
+        0.243,
+        0.658,
+        0.294
+      ],
+      [
+        0.814,
+        1.0,
+        0.987,
+        0.996,
+        1.0,
+        0.731
+      ],
+      [
+        0.694,
+        0.958,
+        0.935,
+        0.935,
+        0.961,
+        0.532
+      ]
+    ],
+    "crop_offset": [
+      98,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 168,
+    "contact_reference_px": 168.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

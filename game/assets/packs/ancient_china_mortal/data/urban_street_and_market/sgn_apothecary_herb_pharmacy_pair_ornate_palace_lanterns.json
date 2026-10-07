@@ -1,0 +1,154 @@
+{
+  "id": "ancient_china_mortal.urban_street_and_market.sgn_apothecary_herb_pharmacy_pair_ornate_palace_lanterns",
+  "name": "Herbal Pharmacy & Clinic Pair of Octagonal Gilded Horn Palace Lanterns",
+  "vietnamese_name": "Cặp Đèn Lồng Cung Đình Bát Giác (Tiệm Thuốc Bắc Nhân Hòa)",
+  "hanzi": "济世仁心药肆门前悬挂双八角雕宫灯",
+  "category": "urban_street_and_market",
+  "sub_category": "shop_sign_board_and_banner",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect_palace_lanterns",
+  "gameplay_role": "palace_lanterns",
+  "destructible": false,
+  "material": "silk",
+  "cultivation_element": "yang",
+  "prompt_summary": "Ancient Chinese commercial street sign asset: Herbal Pharmacy & Clinic Pair of Octagonal Gilded Horn Palace Lanterns. Traditional calligraphy, vibrant cloth or weathered timber, ink outlines, top-down orthographic game sprite, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "business_type": "apothecary_herb_pharmacy"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/urban_street_and_market/sgn_apothecary_herb_pharmacy_pair_ornate_palace_lanterns.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.urban_street_and_market.sgn_apothecary_herb_pharmacy_pair_ornate_palace_lanterns:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.46,
+        0.465
+      ]
+    ],
+    "frac_zero": 0.7138,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.489,
+        0.407,
+        0.687,
+        0.718,
+        0.657,
+        0.426,
+        0.491
+      ],
+      [
+        0.35,
+        0.51,
+        0.721,
+        0.657,
+        0.782,
+        0.526,
+        0.335
+      ],
+      [
+        0.0,
+        0.191,
+        0.319,
+        0.0,
+        0.295,
+        0.111,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      30
+    ],
+    "trunk_columns": [],
+    "contact_px": 13,
+    "contact_reference_px": 13.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

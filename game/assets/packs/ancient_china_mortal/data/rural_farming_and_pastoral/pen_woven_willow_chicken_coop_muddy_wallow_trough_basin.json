@@ -1,0 +1,128 @@
+{
+  "id": "ancient_china_mortal.rural_farming_and_pastoral.pen_woven_willow_chicken_coop_muddy_wallow_trough_basin",
+  "name": "Woven Wicker Poultry & Hen Coop Muddy Wallow Depression inside Pigsty",
+  "vietnamese_name": "Vũng Bùn Lầy Cho Heo Đầm Mình (Chuồng Gà Đan Bằng Liễu & Tre)",
+  "hanzi": "编柳鸡鸭双栖舍湿洼泛泡滚泥下洼处",
+  "category": "rural_farming_and_pastoral",
+  "sub_category": "homestead_pen_and_coop",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect_mud_wallow",
+  "gameplay_role": "mud_wallow",
+  "destructible": true,
+  "material": "earth",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese farm homestead animal husbandry prop: Woven Wicker Poultry & Hen Coop Muddy Wallow Depression inside Pigsty. Rustic peasant craftsmanship, gouache textures with ink outlines, top-down orthographic game sprite, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "animal_housing": "woven_willow_chicken_coop"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/rural_farming_and_pastoral/pen_woven_willow_chicken_coop_muddy_wallow_trough_basin.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.rural_farming_and_pastoral.pen_woven_willow_chicken_coop_muddy_wallow_trough_basin:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.731,
+        0.736
+      ]
+    ],
+    "frac_zero": 0.5841,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.161,
+        0.562,
+        0.843,
+        0.757,
+        0.498,
+        0.117
+      ],
+      [
+        0.902,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.873
+      ],
+      [
+        0.416,
+        0.792,
+        0.967,
+        0.951,
+        0.825,
+        0.418
+      ]
+    ],
+    "crop_offset": [
+      34,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 153,
+    "contact_reference_px": 153.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

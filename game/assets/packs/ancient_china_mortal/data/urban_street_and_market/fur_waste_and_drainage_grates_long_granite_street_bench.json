@@ -1,0 +1,131 @@
+{
+  "id": "ancient_china_mortal.urban_street_and_market.fur_waste_and_drainage_grates_long_granite_street_bench",
+  "name": "Drainage Canals & Stone Slabs Solid Three-Slab Granite Street Rest Bench",
+  "vietnamese_name": "Ghế Đá Dài Dành Cho Khách Bộ Hành (Cống Rãnh & Phiến Đá Đậy Nắp)",
+  "hanzi": "排洪石箅沟青石条砌街头休歇凳",
+  "category": "urban_street_and_market",
+  "sub_category": "street_furniture_and_wellhead",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "rest_on_street_bench",
+  "gameplay_role": "rest_bench",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese urban street furniture: Drainage Canals & Stone Slabs Solid Three-Slab Granite Street Rest Bench. Realistic civic utility styling, ink outlines, top-down orthographic game asset, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "furniture_group": "waste_and_drainage_grates"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/urban_street_and_market/fur_waste_and_drainage_grates_long_granite_street_bench.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.urban_street_and_market.fur_waste_and_drainage_grates_long_granite_street_bench:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.841,
+        0.869
+      ]
+    ],
+    "frac_zero": 0.5243,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.76,
+        0.812,
+        0.817,
+        0.812,
+        0.818,
+        0.822,
+        0.557
+      ],
+      [
+        0.735,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.734
+      ],
+      [
+        0.172,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      32
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 206,
+    "contact_reference_px": 206.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

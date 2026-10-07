@@ -1,0 +1,307 @@
+{
+  "id": "ancient_china_mortal.military_and_fortress.fort_rampart_interior_access_ramp",
+  "name": "Troop Horse-Ramp Incline (Madao)",
+  "vietnamese_name": "Đường Dốc Mã Đạo Cho Ngựa Lên Thành",
+  "hanzi": "登城马道斜坡",
+  "category": "military_and_fortress",
+  "sub_category": "rammed_earth_rampart",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "climb_ramp",
+  "gameplay_role": "Paved inclined earthen roadway allowing cavalry to ascend to parapet.",
+  "destructible": false,
+  "material": "earth",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Wide inclined earthen horse ramp (Madao) paved with gravel allowing cavalry and supply carts to ascend ramparts.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "cavalry_access": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/military_and_fortress/fort_rampart_interior_access_ramp.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.military_and_fortress.fort_rampart_interior_access_ramp:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.497,
+        0.985,
+        0.402
+      ],
+      [
+        0.837,
+        1.0,
+        0.723
+      ],
+      [
+        0.253,
+        0.866,
+        0.064
+      ]
+    ],
+    "frac_zero": 0.5046,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 8,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.635,
+        0.946,
+        0.935,
+        0.961,
+        0.941,
+        0.83,
+        0.153,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.103,
+        0.997,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.51,
+        0.0,
+        0.0
+      ],
+      [
+        0.024,
+        0.394,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.79,
+        0.486,
+        0.01
+      ],
+      [
+        0.403,
+        0.987,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.992,
+        0.908,
+        0.464
+      ],
+      [
+        0.87,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.974
+      ],
+      [
+        0.664,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.837,
+        0.358,
+        0.043
+      ],
+      [
+        0.024,
+        0.367,
+        0.899,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.876,
+        0.125,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.446,
+        1.0,
+        1.0,
+        1.0,
+        0.978,
+        0.419,
+        0.156,
+        0.024,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.609,
+        1.0,
+        1.0,
+        1.0,
+        0.862,
+        0.0,
+        0.066,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.182,
+        0.791,
+        0.997,
+        1.0,
+        0.61,
+        0.003,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.672,
+        0.781,
+        0.461,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      18,
+      39
+    ],
+    "trunk_columns": [
+      4,
+      5,
+      6
+    ],
+    "contact_px": 104,
+    "contact_reference_px": 104.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      384
+    ]
+  }
+}

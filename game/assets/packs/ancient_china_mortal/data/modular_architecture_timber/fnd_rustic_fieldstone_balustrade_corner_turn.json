@@ -1,0 +1,143 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.fnd_rustic_fieldstone_balustrade_corner_turn",
+  "name": "Rustic Dry Fieldstone Corner Balustrade Post Turn",
+  "vietnamese_name": "Trụ Góc Lan Can Khắc Búp Sen (Đá Cuội Đồng Quê Thô Mộc)",
+  "hanzi": "质朴乱石砌转角荷花望柱",
+  "category": "modular_architecture_timber",
+  "sub_category": "foundation_and_plinth_tai_ji",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect_balustrade_post",
+  "gameplay_role": "railing_corner",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese modular architectural foundation: Rustic Dry Fieldstone Corner Balustrade Post Turn. Rustic Dry Fieldstone texture with dark ink contours, top-down orthographic angle, isolated game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "foundation",
+    "style": "rustic_fieldstone"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/fnd_rustic_fieldstone_balustrade_corner_turn.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.fnd_rustic_fieldstone_balustrade_corner_turn:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.646
+      ]
+    ],
+    "frac_zero": 0.6499,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.367,
+        0.727,
+        0.321
+      ],
+      [
+        0.904,
+        1.0,
+        0.917
+      ],
+      [
+        0.377,
+        0.814,
+        0.268
+      ]
+    ],
+    "crop_offset": [
+      21,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 41,
+    "contact_reference_px": 41.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

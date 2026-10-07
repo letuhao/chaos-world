@@ -1,0 +1,159 @@
+{
+  "id": "ancient_china_mortal.imperial_and_law.law_yamen_archives_vault_door",
+  "name": "Reinforced Judicial Archive Iron Door",
+  "vietnamese_name": "Cửa Sắt Kho Án Thư Cơ Mật",
+  "hanzi": "铁铸文案库门",
+  "category": "imperial_and_law",
+  "sub_category": "magistrate_court_yamen",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "lockpick",
+  "gameplay_role": "Heavy banded iron door leading to sensitive criminal dossiers.",
+  "destructible": false,
+  "material": "iron",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Thick iron-banded heavy wooden security gate embedded in brick wall with massive bronze sliding bolt.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "security": "high"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/imperial_and_law/law_yamen_archives_vault_door.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.imperial_and_law.law_yamen_archives_vault_door:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.764,
+        0.671
+      ]
+    ],
+    "frac_zero": 0.562,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.717,
+        0.931,
+        0.784,
+        0.755,
+        0.927,
+        0.907,
+        0.459
+      ],
+      [
+        0.519,
+        1.0,
+        0.844,
+        0.892,
+        0.908,
+        0.628,
+        0.0
+      ],
+      [
+        0.272,
+        0.907,
+        0.828,
+        0.816,
+        0.745,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      26,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 132,
+    "contact_reference_px": 132.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

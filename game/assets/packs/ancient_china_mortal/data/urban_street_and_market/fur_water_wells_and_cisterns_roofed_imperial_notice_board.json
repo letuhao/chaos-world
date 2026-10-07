@@ -1,0 +1,157 @@
+{
+  "id": "ancient_china_mortal.urban_street_and_market.fur_water_wells_and_cisterns_roofed_imperial_notice_board",
+  "name": "Public Wells & Water Cisterns Shingled Timber Public Bounty Noticeboard",
+  "vietnamese_name": "Bảng Dán Cáo Thị Triều Đình Có Mái (Giếng Nước & Bể Chữa Cháy)",
+  "hanzi": "水井消防池披檐悬榜官方告示牌",
+  "category": "urban_street_and_market",
+  "sub_category": "street_furniture_and_wellhead",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "read_imperial_notice",
+  "gameplay_role": "noticeboard",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Ancient Chinese urban street furniture: Public Wells & Water Cisterns Shingled Timber Public Bounty Noticeboard. Realistic civic utility styling, ink outlines, top-down orthographic game asset, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "furniture_group": "water_wells_and_cisterns"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/urban_street_and_market/fur_water_wells_and_cisterns_roofed_imperial_notice_board.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.urban_street_and_market.fur_water_wells_and_cisterns_roofed_imperial_notice_board:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.531,
+        0.517
+      ]
+    ],
+    "frac_zero": 0.6692,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.143,
+        0.201,
+        0.292,
+        0.699,
+        0.271,
+        0.201,
+        0.134
+      ],
+      [
+        0.852,
+        0.992,
+        0.997,
+        0.968,
+        0.993,
+        0.907,
+        0.783
+      ],
+      [
+        0.192,
+        0.298,
+        0.332,
+        0.47,
+        0.526,
+        0.155,
+        0.156
+      ]
+    ],
+    "crop_offset": [
+      17,
+      25
+    ],
+    "trunk_columns": [
+      3,
+      4
+    ],
+    "contact_px": 21,
+    "contact_reference_px": 21.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "id": "ancient_china_mortal.destructible_and_loot.loot_crate_produce_slatted_vegetable_box",
+  "name": "Open-Slatted Winter Radish Crate",
+  "vietnamese_name": "Sọt Gỗ Nan Thưa Đựng Củ Cải Trắng",
+  "hanzi": "条板白萝卜疏菜筐",
+  "category": "destructible_and_loot",
+  "sub_category": "wooden_cargo_crate",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "take_radishes",
+  "gameplay_role": "Open wooden lath crate brimming with plump white daikon radishes.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Open-slatted rustic timber crate filled with fresh white winter radishes with leafy green tops.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "food_vegetable": 15
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/destructible_and_loot/loot_crate_produce_slatted_vegetable_box.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.destructible_and_loot.loot_crate_produce_slatted_vegetable_box:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.603
+      ]
+    ],
+    "frac_zero": 0.6693,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.298,
+        0.769,
+        0.316
+      ],
+      [
+        0.853,
+        1.0,
+        0.829
+      ],
+      [
+        0.292,
+        0.775,
+        0.169
+      ]
+    ],
+    "crop_offset": [
+      19,
+      16
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 37,
+    "contact_reference_px": 37.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

@@ -1,0 +1,155 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.ruf_bark_shingle_mountain_swallowtail_ridge_apex",
+  "name": "Split Cedar Wood Shingles Southern Sweeping Swallowtail Ridge Apex",
+  "vietnamese_name": "Đỉnh Nóc Uốn Cong Đuôi Én Nam Phương (Ngói Ván Gỗ Bách Sơn Lâm)",
+  "hanzi": "雪松劈木瓦闽南双燕尾大正脊",
+  "category": "modular_architecture_timber",
+  "sub_category": "modular_roof_and_flying_eaves",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "admire_swallowtail_ridge",
+  "gameplay_role": "ridge_apex",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "wind",
+  "prompt_summary": "Ancient Chinese modular roof and eaves component: Split Cedar Wood Shingles Southern Sweeping Swallowtail Ridge Apex. Intricate clay tiles, sweeping silhouette, gouache rendering with ink contours, orthographic top-down view, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "roof",
+    "style": "bark_shingle_mountain"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/ruf_bark_shingle_mountain_swallowtail_ridge_apex.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.ruf_bark_shingle_mountain_swallowtail_ridge_apex:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.526,
+        0.532
+      ]
+    ],
+    "frac_zero": 0.6907,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.073,
+        0.043,
+        0.628,
+        0.528,
+        0.014,
+        0.077
+      ],
+      [
+        0.732,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.698
+      ],
+      [
+        0.178,
+        0.298,
+        0.853,
+        0.85,
+        0.307,
+        0.16
+      ]
+    ],
+    "crop_offset": [
+      33,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 75,
+    "contact_reference_px": 75.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

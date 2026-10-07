@@ -1,0 +1,210 @@
+{
+  "id": "ancient_china_mortal.civilian_settlement.settle_siheyuan_inner_garden_pavilion",
+  "name": "Inner Courtyard Garden Pavilion",
+  "vietnamese_name": "Đình Vườn Hoa Hồ Sen",
+  "hanzi": "庭院花亭",
+  "category": "civilian_settlement",
+  "sub_category": "courtyard_residence_siheyuan",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "rest",
+  "gameplay_role": "Octagonal painted gazebo overlooking a stone basin filled with swimming goldfish.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "water",
+  "prompt_summary": "Top-down hexagonal garden pavilion with dark grey conical tile roof, red pillars, carved balustrades, central stone table with round stools, and miniature stone lotus basin.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "meditation_rest": true,
+    "aesthetic_relaxation": 0.9,
+    "tea_drinking": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/civilian_settlement/settle_siheyuan_inner_garden_pavilion.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.civilian_settlement.settle_siheyuan_inner_garden_pavilion:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.428,
+        0.578
+      ],
+      [
+        0.766,
+        0.752
+      ]
+    ],
+    "frac_zero": 0.4998,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.406,
+        0.354,
+        0.718,
+        0.086
+      ],
+      [
+        0.0,
+        0.271,
+        0.712,
+        0.963,
+        0.823,
+        0.383,
+        0.29
+      ],
+      [
+        0.091,
+        0.775,
+        1.0,
+        1.0,
+        1.0,
+        0.79,
+        0.597
+      ],
+      [
+        0.152,
+        0.602,
+        0.944,
+        1.0,
+        0.902,
+        0.543,
+        0.028
+      ],
+      [
+        0.553,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.426
+      ],
+      [
+        0.641,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.547
+      ],
+      [
+        0.08,
+        0.633,
+        0.941,
+        0.999,
+        0.938,
+        0.564,
+        0.008
+      ]
+    ],
+    "crop_offset": [
+      17,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 146,
+    "contact_reference_px": 146.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

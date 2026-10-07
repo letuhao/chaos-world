@@ -1,0 +1,173 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.cor_lake_waterside_gallery_mid_corridor_square_kiosk",
+  "name": "Lakeside Pierced Viewing Gallery Square Viewing Pavilion on Corridor",
+  "vietnamese_name": "Đình Nghỉ Chân Vuông Giữa Hành Lang (Hành Lang Bến Nước Ngắm Cảnh)",
+  "hanzi": "水阁临波水廊廊中方角停歇亭",
+  "category": "modular_architecture_timber",
+  "sub_category": "covered_corridor_and_veranda",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "rest_at_kiosk",
+  "gameplay_role": "rest_kiosk",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "wood",
+  "prompt_summary": "Ancient Chinese covered garden corridor module: Lakeside Pierced Viewing Gallery Square Viewing Pavilion on Corridor. Traditional tiled wooden gallery, balustrade railing, top-down orthographic game sprite, transparent alpha cutout.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "corridor",
+    "style": "lake_waterside_gallery"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/cor_lake_waterside_gallery_mid_corridor_square_kiosk.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.cor_lake_waterside_gallery_mid_corridor_square_kiosk:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.711,
+        0.702
+      ],
+      [
+        0.728,
+        0.732
+      ]
+    ],
+    "frac_zero": 0.508,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.394,
+        0.611,
+        0.528,
+        0.529,
+        0.576,
+        0.478,
+        0.0
+      ],
+      [
+        0.316,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.438,
+        0.0
+      ],
+      [
+        0.352,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.479,
+        0.0
+      ],
+      [
+        0.572,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.702,
+        0.019
+      ],
+      [
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.644,
+        0.219
+      ],
+      [
+        0.259,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.402,
+        0.0
+      ],
+      [
+        0.14,
+        0.435,
+        0.886,
+        0.921,
+        0.486,
+        0.225,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      29,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 64,
+    "contact_reference_px": 64.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.wat_hidden_glen_creek_dry_stony_riverbed_wash",
+  "name": "Shaded Forest Valley Stream Dry Season Stony Riverbed Gravel Wash",
+  "vietnamese_name": "Lòng Suối Cạn Trơ Đá Mùa Khô (Khe Suối Thung Lũng U Tịch)",
+  "hanzi": "幽谷盘石曲折溪枯水季露骨干涸乱石河床",
+  "category": "mountain_cliff_geology",
+  "sub_category": "waterfall_stream_and_cascade",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "cross_dry_riverbed",
+  "gameplay_role": "dry_riverbed",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese mountainous water feature: Shaded Forest Valley Stream Dry Season Stony Riverbed Gravel Wash. Flowing crystal water with gouache splashes, dark ink outlines, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "water_scale": "hidden_glen_creek"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/wat_hidden_glen_creek_dry_stony_riverbed_wash.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.wat_hidden_glen_creek_dry_stony_riverbed_wash:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.584,
+        0.523
+      ],
+      [
+        0.696,
+        0.693
+      ]
+    ],
+    "frac_zero": 0.5143,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.009,
+        0.465,
+        0.463,
+        0.677,
+        0.241,
+        0.0,
+        0.0
+      ],
+      [
+        0.284,
+        0.484,
+        0.872,
+        0.993,
+        0.666,
+        0.346,
+        0.12
+      ],
+      [
+        0.191,
+        0.682,
+        1.0,
+        1.0,
+        1.0,
+        0.719,
+        0.389
+      ],
+      [
+        0.409,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.56
+      ],
+      [
+        0.881,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.766
+      ],
+      [
+        0.303,
+        0.854,
+        1.0,
+        1.0,
+        1.0,
+        0.759,
+        0.212
+      ],
+      [
+        0.0,
+        0.022,
+        0.465,
+        0.856,
+        0.348,
+        0.002,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      18,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 56,
+    "contact_reference_px": 56.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.cor_yamen_official_corridor_corridor_entrance_landing",
+  "name": "Magistrate Complex Dignified Corridor Corridor Terminal Landing with Steps",
+  "vietnamese_name": "Chiếu Nghỉ Đầu Hành Lang Kèm Bậc Đá (Hành Lang Nha Môn Uy Nghi)",
+  "hanzi": "官署通廊廊端出入石步台",
+  "category": "modular_architecture_timber",
+  "sub_category": "covered_corridor_and_veranda",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "step_onto_landing",
+  "gameplay_role": "corridor_landing",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese covered garden corridor module: Magistrate Complex Dignified Corridor Corridor Terminal Landing with Steps. Traditional tiled wooden gallery, balustrade railing, top-down orthographic game sprite, transparent alpha cutout.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "corridor",
+    "style": "yamen_official_corridor"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/cor_yamen_official_corridor_corridor_entrance_landing.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.cor_yamen_official_corridor_corridor_entrance_landing:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.576,
+        0.549
+      ]
+    ],
+    "frac_zero": 0.6559,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.323,
+        0.332,
+        0.397,
+        0.771,
+        0.399,
+        0.341,
+        0.317
+      ],
+      [
+        0.717,
+        0.958,
+        0.972,
+        1.0,
+        0.948,
+        0.963,
+        0.71
+      ],
+      [
+        0.182,
+        0.06,
+        0.473,
+        0.894,
+        0.152,
+        0.06,
+        0.182
+      ]
+    ],
+    "crop_offset": [
+      16,
+      27
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 61,
+    "contact_reference_px": 61.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

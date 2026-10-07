@@ -1,0 +1,167 @@
+{
+  "id": "medieval_western.celtic_highland_and_atlantic_fringe.standing_ogham_inscribed_stone_ancient_granite",
+  "name": "Ancient Granite Ogham Alphabet Inscribed Standing Stone",
+  "vietnamese_name": "Trụ Đá Khắc Chữ Khía Cổ Ogham (Đá Hoa Cương Cổ)",
+  "category": "celtic_highland_and_atlantic_fringe",
+  "sub_category": "peat_fire_hearth_and_well",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "decipher",
+  "gameplay_role": "Celtic highland cultural feature (Ogham Alphabet Inscribed Standing Stone).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "celtic_gaelic",
+  "prompt_summary": "2D orthographic top-down game sprite of ancient granite ogham alphabet inscribed standing stone, weather-beaten rugged granite boulders, Celtic highland and Atlantic fringe style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/celtic_highland_and_atlantic_fringe/standing_ogham_inscribed_stone_ancient_granite.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.celtic_highland_and_atlantic_fringe.standing_ogham_inscribed_stone_ancient_granite:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.414
+      ],
+      [
+        0.707
+      ]
+    ],
+    "frac_zero": 0.6642,
+    "blocks": [
+      [
+        true
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.058,
+        0.859,
+        0.027
+      ],
+      [
+        0.195,
+        1.0,
+        0.115
+      ],
+      [
+        0.234,
+        1.0,
+        0.184
+      ],
+      [
+        0.284,
+        1.0,
+        0.241
+      ],
+      [
+        0.734,
+        1.0,
+        0.76
+      ],
+      [
+        0.764,
+        1.0,
+        0.74
+      ],
+      [
+        0.089,
+        0.781,
+        0.032
+      ]
+    ],
+    "crop_offset": [
+      17,
+      41
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 77,
+    "contact_reference_px": 77.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      256
+    ]
+  }
+}

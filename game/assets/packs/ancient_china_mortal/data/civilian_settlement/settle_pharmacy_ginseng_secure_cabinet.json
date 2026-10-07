@@ -1,0 +1,146 @@
+{
+  "id": "ancient_china_mortal.civilian_settlement.settle_pharmacy_ginseng_secure_cabinet",
+  "name": "Rare Mountain Ginseng Lockbox Cabinet",
+  "vietnamese_name": "Tủ Khóa Nhân Sâm & Lộc Nhung",
+  "hanzi": "参茸宝柜",
+  "category": "civilian_settlement",
+  "sub_category": "herbal_pharmacy",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "loot",
+  "gameplay_role": "Reinforced iron-bound camphor cabinet storing 100-year-old wild mountain ginseng and velvet antler.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "metal",
+  "prompt_summary": "Top-down heavy dark wooden medicine cabinet reinforced with bronze corner brackets and padlock, glass-fronted drawer showing red silk lined boxes with whole dried ginseng roots.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "valuable_loot": [
+      "wild_mountain_ginseng",
+      "velvet_antler_essence"
+    ],
+    "lock_difficulty": "master"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/civilian_settlement/settle_pharmacy_ginseng_secure_cabinet.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.civilian_settlement.settle_pharmacy_ginseng_secure_cabinet:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.77
+      ]
+    ],
+    "frac_zero": 0.6658,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.87,
+        0.977,
+        0.478
+      ],
+      [
+        0.827,
+        0.99,
+        0.272
+      ],
+      [
+        0.542,
+        0.758,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      28,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 49,
+    "contact_reference_px": 49.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

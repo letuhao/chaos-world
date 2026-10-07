@@ -1,0 +1,437 @@
+{
+  "id": "ancient_china_mortal.civilian_settlement.settle_siheyuan_compact_compound",
+  "name": "Compact Urban Courtyard Residence",
+  "vietnamese_name": "Tứ Hợp Viện Phố Thị Nhỏ Gọn",
+  "hanzi": "规整四合",
+  "category": "civilian_settlement",
+  "sub_category": "courtyard_residence_siheyuan",
+  "type": "landmark",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    4,
+    4
+  ],
+  "canvas_px": [
+    512,
+    512
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "enter",
+  "gameplay_role": "Complete self-contained walled city residence with four wings surrounding a central courtyard.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Top-down miniature complete Siheyuan compound, enclosed outer brick perimeter walls with grey tile coping, north main hall, east/west wings, south gatehouse, and paved central courtyard with shade tree.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "complete_estate": true,
+    "total_capacity": 16,
+    "compound_walled_security": 0.95
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/civilian_settlement/settle_siheyuan_compact_compound.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.civilian_settlement.settle_siheyuan_compact_compound:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.384,
+        0.703,
+        0.769,
+        0.46
+      ],
+      [
+        0.763,
+        1.0,
+        1.0,
+        0.804
+      ],
+      [
+        0.872,
+        1.0,
+        1.0,
+        0.776
+      ],
+      [
+        0.747,
+        0.978,
+        0.959,
+        0.434
+      ]
+    ],
+    "frac_zero": 0.3478,
+    "blocks": [
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 16,
+    "anchor_cell": [
+      2,
+      3
+    ],
+    "sub_grid": [
+      14,
+      15
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.028,
+        0.318,
+        0.819,
+        0.193,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.103,
+        0.91,
+        0.906,
+        0.906,
+        0.895,
+        0.875,
+        0.875,
+        0.901,
+        0.999,
+        0.964,
+        0.868,
+        0.046,
+        0.0
+      ],
+      [
+        0.0,
+        0.344,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.935,
+        0.352,
+        0.059
+      ],
+      [
+        0.049,
+        0.847,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.986,
+        0.4
+      ],
+      [
+        0.047,
+        0.889,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.957,
+        0.592
+      ],
+      [
+        0.252,
+        0.999,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.473
+      ],
+      [
+        0.329,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.867,
+        0.148
+      ],
+      [
+        0.511,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.83,
+        0.043
+      ],
+      [
+        0.714,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.986,
+        0.032
+      ],
+      [
+        0.384,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.207
+      ],
+      [
+        0.522,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.422
+      ],
+      [
+        0.78,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.617
+      ],
+      [
+        0.939,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.974,
+        0.145
+      ],
+      [
+        0.562,
+        0.996,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.583,
+        0.254,
+        0.075,
+        0.0
+      ],
+      [
+        0.0,
+        0.123,
+        0.312,
+        0.566,
+        0.891,
+        0.994,
+        1.0,
+        1.0,
+        1.0,
+        0.896,
+        0.073,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      32,
+      17
+    ],
+    "trunk_columns": [
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "contact_px": 217,
+    "contact_reference_px": 217.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        3
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      3
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      512
+    ]
+  }
+}

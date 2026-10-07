@@ -1,0 +1,156 @@
+{
+  "id": "ancient_china_mortal.flora_and_ambience.flora_bamboo_cut_stumps_and_poles_pile",
+  "name": "Harvested Bamboo Canes Stacked on Stumps",
+  "vietnamese_name": "Đống Thân Tre Chặt Sẵn Gác Trên Gốc",
+  "hanzi": "砍伐竹竿存放架",
+  "category": "flora_and_ambience",
+  "sub_category": "bamboo_cluster",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "take_cane",
+  "gameplay_role": "Freshly cut green bamboo poles stacked horizontally on wooden rests.",
+  "destructible": true,
+  "material": "bamboo",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Neat horizontal stack of harvested twenty-foot green bamboo poles resting on two wooden trestles.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "building_material": "bamboo"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_ambience/flora_bamboo_cut_stumps_and_poles_pile.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_ambience.flora_bamboo_cut_stumps_and_poles_pile:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.57,
+        0.579
+      ]
+    ],
+    "frac_zero": 0.6256,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.64,
+        0.758,
+        0.629,
+        0.598,
+        0.613,
+        0.701,
+        0.44
+      ],
+      [
+        0.77,
+        0.972,
+        0.777,
+        0.75,
+        0.793,
+        0.926,
+        0.719
+      ],
+      [
+        0.031,
+        0.551,
+        0.0,
+        0.0,
+        0.014,
+        0.807,
+        0.289
+      ]
+    ],
+    "crop_offset": [
+      20,
+      17
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 45,
+    "contact_reference_px": 45.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

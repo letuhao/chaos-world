@@ -1,0 +1,316 @@
+{
+  "id": "ancient_china_mortal.civilian_settlement.settle_tavern_two_story_wine_inn",
+  "name": "Two-Story Town Wine Tavern 'Tửu Lâu'",
+  "vietnamese_name": "Tửu Lâu Phố Thị Hai Tầng",
+  "hanzi": "市肆酒楼",
+  "category": "civilian_settlement",
+  "sub_category": "tavern_and_teahouse",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "enter",
+  "gameplay_role": "Prominent two-story merchant tavern with upper drinking balcony and fluttering silk wine pennants.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Top-down grand two-story wooden wine tavern with flared grey tile eaves, second-story railed wrap-around balcony with dining tables, red hanging lantern strings, and prominent vertical embroidered wine banner.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "service": [
+      "premium_wine",
+      "delicacies",
+      "private_rooms",
+      "jianghu_intel"
+    ],
+    "intel_brokerage": true,
+    "bounty_board": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/civilian_settlement/settle_tavern_two_story_wine_inn.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.civilian_settlement.settle_tavern_two_story_wine_inn:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.227,
+        0.723,
+        0.233
+      ],
+      [
+        0.687,
+        1.0,
+        0.697
+      ],
+      [
+        0.686,
+        0.967,
+        0.414
+      ]
+    ],
+    "frac_zero": 0.4794,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 9,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.031,
+        0.01,
+        0.324,
+        0.0,
+        0.039,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.002,
+        0.024,
+        0.82,
+        0.88,
+        0.985,
+        0.852,
+        0.589,
+        0.02,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.849,
+        0.989,
+        1.0,
+        1.0,
+        1.0,
+        0.958,
+        0.613,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.414,
+        0.976,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.844,
+        0.255,
+        0.0
+      ],
+      [
+        0.0,
+        0.424,
+        0.846,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.803,
+        0.22,
+        0.0
+      ],
+      [
+        0.076,
+        0.638,
+        0.97,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.985,
+        0.414,
+        0.0
+      ],
+      [
+        0.57,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.983,
+        0.386
+      ],
+      [
+        0.272,
+        0.729,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.993,
+        0.691,
+        0.175
+      ],
+      [
+        0.475,
+        0.997,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.983,
+        0.971,
+        0.643,
+        0.0
+      ],
+      [
+        0.285,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.904,
+        0.282,
+        0.04,
+        0.0
+      ],
+      [
+        0.009,
+        0.349,
+        0.609,
+        0.851,
+        0.97,
+        1.0,
+        0.704,
+        0.13,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      20,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 150,
+    "contact_reference_px": 150.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      384
+    ]
+  }
+}

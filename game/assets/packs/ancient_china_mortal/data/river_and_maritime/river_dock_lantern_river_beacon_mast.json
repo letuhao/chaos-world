@@ -1,0 +1,164 @@
+{
+  "id": "ancient_china_mortal.river_and_maritime.river_dock_lantern_river_beacon_mast",
+  "name": "Night River Navigation Lantern Mast",
+  "vietnamese_name": "Cột Đèn Bão Dẫn Đường Tàu Đêm",
+  "hanzi": "水运航标灯桩",
+  "category": "river_and_maritime",
+  "sub_category": "wooden_dock_and_pier",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "light",
+  "gameplay_role": "Tall wooden mast with hanging glass wind lantern.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Tall timber navigation marker mast with yellow oil storm lantern guiding night boats.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "light_radius": 30.0
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/river_and_maritime/river_dock_lantern_river_beacon_mast.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.river_and_maritime.river_dock_lantern_river_beacon_mast:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.382
+      ],
+      [
+        0.276
+      ]
+    ],
+    "frac_zero": 0.844,
+    "blocks": [
+      [
+        false
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      2,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.419,
+        0.361
+      ],
+      [
+        0.58,
+        0.515
+      ],
+      [
+        0.308,
+        0.288
+      ],
+      [
+        0.219,
+        0.139
+      ],
+      [
+        0.219,
+        0.166
+      ],
+      [
+        0.24,
+        0.213
+      ],
+      [
+        0.474,
+        0.456
+      ]
+    ],
+    "crop_offset": [
+      33,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 39,
+    "contact_reference_px": 39.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

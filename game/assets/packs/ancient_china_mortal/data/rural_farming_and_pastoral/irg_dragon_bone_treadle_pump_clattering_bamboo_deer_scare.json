@@ -1,0 +1,141 @@
+{
+  "id": "ancient_china_mortal.rural_farming_and_pastoral.irg_dragon_bone_treadle_pump_clattering_bamboo_deer_scare",
+  "name": "Pedal Dragon-Bone Chain Water Pump Water-Tipping Clattering Bamboo Device (Luode)",
+  "vietnamese_name": "Ống Tre Bập Bênh Gõ Nước Đuổi Thú (Guồng Nước Đạp Chân Long Cốt Xa)",
+  "hanzi": "脚踏翻水龙骨车水满自跌击石鹿得器",
+  "category": "rural_farming_and_pastoral",
+  "sub_category": "irrigation_flume_and_waterwheel",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "listen_deer_scare",
+  "gameplay_role": "water_chime",
+  "destructible": false,
+  "material": "bamboo",
+  "cultivation_element": "wind",
+  "prompt_summary": "Ancient Chinese agricultural irrigation system part: Pedal Dragon-Bone Chain Water Pump Water-Tipping Clattering Bamboo Device (Luode). Functional wooden hydraulics, ink contours, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "irrigation_tech": "dragon_bone_treadle_pump"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/rural_farming_and_pastoral/irg_dragon_bone_treadle_pump_clattering_bamboo_deer_scare.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.rural_farming_and_pastoral.irg_dragon_bone_treadle_pump_clattering_bamboo_deer_scare:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.448
+      ]
+    ],
+    "frac_zero": 0.7746,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.32,
+        0.597,
+        0.0
+      ],
+      [
+        0.601,
+        0.818,
+        0.273
+      ],
+      [
+        0.229,
+        0.44,
+        0.139
+      ]
+    ],
+    "crop_offset": [
+      26,
+      16
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 20,
+    "contact_reference_px": 20.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

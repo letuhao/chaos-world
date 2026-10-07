@@ -1,0 +1,128 @@
+{
+  "id": "ancient_china_mortal.low_realm_cultivation.cult_herb_scorched_withered_herb_bed",
+  "name": "Frost-Damaged Withered Herb Patch",
+  "vietnamese_name": "Luống Cây Thuốc Bị Sương Muối Héo Rũ",
+  "hanzi": "霜冻干枯废草床",
+  "category": "low_realm_cultivation",
+  "sub_category": "low_grade_herb_patch",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "clear_dead_plants",
+  "gameplay_role": "Bed of blackened wilted stems destroyed by cold Qi backlash.",
+  "destructible": true,
+  "material": "plant",
+  "cultivation_element": "yin",
+  "prompt_summary": "Patch of dry cracked soil with withered blackened stalks and curled brown leaves killed by harsh frost.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "dead_plants": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/low_realm_cultivation/cult_herb_scorched_withered_herb_bed.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.low_realm_cultivation.cult_herb_scorched_withered_herb_bed:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.524,
+        0.51
+      ]
+    ],
+    "frac_zero": 0.6837,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.063,
+        0.027,
+        0.188,
+        0.115,
+        0.055,
+        0.052
+      ],
+      [
+        0.44,
+        0.794,
+        0.917,
+        0.894,
+        0.764,
+        0.411
+      ],
+      [
+        0.523,
+        0.867,
+        0.976,
+        0.943,
+        0.793,
+        0.369
+      ]
+    ],
+    "crop_offset": [
+      37,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 154,
+    "contact_reference_px": 154.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

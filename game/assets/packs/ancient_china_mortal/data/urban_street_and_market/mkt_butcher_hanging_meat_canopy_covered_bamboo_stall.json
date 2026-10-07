@@ -1,0 +1,204 @@
+{
+  "id": "ancient_china_mortal.urban_street_and_market.mkt_butcher_hanging_meat_canopy_covered_bamboo_stall",
+  "name": "Butcher Shop & Carcass Rack Stall with Striped Hemp Sunshade Canopy (2x2)",
+  "vietnamese_name": "Sạp Hàng Có Mái Bạt Che Nắng (2x2) (Phản Thịt Heo & Thịt Bò Treo Móc)",
+  "hanzi": "肉案悬钩屠夫档麻布撑顶四方小货摊",
+  "category": "urban_street_and_market",
+  "sub_category": "market_stall_and_hawker_booth",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "browse_canopy_stall",
+  "gameplay_role": "canopy_stall",
+  "destructible": false,
+  "material": "cloth",
+  "cultivation_element": "metal",
+  "prompt_summary": "Ancient Chinese urban street market asset: Butcher Shop & Carcass Rack Stall with Striped Hemp Sunshade Canopy (2x2). Detailed mercantile props, gouache textures with ink line accents, orthographic top-down view, clean transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "market_genre": "butcher_hanging_meat"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/urban_street_and_market/mkt_butcher_hanging_meat_canopy_covered_bamboo_stall.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.urban_street_and_market.mkt_butcher_hanging_meat_canopy_covered_bamboo_stall:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.614,
+        0.598
+      ],
+      [
+        0.711,
+        0.748
+      ]
+    ],
+    "frac_zero": 0.5011,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.418,
+        0.714,
+        0.707,
+        0.709,
+        0.373,
+        0.0
+      ],
+      [
+        0.0,
+        0.643,
+        0.929,
+        0.739,
+        0.791,
+        0.562,
+        0.0
+      ],
+      [
+        0.339,
+        0.98,
+        1.0,
+        1.0,
+        1.0,
+        0.972,
+        0.293
+      ],
+      [
+        0.65,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.634
+      ],
+      [
+        0.499,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        0.533
+      ],
+      [
+        0.216,
+        0.928,
+        0.941,
+        0.904,
+        0.997,
+        1.0,
+        0.235
+      ],
+      [
+        0.0,
+        0.458,
+        0.175,
+        0.085,
+        0.257,
+        0.583,
+        0.02
+      ]
+    ],
+    "crop_offset": [
+      16,
+      29
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 62,
+    "contact_reference_px": 62.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

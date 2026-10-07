@@ -1,0 +1,120 @@
+{
+  "id": "medieval_western.hanseatic_and_flemish_burgher.turnstile_toll_boom_barrier_iron_reinforced",
+  "name": "Iron-Braced Floating River Toll Timber Boom",
+  "vietnamese_name": "Thanh Gỗ Chắn Thu Phí Kênh Đào (Nẹp Sắt Kiên Cố)",
+  "category": "hanseatic_and_flemish_burgher",
+  "sub_category": "canal_water_lock_and_embankment",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": true,
+  "vision_mode": "low",
+  "interactive_verb": "inspect",
+  "gameplay_role": "Hanseatic urban burgher feature (Floating River Toll Timber Boom).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "flemish_hanseatic",
+  "prompt_summary": "2D orthographic top-down game sprite of iron-braced floating river toll timber boom, wrought iron wall tie anchors and forged hooks, Hanseatic Flemish burgher town style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/hanseatic_and_flemish_burgher/turnstile_toll_boom_barrier_iron_reinforced.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.hanseatic_and_flemish_burgher.turnstile_toll_boom_barrier_iron_reinforced:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.508,
+        0.505
+      ]
+    ],
+    "frac_zero": 0.6599,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.143,
+        0.198,
+        0.43,
+        0.408,
+        0.324,
+        0.215,
+        0.082
+      ],
+      [
+        0.85,
+        0.989,
+        0.996,
+        0.976,
+        0.996,
+        0.994,
+        0.786
+      ],
+      [
+        0.08,
+        0.268,
+        0.52,
+        0.431,
+        0.36,
+        0.283,
+        0.076
+      ]
+    ],
+    "crop_offset": [
+      20,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 16,
+    "contact_reference_px": 16.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

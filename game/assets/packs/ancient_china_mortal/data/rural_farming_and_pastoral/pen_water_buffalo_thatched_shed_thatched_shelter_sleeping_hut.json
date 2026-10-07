@@ -1,0 +1,157 @@
+{
+  "id": "ancient_china_mortal.rural_farming_and_pastoral.pen_water_buffalo_thatched_shed_thatched_shelter_sleeping_hut",
+  "name": "Thatched Water Buffalo Stable Thatched Lean-To Sleeping Shelter for Beasts",
+  "vietnamese_name": "Mái Tranh Che Mưa Cho Gia Súc (Lán Tranh Cho Trâu Nước Nghỉ)",
+  "hanzi": "厚草顶卧牛敞棚靠壁单坡歇卧草篷",
+  "category": "rural_farming_and_pastoral",
+  "sub_category": "homestead_pen_and_coop",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "rest_in_animal_shelter",
+  "gameplay_role": "animal_hut",
+  "destructible": true,
+  "material": "straw",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese farm homestead animal husbandry prop: Thatched Water Buffalo Stable Thatched Lean-To Sleeping Shelter for Beasts. Rustic peasant craftsmanship, gouache textures with ink outlines, top-down orthographic game sprite, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "animal_housing": "water_buffalo_thatched_shed"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/rural_farming_and_pastoral/pen_water_buffalo_thatched_shed_thatched_shelter_sleeping_hut.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.rural_farming_and_pastoral.pen_water_buffalo_thatched_shed_thatched_shelter_sleeping_hut:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.653,
+        0.651
+      ]
+    ],
+    "frac_zero": 0.6392,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.158,
+        0.222,
+        0.591,
+        0.504,
+        0.22,
+        0.195
+      ],
+      [
+        0.709,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.831
+      ],
+      [
+        0.438,
+        0.896,
+        1.0,
+        0.979,
+        0.574,
+        0.263
+      ]
+    ],
+    "crop_offset": [
+      36,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 128,
+    "contact_reference_px": 128.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

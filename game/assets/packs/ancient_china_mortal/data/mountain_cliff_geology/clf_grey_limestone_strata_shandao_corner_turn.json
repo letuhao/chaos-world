@@ -1,0 +1,177 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.clf_grey_limestone_strata_shandao_corner_turn",
+  "name": "Stratified Grey Limestone Cliff Plank Road Right-Angle Corner",
+  "vietnamese_name": "Khúc Quanh Cầu Sạn Đạo (Vách Đá Vôi Xám Trầm Tích)",
+  "hanzi": "层状灰岩绝壁栈道直角转角台",
+  "category": "mountain_cliff_geology",
+  "sub_category": "cliff_face_and_bluff",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "solid",
+  "interactive_verb": "traverse_plank_road",
+  "gameplay_role": "plank_corner",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "wind",
+  "prompt_summary": "Ancient Chinese mountainous geology landscape: Stratified Grey Limestone Cliff Plank Road Right-Angle Corner. Realistic rock textures, ink contours, orthographic top-down world-map view, transparent alpha background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "geology_layer": "cliff",
+    "strata": "grey_limestone_strata"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/clf_grey_limestone_strata_shandao_corner_turn.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.clf_grey_limestone_strata_shandao_corner_turn:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.619,
+        0.277
+      ],
+      [
+        0.719,
+        0.736
+      ]
+    ],
+    "frac_zero": 0.5427,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.309,
+        0.918,
+        0.224,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.647,
+        1.0,
+        0.664,
+        0.227,
+        0.0,
+        0.0
+      ],
+      [
+        0.151,
+        0.935,
+        1.0,
+        0.959,
+        0.673,
+        0.43,
+        0.027
+      ],
+      [
+        0.431,
+        0.993,
+        1.0,
+        0.992,
+        0.946,
+        0.98,
+        0.285
+      ],
+      [
+        0.634,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.652
+      ],
+      [
+        0.441,
+        0.973,
+        1.0,
+        1.0,
+        1.0,
+        0.947,
+        0.461
+      ],
+      [
+        0.0,
+        0.208,
+        0.634,
+        0.921,
+        0.637,
+        0.142,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      18,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 94,
+    "contact_reference_px": 94.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

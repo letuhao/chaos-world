@@ -35,6 +35,7 @@ Prereqs: `uv` (https://docs.astral.sh/uv/) and a Godot 4.7.x binary. All of thes
 - `claim_guard check|claim|release|report` — maintain `docs/claims.jsonl`, the live ledger of which agent session owns which paths (one JSON object per line: `session`, `paths`, `heartbeat`; `owner`/`module`/`note` are free). `check` fails when two live sessions claim overlapping paths (INC-0023) and runs in `tools check`.
 - `data report|audit` — inspect and audit content under `game/data/` (acquisition gaps). `data distribution` — audit item characteristic distribution/diversity; read-only, non-gating by default, `--fail-on warn|error` to gate. Run before planning a generation wave.
 - `cultivation seed|seed-systems|validate|report` — write missing realm-seed content (never overwrites authored files), audit the generation contract, or print the deterministic body-ladder balance report.
+- `i18n report|extract|check` — the translation catalogs (`game/locale/*.tres`): inventory every player-facing string, assign slugs and rewrite call sites (`extract --write`), or gate. `check` runs in `tools check`.
 
 **Godot binary is not on `PATH`.** `tools/godot.py` resolves it from `GODOT_BIN`, else the gitignored `.godot-bin` file, else `PATH`, and fails loudly if none resolve. Do not hardcode machine paths anywhere else. **Never invoke the Godot binary directly:** go through `tools/godot.py` (`tools test`, `run`, `ui`, `export`), which passes `--log-file build/godot.log` and enforces a 900 s ceiling — bypassing it opts you into the hazard below. **Do not rely on bare `python`:** system Python here is inconsistent (3.13 on `PATH`, a broken `py` launcher, 3.10 as `python3`). Always use `uv run`, which honors `.python-version`/`uv.lock`. **Run every gate in the background, never foreground:** a gate spams the owner's shell window for minutes and interrupts whatever they are doing. Start it with `run_in_background: true`, then poll with `shell_output` — and redirect any probe you wrote to a file under `build/` rather than the terminal.
 
@@ -186,6 +187,13 @@ Three tiers, one vocabulary, and each answers a question no other answers (ADR 0
 `tools arch` enforces the facade rule for `ui/` by scanning bare class references, so panels call the facade by name with no `preload` ceremony. **There is no facade width cap** — it is measured by FAN-IN instead (`rules.MAX_FACADE_FAN_IN`): a facade many units import is a god object however many verbs it publishes. A new UI need goes on the facade; reach for a `summary()` read key or a named class when the verb is a read, not a split.
 
 **Split dev cycle** — gameplay and UI can be built in parallel: (1) gameplay publishes a facade method or `preview() -> Dictionary` answering "what is true now?"; (2) UI builds only against that contract, never module internals, and both stay green independently. Where a panel needs something the facade does not expose, add it to the facade — do not widen `ui/` to reach internals.
+
+## Localization
+**Every player-facing string is a key with the English at the call site:** `L.t("LOC_<AREA>_<HASH>", "English")` (`core/localize.gd`). `L.t` returns the catalog translation when one resolves, else the call-site English — so English is the default, tests need no catalog, and editing English never orphans a translation (ADR 0916).
+- **Catalogs are `game/locale/<stem>.tres`** (`ui`, `content`), written ONLY by `uv run python -m tools i18n extract --write`; never hand-edit a slug or its English, because `i18n check` in `tools check` fails on any catalog/source disagreement.
+- **Slug shape** is `LOC_<AREA>_<sha1(english)[:10]>` — a readable area plus a hash stable across file moves; identical English in two files shares one key.
+- **Never let a scene hold text a test reads.** `Label.text` returns the raw key, so any `.tscn` `text` a `summary()` exposes must be set by the panel through `L.t`, never left as a literal.
+- **Scope so far:** `.gd` display sinks. Display `const`s, `.tscn` literals and authored content (`.tres`) are inventoried by `i18n report`; migrate them in later waves.
 
 ## SOLID workflow
 Contract-first; the composition root is the only place that knows concrete types.

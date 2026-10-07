@@ -1,0 +1,142 @@
+{
+  "id": "ancient_china_mortal.war_and_battlefield.war_barricade_pointed_ditch_trench",
+  "name": "Deep Anti-Cavalry Trench with Stakes",
+  "vietnamese_name": "Chiến Hào Đào Sâu Cắm Chông Ngầm",
+  "hanzi": "防骑兵深坑堑壕",
+  "category": "war_and_battlefield",
+  "sub_category": "spiked_barricade_cheval_de_frise",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "jump_across",
+  "gameplay_role": "Excavated ditch with dirt parapet bank concealing fatal bottom spikes.",
+  "destructible": false,
+  "material": "earth",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Deep excavated dirt trench with mounds of freshly dug soil, bottom filled with deadly sharpened stakes.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "fall_damage": 300
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/war_and_battlefield/war_barricade_pointed_ditch_trench.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.war_and_battlefield.war_barricade_pointed_ditch_trench:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.697,
+        0.747,
+        0.724
+      ]
+    ],
+    "frac_zero": 0.5981,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      9,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.368,
+        0.708,
+        0.683,
+        0.63,
+        0.629,
+        0.637,
+        0.732,
+        0.683,
+        0.167
+      ],
+      [
+        0.89,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.853
+      ],
+      [
+        0.412,
+        0.613,
+        0.606,
+        0.561,
+        0.64,
+        0.668,
+        0.674,
+        0.663,
+        0.298
+      ]
+    ],
+    "crop_offset": [
+      55,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 83,
+    "contact_reference_px": 83.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        2,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

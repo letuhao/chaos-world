@@ -1,0 +1,113 @@
+{
+  "id": "ancient_china_mortal.flora_and_ambience.flora_bamboo_ground_carpet_dry_leaves",
+  "name": "Ground Layer of Fallen Dry Bamboo Needles",
+  "vietnamese_name": "Thảm Lá Tre Rụng Khô Vàng Mặt Đất",
+  "hanzi": "竹园落叶松针厚地",
+  "category": "flora_and_ambience",
+  "sub_category": "bamboo_cluster",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "search_needles",
+  "gameplay_role": "Crisp carpet of narrow dried pale yellow bamboo leaves.",
+  "destructible": false,
+  "material": "plant",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Ground patch covered in thick dry golden-brown fallen bamboo leaves and occasional small green shoots.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "quiet_footsteps": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_ambience/flora_bamboo_ground_carpet_dry_leaves.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_ambience.flora_bamboo_ground_carpet_dry_leaves:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.754
+      ]
+    ],
+    "frac_zero": 0.5748,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.495,
+        0.837,
+        0.473
+      ],
+      [
+        0.926,
+        1.0,
+        0.928
+      ],
+      [
+        0.593,
+        0.95,
+        0.56
+      ]
+    ],
+    "crop_offset": [
+      16,
+      18
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 77,
+    "contact_reference_px": 77.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

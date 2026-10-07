@@ -1,0 +1,198 @@
+{
+  "id": "ancient_china_mortal.civilian_settlement.settle_pharmacy_compounding_shears",
+  "name": "Herb Compounding Shed with Shears",
+  "vietnamese_name": "Nhà Chế Thuốc Dao Cắt Dược Liệu",
+  "hanzi": "切药作坊",
+  "category": "civilian_settlement",
+  "sub_category": "herbal_pharmacy",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "craft",
+  "gameplay_role": "Workroom with heavy wooden chopping bench, long iron guillotine herb cutter, and bronze mortars.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "metal",
+  "prompt_summary": "Top-down workshop shed with a sturdy wooden workbench holding a long lever-arm iron herb cutter, heavy bronze mortar and pestle with powdered bark, and wooden medicine stamping dies.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "herb_pulverizing": true,
+    "raw_to_prepared_conversion": 1.3
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/civilian_settlement/settle_pharmacy_compounding_shears.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.civilian_settlement.settle_pharmacy_compounding_shears:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.502,
+        0.486
+      ],
+      [
+        0.476,
+        0.443
+      ]
+    ],
+    "frac_zero": 0.6713,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.319,
+        0.072,
+        0.0,
+        0.084
+      ],
+      [
+        0.227,
+        0.239,
+        0.609,
+        0.451,
+        0.471,
+        0.248
+      ],
+      [
+        0.675,
+        0.917,
+        0.913,
+        0.925,
+        1.0,
+        0.528
+      ],
+      [
+        0.876,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.8
+      ],
+      [
+        0.569,
+        0.681,
+        0.596,
+        0.449,
+        0.704,
+        0.575
+      ],
+      [
+        0.063,
+        0.355,
+        0.797,
+        0.643,
+        0.371,
+        0.06
+      ],
+      [
+        0.0,
+        0.0,
+        0.392,
+        0.339,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      32,
+      17
+    ],
+    "trunk_columns": [
+      2
+    ],
+    "contact_px": 43,
+    "contact_reference_px": 43.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

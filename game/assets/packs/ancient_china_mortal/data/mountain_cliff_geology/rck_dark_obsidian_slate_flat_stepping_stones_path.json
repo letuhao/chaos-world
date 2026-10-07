@@ -1,0 +1,128 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.rck_dark_obsidian_slate_flat_stepping_stones_path",
+  "name": "Dark Iron Mineral Slate Line of Three Stream Stepping Stones",
+  "vietnamese_name": "Hàng Ba Hòn Đá Bước Qua Suối (Đá Phiến Đen Chứa Quặng Sắt)",
+  "hanzi": "玄黑铁矿过溪三眼嵌水踏脚石",
+  "category": "mountain_cliff_geology",
+  "sub_category": "boulder_scree_and_pebbles",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "solid",
+  "interactive_verb": "cross_stepping_stones",
+  "gameplay_role": "stepping_stones",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese geology boulder prop: Dark Iron Mineral Slate Line of Three Stream Stepping Stones. Realistic mineral surface, ink contour line, top-down orthographic game asset, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "rock_type": "dark_obsidian_slate"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/rck_dark_obsidian_slate_flat_stepping_stones_path.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.rck_dark_obsidian_slate_flat_stepping_stones_path:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.585,
+        0.67
+      ]
+    ],
+    "frac_zero": 0.5786,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.082,
+        0.485,
+        0.427,
+        0.375,
+        0.461,
+        0.795,
+        0.219
+      ],
+      [
+        0.788,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.845
+      ],
+      [
+        0.139,
+        0.696,
+        0.68,
+        0.338,
+        0.648,
+        0.72,
+        0.397
+      ]
+    ],
+    "crop_offset": [
+      17,
+      19
+    ],
+    "trunk_columns": [
+      4,
+      5,
+      6
+    ],
+    "contact_px": 73,
+    "contact_reference_px": 73.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

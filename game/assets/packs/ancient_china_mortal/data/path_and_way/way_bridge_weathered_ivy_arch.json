@@ -1,0 +1,166 @@
+{
+  "id": "ancient_china_mortal.path_and_way.way_bridge_weathered_ivy_arch",
+  "name": "Weathered Stone Arch with Ivy",
+  "vietnamese_name": "Cầu Vòm Đá Cổ Rêu Phong",
+  "hanzi": "古藤石拱",
+  "category": "path_and_way",
+  "sub_category": "stone_arched_bridge",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Ancient rustic stone bridge overrun by creeping vines and wild ferns.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "wood",
+  "prompt_summary": "Top-down old chiseled stone arch bridge with green climbing ivy wrapping balustrades and hanging down towards water.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "nav_surface": "walk_surface",
+    "aesthetic_atmosphere": "ancient_ruin"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/path_and_way/way_bridge_weathered_ivy_arch.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.path_and_way.way_bridge_weathered_ivy_arch:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.422,
+        0.496
+      ],
+      [
+        0.669,
+        0.673
+      ]
+    ],
+    "frac_zero": 0.6228,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.062,
+        0.0,
+        0.097,
+        0.157,
+        0.0
+      ],
+      [
+        0.0,
+        0.394,
+        0.806,
+        0.839,
+        0.889,
+        0.603,
+        0.04
+      ],
+      [
+        0.447,
+        0.986,
+        1.0,
+        1.0,
+        1.0,
+        0.998,
+        0.601
+      ],
+      [
+        0.857,
+        1.0,
+        0.96,
+        0.689,
+        0.932,
+        1.0,
+        0.874
+      ],
+      [
+        0.688,
+        1.0,
+        0.62,
+        0.012,
+        0.592,
+        1.0,
+        0.753
+      ],
+      [
+        0.084,
+        0.796,
+        0.331,
+        0.0,
+        0.335,
+        0.888,
+        0.114
+      ]
+    ],
+    "crop_offset": [
+      16,
+      53
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 55,
+    "contact_reference_px": 55.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

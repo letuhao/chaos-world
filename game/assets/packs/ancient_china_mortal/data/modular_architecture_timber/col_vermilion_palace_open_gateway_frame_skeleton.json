@@ -1,0 +1,206 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.col_vermilion_palace_open_gateway_frame_skeleton",
+  "name": "Vermilion Lacquered Palace Open Two-Pillar Structural Gateway Portal",
+  "vietnamese_name": "Khung Cửa Trụ Đôi Đứng Mở (Sơn Son Cung Đình)",
+  "hanzi": "朱红宫廷双柱歇山门架",
+  "category": "modular_architecture_timber",
+  "sub_category": "pillar_beam_and_dougong",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "pass_under_portal",
+  "gameplay_role": "portal_frame",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "fire",
+  "prompt_summary": "Ancient Chinese timber frame architecture component: Vermilion Lacquered Palace Open Two-Pillar Structural Gateway Portal. Traditional mortise and tenon craftsmanship, ink contours, top-down orthographic sprite on clean transparent alpha background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "pillar_beam",
+    "style": "vermilion_palace"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/col_vermilion_palace_open_gateway_frame_skeleton.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.col_vermilion_palace_open_gateway_frame_skeleton:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.691,
+        0.674
+      ],
+      [
+        0.327,
+        0.329
+      ]
+    ],
+    "frac_zero": 0.632,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.051,
+        0.301,
+        0.428,
+        0.406,
+        0.471,
+        0.221,
+        0.04
+      ],
+      [
+        0.497,
+        0.978,
+        1.0,
+        1.0,
+        1.0,
+        0.97,
+        0.391
+      ],
+      [
+        0.657,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.575
+      ],
+      [
+        0.438,
+        0.937,
+        0.823,
+        0.609,
+        0.863,
+        0.921,
+        0.439
+      ],
+      [
+        0.002,
+        0.348,
+        0.316,
+        0.0,
+        0.321,
+        0.358,
+        0.0
+      ],
+      [
+        0.0,
+        0.318,
+        0.312,
+        0.0,
+        0.312,
+        0.29,
+        0.0
+      ],
+      [
+        0.0,
+        0.548,
+        0.543,
+        0.0,
+        0.577,
+        0.543,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      36
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 20,
+    "contact_reference_px": 20.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

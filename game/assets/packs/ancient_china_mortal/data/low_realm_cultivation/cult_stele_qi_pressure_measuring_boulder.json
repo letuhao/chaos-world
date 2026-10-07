@@ -1,0 +1,208 @@
+{
+  "id": "ancient_china_mortal.low_realm_cultivation.cult_stele_qi_pressure_measuring_boulder",
+  "name": "Qi Fist Indentation Strength Boulder",
+  "vietnamese_name": "Tảng Đá Thử Kình Lực Đấm Nát",
+  "hanzi": "内劲测力留拳石",
+  "category": "low_realm_cultivation",
+  "sub_category": "spirit_testing_stele",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "punch_rock",
+  "gameplay_role": "Heavy basalt boulder scarred with dozens of deep fist and palm dents.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Massive dark basalt test boulder pitted with deep hand and fist indentations measuring disciple internal force.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "force_measurement": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/low_realm_cultivation/cult_stele_qi_pressure_measuring_boulder.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.low_realm_cultivation.cult_stele_qi_pressure_measuring_boulder:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.457,
+        0.464
+      ],
+      [
+        0.697,
+        0.7
+      ]
+    ],
+    "frac_zero": 0.5568,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.574,
+        0.956,
+        0.598,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.119,
+        0.997,
+        1.0,
+        0.988,
+        0.077,
+        0.0
+      ],
+      [
+        0.0,
+        0.423,
+        1.0,
+        1.0,
+        1.0,
+        0.354,
+        0.0
+      ],
+      [
+        0.0,
+        0.711,
+        1.0,
+        1.0,
+        1.0,
+        0.596,
+        0.0
+      ],
+      [
+        0.0,
+        0.847,
+        1.0,
+        1.0,
+        1.0,
+        0.684,
+        0.0
+      ],
+      [
+        0.451,
+        0.931,
+        1.0,
+        1.0,
+        1.0,
+        0.937,
+        0.439
+      ],
+      [
+        0.25,
+        0.644,
+        0.844,
+        0.979,
+        0.823,
+        0.721,
+        0.31
+      ]
+    ],
+    "crop_offset": [
+      17,
+      20
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 164,
+    "contact_reference_px": 164.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

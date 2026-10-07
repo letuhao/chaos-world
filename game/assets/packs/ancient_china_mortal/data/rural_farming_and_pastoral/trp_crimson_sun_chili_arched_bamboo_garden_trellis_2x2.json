@@ -1,0 +1,206 @@
+{
+  "id": "ancient_china_mortal.rural_farming_and_pastoral.trp_crimson_sun_chili_arched_bamboo_garden_trellis_2x2",
+  "name": "Fiery Red Sun-Drying Peppers Arched Bamboo Garden Trellis (2x2)",
+  "vietnamese_name": "Giàn Tre Uốn Vòm Cho Cây Leo (2x2) (Ớt Đỏ Cay Nồng Phơi Nắng)",
+  "hanzi": "朝天红辣串串拱形毛竹透光大棚架",
+  "category": "rural_farming_and_pastoral",
+  "sub_category": "crop_trellis_and_hanging_harvest",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect_garden_trellis",
+  "gameplay_role": "garden_trellis",
+  "destructible": false,
+  "material": "bamboo",
+  "cultivation_element": "yang",
+  "prompt_summary": "Ancient Chinese farm crop harvest display: Fiery Red Sun-Drying Peppers Arched Bamboo Garden Trellis (2x2). Golden rustic farm aesthetic, ink contours, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "crop_type": "crimson_sun_chili"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/rural_farming_and_pastoral/trp_crimson_sun_chili_arched_bamboo_garden_trellis_2x2.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.rural_farming_and_pastoral.trp_crimson_sun_chili_arched_bamboo_garden_trellis_2x2:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.611,
+        0.607
+      ],
+      [
+        0.563,
+        0.705
+      ]
+    ],
+    "frac_zero": 0.5439,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.115,
+        0.53,
+        0.297,
+        0.287,
+        0.5,
+        0.131,
+        0.0
+      ],
+      [
+        0.365,
+        0.993,
+        0.825,
+        0.789,
+        0.997,
+        0.414,
+        0.0
+      ],
+      [
+        0.518,
+        0.928,
+        0.74,
+        0.771,
+        0.955,
+        0.577,
+        0.0
+      ],
+      [
+        0.653,
+        1.0,
+        0.879,
+        0.737,
+        1.0,
+        0.695,
+        0.0
+      ],
+      [
+        0.746,
+        0.884,
+        0.795,
+        0.697,
+        1.0,
+        0.826,
+        0.0
+      ],
+      [
+        0.778,
+        0.399,
+        0.647,
+        0.557,
+        0.9,
+        0.825,
+        0.244
+      ],
+      [
+        0.172,
+        0.0,
+        0.245,
+        0.503,
+        0.644,
+        0.372,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      30,
+      16
+    ],
+    "trunk_columns": [
+      3,
+      4,
+      5
+    ],
+    "contact_px": 66,
+    "contact_reference_px": 66.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

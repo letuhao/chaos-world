@@ -1,0 +1,207 @@
+{
+  "id": "ancient_china_mortal.flora_and_ambience.flora_peach_bare_winter_peach_branches",
+  "name": "Winter Bare Peach Tree with Spiky Twigs",
+  "vietnamese_name": "Cây Đào Khẳng Khiu Mùa Đông Chờ Xuân",
+  "hanzi": "冬日寒风枯枝桃",
+  "category": "flora_and_ambience",
+  "sub_category": "ginkgo_and_peach_tree",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Angular spiky winter peach tree with small swelling spring buds.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "wood",
+  "prompt_summary": "Winter peach tree with dark angular bare branches and small reddish dormant flower buds waiting for thaw.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "seasonal": "winter"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_ambience/flora_peach_bare_winter_peach_branches.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_ambience.flora_peach_bare_winter_peach_branches:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.099,
+        0.112
+      ],
+      [
+        0.327,
+        0.324
+      ]
+    ],
+    "frac_zero": 0.8049,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.041,
+        0.087,
+        0.001,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.021,
+        0.145,
+        0.208,
+        0.067,
+        0.034,
+        0.0
+      ],
+      [
+        0.038,
+        0.161,
+        0.344,
+        0.37,
+        0.15,
+        0.031,
+        0.0
+      ],
+      [
+        0.101,
+        0.371,
+        0.336,
+        0.551,
+        0.276,
+        0.164,
+        0.027
+      ],
+      [
+        0.062,
+        0.147,
+        0.685,
+        0.396,
+        0.262,
+        0.06,
+        0.0
+      ],
+      [
+        0.003,
+        0.017,
+        0.304,
+        0.666,
+        0.023,
+        0.021,
+        0.0
+      ],
+      [
+        0.022,
+        0.62,
+        0.973,
+        0.976,
+        0.744,
+        0.122,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      28,
+      18
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 148,
+    "contact_reference_px": 148.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

@@ -1,0 +1,151 @@
+{
+  "id": "ancient_china_mortal.flora_and_ambience.flora_lantern_pair_vermilion_gate_lanterns",
+  "name": "Pair of Round Vermilion Entrance Lanterns",
+  "vietnamese_name": "Cặp Đèn Lồng Tròn Đỏ Treo Trước Cửa",
+  "hanzi": "大门红灯笼一对",
+  "category": "flora_and_ambience",
+  "sub_category": "festival_red_lantern",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "light_lanterns",
+  "gameplay_role": "Twin round ribbed red lanterns hanging from carved bracket eaves.",
+  "destructible": false,
+  "material": "silk",
+  "cultivation_element": "fire",
+  "prompt_summary": "Pair of large spherical bright red paper lanterns hanging symmetrically with black calligraphy characters.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "festive_welcome": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_ambience/flora_lantern_pair_vermilion_gate_lanterns.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_ambience.flora_lantern_pair_vermilion_gate_lanterns:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.453,
+        0.467
+      ]
+    ],
+    "frac_zero": 0.7341,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.577,
+        0.727,
+        0.237,
+        0.269,
+        0.787,
+        0.514
+      ],
+      [
+        0.829,
+        0.946,
+        0.459,
+        0.476,
+        0.994,
+        0.803
+      ],
+      [
+        0.042,
+        0.207,
+        0.134,
+        0.0,
+        0.265,
+        0.001
+      ]
+    ],
+    "crop_offset": [
+      36,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 6,
+    "contact_reference_px": 6.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        1,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      1,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      128,
+      0,
+      256,
+      128
+    ]
+  }
+}

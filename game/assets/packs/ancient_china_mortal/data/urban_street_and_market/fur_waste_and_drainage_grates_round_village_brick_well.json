@@ -1,0 +1,143 @@
+{
+  "id": "ancient_china_mortal.urban_street_and_market.fur_waste_and_drainage_grates_round_village_brick_well",
+  "name": "Drainage Canals & Stone Slabs Round Village Brick Well with Wooden Bucket",
+  "vietnamese_name": "Giếng Gạch Tròn Kèm Thùng Gỗ Múc Nước (Cống Rãnh & Phiến Đá Đậy Nắp)",
+  "hanzi": "排洪石箅沟红砖圆砌木桶水井",
+  "category": "urban_street_and_market",
+  "sub_category": "street_furniture_and_wellhead",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "draw_well_water",
+  "gameplay_role": "wellhead",
+  "destructible": false,
+  "material": "brick",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese urban street furniture: Drainage Canals & Stone Slabs Round Village Brick Well with Wooden Bucket. Realistic civic utility styling, ink outlines, top-down orthographic game asset, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "furniture_group": "waste_and_drainage_grates"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/urban_street_and_market/fur_waste_and_drainage_grates_round_village_brick_well.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.urban_street_and_market.fur_waste_and_drainage_grates_round_village_brick_well:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.689
+      ]
+    ],
+    "frac_zero": 0.6181,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.365,
+        0.748,
+        0.201
+      ],
+      [
+        0.904,
+        1.0,
+        0.898
+      ],
+      [
+        0.527,
+        0.929,
+        0.559
+      ]
+    ],
+    "crop_offset": [
+      19,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 67,
+    "contact_reference_px": 67.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "id": "ancient_china_mortal.creature_and_denizen.denizen_disciple_qi_condensation_stage1_meditating",
+  "name": "Qi Condensation Disciple in Lotus Stance",
+  "vietnamese_name": "Đệ Tử Luyện Khí Tầng Một Ngồi Tĩnh Tọa",
+  "hanzi": "练气一层静心入定",
+  "category": "creature_and_denizen",
+  "sub_category": "low_qi_disciple",
+  "type": "character_sprite",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "talk",
+  "gameplay_role": "Cultivation Novice NPC",
+  "destructible": false,
+  "material": "flesh",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Young cultivator sitting cross-legged on woven mat with faint white mist around nose.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "npc_type": "cultivator"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/creature_and_denizen/denizen_disciple_qi_condensation_stage1_meditating.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.creature_and_denizen.denizen_disciple_qi_condensation_stage1_meditating:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.501
+      ]
+    ],
+    "frac_zero": 0.7072,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.494,
+        0.0
+      ],
+      [
+        0.35,
+        0.998,
+        0.37
+      ],
+      [
+        0.702,
+        0.915,
+        0.719
+      ]
+    ],
+    "crop_offset": [
+      16,
+      18
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 92,
+    "contact_reference_px": 92.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

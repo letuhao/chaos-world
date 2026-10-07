@@ -1,0 +1,160 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.kst_misty_cloud_shrouded_knife_edge_ridge_crest",
+  "name": "Cloud-Veiled Spirit Mountain Peak Knife-Edge Razor Crest Segment (3x1)",
+  "vietnamese_name": "Sống Núi Lưỡi Dao Hẹp (3x1) (Đỉnh Núi Mây Mù Quanh Năm)",
+  "hanzi": "云海缭绕仙山巅利刃薄片山脊梁",
+  "category": "mountain_cliff_geology",
+  "sub_category": "karst_spire_and_pinnacle",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "traverse_knife_ridge",
+  "gameplay_role": "razor_ridge",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "wind",
+  "prompt_summary": "Ancient Chinese karst pinnacle mountain landscape: Cloud-Veiled Spirit Mountain Peak Knife-Edge Razor Crest Segment (3x1). Towering verticality, poetic gouache shading, dark ink contour lines, top-down orthographic sprite on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "geology_layer": "karst",
+    "region": "misty_cloud_shrouded"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/kst_misty_cloud_shrouded_knife_edge_ridge_crest.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.kst_misty_cloud_shrouded_knife_edge_ridge_crest:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.265,
+        0.681,
+        0.28
+      ]
+    ],
+    "frac_zero": 0.8299,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.021,
+        0.463,
+        0.316,
+        0.015,
+        0.0
+      ],
+      [
+        0.081,
+        0.56,
+        0.809,
+        0.718,
+        0.472,
+        0.082
+      ],
+      [
+        0.315,
+        0.674,
+        0.85,
+        0.873,
+        0.683,
+        0.324
+      ]
+    ],
+    "crop_offset": [
+      98,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 128,
+    "contact_reference_px": 128.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      128
+    ]
+  }
+}

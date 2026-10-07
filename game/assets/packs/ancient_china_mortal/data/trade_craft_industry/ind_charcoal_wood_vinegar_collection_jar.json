@@ -1,0 +1,142 @@
+{
+  "id": "ancient_china_mortal.trade_craft_industry.ind_charcoal_wood_vinegar_collection_jar",
+  "name": "Pottery Jar Collecting Condensation Liquid",
+  "vietnamese_name": "Vò Gốm Hứng Giấm Gỗ Tự Nhiên",
+  "hanzi": "接木醋液土陶坛",
+  "category": "trade_craft_industry",
+  "sub_category": "charcoal_burning_mound",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "take_vinegar",
+  "gameplay_role": "Clay pot receiving distilled brown wood smoke essence.",
+  "destructible": true,
+  "material": "ceramic",
+  "cultivation_element": "water",
+  "prompt_summary": "Earthenware jar positioned under bamboo kiln spout collecting condensed brown wood vinegar drops.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "alchemical_liquid": "wood_vinegar"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/trade_craft_industry/ind_charcoal_wood_vinegar_collection_jar.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.trade_craft_industry.ind_charcoal_wood_vinegar_collection_jar:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.566
+      ]
+    ],
+    "frac_zero": 0.769,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.079,
+        0.617,
+        0.0
+      ],
+      [
+        0.868,
+        0.637,
+        0.0
+      ],
+      [
+        0.719,
+        0.53,
+        0.097
+      ]
+    ],
+    "crop_offset": [
+      34,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 45,
+    "contact_reference_px": 45.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

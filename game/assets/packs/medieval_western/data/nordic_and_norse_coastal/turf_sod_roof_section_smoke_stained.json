@@ -1,0 +1,203 @@
+{
+  "id": "medieval_western.nordic_and_norse_coastal.turf_sod_roof_section_smoke_stained",
+  "name": "Longhouse Peat-Smoked Lush Turf Sod Roof Section",
+  "vietnamese_name": "Mái Nhà Phủ Đất Cỏ Xanh Norse (Ám Khói Bếp Than)",
+  "category": "nordic_and_norse_coastal",
+  "sub_category": "turf_roofed_timber_longhouse",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": null,
+  "gameplay_role": "Nordic coastal cultural feature (Lush Turf Sod Roof Section).",
+  "destructible": false,
+  "material": "earth",
+  "feudal_culture": "nordic_norse",
+  "prompt_summary": "2D orthographic top-down game sprite of longhouse peat-smoked lush turf sod roof section, sooty golden patina from indoor turf fires, Nordic Norse coastal settlement style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/nordic_and_norse_coastal/turf_sod_roof_section_smoke_stained.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.nordic_and_norse_coastal.turf_sod_roof_section_smoke_stained:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.486,
+        0.56
+      ],
+      [
+        0.738,
+        0.687
+      ]
+    ],
+    "frac_zero": 0.5287,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.105,
+        0.712,
+        0.06,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.029,
+        0.864,
+        1.0,
+        0.758,
+        0.404,
+        0.0
+      ],
+      [
+        0.348,
+        0.989,
+        1.0,
+        1.0,
+        1.0,
+        0.994,
+        0.393
+      ],
+      [
+        0.658,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.492
+      ],
+      [
+        0.87,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.996,
+        0.422
+      ],
+      [
+        0.211,
+        0.869,
+        1.0,
+        1.0,
+        1.0,
+        0.312,
+        0.301
+      ],
+      [
+        0.0,
+        0.253,
+        0.759,
+        0.963,
+        0.771,
+        0.112,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      20,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 112,
+    "contact_reference_px": 112.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

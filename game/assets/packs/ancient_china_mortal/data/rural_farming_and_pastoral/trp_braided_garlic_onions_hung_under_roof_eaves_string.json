@@ -1,0 +1,159 @@
+{
+  "id": "ancient_china_mortal.rural_farming_and_pastoral.trp_braided_garlic_onions_hung_under_roof_eaves_string",
+  "name": "Braided White Garlic & Shallot Strings Heavy Strung Clusters Hung Under Thatch Eaves",
+  "vietnamese_name": "Chùm Nông Sản Buộc Dưới Mái Hiên (Tỏi Trắng Thắt Bím Dưới Mái)",
+  "hanzi": "编结整齐白大蒜辫茅檐垂吊风干排串",
+  "category": "rural_farming_and_pastoral",
+  "sub_category": "crop_trellis_and_hanging_harvest",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "harvest_hanging_crop",
+  "gameplay_role": "eave_harvest",
+  "destructible": false,
+  "material": "plant",
+  "cultivation_element": "metal",
+  "prompt_summary": "Ancient Chinese farm crop harvest display: Braided White Garlic & Shallot Strings Heavy Strung Clusters Hung Under Thatch Eaves. Golden rustic farm aesthetic, ink contours, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "crop_type": "braided_garlic_onions"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/rural_farming_and_pastoral/trp_braided_garlic_onions_hung_under_roof_eaves_string.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.rural_farming_and_pastoral.trp_braided_garlic_onions_hung_under_roof_eaves_string:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.663,
+        0.602
+      ]
+    ],
+    "frac_zero": 0.6093,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.442,
+        0.48,
+        0.496,
+        0.479,
+        0.499,
+        0.642,
+        0.256
+      ],
+      [
+        0.618,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.868,
+        0.247
+      ],
+      [
+        0.32,
+        0.692,
+        0.85,
+        0.798,
+        0.387,
+        0.268,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      26,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 105,
+    "contact_reference_px": 105.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

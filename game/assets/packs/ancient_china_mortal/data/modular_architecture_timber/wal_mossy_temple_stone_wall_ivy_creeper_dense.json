@@ -1,0 +1,158 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.wal_mossy_temple_stone_wall_ivy_creeper_dense",
+  "name": "Mossy Sacred Mountain Masonry Wall Overgrown with Climbing Green Ivy",
+  "vietnamese_name": "Tường Phủ Dày Dây Leo Dại Xanh (Đá Xếp Miếu Núi Rêu Phong)",
+  "hanzi": "古刹青苔乱石墙浓密爬山虎覆绿墙",
+  "category": "modular_architecture_timber",
+  "sub_category": "wall_and_lattice_window",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "climb_ivy_wall",
+  "gameplay_role": "foliage_wall",
+  "destructible": false,
+  "material": "plant",
+  "cultivation_element": "wood",
+  "prompt_summary": "Ancient Chinese vernacular building wall module: Mossy Sacred Mountain Masonry Wall Overgrown with Climbing Green Ivy. Authentic materials, crisp dark ink outlines, orthographic top-down world-map view, isolated cleanly on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "wall",
+    "style": "mossy_temple_stone"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/wal_mossy_temple_stone_wall_ivy_creeper_dense.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.wal_mossy_temple_stone_wall_ivy_creeper_dense:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.633,
+        0.693
+      ]
+    ],
+    "frac_zero": 0.5773,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.529,
+        0.586,
+        0.508,
+        0.469,
+        0.506,
+        0.704,
+        0.593
+      ],
+      [
+        0.669,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.695
+      ],
+      [
+        0.318,
+        0.625,
+        0.333,
+        0.298,
+        0.322,
+        0.796,
+        0.647
+      ]
+    ],
+    "crop_offset": [
+      17,
+      23
+    ],
+    "trunk_columns": [
+      5,
+      6
+    ],
+    "contact_px": 66,
+    "contact_reference_px": 66.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

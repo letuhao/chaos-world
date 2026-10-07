@@ -1,0 +1,213 @@
+{
+  "id": "ancient_china_mortal.war_and_battlefield.war_siege_triple_bow_ballista",
+  "name": "Triple-Bow Bed Crossbow (Chuangzi Nu)",
+  "vietnamese_name": "Giường Nỏ Ba Cánh Cực Mạnh (Tam Cung Sàng Nỗ)",
+  "hanzi": "三弓床弩巨矢炮",
+  "category": "war_and_battlefield",
+  "sub_category": "siege_engine_and_catapult",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "fire_ballista",
+  "gameplay_role": "Heavy siege ballista firing iron spear-bolts that pin men to walls.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Heavy wooden bed-frame siege crossbow with three laminated bows, windlass winch, firing massive spear-sized bolts.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "piercing_bolt": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/war_and_battlefield/war_siege_triple_bow_ballista.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.war_and_battlefield.war_siege_triple_bow_ballista:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.125,
+        0.599,
+        0.132
+      ],
+      [
+        0.212,
+        0.877,
+        0.248
+      ]
+    ],
+    "frac_zero": 0.8207,
+    "blocks": [
+      [
+        false,
+        true,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.06,
+        0.233,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.059,
+        0.219,
+        0.661,
+        0.809,
+        0.239,
+        0.116,
+        0.0
+      ],
+      [
+        0.19,
+        0.188,
+        0.736,
+        0.817,
+        0.304,
+        0.174,
+        0.152
+      ],
+      [
+        0.0,
+        0.312,
+        1.0,
+        1.0,
+        0.576,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.278,
+        1.0,
+        1.0,
+        0.584,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.478,
+        1.0,
+        1.0,
+        0.801,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.407,
+        0.58,
+        0.512,
+        0.658,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      92,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 95,
+    "contact_reference_px": 95.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

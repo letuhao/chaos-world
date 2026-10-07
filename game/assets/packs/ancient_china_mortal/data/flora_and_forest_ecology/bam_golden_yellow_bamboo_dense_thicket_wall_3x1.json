@@ -1,0 +1,160 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.bam_golden_yellow_bamboo_dense_thicket_wall_3x1",
+  "name": "Imperial Golden Stalk Bamboo Long Bamboo Grove Screen (3x1)",
+  "vietnamese_name": "Rặng Trúc Râm Mát Dài (3x1) (Tre Vàng Óng Quý Hiếm)",
+  "hanzi": "金黄名贵刚竹三格幽深青翠竹屏障",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "bamboo_grove_and_thicket",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect_bamboo_screen",
+  "gameplay_role": "bamboo_barrier",
+  "destructible": false,
+  "material": "bamboo",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese bamboo grove vegetation: Imperial Golden Stalk Bamboo Long Bamboo Grove Screen (3x1). Slender culms with delicate fluttering green leaves, dark ink contours, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "bamboo_variety": "golden_yellow_bamboo"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/bam_golden_yellow_bamboo_dense_thicket_wall_3x1.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.bam_golden_yellow_bamboo_dense_thicket_wall_3x1:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.498,
+        0.503,
+        0.472
+      ]
+    ],
+    "frac_zero": 0.7621,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.17,
+        0.365,
+        0.268,
+        0.179,
+        0.26,
+        0.265
+      ],
+      [
+        0.47,
+        0.832,
+        0.635,
+        0.563,
+        0.768,
+        0.406
+      ],
+      [
+        0.378,
+        0.783,
+        0.708,
+        0.719,
+        0.761,
+        0.335
+      ]
+    ],
+    "crop_offset": [
+      98,
+      19
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 169,
+    "contact_reference_px": 169.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      128
+    ]
+  }
+}

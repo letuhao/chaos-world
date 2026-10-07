@@ -1,0 +1,146 @@
+{
+  "id": "ancient_china_mortal.creature_and_denizen.denizen_soldier_cavalry_scout_horseman",
+  "name": "Frontier Cavalry Scout on Mounted Steed",
+  "vietnamese_name": "Binh Trinh Sát Kỵ Binh Cưỡi Ngựa",
+  "hanzi": "边境快骑斥候",
+  "category": "creature_and_denizen",
+  "sub_category": "imperial_soldier_and_bailiff",
+  "type": "character_sprite",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "talk",
+  "gameplay_role": "Military Guard NPC",
+  "destructible": false,
+  "material": "flesh",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Mounted scout in leather barding on brown horse holding short recurve bow.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "npc_type": "guard"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/creature_and_denizen/denizen_soldier_cavalry_scout_horseman.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.creature_and_denizen.denizen_soldier_cavalry_scout_horseman:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.638,
+        0.172
+      ],
+      [
+        0.57,
+        0.137
+      ]
+    ],
+    "frac_zero": 0.8538,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      4,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.146,
+        0.443,
+        0.0,
+        0.0
+      ],
+      [
+        0.309,
+        0.567,
+        0.0,
+        0.0
+      ],
+      [
+        0.828,
+        0.988,
+        0.161,
+        0.055
+      ],
+      [
+        0.907,
+        1.0,
+        0.336,
+        0.0
+      ],
+      [
+        0.665,
+        0.948,
+        0.072,
+        0.0
+      ],
+      [
+        0.283,
+        0.577,
+        0.0,
+        0.0
+      ],
+      [
+        0.141,
+        0.189,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      76,
+      17
+    ],
+    "trunk_columns": [],
+    "contact_px": 9,
+    "contact_reference_px": 9.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

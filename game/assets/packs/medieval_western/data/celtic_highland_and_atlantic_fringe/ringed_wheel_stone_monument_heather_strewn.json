@@ -1,0 +1,167 @@
+{
+  "id": "medieval_western.celtic_highland_and_atlantic_fringe.ringed_wheel_stone_monument_heather_strewn",
+  "name": "Heather-Strewn Celtic Wheel Ringed High Cross",
+  "vietnamese_name": "Thánh Giá Đá Vòng Tròn Celtic (Phủ Hoa Thạch Nam)",
+  "category": "celtic_highland_and_atlantic_fringe",
+  "sub_category": "celtic_wheel_high_cross",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "pray",
+  "gameplay_role": "Celtic highland cultural feature (Celtic Wheel Ringed High Cross).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "celtic_gaelic",
+  "prompt_summary": "2D orthographic top-down game sprite of heather-strewn celtic wheel ringed high cross, purple flowering moorland heather, Celtic highland and Atlantic fringe style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/celtic_highland_and_atlantic_fringe/ringed_wheel_stone_monument_heather_strewn.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.celtic_highland_and_atlantic_fringe.ringed_wheel_stone_monument_heather_strewn:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.415
+      ],
+      [
+        0.635
+      ]
+    ],
+    "frac_zero": 0.6701,
+    "blocks": [
+      [
+        true
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.001,
+        0.646,
+        0.0
+      ],
+      [
+        0.526,
+        0.884,
+        0.482
+      ],
+      [
+        0.222,
+        0.826,
+        0.206
+      ],
+      [
+        0.003,
+        0.76,
+        0.002
+      ],
+      [
+        0.594,
+        0.971,
+        0.559
+      ],
+      [
+        0.878,
+        1.0,
+        0.887
+      ],
+      [
+        0.25,
+        0.934,
+        0.303
+      ]
+    ],
+    "crop_offset": [
+      17,
+      37
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 83,
+    "contact_reference_px": 83.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      256
+    ]
+  }
+}

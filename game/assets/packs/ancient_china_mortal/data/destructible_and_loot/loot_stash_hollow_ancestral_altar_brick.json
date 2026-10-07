@@ -1,0 +1,113 @@
+{
+  "id": "ancient_china_mortal.destructible_and_loot.loot_stash_hollow_ancestral_altar_brick",
+  "name": "Removable Altar Floor Brick with Secret Ring",
+  "vietnamese_name": "Viên Gạch Lát Bàn Thờ Rút Ra Được",
+  "hanzi": "香案下活络地砖",
+  "category": "destructible_and_loot",
+  "sub_category": "loose_paving_stash",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "pry_brick",
+  "gameplay_role": "Square clay floor tile fitted with recessed flush bronze ring.",
+  "destructible": false,
+  "material": "brick",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Single square clay floor paver in front of altar with subtle flush brass pull-ring for lifting.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "altar_secret": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/destructible_and_loot/loot_stash_hollow_ancestral_altar_brick.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.destructible_and_loot.loot_stash_hollow_ancestral_altar_brick:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.762
+      ]
+    ],
+    "frac_zero": 0.5795,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.627,
+        0.955,
+        0.676
+      ],
+      [
+        0.852,
+        1.0,
+        0.898
+      ],
+      [
+        0.39,
+        0.771,
+        0.569
+      ]
+    ],
+    "crop_offset": [
+      16,
+      22
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 81,
+    "contact_reference_px": 81.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

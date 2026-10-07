@@ -1,0 +1,143 @@
+{
+  "id": "ancient_china_mortal.rural_farming_and_pastoral.pen_mountain_goat_brush_corral_hanging_woven_wicker_feed_rack",
+  "name": "Thorny Brush Mountain Goat Corral Suspended Wicker Hay Rack for Horses",
+  "vietnamese_name": "Giá Tre Đựng Cỏ Khô Treo Cao (Bãi Quây Dê Rừng Bằng Cành Gai)",
+  "hanzi": "干荆棘圈羊栅栏悬挂篾编储草料篓",
+  "category": "rural_farming_and_pastoral",
+  "sub_category": "homestead_pen_and_coop",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "fill_hay_rack",
+  "gameplay_role": "hay_rack",
+  "destructible": true,
+  "material": "bamboo",
+  "cultivation_element": "metal",
+  "prompt_summary": "Ancient Chinese farm homestead animal husbandry prop: Thorny Brush Mountain Goat Corral Suspended Wicker Hay Rack for Horses. Rustic peasant craftsmanship, gouache textures with ink outlines, top-down orthographic game sprite, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "animal_housing": "mountain_goat_brush_corral"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/rural_farming_and_pastoral/pen_mountain_goat_brush_corral_hanging_woven_wicker_feed_rack.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.rural_farming_and_pastoral.pen_mountain_goat_brush_corral_hanging_woven_wicker_feed_rack:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.662
+      ]
+    ],
+    "frac_zero": 0.631,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.243,
+        0.673,
+        0.15
+      ],
+      [
+        0.854,
+        1.0,
+        0.854
+      ],
+      [
+        0.624,
+        0.925,
+        0.542
+      ]
+    ],
+    "crop_offset": [
+      19,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 70,
+    "contact_reference_px": 70.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

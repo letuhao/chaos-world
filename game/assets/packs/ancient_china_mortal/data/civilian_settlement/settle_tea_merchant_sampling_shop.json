@@ -1,0 +1,203 @@
+{
+  "id": "ancient_china_mortal.civilian_settlement.settle_tea_merchant_sampling_shop",
+  "name": "Fine Loose-Leaf Tea Shopfront",
+  "vietnamese_name": "Cửa Hiệu Buôn Trà Thượng Hạng",
+  "hanzi": "御品茶庄",
+  "category": "civilian_settlement",
+  "sub_category": "tavern_and_teahouse",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "shop",
+  "gameplay_role": "Prestigious tea dealership with polished rosewood counters and labeled porcelain tea caddies.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "wood",
+  "prompt_summary": "Top-down high-end town teahouse storefront with carved rosewood display counter, rows of blue-and-white porcelain tea jars, bronze balancing scale, and silk wall hangings.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "trade_shop": "loose_leaf_tea",
+    "merchant_tier": "high"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/civilian_settlement/settle_tea_merchant_sampling_shop.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.civilian_settlement.settle_tea_merchant_sampling_shop:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.635,
+        0.625
+      ],
+      [
+        0.676,
+        0.662
+      ]
+    ],
+    "frac_zero": 0.5475,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.199,
+        0.152,
+        0.628,
+        0.142,
+        0.201,
+        0.0
+      ],
+      [
+        0.281,
+        0.932,
+        1.0,
+        1.0,
+        1.0,
+        0.921,
+        0.251
+      ],
+      [
+        0.741,
+        0.999,
+        1.0,
+        1.0,
+        1.0,
+        0.997,
+        0.722
+      ],
+      [
+        0.364,
+        0.941,
+        1.0,
+        1.0,
+        1.0,
+        0.891,
+        0.336
+      ],
+      [
+        0.194,
+        0.93,
+        1.0,
+        1.0,
+        0.997,
+        0.858,
+        0.196
+      ],
+      [
+        0.0,
+        0.802,
+        0.768,
+        0.812,
+        0.518,
+        0.79,
+        0.265
+      ],
+      [
+        0.0,
+        0.062,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      44
+    ],
+    "trunk_columns": [],
+    "contact_px": 108,
+    "contact_reference_px": 108.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

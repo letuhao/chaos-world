@@ -1,0 +1,128 @@
+{
+  "id": "medieval_western.celtic_highland_and_atlantic_fringe.dugout_log_canoe_dock_atlantic_salt",
+  "name": "Gale-Washed Oak Dugout Canoe Moored at Post",
+  "vietnamese_name": "Thuyền Độc Mộc Buộc Cọc Ven Đảo Hồ (Gió Biển Mặn Thổi)",
+  "category": "celtic_highland_and_atlantic_fringe",
+  "sub_category": "lake_dwelling_crannog_jetty",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "board_canoe",
+  "gameplay_role": "Celtic highland cultural feature (Oak Dugout Canoe Moored at Post).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "celtic_gaelic",
+  "prompt_summary": "2D orthographic top-down game sprite of gale-washed oak dugout canoe moored at post, salt spray worn stone and wind-bent scrub, Celtic highland and Atlantic fringe style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/celtic_highland_and_atlantic_fringe/dugout_log_canoe_dock_atlantic_salt.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.celtic_highland_and_atlantic_fringe.dugout_log_canoe_dock_atlantic_salt:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.484,
+        0.474
+      ]
+    ],
+    "frac_zero": 0.698,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.001,
+        0.145,
+        0.357,
+        0.471,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.282,
+        0.498,
+        0.855,
+        0.923,
+        0.403,
+        0.281,
+        0.0
+      ],
+      [
+        0.394,
+        0.839,
+        0.936,
+        0.96,
+        0.896,
+        0.511,
+        0.052
+      ]
+    ],
+    "crop_offset": [
+      31,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 159,
+    "contact_reference_px": 159.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

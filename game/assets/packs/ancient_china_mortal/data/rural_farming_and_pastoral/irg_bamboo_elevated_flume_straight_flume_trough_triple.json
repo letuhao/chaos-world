@@ -1,0 +1,122 @@
+{
+  "id": "ancient_china_mortal.rural_farming_and_pastoral.irg_bamboo_elevated_flume_straight_flume_trough_triple",
+  "name": "Elevated Split-Bamboo Aqueduct Flume Long Bamboo Water Trough Span (3x1)",
+  "vietnamese_name": "Máng Tre Dẫn Nước Dài (3x1) (Máng Tre Dẫn Nước Trên Giàn Cao)",
+  "hanzi": "竹制架空引水槽三格凌空飞水长木枧",
+  "category": "rural_farming_and_pastoral",
+  "sub_category": "irrigation_flume_and_waterwheel",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "wash_in_flume_water",
+  "gameplay_role": "water_flume",
+  "destructible": false,
+  "material": "bamboo",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese agricultural irrigation system part: Elevated Split-Bamboo Aqueduct Flume Long Bamboo Water Trough Span (3x1). Functional wooden hydraulics, ink contours, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "irrigation_tech": "bamboo_elevated_flume"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/rural_farming_and_pastoral/irg_bamboo_elevated_flume_straight_flume_trough_triple.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.rural_farming_and_pastoral.irg_bamboo_elevated_flume_straight_flume_trough_triple:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.229,
+        0.439,
+        0.226
+      ]
+    ],
+    "frac_zero": 0.8626,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.065,
+        0.469,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.396,
+        0.447,
+        0.679,
+        0.938,
+        0.469,
+        0.449,
+        0.308
+      ],
+      [
+        0.29,
+        0.272,
+        0.281,
+        0.312,
+        0.277,
+        0.246,
+        0.115
+      ]
+    ],
+    "crop_offset": [
+      88,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 11,
+    "contact_reference_px": 11.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

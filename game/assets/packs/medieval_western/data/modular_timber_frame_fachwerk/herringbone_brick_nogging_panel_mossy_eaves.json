@@ -1,0 +1,169 @@
+{
+  "id": "medieval_western.modular_timber_frame_fachwerk.herringbone_brick_nogging_panel_mossy_eaves",
+  "name": "Moss-Bordered Herringbone Brick Nogging Panel",
+  "vietnamese_name": "Vách Xây Gạch Đỏ Kiểu Xương Cá (Viền Rêu Ẩm)",
+  "category": "modular_timber_frame_fachwerk",
+  "sub_category": "wattle_daub_and_brick_infill",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": null,
+  "gameplay_role": "Fachwerk timber-frame modular element (Herringbone Brick Nogging Panel).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "germanic_holy_roman",
+  "prompt_summary": "2D orthographic top-down game sprite of moss-bordered herringbone brick nogging panel, soft green moss along rain drip edges, Fachwerk half-timbering architecture style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/modular_timber_frame_fachwerk/herringbone_brick_nogging_panel_mossy_eaves.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.modular_timber_frame_fachwerk.herringbone_brick_nogging_panel_mossy_eaves:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.617
+      ],
+      [
+        0.86
+      ]
+    ],
+    "frac_zero": 0.5693,
+    "blocks": [
+      [
+        true
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.131,
+        0.571,
+        0.005
+      ],
+      [
+        0.658,
+        1.0,
+        0.373
+      ],
+      [
+        0.713,
+        1.0,
+        0.477
+      ],
+      [
+        0.76,
+        1.0,
+        0.572
+      ],
+      [
+        0.834,
+        1.0,
+        0.706
+      ],
+      [
+        0.963,
+        1.0,
+        0.929
+      ],
+      [
+        0.698,
+        0.954,
+        0.548
+      ]
+    ],
+    "crop_offset": [
+      22,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 61,
+    "contact_reference_px": 61.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      256
+    ]
+  }
+}

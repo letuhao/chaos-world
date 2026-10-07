@@ -1,0 +1,154 @@
+{
+  "id": "ancient_china_mortal.war_and_battlefield.war_barricade_cheval_de_frise_standard",
+  "name": "Crossed Wooden Cheval-de-Frise (Lu Jiao)",
+  "vietnamese_name": "Chông Gỗ Chữ X Chống Kỵ Binh (Lộc Giác)",
+  "hanzi": "拒马鹿角木栅",
+  "category": "war_and_battlefield",
+  "sub_category": "spiked_barricade_cheval_de_frise",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Crossed spiked timbers bound with iron wire to impale charging warhorses.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Traditional Chinese anti-cavalry wooden barricade (Lu Jiao), crossed sharpened timber spikes bound with iron wire.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "cavalry_stop": true,
+    "damage_on_impact": 150
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/war_and_battlefield/war_barricade_cheval_de_frise_standard.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.war_and_battlefield.war_barricade_cheval_de_frise_standard:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.5,
+        0.499
+      ]
+    ],
+    "frac_zero": 0.759,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      2
+    ],
+    "sub_fill": [
+      [
+        0.481,
+        0.502,
+        0.502,
+        0.52,
+        0.498,
+        0.495,
+        0.475
+      ],
+      [
+        0.435,
+        0.512,
+        0.527,
+        0.574,
+        0.52,
+        0.513,
+        0.444
+      ]
+    ],
+    "crop_offset": [
+      16,
+      53
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 212,
+    "contact_reference_px": 212.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

@@ -1,0 +1,207 @@
+{
+  "id": "ancient_china_mortal.civilian_settlement.settle_tavern_canal_drinking_shed",
+  "name": "Canal-Side Drinking Pavilion",
+  "vietnamese_name": "Quán Rượu Ven Kênh Rèm Trúc",
+  "hanzi": "水榭酒亭",
+  "category": "civilian_settlement",
+  "sub_category": "tavern_and_teahouse",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "rest",
+  "gameplay_role": "Breezy riverside tavern built over water piles with roll-up bamboo sun blinds.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "water",
+  "prompt_summary": "Top-down timber pavilion built partially over canal water, roll-up green bamboo matchstick blinds, wooden benches facing water, and earthen wine jars chilling in the stream.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "river_view_recreation": true,
+    "boatman_patronage": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/civilian_settlement/settle_tavern_canal_drinking_shed.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.civilian_settlement.settle_tavern_canal_drinking_shed:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.654,
+        0.666
+      ],
+      [
+        0.541,
+        0.496
+      ]
+    ],
+    "frac_zero": 0.5334,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.049,
+        0.623,
+        0.796,
+        0.781,
+        0.79,
+        0.619,
+        0.055
+      ],
+      [
+        0.61,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.627
+      ],
+      [
+        0.191,
+        0.972,
+        0.835,
+        0.635,
+        0.846,
+        0.963,
+        0.265
+      ],
+      [
+        0.024,
+        0.682,
+        0.847,
+        0.507,
+        0.859,
+        0.673,
+        0.007
+      ],
+      [
+        0.0,
+        0.824,
+        1.0,
+        1.0,
+        1.0,
+        0.816,
+        0.001
+      ],
+      [
+        0.036,
+        0.804,
+        0.723,
+        0.823,
+        0.628,
+        0.729,
+        0.04
+      ],
+      [
+        0.0,
+        0.363,
+        0.567,
+        0.464,
+        0.302,
+        0.098,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      19
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3
+    ],
+    "contact_px": 58,
+    "contact_reference_px": 58.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

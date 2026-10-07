@@ -1,0 +1,210 @@
+{
+  "id": "ancient_china_mortal.rural_farming_and_pastoral.pen_water_buffalo_thatched_shed_enclosed_animal_pen_2x2",
+  "name": "Thatched Water Buffalo Stable Enclosed Post-and-Rail Animal Pen (2x2)",
+  "vietnamese_name": "Bãi Quây Rào Gỗ Nhốt Gia Súc (2x2) (Lán Tranh Cho Trâu Nước Nghỉ)",
+  "hanzi": "厚草顶卧牛敞棚四方合围栅条牲畜圈",
+  "category": "rural_farming_and_pastoral",
+  "sub_category": "homestead_pen_and_coop",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect_livestock_pen",
+  "gameplay_role": "livestock_pen",
+  "destructible": true,
+  "material": "straw",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese farm homestead animal husbandry prop: Thatched Water Buffalo Stable Enclosed Post-and-Rail Animal Pen (2x2). Rustic peasant craftsmanship, gouache textures with ink outlines, top-down orthographic game sprite, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "animal_housing": "water_buffalo_thatched_shed"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/rural_farming_and_pastoral/pen_water_buffalo_thatched_shed_enclosed_animal_pen_2x2.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.rural_farming_and_pastoral.pen_water_buffalo_thatched_shed_enclosed_animal_pen_2x2:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.833,
+        0.822
+      ],
+      [
+        0.529,
+        0.838
+      ]
+    ],
+    "frac_zero": 0.4083,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.421,
+        0.738,
+        0.704,
+        0.696,
+        0.729,
+        0.783,
+        0.358
+      ],
+      [
+        0.576,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.464
+      ],
+      [
+        0.775,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.701
+      ],
+      [
+        0.641,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.63
+      ],
+      [
+        0.479,
+        0.701,
+        0.629,
+        0.965,
+        1.0,
+        1.0,
+        0.547
+      ],
+      [
+        0.428,
+        0.018,
+        0.0,
+        0.576,
+        1.0,
+        1.0,
+        0.731
+      ],
+      [
+        0.658,
+        0.598,
+        0.571,
+        0.705,
+        0.619,
+        0.731,
+        0.729
+      ]
+    ],
+    "crop_offset": [
+      17,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 205,
+    "contact_reference_px": 205.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

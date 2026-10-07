@@ -1,0 +1,184 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.rck_mossy_creek_scree_slope_broad_fan",
+  "name": "Mossy Wet River Stone Broad Talus Scree Avalanche Fan (3x2)",
+  "vietnamese_name": "Gò Đá Sỏi Tràn Sườn Dốc (3x2) (Đá Suối Bám Rêu Xanh)",
+  "hanzi": "湿润青苔扇形倾泻倒石碎堆",
+  "category": "mountain_cliff_geology",
+  "sub_category": "boulder_scree_and_pebbles",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "solid",
+  "interactive_verb": "traverse_talus_fan",
+  "gameplay_role": "talus_fan",
+  "destructible": true,
+  "material": "stone",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese geology boulder prop: Mossy Wet River Stone Broad Talus Scree Avalanche Fan (3x2). Realistic mineral surface, ink contour line, top-down orthographic game asset, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "rock_type": "mossy_creek"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/rck_mossy_creek_scree_slope_broad_fan.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.rck_mossy_creek_scree_slope_broad_fan:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.151,
+        0.856,
+        0.43
+      ],
+      [
+        0.789,
+        0.99,
+        0.72
+      ]
+    ],
+    "frac_zero": 0.6616,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.042,
+        0.684,
+        0.948,
+        0.295,
+        0.0
+      ],
+      [
+        0.0,
+        0.003,
+        0.521,
+        1.0,
+        1.0,
+        0.644,
+        0.0
+      ],
+      [
+        0.0,
+        0.347,
+        0.971,
+        1.0,
+        1.0,
+        0.74,
+        0.0
+      ],
+      [
+        0.09,
+        0.912,
+        1.0,
+        1.0,
+        1.0,
+        0.895,
+        0.382
+      ],
+      [
+        0.717,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.754
+      ],
+      [
+        0.941,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.686
+      ],
+      [
+        0.29,
+        0.792,
+        0.975,
+        0.98,
+        0.846,
+        0.55,
+        0.022
+      ]
+    ],
+    "crop_offset": [
+      81,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 161,
+    "contact_reference_px": 161.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,207 @@
+{
+  "id": "ancient_china_mortal.folk_religion_fengshui.folk_tudi_banyan_tree_root_shrine",
+  "name": "Ancient Banyan Tree Root Altar",
+  "vietnamese_name": "Bàn Thờ Gốc Cây Đa Cổ Thụ Thổ Thần",
+  "hanzi": "老榕树根土地灵龛",
+  "category": "folk_religion_fengshui",
+  "sub_category": "earth_god_shrine_tudi",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "pray",
+  "gameplay_role": "Shrine nestled deep within sprawling mossy aerial roots of sacred fig.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "wood",
+  "prompt_summary": "Ancient twisted banyan tree with massive exposed roots cradling a red-painted stone incense altar and prayer ribbons.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "qi_gathering": 1.2
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/folk_religion_fengshui/folk_tudi_banyan_tree_root_shrine.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.folk_religion_fengshui.folk_tudi_banyan_tree_root_shrine:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.45,
+        0.445
+      ],
+      [
+        0.522,
+        0.557
+      ]
+    ],
+    "frac_zero": 0.6108,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.047,
+        0.601,
+        0.811,
+        0.308,
+        0.001,
+        0.0
+      ],
+      [
+        0.014,
+        0.664,
+        0.846,
+        0.893,
+        0.856,
+        0.386,
+        0.0
+      ],
+      [
+        0.402,
+        0.679,
+        0.686,
+        0.734,
+        0.52,
+        0.743,
+        0.289
+      ],
+      [
+        0.0,
+        0.032,
+        0.433,
+        0.85,
+        0.294,
+        0.026,
+        0.006
+      ],
+      [
+        0.0,
+        0.351,
+        0.703,
+        1.0,
+        0.724,
+        0.134,
+        0.0
+      ],
+      [
+        0.185,
+        0.859,
+        1.0,
+        1.0,
+        0.948,
+        0.568,
+        0.138
+      ],
+      [
+        0.27,
+        0.697,
+        0.942,
+        0.993,
+        0.817,
+        0.294,
+        0.114
+      ]
+    ],
+    "crop_offset": [
+      23,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 124,
+    "contact_reference_px": 124.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

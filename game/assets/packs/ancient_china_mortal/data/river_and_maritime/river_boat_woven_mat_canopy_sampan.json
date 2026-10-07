@@ -1,0 +1,154 @@
+{
+  "id": "ancient_china_mortal.river_and_maritime.river_boat_woven_mat_canopy_sampan",
+  "name": "Arch Woven Mat Canopy River Sampan",
+  "vietnamese_name": "Thuyền Mui Uốn Bằng Mành Tre",
+  "hanzi": "乌篷船摇橹快舟",
+  "category": "river_and_maritime",
+  "sub_category": "fishing_sampan_and_houseboat",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "enter_boat",
+  "gameplay_role": "Classic Jiangnan black-awned boat (Wupengchuan).",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "water",
+  "prompt_summary": "Traditional Jiangnan black-canopied wooden rowboat (Wupengchuan) with sculling oar and straw seat.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "speed_boat": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/river_and_maritime/river_boat_woven_mat_canopy_sampan.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.river_and_maritime.river_boat_woven_mat_canopy_sampan:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.442,
+        0.584
+      ]
+    ],
+    "frac_zero": 0.6538,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.106,
+        0.245,
+        0.346,
+        0.427,
+        0.879,
+        0.687,
+        0.163
+      ],
+      [
+        0.655,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.72
+      ],
+      [
+        0.0,
+        0.109,
+        0.266,
+        0.31,
+        0.3,
+        0.329,
+        0.022
+      ]
+    ],
+    "crop_offset": [
+      16,
+      19
+    ],
+    "trunk_columns": [],
+    "contact_px": 11,
+    "contact_reference_px": 11.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

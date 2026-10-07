@@ -1,0 +1,143 @@
+{
+  "id": "ancient_china_mortal.urban_street_and_market.fur_memorial_stone_lions_night_watchman_gong_bell_stand",
+  "name": "Street Corner Guardian Statuary Watchman Bronze Gong Stand on Street Corner",
+  "vietnamese_name": "Giá Treo Thanh La Của Người Điểm Canh (Sư Tử Đá Trấn Góc Phố)",
+  "hanzi": "避邪小石狮更夫敲锣挂铃打更架",
+  "category": "urban_street_and_market",
+  "sub_category": "street_furniture_and_wellhead",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "strike_watchman_gong",
+  "gameplay_role": "watchman_gong",
+  "destructible": false,
+  "material": "bronze",
+  "cultivation_element": "metal",
+  "prompt_summary": "Ancient Chinese urban street furniture: Street Corner Guardian Statuary Watchman Bronze Gong Stand on Street Corner. Realistic civic utility styling, ink outlines, top-down orthographic game asset, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "furniture_group": "memorial_stone_lions"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/urban_street_and_market/fur_memorial_stone_lions_night_watchman_gong_bell_stand.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.urban_street_and_market.fur_memorial_stone_lions_night_watchman_gong_bell_stand:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.619
+      ]
+    ],
+    "frac_zero": 0.6428,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.28,
+        0.63,
+        0.154
+      ],
+      [
+        0.737,
+        1.0,
+        0.766
+      ],
+      [
+        0.462,
+        0.965,
+        0.597
+      ]
+    ],
+    "crop_offset": [
+      16,
+      20
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 75,
+    "contact_reference_px": 75.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

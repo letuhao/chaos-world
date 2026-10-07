@@ -1,0 +1,207 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.cav_volcanic_fissure_camouflaged_vine_cave_door",
+  "name": "Sulfur Mineral Fissure Vent Hidden Grotto Mouth Shrouded in Thick Vines",
+  "vietnamese_name": "Cửa Động Giấu Kín Dưới Dây Leo (Khe Nứt Địa Nhiệt Lưu Huỳnh)",
+  "hanzi": "硫磺火穴垂帘青藤掩映秘密洞",
+  "category": "mountain_cliff_geology",
+  "sub_category": "cave_mouth_and_grotto",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "part_camouflaged_vines",
+  "gameplay_role": "secret_cave",
+  "destructible": false,
+  "material": "plant",
+  "cultivation_element": "wood",
+  "prompt_summary": "Ancient Chinese mountain cave entrance landscape: Sulfur Mineral Fissure Vent Hidden Grotto Mouth Shrouded in Thick Vines. Mysterious shadowy depths, rugged stone edges, ink outlines, top-down orthographic RPG sprite, transparent cutout.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "cave_archetype": "volcanic_fissure"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/cav_volcanic_fissure_camouflaged_vine_cave_door.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.cav_volcanic_fissure_camouflaged_vine_cave_door:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.479,
+        0.44
+      ],
+      [
+        0.783,
+        0.776
+      ]
+    ],
+    "frac_zero": 0.5138,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.004,
+        0.365,
+        0.73,
+        0.093,
+        0.093,
+        0.0
+      ],
+      [
+        0.0,
+        0.237,
+        0.845,
+        1.0,
+        0.657,
+        0.547,
+        0.079
+      ],
+      [
+        0.051,
+        0.735,
+        1.0,
+        1.0,
+        0.984,
+        0.372,
+        0.0
+      ],
+      [
+        0.188,
+        0.991,
+        1.0,
+        1.0,
+        1.0,
+        0.863,
+        0.153
+      ],
+      [
+        0.592,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.64
+      ],
+      [
+        0.662,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.621
+      ],
+      [
+        0.024,
+        0.49,
+        0.931,
+        0.994,
+        0.846,
+        0.264,
+        0.001
+      ]
+    ],
+    "crop_offset": [
+      17,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 115,
+    "contact_reference_px": 115.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

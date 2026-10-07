@@ -1,0 +1,125 @@
+{
+  "id": "ancient_china_mortal.path_and_way.way_wood_bridge_timber_log_span",
+  "name": "Rustic Timber Log Span Bridge",
+  "vietnamese_name": "Cầu Khỉ Thân Cây Rừng",
+  "hanzi": "原木溪桥",
+  "category": "path_and_way",
+  "sub_category": "wooden_footbridge",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Two stripped pine logs laid across a rocky gorge with bark still clinging.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Top-down two heavy peeled tree trunks laid side by side across mountain brook with flat adzed top surface.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "balance_check_running": 0.25,
+    "rural_shortage_solution": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/path_and_way/way_wood_bridge_timber_log_span.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.path_and_way.way_wood_bridge_timber_log_span:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.689,
+        0.288
+      ]
+    ],
+    "frac_zero": 0.7304,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.819,
+        0.455,
+        0.0,
+        0.0,
+        0.2,
+        0.021
+      ],
+      [
+        1.0,
+        0.922,
+        0.673,
+        0.683,
+        0.884,
+        0.65
+      ],
+      [
+        1.0,
+        0.899,
+        0.033,
+        0.007,
+        0.103,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      40,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 67,
+    "contact_reference_px": 67.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

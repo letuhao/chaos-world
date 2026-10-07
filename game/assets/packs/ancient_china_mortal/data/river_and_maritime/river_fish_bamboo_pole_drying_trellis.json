@@ -1,0 +1,208 @@
+{
+  "id": "ancient_china_mortal.river_and_maritime.river_fish_bamboo_pole_drying_trellis",
+  "name": "Grand Bamboo Salted Fish Drying Trellis",
+  "vietnamese_name": "Giàn Tre Phơi Cá Muối Sông Khổng Lồ",
+  "hanzi": "大竹架挂晒咸鱼",
+  "category": "river_and_maritime",
+  "sub_category": "fish_drying_rack",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "harvest_fish",
+  "gameplay_role": "Multi-tiered bamboo frame hanging hundreds of dried salted fish.",
+  "destructible": true,
+  "material": "bamboo",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Large multi-tiered bamboo trellis rack filled with hundreds of split salted river carp drying in breeze.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "food_yield": 40
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/river_and_maritime/river_fish_bamboo_pole_drying_trellis.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.river_and_maritime.river_fish_bamboo_pole_drying_trellis:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.562,
+        0.767,
+        0.334
+      ],
+      [
+        0.24,
+        0.568,
+        0.353
+      ]
+    ],
+    "frac_zero": 0.7458,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.132,
+        0.183,
+        0.354,
+        0.445,
+        0.586,
+        0.009,
+        0.0
+      ],
+      [
+        0.441,
+        0.904,
+        0.903,
+        0.912,
+        0.866,
+        0.127,
+        0.0
+      ],
+      [
+        0.6,
+        0.989,
+        0.991,
+        0.961,
+        0.9,
+        0.412,
+        0.0
+      ],
+      [
+        0.344,
+        0.711,
+        0.861,
+        0.839,
+        0.813,
+        0.708,
+        0.02
+      ],
+      [
+        0.081,
+        0.453,
+        0.762,
+        0.894,
+        0.871,
+        0.839,
+        0.363
+      ],
+      [
+        0.0,
+        0.225,
+        0.668,
+        0.483,
+        0.397,
+        0.133,
+        0.285
+      ],
+      [
+        0.0,
+        0.073,
+        0.138,
+        0.018,
+        0.08,
+        0.0,
+        0.021
+      ]
+    ],
+    "crop_offset": [
+      87,
+      17
+    ],
+    "trunk_columns": [],
+    "contact_px": 5,
+    "contact_reference_px": 5.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

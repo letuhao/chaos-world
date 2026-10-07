@@ -1,0 +1,199 @@
+{
+  "id": "medieval_western.mediterranean_and_moorish_quarter.heavy_beam_olive_press_sun_baked_terracotta",
+  "name": "Sun-Baked Counterweighted Wooden Olive Press",
+  "vietnamese_name": "Máy Ép Dầu Ô Liu Dầm Gỗ Nặng (Nắng Rám Địa Trung Hải)",
+  "category": "mediterranean_and_moorish_quarter",
+  "sub_category": "olive_press_and_citrus_grove",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "press_oil",
+  "gameplay_role": "Mediterranean Moorish quarter feature (Counterweighted Wooden Olive Press).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "mediterranean_moorish",
+  "prompt_summary": "2D orthographic top-down game sprite of sun-baked counterweighted wooden olive press, warm terracotta glow and chalky white plaster, Mediterranean Moorish Al-Andalus style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/mediterranean_and_moorish_quarter/heavy_beam_olive_press_sun_baked_terracotta.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.mediterranean_and_moorish_quarter.heavy_beam_olive_press_sun_baked_terracotta:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.534,
+        0.552
+      ],
+      [
+        0.495,
+        0.486
+      ]
+    ],
+    "frac_zero": 0.6105,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.008,
+        0.138,
+        0.36,
+        0.112,
+        0.0,
+        0.0
+      ],
+      [
+        0.162,
+        0.479,
+        0.937,
+        0.795,
+        0.845,
+        0.542,
+        0.133
+      ],
+      [
+        0.438,
+        1.0,
+        0.974,
+        0.77,
+        0.969,
+        0.997,
+        0.214
+      ],
+      [
+        0.614,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.436
+      ],
+      [
+        0.367,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.824,
+        0.191
+      ],
+      [
+        0.025,
+        0.587,
+        0.597,
+        0.611,
+        0.512,
+        0.296,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.324,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      22,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 11,
+    "contact_reference_px": 11.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

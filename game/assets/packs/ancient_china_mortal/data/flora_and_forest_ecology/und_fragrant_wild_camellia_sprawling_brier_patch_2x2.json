@@ -1,0 +1,204 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.und_fragrant_wild_camellia_sprawling_brier_patch_2x2",
+  "name": "Fragrant Wild Winter Camellia Sprawling Thorny Thicket Patch (2x2)",
+  "vietnamese_name": "Vạt Cây Bụi Lan Rộng (2x2) (Trà My Rừng Mùa Đông Tỏa Hương)",
+  "hanzi": "耐冬傲霜野山茶四方盘结大蓬灌木丛",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "underbrush_fern_and_creeper",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "navigate_brier_patch",
+  "gameplay_role": "underbrush",
+  "destructible": false,
+  "material": "plant",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese forest underbrush vegetation: Fragrant Wild Winter Camellia Sprawling Thorny Thicket Patch (2x2). Organic foliage, delicate leaves and flowers, ink outlines, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "foliage_group": "fragrant_wild_camellia"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/und_fragrant_wild_camellia_sprawling_brier_patch_2x2.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.und_fragrant_wild_camellia_sprawling_brier_patch_2x2:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.41,
+        0.43
+      ],
+      [
+        0.615,
+        0.624
+      ]
+    ],
+    "frac_zero": 0.5809,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.004,
+        0.229,
+        0.435,
+        0.239,
+        0.0,
+        0.0
+      ],
+      [
+        0.049,
+        0.297,
+        0.544,
+        0.97,
+        0.759,
+        0.09,
+        0.065
+      ],
+      [
+        0.103,
+        0.489,
+        0.967,
+        1.0,
+        0.787,
+        0.373,
+        0.083
+      ],
+      [
+        0.565,
+        0.983,
+        1.0,
+        1.0,
+        1.0,
+        0.925,
+        0.436
+      ],
+      [
+        0.592,
+        0.999,
+        1.0,
+        1.0,
+        1.0,
+        0.991,
+        0.59
+      ],
+      [
+        0.008,
+        0.514,
+        0.997,
+        1.0,
+        0.927,
+        0.43,
+        0.001
+      ],
+      [
+        0.0,
+        0.054,
+        0.307,
+        0.792,
+        0.207,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      19,
+      17
+    ],
+    "trunk_columns": [
+      3
+    ],
+    "contact_px": 40,
+    "contact_reference_px": 40.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

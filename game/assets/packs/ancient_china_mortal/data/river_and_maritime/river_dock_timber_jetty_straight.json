@@ -1,0 +1,122 @@
+{
+  "id": "ancient_china_mortal.river_and_maritime.river_dock_timber_jetty_straight",
+  "name": "Weathered Timber Riverside Jetty Pier",
+  "vietnamese_name": "Cầu Tàu Bến Gỗ Ven Sông",
+  "hanzi": "沿河木栈道码头",
+  "category": "river_and_maritime",
+  "sub_category": "wooden_dock_and_pier",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "walk",
+  "gameplay_role": "Timber plank dock extending into river.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "water",
+  "prompt_summary": "Traditional Chinese riverside wooden pier jetty extending over water, weathered pine planks on timber pilings.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "boat_landing": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/river_and_maritime/river_dock_timber_jetty_straight.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.river_and_maritime.river_dock_timber_jetty_straight:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.208,
+        0.512,
+        0.215
+      ]
+    ],
+    "frac_zero": 0.8715,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.364,
+        0.234,
+        0.0,
+        0.0
+      ],
+      [
+        0.55,
+        0.638,
+        0.839,
+        0.778,
+        0.618,
+        0.586
+      ],
+      [
+        0.039,
+        0.02,
+        0.456,
+        0.369,
+        0.037,
+        0.046
+      ]
+    ],
+    "crop_offset": [
+      97,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 32,
+    "contact_reference_px": 32.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

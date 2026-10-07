@@ -1,0 +1,209 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.pin_umbrella_shaded_pine_horizontal_cliff_reaching",
+  "name": "Broad Umbrella Canopy Pine Horizontal Branch Reaching over Precipice",
+  "vietnamese_name": "Cành Tùng Vươn Ngang Qua Vách Núi (Cây Tùng Tán Dù Che Mát)",
+  "hanzi": "华盖参天平顶松横空出世探崖平枝",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "ancient_pine_and_conifer",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "admire_reaching_branch",
+  "gameplay_role": "scenic_tree",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese pine tree landscape asset: Broad Umbrella Canopy Pine Horizontal Branch Reaching over Precipice. Evergreen needle tufts, rough peeling bark, dark ink contours, top-down orthographic RPG sprite on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "tree_family": "conifer",
+    "variety": "umbrella_shaded_pine"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/pin_umbrella_shaded_pine_horizontal_cliff_reaching.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.pin_umbrella_shaded_pine_horizontal_cliff_reaching:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.401,
+        0.445
+      ],
+      [
+        0.314,
+        0.438
+      ]
+    ],
+    "frac_zero": 0.6655,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.017,
+        0.493,
+        0.832,
+        0.343,
+        0.0,
+        0.0
+      ],
+      [
+        0.004,
+        0.539,
+        0.908,
+        0.775,
+        0.933,
+        0.497,
+        0.018
+      ],
+      [
+        0.165,
+        0.533,
+        0.242,
+        0.411,
+        0.493,
+        0.505,
+        0.077
+      ],
+      [
+        0.415,
+        0.532,
+        0.316,
+        0.305,
+        0.487,
+        0.487,
+        0.436
+      ],
+      [
+        0.0,
+        0.186,
+        0.072,
+        0.399,
+        0.439,
+        0.15,
+        0.0
+      ],
+      [
+        0.0,
+        0.109,
+        0.33,
+        0.688,
+        0.548,
+        0.601,
+        0.001
+      ],
+      [
+        0.234,
+        0.759,
+        0.926,
+        0.978,
+        0.97,
+        0.823,
+        0.126
+      ]
+    ],
+    "crop_offset": [
+      20,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 204,
+    "contact_reference_px": 204.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "id": "ancient_china_mortal.civilian_settlement.settle_mill_hand_crank_winnowing_fan",
+  "name": "Hand-Cranked Wooden Winnowing Fan",
+  "vietnamese_name": "Quạt Thóc Phong Xa Bằng Gỗ",
+  "hanzi": "手摇风车",
+  "category": "civilian_settlement",
+  "sub_category": "watermill_and_grainstore",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "craft",
+  "gameplay_role": "Traditional box winnower separating grain from chaff with internal cranked wooden paddles.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "wood",
+  "prompt_summary": "Top-down wooden winnowing machine with top funnel hopper, side hand crank, internal fan box, and two lower chutes separating clean grain and chaff.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "chaff_separation_efficiency": 0.92,
+    "manual_crank": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/civilian_settlement/settle_mill_hand_crank_winnowing_fan.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.civilian_settlement.settle_mill_hand_crank_winnowing_fan:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.588
+      ]
+    ],
+    "frac_zero": 0.6735,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.463,
+        0.954,
+        0.152
+      ],
+      [
+        0.891,
+        0.954,
+        0.438
+      ],
+      [
+        0.38,
+        0.657,
+        0.105
+      ]
+    ],
+    "crop_offset": [
+      20,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 45,
+    "contact_reference_px": 45.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

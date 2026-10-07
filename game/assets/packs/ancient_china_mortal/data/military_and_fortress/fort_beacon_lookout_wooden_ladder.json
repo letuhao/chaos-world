@@ -1,0 +1,170 @@
+{
+  "id": "ancient_china_mortal.military_and_fortress.fort_beacon_lookout_wooden_ladder",
+  "name": "Long Retractable Timber Notch Ladder",
+  "vietnamese_name": "Thang Gỗ Rút Leo Lên Đài Lửa",
+  "hanzi": "登台抽拉木梯",
+  "category": "military_and_fortress",
+  "sub_category": "signal_beacon_tower",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "climb",
+  "gameplay_role": "Heavy pole ladder pulled up to prevent surprise enemy escalade.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Tall notched timber pole ladder leaning against sheer tower wall with iron rungs and hoist rope.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "movable": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/military_and_fortress/fort_beacon_lookout_wooden_ladder.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.military_and_fortress.fort_beacon_lookout_wooden_ladder:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.469
+      ],
+      [
+        0.186
+      ]
+    ],
+    "frac_zero": 0.8208,
+    "blocks": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.621,
+        0.732,
+        0.0
+      ],
+      [
+        0.573,
+        0.784,
+        0.188
+      ],
+      [
+        0.177,
+        0.289,
+        0.0
+      ],
+      [
+        0.165,
+        0.171,
+        0.0
+      ],
+      [
+        0.142,
+        0.118,
+        0.0
+      ],
+      [
+        0.223,
+        0.118,
+        0.0
+      ],
+      [
+        0.424,
+        0.114,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      31,
+      16
+    ],
+    "trunk_columns": [
+      0
+    ],
+    "contact_px": 34,
+    "contact_reference_px": 34.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

@@ -1,0 +1,206 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.wat_rushing_torrents_mossy_rock_waterfall_alcove",
+  "name": "High-Volume Mountain Torrent Secret Dry Cave Behind Waterfall Curtain",
+  "vietnamese_name": "Hang Khô Bí Mật Đằng Sau Màn Nước (Dòng Thác Cuồn Cuộn Lưng Trời)",
+  "hanzi": "怒涛奔涌大悬瀑水帘洞天内藏别有干坤",
+  "category": "mountain_cliff_geology",
+  "sub_category": "waterfall_stream_and_cascade",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "enter_water_curtain_cave",
+  "gameplay_role": "water_curtain_cave",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "yin",
+  "prompt_summary": "Ancient Chinese mountainous water feature: High-Volume Mountain Torrent Secret Dry Cave Behind Waterfall Curtain. Flowing crystal water with gouache splashes, dark ink outlines, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "water_scale": "rushing_torrents"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/wat_rushing_torrents_mossy_rock_waterfall_alcove.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.wat_rushing_torrents_mossy_rock_waterfall_alcove:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.568,
+        0.429
+      ],
+      [
+        0.731,
+        0.716
+      ]
+    ],
+    "frac_zero": 0.5182,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.007,
+        0.138,
+        0.777,
+        0.073,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.193,
+        0.665,
+        1.0,
+        0.76,
+        0.525,
+        0.467,
+        0.14
+      ],
+      [
+        0.104,
+        0.819,
+        1.0,
+        1.0,
+        1.0,
+        0.701,
+        0.223
+      ],
+      [
+        0.296,
+        0.955,
+        1.0,
+        1.0,
+        1.0,
+        0.944,
+        0.148
+      ],
+      [
+        0.347,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.471
+      ],
+      [
+        0.636,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.943,
+        0.234
+      ],
+      [
+        0.0,
+        0.302,
+        0.759,
+        0.958,
+        0.708,
+        0.255,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      18,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 105,
+    "contact_reference_px": 105.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

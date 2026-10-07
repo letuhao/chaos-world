@@ -67,15 +67,15 @@ Archive a known source for an existing generated/approved asset:
 uv run python -m tools assets map preserve-original --asset-id <catalog-id> --source "<known-original.png>"
 ```
 
-`preserve-original` copies the record's provenance onto that source; verify the source belongs to the recorded run before using it. When a pre-cutout render exists, preserve it in addition to the installed cutout. Different hashes can coexist in `source_images`; distinguish them by inspected content and run evidence. Do not invent an unavailable original or substitute the runtime sprite as raw generation evidence.
+`preserve-original` copies the record's provenance onto that source; verify the source belongs to the recorded run before using it. Pass `--index <path>` to target a staging catalog. When a pre-cutout render exists, preserve it in addition to the installed cutout. Different hashes can coexist in `source_images`; distinguish them by inspected content and run evidence. Do not invent an unavailable original or substitute the runtime sprite as raw generation evidence.
 
 For legacy assets without mapped originals:
 
 ```text
-uv run python -m tools assets map recover-originals --source-root "<local-original-directory>"
+uv run python -m tools assets map recover-originals --source-root "<local-original-directory>" [--source-root "<another-directory>"] [--index <path>]
 ```
 
-Inspect `build/map-original-recovery.jsonl` and compare candidate images. The matcher uses a generated-date window and alpha profile, not exact content identity; `high_confidence` is a heuristic. Ambiguous or missing matches remain unresolved. Prefer `preserve-original` for a verified source. `recover-originals --apply` archives only high-confidence proposals; review all of those before applying because it has no asset-ID selection flag. Existing mappings are skipped.
+Inspect `build/map-original-recovery.jsonl` and compare candidate images. Exact asset-ID and recorded-seed filename matches are high confidence. Files without identity evidence are compared by modification date and opaque-pixel ratio; even a unique date/alpha match is `needs_review` and is never applied automatically. Ambiguous and missing matches remain unresolved. Use `--exclude-prefix <prefix>` to keep another asset pack out of fallback matching. `recover-originals --apply` archives only identity-based high-confidence proposals; existing mappings are skipped. Pass `--date-window-days` and `--alpha-tolerance` to tune fallback candidate discovery, not automatic approval.
 
 Recovery does not remove backgrounds, resize sprites, or rebuild collision. Re-normalizing a verified source uses the normal installer and its replacement rules. Lost pre-cutout pixels cannot be recovered from an archived cutout. Local originals must be restored separately on a fresh checkout because catalog auditing verifies the files they reference.
 

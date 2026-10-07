@@ -1,0 +1,212 @@
+{
+  "id": "ancient_china_mortal.path_and_way.way_towpath_sluice_windlass_dock",
+  "name": "Towpath Lock Gate & Windlass",
+  "vietnamese_name": "Ụ Cửa Cống Kênh Tời Gỗ",
+  "hanzi": "闸口绞盘",
+  "category": "path_and_way",
+  "sub_category": "canal_towpath",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "interact",
+  "gameplay_role": "Mechanical wooden capstan used by trackers to pull heavy barges through lock rapids.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "metal",
+  "prompt_summary": "Top-down wooden windlass capstan with radial turnstiles on stone pier next to canal lock sluice.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "mechanical_winch": true,
+    "rapid_transit_aid": true,
+    "interactive_verb": "interact"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/path_and_way/way_towpath_sluice_windlass_dock.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.path_and_way.way_towpath_sluice_windlass_dock:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.313,
+        0.281
+      ],
+      [
+        0.863,
+        0.873
+      ]
+    ],
+    "frac_zero": 0.5874,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.087,
+        0.234,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.058,
+        0.492,
+        0.591,
+        0.133,
+        0.0,
+        0.0
+      ],
+      [
+        0.005,
+        0.499,
+        0.682,
+        0.718,
+        0.513,
+        0.0,
+        0.0
+      ],
+      [
+        0.42,
+        1.0,
+        1.0,
+        0.958,
+        0.919,
+        0.585,
+        0.17
+      ],
+      [
+        0.476,
+        1.0,
+        1.0,
+        0.995,
+        1.0,
+        0.704,
+        0.0
+      ],
+      [
+        0.667,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.932,
+        0.013
+      ],
+      [
+        0.816,
+        0.938,
+        1.0,
+        1.0,
+        0.991,
+        0.933,
+        0.51
+      ]
+    ],
+    "crop_offset": [
+      28,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 199,
+    "contact_reference_px": 199.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

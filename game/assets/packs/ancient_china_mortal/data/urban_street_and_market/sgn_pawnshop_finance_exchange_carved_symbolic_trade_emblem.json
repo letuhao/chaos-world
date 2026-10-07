@@ -1,0 +1,143 @@
+{
+  "id": "ancient_china_mortal.urban_street_and_market.sgn_pawnshop_finance_exchange_carved_symbolic_trade_emblem",
+  "name": "Pawnshop & Silver Exchange Carved Wooden Trade Emblem Figure (Fish/Mortar)",
+  "vietnamese_name": "Biển Hiệu Hình Vật Tượng Trưng (Cá/Cối) (Tiệm Cầm Đồ Đương Phố)",
+  "hanzi": "万通典当银号立体圆雕行当标志木象",
+  "category": "urban_street_and_market",
+  "sub_category": "shop_sign_board_and_banner",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect_trade_emblem",
+  "gameplay_role": "emblem_sign",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "metal",
+  "prompt_summary": "Ancient Chinese commercial street sign asset: Pawnshop & Silver Exchange Carved Wooden Trade Emblem Figure (Fish/Mortar). Traditional calligraphy, vibrant cloth or weathered timber, ink outlines, top-down orthographic game sprite, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "business_type": "pawnshop_finance_exchange"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/urban_street_and_market/sgn_pawnshop_finance_exchange_carved_symbolic_trade_emblem.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.urban_street_and_market.sgn_pawnshop_finance_exchange_carved_symbolic_trade_emblem:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.608
+      ]
+    ],
+    "frac_zero": 0.6494,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.194,
+        0.742,
+        0.197
+      ],
+      [
+        0.779,
+        1.0,
+        0.788
+      ],
+      [
+        0.43,
+        0.757,
+        0.576
+      ]
+    ],
+    "crop_offset": [
+      16,
+      20
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 59,
+    "contact_reference_px": 59.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

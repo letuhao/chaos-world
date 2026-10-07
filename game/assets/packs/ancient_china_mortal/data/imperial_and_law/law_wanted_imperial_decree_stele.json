@@ -1,0 +1,194 @@
+{
+  "id": "ancient_china_mortal.imperial_and_law.law_wanted_imperial_decree_stele",
+  "name": "Imperial Edict Bronze-Framed Stele",
+  "vietnamese_name": "Bia Đá Thánh Chỉ Chiếu Thư",
+  "hanzi": "皇帝圣旨碑",
+  "category": "imperial_and_law",
+  "sub_category": "wanted_noticeboard",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "read",
+  "gameplay_role": "Imperial edict engraved in stone announcing nationwide amnesty or mobilization.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Ornate stone stele with imperial twin dragon crown header, detailing royal dynastic decrees in gilt calligraphy.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "imperial_edict": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/imperial_and_law/law_wanted_imperial_decree_stele.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.imperial_and_law.law_wanted_imperial_decree_stele:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.634,
+        0.626
+      ],
+      [
+        0.697,
+        0.693
+      ]
+    ],
+    "frac_zero": 0.6556,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.021,
+        0.533,
+        0.703,
+        0.311,
+        0.013
+      ],
+      [
+        0.632,
+        1.0,
+        1.0,
+        0.944,
+        0.436
+      ],
+      [
+        0.322,
+        1.0,
+        1.0,
+        0.871,
+        0.008
+      ],
+      [
+        0.229,
+        1.0,
+        1.0,
+        0.78,
+        0.0
+      ],
+      [
+        0.147,
+        1.0,
+        1.0,
+        0.709,
+        0.0
+      ],
+      [
+        0.415,
+        1.0,
+        1.0,
+        0.943,
+        0.066
+      ],
+      [
+        0.612,
+        0.843,
+        0.867,
+        0.895,
+        0.39
+      ]
+    ],
+    "crop_offset": [
+      54,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 133,
+    "contact_reference_px": 133.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.und_climbing_green_ivy_low_ground_carpet_ferns",
+  "name": "Climbing Wall Ivy & Creepers Lush Ground Carpet of Wild Green Ferns",
+  "vietnamese_name": "Thảm Dương Xỉ Xanh Rì Bám Đất (Dây Thường Xuân Leo Tường Đá)",
+  "hanzi": "络石爬藤绿蔓林下成片碧绿蕨菜丛",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "underbrush_fern_and_creeper",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "gather_bracken_fern",
+  "gameplay_role": "fern_carpet",
+  "destructible": false,
+  "material": "plant",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese forest underbrush vegetation: Climbing Wall Ivy & Creepers Lush Ground Carpet of Wild Green Ferns. Organic foliage, delicate leaves and flowers, ink outlines, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "foliage_group": "climbing_green_ivy"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/und_climbing_green_ivy_low_ground_carpet_ferns.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.und_climbing_green_ivy_low_ground_carpet_ferns:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.523,
+        0.53
+      ]
+    ],
+    "frac_zero": 0.654,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.063,
+        0.263,
+        0.122,
+        0.043,
+        0.056,
+        0.179,
+        0.109
+      ],
+      [
+        0.58,
+        0.976,
+        0.979,
+        0.975,
+        0.957,
+        0.987,
+        0.401
+      ],
+      [
+        0.327,
+        0.626,
+        0.735,
+        0.71,
+        0.646,
+        0.622,
+        0.161
+      ]
+    ],
+    "crop_offset": [
+      26,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 167,
+    "contact_reference_px": 167.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

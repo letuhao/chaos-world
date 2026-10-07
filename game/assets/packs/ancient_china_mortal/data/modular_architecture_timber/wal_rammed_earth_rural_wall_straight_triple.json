@@ -1,0 +1,178 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.wal_rammed_earth_rural_wall_straight_triple",
+  "name": "Rammed Loess Clay & Straw Straight Solid Wall (3x1)",
+  "vietnamese_name": "Tường Đặc Thẳng (3x1) (Tường Đất Nện Pha Rơm Đồng Quê)",
+  "hanzi": "夯土版筑墙三步院墙",
+  "category": "modular_architecture_timber",
+  "sub_category": "wall_and_lattice_window",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "knock_wall",
+  "gameplay_role": "wall_segment",
+  "destructible": false,
+  "material": "earth",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese vernacular building wall module: Rammed Loess Clay & Straw Straight Solid Wall (3x1). Authentic materials, crisp dark ink outlines, orthographic top-down world-map view, isolated cleanly on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "wall",
+    "style": "rammed_earth_rural"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/wal_rammed_earth_rural_wall_straight_triple.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.wal_rammed_earth_rural_wall_straight_triple:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.651,
+        0.757,
+        0.616
+      ]
+    ],
+    "frac_zero": 0.533,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      11,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.702,
+        0.791,
+        0.771,
+        0.757,
+        0.771,
+        0.771,
+        0.767,
+        0.742,
+        0.78,
+        0.81,
+        0.699
+      ],
+      [
+        0.369,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.293
+      ],
+      [
+        0.025,
+        0.424,
+        0.526,
+        0.501,
+        0.503,
+        0.487,
+        0.46,
+        0.496,
+        0.348,
+        0.172,
+        0.027
+      ]
+    ],
+    "crop_offset": [
+      17,
+      18
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 33,
+    "contact_reference_px": 33.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      128
+    ]
+  }
+}

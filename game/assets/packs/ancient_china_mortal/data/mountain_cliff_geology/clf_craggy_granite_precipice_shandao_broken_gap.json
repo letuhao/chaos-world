@@ -1,0 +1,132 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.clf_craggy_granite_precipice_shandao_broken_gap",
+  "name": "Craggy Jagged Granite Precipice Shattered Plank Road Gap (Jump Hazard)",
+  "vietnamese_name": "Đoạn Cầu Sạn Đạo Gãy Sụp (Vách Đá Hoa Cương Dựng Đứng)",
+  "hanzi": "嶙峋花岗岩峭壁断落悬空踏板缺口",
+  "category": "mountain_cliff_geology",
+  "sub_category": "cliff_face_and_bluff",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "leap_across_chasm",
+  "gameplay_role": "plank_hazard",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "wind",
+  "prompt_summary": "Ancient Chinese mountainous geology landscape: Craggy Jagged Granite Precipice Shattered Plank Road Gap (Jump Hazard). Realistic rock textures, ink contours, orthographic top-down world-map view, transparent alpha background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "geology_layer": "cliff",
+    "strata": "craggy_granite_precipice"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/clf_craggy_granite_precipice_shandao_broken_gap.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.clf_craggy_granite_precipice_shandao_broken_gap:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.693,
+        0.688
+      ]
+    ],
+    "frac_zero": 0.585,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.181,
+        0.7,
+        0.194,
+        0.229,
+        0.595,
+        0.256,
+        0.052
+      ],
+      [
+        0.994,
+        1.0,
+        0.859,
+        0.817,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        0.439,
+        0.893,
+        1.0,
+        0.989,
+        0.94,
+        0.42,
+        0.094
+      ]
+    ],
+    "crop_offset": [
+      30,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 122,
+    "contact_reference_px": 122.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

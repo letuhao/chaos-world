@@ -1,0 +1,273 @@
+{
+  "id": "ancient_china_mortal.military_and_fortress.fort_gate_wengcheng_circular_enclosure",
+  "name": "Wengcheng Barbican Enclosure Wall Segment",
+  "vietnamese_name": "Tường Vực Ô Cung Thành (Úng Thành)",
+  "hanzi": "瓮城合围弧墙",
+  "category": "military_and_fortress",
+  "sub_category": "city_gate_and_portcullis",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    4,
+    2
+  ],
+  "canvas_px": [
+    512,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": null,
+  "gameplay_role": "Curved defensive kill-zone trap wall surrounding main gate.",
+  "destructible": false,
+  "material": "brick",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Curved semicircular defensive brick fortress barbican wall creating an ambush enclosure courtyard.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "ambush_zone": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/military_and_fortress/fort_gate_wengcheng_circular_enclosure.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.military_and_fortress.fort_gate_wengcheng_circular_enclosure:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.097,
+        0.603,
+        0.604,
+        0.091
+      ],
+      [
+        0.595,
+        0.866,
+        0.889,
+        0.627
+      ]
+    ],
+    "frac_zero": 0.5643,
+    "blocks": [
+      [
+        false,
+        true,
+        true,
+        false
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      2,
+      1
+    ],
+    "sub_grid": [
+      15,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.024,
+        0.241,
+        0.488,
+        0.233,
+        0.015,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.073,
+        0.771,
+        1.0,
+        1.0,
+        1.0,
+        0.752,
+        0.044,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.009,
+        0.015,
+        0.488,
+        0.812,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.791,
+        0.271,
+        0.021,
+        0.015,
+        0.01
+      ],
+      [
+        0.717,
+        0.941,
+        0.938,
+        0.999,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.997,
+        0.985,
+        0.948,
+        0.938,
+        0.713
+      ],
+      [
+        0.451,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.998,
+        0.408
+      ],
+      [
+        0.105,
+        0.463,
+        0.612,
+        0.93,
+        1.0,
+        1.0,
+        0.98,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.968,
+        0.735,
+        0.598,
+        0.081
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.042,
+        0.339,
+        0.247,
+        0.238,
+        0.81,
+        0.576,
+        0.33,
+        0.244,
+        0.054,
+        0.048,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      26
+    ],
+    "trunk_columns": [
+      7,
+      8
+    ],
+    "contact_px": 104,
+    "contact_reference_px": 104.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      256
+    ]
+  }
+}

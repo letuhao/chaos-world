@@ -1,0 +1,208 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.pin_twisted_ridge_cypress_wind_sheared_one_sided",
+  "name": "Twisted Mountain Ridge Cypress Wind-Sheared Flag Pine (Branches on One Side)",
+  "vietnamese_name": "Cây Tùng Tán Cờ Nghiêng Theo Gió (Bách Xoắn Sườn Núi Gió Lộng)",
+  "hanzi": "苍龙盘旋老崖柏经年劲风单向旗形松",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "ancient_pine_and_conifer",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "listen_wind_in_pines",
+  "gameplay_role": "wind_pine",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "wind",
+  "prompt_summary": "Ancient Chinese pine tree landscape asset: Twisted Mountain Ridge Cypress Wind-Sheared Flag Pine (Branches on One Side). Evergreen needle tufts, rough peeling bark, dark ink contours, top-down orthographic RPG sprite on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "tree_family": "conifer",
+    "variety": "twisted_ridge_cypress"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/pin_twisted_ridge_cypress_wind_sheared_one_sided.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.pin_twisted_ridge_cypress_wind_sheared_one_sided:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.329,
+        0.39
+      ],
+      [
+        0.276,
+        0.374
+      ]
+    ],
+    "frac_zero": 0.715,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.391,
+        0.834,
+        0.258,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.379,
+        0.782,
+        0.564,
+        0.738,
+        0.134,
+        0.0
+      ],
+      [
+        0.051,
+        0.378,
+        0.232,
+        0.394,
+        0.501,
+        0.595,
+        0.086
+      ],
+      [
+        0.66,
+        0.728,
+        0.333,
+        0.404,
+        0.532,
+        0.409,
+        0.222
+      ],
+      [
+        0.003,
+        0.0,
+        0.0,
+        0.081,
+        0.579,
+        0.704,
+        0.467
+      ],
+      [
+        0.0,
+        0.134,
+        0.122,
+        0.748,
+        0.055,
+        0.002,
+        0.0
+      ],
+      [
+        0.115,
+        0.685,
+        0.89,
+        0.928,
+        0.764,
+        0.264,
+        0.024
+      ]
+    ],
+    "crop_offset": [
+      23,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 186,
+    "contact_reference_px": 186.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

@@ -1,0 +1,160 @@
+{
+  "id": "ancient_china_mortal.urban_street_and_market.mkt_ceramic_crockery_merchant_folding_wooden_market_table",
+  "name": "Glazed Ceramics & Pottery Stand Low Folding Wooden Trestle Table with Goods",
+  "vietnamese_name": "Bàn Gỗ Xếp Bày Hàng Chợ (Sạp Bát Đĩa Gốm Sứ Bày Bán)",
+  "hanzi": "瓷碗陶壶日用铺支腿木质平摆案板",
+  "category": "urban_street_and_market",
+  "sub_category": "market_stall_and_hawker_booth",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "browse_market_table",
+  "gameplay_role": "market_table",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese urban street market asset: Glazed Ceramics & Pottery Stand Low Folding Wooden Trestle Table with Goods. Detailed mercantile props, gouache textures with ink line accents, orthographic top-down view, clean transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "market_genre": "ceramic_crockery_merchant"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/urban_street_and_market/mkt_ceramic_crockery_merchant_folding_wooden_market_table.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.urban_street_and_market.mkt_ceramic_crockery_merchant_folding_wooden_market_table:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.44,
+        0.543
+      ]
+    ],
+    "frac_zero": 0.6418,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.527,
+        0.83,
+        0.681,
+        0.614,
+        0.306
+      ],
+      [
+        0.148,
+        0.498,
+        0.641,
+        0.463,
+        0.605,
+        0.304,
+        0.28
+      ],
+      [
+        0.644,
+        0.526,
+        0.706,
+        0.792,
+        0.802,
+        0.274,
+        0.773
+      ]
+    ],
+    "crop_offset": [
+      17,
+      19
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 75,
+    "contact_reference_px": 75.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

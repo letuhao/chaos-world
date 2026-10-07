@@ -1,0 +1,197 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.gat_scholar_garden_double_door_rustic_weathered",
+  "name": "Scholar Garden Classical Rustic Split-Timber Double Door with Latch",
+  "vietnamese_name": "Cửa Gỗ Mộc Cũ Kỹ Có Then Cài (Vườn Văn Nhân Tao Nhã)",
+  "hanzi": "文人园林柴木双扇闩门",
+  "category": "modular_architecture_timber",
+  "sub_category": "moon_gate_and_archway",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "unlatch_wooden_door",
+  "gameplay_role": "door_barrier",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "wood",
+  "prompt_summary": "Ancient Chinese architectural entrance portal: Scholar Garden Classical Rustic Split-Timber Double Door with Latch. Ornate joinery, traditional aesthetic, top-down orthographic view for 2D RPG, clear transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "gateway",
+    "style": "scholar_garden"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/gat_scholar_garden_double_door_rustic_weathered.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.gat_scholar_garden_double_door_rustic_weathered:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.747,
+        0.745
+      ],
+      [
+        0.68,
+        0.676
+      ]
+    ],
+    "frac_zero": 0.5455,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.562,
+        0.77,
+        0.823,
+        0.777,
+        0.553,
+        0.0
+      ],
+      [
+        0.497,
+        0.886,
+        1.0,
+        1.0,
+        1.0,
+        0.876,
+        0.487
+      ],
+      [
+        0.829,
+        1.0,
+        1.0,
+        0.953,
+        1.0,
+        1.0,
+        0.829
+      ],
+      [
+        0.359,
+        0.953,
+        1.0,
+        0.934,
+        1.0,
+        0.996,
+        0.358
+      ],
+      [
+        0.159,
+        1.0,
+        1.0,
+        0.966,
+        1.0,
+        1.0,
+        0.155
+      ],
+      [
+        0.038,
+        0.612,
+        0.438,
+        0.236,
+        0.641,
+        0.349,
+        0.044
+      ]
+    ],
+    "crop_offset": [
+      16,
+      58
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 37,
+    "contact_reference_px": 37.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

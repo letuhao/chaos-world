@@ -1,0 +1,143 @@
+{
+  "id": "ancient_china_mortal.trade_craft_industry.ind_kiln_potters_foot_wheel_bench",
+  "name": "Potter Foot-Treadle Kickwheel Station",
+  "vietnamese_name": "Bàn Xoay Gốm Đạp Chân Dưới Mái Hiên",
+  "hanzi": "陶工手拉坯脚踏轮",
+  "category": "trade_craft_industry",
+  "sub_category": "ceramic_and_brick_kiln",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "throw_clay",
+  "gameplay_role": "Heavy wooden turntable spun by foot with wet clay vase.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Rustic potters workshop bench with wooden kickwheel, bowl of slip water, and half-shaped clay urn on wheel.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "craft_pottery": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/trade_craft_industry/ind_kiln_potters_foot_wheel_bench.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.trade_craft_industry.ind_kiln_potters_foot_wheel_bench:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.605
+      ]
+    ],
+    "frac_zero": 0.6537,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.03,
+        0.499,
+        0.455
+      ],
+      [
+        0.83,
+        0.979,
+        0.663
+      ],
+      [
+        0.407,
+        0.957,
+        0.631
+      ]
+    ],
+    "crop_offset": [
+      19,
+      18
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 70,
+    "contact_reference_px": 70.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

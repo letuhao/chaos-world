@@ -1,0 +1,156 @@
+{
+  "id": "ancient_china_mortal.outlaw_and_jianghu.outlaw_palisade_looted_goods_hoard_pile",
+  "name": "Looted Caravan Cargo & Strongbox Pile",
+  "vietnamese_name": "Đống Cướp Bóc Hòm Xiểng Lụa Là Của Sơn Tặc",
+  "hanzi": "抢劫辎重宝箱堆",
+  "category": "outlaw_and_jianghu",
+  "sub_category": "bandit_stockade_palisade",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "loot_treasure",
+  "gameplay_role": "Disorderly mound of robbed trade chests, silks, and wine jugs.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Disorderly mound of ransacked trade chests, spilled bronze coins, broken jade ornaments, and kegs of wine.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "gold_loot": 500
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/outlaw_and_jianghu/outlaw_palisade_looted_goods_hoard_pile.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.outlaw_and_jianghu.outlaw_palisade_looted_goods_hoard_pile:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.665,
+        0.56
+      ]
+    ],
+    "frac_zero": 0.6554,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.146,
+        0.463,
+        0.923,
+        0.444,
+        0.183,
+        0.0
+      ],
+      [
+        0.81,
+        1.0,
+        1.0,
+        1.0,
+        0.924,
+        0.355
+      ],
+      [
+        0.126,
+        0.717,
+        0.932,
+        0.753,
+        0.569,
+        0.2
+      ]
+    ],
+    "crop_offset": [
+      38,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 121,
+    "contact_reference_px": 121.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

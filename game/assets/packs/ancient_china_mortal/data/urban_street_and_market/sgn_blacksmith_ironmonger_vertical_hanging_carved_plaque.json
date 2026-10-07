@@ -1,0 +1,170 @@
+{
+  "id": "ancient_china_mortal.urban_street_and_market.sgn_blacksmith_ironmonger_vertical_hanging_carved_plaque",
+  "name": "Blacksmith & Weapon Armory Vertical Carved Lacquer Signboard with Gold Characters",
+  "vietnamese_name": "Biển Hiệu Dọc Bằng Gỗ Khắc Chữ Vàng (Tiệm Rèn Đao Kiếm Binh Khí)",
+  "hanzi": "神锋百炼铁铺悬壁黑漆描金竖招牌",
+  "category": "urban_street_and_market",
+  "sub_category": "shop_sign_board_and_banner",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "read_lacquer_plaque",
+  "gameplay_role": "hanging_sign",
+  "destructible": false,
+  "material": "lacquer",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Ancient Chinese commercial street sign asset: Blacksmith & Weapon Armory Vertical Carved Lacquer Signboard with Gold Characters. Traditional calligraphy, vibrant cloth or weathered timber, ink outlines, top-down orthographic game sprite, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "business_type": "blacksmith_ironmonger"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/urban_street_and_market/sgn_blacksmith_ironmonger_vertical_hanging_carved_plaque.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.urban_street_and_market.sgn_blacksmith_ironmonger_vertical_hanging_carved_plaque:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.585
+      ],
+      [
+        0.313
+      ]
+    ],
+    "frac_zero": 0.744,
+    "blocks": [
+      [
+        false
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.677,
+        0.736,
+        0.565
+      ],
+      [
+        0.46,
+        0.952,
+        0.129
+      ],
+      [
+        0.38,
+        0.884,
+        0.011
+      ],
+      [
+        0.316,
+        0.832,
+        0.0
+      ],
+      [
+        0.31,
+        0.835,
+        0.0
+      ],
+      [
+        0.021,
+        0.39,
+        0.0
+      ],
+      [
+        0.051,
+        0.473,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      25,
+      17
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 23,
+    "contact_reference_px": 23.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

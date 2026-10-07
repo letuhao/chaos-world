@@ -1,0 +1,208 @@
+{
+  "id": "ancient_china_mortal.urban_street_and_market.fur_waste_and_drainage_grates_octagonal_carved_stone_well",
+  "name": "Drainage Canals & Stone Slabs Octagonal Carved Granite Wellhead with Winch",
+  "vietnamese_name": "Giếng Đá Bát Giác Kèm Trục Kéo Nước (Cống Rãnh & Phiến Đá Đậy Nắp)",
+  "hanzi": "排洪石箅沟八角雕纹辘轳古井",
+  "category": "urban_street_and_market",
+  "sub_category": "street_furniture_and_wellhead",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "draw_well_water",
+  "gameplay_role": "wellhead",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese urban street furniture: Drainage Canals & Stone Slabs Octagonal Carved Granite Wellhead with Winch. Realistic civic utility styling, ink outlines, top-down orthographic game asset, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "furniture_group": "waste_and_drainage_grates"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/urban_street_and_market/fur_waste_and_drainage_grates_octagonal_carved_stone_well.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.urban_street_and_market.fur_waste_and_drainage_grates_octagonal_carved_stone_well:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.774,
+        0.761
+      ],
+      [
+        0.824,
+        0.835
+      ]
+    ],
+    "frac_zero": 0.4018,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.323,
+        0.807,
+        0.789,
+        0.739,
+        0.152,
+        0.0
+      ],
+      [
+        0.438,
+        0.992,
+        1.0,
+        1.0,
+        1.0,
+        0.931,
+        0.296
+      ],
+      [
+        0.899,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.831
+      ],
+      [
+        0.939,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.904
+      ],
+      [
+        0.974,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.984
+      ],
+      [
+        0.47,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.984,
+        0.404
+      ],
+      [
+        0.0,
+        0.501,
+        0.968,
+        0.968,
+        0.965,
+        0.354,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      19,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 123,
+    "contact_reference_px": 123.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

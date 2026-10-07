@@ -1,0 +1,299 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.bam_green_moso_timber_clearing_bamboo_circle",
+  "name": "Giant Green Moso Bamboo Natural Circular Bamboo Grove Clearing",
+  "vietnamese_name": "Khoảng Đất Trống Giữa Rừng Trúc (Tre Mạy Bương Xanh Khổng Lồ)",
+  "hanzi": "翠绿巨型毛竹环回清修幽境竹心空地",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "bamboo_grove_and_thicket",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "meditate_in_bamboo_clearing",
+  "gameplay_role": "bamboo_grove",
+  "destructible": false,
+  "material": "bamboo",
+  "cultivation_element": "wood",
+  "prompt_summary": "Ancient Chinese bamboo grove vegetation: Giant Green Moso Bamboo Natural Circular Bamboo Grove Clearing. Slender culms with delicate fluttering green leaves, dark ink contours, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "bamboo_variety": "green_moso_timber"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/bam_green_moso_timber_clearing_bamboo_circle.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.bam_green_moso_timber_clearing_bamboo_circle:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.386,
+        0.568,
+        0.279
+      ],
+      [
+        0.541,
+        0.704,
+        0.472
+      ],
+      [
+        0.604,
+        0.988,
+        0.579
+      ]
+    ],
+    "frac_zero": 0.5186,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      10,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.276,
+        0.093,
+        0.016,
+        0.031,
+        0.021,
+        0.006,
+        0.0,
+        0.002
+      ],
+      [
+        0.153,
+        0.037,
+        0.604,
+        0.773,
+        0.34,
+        0.481,
+        0.604,
+        0.106,
+        0.223,
+        0.174
+      ],
+      [
+        0.308,
+        0.357,
+        0.835,
+        0.999,
+        0.911,
+        0.87,
+        0.957,
+        0.504,
+        0.397,
+        0.202
+      ],
+      [
+        0.238,
+        0.693,
+        0.988,
+        1.0,
+        0.996,
+        1.0,
+        1.0,
+        0.817,
+        0.49,
+        0.141
+      ],
+      [
+        0.205,
+        0.679,
+        1.0,
+        0.981,
+        0.697,
+        0.885,
+        1.0,
+        0.994,
+        0.517,
+        0.302
+      ],
+      [
+        0.108,
+        0.601,
+        0.962,
+        0.696,
+        0.301,
+        0.528,
+        0.623,
+        0.895,
+        0.399,
+        0.044
+      ],
+      [
+        0.048,
+        0.383,
+        0.73,
+        0.556,
+        0.617,
+        0.573,
+        0.417,
+        0.551,
+        0.194,
+        0.006
+      ],
+      [
+        0.0,
+        0.305,
+        0.894,
+        0.99,
+        1.0,
+        1.0,
+        0.983,
+        0.845,
+        0.427,
+        0.0
+      ],
+      [
+        0.298,
+        0.987,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.956,
+        0.073
+      ],
+      [
+        0.179,
+        0.967,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.915,
+        0.064
+      ],
+      [
+        0.0,
+        0.194,
+        0.68,
+        0.904,
+        1.0,
+        0.971,
+        0.83,
+        0.553,
+        0.117,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      33,
+      18
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 190,
+    "contact_reference_px": 190.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.0": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.15": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.35": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "1.6": [
+        0,
+        2,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      1,
+      2,
+      1,
+      2
+    ],
+    "block_rect_px": [
+      128,
+      256,
+      256,
+      384
+    ]
+  }
+}

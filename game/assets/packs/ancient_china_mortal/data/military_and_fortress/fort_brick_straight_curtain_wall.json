@@ -1,0 +1,240 @@
+{
+  "id": "ancient_china_mortal.military_and_fortress.fort_brick_straight_curtain_wall",
+  "name": "Kiln-Fired Grey Brick Crenellated Wall",
+  "vietnamese_name": "Tường Thành Xây Gạch Xám Lỗ Châu Mai",
+  "hanzi": "青砖垛口城墙直段",
+  "category": "military_and_fortress",
+  "sub_category": "crenellated_brick_wall",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    4,
+    2
+  ],
+  "canvas_px": [
+    512,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": null,
+  "gameplay_role": "Monumental Ming-style grey brick rampart with battlements and arrow slits.",
+  "destructible": false,
+  "material": "brick",
+  "cultivation_element": "mortal",
+  "prompt_summary": "High ancient Chinese grey brick curtain wall section with notched battlements, crenels, arrow slits, and broad walkway.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "fortress_tier": "imperial_standard"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/military_and_fortress/fort_brick_straight_curtain_wall.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.military_and_fortress.fort_brick_straight_curtain_wall:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.834,
+        0.783,
+        0.783,
+        0.827
+      ],
+      [
+        0.778,
+        0.695,
+        0.706,
+        0.778
+      ]
+    ],
+    "frac_zero": 0.5487,
+    "blocks": [
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 8,
+    "anchor_cell": [
+      2,
+      1
+    ],
+    "sub_grid": [
+      15,
+      5
+    ],
+    "sub_fill": [
+      [
+        0.352,
+        0.895,
+        0.893,
+        0.569,
+        0.454,
+        0.445,
+        0.47,
+        0.471,
+        0.477,
+        0.474,
+        0.455,
+        0.592,
+        0.874,
+        0.871,
+        0.294
+      ],
+      [
+        0.786,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.771
+      ],
+      [
+        0.56,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.529
+      ],
+      [
+        0.271,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.175
+      ],
+      [
+        0.128,
+        0.927,
+        0.933,
+        0.686,
+        0.163,
+        0.172,
+        0.172,
+        0.177,
+        0.194,
+        0.204,
+        0.203,
+        0.768,
+        0.981,
+        0.963,
+        0.03
+      ]
+    ],
+    "crop_offset": [
+      17,
+      82
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3
+    ],
+    "contact_px": 90,
+    "contact_reference_px": 90.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      256
+    ]
+  }
+}

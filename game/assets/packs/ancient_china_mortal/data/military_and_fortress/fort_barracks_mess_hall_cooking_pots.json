@@ -1,0 +1,206 @@
+{
+  "id": "ancient_china_mortal.military_and_fortress.fort_barracks_mess_hall_cooking_pots",
+  "name": "Camp Mess Kitchen & Giant Cauldrons",
+  "vietnamese_name": "Bếp Ăn Quân Đội Nồi Lớn Quân Nhu",
+  "hanzi": "火头军大铁锅灶",
+  "category": "military_and_fortress",
+  "sub_category": "military_barracks",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "cook_rations",
+  "gameplay_role": "Clay hearth stoves holding two giant iron soup cauldrons.",
+  "destructible": false,
+  "material": "iron",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Open-air camp mess kitchen with clay brick oven hearths holding massive black iron cauldrons and wooden ladles.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "rations": 200
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/military_and_fortress/fort_barracks_mess_hall_cooking_pots.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.military_and_fortress.fort_barracks_mess_hall_cooking_pots:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.62,
+        0.447
+      ],
+      [
+        0.728,
+        0.77
+      ]
+    ],
+    "frac_zero": 0.5015,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.199,
+        0.798,
+        0.27,
+        0.025,
+        0.0,
+        0.0
+      ],
+      [
+        0.275,
+        0.587,
+        1.0,
+        0.738,
+        0.689,
+        0.404,
+        0.263
+      ],
+      [
+        0.403,
+        0.93,
+        1.0,
+        0.978,
+        0.722,
+        0.899,
+        0.268
+      ],
+      [
+        0.379,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.997,
+        0.348
+      ],
+      [
+        0.741,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.853
+      ],
+      [
+        0.19,
+        0.943,
+        1.0,
+        1.0,
+        1.0,
+        0.965,
+        0.38
+      ],
+      [
+        0.0,
+        0.174,
+        0.725,
+        0.879,
+        0.8,
+        0.203,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      21
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 110,
+    "contact_reference_px": 110.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

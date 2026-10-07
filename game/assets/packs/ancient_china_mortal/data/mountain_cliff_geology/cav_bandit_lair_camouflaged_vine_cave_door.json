@@ -1,0 +1,208 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.cav_bandit_lair_camouflaged_vine_cave_door",
+  "name": "Bandit Mountain Lair Hidden Grotto Mouth Shrouded in Thick Vines",
+  "vietnamese_name": "Cửa Động Giấu Kín Dưới Dây Leo (Hang Ổ Sơn Tặc)",
+  "hanzi": "匪寨幽洞垂帘青藤掩映秘密洞",
+  "category": "mountain_cliff_geology",
+  "sub_category": "cave_mouth_and_grotto",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "part_camouflaged_vines",
+  "gameplay_role": "secret_cave",
+  "destructible": false,
+  "material": "plant",
+  "cultivation_element": "wood",
+  "prompt_summary": "Ancient Chinese mountain cave entrance landscape: Bandit Mountain Lair Hidden Grotto Mouth Shrouded in Thick Vines. Mysterious shadowy depths, rugged stone edges, ink outlines, top-down orthographic RPG sprite, transparent cutout.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "cave_archetype": "bandit_lair"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/cav_bandit_lair_camouflaged_vine_cave_door.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.cav_bandit_lair_camouflaged_vine_cave_door:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.476,
+        0.485
+      ],
+      [
+        0.775,
+        0.778
+      ]
+    ],
+    "frac_zero": 0.5002,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.241,
+        0.846,
+        0.077,
+        0.022,
+        0.0
+      ],
+      [
+        0.0,
+        0.179,
+        0.87,
+        1.0,
+        0.81,
+        0.429,
+        0.093
+      ],
+      [
+        0.114,
+        0.714,
+        1.0,
+        1.0,
+        1.0,
+        0.577,
+        0.282
+      ],
+      [
+        0.264,
+        0.913,
+        1.0,
+        1.0,
+        1.0,
+        0.884,
+        0.028
+      ],
+      [
+        0.463,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.501
+      ],
+      [
+        0.741,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.694
+      ],
+      [
+        0.072,
+        0.492,
+        0.88,
+        0.997,
+        0.849,
+        0.59,
+        0.023
+      ]
+    ],
+    "crop_offset": [
+      17,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 134,
+    "contact_reference_px": 134.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

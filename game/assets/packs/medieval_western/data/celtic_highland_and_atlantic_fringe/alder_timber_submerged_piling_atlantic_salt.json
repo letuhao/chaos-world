@@ -1,0 +1,161 @@
+{
+  "id": "medieval_western.celtic_highland_and_atlantic_fringe.alder_timber_submerged_piling_atlantic_salt",
+  "name": "Gale-Washed Alder Wood Underwater Stilt Piling",
+  "vietnamese_name": "Cọc Gỗ Cây Tiêu Rừng Cắm Lòng Hồ (Gió Biển Mặn Thổi)",
+  "category": "celtic_highland_and_atlantic_fringe",
+  "sub_category": "lake_dwelling_crannog_jetty",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": null,
+  "gameplay_role": "Celtic highland cultural feature (Alder Wood Underwater Stilt Piling).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "celtic_gaelic",
+  "prompt_summary": "2D orthographic top-down game sprite of gale-washed alder wood underwater stilt piling, salt spray worn stone and wind-bent scrub, Celtic highland and Atlantic fringe style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/celtic_highland_and_atlantic_fringe/alder_timber_submerged_piling_atlantic_salt.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.celtic_highland_and_atlantic_fringe.alder_timber_submerged_piling_atlantic_salt:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.605
+      ],
+      [
+        0.666
+      ]
+    ],
+    "frac_zero": 0.7432,
+    "blocks": [
+      [
+        true
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      2,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.438,
+        0.383
+      ],
+      [
+        0.793,
+        0.716
+      ],
+      [
+        0.748,
+        0.512
+      ],
+      [
+        0.696,
+        0.452
+      ],
+      [
+        0.709,
+        0.466
+      ],
+      [
+        0.748,
+        0.582
+      ],
+      [
+        0.804,
+        0.66
+      ]
+    ],
+    "crop_offset": [
+      36,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 46,
+    "contact_reference_px": 46.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      256
+    ]
+  }
+}

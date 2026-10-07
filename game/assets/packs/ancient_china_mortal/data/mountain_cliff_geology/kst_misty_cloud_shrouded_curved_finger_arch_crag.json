@@ -1,0 +1,209 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.kst_misty_cloud_shrouded_curved_finger_arch_crag",
+  "name": "Cloud-Veiled Spirit Mountain Peak Arched Hook Overhanging Finger Peak",
+  "vietnamese_name": "Mỏm Núi Cong Như Ngón Tay (2x2) (Đỉnh Núi Mây Mù Quanh Năm)",
+  "hanzi": "云海缭绕仙山巅弯如屈指悬空老峰",
+  "category": "mountain_cliff_geology",
+  "sub_category": "karst_spire_and_pinnacle",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "inspect_arch_crag",
+  "gameplay_role": "arch_crag",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "wind",
+  "prompt_summary": "Ancient Chinese karst pinnacle mountain landscape: Cloud-Veiled Spirit Mountain Peak Arched Hook Overhanging Finger Peak. Towering verticality, poetic gouache shading, dark ink contour lines, top-down orthographic sprite on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "geology_layer": "karst",
+    "region": "misty_cloud_shrouded"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/kst_misty_cloud_shrouded_curved_finger_arch_crag.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.kst_misty_cloud_shrouded_curved_finger_arch_crag:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.383,
+        0.356
+      ],
+      [
+        0.746,
+        0.742
+      ]
+    ],
+    "frac_zero": 0.5549,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.192,
+        0.705,
+        0.073,
+        0.0,
+        0.0
+      ],
+      [
+        0.026,
+        0.389,
+        0.583,
+        0.99,
+        0.581,
+        0.087,
+        0.0
+      ],
+      [
+        0.013,
+        0.184,
+        0.872,
+        0.829,
+        0.771,
+        0.462,
+        0.023
+      ],
+      [
+        0.255,
+        0.768,
+        0.998,
+        0.424,
+        0.824,
+        0.646,
+        0.206
+      ],
+      [
+        0.359,
+        0.999,
+        1.0,
+        0.989,
+        0.979,
+        0.889,
+        0.279
+      ],
+      [
+        0.67,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.646
+      ],
+      [
+        0.18,
+        0.574,
+        0.824,
+        0.966,
+        0.865,
+        0.672,
+        0.121
+      ]
+    ],
+    "crop_offset": [
+      18,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 152,
+    "contact_reference_px": 152.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

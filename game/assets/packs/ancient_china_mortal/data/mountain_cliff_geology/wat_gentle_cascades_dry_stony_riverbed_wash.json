@@ -1,0 +1,171 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.wat_gentle_cascades_dry_stony_riverbed_wash",
+  "name": "Gentle Stepped Rocky Cascade Dry Season Stony Riverbed Gravel Wash",
+  "vietnamese_name": "Lòng Suối Cạn Trơ Đá Mùa Khô (Dòng Thác Bậc Thang Êm Đềm)",
+  "hanzi": "清平迭级叠翠流枯水季露骨干涸乱石河床",
+  "category": "mountain_cliff_geology",
+  "sub_category": "waterfall_stream_and_cascade",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "cross_dry_riverbed",
+  "gameplay_role": "dry_riverbed",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese mountainous water feature: Gentle Stepped Rocky Cascade Dry Season Stony Riverbed Gravel Wash. Flowing crystal water with gouache splashes, dark ink outlines, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "water_scale": "gentle_cascades"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/wat_gentle_cascades_dry_stony_riverbed_wash.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.wat_gentle_cascades_dry_stony_riverbed_wash:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.609,
+        0.508
+      ],
+      [
+        0.721,
+        0.697
+      ]
+    ],
+    "frac_zero": 0.4976,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.487,
+        0.437,
+        0.169,
+        0.22,
+        0.094,
+        0.0
+      ],
+      [
+        0.0,
+        0.812,
+        0.964,
+        0.852,
+        0.946,
+        0.564,
+        0.086
+      ],
+      [
+        0.344,
+        0.997,
+        1.0,
+        1.0,
+        1.0,
+        0.708,
+        0.158
+      ],
+      [
+        0.323,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.927,
+        0.346
+      ],
+      [
+        0.698,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.552
+      ],
+      [
+        0.635,
+        0.988,
+        1.0,
+        1.0,
+        1.0,
+        0.95,
+        0.491
+      ],
+      [
+        0.0,
+        0.131,
+        0.561,
+        0.875,
+        0.498,
+        0.068,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 66,
+    "contact_reference_px": 66.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

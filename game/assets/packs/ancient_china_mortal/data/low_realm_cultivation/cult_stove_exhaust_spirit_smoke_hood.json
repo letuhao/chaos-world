@@ -1,0 +1,153 @@
+{
+  "id": "ancient_china_mortal.low_realm_cultivation.cult_stove_exhaust_spirit_smoke_hood",
+  "name": "Overhead Bronze Smoke Hood & Flue",
+  "vietnamese_name": "Chụp Hút Khói Lò Đan Bằng Đồng",
+  "hanzi": "青铜排烟排毒罩",
+  "category": "low_realm_cultivation",
+  "sub_category": "bronze_medicinal_stove",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Conical bronze hood suspended over cauldron venting toxic fumes.",
+  "destructible": false,
+  "material": "bronze",
+  "cultivation_element": "wind",
+  "prompt_summary": "Conical hammered bronze exhaust hood with iron chain supports and chimney pipe venting alchemy vapors.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "toxic_vent": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/low_realm_cultivation/cult_stove_exhaust_spirit_smoke_hood.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.low_realm_cultivation.cult_stove_exhaust_spirit_smoke_hood:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.211,
+        0.236
+      ]
+    ],
+    "frac_zero": 0.8625,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.411,
+        0.113,
+        0.0,
+        0.0
+      ],
+      [
+        0.239,
+        0.238,
+        0.837,
+        0.604,
+        0.214,
+        0.402
+      ],
+      [
+        0.025,
+        0.001,
+        0.495,
+        0.287,
+        0.0,
+        0.088
+      ]
+    ],
+    "crop_offset": [
+      37,
+      16
+    ],
+    "trunk_columns": [
+      2
+    ],
+    "contact_px": 25,
+    "contact_reference_px": 25.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

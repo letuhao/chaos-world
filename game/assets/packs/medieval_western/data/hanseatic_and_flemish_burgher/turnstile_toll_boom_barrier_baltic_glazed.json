@@ -1,0 +1,127 @@
+{
+  "id": "medieval_western.hanseatic_and_flemish_burgher.turnstile_toll_boom_barrier_baltic_glazed",
+  "name": "Baltic Glazed Floating River Toll Timber Boom",
+  "vietnamese_name": "Thanh Gỗ Chắn Thu Phí Kênh Đào (Men Bóng Baltic)",
+  "category": "hanseatic_and_flemish_burgher",
+  "sub_category": "canal_water_lock_and_embankment",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": true,
+  "vision_mode": "low",
+  "interactive_verb": "inspect",
+  "gameplay_role": "Hanseatic urban burgher feature (Floating River Toll Timber Boom).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "flemish_hanseatic",
+  "prompt_summary": "2D orthographic top-down game sprite of baltic glazed floating river toll timber boom, dark clinker glazed bricks and smooth mortar, Hanseatic Flemish burgher town style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/hanseatic_and_flemish_burgher/turnstile_toll_boom_barrier_baltic_glazed.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.hanseatic_and_flemish_burgher.turnstile_toll_boom_barrier_baltic_glazed:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.647,
+        0.659
+      ]
+    ],
+    "frac_zero": 0.6282,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.343,
+        0.52,
+        0.356,
+        0.658,
+        0.355,
+        0.531,
+        0.333
+      ],
+      [
+        0.734,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.76
+      ],
+      [
+        0.314,
+        0.725,
+        0.41,
+        0.699,
+        0.418,
+        0.754,
+        0.341
+      ]
+    ],
+    "crop_offset": [
+      16,
+      32
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 195,
+    "contact_reference_px": 195.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

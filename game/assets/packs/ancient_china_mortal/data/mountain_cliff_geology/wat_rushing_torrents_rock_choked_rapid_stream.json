@@ -1,0 +1,128 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.wat_rushing_torrents_rock_choked_rapid_stream",
+  "name": "High-Volume Mountain Torrent White-Water Rapids between Jagged Rocks",
+  "vietnamese_name": "Ghềnh Nước Xiết Chen Giữa Đá Nhọn (Dòng Thác Cuồn Cuộn Lưng Trời)",
+  "hanzi": "怒涛奔涌大悬瀑暗礁阻截急流险滩",
+  "category": "mountain_cliff_geology",
+  "sub_category": "waterfall_stream_and_cascade",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "navigate_rapids",
+  "gameplay_role": "river_rapids",
+  "destructible": false,
+  "material": "water",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese mountainous water feature: High-Volume Mountain Torrent White-Water Rapids between Jagged Rocks. Flowing crystal water with gouache splashes, dark ink outlines, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "water_scale": "rushing_torrents"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/wat_rushing_torrents_rock_choked_rapid_stream.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.wat_rushing_torrents_rock_choked_rapid_stream:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.708,
+        0.694
+      ]
+    ],
+    "frac_zero": 0.5985,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.258,
+        0.635,
+        0.169,
+        0.25,
+        0.671,
+        0.185
+      ],
+      [
+        0.867,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.789
+      ],
+      [
+        0.562,
+        0.928,
+        0.931,
+        0.938,
+        0.897,
+        0.362
+      ]
+    ],
+    "crop_offset": [
+      36,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 152,
+    "contact_reference_px": 152.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

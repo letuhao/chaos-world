@@ -1,0 +1,113 @@
+{
+  "id": "ancient_china_mortal.war_and_battlefield.war_arrow_burning_fire_arrows_smoldering",
+  "name": "Smoldering Fire Arrows in Dry Thatch",
+  "vietnamese_name": "Mũi Tên Tẩm Lửa Còn Đang Bốc Khói",
+  "hanzi": "冒烟点火火箭排",
+  "category": "war_and_battlefield",
+  "sub_category": "battlefield_arrow_cluster",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "extinguish",
+  "gameplay_role": "Cluster of arrows with oil-soaked rags still smoking and flickering.",
+  "destructible": true,
+  "material": "fire",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Several incendiary arrows stuck in ground with burning pitch cloth tips emitting curls of greasy grey smoke.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "fire_starter": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/war_and_battlefield/war_arrow_burning_fire_arrows_smoldering.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.war_and_battlefield.war_arrow_burning_fire_arrows_smoldering:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.51
+      ]
+    ],
+    "frac_zero": 0.7101,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.332,
+        0.6,
+        0.388
+      ],
+      [
+        0.308,
+        0.461,
+        0.233
+      ],
+      [
+        0.694,
+        0.941,
+        0.434
+      ]
+    ],
+    "crop_offset": [
+      24,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 70,
+    "contact_reference_px": 70.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

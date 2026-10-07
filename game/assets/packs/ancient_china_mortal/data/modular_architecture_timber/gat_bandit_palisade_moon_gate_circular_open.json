@@ -1,0 +1,208 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.gat_bandit_palisade_moon_gate_circular_open",
+  "name": "Wilderness Stockade Outlaw Circular Moon Gate Arch (Open Portal)",
+  "vietnamese_name": "Cổng Nguyệt Môn Tròn Mở Thông (2x2) (Cửa Trại Sơn Tặc Rừng Sâu)",
+  "hanzi": "绿林寨栅正圆月洞通门",
+  "category": "modular_architecture_timber",
+  "sub_category": "moon_gate_and_archway",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "pass_through_moon_gate",
+  "gameplay_role": "portal",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "metal",
+  "prompt_summary": "Ancient Chinese architectural entrance portal: Wilderness Stockade Outlaw Circular Moon Gate Arch (Open Portal). Ornate joinery, traditional aesthetic, top-down orthographic view for 2D RPG, clear transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "gateway",
+    "style": "bandit_palisade"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/gat_bandit_palisade_moon_gate_circular_open.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.gat_bandit_palisade_moon_gate_circular_open:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.579,
+        0.576
+      ],
+      [
+        0.715,
+        0.762
+      ]
+    ],
+    "frac_zero": 0.4995,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.153,
+        0.72,
+        0.625,
+        0.708,
+        0.123,
+        0.0
+      ],
+      [
+        0.095,
+        0.827,
+        1.0,
+        1.0,
+        1.0,
+        0.779,
+        0.081
+      ],
+      [
+        0.31,
+        0.885,
+        0.912,
+        0.571,
+        0.935,
+        0.865,
+        0.284
+      ],
+      [
+        0.657,
+        1.0,
+        0.493,
+        0.0,
+        0.571,
+        1.0,
+        0.654
+      ],
+      [
+        0.439,
+        1.0,
+        0.969,
+        0.843,
+        0.985,
+        1.0,
+        0.71
+      ],
+      [
+        0.562,
+        0.996,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        0.665
+      ],
+      [
+        0.0,
+        0.34,
+        0.823,
+        1.0,
+        0.795,
+        0.469,
+        0.02
+      ]
+    ],
+    "crop_offset": [
+      16,
+      24
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 150,
+    "contact_reference_px": 150.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

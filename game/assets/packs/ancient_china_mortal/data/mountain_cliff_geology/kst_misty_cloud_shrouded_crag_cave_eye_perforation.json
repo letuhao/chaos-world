@@ -1,0 +1,209 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.kst_misty_cloud_shrouded_crag_cave_eye_perforation",
+  "name": "Cloud-Veiled Spirit Mountain Peak Karst Peak with Pierced Sky-Eye Hole",
+  "vietnamese_name": "Đỉnh Núi Thủng Mắt Trời Thông Gió (Đỉnh Núi Mây Mù Quanh Năm)",
+  "hanzi": "云海缭绕仙山巅穿山穿心天门洞",
+  "category": "mountain_cliff_geology",
+  "sub_category": "karst_spire_and_pinnacle",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "gaze_through_sky_eye",
+  "gameplay_role": "sky_eye_peak",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "wind",
+  "prompt_summary": "Ancient Chinese karst pinnacle mountain landscape: Cloud-Veiled Spirit Mountain Peak Karst Peak with Pierced Sky-Eye Hole. Towering verticality, poetic gouache shading, dark ink contour lines, top-down orthographic sprite on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "geology_layer": "karst",
+    "region": "misty_cloud_shrouded"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/kst_misty_cloud_shrouded_crag_cave_eye_perforation.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.kst_misty_cloud_shrouded_crag_cave_eye_perforation:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.361,
+        0.36
+      ],
+      [
+        0.718,
+        0.733
+      ]
+    ],
+    "frac_zero": 0.5686,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.213,
+        0.727,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.101,
+        0.642,
+        0.994,
+        0.57,
+        0.102,
+        0.0
+      ],
+      [
+        0.09,
+        0.628,
+        0.886,
+        0.772,
+        0.65,
+        0.584,
+        0.031
+      ],
+      [
+        0.107,
+        0.4,
+        0.958,
+        1.0,
+        0.801,
+        0.421,
+        0.022
+      ],
+      [
+        0.373,
+        0.928,
+        1.0,
+        1.0,
+        0.988,
+        0.834,
+        0.32
+      ],
+      [
+        0.707,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.706
+      ],
+      [
+        0.074,
+        0.496,
+        0.757,
+        0.93,
+        0.762,
+        0.48,
+        0.098
+      ]
+    ],
+    "crop_offset": [
+      19,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 116,
+    "contact_reference_px": 116.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

@@ -1,0 +1,278 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.cor_yamen_official_corridor_octagonal_overlook_kiosk",
+  "name": "Magistrate Complex Dignified Corridor Octagonal Water Overlook Corridor Pavilion",
+  "vietnamese_name": "Đình Bát Giác Ngắm Cảnh Bến Nước (Hành Lang Nha Môn Uy Nghi)",
+  "hanzi": "官署通廊八角临渊水榭亭",
+  "category": "modular_architecture_timber",
+  "sub_category": "covered_corridor_and_veranda",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "admire_scenic_overlook",
+  "gameplay_role": "viewing_pavilion",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese covered garden corridor module: Magistrate Complex Dignified Corridor Octagonal Water Overlook Corridor Pavilion. Traditional tiled wooden gallery, balustrade railing, top-down orthographic game sprite, transparent alpha cutout.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "corridor",
+    "style": "yamen_official_corridor"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/cor_yamen_official_corridor_octagonal_overlook_kiosk.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.cor_yamen_official_corridor_octagonal_overlook_kiosk:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.506,
+        0.76,
+        0.416
+      ],
+      [
+        0.875,
+        1.0,
+        0.752
+      ],
+      [
+        0.432,
+        0.929,
+        0.597
+      ]
+    ],
+    "frac_zero": 0.4151,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.041,
+        0.684,
+        0.507,
+        0.5,
+        0.563,
+        0.377,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.157,
+        0.802,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.968,
+        0.434,
+        0.005,
+        0.0
+      ],
+      [
+        0.474,
+        0.977,
+        0.989,
+        0.814,
+        0.499,
+        0.346,
+        0.765,
+        0.856,
+        1.0,
+        0.819,
+        0.019
+      ],
+      [
+        0.365,
+        1.0,
+        0.861,
+        0.955,
+        1.0,
+        1.0,
+        0.992,
+        0.848,
+        1.0,
+        0.769,
+        0.0
+      ],
+      [
+        0.45,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.895,
+        0.0
+      ],
+      [
+        0.776,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.364
+      ],
+      [
+        0.529,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.635,
+        0.024
+      ],
+      [
+        0.527,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.872,
+        0.388
+      ],
+      [
+        0.009,
+        0.524,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.978,
+        0.478
+      ],
+      [
+        0.0,
+        0.002,
+        0.502,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.974,
+        0.285,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.044,
+        0.333,
+        0.896,
+        0.833,
+        0.64,
+        0.305,
+        0.157,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      19,
+      17
+    ],
+    "trunk_columns": [
+      4,
+      5,
+      6
+    ],
+    "contact_px": 85,
+    "contact_reference_px": 85.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        2,
+        1,
+        2
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

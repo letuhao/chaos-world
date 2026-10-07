@@ -1,0 +1,312 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.kst_guilin_jade_tower_broad_flat_table_mesa",
+  "name": "Guilin Verdant Karst Spire Flat-Topped Cloud Mesa (Table Peak)",
+  "vietnamese_name": "Đỉnh Núi Bàn Bằng Phẳng Ngắm Mây (3x3) (Trụ Đỉnh Quế Lâm Xanh Biếc)",
+  "hanzi": "桂林叠翠秀峰平顶白云大方桌台",
+  "category": "mountain_cliff_geology",
+  "sub_category": "karst_spire_and_pinnacle",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "explore_cloud_mesa",
+  "gameplay_role": "mesa_peak",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "wood",
+  "prompt_summary": "Ancient Chinese karst pinnacle mountain landscape: Guilin Verdant Karst Spire Flat-Topped Cloud Mesa (Table Peak). Towering verticality, poetic gouache shading, dark ink contour lines, top-down orthographic sprite on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "geology_layer": "karst",
+    "region": "guilin_jade_tower"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/kst_guilin_jade_tower_broad_flat_table_mesa.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.kst_guilin_jade_tower_broad_flat_table_mesa:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.014,
+        0.613,
+        0.003
+      ],
+      [
+        0.375,
+        0.959,
+        0.449
+      ],
+      [
+        0.677,
+        0.956,
+        0.728
+      ]
+    ],
+    "frac_zero": 0.544,
+    "blocks": [
+      [
+        false,
+        true,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 7,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.101,
+        0.706,
+        0.396,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.439,
+        1.0,
+        0.782,
+        0.05,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.1,
+        0.572,
+        1.0,
+        0.988,
+        0.13,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.026,
+        0.396,
+        0.793,
+        1.0,
+        1.0,
+        0.01,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.033,
+        0.613,
+        0.214,
+        0.991,
+        1.0,
+        1.0,
+        0.521,
+        0.658,
+        0.007,
+        0.0
+      ],
+      [
+        0.0,
+        0.161,
+        0.864,
+        0.764,
+        1.0,
+        1.0,
+        1.0,
+        0.668,
+        0.896,
+        0.175,
+        0.001
+      ],
+      [
+        0.0,
+        0.403,
+        0.996,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.991,
+        0.997,
+        0.646,
+        0.299
+      ],
+      [
+        0.251,
+        0.88,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.769,
+        0.081
+      ],
+      [
+        0.642,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.652
+      ],
+      [
+        0.227,
+        0.992,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.93,
+        0.493
+      ],
+      [
+        0.0,
+        0.155,
+        0.479,
+        0.636,
+        0.833,
+        0.741,
+        0.941,
+        0.86,
+        0.64,
+        0.084,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      18,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "contact_px": 170,
+    "contact_reference_px": 170.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      384
+    ]
+  }
+}

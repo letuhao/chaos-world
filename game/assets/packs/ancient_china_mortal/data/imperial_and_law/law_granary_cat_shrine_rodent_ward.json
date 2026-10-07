@@ -1,0 +1,143 @@
+{
+  "id": "ancient_china_mortal.imperial_and_law.law_granary_cat_shrine_rodent_ward",
+  "name": "Granary Cat Spirit Vermin Warding Shrine",
+  "vietnamese_name": "Miếu Thần Mèo Trừ Chuột Kho Lương",
+  "hanzi": "粮仓避鼠猫神龛",
+  "category": "imperial_and_law",
+  "sub_category": "imperial_granary",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "pray",
+  "gameplay_role": "Small stone altar dedicated to feline spirits protecting grain from rats.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Small rustic stone shrine with miniature carved cat statue, incense burner, and offering of dried fish.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "pest_control": "blessed"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/imperial_and_law/law_granary_cat_shrine_rodent_ward.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.imperial_and_law.law_granary_cat_shrine_rodent_ward:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.513
+      ]
+    ],
+    "frac_zero": 0.6942,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.122,
+        0.678,
+        0.008
+      ],
+      [
+        0.285,
+        0.927,
+        0.191
+      ],
+      [
+        0.69,
+        0.942,
+        0.642
+      ]
+    ],
+    "crop_offset": [
+      19,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 82,
+    "contact_reference_px": 82.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

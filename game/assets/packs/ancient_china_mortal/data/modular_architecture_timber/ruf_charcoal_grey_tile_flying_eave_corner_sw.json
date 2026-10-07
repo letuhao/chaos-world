@@ -1,0 +1,144 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.ruf_charcoal_grey_tile_flying_eave_corner_sw",
+  "name": "Imperial Charcoal Grey Clay Tile Sweeping Flying Eave Upturned Corner (SW)",
+  "vietnamese_name": "Đầu Mái Cong Vút Phi Thiềm (Tây Nam) (Ngói Xám Tro Cung Đình)",
+  "hanzi": "官造青灰瓦西南飞檐戗角",
+  "category": "modular_architecture_timber",
+  "sub_category": "modular_roof_and_flying_eaves",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "admire_flying_eave",
+  "gameplay_role": "flying_eave",
+  "destructible": false,
+  "material": "tile",
+  "cultivation_element": "wind",
+  "prompt_summary": "Ancient Chinese modular roof and eaves component: Imperial Charcoal Grey Clay Tile Sweeping Flying Eave Upturned Corner (SW). Intricate clay tiles, sweeping silhouette, gouache rendering with ink contours, orthographic top-down view, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "roof",
+    "style": "charcoal_grey_tile"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/ruf_charcoal_grey_tile_flying_eave_corner_sw.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.ruf_charcoal_grey_tile_flying_eave_corner_sw:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.625
+      ]
+    ],
+    "frac_zero": 0.6405,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.427,
+        0.515,
+        0.427
+      ],
+      [
+        0.65,
+        1.0,
+        0.644
+      ],
+      [
+        0.522,
+        0.931,
+        0.519
+      ]
+    ],
+    "crop_offset": [
+      16,
+      19
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 62,
+    "contact_reference_px": 62.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

@@ -1,0 +1,160 @@
+{
+  "id": "ancient_china_mortal.trade_craft_industry.ind_dye_sericulture_silkworm_hurdles",
+  "name": "Silkworm Rearing Trays Multi-Tier Rack",
+  "vietnamese_name": "Giá Nuôi Tằm Ăn Dâu Nhiều Tầng",
+  "hanzi": "多层养蚕竹箅架",
+  "category": "trade_craft_industry",
+  "sub_category": "dye_vat_and_silk_rack",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "feed_silkworms",
+  "gameplay_role": "Shelved racks of round bamboo trays with mulberry leaves and worms.",
+  "destructible": true,
+  "material": "bamboo",
+  "cultivation_element": "wood",
+  "prompt_summary": "Tall wooden frame holding seven tiers of round woven bamboo trays covered in chopped green mulberry leaves.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "sericulture": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/trade_craft_industry/ind_dye_sericulture_silkworm_hurdles.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.trade_craft_industry.ind_dye_sericulture_silkworm_hurdles:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.716,
+        0.73
+      ]
+    ],
+    "frac_zero": 0.51,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.622,
+        0.837,
+        0.834,
+        0.854,
+        0.848,
+        0.831,
+        0.549
+      ],
+      [
+        0.614,
+        0.972,
+        0.971,
+        0.979,
+        0.997,
+        0.979,
+        0.485
+      ],
+      [
+        0.287,
+        0.655,
+        0.546,
+        0.644,
+        0.623,
+        0.632,
+        0.154
+      ]
+    ],
+    "crop_offset": [
+      20,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 177,
+    "contact_reference_px": 177.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

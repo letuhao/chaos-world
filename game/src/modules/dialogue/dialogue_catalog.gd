@@ -20,7 +20,12 @@ extends RefCounted
 ## defect.
 
 const DIALOGUE_ROOT := "res://data/dialogue"
-const DIALOG_SCRIPT_CLASS := "DialogDef"
+## The script class THIS catalog loads. It is `DialogueDef`, NOT `DialogDef`: the two
+## resource types are different concerns (an authored branching graph versus a
+## fate-modified speech line in `destiny/`), and this constant was copy-pasted from
+## `DialogCatalog` and never updated — so the pre-scan skipped every authored
+## conversation and the catalog was permanently empty.
+const DIALOG_SCRIPT_CLASS := "DialogueDef"
 
 static var shared: DialogueCatalog = null
 

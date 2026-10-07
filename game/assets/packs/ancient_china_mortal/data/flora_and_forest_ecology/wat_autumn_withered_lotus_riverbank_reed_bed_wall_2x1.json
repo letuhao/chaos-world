@@ -1,0 +1,160 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.wat_autumn_withered_lotus_riverbank_reed_bed_wall_2x1",
+  "name": "Autumn Rain Withered Lotus Lake Thick Wall of Riverbank Wetland Reeds (2x1)",
+  "vietnamese_name": "Rặng Sậy Dày Đặc Ngăn Nước (2x1) (Đầm Sen Tàn Lá Rách Mùa Thu)",
+  "hanzi": "秋雨听残破荷枯叶茂密掩映芦苇屏障带",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "aquatic_lotus_and_wetland_reed",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "hide_in_reed_bed",
+  "gameplay_role": "reed_wall",
+  "destructible": false,
+  "material": "plant",
+  "cultivation_element": "yin",
+  "prompt_summary": "Ancient Chinese wetland aquatic flora: Autumn Rain Withered Lotus Lake Thick Wall of Riverbank Wetland Reeds (2x1). Delicate water reflection, ink outlines, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "wetland_type": "autumn_withered_lotus"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/wat_autumn_withered_lotus_riverbank_reed_bed_wall_2x1.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.wat_autumn_withered_lotus_riverbank_reed_bed_wall_2x1:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.632,
+        0.651
+      ]
+    ],
+    "frac_zero": 0.5654,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.158,
+        0.421,
+        0.311,
+        0.346,
+        0.417,
+        0.398,
+        0.078
+      ],
+      [
+        0.818,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.755
+      ],
+      [
+        0.234,
+        0.753,
+        0.881,
+        0.929,
+        0.844,
+        0.658,
+        0.092
+      ]
+    ],
+    "crop_offset": [
+      22,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 153,
+    "contact_reference_px": 153.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

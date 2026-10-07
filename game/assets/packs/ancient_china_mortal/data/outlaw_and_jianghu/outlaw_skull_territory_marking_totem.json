@@ -1,0 +1,170 @@
+{
+  "id": "ancient_china_mortal.outlaw_and_jianghu.outlaw_skull_territory_marking_totem",
+  "name": "Bleached Skulls Boundary Warning Pole",
+  "vietnamese_name": "Cột Gỗ Cắm Đầu Lâu Cảnh Báo Sơn Phỉ",
+  "hanzi": "骷髅示警界桩木",
+  "category": "outlaw_and_jianghu",
+  "sub_category": "skull_boundary_pole",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "examine",
+  "gameplay_role": "Tall notched tree trunk topped with multiple human skulls.",
+  "destructible": false,
+  "material": "bone",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Tall rough wooden marker totem pole crowned with three weathered human skulls and black raven feathers.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "intimidation": 40
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/outlaw_and_jianghu/outlaw_skull_territory_marking_totem.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.outlaw_and_jianghu.outlaw_skull_territory_marking_totem:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.544
+      ],
+      [
+        0.312
+      ]
+    ],
+    "frac_zero": 0.7719,
+    "blocks": [
+      [
+        false
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.224,
+        0.364,
+        0.073
+      ],
+      [
+        0.554,
+        0.783,
+        0.016
+      ],
+      [
+        0.729,
+        0.953,
+        0.203
+      ],
+      [
+        0.383,
+        0.614,
+        0.0
+      ],
+      [
+        0.213,
+        0.444,
+        0.0
+      ],
+      [
+        0.118,
+        0.365,
+        0.0
+      ],
+      [
+        0.16,
+        0.586,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      29,
+      17
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 39,
+    "contact_reference_px": 39.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

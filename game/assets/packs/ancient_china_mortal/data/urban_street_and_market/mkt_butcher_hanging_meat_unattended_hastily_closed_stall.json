@@ -1,0 +1,159 @@
+{
+  "id": "ancient_china_mortal.urban_street_and_market.mkt_butcher_hanging_meat_unattended_hastily_closed_stall",
+  "name": "Butcher Shop & Carcass Rack Hastily Abandoned Stall with Scattered Goods",
+  "vietnamese_name": "Sạp Hàng Bị Bỏ Chạy Hàng Hóa Rơi Vãi (Phản Thịt Heo & Thịt Bò Treo Móc)",
+  "hanzi": "肉案悬钩屠夫档仓皇弃置凌乱残货摊",
+  "category": "urban_street_and_market",
+  "sub_category": "market_stall_and_hawker_booth",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "search_abandoned_stall",
+  "gameplay_role": "abandoned_stall",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "yin",
+  "prompt_summary": "Ancient Chinese urban street market asset: Butcher Shop & Carcass Rack Hastily Abandoned Stall with Scattered Goods. Detailed mercantile props, gouache textures with ink line accents, orthographic top-down view, clean transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "market_genre": "butcher_hanging_meat"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/urban_street_and_market/mkt_butcher_hanging_meat_unattended_hastily_closed_stall.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.urban_street_and_market.mkt_butcher_hanging_meat_unattended_hastily_closed_stall:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.642,
+        0.689
+      ]
+    ],
+    "frac_zero": 0.5623,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.208,
+        0.583,
+        0.768,
+        0.858,
+        0.746,
+        0.612,
+        0.179
+      ],
+      [
+        0.665,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        0.641
+      ],
+      [
+        0.11,
+        0.34,
+        0.674,
+        0.797,
+        0.85,
+        0.525,
+        0.256
+      ]
+    ],
+    "crop_offset": [
+      16,
+      20
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 119,
+    "contact_reference_px": 119.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

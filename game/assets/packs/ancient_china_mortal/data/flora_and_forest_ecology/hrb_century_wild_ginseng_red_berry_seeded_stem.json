@@ -1,0 +1,136 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.hrb_century_wild_ginseng_red_berry_seeded_stem",
+  "name": "Mountain Century Wild Ginseng Mature Stem Laden with Ripe Scarlet Seed Berries",
+  "vietnamese_name": "Cành Thuốc Trĩu Quả Hạt Đỏ Mọng (Nhân Sâm Núi Trăm Năm)",
+  "hanzi": "长白山百年野山参顶生朱红累累灵药籽",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "mountain_medicinal_herb_wild",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "gather_herb_seeds",
+  "gameplay_role": "herb_seeds",
+  "destructible": false,
+  "material": "plant",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese valuable mountain medicinal herb: Mountain Century Wild Ginseng Mature Stem Laden with Ripe Scarlet Seed Berries. Botanical accuracy, luminous gouache accents, ink contours, top-down orthographic game prop on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "species": "century_wild_ginseng"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/hrb_century_wild_ginseng_red_berry_seeded_stem.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.hrb_century_wild_ginseng_red_berry_seeded_stem:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.199
+      ]
+    ],
+    "frac_zero": 0.8951,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      2,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.093,
+        0.242
+      ],
+      [
+        0.518,
+        0.111
+      ],
+      [
+        0.172,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      39,
+      17
+    ],
+    "trunk_columns": [],
+    "contact_px": 13,
+    "contact_reference_px": 13.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

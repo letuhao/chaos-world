@@ -1,0 +1,207 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.clf_craggy_granite_precipice_cliff_corner_convex",
+  "name": "Craggy Jagged Granite Precipice Protruding Convex Cliff Corner",
+  "vietnamese_name": "Góc Vách Núi Nhô Ra Ngoài (Vách Đá Hoa Cương Dựng Đứng)",
+  "hanzi": "嶙峋花岗岩峭壁凸突转角崖",
+  "category": "mountain_cliff_geology",
+  "sub_category": "cliff_face_and_bluff",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "inspect_cliff_corner",
+  "gameplay_role": "cliff_corner",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese mountainous geology landscape: Craggy Jagged Granite Precipice Protruding Convex Cliff Corner. Realistic rock textures, ink contours, orthographic top-down world-map view, transparent alpha background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "geology_layer": "cliff",
+    "strata": "craggy_granite_precipice"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/clf_craggy_granite_precipice_cliff_corner_convex.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.clf_craggy_granite_precipice_cliff_corner_convex:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.543,
+        0.41
+      ],
+      [
+        0.757,
+        0.734
+      ]
+    ],
+    "frac_zero": 0.5285,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.15,
+        0.62,
+        0.033,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.005,
+        0.597,
+        1.0,
+        0.894,
+        0.6,
+        0.106,
+        0.0
+      ],
+      [
+        0.011,
+        0.903,
+        1.0,
+        1.0,
+        1.0,
+        0.727,
+        0.08
+      ],
+      [
+        0.527,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.848,
+        0.448
+      ],
+      [
+        0.834,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.769
+      ],
+      [
+        0.499,
+        0.998,
+        1.0,
+        1.0,
+        1.0,
+        0.979,
+        0.345
+      ],
+      [
+        0.0,
+        0.333,
+        0.637,
+        0.929,
+        0.523,
+        0.126,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      18,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 78,
+    "contact_reference_px": 78.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

@@ -1,0 +1,157 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.wat_sacred_pink_lotus_white_pampas_grass_plumes",
+  "name": "Sacred Blooming Pink Lotus Flowering White Feathered Reed Plumes",
+  "vietnamese_name": "Bông Lau Trắng Bay Theo Gió Chiều (Sen Hồng Thắm Nở Rộ Mặt Hồ)",
+  "hanzi": "十里荷香粉红莲迎风飘洒白茫茫芦花",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "aquatic_lotus_and_wetland_reed",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "watch_pampas_in_wind",
+  "gameplay_role": "pampas_plumes",
+  "destructible": false,
+  "material": "plant",
+  "cultivation_element": "wind",
+  "prompt_summary": "Ancient Chinese wetland aquatic flora: Sacred Blooming Pink Lotus Flowering White Feathered Reed Plumes. Delicate water reflection, ink outlines, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "wetland_type": "sacred_pink_lotus"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/wat_sacred_pink_lotus_white_pampas_grass_plumes.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.wat_sacred_pink_lotus_white_pampas_grass_plumes:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.557,
+        0.599
+      ]
+    ],
+    "frac_zero": 0.653,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.132,
+        0.341,
+        0.074,
+        0.101,
+        0.337,
+        0.174
+      ],
+      [
+        0.512,
+        0.926,
+        1.0,
+        1.0,
+        0.94,
+        0.54
+      ],
+      [
+        0.279,
+        0.842,
+        0.972,
+        0.954,
+        0.853,
+        0.354
+      ]
+    ],
+    "crop_offset": [
+      34,
+      18
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 150,
+    "contact_reference_px": 150.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      1,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      128,
+      0,
+      256,
+      128
+    ]
+  }
+}

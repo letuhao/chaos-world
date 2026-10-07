@@ -1,0 +1,126 @@
+{
+  "id": "ancient_china_mortal.urban_street_and_market.dec_market_debris_waste_deep_cart_wheel_rut_straight",
+  "name": "Market End Organic Waste Deep Parallel Cart Wheel Ruts (2x1)",
+  "vietnamese_name": "Vết Hằn Bánh Xe Ngựa Đôi Thẳng (2x1) (Rác Rưởi Tan Chợ Vương Vãi)",
+  "hanzi": "散市残菜叶平行深陷车辙直印",
+  "category": "urban_street_and_market",
+  "sub_category": "litter_wheel_rut_and_puddle",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect_cart_ruts",
+  "gameplay_role": "rut_decal",
+  "destructible": false,
+  "material": "earth",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese street floor decal: Market End Organic Waste Deep Parallel Cart Wheel Ruts (2x1). Ground-level realistic grunge detail, ink outlines, top-down orthographic game decal on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "decal_condition": "market_debris_waste"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/urban_street_and_market/dec_market_debris_waste_deep_cart_wheel_rut_straight.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.urban_street_and_market.dec_market_debris_waste_deep_cart_wheel_rut_straight:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.813,
+        0.819
+      ]
+    ],
+    "frac_zero": 0.6048,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.718,
+        0.938,
+        0.873,
+        0.677,
+        0.899,
+        0.938,
+        0.639
+      ],
+      [
+        0.839,
+        1.0,
+        0.969,
+        0.737,
+        0.987,
+        1.0,
+        0.852
+      ],
+      [
+        0.0,
+        0.0,
+        0.547,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      30
+    ],
+    "trunk_columns": [
+      2
+    ],
+    "contact_px": 214,
+    "contact_reference_px": 214.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

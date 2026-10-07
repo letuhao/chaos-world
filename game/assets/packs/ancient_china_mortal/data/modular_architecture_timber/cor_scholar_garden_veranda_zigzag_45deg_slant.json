@@ -1,0 +1,179 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.cor_scholar_garden_veranda_zigzag_45deg_slant",
+  "name": "Classical Garden Cloister Walkway Slanted 45-Degree Zigzag Corridor Bay",
+  "vietnamese_name": "Khúc Lượn Hành Lang Nghiêng 45 Độ (Hành Lang Vườn Cảnh Giang Nam)",
+  "hanzi": "苏式游廊折角游龙曲廊",
+  "category": "modular_architecture_timber",
+  "sub_category": "covered_corridor_and_veranda",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "walk_along",
+  "gameplay_role": "corridor_zigzag",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "wood",
+  "prompt_summary": "Ancient Chinese covered garden corridor module: Classical Garden Cloister Walkway Slanted 45-Degree Zigzag Corridor Bay. Traditional tiled wooden gallery, balustrade railing, top-down orthographic game sprite, transparent alpha cutout.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "corridor",
+    "style": "scholar_garden_veranda"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/cor_scholar_garden_veranda_zigzag_45deg_slant.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.cor_scholar_garden_veranda_zigzag_45deg_slant:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.646,
+        0.719
+      ],
+      [
+        0.826,
+        0.813
+      ]
+    ],
+    "frac_zero": 0.4359,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.154,
+        0.32,
+        0.321,
+        0.326,
+        0.479,
+        0.747,
+        0.322
+      ],
+      [
+        0.368,
+        0.989,
+        0.88,
+        0.867,
+        0.874,
+        1.0,
+        0.574
+      ],
+      [
+        0.469,
+        0.997,
+        0.968,
+        0.961,
+        0.979,
+        1.0,
+        0.307
+      ],
+      [
+        0.587,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.475
+      ],
+      [
+        0.792,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.742
+      ],
+      [
+        0.358,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.521
+      ],
+      [
+        0.181,
+        0.675,
+        0.904,
+        0.87,
+        0.61,
+        0.63,
+        0.157
+      ]
+    ],
+    "crop_offset": [
+      17,
+      25
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 178,
+    "contact_reference_px": 178.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

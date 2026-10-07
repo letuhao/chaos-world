@@ -1,0 +1,141 @@
+{
+  "id": "ancient_china_mortal.low_realm_cultivation.cult_stove_herbal_grinding_boat_chuan",
+  "name": "Iron Roller Herbal Grinding Boat (Yaodao)",
+  "vietnamese_name": "Thuyền Nghiền Thuốc Bằng Sắt Có Bánh Lăn",
+  "hanzi": "铁轮药碾研磨槽",
+  "category": "low_realm_cultivation",
+  "sub_category": "bronze_medicinal_stove",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "grind_herbs",
+  "gameplay_role": "Boat-shaped iron trough with heavy circular disc rolled by foot.",
+  "destructible": false,
+  "material": "iron",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Boat-shaped cast iron herbal grinding trough (Yaodao) with heavy central iron wheel disc for crushing roots.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "grind_herbs": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/low_realm_cultivation/cult_stove_herbal_grinding_boat_chuan.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.low_realm_cultivation.cult_stove_herbal_grinding_boat_chuan:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.541
+      ]
+    ],
+    "frac_zero": 0.6901,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.12,
+        0.564,
+        0.088
+      ],
+      [
+        0.875,
+        1.0,
+        0.872
+      ],
+      [
+        0.307,
+        0.737,
+        0.272
+      ]
+    ],
+    "crop_offset": [
+      17,
+      16
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 53,
+    "contact_reference_px": 53.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

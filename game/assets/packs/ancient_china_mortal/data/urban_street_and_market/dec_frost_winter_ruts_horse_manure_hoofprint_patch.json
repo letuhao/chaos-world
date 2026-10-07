@@ -1,0 +1,113 @@
+{
+  "id": "ancient_china_mortal.urban_street_and_market.dec_frost_winter_ruts_horse_manure_hoofprint_patch",
+  "name": "Winter Frost Dusted Ground Ruts Dry Horse Droppings and Fresh Hoofprints",
+  "vietnamese_name": "Phân Ngựa Khô & Dấu Móng Ngựa Đạp Đất (Vệt Bánh Xe Đóng Băng Tuyết Mùa Đông)",
+  "hanzi": "隆冬积雪冻车辙马蹄杂乱与干马粪堆",
+  "category": "urban_street_and_market",
+  "sub_category": "litter_wheel_rut_and_puddle",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "track_horse_hoofprints",
+  "gameplay_role": "manure_decal",
+  "destructible": false,
+  "material": "earth",
+  "cultivation_element": "metal",
+  "prompt_summary": "Ancient Chinese street floor decal: Winter Frost Dusted Ground Ruts Dry Horse Droppings and Fresh Hoofprints. Ground-level realistic grunge detail, ink outlines, top-down orthographic game decal on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "decal_condition": "frost_winter_ruts"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/urban_street_and_market/dec_frost_winter_ruts_horse_manure_hoofprint_patch.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.urban_street_and_market.dec_frost_winter_ruts_horse_manure_hoofprint_patch:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.783
+      ]
+    ],
+    "frac_zero": 0.5583,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.607,
+        0.842,
+        0.721
+      ],
+      [
+        0.86,
+        1.0,
+        0.876
+      ],
+      [
+        0.564,
+        0.938,
+        0.624
+      ]
+    ],
+    "crop_offset": [
+      17,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 65,
+    "contact_reference_px": 65.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

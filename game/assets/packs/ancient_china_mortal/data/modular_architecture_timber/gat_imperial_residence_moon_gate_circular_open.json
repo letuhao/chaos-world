@@ -1,0 +1,198 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.gat_imperial_residence_moon_gate_circular_open",
+  "name": "Imperial Official Residence Circular Moon Gate Arch (Open Portal)",
+  "vietnamese_name": "Cổng Nguyệt Môn Tròn Mở Thông (2x2) (Dinh Thự Quyền Quý)",
+  "hanzi": "王府官邸正圆月洞通门",
+  "category": "modular_architecture_timber",
+  "sub_category": "moon_gate_and_archway",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "pass_through_moon_gate",
+  "gameplay_role": "portal",
+  "destructible": false,
+  "material": "brick",
+  "cultivation_element": "fire",
+  "prompt_summary": "Ancient Chinese architectural entrance portal: Imperial Official Residence Circular Moon Gate Arch (Open Portal). Ornate joinery, traditional aesthetic, top-down orthographic view for 2D RPG, clear transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "gateway",
+    "style": "imperial_residence"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/gat_imperial_residence_moon_gate_circular_open.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.gat_imperial_residence_moon_gate_circular_open:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.531,
+        0.535
+      ],
+      [
+        0.625,
+        0.672
+      ]
+    ],
+    "frac_zero": 0.6275,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.096,
+        0.614,
+        0.531,
+        0.606,
+        0.095,
+        0.0
+      ],
+      [
+        0.004,
+        0.683,
+        1.0,
+        1.0,
+        1.0,
+        0.658,
+        0.008
+      ],
+      [
+        0.236,
+        0.957,
+        1.0,
+        1.0,
+        1.0,
+        0.94,
+        0.228
+      ],
+      [
+        0.793,
+        1.0,
+        0.642,
+        0.084,
+        0.661,
+        1.0,
+        0.807
+      ],
+      [
+        0.556,
+        1.0,
+        0.772,
+        0.115,
+        0.772,
+        1.0,
+        0.601
+      ],
+      [
+        0.004,
+        0.232,
+        0.631,
+        0.176,
+        0.717,
+        0.434,
+        0.406
+      ]
+    ],
+    "crop_offset": [
+      16,
+      61
+    ],
+    "trunk_columns": [
+      4,
+      5,
+      6
+    ],
+    "contact_px": 99,
+    "contact_reference_px": 99.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

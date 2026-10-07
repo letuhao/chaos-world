@@ -1,0 +1,110 @@
+{
+  "id": "medieval_western.slavic_eastern_taiga_and_logcraft.lace_carved_window_surround_fresh_pine",
+  "name": "Fresh Hewn Pine Intricate Nalichniki Lace Window",
+  "vietnamese_name": "Khung Cửa Sổ Gỗ Chạm Ren Nalichniki (Gỗ Thông Mới Đẽo)",
+  "category": "slavic_eastern_taiga_and_logcraft",
+  "sub_category": "carved_window_nalichniki_frame",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "peer_inside",
+  "gameplay_role": "Slavic taiga cultural feature (Intricate Nalichniki Lace Window).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "slavic_rus",
+  "prompt_summary": "2D orthographic top-down game sprite of fresh hewn pine intricate nalichniki lace window, golden resinous aromatic pine wood, Slavic Kievan Rus taiga style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/slavic_eastern_taiga_and_logcraft/lace_carved_window_surround_fresh_pine.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.slavic_eastern_taiga_and_logcraft.lace_carved_window_surround_fresh_pine:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.541
+      ]
+    ],
+    "frac_zero": 0.6955,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.102,
+        0.642,
+        0.029
+      ],
+      [
+        0.682,
+        0.894,
+        0.595
+      ],
+      [
+        0.534,
+        0.834,
+        0.449
+      ]
+    ],
+    "crop_offset": [
+      19,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 66,
+    "contact_reference_px": 66.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

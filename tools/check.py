@@ -41,6 +41,12 @@ STEPS: tuple[tuple[str, list[str]], ...] = (
     # tree" is what check already does and proves nothing. Needs no engine, so it runs
     # first among the content audits.
     ("selftest", ["run"]),
+    # The translation catalogs agree with the source: every `L.t(slug, "English")` call has a
+    # catalog row (`game/locale/*.tres`), no row is orphaned, no slug is reused for different
+    # text, and a file that has adopted `L.t` carries no literal the rewrite should have
+    # replaced. It fails on inconsistency only, so a tree that has not migrated yet is
+    # inventoried, not red. Engine-free, so it runs with the other content audits.
+    ("i18n", ["check"]),
     # Every environment_theme the map index ships must still have its prose in
     # map_assets.py. The prose is pasted verbatim into ComfyUI prompts and `migrate`
     # cannot refresh an existing value, so a shortened string leaves rows rendering

@@ -1,0 +1,199 @@
+{
+  "id": "ancient_china_mortal.military_and_fortress.fort_brick_guard_bell_alarm_pavilion",
+  "name": "Battlement Alarm Bell Bronze Pavilion",
+  "vietnamese_name": "Chuông Đồng Báo Động Trên Vọng Lâu",
+  "hanzi": "警讯铜钟亭",
+  "category": "military_and_fortress",
+  "sub_category": "crenellated_brick_wall",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "core_ring",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "ring_bell",
+  "gameplay_role": "Open brick turret housing large bronze bell struck when attackers spotted.",
+  "destructible": false,
+  "material": "bronze",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Elevated open turret on wall corner housing a heavy bronze alarm bell with swinging wooden striker log.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "sound_radius": 1500
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/military_and_fortress/fort_brick_guard_bell_alarm_pavilion.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.military_and_fortress.fort_brick_guard_bell_alarm_pavilion:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.415,
+        0.405
+      ],
+      [
+        0.606,
+        0.698
+      ]
+    ],
+    "frac_zero": 0.6384,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.006,
+        0.556,
+        0.515,
+        0.002,
+        0.0
+      ],
+      [
+        0.158,
+        0.688,
+        1.0,
+        1.0,
+        0.656,
+        0.166
+      ],
+      [
+        0.0,
+        0.441,
+        0.895,
+        0.881,
+        0.462,
+        0.0
+      ],
+      [
+        0.062,
+        0.649,
+        0.951,
+        0.929,
+        0.609,
+        0.044
+      ],
+      [
+        0.126,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.069
+      ],
+      [
+        0.51,
+        0.909,
+        1.0,
+        1.0,
+        1.0,
+        0.53
+      ],
+      [
+        0.0,
+        0.09,
+        0.688,
+        0.724,
+        0.837,
+        0.163
+      ]
+    ],
+    "crop_offset": [
+      32,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 94,
+    "contact_reference_px": 94.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

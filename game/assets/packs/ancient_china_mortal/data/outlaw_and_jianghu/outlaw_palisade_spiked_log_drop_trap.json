@@ -1,0 +1,199 @@
+{
+  "id": "ancient_china_mortal.outlaw_and_jianghu.outlaw_palisade_spiked_log_drop_trap",
+  "name": "Deadfall Log Trap Suspended by Ropes",
+  "vietnamese_name": "Bẫy Gỗ Lăn Khổng Lồ Treo Trên Dốc",
+  "hanzi": "山道滚木陷阱架",
+  "category": "outlaw_and_jianghu",
+  "sub_category": "bandit_stockade_palisade",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "trigger_deadfall",
+  "gameplay_role": "Heavy bundle of sharpened logs rigged to roll down hillside.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Overhead wooden scaffold holding a bundle of five massive sharpened logs tied with a trip rope.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "trap_damage": 600
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/outlaw_and_jianghu/outlaw_palisade_spiked_log_drop_trap.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.outlaw_and_jianghu.outlaw_palisade_spiked_log_drop_trap:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.569,
+        0.547
+      ],
+      [
+        0.577,
+        0.586
+      ]
+    ],
+    "frac_zero": 0.6437,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.084,
+        0.145,
+        0.674,
+        0.228,
+        0.188,
+        0.0
+      ],
+      [
+        0.186,
+        0.716,
+        1.0,
+        0.761,
+        0.444,
+        0.029
+      ],
+      [
+        0.684,
+        0.783,
+        1.0,
+        0.854,
+        0.802,
+        0.444
+      ],
+      [
+        0.373,
+        0.805,
+        1.0,
+        0.921,
+        0.704,
+        0.0
+      ],
+      [
+        0.305,
+        0.747,
+        1.0,
+        0.965,
+        0.542,
+        0.0
+      ],
+      [
+        0.158,
+        0.912,
+        1.0,
+        0.996,
+        0.535,
+        0.0
+      ],
+      [
+        0.0,
+        0.41,
+        0.634,
+        0.669,
+        0.094,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      41,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3
+    ],
+    "contact_px": 22,
+    "contact_reference_px": 22.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

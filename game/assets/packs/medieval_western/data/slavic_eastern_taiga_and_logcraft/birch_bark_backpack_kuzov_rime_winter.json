@@ -1,0 +1,108 @@
+{
+  "id": "medieval_western.slavic_eastern_taiga_and_logcraft.birch_bark_backpack_kuzov_rime_winter",
+  "name": "Winter Rime Chilled Woven Birch Bark Trapper Pack (Kuzov)",
+  "vietnamese_name": "Gùi Đan Vỏ Bạch Dương Đi Rừng (Sương Băng Mùa Đông)",
+  "category": "slavic_eastern_taiga_and_logcraft",
+  "sub_category": "taiga_fur_trappers_post",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "loot",
+  "gameplay_role": "Slavic taiga cultural feature (Woven Birch Bark Trapper Pack (Kuzov)).",
+  "destructible": false,
+  "material": "organic",
+  "feudal_culture": "slavic_rus",
+  "prompt_summary": "2D orthographic top-down game sprite of winter rime chilled woven birch bark trapper pack (kuzov), frozen icicles and frosted roof timber, Slavic Kievan Rus taiga style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/slavic_eastern_taiga_and_logcraft/birch_bark_backpack_kuzov_rime_winter.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.slavic_eastern_taiga_and_logcraft.birch_bark_backpack_kuzov_rime_winter:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.578
+      ]
+    ],
+    "frac_zero": 0.6627,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.151,
+        0.586,
+        0.122
+      ],
+      [
+        0.916,
+        1.0,
+        0.825
+      ],
+      [
+        0.349,
+        0.89,
+        0.329
+      ]
+    ],
+    "crop_offset": [
+      18,
+      17
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 41,
+    "contact_reference_px": 41.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

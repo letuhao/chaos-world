@@ -1,0 +1,131 @@
+{
+  "id": "ancient_china_mortal.imperial_and_law.law_jail_water_dungeon_grate",
+  "name": "Iron Grate to Submerged Water Dungeon",
+  "vietnamese_name": "Song Sắt Hầm Thủy Lao Dưới Nước",
+  "hanzi": "水牢铁栅栏",
+  "category": "imperial_and_law",
+  "sub_category": "county_jail_and_pillory",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect",
+  "gameplay_role": "Iron grill flush with ground looking into flooded subterranean cell.",
+  "destructible": false,
+  "material": "iron",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Heavy rusted iron drainage grate set into stone floor with murky green water visible below, subterranean cell access.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "hazard": "drowning"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/imperial_and_law/law_jail_water_dungeon_grate.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.imperial_and_law.law_jail_water_dungeon_grate:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.666,
+        0.74
+      ]
+    ],
+    "frac_zero": 0.6118,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.183,
+        0.512,
+        0.855,
+        0.92,
+        0.919,
+        0.816,
+        0.219
+      ],
+      [
+        0.894,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.742,
+        0.266
+      ],
+      [
+        0.416,
+        0.406,
+        0.463,
+        0.454,
+        0.658,
+        0.363,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      28,
+      25
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 121,
+    "contact_reference_px": 121.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

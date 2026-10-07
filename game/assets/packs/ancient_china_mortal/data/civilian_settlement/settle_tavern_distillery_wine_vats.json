@@ -1,0 +1,217 @@
+{
+  "id": "ancient_china_mortal.civilian_settlement.settle_tavern_distillery_wine_vats",
+  "name": "Backyard Wine Distillery & Vats",
+  "vietnamese_name": "Lò Nấu Rượu Chum Ủ Men",
+  "hanzi": "烧酒作坊",
+  "category": "civilian_settlement",
+  "sub_category": "tavern_and_teahouse",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "craft",
+  "gameplay_role": "Fermentation yard with rows of giant glazed earthenware wine urns sealed with red cloth.",
+  "destructible": true,
+  "material": "earth",
+  "cultivation_element": "fire",
+  "prompt_summary": "Top-down courtyard workshop with large brick distillation furnace and copper condenser pipe, surrounded by dozens of large glazed terracotta wine urns sealed with mud and red wax paper.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "alcohol_brewing": true,
+    "daily_wine_production": "10_jars"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/civilian_settlement/settle_tavern_distillery_wine_vats.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.civilian_settlement.settle_tavern_distillery_wine_vats:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.642,
+        0.84,
+        0.579
+      ],
+      [
+        0.852,
+        0.988,
+        0.852
+      ]
+    ],
+    "frac_zero": 0.5946,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.085,
+        0.473,
+        0.645,
+        0.421,
+        0.375,
+        0.386,
+        0.032
+      ],
+      [
+        0.4,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.259
+      ],
+      [
+        0.44,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.223
+      ],
+      [
+        0.602,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.453
+      ],
+      [
+        0.765,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.685
+      ],
+      [
+        0.895,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.879
+      ],
+      [
+        0.545,
+        0.817,
+        0.907,
+        0.991,
+        0.953,
+        0.826,
+        0.574
+      ]
+    ],
+    "crop_offset": [
+      81,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 205,
+    "contact_reference_px": 205.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

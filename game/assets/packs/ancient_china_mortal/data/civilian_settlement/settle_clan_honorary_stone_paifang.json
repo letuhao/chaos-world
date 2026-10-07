@@ -1,0 +1,158 @@
+{
+  "id": "ancient_china_mortal.civilian_settlement.settle_clan_honorary_stone_paifang",
+  "name": "Filial Piety Honor Stone Paifang",
+  "vietnamese_name": "Cổng Khảo Trinh Tiết Bằng Đá",
+  "hanzi": "贞节牌坊",
+  "category": "civilian_settlement",
+  "sub_category": "clan_ancestral_hall",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect",
+  "gameplay_role": "Four-pillar three-tier imperial honor arch carved from white marble honoring clan virtue.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Top-down monumental white limestone Paifang gateway with three gabled stone roofs, deep relief dragon carvings, and imperial decree honorific inscription plaque.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "imperial_commendation": true,
+    "clan_virtue_multiplier": 1.5
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/civilian_settlement/settle_clan_honorary_stone_paifang.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.civilian_settlement.settle_clan_honorary_stone_paifang:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.412,
+        0.619,
+        0.42
+      ]
+    ],
+    "frac_zero": 0.7979,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 3,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.004,
+        0.397,
+        0.701,
+        0.749,
+        0.41,
+        0.053,
+        0.0
+      ],
+      [
+        0.632,
+        0.873,
+        0.854,
+        0.834,
+        0.87,
+        0.764,
+        0.086
+      ],
+      [
+        0.271,
+        0.292,
+        0.293,
+        0.3,
+        0.3,
+        0.272,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      93,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 13,
+    "contact_reference_px": 13.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

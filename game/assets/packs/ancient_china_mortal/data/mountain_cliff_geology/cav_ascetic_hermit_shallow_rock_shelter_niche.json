@@ -1,0 +1,208 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.cav_ascetic_hermit_shallow_rock_shelter_niche",
+  "name": "Daoist Hermit Meditation Cave Shallow Cliff Undercut Camp Shelter",
+  "vietnamese_name": "Hốc Đá Nông Che Mưa Cắm Trại (Động Tu Chân Ẩn Sĩ)",
+  "hanzi": "隐者仙窟凹坑避雨猎人浅龛",
+  "category": "mountain_cliff_geology",
+  "sub_category": "cave_mouth_and_grotto",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "shelter_from_rain",
+  "gameplay_role": "rock_shelter",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "wood",
+  "prompt_summary": "Ancient Chinese mountain cave entrance landscape: Daoist Hermit Meditation Cave Shallow Cliff Undercut Camp Shelter. Mysterious shadowy depths, rugged stone edges, ink outlines, top-down orthographic RPG sprite, transparent cutout.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "cave_archetype": "ascetic_hermit"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/cav_ascetic_hermit_shallow_rock_shelter_niche.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.cav_ascetic_hermit_shallow_rock_shelter_niche:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.538,
+        0.484
+      ],
+      [
+        0.811,
+        0.826
+      ]
+    ],
+    "frac_zero": 0.4798,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.237,
+        0.673,
+        0.225,
+        0.018,
+        0.0
+      ],
+      [
+        0.098,
+        0.586,
+        0.894,
+        1.0,
+        0.659,
+        0.308,
+        0.0
+      ],
+      [
+        0.153,
+        0.931,
+        1.0,
+        1.0,
+        1.0,
+        0.936,
+        0.068
+      ],
+      [
+        0.172,
+        0.985,
+        1.0,
+        1.0,
+        1.0,
+        0.963,
+        0.106
+      ],
+      [
+        0.425,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.56
+      ],
+      [
+        0.879,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.797
+      ],
+      [
+        0.274,
+        0.667,
+        0.921,
+        0.882,
+        0.893,
+        0.69,
+        0.242
+      ]
+    ],
+    "crop_offset": [
+      18,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 169,
+    "contact_reference_px": 169.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

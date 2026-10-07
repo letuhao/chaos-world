@@ -1,0 +1,208 @@
+{
+  "id": "ancient_china_mortal.flora_and_ambience.flora_peach_ripe_summer_fruit_peach_tree",
+  "name": "Summer Peach Tree Heavy with Ripe Fruit",
+  "vietnamese_name": "Cây Đào Trĩu Quả Chín Mọng Mùa Hè",
+  "hanzi": "结满红桃丰收老树",
+  "category": "flora_and_ambience",
+  "sub_category": "ginkgo_and_peach_tree",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "pick_peaches",
+  "gameplay_role": "Green-leafed tree dripping with large rosy longevity peaches.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "wood",
+  "prompt_summary": "Green peach tree with branches drooping under weight of dozens of plump ripe pink and red peaches.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "food_harvest": "peach",
+    "yield": 8
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_ambience/flora_peach_ripe_summer_fruit_peach_tree.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_ambience.flora_peach_ripe_summer_fruit_peach_tree:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.487,
+        0.483
+      ],
+      [
+        0.435,
+        0.44
+      ]
+    ],
+    "frac_zero": 0.628,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.004,
+        0.491,
+        0.727,
+        0.202,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.537,
+        0.985,
+        0.958,
+        0.849,
+        0.151,
+        0.0
+      ],
+      [
+        0.162,
+        0.515,
+        0.925,
+        0.854,
+        0.826,
+        0.468,
+        0.028
+      ],
+      [
+        0.688,
+        0.97,
+        0.67,
+        0.493,
+        0.6,
+        0.972,
+        0.514
+      ],
+      [
+        0.226,
+        0.489,
+        0.193,
+        0.61,
+        0.477,
+        0.53,
+        0.128
+      ],
+      [
+        0.0,
+        0.158,
+        0.312,
+        0.718,
+        0.163,
+        0.077,
+        0.0
+      ],
+      [
+        0.007,
+        0.722,
+        0.985,
+        0.996,
+        0.881,
+        0.276,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      23,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 140,
+    "contact_reference_px": 140.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

@@ -1,0 +1,211 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.clf_yellow_loess_bluff_cliff_corner_convex",
+  "name": "Yellow Loess Terraced Bluff Protruding Convex Cliff Corner",
+  "vietnamese_name": "Góc Vách Núi Nhô Ra Ngoài (Vách Đất Vàng Hoàng Thổ Phù Sa)",
+  "hanzi": "黄土塬高崖凸突转角崖",
+  "category": "mountain_cliff_geology",
+  "sub_category": "cliff_face_and_bluff",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "inspect_cliff_corner",
+  "gameplay_role": "cliff_corner",
+  "destructible": false,
+  "material": "earth",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese mountainous geology landscape: Yellow Loess Terraced Bluff Protruding Convex Cliff Corner. Realistic rock textures, ink contours, orthographic top-down world-map view, transparent alpha background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "geology_layer": "cliff",
+    "strata": "yellow_loess_bluff"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/clf_yellow_loess_bluff_cliff_corner_convex.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.clf_yellow_loess_bluff_cliff_corner_convex:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.623,
+        0.596
+      ],
+      [
+        0.936,
+        0.937
+      ]
+    ],
+    "frac_zero": 0.4057,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.001,
+        0.188,
+        0.285,
+        0.683,
+        0.168,
+        0.081,
+        0.013
+      ],
+      [
+        0.148,
+        0.671,
+        0.953,
+        1.0,
+        0.815,
+        0.79,
+        0.193
+      ],
+      [
+        0.466,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.992,
+        0.426
+      ],
+      [
+        0.583,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.65
+      ],
+      [
+        0.672,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.637
+      ],
+      [
+        0.821,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.806
+      ],
+      [
+        0.96,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.946
+      ]
+    ],
+    "crop_offset": [
+      17,
+      19
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 222,
+    "contact_reference_px": 222.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

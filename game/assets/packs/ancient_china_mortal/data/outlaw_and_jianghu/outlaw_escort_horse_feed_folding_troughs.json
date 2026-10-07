@@ -1,0 +1,141 @@
+{
+  "id": "ancient_china_mortal.outlaw_and_jianghu.outlaw_escort_horse_feed_folding_troughs",
+  "name": "Portable Canvas Mount Feeding Trough",
+  "vietnamese_name": "Máng Vải Gấp Cho Ngựa Ăn Dọc Đường",
+  "hanzi": "帆布折叠喂马槽",
+  "category": "outlaw_and_jianghu",
+  "sub_category": "escort_caravan_wagon",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "feed_horses",
+  "gameplay_role": "Folding canvas and wood trough for grain on long highways.",
+  "destructible": true,
+  "material": "canvas",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Collapsible folding canvas water and grain trough suspended between four wooden stakes.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "horse_care": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/outlaw_and_jianghu/outlaw_escort_horse_feed_folding_troughs.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.outlaw_and_jianghu.outlaw_escort_horse_feed_folding_troughs:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.506
+      ]
+    ],
+    "frac_zero": 0.7524,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.365,
+        0.531,
+        0.113
+      ],
+      [
+        0.696,
+        0.994,
+        0.371
+      ],
+      [
+        0.336,
+        0.414,
+        0.264
+      ]
+    ],
+    "crop_offset": [
+      24,
+      16
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 10,
+    "contact_reference_px": 10.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

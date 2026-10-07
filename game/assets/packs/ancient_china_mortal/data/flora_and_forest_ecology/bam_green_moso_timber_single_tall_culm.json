@@ -1,0 +1,170 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.bam_green_moso_timber_single_tall_culm",
+  "name": "Giant Green Moso Bamboo Single Graceful Bamboo Stalk (1x2)",
+  "vietnamese_name": "Một Thân Tre Cao Thẳng (1x2) (Tre Mạy Bương Xanh Khổng Lồ)",
+  "hanzi": "翠绿巨型毛竹单株挺拔修竹竿",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "bamboo_grove_and_thicket",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "chop_timber_bamboo",
+  "gameplay_role": "bamboo_stalk",
+  "destructible": false,
+  "material": "bamboo",
+  "cultivation_element": "wood",
+  "prompt_summary": "Ancient Chinese bamboo grove vegetation: Giant Green Moso Bamboo Single Graceful Bamboo Stalk (1x2). Slender culms with delicate fluttering green leaves, dark ink contours, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "bamboo_variety": "green_moso_timber"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/bam_green_moso_timber_single_tall_culm.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.bam_green_moso_timber_single_tall_culm:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.381
+      ],
+      [
+        0.293
+      ]
+    ],
+    "frac_zero": 0.7485,
+    "blocks": [
+      [
+        false
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.017,
+        0.411,
+        0.006
+      ],
+      [
+        0.171,
+        0.714,
+        0.152
+      ],
+      [
+        0.358,
+        0.741,
+        0.262
+      ],
+      [
+        0.474,
+        0.795,
+        0.16
+      ],
+      [
+        0.25,
+        0.466,
+        0.012
+      ],
+      [
+        0.032,
+        0.25,
+        0.0
+      ],
+      [
+        0.272,
+        0.65,
+        0.004
+      ]
+    ],
+    "crop_offset": [
+      24,
+      18
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 53,
+    "contact_reference_px": 53.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

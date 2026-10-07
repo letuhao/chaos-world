@@ -1,0 +1,136 @@
+{
+  "id": "ancient_china_mortal.folk_religion_fengshui.folk_stone_spirit_blocking_concave_mirror",
+  "name": "Bagua Concave Bronze Mirror on Wooden Pole",
+  "vietnamese_name": "Gương Bát Quái Bằng Đồng Treo Cột Gỗ",
+  "hanzi": "八卦凹面镇宅铜镜",
+  "category": "folk_religion_fengshui",
+  "sub_category": "warding_stone_shigandang",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "adjust_mirror",
+  "gameplay_role": "Round bronze mirror set in wooden Bagua trigram octagon.",
+  "destructible": false,
+  "material": "bronze",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Weathered timber post with octagonal wooden frame holding round bronze Bagua mirror reflecting sky.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "reflects_curse": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/folk_religion_fengshui/folk_stone_spirit_blocking_concave_mirror.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.folk_religion_fengshui.folk_stone_spirit_blocking_concave_mirror:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.458
+      ]
+    ],
+    "frac_zero": 0.8887,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      2,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.729,
+        0.461
+      ],
+      [
+        0.54,
+        0.016
+      ],
+      [
+        0.218,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      46,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 13,
+    "contact_reference_px": 13.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

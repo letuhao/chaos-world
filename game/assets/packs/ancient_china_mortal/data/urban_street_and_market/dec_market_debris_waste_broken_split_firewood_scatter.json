@@ -1,0 +1,113 @@
+{
+  "id": "ancient_china_mortal.urban_street_and_market.dec_market_debris_waste_broken_split_firewood_scatter",
+  "name": "Market End Organic Waste Scatter of Chopped Pine Wood Chips and Bark",
+  "vietnamese_name": "Vụn Gỗ Bổ Củi Rơi Vãi Quanh Gốc (Rác Rưởi Tan Chợ Vương Vãi)",
+  "hanzi": "散市残菜叶砍木飞溅残余松树皮片",
+  "category": "urban_street_and_market",
+  "sub_category": "litter_wheel_rut_and_puddle",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "gather_woodchips",
+  "gameplay_role": "woodchips_decal",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "wood",
+  "prompt_summary": "Ancient Chinese street floor decal: Market End Organic Waste Scatter of Chopped Pine Wood Chips and Bark. Ground-level realistic grunge detail, ink outlines, top-down orthographic game decal on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "decal_condition": "market_debris_waste"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/urban_street_and_market/dec_market_debris_waste_broken_split_firewood_scatter.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.urban_street_and_market.dec_market_debris_waste_broken_split_firewood_scatter:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.77
+      ]
+    ],
+    "frac_zero": 0.5671,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.99,
+        0.876,
+        0.449
+      ],
+      [
+        0.86,
+        1.0,
+        0.892
+      ],
+      [
+        0.392,
+        0.869,
+        0.555
+      ]
+    ],
+    "crop_offset": [
+      18,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 63,
+    "contact_reference_px": 63.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

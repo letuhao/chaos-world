@@ -1,0 +1,127 @@
+{
+  "id": "ancient_china_mortal.urban_street_and_market.dec_muddy_rain_ruts_muddy_water_puddle_reflection",
+  "name": "Rainy Season Deep Mud Rut Muddy Rain Puddle with Sky Water Reflection",
+  "vietnamese_name": "Vũng Nước Bùn Đọng Soi Bóng Trời (2x1) (Vết Bánh Xe Lún Bùn Mùa Mưa)",
+  "hanzi": "泥泞雨季辙积水泥洼映空水塘",
+  "category": "urban_street_and_market",
+  "sub_category": "litter_wheel_rut_and_puddle",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "gaze_into_puddle",
+  "gameplay_role": "puddle_decal",
+  "destructible": false,
+  "material": "water",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese street floor decal: Rainy Season Deep Mud Rut Muddy Rain Puddle with Sky Water Reflection. Ground-level realistic grunge detail, ink outlines, top-down orthographic game decal on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "decal_condition": "muddy_rain_ruts"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/urban_street_and_market/dec_muddy_rain_ruts_muddy_water_puddle_reflection.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.urban_street_and_market.dec_muddy_rain_ruts_muddy_water_puddle_reflection:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.643,
+        0.702
+      ]
+    ],
+    "frac_zero": 0.6137,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.331,
+        0.678,
+        0.521,
+        0.36,
+        0.633,
+        0.798,
+        0.32
+      ],
+      [
+        0.841,
+        1.0,
+        0.997,
+        0.846,
+        1.0,
+        1.0,
+        0.816
+      ],
+      [
+        0.238,
+        0.834,
+        0.35,
+        0.072,
+        0.68,
+        0.762,
+        0.271
+      ]
+    ],
+    "crop_offset": [
+      17,
+      24
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 99,
+    "contact_reference_px": 99.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

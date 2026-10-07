@@ -167,6 +167,14 @@ UI_MODULES: dict[str, list[str]] = {
     # from `QuestProgram` (ADR 0143's bridge), and that file is the only thing in
     # `src/` that calls `QuestApi.accept`.
     "quest": [],
+    # The conversation surface (ADR 0862). A dialogue panel is a read of the facade
+    # plus the one verb a conversation has: `current` publishes the node and its
+    # choices as primitives, and `choose` moves the actor's OWN dialogue row — the
+    # module's own state, never another module's ledger, so this is the `clan` shape
+    # (`ClanApi.join` is pressed straight from `clan_screen`) rather than the `quest`
+    # bridge shape. Granted with no module dependency: `dialogue` declares only
+    # `contracts` and `core` in registry.json, and a conversation reads nothing else.
+    "dialogue": [],
     # A doctrine board (the `doctrine` module). A board screen is a pure read of the
     # facade on the same shape as the quest journal: `available`, `boards`, `price` and
     # `summary` all return primitive dicts, and a board row carries its own label, cost

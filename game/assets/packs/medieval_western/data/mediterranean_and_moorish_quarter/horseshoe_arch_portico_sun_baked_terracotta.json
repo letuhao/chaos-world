@@ -1,0 +1,173 @@
+{
+  "id": "medieval_western.mediterranean_and_moorish_quarter.horseshoe_arch_portico_sun_baked_terracotta",
+  "name": "Sun-Baked Moorish Horseshoe Arch Columnade",
+  "vietnamese_name": "Dãy Vòm Cửa Móng Ngựa Moorish (Nắng Rám Địa Trung Hải)",
+  "category": "mediterranean_and_moorish_quarter",
+  "sub_category": "arcaded_patio_courtyard",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "walk_under",
+  "gameplay_role": "Mediterranean Moorish quarter feature (Moorish Horseshoe Arch Columnade).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "mediterranean_moorish",
+  "prompt_summary": "2D orthographic top-down game sprite of sun-baked moorish horseshoe arch columnade, warm terracotta glow and chalky white plaster, Mediterranean Moorish Al-Andalus style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/mediterranean_and_moorish_quarter/horseshoe_arch_portico_sun_baked_terracotta.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.mediterranean_and_moorish_quarter.horseshoe_arch_portico_sun_baked_terracotta:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.903,
+        0.902
+      ],
+      [
+        0.784,
+        0.771
+      ]
+    ],
+    "frac_zero": 0.3957,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.455,
+        0.969,
+        0.969,
+        0.969,
+        0.972,
+        0.973,
+        0.448
+      ],
+      [
+        0.783,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.761
+      ],
+      [
+        0.822,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.796
+      ],
+      [
+        0.617,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.587
+      ],
+      [
+        0.449,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.415
+      ],
+      [
+        0.448,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.383
+      ],
+      [
+        0.111,
+        0.188,
+        0.66,
+        0.844,
+        0.465,
+        0.25,
+        0.135
+      ]
+    ],
+    "crop_offset": [
+      17,
+      31
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 196,
+    "contact_reference_px": 196.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

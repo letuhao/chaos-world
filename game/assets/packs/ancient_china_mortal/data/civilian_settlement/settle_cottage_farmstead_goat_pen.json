@@ -1,0 +1,217 @@
+{
+  "id": "ancient_china_mortal.civilian_settlement.settle_cottage_farmstead_goat_pen",
+  "name": "Peasant Farmstead with Goat Pen",
+  "vietnamese_name": "Trang Trại Tranh Kèm Chuồng Dê",
+  "hanzi": "茅舍伴栏",
+  "category": "civilian_settlement",
+  "sub_category": "peasant_thatched_cottage",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "enter",
+  "gameplay_role": "Farmstead featuring an adjoining wattle fence enclosure housing goats and a straw stack.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Top-down sprite of thatched peasant cottage with adjacent woven wattle livestock pen, wooden feeding trough, and golden straw haystack.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "housing_capacity": 4,
+    "livestock_capacity": 6,
+    "animal_type": "goats",
+    "milk_and_wool": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/civilian_settlement/settle_cottage_farmstead_goat_pen.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.civilian_settlement.settle_cottage_farmstead_goat_pen:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.452,
+        0.709,
+        0.604
+      ],
+      [
+        0.781,
+        0.989,
+        0.813
+      ]
+    ],
+    "frac_zero": 0.6279,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.124,
+        0.346,
+        0.668,
+        0.163
+      ],
+      [
+        0.06,
+        0.604,
+        0.766,
+        0.938,
+        0.815,
+        0.488,
+        0.473
+      ],
+      [
+        0.471,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.941,
+        0.266
+      ],
+      [
+        0.865,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.801
+      ],
+      [
+        0.807,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.969
+      ],
+      [
+        0.679,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.705
+      ],
+      [
+        0.117,
+        0.651,
+        0.91,
+        0.963,
+        0.918,
+        0.615,
+        0.084
+      ]
+    ],
+    "crop_offset": [
+      82,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 156,
+    "contact_reference_px": 156.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

@@ -1,0 +1,172 @@
+{
+  "id": "ancient_china_mortal.path_and_way.way_bridge_single_arch_humpback",
+  "name": "Humpback Single-Arch Stone Bridge",
+  "vietnamese_name": "Cầu Vòm Đá Đơn Nhịp",
+  "hanzi": "单孔石拱桥",
+  "category": "path_and_way",
+  "sub_category": "stone_arched_bridge",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "Graceful arched grey limestone bridge over village rivers with stone balustrades.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Top-down orthographic single-arch curved humpback stone bridge, stone balusters with lotus petal finials, water passage beneath.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "nav_surface": "walk_surface",
+    "water_clearance_boat": "sampan",
+    "flood_resistance": "high"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/path_and_way/way_bridge_single_arch_humpback.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.path_and_way.way_bridge_single_arch_humpback:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.459,
+        0.423
+      ],
+      [
+        0.678,
+        0.595
+      ]
+    ],
+    "frac_zero": 0.653,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.317,
+        0.0,
+        0.253,
+        0.069,
+        0.0
+      ],
+      [
+        0.0,
+        0.868,
+        0.786,
+        0.888,
+        0.405,
+        0.0
+      ],
+      [
+        0.012,
+        0.931,
+        1.0,
+        1.0,
+        0.488,
+        0.0
+      ],
+      [
+        0.024,
+        0.98,
+        1.0,
+        1.0,
+        0.59,
+        0.0
+      ],
+      [
+        0.025,
+        0.945,
+        1.0,
+        1.0,
+        0.545,
+        0.0
+      ],
+      [
+        0.447,
+        1.0,
+        1.0,
+        1.0,
+        0.762,
+        0.223
+      ],
+      [
+        0.144,
+        0.781,
+        0.959,
+        0.778,
+        0.415,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      37,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 95,
+    "contact_reference_px": 95.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

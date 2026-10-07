@@ -82,6 +82,11 @@ element_coverage = _load("element_coverage")
 fmt = _load("fmt")
 gate_reach = _load("gate_reach")
 godot_bypass = _load("godot_bypass")
+i18n = _load("i18n")
+# Importing the cases module REGISTERS the i18n gate's red paths with the selftest harness,
+# so the load is load-bearing rather than unused (same shape as the other `*_selftest`
+# modules below). A Python guard with no red path was never tested (INC-0016).
+i18n_selftest = _load("i18n.selftest_case")
 incident = _load("incident")
 institution_family = _load("institution_family")
 item_derive = _load("item_derive")
@@ -116,6 +121,7 @@ COMMANDS = {
     "fmt": fmt,
     "gate_reach": gate_reach,
     "godot_bypass": godot_bypass,
+    "i18n": i18n,
     "lint": lint,
     "loop_guard": loop_guard,
     "lore": lore,

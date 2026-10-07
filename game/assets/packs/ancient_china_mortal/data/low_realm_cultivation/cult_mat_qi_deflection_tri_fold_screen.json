@@ -1,0 +1,156 @@
+{
+  "id": "ancient_china_mortal.low_realm_cultivation.cult_mat_qi_deflection_tri_fold_screen",
+  "name": "Three-Leaf Cedar Wind Deflection Screen",
+  "vietnamese_name": "Bình Phong Gỗ Bách Chắn Gió Lạnh",
+  "hanzi": "挡风避寒柏木小折屏",
+  "category": "low_realm_cultivation",
+  "sub_category": "disciple_meditation_mat",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": null,
+  "gameplay_role": "Low wooden folding screen keeping drafts off meditating cultivators.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Three-fold low cedar wood folding screen with paper lattice panels placed to block cold winds from sitting disciple.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "draft_protection": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/low_realm_cultivation/cult_mat_qi_deflection_tri_fold_screen.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.low_realm_cultivation.cult_mat_qi_deflection_tri_fold_screen:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.688,
+        0.695
+      ]
+    ],
+    "frac_zero": 0.5856,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.623,
+        0.817,
+        0.673,
+        0.878,
+        0.673,
+        0.842,
+        0.609
+      ],
+      [
+        0.594,
+        0.973,
+        0.97,
+        0.973,
+        0.979,
+        0.975,
+        0.561
+      ],
+      [
+        0.256,
+        0.269,
+        0.595,
+        0.212,
+        0.594,
+        0.309,
+        0.225
+      ]
+    ],
+    "crop_offset": [
+      17,
+      27
+    ],
+    "trunk_columns": [
+      2
+    ],
+    "contact_px": 29,
+    "contact_reference_px": 29.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

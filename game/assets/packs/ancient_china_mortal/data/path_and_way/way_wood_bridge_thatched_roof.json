@@ -1,0 +1,165 @@
+{
+  "id": "ancient_china_mortal.path_and_way.way_wood_bridge_thatched_roof",
+  "name": "Thatched Roof Covered Bridge",
+  "vietnamese_name": "Cầu Mái Tranh Che Mưa Nắng",
+  "hanzi": "茅顶廊桥",
+  "category": "path_and_way",
+  "sub_category": "wooden_footbridge",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "rest",
+  "gameplay_role": "Village wooden bridge protected from rot by a thick overhanging straw thatch canopy.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Top-down rustic wooden bridge shielded beneath thick straw thatch gabled roof with rustic timber support posts.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "weather_shield": 0.85,
+    "rest_stop": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/path_and_way/way_wood_bridge_thatched_roof.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.path_and_way.way_wood_bridge_thatched_roof:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.626,
+        0.567
+      ],
+      [
+        0.831,
+        0.802
+      ]
+    ],
+    "frac_zero": 0.6069,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.227,
+        0.753,
+        0.089,
+        0.0
+      ],
+      [
+        0.313,
+        0.976,
+        1.0,
+        0.923,
+        0.166
+      ],
+      [
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        0.357
+      ],
+      [
+        0.696,
+        0.993,
+        0.9,
+        1.0,
+        0.621
+      ],
+      [
+        0.795,
+        0.982,
+        1.0,
+        0.96,
+        0.733
+      ],
+      [
+        0.338,
+        1.0,
+        1.0,
+        0.963,
+        0.21
+      ],
+      [
+        0.605,
+        0.988,
+        1.0,
+        0.975,
+        0.551
+      ]
+    ],
+    "crop_offset": [
+      48,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 140,
+    "contact_reference_px": 140.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

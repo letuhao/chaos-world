@@ -1,0 +1,110 @@
+{
+  "id": "medieval_western.anglo_norman_feudal_heartland.charter_parchment_lectern_weathered_grey",
+  "name": "Weathered Grey Feudal Charter Oak Lectern",
+  "vietnamese_name": "Bục Gỗ Để Hiến Chương Lãnh Địa (Phong Hóa Xám)",
+  "category": "anglo_norman_feudal_heartland",
+  "sub_category": "feudal_homage_court_furnishing",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "read",
+  "gameplay_role": "Feudal Anglo-Norman component (Feudal Charter Oak Lectern).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "anglo_norman",
+  "prompt_summary": "2D orthographic top-down game sprite of weathered grey feudal charter oak lectern, silvered weathered grain with aged surface, Anglo-Norman medieval feudal style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/anglo_norman_feudal_heartland/charter_parchment_lectern_weathered_grey.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.anglo_norman_feudal_heartland.charter_parchment_lectern_weathered_grey:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.748
+      ]
+    ],
+    "frac_zero": 0.6153,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.813,
+        0.874,
+        0.734
+      ],
+      [
+        0.796,
+        0.801,
+        0.763
+      ],
+      [
+        0.622,
+        0.74,
+        0.485
+      ]
+    ],
+    "crop_offset": [
+      22,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 68,
+    "contact_reference_px": 68.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

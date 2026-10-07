@@ -1,0 +1,110 @@
+{
+  "id": "medieval_western.wayfarers_nomads_and_tinker_camps.river_stone_campfire_ring_rain_soaked",
+  "name": "Rain-Drenched Circular Stone Campfire Pit with Embers",
+  "vietnamese_name": "Hố Lửa Trại Quây Đá Cuội Than Hồng (Mưa Ướt Sũng)",
+  "category": "wayfarers_nomads_and_tinker_camps",
+  "sub_category": "campfire_circle_and_instruments",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "cover",
+  "blocks_projectile": false,
+  "vision_mode": "low",
+  "interactive_verb": "cook_campfire",
+  "gameplay_role": "Wayfarer nomad campsite feature (Circular Stone Campfire Pit with Embers).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "wayfarer_nomad",
+  "prompt_summary": "2D orthographic top-down game sprite of rain-drenched circular stone campfire pit with embers, dark soaked wool canvas with water runoff streaks, Medieval itinerant wayfarer nomad camp style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/wayfarers_nomads_and_tinker_camps/river_stone_campfire_ring_rain_soaked.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.wayfarers_nomads_and_tinker_camps.river_stone_campfire_ring_rain_soaked:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.696
+      ]
+    ],
+    "frac_zero": 0.6086,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.377,
+        0.759,
+        0.261
+      ],
+      [
+        0.854,
+        1.0,
+        0.868
+      ],
+      [
+        0.566,
+        0.929,
+        0.581
+      ]
+    ],
+    "crop_offset": [
+      18,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 72,
+    "contact_reference_px": 72.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

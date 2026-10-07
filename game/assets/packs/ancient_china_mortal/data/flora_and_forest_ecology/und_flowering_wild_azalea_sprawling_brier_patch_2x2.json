@@ -1,0 +1,204 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.und_flowering_wild_azalea_sprawling_brier_patch_2x2",
+  "name": "Flowering Mountain Azalea Shrubs Sprawling Thorny Thicket Patch (2x2)",
+  "vietnamese_name": "Vạt Cây Bụi Lan Rộng (2x2) (Bụi Hoa Đỗ Quyên Rừng Nở Rực)",
+  "hanzi": "艳红高山映山红四方盘结大蓬灌木丛",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "underbrush_fern_and_creeper",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "navigate_brier_patch",
+  "gameplay_role": "underbrush",
+  "destructible": false,
+  "material": "plant",
+  "cultivation_element": "fire",
+  "prompt_summary": "Ancient Chinese forest underbrush vegetation: Flowering Mountain Azalea Shrubs Sprawling Thorny Thicket Patch (2x2). Organic foliage, delicate leaves and flowers, ink outlines, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "foliage_group": "flowering_wild_azalea"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/und_flowering_wild_azalea_sprawling_brier_patch_2x2.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.und_flowering_wild_azalea_sprawling_brier_patch_2x2:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.49,
+        0.551
+      ],
+      [
+        0.608,
+        0.544
+      ]
+    ],
+    "frac_zero": 0.5805,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.174,
+        0.695,
+        0.58,
+        0.051,
+        0.0
+      ],
+      [
+        0.082,
+        0.271,
+        0.667,
+        0.981,
+        0.747,
+        0.462,
+        0.0
+      ],
+      [
+        0.447,
+        0.753,
+        0.979,
+        1.0,
+        0.922,
+        0.388,
+        0.003
+      ],
+      [
+        0.825,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.891,
+        0.189
+      ],
+      [
+        0.229,
+        0.995,
+        1.0,
+        1.0,
+        1.0,
+        0.969,
+        0.582
+      ],
+      [
+        0.005,
+        0.616,
+        1.0,
+        1.0,
+        0.68,
+        0.136,
+        0.0
+      ],
+      [
+        0.0,
+        0.058,
+        0.785,
+        0.298,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      22,
+      17
+    ],
+    "trunk_columns": [
+      2
+    ],
+    "contact_px": 38,
+    "contact_reference_px": 38.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

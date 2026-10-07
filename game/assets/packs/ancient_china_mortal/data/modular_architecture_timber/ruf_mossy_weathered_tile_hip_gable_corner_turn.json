@@ -1,0 +1,209 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.ruf_mossy_weathered_tile_hip_gable_corner_turn",
+  "name": "Moss-Covered Hundred-Year Temple Tile Hipped-and-Gabled Roof Corner Turn",
+  "vietnamese_name": "Góc Mái Khối Nóc Hỗn Hợp Xieshan (Ngói Cổ Trăm Năm Rêu Bám)",
+  "hanzi": "百岁苍苔老瓦歇山四合推山角",
+  "category": "modular_architecture_timber",
+  "sub_category": "modular_roof_and_flying_eaves",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "inspect_xieshan_corner",
+  "gameplay_role": "roof_corner",
+  "destructible": false,
+  "material": "tile",
+  "cultivation_element": "yin",
+  "prompt_summary": "Ancient Chinese modular roof and eaves component: Moss-Covered Hundred-Year Temple Tile Hipped-and-Gabled Roof Corner Turn. Intricate clay tiles, sweeping silhouette, gouache rendering with ink contours, orthographic top-down view, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "roof",
+    "style": "mossy_weathered_tile"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/ruf_mossy_weathered_tile_hip_gable_corner_turn.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.ruf_mossy_weathered_tile_hip_gable_corner_turn:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.658,
+        0.658
+      ],
+      [
+        0.747,
+        0.771
+      ]
+    ],
+    "frac_zero": 0.4526,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.365,
+        0.452,
+        0.348,
+        0.29,
+        0.363,
+        0.494,
+        0.314
+      ],
+      [
+        0.265,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.168
+      ],
+      [
+        0.173,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.09
+      ],
+      [
+        0.219,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.307
+      ],
+      [
+        0.417,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.37
+      ],
+      [
+        0.511,
+        0.964,
+        1.0,
+        1.0,
+        1.0,
+        0.988,
+        0.52
+      ],
+      [
+        0.0,
+        0.568,
+        0.84,
+        0.96,
+        0.876,
+        0.645,
+        0.003
+      ]
+    ],
+    "crop_offset": [
+      17,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 154,
+    "contact_reference_px": 154.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "id": "ancient_china_mortal.war_and_battlefield.war_corpse_sword_planted_memorial_cross",
+  "name": "Single Blade Planted in Earth Memorial",
+  "vietnamese_name": "Thanh Kiếm Cắm Đất Tưởng Niệm Chiến Hữu",
+  "hanzi": "长剑入土孤冢",
+  "category": "war_and_battlefield",
+  "sub_category": "corpse_trench",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "pray",
+  "gameplay_role": "Steel straight sword (Jian) driven upright into solitary mound with prayer beads.",
+  "destructible": false,
+  "material": "steel",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Single double-edged Chinese straight sword (Jian) driven vertically into a small solitary dirt mound, prayer beads wrapped around guard.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "blessing_site": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/war_and_battlefield/war_corpse_sword_planted_memorial_cross.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.war_and_battlefield.war_corpse_sword_planted_memorial_cross:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.349
+      ]
+    ],
+    "frac_zero": 0.8427,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.071,
+        0.128,
+        0.0
+      ],
+      [
+        0.135,
+        0.192,
+        0.0
+      ],
+      [
+        0.777,
+        0.842,
+        0.188
+      ]
+    ],
+    "crop_offset": [
+      30,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 63,
+    "contact_reference_px": 63.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

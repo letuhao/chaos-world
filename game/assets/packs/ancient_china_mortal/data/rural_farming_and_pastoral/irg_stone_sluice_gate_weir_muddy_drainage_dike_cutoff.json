@@ -1,0 +1,119 @@
+{
+  "id": "ancient_china_mortal.rural_farming_and_pastoral.irg_stone_sluice_gate_weir_muddy_drainage_dike_cutoff",
+  "name": "Masonry Canal Sluice Gate & Weir Compacted Earth Irrigation Dike Border",
+  "vietnamese_name": "Bờ Đê Đất Nện Dẫn Nước Thửa Ruộng (Cống Đá Điều Tiết Nước Kênh)",
+  "hanzi": "规整石砌斗门闸夯泥固土灌溉埂条",
+  "category": "rural_farming_and_pastoral",
+  "sub_category": "irrigation_flume_and_waterwheel",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "walk_dike_border",
+  "gameplay_role": "dike_border",
+  "destructible": false,
+  "material": "earth",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese agricultural irrigation system part: Masonry Canal Sluice Gate & Weir Compacted Earth Irrigation Dike Border. Functional wooden hydraulics, ink contours, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "irrigation_tech": "stone_sluice_gate_weir"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/rural_farming_and_pastoral/irg_stone_sluice_gate_weir_muddy_drainage_dike_cutoff.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.rural_farming_and_pastoral.irg_stone_sluice_gate_weir_muddy_drainage_dike_cutoff:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.405,
+        0.421
+      ]
+    ],
+    "frac_zero": 0.7647,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      6,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.477,
+        0.137,
+        0.0,
+        0.0
+      ],
+      [
+        0.676,
+        0.815,
+        0.998,
+        0.955,
+        0.78,
+        0.674
+      ],
+      [
+        0.018,
+        0.194,
+        0.744,
+        0.613,
+        0.156,
+        0.052
+      ]
+    ],
+    "crop_offset": [
+      36,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 39,
+    "contact_reference_px": 39.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

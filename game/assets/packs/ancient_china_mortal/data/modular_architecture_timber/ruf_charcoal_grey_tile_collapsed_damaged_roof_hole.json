@@ -1,0 +1,160 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.ruf_charcoal_grey_tile_collapsed_damaged_roof_hole",
+  "name": "Imperial Charcoal Grey Clay Tile Broken Collapsed Roof Exposing Rafters",
+  "vietnamese_name": "Lỗ Thủng Trên Mái Lộ Vì Kèo Gỗ (Ngói Xám Tro Cung Đình)",
+  "hanzi": "官造青灰瓦塌陷破损露橡椽",
+  "category": "modular_architecture_timber",
+  "sub_category": "modular_roof_and_flying_eaves",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "climb_through_roof_gap",
+  "gameplay_role": "damaged_roof",
+  "destructible": true,
+  "material": "tile",
+  "cultivation_element": "yin",
+  "prompt_summary": "Ancient Chinese modular roof and eaves component: Imperial Charcoal Grey Clay Tile Broken Collapsed Roof Exposing Rafters. Intricate clay tiles, sweeping silhouette, gouache rendering with ink contours, orthographic top-down view, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "roof",
+    "style": "charcoal_grey_tile"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/ruf_charcoal_grey_tile_collapsed_damaged_roof_hole.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.ruf_charcoal_grey_tile_collapsed_damaged_roof_hole:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.676,
+        0.681
+      ]
+    ],
+    "frac_zero": 0.6044,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.188,
+        0.379,
+        0.734,
+        0.728,
+        0.416,
+        0.192,
+        0.0
+      ],
+      [
+        0.705,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.732,
+        0.031
+      ],
+      [
+        0.183,
+        0.897,
+        1.0,
+        1.0,
+        0.912,
+        0.207,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      31,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 128,
+    "contact_reference_px": 128.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

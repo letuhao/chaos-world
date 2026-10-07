@@ -1,0 +1,160 @@
+{
+  "id": "ancient_china_mortal.rural_farming_and_pastoral.gra_earthen_walled_barn_earthenware_fermentation_soy_vats",
+  "name": "Communal Earthen Village Barn Pair of Giant Glazed Soy Fermentation Vats",
+  "vietnamese_name": "Cặp Chum Sành Ủ Tương Đen Khổng Lồ (Nhà Kho Thôn Trang Tường Đất Rơm)",
+  "hanzi": "庄稼大聚落土打公仓双只酱菜封泥粗陶大坛",
+  "category": "rural_farming_and_pastoral",
+  "sub_category": "grain_granary_and_haystack",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect_soy_vats",
+  "gameplay_role": "soy_vats",
+  "destructible": false,
+  "material": "ceramic",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Ancient Chinese farm grain storage asset: Communal Earthen Village Barn Pair of Giant Glazed Soy Fermentation Vats. Peasant pastoral atmosphere, ink outlines, top-down orthographic game sprite, transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "farm_archetype": "earthen_walled_barn"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/rural_farming_and_pastoral/gra_earthen_walled_barn_earthenware_fermentation_soy_vats.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.rural_farming_and_pastoral.gra_earthen_walled_barn_earthenware_fermentation_soy_vats:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.561,
+        0.597
+      ]
+    ],
+    "frac_zero": 0.6575,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      7,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.032,
+        0.168,
+        0.367,
+        0.747,
+        0.45,
+        0.205,
+        0.066
+      ],
+      [
+        0.438,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.512
+      ],
+      [
+        0.312,
+        0.54,
+        0.811,
+        0.839,
+        0.804,
+        0.538,
+        0.305
+      ]
+    ],
+    "crop_offset": [
+      18,
+      30
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 218,
+    "contact_reference_px": 218.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

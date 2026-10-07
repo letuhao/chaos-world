@@ -1,0 +1,206 @@
+{
+  "id": "ancient_china_mortal.trade_craft_industry.ind_charcoal_collier_thatched_lean_to",
+  "name": "Charcoal Burner Primitive Forest Shanty",
+  "vietnamese_name": "Lán Tranh Của Người Thợ Đốt Than",
+  "hanzi": "炭翁森林草棚",
+  "category": "trade_craft_industry",
+  "sub_category": "charcoal_burning_mound",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "core_ring",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "rest",
+  "gameplay_role": "Crude lean-to of bark and branches for lonely forest collier.",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Primitive single-pitch thatched lean-to shack made of tree branches, straw bedding, hanging soot kettle.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "shelter": "rustic"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/trade_craft_industry/ind_charcoal_collier_thatched_lean_to.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.trade_craft_industry.ind_charcoal_collier_thatched_lean_to:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.398,
+        0.318
+      ],
+      [
+        0.745,
+        0.814
+      ]
+    ],
+    "frac_zero": 0.5814,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.044,
+        0.078,
+        0.207,
+        0.26,
+        0.065,
+        0.015,
+        0.0
+      ],
+      [
+        0.006,
+        0.069,
+        0.776,
+        0.922,
+        0.15,
+        0.002,
+        0.0
+      ],
+      [
+        0.151,
+        0.58,
+        1.0,
+        1.0,
+        0.869,
+        0.265,
+        0.0
+      ],
+      [
+        0.33,
+        0.95,
+        1.0,
+        1.0,
+        1.0,
+        0.567,
+        0.058
+      ],
+      [
+        0.888,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.811
+      ],
+      [
+        0.57,
+        0.735,
+        0.971,
+        1.0,
+        1.0,
+        0.991,
+        0.314
+      ],
+      [
+        0.0,
+        0.0,
+        0.747,
+        0.961,
+        0.885,
+        0.315,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      23,
+      25
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 106,
+    "contact_reference_px": 106.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

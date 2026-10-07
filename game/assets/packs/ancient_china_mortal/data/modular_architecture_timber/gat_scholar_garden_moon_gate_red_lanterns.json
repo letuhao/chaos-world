@@ -1,0 +1,200 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.gat_scholar_garden_moon_gate_red_lanterns",
+  "name": "Scholar Garden Classical Moon Gate Draped with Twin Red Lanterns",
+  "vietnamese_name": "Cổng Nguyệt Môn Treo Cặp Đèn Lồng Đỏ (Vườn Văn Nhân Tao Nhã)",
+  "hanzi": "文人园林双红灯笼月洞门",
+  "category": "modular_architecture_timber",
+  "sub_category": "moon_gate_and_archway",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect_hanging_lanterns",
+  "gameplay_role": "portal",
+  "destructible": false,
+  "material": "silk",
+  "cultivation_element": "yang",
+  "prompt_summary": "Ancient Chinese architectural entrance portal: Scholar Garden Classical Moon Gate Draped with Twin Red Lanterns. Ornate joinery, traditional aesthetic, top-down orthographic view for 2D RPG, clear transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "gateway",
+    "style": "scholar_garden"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/gat_scholar_garden_moon_gate_red_lanterns.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.gat_scholar_garden_moon_gate_red_lanterns:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.575,
+        0.569
+      ],
+      [
+        0.67,
+        0.739
+      ]
+    ],
+    "frac_zero": 0.5738,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.155,
+        0.712,
+        0.625,
+        0.695,
+        0.111,
+        0.0
+      ],
+      [
+        0.071,
+        0.847,
+        1.0,
+        1.0,
+        1.0,
+        0.76,
+        0.06
+      ],
+      [
+        0.269,
+        0.845,
+        0.943,
+        0.749,
+        0.953,
+        0.813,
+        0.257
+      ],
+      [
+        0.862,
+        1.0,
+        0.476,
+        0.029,
+        0.558,
+        1.0,
+        0.844
+      ],
+      [
+        0.612,
+        1.0,
+        0.709,
+        0.81,
+        0.886,
+        1.0,
+        0.577
+      ],
+      [
+        0.258,
+        0.531,
+        0.846,
+        0.828,
+        0.907,
+        0.786,
+        0.34
+      ]
+    ],
+    "crop_offset": [
+      17,
+      50
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 154,
+    "contact_reference_px": 154.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

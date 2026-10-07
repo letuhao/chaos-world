@@ -1,0 +1,168 @@
+{
+  "id": "medieval_western.mediterranean_and_moorish_quarter.slender_twin_marble_shaft_shaded_pergola",
+  "name": "Vine-Shaded Twin Slender Marble Column Pier",
+  "vietnamese_name": "Cặp Cột Cẩm Thạch Thanh Mảnh (Bóng Râm Giàn Nho)",
+  "category": "mediterranean_and_moorish_quarter",
+  "sub_category": "arcaded_patio_courtyard",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": null,
+  "gameplay_role": "Mediterranean Moorish quarter feature (Twin Slender Marble Column Pier).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "mediterranean_moorish",
+  "prompt_summary": "2D orthographic top-down game sprite of vine-shaded twin slender marble column pier, cool dappled shadows and leafy grape tendrils, Mediterranean Moorish Al-Andalus style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/mediterranean_and_moorish_quarter/slender_twin_marble_shaft_shaded_pergola.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.mediterranean_and_moorish_quarter.slender_twin_marble_shaft_shaded_pergola:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.699
+      ],
+      [
+        0.528
+      ]
+    ],
+    "frac_zero": 0.6019,
+    "blocks": [
+      [
+        true
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.485,
+        0.85,
+        0.535
+      ],
+      [
+        0.818,
+        1.0,
+        0.865
+      ],
+      [
+        0.68,
+        0.497,
+        0.736
+      ],
+      [
+        0.447,
+        0.118,
+        0.443
+      ],
+      [
+        0.403,
+        0.798,
+        0.377
+      ],
+      [
+        0.56,
+        1.0,
+        0.528
+      ],
+      [
+        0.327,
+        0.8,
+        0.403
+      ]
+    ],
+    "crop_offset": [
+      17,
+      35
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 68,
+    "contact_reference_px": 68.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      256
+    ]
+  }
+}

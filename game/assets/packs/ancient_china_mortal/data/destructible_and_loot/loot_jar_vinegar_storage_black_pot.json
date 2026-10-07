@@ -1,0 +1,142 @@
+{
+  "id": "ancient_china_mortal.destructible_and_loot.loot_jar_vinegar_storage_black_pot",
+  "name": "Heavy Black-Glazed Pungent Vinegar Pot",
+  "vietnamese_name": "Hũ Giấm Đen Lâu Năm Men Đen",
+  "hanzi": "老陈醋黑釉大罐",
+  "category": "destructible_and_loot",
+  "sub_category": "glazed_wine_jar",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "break_pot",
+  "gameplay_role": "Dark black shiny jar containing sour aged Shanxi vinegar.",
+  "destructible": true,
+  "material": "ceramic",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Stout shiny black-glazed earthenware jar with wooden stopper and white painted character 'Vinegar'.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "loot_table": "vinegar_drops"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/destructible_and_loot/loot_jar_vinegar_storage_black_pot.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.destructible_and_loot.loot_jar_vinegar_storage_black_pot:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.721
+      ]
+    ],
+    "frac_zero": 0.688,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.514,
+        0.733,
+        0.013
+      ],
+      [
+        0.954,
+        1.0,
+        0.763
+      ],
+      [
+        0.613,
+        0.803,
+        0.054
+      ]
+    ],
+    "crop_offset": [
+      28,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 47,
+    "contact_reference_px": 47.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

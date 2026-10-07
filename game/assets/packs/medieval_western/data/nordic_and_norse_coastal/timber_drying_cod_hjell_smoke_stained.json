@@ -1,0 +1,196 @@
+{
+  "id": "medieval_western.nordic_and_norse_coastal.timber_drying_cod_hjell_smoke_stained",
+  "name": "Longhouse Peat-Smoked Atlantic Cod Drying Timber Rack (Hjell)",
+  "vietnamese_name": "Giàn Gỗ Phơi Cá Tuyết Gió Biển (Ám Khói Bếp Than)",
+  "category": "nordic_and_norse_coastal",
+  "sub_category": "whalebone_arch_and_stockfish",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "harvest",
+  "gameplay_role": "Nordic coastal cultural feature (Atlantic Cod Drying Timber Rack (Hjell)).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "nordic_norse",
+  "prompt_summary": "2D orthographic top-down game sprite of longhouse peat-smoked atlantic cod drying timber rack (hjell), sooty golden patina from indoor turf fires, Nordic Norse coastal settlement style, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/nordic_and_norse_coastal/timber_drying_cod_hjell_smoke_stained.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:medieval_western.nordic_and_norse_coastal.timber_drying_cod_hjell_smoke_stained:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.558,
+        0.49
+      ],
+      [
+        0.848,
+        0.848
+      ]
+    ],
+    "frac_zero": 0.6097,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.049,
+        0.628,
+        0.002,
+        0.0,
+        0.0
+      ],
+      [
+        0.07,
+        0.715,
+        1.0,
+        0.515,
+        0.043,
+        0.0
+      ],
+      [
+        0.562,
+        1.0,
+        1.0,
+        0.982,
+        0.452,
+        0.0
+      ],
+      [
+        0.805,
+        1.0,
+        1.0,
+        1.0,
+        0.833,
+        0.094
+      ],
+      [
+        0.843,
+        1.0,
+        1.0,
+        1.0,
+        0.839,
+        0.062
+      ],
+      [
+        0.84,
+        1.0,
+        1.0,
+        1.0,
+        0.822,
+        0.25
+      ],
+      [
+        0.314,
+        0.903,
+        0.677,
+        0.887,
+        0.34,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      47,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3
+    ],
+    "contact_px": 51,
+    "contact_reference_px": 51.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

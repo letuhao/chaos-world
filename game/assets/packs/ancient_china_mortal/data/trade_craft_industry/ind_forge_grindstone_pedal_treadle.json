@@ -1,0 +1,142 @@
+{
+  "id": "ancient_china_mortal.trade_craft_industry.ind_forge_grindstone_pedal_treadle",
+  "name": "Pedal-Operated Rotary Sandstone Grinder",
+  "vietnamese_name": "Bàn Mài Dao Kéo Đạp Chân Bằng Đá",
+  "hanzi": "脚踏旋转磨刀石",
+  "category": "trade_craft_industry",
+  "sub_category": "iron_smithy_forge",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "sharpen_weapon",
+  "gameplay_role": "Circular sandstone wheel rotated by foot treadle with water drip.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Wooden frame holding circular rotating sandstone grinding wheel with leather foot treadle and water drip can.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "sharpen_buff": 0.15
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/trade_craft_industry/ind_forge_grindstone_pedal_treadle.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.trade_craft_industry.ind_forge_grindstone_pedal_treadle:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.578
+      ]
+    ],
+    "frac_zero": 0.7063,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.551,
+        0.657,
+        0.023
+      ],
+      [
+        0.928,
+        0.984,
+        0.281
+      ],
+      [
+        0.335,
+        0.479,
+        0.442
+      ]
+    ],
+    "crop_offset": [
+      24,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 15,
+    "contact_reference_px": 15.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

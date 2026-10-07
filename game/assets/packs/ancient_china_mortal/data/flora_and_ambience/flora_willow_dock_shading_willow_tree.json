@@ -1,0 +1,207 @@
+{
+  "id": "ancient_china_mortal.flora_and_ambience.flora_willow_dock_shading_willow_tree",
+  "name": "Willow Tree Shading Stone Pier Bench",
+  "vietnamese_name": "Cây Liễu Che Bóng Mát Cầu Tàu Bến Đò",
+  "hanzi": "渡口遮阳迎客柳",
+  "category": "flora_and_ambience",
+  "sub_category": "weeping_willow_tree",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "rest_bench",
+  "gameplay_role": "Willow positioned over rustic stone seat on river wharf.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "wood",
+  "prompt_summary": "Graceful weeping willow tree overhanging a weathered flat stone rest bench beside river dock.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "rest_buff": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_ambience/flora_willow_dock_shading_willow_tree.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_ambience.flora_willow_dock_shading_willow_tree:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.441,
+        0.42
+      ],
+      [
+        0.616,
+        0.497
+      ]
+    ],
+    "frac_zero": 0.6204,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.047,
+        0.583,
+        0.457,
+        0.082,
+        0.0,
+        0.0
+      ],
+      [
+        0.231,
+        0.774,
+        0.975,
+        0.984,
+        0.707,
+        0.112,
+        0.0
+      ],
+      [
+        0.381,
+        0.599,
+        0.58,
+        0.582,
+        0.847,
+        0.479,
+        0.0
+      ],
+      [
+        0.072,
+        0.453,
+        0.171,
+        0.068,
+        0.32,
+        0.132,
+        0.0
+      ],
+      [
+        0.42,
+        0.855,
+        0.859,
+        0.776,
+        0.452,
+        0.16,
+        0.0
+      ],
+      [
+        0.792,
+        1.0,
+        1.0,
+        1.0,
+        0.994,
+        0.759,
+        0.225
+      ],
+      [
+        0.006,
+        0.367,
+        0.841,
+        0.865,
+        0.403,
+        0.031,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      29,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 76,
+    "contact_reference_px": 76.0,
+    "blocked_by_scale": {
+      "0.85": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.0": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.15": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.35": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      128,
+      128,
+      256,
+      256
+    ]
+  }
+}

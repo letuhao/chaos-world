@@ -1,0 +1,173 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.pin_umbrella_shaded_pine_dead_spire_snag_crow",
+  "name": "Broad Umbrella Canopy Pine Dead Timber Spire with Black Crow Perch",
+  "vietnamese_name": "Cành Cây Khô Độc Đạo Quạ Đen Đậu (Cây Tùng Tán Dù Che Mát)",
+  "hanzi": "华盖参天平顶松枯枝干耸乌鸦栖息桩",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "ancient_pine_and_conifer",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "watch_perched_crow",
+  "gameplay_role": "dead_snag",
+  "destructible": true,
+  "material": "wood",
+  "cultivation_element": "yin",
+  "prompt_summary": "Ancient Chinese pine tree landscape asset: Broad Umbrella Canopy Pine Dead Timber Spire with Black Crow Perch. Evergreen needle tufts, rough peeling bark, dark ink contours, top-down orthographic RPG sprite on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "tree_family": "conifer",
+    "variety": "umbrella_shaded_pine"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/pin_umbrella_shaded_pine_dead_spire_snag_crow.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.pin_umbrella_shaded_pine_dead_spire_snag_crow:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.423
+      ],
+      [
+        0.384
+      ]
+    ],
+    "frac_zero": 0.7219,
+    "blocks": [
+      [
+        false
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.234,
+        0.836,
+        0.227
+      ],
+      [
+        0.414,
+        0.422,
+        0.534
+      ],
+      [
+        0.217,
+        0.678,
+        0.246
+      ],
+      [
+        0.081,
+        0.912,
+        0.121
+      ],
+      [
+        0.079,
+        0.738,
+        0.211
+      ],
+      [
+        0.216,
+        0.791,
+        0.143
+      ],
+      [
+        0.402,
+        0.68,
+        0.55
+      ]
+    ],
+    "crop_offset": [
+      17,
+      40
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 78,
+    "contact_reference_px": 78.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      128,
+      128,
+      256
+    ]
+  }
+}

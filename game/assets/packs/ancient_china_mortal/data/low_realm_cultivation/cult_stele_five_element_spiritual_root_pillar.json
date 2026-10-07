@@ -1,0 +1,245 @@
+{
+  "id": "ancient_china_mortal.low_realm_cultivation.cult_stele_five_element_spiritual_root_pillar",
+  "name": "Five-Elements Spiritual Root Testing Monolith",
+  "vietnamese_name": "Bia Đá Kiểm Tra Linh Căn Ngũ Hành",
+  "hanzi": "五行灵根测灵石碑",
+  "category": "low_realm_cultivation",
+  "sub_category": "spirit_testing_stele",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    3
+  ],
+  "canvas_px": [
+    256,
+    384
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "test_spiritual_root",
+  "gameplay_role": "Ancient weathered quartz monolith inscribed with five glowing elemental runes.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "qi",
+  "prompt_summary": "Tall ancient crystalline quartz monolith pillar carved with five circular Chinese elemental crests (Metal, Wood, Water, Fire, Earth).",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "spiritual_root_test": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/low_realm_cultivation/cult_stele_five_element_spiritual_root_pillar.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.low_realm_cultivation.cult_stele_five_element_spiritual_root_pillar:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.336,
+        0.317
+      ],
+      [
+        0.421,
+        0.411
+      ],
+      [
+        0.7,
+        0.703
+      ]
+    ],
+    "frac_zero": 0.6708,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      7,
+      10
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.412,
+        0.955,
+        0.289,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.818,
+        1.0,
+        0.682,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.88,
+        1.0,
+        0.738,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.911,
+        1.0,
+        0.822,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.063,
+        0.961,
+        1.0,
+        0.867,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.063,
+        0.976,
+        1.0,
+        0.913,
+        0.021,
+        0.0
+      ],
+      [
+        0.0,
+        0.508,
+        0.867,
+        1.0,
+        0.809,
+        0.648,
+        0.0
+      ],
+      [
+        0.317,
+        0.92,
+        0.959,
+        1.0,
+        0.967,
+        0.891,
+        0.351
+      ],
+      [
+        0.513,
+        0.898,
+        1.0,
+        1.0,
+        1.0,
+        0.847,
+        0.385
+      ],
+      [
+        0.0,
+        0.0,
+        0.675,
+        1.0,
+        0.812,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      74
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 159,
+    "contact_reference_px": 159.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      384
+    ]
+  }
+}

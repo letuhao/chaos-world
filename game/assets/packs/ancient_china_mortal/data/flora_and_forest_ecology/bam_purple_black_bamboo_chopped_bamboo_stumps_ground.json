@@ -1,0 +1,143 @@
+{
+  "id": "ancient_china_mortal.flora_and_forest_ecology.bam_purple_black_bamboo_chopped_bamboo_stumps_ground",
+  "name": "Mystic Purple-Black Bamboo Ground Patch of Cut Bamboo Stumps",
+  "vietnamese_name": "Đám Gốc Tre Bị Đốn Bằng Rìu (Trúc Đen Tía Huyền Bí (Tử Trúc))",
+  "hanzi": "紫黑典雅斑竹砍伐削平带露竹桩地",
+  "category": "flora_and_forest_ecology",
+  "sub_category": "bamboo_grove_and_thicket",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "ground_contact",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect_cut_stumps",
+  "gameplay_role": "bamboo_stumps",
+  "destructible": false,
+  "material": "bamboo",
+  "cultivation_element": "yin",
+  "prompt_summary": "Ancient Chinese bamboo grove vegetation: Mystic Purple-Black Bamboo Ground Patch of Cut Bamboo Stumps. Slender culms with delicate fluttering green leaves, dark ink contours, top-down orthographic game asset on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "bamboo_variety": "purple_black_bamboo"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/flora_and_forest_ecology/bam_purple_black_bamboo_chopped_bamboo_stumps_ground.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.flora_and_forest_ecology.bam_purple_black_bamboo_chopped_bamboo_stumps_ground:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.473
+      ]
+    ],
+    "frac_zero": 0.6964,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.39,
+        0.196,
+        0.147
+      ],
+      [
+        0.368,
+        0.534,
+        0.192
+      ],
+      [
+        0.706,
+        0.927,
+        0.526
+      ]
+    ],
+    "crop_offset": [
+      24,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 71,
+    "contact_reference_px": 71.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

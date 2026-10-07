@@ -1,0 +1,179 @@
+{
+  "id": "ancient_china_mortal.modular_architecture_timber.cor_mountain_temple_zigzag_zigzag_45deg_slant",
+  "name": "Mountain Monastery Stepped Walkway Slanted 45-Degree Zigzag Corridor Bay",
+  "vietnamese_name": "Khúc Lượn Hành Lang Nghiêng 45 Độ (Hành Lang Ziczac Quanh Núi)",
+  "hanzi": "依山曲折栈廊折角游龙曲廊",
+  "category": "modular_architecture_timber",
+  "sub_category": "covered_corridor_and_veranda",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "walk_along",
+  "gameplay_role": "corridor_zigzag",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "earth",
+  "prompt_summary": "Ancient Chinese covered garden corridor module: Mountain Monastery Stepped Walkway Slanted 45-Degree Zigzag Corridor Bay. Traditional tiled wooden gallery, balustrade railing, top-down orthographic game sprite, transparent alpha cutout.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "snap_layer": "corridor",
+    "style": "mountain_temple_zigzag"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/modular_architecture_timber/cor_mountain_temple_zigzag_zigzag_45deg_slant.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.modular_architecture_timber.cor_mountain_temple_zigzag_zigzag_45deg_slant:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.668,
+        0.327
+      ],
+      [
+        0.616,
+        0.802
+      ]
+    ],
+    "frac_zero": 0.5242,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.514,
+        0.883,
+        0.624,
+        0.001,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.522,
+        0.815,
+        0.968,
+        0.648,
+        0.062,
+        0.0,
+        0.0
+      ],
+      [
+        0.232,
+        0.955,
+        0.979,
+        0.925,
+        0.905,
+        0.818,
+        0.215
+      ],
+      [
+        0.02,
+        0.065,
+        0.418,
+        0.913,
+        0.955,
+        0.999,
+        0.408
+      ],
+      [
+        0.522,
+        0.705,
+        0.778,
+        0.995,
+        1.0,
+        1.0,
+        0.644
+      ],
+      [
+        0.592,
+        0.884,
+        0.888,
+        0.704,
+        0.891,
+        1.0,
+        0.584
+      ],
+      [
+        0.325,
+        0.715,
+        0.747,
+        0.934,
+        0.739,
+        0.734,
+        0.298
+      ]
+    ],
+    "crop_offset": [
+      17,
+      20
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 191,
+    "contact_reference_px": 191.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

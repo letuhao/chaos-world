@@ -1,0 +1,182 @@
+{
+  "id": "ancient_china_mortal.path_and_way.way_bridge_water_gate_arch",
+  "name": "Canal Sluice Water-Gate Arch",
+  "vietnamese_name": "Cầu Vòm Đá Kiêm Cửa Đập Nước",
+  "hanzi": "水闸桥亭",
+  "category": "path_and_way",
+  "sub_category": "stone_arched_bridge",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "interact",
+  "gameplay_role": "Dual-function bridge housing vertical timber floodgate drop-boards.",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "wood",
+  "prompt_summary": "Top-down stone bridge with overhead wooden gantry housing chains and winches for lifting water sluice gates.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "water_flow_control": true,
+    "irrigation_valve": true,
+    "interactive_verb": "interact"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/path_and_way/way_bridge_water_gate_arch.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.path_and_way.way_bridge_water_gate_arch:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.428,
+        0.421
+      ],
+      [
+        0.725,
+        0.723
+      ]
+    ],
+    "frac_zero": 0.5509,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.35,
+        0.493,
+        0.315,
+        0.646,
+        0.087,
+        0.0
+      ],
+      [
+        0.0,
+        0.587,
+        0.645,
+        0.4,
+        0.812,
+        0.363,
+        0.0
+      ],
+      [
+        0.0,
+        0.54,
+        0.821,
+        0.787,
+        0.932,
+        0.369,
+        0.0
+      ],
+      [
+        0.0,
+        0.82,
+        1.0,
+        1.0,
+        1.0,
+        0.518,
+        0.0
+      ],
+      [
+        0.0,
+        0.645,
+        1.0,
+        1.0,
+        1.0,
+        0.403,
+        0.0
+      ],
+      [
+        0.063,
+        0.839,
+        1.0,
+        1.0,
+        1.0,
+        0.668,
+        0.057
+      ],
+      [
+        0.77,
+        0.98,
+        1.0,
+        1.0,
+        1.0,
+        0.998,
+        0.861
+      ]
+    ],
+    "crop_offset": [
+      18,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 217,
+    "contact_reference_px": 217.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

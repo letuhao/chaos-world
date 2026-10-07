@@ -1,0 +1,185 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.kst_yangshuo_slender_needle_natural_rock_arch_bridge",
+  "name": "Yangshuo Razor Needle Peak Natural Eroded Karst Bridge over Void",
+  "vietnamese_name": "Cầu Vòm Đá Tự Nhiên Bắc Qua Vực (Đỉnh Kim Dương Sóc Nhọn Hoắt)",
+  "hanzi": "阳朔一线立独锥天生石拱仙人桥",
+  "category": "mountain_cliff_geology",
+  "sub_category": "karst_spire_and_pinnacle",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "solid",
+  "interactive_verb": "cross_natural_bridge",
+  "gameplay_role": "natural_bridge",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "metal",
+  "prompt_summary": "Ancient Chinese karst pinnacle mountain landscape: Yangshuo Razor Needle Peak Natural Eroded Karst Bridge over Void. Towering verticality, poetic gouache shading, dark ink contour lines, top-down orthographic sprite on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "geology_layer": "karst",
+    "region": "yangshuo_slender_needle"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/kst_yangshuo_slender_needle_natural_rock_arch_bridge.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.kst_yangshuo_slender_needle_natural_rock_arch_bridge:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.129,
+        0.641,
+        0.139
+      ],
+      [
+        0.551,
+        0.867,
+        0.56
+      ]
+    ],
+    "frac_zero": 0.7487,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.253,
+        0.417,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.11,
+        0.654,
+        0.759,
+        0.012,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.305,
+        0.934,
+        0.949,
+        0.525,
+        0.219,
+        0.0
+      ],
+      [
+        0.0,
+        0.585,
+        1.0,
+        0.968,
+        1.0,
+        0.477,
+        0.0
+      ],
+      [
+        0.185,
+        0.896,
+        1.0,
+        0.428,
+        0.947,
+        0.652,
+        0.058
+      ],
+      [
+        0.571,
+        1.0,
+        1.0,
+        0.95,
+        1.0,
+        0.945,
+        0.512
+      ],
+      [
+        0.171,
+        0.453,
+        0.735,
+        0.954,
+        0.701,
+        0.46,
+        0.052
+      ]
+    ],
+    "crop_offset": [
+      84,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 114,
+    "contact_reference_px": 114.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

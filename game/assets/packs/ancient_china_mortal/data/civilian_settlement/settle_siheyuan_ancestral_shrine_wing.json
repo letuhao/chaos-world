@@ -1,0 +1,208 @@
+{
+  "id": "ancient_china_mortal.civilian_settlement.settle_siheyuan_ancestral_shrine_wing",
+  "name": "Household Ancestral Altar Wing",
+  "vietnamese_name": "Gian Thờ Gia Tiên Trong Viện",
+  "hanzi": "家庙祭堂",
+  "category": "civilian_settlement",
+  "sub_category": "courtyard_residence_siheyuan",
+  "type": "building",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "pray",
+  "gameplay_role": "Sacred side pavilion dedicated to burning incense for lineage predecessors.",
+  "destructible": false,
+  "material": "wood",
+  "cultivation_element": "mortal",
+  "prompt_summary": "Top-down ornate single-story shrine pavilion with deep eaves, inscribed wooden front sign, bronze tripod incense cauldron, and candlelit altar interior visible through doors.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "family_ancestor_blessing": 0.7,
+    "incense_offering": true
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/civilian_settlement/settle_siheyuan_ancestral_shrine_wing.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.civilian_settlement.settle_siheyuan_ancestral_shrine_wing:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.659,
+        0.654
+      ],
+      [
+        0.713,
+        0.776
+      ]
+    ],
+    "frac_zero": 0.4695,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.236,
+        0.553,
+        0.503,
+        0.646,
+        0.02,
+        0.0
+      ],
+      [
+        0.173,
+        0.86,
+        1.0,
+        1.0,
+        1.0,
+        0.75,
+        0.0
+      ],
+      [
+        0.754,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.654
+      ],
+      [
+        0.194,
+        0.898,
+        1.0,
+        1.0,
+        1.0,
+        0.828,
+        0.022
+      ],
+      [
+        0.199,
+        0.8,
+        1.0,
+        1.0,
+        1.0,
+        0.657,
+        0.108
+      ],
+      [
+        0.635,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.551
+      ],
+      [
+        0.103,
+        0.335,
+        0.997,
+        1.0,
+        0.991,
+        0.709,
+        0.315
+      ]
+    ],
+    "crop_offset": [
+      20,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 139,
+    "contact_reference_px": 139.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

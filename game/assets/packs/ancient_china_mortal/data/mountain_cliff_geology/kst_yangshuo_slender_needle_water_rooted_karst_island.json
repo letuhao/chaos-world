@@ -1,0 +1,309 @@
+{
+  "id": "ancient_china_mortal.mountain_cliff_geology.kst_yangshuo_slender_needle_water_rooted_karst_island",
+  "name": "Yangshuo Razor Needle Peak River-Emerging Karst Island Mountain",
+  "vietnamese_name": "Đảo Núi Đá Mọc Từ Lòng Sông (Đỉnh Kim Dương Sóc Nhọn Hoắt)",
+  "hanzi": "阳朔一线立独锥浮水立根碧水石洲",
+  "category": "mountain_cliff_geology",
+  "sub_category": "karst_spire_and_pinnacle",
+  "type": "structure",
+  "alpha": "transparent",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "survey_karst_island",
+  "gameplay_role": "river_karst",
+  "destructible": false,
+  "material": "stone",
+  "cultivation_element": "water",
+  "prompt_summary": "Ancient Chinese karst pinnacle mountain landscape: Yangshuo Razor Needle Peak River-Emerging Karst Island Mountain. Towering verticality, poetic gouache shading, dark ink contour lines, top-down orthographic sprite on transparent background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Ancient China Mortal World (Cửu Châu Phàm Trần)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded East Asian mortal palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {
+    "geology_layer": "karst",
+    "region": "yangshuo_slender_needle"
+  },
+  "path": "res://assets/packs/ancient_china_mortal/runtime/mountain_cliff_geology/kst_yangshuo_slender_needle_water_rooted_karst_island.png",
+  "generated_on": "2026-10-07",
+  "prompt_ref": "comfyui-map-v1:ancient_china_mortal.mountain_cliff_geology.kst_yangshuo_slender_needle_water_rooted_karst_island:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.0,
+        0.498,
+        0.019
+      ],
+      [
+        0.484,
+        0.971,
+        0.484
+      ],
+      [
+        0.596,
+        0.942,
+        0.646
+      ]
+    ],
+    "frac_zero": 0.5694,
+    "blocks": [
+      [
+        false,
+        true,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 7,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.266,
+        0.525,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.694,
+        0.877,
+        0.049,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.17,
+        0.874,
+        1.0,
+        0.229,
+        0.032,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.016,
+        0.065,
+        0.271,
+        1.0,
+        1.0,
+        0.484,
+        0.247,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.138,
+        0.518,
+        0.621,
+        1.0,
+        1.0,
+        0.919,
+        0.477,
+        0.216,
+        0.0,
+        0.0
+      ],
+      [
+        0.119,
+        0.488,
+        0.934,
+        0.934,
+        1.0,
+        1.0,
+        1.0,
+        0.961,
+        0.852,
+        0.357,
+        0.005
+      ],
+      [
+        0.141,
+        0.739,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.546,
+        0.094
+      ],
+      [
+        0.61,
+        0.998,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.939,
+        0.37
+      ],
+      [
+        0.261,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.996,
+        0.401
+      ],
+      [
+        0.05,
+        0.608,
+        0.898,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.936,
+        0.63,
+        0.016
+      ],
+      [
+        0.0,
+        0.0,
+        0.254,
+        0.703,
+        0.656,
+        0.884,
+        0.843,
+        0.336,
+        0.053,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      23,
+      16
+    ],
+    "trunk_columns": [
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 136,
+    "contact_reference_px": 136.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      384
+    ]
+  }
+}
