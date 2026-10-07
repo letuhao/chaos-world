@@ -14,7 +14,7 @@ pieces = Array[StringName]([&"set_ironhide_vigil_band", &"set_ironhide_vigil_war
 uniques = Array[StringName]([&"unique_ironhide_hearthguard"])
 tiers = Array[Dictionary]([
 	{"count": 2, "label": "Vigil Pair", "options": [{"option_id": &"core_defense_physical", "value": 6.0}, {"option_id": &"core_max_health", "value": 12.0}]},
-	{"count": 3, "label": "Vigil Ward", "options": [{"option_id": &"core_status_resistance", "value": 0.04}, {"option_id": &"core_defense_physical", "value": 4.0}]},
+	{"count": 3, "label": "Vigil Ward", "options": [{"option_id": &"core_status_defense", "value": 0.04}, {"option_id": &"core_defense_physical", "value": 4.0}]},
 	{"count": 4, "label": "Vigil Bastion", "options": [{"option_id": &"core_damage_reduction", "value": 0.03}, {"option_id": &"core_poise", "value": 8.0}]},
 	{"count": 5, "label": "Vigil Complete", "options": [{"option_id": &"core_max_health", "value": 16.0}, {"option_id": &"core_damage_reduction", "value": 0.02}]},
 ])

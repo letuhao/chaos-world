@@ -11,7 +11,7 @@ rarity = &"common"
 realm = &"tribulation"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"core_insight_gain", "value": 0.026},
-	{"option_id": &"core_status_resistance", "value": 0.022},
+	{"option_id": &"core_status_defense", "value": 9.9},
 ])
 roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"bandolier"

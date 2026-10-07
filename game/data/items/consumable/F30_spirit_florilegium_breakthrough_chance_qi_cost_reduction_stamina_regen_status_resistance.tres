@@ -13,7 +13,7 @@ fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"core_breakthrough_chance", "value": 0.05},
 	{"option_id": &"core_qi_cost_reduction", "value": 0.04},
 	{"option_id": &"core_stamina_regen", "value": 13.75},
-	{"option_id": &"core_status_resistance", "value": 0.05},
+	{"option_id": &"core_status_defense", "value": 13.75},
 ])
 roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"syrup"

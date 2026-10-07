@@ -13,7 +13,7 @@ fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"core_defense_spiritual", "value": 18},
 	{"option_id": &"core_max_qi", "value": 18.56},
 	{"option_id": &"core_qi_regen", "value": 18.56},
-	{"option_id": &"core_status_resistance", "value": 0.04},
+	{"option_id": &"core_status_defense", "value": 18.56},
 	{"option_id": &"core_cultivation_rate", "value": 0.05},
 ])
 roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}

@@ -11,7 +11,7 @@ rarity = &"legendary"
 realm = &"primordial_origin"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"core_poise", "value": 37.54},
-	{"option_id": &"core_status_resistance", "value": 0.05},
+	{"option_id": &"core_status_defense", "value": 37.54},
 ])
 roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"formula"

@@ -12,7 +12,7 @@ realm = &"body_integration"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"core_poise", "value": 8.8},
 	{"option_id": &"core_defense_spiritual", "value": 8.8},
-	{"option_id": &"core_status_resistance", "value": 0.03},
+	{"option_id": &"core_status_defense", "value": 8.8},
 ])
 roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"salve"

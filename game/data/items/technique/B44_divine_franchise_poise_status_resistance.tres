@@ -11,7 +11,7 @@ rarity = &"legendary"
 realm = &"dao_ancestor"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"core_poise", "value": 36.58},
-	{"option_id": &"core_status_resistance", "value": 0.03},
+	{"option_id": &"core_status_defense", "value": 36.58},
 ])
 roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"mantra"

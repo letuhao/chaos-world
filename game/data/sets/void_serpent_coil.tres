@@ -13,7 +13,7 @@ counting = &"distinct_definition"
 pieces = Array[StringName]([&"set_void_coil_sigil", &"set_void_coil_ring", &"set_void_coil_hides", &"set_void_coil_anchor", &"set_void_coil_fang"])
 uniques = Array[StringName]([&"unique_void_coil_coiled_heart"])
 tiers = Array[Dictionary]([
-	{"count": 2, "label": "Coil Closed", "options": [{"option_id": &"core_defense_physical", "value": 12.0}, {"option_id": &"core_status_resistance", "value": 0.02}]},
+	{"count": 2, "label": "Coil Closed", "options": [{"option_id": &"core_defense_physical", "value": 12.0}, {"option_id": &"core_status_defense", "value": 0.02}]},
 	{"count": 3, "label": "Coil Wound", "options": [{"option_id": &"core_attack_physical", "value": 16.0}, {"option_id": &"core_crit_chance", "value": 0.03}]},
 	{"count": 4, "label": "Coil Reversed", "options": [{"option_id": &"core_penetration", "value": 20.0}, {"option_id": &"core_damage_reduction", "value": 0.05}, {"option_id": &"core_attack_speed", "value": 0.05}]},
 	{"count": 5, "label": "Coil Sealed", "options": [{"option_id": &"core_attack_physical", "value": 26.0}, {"option_id": &"core_damage_reduction", "value": 0.05}, {"option_id": &"core_max_health", "value": 40.0}]},

@@ -32,8 +32,8 @@ extends TestCase
 ##    every rung of the ladder, still moves the gate".
 ## 3. A FLAT on it is legal authored content, which it was not while the id was
 ##    rate-shaped — the PERCENT multiply still lands on a non-zero baseline, so it is
-##    real rather than the ADR 0022 `(0.0 + 0.0) * 1.5` trap. (No `core_status_defense`
-##    option exists yet; every `core_status_resistance` carrier is a no-op — DEF-0357.)
+##    real rather than the ADR 0022 `(0.0 + 0.0) * 1.5` trap. (DEF-0357 is CLOSED: the
+##    `core_status_defense` option exists and every old carrier was migrated onto it.)
 ## 4. The composed gate still lands STRICTLY ABOVE `status_min_apply` for any finite
 ##    defense, because the resist is a RATIO: `mitigation_ceiling * D / (K + D)` is
 ##    strictly below the ceiling, and `1 - mitigation_ceiling` is what is left. Immunity
@@ -105,8 +105,8 @@ func test_the_baseline_is_small_and_positive_never_zero() -> void:
 	)
 	# The retired id is a DIFFERENT id, not a synonym: the old string resolves to
 	# nothing rather than to this value — the migration cost ADR 0200 accepted, measured
-	# here so a silent alias cannot hide it. The CARRIERS were never migrated (no
-	# `core_status_defense` option exists; every old grant is a no-op — DEF-0357).
+	# here so a silent alias cannot hide it. The CARRIERS were migrated onto the
+	# `core_status_defense` option (DEF-0357 closed); no alias for the old id exists.
 	assert_eq(
 		actor.stats.derived(Stat.STATUS_RESISTANCE) <= 0.0,
 		true,
@@ -305,7 +305,7 @@ func test_the_resist_term_is_a_ratio_below_the_mitigation_ceiling_not_a_cap() ->
 
 ## The player's actual experience, through the REAL production apply path and the
 ## SHIPPED tuning: a race's own `will`, and a race's `will` plus the five-slot flat
-## budget simulated below (the authored `core_status_defense` content is owed — DEF-0357).
+## budget simulated below (the `core_status_defense` content is authored — DEF-0357 closed).
 ## Both stay above the `1 - mitigation_ceiling` the curve bottoms out at — so the
 ## authored experience is "debuffs land often, and a committed build tips the odds",
 ## never immunity.

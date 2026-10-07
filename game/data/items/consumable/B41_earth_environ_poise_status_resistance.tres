@@ -11,7 +11,7 @@ rarity = &"rare"
 realm = &"spirit_palace"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"core_poise", "value": 17.33},
-	{"option_id": &"core_status_resistance", "value": 0.03},
+	{"option_id": &"core_status_defense", "value": 17.33},
 ])
 roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"powder"

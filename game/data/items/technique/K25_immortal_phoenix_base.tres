@@ -10,7 +10,7 @@ category = &"consumable"
 rarity = &"legendary"
 realm = &"immortal_sovereign"
 fixed_modifiers = Array[Dictionary]([
-	{"option_id": &"core_status_resistance", "value": 0.03},
+	{"option_id": &"core_status_defense", "value": 34.65},
 ])
 roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"draft"

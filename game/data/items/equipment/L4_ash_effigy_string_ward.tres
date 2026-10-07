@@ -10,7 +10,7 @@ category = &"equipment"
 rarity = &"common"
 realm = &"nascent_soul"
 fixed_modifiers = Array[Dictionary]([
-	{"option_id": &"core_status_resistance", "value": 0.05},
+	{"option_id": &"core_status_defense", "value": 10.08},
 	{"option_id": &"base_will", "value": 10.08},
 ])
 roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}

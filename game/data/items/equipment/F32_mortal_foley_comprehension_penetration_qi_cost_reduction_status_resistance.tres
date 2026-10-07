@@ -13,7 +13,7 @@ fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"base_comprehension", "value": 7.15},
 	{"option_id": &"core_penetration", "value": 7.15},
 	{"option_id": &"core_qi_cost_reduction", "value": 0.04},
-	{"option_id": &"core_status_resistance", "value": 0.03},
+	{"option_id": &"core_status_defense", "value": 7.15},
 ])
 roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"greaves"

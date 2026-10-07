@@ -13,7 +13,7 @@ fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"base_agility", "value": 14.44},
 	{"option_id": &"core_cooldown_reduction", "value": 0.04},
 	{"option_id": &"base_physique", "value": 14.44},
-	{"option_id": &"core_status_resistance", "value": 0.05},
+	{"option_id": &"core_status_defense", "value": 14.44},
 ])
 roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"draft"

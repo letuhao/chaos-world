@@ -12,7 +12,7 @@ realm = &"spirit_palace"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"core_max_health", "value": 24.42},
 	{"option_id": &"core_cultivation_rate", "value": 0.04},
-	{"option_id": &"core_status_resistance", "value": 0.04},
+	{"option_id": &"core_status_defense", "value": 17.33},
 ])
 roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"

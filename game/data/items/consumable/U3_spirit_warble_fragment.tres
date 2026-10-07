@@ -10,7 +10,7 @@ category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_manifestation"
 fixed_modifiers = Array[Dictionary]([
-	{"option_id": &"core_status_resistance", "value": 0.04},
+	{"option_id": &"core_status_defense", "value": 15.12},
 ])
 roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"pill"

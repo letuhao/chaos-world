@@ -11,7 +11,7 @@ rarity = &"legendary"
 realm = &"transcendent"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"core_defense_spiritual", "value": 45},
-	{"option_id": &"core_status_resistance", "value": 0.04},
+	{"option_id": &"core_status_defense", "value": 35.62},
 ])
 roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"

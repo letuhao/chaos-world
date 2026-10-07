@@ -46,7 +46,7 @@
       "core_poise",
       "core_qi_regen",
       "core_stamina_regen",
-      "core_status_resistance"
+      "core_status_defense"
     ],
     "dual": [
       "cult_charm",
@@ -298,7 +298,7 @@
       "core_qi_cost_reduction",
       "core_qi_regen",
       "core_stamina_regen",
-      "core_status_resistance",
+      "core_status_defense",
       "cult_bone_density",
       "cult_carry_capacity",
       "cult_charm",
@@ -378,7 +378,7 @@
       "core_penetration",
       "core_poise",
       "core_qi_cost_reduction",
-      "core_status_resistance",
+      "core_status_defense",
       "cult_dodge_chance",
       "cult_illusion_resistance",
       "cult_mental_attack",
@@ -508,6 +508,6 @@
       "trade_value"
     ]
   },
-  "source_sha256": "45d9a053a0e96219",
+  "source_sha256": "3153e3b53e462646",
   "version": 2
 }

@@ -10,7 +10,7 @@ category = &"equipment"
 rarity = &"legendary"
 realm = &"great_luo"
 fixed_modifiers = Array[Dictionary]([
-	{"option_id": &"core_status_resistance", "value": 0.04},
+	{"option_id": &"core_status_defense", "value": 32.72},
 ])
 roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"

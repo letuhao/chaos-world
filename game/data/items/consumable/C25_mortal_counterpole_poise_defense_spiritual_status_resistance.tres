@@ -12,7 +12,7 @@ realm = &"qi_refining"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"core_poise", "value": 5.5},
 	{"option_id": &"core_defense_spiritual", "value": 5.5},
-	{"option_id": &"core_status_resistance", "value": 0.05},
+	{"option_id": &"core_status_defense", "value": 5.5},
 ])
 roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"food"

@@ -11,7 +11,7 @@ rarity = &"common"
 realm = &"void_refinement"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"core_stamina_regen", "value": 8.25},
-	{"option_id": &"core_status_resistance", "value": 0.025},
+	{"option_id": &"core_status_defense", "value": 4.87},
 ])
 roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"lens"
