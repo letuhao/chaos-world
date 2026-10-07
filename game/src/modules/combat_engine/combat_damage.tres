@@ -120,6 +120,18 @@ status_min_apply = 0.01
 ; ADR 0902 (P4). The fallback re-application lockout; 0.0 = no ICD. Pushed into
 ; StatusApi.set_icd_default at boot -- the status module owns the clock it reads.
 status_icd_default = 0.0
+; ADR 0902 (P10). The apply-chance SHAPE: "linear" is the shipped parity-half reading
+; (byte-identical); "sigmoid" is Keepverse's shape, 0.5 at its own zero. status_apply_offset
+; shifts the neutral point (the measured CC-lock dial), status_apply_steepness steepens the
+; sigmoid, and the two *_by_category maps override scale/steepness per authored category.
+; ADR 0902 (P11). status_tier_power_weight folds the realm power gap into the delta; 0.0 is
+; the shipped realm-invariant reading (the cross-realm measurement picks any other value).
+status_apply_shape = &"linear"
+status_apply_offset = 0.0
+status_apply_steepness = 1.0
+status_apply_scale_by_category = {}
+status_apply_steepness_by_category = {}
+status_tier_power_weight = 0.0
 status_power_prefix = "status.power."
 status_resist_prefix = "status.resist."
 status_rate_scale = 0.5

@@ -365,6 +365,25 @@ extends Resource
 ## `0.0` = no ICD. The composition root pushes this into `StatusApi.set_icd_default`,
 ## because only the status module owns the per-instance clock the check reads.
 @export var status_icd_default: float = 0.0
+## ADR 0902 (P10): the apply-chance SHAPE. `linear` is the shipped parity-half reading —
+## `clampf(0.5 + shifted / (2 * scale))` — and is byte-identical; `sigmoid` is Keepverse's
+## shape (0.5 at its own zero), reachable by a `.tres` edit rather than a code change.
+@export var status_apply_shape: StringName = &"linear"
+## ADR 0902 (P10): the apply-chance OFFSET — `shifted = delta - status_apply_offset`.
+## The measured CC-lock dial: 0.0 keeps every shipped number, and a positive value demands
+## that much more net advantage before the roll reads above half.
+@export var status_apply_offset: float = 0.0
+## ADR 0902 (P10): the sigmoid shape's steepness. Unused by the linear default.
+@export var status_apply_steepness: float = 1.0
+## ADR 0902 (P10): per-CATEGORY pass-throughs, keyed by an authored `categories` name.
+## Empty is the shipped reading; the FIRST authored category present wins, and an absent
+## category falls back to `status_rate_scale` / `status_apply_steepness`.
+@export var status_apply_scale_by_category: Dictionary = {}
+@export var status_apply_steepness_by_category: Dictionary = {}
+## ADR 0902 (P11): the tier-power-in-delta WEIGHT. 0.0 is the shipped realm-invariant
+## reading; a nonzero weight folds `weight * (attacker realm power - defender realm power)`
+## into the delta. Default-off pending the cross-realm measurement (T10).
+@export var status_tier_power_weight: float = 0.0
 ## Coefficient from the attacker's `element_power_<e>` onto the applied status's
 ## potency. Potency REUSES that id rather than adding an `element_status_power_<e>`
 ## sibling (ADR 0088), so it inherits ADR 0069's realm-invariance fix with no new stat

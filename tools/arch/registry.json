@@ -359,6 +359,12 @@
         "core",
         "world"
       ]
+    },
+    "worldmap": {
+      "deps": [
+        "contracts",
+        "core"
+      ]
     }
   }
 }

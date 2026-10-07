@@ -168,6 +168,12 @@ const REFUSE_UNWRITABLE := &"unwritable"
 ## declares. A hard refusal is its own reason, like every other refusal here.
 const REFUSE_IMMUNE := &"immune"
 
+## ADR 0902 (P14): the post-roll refinement of Keepverse's `UselessMagnitude` — a status
+## whose FULLY FACTORED magnitude is zero AND whose effective duration is non-positive
+## does nothing at all (their `IsUseless`). A zero-magnitude TIMED status is NOT useless:
+## it can still gate or modify stats, so only both-together refuses.
+const REFUSE_USELESS_MAGNITUDE := &"useless_magnitude"
+
 ## Refusal reasons that are the CALLER's decision rather than an answer a status got,
 ## so [method _worth_reporting] keeps them out of the refused log (ADR 0902, P5): an
 ## empty request, a closed gate and a missing generator are facts about nobody.
@@ -405,11 +411,34 @@ static func resolve_roll(
 	# reuse refusing to retire.
 	var authored := maxf(_finite(_number(request.get(KEY_POTENCY, 0.0))), 0.0)
 	var base := authored if authored > 0.0 else potency_of(attacker, tuning, element)
-	out[&"potency"] = base * maxf(0.0, _finite(intensity_net))
+	var effective := base * maxf(0.0, _finite(intensity_net))
+	# ADR 0902 (P14): Keepverse's post-roll `UselessMagnitude` — a zero factored
+	# magnitude AND a non-positive effective duration means the status would do nothing
+	# at all. A zero-magnitude TIMED status is NOT useless, and the check only fires on
+	# a case the floor and the roll let through, so every shipped landing is unchanged.
+	if open and absf(effective) < 1e-9 and _effective_life(request, tuning, duration_net) <= 0.0:
+		# `out[ready]` was set by the roll above; this refusal happens AFTER it, so the
+		# flag must be reset or `apply` would read the refusal as a rolled `resisted`.
+		out[&"ready"] = false
+		out[REFUSED] = REFUSE_USELESS_MAGNITUDE
+		return out
+	out[&"potency"] = effective
 	out[&"intensity_net"] = intensity_net
 	out[&"duration_net"] = duration_net
 	out[&"open"] = open
 	return out
+
+
+## The duration `_status` would build, for the post-roll usefulness check (ADR 0902,
+## P14): the request's authored duration, else the tuning default, scaled by the
+## duration factor — the exact resolution the writer performs.
+static func _effective_life(
+	request: Dictionary, tuning: CombatTuning, duration_net: float
+) -> float:
+	var life := _finite(_number(request.get(KEY_DURATION, 0.0)))
+	if life <= 0.0 and tuning != null:
+		life = _finite(tuning.status_default_duration)
+	return life * maxf(0.0, _finite(duration_net))
 
 
 ## Publish `result` on `outcome` by APPENDING it to the proposal's `effects[]`, which
@@ -589,14 +618,62 @@ static func apply_chance(
 	resist += maxf(0.0, _finite(elem_resist))
 	if scope == SCOPE_COMBAT:
 		resist += clampf(_status_defense_share(target, tuning), 0.0, 1.0)
-	var scale := _finite(tuning.status_rate_scale)
+	var scale := _category_float(
+		tuning.status_apply_scale_by_category, categories, _finite(tuning.status_rate_scale)
+	)
+	# ADR 0902 (P10): `shifted = delta - offset`. The shipped offset is 0.0, and
+	# `delta - 0.0` is exact in IEEE, so the shipped numbers are reproduced bit for bit.
+	var delta := power - resist
+	# ADR 0902 (P11): the default-off tier-power knob. 0.0 is the shipped realm-invariant
+	# reading; a nonzero weight folds the realm power GAP into the delta.
+	var tier_weight := _finite(tuning.status_tier_power_weight)
+	if tier_weight != 0.0 and attacker != null and target != null:
+		delta += tier_weight * _realm_power_gap(attacker, target)
+	var shifted := delta - _finite(tuning.status_apply_offset)
 	# A non-positive scale cannot say how much advantage is decisive, and the honest
 	# answer for a contest with no exchange rate is parity rather than a division.
 	var p_apply := 0.5
 	if scale > 0.0:
-		p_apply = clampf(0.5 + (power - resist) / (2.0 * scale), 0.0, 1.0)
+		if tuning.status_apply_shape == &"sigmoid":
+			var steepness := _category_float(
+				tuning.status_apply_steepness_by_category,
+				categories,
+				_finite(tuning.status_apply_steepness)
+			)
+			p_apply = 1.0 / (1.0 + exp(-steepness * shifted / (2.0 * scale)))
+		else:
+			p_apply = clampf(0.5 + shifted / (2.0 * scale), 0.0, 1.0)
 	var chance := _finite(gate) * p_apply
 	return clampf(chance, clampf(_finite(tuning.status_min_apply), 0.0, 1.0), 1.0)
+
+
+## The per-category pass-through (ADR 0902, P10): the FIRST authored category present in
+## `by_category` wins; an empty map, or none of the categories present, falls back to `base`.
+static func _category_float(by_category: Dictionary, categories: Array, base: float) -> float:
+	if by_category.is_empty():
+		return base
+	for category in categories:
+		var named := String(category)
+		if by_category.has(named):
+			return _finite(float(by_category[named]))
+		if by_category.has(StringName(named)):
+			return _finite(float(by_category[StringName(named)]))
+	return base
+
+
+## The realm power GAP between two actors, for the default-off tier knob (ADR 0902, P11).
+## `RealmScaling.highest_realm` is core's own read of an actor's realm; an actor with no
+## realm def reads 0.0 and the gap is the other side's power.
+static func _realm_power_gap(attacker: Actor, target: Actor) -> float:
+	var attacker_power := 0.0
+	var target_power := 0.0
+	var attacker_realm := RealmScaling.highest_realm(attacker)
+	if attacker_realm != null:
+		attacker_power = _finite(attacker_realm.power)
+	var target_realm := RealmScaling.highest_realm(target)
+	if target_realm != null:
+		target_power = _finite(target_realm.power)
+	return attacker_power - target_power
 
 
 ## One side's authored channel total (ADR 0884): `prefix + "omni"` always, plus
