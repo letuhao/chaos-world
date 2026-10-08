@@ -128,6 +128,20 @@ const R_CAPACITY_FULL := "capacity_full"
 ## Leaving when the actor belongs to nothing. **The only thing `leave` refuses on** apart
 ## from `no_actor`: an exit that could be refused is a trap, not a door.
 const R_NOT_A_MEMBER := "not_a_member"
+## The purge's margin (ADR 0084): forfeited standing PLUS this, structurally asymmetric.
+const EXPEL_MARGIN := 10
+## Refusals owned by the driven contracts, aliased so one rename cannot split two vocabularies.
+const R_TARGET_NOT_A_MEMBER := Expellable.R_TARGET_NOT_A_MEMBER
+const R_CANNOT_EXPEL_SELF := Expellable.R_CANNOT_EXPEL_SELF
+const R_CANNOT_EXPEL_EQUAL_OR_ABOVE := Expellable.R_CANNOT_EXPEL_EQUAL_OR_ABOVE
+const R_COST_NOT_ASYMMETRIC := Expellable.R_COST_NOT_ASYMMETRIC
+const R_NOT_AUTHORISED := Expellable.R_NOT_AUTHORISED
+const R_NOTHING_OWED := Dutiable.R_NOTHING_OWED
+const R_NO_PERIODS := InstitutionCapability.R_NO_PERIODS
+const R_NOT_INVITED := AdmitTable.R_NOT_INVITED
+const R_VACANT := AdmitTable.R_VACANT
+const R_BELOW_REQUIREMENT := AdmitTable.R_BELOW_REQUIREMENT
+const R_NO_AUTHORITY_ID := Authorised.R_NO_AUTHORITY_ID
 
 ## Every reason this surface can return, keyed by the name it is written with, so a
 ## caller can look one up without holding the constant. The ledger's own table PLUS this
@@ -142,6 +156,17 @@ const REASONS := {
 	R_NO_ENTRY_OFFICE: R_NO_ENTRY_OFFICE,
 	R_CAPACITY_FULL: R_CAPACITY_FULL,
 	R_NOT_A_MEMBER: R_NOT_A_MEMBER,
+	R_TARGET_NOT_A_MEMBER: R_TARGET_NOT_A_MEMBER,
+	R_CANNOT_EXPEL_SELF: R_CANNOT_EXPEL_SELF,
+	R_CANNOT_EXPEL_EQUAL_OR_ABOVE: R_CANNOT_EXPEL_EQUAL_OR_ABOVE,
+	R_COST_NOT_ASYMMETRIC: R_COST_NOT_ASYMMETRIC,
+	R_NOT_AUTHORISED: R_NOT_AUTHORISED,
+	R_NOTHING_OWED: R_NOTHING_OWED,
+	R_NO_PERIODS: R_NO_PERIODS,
+	R_NOT_INVITED: R_NOT_INVITED,
+	R_VACANT: R_VACANT,
+	R_BELOW_REQUIREMENT: R_BELOW_REQUIREMENT,
+	R_NO_AUTHORITY_ID: R_NO_AUTHORITY_ID,
 }
 
 ## How many organizations the world roster table may carry. A hand-edited or runaway
@@ -241,11 +266,16 @@ static func source_tag(institution_id: StringName) -> StringName:
 ## no office — the member duty lines open either way, so admission is never free — and
 ## `NO_ENTRY_OFFICE` fires only when the kind AUTHORS offices and none of them can be
 ## named, which is a content fault rather than a policy.
+##
+## ## The gate's inputs arrive on `admit`, never on a second content field
+## The def authors NO admission rows, so the caller hands the table in; a refused table
+## refuses BEFORE any office resolves (ADR 0044). D8: capacity seats, invitation admits.
 static func join(
 	registry: InstitutionRegistry,
 	actor: Actor,
 	institution_id: StringName,
-	position_id: StringName = &""
+	position_id: StringName = &"",
+	admit: Dictionary = {}
 ) -> Dictionary:
 	if actor == null:
 		return InstitutionLedger.refuse(R_NO_ACTOR)
@@ -260,6 +290,14 @@ static func join(
 	var claims := _claims(actor)
 	if claims.has(wanted):
 		return InstitutionLedger.refuse(R_ALREADY_A_MEMBER)
+	if not admit.is_empty():
+		var table := {"member": String(actor.id)}
+		for key in ["invite_only", "invited", "requirements", "values"]:
+			if admit.has(key):
+				table[key] = admit[key]
+		var verdict := AdmitTable.new().admits(table)
+		if not bool(verdict.get("ok", false)):
+			return verdict
 	var seated := _entry_office(def, position_id)
 	if seated.get("refused", "") != "":
 		return InstitutionLedger.refuse(String(seated["refused"]))
@@ -466,6 +504,81 @@ static func move_standing(
 	)
 
 
+## ## Whether `actor` may exercise `authority_id` in one organization, as a READ.
+## Writes nothing: the `Authorised.holds` answer. D8: the peer rule is this read's counter.
+static func has_authority(
+	registry: InstitutionRegistry,
+	actor: Actor,
+	institution_id: StringName,
+	authority_id: StringName
+) -> Dictionary:
+	if actor == null or registry == null:
+		return InstitutionLedger.refuse(R_NO_ACTOR if actor == null else R_UNKNOWN_KIND)
+	var wanted := InstitutionLedger.text(institution_id, "")
+	var claims := _claims(actor)
+	if wanted == "" or not claims.has(wanted):
+		return InstitutionLedger.refuse(R_NOT_A_MEMBER)
+	var def := _definition(wanted)
+	if def == null:
+		return InstitutionLedger.refuse(R_UNKNOWN_INSTITUTION)
+	var office := _authority_ctx(def, claims[wanted] as Dictionary)
+	var held := Authorised.new().holds(office, authority_id)
+	if not bool(held.get("ok", false)):
+		return held
+	return held
+
+
+## ## Cast `target` out of one organization at `actor`'s expense — the standard's purge.
+## D8: the cost IS the counter — forfeited standing PLUS `EXPEL_MARGIN`, a comparison.
+## The rule is the `Expellable` contract's own; force bypasses the peer rule ONLY. The
+## target is an `Actor` because the claim lives on the body.
+static func expel(
+	registry: InstitutionRegistry,
+	actor: Actor,
+	institution_id: StringName,
+	target: Actor,
+	force: bool = false
+) -> Dictionary:
+	if actor == null or target == null:
+		return InstitutionLedger.refuse(R_NO_ACTOR if actor == null else R_TARGET_NOT_A_MEMBER)
+	var wanted := InstitutionLedger.text(institution_id, "")
+	var def := _definition(wanted) if registry != null else null
+	if def == null:
+		return InstitutionLedger.refuse(
+			R_UNKNOWN_KIND if registry == null else R_UNKNOWN_INSTITUTION
+		)
+	var claims := _claims(actor)
+	if not claims.has(wanted) or String(target.id) == String(actor.id):
+		return InstitutionLedger.refuse(
+			R_NOT_A_MEMBER if not claims.has(wanted) else R_CANNOT_EXPEL_SELF
+		)
+	var ctx := _expel_ctx(def, claims[wanted] as Dictionary, actor, target, wanted, force)
+	var planned := Expellable.new().expel(ctx)
+	if not bool(planned.get("ok", false)):
+		return planned
+	return _apply_expel(registry, actor, target, wanted, planned)
+
+
+## ## Settle `actor`'s open duty lines in one organization by `periods`.
+## The debt `join` opens, paid through the `Dutiable` clamp. Authority-free by design: a
+## debt needing permission to pay is a trap. D8: the settled count is the counter.
+static func serve(
+	registry: InstitutionRegistry, actor: Actor, institution_id: StringName, periods: int
+) -> Dictionary:
+	if actor == null or registry == null:
+		return InstitutionLedger.refuse(R_NO_ACTOR if actor == null else R_UNKNOWN_KIND)
+	var wanted := InstitutionLedger.text(institution_id, "")
+	var claims := _claims(actor)
+	if wanted == "" or not claims.has(wanted):
+		return InstitutionLedger.refuse(R_NOT_A_MEMBER)
+	var row := (claims[wanted] as Dictionary).duplicate(true)
+	var owed := {"member": String(actor.id), "owed": row.get("obligation", {}), "periods": periods}
+	var planned := Dutiable.new().serve(owed)
+	if not bool(planned.get("ok", false)):
+		return planned
+	return _apply_serve(actor, wanted, row, planned)
+
+
 ## ## Rebuild every recognition this actor's claims imply, and nothing else.
 ##
 ## Strip-then-rebuild for each organization in turn, which is what makes this idempotent:
@@ -554,6 +667,88 @@ static func clear() -> int:
 
 
 # --- Internals -----------------------------------------------------------------
+
+
+## The member's office as `Authorised` reads it.
+static func _authority_ctx(def: InstitutionDef, row: Dictionary) -> Dictionary:
+	var office := def.position(StringName(InstitutionLedger.text(row.get("position", ""), "")))
+	if office == null:
+		return {"office": "", "authorities": [], "duties": []}
+	return {"office": String(office.id), "authorities": office.authorities, "duties": office.duties}
+
+
+## One purge as `Expellable` reads it: derived costs, authored authority lists.
+static func _expel_ctx(
+	def: InstitutionDef,
+	expeller_row: Dictionary,
+	actor: Actor,
+	target: Actor,
+	wanted: String,
+	force: bool
+) -> Dictionary:
+	var target_claims := _claims(target)
+	var expelled_standing := 0
+	var target_office := ""
+	var target_authorities: Array = []
+	var target_row := target_claims.get(wanted, {}) as Dictionary
+	expelled_standing = maxi(0, int(target_row.get("standing", 0)))
+	target_office = InstitutionLedger.text(target_row.get("position", ""), "")
+	var seat := def.position(StringName(target_office)) if target_office != "" else null
+	if seat != null:
+		target_authorities = seat.authorities
+	return {
+		"member": String(actor.id),
+		"target": String(target.id),
+		"target_member": target_claims.has(wanted),
+		"target_office": target_office,
+		"target_authorities": target_authorities,
+		"authorities": (_authority_ctx(def, expeller_row) as Dictionary).get("authorities", []),
+		"cost_expelled": expelled_standing,
+		"cost_expeller": expelled_standing + EXPEL_MARGIN,
+		"force": force,
+	}
+
+
+## Charge the expeller, sever the target; every refusal returns above (ADR 0044).
+static func _apply_expel(
+	registry: InstitutionRegistry, actor: Actor, target: Actor, wanted: String, planned: Dictionary
+) -> Dictionary:
+	var cost := -int((planned["plan"] as Dictionary)["cost_expeller"])
+	var claims := _claims(actor)
+	var mine := claims[wanted] as Dictionary
+	var charged := InstitutionLedger.move_standing(mine, cost)
+	claims[wanted] = charged["ledger"]
+	_write_claims(actor, claims)
+	InstitutionProjection.strip(target, source_tag(StringName(wanted)))
+	var target_claims := _claims(target)
+	target_claims.erase(wanted)
+	_write_claims(target, target_claims)
+	_disenrol(wanted, String(target.id))
+	var granted := _project(actor, registry, claims[wanted] as Dictionary)
+	var answer := (planned["plan"] as Dictionary).duplicate()
+	answer["institution"] = wanted
+	answer["applied_expeller"] = int(charged.get("applied", 0))
+	answer["granted"] = granted.get("granted", {})
+	return InstitutionLedger.ok(answer)
+
+
+## Subtract each line's settled count, keeping zero keys.
+static func _apply_serve(
+	actor: Actor, wanted: String, row: Dictionary, planned: Dictionary
+) -> Dictionary:
+	var claims := _claims(actor)
+	var lines := row.get("obligation", {}) as Dictionary
+	var discharged := 0
+	for entry in planned.get("served", []) as Array:
+		var term := String((entry as Dictionary).get("term", ""))
+		var paid := int((entry as Dictionary).get("settled", 0))
+		lines[term] = maxi(0, int(lines.get(term, 0)) - paid)
+		if bool((entry as Dictionary).get("discharged", false)):
+			discharged += 1
+	claims[wanted] = row
+	_write_claims(actor, claims)
+	planned["discharged"] = discharged
+	return planned
 
 
 ## ## Where a claim is stored, and why `get_module_data` is not enough on its own
