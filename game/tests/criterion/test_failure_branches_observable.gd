@@ -16,13 +16,13 @@ extends TestCase
 ## and the two need different fixes, so both halves are asserted: the reason IS
 ## renderable, and the button IS disabled.
 ##
-## **On the breakthrough, train and recovery legs there is nothing to render.**
-## Those facades answer `false`, so the screen picks the message itself — and picks
-## ONE message for every cause. `act_breakthrough` says "The attempt deviated;
-## recover and try again" whether the attempt rolled badly, the pill was absent, or
-## there is no realm to enter. `act_recover` says "Nothing damaged to repair" to a
-## hero that IS damaged and simply has no elixir, while the same screen's `unmet`
-## line says "Damaged channels need repair".
+## **On the breakthrough, train and recovery legs the naming now reaches the player.**
+## Those facades still answer `false`, but the body module publishes its refusals as
+## named clauses (`unavailable`) and the screen joins them, so each cause reads as its
+## own sentence: a missing pill names the pill, the terminal realm names the ladder's
+## end, a missing recovery elixir names the elixir. The deviation is the one cause the
+## screen cannot know before the roll, so it is read from the record
+## (`attempt_outcome.reason`) — the branch this file keeps reachable.
 ##
 ## Every loop is bounded by a constant naming the condition it stops on. Every
 ## screen instantiated here is freed.
@@ -48,10 +48,14 @@ const LADDER_GUARD := 64
 # pass against a copy of itself. Read from the screen SOURCE, so a message that
 # drifts and a test that drifts together cannot hide.
 
-## `BodyCultivationPanel.act_breakthrough`'s one refusal line.
-const M_DEVIATED := "The attempt deviated; recover and try again"
-## `BodyCultivationPanel.act_recover`'s one refusal line.
-const M_NOTHING_DAMAGED := "Nothing damaged to repair"
+## The named clauses the body module publishes for a refused breakthrough (ADR 0150).
+const M_MISSING_PILL := "Missing breakthrough pill"
+const M_NO_REALM_AHEAD := "Already at the highest realm"
+## The named clause for a refused repair whose remedy is absent.
+const M_NO_RECOVERY_ELIXIR := "No recovery elixir to spend"
+## The deviation sentence the module authors for the record — the one cause the
+## screen cannot know before the roll.
+const M_DEVIATED := "The attempt into %s deviated; repair the wound before trying again"
 ## `BodyCultivationPanel.act_strengthen`'s one refusal line.
 const M_NO_ELIXIR := "No channel elixir to spend"
 ## `BodyCultivationPanel.act_ascend`'s refusal line once an ascent IS owed.
@@ -208,9 +212,10 @@ func _held(actor: Actor, item_id: StringName) -> int:
 ##   no realm ahead refused at `_next_index`, nothing spent
 ##
 ## A deviation is the fourth cause and cannot be forced through the facade, which
-## takes no rng — so that half is asserted from the screen's source instead: the
-## single `else` above is the one those three share, and it is the deviation line.
-func test_four_different_refusals_report_one_deviation_message() -> void:
+## takes no rng — so that half is asserted from the sources instead: the screen's
+## refusal reads the record (`attempt_outcome`), and the module authors the
+## deviation sentence.
+func test_four_different_refusals_each_name_their_own_cause() -> void:
 	var screen := _instantiate(BODY_SCREEN)
 	if screen == null:
 		return
@@ -231,9 +236,18 @@ func test_four_different_refusals_report_one_deviation_message() -> void:
 	var at_top := _body_hero(_realm_id(RealmDefaults.ladder().realms().size() - 1))
 	var refusal_top := _press_breakthrough(screen, at_top)
 
-	assert_eq(refusal_pill, M_DEVIATED, "a missing pill is reported as a deviation")
-	assert_eq(refusal_points, M_DEVIATED, "so is a missing huyệt set")
-	assert_eq(refusal_top, M_DEVIATED, "and so is having no realm left to enter")
+	assert_eq(refusal_pill, M_MISSING_PILL, "a missing pill names the pill")
+	assert_eq(
+		refusal_points.contains("Acupoint quality below the realm requirement"),
+		true,
+		"a missing huyệt set names the acupoint requirement"
+	)
+	assert_eq(refusal_top, M_NO_REALM_AHEAD, "the terminal realm names the ladder's end")
+	# The three are genuinely three sentences, which is the whole point: one message
+	# for all of them was the loss this file originally measured.
+	assert_ne(refusal_pill, refusal_points, "and the refusals read differently")
+	assert_ne(refusal_pill, refusal_top, "each naming its own cause")
+	assert_ne(refusal_points, refusal_top, "rather than sharing one sentence")
 	# The three are genuinely three: each hero really is refused, and for a
 	# different reason, which is what makes the single message a loss rather than
 	# an accurate summary.
@@ -249,15 +263,25 @@ func test_four_different_refusals_report_one_deviation_message() -> void:
 	# None of them moved, so nothing was spent: the refusal is free, which is the one
 	# thing the message gets right.
 	assert_eq(_held(no_pill, _pill_id(no_pill)), 0, "and the refused press spent nothing")
-	# And the structural half: ONE else, and it is the deviation line.
+	# And the structural half: the one cause the screen cannot know before the roll is
+	# read from the RECORD, and the module authors its sentence — so the deviation
+	# branch stays reachable instead of collapsing into the clauses.
 	var code := _code_of(BODY_SCREEN)
-	var branch := _function_body(code, "act_breakthrough")
 	assert_eq(
-		_occurrences(branch, "else:"),
-		1,
-		"act_breakthrough has one refusal branch, so every refusal shares one message"
+		_function_body(code, "_breakthrough_refusal").contains("attempt_outcome"),
+		true,
+		"the refusal falls back to the roll's record"
 	)
-	assert_eq(branch.contains(M_DEVIATED), true, "and that branch names a deviation")
+	assert_eq(
+		_function_body(code, "_resolve_refusal").contains("attempt_outcome"),
+		true,
+		"and the resolve half reads the record alone"
+	)
+	assert_eq(
+		_code_of("res://src/modules/body_cultivation/refusal.gd").contains(M_DEVIATED),
+		true,
+		"and the module authors the deviation sentence"
+	)
 
 
 ## The refusal is FREE — nothing spent, nothing moved — which is the property that
@@ -286,12 +310,12 @@ func test_a_refused_breakthrough_costs_the_hero_nothing() -> void:
 # --- 2. Recovery: the message contradicts the screen's own checklist ----------
 
 
-## **THE FAIL-RECOVERABLY FINDING.** A hero carrying a deviation and no elixir is
-## told there is nothing to repair — on a screen whose own `unmet` line says the
-## opposite, one property away. The recovery branch is the seventh leg, so this is
-## the leg nobody audited, and the message is worse than silence: it tells the player
-## the thing they can plainly see on the vitals row is not true.
-func test_a_damaged_hero_with_no_elixir_is_told_there_is_nothing_to_repair() -> void:
+## **THE FAIL-RECOVERABLY FINDING, FIXED.** A hero carrying a deviation and no elixir
+## used to be told there is nothing to repair — on a screen whose own `unmet` line
+## said the opposite, one property away. The refusal now names the missing remedy
+## (ADR 0150): the wound is on the checklist and the elixir is in the message, so the
+## screen agrees with itself and the player knows what to go and find.
+func test_a_damaged_hero_with_no_elixir_is_told_the_elixir_is_missing() -> void:
 	var hero := _prepared_hero()
 	# A real deviation's wound: `BodyAdvancement._deviate` tears the required channel
 	# the hero trained deepest and jams a huyệt on it. The tear is the one the
@@ -325,18 +349,18 @@ func test_a_damaged_hero_with_no_elixir_is_told_there_is_nothing_to_repair() -> 
 	assert_eq(repaired, false, "so recovery genuinely refuses")
 	assert_eq(
 		_message(screen),
-		M_NOTHING_DAMAGED,
-		"and the player is told there is nothing to repair — the screen contradicting itself"
+		M_NO_RECOVERY_ELIXIR,
+		"and the player is told the elixir is what is missing"
 	)
-	# The elixir's absence is named NOWHERE on the screen. `unmet` lists the wound
-	# and never the item that would close it, which is what makes the message
-	# unfixable from the screen the player is looking at.
+	# The remedy is named in the published refusal DATA, not only in the sentence:
+	# `unavailable.recover` carries the clause, so a screen renders the item without
+	# re-deriving it.
 	var published := BodyCultivationApi.panel_state(hero)
-	assert_eq(
-		_publishes_item_absence(published),
-		false,
-		"and panel_state publishes nothing about the missing elixir either"
-	)
+	var clauses: Array = (published.get("unavailable", {}) as Dictionary).get("recover", [])
+	var labels: Array[String] = []
+	for clause in clauses:
+		labels.append(String((clause as Dictionary).get("label", "")))
+	assert_eq(labels.has(M_NO_RECOVERY_ELIXIR), true, "and the published refusal names the elixir")
 
 
 ## With the elixir in hand the same press works and the message is right, so the
@@ -361,7 +385,7 @@ func test_the_same_repair_succeeds_once_the_elixir_is_held() -> void:
 	screen.call("setup", hero)
 	var repaired: bool = screen.call("act_recover")
 	assert_eq(repaired, true, "with the elixir held, the same press repairs")
-	assert_ne(_message(screen), M_NOTHING_DAMAGED, "and says so instead")
+	assert_eq(_message(screen), "Repaired", "and says so")
 	var unmet := (screen.summary() as Dictionary).get("unmet", []) as Array
 	assert_eq(
 		_clauses_about(unmet, "Damaged channels need repair"),
@@ -615,16 +639,6 @@ func _take_item(hero: Actor, item_id: StringName) -> void:
 		0,
 		"every copy of '%s' was really removed (it started at %d)" % [String(item_id), held]
 	)
-
-
-## Whether a published view names any item's ABSENCE — the thing a player needs when
-## a refusal is "you are missing something". A defect here is the whole
-## fail-recoverably blind spot: the wound is reported, the remedy is not.
-func _publishes_item_absence(view: Dictionary) -> bool:
-	for key: String in view.keys():
-		if key.contains("item") or key.contains("elixir"):
-			return true
-	return false
 
 
 ## The unmet clauses naming `subject`, so a negative can name the gate refusing

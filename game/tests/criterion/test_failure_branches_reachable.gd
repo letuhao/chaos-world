@@ -57,6 +57,8 @@ const R_NO_SEAM := "no_creation_seam"
 
 ## The scene the creation screen ships as.
 const CREATION_SCENE := "res://src/ui/screens/character_creation.tscn"
+## The scene the body panel ships as — the production caller of the durable half.
+const BODY_SCREEN := "res://src/ui/screens/body_cultivation_panel.tscn"
 
 ## Stops a sweep over a ladder that stopped ending.
 const LADDER_GUARD := 64
@@ -790,21 +792,22 @@ func _reachable_reason(reason: String) -> bool:
 	return found
 
 
-# --- 6. The two-phase breakthrough lifecycle is unreachable in play ------------
+# --- 6. The two-phase breakthrough lifecycle is reachable in play -------------
 
 
 ## `BodyCultivationApi.begin_breakthrough` and `resolve_breakthrough` are the
 ## documented "durable half": the pill is spent there and the record is persisted so
-## a save taken mid-attempt resolves on reload. The facade's own docstring promises a
+## a save taken mid-attempt resolves on reload. The facade's docstring promises a
 ## panel will read `panel_state`'s `attempt` and "offer resolve rather than a fresh
 ## breakthrough".
 ##
-## Neither half is called anywhere in `res://src`. `attempt_breakthrough` is the only
-## body breakthrough verb the screen presses, and it runs both halves inside one
-## call, so no state a player can produce has an attempt in flight and the `attempt`
-## field is permanently empty. The durable half, the save-spanning attempt, and the
-## panel affordance its docstring describes are all unreachable.
-func test_the_two_phase_breakthrough_lifecycle_has_no_production_caller() -> void:
+## This section used to pin them as UNREACHABLE: `attempt_breakthrough` was the only
+## verb the screen pressed and it ran both halves inside one call, so no state a
+## player could produce had an attempt in flight. The panel now presses the two
+## halves itself (commit, then resolve), so the assertion is inverted: both verbs
+## have a production caller, and the state the durable half exists for is one a
+## player can produce.
+func test_the_two_phase_breakthrough_lifecycle_has_a_production_caller() -> void:
 	for verb: StringName in [&"begin_breakthrough", &"resolve_breakthrough"]:
 		var callers := 0
 		for path: String in ContentScan.files_under("res://src", ".gd"):
@@ -814,26 +817,40 @@ func test_the_two_phase_breakthrough_lifecycle_has_no_production_caller() -> voi
 			if FileAccess.get_file_as_string(path).contains("BodyCultivationApi.%s(" % verb):
 				callers += 1
 		assert_eq(
-			callers,
-			0,
-			"BodyCultivationApi.%s is unreachable in play: no file in res://src calls it" % verb
+			callers >= 1,
+			true,
+			"BodyCultivationApi.%s is reachable in play: a shipped file calls it" % verb
 		)
-	# And the field that depends on it, for a hero in the two states a player can
-	# produce: fresh, and immediately after pressing Breakthrough on a hero that IS
-	# prepared (otherwise the press is refused by the preparation gate and nothing
-	# would be written at all).
+	# And the field that depends on it, driven the way the panel drives it: press once
+	# to COMMIT (the attempt is in flight), press again to resolve it to terminal.
+	var packed := load(BODY_SCREEN) as PackedScene
+	assert_ne(packed, null, "the body panel scene loads")
+	if packed == null:
+		return
+	var screen := packed.instantiate() as Control
+	assert_ne(screen, null, "and instantiates")
+	if screen == null:
+		return
 	var hero := _prepared_hero()
+	screen.call("setup", hero)
 	assert_eq(
 		String(BodyAdvancement.preview(hero).get("attempt", "")),
 		"",
 		"a prepared hero with nothing attempted reports no attempt in flight"
 	)
-	BodyCultivationApi.attempt_breakthrough(hero)
+	screen.call("act_breakthrough")
+	assert_ne(
+		String(BodyAdvancement.preview(hero).get("attempt", "")),
+		"",
+		"and the panel's first press leaves one in flight — the durable state"
+	)
+	screen.call("act_breakthrough")
 	assert_eq(
 		String(BodyAdvancement.preview(hero).get("attempt", "")),
 		"",
-		"and a hero that just pressed Breakthrough reports none either: the record is terminal"
+		"and the panel's second press resolves it to terminal"
 	)
+	screen.free()
 
 
 ## What makes that terminal: every exit from `resolve_attempt` ends the record, so no
@@ -852,13 +869,11 @@ func test_a_body_attempt_is_terminal_the_moment_the_one_call_returns() -> void:
 	)
 
 
-## The other half of the claim, and the reason it matters: the durable lifecycle is
-## not broken, it is UNREACHABLE. Driven directly it commits an attempt a panel would
-## render as "an attempt is committed", and the resolve half rolls it. So the
-## machinery the facade documents exists and works — and no player can press it,
-## because `test_the_two_phase_breakthrough_lifecycle_has_no_production_caller` shows
-## no shipped file calls either half.
-func test_the_unreachable_durable_half_works_when_a_caller_drives_it() -> void:
+## The unit half of the pair: the durable lifecycle works when driven directly — it
+## commits an attempt the panel renders as "an attempt is committed", and the resolve
+## half rolls it. The reachability half is the test above, which drives the same two
+## halves through the panel's own presses.
+func test_the_durable_half_works_when_a_caller_drives_it() -> void:
 	var hero := _prepared_hero()
 	var committed := BodyCultivationApi.begin_breakthrough(hero)
 	assert_eq(committed.is_empty(), false, "a caller can still commit an attempt")
@@ -866,7 +881,7 @@ func test_the_unreachable_durable_half_works_when_a_caller_drives_it() -> void:
 	assert_eq(
 		String(BodyAdvancement.preview(hero).get("attempt", "")),
 		String(committed.get("attempt", "")),
-		"and the preview reports it as in flight — the state no player can produce"
+		"and the preview reports it as in flight — the durable state"
 	)
 	assert_eq(BodyAdvancement.active_attempt(hero) != null, true, "the record is active")
 	BodyCultivationApi.resolve_breakthrough(hero)
@@ -876,10 +891,10 @@ func test_the_unreachable_durable_half_works_when_a_caller_drives_it() -> void:
 
 
 ## The refusal the durable half has and the one-press verb does not: an attempt
-## already in flight blocks a second one. It is UNREACHABLE in play for the same
-## reason — only an unreachable caller can leave an attempt in flight — and the body
-## path reports it by returning an EMPTY dictionary rather than a named reason, so
-## even the caller that reaches it is told nothing.
+## already in flight blocks a second one. The panel never makes this call — it offers
+## resolve once committed — so this is a caller-shape guard rather than a player
+## press, and the body path reports it by returning an EMPTY dictionary rather than a
+## named reason, so even the caller that reaches it is told nothing.
 func test_an_attempt_already_in_flight_is_refused_without_a_reason() -> void:
 	var hero := _prepared_hero()
 	var first := BodyCultivationApi.begin_breakthrough(hero)
