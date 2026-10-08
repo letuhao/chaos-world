@@ -572,7 +572,9 @@ func _refusal(view: Dictionary, verb: String) -> String:
 	var parts := PackedStringArray()
 	var clauses: Array = (view.get("unavailable", {}) as Dictionary).get(verb, [])
 	for clause in clauses:
-		var label := String((clause as Dictionary).get("label", ""))
+		# The module publishes a KEY per clause (`Refusal.BUSY_LABEL`), so it resolves here —
+		# this join is what the message line shows.
+		var label := L.t(String((clause as Dictionary).get("label", "")))
 		if not label.is_empty() and not parts.has(label):
 			parts.append(label)
 	return "; ".join(parts)

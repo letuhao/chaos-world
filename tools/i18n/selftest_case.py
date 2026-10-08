@@ -195,6 +195,64 @@ def _growth_is_red() -> None:
         expect(_check(root) == 1, "new hardcoded English past the baseline must fail")
 
 
+_APP_SCENE = """[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/app/owner.gd" id="1"]
+
+[node name="Bar" type="Control"]
+script = ExtResource("1")
+
+[node name="Slot" type="Button" parent="."]
+tooltip_text = "Route slot 1"
+"""
+
+
+@case("i18n: an APP-owned scene holds a BARE key, never a call (a scene cannot parse one)")
+def _app_scene_holds_a_bare_key() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        write(
+            root / "game" / "src" / "app" / "owner.gd",
+            "extends Control\n\n\nfunc _ready() -> void:\n\tL.localize_tree(self)\n",
+        )
+        write(root / "game" / "scenes" / "bar.tscn", _APP_SCENE)
+        write(root / "game" / "locale" / "scenes.tres", catalog.render("en", {}))
+        write(root / "game" / "locale" / "gaps.json", "{}")
+        _extract(root, scope="scenes")
+        text = (root / "game" / "scenes" / "bar.tscn").read_text(encoding="utf-8")
+        expect('tooltip_text = "LOC_' in text, f"the scene holds the key: {text!r}")
+        expect(
+            "L.t(" not in text, f"and never a call — Godot cannot parse one in a scene: {text!r}"
+        )
+
+
+@case("i18n: a scene nothing covers stays inventoried")
+def _uncovered_scene_is_not_rewritten() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        write(root / "game" / "scenes" / "dead.tscn", _APP_SCENE)
+        write(root / "game" / "locale" / "scenes.tres", catalog.render("en", {}))
+        write(root / "game" / "locale" / "gaps.json", "{}")
+        _extract(root, scope="scenes")
+        text = (root / "game" / "scenes" / "dead.tscn").read_text(encoding="utf-8")
+        expect(
+            'tooltip_text = "Route slot 1"' in text, f"an ownerless scene is left alone: {text!r}"
+        )
+
+
+@case("i18n: a NEW file's sink is not absorbed when the baseline is rewritten")
+def _new_file_sink_survives_the_baseline() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        _tree(root, _HARDCODED, catalog.render("en", {}))
+        _extract(root)  # the known file is keyed, so the baseline records it at nothing
+        # A second script lands with hardcoded English, and the next `extract` refreshes the
+        # baseline: recording its count here is how a new screen shipped sinks with `check` green.
+        write(root / "game" / "src" / "ui" / "fresh.gd", _HARDCODED)
+        engine._write_baseline(Path(root), engine.scan_all(Path(root)))
+        expect(_check(root) == 1, "a file the baseline never knew is not absorbed by a rewrite")
+
+
 @case("i18n extract then check: the rewrite is GREEN and idempotent")
 def _extract_round_trip() -> None:
     with tempfile.TemporaryDirectory() as tmp:

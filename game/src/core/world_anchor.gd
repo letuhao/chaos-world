@@ -140,6 +140,8 @@ static func ascend(actor: Actor) -> bool:
 ## enforces instead of restating the requirement (ADR 0034). Only meaningful above
 ## `COMMIT_MICRO`, which is the band whose gate reads the ascent at all.
 static func ascension_unmet(actor: Actor) -> String:
+	# A SENTINEL, not a sentence: three UI suites assert this value is published UNTOUCHED and
+	# only the wording on screen is withheld, so the key must not be resolved here.
 	if actor == null or actor.ascension == null:
 		return NO_ASCENT
 	var remaining := actor.ascension.steps_remaining()

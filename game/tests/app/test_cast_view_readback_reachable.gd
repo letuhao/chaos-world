@@ -286,7 +286,7 @@ func test_a_refused_cast_reports_nothing_moved() -> void:
 	# The refusal is a message the player can act on, not a silent false.
 	assert_eq(
 		String(loadout.summary().get("message", "")),
-		"%s: %s" % [String(def.id), String(TechniqueLoadoutScreen.NO_TARGET_BODY)],
+		"%s: %s" % [String(def.id), L.t(String(TechniqueLoadoutScreen.NO_TARGET_BODY))],
 		"the page says, in words, that nothing was fired and nothing was spent"
 	)
 

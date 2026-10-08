@@ -418,7 +418,7 @@ func test_resolve_cancels_when_the_tier_gate_shut_under_the_attempt() -> void:
 	var stored := BodyAdvancement.attempt(actor)
 	assert_ne(stored == null, true, "the record is kept")
 	assert_eq(stored.status, BodyAttempt.STATUS_CANCELLED, "cancelled, not a deviation")
-	assert_eq(L.t(stored.outcome_granted), false, "nothing granted")
+	assert_eq(stored.outcome_granted, false, "nothing granted")
 	assert_eq(stored.trial_complete, false, "no trial ran")
 
 
@@ -433,7 +433,7 @@ func test_cancel_ends_the_attempt_without_a_deviation() -> void:
 	assert_eq(BodyAdvancement.cancel(actor), true, "cancelled")
 	var stored := BodyAdvancement.attempt(actor)
 	assert_eq(stored.status, BodyAttempt.STATUS_CANCELLED, "cancelled")
-	assert_eq(L.t(stored.outcome_granted), false, "nothing granted")
+	assert_eq(stored.outcome_granted, false, "nothing granted")
 	assert_eq(
 		(actor.component(&"acupoints") as AcupointSet).blocked_count(),
 		blocked,

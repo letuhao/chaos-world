@@ -55,12 +55,15 @@ func show_territory(view: Dictionary) -> void:
 	var authored_name := String(_view.get("display_name", ""))
 	_head = authored_name if authored_name != "" else String(_view.get("territory_id", ""))
 	if _head == "":
-		_head = UNKNOWN_TEXT
+		_head = L.t(UNKNOWN_TEXT)
 	var holder := String(_view.get("holder_id", ""))
-	_holder = NO_HOLDER if holder == "" else "%s %s" % [HOLDER_PREFIX, holder]
+	# `summary()` publishes every line here, and each branch value is a KEY.
+	_holder = L.t(NO_HOLDER) if holder == "" else "%s %s" % [L.t(HOLDER_PREFIX), holder]
 	var challenger := String(_view.get("challenger_id", ""))
-	_challenge = NO_CHALLENGER if challenger == "" else "%s %s" % [CHALLENGER_PREFIX, challenger]
-	_meta = _meta_text()
+	_challenge = (
+		L.t(NO_CHALLENGER) if challenger == "" else "%s %s" % [L.t(CHALLENGER_PREFIX), challenger]
+	)
+	_meta = L.t(_meta_text())
 	_render()
 
 

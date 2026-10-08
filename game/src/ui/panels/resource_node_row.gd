@@ -238,7 +238,7 @@ func _custody_text() -> String:
 	if is_contested():
 		return (
 			L.t("LOC_UI_PANELS_D342B2A250")
-			% [VACANT_TEXT, META_SEP, CONTESTED_SUFFIX.strip_edges()]
+			% [L.t(VACANT_TEXT), L.t(META_SEP), L.t(CONTESTED_SUFFIX.strip_edges())]
 		)
 	if is_vacant():
 		return L.t(VACANT_TEXT)

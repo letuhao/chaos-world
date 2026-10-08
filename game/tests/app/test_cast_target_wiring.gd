@@ -421,7 +421,7 @@ func test_no_target_is_refused_by_name_and_costs_nothing() -> void:
 	# And the refusal is a MESSAGE the player can act on, not a silent false.
 	assert_eq(
 		String(page.summary().get("message", "")),
-		"%s: %s" % [String(def.id), String(TechniqueLoadoutScreen.NO_TARGET_BODY)],
+		"%s: %s" % [String(def.id), L.t(String(TechniqueLoadoutScreen.NO_TARGET_BODY))],
 		"the page says, in words, that nothing was fired and nothing was spent"
 	)
 	# With nowhere to aim the row refuses to offer the press at all, so a player is

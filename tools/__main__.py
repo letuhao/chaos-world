@@ -65,6 +65,8 @@ render_durability_selftest = _load("render_durability_selftest")
 race_from_lore_selftest = _load("race_from_lore_selftest")
 art_fidelity = _load("art_fidelity")
 assets = _load("assets")
+faultlands_pack = _load("faultlands_pack")
+faultlands_pack_selftest = _load("faultlands_pack_selftest")
 assets_sweep = _load("assets_sweep")
 character_assets = _load("character_assets")
 character_bundle_sync = _load("character_bundle_sync")
@@ -135,6 +137,7 @@ COMMANDS = {
     "no_caller_verbs": no_caller_verbs,
     "art_fidelity": art_fidelity,
     "assets": assets,
+    "faultlands": faultlands_pack,
     "assets-sweep": assets_sweep,
     "character_assets": character_assets,
     "character_bundle_sync": character_bundle_sync,

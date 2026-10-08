@@ -254,7 +254,9 @@ func test_ascend_walks_the_ascent_one_step_at_a_time() -> void:
 ## breakthrough that begins it.
 func test_ascend_refuses_without_an_ascent() -> void:
 	var actor := _player()
-	assert_eq(WorldAnchor.ascension_unmet(actor), "No ascent begun", "and says so")
+	# The module publishes the sentinel KEY (the UI resolves or withholds it), so the sentence is
+	# what the KEY reads as — not the raw value.
+	assert_eq(L.t(WorldAnchor.ascension_unmet(actor)), "No ascent begun", "and says so")
 	assert_eq(WorldAnchor.ascend(actor), false, "nothing to walk")
 
 

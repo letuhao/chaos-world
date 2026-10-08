@@ -147,12 +147,51 @@ def scan_all(repo_root: Path) -> list[tuple[str, Scan]]:
     return out
 
 
+_SCENE_SCRIPT = re.compile(r'^\[ext_resource type="Script" path="res://([^"]+)"', re.MULTILINE)
+_SCENE_REF = re.compile(r'^\[ext_resource type="PackedScene" path="res://([^"]+)"', re.MULTILINE)
+
+
+def _pass_covered_scenes(repo_root: Path) -> set[str]:
+    """The scenes the PROGRAM resolves, by the same rule `src/ui` scenes meet.
+
+    A scene is covered when its root script calls `L.localize_tree`, and so is every scene such a
+    scene instantiates, because the pass walks the whole subtree. An app scene nothing covers has
+    no reader for a key, so it stays INVENTORIED (`tscn_app_lit`) rather than swept.
+    """
+    # The walk is the SOURCE tree, not the scanned list: `game/src/app/` composes no wording of
+    # its own, so it is not a scanned root, yet it owns the app scene whose subtree it resolves.
+    owners: set[str] = set()
+    scenes: dict[str, str] = {}
+    for path in (repo_root / "game" / "src").rglob("*.gd"):
+        if "localize_tree" in read_text(path):
+            owners.add(path.relative_to(repo_root).as_posix())
+    for root in (repo_root / "game" / "src" / "ui", repo_root / "game" / "scenes"):
+        for path in root.rglob("*.tscn"):
+            rel = path.relative_to(repo_root).as_posix()
+            scenes[rel] = read_text(path)
+    covered: set[str] = set()
+    frontier: list[str] = []
+    for rel, body in scenes.items():
+        script = _SCENE_SCRIPT.search(body)
+        if script is not None and f"game/{script.group(1)}" in owners:
+            covered.add(rel)
+            frontier.append(rel)
+    while frontier:
+        parent = frontier.pop()
+        for ref in _SCENE_REF.findall(scenes.get(parent, "")):
+            child = f"game/{ref}"
+            if child in scenes and child not in covered:
+                covered.add(child)
+                frontier.append(child)
+    return covered
+
+
 def _replacement(finding: Finding, original: str) -> str:
     """The text a sink is rewritten to. `original` is the current source slice of the span."""
     if finding.kind in ("gd_prop_expr", "gd_format_expr"):
         return f"{policy.RESOLVER}({original})"
     slug = finding.key or catalog.slug_for(finding.prefix, finding.english)
-    if finding.kind in ("tscn_lit", "tres_lit", "gd_const_key"):
+    if finding.kind in ("tscn_lit", "tscn_app_lit", "tres_lit", "gd_const_key"):
         # A scene value, a data field or a `static`-context const holds the BARE key; a reader
         # resolves it (`L.t` at the sink). This is what keeps a static-only module compilable.
         return f'"{slug}"'
@@ -184,8 +223,19 @@ def _guard_counts(scans: list[tuple[str, Scan]]) -> dict[str, int]:
 
 
 def _write_baseline(repo_root: Path, scans: list[tuple[str, Scan]]) -> bool:
+    """Record the sink count of every file the baseline ALREADY knows.
+
+    A file it does not know is left out, which `check` reads as zero — so a NEW script with
+    hardcoded English fails the guard instead of being absorbed by the next extract. A file whose
+    sinks are all keyed drops out too, which is the post-migration invariant: no hardcoded
+    player-facing text in `ui/`.
+    """
     counts = _guard_counts(scans)
     path = repo_root / GAPS_REL
+    previous: dict[str, int] = {}
+    if path.is_file():
+        previous = json.loads(read_text(path))
+    counts = {rel: value for rel, value in counts.items() if rel in previous}
     text = json.dumps(counts, indent=2, sort_keys=True) + "\n"
     if path.is_file() and read_text(path) == text:
         return False
@@ -265,6 +315,7 @@ def _extract(args) -> int:
             "the panel first, then pass --unsafe."
         )
     scans = scan_all(repo_root)
+    covered = _pass_covered_scenes(repo_root)
     existing = _load_catalogs(repo_root)
     rows: dict[str, dict[str, str]] = {}
     for rel, result in scans:
@@ -287,7 +338,12 @@ def _extract(args) -> int:
     for rel, result in scans:
         if only and not any(needle in rel for needle in only):
             continue
-        targets = [f for f in result.findings if f.kind in kinds]
+        targets = [
+            f
+            for f in result.findings
+            if f.kind in kinds
+            or (f.kind == "tscn_app_lit" and rel in covered and "tscn_lit" in kinds)
+        ]
         if not targets:
             continue
         total += len(targets)

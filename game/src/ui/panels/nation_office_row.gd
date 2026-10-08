@@ -62,16 +62,18 @@ func show_office(view: Dictionary) -> void:
 		return
 	_view = view.duplicate(true)
 	var vacant := bool(_view.get("vacant", false))
-	var authored_name := String(_view.get("display_name", ""))
+	# Every line here is published by `summary()`, so each resolves where it is built: the label
+	# resolves too, and a summary that disagreed with its label is the bug this closes.
+	var authored_name := L.t(String(_view.get("display_name", "")))
 	_head = authored_name if authored_name != "" else String(_view.get("office_id", ""))
 	if _head == "":
-		_head = UNKNOWN_TEXT
+		_head = L.t(UNKNOWN_TEXT)
 	# The one line that must never be ambiguous: a seat with no holder says so in
 	# words. It is not an empty string, a zero, or a dash.
-	_holder = VACANT_TEXT if vacant else "%s %s" % [HOLDER_PREFIX, holder_id()]
+	_holder = (L.t(VACANT_TEXT) if vacant else "%s %s" % [L.t(HOLDER_PREFIX), holder_id()])
 	_method = String(_view.get("succession_method", ""))
-	_method = METHOD_UNKNOWN if _method == "" else _method
-	_meta = _meta_text()
+	_method = L.t(METHOD_UNKNOWN) if _method == "" else _method
+	_meta = L.t(_meta_text())
 	_render()
 
 

@@ -1,0 +1,22 @@
+[gd_resource type="Translation" format=3]
+
+[resource]
+locale = "en"
+messages = {
+"LOC_SCENES_0280F48ADB": "Route slot 2",
+"LOC_SCENES_130709988E": "Route slot 8",
+"LOC_SCENES_223249EEC7": "Route slot 9",
+"LOC_SCENES_256C5C82C7": "Route slot 14",
+"LOC_SCENES_304CDC68A0": "Route slot 11",
+"LOC_SCENES_3826FCB46D": "Route slot 16",
+"LOC_SCENES_53EDF6CE2D": "Route slot 7",
+"LOC_SCENES_6CAB69C3F5": "Route slot 3",
+"LOC_SCENES_741333F75A": "Route slot 13",
+"LOC_SCENES_757C3D372B": "Route slot 12",
+"LOC_SCENES_A0ED569F90": "Route slot 4",
+"LOC_SCENES_AAA43F1C71": "Route slot 10",
+"LOC_SCENES_B82DE8B956": "Route slot 5",
+"LOC_SCENES_CF59B4E76F": "Route slot 1",
+"LOC_SCENES_F0A4C90DA8": "Route slot 6",
+"LOC_SCENES_F92C530CB7": "Route slot 15",
+}

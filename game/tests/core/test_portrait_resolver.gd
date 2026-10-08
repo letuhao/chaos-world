@@ -244,7 +244,8 @@ func test_a_published_character_portrait_resolves_with_every_layer() -> void:
 	# that has nothing to do with the wiring under test. The panel reports a missing file itself.
 	var def := PortraitCatalog.instance().portrait_definition(&"unique-0001")
 	assert_ne(def, null, "the published portrait is not in the catalog")
-	assert_eq(String(def.display_name), "Ilsa Renn", "authored display name survived the sync")
+	# The def holds the KEY like every authored display field, so the sentence is what it reads as.
+	assert_eq(L.t(String(def.display_name)), "Ilsa Renn", "authored display name survived the sync")
 	var layers := def.layer_paths
 	assert_eq(layers.size(), 2, "both installable shots are declared as layers")
 	assert_eq(

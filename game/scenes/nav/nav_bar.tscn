@@ -24,97 +24,97 @@ layout_mode = 2
 [node name="Slot0Button" type="Button" parent="Layout/RouteRow"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Route slot 1"
+tooltip_text = "LOC_SCENES_CF59B4E76F"
 text = "1"
 
 [node name="Slot1Button" type="Button" parent="Layout/RouteRow"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Route slot 2"
+tooltip_text = "LOC_SCENES_0280F48ADB"
 text = "2"
 
 [node name="Slot2Button" type="Button" parent="Layout/RouteRow"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Route slot 3"
+tooltip_text = "LOC_SCENES_6CAB69C3F5"
 text = "3"
 
 [node name="Slot3Button" type="Button" parent="Layout/RouteRow"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Route slot 4"
+tooltip_text = "LOC_SCENES_A0ED569F90"
 text = "4"
 
 [node name="Slot4Button" type="Button" parent="Layout/RouteRow"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Route slot 5"
+tooltip_text = "LOC_SCENES_B82DE8B956"
 text = "5"
 
 [node name="Slot5Button" type="Button" parent="Layout/RouteRow"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Route slot 6"
+tooltip_text = "LOC_SCENES_F0A4C90DA8"
 text = "6"
 
 [node name="Slot6Button" type="Button" parent="Layout/RouteRow"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Route slot 7"
+tooltip_text = "LOC_SCENES_53EDF6CE2D"
 text = "7"
 
 [node name="Slot7Button" type="Button" parent="Layout/RouteRow"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Route slot 8"
+tooltip_text = "LOC_SCENES_130709988E"
 text = "8"
 
 [node name="Slot8Button" type="Button" parent="Layout/RouteRow"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Route slot 9"
+tooltip_text = "LOC_SCENES_223249EEC7"
 text = "9"
 
 [node name="Slot9Button" type="Button" parent="Layout/RouteRow"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Route slot 10"
+tooltip_text = "LOC_SCENES_AAA43F1C71"
 text = "0"
 
 [node name="Slot10Button" type="Button" parent="Layout/RouteRow"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Route slot 11"
+tooltip_text = "LOC_SCENES_304CDC68A0"
 text = "-"
 
 [node name="Slot11Button" type="Button" parent="Layout/RouteRow"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Route slot 12"
+tooltip_text = "LOC_SCENES_757C3D372B"
 text = "q"
 
 [node name="Slot12Button" type="Button" parent="Layout/RouteRow"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Route slot 13"
+tooltip_text = "LOC_SCENES_741333F75A"
 text = "e"
 
 [node name="Slot13Button" type="Button" parent="Layout/RouteRow"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Route slot 14"
+tooltip_text = "LOC_SCENES_256C5C82C7"
 text = "c"
 
 [node name="Slot14Button" type="Button" parent="Layout/RouteRow"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Route slot 15"
+tooltip_text = "LOC_SCENES_F92C530CB7"
 text = "l"
 
 [node name="Slot15Button" type="Button" parent="Layout/RouteRow"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Route slot 16"
+tooltip_text = "LOC_SCENES_3826FCB46D"
 text = "t"
 
 [node name="StatusLabel" type="Label" parent="Layout"]

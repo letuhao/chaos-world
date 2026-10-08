@@ -11,6 +11,10 @@ func _screen() -> WorldMapScreen:
 	return (load(SCREEN) as PackedScene).instantiate() as WorldMapScreen
 
 
+## How many values the primitive walk visited, so the test can assert it looked at all.
+var _primitives_seen := 0
+
+
 func _actor() -> Actor:
 	var actor := Actor.new(&"map_hero", {Stat.PHYSIQUE: 20.0})
 	actor.set_path(PathState.new(PathState.BODY, &"qi_refining"))
@@ -119,7 +123,11 @@ func test_info_panel_shows_details_on_selection() -> void:
 	if not nodes.is_empty():
 		var loc_id := StringName(nodes[0].get("location_id", &""))
 		screen._on_node_pressed(loc_id)
-		assert_eq(screen._info_name.text, nodes[0].get("display_name", ""), "name shown")
+		# The node publishes the KEY and the label holds the resolved text, so the comparison
+		# resolves too — otherwise the test reads the slug as the expectation.
+		assert_eq(
+			screen._info_name.text, L.t(String(nodes[0].get("display_name", ""))), "name shown"
+		)
 		assert_eq(screen._info_tier.text != "", true, "tier shown")
 		assert_eq(screen._info_faction.text != "", true, "faction shown")
 		assert_eq(screen._info_danger.text != "", true, "danger shown")
@@ -145,12 +153,19 @@ func test_tier_grouping_is_reflected_in_positions() -> void:
 
 func test_summary_values_are_primitives() -> void:
 	var screen := _screen()
-	screen.setup(_actor())
+	var actor := _actor()
+	screen.setup(actor)
+	assert_ne(screen.actor(), null, "the screen is bound to the actor it was handed")
+	# The walk asserts only when it FINDS a non-primitive, so the test has to assert it ran —
+	# otherwise it reports "asserted nothing" against its own floor whatever the summary holds.
+	_primitives_seen = 0
 	_check_primitives(screen.summary())
+	assert_ne(_primitives_seen, 0, "and the walk visited what the screen published")
 	screen.free()
 
 
 func _check_primitives(value: Variant) -> void:
+	_primitives_seen += 1
 	match typeof(value):
 		TYPE_BOOL, TYPE_INT, TYPE_FLOAT, TYPE_STRING, TYPE_STRING_NAME:
 			pass

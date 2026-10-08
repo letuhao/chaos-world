@@ -8,6 +8,10 @@ extends RefCounted
 const STAT := &"stat"
 const RESOURCE := &"resource"
 const PROPERTY := &"property"
+## The lifespan a consumable extends. `tests/modules/items/test_lifespan_elixir.gd` reads it as a
+## `target_type`, and the recipe/elixir pair tags itself `&"lifespan"` — this was the only half
+## missing, and its absence stopped that suite from PARSING, which aborted the whole module run.
+const LIFESPAN := &"lifespan"
 
 # Resource scopes: one-shot restoration vs a persistent capacity/regen change.
 const SCOPE_CURRENT := &"current"
