@@ -58,6 +58,10 @@ func teardown() -> void:
 	CustodyApi.set_minter(Callable())
 	ForageApi.set_granter(Callable())
 	ResourceNodeCatalog.instance().reset()
+	# The institution registry and the org family catalog are process-wide too, and the
+	# registered-kind test below boots them (ADR 0933): return both to "not wired".
+	InstitutionRegistry.shared = null
+	InstitutionDefCatalog.clear()
 
 
 ## A holder with everything a claim needs: an inventory for the coin leg, and all four
@@ -306,8 +310,9 @@ func test_subject_refuses_when_no_minter_is_installed() -> void:
 
 
 func test_the_resolver_answers_for_all_four_owner_kinds() -> void:
-	# `OwnerRef.KINDS` is closed and every one of the four resolves through a real path:
-	# `actor` by its id, and each institution tier by its authored catalog.
+	# `actor` plus the three shipped tiers each resolve through a real path: `actor` by
+	# its id, and each tier by its authored catalog. The kind set is OPEN (ADR 0933) — the
+	# registered non-tier case is asserted in the test beside this one.
 	assert_eq(bool(OwnerResolver.resolve("actor", "player")["ok"]), true, "an actor resolves")
 	for kind in [&"clan", &"sect", &"nation"]:
 		var ghost := OwnerResolver.resolve(String(kind), "no_such_institution")
@@ -319,10 +324,42 @@ func test_the_resolver_answers_for_all_four_owner_kinds() -> void:
 		)
 
 
+## ## A registered non-tier kind is a holder kind (ADR 0933, ADR 0922)
+##
+## The pack's licence reaching the holder vocabulary: before this slice `OwnerRef.KINDS`
+## was closed to four names, so a modder's organization kind could hold nothing. The kind
+## is registered by the same boot that registers every shipped kind, and its id must name
+## an authored organization OF THAT KIND — both halves are checked, so a typo'd id refuses
+## by name instead of silently owning ground.
+func test_the_resolver_accepts_a_registered_non_tier_kind() -> void:
+	InstitutionDefCatalog.clear()
+	var installed := InstitutionBoot.install()
+	assert_eq(
+		bool(installed["ok"]),
+		true,
+		"setup: the shipped family registers: %s" % [installed.get("refused", [])]
+	)
+	assert_eq(
+		InstitutionRegistry.instance().knows(&"trading_guild"),
+		true,
+		"setup: the guild kind is registered"
+	)
+	var shipped := OwnerResolver.resolve("trading_guild", "lantern_exchange")
+	assert_eq(
+		bool(shipped["ok"]),
+		true,
+		"a registered non-tier kind resolves: %s" % shipped.get("reason", "")
+	)
+	var ghost := OwnerResolver.resolve("trading_guild", "no_such_house")
+	assert_eq(bool(ghost["ok"]), false, "and an id of that kind that names nothing refuses")
+	assert_eq(String(ghost["reason"]), OwnerResolver.UNKNOWN_INSTITUTION, "by the generic name")
+
+
 func test_the_resolver_refuses_an_unknown_kind_closed() -> void:
 	# The whole point of the type: a typo must never answer as somebody else. Defaulting
-	# to `actor` would let a sect's holding pass a player's check.
-	for kind_value in ["guild", "town", "", "Actor"]:
+	# to `actor` would let a sect's holding pass a player's check. The kind set is OPEN
+	# (ADR 0933) but not unbounded: a kind no boot registered is not a kind.
+	for kind_value in ["no_such_org_kind", "town", "Actor", ""]:
 		var answered := OwnerResolver.resolve(kind_value, "x")
 		assert_eq(bool(answered["ok"]), false, "kind '%s' refuses" % kind_value)
 		assert_eq(

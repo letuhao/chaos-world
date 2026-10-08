@@ -12,21 +12,36 @@ extends RefCounted
 ## `RefCounted`, not a `Resource`, because it is never an `@export` on a `.tres` — the
 ## authored node definition names it by `kind` and `id`, never by holding a live reference.
 ##
+## ## The kind vocabulary is OPEN, and this file does not police it (ADR 0933)
+##
+## A holder kind is valid when the build has REGISTERED it — a pack's `trading_guild` as
+## much as a shipped tier — and the institution registry lives above this leaf layer, so
+## membership is decided where the registry IS visible: `OwnerResolver.resolve`, ADR 0097's
+## injected seam, which refuses an unregistered kind by name. A copy of that vocabulary
+## here would be a second list that can drift; an injected checker would make a value
+## object carry process-global state. So this file validates STRUCTURE only — a non-empty
+## kind and a non-empty id. `actor` is not special here either: it is special at the
+## resolver, which resolves it by id because it is the one kind with no catalog.
+##
 ## ## The three-state vocabulary is load-bearing
 ##
 ## An absent holder is `{"vacant": true}` (ADR 0083): the thing exists and its value does
 ## not. `{}` means there is no thing at all. These are different answers and a screen that
 ## collapses them cannot render a claim on unowned ground.
 
-## The closed set of holder kinds. A ref naming anything else refuses closed — an unknown
-## kind is a content bug, and defaulting it to `actor` would let a sect's holding answer to
-## a player's check.
+## The kinds whose resolution path ships STATICALLY with the resolver: `actor`, resolved
+## by id because it is the one kind with no catalog, and the three institution tiers whose
+## catalogs ship in this build. **Not the acceptance vocabulary** — see the class note: the
+## kind set is OPEN, and any kind `InstitutionRegistry` knows is an equally valid holder.
+## Read this as "resolves without the registry", never as "the only kinds".
 const KINDS: Array[StringName] = [&"actor", &"clan", &"sect", &"nation"]
 
+## The refusal an empty kind reaches HERE, and the one an unregistered kind reaches at the
+## resolver — one rule, one name, written once.
 const UNKNOWN_KIND := "unknown_owner_kind"
 const VACANT := "vacant"
 
-## The kind of holder. Always one of `KINDS` on a normalized ref.
+## The kind of holder. Any non-empty kind on a normalized ref; see the class note.
 var kind: StringName = &""
 ## The id of the holder, scoped by `kind`.
 var id: StringName = &""
@@ -47,11 +62,13 @@ static func is_vacant(data: Variant) -> bool:
 	return data is Dictionary and (data as Dictionary).get(VACANT, false) == true
 
 
-## Build a ref, refusing an unknown kind. `{ok: false, reason: ...}` rather than a
-## half-formed ref, so a typo in authored content fails loudly at load instead of
-## answering as somebody else.
+## Build a ref, refusing only a structurally incomplete one: an empty kind names no kind,
+## and an empty id names nobody. Membership is NOT checked here — a kind this build does
+## not register still builds a ref, and every USE of it refuses by name at
+## `OwnerResolver.resolve` (class note). Rejected: defaulting a missing kind to `actor`,
+## which would let a sect's holding answer to a player's check.
 static func create(kind_value: StringName, id_value: StringName) -> Dictionary:
-	if not KINDS.has(kind_value):
+	if kind_value == &"":
 		return {"ok": false, "reason": UNKNOWN_KIND, "kind": String(kind_value)}
 	if id_value == &"":
 		return {"ok": false, "reason": "unknown_owner", "kind": String(kind_value)}
@@ -65,9 +82,17 @@ func to_dict() -> Dictionary:
 	return {"kind": String(kind), "id": String(id)}
 
 
-## Restore from `to_dict`. An unknown kind normalizes to the empty ref rather than being
-## kept, because a ref that names a holder kind the game does not have cannot be resolved
-## by anything and would sit in a ledger forever.
+## Restore from `to_dict`. A kind this build does not register is KEPT, never dropped and
+## never coerced: an institution holding ground is a WORLD FACT (ADR 0097), and collapsing
+## the ref is how a held node reads as VACANT — free ground for the next claimant, erased
+## for good by the next autosave. Keeping it smuggles nothing in, because nothing acts on
+## an unresolvable holder: every use refuses by name at the resolver. Contrast
+## `clan_state.normalize`, which DROPS an id no def defines — a membership there is acted
+## on (it grants recognition), which is the difference.
+##
+## A corrupt (wrong-typed) field is diagnosed as empty, never aborted: `StringName(42.0)`
+## RAISES in GDScript, and a save load that crashes reads as a composition-root bug rather
+## than as one bad field (`InstitutionLedger._text` records the same rule).
 static func from_dict(data: Variant) -> OwnerRef:
 	var ref := OwnerRef.new()
 	if not data is Dictionary:
@@ -75,11 +100,17 @@ static func from_dict(data: Variant) -> OwnerRef:
 	var source := data as Dictionary
 	if bool(source.get(VACANT, false)):
 		return ref
-	var kind_value := StringName(source.get("kind", ""))
-	if not KINDS.has(kind_value):
+	var kind_source: Variant = source.get("kind", "")
+	var id_source: Variant = source.get("id", "")
+	if not (kind_source is String or kind_source is StringName):
+		return ref
+	if not (id_source is String or id_source is StringName):
+		return ref
+	var kind_value := StringName(kind_source)
+	if kind_value == &"":
 		return ref
 	ref.kind = kind_value
-	ref.id = StringName(source.get("id", ""))
+	ref.id = StringName(id_source)
 	return ref
 
 

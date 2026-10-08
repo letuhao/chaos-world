@@ -272,14 +272,24 @@ func test_the_corpus_really_carries_non_zero_floors_after_loading() -> void:
 # --- refusals a floor must not swallow ------------------------------------------
 
 
-## An unknown holder is refused BY NAME, and the floor is not what refuses it. Asserted on
-## a floor-0 node so the only rule in play is the unknown-kind refusal: a gate that reported
-## `claim_below_floor` for everything would otherwise satisfy the first half of this test.
+## An unregistered holder kind is refused BY NAME, and the floor is not what refuses it.
+## Asserted on a floor-0 node so the only rule in play is the kind refusal: a gate that
+## reported `claim_below_floor` for everything would otherwise satisfy the first half of
+## this test.
+##
+## The kind vocabulary is OPEN (ADR 0933) and it is the resolver's to police, so this case
+## installs the refusal the way `OwnerResolver` gives it for a kind no boot registered. A
+## module-side pre-filter answers the same rule first today; both paths name
+## `unknown_owner_kind` and neither touches the floor.
 func test_an_unknown_holder_refuses_by_name_rather_than_as_a_floor() -> void:
 	var open := _open_nodes()
 	assert_ne(open.is_empty(), true, "setup: the corpus authors a floor-0 node")
+	HoldingsApi.set_resolver(
+		func(_kind: String, _id: String) -> Dictionary:
+			return {"ok": false, "reason": OwnerRef.UNKNOWN_KIND}
+	)
 	var result := HoldingsApi.claim(_actor, open[0].node_id, _owner(&"x", &"guild"))
-	assert_eq(bool(result["ok"]), false, "a kind outside the closed set refuses")
+	assert_eq(bool(result["ok"]), false, "a kind no boot registered refuses")
 	assert_eq(
 		String(result["reason"]),
 		HoldingsState.UNKNOWN_OWNER_KIND,
@@ -326,12 +336,34 @@ func test_the_production_owner_ref_carries_no_standing_field() -> void:
 	assert_eq(stored, {}, "an unknown node has no holder to read a field off")
 
 
+## ## An unregistered kind is a WORLD FACT, not a reason to erase a holder (ADR 0933).
+##
+## `HoldingsState.normalize` used to collapse a ref whose kind this build does not know
+## into `vacant`: a held node any rival could then take for free, and an erasure the next
+## autosave would make permanent. The ref is KEPT verbatim and every USE of it refuses by
+## name at the resolver, so the ground stays somebody's until something can resolve it.
+func test_an_unregistered_kind_keeps_the_holder_instead_of_reading_vacant() -> void:
+	var state := HoldingsState.normalize(
+		{"nodes": {"wayfarer_hold": {"owner": {"kind": "wayfarer_guild", "id": "the_company"}}}}
+	)
+	assert_eq(
+		HoldingsState.holder(state, &"wayfarer_hold"),
+		{"kind": "wayfarer_guild", "id": "the_company"},
+		"the holder survives normalize verbatim"
+	)
+	assert_eq(
+		HoldingsState.is_vacant(state, &"wayfarer_hold"),
+		false,
+		"so a rival can never read the ground as unowned"
+	)
+
+
 ## ## Institutions are not second-class any more.
 ##
 ## The old gate refused EVERY non-`actor` holder on a floored node outright, so an
-## institution could never take one — a type check wearing a gate's clothes. A count of
-## ledger rows is the same fact for all four `OwnerRef.KINDS`, so a clan reaches a floored
-## node on exactly the terms an actor does.
+## institution could never take one — a type check wearing a gate's clothes. The count
+## never reads the kind, so a clan reaches a floored node on exactly the terms an actor
+## does — and so will any kind a registered pack ships (ADR 0933).
 func test_a_floored_node_is_gated_on_holdings_for_an_institution_too() -> void:
 	var open := _open_nodes()
 	assert_ne(open.is_empty(), true, "setup: the corpus authors floor-0 nodes")
