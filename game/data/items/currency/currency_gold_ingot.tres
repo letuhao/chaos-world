@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"currency_gold_ingot"
-display_name = "Gold Ingot"
+display_name = "LOC_ITEMS_CURRENCY_GOLD_INGOT_DISPLAY_NAME"
 category = &"currency"
 rarity = &"common"
 realm = &"nascent_soul"

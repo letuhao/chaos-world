@@ -673,3 +673,26 @@ Before approving any generated asset wave into the game pack, each output file m
 7. **Downscaling Silhouette Legibility (`128px_readability_check`)**:
    - 1x1 cell items downscaled to 128x128 px must maintain high-contrast silhouette clarity without turning into unreadable micro-noise.
 
+---
+
+### 8.5 Empirical Candidate Test Results & Validation Log (7 Archetypes)
+
+The prompt formulas and variant mechanics were verified across all 7 archetypes using local ComfyUI (`krea2/raySemiReal_krea2TurboV1Nsfw` + `Scottie:1.0` LoRA) and automated headless validation.
+
+| # | Archetype | Candidate Asset Slug | Canonical Name | Variants Tested | Core Validation Outcome |
+|---|---|---|---|---|---|
+| **1** | `item_tool` | `crescent_spirit_herb_sickle` | Liềm Cắt Linh Thảo Nguyệt Nha | `pristine`, `rain_soaked`, `winter_frost`, `damaged_chipped` | **PASSED**: 100% clean cutout icon. Zero diorama, zero fence post, zero hands. Silhouette and blade curve identical across all 4 variants. |
+| **2** | `prop_workstation` | `bronze_trigram_pill_furnace` | Bát Quái Thanh Đồng Đan Lô | `dormant_unlit`, `active_fire`, `winter_snow`, `damaged_cracked` | **PASSED**: Authentic 3-legged tripod ding cauldron at 45° angle. Bagua trigram vents, active fire inside belly, snow caps on lid, identical tripod foot contact baseline. |
+| **3** | `structure_building` | `azure_cloud_mountain_gate` | Thanh Vân Sơn Môn Bài Lâu | `day_pristine`, `night_lit`, `winter_snow`, `damaged_breached` | **PASSED**: Tang-Song Dougong architecture with glazed emerald tiles. Flat horizontal ground contact line. Night variant preserves daylight albedo while illuminating red lanterns. |
+| **4** | `flora_herb` | `blood_crystal_ginseng` | Huyết Tinh Linh Sâm | `ripe_blooming`, `harvested_stump` | **PASSED**: Botanical Xianxia herb sprite. Zero diorama pots/dirt chunks. Harvested variant shows clipped stem and flat root stump. |
+| **5** | `fauna_beast` | `azure_crest_cloud_crane` | Thanh Đỉnh Linh Vân Hạc | `idle_standing`, `alert_aggressive` | **PASSED**: Adaptive `#D0D0D0` contrast background eliminated 100% of white plumage cutout holes. Pure crane anatomy on slender legs, zero perches/cages. |
+| **6** | `terrain_tile` | `danxia_red_crag_stone` | Đan Hà Hồng Sa Thạch Điền | `dry_temperate`, `wet_rain` | **PASSED**: Full-bleed opaque canvas (`alpha: opaque`, bypassing RemBG). Material-first phrasing prevents 3D canyon vistas; rain variant produces matching reflective water sheets. |
+| **7** | `vfx_particle` | `ascending_spiritual_qi_motes` | Thanh Kim Linh Quang Thăng Đằng | `subtle_ambient`, `surging_vortex` | **PASSED**: Solid pure `#000000` black background bypassing RemBG. Luminous cyan/gold energy glows, semi-transparent trails, and motes fully preserved for additive blending in Godot (`blend_mode = Add`). |
+
+#### Key Tuning Lessons & Production Rules:
+1. **Adaptive Contrast Backgrounds for White Cutouts**: Never prompt white/snow assets against `#FFFFFF` background. Grey `#D0D0D0` background allows RMBG-2.0 to preserve fine white feather tips, icicles, and white jade rims without erosion.
+2. **Bypassing RemBG for Additive VFX**: Atmospheric particles and Qi motes must be generated with `alpha: opaque` on `#000000` pitch black to maintain radiant transparency.
+3. **Material-First Phrasing for Ground Surfaces**: Diffusion models convert architectural nouns ("crag", "canyon", "pedestal") into 3D scenes. Ground surfaces must use material terminology ("uniform flat soil surface", "fine mineral silt", "broad planar pavement").
+4. **Immutable Geometry Anchors for Variants**: Keeping base materials, perspective angles, and contact pivots identical across variants guarantees seamless sprite swapping in Godot without collision jitter or visual popping.
+
+

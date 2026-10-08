@@ -18,7 +18,7 @@ tick_interval = 1.0
 mitigation_tags = Array[StringName]([&"affinity", &"gear", &"pill"])
 payload = {
 "mechanic": &"brace",
-"text": "The body moves on its own spark now. Hands and feet arrive before thought finishes.",
+"text": "LOC_STATUSES_LIGHTNING_QUICKEN_TEXT",
 "modifiers": [
 {"stat": &"attack_speed", "op": &"percent", "value": 0.1},
 {"stat": &"move_speed", "op": &"flat", "value": 6.0}

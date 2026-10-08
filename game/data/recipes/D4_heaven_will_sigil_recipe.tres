@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"D4_heaven_will_sigil_recipe"
-display_name = "Heaven Will Sigil Recipe"
+display_name = "LOC_RECIPES_D4_HEAVEN_WILL_SIGIL_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"sigil_heaven_ore", &"talisman_moonstone_shard"])
 outputs = Array[StringName]([&"D4_heaven_will_sigil"])

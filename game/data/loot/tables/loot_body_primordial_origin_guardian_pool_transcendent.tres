@@ -54,7 +54,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_body_primordial_origin_guardian_pool_transcendent"
-display_name = "Body of the Dao Guardian salvage (transcendent)"
+display_name = "LOC_LOOT_BODY_PRIMORDIAL_ORIGIN_GUARDIAN_TRANSCENDENT_0_DISPLAY_NAME"
 realm = &"transcendent"
 rarity = &""
 rolls = 1

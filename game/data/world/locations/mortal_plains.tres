@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 location_id = &"mortal_plains"
-display_name = "Mortal Plains"
+display_name = "LOC_WORLD_MORTAL_PLAINS_DISPLAY_NAME"
 tier = &"mortal_world"
 faction_id = &"body_dao"
 resources = Array[StringName]([&"iron_ore", &"herb_common"])

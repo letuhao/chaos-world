@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_puppet_marionette_king_pool_qi_refining"
-display_name = "Marionette King salvage (qi_refining)"
+display_name = "LOC_LOOT_PUPPET_MARIONETTE_KING_QI_REFINING_0_DISPLAY_NAME"
 realm = &"qi_refining"
 rarity = &""
 rolls = 1

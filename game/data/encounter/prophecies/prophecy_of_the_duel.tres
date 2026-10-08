@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_pro")
 id = &"prophecy_of_the_duel"
-display_name = "Prophecy of the Duel"
-description = "A cryptic vision of a duel that will define your path."
+display_name = "LOC_ENCOUNTER_PROPHECY_OF_THE_DUEL_DISPLAY_NAME"
+description = "LOC_ENCOUNTER_PROPHECY_OF_THE_DUEL_DESCRIPTION"
 hint_fate_id = &"first_blood_duel"
 hint_text = "Steel will cross steel, and the first blow struck will mark you forever."

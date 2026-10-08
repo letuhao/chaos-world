@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"censer_copper"
-display_name = "Copper Censer"
+display_name = "LOC_ITEMS_CENSER_COPPER_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"nascent_soul"

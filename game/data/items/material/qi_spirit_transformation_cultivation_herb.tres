@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"qi_spirit_transformation_cultivation_herb"
-display_name = "Spirit Transformation Herb"
+display_name = "LOC_ITEMS_QI_SPIRIT_TRANSFORMATION_CULTIVATION_HERB_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"spirit_transformation"
@@ -16,4 +16,4 @@ roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"herb"
 grade = &"mortal"
 sources = Array[StringName]([&"gather", &"domain:qi_qi_refining_trial"])
-description = "Cultivation herb for Spirit Transformation. Gathered from the wild."
+description = "LOC_ITEMS_QI_SPIRIT_TRANSFORMATION_CULTIVATION_HERB_DESCRIPTION"

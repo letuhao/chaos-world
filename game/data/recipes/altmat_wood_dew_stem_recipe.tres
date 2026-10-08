@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"altmat_wood_dew_stem_recipe"
-display_name = "Dew Stem Alternate Recipe"
+display_name = "LOC_RECIPES_ALTMAT_WOOD_DEW_STEM_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"wood_dew_stem", &"marine_seaweed_herb"])
 outputs = Array[StringName]([&"alchemy_clarity_pill"])

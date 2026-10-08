@@ -30,7 +30,7 @@ rarity_floor = &"magic"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d4_ash_effigy_pool_spirit_sovereign"
-display_name = "Ash Effigy Lesser salvage (spirit_sovereign)"
+display_name = "LOC_LOOT_D4_ASH_EFFIGY_SPIRIT_SOVEREIGN_0_DISPLAY_NAME"
 realm = &"spirit_sovereign"
 rarity = &""
 rolls = 1

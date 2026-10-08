@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F47_divine_graphitic_fortune_penetration_stamina_regen"
-display_name = "Divine Graphitic Fortune Penetration Stamina regen"
+display_name = "LOC_ITEMS_F47_DIVINE_GRAPHITIC_FORTUNE_PENETRATION_STAMINA_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"

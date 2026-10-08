@@ -42,7 +42,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_orb_storm_phoenix_pool_transcendent"
-display_name = "Storm Phoenix salvage (transcendent)"
+display_name = "LOC_LOOT_ORB_STORM_PHOENIX_TRANSCENDENT_0_DISPLAY_NAME"
 realm = &"transcendent"
 rarity = &""
 rolls = 1

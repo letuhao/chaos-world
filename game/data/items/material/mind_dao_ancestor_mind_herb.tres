@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"mind_dao_ancestor_mind_herb"
-display_name = "Mind Dao Ancestor Mind Herb"
+display_name = "LOC_ITEMS_MIND_DAO_ANCESTOR_MIND_HERB_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"dao_ancestor"
@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"herb"
 grade = &"divine"
 sources = Array[StringName]([&"gather", &"boss:F19_dao_warden"])
-description = "Gathered reagent for the realm's elixir."
+description = "LOC_ITEMS_MIND_DAO_ANCESTOR_MIND_HERB_DESCRIPTION"

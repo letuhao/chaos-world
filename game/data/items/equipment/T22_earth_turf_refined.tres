@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"T22_earth_turf_refined"
-display_name = "Earth Turf Refined"
+display_name = "LOC_ITEMS_T22_EARTH_TURF_REFINED_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"spirit_palace"

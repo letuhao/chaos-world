@@ -5,8 +5,8 @@
 script = ExtResource("1_def")
 id = &"mind_mirror_reversal"
 delivered_by = &"sigil_moon_reflect"
-display_name = "Mirror Reversal"
-description = "Splits an incoming impression and sends half of it back down the same path. A dark reflection, so it is weakest against light and best against its own kind."
+display_name = "LOC_TECHNIQUES_MIND_MIRROR_REVERSAL_DISPLAY_NAME"
+description = "LOC_TECHNIQUES_MIND_MIRROR_REVERSAL_DESCRIPTION"
 tags = Array[StringName]([&"technique", &"mind", &"dark", &"counter"])
 grade = &"spirit"
 rarity = &"magic"

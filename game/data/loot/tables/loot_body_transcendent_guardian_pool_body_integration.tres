@@ -30,7 +30,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_body_transcendent_guardian_pool_body_integration"
-display_name = "Body of Humanity Guardian salvage (body_integration)"
+display_name = "LOC_LOOT_BODY_TRANSCENDENT_GUARDIAN_BODY_INTEGRATION_0_DISPLAY_NAME"
 realm = &"body_integration"
 rarity = &""
 rolls = 1

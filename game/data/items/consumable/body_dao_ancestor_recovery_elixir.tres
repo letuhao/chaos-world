@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"body_dao_ancestor_recovery_elixir"
-display_name = "Dao Ancestor Mending Elixir"
+display_name = "LOC_ITEMS_BODY_DAO_ANCESTOR_RECOVERY_ELIXIR_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_ancestor"
@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"elixir"
 grade = &"divine"
 sources = Array[StringName]([&"craft:body_dao_ancestor_recovery_recipe"])
-description = "Clears a blocked huyệt and repairs one damaged channel after a failed breakthrough."
+description = "LOC_ITEMS_BODY_DAO_ANCESTOR_RECOVERY_ELIXIR_DESCRIPTION"

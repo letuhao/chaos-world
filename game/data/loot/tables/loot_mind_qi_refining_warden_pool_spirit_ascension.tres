@@ -30,7 +30,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_mind_qi_refining_warden_pool_spirit_ascension"
-display_name = "Mind Awakening Warden salvage (spirit_ascension)"
+display_name = "LOC_LOOT_MIND_QI_REFINING_WARDEN_SPIRIT_ASCENSION_0_DISPLAY_NAME"
 realm = &"spirit_ascension"
 rarity = &""
 rolls = 1

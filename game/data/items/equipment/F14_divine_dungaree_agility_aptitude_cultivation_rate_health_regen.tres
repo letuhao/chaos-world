@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F14_divine_dungaree_agility_aptitude_cultivation_rate_health_regen"
-display_name = "Divine Dungaree Agility Aptitude Cultivation rate Health regen"
+display_name = "LOC_ITEMS_F14_DIVINE_DUNGAREE_AGILITY_APTITUDE_CULTIVATION_RATE_HEALTH_REGEN_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"dao_ancestor"

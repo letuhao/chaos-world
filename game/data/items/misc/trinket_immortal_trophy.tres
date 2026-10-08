@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"trinket_immortal_trophy"
-display_name = "Immortal Trophy"
+display_name = "LOC_ITEMS_TRINKET_IMMORTAL_TROPHY_DISPLAY_NAME"
 category = &"misc"
 rarity = &"legendary"
 realm = &"golden_immortal"

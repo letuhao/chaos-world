@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 id = &"metal_flesh"
-display_name = "Iron Flesh"
+display_name = "LOC_BODY_CULTIVATION_METAL_FLESH_DISPLAY_NAME"
 best_against = "Cut and gash: metal holds a line a softer body parts along."
 material = &"metal"
 transforms_into = &"forearm"

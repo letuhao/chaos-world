@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"X15_immortal_assay_remainder"
-display_name = "Immortal Assay Remainder"
+display_name = "LOC_ITEMS_X15_IMMORTAL_ASSAY_REMAINDER_DISPLAY_NAME"
 category = &"key"
 rarity = &"legendary"
 realm = &"heaven_immortal"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 location_id = &"spirit_peaks"
-display_name = "Spirit Peaks"
+display_name = "LOC_WORLD_SPIRIT_PEAKS_DISPLAY_NAME"
 tier = &"spirit_world"
 faction_id = &"qi_dao"
 resources = Array[StringName]([&"spirit_stone", &"jade_ore"])

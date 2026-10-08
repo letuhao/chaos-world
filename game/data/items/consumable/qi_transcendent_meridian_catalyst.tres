@@ -5,9 +5,9 @@
 [resource]
 script = ExtResource("1_item")
 id = &"qi_transcendent_meridian_catalyst"
-display_name = "Origin Circuit Resin"
+display_name = "LOC_ITEMS_QI_TRANSCENDENT_MERIDIAN_CATALYST_DISPLAY_NAME"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"divine"
 sources = Array[StringName]([&"craft:qi_transcendent_meridian_catalyst_recipe"])
-description = "Spent to train one Transcendent meridian the next gate never names, for the flow and reservoir width it grants. No gate asks for it."
+description = "LOC_ITEMS_QI_TRANSCENDENT_MERIDIAN_CATALYST_DESCRIPTION"

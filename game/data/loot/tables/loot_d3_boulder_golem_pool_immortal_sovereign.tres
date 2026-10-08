@@ -30,7 +30,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d3_boulder_golem_pool_immortal_sovereign"
-display_name = "Stone Golem Lesser salvage (immortal_sovereign)"
+display_name = "LOC_LOOT_D3_BOULDER_GOLEM_IMMORTAL_SOVEREIGN_0_DISPLAY_NAME"
 realm = &"immortal_sovereign"
 rarity = &""
 rolls = 1

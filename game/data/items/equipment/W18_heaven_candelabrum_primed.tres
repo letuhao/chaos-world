@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"W18_heaven_candelabrum_primed"
-display_name = "Heaven Candelabrum Primed"
+display_name = "LOC_ITEMS_W18_HEAVEN_CANDELABRUM_PRIMED_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"true_immortal"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"A4_divine_ailanthus_base"
-display_name = "Divine Ailanthus Base"
+display_name = "LOC_ITEMS_A4_DIVINE_AILANTHUS_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"

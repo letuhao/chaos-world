@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B39_mortal_emolument_spirit_qi_cost_reduction"
-display_name = "Mortal Emolument Spirit Qi Cost Reduction"
+display_name = "LOC_ITEMS_B39_MORTAL_EMOLUMENT_SPIRIT_QI_COST_REDUCTION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"spirit_transformation"

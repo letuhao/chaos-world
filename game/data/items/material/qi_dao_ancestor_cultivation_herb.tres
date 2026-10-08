@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"qi_dao_ancestor_cultivation_herb"
-display_name = "Dao Ancestor Herb"
+display_name = "LOC_ITEMS_QI_DAO_ANCESTOR_CULTIVATION_HERB_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"dao_ancestor"
@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"herb"
 grade = &"divine"
 sources = Array[StringName]([&"gather", &"domain:mind_heaven_immortal_trial"])
-description = "Cultivation herb for Dao Ancestor. Gathered from the wild."
+description = "LOC_ITEMS_QI_DAO_ANCESTOR_CULTIVATION_HERB_DESCRIPTION"

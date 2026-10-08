@@ -216,7 +216,11 @@ static func record(
 		OK_RECORDED,
 		_merged(
 			about,
-			{"depth": stack.size(), "depth_limit": MAX_UNDO_DEPTH, "snapshot_values": _snapshot_size(board)}
+			{
+				"depth": stack.size(),
+				"depth_limit": MAX_UNDO_DEPTH,
+				"snapshot_values": _snapshot_size(board)
+			}
 		)
 	)
 
@@ -423,7 +427,11 @@ static func _resolve(actor: Actor, room_id: StringName, fixture_id: StringName) 
 		if String(fixture.get("fixture_id", "")) != String(fixture_id):
 			continue
 		if String(fixture.get("kind", "")) != String(DomainFixtures.KIND_PUZZLE):
-			return _answer(false, ERR_WRONG_KIND, _merged(_about(fixture, room_id), {"asked": String(fixture_id)}))
+			return _answer(
+				false,
+				ERR_WRONG_KIND,
+				_merged(_about(fixture, room_id), {"asked": String(fixture_id)})
+			)
 		return {"ok": true, "reason": "", "fixture": fixture, "key": _key(room_id, fixture_id)}
 	return _answer(
 		false, ERR_UNKNOWN_FIXTURE, {"room_id": String(room_id), "fixture_id": String(fixture_id)}
@@ -437,7 +445,9 @@ static func _key(room_id: StringName, fixture_id: StringName) -> String:
 ## The fixture's own ledger row, through `DomainFixtures`' public read. Normalised by
 ## that module, so `wrong` / `progress` / `claimed` arrive as ints and bools whether
 ## they came from a live ledger or out of a save.
-static func _record_of_fixture(actor: Actor, room_id: StringName, fixture_id: StringName) -> Dictionary:
+static func _record_of_fixture(
+	actor: Actor, room_id: StringName, fixture_id: StringName
+) -> Dictionary:
 	return DomainFixtures.state_of(actor, room_id, fixture_id)
 
 
@@ -602,7 +612,11 @@ static func _snapshot_of(state: Dictionary) -> Dictionary:
 	for field in state:
 		var flat := _flat_of(state[field], MAX_SNAPSHOT_VALUES - spent)
 		if not bool(flat.get("ok", false)):
-			return {"ok": false, "reason": String(flat.get("reason", ERR_SNAPSHOT_TOO_LARGE)), "values": {}}
+			return {
+				"ok": false,
+				"reason": String(flat.get("reason", ERR_SNAPSHOT_TOO_LARGE)),
+				"values": {}
+			}
 		var values: Array = flat["values"]
 		spent += values.size()
 		# A one-element list collapses to the scalar it always meant, so a `progress`
@@ -708,7 +722,13 @@ static func _tools(actor: Actor) -> Dictionary:
 static func _ensure_tools(actor: Actor) -> Dictionary:
 	var tools := _tools(actor)
 	if tools.is_empty():
-		tools = {"version": STATE_VERSION, "run": _run_id(actor), "stacks": {}, "hints": {}, "revealed": {}}
+		tools = {
+			"version": STATE_VERSION,
+			"run": _run_id(actor),
+			"stacks": {},
+			"hints": {},
+			"revealed": {}
+		}
 	return tools
 
 

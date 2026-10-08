@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"R12_divine_meridian_message"
-display_name = "Divine Meridian Message"
+display_name = "LOC_ITEMS_R12_DIVINE_MERIDIAN_MESSAGE_DISPLAY_NAME"
 category = &"quest"
 rarity = &"legendary"
 realm = &"dao_ancestor"

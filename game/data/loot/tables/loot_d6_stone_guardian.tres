@@ -186,7 +186,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d6_stone_guardian"
-display_name = "Stone Guardian Totem Lesser"
+display_name = "LOC_LOOT_D6_STONE_GUARDIAN_POOL_DAO_ANCESTOR_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

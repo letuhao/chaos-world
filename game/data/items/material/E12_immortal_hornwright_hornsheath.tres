@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E12_immortal_hornwright_hornsheath"
-display_name = "Immortal Hornwright Hornsheath"
+display_name = "LOC_ITEMS_E12_IMMORTAL_HORNWRIGHT_HORNSHEATH_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"immortal_sovereign"

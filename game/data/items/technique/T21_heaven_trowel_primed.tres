@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"T21_heaven_trowel_primed"
-display_name = "Heaven Trowel Primed"
+display_name = "LOC_ITEMS_T21_HEAVEN_TROWEL_PRIMED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"mystic_immortal"

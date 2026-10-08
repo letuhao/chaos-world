@@ -174,7 +174,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_qi_tribulation_guardian"
-display_name = "Tribulation Crossing Guardian"
+display_name = "LOC_LOOT_QI_TRIBULATION_GUARDIAN_POOL_CORE_FORMATION_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d4_cinder_wyrm_pool_body_integration"
-display_name = "Cinder Wyrm Lesser salvage (body_integration)"
+display_name = "LOC_LOOT_D4_CINDER_WYRM_BODY_INTEGRATION_0_DISPLAY_NAME"
 realm = &"body_integration"
 rarity = &""
 rolls = 1

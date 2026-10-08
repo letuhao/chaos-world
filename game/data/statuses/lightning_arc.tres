@@ -19,7 +19,7 @@ tick_interval = 1.0
 mitigation_tags = Array[StringName]([&"affinity", &"technique", &"pill"])
 payload = {
 "mechanic": &"escalating_burn",
-"text": "The storm keeps its hand on them. Every bolt after the first lands harder than the one before, and none of them is the last.",
+"text": "LOC_STATUSES_LIGHTNING_ARC_TEXT",
 "pool": &"health",
 "share_per_pulse": 0.025,
 "escalation_per_tick": 0.1,

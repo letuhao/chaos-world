@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_flame_dragon_pool_spirit_sea"
-display_name = "Flame Dragon salvage (spirit_sea)"
+display_name = "LOC_LOOT_FLAME_DRAGON_SPIRIT_SEA_0_DISPLAY_NAME"
 realm = &"spirit_sea"
 rarity = &""
 rolls = 1

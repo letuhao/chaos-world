@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C27_earth_currier_tawed"
-display_name = "Earth Currier Tawed"
+display_name = "LOC_ITEMS_C27_EARTH_CURRIER_TAWED_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_manifestation"

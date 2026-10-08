@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"T7_immortal_sallow_testimony"
-display_name = "Immortal Sallow Testimony"
+display_name = "LOC_ITEMS_T7_IMMORTAL_SALLOW_TESTIMONY_DISPLAY_NAME"
 category = &"quest"
 rarity = &"legendary"
 realm = &"immortal_sovereign"

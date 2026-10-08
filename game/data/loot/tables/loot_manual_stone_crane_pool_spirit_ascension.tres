@@ -18,7 +18,7 @@ rarity_floor = &"magic"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_manual_stone_crane_pool_spirit_ascension"
-display_name = "Stone Crane salvage (spirit_ascension)"
+display_name = "LOC_LOOT_MANUAL_STONE_CRANE_SPIRIT_ASCENSION_0_DISPLAY_NAME"
 realm = &"spirit_ascension"
 rarity = &""
 rolls = 1

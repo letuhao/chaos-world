@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"feast_divine_banquet"
-display_name = "Divine Banquet"
+display_name = "LOC_ITEMS_FEAST_DIVINE_BANQUET_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_ancestor"

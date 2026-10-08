@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"L5_mortal_veil_bell"
-display_name = "Mortal Veil Bell"
+display_name = "LOC_ITEMS_L5_MORTAL_VEIL_BELL_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"spirit_transformation"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F22_earth_equipoise_agility_attack_speed_breakthrough_chance_max_qi"
-display_name = "Earth Equipoise Agility Attack speed Breakthrough chance Max qi"
+display_name = "LOC_ITEMS_F22_EARTH_EQUIPOISE_AGILITY_ATTACK_SPEED_BREAKTHROUGH_CHANCE_MAX_QI_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_severing"

@@ -18,7 +18,7 @@ rarity_floor = &"magic"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_body_void_refinement_guardian_pool_spirit_severing"
-display_name = "Organ Tempering Guardian salvage (spirit_severing)"
+display_name = "LOC_LOOT_BODY_VOID_REFINEMENT_GUARDIAN_SPIRIT_SEVERING_0_DISPLAY_NAME"
 realm = &"spirit_severing"
 rarity = &""
 rolls = 1

@@ -5,8 +5,8 @@
 script = ExtResource("1_def")
 id = &"body_tiger_palm"
 delivered_by = &"tome_cinder_tiger_palm"
-display_name = "Tiger Palm"
-description = "A short palm driven off the heel with nothing elemental in it at all. Every point of its output is raw body mass, so no element matchup can blunt it."
+display_name = "LOC_TECHNIQUES_BODY_TIGER_PALM_DISPLAY_NAME"
+description = "LOC_TECHNIQUES_BODY_TIGER_PALM_DESCRIPTION"
 tags = Array[StringName]([&"technique", &"body", &"strike", &"no_element"])
 grade = &"spirit"
 rarity = &"magic"

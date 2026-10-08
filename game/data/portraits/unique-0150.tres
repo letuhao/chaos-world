@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_portrait")
 id = &"unique-0150"
-display_name = "Sarn Oveth"
+display_name = "LOC_PORTRAITS_UNIQUE_0150_DISPLAY_NAME"
 race_id = &"emberblood"
 visual_traits = Array[StringName]([&"burden:the-fuel-is-the-man", &"class:present-at-a-congregation-he-was-never-initiated-into", &"gift:refines-faster-than-anything-alive", &"hazard:his-own-name-cannot-be-cemented", &"path:body", &"role:the-cinder-attendant-with-no-entry", &"standing:no-line-in-the-register"])
 layer_paths = Array[String](["res://assets/characters/portraits/emberblood.png"])

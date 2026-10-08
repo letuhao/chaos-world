@@ -18,7 +18,7 @@ tick_interval = 1.0
 mitigation_tags = Array[StringName]([&"affinity", &"technique"])
 payload = {
 "mechanic": &"feed_siblings",
-"text": "The wind carries fire. Every burn and every bleed already on the target is spread further than any of them would have run alone.",
+"text": "LOC_STATUSES_WIND_SPREAD_TEXT",
 "sibling_gain": 0.45,
 "sibling_cap": 0.4,
 "modifiers": []

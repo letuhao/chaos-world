@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F18_heaven_enkindle_agility_aptitude_insight_gain_spirit"
-display_name = "Heaven Enkindle Agility Aptitude Insight gain Spirit"
+display_name = "LOC_ITEMS_F18_HEAVEN_ENKINDLE_AGILITY_APTITUDE_INSIGHT_GAIN_SPIRIT_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"earth_immortal"

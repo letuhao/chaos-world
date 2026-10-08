@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Q8_immortal_dogwood_pumice"
-display_name = "Immortal Dogwood Pumice"
+display_name = "LOC_ITEMS_Q8_IMMORTAL_DOGWOOD_PUMICE_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"heaven_immortal"

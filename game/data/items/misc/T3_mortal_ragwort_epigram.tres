@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"T3_mortal_ragwort_epigram"
-display_name = "Mortal Ragwort Epigram"
+display_name = "LOC_ITEMS_T3_MORTAL_RAGWORT_EPIGRAM_DISPLAY_NAME"
 category = &"misc"
 rarity = &"common"
 realm = &"spirit_transformation"

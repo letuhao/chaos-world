@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F35_spirit_frackle_comprehension_fortune_max_stamina_qi_regen"
-display_name = "Spirit Frackle Comprehension Fortune Max stamina Qi regen"
+display_name = "LOC_ITEMS_F35_SPIRIT_FRACKLE_COMPREHENSION_FORTUNE_MAX_STAMINA_QI_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_domain"

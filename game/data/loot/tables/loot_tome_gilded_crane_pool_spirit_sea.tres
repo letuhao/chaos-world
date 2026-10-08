@@ -30,7 +30,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_tome_gilded_crane_pool_spirit_sea"
-display_name = "Gilded Crane salvage (spirit_sea)"
+display_name = "LOC_LOOT_TOME_GILDED_CRANE_SPIRIT_SEA_0_DISPLAY_NAME"
 realm = &"spirit_sea"
 rarity = &""
 rolls = 1

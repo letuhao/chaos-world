@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"bladework_void_edge_recipe"
-display_name = "Void Edge Bladework Recipe"
+display_name = "LOC_RECIPES_BLADEWORK_VOID_EDGE_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"crystal_lapis", &"scale_voidwyrm"])
 outputs = Array[StringName]([&"bladework_void_edge"])

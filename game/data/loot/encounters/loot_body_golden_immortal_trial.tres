@@ -6,7 +6,7 @@
 [sub_resource type="Resource" id="tier_0"]
 script = ExtResource("2_tier")
 tier = 1
-label = "Gate"
+label = "LOC_LOOT_LOOT_BODY_GOLDEN_IMMORTAL_TRIAL_LABEL_1"
 realm = &"golden_immortal"
 rarity = &"common"
 vitality = 64125.
@@ -18,7 +18,7 @@ boss_tables = Array[Dictionary]([
 [sub_resource type="Resource" id="tier_1"]
 script = ExtResource("2_tier")
 tier = 2
-label = "Depths"
+label = "LOC_LOOT_LOOT_BODY_GOLDEN_IMMORTAL_TRIAL_LABEL_2"
 realm = &"golden_immortal"
 rarity = &"rare"
 vitality = 102600.
@@ -30,7 +30,7 @@ boss_tables = Array[Dictionary]([
 [resource]
 script = ExtResource("1_encounter")
 id = &"loot_body_golden_immortal_trial"
-display_name = "Body of Eternity Trial"
+display_name = "LOC_LOOT_LOOT_BODY_GOLDEN_IMMORTAL_TRIAL_DISPLAY_NAME"
 domain_id = &"body_golden_immortal_trial"
 boss_ids = Array[StringName]([&"body_golden_immortal_guardian", &"E7_golden_regent"])
 key_reach = 0

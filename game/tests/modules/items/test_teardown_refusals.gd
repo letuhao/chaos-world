@@ -41,7 +41,9 @@ func _carry(actor: Actor, path: String, seed_value: int) -> ItemInstance:
 
 ## A refusal must change NOTHING. This is asserted on every branch below, because
 ## a refusal that consumed the item would be the worst version of this bug.
-func _assert_refused(actor: Actor, instance_id: StringName, reason: String, label: String) -> Dictionary:
+func _assert_refused(
+	actor: Actor, instance_id: StringName, reason: String, label: String
+) -> Dictionary:
 	var inventory := ItemsApi.inventory(actor)
 	var survivors := inventory.used_slots()
 	var result := ItemTeardown.tear_down(actor, instance_id)
@@ -212,7 +214,9 @@ func test_an_enchanted_piece_is_refused() -> void:
 		return
 	SocketApi.attach(actor)
 	var state := SocketApi.socket_state(actor)
-	state["channels"] = {String(bangle.instance_id): {"generation": 1, "effect": {}, "reagent_id": ""}}
+	state["channels"] = {
+		String(bangle.instance_id): {"generation": 1, "effect": {}, "reagent_id": ""}
+	}
 	actor.set_module_data(ItemTeardown.SOCKET_STATE_KEY, state)
 	assert_eq(
 		SocketApi.socket_state(actor)["channels"].has(String(bangle.instance_id)),

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F1_mortal_crosslet_spirit_attack_speed_will_qi_cost_reduction"
-display_name = "Mortal Crosslet Spirit Attack Speed Will Qi Cost Reduction"
+display_name = "LOC_ITEMS_F1_MORTAL_CROSSLET_SPIRIT_ATTACK_SPEED_WILL_QI_COST_REDUCTION_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"tribulation"

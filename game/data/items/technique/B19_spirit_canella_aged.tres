@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B19_spirit_canella_aged"
-display_name = "Spirit Canella Aged"
+display_name = "LOC_ITEMS_B19_SPIRIT_CANELLA_AGED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_severing"

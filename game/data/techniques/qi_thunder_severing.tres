@@ -5,8 +5,8 @@
 script = ExtResource("1_def")
 id = &"qi_thunder_severing"
 delivered_by = &"manual_thunder_ape_roar"
-display_name = "Thunder Severing"
-description = "A discharge so brief it has no travel time worth naming. Almost pure elemental, so it is the technique most worth mastering rather than the cheapest one to cast."
+display_name = "LOC_TECHNIQUES_QI_THUNDER_SEVERING_DISPLAY_NAME"
+description = "LOC_TECHNIQUES_QI_THUNDER_SEVERING_DESCRIPTION"
 tags = Array[StringName]([&"technique", &"lightning", &"burst"])
 grade = &"heaven"
 rarity = &"rare"

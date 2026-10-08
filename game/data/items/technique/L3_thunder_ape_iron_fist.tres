@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"L3_thunder_ape_iron_fist"
-display_name = "Thunder Ape Iron Fist"
+display_name = "LOC_ITEMS_L3_THUNDER_APE_IRON_FIST_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_ascension"

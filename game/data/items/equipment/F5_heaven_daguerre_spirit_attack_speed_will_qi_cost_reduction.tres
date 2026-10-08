@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F5_heaven_daguerre_spirit_attack_speed_will_qi_cost_reduction"
-display_name = "Heaven Daguerre Spirit Attack Speed Will Qi Cost Reduction"
+display_name = "LOC_ITEMS_F5_HEAVEN_DAGUERRE_SPIRIT_ATTACK_SPEED_WILL_QI_COST_REDUCTION_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"great_luo"

@@ -19,13 +19,13 @@ layout_mode = 2
 [node name="Title" type="Label" parent="Layout"]
 layout_mode = 2
 theme_type_variation = &"ScreenTitle"
-text = "Relationships"
+text = "LOC_UI_SCREENS_229981DD1D"
 
 [node name="RelationshipHeader" type="Label" parent="Layout"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "No hero bound."
+text = "LOC_UI_SCREENS_6E9BC19A74"
 
 [node name="Scroll" type="ScrollContainer" parent="Layout"]
 layout_mode = 2
@@ -50,7 +50,7 @@ unique_name_in_owner = true
 [node name="HistoryTitle" type="Label" parent="Layout/Scroll"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "History"
+text = "LOC_UI_SCREENS_90CCD64974"
 
 [node name="History" type="VBoxContainer" parent="Layout/Scroll"]
 layout_mode = 2

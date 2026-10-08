@@ -87,7 +87,7 @@ func _remove_tree(path: String, depth: int = 0) -> void:
 func _write_mod_json() -> void:
 	var json := (
 		JSON
-		.stringify(
+		. stringify(
 			{
 				"id": "dlc_pipeline",
 				"version": "1.0",

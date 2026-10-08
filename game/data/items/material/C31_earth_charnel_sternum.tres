@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C31_earth_charnel_sternum"
-display_name = "Earth Charnel Sternum"
+display_name = "LOC_ITEMS_C31_EARTH_CHARNEL_STERNUM_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_sovereign"

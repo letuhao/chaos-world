@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Z41_immortal_kimberlite_yarn"
-display_name = "Immortal Retting Yarn"
+display_name = "LOC_ITEMS_Z41_IMMORTAL_KIMBERLITE_YARN_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"primordial_immortal"

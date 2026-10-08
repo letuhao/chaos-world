@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"qiabs_moon_tincture"
-display_name = "Moon Absorption Tincture"
+display_name = "LOC_ITEMS_QIABS_MOON_TINCTURE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"true_immortal"

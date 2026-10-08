@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E3_earth_saddlery_belly"
-display_name = "Earth Saddlery Belly"
+display_name = "LOC_ITEMS_E3_EARTH_SADDLERY_BELLY_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_domain"

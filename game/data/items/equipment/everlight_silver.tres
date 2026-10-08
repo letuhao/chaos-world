@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"everlight_silver"
-display_name = "Silver Everlight"
+display_name = "LOC_ITEMS_EVERLIGHT_SILVER_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"magic"
 realm = &"spirit_manifestation"

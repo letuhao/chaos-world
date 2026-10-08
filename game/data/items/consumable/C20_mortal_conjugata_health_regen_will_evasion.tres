@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C20_mortal_conjugata_health_regen_will_evasion"
-display_name = "Mortal Conjugata Health Regen Will Evasion"
+display_name = "LOC_ITEMS_C20_MORTAL_CONJUGATA_HEALTH_REGEN_WILL_EVASION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"spirit_transformation"

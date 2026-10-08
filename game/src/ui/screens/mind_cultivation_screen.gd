@@ -314,7 +314,7 @@ func _render_conditions(preview: Dictionary, on_path: bool) -> void:
 		return
 	var unmet: Array = preview.get("conditions", [])
 	if unmet.is_empty():
-		_conditions_label.text = "Conditions: READY"
+		_conditions_label.text = L.t("LOC_UI_SCREENS_AAC947F6E9")
 		_conditions_label.theme_type_variation = &"OkLabel"
 		return
 	var costs: Dictionary = preview.get("costs", {})
@@ -331,7 +331,9 @@ func _render_conditions(preview: Dictionary, on_path: bool) -> void:
 	var stage := String(preview.get("anchor_stage", ""))
 	if not stage.is_empty():
 		anchor_line = " | Anchor: %s" % stage
-	_conditions_label.text = "Conditions: %s%s%s" % [", ".join(unmet), cost_line, anchor_line]
+	_conditions_label.text = (
+		L.t("LOC_UI_SCREENS_ECE6D84DF5") % [", ".join(unmet), cost_line, anchor_line]
+	)
 	_conditions_label.theme_type_variation = &"MetaLabel"
 
 
@@ -341,7 +343,7 @@ func _render_realm(live: Dictionary, preview: Dictionary, on_path: bool) -> void
 	if _realm_label == null:
 		return
 	if not on_path:
-		_realm_label.text = "Realm: none"
+		_realm_label.text = L.t("LOC_UI_SCREENS_7B6A7382FC")
 		return
 	var current := String(live.get("display_name", ""))
 	if current.is_empty():

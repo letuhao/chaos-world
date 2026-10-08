@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"w35_scroll_thunder_crane_call_recipe"
-display_name = "Scroll Thunder Crane Call Recipe"
+display_name = "LOC_RECIPES_W35_SCROLL_THUNDER_CRANE_CALL_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"gem_stormtopaz", &"wood_frost_vein"])
 outputs = Array[StringName]([&"scroll_thunder_crane_call"])

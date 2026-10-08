@@ -1,0 +1,11 @@
+[gd_resource type="Translation" format=3]
+
+[resource]
+locale = "en"
+messages = {
+"LOC_MIND_CULTIVATION_080A9A0690": "Attempt in flight",
+"LOC_MIND_CULTIVATION_1DA78D39AD": "Pocket World",
+"LOC_MIND_CULTIVATION_1FE9F0035C": "Inner World",
+"LOC_MIND_CULTIVATION_604164D7F1": "Seed World",
+"LOC_MIND_CULTIVATION_BC7819B34F": "Unknown",
+}

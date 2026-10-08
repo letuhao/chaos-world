@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_race")
 id = &"tidecaller"
-display_name = "Tidecaller"
-description = "A long-lived body built for perception rather than force. Comprehension and will carry it through realms that would end a hotter body, and it cannot take the body path at all: it was assembled for looking, not for being hit. Water affinity is the only one it holds."
+display_name = "LOC_RACES_TIDECALLER_DISPLAY_NAME"
+description = "LOC_RACES_TIDECALLER_DESCRIPTION"
 dominance = 0.55
 manifestation_threshold = 0.2
 gestation_days = 36.0

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F30_earth_fistic_breakthrough_chance_max_health_qi_cost_reduction_stamina_regen"
-display_name = "Earth Fistic Breakthrough chance Max health Qi cost reduction Stamina regen"
+display_name = "LOC_ITEMS_F30_EARTH_FISTIC_BREAKTHROUGH_CHANCE_MAX_HEALTH_QI_COST_REDUCTION_STAMINA_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_severing"

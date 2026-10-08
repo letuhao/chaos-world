@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d1_storm_hawk_hatchling_pool_core_formation"
-display_name = "Storm Hawk Hatchling Lesser salvage (core_formation)"
+display_name = "LOC_LOOT_D1_STORM_HAWK_HATCHLING_CORE_FORMATION_0_DISPLAY_NAME"
 realm = &"core_formation"
 rarity = &""
 rolls = 1

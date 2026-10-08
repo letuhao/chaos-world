@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G23_mortal_house_defense_spiritual_penetration"
-display_name = "Mortal House Defense spiritual Penetration"
+display_name = "LOC_ITEMS_G23_MORTAL_HOUSE_DEFENSE_SPIRITUAL_PENETRATION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"tribulation"

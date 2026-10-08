@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"mind_body_integration_recovery_elixir"
-display_name = "Body Integration Clarity Elixir"
+display_name = "LOC_ITEMS_MIND_BODY_INTEGRATION_RECOVERY_ELIXIR_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"body_integration"
@@ -16,4 +16,4 @@ roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"elixir"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:mind_body_integration_recovery_recipe", &"domain:treasure_frost_hermit_domain"])
-description = "Calms a clouded sea of consciousness and repairs one burned channel after a failed breakthrough."
+description = "LOC_ITEMS_MIND_BODY_INTEGRATION_RECOVERY_ELIXIR_DESCRIPTION"

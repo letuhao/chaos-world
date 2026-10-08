@@ -7,7 +7,7 @@
 script = ExtResource("2_stage")
 stage_id = &"silent"
 index = 0
-display_name = "Silent"
+display_name = "LOC_NPC_GATE_KEEPER_BO_DISPLAY_NAME_1"
 stat_multipliers = {}
 tags = Array[StringName]([&"souled_beast"])
 advance_after = 0
@@ -17,7 +17,7 @@ terminal = false
 script = ExtResource("2_stage")
 stage_id = &"watching"
 index = 1
-display_name = "Watching"
+display_name = "LOC_NPC_GATE_KEEPER_BO_DISPLAY_NAME_2"
 stat_multipliers = {}
 tags = Array[StringName]([&"souled_beast", &"patient"])
 advance_after = 0
@@ -26,7 +26,7 @@ terminal = false
 [resource]
 script = ExtResource("1_def")
 npc_id = &"gate_keeper_bo"
-display_name = "Gatekeeper Bo"
+display_name = "LOC_NPC_GATE_KEEPER_BO_DISPLAY_NAME_3"
 inhabitant_id = &"azure_disciple"
 tier = &"minor"
 faction = &"body_dao"

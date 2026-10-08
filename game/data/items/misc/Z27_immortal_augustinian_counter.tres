@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Z27_immortal_augustinian_counter"
-display_name = "Immortal Augustinian Counter"
+display_name = "LOC_ITEMS_Z27_IMMORTAL_AUGUSTINIAN_COUNTER_DISPLAY_NAME"
 category = &"misc"
 rarity = &"legendary"
 realm = &"primordial_immortal"

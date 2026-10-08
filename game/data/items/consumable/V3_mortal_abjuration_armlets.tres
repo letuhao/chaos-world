@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V3_mortal_abjuration_armlets"
-display_name = "Mortal Abjuration Armlets"
+display_name = "LOC_ITEMS_V3_MORTAL_ABJURATION_ARMLETS_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"body_integration"

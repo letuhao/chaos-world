@@ -6,7 +6,7 @@
 [sub_resource type="Resource" id="tier_0"]
 script = ExtResource("2_tier")
 tier = 1
-label = "Gate"
+label = "LOC_LOOT_LOOT_MIND_DAO_FRUIT_TRIAL_LABEL_1"
 realm = &"dao_fruit"
 rarity = &"common"
 vitality = 256950.
@@ -18,7 +18,7 @@ boss_tables = Array[Dictionary]([
 [sub_resource type="Resource" id="tier_1"]
 script = ExtResource("2_tier")
 tier = 2
-label = "Depths"
+label = "LOC_LOOT_LOOT_MIND_DAO_FRUIT_TRIAL_LABEL_2"
 realm = &"dao_fruit"
 rarity = &"rare"
 vitality = 411120.
@@ -30,7 +30,7 @@ boss_tables = Array[Dictionary]([
 [resource]
 script = ExtResource("1_encounter")
 id = &"loot_mind_dao_fruit_trial"
-display_name = "Dao of Mind Trial"
+display_name = "LOC_LOOT_LOOT_MIND_DAO_FRUIT_TRIAL_DISPLAY_NAME"
 domain_id = &"mind_dao_fruit_trial"
 boss_ids = Array[StringName]([&"mind_dao_fruit_warden", &"F14_dao_fruit_warden"])
 key_reach = 0

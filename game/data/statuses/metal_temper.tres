@@ -18,7 +18,7 @@ tick_interval = 1.0
 mitigation_tags = Array[StringName]([&"affinity", &"gear", &"technique"])
 payload = {
 "mechanic": &"brace",
-"text": "Tempered steel under the skin. The body has been honed like a blade and keeps edges out.",
+"text": "LOC_STATUSES_METAL_TEMPER_TEXT",
 "modifiers": [
 {"stat": &"damage_reduction", "op": &"flat", "value": 0.06},
 {"stat": &"defense_physical", "op": &"flat", "value": 8.0}

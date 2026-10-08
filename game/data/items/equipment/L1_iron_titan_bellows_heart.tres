@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"L1_iron_titan_bellows_heart"
-display_name = "Iron Titan Bellows Heart"
+display_name = "LOC_ITEMS_L1_IRON_TITAN_BELLOWS_HEART_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"magic"
 realm = &"spirit_condensation"

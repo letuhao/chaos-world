@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F28_divine_ferrule_aptitude_attack_physical_stamina_regen_will"
-display_name = "Divine Ferrule Aptitude Attack physical Stamina regen Will"
+display_name = "LOC_ITEMS_F28_DIVINE_FERRULE_APTITUDE_ATTACK_PHYSICAL_STAMINA_REGEN_WILL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"transcendent"

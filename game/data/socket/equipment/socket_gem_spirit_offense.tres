@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"socket_gem_spirit_offense"
-display_name = "Spirit Offensive Gem"
+display_name = "LOC_SOCKET_SOCKET_GEM_SPIRIT_OFFENSE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"magic"
 realm = &"spirit_severing"
@@ -19,4 +19,4 @@ stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"gather", &"domain:treasure_iron_sage_domain"])
 tags = Array[StringName]([&"socket_item", &"socket_kind:offense"])
-description = "Socket item. Offensive gem; while its host is worn it adds physical attack and critical chance."
+description = "LOC_SOCKET_SOCKET_GEM_SPIRIT_OFFENSE_DESCRIPTION"

@@ -18,7 +18,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_mind_great_ascension_warden_pool_golden_immortal"
-display_name = "Concentration Warden salvage (golden_immortal)"
+display_name = "LOC_LOOT_MIND_GREAT_ASCENSION_WARDEN_GOLDEN_IMMORTAL_0_DISPLAY_NAME"
 realm = &"golden_immortal"
 rarity = &""
 rolls = 1

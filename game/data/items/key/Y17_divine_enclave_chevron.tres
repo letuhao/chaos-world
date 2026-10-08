@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Y17_divine_enclave_chevron"
-display_name = "Divine Enclave Chevron"
+display_name = "LOC_ITEMS_Y17_DIVINE_ENCLAVE_CHEVRON_DISPLAY_NAME"
 category = &"key"
 rarity = &"legendary"
 realm = &"dao_ancestor"

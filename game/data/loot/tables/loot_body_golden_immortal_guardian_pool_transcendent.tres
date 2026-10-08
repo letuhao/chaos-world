@@ -18,7 +18,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_body_golden_immortal_guardian_pool_transcendent"
-display_name = "Body of Eternity Guardian salvage (transcendent)"
+display_name = "LOC_LOOT_BODY_GOLDEN_IMMORTAL_GUARDIAN_TRANSCENDENT_0_DISPLAY_NAME"
 realm = &"transcendent"
 rarity = &""
 rolls = 1

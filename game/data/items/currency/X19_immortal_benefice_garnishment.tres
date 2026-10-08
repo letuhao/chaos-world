@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"X19_immortal_benefice_garnishment"
-display_name = "Immortal Benefice Garnishment"
+display_name = "LOC_ITEMS_X19_IMMORTAL_BENEFICE_GARNISHMENT_DISPLAY_NAME"
 category = &"currency"
 rarity = &"legendary"
 realm = &"primordial_immortal"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"tattoo_flame_ward_recipe"
-display_name = "Flame Ward Recipe"
+display_name = "LOC_RECIPES_TATTOO_FLAME_WARD_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"tattoo_mortal_ink", &"tattoo_spirit_ore"])
 outputs = Array[StringName]([&"tattoo_flame_ward"])

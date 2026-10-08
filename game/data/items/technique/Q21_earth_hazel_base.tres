@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Q21_earth_hazel_base"
-display_name = "Earth Hazel Base"
+display_name = "LOC_ITEMS_Q21_EARTH_HAZEL_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_severing"

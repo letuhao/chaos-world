@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"O12_heaven_jade_seal_perfected"
-display_name = "Heaven Jade Seal Perfected"
+display_name = "LOC_ITEMS_O12_HEAVEN_JADE_SEAL_PERFECTED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"earth_immortal"

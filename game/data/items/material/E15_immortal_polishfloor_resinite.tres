@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E15_immortal_polishfloor_resinite"
-display_name = "Immortal Polishfloor Resinite"
+display_name = "LOC_ITEMS_E15_IMMORTAL_POLISHFLOOR_RESINITE_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"immortal_sovereign"

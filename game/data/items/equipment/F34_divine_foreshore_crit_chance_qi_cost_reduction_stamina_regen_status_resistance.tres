@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F34_divine_foreshore_crit_chance_qi_cost_reduction_stamina_regen_status_resistance"
-display_name = "Divine Foreshore Crit chance Qi cost reduction Stamina regen Status resistance"
+display_name = "LOC_ITEMS_F34_DIVINE_FORESHORE_CRIT_CHANCE_QI_COST_REDUCTION_STAMINA_REGEN_STATUS_RESISTANCE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"dao_ancestor"

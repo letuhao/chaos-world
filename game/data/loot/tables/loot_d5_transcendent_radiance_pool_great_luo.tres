@@ -30,7 +30,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d5_transcendent_radiance_pool_great_luo"
-display_name = "Transcendent Radiance Lesser salvage (great_luo)"
+display_name = "LOC_LOOT_D5_TRANSCENDENT_RADIANCE_GREAT_LUO_0_DISPLAY_NAME"
 realm = &"great_luo"
 rarity = &""
 rolls = 1

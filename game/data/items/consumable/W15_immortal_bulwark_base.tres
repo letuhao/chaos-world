@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"W15_immortal_bulwark_base"
-display_name = "Immortal Bulwark Base"
+display_name = "LOC_ITEMS_W15_IMMORTAL_BULWARK_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_immortal"

@@ -5,8 +5,8 @@
 script = ExtResource("1_def")
 id = &"qi_metal_edge"
 delivered_by = &"codex_iron_sage_gourd"
-display_name = "Metal Edge"
-description = "Collapses a year of refined qi into one hard line. The sharpest thing a mortal hand can throw, and the cheapest way to find out what metal actually overcomes."
+display_name = "LOC_TECHNIQUES_QI_METAL_EDGE_DISPLAY_NAME"
+description = "LOC_TECHNIQUES_QI_METAL_EDGE_DESCRIPTION"
 tags = Array[StringName]([&"technique", &"metal", &"single_target"])
 grade = &"earth"
 rarity = &"magic"

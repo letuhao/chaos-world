@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"R17_heaven_oxbow_primed"
-display_name = "Heaven Oxbow Primed"
+display_name = "LOC_ITEMS_R17_HEAVEN_OXBOW_PRIMED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"dao_fruit"

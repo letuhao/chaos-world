@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"flute_crane_bone"
-display_name = "Crane Bone"
+display_name = "LOC_ITEMS_FLUTE_CRANE_BONE_DISPLAY_NAME"
 category = &"material"
 rarity = &"magic"
 realm = &"spirit_severing"

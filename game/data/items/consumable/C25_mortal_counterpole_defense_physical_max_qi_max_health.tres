@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C25_mortal_counterpole_defense_physical_max_qi_max_health"
-display_name = "Mortal Counterpole Defense Physical Max Qi Max Health"
+display_name = "LOC_ITEMS_C25_MORTAL_COUNTERPOLE_DEFENSE_PHYSICAL_MAX_QI_MAX_HEALTH_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"great_ascension"

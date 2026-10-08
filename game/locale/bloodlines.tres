@@ -1,0 +1,16 @@
+[gd_resource type="Translation" format=3]
+
+[resource]
+locale = "en"
+messages = {
+"LOC_BLOODLINES_EMBERBORN_DESCRIPTION": "A line from the founding generation of a body that burned through its own reserve and kept going. Recorded alongside the stone line because the two were crossed at the same conception and have stayed crossed since, which is why the concentration is thin and unevenly spread. The grant is defensive and fires continuously: a slower burn rather than a bigger tank.",
+"LOC_BLOODLINES_EMBERBORN_DISPLAY_NAME": "Emberborn",
+"LOC_BLOODLINES_HEARTHBORN_DESCRIPTION": "The default concentration found in long-settled households: a lineage carried carefully for many generations, averaged with whatever else the household took in. Common as a stat-block and unsurprising as a reading — most actors hold some, and most never cross its bar. Its grant is small on purpose; the line is common because it is dependable, not because it is strong.",
+"LOC_BLOODLINES_HEARTHBORN_DISPLAY_NAME": "Hearthborn",
+"LOC_BLOODLINES_TIDEBORN_DESCRIPTION": "The oldest recorded carrier line, kept in one household so long that the name stopped describing a family and started describing a body. Two generations of pure pairing is the most this line has ever held, and the bar is set where it is because that is exactly the ceiling of an unbroken chain. Its grant trades immediate impact for sustained pressure: nothing here lands harder, everything here lasts.",
+"LOC_BLOODLINES_TIDEBORN_DISPLAY_NAME": "Tideborn",
+"LOC_BLOODLINES_TIDECULLED_DESCRIPTION": "A line maintained by a clan that culled its own branches rather than marrying out of them. The concentration survives because the gene pool was narrowed, not improved, and it crosses races freely — the cull was a political act, never an anatomical one. Its grant favours sustained effort over sudden effort: regen and cultivation pace, nothing that spikes.",
+"LOC_BLOODLINES_TIDECULLED_DISPLAY_NAME": "Tideculled",
+"LOC_BLOODLINES_VOIDBORN_DESCRIPTION": "A line with no recorded origin and no household that will admit to it. The founding bar is set at 0.72 because the arithmetic leaves exactly one generation of pure-by-pure inheritance able to clear it: anything weaker is unobtainable by any pairing and the content would be dead. This lineage is the system's proof that its own ladder is reachable.",
+"LOC_BLOODLINES_VOIDBORN_DISPLAY_NAME": "Voidborn",
+}

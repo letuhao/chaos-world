@@ -6,7 +6,7 @@
 [sub_resource type="Resource" id="tier_0"]
 script = ExtResource("2_tier")
 tier = 1
-label = "Gate"
+label = "LOC_LOOT_LOOT_QI_TRANSCENDENT_TRIAL_LABEL_1"
 realm = &"transcendent"
 rarity = &"common"
 vitality = 491793.8
@@ -18,7 +18,7 @@ boss_tables = Array[Dictionary]([
 [sub_resource type="Resource" id="tier_1"]
 script = ExtResource("2_tier")
 tier = 2
-label = "Depths"
+label = "LOC_LOOT_LOOT_QI_TRANSCENDENT_TRIAL_LABEL_2"
 realm = &"transcendent"
 rarity = &"rare"
 vitality = 786870.
@@ -30,7 +30,7 @@ boss_tables = Array[Dictionary]([
 [resource]
 script = ExtResource("1_encounter")
 id = &"loot_qi_transcendent_trial"
-display_name = "Transcendent Trial"
+display_name = "LOC_LOOT_LOOT_QI_TRANSCENDENT_TRIAL_DISPLAY_NAME"
 domain_id = &"qi_transcendent_trial"
 boss_ids = Array[StringName]([&"qi_transcendent_warden", &"F20_transcendent_warden"])
 key_reach = 0

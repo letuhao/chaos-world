@@ -21,13 +21,13 @@ layout_mode = 2
 [node name="Title" type="Label" parent="Layout"]
 layout_mode = 2
 theme_type_variation = &"ScreenTitle"
-text = "Lineage"
+text = "LOC_UI_SCREENS_F696463B6D"
 
 [node name="LineageHeader" type="Label" parent="Layout"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "No hero bound."
+text = "LOC_UI_SCREENS_6E9BC19A74"
 
 [node name="Scroll" type="ScrollContainer" parent="Layout"]
 layout_mode = 2
@@ -40,12 +40,12 @@ size_flags_horizontal = 3
 [node name="BodyTitle" type="Label" parent="Layout/Scroll/Page"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "Body"
+text = "LOC_UI_SCREENS_718A7E8A58"
 
 [node name="BodyNote" type="Label" parent="Layout/Scroll/Page"]
 layout_mode = 2
 theme_type_variation = &"MetaLabel"
-text = "A race is a body plan that refuses. The refusals are the content."
+text = "LOC_UI_SCREENS_11106CC5E8"
 autowrap_mode = 2
 
 [node name="Body" type="VBoxContainer" parent="Layout/Scroll/Page"]
@@ -57,12 +57,12 @@ unique_name_in_owner = true
 [node name="BloodTitle" type="Label" parent="Layout/Scroll/Page"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "Inheritance"
+text = "LOC_UI_SCREENS_FDADDB9CE3"
 
 [node name="BloodNote" type="Label" parent="Layout/Scroll/Page"]
 layout_mode = 2
 theme_type_variation = &"MetaLabel"
-text = "Purity gates, it never scales. A dormant line is still carried."
+text = "LOC_UI_SCREENS_9745900791"
 autowrap_mode = 2
 
 [node name="Bloodlines" type="VBoxContainer" parent="Layout/Scroll/Page"]
@@ -76,12 +76,12 @@ unique_name_in_owner = true
 [node name="HouseTitle" type="Label" parent="Layout/Scroll/Page"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "House"
+text = "LOC_UI_SCREENS_DC8745BA30"
 
 [node name="HouseNote" type="Label" parent="Layout/Scroll/Page"]
 layout_mode = 2
 theme_type_variation = &"MetaLabel"
-text = "A clan grants recognition, never power, and publishes terms on both sides."
+text = "LOC_UI_SCREENS_5AD4038DF8"
 autowrap_mode = 2
 
 [node name="House" type="VBoxContainer" parent="Layout/Scroll/Page"]

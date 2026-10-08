@@ -23,7 +23,12 @@ func _init(entries: Array[Dictionary] = []) -> void:
 
 
 ## Log an interaction. Evicts the oldest entry if at capacity.
-func add(type: StringName, emotional_delta: Dictionary = {}, timestamp: float = 0.0, dc_session: bool = false) -> void:
+func add(
+	type: StringName,
+	emotional_delta: Dictionary = {},
+	timestamp: float = 0.0,
+	dc_session: bool = false
+) -> void:
 	var entry := {
 		"type": String(type),
 		"emotional_delta": emotional_delta,

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C25_mortal_counterpole_spirit_qi_cost_reduction_move_speed"
-display_name = "Mortal Counterpole Spirit Qi Cost Reduction Move Speed"
+display_name = "LOC_ITEMS_C25_MORTAL_COUNTERPOLE_SPIRIT_QI_COST_REDUCTION_MOVE_SPEED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"great_ascension"

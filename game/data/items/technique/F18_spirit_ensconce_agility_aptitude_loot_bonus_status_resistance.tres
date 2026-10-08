@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F18_spirit_ensconce_agility_aptitude_loot_bonus_status_resistance"
-display_name = "Spirit Ensconce Agility Aptitude Loot bonus Status resistance"
+display_name = "LOC_ITEMS_F18_SPIRIT_ENSCONCE_AGILITY_APTITUDE_LOOT_BONUS_STATUS_RESISTANCE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_unity"

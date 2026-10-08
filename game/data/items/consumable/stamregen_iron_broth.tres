@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"stamregen_iron_broth"
-display_name = "Iron Vigor Broth"
+display_name = "LOC_ITEMS_STAMREGEN_IRON_BROTH_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"great_ascension"

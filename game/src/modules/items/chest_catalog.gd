@@ -58,11 +58,9 @@ func _ensure_loaded() -> void:
 	for path in ContentScan.files_under(CHESTS_ROOT):
 		if not path.get_file().ends_with(".tres"):
 			continue
-		if not (
-			FileAccess
-			. get_file_as_string(path)
-			. contains('script_class="%s"' % CHEST_SCRIPT_CLASS)
-		):
+		if not (FileAccess.get_file_as_string(path).contains(
+			'script_class="%s"' % CHEST_SCRIPT_CLASS
+		)):
 			continue
 		_absorb(load(path) as ChestDef, path)
 

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Z4_divine_aurum_perfected"
-display_name = "Divine Aurum Perfected"
+display_name = "LOC_ITEMS_Z4_DIVINE_AURUM_PERFECTED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"

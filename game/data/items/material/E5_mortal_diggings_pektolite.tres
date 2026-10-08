@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E5_mortal_diggings_pektolite"
-display_name = "Mortal Diggings Pektolite"
+display_name = "LOC_ITEMS_E5_MORTAL_DIGGINGS_PEKTOLITE_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"qi_refining"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"body_primordial_immortal_guardian_core"
-display_name = "Body of Unity Guardian Core"
+display_name = "LOC_ITEMS_BODY_PRIMORDIAL_IMMORTAL_GUARDIAN_CORE_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"primordial_immortal"
@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"beast_core"
 grade = &"immortal"
 sources = Array[StringName]([&"boss:body_primordial_immortal_guardian"])
-description = "Boss-only channel catalyst."
+description = "LOC_ITEMS_BODY_PRIMORDIAL_IMMORTAL_GUARDIAN_CORE_DESCRIPTION"

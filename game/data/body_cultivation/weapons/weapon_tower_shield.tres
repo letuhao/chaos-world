@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 id = &"tower_shield"
-display_name = "Tower Shield"
+display_name = "LOC_BODY_CULTIVATION_TOWER_SHIELD_DISPLAY_NAME"
 best_against = "A single strong body made to commit: the wall refuses what a duellist cannot."
 demand = &"brace"
 lean = &"mass"

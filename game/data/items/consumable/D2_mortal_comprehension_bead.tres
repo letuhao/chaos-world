@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"D2_mortal_comprehension_bead"
-display_name = "Mortal Comprehension Bead"
+display_name = "LOC_ITEMS_D2_MORTAL_COMPREHENSION_BEAD_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"qi_refining"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"D1_immortal_breakthrough_charm_recipe"
-display_name = "Immortal Breakthrough Charm Recipe"
+display_name = "LOC_RECIPES_D1_IMMORTAL_BREAKTHROUGH_CHARM_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"astral_cosmic_dust_ore", &"astral_eclipse_essence"])
 outputs = Array[StringName]([&"D1_immortal_breakthrough_charm"])

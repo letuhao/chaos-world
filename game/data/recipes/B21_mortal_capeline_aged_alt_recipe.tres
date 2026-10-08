@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"B21_mortal_capeline_aged_alt_recipe"
-display_name = "Mortal Capeline Aged (Alt) Recipe"
+display_name = "LOC_RECIPES_B21_MORTAL_CAPELINE_AGED_ALT_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"B21_mortal_capeline_refined", &"bracer_iron_ore", &"filament_flax"])
 outputs = Array[StringName]([&"B21_mortal_capeline_aged"])

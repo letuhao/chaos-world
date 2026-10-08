@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"socket_rune_earth_utility"
-display_name = "Earth Utility Rune"
+display_name = "LOC_SOCKET_SOCKET_RUNE_EARTH_UTILITY_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"spirit_unity"
@@ -19,4 +19,4 @@ stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"gather", &"domain:flame_valley"])
 tags = Array[StringName]([&"socket_item", &"socket_kind:utility"])
-description = "Socket item. Utility rune; while its host is worn it adds qi and stamina capacity."
+description = "LOC_SOCKET_SOCKET_RUNE_EARTH_UTILITY_DESCRIPTION"

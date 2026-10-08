@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"qi_golden_immortal_breakthrough_pill"
-display_name = "Golden Immortal Refinement Pill"
+display_name = "LOC_ITEMS_QI_GOLDEN_IMMORTAL_BREAKTHROUGH_PILL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"golden_immortal"
@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:qi_golden_immortal_pill_recipe", &"domain:mind_spirit_manifestation_trial"])
-description = "Consumed by the Qi Cultivation attempt entering Golden Immortal; no equipment modifier."
+description = "LOC_ITEMS_QI_GOLDEN_IMMORTAL_BREAKTHROUGH_PILL_DESCRIPTION"

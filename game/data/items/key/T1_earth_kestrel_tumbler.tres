@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"T1_earth_kestrel_tumbler"
-display_name = "Earth Kestrel Tumbler"
+display_name = "LOC_ITEMS_T1_EARTH_KESTREL_TUMBLER_DISPLAY_NAME"
 category = &"key"
 rarity = &"rare"
 realm = &"spirit_manifestation"

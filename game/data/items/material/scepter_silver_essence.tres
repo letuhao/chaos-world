@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"scepter_silver_essence"
-display_name = "Scepter Silver Essence"
+display_name = "LOC_ITEMS_SCEPTER_SILVER_ESSENCE_DISPLAY_NAME"
 category = &"material"
 rarity = &"magic"
 realm = &"spirit_ascension"

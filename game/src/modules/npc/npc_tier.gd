@@ -56,11 +56,11 @@ static func normalize(tier: StringName) -> StringName:
 static func label(tier: StringName) -> String:
 	match tier:
 		MAJOR:
-			return "Major"
+			return L.t("LOC_NPC_8A52ED17C5")
 		STORY:
-			return "Story"
+			return L.t("LOC_NPC_86B4BA2FF9")
 		MINOR:
-			return "Minor"
+			return L.t("LOC_NPC_100B455471")
 		TRANSIENT:
-			return "Transient"
-	return "Minor"
+			return L.t("LOC_NPC_45D5BC5A65")
+	return L.t("LOC_NPC_100B455471")

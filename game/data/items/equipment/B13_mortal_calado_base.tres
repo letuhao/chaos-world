@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B13_mortal_calado_base"
-display_name = "Mortal Calado Base"
+display_name = "LOC_ITEMS_B13_MORTAL_CALADO_BASE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"qi_refining"

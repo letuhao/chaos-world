@@ -1,0 +1,33 @@
+[gd_resource type="Translation" format=3]
+
+[resource]
+locale = "en"
+messages = {
+"LOC_WORLD_AZURE_DISCIPLE_DISPLAY_NAME": "Azure Disciple",
+"LOC_WORLD_BODY_DAO_DISPLAY_NAME": "Body Dao",
+"LOC_WORLD_ELEMENTAL_LAW_DESCRIPTION": "Governs dominant elements, elemental balance, and seasonal cycles.",
+"LOC_WORLD_ELEMENTAL_LAW_DISPLAY_NAME": "Elemental Law",
+"LOC_WORLD_IMMORTAL_COURT_DISPLAY_NAME": "Immortal Court",
+"LOC_WORLD_IMMORTAL_WORLD_DISPLAY_NAME": "Immortal World",
+"LOC_WORLD_IRONHIDE_BEAR_DISPLAY_NAME": "Ironhide Bear",
+"LOC_WORLD_LIFE_LAW_DESCRIPTION": "Governs allowed life forms, evolution speed, and intelligence ceiling.",
+"LOC_WORLD_LIFE_LAW_DISPLAY_NAME": "Life Law",
+"LOC_WORLD_MIND_DAO_DISPLAY_NAME": "Mind Dao",
+"LOC_WORLD_MORTAL_PLAINS_DISPLAY_NAME": "Mortal Plains",
+"LOC_WORLD_MORTAL_WORLD_DISPLAY_NAME": "Mortal World",
+"LOC_WORLD_PHYSICAL_LAW_DESCRIPTION": "Governs gravity, energy density, and material hardness.",
+"LOC_WORLD_PHYSICAL_LAW_DISPLAY_NAME": "Physical Law",
+"LOC_WORLD_QI_DAO_DISPLAY_NAME": "Qi Dao",
+"LOC_WORLD_QI_LAW_DESCRIPTION": "Governs qi density, qi type, and qi tide cycles.",
+"LOC_WORLD_QI_LAW_DISPLAY_NAME": "Qi Law",
+"LOC_WORLD_SPATIAL_LAW_DESCRIPTION": "Governs world size, dimensions, and spatial stability.",
+"LOC_WORLD_SPATIAL_LAW_DISPLAY_NAME": "Spatial Law",
+"LOC_WORLD_SPIRIT_HERB_DISPLAY_NAME": "Spirit Herb",
+"LOC_WORLD_SPIRIT_PEAKS_DISPLAY_NAME": "Spirit Peaks",
+"LOC_WORLD_SPIRIT_WORLD_DISPLAY_NAME": "Spirit World",
+"LOC_WORLD_STORM_ELEMENTAL_DISPLAY_NAME": "Storm Elemental",
+"LOC_WORLD_TEMPORAL_LAW_DESCRIPTION": "Governs time flow rate and temporal stability within the world.",
+"LOC_WORLD_TEMPORAL_LAW_DISPLAY_NAME": "Temporal Law",
+"LOC_WORLD_TRANSCENDENT_REALM_DISPLAY_NAME": "Transcendent Realm",
+"LOC_WORLD_TRANSCENDENT_WORLD_DISPLAY_NAME": "Transcendent World",
+}

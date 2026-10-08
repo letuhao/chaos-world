@@ -441,6 +441,33 @@ def _scan_decl(
     span_start = line_start + equals + 1
     span_end = _initializer_span(text, span_start)
     regions.append((line_start + match.start("kw"), span_end))
+    # The initializer begins at the character after `=`, which is a SPACE in `x := "…"`. The
+    # format rule addresses offsets from `base`, so the base must advance past that whitespace or
+    # the rewrite eats the wrong character (it left a stray quote and broke `LootValidator`).
+    initializer = text[span_start:span_end]
+    lead = len(initializer) - len(initializer.lstrip())
+    initializer = initializer.lstrip()
+    span_start += lead
+    # A FORMAT is never a bare key: `"Short on %s" % args` holds placeholders, so replacing the
+    # message with `"LOC_…"` would raise, and a `const` cannot call `L.t` (a const value must be a
+    # constant expression). A const format is therefore left alone and reported; a `var` one is
+    # resolved by the same rule the sinks use.
+    if _format_operator(initializer) >= 0:
+        if not is_const and policy.has_display_token(match.group("name")):
+            _key_format(
+                rel,
+                line_no,
+                span_start,
+                initializer,
+                prefix,
+                catalog,
+                "gd_prop_lit",
+                findings,
+                keyed,
+            )
+        elif not is_const:
+            unsupported.append(Unsupported(rel, line_no, "a local format in a non-display name"))
+        return
     wrapped = _wrapped_spans(text, span_start, span_end)
     literals: list[Finding] = []
     for literal in STRING_LIT.finditer(text, span_start, span_end):
@@ -468,7 +495,10 @@ def _scan_decl(
                 )
             )
     findings.extend(literals)
-    if is_const:
+    # Only a const whose VALUE IS A KEY belongs in `keyed`: the set drives a rule that wraps a
+    # keyed const where it is used, and an ordinary constant (`SCHEMA_VERSION`) wrapped in `L.t`
+    # does not compile.
+    if is_const and re.fullmatch(r'\s*"LOC_[A-Z0-9_]+"\s*', initializer):
         keyed.add(match.group("name"))
 
 
@@ -664,7 +694,13 @@ def scan_tscn(rel: str, text: str, prefix: str, catalog: str) -> Scan:
     """
     under_ui = rel.replace("\\", "/").startswith("game/src/ui/")
     kind = "tscn_lit" if under_ui else "tscn_app_lit"
-    return Scan(_scan_rows(rel, text, prefix, catalog, kind, _TSCN_ROW), [], [], False)
+    # A key already in the scene is a USE: the owner's `L.localize_tree` pass resolves it, so
+    # `check` must see it or it would prune a row the tree still reads.
+    uses: list[Use] = []
+    for line_no, _start, line in _lines(text):
+        for match in _USE_ANY.finditer(line):
+            uses.append(Use(rel, line_no, match.group(1), ""))
+    return Scan(_scan_rows(rel, text, prefix, catalog, kind, _TSCN_ROW), uses, [], False)
 
 
 def scan_file(rel: str, text: str) -> Scan | None:

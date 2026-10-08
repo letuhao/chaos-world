@@ -30,7 +30,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_body_foundation_guardian_pool_spirit_domain"
-display_name = "Muscle Forging Guardian salvage (spirit_domain)"
+display_name = "LOC_LOOT_BODY_FOUNDATION_GUARDIAN_SPIRIT_DOMAIN_0_DISPLAY_NAME"
 realm = &"spirit_domain"
 rarity = &""
 rolls = 1

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"W15_immortal_bulwark_base_recipe"
-display_name = "Immortal Bulwark Base Recipe"
+display_name = "LOC_RECIPES_W15_IMMORTAL_BULWARK_BASE_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"ore_dragonbone", &"ore_void_crystal"])
 outputs = Array[StringName]([&"W15_immortal_bulwark_base"])

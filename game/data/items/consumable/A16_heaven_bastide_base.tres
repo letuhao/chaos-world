@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"A16_heaven_bastide_base"
-display_name = "Heaven Bastide Base"
+display_name = "LOC_ITEMS_A16_HEAVEN_BASTIDE_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"immortal_sovereign"

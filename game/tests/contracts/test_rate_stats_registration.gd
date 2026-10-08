@@ -195,9 +195,7 @@ func test_a_flat_on_a_module_owned_rate_is_refused() -> void:
 	for problem in retired.problems():
 		if String(problem).contains("RATE_STATS"):
 			retired_is_rate_refusal = true
-	assert_eq(
-		retired_is_rate_refusal, false, "a FLAT on the retired id is not a rate refusal"
-	)
+	assert_eq(retired_is_rate_refusal, false, "a FLAT on the retired id is not a rate refusal")
 
 
 ## A minimal valid `StatusDef` carrying one modifier, so the only problem it can report
@@ -385,8 +383,9 @@ func _module_baselines() -> void:
 ## literals, not names.
 func _vocabulary_entries(path: String) -> void:
 	var text := FileAccess.get_file_as_string(path)
-	if not text.contains("MindVocabulary.offence_id") and not text.contains(
-		"MindVocabulary.defence_id"
+	if (
+		not text.contains("MindVocabulary.offence_id")
+		and not text.contains("MindVocabulary.defence_id")
 	):
 		return
 	var off_expr := _minf_rhs(text, "offence_id")

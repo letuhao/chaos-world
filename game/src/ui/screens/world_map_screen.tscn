@@ -24,7 +24,7 @@ grow_vertical = 2
 [node name="Title" type="Label" parent="Layout"]
 layout_mode = 2
 theme_type_variation = &"ScreenTitle"
-text = "World Map"
+text = "LOC_UI_SCREENS_454A2A3590"
 
 [node name="MapArea" type="Control" parent="Layout"]
 layout_mode = 2
@@ -48,7 +48,7 @@ layout_mode = 2
 [node name="InfoName" type="Label" parent="Layout/InfoPanel/InfoVBox"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "Location Details"
+text = "LOC_UI_SCREENS_A48800A1EC"
 
 [node name="InfoTier" type="Label" parent="Layout/InfoPanel/InfoVBox"]
 layout_mode = 2

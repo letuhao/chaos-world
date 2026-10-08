@@ -66,12 +66,9 @@ extends UiScreen
 const LOT_ROWS := 16
 const ROW_SCENE := "res://src/ui/panels/auction_lot_row.tscn"
 const ACTIONS_SCENE := "res://src/ui/panels/action_set.tscn"
-const HEADER_TEXT := "Every lot in the world, and who is winning it."
-const NO_ACTOR_TEXT := "No hero bound."
-const FOOTER_TEXT := (
-	"Up / Down picks a lot, Accept bids on it through the auction's own arithmetic. "
-	+ "Cancel returns."
-)
+const HEADER_TEXT := "LOC_UI_SCREENS_7509059374"
+const NO_ACTOR_TEXT := "LOC_UI_SCREENS_6E9BC19A74"
+const FOOTER_TEXT := "LOC_UI_SCREENS_D1475898FD" + "LOC_UI_SCREENS_6A41F1E6E5"
 
 ## The action ids this screen publishes, in the order the bar shows them. Declared as
 ## constants rather than built per call so the order a test reads is the order the
@@ -546,12 +543,12 @@ func _render() -> void:
 	if _header == null:
 		return
 	if _actor == null:
-		_header.text = NO_ACTOR_TEXT
+		_header.text = L.t(NO_ACTOR_TEXT)
 		_footer.text = ""
 		_publish_actions()
 		return
-	_header.text = HEADER_TEXT
-	_footer.text = FOOTER_TEXT
+	_header.text = L.t(HEADER_TEXT)
+	_footer.text = L.t(FOOTER_TEXT)
 	_publish_actions()
 
 

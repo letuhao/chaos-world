@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"pact_ascendant_token_recipe"
-display_name = "Ascendant Token Pact Recipe"
+display_name = "LOC_RECIPES_PACT_ASCENDANT_TOKEN_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"gem_celestite", &"astral_dawnstar_essence"])
 outputs = Array[StringName]([&"pact_ascendant_token"])

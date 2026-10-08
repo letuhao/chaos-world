@@ -276,15 +276,18 @@ static func roster(actor: Actor) -> Array:
 	var out: Array = []
 	for entry in ElementDefaults.all():
 		var def := entry as ElementDef
-		out.append(
-			{
-				"id": String(def.id),
-				"name": def.display_name,
-				"tier": def.tier,
-				"mastery": ElementMastery.mastery_of(actor, def.id),
-				"spark": ElementTraining.can_practise(actor, def.id, rules),
-				"usable": ElementMastery.usable(actor, def.id, rules),
-			}
+		(
+			out
+			. append(
+				{
+					"id": String(def.id),
+					"name": def.display_name,
+					"tier": def.tier,
+					"mastery": ElementMastery.mastery_of(actor, def.id),
+					"spark": ElementTraining.can_practise(actor, def.id, rules),
+					"usable": ElementMastery.usable(actor, def.id, rules),
+				}
+			)
 		)
 	return out
 

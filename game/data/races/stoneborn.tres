@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_race")
 id = &"stoneborn"
-display_name = "Stoneborn"
-description = "A dense, slow body assembled for load-bearing work. It carries more physique and stamina than anything else here and it stops at the Immortal tier, because the density that makes it durable is the same density that will not let a dantian form. Mind cultivation is closed outright."
+display_name = "LOC_RACES_STONEBORN_DISPLAY_NAME"
+description = "LOC_RACES_STONEBORN_DESCRIPTION"
 dominance = 0.8
 manifestation_threshold = 0.15
 gestation_days = 42.0

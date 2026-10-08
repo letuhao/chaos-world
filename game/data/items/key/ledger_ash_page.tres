@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"ledger_ash_page"
-display_name = "Ledger of Ash"
+display_name = "LOC_ITEMS_LEDGER_ASH_PAGE_DISPLAY_NAME"
 category = &"key"
 rarity = &"rare"
 realm = &"spirit_condensation"

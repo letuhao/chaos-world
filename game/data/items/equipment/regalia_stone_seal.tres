@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"regalia_stone_seal"
-display_name = "Stone Guardian Seal"
+display_name = "LOC_ITEMS_REGALIA_STONE_SEAL_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"dao_fruit"

@@ -198,8 +198,9 @@ func _compute_lines() -> void:
 	var position := String(_view.get("position_name", ""))
 	if position == "":
 		position = String(_view.get("position_id", ""))
-	_position = NO_POSITION if position == "" else position
-	_standing = _standing_text(position)
+	# The office name arrives as a KEY, and `summary()` publishes both lines — so they resolve here.
+	_position = L.t(NO_POSITION) if position == "" else L.t(position)
+	_standing = L.t(_standing_text(position))
 	var duties := _string_list(_view.get("duties", []))
 	_duty = _duty_text() if not duties.is_empty() else ""
 	_meta = _meta_text()

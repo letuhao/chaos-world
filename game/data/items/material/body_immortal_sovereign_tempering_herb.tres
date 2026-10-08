@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"body_immortal_sovereign_tempering_herb"
-display_name = "Body of Earth Tempering Herb"
+display_name = "LOC_ITEMS_BODY_IMMORTAL_SOVEREIGN_TEMPERING_HERB_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"immortal_sovereign"
@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"herb"
 grade = &"immortal"
 sources = Array[StringName]([&"gather", &"boss:body_immortal_sovereign_guardian"])
-description = "Gathered tempering reagent."
+description = "LOC_ITEMS_BODY_IMMORTAL_SOVEREIGN_TEMPERING_HERB_DESCRIPTION"

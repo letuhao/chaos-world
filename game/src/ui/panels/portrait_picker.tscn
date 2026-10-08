@@ -20,7 +20,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "Choose a face, or arrive as you are."
+text = "LOC_UI_PANELS_08EB656D90"
 
 [node name="PickerNote" type="Label" parent="Layout"]
 unique_name_in_owner = true

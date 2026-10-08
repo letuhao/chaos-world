@@ -42,7 +42,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E8_luo_warden_pool_true_immortal"
-display_name = "Luo Warden salvage (true_immortal)"
+display_name = "LOC_LOOT_E8_LUO_WARDEN_TRUE_IMMORTAL_0_DISPLAY_NAME"
 realm = &"true_immortal"
 rarity = &""
 rolls = 1

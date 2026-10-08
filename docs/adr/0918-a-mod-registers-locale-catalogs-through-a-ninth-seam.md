@@ -63,13 +63,28 @@ interface"), so this is a reviewed change to that surface, not an ad-hoc read.
 - **The scope is every layer that composes wording**: `.gd` in `ui/`, `modules/` and `core/`
   (a persona composer's default manner, a realm name), plus `data/`, plus the `src/ui` scenes.
   `app/` and `contracts/` compose no wording and stay out.
-- **Counted text is `L.tn(key, count)`**, which takes the singular row and the locale's `key_1`.
-  A text `.tres` `Translation` carries no CLDR rule, so the form COUNT lives in an explicit
-  table and an unlisted locale is refused loudly rather than given an English-shaped plural;
-  a locale needing more than two forms must wait for a catalog format that can hold them.
+- **Counted text is `L.tn(key, count)`**, which takes the row for form 0 and the locale's
+  `key_1`, `key_2`, … A text `.tres` `Translation` carries no CLDR rule, so the form COUNT and
+  the rule that picks one live in ONE table here — no plural, the singular/other pair, and the
+  Slavic three-form rule (1; 2-4 outside 12-14; else) — and an unlisted locale is refused LOUDLY
+  rather than given an English-shaped plural. A rule is per SHAPE of language, not per language,
+  so adding one is a line in that table plus its catalog rows.
 - **`L.set_locale(code)` switches and returns false when no catalog is loaded**, so a caller
-  can refuse rather than half-switch. A non-Latin locale additionally needs a font with its
-  glyphs, and the theme declares none today — so no such locale ships until that asset lands.
+  can refuse rather than half-switch. A CJK locale also calls `L.apply_script_font()`, which
+  installs a `SystemFont` over a candidate family list as the engine fallback: NO font asset
+  ships in this repo, and a locale that drew boxes would be unshippable, so the mechanism
+  resolves an OS font instead. A shipped font asset supersedes the list, never the mechanism.
+- **A display `const`/`var` holds the bare KEY and the reader resolves it.** `var NAME := L.t(k)`
+  is wrong twice over: gdlint's `class-variable-name` rejects `var REASON_TEXT`, and a value
+  resolved at declaration pins the locale for the process's life. So a const stays a const
+  (`const X := "LOC_…"`), a panel's table holds keys, and the accessor resolves — the same split
+  a `.tres` field uses, one reader per key.
+- **A `%`-format expression keys its MESSAGE and its ARGUMENTS.** The template is keyed as a
+  whole (`L.t(key) % [name, n]`) and each prose literal in the argument list with it, because
+  `"%s - %s" % [fact, "heard" if ok else "not yet"]` holds three messages. A keyed `CONST` used
+  as an argument, or as the format's HEAD (`CONST % args` — a key is not a template and would
+  raise), is resolved first; so is a helper that `return`s a keyed const. The scanner reads a
+  file's own keyed consts to see all three, and never keys a quoted word inside a COMMENT.
 
 ## Consequences
 

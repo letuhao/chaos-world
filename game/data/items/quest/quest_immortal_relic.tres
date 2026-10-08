@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"quest_immortal_relic"
-display_name = "Immortal Relic"
+display_name = "LOC_ITEMS_QUEST_IMMORTAL_RELIC_DISPLAY_NAME"
 category = &"quest"
 rarity = &"legendary"
 realm = &"immortal_sovereign"

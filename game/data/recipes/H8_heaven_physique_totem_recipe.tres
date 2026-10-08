@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"H8_heaven_physique_totem_recipe"
-display_name = "Heaven Physique Totem Recipe"
+display_name = "LOC_RECIPES_H8_HEAVEN_PHYSIQUE_TOTEM_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"ore_heavenly_jade", &"scale_dragon"])
 outputs = Array[StringName]([&"H8_heaven_physique_totem"])

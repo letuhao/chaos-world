@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"J4_mortal_cloud_perfected"
-display_name = "Mortal Cloud Perfected"
+display_name = "LOC_ITEMS_J4_MORTAL_CLOUD_PERFECTED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"foundation"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"T2_immortal_linden_lintel"
-display_name = "Immortal Linden Lintel"
+display_name = "LOC_ITEMS_T2_IMMORTAL_LINDEN_LINTEL_DISPLAY_NAME"
 category = &"key"
 rarity = &"legendary"
 realm = &"primordial_immortal"

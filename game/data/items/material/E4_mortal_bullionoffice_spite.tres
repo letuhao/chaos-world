@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E4_mortal_bullionoffice_spite"
-display_name = "Mortal Bullionoffice Spite"
+display_name = "LOC_ITEMS_E4_MORTAL_BULLIONOFFICE_SPITE_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"core_formation"

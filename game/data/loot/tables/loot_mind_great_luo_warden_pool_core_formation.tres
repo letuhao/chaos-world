@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_mind_great_luo_warden_pool_core_formation"
-display_name = "Transcendence Warden salvage (core_formation)"
+display_name = "LOC_LOOT_MIND_GREAT_LUO_WARDEN_CORE_FORMATION_0_DISPLAY_NAME"
 realm = &"core_formation"
 rarity = &""
 rolls = 1

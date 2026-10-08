@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 id = &"nine_province_reach"
-display_name = "The Nine-Province Reach"
+display_name = "LOC_NATION_NINE_PROVINCE_REACH_DISPLAY_NAME"
 tier_index = 2
 location_ids = Array[StringName]([&"transcendent_realm"])
 seat_location_id = &"transcendent_realm"

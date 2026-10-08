@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"P8_heaven_bobbin_refined"
-display_name = "Heaven Bobbin Refined"
+display_name = "LOC_ITEMS_P8_HEAVEN_BOBBIN_REFINED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"earth_immortal"

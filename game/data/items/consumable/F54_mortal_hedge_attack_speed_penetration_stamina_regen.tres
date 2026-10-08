@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F54_mortal_hedge_attack_speed_penetration_stamina_regen"
-display_name = "Mortal Hedge Attack speed Penetration Stamina regen"
+display_name = "LOC_ITEMS_F54_MORTAL_HEDGE_ATTACK_SPEED_PENETRATION_STAMINA_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"body_integration"

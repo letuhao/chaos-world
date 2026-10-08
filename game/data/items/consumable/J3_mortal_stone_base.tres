@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"J3_mortal_stone_base"
-display_name = "Mortal Stone Base"
+display_name = "LOC_ITEMS_J3_MORTAL_STONE_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"nascent_soul"

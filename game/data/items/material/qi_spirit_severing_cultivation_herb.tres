@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"qi_spirit_severing_cultivation_herb"
-display_name = "Spirit Severing Herb"
+display_name = "LOC_ITEMS_QI_SPIRIT_SEVERING_CULTIVATION_HERB_DISPLAY_NAME"
 category = &"material"
 rarity = &"magic"
 realm = &"spirit_severing"
@@ -16,4 +16,4 @@ roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"herb"
 grade = &"spirit"
 sources = Array[StringName]([&"gather", &"domain:qi_nascent_soul_domain"])
-description = "Cultivation herb for Spirit Severing. Gathered from the wild."
+description = "LOC_ITEMS_QI_SPIRIT_SEVERING_CULTIVATION_HERB_DESCRIPTION"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"A32_immortal_cabinetwork_vitrine"
-display_name = "Immortal Cabinetwork Vitrine"
+display_name = "LOC_ITEMS_A32_IMMORTAL_CABINETWORK_VITRINE_DISPLAY_NAME"
 category = &"misc"
 rarity = &"legendary"
 realm = &"heaven_immortal"

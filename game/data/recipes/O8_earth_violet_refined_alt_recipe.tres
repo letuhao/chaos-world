@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"O8_earth_violet_refined_alt_recipe"
-display_name = "Earth Violet Refined (Alt) Recipe"
+display_name = "LOC_RECIPES_O8_EARTH_VIOLET_REFINED_ALT_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"O8_earth_violet_base", &"feather_owl", &"banner_gale_essence"])
 outputs = Array[StringName]([&"O8_earth_violet_refined"])

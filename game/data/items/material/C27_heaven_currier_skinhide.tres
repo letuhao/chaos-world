@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C27_heaven_currier_skinhide"
-display_name = "Heaven Currier Skinhide"
+display_name = "LOC_ITEMS_C27_HEAVEN_CURRIER_SKINHIDE_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"immortal_sovereign"

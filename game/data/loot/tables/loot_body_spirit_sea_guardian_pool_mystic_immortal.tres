@@ -30,7 +30,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_body_spirit_sea_guardian_pool_mystic_immortal"
-display_name = "Gold Body Guardian salvage (mystic_immortal)"
+display_name = "LOC_LOOT_BODY_SPIRIT_SEA_GUARDIAN_MYSTIC_IMMORTAL_0_DISPLAY_NAME"
 realm = &"mystic_immortal"
 rarity = &""
 rolls = 1

@@ -25,9 +25,7 @@ static func active_events(actor: Actor) -> Array[Dictionary]:
 	var out: Array[Dictionary] = []
 	if actor == null:
 		return out
-	var ledger := DestinyState.normalize(
-		actor.get_module_data(DestinyState.MODULE_KEY)
-	)
+	var ledger := DestinyState.normalize(actor.get_module_data(DestinyState.MODULE_KEY))
 	for fate_id in DestinyState.fate_ids(ledger):
 		var def := FateCatalog.instance().fate_definition(fate_id)
 		if def == null:
@@ -36,13 +34,16 @@ static func active_events(actor: Actor) -> Array[Dictionary]:
 			if not (event is Dictionary):
 				continue
 			var entry := event as Dictionary
-			out.append(
-				{
-					"fate_id": String(fate_id),
-					"event_type": StringName(entry.get("event_type", &"")),
-					"magnitude": float(entry.get("magnitude", 0.0)),
-					"description": String(entry.get("description", "")),
-				}
+			(
+				out
+				. append(
+					{
+						"fate_id": String(fate_id),
+						"event_type": StringName(entry.get("event_type", &"")),
+						"magnitude": float(entry.get("magnitude", 0.0)),
+						"description": String(entry.get("description", "")),
+					}
+				)
 			)
 	return out
 

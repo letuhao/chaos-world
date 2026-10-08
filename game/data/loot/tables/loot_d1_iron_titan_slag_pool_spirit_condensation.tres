@@ -18,7 +18,7 @@ rarity_floor = &"magic"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d1_iron_titan_slag_pool_spirit_condensation"
-display_name = "Iron Titan Slag Lesser salvage (spirit_condensation)"
+display_name = "LOC_LOOT_D1_IRON_TITAN_SLAG_SPIRIT_CONDENSATION_0_DISPLAY_NAME"
 realm = &"spirit_condensation"
 rarity = &""
 rolls = 1

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Q9_divine_eddy_aged"
-display_name = "Divine Eddy Aged"
+display_name = "LOC_ITEMS_Q9_DIVINE_EDDY_AGED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"

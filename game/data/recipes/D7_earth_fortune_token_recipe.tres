@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"D7_earth_fortune_token_recipe"
-display_name = "Earth Fortune Token Recipe"
+display_name = "LOC_RECIPES_D7_EARTH_FORTUNE_TOKEN_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"shard_glacier", &"shard_volcano"])
 outputs = Array[StringName]([&"D7_earth_fortune_token"])

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"K22_heaven_dao_base_recipe"
-display_name = "Heaven Dao Base Recipe"
+display_name = "LOC_RECIPES_K22_HEAVEN_DAO_BASE_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"everlight_star_ore", &"torc_heaven_jade"])
 outputs = Array[StringName]([&"K22_heaven_dao_base"])

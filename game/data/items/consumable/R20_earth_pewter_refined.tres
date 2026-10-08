@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"R20_earth_pewter_refined"
-display_name = "Earth Pewter Refined"
+display_name = "LOC_ITEMS_R20_EARTH_PEWTER_REFINED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_sea"

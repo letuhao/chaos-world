@@ -120,10 +120,14 @@ func show_entry(view: Dictionary) -> void:
 	_view = view.duplicate(true)
 	_head = _head_text(_view)
 	_meta = _meta_text(_view)
-	_mastery = _mastery_text(_view)
-	_price = _price_text(_view)
-	_band = _band_text(_view)
-	_note = _note_text(_view)
+	_mastery = L.t(_mastery_text(_view))
+	# Resolved here for the same reason as `_note`: `price_line` is what `summary()` publishes,
+	# and `GATE_MARK` is a KEY appended to the sentence.
+	_price = L.t(_price_text(_view))
+	_band = L.t(_band_text(_view))
+	# Resolved at the assignment, because `note_line` is what `summary()` publishes: the label
+	# resolves too, and a summary that disagreed with its label is the bug this closes.
+	_note = L.t(_note_text(_view))
 	_render()
 
 
@@ -297,7 +301,7 @@ func _price_text(view: Dictionary) -> String:
 	if known_entry():
 		return L.t(KNOWN_TEXT)
 	var price := float(view.get("learn_price", 0.0))
-	var quoted := FREE_TEXT if price <= 0.0 else COST_TEXT % int(round(price))
+	var quoted := FREE_TEXT if price <= 0.0 else L.t(COST_TEXT) % int(round(price))
 	if bool(view.get("can_learn", false)):
 		return quoted
 	return quoted + GATE_MARK
@@ -470,7 +474,7 @@ func _short_text(short: Array) -> String:
 			parts
 			. append(
 				(
-					SHORT_TEXT
+					L.t(SHORT_TEXT)
 					% [
 						_path_words(String(entry.get("resource", ""))),
 						int(round(float(entry.get("required", 0.0)))),

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"venom_antidote_elixir"
-display_name = "Antidote Elixir"
+display_name = "LOC_ITEMS_VENOM_ANTIDOTE_ELIXIR_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_ascension"

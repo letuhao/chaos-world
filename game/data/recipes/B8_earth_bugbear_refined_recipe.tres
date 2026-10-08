@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"B8_earth_bugbear_refined_recipe"
-display_name = "Earth Bugbear Refined Recipe"
+display_name = "LOC_RECIPES_B8_EARTH_BUGBEAR_REFINED_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"B8_earth_bugbear_base", &"scale_basilisk"])
 outputs = Array[StringName]([&"B8_earth_bugbear_refined"])

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F34_immortal_foxed_crit_chance_defense_physical_qi_cost_reduction_stamina_regen"
-display_name = "Immortal Foxed Crit chance Defense physical Qi cost reduction Stamina regen"
+display_name = "LOC_ITEMS_F34_IMMORTAL_FOXED_CRIT_CHANCE_DEFENSE_PHYSICAL_QI_COST_REDUCTION_STAMINA_REGEN_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"dao_fruit"

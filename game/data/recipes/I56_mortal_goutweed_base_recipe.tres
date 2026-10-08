@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"I56_mortal_goutweed_base_recipe"
-display_name = "Mortal Goutweed Base Recipe"
+display_name = "LOC_RECIPES_I56_MORTAL_GOUTWEED_BASE_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"C33_mortal_archive_diagramma", &"formation_iron_ore"])
 outputs = Array[StringName]([&"I56_mortal_goutweed_base"])

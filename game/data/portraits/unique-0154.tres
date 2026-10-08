@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_portrait")
 id = &"unique-0154"
-display_name = "Kesler Braymark"
+display_name = "LOC_PORTRAITS_UNIQUE_0154_DISPLAY_NAME"
 race_id = &"emberblood"
 visual_traits = Array[StringName]([&"burden:the-fuel-is-the-body", &"class:uncountable-good", &"gift:fastest-refining-in-the-record", &"hazard:he-is-also-the-medicine", &"path:none", &"role:dose-holder", &"standing:counted-in-the-stock"])
 layer_paths = Array[String](["res://assets/characters/portraits/emberblood.png"])

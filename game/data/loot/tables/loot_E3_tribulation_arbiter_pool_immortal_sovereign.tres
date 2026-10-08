@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E3_tribulation_arbiter_pool_immortal_sovereign"
-display_name = "Tribulation Arbiter salvage (immortal_sovereign)"
+display_name = "LOC_LOOT_E3_TRIBULATION_ARBITER_IMMORTAL_SOVEREIGN_0_DISPLAY_NAME"
 realm = &"immortal_sovereign"
 rarity = &""
 rolls = 1

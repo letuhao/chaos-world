@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"T3_divine_ragwort_snuffbox"
-display_name = "Divine Ragwort Snuffbox"
+display_name = "LOC_ITEMS_T3_DIVINE_RAGWORT_SNUFFBOX_DISPLAY_NAME"
 category = &"misc"
 rarity = &"legendary"
 realm = &"transcendent"

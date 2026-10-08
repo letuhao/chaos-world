@@ -95,7 +95,7 @@ const UNKNOWN_TYPE := &"unauthored_trial_type"
 const UNKNOWN_DOMAIN := &"unknown_domain"
 const NO_ACTOR := &"no_actor"
 const NO_BLESSING := &"no_cultivation_blessing_for_element"
-const NOT_APPLIED := &"the blessing was refused"
+const NOT_APPLIED := &"LOC_STATUS_8B6951B755"
 const ALREADY_REWARDED := &"already_rewarded"
 
 ## Marks a blessing already paid, WITHIN THIS SESSION.

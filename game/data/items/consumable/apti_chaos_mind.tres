@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"apti_chaos_mind"
-display_name = "Chaos Mind Elixir"
+display_name = "LOC_ITEMS_APTI_CHAOS_MIND_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_ancestor"

@@ -210,7 +210,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_elemental_heaven_guardian"
-display_name = "Aether Guardian"
+display_name = "LOC_LOOT_ELEMENTAL_HEAVEN_GUARDIAN_POOL_DAO_ANCESTOR_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

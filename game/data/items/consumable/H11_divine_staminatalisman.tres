@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"H11_divine_staminatalisman"
-display_name = "Divine Stamina Talisman"
+display_name = "LOC_ITEMS_H11_DIVINE_STAMINATALISMAN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"transcendent"

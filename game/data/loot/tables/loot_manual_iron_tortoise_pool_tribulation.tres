@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_manual_iron_tortoise_pool_tribulation"
-display_name = "Iron Tortoise salvage (tribulation)"
+display_name = "LOC_LOOT_MANUAL_IRON_TORTOISE_TRIBULATION_0_DISPLAY_NAME"
 realm = &"tribulation"
 rarity = &""
 rolls = 1

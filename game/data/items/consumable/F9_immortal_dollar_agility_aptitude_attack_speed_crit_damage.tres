@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F9_immortal_dollar_agility_aptitude_attack_speed_crit_damage"
-display_name = "Immortal Dollar Agility Aptitude Attack speed Crit damage"
+display_name = "LOC_ITEMS_F9_IMMORTAL_DOLLAR_AGILITY_APTITUDE_ATTACK_SPEED_CRIT_DAMAGE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"great_luo"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F42_spirit_gerundium_crit_chance_loot_bonus_max_stamina"
-display_name = "Spirit Gerundium Crit chance Loot bonus Max stamina"
+display_name = "LOC_ITEMS_F42_SPIRIT_GERUNDIUM_CRIT_CHANCE_LOOT_BONUS_MAX_STAMINA_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"magic"
 realm = &"spirit_manifestation"

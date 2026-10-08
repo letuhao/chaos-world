@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"D2_spirit_comprehension_bead"
-display_name = "Spirit Comprehension Bead"
+display_name = "LOC_ITEMS_D2_SPIRIT_COMPREHENSION_BEAD_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_manifestation"

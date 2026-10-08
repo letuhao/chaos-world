@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"sap_gum"
-display_name = "Gum Sap"
+display_name = "LOC_ITEMS_SAP_GUM_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_manifestation"

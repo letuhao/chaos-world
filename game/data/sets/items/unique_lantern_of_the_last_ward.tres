@@ -5,14 +5,14 @@
 [resource]
 script = ExtResource("1_item")
 id = &"unique_lantern_of_the_last_ward"
-display_name = "Lantern of the Last Ward"
+display_name = "LOC_SETS_UNIQUE_LANTERN_OF_THE_LAST_WARD_DISPLAY_NAME"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"divine"
 stackable = false
 tags = Array[StringName]([&"unique", &"unique_route:body_dao_ancestor_guardian"])
 sources = Array[StringName]([&"boss:body_dao_ancestor_guardian"])
-description = "A ward-lantern carried from the last defended gate. Locks a fixed transcendent signature; the light does not leave the wearer."
+description = "LOC_SETS_UNIQUE_LANTERN_OF_THE_LAST_WARD_DESCRIPTION"
 rarity = &"legendary"
 realm = &"dao_ancestor"
 fixed_modifiers = Array[Dictionary]([

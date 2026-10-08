@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d2_void_serpent_pool_dao_fruit"
-display_name = "Void Serpent Lesser salvage (dao_fruit)"
+display_name = "LOC_LOOT_D2_VOID_SERPENT_DAO_FRUIT_0_DISPLAY_NAME"
 realm = &"dao_fruit"
 rarity = &""
 rolls = 1

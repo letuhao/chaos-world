@@ -222,7 +222,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d1_iron_titan_slag"
-display_name = "Iron Titan Slag Lesser"
+display_name = "LOC_LOOT_D1_IRON_TITAN_SLAG_POOL_DAO_ANCESTOR_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

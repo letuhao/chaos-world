@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F23_heaven_estaminet_agility_attack_spiritual_breakthrough_chance_dao_heart"
-display_name = "Heaven Estaminet Agility Attack spiritual Breakthrough chance Dao heart"
+display_name = "LOC_ITEMS_F23_HEAVEN_ESTAMINET_AGILITY_ATTACK_SPIRITUAL_BREAKTHROUGH_CHANCE_DAO_HEART_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"true_immortal"

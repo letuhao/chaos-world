@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_mind_foundation_warden_pool_tribulation"
-display_name = "Focus Warden salvage (tribulation)"
+display_name = "LOC_LOOT_MIND_FOUNDATION_WARDEN_TRIBULATION_0_DISPLAY_NAME"
 realm = &"tribulation"
 rarity = &""
 rolls = 1

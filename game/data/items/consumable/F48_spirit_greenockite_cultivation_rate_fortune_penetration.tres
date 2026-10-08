@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F48_spirit_greenockite_cultivation_rate_fortune_penetration"
-display_name = "Spirit Greenockite Cultivation rate Fortune Penetration"
+display_name = "LOC_ITEMS_F48_SPIRIT_GREENOCKITE_CULTIVATION_RATE_FORTUNE_PENETRATION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_domain"

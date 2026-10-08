@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 id = &"star_court"
-display_name = "The Star Court"
+display_name = "LOC_NATION_STAR_COURT_DISPLAY_NAME"
 tier_index = 3
 location_ids = Array[StringName]([&"immortal_court"])
 seat_location_id = &"immortal_court"

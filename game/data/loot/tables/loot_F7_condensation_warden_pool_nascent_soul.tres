@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_F7_condensation_warden_pool_nascent_soul"
-display_name = "Quiet Condenser salvage (nascent_soul)"
+display_name = "LOC_LOOT_F7_CONDENSATION_WARDEN_NASCENT_SOUL_0_DISPLAY_NAME"
 realm = &"nascent_soul"
 rarity = &""
 rolls = 1

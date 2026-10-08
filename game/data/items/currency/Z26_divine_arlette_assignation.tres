@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Z26_divine_arlette_assignation"
-display_name = "Divine Arlette Assignation"
+display_name = "LOC_ITEMS_Z26_DIVINE_ARLETTE_ASSIGNATION_DISPLAY_NAME"
 category = &"currency"
 rarity = &"legendary"
 realm = &"transcendent"

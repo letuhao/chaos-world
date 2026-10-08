@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"P1_divine_auger_base_recipe"
-display_name = "Divine Auger Base Recipe"
+display_name = "LOC_RECIPES_P1_DIVINE_AUGER_BASE_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"filament_primordial_thread", &"divine_chaos_tablet"])
 outputs = Array[StringName]([&"P1_divine_auger_base"])

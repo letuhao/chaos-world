@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U4_heaven_weald_chalice"
-display_name = "Heaven Weald Chalice"
+display_name = "LOC_ITEMS_U4_HEAVEN_WEALD_CHALICE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"true_immortal"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"Q22_earth_hearth_refined_recipe"
-display_name = "Earth Hearth Refined Recipe"
+display_name = "LOC_RECIPES_Q22_EARTH_HEARTH_REFINED_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"Q22_earth_hearth_base", &"fungus_pale_veil"])
 outputs = Array[StringName]([&"Q22_earth_hearth_refined"])

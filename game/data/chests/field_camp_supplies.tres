@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_chest")
 id = &"field_camp_supplies"
-display_name = "A Camp Chest"
+display_name = "LOC_CHESTS_FIELD_CAMP_SUPPLIES_DISPLAY_NAME"
 rolls = 2
 rows = Array[Dictionary]([{"item_id": &"domain_rations", "weight": 3}, {"item_id": &"domain_torch", "weight": 2}, {"item_id": &"domain_waterskin", "weight": 1}])
 guaranteed = Array[StringName]([&"domain_survival_kit"])

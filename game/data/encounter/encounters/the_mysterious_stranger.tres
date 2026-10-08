@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_enc")
 id = &"the_mysterious_stranger"
-display_name = "The Mysterious Stranger"
-description = "A hooded figure approaches with a cryptic warning. They speak of a fate that awaits, and offer a choice that will shape your path."
+display_name = "LOC_ENCOUNTER_THE_MYSTERIOUS_STRANGER_DISPLAY_NAME"
+description = "LOC_ENCOUNTER_THE_MYSTERIOUS_STRANGER_DESCRIPTION"
 trigger_type = &"always"
 trigger_value = &""
 weight = 0.8

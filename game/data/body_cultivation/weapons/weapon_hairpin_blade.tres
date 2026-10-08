@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 id = &"hairpin"
-display_name = "Hairpin Blade"
+display_name = "LOC_BODY_CULTIVATION_HAIRPIN_DISPLAY_NAME"
 best_against = "Beast-bone and crystal hides: a point enters where a cut cannot."
 demand = &"precision"
 lean = &"speed"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"J14_earth_star_base"
-display_name = "Earth Star Base"
+display_name = "LOC_ITEMS_J14_EARTH_STAR_BASE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"spirit_sovereign"

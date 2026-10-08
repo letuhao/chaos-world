@@ -6,7 +6,7 @@
 [sub_resource type="Resource" id="tier_0"]
 script = ExtResource("2_tier")
 tier = 1
-label = "Gate"
+label = "LOC_LOOT_LOOT_BODY_SPIRIT_MANIFESTATION_TRIAL_LABEL_1"
 realm = &"spirit_manifestation"
 rarity = &"common"
 vitality = 10312.5
@@ -18,7 +18,7 @@ boss_tables = Array[Dictionary]([
 [sub_resource type="Resource" id="tier_1"]
 script = ExtResource("2_tier")
 tier = 2
-label = "Depths"
+label = "LOC_LOOT_LOOT_BODY_SPIRIT_MANIFESTATION_TRIAL_LABEL_2"
 realm = &"spirit_manifestation"
 rarity = &"rare"
 vitality = 16500.
@@ -30,7 +30,7 @@ boss_tables = Array[Dictionary]([
 [resource]
 script = ExtResource("1_encounter")
 id = &"loot_body_spirit_manifestation_trial"
-display_name = "Diamond Body Trial"
+display_name = "LOC_LOOT_LOOT_BODY_SPIRIT_MANIFESTATION_TRIAL_DISPLAY_NAME"
 domain_id = &"body_spirit_manifestation_trial"
 boss_ids = Array[StringName]([&"body_spirit_manifestation_guardian", &"E5_manifestation_warden"])
 key_reach = 0

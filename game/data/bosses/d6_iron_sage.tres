@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_boss")
 id = &"d6_iron_sage"
-display_name = "Iron Sage"
+display_name = "LOC_BOSSES_D6_IRON_SAGE_DISPLAY_NAME"
 domain_id = &"treasure_iron_sage_domain"
 loot = Array[StringName]([])
 ; Blade-work finds the seams: the body's physical guard and its footing are cut away.

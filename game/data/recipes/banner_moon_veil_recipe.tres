@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"banner_moon_veil_recipe"
-display_name = "Moon Veil Banner Recipe"
+display_name = "LOC_RECIPES_BANNER_MOON_VEIL_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"banner_moon_herb", &"banner_gale_essence"])
 outputs = Array[StringName]([&"banner_moon_veil"])

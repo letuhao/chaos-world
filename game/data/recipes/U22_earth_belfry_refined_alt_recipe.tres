@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"U22_earth_belfry_refined_alt_recipe"
-display_name = "Earth Belfry Refined (Alt) Recipe"
+display_name = "LOC_RECIPES_U22_EARTH_BELFRY_REFINED_ALT_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"U22_earth_belfry_base", &"bow_iron_ore", &"carvebone_tusk"])
 outputs = Array[StringName]([&"U22_earth_belfry_refined"])

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V7_heaven_aerie_kilim"
-display_name = "Heaven Aerie Kilim"
+display_name = "LOC_ITEMS_V7_HEAVEN_AERIE_KILIM_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"golden_immortal"

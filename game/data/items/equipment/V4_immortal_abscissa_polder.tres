@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V4_immortal_abscissa_polder"
-display_name = "Immortal Abscissa Polder"
+display_name = "LOC_ITEMS_V4_IMMORTAL_ABSCISSA_POLDER_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"heaven_immortal"

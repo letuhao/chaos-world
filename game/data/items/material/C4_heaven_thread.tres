@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C4_heaven_thread"
-display_name = "Heaven Thread"
+display_name = "LOC_ITEMS_C4_HEAVEN_THREAD_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"true_immortal"

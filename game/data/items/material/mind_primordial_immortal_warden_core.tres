@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"mind_primordial_immortal_warden_core"
-display_name = "Ascension Oracle Core"
+display_name = "LOC_ITEMS_MIND_PRIMORDIAL_IMMORTAL_WARDEN_CORE_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"primordial_immortal"
@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"beast_core"
 grade = &"immortal"
 sources = Array[StringName]([&"boss:mind_primordial_immortal_warden"])
-description = "Boss-only catalyst for the realm's pill."
+description = "LOC_ITEMS_MIND_PRIMORDIAL_IMMORTAL_WARDEN_CORE_DESCRIPTION"

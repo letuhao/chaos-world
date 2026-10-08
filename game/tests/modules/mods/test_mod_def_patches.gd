@@ -50,15 +50,21 @@ func _write_mod(dir_name: String, mod_id: String, patches: Array) -> String:
 	var dir_path := _root.path_join(dir_name)
 	DirAccess.make_dir_recursive_absolute(dir_path)
 	var manifest := FileAccess.open(dir_path.path_join("mod.json"), FileAccess.WRITE)
-	manifest.store_string(
-		JSON.stringify(
-			{
-				"id": mod_id,
-				"version": "1.0",
-				"priority": 0,
-				"requires_api": 1,
-				"def_patches": patches,
-			}
+	(
+		manifest
+		. store_string(
+			(
+				JSON
+				. stringify(
+					{
+						"id": mod_id,
+						"version": "1.0",
+						"priority": 0,
+						"requires_api": 1,
+						"def_patches": patches,
+					}
+				)
+			)
 		)
 	)
 	manifest.close()
@@ -70,7 +76,13 @@ func test_def_patches_are_recorded() -> void:
 		"patches",
 		"w9_patches",
 		[
-			{"family": "items", "id": "iron_sword", "field": "value", "value": 100, "operation": "set"},
+			{
+				"family": "items",
+				"id": "iron_sword",
+				"field": "value",
+				"value": 100,
+				"operation": "set"
+			},
 		]
 	)
 	var out := ModsApi.load_order([_root])
@@ -87,8 +99,20 @@ func test_def_patches_reach_runtime_registrations() -> void:
 		"patches",
 		"w9_patches",
 		[
-			{"family": "items", "id": "iron_sword", "field": "value", "value": 100, "operation": "set"},
-			{"family": "items", "id": "iron_sword", "field": "tags", "value": "rare", "operation": "add"},
+			{
+				"family": "items",
+				"id": "iron_sword",
+				"field": "value",
+				"value": 100,
+				"operation": "set"
+			},
+			{
+				"family": "items",
+				"id": "iron_sword",
+				"field": "tags",
+				"value": "rare",
+				"operation": "add"
+			},
 		]
 	)
 	var out := ModsApi.load_order([_root])
@@ -179,7 +203,15 @@ func test_unknown_def_patch_operation_refused() -> void:
 	var dir_path := _write_mod(
 		"patches",
 		"w9_patches",
-		[{"family": "items", "id": "iron_sword", "field": "value", "value": 100, "operation": "unknown_op"}]
+		[
+			{
+				"family": "items",
+				"id": "iron_sword",
+				"field": "value",
+				"value": 100,
+				"operation": "unknown_op"
+			}
+		]
 	)
 	var out := ModsApi.load_order([_root])
 	assert_eq(out["ok"], false, "unknown operation refused")

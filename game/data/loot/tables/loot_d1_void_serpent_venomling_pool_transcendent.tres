@@ -18,7 +18,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d1_void_serpent_venomling_pool_transcendent"
-display_name = "Void Serpent Venomling Lesser salvage (transcendent)"
+display_name = "LOC_LOOT_D1_VOID_SERPENT_VENOMLING_TRANSCENDENT_0_DISPLAY_NAME"
 realm = &"transcendent"
 rarity = &""
 rolls = 1

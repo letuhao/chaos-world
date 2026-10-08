@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"G9_lens_primordial_binding_recipe"
-display_name = "Primordial Lens Binding Recipe"
+display_name = "LOC_RECIPES_G9_LENS_PRIMORDIAL_BINDING_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"G9_heaven_catalyst", &"shard_primordial"])
 outputs = Array[StringName]([&"lens_primordial"])

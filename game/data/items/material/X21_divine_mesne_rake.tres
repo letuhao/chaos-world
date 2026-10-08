@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"X21_divine_mesne_rake"
-display_name = "Divine Mesne Rake"
+display_name = "LOC_ITEMS_X21_DIVINE_MESNE_RAKE_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"primordial_origin"

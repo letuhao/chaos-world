@@ -18,7 +18,7 @@ rarity_floor = &"magic"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_tome_cinder_tiger_pool_spirit_sovereign"
-display_name = "Cinder Tiger salvage (spirit_sovereign)"
+display_name = "LOC_LOOT_TOME_CINDER_TIGER_SPIRIT_SOVEREIGN_0_DISPLAY_NAME"
 realm = &"spirit_sovereign"
 rarity = &""
 rolls = 1

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"domain_survival_kit"
-display_name = "Domain Survival Kit"
+display_name = "LOC_ITEMS_DOMAIN_SURVIVAL_KIT_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"qi_refining"
@@ -15,7 +15,7 @@ stackable = true
 max_stack = 5
 tags = Array[StringName]([&"domain", &"survival", &"food", &"water", &"torch"])
 sources = Array[StringName]([&"domain:qi_qi_refining_domain", &"gather:domain_cache", &"craft:domain_survival_kit_recipe"])
-description = "A bundled kit. Restores 2 food, 2 water, and 2 torch when consumed."
+description = "LOC_ITEMS_DOMAIN_SURVIVAL_KIT_DESCRIPTION"
 ; resource: food, water, torch
 ; depletion_rate: 1 per room entered (each resource)
 ; duration: 2 rooms (all resources)

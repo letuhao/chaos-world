@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F53_heaven_hayward_attack_speed_insight_gain_physique"
-display_name = "Heaven Hayward Attack speed Insight gain Physique"
+display_name = "LOC_ITEMS_F53_HEAVEN_HAYWARD_ATTACK_SPEED_INSIGHT_GAIN_PHYSIQUE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"dao_fruit"

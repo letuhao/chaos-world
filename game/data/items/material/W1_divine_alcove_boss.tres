@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"W1_divine_alcove_boss"
-display_name = "Divine Alcove Boss"
+display_name = "LOC_ITEMS_W1_DIVINE_ALCOVE_BOSS_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"transcendent"

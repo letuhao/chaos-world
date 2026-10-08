@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"D6_immortal_healthsalve"
-display_name = "Immortal Renewal Salve"
+display_name = "LOC_ITEMS_D6_IMMORTAL_HEALTHSALVE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"earth_immortal"

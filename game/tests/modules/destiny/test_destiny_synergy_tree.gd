@@ -15,7 +15,7 @@ const CHOSEN := &"t_chosen_one"
 func setup() -> void:
 	(
 		DestinyFixtureCatalog
-		.install(
+		. install(
 			[
 				DestinyFixtureCatalog.flat_fate(OATH, Stat.DEFENSE_PHYSICAL, 3.0),
 				DestinyFixtureCatalog.flat_fate(PLEDGE, Stat.ATTACK_PHYSICAL, 2.0),
@@ -111,12 +111,15 @@ func test_inconsistent_views_are_reported() -> void:
 func test_a_fate_with_unmet_requires_is_not_earnable() -> void:
 	var fate := DestinyFixtureCatalog.story_fate(&"t_gated")
 	fate.requires = [&"t_oath_breaker"]
-	DestinyFixtureCatalog.install(
-		[
-			DestinyFixtureCatalog.flat_fate(OATH, Stat.DEFENSE_PHYSICAL, 3.0),
-			fate,
-		],
-		[]
+	(
+		DestinyFixtureCatalog
+		. install(
+			[
+				DestinyFixtureCatalog.flat_fate(OATH, Stat.DEFENSE_PHYSICAL, 3.0),
+				fate,
+			],
+			[]
+		)
 	)
 	var actor := _hero()
 	var def := FateCatalog.instance().fate_definition(&"t_gated")
@@ -147,12 +150,15 @@ func test_a_fate_with_no_requires_is_always_earnable() -> void:
 func test_earn_fate_refuses_when_requires_are_unmet() -> void:
 	var fate := DestinyFixtureCatalog.story_fate(&"t_gated")
 	fate.requires = [&"t_oath_breaker"]
-	DestinyFixtureCatalog.install(
-		[
-			DestinyFixtureCatalog.flat_fate(OATH, Stat.DEFENSE_PHYSICAL, 3.0),
-			fate,
-		],
-		[]
+	(
+		DestinyFixtureCatalog
+		. install(
+			[
+				DestinyFixtureCatalog.flat_fate(OATH, Stat.DEFENSE_PHYSICAL, 3.0),
+				fate,
+			],
+			[]
+		)
 	)
 	var actor := _hero()
 	var ledger := DestinyApi.earn_fate(actor, &"t_gated", "combat")

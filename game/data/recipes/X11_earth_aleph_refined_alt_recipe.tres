@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"X11_earth_aleph_refined_alt_recipe"
-display_name = "Earth Aleph Refined (Alt) Recipe"
+display_name = "LOC_RECIPES_X11_EARTH_ALEPH_REFINED_ALT_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"X11_earth_aleph_base", &"staff_starfall_ore", &"pendant_silk_herb"])
 outputs = Array[StringName]([&"X11_earth_aleph_refined"])

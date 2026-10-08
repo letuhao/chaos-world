@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"I42_immortal_gadstyle_aged"
-display_name = "Immortal Gadstyle Aged"
+display_name = "LOC_ITEMS_I42_IMMORTAL_GADSTYLE_AGED_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"dao_fruit"

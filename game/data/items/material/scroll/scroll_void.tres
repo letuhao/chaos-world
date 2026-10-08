@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"scroll_void"
-display_name = "Void Scroll"
+display_name = "LOC_ITEMS_SCROLL_VOID_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"heaven_immortal"
@@ -20,4 +20,4 @@ subcategory = &"scroll"
 grade = &"immortal"
 tags = Array[StringName]([&"legendary"])
 sources = Array[StringName]([&"craft:scroll_void_recipe"])
-description = "A dark scroll that absorbs light. Immortal-grade with void affinity."
+description = "LOC_ITEMS_SCROLL_VOID_DESCRIPTION"

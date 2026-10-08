@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G21_divine_hophorn_dao_heart_qi_regen"
-display_name = "Divine Hophorn Dao heart Qi regen"
+display_name = "LOC_ITEMS_G21_DIVINE_HOPHORN_DAO_HEART_QI_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"

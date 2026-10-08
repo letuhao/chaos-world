@@ -234,7 +234,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_body_true_immortal_guardian"
-display_name = "Body of Transcendence Guardian"
+display_name = "LOC_LOOT_BODY_TRUE_IMMORTAL_GUARDIAN_CORE_0_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

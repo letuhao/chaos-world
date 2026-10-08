@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"flame_dragon_heart_seal"
-display_name = "Heartseal of the Flame Dragon"
+display_name = "LOC_ITEMS_FLAME_DRAGON_HEART_SEAL_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"spirit_unity"

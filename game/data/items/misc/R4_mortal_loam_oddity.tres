@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"R4_mortal_loam_oddity"
-display_name = "Mortal Loam Oddity"
+display_name = "LOC_ITEMS_R4_MORTAL_LOAM_ODDITY_DISPLAY_NAME"
 category = &"misc"
 rarity = &"common"
 realm = &"nascent_soul"

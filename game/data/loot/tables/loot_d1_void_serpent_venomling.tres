@@ -234,7 +234,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d1_void_serpent_venomling"
-display_name = "Void Serpent Venomling Lesser"
+display_name = "LOC_LOOT_D1_VOID_SERPENT_VENOMLING_POOL_BODY_INTEGRATION_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

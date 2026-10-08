@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 id = &"spear"
-display_name = "Spear"
+display_name = "LOC_BODY_CULTIVATION_SPEAR_DISPLAY_NAME"
 best_against = "Swarm and reach: the point enters a body that never let a bludgeon land."
 demand = &"leverage"
 lean = &"balance"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C28_earth_assayhouse_pig"
-display_name = "Earth Assayhouse Pig"
+display_name = "LOC_ITEMS_C28_EARTH_ASSAYHOUSE_PIG_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_sovereign"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C8_earth_closh_refined"
-display_name = "Earth Closh Refined"
+display_name = "LOC_ITEMS_C8_EARTH_CLOSH_REFINED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_sovereign"

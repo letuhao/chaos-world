@@ -1,0 +1,16 @@
+[gd_resource type="Translation" format=3]
+
+[resource]
+locale = "en"
+messages = {
+"LOC_RACES_COMMONBORN_DESCRIPTION": "The body everyone is born into before the world has an opinion about them. It stops where mortals stop and lends no discipline, which is exactly why it is weak: nothing about its anatomy favours a path, so a Commonborn must settle on one early and is weakest precisely where a specialist is strongest. Mind is closed to it outright — a body this even has no native faculty for it. Its affinities are broad and shallow, every element faintly legible and none native, so breadth buys flexibility rather than power.",
+"LOC_RACES_COMMONBORN_DISPLAY_NAME": "Commonborn",
+"LOC_RACES_EMBERBLOOD_DESCRIPTION": "A body that runs hot and short. It refines qi faster than anything here and reads intent at the speed of a struck match, at the cost of a lifespan measured in decades rather than centuries and a mind path that closes once the furnace is lit. Fire affinity is structural, not a gift.",
+"LOC_RACES_EMBERBLOOD_DISPLAY_NAME": "Emberblood",
+"LOC_RACES_EMBERBLOOD_TOUCHED_DESCRIPTION": "A frame that carries one of the three disciplines in its marrow rather than being denied it. Every specialist race here closes a path outright because its anatomy refuses the other discipline; this one closes neither, because it was altered rather than specialised, and it pays for that in reach: nothing it does is native, so it is competent everywhere and formidable nowhere. It is the only body in the pool that can walk two paths at once, which is why the origin that arrives through it has a choice the other two do not.",
+"LOC_RACES_EMBERBLOOD_TOUCHED_DISPLAY_NAME": "Emberblood Touched",
+"LOC_RACES_STONEBORN_DESCRIPTION": "A dense, slow body assembled for load-bearing work. It carries more physique and stamina than anything else here and it stops at the Immortal tier, because the density that makes it durable is the same density that will not let a dantian form. Mind cultivation is closed outright.",
+"LOC_RACES_STONEBORN_DISPLAY_NAME": "Stoneborn",
+"LOC_RACES_TIDECALLER_DESCRIPTION": "A long-lived body built for perception rather than force. Comprehension and will carry it through realms that would end a hotter body, and it cannot take the body path at all: it was assembled for looking, not for being hit. Water affinity is the only one it holds.",
+"LOC_RACES_TIDECALLER_DISPLAY_NAME": "Tidecaller",
+}

@@ -186,7 +186,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d6_frost_hermit"
-display_name = "Frost Hermit Lesser"
+display_name = "LOC_LOOT_D6_FROST_HERMIT_POOL_DAO_ANCESTOR_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

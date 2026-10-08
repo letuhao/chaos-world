@@ -18,7 +18,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d1_iron_titan_slag_pool_earth_immortal"
-display_name = "Iron Titan Slag Lesser salvage (earth_immortal)"
+display_name = "LOC_LOOT_D1_IRON_TITAN_SLAG_EARTH_IMMORTAL_0_DISPLAY_NAME"
 realm = &"earth_immortal"
 rarity = &""
 rolls = 1

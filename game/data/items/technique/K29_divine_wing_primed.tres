@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"K29_divine_wing_primed"
-display_name = "Divine Wing Primed"
+display_name = "LOC_ITEMS_K29_DIVINE_WING_PRIMED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_ancestor"

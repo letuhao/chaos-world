@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"P4_immortal_birch_perfected"
-display_name = "Immortal Birch Perfected"
+display_name = "LOC_ITEMS_P4_IMMORTAL_BIRCH_PERFECTED_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"great_luo"

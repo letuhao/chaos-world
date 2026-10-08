@@ -1,0 +1,38 @@
+[gd_resource type="Translation" format=3]
+
+[resource]
+locale = "en"
+messages = {
+"LOC_SOCKET_SOCKET_GEM_IMMORTAL_DEFENSE_DESCRIPTION": "Socket item. Defensive gem; while its host is worn it adds physical defence and health.",
+"LOC_SOCKET_SOCKET_GEM_IMMORTAL_DEFENSE_DISPLAY_NAME": "Immortal Defensive Gem",
+"LOC_SOCKET_SOCKET_GEM_SPIRIT_OFFENSE_DESCRIPTION": "Socket item. Offensive gem; while its host is worn it adds physical attack and critical chance.",
+"LOC_SOCKET_SOCKET_GEM_SPIRIT_OFFENSE_DISPLAY_NAME": "Spirit Offensive Gem",
+"LOC_SOCKET_SOCKET_GEM_SPIRIT_UTILITY_DESCRIPTION": "Socket item. Utility gem; while its host is worn it adds qi capacity and qi regeneration.",
+"LOC_SOCKET_SOCKET_GEM_SPIRIT_UTILITY_DISPLAY_NAME": "Spirit Utility Gem",
+"LOC_SOCKET_SOCKET_HOST_LEGENDARY_PLATE_DESCRIPTION": "Equipment that can carry two sockets. The socket subsystem opens, imputes and fills its slots.",
+"LOC_SOCKET_SOCKET_HOST_LEGENDARY_PLATE_DISPLAY_NAME": "Socket-Bearing Plate",
+"LOC_SOCKET_SOCKET_HOST_RARE_BLADE_DESCRIPTION": "Equipment that can carry one socket. The socket subsystem opens, imputes and fills its slots.",
+"LOC_SOCKET_SOCKET_HOST_RARE_BLADE_DISPLAY_NAME": "Socket-Bearing Blade",
+"LOC_SOCKET_SOCKET_REAGENT_MORTAL_ENCHANTMENT_DESCRIPTION": "Consumed to apply or replace the enchantment channel on an owned item.",
+"LOC_SOCKET_SOCKET_REAGENT_MORTAL_ENCHANTMENT_DISPLAY_NAME": "Etching Wash",
+"LOC_SOCKET_SOCKET_REAGENT_MORTAL_IMPUTATION_DESCRIPTION": "Consumed to give an empty socket slot its own modifiers.",
+"LOC_SOCKET_SOCKET_REAGENT_MORTAL_IMPUTATION_DISPLAY_NAME": "Imputation Ink",
+"LOC_SOCKET_SOCKET_REAGENT_MORTAL_SLOT_DEFENSE_DESCRIPTION": "Consumed to open a defensive socket slot on an owned item.",
+"LOC_SOCKET_SOCKET_REAGENT_MORTAL_SLOT_DEFENSE_DISPLAY_NAME": "Mortar Defensive Socket Rune",
+"LOC_SOCKET_SOCKET_REAGENT_MORTAL_SLOT_OFFENSE_DESCRIPTION": "Consumed to open an offensive socket slot on an owned item.",
+"LOC_SOCKET_SOCKET_REAGENT_MORTAL_SLOT_OFFENSE_DISPLAY_NAME": "Mortar Offensive Socket Rune",
+"LOC_SOCKET_SOCKET_REAGENT_MORTAL_SLOT_UTILITY_DESCRIPTION": "Consumed to open a utility socket slot on an owned item.",
+"LOC_SOCKET_SOCKET_REAGENT_MORTAL_SLOT_UTILITY_DISPLAY_NAME": "Mortar Utility Socket Rune",
+"LOC_SOCKET_SOCKET_REAGENT_SPIRIT_ENCHANTMENT_DESCRIPTION": "Consumed to apply or replace the enchantment channel at spirit scale.",
+"LOC_SOCKET_SOCKET_REAGENT_SPIRIT_ENCHANTMENT_DISPLAY_NAME": "Spirit Etching Wash",
+"LOC_SOCKET_SOCKET_REAGENT_SPIRIT_IMPUTATION_DESCRIPTION": "Consumed to give an empty socket slot its own modifiers at spirit scale.",
+"LOC_SOCKET_SOCKET_REAGENT_SPIRIT_IMPUTATION_DISPLAY_NAME": "Spirit Imputation Ink",
+"LOC_SOCKET_SOCKET_RUNE_EARTH_UTILITY_DESCRIPTION": "Socket item. Utility rune; while its host is worn it adds qi and stamina capacity.",
+"LOC_SOCKET_SOCKET_RUNE_EARTH_UTILITY_DISPLAY_NAME": "Earth Utility Rune",
+"LOC_SOCKET_SOCKET_RUNE_MORTAL_DEFENSE_DESCRIPTION": "Socket item. Defensive rune; while its host is worn it adds physical defence and health.",
+"LOC_SOCKET_SOCKET_RUNE_MORTAL_DEFENSE_DISPLAY_NAME": "Crude Defensive Rune",
+"LOC_SOCKET_SOCKET_RUNE_MORTAL_OFFENSE_DESCRIPTION": "Socket item. Offensive rune; while its host is worn it adds one physical attack modifier.",
+"LOC_SOCKET_SOCKET_RUNE_MORTAL_OFFENSE_DISPLAY_NAME": "Crude Offensive Rune",
+"LOC_SOCKET_SOCKET_RUNE_SPIRIT_DEFENSE_DESCRIPTION": "Socket item. Defensive rune; while its host is worn it adds physical defence and poise.",
+"LOC_SOCKET_SOCKET_RUNE_SPIRIT_DEFENSE_DISPLAY_NAME": "Spirit Defensive Rune",
+}

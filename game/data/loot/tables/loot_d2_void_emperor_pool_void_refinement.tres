@@ -30,7 +30,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d2_void_emperor_pool_void_refinement"
-display_name = "Void Emperor Lesser salvage (void_refinement)"
+display_name = "LOC_LOOT_D2_VOID_EMPEROR_VOID_REFINEMENT_0_DISPLAY_NAME"
 realm = &"void_refinement"
 rarity = &""
 rolls = 1

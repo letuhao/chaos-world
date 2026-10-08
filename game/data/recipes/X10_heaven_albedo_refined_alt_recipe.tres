@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"X10_heaven_albedo_refined_alt_recipe"
-display_name = "Heaven Albedo Refined (Alt) Recipe"
+display_name = "LOC_RECIPES_X10_HEAVEN_ALBEDO_REFINED_ALT_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"X10_heaven_albedo_base", &"W6_heaven_bastion_hackle", &"pouch_celestial_silk_hide"])
 outputs = Array[StringName]([&"X10_heaven_albedo_refined"])

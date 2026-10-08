@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F51_divine_hackbutter_evasion_penetration_status_resistance"
-display_name = "Divine Hackbutter Evasion Penetration Status resistance"
+display_name = "LOC_ITEMS_F51_DIVINE_HACKBUTTER_EVASION_PENETRATION_STATUS_RESISTANCE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_ancestor"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"A27_divine_blessing_scapulary"
-display_name = "Divine Blessing Scapulary"
+display_name = "LOC_ITEMS_A27_DIVINE_BLESSING_SCAPULARY_DISPLAY_NAME"
 category = &"key"
 rarity = &"legendary"
 realm = &"transcendent"

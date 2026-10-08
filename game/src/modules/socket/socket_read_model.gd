@@ -120,21 +120,24 @@ static func affix_views(instance: ItemInstance) -> Array:
 		if option_id == &"":
 			continue
 		var reforgeable := SocketPolicy.is_reforgable(instance, option_id)
-		out.append(
-			{
-				"option_id": String(option_id),
-				"label": String(effect.get("label", option_id)),
-				"channel": String(effect.get("channel", "")),
-				"op": String(effect.get("op", "FLAT")),
-				"unit": String(effect.get("unit", "magnitude")),
-				"target_type": String(effect.get("target_type", "")),
-				"target_id": String(effect.get("target_id", "")),
-				"value": float(effect.get("value", 0.0)),
-				"value_min": float(effect.get("value_min", 0.0)),
-				"value_max": float(effect.get("value_max", 0.0)),
-				"reforgable": reforgeable,
-				"blocked_reason": "" if reforgeable else _blocked_reason(effect),
-			}
+		(
+			out
+			. append(
+				{
+					"option_id": String(option_id),
+					"label": String(effect.get("label", option_id)),
+					"channel": String(effect.get("channel", "")),
+					"op": String(effect.get("op", "FLAT")),
+					"unit": String(effect.get("unit", "magnitude")),
+					"target_type": String(effect.get("target_type", "")),
+					"target_id": String(effect.get("target_id", "")),
+					"value": float(effect.get("value", 0.0)),
+					"value_min": float(effect.get("value_min", 0.0)),
+					"value_max": float(effect.get("value_max", 0.0)),
+					"reforgable": reforgeable,
+					"blocked_reason": "" if reforgeable else _blocked_reason(effect),
+				}
+			)
 		)
 	return out
 
@@ -293,9 +296,7 @@ static func cost_views(reagents: Dictionary, index: int, parent: Dictionary) -> 
 		# count above: a screen that showed "1" here would quote a price the
 		# transaction would refuse to honour.
 		"reforge": first_held(reagents["enchantment"]),
-		"reforge_units": SocketPolicy.reforge_cost_units(
-			int(parent.get("reforge_attempts", 0))
-		),
+		"reforge_units": SocketPolicy.reforge_cost_units(int(parent.get("reforge_attempts", 0))),
 		"slot_index": index,
 		"slot_kind": String(focused.get("kind", SocketPolicy.KIND_ANY)),
 		"slot_occupied": bool(focused.get("occupied", false)),

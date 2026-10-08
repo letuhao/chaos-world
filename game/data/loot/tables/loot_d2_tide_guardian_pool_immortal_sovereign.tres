@@ -18,7 +18,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d2_tide_guardian_pool_immortal_sovereign"
-display_name = "Tide Guardian Lesser salvage (immortal_sovereign)"
+display_name = "LOC_LOOT_D2_TIDE_GUARDIAN_IMMORTAL_SOVEREIGN_0_DISPLAY_NAME"
 realm = &"immortal_sovereign"
 rarity = &""
 rolls = 1

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Z19_earth_bight_perfected"
-display_name = "Earth Bight Perfected"
+display_name = "LOC_ITEMS_Z19_EARTH_BIGHT_PERFECTED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_ascension"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G24_earth_hypnum_physique_spirit"
-display_name = "Earth Hypnum Physique Spirit"
+display_name = "LOC_ITEMS_G24_EARTH_HYPNUM_PHYSIQUE_SPIRIT_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_condensation"

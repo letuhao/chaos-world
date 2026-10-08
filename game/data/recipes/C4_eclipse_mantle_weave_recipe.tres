@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"C4_eclipse_mantle_weave_recipe"
-display_name = "Woven Eclipse Mantle Recipe"
+display_name = "LOC_RECIPES_C4_ECLIPSE_MANTLE_WEAVE_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"C4_heaven_weave", &"filament_voidsilk"])
 outputs = Array[StringName]([&"mantle_eclipse"])

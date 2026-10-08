@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"C4_earth_thread_recipe"
-display_name = "Earth Thread Recipe"
+display_name = "LOC_RECIPES_C4_EARTH_THREAD_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"filament_jute", &"petal_iris"])
 outputs = Array[StringName]([&"C4_earth_thread"])

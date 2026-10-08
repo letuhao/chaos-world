@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"filament_stormspun"
-display_name = "Stormspun Filament"
+display_name = "LOC_ITEMS_FILAMENT_STORMSPUN_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"immortal_sovereign"

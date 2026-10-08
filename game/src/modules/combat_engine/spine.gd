@@ -70,7 +70,7 @@ const BLOCK_COST := 0.75
 ## float) -> float`, returning the overflow it did NOT take; `CombatShield` (`shield.gd`)
 ## is the shipped binding, and anything else in that slot absorbs nothing rather than
 ## crashing the hit.
-const SHIELD_COMPONENT := &"Shield"
+const SHIELD_COMPONENT := &"LOC_COMBAT_ENGINE_0827141931"
 
 
 ## Resolve one hit and apply it. The only mutating function in the spine: S9 spends

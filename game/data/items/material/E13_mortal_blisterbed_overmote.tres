@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E13_mortal_blisterbed_overmote"
-display_name = "Mortal Blisterbed Overmote"
+display_name = "LOC_ITEMS_E13_MORTAL_BLISTERBED_OVERMOTE_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"spirit_transformation"

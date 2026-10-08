@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Y20_immortal_parsonage_gimbel"
-display_name = "Immortal Parsonage Gimbel"
+display_name = "LOC_ITEMS_Y20_IMMORTAL_PARSONAGE_GIMBEL_DISPLAY_NAME"
 category = &"misc"
 rarity = &"legendary"
 realm = &"immortal_sovereign"

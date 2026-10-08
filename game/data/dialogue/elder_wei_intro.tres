@@ -8,7 +8,7 @@
 [sub_resource type="Resource" id="Resource_gj3tu"]
 script = ExtResource("2_rw6tp")
 choice_id = &"ask_oath"
-label = "Ask whose oath is written in that book."
+label = "LOC_DIALOGUE_ELDER_WEI_INTRO_LABEL_1"
 target = &"oath"
 effect_key = &"asked_about_the_oath"
 effect_value = true
@@ -29,7 +29,7 @@ value = 2
 [sub_resource type="Resource" id="Resource_0wgr3"]
 script = ExtResource("2_rw6tp")
 choice_id = &"ask_debt"
-label = "Then ask who holds the debt now."
+label = "LOC_DIALOGUE_ELDER_WEI_INTRO_LABEL_2"
 target = &"debt"
 condition = SubResource("Resource_bk5ax")
 effect_value = null
@@ -37,7 +37,7 @@ effect_value = null
 [sub_resource type="Resource" id="Resource_62rv6"]
 script = ExtResource("2_rw6tp")
 choice_id = &"leave"
-label = "Say nothing more."
+label = "LOC_DIALOGUE_ELDER_WEI_INTRO_LABEL_3"
 effect_value = null
 
 [sub_resource type="Resource" id="Resource_xwq8t"]
@@ -50,7 +50,7 @@ choices = Array[ExtResource("2_rw6tp")]([SubResource("Resource_0wgr3"), SubResou
 [sub_resource type="Resource" id="Resource_6i6nv"]
 script = ExtResource("2_rw6tp")
 choice_id = &"leave"
-label = "Say nothing more."
+label = "LOC_DIALOGUE_ELDER_WEI_INTRO_LABEL_4"
 effect_value = null
 
 [sub_resource type="Resource" id="Resource_j465n"]

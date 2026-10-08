@@ -42,7 +42,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_qi_void_refinement_warden_pool_foundation"
-display_name = "Void Refinement Warden salvage (foundation)"
+display_name = "LOC_LOOT_QI_VOID_REFINEMENT_WARDEN_FOUNDATION_0_DISPLAY_NAME"
 realm = &"foundation"
 rarity = &""
 rolls = 1

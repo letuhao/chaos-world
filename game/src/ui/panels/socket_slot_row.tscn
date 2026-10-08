@@ -19,7 +19,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "Socket slot"
+text = "LOC_UI_PANELS_DB6FCC974F"
 
 [node name="KindLabel" type="Label" parent="Layout"]
 unique_name_in_owner = true
@@ -31,7 +31,7 @@ text = ""
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"MetaLabel"
-text = "Slot modifiers (0)"
+text = "LOC_UI_PANELS_B126D20C1F"
 
 [node name="ImprintRows" type="VBoxContainer" parent="Layout"]
 unique_name_in_owner = true
@@ -41,7 +41,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"MetaLabel"
-text = "Socket item (0)"
+text = "LOC_UI_PANELS_9E1723931D"
 
 [node name="GemRows" type="VBoxContainer" parent="Layout"]
 unique_name_in_owner = true
@@ -51,7 +51,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"MetaLabel"
-text = "Socket item enchantment"
+text = "LOC_UI_PANELS_FEB2D0450D"
 
 [node name="GemEnchantLabel" type="Label" parent="Layout"]
 unique_name_in_owner = true
@@ -64,4 +64,4 @@ autowrap_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"MetaLabel"
-text = "Empty slot"
+text = "LOC_UI_PANELS_F85306EF8F"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"D3_earth_agility_draught"
-display_name = "Earth Agility Draught"
+display_name = "LOC_ITEMS_D3_EARTH_AGILITY_DRAUGHT_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_domain"

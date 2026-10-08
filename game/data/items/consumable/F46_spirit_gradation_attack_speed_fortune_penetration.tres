@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F46_spirit_gradation_attack_speed_fortune_penetration"
-display_name = "Spirit Gradation Attack speed Fortune Penetration"
+display_name = "LOC_ITEMS_F46_SPIRIT_GRADATION_ATTACK_SPEED_FORTUNE_PENETRATION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_sovereign"

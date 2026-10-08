@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"herb_phoenix_feather"
-display_name = "Phoenix Feather"
+display_name = "LOC_ITEMS_HERB_PHOENIX_FEATHER_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"golden_immortal"

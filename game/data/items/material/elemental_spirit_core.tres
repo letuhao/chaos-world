@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"elemental_spirit_core"
-display_name = "Tide Beast Core"
+display_name = "LOC_ITEMS_ELEMENTAL_SPIRIT_CORE_DISPLAY_NAME"
 category = &"material"
 rarity = &"magic"
 realm = &"spirit_severing"

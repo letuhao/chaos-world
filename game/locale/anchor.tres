@@ -1,0 +1,10 @@
+[gd_resource type="Translation" format=3]
+
+[resource]
+locale = "en"
+messages = {
+"LOC_ANCHOR_HEARTH_OF_THE_RETURNING_DESCRIPTION": "A low, sealed hearth that burns without fuel and holds a soul steady while its owner is inside it. It does not close a wound; it gives one somewhere to stop bleeding.",
+"LOC_ANCHOR_HEARTH_OF_THE_RETURNING_DISPLAY_NAME": "Hearth of the Returning",
+"LOC_ANCHOR_STONE_OF_THE_HELD_NAME_DESCRIPTION": "A standing stone that remembers every soul that failed inside it. It repairs nothing and prevents nothing; what it does is make the next death cost nothing at all, once, to whoever is named on it.",
+"LOC_ANCHOR_STONE_OF_THE_HELD_NAME_DISPLAY_NAME": "Stone of the Held Name",
+}

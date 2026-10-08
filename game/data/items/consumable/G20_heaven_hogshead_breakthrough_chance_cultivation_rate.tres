@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G20_heaven_hogshead_breakthrough_chance_cultivation_rate"
-display_name = "Heaven Hogshead Breakthrough chance Cultivation rate"
+display_name = "LOC_ITEMS_G20_HEAVEN_HOGSHEAD_BREAKTHROUGH_CHANCE_CULTIVATION_RATE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"true_immortal"

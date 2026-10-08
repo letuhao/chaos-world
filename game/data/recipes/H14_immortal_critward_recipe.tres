@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"H14_immortal_critward_recipe"
-display_name = "Immortal Critward Recipe"
+display_name = "LOC_RECIPES_H14_IMMORTAL_CRITWARD_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"shard_supernova", &"filament_voidsilk"])
 outputs = Array[StringName]([&"H14_immortal_critward"])

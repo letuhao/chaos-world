@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"I56_mortal_goutweed_perfected"
-display_name = "Mortal Goutweed Perfected"
+display_name = "LOC_ITEMS_I56_MORTAL_GOUTWEED_PERFECTED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"tribulation"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"scale_crocodile"
-display_name = "Crocodile Scale"
+display_name = "LOC_ITEMS_SCALE_CROCODILE_DISPLAY_NAME"
 category = &"material"
 rarity = &"magic"
 realm = &"spirit_ascension"

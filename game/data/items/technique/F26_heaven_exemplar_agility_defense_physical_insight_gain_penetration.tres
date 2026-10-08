@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F26_heaven_exemplar_agility_defense_physical_insight_gain_penetration"
-display_name = "Heaven Exemplar Agility Defense physical Insight gain Penetration"
+display_name = "LOC_ITEMS_F26_HEAVEN_EXEMPLAR_AGILITY_DEFENSE_PHYSICAL_INSIGHT_GAIN_PENETRATION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"true_immortal"

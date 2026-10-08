@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Z40_heaven_ejecta_cippus"
-display_name = "Heaven Ejecta Cippus"
+display_name = "LOC_ITEMS_Z40_HEAVEN_EJECTA_CIPPUS_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"dao_fruit"

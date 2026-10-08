@@ -18,7 +18,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d3_frost_wolf_pup_pool_dao_ancestor"
-display_name = "Frost Wolf Lesser salvage (dao_ancestor)"
+display_name = "LOC_LOOT_D3_FROST_WOLF_PUP_DAO_ANCESTOR_0_DISPLAY_NAME"
 realm = &"dao_ancestor"
 rarity = &""
 rolls = 1

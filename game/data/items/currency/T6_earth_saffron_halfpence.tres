@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"T6_earth_saffron_halfpence"
-display_name = "Earth Saffron Halfpence"
+display_name = "LOC_ITEMS_T6_EARTH_SAFFRON_HALFPENCE_DISPLAY_NAME"
 category = &"currency"
 rarity = &"rare"
 realm = &"spirit_palace"

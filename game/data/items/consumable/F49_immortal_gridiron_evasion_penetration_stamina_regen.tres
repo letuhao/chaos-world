@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F49_immortal_gridiron_evasion_penetration_stamina_regen"
-display_name = "Immortal Gridiron Evasion Penetration Stamina regen"
+display_name = "LOC_ITEMS_F49_IMMORTAL_GRIDIRON_EVASION_PENETRATION_STAMINA_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_fruit"

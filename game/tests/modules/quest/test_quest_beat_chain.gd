@@ -29,22 +29,27 @@ var _occurrence := 0
 
 func setup() -> void:
 	DestinyFixtureCatalog.install(
-		[DestinyFixtureCatalog.story_fate(FATE)],
-		[DestinyFixtureCatalog.plain_destiny(DESTINY)]
+		[DestinyFixtureCatalog.story_fate(FATE)], [DestinyFixtureCatalog.plain_destiny(DESTINY)]
 	)
-	QuestFixtureCatalog.install(
-		[
-			QuestFixtureCatalog.quest(
-				QUEST,
-				QuestDef.KIND_AUTHORED,
-				{},
-				[{"step_id": &"s", "fact": FACT, "need": 1}],
-				[
-					QuestFixtureCatalog.grant(QuestDef.GRANT_FATE, FATE),
-					QuestFixtureCatalog.grant(QuestDef.GRANT_DESTINY, DESTINY),
-				]
-			),
-		]
+	(
+		QuestFixtureCatalog
+		. install(
+			[
+				(
+					QuestFixtureCatalog
+					. quest(
+						QUEST,
+						QuestDef.KIND_AUTHORED,
+						{},
+						[{"step_id": &"s", "fact": FACT, "need": 1}],
+						[
+							QuestFixtureCatalog.grant(QuestDef.GRANT_FATE, FATE),
+							QuestFixtureCatalog.grant(QuestDef.GRANT_DESTINY, DESTINY),
+						]
+					)
+				),
+			]
+		)
 	)
 
 
@@ -74,9 +79,7 @@ func test_a_beat_offered_to_the_director_completes_the_quest_and_pays_grants() -
 
 	var detail := report["detail"] as Dictionary
 	assert_eq(
-		(detail["completed"] as Array),
-		[String(QUEST)],
-		"the quest completed through the beat chain"
+		detail["completed"] as Array, [String(QUEST)], "the quest completed through the beat chain"
 	)
 	assert_eq(
 		_ids_of_kind(detail["paid"] as Array, QuestDef.GRANT_FATE),
@@ -88,15 +91,9 @@ func test_a_beat_offered_to_the_director_completes_the_quest_and_pays_grants() -
 		[String(DESTINY)],
 		"the destiny grant was paid"
 	)
+	assert_eq(DestinyApi.has_fate(actor, FATE), true, "and the fate is in the actor's ledger")
 	assert_eq(
-		DestinyApi.has_fate(actor, FATE),
-		true,
-		"and the fate is in the actor's ledger"
-	)
-	assert_eq(
-		DestinyApi.has_destiny(actor, DESTINY),
-		true,
-		"and the destiny is in the actor's ledger"
+		DestinyApi.has_destiny(actor, DESTINY), true, "and the destiny is in the actor's ledger"
 	)
 
 
@@ -107,11 +104,7 @@ func test_a_second_beat_for_the_same_fact_completes_nothing_and_pays_nothing() -
 	QuestApi.accept(actor, QUEST)
 
 	_offer(actor, FACT)
-	assert_eq(
-		DestinyApi.has_fate(actor, FATE),
-		true,
-		"the first beat paid the fate"
-	)
+	assert_eq(DestinyApi.has_fate(actor, FATE), true, "the first beat paid the fate")
 
 	# A second occurrence of the same fact — the ledger is monotone, so the count
 	# rises and the step stays satisfied. The once-guard must refuse a second payout.
@@ -123,11 +116,7 @@ func test_a_second_beat_for_the_same_fact_completes_nothing_and_pays_nothing() -
 	)
 
 	assert_eq(bool(second["claimed"]), false, "the sink does not claim a beat for a finished quest")
-	assert_eq(
-		_fate_history_count(actor, FATE),
-		1,
-		"the fate was earned exactly once"
-	)
+	assert_eq(_fate_history_count(actor, FATE), 1, "the fate was earned exactly once")
 
 
 ## The handler claims a fact an active quest watches, and does not claim a fact
@@ -138,14 +127,10 @@ func test_the_handler_claims_only_facts_an_active_quest_watches() -> void:
 	var handler := QuestBeatHandler.new()
 
 	assert_eq(
-		handler.handles(_beat(FACT), actor),
-		true,
-		"a fact the active quest watches is claimed"
+		handler.handles(_beat(FACT), actor), true, "a fact the active quest watches is claimed"
 	)
 	assert_eq(
-		handler.handles(_beat(OTHER_FACT), actor),
-		false,
-		"a fact no quest watches is not claimed"
+		handler.handles(_beat(OTHER_FACT), actor), false, "a fact no quest watches is not claimed"
 	)
 
 
@@ -158,16 +143,8 @@ func test_resolving_a_claimed_beat_completes_the_quest_and_returns_the_completio
 	var outcome := handler.resolve(_beat(FACT, SOURCE), actor)
 
 	assert_eq(bool(outcome["claimed"]), true, "the beat was claimed")
-	assert_eq(
-		(outcome["completed"] as Array),
-		[String(QUEST)],
-		"the completion list names the quest"
-	)
-	assert_eq(
-		String(outcome["source"]),
-		SOURCE,
-		"and carries the beat's source through"
-	)
+	assert_eq(outcome["completed"] as Array, [String(QUEST)], "the completion list names the quest")
+	assert_eq(String(outcome["source"]), SOURCE, "and carries the beat's source through")
 	assert_eq(
 		QuestApi.summary(actor)["completed"],
 		[String(QUEST)],
@@ -180,11 +157,7 @@ func test_the_handler_does_not_claim_for_an_unaccepted_quest() -> void:
 	var actor := QuestFixtureCatalog.hero()
 	var handler := QuestBeatHandler.new()
 
-	assert_eq(
-		handler.handles(_beat(FACT), actor),
-		false,
-		"an unaccepted quest claims nothing"
-	)
+	assert_eq(handler.handles(_beat(FACT), actor), false, "an unaccepted quest claims nothing")
 
 
 ## The handler does not claim a beat for a completed quest.
@@ -195,20 +168,14 @@ func test_the_handler_does_not_claim_for_a_completed_quest() -> void:
 
 	var handler := QuestBeatHandler.new()
 	assert_eq(
-		handler.handles(_beat(FACT), actor),
-		false,
-		"a completed quest claims nothing further"
+		handler.handles(_beat(FACT), actor), false, "a completed quest claims nothing further"
 	)
 
 
 ## The handler does not claim a beat with no actor.
 func test_the_handler_claims_nothing_without_an_actor() -> void:
 	var handler := QuestBeatHandler.new()
-	assert_eq(
-		handler.handles(_beat(FACT), null),
-		false,
-		"a null actor claims nothing"
-	)
+	assert_eq(handler.handles(_beat(FACT), null), false, "a null actor claims nothing")
 
 
 ## The handler does not claim a beat with no fact.
@@ -216,11 +183,7 @@ func test_the_handler_claims_nothing_without_a_fact() -> void:
 	var actor := QuestFixtureCatalog.hero()
 	QuestApi.accept(actor, QUEST)
 	var handler := QuestBeatHandler.new()
-	assert_eq(
-		handler.handles(_beat(&""), actor),
-		false,
-		"an empty fact is not claimed"
-	)
+	assert_eq(handler.handles(_beat(&""), actor), false, "an empty fact is not claimed")
 
 
 ## The handler does not claim a null beat.
@@ -228,11 +191,7 @@ func test_the_handler_claims_nothing_for_a_null_beat() -> void:
 	var actor := QuestFixtureCatalog.hero()
 	QuestApi.accept(actor, QUEST)
 	var handler := QuestBeatHandler.new()
-	assert_eq(
-		handler.handles(null, actor),
-		false,
-		"a null beat is not claimed"
-	)
+	assert_eq(handler.handles(null, actor), false, "a null beat is not claimed")
 
 
 ## The handler resolves a beat in both the dictionary and value-object shapes.
@@ -242,23 +201,22 @@ func test_the_handler_resolves_a_beat_in_both_the_dictionary_and_value_object_sh
 	var handler := QuestBeatHandler.new()
 
 	var dict_outcome := handler.resolve(_beat(FACT, SOURCE), actor)
-	assert_eq(
-		(dict_outcome["completed"] as Array),
-		[String(QUEST)],
-		"the dictionary shape resolves"
-	)
+	assert_eq(dict_outcome["completed"] as Array, [String(QUEST)], "the dictionary shape resolves")
 
 	# Reset for the value-object shape
-	QuestFixtureCatalog.install(
-		[
-			QuestFixtureCatalog.quest(
-				&"t_chain_quest_2",
-				QuestDef.KIND_AUTHORED,
-				{},
-				[{"step_id": &"s", "fact": FACT, "need": 1}],
-				[QuestFixtureCatalog.grant(QuestDef.GRANT_FATE, FATE)]
-			),
-		]
+	(
+		QuestFixtureCatalog
+		. install(
+			[
+				QuestFixtureCatalog.quest(
+					&"t_chain_quest_2",
+					QuestDef.KIND_AUTHORED,
+					{},
+					[{"step_id": &"s", "fact": FACT, "need": 1}],
+					[QuestFixtureCatalog.grant(QuestDef.GRANT_FATE, FATE)]
+				),
+			]
+		)
 	)
 	var actor2 := QuestFixtureCatalog.hero()
 	QuestApi.accept(actor2, &"t_chain_quest_2")
@@ -266,15 +224,11 @@ func test_the_handler_resolves_a_beat_in_both_the_dictionary_and_value_object_sh
 	var shaped := WorldBeat.make(&"t_chain_beat_2", FACT, 1, SOURCE)
 	var shaped_outcome := handler.resolve(shaped, actor2)
 	assert_eq(
-		(shaped_outcome["completed"] as Array),
+		shaped_outcome["completed"] as Array,
 		[&"t_chain_quest_2"],
 		"the value-object shape resolves"
 	)
-	assert_eq(
-		String(shaped_outcome["source"]),
-		SOURCE,
-		"and carries the source through"
-	)
+	assert_eq(String(shaped_outcome["source"]), SOURCE, "and carries the source through")
 
 
 ## The handler's resolve returns a refusal for a beat it does not claim.
@@ -285,11 +239,7 @@ func test_resolving_an_unclaimed_beat_returns_a_refusal() -> void:
 	var outcome := handler.resolve(_beat(FACT), actor)
 	assert_eq(bool(outcome["claimed"]), false, "the beat was not claimed")
 	assert_eq(String(outcome["reason"]), "not_handled", "and the refusal names why")
-	assert_eq(
-		(outcome["completed"] as Array).is_empty(),
-		true,
-		"and the completion list is empty"
-	)
+	assert_eq((outcome["completed"] as Array).is_empty(), true, "and the completion list is empty")
 
 
 ## The handler's watches() returns the quest ids that watch a fact.
@@ -304,9 +254,7 @@ func test_watches_returns_the_quest_ids_that_watch_a_fact() -> void:
 		"the active quest watching the fact is returned"
 	)
 	assert_eq(
-		handler.watches(actor, OTHER_FACT),
-		[] as Array[String],
-		"no quest watches the other fact"
+		handler.watches(actor, OTHER_FACT), [] as Array[String], "no quest watches the other fact"
 	)
 
 
@@ -320,11 +268,7 @@ func test_resolving_a_beat_never_writes_to_the_fact_ledger() -> void:
 	QuestBeatHandler.new().resolve(_beat(FACT, SOURCE), actor)
 
 	var after: Dictionary = actor.get_module_data(&"world_facts")
-	assert_eq(
-		JSON.stringify(after),
-		JSON.stringify(before),
-		"the ledger is untouched by a resolve"
-	)
+	assert_eq(JSON.stringify(after), JSON.stringify(before), "the ledger is untouched by a resolve")
 
 
 ## The handler claims a beat for a quest that is active but whose step is not
@@ -344,11 +288,7 @@ func test_the_handler_claims_a_fact_even_when_the_step_is_not_yet_satisfied() ->
 
 	# Resolving it completes nothing — the step is not met.
 	var outcome := handler.resolve(_beat(FACT, SOURCE), actor)
-	assert_eq(
-		(outcome["completed"] as Array).is_empty(),
-		true,
-		"but nothing completes"
-	)
+	assert_eq((outcome["completed"] as Array).is_empty(), true, "but nothing completes")
 
 
 ## The handler does not claim a beat for a quest that is offered but not accepted.
@@ -357,21 +297,14 @@ func test_the_handler_does_not_claim_for_an_offered_but_unaccepted_quest() -> vo
 	var handler := QuestBeatHandler.new()
 
 	# The quest is ungated, so it IS offered — but not accepted.
-	assert_eq(
-		handler.handles(_beat(FACT), actor),
-		false,
-		"an unaccepted quest claims nothing"
-	)
+	assert_eq(handler.handles(_beat(FACT), actor), false, "an unaccepted quest claims nothing")
 
 
 ## The handler claims a beat for a quest whose step needs more than one
 ## occurrence — the claim is about the fact, not the count.
 func test_the_handler_claims_a_fact_for_a_quest_with_a_multi_occurrence_step() -> void:
 	var multi := QuestFixtureCatalog.quest(
-		&"t_chain_multi",
-		QuestDef.KIND_AUTHORED,
-		{},
-		[{"step_id": &"m", "fact": FACT, "need": 3}]
+		&"t_chain_multi", QuestDef.KIND_AUTHORED, {}, [{"step_id": &"m", "fact": FACT, "need": 3}]
 	)
 	QuestFixtureCatalog.install([multi])
 	var actor := QuestFixtureCatalog.hero()
@@ -392,11 +325,7 @@ func test_the_handler_does_not_claim_for_a_quest_completed_through_the_chain() -
 	_offer(actor, FACT)
 
 	var handler := QuestBeatHandler.new()
-	assert_eq(
-		handler.handles(_beat(FACT), actor),
-		false,
-		"a completed quest claims nothing"
-	)
+	assert_eq(handler.handles(_beat(FACT), actor), false, "a completed quest claims nothing")
 
 
 ## The handler's resolve returns the paid and unspent lists from the completion.
@@ -407,16 +336,8 @@ func test_resolving_a_claimed_beat_returns_the_paid_and_unspent_lists() -> void:
 	var handler := QuestBeatHandler.new()
 	var outcome := handler.resolve(_beat(FACT, SOURCE), actor)
 
-	assert_eq(
-		(outcome["paid"] as Array).size(),
-		2,
-		"both grants were paid"
-	)
-	assert_eq(
-		(outcome["unspent"] as Array).is_empty(),
-		true,
-		"and nothing was left unspent"
-	)
+	assert_eq((outcome["paid"] as Array).size(), 2, "both grants were paid")
+	assert_eq((outcome["unspent"] as Array).is_empty(), true, "and nothing was left unspent")
 
 
 ## The handler's resolve carries the fact and source from the beat.

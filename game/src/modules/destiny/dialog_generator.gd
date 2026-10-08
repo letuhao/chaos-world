@@ -11,6 +11,7 @@ extends RefCounted
 ## The generator READS the fate ledger. It never writes, and a dialog read
 ## leaves the ledger byte-identical (ADR 0065 earn-only).
 
+
 ## The assembled dialog, as primitives.
 ## `{dialog_id, npc_id, base_text, final_text, modifiers_applied}`
 ## `modifiers_applied` is `[{fate_id, dialog_id, override_text}]`.
@@ -39,12 +40,15 @@ static func generate(dialog_id: StringName, actor: Actor) -> Dictionary:
 			continue
 		var override_text := String(fate_def.dialog_modifiers[String(dialog_id)])
 		final_text = override_text
-		modifiers_applied.append(
-			{
-				"fate_id": String(fate_id),
-				"dialog_id": String(dialog_id),
-				"override_text": override_text,
-			}
+		(
+			modifiers_applied
+			. append(
+				{
+					"fate_id": String(fate_id),
+					"dialog_id": String(dialog_id),
+					"override_text": override_text,
+				}
+			)
 		)
 	return {
 		"dialog_id": String(dialog_id),

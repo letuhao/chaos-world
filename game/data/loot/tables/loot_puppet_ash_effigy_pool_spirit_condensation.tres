@@ -18,7 +18,7 @@ rarity_floor = &"magic"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_puppet_ash_effigy_pool_spirit_condensation"
-display_name = "Ash Effigy salvage (spirit_condensation)"
+display_name = "LOC_LOOT_PUPPET_ASH_EFFIGY_SPIRIT_CONDENSATION_0_DISPLAY_NAME"
 realm = &"spirit_condensation"
 rarity = &""
 rolls = 1

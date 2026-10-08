@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"L4_stone_colossus_granite_ward"
-display_name = "Granite Ward"
+display_name = "LOC_ITEMS_L4_STONE_COLOSSUS_GRANITE_WARD_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"spirit_sea"

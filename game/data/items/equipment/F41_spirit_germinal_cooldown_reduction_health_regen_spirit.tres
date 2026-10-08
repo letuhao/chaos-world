@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F41_spirit_germinal_cooldown_reduction_health_regen_spirit"
-display_name = "Spirit Germinal Cooldown reduction Health regen Spirit"
+display_name = "LOC_ITEMS_F41_SPIRIT_GERMINAL_COOLDOWN_REDUCTION_HEALTH_REGEN_SPIRIT_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"magic"
 realm = &"spirit_domain"

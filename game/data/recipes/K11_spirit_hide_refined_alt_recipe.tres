@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"K11_spirit_hide_refined_alt_recipe"
-display_name = "K11 Spirit Hide Refined Alt Recipe"
+display_name = "LOC_RECIPES_K11_SPIRIT_HIDE_REFINED_ALT_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"K11_spirit_hide_base", &"body_spirit_sovereign_tempering_herb", &"grimoire_ink_essence"])
 outputs = Array[StringName]([&"K11_spirit_hide_refined"])

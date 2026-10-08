@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"pact_ranger_token"
-display_name = "Ranger's Pact Token"
+display_name = "LOC_ITEMS_PACT_RANGER_TOKEN_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"spirit_domain"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"A5_divine_alkalis_base"
-display_name = "Divine Alkalis Base"
+display_name = "LOC_ITEMS_A5_DIVINE_ALKALIS_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_ancestor"

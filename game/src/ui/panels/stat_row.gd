@@ -119,7 +119,7 @@ func ratio() -> float:
 ## Value with its unit and precision. The single formatting rule every row uses.
 func value_text() -> String:
 	if _maximum > 0.0:
-		return L.t("LOC_UI_PANELS_B9884E384D") % [_number(_current), _number(_maximum)]
+		return L.t("%s/%s") % [_number(_current), _number(_maximum)]
 	return _number(_current)
 
 

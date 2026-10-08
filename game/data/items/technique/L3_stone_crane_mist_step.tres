@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"L3_stone_crane_mist_step"
-display_name = "Stone Crane Mist Step"
+display_name = "LOC_ITEMS_L3_STONE_CRANE_MIST_STEP_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_manifestation"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"dao_endless_heart_recipe"
-display_name = "Endless Heart Recipe"
+display_name = "LOC_RECIPES_DAO_ENDLESS_HEART_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"carvebone_primordial_bone", &"filament_chaosweave"])
 outputs = Array[StringName]([&"dao_endless_heart"])

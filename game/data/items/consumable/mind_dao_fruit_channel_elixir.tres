@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"mind_dao_fruit_channel_elixir"
-display_name = "Dao of Mind Lucidity Elixir"
+display_name = "LOC_ITEMS_MIND_DAO_FRUIT_CHANNEL_ELIXIR_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_fruit"
@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"elixir"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:mind_dao_fruit_elixir_recipe", &"boss:mind_dao_fruit_warden"])
-description = "Advances one meridian a step, or deepens a strengthened channel."
+description = "LOC_ITEMS_MIND_DAO_FRUIT_CHANNEL_ELIXIR_DESCRIPTION"

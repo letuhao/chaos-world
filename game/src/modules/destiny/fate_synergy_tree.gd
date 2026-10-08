@@ -11,6 +11,7 @@ extends RefCounted
 ## This is a pure validator: it reads the catalog and reports errors. It holds no
 ## state and mutates nothing.
 
+
 ## Whether the synergy graph is acyclic. Uses DFS with a three-color mark
 ## (white/gray/black) to detect back edges.
 static func is_acyclic() -> bool:
@@ -46,8 +47,13 @@ static func validate() -> Array[String]:
 				)
 			elif not target.requires.has(fate_id):
 				errors.append(
-					"fate '%s' unlocks '%s' but '%s.requires" % [fate_id, unlocked_id, unlocked_id]
-					+ "' does not list '%s'" % fate_id
+					(
+						(
+							"fate '%s' unlocks '%s' but '%s.requires"
+							% [fate_id, unlocked_id, unlocked_id]
+						)
+						+ "' does not list '%s'" % fate_id
+					)
 				)
 		for required_id in def.requires:
 			var source := catalog.fate_definition(required_id)
@@ -57,8 +63,13 @@ static func validate() -> Array[String]:
 				)
 			elif not source.unlocks.has(fate_id):
 				errors.append(
-					"fate '%s' requires '%s' but '%s.unlocks" % [fate_id, required_id, required_id]
-					+ "' does not list '%s'" % fate_id
+					(
+						(
+							"fate '%s' requires '%s' but '%s.unlocks"
+							% [fate_id, required_id, required_id]
+						)
+						+ "' does not list '%s'" % fate_id
+					)
 				)
 	return errors
 
@@ -141,9 +152,7 @@ static func graph() -> Dictionary:
 
 
 ## DFS cycle detection. Returns false if a back edge is found.
-static func _dfs_acyclic(
-	catalog: FateCatalog, fate_id: StringName, color: Dictionary
-) -> bool:
+static func _dfs_acyclic(catalog: FateCatalog, fate_id: StringName, color: Dictionary) -> bool:
 	color[String(fate_id)] = 1  # gray: on the current path
 	var def := catalog.fate_definition(fate_id)
 	if def != null:

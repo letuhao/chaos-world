@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Q3_divine_crook_patina"
-display_name = "Divine Crook Patina"
+display_name = "LOC_ITEMS_Q3_DIVINE_CROOK_PATINA_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"transcendent"

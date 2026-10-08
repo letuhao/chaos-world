@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Y18_immortal_knighthood_warvictory"
-display_name = "Immortal Knighthood Warvictory"
+display_name = "LOC_ITEMS_Y18_IMMORTAL_KNIGHTHOOD_WARVICTORY_DISPLAY_NAME"
 category = &"misc"
 rarity = &"legendary"
 realm = &"dao_fruit"

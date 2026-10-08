@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"sigil_heaven_gather_recipe"
-display_name = "Heaven Gather Sigil Recipe"
+display_name = "LOC_RECIPES_SIGIL_HEAVEN_GATHER_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"herb_sunpetal", &"marine_coral_leviathan_pearl_essence"])
 outputs = Array[StringName]([&"sigil_heaven_gather"])

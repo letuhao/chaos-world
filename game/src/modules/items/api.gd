@@ -305,7 +305,9 @@ static func _deliver_row(
 
 
 static func _chest_refuse(reason: String, chest_id: StringName) -> Dictionary:
-	return {"ok": false, "reason": reason, "chest_id": String(chest_id), "granted": [], "refused": []}
+	return {
+		"ok": false, "reason": reason, "chest_id": String(chest_id), "granted": [], "refused": []
+	}
 
 
 ## Use (consume/learn) one unit of `def_id`. All-or-nothing: consumes nothing

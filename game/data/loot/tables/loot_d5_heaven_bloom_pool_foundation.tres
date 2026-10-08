@@ -30,7 +30,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d5_heaven_bloom_pool_foundation"
-display_name = "Heaven Bloom Lesser salvage (foundation)"
+display_name = "LOC_LOOT_D5_HEAVEN_BLOOM_FOUNDATION_0_DISPLAY_NAME"
 realm = &"foundation"
 rarity = &""
 rolls = 1

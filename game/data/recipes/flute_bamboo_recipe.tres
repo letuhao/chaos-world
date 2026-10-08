@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"flute_bamboo_recipe"
-display_name = "Bamboo Flute Recipe"
+display_name = "LOC_RECIPES_FLUTE_BAMBOO_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"flute_bamboo_shoot"])
 outputs = Array[StringName]([&"flute_bamboo"])

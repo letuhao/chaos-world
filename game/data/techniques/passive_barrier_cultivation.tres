@@ -5,8 +5,8 @@
 script = ExtResource("1_def")
 id = &"passive_barrier_cultivation"
 delivered_by = &"sigil_earth_steady"
-display_name = "Barrier Cultivation"
-description = "Practises holding a wall up while deliberately having it struck. Mental defence and resistance to illusion, trained as two separate muscles."
+display_name = "LOC_TECHNIQUES_PASSIVE_BARRIER_CULTIVATION_DISPLAY_NAME"
+description = "LOC_TECHNIQUES_PASSIVE_BARRIER_CULTIVATION_DESCRIPTION"
 tags = Array[StringName]([&"passive", &"mind", &"defense"])
 grade = &"spirit"
 rarity = &"magic"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"A15_heaven_barmbrack_refined"
-display_name = "Heaven Barmbrack Refined"
+display_name = "LOC_ITEMS_A15_HEAVEN_BARMBRACK_REFINED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"dao_fruit"

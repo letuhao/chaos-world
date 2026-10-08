@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"K26_immortal_tide_perfected"
-display_name = "Immortal Tide Perfected"
+display_name = "LOC_ITEMS_K26_IMMORTAL_TIDE_PERFECTED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"immortal_sovereign"

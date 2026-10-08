@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"I51_mortal_gibbet_perfected"
-display_name = "Mortal Gibbet Perfected"
+display_name = "LOC_ITEMS_I51_MORTAL_GIBBET_PERFECTED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"qi_refining"

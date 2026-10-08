@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"manual_iron_tortoise_shell"
-display_name = "Iron Tortoise Shell"
+display_name = "LOC_ITEMS_MANUAL_IRON_TORTOISE_SHELL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"tribulation"

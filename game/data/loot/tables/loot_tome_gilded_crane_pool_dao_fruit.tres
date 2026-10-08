@@ -30,7 +30,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_tome_gilded_crane_pool_dao_fruit"
-display_name = "Gilded Crane salvage (dao_fruit)"
+display_name = "LOC_LOOT_TOME_GILDED_CRANE_DAO_FRUIT_0_DISPLAY_NAME"
 realm = &"dao_fruit"
 rarity = &""
 rolls = 1

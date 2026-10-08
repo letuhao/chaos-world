@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"mind_nascent_soul_sea_catalyst"
-display_name = "Insight Sea Catalyst"
+display_name = "LOC_ITEMS_MIND_NASCENT_SOUL_SEA_CATALYST_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"nascent_soul"
@@ -16,4 +16,4 @@ roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"tonic"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:mind_nascent_soul_sea_recipe"])
-description = "Strengthens the sea of consciousness toward the realm's clarity and purity targets."
+description = "LOC_ITEMS_MIND_NASCENT_SOUL_SEA_CATALYST_DESCRIPTION"

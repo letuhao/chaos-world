@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_F13_earth_warden_pool_core_formation"
-display_name = "Earth Warden salvage (core_formation)"
+display_name = "LOC_LOOT_F13_EARTH_WARDEN_CORE_FORMATION_0_DISPLAY_NAME"
 realm = &"core_formation"
 rarity = &""
 rolls = 1

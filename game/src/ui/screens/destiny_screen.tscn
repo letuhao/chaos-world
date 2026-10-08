@@ -20,13 +20,13 @@ layout_mode = 2
 [node name="Title" type="Label" parent="Layout"]
 layout_mode = 2
 theme_type_variation = &"ScreenTitle"
-text = "Fate and Destiny"
+text = "LOC_UI_SCREENS_AB79138670"
 
 [node name="CodexHeader" type="Label" parent="Layout"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "No hero bound."
+text = "LOC_UI_SCREENS_6E9BC19A74"
 
 [node name="Scroll" type="ScrollContainer" parent="Layout"]
 layout_mode = 2
@@ -39,7 +39,7 @@ size_flags_horizontal = 3
 [node name="DestinyTitle" type="Label" parent="Layout/Scroll/Codex"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "Destinies"
+text = "LOC_UI_SCREENS_55CF474C16"
 
 [node name="Destinies" type="VBoxContainer" parent="Layout/Scroll/Codex"]
 layout_mode = 2
@@ -56,7 +56,7 @@ unique_name_in_owner = true
 [node name="FateTitle" type="Label" parent="Layout/Scroll/Codex"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "Fate"
+text = "LOC_UI_SCREENS_3A7F70BDA7"
 
 [node name="Fates" type="VBoxContainer" parent="Layout/Scroll/Codex"]
 layout_mode = 2

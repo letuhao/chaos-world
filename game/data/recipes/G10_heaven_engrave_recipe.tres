@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"G10_heaven_engrave_recipe"
-display_name = "Heaven Engraving Recipe"
+display_name = "LOC_RECIPES_G10_HEAVEN_ENGRAVE_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"G10_earth_engrave", &"carvebone_dragon_bone"])
 outputs = Array[StringName]([&"G10_heaven_engrave"])

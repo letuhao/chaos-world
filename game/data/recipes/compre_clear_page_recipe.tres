@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"compre_clear_page_recipe"
-display_name = "Clear Page Recipe"
+display_name = "LOC_RECIPES_COMPRE_CLEAR_PAGE_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"tablet_bronze", &"herb_frostmint"])
 outputs = Array[StringName]([&"compre_clear_page"])

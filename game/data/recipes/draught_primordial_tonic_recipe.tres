@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"draught_primordial_tonic_recipe"
-display_name = "Primordial Tonic Recipe"
+display_name = "LOC_RECIPES_DRAUGHT_PRIMORDIAL_TONIC_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"wood_immortal_core", &"filament_primordial_thread"])
 outputs = Array[StringName]([&"draught_primordial_tonic"])

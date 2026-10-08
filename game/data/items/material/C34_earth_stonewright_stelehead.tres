@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C34_earth_stonewright_stelehead"
-display_name = "Earth Stonewright Stelehead"
+display_name = "LOC_ITEMS_C34_EARTH_STONEWRIGHT_STELEHEAD_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_palace"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"I5_mortal_drayage_aged"
-display_name = "Mortal Drayage Aged"
+display_name = "LOC_ITEMS_I5_MORTAL_DRAYAGE_AGED_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"great_ascension"

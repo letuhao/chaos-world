@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"D8_spirit_critedge_ward_recipe"
-display_name = "Spirit Critedge Ward Recipe"
+display_name = "LOC_RECIPES_D8_SPIRIT_CRITEDGE_WARD_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"accessory_moonstone_shard", &"alchemy_glow_essence"])
 outputs = Array[StringName]([&"D8_spirit_critedge_ward"])

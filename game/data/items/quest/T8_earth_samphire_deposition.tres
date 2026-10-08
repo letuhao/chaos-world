@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"T8_earth_samphire_deposition"
-display_name = "Earth Samphire Deposition"
+display_name = "LOC_ITEMS_T8_EARTH_SAMPHIRE_DEPOSITION_DISPLAY_NAME"
 category = &"quest"
 rarity = &"rare"
 realm = &"spirit_ascension"

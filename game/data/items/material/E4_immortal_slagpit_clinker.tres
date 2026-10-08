@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E4_immortal_slagpit_clinker"
-display_name = "Immortal Slagpit Clinker"
+display_name = "LOC_ITEMS_E4_IMMORTAL_SLAGPIT_CLINKER_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"immortal_sovereign"

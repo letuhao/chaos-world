@@ -6,7 +6,7 @@
 [sub_resource type="Resource" id="Stage_lots_read"]
 script = ExtResource("2_stage")
 stage_id = &"lots_read"
-display_name = "The Lots Are Read"
+display_name = "LOC_EVENT_AUCTION_AT_THE_IMMORTAL_COURT_DISPLAY_NAME_1"
 requires = {}
 duration_periods = 1
 on_enter = [{"fact": &"auction_lots_read", "amount": 1}]
@@ -14,7 +14,7 @@ on_enter = [{"fact": &"auction_lots_read", "amount": 1}]
 [sub_resource type="Resource" id="Stage_bids_open"]
 script = ExtResource("2_stage")
 stage_id = &"bids_open"
-display_name = "Bids Open"
+display_name = "LOC_EVENT_AUCTION_AT_THE_IMMORTAL_COURT_DISPLAY_NAME_2"
 requires = {"verb": &"fact", "id": &"auction_lots_read", "need": 1}
 duration_periods = 1
 on_enter = [{"fact": &"auction_bids_placed", "amount": 1}]
@@ -22,7 +22,7 @@ on_enter = [{"fact": &"auction_bids_placed", "amount": 1}]
 [sub_resource type="Resource" id="Stage_hammer"]
 script = ExtResource("2_stage")
 stage_id = &"hammer"
-display_name = "The Hammer Falls"
+display_name = "LOC_EVENT_AUCTION_AT_THE_IMMORTAL_COURT_DISPLAY_NAME_3"
 requires = {"verb": &"fact", "id": &"auction_bids_placed", "need": 1}
 duration_periods = 0
 on_enter = [{"fact": &"auction_closed", "amount": 1}]
@@ -30,8 +30,8 @@ on_enter = [{"fact": &"auction_closed", "amount": 1}]
 [resource]
 script = ExtResource("1_event")
 id = &"auction_at_the_immortal_court"
-display_name = "The Auction at the Immortal Court"
-description = "What the Court has no use for and cannot refuse to be seen selling. The lots, the bids and the hammer are this event's; what a lot actually resolves to is the market's, and the coins move there. Nothing here prices anything."
+display_name = "LOC_EVENT_AUCTION_AT_THE_IMMORTAL_COURT_DISPLAY_NAME_4"
+description = "LOC_EVENT_AUCTION_AT_THE_IMMORTAL_COURT_DESCRIPTION"
 kind = &"auction"
 trigger = {"verb": &"has_fate", "id": &"first_blood_duel"}
 location_id = &"immortal_court"

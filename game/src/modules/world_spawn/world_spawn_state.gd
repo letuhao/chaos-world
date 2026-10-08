@@ -89,7 +89,7 @@ static func normalize(data: Variant) -> Dictionary:
 static func seed_from_actor(actor: Actor) -> int:
 	if actor == null:
 		return 0
-	var text := "%s:%d" % [String(actor.id), SCHEMA_VERSION]
+	var text := "%s:%d" % [String(actor.id), SCHEMA_VERSION]  # i18n:off — a hash input
 	var hashed := FNV_OFFSET
 	for index in text.length():
 		hashed = (hashed ^ text.unicode_at(index)) & 0xFFFFFFFF

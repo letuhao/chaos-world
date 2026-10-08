@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"H5_spirit_agility_dagger"
-display_name = "Spirit Agility Dagger"
+display_name = "LOC_ITEMS_H5_SPIRIT_AGILITY_DAGGER_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"magic"
 realm = &"spirit_domain"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"mind_spirit_unity_mind_herb"
-display_name = "Wisdom Mind Herb"
+display_name = "LOC_ITEMS_MIND_SPIRIT_UNITY_MIND_HERB_DISPLAY_NAME"
 category = &"material"
 rarity = &"magic"
 realm = &"spirit_unity"
@@ -16,4 +16,4 @@ roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"herb"
 grade = &"spirit"
 sources = Array[StringName]([&"gather", &"domain:qi_spirit_ascension_trial", &"domain:qi_primordial_origin_trial"])
-description = "Gathered reagent for the realm's elixir."
+description = "LOC_ITEMS_MIND_SPIRIT_UNITY_MIND_HERB_DESCRIPTION"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V3_immortal_abjuration_sabaton"
-display_name = "Immortal Abjuration Sabaton"
+display_name = "LOC_ITEMS_V3_IMMORTAL_ABJURATION_SABATON_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"heaven_immortal"

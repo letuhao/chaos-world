@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B40_mortal_encumbrance_defense_spiritual_cultivation_rate"
-display_name = "Mortal Encumbrance Defense Spiritual Cultivation Rate"
+display_name = "LOC_ITEMS_B40_MORTAL_ENCUMBRANCE_DEFENSE_SPIRITUAL_CULTIVATION_RATE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"void_refinement"

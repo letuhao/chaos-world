@@ -145,7 +145,7 @@ func summary() -> Dictionary:
 	return {
 		"id": organization_id(),
 		"kind": _kind,
-		"display_name": String(_view.get("display_name", "")),
+		"display_name": L.t(String(_view.get("display_name", ""))),
 		"refused": _reason != "",
 		"reason": _reason,
 		# The organization exists -- that is what `is_filled()` already said -- and the
@@ -272,7 +272,7 @@ func _compute_lines() -> void:
 		_meta_line = ""
 		return
 	_positions = _position_views()
-	var authored := String(_view.get("display_name", ""))
+	var authored := L.t(String(_view.get("display_name", "")))
 	_head = authored if authored != "" else String(_view.get("id", UNNAMED))
 	_kind = String(_view.get("kind", ""))
 	# A refusal replaces the CLAIM, not the organization: the organization is still
@@ -340,7 +340,7 @@ func _position_summary(position: Dictionary) -> Dictionary:
 	var published := view.has("vacant")
 	return {
 		"id": String(view.get("id", "")),
-		"display_name": String(view.get("display_name", "")),
+		"display_name": L.t(String(view.get("display_name", ""))),
 		"vacant": vacant,
 		# What `capacity` MEANS is the office's own word, read off the authored cap: `0`
 		# is an unbounded room, `1` is a seat, more is a room that can fill.
@@ -384,7 +384,9 @@ func _position_state(vacant: bool, published: bool) -> String:
 ## The `VACANT` token is the point: an office nobody holds says so in words, and it is
 ## printed before the numbers so the eye finds the gap without reading them.
 func _position_line_of(view: Dictionary) -> String:
-	var name := String(view.get("display_name", ""))
+	# The office's name is a KEY in the institution data, like every other display field, and
+	# this line is what `summary()` publishes — so it resolves here, once.
+	var name := L.t(String(view.get("display_name", "")))
 	if name == "":
 		name = String(view.get("id", OFFICE_UNNAMED))
 	var parts: Array = [name]

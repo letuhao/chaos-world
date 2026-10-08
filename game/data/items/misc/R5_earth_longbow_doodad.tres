@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"R5_earth_longbow_doodad"
-display_name = "Earth Longbow Doodad"
+display_name = "LOC_ITEMS_R5_EARTH_LONGBOW_DOODAD_DISPLAY_NAME"
 category = &"misc"
 rarity = &"rare"
 realm = &"spirit_manifestation"

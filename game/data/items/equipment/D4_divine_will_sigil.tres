@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"D4_divine_will_sigil"
-display_name = "Divine Will Sigil"
+display_name = "LOC_ITEMS_D4_DIVINE_WILL_SIGIL_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"primordial_origin"

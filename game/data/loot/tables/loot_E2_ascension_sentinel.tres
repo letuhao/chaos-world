@@ -198,7 +198,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E2_ascension_sentinel"
-display_name = "Ascension Sentinel"
+display_name = "LOC_LOOT_E2_ASCENSION_SENTINEL_CORE_0_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d2_iron_monarch_pool_spirit_severing"
-display_name = "Iron Monarch Lesser salvage (spirit_severing)"
+display_name = "LOC_LOOT_D2_IRON_MONARCH_SPIRIT_SEVERING_0_DISPLAY_NAME"
 realm = &"spirit_severing"
 rarity = &""
 rolls = 1

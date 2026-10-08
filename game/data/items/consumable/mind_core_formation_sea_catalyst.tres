@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"mind_core_formation_sea_catalyst"
-display_name = "Clarity Sea Catalyst"
+display_name = "LOC_ITEMS_MIND_CORE_FORMATION_SEA_CATALYST_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"core_formation"
@@ -16,4 +16,4 @@ roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"tonic"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:mind_core_formation_sea_recipe", &"domain:body_transcendent_trial"])
-description = "Strengthens the sea of consciousness toward the realm's clarity and purity targets."
+description = "LOC_ITEMS_MIND_CORE_FORMATION_SEA_CATALYST_DESCRIPTION"

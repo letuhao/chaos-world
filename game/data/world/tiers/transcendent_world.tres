@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 tier_id = &"transcendent_world"
-display_name = "Transcendent World"
+display_name = "LOC_WORLD_TRANSCENDENT_WORLD_DISPLAY_NAME"
 realm_min = 28
 realm_max = 30
 law_slots = 15

@@ -60,14 +60,11 @@ const BODY_SCENE := "res://src/ui/panels/lineage_body_row.tscn"
 const BLOOD_SCENE := "res://src/ui/panels/lineage_blood_row.tscn"
 const HOUSE_SCENE := "res://src/ui/panels/lineage_house_row.tscn"
 
-const HEADER_TEXT := "What you are, what you carry, and who you belong to."
-const NO_ACTOR_TEXT := "No hero bound."
+const HEADER_TEXT := "LOC_UI_SCREENS_4FFF4C0181"
+const NO_ACTOR_TEXT := "LOC_UI_SCREENS_6E9BC19A74"
 const NO_ACTOR_FOOTER := ""
-const FOOTER_TEXT := (
-	"Read-only. A body is what it refuses, a bloodline is what it carries, "
-	+ "a house is what it owes and asks."
-)
-const DORMANT_COUNT := "carried and dormant"
+const FOOTER_TEXT := "LOC_UI_SCREENS_B4B308970B" + "LOC_UI_SCREENS_4E97B4DDFE"
+const DORMANT_COUNT := "LOC_UI_SCREENS_64B555E1EA"
 const AWAKE_COUNT := "awake"
 
 var _race: Dictionary = {}
@@ -199,11 +196,11 @@ func _render() -> void:
 	if _header == null:
 		return
 	if _actor == null:
-		_header.text = NO_ACTOR_TEXT
-		_footer.text = NO_ACTOR_FOOTER
+		_header.text = L.t(NO_ACTOR_TEXT)
+		_footer.text = L.t(NO_ACTOR_FOOTER)
 		return
-	_header.text = HEADER_TEXT
-	_footer.text = FOOTER_TEXT
+	_header.text = L.t(HEADER_TEXT)
+	_footer.text = L.t(FOOTER_TEXT)
 
 
 # --- ScreenStack hooks ------------------------------------------------------

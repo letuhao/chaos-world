@@ -222,7 +222,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E3_void_refinement_arbiter"
-display_name = "Void Refinement Arbiter"
+display_name = "LOC_LOOT_E3_VOID_REFINEMENT_ARBITER_CORE_0_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

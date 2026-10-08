@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"body_void_refinement_recovery_elixir"
-display_name = "Void Refinement Mending Elixir"
+display_name = "LOC_ITEMS_BODY_VOID_REFINEMENT_RECOVERY_ELIXIR_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"void_refinement"
@@ -16,4 +16,4 @@ roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"elixir"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:body_void_refinement_recovery_recipe"])
-description = "Clears a blocked huyệt and repairs one damaged channel after a failed breakthrough."
+description = "LOC_ITEMS_BODY_VOID_REFINEMENT_RECOVERY_ELIXIR_DESCRIPTION"

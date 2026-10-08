@@ -63,11 +63,28 @@ const TRANSFORM := &"transform"
 ## All types, canonically ordered. Used by the diversity validator and by a
 ## picker that offers the full vocabulary.
 const ALL := [
-	PROJECTILE, BEAM, AOE, NOVA, CHAIN, EXPLOSION, METEOR, PULL, PUSH,
-	SHIELD, BARRIER, HEAL, BUFF,
-	DASH, TELEPORT, BLINK,
-	TRAP, ZONE, STUN, SLOW,
-	SUMMON, TRANSFORM,
+	PROJECTILE,
+	BEAM,
+	AOE,
+	NOVA,
+	CHAIN,
+	EXPLOSION,
+	METEOR,
+	PULL,
+	PUSH,
+	SHIELD,
+	BARRIER,
+	HEAL,
+	BUFF,
+	DASH,
+	TELEPORT,
+	BLINK,
+	TRAP,
+	ZONE,
+	STUN,
+	SLOW,
+	SUMMON,
+	TRANSFORM,
 ]
 
 ## Category lookup: VFX type -> category name.

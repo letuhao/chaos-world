@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"A10_immortal_axletree_primed_recipe"
-display_name = "Immortal Axletree Primed Sigil Recipe"
+display_name = "LOC_RECIPES_A10_IMMORTAL_AXLETREE_PRIMED_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"A10_immortal_axletree_aged", &"qi_true_immortal_qi_herb", &"Q8_immortal_dogwood_chalk", &"fungus_thorncap"])
 outputs = Array[StringName]([&"A10_immortal_axletree_primed"])

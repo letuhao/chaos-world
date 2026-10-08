@@ -30,7 +30,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_marine_abyssal_kraken_pool_spirit_condensation"
-display_name = "Abyssal Kraken salvage (spirit_condensation)"
+display_name = "LOC_LOOT_MARINE_ABYSSAL_KRAKEN_SPIRIT_CONDENSATION_0_DISPLAY_NAME"
 realm = &"spirit_condensation"
 rarity = &""
 rolls = 1

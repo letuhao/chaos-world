@@ -30,7 +30,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E7_heaven_arbiter_pool_primordial_immortal"
-display_name = "Heaven Arbiter salvage (primordial_immortal)"
+display_name = "LOC_LOOT_E7_HEAVEN_ARBITER_PRIMORDIAL_IMMORTAL_0_DISPLAY_NAME"
 realm = &"primordial_immortal"
 rarity = &""
 rolls = 1

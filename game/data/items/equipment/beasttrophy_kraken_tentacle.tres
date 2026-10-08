@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"beasttrophy_kraken_tentacle"
-display_name = "Abyssal Kraken Tentacle Trophy"
+display_name = "LOC_ITEMS_BEASTTROPHY_KRAKEN_TENTACLE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"dao_fruit"

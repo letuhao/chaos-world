@@ -5,5 +5,5 @@
 [resource]
 script = ExtResource("1_domain")
 id = &"body_primordial_immortal_trial"
-display_name = "Body of Unity Trial"
+display_name = "LOC_DOMAINS_BODY_PRIMORDIAL_IMMORTAL_TRIAL_DISPLAY_NAME"
 boss_ids = Array[StringName]([&"body_primordial_immortal_guardian", &"E9_primordial_warden"])

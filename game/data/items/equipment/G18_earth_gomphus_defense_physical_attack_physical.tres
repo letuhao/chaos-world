@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G18_earth_gomphus_defense_physical_attack_physical"
-display_name = "Earth Gomphus Defense physical Attack physical"
+display_name = "LOC_ITEMS_G18_EARTH_GOMPHUS_DEFENSE_PHYSICAL_ATTACK_PHYSICAL_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"spirit_sovereign"

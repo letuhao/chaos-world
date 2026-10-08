@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E8_divine_varnishworks_resinoid"
-display_name = "Divine Varnishworks Resinoid"
+display_name = "LOC_ITEMS_E8_DIVINE_VARNISHWORKS_RESINOID_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"transcendent"

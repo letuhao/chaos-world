@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"O5_spirit_arrowroot_aged"
-display_name = "Spirit Arrowroot Aged"
+display_name = "LOC_ITEMS_O5_SPIRIT_ARROWROOT_AGED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_manifestation"

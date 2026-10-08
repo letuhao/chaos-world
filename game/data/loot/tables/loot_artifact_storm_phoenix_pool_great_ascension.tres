@@ -30,7 +30,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_artifact_storm_phoenix_pool_great_ascension"
-display_name = "Storm Phoenix salvage (great_ascension)"
+display_name = "LOC_LOOT_ARTIFACT_STORM_PHOENIX_GREAT_ASCENSION_0_DISPLAY_NAME"
 realm = &"great_ascension"
 rarity = &""
 rolls = 1

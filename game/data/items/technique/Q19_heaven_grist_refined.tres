@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Q19_heaven_grist_refined"
-display_name = "Heaven Grist Refined"
+display_name = "LOC_ITEMS_Q19_HEAVEN_GRIST_REFINED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"earth_immortal"

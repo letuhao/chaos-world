@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Y15_divine_chamber_fetish"
-display_name = "Divine Chamber Fetish"
+display_name = "LOC_ITEMS_Y15_DIVINE_CHAMBER_FETISH_DISPLAY_NAME"
 category = &"key"
 rarity = &"legendary"
 realm = &"dao_ancestor"

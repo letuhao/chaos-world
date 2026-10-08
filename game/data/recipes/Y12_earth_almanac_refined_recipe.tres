@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"Y12_earth_almanac_refined_recipe"
-display_name = "Earth Almanac Refined Recipe"
+display_name = "LOC_RECIPES_Y12_EARTH_ALMANAC_REFINED_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"Y12_earth_almanac_base", &"alchemy_cinder_ore"])
 outputs = Array[StringName]([&"Y12_earth_almanac_refined"])

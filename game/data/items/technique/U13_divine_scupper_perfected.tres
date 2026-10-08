@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U13_divine_scupper_perfected"
-display_name = "Divine Scupper Manual"
+display_name = "LOC_ITEMS_U13_DIVINE_SCUPPER_PERFECTED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"transcendent"

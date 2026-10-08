@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_marine_coral_leviathan_pool_dao_fruit"
-display_name = "Coral Leviathan salvage (dao_fruit)"
+display_name = "LOC_LOOT_MARINE_CORAL_LEVIATHAN_DAO_FRUIT_0_DISPLAY_NAME"
 realm = &"dao_fruit"
 rarity = &""
 rolls = 1

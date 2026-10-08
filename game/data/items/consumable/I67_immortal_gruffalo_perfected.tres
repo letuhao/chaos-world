@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"I67_immortal_gruffalo_perfected"
-display_name = "Immortal Gruffalo Perfected"
+display_name = "LOC_ITEMS_I67_IMMORTAL_GRUFFALO_PERFECTED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"heaven_immortal"

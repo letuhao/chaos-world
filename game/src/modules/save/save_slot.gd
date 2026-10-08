@@ -22,7 +22,7 @@ extends RefCounted
 const ENVELOPE_VERSION := 1
 ## The marker a reader checks before trusting a parsed file. A JSON object without it is not a
 ## save, whatever else it happens to contain.
-const FORMAT := "chaos-world.save"
+const FORMAT := "LOC_SAVE_FC58423064"
 
 ## The world ledger keys carried beside the actor. `soul` is one of them for ADR 0127's reason:
 ## it is a world fact by the ADR 0101 test — per-actor it would be incorrect the moment a second

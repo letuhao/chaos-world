@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"S1_divine_alderman_base"
-display_name = "Divine Alderman Base"
+display_name = "LOC_ITEMS_S1_DIVINE_ALDERMAN_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_ancestor"

@@ -43,8 +43,8 @@ const STACKS := &"stacks"
 const INSTANCE := &"instance_id"
 const REASON := &"reason"
 
-const REFUSE_NULL := &"status is null"
-const REFUSE_NO_ID := &"status id is empty"
+const REFUSE_NULL := &"LOC_CORE_86149B21FC"
+const REFUSE_NO_ID := &"LOC_CORE_8B8072C554"
 
 ## The one instance per id, held by REFERENCE to the actor's own array rather than
 ## a shadow copy of it: `FertilityApi.advance` erases `actor.statuses` directly

@@ -5,14 +5,14 @@
 [resource]
 script = ExtResource("1_item")
 id = &"set_ironhide_vigil_wardplate"
-display_name = "Ironhide Vigil Wardplate"
+display_name = "LOC_SETS_SET_IRONHIDE_VIGIL_WARDPLATE_DISPLAY_NAME"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"mortal"
 stackable = false
 tags = Array[StringName]([&"set:ironhide_vigil"])
 sources = Array[StringName]([&"boss:body_core_formation_guardian"])
-description = "Layered hide plate that distributes a body blow across the frame."
+description = "LOC_SETS_SET_IRONHIDE_VIGIL_WARDPLATE_DESCRIPTION"
 rarity = &"magic"
 realm = &"core_formation"
 fixed_modifiers = Array[Dictionary]([

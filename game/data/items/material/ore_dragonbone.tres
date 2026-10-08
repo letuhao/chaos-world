@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"ore_dragonbone"
-display_name = "Dragonbone Ore"
+display_name = "LOC_ITEMS_ORE_DRAGONBONE_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"earth_immortal"

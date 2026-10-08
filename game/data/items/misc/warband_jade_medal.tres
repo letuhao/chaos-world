@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"warband_jade_medal"
-display_name = "Jade Warband Medal"
+display_name = "LOC_ITEMS_WARBAND_JADE_MEDAL_DISPLAY_NAME"
 category = &"misc"
 rarity = &"rare"
 realm = &"true_immortal"

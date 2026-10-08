@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F32_divine_flype_crit_damage_max_health_qi_cost_reduction_stamina_regen"
-display_name = "Divine Flype Crit damage Max health Qi cost reduction Stamina regen"
+display_name = "LOC_ITEMS_F32_DIVINE_FLYPE_CRIT_DAMAGE_MAX_HEALTH_QI_COST_REDUCTION_STAMINA_REGEN_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"dao_ancestor"

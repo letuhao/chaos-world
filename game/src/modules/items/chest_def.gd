@@ -85,7 +85,9 @@ func problems() -> Array[String]:
 	if display_name == "":
 		out.append("%s has no display_name" % String(id))
 	if rolls < 0:
-		out.append("%s authors %d rolls; a chest cannot draw a negative number" % [String(id), rolls])
+		out.append(
+			"%s authors %d rolls; a chest cannot draw a negative number" % [String(id), rolls]
+		)
 	if rolls > 0 and rows.is_empty():
 		out.append("%s draws %d rolls from an empty pool" % [String(id), rolls])
 	for row in rows:

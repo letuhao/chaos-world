@@ -5,8 +5,8 @@
 script = ExtResource("1_def")
 id = &"qi_verdant_coil"
 delivered_by = &"scroll_verdant_coil"
-display_name = "Verdant Coil"
-description = "Whips living qi into a binding knot of thorned vine. Most of it is elemental: metal cuts it apart, and a body that drinks takes the thorns poorly."
+display_name = "LOC_TECHNIQUES_QI_VERDANT_COIL_DISPLAY_NAME"
+description = "LOC_TECHNIQUES_QI_VERDANT_COIL_DESCRIPTION"
 tags = Array[StringName]([&"technique", &"wood", &"area"])
 grade = &"mortal"
 rarity = &"magic"

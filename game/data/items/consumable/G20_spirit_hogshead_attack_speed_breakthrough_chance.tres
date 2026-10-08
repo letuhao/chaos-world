@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G20_spirit_hogshead_attack_speed_breakthrough_chance"
-display_name = "Spirit Hogshead Attack speed Breakthrough chance"
+display_name = "LOC_ITEMS_G20_SPIRIT_HOGSHEAD_ATTACK_SPEED_BREAKTHROUGH_CHANCE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_domain"

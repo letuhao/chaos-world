@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C31_earth_skeleton_radius"
-display_name = "Earth Skeleton Radius"
+display_name = "LOC_ITEMS_C31_EARTH_SKELETON_RADIUS_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_condensation"

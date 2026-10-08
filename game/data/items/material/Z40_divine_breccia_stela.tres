@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Z40_divine_breccia_stela"
-display_name = "Divine Breccia Stela"
+display_name = "LOC_ITEMS_Z40_DIVINE_BRECCIA_STELA_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"transcendent"

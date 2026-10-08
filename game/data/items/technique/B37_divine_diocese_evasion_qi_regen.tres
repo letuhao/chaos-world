@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B37_divine_diocese_evasion_qi_regen"
-display_name = "Divine Diocese Evasion Qi Regen"
+display_name = "LOC_ITEMS_B37_DIVINE_DIOCESE_EVASION_QI_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"transcendent"

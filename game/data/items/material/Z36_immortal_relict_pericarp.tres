@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Z36_immortal_relict_pericarp"
-display_name = "Immortal Drupelet Pericarp"
+display_name = "LOC_ITEMS_Z36_IMMORTAL_RELICT_PERICARP_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"dao_fruit"

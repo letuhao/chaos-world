@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V19_divine_aperture_base"
-display_name = "Divine Aperture Base"
+display_name = "LOC_ITEMS_V19_DIVINE_APERTURE_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"transcendent"

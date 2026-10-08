@@ -210,7 +210,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d5_spirit_bloom"
-display_name = "Spirit Bloom Lesser"
+display_name = "LOC_LOOT_D5_SPIRIT_BLOOM_POOL_DAO_FRUIT_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

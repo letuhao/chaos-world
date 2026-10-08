@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"venom_purified_essence"
-display_name = "Purified Essence"
+display_name = "LOC_ITEMS_VENOM_PURIFIED_ESSENCE_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"foundation"

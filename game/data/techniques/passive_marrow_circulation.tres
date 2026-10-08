@@ -5,8 +5,8 @@
 script = ExtResource("1_def")
 id = &"passive_marrow_circulation"
 delivered_by = &"dao_deep_heart"
-display_name = "Marrow Circulation Primer"
-description = "Teaches qi to take the short route through the long bones. Steadier qi control and better affinity to outside energy, and nothing that helps a strike land."
+display_name = "LOC_TECHNIQUES_PASSIVE_MARROW_CIRCULATION_DISPLAY_NAME"
+description = "LOC_TECHNIQUES_PASSIVE_MARROW_CIRCULATION_DESCRIPTION"
 tags = Array[StringName]([&"passive", &"qi", &"circulation"])
 grade = &"spirit"
 rarity = &"magic"

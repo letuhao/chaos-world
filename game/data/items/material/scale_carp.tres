@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"scale_carp"
-display_name = "Carp Scale"
+display_name = "LOC_ITEMS_SCALE_CARP_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"great_ascension"

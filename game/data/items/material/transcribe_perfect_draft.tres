@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"transcribe_perfect_draft"
-display_name = "Perfect Draft"
+display_name = "LOC_ITEMS_TRANSCRIBE_PERFECT_DRAFT_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"primordial_origin"

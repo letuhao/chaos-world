@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_tome_gilded_crane_pool_immortal_sovereign"
-display_name = "Gilded Crane salvage (immortal_sovereign)"
+display_name = "LOC_LOOT_TOME_GILDED_CRANE_IMMORTAL_SOVEREIGN_0_DISPLAY_NAME"
 realm = &"immortal_sovereign"
 rarity = &""
 rolls = 1

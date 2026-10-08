@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"votive_heaven_relic"
-display_name = "Votive of Heaven"
+display_name = "LOC_ITEMS_VOTIVE_HEAVEN_RELIC_DISPLAY_NAME"
 category = &"quest"
 rarity = &"rare"
 realm = &"true_immortal"

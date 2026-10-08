@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"cut_stage2_lens_eclipse_recipe"
-display_name = "Cut Diamond Facet Recipe"
+display_name = "LOC_RECIPES_CUT_STAGE2_LENS_ECLIPSE_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"cut_diamond_facet", &"gemstone_alexandrite"])
 outputs = Array[StringName]([&"lens_eclipse"])

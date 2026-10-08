@@ -18,7 +18,7 @@ layout_mode = 2
 [node name="TitleLabel" type="Label" parent="Layout"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "Your face"
+text = "LOC_UI_PANELS_7452269BC7"
 
 [node name="PortraitRow" type="HBoxContainer" parent="Layout"]
 layout_mode = 2
@@ -38,7 +38,7 @@ size_flags_horizontal = 3
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "No face"
+text = "LOC_UI_PANELS_EE1FDEBB2F"
 
 [node name="PortraitIdLabel" type="Label" parent="Layout/PortraitRow/PortraitText"]
 unique_name_in_owner = true

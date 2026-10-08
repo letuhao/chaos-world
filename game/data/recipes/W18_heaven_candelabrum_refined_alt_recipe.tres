@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"W18_heaven_candelabrum_refined_alt_recipe"
-display_name = "Heaven Candelabrum Refined (Alt) Recipe"
+display_name = "LOC_RECIPES_W18_HEAVEN_CANDELABRUM_REFINED_ALT_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"W18_heaven_candelabrum_base", &"idol_star_ore", &"veil_star_ore"])
 outputs = Array[StringName]([&"W18_heaven_candelabrum_refined"])

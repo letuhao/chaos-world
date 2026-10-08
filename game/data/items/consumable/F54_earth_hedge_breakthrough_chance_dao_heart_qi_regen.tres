@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F54_earth_hedge_breakthrough_chance_dao_heart_qi_regen"
-display_name = "Earth Hedge Breakthrough chance Dao heart Qi regen"
+display_name = "LOC_ITEMS_F54_EARTH_HEDGE_BREAKTHROUGH_CHANCE_DAO_HEART_QI_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_unity"

@@ -30,7 +30,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_treasure_gilded_beetle_pool_primordial_origin"
-display_name = "Gilded Beetle salvage (primordial_origin)"
+display_name = "LOC_LOOT_TREASURE_GILDED_BEETLE_PRIMORDIAL_ORIGIN_0_DISPLAY_NAME"
 realm = &"primordial_origin"
 rarity = &""
 rolls = 1

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V8_spirit_agger_carafe"
-display_name = "Spirit Agger Carafe"
+display_name = "LOC_ITEMS_V8_SPIRIT_AGGER_CARAFE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_sea"

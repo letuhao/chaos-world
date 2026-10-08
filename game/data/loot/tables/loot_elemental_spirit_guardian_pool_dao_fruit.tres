@@ -42,7 +42,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_elemental_spirit_guardian_pool_dao_fruit"
-display_name = "Tide Guardian salvage (dao_fruit)"
+display_name = "LOC_LOOT_ELEMENTAL_SPIRIT_GUARDIAN_DAO_FRUIT_0_DISPLAY_NAME"
 realm = &"dao_fruit"
 rarity = &""
 rolls = 1

@@ -282,7 +282,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_qi_void_refinement_warden"
-display_name = "Void Refinement Warden"
+display_name = "LOC_LOOT_QI_VOID_REFINEMENT_WARDEN_CORE_0_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_enc")
 id = &"the_wandering_swordsman"
-display_name = "The Wandering Swordsman"
-description = "A lone swordsman blocks your path, eyes sharp. He offers a duel — win, and you earn his respect. Lose, and you learn humility."
+display_name = "LOC_ENCOUNTER_THE_WANDERING_SWORDSMAN_DISPLAY_NAME"
+description = "LOC_ENCOUNTER_THE_WANDERING_SWORDSMAN_DESCRIPTION"
 trigger_type = &"always"
 trigger_value = &""
 weight = 1.0

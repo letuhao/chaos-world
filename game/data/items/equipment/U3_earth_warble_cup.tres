@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U3_earth_warble_cup"
-display_name = "Earth Warble Cup"
+display_name = "LOC_ITEMS_U3_EARTH_WARBLE_CUP_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"spirit_ascension"

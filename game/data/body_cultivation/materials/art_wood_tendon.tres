@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 id = &"wood_tendon"
-display_name = "Wooden Tendon"
+display_name = "LOC_BODY_CULTIVATION_WOOD_TENDON_DISPLAY_NAME"
 best_against = "Snap and shear: a fibre body bends where bone breaks."
 material = &"wood"
 transforms_into = &"calf"

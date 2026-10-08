@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"W20_heaven_chersonese_refined_alt_recipe"
-display_name = "Heaven Chersonese Refined (Alt) Recipe"
+display_name = "LOC_RECIPES_W20_HEAVEN_CHERSONESE_REFINED_ALT_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"W20_heaven_chersonese_base", &"astral_lunar_veil_herb", &"staff_moonwhisper_essence"])
 outputs = Array[StringName]([&"W20_heaven_chersonese_refined"])

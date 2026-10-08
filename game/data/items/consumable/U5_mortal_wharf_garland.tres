@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U5_mortal_wharf_garland"
-display_name = "Mortal Wharf Garland"
+display_name = "LOC_ITEMS_U5_MORTAL_WHARF_GARLAND_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"great_ascension"

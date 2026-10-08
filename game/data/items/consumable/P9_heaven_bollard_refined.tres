@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"P9_heaven_bollard_refined"
-display_name = "Heaven Bollard Refined"
+display_name = "LOC_ITEMS_P9_HEAVEN_BOLLARD_REFINED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"true_immortal"

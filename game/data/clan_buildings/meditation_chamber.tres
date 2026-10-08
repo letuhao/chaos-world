@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1")
 id = &"meditation_chamber"
-display_name = "Meditation Chamber"
-description = "A quiet chamber for cultivation meditation. Enhances cultivation speed and unlocks meditation verbs."
+display_name = "LOC_CLAN_BUILDINGS_MEDITATION_CHAMBER_DISPLAY_NAME"
+description = "LOC_CLAN_BUILDINGS_MEDITATION_CHAMBER_DESCRIPTION"
 category = &"cultivation"
 max_level = 3
 base_cost_materials = 250

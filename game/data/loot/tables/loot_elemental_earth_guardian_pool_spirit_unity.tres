@@ -30,7 +30,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_elemental_earth_guardian_pool_spirit_unity"
-display_name = "Terra Guardian salvage (spirit_unity)"
+display_name = "LOC_LOOT_ELEMENTAL_EARTH_GUARDIAN_SPIRIT_UNITY_0_DISPLAY_NAME"
 realm = &"spirit_unity"
 rarity = &""
 rolls = 1

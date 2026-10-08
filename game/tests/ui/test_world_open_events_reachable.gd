@@ -203,7 +203,7 @@ func test_the_screen_names_the_open_event_and_its_stage_and_its_payoff() -> void
 		"and WHAT it pays, in the event module's own vocabulary"
 	)
 	assert_eq(
-		String(world.get("events_title", "")),
+		L.t(String(world.get("events_title", ""))),
 		"What is happening in the world",
 		"under a heading that says there IS something happening"
 	)
@@ -297,7 +297,7 @@ func test_a_world_with_no_open_event_says_so_rather_than_rendering_an_empty_list
 	var world := _world_of(screen)
 	assert_eq(int(world.get("open_event_count", -1)), 0, "there is genuinely nothing open")
 	assert_eq(
-		String(world.get("events_title", "")),
+		L.t(String(world.get("events_title", ""))),
 		"Nothing is happening in the world right now",
 		"and the heading says the world is quiet, in the plainest words available"
 	)
@@ -306,7 +306,7 @@ func test_a_world_with_no_open_event_says_so_rather_than_rendering_an_empty_list
 	if lines.is_empty():
 		return
 	assert_eq(
-		String(lines[0]),
+		L.t(String(lines[0])),
 		"No event is open. The world is waiting on its next one.",
 		"and it is a sentence, so the section reads as an answer rather than as a failure"
 	)
@@ -331,7 +331,7 @@ func test_an_unwired_events_seam_is_named_rather_than_rendered_as_a_quiet_world(
 		"the screen knows the root published no rows, and says so in the flag"
 	)
 	assert_eq(
-		String(world.get("events_title", "")),
+		L.t(String(world.get("events_title", ""))),
 		"The world's events are not published to this screen",
 		"and the heading NAMES THE MISSING SEAM rather than claiming the world is quiet"
 	)
@@ -359,7 +359,7 @@ func test_an_open_event_this_screen_cannot_name_says_so_instead_of_claiming_peac
 	var world := _world_of(screen)
 	assert_eq(int(world.get("open_event_count", -1)), 1, "an event really is open")
 	assert_eq(
-		String(world.get("events_title", "")),
+		L.t(String(world.get("events_title", ""))),
 		"Something is open, and this screen cannot name it",
 		"which is neither 'quiet' nor 'fine', and the heading says exactly that"
 	)

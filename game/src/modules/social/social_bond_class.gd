@@ -156,21 +156,21 @@ static func at_least(bond_class: StringName, target: StringName) -> bool:
 static func label(bond_class: StringName) -> String:
 	match bond_class:
 		STRANGER:
-			return "Stranger"
+			return L.t("LOC_SOCIAL_5D60331830")
 		ACQUAINTANCE:
-			return "Acquaintance"
+			return L.t("LOC_SOCIAL_81E76E5BA6")
 		FRIEND:
-			return "Friend"
+			return L.t("LOC_SOCIAL_2394299D6F")
 		CONFIDANT:
-			return "Confidant"
+			return L.t("LOC_SOCIAL_6D556D0E00")
 		SWORN:
-			return "Sworn"
+			return L.t("LOC_SOCIAL_A8BD065BA2")
 		SUSPECT:
-			return "Suspect"
+			return L.t("LOC_SOCIAL_AB646FBF43")
 		HOSTILE:
-			return "Hostile"
+			return L.t("LOC_SOCIAL_49CE5DE18C")
 		GRUDGE:
-			return "Grudge"
+			return L.t("LOC_SOCIAL_C0C7A8485B")
 		NEMESIS:
-			return "Nemesis"
-	return "Stranger"
+			return L.t("LOC_SOCIAL_C10C9355D2")
+	return L.t("LOC_SOCIAL_5D60331830")

@@ -22,7 +22,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "Item Workbench"
+text = "LOC_UI_SCREENS_AC307B0587"
 
 [node name="Body" type="HBoxContainer" parent="Layout"]
 layout_mode = 2
@@ -51,4 +51,4 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"MetaLabel"
-text = "Arrows or stick to move, Enter to act, Esc to close."
+text = "LOC_UI_SCREENS_A76EE74107"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"A32_immortal_assemblage_curioserie"
-display_name = "Immortal Assemblage Curioserie"
+display_name = "LOC_ITEMS_A32_IMMORTAL_ASSEMBLAGE_CURIOSERIE_DISPLAY_NAME"
 category = &"misc"
 rarity = &"legendary"
 realm = &"dao_fruit"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"D2_earth_comprehension_bead_recipe"
-display_name = "Earth Comprehension Bead Recipe"
+display_name = "LOC_RECIPES_D2_EARTH_COMPREHENSION_BEAD_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"alchemy_cinder_ore", &"astral_moonwhisper_herb"])
 outputs = Array[StringName]([&"D2_earth_comprehension_bead"])

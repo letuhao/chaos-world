@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"I35_mortal_foreshore_base"
-display_name = "Mortal Foreshore Base"
+display_name = "LOC_ITEMS_I35_MORTAL_FORESHORE_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"core_formation"

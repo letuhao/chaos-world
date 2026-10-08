@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"refill_chaos_recipe"
-display_name = "Chaos Refill Recipe"
+display_name = "LOC_RECIPES_REFILL_CHAOS_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"refill_immortal_essence", &"refill_spring_herb"])
 outputs = Array[StringName]([&"refill_chaos"])

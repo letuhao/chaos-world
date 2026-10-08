@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"mind_nascent_soul_warden_core"
-display_name = "Insight Oracle Core"
+display_name = "LOC_ITEMS_MIND_NASCENT_SOUL_WARDEN_CORE_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"nascent_soul"
@@ -16,4 +16,4 @@ roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"beast_core"
 grade = &"mortal"
 sources = Array[StringName]([&"boss:mind_nascent_soul_warden"])
-description = "Boss-only catalyst for the realm's pill."
+description = "LOC_ITEMS_MIND_NASCENT_SOUL_WARDEN_CORE_DESCRIPTION"

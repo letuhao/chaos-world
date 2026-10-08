@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"btchance_transcendent_pill_recipe"
-display_name = "Transcendent Breakthrough Pill Recipe"
+display_name = "LOC_RECIPES_BTCHANCE_TRANSCENDENT_PILL_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"shard_singularity", &"filament_chaosweave"])
 outputs = Array[StringName]([&"btchance_transcendent_pill"])

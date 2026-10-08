@@ -5,8 +5,8 @@
 script = ExtResource("1_def")
 id = &"passive_dantian_reservoir"
 delivered_by = &"dao_first_heart"
-display_name = "Dantian Reservoir Manual"
-description = "A drawing and breathing scheme for holding qi in the lower field without straining. Deeper reservoir and steadier regrowth; it grants no power at all."
+display_name = "LOC_TECHNIQUES_PASSIVE_DANTIAN_RESERVOIR_DISPLAY_NAME"
+description = "LOC_TECHNIQUES_PASSIVE_DANTIAN_RESERVOIR_DESCRIPTION"
 tags = Array[StringName]([&"passive", &"qi", &"capacity"])
 grade = &"mortal"
 rarity = &"common"

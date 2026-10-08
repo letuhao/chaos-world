@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"embershard_immortal_seed"
-display_name = "Immortal Element Seed"
+display_name = "LOC_ITEMS_EMBERSHARD_IMMORTAL_SEED_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"dao_fruit"

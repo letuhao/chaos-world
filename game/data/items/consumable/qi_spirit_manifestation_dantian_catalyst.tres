@@ -5,9 +5,9 @@
 [resource]
 script = ExtResource("1_item")
 id = &"qi_spirit_manifestation_dantian_catalyst"
-display_name = "Manifestation Prism"
+display_name = "LOC_ITEMS_QI_SPIRIT_MANIFESTATION_DANTIAN_CATALYST_DISPLAY_NAME"
 category = &"consumable"
 subcategory = &"tonic"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:qi_spirit_manifestation_dantian_catalyst_recipe"])
-description = "Spent on a Spirit Manifestation sitting that overflows a full dantian. The overflow becomes dantian quality past the next realm's floor, and every gate is met without one."
+description = "LOC_ITEMS_QI_SPIRIT_MANIFESTATION_DANTIAN_CATALYST_DESCRIPTION"

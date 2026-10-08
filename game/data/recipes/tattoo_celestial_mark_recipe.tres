@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"tattoo_celestial_mark_recipe"
-display_name = "Celestial Mark Recipe"
+display_name = "LOC_RECIPES_TATTOO_CELESTIAL_MARK_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"tattoo_earth_herb", &"tattoo_heaven_ink"])
 outputs = Array[StringName]([&"tattoo_celestial_mark"])

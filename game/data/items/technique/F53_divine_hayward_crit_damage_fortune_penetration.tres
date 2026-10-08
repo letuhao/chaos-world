@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F53_divine_hayward_crit_damage_fortune_penetration"
-display_name = "Divine Hayward Crit damage Fortune Penetration"
+display_name = "LOC_ITEMS_F53_DIVINE_HAYWARD_CRIT_DAMAGE_FORTUNE_PENETRATION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"transcendent"

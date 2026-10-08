@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"G9_heaven_aggregate_recipe"
-display_name = "Heaven Aggregate Recipe"
+display_name = "LOC_RECIPES_G9_HEAVEN_AGGREGATE_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"G9_earth_aggregate", &"shard_storm"])
 outputs = Array[StringName]([&"G9_heaven_aggregate"])

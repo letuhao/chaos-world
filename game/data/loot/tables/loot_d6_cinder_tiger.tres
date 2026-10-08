@@ -186,7 +186,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d6_cinder_tiger"
-display_name = "Cinder Tiger Lesser"
+display_name = "LOC_LOOT_D6_CINDER_TIGER_POOL_DAO_FRUIT_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

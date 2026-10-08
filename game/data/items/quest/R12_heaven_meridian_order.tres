@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"R12_heaven_meridian_order"
-display_name = "Heaven Meridian Order"
+display_name = "LOC_ITEMS_R12_HEAVEN_MERIDIAN_ORDER_DISPLAY_NAME"
 category = &"quest"
 rarity = &"rare"
 realm = &"immortal_sovereign"

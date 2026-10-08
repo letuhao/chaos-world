@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d3_coral_serpent_pool_spirit_sovereign"
-display_name = "Coral Leviathan Lesser salvage (spirit_sovereign)"
+display_name = "LOC_LOOT_D3_CORAL_SERPENT_SPIRIT_SOVEREIGN_0_DISPLAY_NAME"
 realm = &"spirit_sovereign"
 rarity = &""
 rolls = 1

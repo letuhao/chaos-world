@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"seal_heaven_jade_ore"
-display_name = "Seal Heaven Jade Ore"
+display_name = "LOC_ITEMS_SEAL_HEAVEN_JADE_ORE_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"primordial_immortal"

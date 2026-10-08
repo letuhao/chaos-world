@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"H13_mortal_pierce_orb"
-display_name = "Mortal Pierce Orb"
+display_name = "LOC_ITEMS_H13_MORTAL_PIERCE_ORB_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"body_integration"

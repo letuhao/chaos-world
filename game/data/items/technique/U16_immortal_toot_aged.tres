@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U16_immortal_toot_aged"
-display_name = "Immortal Toot Aged"
+display_name = "LOC_ITEMS_U16_IMMORTAL_TOOT_AGED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"true_immortal"

@@ -115,7 +115,7 @@ func test_the_panel_says_when_no_tribulation_is_owed() -> void:
 		return
 	panel.set_state({"owed": false, "gate_open": true})
 	var row := panel.summary() as Dictionary
-	assert_eq(bool(row["owed"]), false, "nothing owed")
+	assert_eq(L.t(bool(row["owed"])), false, "nothing owed")
 	assert_ne(String(row["verdict"]), "", "and the row still says something about it")
 	assert_eq(String(row["verdict"]), _verdict_text(panel), "the verdict line matches")
 	panel.free()

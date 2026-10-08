@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"T8_divine_samphire_waypoint"
-display_name = "Divine Samphire Waypoint"
+display_name = "LOC_ITEMS_T8_DIVINE_SAMPHIRE_WAYPOINT_DISPLAY_NAME"
 category = &"quest"
 rarity = &"legendary"
 realm = &"primordial_origin"

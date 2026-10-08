@@ -70,7 +70,7 @@ const EARN_SOURCE := "mind_breakthrough"
 ## READY label and a Breakthrough button that does nothing on the same screen
 ## (BL-0152). EVERY branch of `preview` reports it, because an early return that
 ## dropped it would reopen the same disagreement on a different actor.
-const ATTEMPT_CLAUSE := "Attempt in flight"
+const ATTEMPT_CLAUSE := "LOC_MIND_CULTIVATION_080A9A0690"
 
 
 ## Preview the breakthrough conditions without consuming anything. Returns a

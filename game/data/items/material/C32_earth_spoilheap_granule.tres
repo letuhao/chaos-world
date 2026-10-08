@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C32_earth_spoilheap_granule"
-display_name = "Earth Spoilheap Granule"
+display_name = "LOC_ITEMS_C32_EARTH_SPOILHEAP_GRANULE_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_ascension"

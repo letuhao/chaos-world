@@ -6,7 +6,7 @@
 [sub_resource type="Resource" id="tier_0"]
 script = ExtResource("2_tier")
 tier = 1
-label = "Gate"
+label = "LOC_LOOT_LOOT_SCROLL_FROST_SERPENT_DOMAIN_LABEL_1"
 realm = &"core_formation"
 rarity = &"common"
 vitality = 3300.
@@ -18,7 +18,7 @@ boss_tables = Array[Dictionary]([
 [sub_resource type="Resource" id="tier_1"]
 script = ExtResource("2_tier")
 tier = 2
-label = "Depths"
+label = "LOC_LOOT_LOOT_SCROLL_FROST_SERPENT_DOMAIN_LABEL_2"
 realm = &"core_formation"
 rarity = &"rare"
 vitality = 5280.
@@ -30,7 +30,7 @@ boss_tables = Array[Dictionary]([
 [resource]
 script = ExtResource("1_encounter")
 id = &"loot_scroll_frost_serpent_domain"
-display_name = "Frost Serpent Domain"
+display_name = "LOC_LOOT_LOOT_SCROLL_FROST_SERPENT_DOMAIN_DISPLAY_NAME"
 domain_id = &"scroll_frost_serpent_domain"
 boss_ids = Array[StringName]([&"scroll_frost_serpent", &"d5_frost_serpent"])
 key_reach = 0

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 id = &"minor_2"
-display_name = "Stomach Minor Node 03"
+display_name = "LOC_BODY_CULTIVATION_MINOR_2_DISPLAY_NAME"
 tier = &"minor"
 unlock_index = 0
 meridian_id = &"stomach"

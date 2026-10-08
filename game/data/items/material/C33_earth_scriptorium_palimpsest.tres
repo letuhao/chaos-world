@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C33_earth_scriptorium_palimpsest"
-display_name = "Earth Scriptorium Palimpsest"
+display_name = "LOC_ITEMS_C33_EARTH_SCRIPTORIUM_PALIMPSEST_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_ascension"

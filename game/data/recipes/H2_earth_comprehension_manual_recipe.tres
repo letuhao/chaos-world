@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"H2_earth_comprehension_manual_recipe"
-display_name = "Earth Comprehension Manual Recipe"
+display_name = "LOC_RECIPES_H2_EARTH_COMPREHENSION_MANUAL_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"tablet_jade", &"jade_moon"])
 outputs = Array[StringName]([&"H2_earth_comprehension_manual"])

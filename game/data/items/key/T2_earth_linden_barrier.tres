@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"T2_earth_linden_barrier"
-display_name = "Earth Linden Barrier"
+display_name = "LOC_ITEMS_T2_EARTH_LINDEN_BARRIER_DISPLAY_NAME"
 category = &"key"
 rarity = &"rare"
 realm = &"spirit_sea"

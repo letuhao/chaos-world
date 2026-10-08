@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C33_earth_recordhouse_diagramma"
-display_name = "Earth Recordhouse Diagramma"
+display_name = "LOC_ITEMS_C33_EARTH_RECORDHOUSE_DIAGRAMMA_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_severing"

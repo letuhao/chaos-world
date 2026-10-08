@@ -27,7 +27,9 @@ func entry(partner_id: StringName) -> RelationshipEntry:
 
 
 ## Get or create the entry for `partner_id`.
-func ensure_entry(partner_id: StringName, type: StringName = RelationshipType.NONE) -> RelationshipEntry:
+func ensure_entry(
+	partner_id: StringName, type: StringName = RelationshipType.NONE
+) -> RelationshipEntry:
 	var key := String(partner_id)
 	if not _entries.has(key):
 		_entries[key] = RelationshipEntry.new(partner_id, type)
@@ -61,7 +63,14 @@ func active_romantic_count() -> int:
 	var count := 0
 	for key in _entries.keys():
 		var entry := _entries[key] as RelationshipEntry
-		if entry != null and entry.is_active() and (entry.relationship_type == RelationshipType.ROMANTIC or entry.relationship_type == RelationshipType.SPOUSE):
+		if (
+			entry != null
+			and entry.is_active()
+			and (
+				entry.relationship_type == RelationshipType.ROMANTIC
+				or entry.relationship_type == RelationshipType.SPOUSE
+			)
+		):
 			count += 1
 	return count
 

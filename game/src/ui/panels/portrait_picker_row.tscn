@@ -32,5 +32,5 @@ autowrap_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Button"
-text = "Wear this face"
+text = "LOC_UI_PANELS_D47965AB1E"
 disabled = true

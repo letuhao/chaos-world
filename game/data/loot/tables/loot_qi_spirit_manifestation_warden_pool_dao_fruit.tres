@@ -42,7 +42,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_qi_spirit_manifestation_warden_pool_dao_fruit"
-display_name = "Spirit Manifestation Warden salvage (dao_fruit)"
+display_name = "LOC_LOOT_QI_SPIRIT_MANIFESTATION_WARDEN_DAO_FRUIT_0_DISPLAY_NAME"
 realm = &"dao_fruit"
 rarity = &""
 rolls = 1

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_portrait")
 id = &"unique-0089"
-display_name = "Adreithe Voss"
+display_name = "LOC_PORTRAITS_UNIQUE_0089_DISPLAY_NAME"
 race_id = &"stoneborn"
 visual_traits = Array[StringName]([&"gift:dense-through-load", &"hazard:tuned-to-a-frame-untested", &"path:qi-path", &"role:stair-bred", &"standing:term-not-estate"])
 layer_paths = Array[String](["res://assets/characters/portraits/stoneborn.png"])

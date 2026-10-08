@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"I61_earth_greenockite_aged_alt_recipe"
-display_name = "Earth Greenockite Aged (Alt) Recipe"
+display_name = "LOC_RECIPES_I61_EARTH_GREENOCKITE_AGED_ALT_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"I61_earth_greenockite_refined", &"idol_glow_herb", &"flute_moonwell_essence"])
 outputs = Array[StringName]([&"I61_earth_greenockite_aged"])

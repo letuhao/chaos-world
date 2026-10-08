@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"circlet_gem_dust"
-display_name = "Circlet Gem Dust"
+display_name = "LOC_ITEMS_CIRCLET_GEM_DUST_DISPLAY_NAME"
 category = &"material"
 rarity = &"magic"
 realm = &"spirit_severing"

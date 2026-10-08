@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"B26_earth_cassowary_primed_recipe"
-display_name = "Earth Cassowary Primed Recipe"
+display_name = "LOC_RECIPES_B26_EARTH_CASSOWARY_PRIMED_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"B26_earth_cassowary_aged", &"fungus_rustgill", &"W7_earth_bedlam_leaching", &"astral_comet_tail_ore"])
 outputs = Array[StringName]([&"B26_earth_cassowary_primed"])

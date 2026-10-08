@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"W2_divine_antler_dyer"
-display_name = "Divine Antler Dyer"
+display_name = "LOC_ITEMS_W2_DIVINE_ANTLER_DYER_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"transcendent"

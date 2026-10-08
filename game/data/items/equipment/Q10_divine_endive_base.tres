@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Q10_divine_endive_base"
-display_name = "Divine Endive Base"
+display_name = "LOC_ITEMS_Q10_DIVINE_ENDIVE_BASE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"primordial_origin"

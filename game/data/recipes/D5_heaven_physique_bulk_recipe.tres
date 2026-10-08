@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"D5_heaven_physique_bulk_recipe"
-display_name = "Heaven Physique Bulk Recipe"
+display_name = "LOC_RECIPES_D5_HEAVEN_PHYSIQUE_BULK_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"armor_moonstone_ore", &"ore_starfall_iron"])
 outputs = Array[StringName]([&"D5_heaven_physique_bulk"])

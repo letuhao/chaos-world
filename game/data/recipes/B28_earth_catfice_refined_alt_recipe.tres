@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"B28_earth_catfice_refined_alt_recipe"
-display_name = "Earth Catfice Refined (Alt) Recipe"
+display_name = "LOC_RECIPES_B28_EARTH_CATFICE_REFINED_ALT_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"B28_earth_catfice_base", &"gemstone_turquoise", &"jade_moon"])
 outputs = Array[StringName]([&"B28_earth_catfice_refined"])

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"oath_moon_vow"
-display_name = "Oath of the Moon"
+display_name = "LOC_ITEMS_OATH_MOON_VOW_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"golden_immortal"

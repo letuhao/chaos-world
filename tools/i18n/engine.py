@@ -328,6 +328,11 @@ def _extract(args) -> int:
     # The catalog is exactly what the tree references: every existing `L.t` plus every row
     # this rewrite introduced. An English edit therefore drops the dead row on the next run
     # rather than leaving an orphan `check` would flag.
+    # Every owner we know about is written, even one whose last row is gone: `rows` is built from
+    # USES, so an owner with no uses would otherwise keep its stale FILE and every row in it would
+    # be reported as an orphan for ever. Writing it empty is what drops the dead row.
+    for owner in existing:
+        rows.setdefault(owner, {})
     for owner, values in sorted(rows.items()):
         target = catalog.catalog_path(repo_root, owner)
         if catalog.save(target, values):

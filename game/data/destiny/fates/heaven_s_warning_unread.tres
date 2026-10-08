@@ -10,4 +10,4 @@ description = "LOC_DESTINY_HEAVEN_S_WARNING_UNREAD_DESCRIPTION"
 category = &"heaven"
 tier = 0
 visibility = &"teaser"
-teaser = "Something arrived. The archive does not say what."
+teaser = "LOC_DESTINY_HEAVEN_S_WARNING_UNREAD_TEASER"

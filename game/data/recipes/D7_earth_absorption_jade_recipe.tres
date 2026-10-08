@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"D7_earth_absorption_jade_recipe"
-display_name = "Earth Absorption Jade Recipe"
+display_name = "LOC_RECIPES_D7_EARTH_ABSORPTION_JADE_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"shard_glacier", &"shard_volcano"])
 outputs = Array[StringName]([&"D7_earth_absorption_jade"])

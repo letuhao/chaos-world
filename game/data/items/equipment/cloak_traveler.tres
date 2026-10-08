@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"cloak_traveler"
-display_name = "Traveler Cloak"
+display_name = "LOC_ITEMS_CLOAK_TRAVELER_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"body_integration"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"w35_trinket_heaven_trophy_recipe"
-display_name = "Trinket Heaven Trophy Recipe"
+display_name = "LOC_RECIPES_W35_TRINKET_HEAVEN_TROPHY_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"gemstone_emerald", &"sap_latex"])
 outputs = Array[StringName]([&"trinket_heaven_trophy"])

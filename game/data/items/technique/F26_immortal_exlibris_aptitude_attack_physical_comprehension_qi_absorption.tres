@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F26_immortal_exlibris_aptitude_attack_physical_comprehension_qi_absorption"
-display_name = "Immortal Exlibris Aptitude Attack physical Comprehension Qi absorption"
+display_name = "LOC_ITEMS_F26_IMMORTAL_EXLIBRIS_APTITUDE_ATTACK_PHYSICAL_COMPREHENSION_QI_ABSORPTION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_fruit"

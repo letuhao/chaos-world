@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_soul")
 id = &"the_ledger_knows_your_name"
-display_name = "The Ledger Knows Your Name"
-description = "The third return. By now the record of what you were outlives the body doing the recording, and the two are no longer the same size."
+display_name = "LOC_SOUL_THE_LEDGER_KNOWS_YOUR_NAME_DISPLAY_NAME"
+description = "LOC_SOUL_THE_LEDGER_KNOWS_YOUR_NAME_DESCRIPTION"
 bearing = "The record is longer than you are. Carry it or do not."
 race_id = &"emberblood"
 order = 2

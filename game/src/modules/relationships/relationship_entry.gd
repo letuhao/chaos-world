@@ -47,7 +47,12 @@ func mark_ended(reason: StringName, timestamp: float) -> void:
 
 
 ## Record an interaction and update the frequent partner tier.
-func record_interaction(type: StringName, emotional_delta: Dictionary = {}, timestamp: float = 0.0, dc_session: bool = false) -> void:
+func record_interaction(
+	type: StringName,
+	emotional_delta: Dictionary = {},
+	timestamp: float = 0.0,
+	dc_session: bool = false
+) -> void:
 	interaction_log.add(type, emotional_delta, timestamp, dc_session)
 	for axis in emotional_delta:
 		emotional_signature.add(axis, float(emotional_delta[axis]))
@@ -69,14 +74,25 @@ func _update_frequent_partner_tier() -> void:
 
 
 ## Record a dual cultivation session in the DC-specific history.
-func record_dc_session(technique_id: StringName, essence_transferred: float, harmony_achieved: float, timestamp: float, partner_bond_class: StringName) -> void:
-	dual_cultivation_history.append({
-		"technique_id": String(technique_id),
-		"essence_transferred": essence_transferred,
-		"harmony_achieved": harmony_achieved,
-		"timestamp": timestamp,
-		"partner_bond_class": String(partner_bond_class),
-	})
+func record_dc_session(
+	technique_id: StringName,
+	essence_transferred: float,
+	harmony_achieved: float,
+	timestamp: float,
+	partner_bond_class: StringName
+) -> void:
+	(
+		dual_cultivation_history
+		. append(
+			{
+				"technique_id": String(technique_id),
+				"essence_transferred": essence_transferred,
+				"harmony_achieved": harmony_achieved,
+				"timestamp": timestamp,
+				"partner_bond_class": String(partner_bond_class),
+			}
+		)
+	)
 	is_dual_cultivation_partner = true
 
 

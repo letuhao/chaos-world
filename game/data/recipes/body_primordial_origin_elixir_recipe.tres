@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"body_primordial_origin_elixir_recipe"
-display_name = "Body of the Dao Elixir Formula"
+display_name = "LOC_RECIPES_BODY_PRIMORDIAL_ORIGIN_ELIXIR_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"body_primordial_origin_tempering_herb", &"body_primordial_origin_guardian_core"])
 outputs = Array[StringName]([&"body_primordial_origin_channel_elixir"])

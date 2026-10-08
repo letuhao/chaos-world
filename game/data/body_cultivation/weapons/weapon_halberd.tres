@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 id = &"halberd"
-display_name = "Halberd"
+display_name = "LOC_BODY_CULTIVATION_HALBERD_DISPLAY_NAME"
 best_against = "Mounted and leaping bodies: the swing takes a rider off its line."
 demand = &"balance"
 lean = &"leverage"

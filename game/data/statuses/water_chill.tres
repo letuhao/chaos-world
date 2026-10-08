@@ -20,7 +20,7 @@ tick_interval = 1.0
 mitigation_tags = Array[StringName]([&"affinity", &"gear", &"technique", &"pill"])
 payload = {
 "mechanic": &"slow",
-"text": "Cold settles into the meridians. The body moves more slowly and strikes less often.",
+"text": "LOC_STATUSES_WATER_CHILL_TEXT",
 "modifiers": [
 {"stat": &"move_speed", "op": &"flat", "value": -30.0},
 {"stat": &"attack_speed", "op": &"percent", "value": -0.3}

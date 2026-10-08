@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"H5_immortal_agility_dagger_recipe"
-display_name = "Immortal Agility Dagger Recipe"
+display_name = "LOC_RECIPES_H5_IMMORTAL_AGILITY_DAGGER_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"orb_void_ore", &"herb_phoenix_feather"])
 outputs = Array[StringName]([&"H5_immortal_agility_dagger"])

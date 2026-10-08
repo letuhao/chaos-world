@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"A21_earth_birza_primed"
-display_name = "Earth Birza Primed"
+display_name = "LOC_ITEMS_A21_EARTH_BIRZA_PRIMED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_ascension"

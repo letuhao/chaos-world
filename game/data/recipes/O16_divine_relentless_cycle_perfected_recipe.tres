@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"O16_divine_relentless_cycle_perfected_recipe"
-display_name = "Divine Relentless Cycle Perfected Recipe"
+display_name = "LOC_RECIPES_O16_DIVINE_RELENTLESS_CYCLE_PERFECTED_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"O16_divine_relentless_cycle_primed", &"filament_chaosweave", &"filament_primordial_thread"])
 outputs = Array[StringName]([&"O16_divine_relentless_cycle_perfected"])

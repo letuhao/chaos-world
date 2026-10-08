@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"Q14_immortal_gantry_refined_recipe"
-display_name = "Immortal Gantry Refined Recipe"
+display_name = "LOC_RECIPES_Q14_IMMORTAL_GANTRY_REFINED_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"Q14_immortal_gantry_base", &"gemstone_alexandrite"])
 outputs = Array[StringName]([&"Q14_immortal_gantry_refined"])

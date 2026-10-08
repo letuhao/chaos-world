@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"transcribe_rough_draft"
-display_name = "Rough Draft"
+display_name = "LOC_ITEMS_TRANSCRIBE_ROUGH_DRAFT_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"foundation"

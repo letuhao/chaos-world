@@ -34,7 +34,7 @@ const REASON_NO_PURGE_SEAM := "no_purge_seam"
 ## cannot clear the combat-scope statuses a fight inflicted. Reported rather than hidden.
 const PURGE_UNWIRED := ""
 
-const HEADER_TEXT := "Fight"
+const HEADER_TEXT := "LOC_UI_SCREENS_2C2D161014"
 
 ## The tone map: `FightLoop`'s outcome words to the message tone a player reads.
 ##
@@ -300,7 +300,7 @@ func _refresh_view() -> void:
 	if _panel != null:
 		_panel.show_fight(_current())
 	if _header_label != null:
-		_header_label.text = HEADER_TEXT if actor() != null else "Fight — no hero"
+		_header_label.text = L.t(HEADER_TEXT if actor() != null else "Fight — no hero")
 	var offered := _enabled(bool(_current().get("fighting", false)))
 	if _start_button != null:
 		_start_button.disabled = not bool(offered["start"])

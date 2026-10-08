@@ -18,7 +18,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_succubus_heaven_guardian_pool_primordial_origin"
-display_name = "Heaven Bloom Guardian salvage (primordial_origin)"
+display_name = "LOC_LOOT_SUCCUBUS_HEAVEN_GUARDIAN_PRIMORDIAL_ORIGIN_0_DISPLAY_NAME"
 realm = &"primordial_origin"
 rarity = &""
 rolls = 1

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_portrait")
 id = &"wake"
-display_name = "Wake"
+display_name = "LOC_PORTRAITS_WAKE_DISPLAY_NAME"
 race_id = &"wake"
 visual_traits = Array[StringName]([&"form:plain", &"palette:neutral"])
 layer_paths = Array[String](["res://assets/characters/portraits/wake.png"])

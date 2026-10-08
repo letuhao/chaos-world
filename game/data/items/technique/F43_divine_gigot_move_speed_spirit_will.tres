@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F43_divine_gigot_move_speed_spirit_will"
-display_name = "Divine Gigot Move speed Spirit Will"
+display_name = "LOC_ITEMS_F43_DIVINE_GIGOT_MOVE_SPEED_SPIRIT_WILL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"

@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1")
 id = &"storehouse"
-display_name = "Storehouse"
-description = "A secure storage facility for materials and goods. Increases material storage capacity and unlocks economy verbs."
+display_name = "LOC_CLAN_BUILDINGS_STOREHOUSE_DISPLAY_NAME"
+description = "LOC_CLAN_BUILDINGS_STOREHOUSE_DESCRIPTION"
 category = &"economy"
 max_level = 3
 base_cost_materials = 175

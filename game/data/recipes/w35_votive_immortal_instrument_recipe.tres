@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"w35_votive_immortal_instrument_recipe"
-display_name = "Votive Immortal Instrument Recipe"
+display_name = "LOC_RECIPES_W35_VOTIVE_IMMORTAL_INSTRUMENT_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"jade_immortal", &"wood_immortal_core"])
 outputs = Array[StringName]([&"votive_immortal_instrument"])

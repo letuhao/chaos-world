@@ -312,15 +312,15 @@ func authored_rooms() -> Array:
 
 func _header_text() -> String:
 	if _actor == null:
-		return "Domains — no hero"
+		return L.t("LOC_UI_SCREENS_C7ED3232FB")
 	if _templates.is_empty():
-		return "Domains — none authored"
-	return "Domains — %d authored" % _templates.size()
+		return L.t("LOC_UI_SCREENS_07EA2D5F54")
+	return L.t("LOC_UI_SCREENS_6334B819B4") % _templates.size()
 
 
 func _status_text() -> String:
 	if _view.is_empty():
-		return "Not inside a domain"
+		return L.t("LOC_UI_SCREENS_49AF941E12")
 	var map: Dictionary = _view.get("map", {})
 	return (
 		"Inside %s — %d room(s), %d discovered"
@@ -338,7 +338,7 @@ func _status_text() -> String:
 func _map_text() -> String:
 	var minimap := _minimap()
 	if minimap.is_empty():
-		return "No floor plan — no domain is active"
+		return L.t("LOC_UI_SCREENS_D935AD188B")
 	var box: Variant = minimap.get("bounds", [])
 	var width := int((box as Array)[2]) if (box as Array).size() == 4 else 0
 	var height := int((box as Array)[3]) if (box as Array).size() == 4 else 0
@@ -360,7 +360,7 @@ func _map_text() -> String:
 func _rooms_text() -> String:
 	var rows := _room_rows(_minimap())
 	if rows.is_empty():
-		return "No rooms known"
+		return L.t("LOC_UI_SCREENS_2946655BB5")
 	var lines: Array = []
 	for row in rows:
 		var room := row as Dictionary
@@ -384,7 +384,7 @@ func _rooms_text() -> String:
 func _population_text() -> String:
 	var rows := _population_rows()
 	if rows.is_empty():
-		return "Nobody is placed here yet"
+		return L.t("LOC_UI_SCREENS_67CC6EF0F9")
 	var lines: Array = []
 	for row in rows:
 		lines.append("%s: %d" % [row["role"], row["count"]])
@@ -396,7 +396,7 @@ func _population_text() -> String:
 func _zones_text() -> String:
 	var rows := _zone_rows(_minimap())
 	if rows.is_empty():
-		return "No severe environment authored here"
+		return L.t("LOC_UI_SCREENS_6020939772")
 	var lines: Array = []
 	for row in rows:
 		var zone := row as Dictionary
@@ -421,7 +421,7 @@ func _zones_text() -> String:
 func _fixture_text() -> String:
 	var fixture := _selected_fixture_row()
 	if fixture.is_empty():
-		return "No fixture in this room"
+		return L.t("LOC_UI_SCREENS_E876F6BA60")
 	return (
 		"%s (%s) in %s" % [fixture.get("fixture_id", ""), fixture.get("kind", ""), _selected_room]
 	)

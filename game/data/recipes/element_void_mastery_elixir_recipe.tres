@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"element_void_mastery_elixir_recipe"
-display_name = "Void Mastery Elixir Formula"
+display_name = "LOC_RECIPES_ELEMENT_VOID_MASTERY_ELIXIR_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"scale_voidwyrm", &"bangle_moon_essence"])
 outputs = Array[StringName]([&"element_void_mastery_elixir"])

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C11_earth_coho_base"
-display_name = "Earth Coho Base"
+display_name = "LOC_ITEMS_C11_EARTH_COHO_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_palace"

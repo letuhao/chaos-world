@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_boss")
 id = &"qi_body_integration_warden"
-display_name = "Body Integration Warden"
+display_name = "LOC_BOSSES_QI_BODY_INTEGRATION_WARDEN_DISPLAY_NAME"
 domain_id = &"qi_body_integration_trial"
 ## The hearth's authored cost (ADR 0146): a player must be able to afford the structure
 ## that repairs a damaged soul. Declared in `loot_qi_body_integration_warden` and the

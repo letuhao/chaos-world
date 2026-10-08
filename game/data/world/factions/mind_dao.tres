@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 faction_id = &"mind_dao"
-display_name = "Mind Dao"
+display_name = "LOC_WORLD_MIND_DAO_DISPLAY_NAME"
 dao_alignment = &"mind"
 home_tier = &"transcendent_world"
 philosophy = "Transcendence through spirit. The mind is the seed of the Dao; to refine the self is to touch the infinite."

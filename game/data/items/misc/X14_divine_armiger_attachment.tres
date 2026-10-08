@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"X14_divine_armiger_attachment"
-display_name = "Divine Armiger Attachment"
+display_name = "LOC_ITEMS_X14_DIVINE_ARMIGER_ATTACHMENT_DISPLAY_NAME"
 category = &"misc"
 rarity = &"legendary"
 realm = &"transcendent"

@@ -198,7 +198,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d1_iron_sage_adept"
-display_name = "Iron Sage Adept Lesser"
+display_name = "LOC_LOOT_D1_IRON_SAGE_ADEPT_POOL_DAO_FRUIT_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

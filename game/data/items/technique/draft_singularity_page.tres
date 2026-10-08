@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"draft_singularity_page"
-display_name = "Singularity Draft Page"
+display_name = "LOC_ITEMS_DRAFT_SINGULARITY_PAGE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"transcendent"

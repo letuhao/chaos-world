@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 id = &"major_3"
-display_name = "Dai Mai Major Node 04"
+display_name = "LOC_BODY_CULTIVATION_MAJOR_3_DISPLAY_NAME"
 tier = &"major"
 unlock_index = 9
 meridian_id = &"dai_mai"

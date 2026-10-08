@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E18_mortal_bristleworks_setae"
-display_name = "Mortal Bristleworks Setae"
+display_name = "LOC_ITEMS_E18_MORTAL_BRISTLEWORKS_SETAE_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"great_ascension"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"P8_heaven_bobbin_base_recipe"
-display_name = "Heaven Bobbin Base Recipe"
+display_name = "LOC_RECIPES_P8_HEAVEN_BOBBIN_BASE_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"tattoo_heaven_ink", &"staff_moonwhisper_essence"])
 outputs = Array[StringName]([&"P8_heaven_bobbin_base"])

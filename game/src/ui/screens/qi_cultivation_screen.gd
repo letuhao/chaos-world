@@ -160,7 +160,7 @@ func _feed_children(live: Dictionary) -> void:
 ## It used to name the dantian's tier here, over a `dantian_tier` key the facade
 ## published for a ladder nothing read and the realm line already prints (ADR 0180).
 func _dantian_label(live: Dictionary) -> String:
-	var name := "Dantian quality"
+	var name := L.t("LOC_UI_SCREENS_C3339E79E8")
 	if bool(live.get("dantian_injured", false)):
 		name += " SCARRED"
 	return name
@@ -220,7 +220,7 @@ func _render_realm(live: Dictionary) -> void:
 	if _realm_label == null:
 		return
 	if live.is_empty():
-		_realm_label.text = "Realm: none"
+		_realm_label.text = L.t("LOC_UI_SCREENS_7B6A7382FC")
 		return
 	_realm_label.text = (
 		"Realm: %s -> %s"
@@ -242,7 +242,7 @@ func _render_conditions(live: Dictionary) -> void:
 		return
 	var unmet: Array = live.get("unmet", [])
 	if unmet.is_empty():
-		_conditions_label.text = "Conditions: READY"
+		_conditions_label.text = L.t("LOC_UI_SCREENS_AAC947F6E9")
 		_conditions_label.theme_type_variation = &"OkLabel"
 		return
 	var costs: Dictionary = live.get("costs", {})
@@ -252,7 +252,7 @@ func _render_conditions(live: Dictionary) -> void:
 		for key in costs:
 			ids.append("%s x%d" % [key, int(costs[key])])
 		cost_line = " | Needs: %s" % ", ".join(ids)
-	_conditions_label.text = "Conditions: %s%s" % [", ".join(unmet), cost_line]
+	_conditions_label.text = L.t("LOC_UI_SCREENS_D79D1724A3") % [", ".join(unmet), cost_line]
 	_conditions_label.theme_type_variation = &"MetaLabel"
 
 

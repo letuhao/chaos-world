@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"broth_tide"
-display_name = "Tide Broth"
+display_name = "LOC_ITEMS_BROTH_TIDE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"immortal_sovereign"

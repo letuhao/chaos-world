@@ -30,7 +30,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E4_condensation_warden_pool_dao_ancestor"
-display_name = "Condensation Warden salvage (dao_ancestor)"
+display_name = "LOC_LOOT_E4_CONDENSATION_WARDEN_DAO_ANCESTOR_0_DISPLAY_NAME"
 realm = &"dao_ancestor"
 rarity = &""
 rolls = 1

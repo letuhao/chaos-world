@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"N13_earth_mantle_base"
-display_name = "Earth Mantle Base"
+display_name = "LOC_ITEMS_N13_EARTH_MANTLE_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_ascension"

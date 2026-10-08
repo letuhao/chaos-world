@@ -22,14 +22,14 @@ layout_mode = 2
 [node name="Title" type="Label" parent="Layout"]
 layout_mode = 2
 theme_type_variation = &"ScreenTitle"
-text = "Soul and Hearth"
+text = "LOC_UI_SCREENS_B1A90B67AB"
 
 [node name="SoulHeader" type="Label" parent="Layout"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
 autowrap_mode = 2
-text = "The soul you are playing under, and the ground you can stand on."
+text = "LOC_UI_SCREENS_2F80BB6A2E"
 
 [node name="PortraitPanel" parent="Layout" instance=ExtResource("4")]
 unique_name_in_owner = true
@@ -53,13 +53,13 @@ layout_mode = 2
 [node name="DifficultyTitle" type="Label" parent="Layout/Scroll/Page/Difficulty"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "What this run is played under"
+text = "LOC_UI_SCREENS_72FE76C1E0"
 
 [node name="DifficultyNote" type="Label" parent="Layout/Scroll/Page/Difficulty"]
 layout_mode = 2
 theme_type_variation = &"MetaLabel"
 autowrap_mode = 2
-text = "A difficulty moves a closed set of fractions of what you already hold, and nothing else."
+text = "LOC_UI_SCREENS_38FB54EA7A"
 
 [node name="Presets" type="VBoxContainer" parent="Layout/Scroll/Page/Difficulty"]
 unique_name_in_owner = true
@@ -85,13 +85,13 @@ layout_mode = 2
 [node name="HearthTitle" type="Label" parent="Layout/Scroll/Page/Hearth"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "What you can raise"
+text = "LOC_UI_SCREENS_A0EBE03A76"
 
 [node name="HearthNote" type="Label" parent="Layout/Scroll/Page/Hearth"]
 layout_mode = 2
 theme_type_variation = &"MetaLabel"
 autowrap_mode = 2
-text = "A raised anchor is a world fact. A rival reads it standing, and a repair only happens on a period boundary."
+text = "LOC_UI_SCREENS_2F080413E7"
 
 [node name="Anchors" type="VBoxContainer" parent="Layout/Scroll/Page/Hearth"]
 unique_name_in_owner = true

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"altmat_filament_starlinen_recipe"
-display_name = "Starlinen Alternate Recipe"
+display_name = "LOC_RECIPES_ALTMAT_FILAMENT_STARLINEN_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"filament_starlinen", &"gem_voidcrystal"])
 outputs = Array[StringName]([&"mantle_supernova"])

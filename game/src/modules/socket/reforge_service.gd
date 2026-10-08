@@ -137,16 +137,22 @@ static func commit(
 	if not _swap(target, option_id, replacement):
 		return SocketResult.refused(ACTION_COMMIT, target_id, "option_vanished")
 	var attempts_after := ledger.record_reforge(target_id, option_id)
-	var result := SocketResult.committed(
-		ACTION_COMMIT, target_id, _repeat(reagent.id, units), {
-			"option": String(option_id),
-			"replaced": previous,
-			"rolled": previous,
-			"effect": replacement.duplicate(true),
-			"attempts": attempts_after,
-			"cap": SocketPolicy.reforge_cap(target.rarity),
-			"units": units,
-		}
+	var result := (
+		SocketResult
+		. committed(
+			ACTION_COMMIT,
+			target_id,
+			_repeat(reagent.id, units),
+			{
+				"option": String(option_id),
+				"replaced": previous,
+				"rolled": previous,
+				"effect": replacement.duplicate(true),
+				"attempts": attempts_after,
+				"cap": SocketPolicy.reforge_cap(target.rarity),
+				"units": units,
+			}
+		)
 	)
 	ledger.record_request(request_id, result)
 	ledger.commit(actor)
@@ -205,18 +211,20 @@ static func _refusal(
 	var attempts := ledger.reforge_count(target_id)
 	if attempts >= SocketPolicy.reforge_cap(target.rarity):
 		return "cap_exhausted"
-	if not SocketCosts.can_pay(ItemsApi.inventory(actor), _repeat(reagent.id, SocketPolicy.reforge_cost_units(attempts))):
+	if not SocketCosts.can_pay(
+		ItemsApi.inventory(actor), _repeat(reagent.id, SocketPolicy.reforge_cost_units(attempts))
+	):
 		return "missing_cost"
 	if (
 		SocketPools
-		.permitted_reforge(
+		. permitted_reforge(
 			ItemRarity.sanitize(target.rarity),
 			_kept_ids(target, option_id),
 			_realm_id(target),
 			_rarity_index(target),
 			_floor(target, option_id)
 		)
-		.is_empty()
+		. is_empty()
 	):
 		return "no_legal_option"
 	return ""

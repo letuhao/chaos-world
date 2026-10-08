@@ -5,14 +5,14 @@
 [resource]
 script = ExtResource("1_item")
 id = &"set_ironhide_vigil_greatblade"
-display_name = "Ironhide Vigil Greatblade"
+display_name = "LOC_SETS_SET_IRONHIDE_VIGIL_GREATBLADE_DISPLAY_NAME"
 category = &"equipment"
 subcategory = &"weapon"
 grade = &"mortal"
 stackable = false
 tags = Array[StringName]([&"set:ironhide_vigil"])
 sources = Array[StringName]([&"boss:body_nascent_soul_guardian"])
-description = "Quarry blade kept blunt-edged; the weight is the weapon, not the edge."
+description = "LOC_SETS_SET_IRONHIDE_VIGIL_GREATBLADE_DESCRIPTION"
 rarity = &"rare"
 realm = &"nascent_soul"
 fixed_modifiers = Array[Dictionary]([

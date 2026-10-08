@@ -5,14 +5,14 @@
 [resource]
 script = ExtResource("1_item")
 id = &"set_stormcall_circuit_staff"
-display_name = "Stormcall Staff"
+display_name = "LOC_SETS_SET_STORMCALL_CIRCUIT_STAFF_DISPLAY_NAME"
 category = &"equipment"
 subcategory = &"weapon"
 grade = &"spirit"
 stackable = false
 tags = Array[StringName]([&"set:stormcall_circuit"])
 sources = Array[StringName]([&"boss:body_spirit_manifestation_guardian"])
-description = "A manifestation staff tuned to a single repeatable stroke."
+description = "LOC_SETS_SET_STORMCALL_CIRCUIT_STAFF_DESCRIPTION"
 rarity = &"rare"
 realm = &"spirit_manifestation"
 fixed_modifiers = Array[Dictionary]([

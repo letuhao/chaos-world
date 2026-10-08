@@ -42,7 +42,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d5_heaven_bloom_pool_heaven_immortal"
-display_name = "Heaven Bloom Lesser salvage (heaven_immortal)"
+display_name = "LOC_LOOT_D5_HEAVEN_BLOOM_HEAVEN_IMMORTAL_0_DISPLAY_NAME"
 realm = &"heaven_immortal"
 rarity = &""
 rolls = 1

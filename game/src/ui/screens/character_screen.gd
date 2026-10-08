@@ -16,32 +16,32 @@ extends UiScreen
 ## it bound nothing and rendered an empty stat list and an empty resource list
 ## while `summary()` still reported all 38 stats. Every row below is therefore
 ## looked up by the exact name the scene writes.
-const STAT_ROW_PREFIX := "Stat"
-const POOL_ROW_PREFIX := "Pool"
-const ROW_SUFFIX := "Row"
+const STAT_ROW_PREFIX := "Stat"  # i18n:off — a NODE NAME fragment the scene declares, not text
+const POOL_ROW_PREFIX := "Pool"  # i18n:off — a NODE NAME fragment
+const ROW_SUFFIX := "Row"  # i18n:off — a NODE NAME fragment
 const SCENE_ROWS := 8
 
 ## The one line a player reads above the sheet. The `paths` block keeps its ids
 ## because that is a data contract tests assert on, but the STRING a person reads
 ## must not be `body_cultivation qi_refining`.
 const PATH_LABELS: Dictionary = {
-	&"body_cultivation": "Body",
-	&"qi_cultivation": "Qi",
-	&"mind_cultivation": "Mind",
+	&"body_cultivation": "LOC_UI_SCREENS_718A7E8A58",
+	&"qi_cultivation": "LOC_UI_SCREENS_F9185E4BC5",
+	&"mind_cultivation": "LOC_UI_SCREENS_59E63F7EAA",
 }
 
 ## The aptitude section (ADR 0890). The roster is structural — three postures of four
 ## (`core/aptitude.gd`) — so the sheet declares one row per aptitude and the section
 ## reads whatever the build resolved. Rows are looked up by the same `%` prefix pattern
 ## the stat and pool rows use.
-const APTITUDE_ROW_PREFIX := "Apt"
+const APTITUDE_ROW_PREFIX := "Apt"  # i18n:off — a NODE NAME fragment
 
 ## The posture a player reads. Keys are the roster's own constants, so this map cannot
 ## drift from `Aptitude`'s spelling; an id outside the map reads as "none".
 const POSTURE_LABELS: Dictionary = {
-	Aptitude.POSTURE_FORCE: "Force",
-	Aptitude.POSTURE_FINESSE: "Finesse",
-	Aptitude.POSTURE_BASTION: "Bastion",
+	Aptitude.POSTURE_FORCE: "LOC_UI_SCREENS_41F38A09CC",
+	Aptitude.POSTURE_FINESSE: "LOC_UI_SCREENS_C54A756D77",
+	Aptitude.POSTURE_BASTION: "LOC_UI_SCREENS_CC2B3A1A47",
 }
 
 var _vitals: VBoxContainer = null
@@ -78,11 +78,11 @@ func _refresh_view() -> void:
 	_bind_nodes()
 	var live := _actor != null
 	if _realm_label != null:
-		_realm_label.text = "Paths enrolled"
+		_realm_label.text = L.t("LOC_UI_SCREENS_9AADD3B0D6")
 	if _paths_label != null:
-		_paths_label.text = "Paths: %s" % _path_text() if live else ""
+		_paths_label.text = L.t("LOC_UI_SCREENS_32B10ADD66") % _path_text() if live else ""
 	if _aptitude_title != null:
-		_aptitude_title.text = "Aptitudes (dominant: %s)" % _dominant_label()
+		_aptitude_title.text = L.t("LOC_UI_SCREENS_97D0AEBBAC") % _dominant_label()
 	_fill_aptitude_rows()
 	_fill_pool_rows()
 	_fill_stat_rows()
@@ -113,7 +113,8 @@ func _path_text() -> String:
 	for path_id in PathState.ALL:
 		var entry: Dictionary = _paths().get(String(path_id), {})
 		if bool(entry.get("enrolled", false)):
-			var label: String = PATH_LABELS.get(path_id, String(path_id))
+			# The table holds KEYS, so the label resolves here — the one place it becomes text.
+			var label := L.t(String(PATH_LABELS.get(path_id, String(path_id))))
 			parts.append("%s %s" % [label, entry.get("realm", "")])
 	return ", ".join(parts) if not parts.is_empty() else "none"
 
@@ -175,7 +176,7 @@ func _aptitudes() -> Dictionary:
 ## case `AptitudeGrant.dominant_posture` refuses to break arbitrarily.
 func _dominant_label() -> String:
 	var dominant := StringName(_aptitudes().get("dominant", ""))
-	return String(POSTURE_LABELS.get(dominant, "none"))
+	return L.t(String(POSTURE_LABELS.get(dominant, "none")))
 
 
 ## One row per aptitude, in the roster's append-only order. Each row is a `stat` row so
@@ -233,7 +234,8 @@ func _bind_nodes() -> void:
 			_aptitude_rows.append(apt)
 
 
-## The exact `%` unique name the scene declares for one row, e.g. `%Pool0Row`.
+## The exact `%` unique name the scene declares for one row, e.g. `%Pool0Row`. A NODE NAME, not
+## text: the fragments are the scene's own spelling and must never become a key.
 func _row_name(prefix: String, index: int) -> String:
 	return "%%%s%d%s" % [prefix, index, ROW_SUFFIX]
 

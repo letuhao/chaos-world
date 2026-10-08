@@ -30,7 +30,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d1_iron_sage_adept_pool_great_ascension"
-display_name = "Iron Sage Adept Lesser salvage (great_ascension)"
+display_name = "LOC_LOOT_D1_IRON_SAGE_ADEPT_GREAT_ASCENSION_0_DISPLAY_NAME"
 realm = &"great_ascension"
 rarity = &""
 rolls = 1

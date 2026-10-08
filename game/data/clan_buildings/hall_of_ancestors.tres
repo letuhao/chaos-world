@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1")
 id = &"hall_of_ancestors"
-display_name = "Hall of Ancestors"
-description = "A sacred hall honoring the clan's lineage. Strengthens bloodline recognition and unlocks lineage-related verbs."
+display_name = "LOC_CLAN_BUILDINGS_HALL_OF_ANCESTORS_DISPLAY_NAME"
+description = "LOC_CLAN_BUILDINGS_HALL_OF_ANCESTORS_DESCRIPTION"
 category = &"lineage"
 max_level = 3
 base_cost_materials = 150

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"T22_earth_turf_perfected_recipe"
-display_name = "Earth Turf Perfected Recipe"
+display_name = "LOC_RECIPES_T22_EARTH_TURF_PERFECTED_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"T22_earth_turf_primed", &"pendant_silk_herb", &"seal_goldthread_herb"])
 outputs = Array[StringName]([&"T22_earth_turf_perfected"])

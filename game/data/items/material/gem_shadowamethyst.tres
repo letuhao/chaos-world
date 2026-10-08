@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"gem_shadowamethyst"
-display_name = "Shadowamethyst"
+display_name = "LOC_ITEMS_GEM_SHADOWAMETHYST_DISPLAY_NAME"
 category = &"material"
 rarity = &"magic"
 realm = &"spirit_sovereign"

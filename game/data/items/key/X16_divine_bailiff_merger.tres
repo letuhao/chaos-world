@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"X16_divine_bailiff_merger"
-display_name = "Divine Bailiff Merger"
+display_name = "LOC_ITEMS_X16_DIVINE_BAILIFF_MERGER_DISPLAY_NAME"
 category = &"key"
 rarity = &"legendary"
 realm = &"primordial_origin"

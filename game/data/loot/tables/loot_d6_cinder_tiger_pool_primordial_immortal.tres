@@ -30,7 +30,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d6_cinder_tiger_pool_primordial_immortal"
-display_name = "Cinder Tiger Lesser salvage (primordial_immortal)"
+display_name = "LOC_LOOT_D6_CINDER_TIGER_PRIMORDIAL_IMMORTAL_0_DISPLAY_NAME"
 realm = &"primordial_immortal"
 rarity = &""
 rolls = 1

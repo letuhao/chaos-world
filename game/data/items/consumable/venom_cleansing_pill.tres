@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"venom_cleansing_pill"
-display_name = "Cleansing Pill"
+display_name = "LOC_ITEMS_VENOM_CLEANSING_PILL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_sovereign"

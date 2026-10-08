@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"H12_spirit_absorption_orb_recipe"
-display_name = "Spirit Absorption Orb Recipe"
+display_name = "LOC_RECIPES_H12_SPIRIT_ABSORPTION_ORB_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"gemstone_citrine", &"crystal_amethyst"])
 outputs = Array[StringName]([&"H12_spirit_absorption_orb"])

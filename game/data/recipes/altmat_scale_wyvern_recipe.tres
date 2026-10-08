@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"altmat_scale_wyvern_recipe"
-display_name = "Wyvern Scale Alternate Recipe"
+display_name = "LOC_RECIPES_ALTMAT_SCALE_WYVERN_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"scale_wyvern", &"jade_obsidian"])
 outputs = Array[StringName]([&"bracer_flame"])

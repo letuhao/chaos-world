@@ -210,7 +210,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_F7_sea_warden"
-display_name = "Tide Reflector"
+display_name = "LOC_LOOT_F7_SEA_WARDEN_CORE_0_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

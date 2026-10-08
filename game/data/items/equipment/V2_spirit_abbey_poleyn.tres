@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V2_spirit_abbey_poleyn"
-display_name = "Spirit Abbey Poleyn"
+display_name = "LOC_ITEMS_V2_SPIRIT_ABBEY_POLEYN_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"magic"
 realm = &"spirit_unity"

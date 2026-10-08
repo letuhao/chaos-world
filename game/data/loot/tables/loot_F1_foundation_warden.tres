@@ -246,7 +246,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_F1_foundation_warden"
-display_name = "Foundation Warden"
+display_name = "LOC_LOOT_F1_FOUNDATION_WARDEN_CORE_0_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

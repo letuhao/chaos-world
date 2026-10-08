@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"L3_drake_ember_core"
-display_name = "Flame Drake Ember Core"
+display_name = "LOC_ITEMS_L3_DRAKE_EMBER_CORE_DISPLAY_NAME"
 category = &"material"
 rarity = &"magic"
 realm = &"spirit_manifestation"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V9_immortal_albedo_covenant"
-display_name = "Immortal Albedo Covenant"
+display_name = "LOC_ITEMS_V9_IMMORTAL_ALBEDO_COVENANT_DISPLAY_NAME"
 category = &"key"
 rarity = &"legendary"
 realm = &"mystic_immortal"

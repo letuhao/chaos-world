@@ -18,7 +18,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d4_ash_effigy_pool_earth_immortal"
-display_name = "Ash Effigy Lesser salvage (earth_immortal)"
+display_name = "LOC_LOOT_D4_ASH_EFFIGY_EARTH_IMMORTAL_0_DISPLAY_NAME"
 realm = &"earth_immortal"
 rarity = &""
 rolls = 1

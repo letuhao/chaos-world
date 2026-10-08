@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G15_spirit_glissade_evasion_max_stamina"
-display_name = "Spirit Glissade Evasion Max stamina"
+display_name = "LOC_ITEMS_G15_SPIRIT_GLISSADE_EVASION_MAX_STAMINA_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_domain"

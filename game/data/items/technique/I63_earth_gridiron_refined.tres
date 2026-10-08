@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"I63_earth_gridiron_refined"
-display_name = "Earth Gridiron Refined"
+display_name = "LOC_ITEMS_I63_EARTH_GRIDIRON_REFINED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_condensation"

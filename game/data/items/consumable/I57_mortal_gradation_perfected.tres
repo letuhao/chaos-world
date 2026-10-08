@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"I57_mortal_gradation_perfected"
-display_name = "Mortal Gradation Perfected"
+display_name = "LOC_ITEMS_I57_MORTAL_GRADATION_PERFECTED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"tribulation"

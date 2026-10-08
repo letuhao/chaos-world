@@ -82,12 +82,12 @@ const ACTION_IDS: Array[StringName] = [
 ]
 
 const ACTION_LABELS := {
-	&"enter": "Enter domain",
-	&"visit": "Visit room",
-	&"inspect": "Inspect fixture",
-	&"attempt": "Strike node",
-	&"claim": "Open treasure",
-	&"leave": "Leave",
+	&"enter": "LOC_UI_SCREENS_9EFF7ED921",
+	&"visit": "LOC_UI_SCREENS_2AA4D3E32A",
+	&"inspect": "LOC_UI_SCREENS_1508A954EE",
+	&"attempt": "LOC_UI_SCREENS_682924E339",
+	&"claim": "LOC_UI_SCREENS_B6DA8450F0",
+	&"leave": "LOC_UI_SCREENS_7E3520A973",
 }
 
 ## Drive any action by id, so `tools ui drive --cmd` and a headless probe reach the same
@@ -490,13 +490,13 @@ func _render() -> void:
 	_bind_nodes()
 	var model := _read_model()
 	var lines := model.lines() if model != null else {}
-	_header_label.text = String(lines.get("header", "Domains — no hero"))
-	_status_label.text = String(lines.get("status", "Not inside a domain"))
-	_map_label.text = String(lines.get("map", "No floor plan — no domain is active"))
-	_rooms_label.text = String(lines.get("rooms", "No rooms known"))
-	_population_label.text = String(lines.get("population", "Nobody is placed here yet"))
-	_zones_label.text = String(lines.get("zones", "No severe environment authored here"))
-	_fixture_label.text = String(lines.get("fixture", "No fixture in this room"))
+	_header_label.text = L.t(String(lines.get("header", "Domains — no hero")))
+	_status_label.text = L.t(String(lines.get("status", "Not inside a domain")))
+	_map_label.text = L.t(String(lines.get("map", "No floor plan — no domain is active")))
+	_rooms_label.text = L.t(String(lines.get("rooms", "No rooms known")))
+	_population_label.text = L.t(String(lines.get("population", "Nobody is placed here yet")))
+	_zones_label.text = L.t(String(lines.get("zones", "No severe environment authored here")))
+	_fixture_label.text = L.t(String(lines.get("fixture", "No fixture in this room")))
 	_enter_button.disabled = not _can_enter()
 	_leave_button.disabled = not _can_leave()
 	_visit_button.disabled = not _can_visit()
@@ -982,7 +982,7 @@ func _publish_message() -> void:
 	if _actions != null:
 		_actions.set_message(_message, _tone)
 	if _message_label != null:
-		_message_label.text = _message
+		_message_label.text = L.t(_message)
 		_message_label.theme_type_variation = _tone_variation()
 
 

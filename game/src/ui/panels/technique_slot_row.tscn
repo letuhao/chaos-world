@@ -46,12 +46,12 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme_type_variation = &"PrimaryButton"
-text = "Cast"
+text = "LOC_UI_PANELS_60745AEF33"
 disabled = true
 
 [node name="UnequipButton" type="Button" parent="Layout"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"DangerButton"
-text = "Unequip"
+text = "LOC_UI_PANELS_1144212817"
 disabled = true

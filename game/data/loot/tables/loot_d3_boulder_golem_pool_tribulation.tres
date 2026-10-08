@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d3_boulder_golem_pool_tribulation"
-display_name = "Stone Golem Lesser salvage (tribulation)"
+display_name = "LOC_LOOT_D3_BOULDER_GOLEM_TRIBULATION_0_DISPLAY_NAME"
 realm = &"tribulation"
 rarity = &""
 rolls = 1

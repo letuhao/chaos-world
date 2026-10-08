@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"D2_immortal_daoheart_sigil_recipe"
-display_name = "Immortal Daoheart Sigil Recipe"
+display_name = "LOC_RECIPES_D2_IMMORTAL_DAOHEART_SIGIL_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"astral_void_crystal_ore", &"circlet_void_dust"])
 outputs = Array[StringName]([&"D2_immortal_daoheart_sigil"])

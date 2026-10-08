@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"grimoire_moon"
-display_name = "Moon Grimoire"
+display_name = "LOC_ITEMS_GRIMOIRE_MOON_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"dao_fruit"

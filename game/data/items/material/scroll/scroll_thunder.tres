@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"scroll_thunder"
-display_name = "Thunder Scroll"
+display_name = "LOC_ITEMS_SCROLL_THUNDER_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"heaven_immortal"
@@ -20,4 +20,4 @@ subcategory = &"scroll"
 grade = &"immortal"
 tags = Array[StringName]([&"legendary"])
 sources = Array[StringName]([&"craft:scroll_thunder_recipe", &"domain:artifact_void_leviathan_domain"])
-description = "A thunderous scroll crackling with immortal lightning. Immortal-grade."
+description = "LOC_ITEMS_SCROLL_THUNDER_DESCRIPTION"

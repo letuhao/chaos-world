@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"A31_divine_matricespress_intaglio"
-display_name = "Divine Matricespress Intaglio"
+display_name = "LOC_ITEMS_A31_DIVINE_MATRICESPRESS_INTAGLIO_DISPLAY_NAME"
 category = &"currency"
 rarity = &"legendary"
 realm = &"transcendent"

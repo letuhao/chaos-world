@@ -30,7 +30,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d4_cinder_wyrm_pool_spirit_severing"
-display_name = "Cinder Wyrm Lesser salvage (spirit_severing)"
+display_name = "LOC_LOOT_D4_CINDER_WYRM_SPIRIT_SEVERING_0_DISPLAY_NAME"
 realm = &"spirit_severing"
 rarity = &""
 rolls = 1

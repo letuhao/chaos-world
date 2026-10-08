@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"I48_divine_germinal_aged"
-display_name = "Divine Germinal Aged"
+display_name = "LOC_ITEMS_I48_DIVINE_GERMINAL_AGED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"transcendent"

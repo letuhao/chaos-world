@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C32_mortal_spoilheap_sherd"
-display_name = "Mortal Spoilheap Sherd"
+display_name = "LOC_ITEMS_C32_MORTAL_SPOILHEAP_SHERD_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"tribulation"

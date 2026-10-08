@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"H17_immortal_interline_attack_speed_breakthrough_chance_evasion_fortune_qi_regen"
-display_name = "Immortal Interline Attack speed Breakthrough chance Evasion Fortune Qi regen"
+display_name = "LOC_ITEMS_H17_IMMORTAL_INTERLINE_ATTACK_SPEED_BREAKTHROUGH_CHANCE_EVASION_FORTUNE_QI_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"great_luo"

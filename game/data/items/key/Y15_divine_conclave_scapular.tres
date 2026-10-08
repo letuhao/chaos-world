@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Y15_divine_conclave_scapular"
-display_name = "Divine Conclave Scapular"
+display_name = "LOC_ITEMS_Y15_DIVINE_CONCLAVE_SCAPULAR_DISPLAY_NAME"
 category = &"key"
 rarity = &"legendary"
 realm = &"transcendent"

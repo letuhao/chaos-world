@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F54_immortal_hedge_penetration_physique_status_resistance"
-display_name = "Immortal Hedge Penetration Physique Status resistance"
+display_name = "LOC_ITEMS_F54_IMMORTAL_HEDGE_PENETRATION_PHYSIQUE_STATUS_RESISTANCE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"earth_immortal"

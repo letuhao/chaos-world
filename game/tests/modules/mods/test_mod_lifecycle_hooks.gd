@@ -50,15 +50,21 @@ func _write_mod(dir_name: String, mod_id: String, hooks: Array) -> String:
 	var dir_path := _root.path_join(dir_name)
 	DirAccess.make_dir_recursive_absolute(dir_path)
 	var manifest := FileAccess.open(dir_path.path_join("mod.json"), FileAccess.WRITE)
-	manifest.store_string(
-		JSON.stringify(
-			{
-				"id": mod_id,
-				"version": "1.0",
-				"priority": 0,
-				"requires_api": 1,
-				"lifecycle_hooks": hooks,
-			}
+	(
+		manifest
+		. store_string(
+			(
+				JSON
+				. stringify(
+					{
+						"id": mod_id,
+						"version": "1.0",
+						"priority": 0,
+						"requires_api": 1,
+						"lifecycle_hooks": hooks,
+					}
+				)
+			)
 		)
 	)
 	manifest.close()
@@ -108,11 +114,7 @@ func test_add_lifecycle_hook_seam() -> void:
 
 
 func test_unknown_lifecycle_event_refused() -> void:
-	var dir_path := _write_mod(
-		"hooks",
-		"w8_hooks",
-		[{"event": "on_unknown"}]
-	)
+	var dir_path := _write_mod("hooks", "w8_hooks", [{"event": "on_unknown"}])
 	var out := ModsApi.load_order([_root])
 	assert_eq(out["ok"], false, "unknown event refused")
 	assert_eq(out["reason"], "bad_manifest", "named reason")
@@ -153,16 +155,8 @@ func test_lifecycle_hooks_with_callable_spec() -> void:
 
 
 func test_multiple_mods_can_hook_same_event() -> void:
-	_write_mod(
-		"first",
-		"w8_first",
-		[{"event": "on_load"}]
-	)
-	_write_mod(
-		"second",
-		"w8_second",
-		[{"event": "on_load"}]
-	)
+	_write_mod("first", "w8_first", [{"event": "on_load"}])
+	_write_mod("second", "w8_second", [{"event": "on_load"}])
 	var out := ModsApi.load_order([_root])
 	assert_eq(out["ok"], true, "both mods load")
 	var registrations := ModRuntime.finalize(out["contexts"], out["registry"])

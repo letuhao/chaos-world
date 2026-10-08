@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_crown_iron_monarch_pool_foundation"
-display_name = "Iron Monarch salvage (foundation)"
+display_name = "LOC_LOOT_CROWN_IRON_MONARCH_FOUNDATION_0_DISPLAY_NAME"
 realm = &"foundation"
 rarity = &""
 rolls = 1

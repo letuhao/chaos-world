@@ -18,7 +18,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_orb_void_serpent_pool_primordial_origin"
-display_name = "Void Serpent salvage (primordial_origin)"
+display_name = "LOC_LOOT_ORB_VOID_SERPENT_PRIMORDIAL_ORIGIN_0_DISPLAY_NAME"
 realm = &"primordial_origin"
 rarity = &""
 rolls = 1

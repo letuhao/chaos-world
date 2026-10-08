@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d4_ash_wyrm_pool_core_formation"
-display_name = "Ash Wyrm Lesser salvage (core_formation)"
+display_name = "LOC_LOOT_D4_ASH_WYRM_CORE_FORMATION_0_DISPLAY_NAME"
 realm = &"core_formation"
 rarity = &""
 rolls = 1

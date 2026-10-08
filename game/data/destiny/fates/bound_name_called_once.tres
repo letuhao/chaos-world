@@ -10,5 +10,5 @@ description = "LOC_DESTINY_BOUND_NAME_CALLED_ONCE_DESCRIPTION"
 category = &"severance"
 tier = 2
 visibility = &"hidden"
-teaser = "One line in the ledger names two people. The second line is the sect's."
+teaser = "LOC_DESTINY_BOUND_NAME_CALLED_ONCE_TEASER"
 counters = Array[StringName]([&"severances"])

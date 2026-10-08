@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 id = &"spleen"
-display_name = "Spleen"
+display_name = "LOC_MERIDIANS_SPLEEN_DISPLAY_NAME"
 type = &"primary"
 tier = 0
 capacity_bonus = 0.05

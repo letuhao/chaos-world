@@ -30,7 +30,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E5_manifestation_warden_pool_great_luo"
-display_name = "Manifestation Warden salvage (great_luo)"
+display_name = "LOC_LOOT_E5_MANIFESTATION_WARDEN_GREAT_LUO_0_DISPLAY_NAME"
 realm = &"great_luo"
 rarity = &""
 rolls = 1

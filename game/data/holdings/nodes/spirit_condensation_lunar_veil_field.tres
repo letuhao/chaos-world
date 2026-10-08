@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_node")
 node_id = &"spirit_condensation_lunar_veil_field"
-display_name = "Lunar Veil Field"
+display_name = "LOC_HOLDINGS_SPIRIT_CONDENSATION_LUNAR_VEIL_FIELD_DISPLAY_NAME"
 kind = &"herb"
 realm = &"spirit_condensation"
 yield_per_period = 8

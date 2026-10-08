@@ -6,7 +6,7 @@
 [sub_resource type="Resource" id="tier_0"]
 script = ExtResource("2_tier")
 tier = 1
-label = "Gate"
+label = "LOC_LOOT_LOOT_QI_PRIMORDIAL_ORIGIN_TRIAL_LABEL_1"
 realm = &"primordial_origin"
 rarity = &"common"
 vitality = 1033987.5
@@ -18,7 +18,7 @@ boss_tables = Array[Dictionary]([
 [sub_resource type="Resource" id="tier_1"]
 script = ExtResource("2_tier")
 tier = 2
-label = "Depths"
+label = "LOC_LOOT_LOOT_QI_PRIMORDIAL_ORIGIN_TRIAL_LABEL_2"
 realm = &"primordial_origin"
 rarity = &"rare"
 vitality = 1654380.
@@ -30,7 +30,7 @@ boss_tables = Array[Dictionary]([
 [resource]
 script = ExtResource("1_encounter")
 id = &"loot_qi_primordial_origin_trial"
-display_name = "Primordial Origin Trial"
+display_name = "LOC_LOOT_LOOT_QI_PRIMORDIAL_ORIGIN_TRIAL_DISPLAY_NAME"
 domain_id = &"qi_primordial_origin_trial"
 boss_ids = Array[StringName]([&"qi_primordial_origin_warden", &"F20_primordial_warden"])
 key_reach = 0

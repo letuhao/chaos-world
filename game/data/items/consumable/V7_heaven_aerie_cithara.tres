@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V7_heaven_aerie_cithara"
-display_name = "Heaven Aerie Cithara"
+display_name = "LOC_ITEMS_V7_HEAVEN_AERIE_CITHARA_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"immortal_sovereign"

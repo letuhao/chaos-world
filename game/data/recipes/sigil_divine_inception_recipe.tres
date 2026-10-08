@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"sigil_divine_inception_recipe"
-display_name = "Divine Inception Sigil Recipe"
+display_name = "LOC_RECIPES_SIGIL_DIVINE_INCEPTION_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"filament_chaosweave", &"sap_tar"])
 outputs = Array[StringName]([&"sigil_divine_inception"])

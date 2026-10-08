@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"K26_immortal_tide_refined_alt_recipe"
-display_name = "K26 Immortal Tide Refined Alt Recipe"
+display_name = "LOC_RECIPES_K26_IMMORTAL_TIDE_REFINED_ALT_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"K26_immortal_tide_base", &"ore_phoenix_ash", &"grimoire_void_ink"])
 outputs = Array[StringName]([&"K26_immortal_tide_refined"])

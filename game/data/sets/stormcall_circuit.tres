@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_set")
 id = &"stormcall_circuit"
-display_name = "Stormcall Circuit"
-description = "A spirit-band circuit that stores one discharge and routes it. Two members close the circuit; five conduct it."
+display_name = "LOC_SETS_STORMCALL_CIRCUIT_DISPLAY_NAME"
+description = "LOC_SETS_STORMCALL_CIRCUIT_DESCRIPTION"
 realm = &"spirit_severing"
 rarity = &"legendary"
 counting = &"distinct_definition"

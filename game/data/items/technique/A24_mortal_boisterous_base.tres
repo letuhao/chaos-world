@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"A24_mortal_boisterous_base"
-display_name = "Mortal Boisterous Base"
+display_name = "LOC_ITEMS_A24_MORTAL_BOISTEROUS_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"body_integration"

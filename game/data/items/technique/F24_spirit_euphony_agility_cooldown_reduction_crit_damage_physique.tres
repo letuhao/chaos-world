@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F24_spirit_euphony_agility_cooldown_reduction_crit_damage_physique"
-display_name = "Spirit Euphony Agility Cooldown reduction Crit damage Physique"
+display_name = "LOC_ITEMS_F24_SPIRIT_EUPHONY_AGILITY_COOLDOWN_REDUCTION_CRIT_DAMAGE_PHYSIQUE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_sovereign"

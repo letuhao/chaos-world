@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G19_earth_henge_breakthrough_chance_physique"
-display_name = "Earth Henge Breakthrough chance Physique"
+display_name = "LOC_ITEMS_G19_EARTH_HENGE_BREAKTHROUGH_CHANCE_PHYSIQUE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_domain"

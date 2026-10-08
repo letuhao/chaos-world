@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"succubus_immortal_breakthrough_recipe"
-display_name = "Immortal Tide Elixir Recipe"
+display_name = "LOC_RECIPES_SUCCUBUS_IMMORTAL_BREAKTHROUGH_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"succubus_immortal_essence", &"succubus_immortal_heart_core"])
 outputs = Array[StringName]([&"succubus_immortal_breakthrough_elixir"])

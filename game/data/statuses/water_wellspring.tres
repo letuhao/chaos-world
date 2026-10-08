@@ -18,7 +18,7 @@ tick_interval = 1.0
 mitigation_tags = Array[StringName]([&"affinity", &"pill", &"technique"])
 payload = {
 "mechanic": &"regrowth",
-"text": "A wellspring opened below the heart. Qi is deeper and does not stop coming back.",
+"text": "LOC_STATUSES_WATER_WELLSPRING_TEXT",
 "modifiers": [
 {"stat": &"max_qi", "op": &"flat", "value": 40.0},
 {"stat": &"qi_regen", "op": &"flat", "value": 2.5}

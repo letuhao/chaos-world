@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"jade_violet"
-display_name = "Violet Jade"
+display_name = "LOC_ITEMS_JADE_VIOLET_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_condensation"

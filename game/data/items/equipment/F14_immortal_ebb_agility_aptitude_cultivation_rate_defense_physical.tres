@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F14_immortal_ebb_agility_aptitude_cultivation_rate_defense_physical"
-display_name = "Immortal Ebb Agility Aptitude Cultivation rate Defense physical"
+display_name = "LOC_ITEMS_F14_IMMORTAL_EBB_AGILITY_APTITUDE_CULTIVATION_RATE_DEFENSE_PHYSICAL_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"mystic_immortal"

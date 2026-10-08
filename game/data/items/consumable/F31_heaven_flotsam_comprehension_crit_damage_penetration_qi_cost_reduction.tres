@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F31_heaven_flotsam_comprehension_crit_damage_penetration_qi_cost_reduction"
-display_name = "Heaven Flotsam Comprehension Crit damage Penetration Qi cost reduction"
+display_name = "LOC_ITEMS_F31_HEAVEN_FLOTSAM_COMPREHENSION_CRIT_DAMAGE_PENETRATION_QI_COST_REDUCTION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"primordial_immortal"

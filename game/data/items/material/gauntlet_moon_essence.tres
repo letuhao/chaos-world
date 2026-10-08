@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"gauntlet_moon_essence"
-display_name = "Gauntlet Moon Essence"
+display_name = "LOC_ITEMS_GAUNTLET_MOON_ESSENCE_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_condensation"

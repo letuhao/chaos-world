@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_portrait")
 id = &"unique-0068"
-display_name = "Garrow Thell"
+display_name = "LOC_PORTRAITS_UNIQUE_0068_DISPLAY_NAME"
 race_id = &"stoneborn"
 visual_traits = Array[StringName]([&"burden:charges-for-a-field-he-cannot-be-admitted-to", &"class:gate-fee-collector-in-the-evidence", &"gift:the-densest-body-in-the-record", &"hazard:the-seventeenth-gate-is-one-short-of-his-own-tier", &"path:body-path", &"role:gate-collector", &"standing:sells-the-only-tax-the-tier-can-collect"])
 layer_paths = Array[String](["res://assets/characters/portraits/stoneborn.png"])

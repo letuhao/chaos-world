@@ -5,8 +5,8 @@
 script = ExtResource("1_def")
 id = &"mind_revelation_lance"
 delivered_by = &"codex_void_serpent_fang"
-display_name = "Revelation Lance"
-description = "A single named fact, driven hard enough to be believed. Almost pure light and carried on the intent rather than the will, so it lands on illusions and sceptics alike."
+display_name = "LOC_TECHNIQUES_MIND_REVELATION_LANCE_DISPLAY_NAME"
+description = "LOC_TECHNIQUES_MIND_REVELATION_LANCE_DESCRIPTION"
 tags = Array[StringName]([&"technique", &"mind", &"light", &"pierce"])
 grade = &"earth"
 rarity = &"rare"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"feast_immortal_feast"
-display_name = "Immortal Feast"
+display_name = "LOC_ITEMS_FEAST_IMMORTAL_FEAST_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"great_luo"

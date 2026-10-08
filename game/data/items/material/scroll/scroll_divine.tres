@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"scroll_divine"
-display_name = "Divine Scroll"
+display_name = "LOC_ITEMS_SCROLL_DIVINE_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"dao_ancestor"
@@ -20,4 +20,4 @@ subcategory = &"scroll"
 grade = &"divine"
 tags = Array[StringName]([&"mythic"])
 sources = Array[StringName]([&"craft:scroll_divine_recipe", &"boss:mind_transcendent_warden"])
-description = "A radiant scroll inscribed with divine law. Divine-grade power."
+description = "LOC_ITEMS_SCROLL_DIVINE_DESCRIPTION"

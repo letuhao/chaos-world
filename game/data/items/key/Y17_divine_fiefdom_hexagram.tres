@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Y17_divine_fiefdom_hexagram"
-display_name = "Divine Fiefdom Hexagram"
+display_name = "LOC_ITEMS_Y17_DIVINE_FIEFDOM_HEXAGRAM_DISPLAY_NAME"
 category = &"key"
 rarity = &"legendary"
 realm = &"primordial_origin"

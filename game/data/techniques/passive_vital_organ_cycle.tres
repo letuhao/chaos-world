@@ -5,8 +5,8 @@
 script = ExtResource("1_def")
 id = &"passive_vital_organ_cycle"
 delivered_by = &"anima_spirit_leaf"
-display_name = "Vital Organ Cycle"
-description = "A breathing cycle that keeps the organs supplied under strain. Organ vitality and general regeneration, bought with a slow, dull price that has to be paid forever."
+display_name = "LOC_TECHNIQUES_PASSIVE_VITAL_ORGAN_CYCLE_DISPLAY_NAME"
+description = "LOC_TECHNIQUES_PASSIVE_VITAL_ORGAN_CYCLE_DESCRIPTION"
 tags = Array[StringName]([&"passive", &"body", &"organs"])
 grade = &"spirit"
 rarity = &"magic"

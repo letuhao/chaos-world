@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"W4_immortal_arbour_electrolyte"
-display_name = "Immortal Arbour Electrolyte"
+display_name = "LOC_ITEMS_W4_IMMORTAL_ARBOUR_ELECTROLYTE_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"golden_immortal"

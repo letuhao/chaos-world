@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"G3_earth_facet_recipe"
-display_name = "Earth Facet Recipe"
+display_name = "LOC_RECIPES_G3_EARTH_FACET_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"crystal_sapphire", &"cut_sapphire_facet"])
 outputs = Array[StringName]([&"G3_earth_facet"])

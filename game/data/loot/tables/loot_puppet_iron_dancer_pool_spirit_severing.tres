@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_puppet_iron_dancer_pool_spirit_severing"
-display_name = "Iron Dancer salvage (spirit_severing)"
+display_name = "LOC_LOOT_PUPPET_IRON_DANCER_SPIRIT_SEVERING_0_DISPLAY_NAME"
 realm = &"spirit_severing"
 rarity = &""
 rolls = 1

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"A9_immortal_autunite_perfected"
-display_name = "Immortal Autunite Perfected"
+display_name = "LOC_ITEMS_A9_IMMORTAL_AUTUNITE_PERFECTED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"earth_immortal"

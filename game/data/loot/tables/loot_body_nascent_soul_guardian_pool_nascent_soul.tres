@@ -30,7 +30,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_body_nascent_soul_guardian_pool_nascent_soul"
-display_name = "Marrow Cleansing Guardian salvage (nascent_soul)"
+display_name = "LOC_LOOT_BODY_NASCENT_SOUL_GUARDIAN_NASCENT_SOUL_0_DISPLAY_NAME"
 realm = &"nascent_soul"
 rarity = &""
 rolls = 1

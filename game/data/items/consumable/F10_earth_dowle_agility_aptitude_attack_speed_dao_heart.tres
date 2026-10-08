@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F10_earth_dowle_agility_aptitude_attack_speed_dao_heart"
-display_name = "Earth Dowle Agility Aptitude Attack speed Dao heart"
+display_name = "LOC_ITEMS_F10_EARTH_DOWLE_AGILITY_APTITUDE_ATTACK_SPEED_DAO_HEART_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_condensation"

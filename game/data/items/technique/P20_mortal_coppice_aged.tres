@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"P20_mortal_coppice_aged"
-display_name = "Mortal Coppice Aged"
+display_name = "LOC_ITEMS_P20_MORTAL_COPPICE_AGED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"tribulation"

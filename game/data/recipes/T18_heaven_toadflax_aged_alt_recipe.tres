@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"T18_heaven_toadflax_aged_alt_recipe"
-display_name = "Heaven Toadflax Aged (Alt) Recipe"
+display_name = "LOC_RECIPES_T18_HEAVEN_TOADFLAX_AGED_ALT_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"T18_heaven_toadflax_refined", &"scale_kraken", &"fungus_shadow_truffle"])
 outputs = Array[StringName]([&"T18_heaven_toadflax_aged"])

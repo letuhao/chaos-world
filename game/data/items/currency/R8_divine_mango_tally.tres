@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"R8_divine_mango_tally"
-display_name = "Divine Mango Tally"
+display_name = "LOC_ITEMS_R8_DIVINE_MANGO_TALLY_DISPLAY_NAME"
 category = &"currency"
 rarity = &"legendary"
 realm = &"dao_ancestor"

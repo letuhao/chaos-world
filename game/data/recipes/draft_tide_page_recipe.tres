@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"draft_tide_page_recipe"
-display_name = "Tide Draft Recipe"
+display_name = "LOC_RECIPES_DRAFT_TIDE_PAGE_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"tablet_void", &"shard_eclipse"])
 outputs = Array[StringName]([&"draft_tide_page"])

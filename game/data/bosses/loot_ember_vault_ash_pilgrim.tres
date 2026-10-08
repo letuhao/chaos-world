@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_boss")
 id = &"loot_ember_vault_ash_pilgrim"
-display_name = "Ember Vault Ash Pilgrim"
+display_name = "LOC_BOSSES_LOOT_EMBER_VAULT_ASH_PILGRIM_DISPLAY_NAME"
 domain_id = &"loot_ember_vault_domain"
 loot = Array[StringName]([])
 crit_chance = 0.0

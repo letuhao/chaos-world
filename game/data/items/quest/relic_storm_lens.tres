@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"relic_storm_lens"
-display_name = "Storm Lens Relic"
+display_name = "LOC_ITEMS_RELIC_STORM_LENS_DISPLAY_NAME"
 category = &"quest"
 rarity = &"rare"
 realm = &"great_luo"

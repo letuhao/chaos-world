@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"mind_spirit_severing_sea_catalyst"
-display_name = "Understanding Sea Catalyst"
+display_name = "LOC_ITEMS_MIND_SPIRIT_SEVERING_SEA_CATALYST_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_severing"
@@ -16,4 +16,4 @@ roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"tonic"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:mind_spirit_severing_sea_recipe", &"domain:qi_spirit_severing_trial"])
-description = "Strengthens the sea of consciousness toward the realm's clarity and purity targets."
+description = "LOC_ITEMS_MIND_SPIRIT_SEVERING_SEA_CATALYST_DESCRIPTION"

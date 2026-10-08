@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U5_divine_wharf_fillet"
-display_name = "Divine Wharf Fillet"
+display_name = "LOC_ITEMS_U5_DIVINE_WHARF_FILLET_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"dao_ancestor"

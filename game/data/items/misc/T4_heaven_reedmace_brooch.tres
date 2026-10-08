@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"T4_heaven_reedmace_brooch"
-display_name = "Heaven Reedmace Brooch"
+display_name = "LOC_ITEMS_T4_HEAVEN_REEDMACE_BROOCH_DISPLAY_NAME"
 category = &"misc"
 rarity = &"rare"
 realm = &"true_immortal"

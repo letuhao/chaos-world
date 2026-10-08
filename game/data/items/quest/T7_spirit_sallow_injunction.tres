@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"T7_spirit_sallow_injunction"
-display_name = "Spirit Sallow Injunction"
+display_name = "LOC_ITEMS_T7_SPIRIT_SALLOW_INJUNCTION_DISPLAY_NAME"
 category = &"quest"
 rarity = &"magic"
 realm = &"spirit_unity"

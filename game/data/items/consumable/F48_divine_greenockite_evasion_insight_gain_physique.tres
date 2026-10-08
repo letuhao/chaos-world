@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F48_divine_greenockite_evasion_insight_gain_physique"
-display_name = "Divine Greenockite Evasion Insight gain Physique"
+display_name = "LOC_ITEMS_F48_DIVINE_GREENOCKITE_EVASION_INSIGHT_GAIN_PHYSIQUE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"transcendent"

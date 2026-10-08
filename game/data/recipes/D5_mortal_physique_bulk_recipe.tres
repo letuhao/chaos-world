@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"D5_mortal_physique_bulk_recipe"
-display_name = "Mortal Physique Bulk Recipe"
+display_name = "LOC_RECIPES_D5_MORTAL_PHYSIQUE_BULK_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"pauldron_iron_ore", &"armor_iron_ore"])
 outputs = Array[StringName]([&"D5_mortal_physique_bulk"])

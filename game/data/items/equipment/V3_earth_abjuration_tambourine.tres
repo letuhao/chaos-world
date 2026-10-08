@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V3_earth_abjuration_tambourine"
-display_name = "Earth Abjuration Tambourine"
+display_name = "LOC_ITEMS_V3_EARTH_ABJURATION_TAMBOURINE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"spirit_sea"

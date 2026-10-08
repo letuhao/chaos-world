@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"R16_heaven_osprey_refined"
-display_name = "Heaven Osprey Refined"
+display_name = "LOC_ITEMS_R16_HEAVEN_OSPREY_REFINED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"dao_fruit"

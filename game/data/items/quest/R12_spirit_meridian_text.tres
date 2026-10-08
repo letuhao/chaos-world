@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"R12_spirit_meridian_text"
-display_name = "Spirit Meridian Text"
+display_name = "LOC_ITEMS_R12_SPIRIT_MERIDIAN_TEXT_DISPLAY_NAME"
 category = &"quest"
 rarity = &"magic"
 realm = &"spirit_severing"

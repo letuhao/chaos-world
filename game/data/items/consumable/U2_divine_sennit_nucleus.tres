@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U2_divine_sennit_nucleus"
-display_name = "Divine Sennit Nucleus"
+display_name = "LOC_ITEMS_U2_DIVINE_SENNIT_NUCLEUS_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_ancestor"

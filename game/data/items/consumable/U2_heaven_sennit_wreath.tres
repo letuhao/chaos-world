@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U2_heaven_sennit_wreath"
-display_name = "Heaven Sennit Wreath"
+display_name = "LOC_ITEMS_U2_HEAVEN_SENNIT_WREATH_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"primordial_immortal"

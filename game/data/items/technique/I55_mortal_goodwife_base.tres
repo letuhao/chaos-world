@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"I55_mortal_goodwife_base"
-display_name = "Mortal Goodwife Base"
+display_name = "LOC_ITEMS_I55_MORTAL_GOODWIFE_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"nascent_soul"

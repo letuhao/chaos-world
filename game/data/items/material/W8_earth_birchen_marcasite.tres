@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"W8_earth_birchen_marcasite"
-display_name = "Earth Birchen Marcasite"
+display_name = "LOC_ITEMS_W8_EARTH_BIRCHEN_MARCASITE_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_manifestation"

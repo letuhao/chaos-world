@@ -42,7 +42,7 @@ rarity_floor = &"magic"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_qi_nascent_soul_warden_pool_spirit_domain"
-display_name = "Nascent Soul Warden salvage (spirit_domain)"
+display_name = "LOC_LOOT_QI_NASCENT_SOUL_WARDEN_SPIRIT_DOMAIN_0_DISPLAY_NAME"
 realm = &"spirit_domain"
 rarity = &""
 rolls = 1

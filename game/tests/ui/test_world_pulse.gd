@@ -152,7 +152,9 @@ func test_panel_enables_wait_only_when_the_caller_allows_it() -> void:
 	)
 	panel.show_world({"wired": true, "can_advance": true})
 	assert_eq(panel.summary().get("wait_enabled", false), true, "and enabled once it can")
-	assert_eq(panel.summary().get("wait_label", ""), "Wait a season", "the label drops the excuse")
+	assert_eq(
+		L.t(panel.summary().get("wait_label", "")), "Wait a season", "the label drops the excuse"
+	)
 	_free_all()
 
 
@@ -207,7 +209,7 @@ func test_pressing_wait_without_a_bridge_refuses_and_names_the_missing_seam() ->
 	var world := _world_of(screen)
 	assert_eq(world.get("tone", ""), "error", "the refusal is an error, not a silence")
 	assert_eq(
-		world.get("message_text", ""),
+		L.t(world.get("message_text", "")),
 		"This screen is not wired to the world clock",
 		"the message names the seam, so an unreachable tick is never mistaken for a quiet one"
 	)
@@ -241,7 +243,7 @@ func test_pressing_wait_reports_a_refusal_the_pulse_returned() -> void:
 	var world := _world_of(screen)
 	assert_eq(world.get("tone", ""), "error", "and it is reported as one")
 	assert_eq(
-		world.get("message_text", ""),
+		L.t(world.get("message_text", "")),
 		"No one is listening for what happens",
 		"in the wording the panel owns"
 	)

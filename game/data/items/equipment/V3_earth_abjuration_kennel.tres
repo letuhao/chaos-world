@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V3_earth_abjuration_kennel"
-display_name = "Earth Abjuration Kennel"
+display_name = "LOC_ITEMS_V3_EARTH_ABJURATION_KENNEL_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"spirit_sovereign"

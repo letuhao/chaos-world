@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"X20_immortal_burgess_determinable"
-display_name = "Immortal Burgess Determinable"
+display_name = "LOC_ITEMS_X20_IMMORTAL_BURGESS_DETERMINABLE_DISPLAY_NAME"
 category = &"quest"
 rarity = &"legendary"
 realm = &"golden_immortal"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Q4_divine_cumin_matrix"
-display_name = "Divine Cumin Matrix"
+display_name = "LOC_ITEMS_Q4_DIVINE_CUMIN_MATRIX_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"primordial_origin"

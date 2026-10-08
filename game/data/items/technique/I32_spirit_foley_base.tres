@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"I32_spirit_foley_base"
-display_name = "Spirit Foley Base"
+display_name = "LOC_ITEMS_I32_SPIRIT_FOLEY_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_sea"

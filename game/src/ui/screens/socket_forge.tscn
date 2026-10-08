@@ -20,13 +20,13 @@ layout_mode = 2
 [node name="Title" type="Label" parent="Layout"]
 layout_mode = 2
 theme_type_variation = &"ScreenTitle"
-text = "Socket Forge"
+text = "LOC_UI_SCREENS_808CAF7C06"
 
 [node name="ParentLabel" type="Label" parent="Layout"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "No socket host"
+text = "LOC_UI_SCREENS_AB7923DD9A"
 
 [node name="MetaLabel" type="Label" parent="Layout"]
 unique_name_in_owner = true
@@ -41,7 +41,7 @@ layout_mode = 2
 [node name="HostLabel" type="Label" parent="Layout/Selectors"]
 layout_mode = 2
 theme_type_variation = &"MetaLabel"
-text = "Host"
+text = "LOC_UI_SCREENS_3960EC4CA5"
 
 [node name="HostOption" type="OptionButton" parent="Layout/Selectors"]
 unique_name_in_owner = true
@@ -50,7 +50,7 @@ layout_mode = 2
 [node name="SlotLabel" type="Label" parent="Layout/Selectors"]
 layout_mode = 2
 theme_type_variation = &"MetaLabel"
-text = "Slot"
+text = "LOC_UI_SCREENS_ECE2AC10D7"
 
 [node name="SlotOption" type="OptionButton" parent="Layout/Selectors"]
 unique_name_in_owner = true
@@ -59,7 +59,7 @@ layout_mode = 2
 [node name="GemLabel" type="Label" parent="Layout/Selectors"]
 layout_mode = 2
 theme_type_variation = &"MetaLabel"
-text = "Socket item"
+text = "LOC_UI_SCREENS_6EFE105A79"
 
 [node name="GemOption" type="OptionButton" parent="Layout/Selectors"]
 unique_name_in_owner = true

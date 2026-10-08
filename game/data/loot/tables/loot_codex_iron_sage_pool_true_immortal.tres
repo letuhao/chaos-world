@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_codex_iron_sage_pool_true_immortal"
-display_name = "Iron Sage salvage (true_immortal)"
+display_name = "LOC_LOOT_CODEX_IRON_SAGE_TRUE_IMMORTAL_0_DISPLAY_NAME"
 realm = &"true_immortal"
 rarity = &""
 rolls = 1

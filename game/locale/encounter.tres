@@ -1,0 +1,16 @@
+[gd_resource type="Translation" format=3]
+
+[resource]
+locale = "en"
+messages = {
+"LOC_ENCOUNTER_PROPHECY_OF_THE_CHOSEN_DESCRIPTION": "A vision of a destiny that calls to you from beyond.",
+"LOC_ENCOUNTER_PROPHECY_OF_THE_CHOSEN_DISPLAY_NAME": "Prophecy of the Chosen",
+"LOC_ENCOUNTER_PROPHECY_OF_THE_DUEL_DESCRIPTION": "A cryptic vision of a duel that will define your path.",
+"LOC_ENCOUNTER_PROPHECY_OF_THE_DUEL_DISPLAY_NAME": "Prophecy of the Duel",
+"LOC_ENCOUNTER_THE_ANCIENT_SHRINE_DESCRIPTION": "An ancient shrine hums with spiritual energy. A vision floods your mind — a glimpse of a destiny not yet earned.",
+"LOC_ENCOUNTER_THE_ANCIENT_SHRINE_DISPLAY_NAME": "The Ancient Shrine",
+"LOC_ENCOUNTER_THE_MYSTERIOUS_STRANGER_DESCRIPTION": "A hooded figure approaches with a cryptic warning. They speak of a fate that awaits, and offer a choice that will shape your path.",
+"LOC_ENCOUNTER_THE_MYSTERIOUS_STRANGER_DISPLAY_NAME": "The Mysterious Stranger",
+"LOC_ENCOUNTER_THE_WANDERING_SWORDSMAN_DESCRIPTION": "A lone swordsman blocks your path, eyes sharp. He offers a duel — win, and you earn his respect. Lose, and you learn humility.",
+"LOC_ENCOUNTER_THE_WANDERING_SWORDSMAN_DISPLAY_NAME": "The Wandering Swordsman",
+}

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"D2_earth_comprehension_bead"
-display_name = "Earth Comprehension Bead"
+display_name = "LOC_ITEMS_D2_EARTH_COMPREHENSION_BEAD_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_palace"

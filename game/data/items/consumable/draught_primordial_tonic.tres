@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"draught_primordial_tonic"
-display_name = "Primordial Tonic Draught"
+display_name = "LOC_ITEMS_DRAUGHT_PRIMORDIAL_TONIC_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"

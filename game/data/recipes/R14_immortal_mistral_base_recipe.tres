@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"R14_immortal_mistral_base_recipe"
-display_name = "Immortal Mistral Base Recipe"
+display_name = "LOC_RECIPES_R14_IMMORTAL_MISTRAL_BASE_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"orb_void_ore", &"qi_earth_immortal_qi_herb"])
 outputs = Array[StringName]([&"R14_immortal_mistral_base"])

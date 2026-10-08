@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d6_frost_hermit_pool_dao_fruit"
-display_name = "Frost Hermit Lesser salvage (dao_fruit)"
+display_name = "LOC_LOOT_D6_FROST_HERMIT_DAO_FRUIT_0_DISPLAY_NAME"
 realm = &"dao_fruit"
 rarity = &""
 rolls = 1

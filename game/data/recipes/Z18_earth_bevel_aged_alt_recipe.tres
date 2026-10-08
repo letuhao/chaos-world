@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"Z18_earth_bevel_aged_alt_recipe"
-display_name = "Earth Bevel Aged (Alt) Recipe"
+display_name = "LOC_RECIPES_Z18_EARTH_BEVEL_AGED_ALT_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"Z18_earth_bevel_refined", &"W7_earth_bedlam_leaching", &"W8_earth_birchen_loment"])
 outputs = Array[StringName]([&"Z18_earth_bevel_aged"])

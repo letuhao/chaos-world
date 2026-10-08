@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G19_earth_henge_attack_speed_fortune"
-display_name = "Earth Henge Attack speed Fortune"
+display_name = "LOC_ITEMS_G19_EARTH_HENGE_ATTACK_SPEED_FORTUNE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_palace"

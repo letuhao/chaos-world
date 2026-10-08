@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V13_divine_altarpiece_teston"
-display_name = "Divine Altarpiece Teston"
+display_name = "LOC_ITEMS_V13_DIVINE_ALTARPIECE_TESTON_DISPLAY_NAME"
 category = &"currency"
 rarity = &"legendary"
 realm = &"primordial_origin"

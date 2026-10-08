@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"K10_spirit_scale_aged"
-display_name = "Spirit Scale Aged"
+display_name = "LOC_ITEMS_K10_SPIRIT_SCALE_AGED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_sea"

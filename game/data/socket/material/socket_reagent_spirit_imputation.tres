@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"socket_reagent_spirit_imputation"
-display_name = "Spirit Imputation Ink"
+display_name = "LOC_SOCKET_SOCKET_REAGENT_SPIRIT_IMPUTATION_DISPLAY_NAME"
 category = &"material"
 rarity = &"magic"
 realm = &"spirit_condensation"
@@ -18,4 +18,4 @@ stackable = true
 grade = &"spirit"
 sources = Array[StringName]([&"gather", &"domain:loot_ember_vault_domain"])
 tags = Array[StringName]([&"socket_reagent", &"imputation_reagent"])
-description = "Consumed to give an empty socket slot its own modifiers at spirit scale."
+description = "LOC_SOCKET_SOCKET_REAGENT_SPIRIT_IMPUTATION_DESCRIPTION"

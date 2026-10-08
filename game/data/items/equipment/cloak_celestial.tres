@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"cloak_celestial"
-display_name = "Celestial Cloak"
+display_name = "LOC_ITEMS_CLOAK_CELESTIAL_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"earth_immortal"

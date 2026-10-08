@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"Z20_earth_bilge_aged_alt_recipe"
-display_name = "Earth Bilge Aged (Alt) Recipe"
+display_name = "LOC_RECIPES_Z20_EARTH_BILGE_AGED_ALT_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"Z20_earth_bilge_refined", &"elemental_earth_essence", &"crystal_sapphire"])
 outputs = Array[StringName]([&"Z20_earth_bilge_aged"])

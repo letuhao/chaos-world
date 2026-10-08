@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F41_earth_gauche_breakthrough_chance_loot_bonus_qi_absorption"
-display_name = "Earth Gauche Breakthrough chance Loot bonus Qi absorption"
+display_name = "LOC_ITEMS_F41_EARTH_GAUCHE_BREAKTHROUGH_CHANCE_LOOT_BONUS_QI_ABSORPTION_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"spirit_sovereign"

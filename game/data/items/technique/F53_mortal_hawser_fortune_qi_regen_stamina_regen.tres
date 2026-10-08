@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F53_mortal_hawser_fortune_qi_regen_stamina_regen"
-display_name = "Mortal Hawser Fortune Qi regen Stamina regen"
+display_name = "LOC_ITEMS_F53_MORTAL_HAWSER_FORTUNE_QI_REGEN_STAMINA_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"qi_refining"

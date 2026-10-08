@@ -5,5 +5,5 @@
 [resource]
 script = ExtResource("1_domain")
 id = &"mind_dao_ancestor_trial"
-display_name = "Mind Dao Ancestor Trial"
+display_name = "LOC_DOMAINS_MIND_DAO_ANCESTOR_TRIAL_DISPLAY_NAME"
 boss_ids = Array[StringName]([&"mind_dao_ancestor_warden", &"F19_dao_warden"])

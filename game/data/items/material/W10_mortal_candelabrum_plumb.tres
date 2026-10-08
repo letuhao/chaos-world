@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"W10_mortal_candelabrum_plumb"
-display_name = "Mortal Candelabrum Plumb"
+display_name = "LOC_ITEMS_W10_MORTAL_CANDELABRUM_PLUMB_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"qi_refining"

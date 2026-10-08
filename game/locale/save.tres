@@ -1,0 +1,7 @@
+[gd_resource type="Translation" format=3]
+
+[resource]
+locale = "en"
+messages = {
+"LOC_SAVE_FC58423064": "chaos-world.save",
+}

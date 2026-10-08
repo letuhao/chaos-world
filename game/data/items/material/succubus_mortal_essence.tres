@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"succubus_mortal_essence"
-display_name = "Mortal Veil Essence"
+display_name = "LOC_ITEMS_SUCCUBUS_MORTAL_ESSENCE_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"tribulation"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V14_mortal_anabasis_soldus"
-display_name = "Mortal Anabasis Soldus"
+display_name = "LOC_ITEMS_V14_MORTAL_ANABASIS_SOLDUS_DISPLAY_NAME"
 category = &"currency"
 rarity = &"common"
 realm = &"qi_refining"

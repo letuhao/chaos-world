@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_portrait")
 id = &"unique-0001__pose-06"
-display_name = "Ilsa Renn, pose"
+display_name = "LOC_PORTRAITS_UNIQUE_0001_POSE_06_DISPLAY_NAME"
 race_id = &"echoless"
 visual_traits = Array[StringName]([&"pose:standing under a canopy with one hand flat on a column, holding position while others argue"])
 layer_paths = Array[String](["res://assets/characters/unique/unique-0001/ilsa_pose_06.png"])

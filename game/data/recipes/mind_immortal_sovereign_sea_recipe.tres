@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"mind_immortal_sovereign_sea_recipe"
-display_name = "Ascendant of Mind Sea Formula"
+display_name = "LOC_RECIPES_MIND_IMMORTAL_SOVEREIGN_SEA_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"mind_immortal_sovereign_mind_herb", &"mind_immortal_sovereign_warden_core"])
 outputs = Array[StringName]([&"mind_immortal_sovereign_sea_catalyst"])

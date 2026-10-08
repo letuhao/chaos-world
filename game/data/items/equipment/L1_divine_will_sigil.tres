@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"L1_divine_will_sigil"
-display_name = "Divine Resolve Band"
+display_name = "LOC_ITEMS_L1_DIVINE_WILL_SIGIL_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"dao_ancestor"

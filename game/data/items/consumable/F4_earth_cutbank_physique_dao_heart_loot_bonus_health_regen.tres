@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F4_earth_cutbank_physique_dao_heart_loot_bonus_health_regen"
-display_name = "Earth Cutbank Physique Dao Heart Loot Bonus Health Regen"
+display_name = "LOC_ITEMS_F4_EARTH_CUTBANK_PHYSIQUE_DAO_HEART_LOOT_BONUS_HEALTH_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_palace"

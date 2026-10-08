@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U18_heaven_zinnia_primed"
-display_name = "Heaven Zinnia Primed"
+display_name = "LOC_ITEMS_U18_HEAVEN_ZINNIA_PRIMED_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"true_immortal"

@@ -105,11 +105,11 @@ func test_advance_refuses_short_mastery_and_names_the_rise() -> void:
 	var actor := _hero()
 	screen.setup(actor)
 	screen.act_advance()
-	assert_eq(String(screen.summary()["message"]), "Awaken first.", "the unenrolled refusal")
+	assert_eq(L.t(String(screen.summary()["message"])), "Awaken first.", "the unenrolled refusal")
 	screen.act_awaken()
 	screen.act_advance()
 	var view := screen.summary()
-	assert_eq(String(view["message"]), "Mastery short.", "the climb is paid in mastery")
+	assert_eq(L.t(String(view["message"])), "Mastery short.", "the climb is paid in mastery")
 	assert_eq(bool(view["can_act"]), false, "and nothing is offered")
 	# Meet the threshold through the facade's own curve, then press the screen's door.
 	var threshold := float(view["threshold"])

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"B27_earth_cataclysm_refined_recipe"
-display_name = "Earth Cataclysm Refined Recipe"
+display_name = "LOC_RECIPES_B27_EARTH_CATACLYSM_REFINED_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"B27_earth_cataclysm_base", &"shield_moonstone_ore"])
 outputs = Array[StringName]([&"B27_earth_cataclysm_refined"])

@@ -19,7 +19,7 @@ layout_mode = 2
 [node name="TitleLabel" type="Label" parent="Layout"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "Settlement"
+text = "LOC_UI_PANELS_45EAAD8B8C"
 
 [node name="BuildingLabel" type="Label" parent="Layout"]
 unique_name_in_owner = true

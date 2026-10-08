@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"R4_heaven_loam_bauble"
-display_name = "Heaven Loam Bauble"
+display_name = "LOC_ITEMS_R4_HEAVEN_LOAM_BAUBLE_DISPLAY_NAME"
 category = &"misc"
 rarity = &"rare"
 realm = &"mystic_immortal"

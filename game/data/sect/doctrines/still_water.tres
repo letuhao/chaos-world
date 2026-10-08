@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_doctrine")
 id = &"still_water"
-display_name = "Still Water"
-description = "Comprehension practised as a discipline rather than a gift. Every seat in the Jade Court sits with its breathing even because a man who cannot sit still has not yet learned to read."
+display_name = "LOC_SECT_STILL_WATER_DISPLAY_NAME"
+description = "LOC_SECT_STILL_WATER_DESCRIPTION"
 teachings = Array[StringName]([&"read_a_line_slowly", &"hold_the_breath", &"separate_seeing_from_naming"])
 refusals = Array[StringName]([&"unready", &"already_known"])
 comprehension_floor = 5.0

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C24_heaven_coulis_dao_heart_fortune_loot_bonus"
-display_name = "Heaven Coulis Dao Heart Fortune Loot Bonus"
+display_name = "LOC_ITEMS_C24_HEAVEN_COULIS_DAO_HEART_FORTUNE_LOOT_BONUS_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"dao_fruit"

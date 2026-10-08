@@ -18,7 +18,7 @@ rarity_floor = &"magic"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d6_frost_hermit_pool_spirit_sea"
-display_name = "Frost Hermit Lesser salvage (spirit_sea)"
+display_name = "LOC_LOOT_D6_FROST_HERMIT_SPIRIT_SEA_0_DISPLAY_NAME"
 realm = &"spirit_sea"
 rarity = &""
 rolls = 1

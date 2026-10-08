@@ -18,7 +18,7 @@ layout_mode = 2
 [node name="Title" type="Label" parent="Layout"]
 layout_mode = 2
 theme_type_variation = &"ScreenTitle"
-text = "Credits"
+text = "LOC_UI_SCREENS_BFAC50D642"
 
 [node name="CreditLines" type="VBoxContainer" parent="Layout"]
 unique_name_in_owner = true
@@ -27,29 +27,29 @@ layout_mode = 2
 [node name="Line0" type="Label" parent="Layout/CreditLines"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "Chaos World — a cultivation action RPG."
+text = "LOC_UI_SCREENS_0FFA48ACD1"
 horizontal_alignment = 1
 
 [node name="Line1" type="Label" parent="Layout/CreditLines"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "Built with Godot 4.7."
+text = "LOC_UI_SCREENS_92A407230D"
 horizontal_alignment = 1
 
 [node name="Line2" type="Label" parent="Layout/CreditLines"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "Art generated locally with ComfyUI, in the shared gouache idiom."
+text = "LOC_UI_SCREENS_AA2FCC71A4"
 horizontal_alignment = 1
 
 [node name="Line3" type="Label" parent="Layout/CreditLines"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "Design recorded in architecture decision records."
+text = "LOC_UI_SCREENS_03735590A8"
 horizontal_alignment = 1
 
 [node name="Line4" type="Label" parent="Layout/CreditLines"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "Every system reachable, or reported unwired."
+text = "LOC_UI_SCREENS_8968B724D5"
 horizontal_alignment = 1

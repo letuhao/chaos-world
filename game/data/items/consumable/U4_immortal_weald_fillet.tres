@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U4_immortal_weald_fillet"
-display_name = "Immortal Weald Fillet"
+display_name = "LOC_ITEMS_U4_IMMORTAL_WEALD_FILLET_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"heaven_immortal"

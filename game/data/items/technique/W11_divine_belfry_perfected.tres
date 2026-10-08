@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"W11_divine_belfry_perfected"
-display_name = "Divine Belfry Perfected"
+display_name = "LOC_ITEMS_W11_DIVINE_BELFRY_PERFECTED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"

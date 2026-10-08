@@ -18,7 +18,7 @@ rarity_floor = &"magic"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_relic_ash_wyrm_pool_spirit_palace"
-display_name = "Ash Wyrm salvage (spirit_palace)"
+display_name = "LOC_LOOT_RELIC_ASH_WYRM_SPIRIT_PALACE_0_DISPLAY_NAME"
 realm = &"spirit_palace"
 rarity = &""
 rolls = 1

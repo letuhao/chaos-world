@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d6_jade_serpent_pool_body_integration"
-display_name = "Jade Serpent Totem Lesser salvage (body_integration)"
+display_name = "LOC_LOOT_D6_JADE_SERPENT_BODY_INTEGRATION_0_DISPLAY_NAME"
 realm = &"body_integration"
 rarity = &""
 rolls = 1

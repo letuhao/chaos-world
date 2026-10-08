@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"B10_mortal_byssus_refined_alt_recipe"
-display_name = "Mortal Byssus Refined (Alt) Recipe"
+display_name = "LOC_RECIPES_B10_MORTAL_BYSSUS_REFINED_ALT_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"B10_mortal_byssus_base", &"body_great_ascension_tempering_herb", &"staff_ironbark_herb"])
 outputs = Array[StringName]([&"B10_mortal_byssus_refined"])

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F50_divine_grindstone_fortune_penetration_status_resistance"
-display_name = "Divine Grindstone Fortune Penetration Status resistance"
+display_name = "LOC_ITEMS_F50_DIVINE_GRINDSTONE_FORTUNE_PENETRATION_STATUS_RESISTANCE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"

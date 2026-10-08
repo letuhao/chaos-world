@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"R11_mortal_mastic_riddle"
-display_name = "Mortal Mastic Riddle"
+display_name = "LOC_ITEMS_R11_MORTAL_MASTIC_RIDDLE_DISPLAY_NAME"
 category = &"quest"
 rarity = &"common"
 realm = &"foundation"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G21_heaven_hophorn_breakthrough_chance_status_resistance"
-display_name = "Heaven Hophorn Breakthrough chance Status resistance"
+display_name = "LOC_ITEMS_G21_HEAVEN_HOPHORN_BREAKTHROUGH_CHANCE_STATUS_RESISTANCE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"heaven_immortal"

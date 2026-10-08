@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_F5_qi_refining_warden_pool_spirit_transformation"
-display_name = "Qi Refining Warden salvage (spirit_transformation)"
+display_name = "LOC_LOOT_F5_QI_REFINING_WARDEN_SPIRIT_TRANSFORMATION_0_DISPLAY_NAME"
 realm = &"spirit_transformation"
 rarity = &""
 rolls = 1

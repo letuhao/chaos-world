@@ -5,9 +5,9 @@
 [resource]
 script = ExtResource("1")
 law_id = &"life_law"
-display_name = "Life Law"
+display_name = "LOC_WORLD_LIFE_LAW_DISPLAY_NAME"
 group = &"life"
 value_min = 0.0
 value_max = 1.0
-description = "Governs allowed life forms, evolution speed, and intelligence ceiling."
+description = "LOC_WORLD_LIFE_LAW_DESCRIPTION"
 tier_ids = Array[StringName]([&"mortal_world", &"spirit_world", &"immortal_world", &"transcendent_world"])

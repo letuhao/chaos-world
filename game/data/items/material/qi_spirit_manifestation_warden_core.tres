@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"qi_spirit_manifestation_warden_core"
-display_name = "Spirit Manifestation Warden Core"
+display_name = "LOC_ITEMS_QI_SPIRIT_MANIFESTATION_WARDEN_CORE_DISPLAY_NAME"
 category = &"material"
 rarity = &"magic"
 realm = &"spirit_manifestation"
@@ -16,4 +16,4 @@ roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"beast_core"
 grade = &"spirit"
 sources = Array[StringName]([&"boss:qi_spirit_manifestation_warden"])
-description = "Boss-only catalyst for the realm's pill."
+description = "LOC_ITEMS_QI_SPIRIT_MANIFESTATION_WARDEN_CORE_DESCRIPTION"

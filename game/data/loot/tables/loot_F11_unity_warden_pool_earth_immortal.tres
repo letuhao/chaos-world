@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_F11_unity_warden_pool_earth_immortal"
-display_name = "Unity Warden salvage (earth_immortal)"
+display_name = "LOC_LOOT_F11_UNITY_WARDEN_EARTH_IMMORTAL_0_DISPLAY_NAME"
 realm = &"earth_immortal"
 rarity = &""
 rolls = 1

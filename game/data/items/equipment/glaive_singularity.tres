@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"glaive_singularity"
-display_name = "Singularity Glaive"
+display_name = "LOC_ITEMS_GLAIVE_SINGULARITY_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"dao_fruit"

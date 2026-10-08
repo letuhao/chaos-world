@@ -138,9 +138,7 @@ func compare(key: StringName, candidate: Variant) -> int:
 ## author who genuinely means to re-declare the type passes `false` deliberately. The
 ## permissive path exists because a conversation that starts a variable mid-run has no
 ## earlier row to match — `strict = false` is how an author says so.
-func set_value(
-	key: StringName, value: Variant, strict: bool = true
-) -> Dictionary:
+func set_value(key: StringName, value: Variant, strict: bool = true) -> Dictionary:
 	if key == &"":
 		return _answer(false, REFUSAL_NO_KEY)
 	var text := String(key)

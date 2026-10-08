@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F38_divine_fustic_loot_bonus_spirit_will"
-display_name = "Divine Fustic Loot bonus Spirit Will"
+display_name = "LOC_ITEMS_F38_DIVINE_FUSTIC_LOOT_BONUS_SPIRIT_WILL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"

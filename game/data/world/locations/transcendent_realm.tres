@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 location_id = &"transcendent_realm"
-display_name = "Transcendent Realm"
+display_name = "LOC_WORLD_TRANSCENDENT_REALM_DISPLAY_NAME"
 tier = &"transcendent_world"
 faction_id = &"mind_dao"
 resources = Array[StringName]([&"dao_fragment", &"void_crystal"])

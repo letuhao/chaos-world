@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"A25_divine_chancery_mandamus"
-display_name = "Divine Chancery Mandamus"
+display_name = "LOC_ITEMS_A25_DIVINE_CHANCERY_MANDAMUS_DISPLAY_NAME"
 category = &"currency"
 rarity = &"legendary"
 realm = &"dao_ancestor"

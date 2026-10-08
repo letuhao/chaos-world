@@ -313,7 +313,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_route_e8_mystic_warden"
-display_name = "Mystic Warden spoils"
+display_name = "LOC_LOOT_GUARANTEED_UNIQUE_DISPLAY_NAME"
 realm = &"mystic_immortal"
 rarity = &"legendary"
 rolls = 2

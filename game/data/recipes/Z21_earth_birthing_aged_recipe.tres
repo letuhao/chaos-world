@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"Z21_earth_birthing_aged_recipe"
-display_name = "Earth Birthing Aged Recipe"
+display_name = "LOC_RECIPES_Z21_EARTH_BIRTHING_AGED_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"Z21_earth_birthing_refined", &"soul_cinder_core", &"herb_stoneheart"])
 outputs = Array[StringName]([&"Z21_earth_birthing_aged"])

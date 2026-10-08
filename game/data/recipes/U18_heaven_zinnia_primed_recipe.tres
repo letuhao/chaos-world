@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"U18_heaven_zinnia_primed_recipe"
-display_name = "Heaven Zinnia Primed Recipe"
+display_name = "LOC_RECIPES_U18_HEAVEN_ZINNIA_PRIMED_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"U18_heaven_zinnia_aged", &"petal_lily", &"orb_storm_ore", &"feather_roc"])
 outputs = Array[StringName]([&"U18_heaven_zinnia_primed"])

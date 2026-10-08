@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"H2_spirit_comprehension_manual"
-display_name = "Spirit Comprehension Manual"
+display_name = "LOC_ITEMS_H2_SPIRIT_COMPREHENSION_MANUAL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_sovereign"

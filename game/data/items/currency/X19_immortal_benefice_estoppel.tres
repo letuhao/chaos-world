@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"X19_immortal_benefice_estoppel"
-display_name = "Immortal Benefice Estoppel"
+display_name = "LOC_ITEMS_X19_IMMORTAL_BENEFICE_ESTOPPEL_DISPLAY_NAME"
 category = &"currency"
 rarity = &"legendary"
 realm = &"dao_fruit"

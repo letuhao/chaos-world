@@ -30,7 +30,7 @@ rarity_floor = &"magic"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d6_abyssal_serpent_pool_spirit_unity"
-display_name = "Abyssal Serpent Lesser salvage (spirit_unity)"
+display_name = "LOC_LOOT_D6_ABYSSAL_SERPENT_SPIRIT_UNITY_0_DISPLAY_NAME"
 realm = &"spirit_unity"
 rarity = &""
 rolls = 1

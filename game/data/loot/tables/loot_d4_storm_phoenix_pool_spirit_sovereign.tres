@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d4_storm_phoenix_pool_spirit_sovereign"
-display_name = "Storm Phoenix Lesser salvage (spirit_sovereign)"
+display_name = "LOC_LOOT_D4_STORM_PHOENIX_SPIRIT_SOVEREIGN_0_DISPLAY_NAME"
 realm = &"spirit_sovereign"
 rarity = &""
 rolls = 1

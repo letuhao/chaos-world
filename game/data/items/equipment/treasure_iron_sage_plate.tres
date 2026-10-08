@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"treasure_iron_sage_plate"
-display_name = "Sage Plate"
+display_name = "LOC_ITEMS_TREASURE_IRON_SAGE_PLATE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"spirit_manifestation"

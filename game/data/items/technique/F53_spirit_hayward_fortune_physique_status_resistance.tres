@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F53_spirit_hayward_fortune_physique_status_resistance"
-display_name = "Spirit Hayward Fortune Physique Status resistance"
+display_name = "LOC_ITEMS_F53_SPIRIT_HAYWARD_FORTUNE_PHYSIQUE_STATUS_RESISTANCE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_unity"

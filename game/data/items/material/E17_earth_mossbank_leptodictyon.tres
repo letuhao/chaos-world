@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E17_earth_mossbank_leptodictyon"
-display_name = "Earth Mossbank Leptodictyon"
+display_name = "LOC_ITEMS_E17_EARTH_MOSSBANK_LEPTODICTYON_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_manifestation"

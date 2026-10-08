@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G19_spirit_hessian_penetration_physique"
-display_name = "Spirit Hessian Penetration Physique"
+display_name = "LOC_ITEMS_G19_SPIRIT_HESSIAN_PENETRATION_PHYSIQUE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_palace"

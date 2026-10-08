@@ -11,7 +11,11 @@ func test_start_relationship() -> void:
 	RelationshipsApi.attach(actor)
 	var result := RelationshipsApi.start_relationship(actor, &"npc_1", RelationshipType.FRIEND)
 	assert_eq(result.get("ok", false), true, "start_relationship ok")
-	assert_eq(RelationshipsApi.relationship_type(actor, &"npc_1"), RelationshipType.FRIEND, "relationship type is FRIEND")
+	assert_eq(
+		RelationshipsApi.relationship_type(actor, &"npc_1"),
+		RelationshipType.FRIEND,
+		"relationship type is FRIEND"
+	)
 
 
 func test_end_relationship() -> void:
@@ -20,8 +24,11 @@ func test_end_relationship() -> void:
 	RelationshipsApi.start_relationship(actor, &"npc_1", RelationshipType.ROMANTIC)
 	var result := RelationshipsApi.end_relationship(actor, &"npc_1", &"betrayal")
 	assert_eq(result.get("ok", false), true, "end_relationship ok")
-	assert_eq(RelationshipsApi.relationship_type(actor, &"npc_1"), RelationshipType.ROMANTIC, "type preserved after end")
-
+	assert_eq(
+		RelationshipsApi.relationship_type(actor, &"npc_1"),
+		RelationshipType.ROMANTIC,
+		"type preserved after end"
+	)
 
 
 func test_log_interaction() -> void:
@@ -33,15 +40,15 @@ func test_log_interaction() -> void:
 	assert_eq(RelationshipsApi.interaction_count(actor, &"npc_1"), 1, "interaction count is 1")
 
 
-
 func test_frequent_partner_tier() -> void:
 	var actor := Actor.new()
 	RelationshipsApi.attach(actor)
 	RelationshipsApi.start_relationship(actor, &"npc_1", RelationshipType.FRIEND)
 	for i in range(15):
 		RelationshipsApi.log_interaction(actor, &"npc_1", &"gift")
-	assert_eq(RelationshipsApi.frequent_partner_tier(actor, &"npc_1"), 1, "tier 1 at 15 interactions")
-
+	assert_eq(
+		RelationshipsApi.frequent_partner_tier(actor, &"npc_1"), 1, "tier 1 at 15 interactions"
+	)
 
 
 func test_frequent_partner_advantage() -> void:
@@ -51,9 +58,10 @@ func test_frequent_partner_advantage() -> void:
 	for i in range(30):
 		RelationshipsApi.log_interaction(actor, &"npc_1", &"gift")
 	var advantage := RelationshipsApi.frequent_partner_advantage(actor, &"npc_1")
-	assert_almost_eq(float(advantage.get("emotional_energy", 1.0)), 1.20, "tier 2 energy bonus", 0.001)
+	assert_almost_eq(
+		float(advantage.get("emotional_energy", 1.0)), 1.20, "tier 2 energy bonus", 0.001
+	)
 	assert_almost_eq(float(advantage.get("dc_efficiency", 1.0)), 1.10, "tier 2 dc bonus", 0.001)
-
 
 
 func test_dual_cultivation_partner() -> void:
@@ -65,7 +73,6 @@ func test_dual_cultivation_partner() -> void:
 	assert_eq(RelationshipsApi.is_dual_cultivation_partner(actor, &"npc_1"), true, "is dc partner")
 
 
-
 func test_emotional_signature() -> void:
 	var actor := Actor.new()
 	RelationshipsApi.attach(actor)
@@ -73,7 +80,6 @@ func test_emotional_signature() -> void:
 	RelationshipsApi.log_interaction(actor, &"npc_1", &"gift", {"joy": 0.15})
 	var sig := RelationshipsApi.emotional_signature(actor, &"npc_1")
 	assert_almost_eq(float(sig.get("joy", 0.0)), 0.45, "joy raised by gift", 0.001)
-
 
 
 func test_summary() -> void:
@@ -85,10 +91,8 @@ func test_summary() -> void:
 	assert_eq(int(summary.get("partner_count", 0)), 2, "two partners in summary")
 
 
-
 func test_invalid_args_refused() -> void:
 	var actor := Actor.new()
 	RelationshipsApi.attach(actor)
 	var result := RelationshipsApi.start_relationship(actor, &"", RelationshipType.FRIEND)
 	assert_eq(result.get("ok", false), false, "empty partner_id refused")
-

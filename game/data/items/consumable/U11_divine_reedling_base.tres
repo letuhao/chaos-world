@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U11_divine_reedling_base"
-display_name = "Divine Reedling Base"
+display_name = "LOC_ITEMS_U11_DIVINE_REEDLING_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"transcendent"

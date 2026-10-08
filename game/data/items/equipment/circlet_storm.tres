@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"circlet_storm"
-display_name = "Storm Circlet"
+display_name = "LOC_ITEMS_CIRCLET_STORM_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"golden_immortal"

@@ -86,7 +86,9 @@ static func _parse(text: String) -> Dictionary:
 			# A new title closes any node already being read.
 			if not current.is_empty():
 				if not in_body:
-					problems.append("%s: node '%s' never opened a body" % [R_NO_BODY, current.get("title", "")])
+					problems.append(
+						"%s: node '%s' never opened a body" % [R_NO_BODY, current.get("title", "")]
+					)
 				nodes.append(current)
 			current = {"title": line.substr("title:".length()).strip_edges(), "lines": []}
 			in_body = false
@@ -100,7 +102,9 @@ static func _parse(text: String) -> Dictionary:
 		if line == "===":
 			if not current.is_empty():
 				if not in_body:
-					problems.append("%s: node '%s' ended without a body" % [R_NO_BODY, current.get("title", "")])
+					problems.append(
+						"%s: node '%s' ended without a body" % [R_NO_BODY, current.get("title", "")]
+					)
 				nodes.append(current)
 				current = {}
 			in_body = false
@@ -320,7 +324,7 @@ static func _typed(raw: String) -> Variant:
 		return int(raw)
 	if raw.is_valid_float():
 		return float(raw)
-	return raw.trim_prefix("\"").trim_suffix("\"")
+	return raw.trim_prefix('"').trim_suffix('"')
 
 
 # --- validation --------------------------------------------------------------

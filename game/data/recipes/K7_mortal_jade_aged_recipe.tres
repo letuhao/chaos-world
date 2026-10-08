@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"K7_mortal_jade_aged_recipe"
-display_name = "Mortal Jade Aged Recipe"
+display_name = "LOC_RECIPES_K7_MORTAL_JADE_AGED_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"K7_mortal_jade_refined", &"elemental_mortal_essence"])
 outputs = Array[StringName]([&"K7_mortal_jade_aged"])

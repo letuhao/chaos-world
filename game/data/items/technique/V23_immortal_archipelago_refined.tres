@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V23_immortal_archipelago_refined"
-display_name = "Immortal Archipelago Refined"
+display_name = "LOC_ITEMS_V23_IMMORTAL_ARCHIPELAGO_REFINED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"golden_immortal"

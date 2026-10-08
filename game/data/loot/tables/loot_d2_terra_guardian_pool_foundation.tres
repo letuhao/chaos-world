@@ -54,7 +54,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d2_terra_guardian_pool_foundation"
-display_name = "Terra Guardian Lesser salvage (foundation)"
+display_name = "LOC_LOOT_D2_TERRA_GUARDIAN_FOUNDATION_0_DISPLAY_NAME"
 realm = &"foundation"
 rarity = &""
 rolls = 1

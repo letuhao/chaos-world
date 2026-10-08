@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"ash_arena_formation_key"
-display_name = "Arena Formation Key"
+display_name = "LOC_ITEMS_ASH_ARENA_FORMATION_KEY_DISPLAY_NAME"
 category = &"key"
 rarity = &"rare"
 realm = &"spirit_condensation"

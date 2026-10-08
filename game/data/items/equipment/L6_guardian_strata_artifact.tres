@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"L6_guardian_strata_artifact"
-display_name = "Strata Guardian Core"
+display_name = "LOC_ITEMS_L6_GUARDIAN_STRATA_ARTIFACT_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"spirit_palace"

@@ -19,7 +19,7 @@
 script = ExtResource("2_opinion")
 subject_id = &"qi_dao"
 stance = &"distrust"
-prose = "the sect counts your hours and calls the ledger a virtue"
+prose = "LOC_NPC_QI_DAO_PROSE"
 opinion_seed = 0
 plausible_tiers = Array[String](["minor"])
 
@@ -31,7 +31,7 @@ script = ExtResource("3_tell")
 trigger = &"new_face"
 matches = &""
 verb = &"looks_at_your_hands"
-body = "looks at your hands first, and only then at your face"
+body = "LOC_NPC_QI_DAO_BODY"
 consequence = &"watches"
 priority = 0
 plausible_tiers = Array[String](["minor"])
@@ -39,9 +39,9 @@ plausible_tiers = Array[String](["minor"])
 [resource]
 script = ExtResource("1_voice")
 location_id = &"qi_dao"
-names = Array[String](["the woman sweeping", "the boy on the steps", "the man mending the hinge", "the girl carrying water"])
-manners = Array[String](["counts something under her breath", "stands where he can see the road", "watches the hinge instead of you", "does not stop walking but slows"])
-activities = Array[String](["sweeping the same stone over and over", "waiting for a name to be called", "mending a hinge that does not need it", "carrying water that is not needed"])
+names = Array[String](["LOC_NPC_QI_DAO_NAMES_1", "LOC_NPC_QI_DAO_NAMES_2", "LOC_NPC_QI_DAO_NAMES_3", "LOC_NPC_QI_DAO_NAMES_4"])
+manners = Array[String](["LOC_NPC_QI_DAO_MANNERS_1", "LOC_NPC_QI_DAO_MANNERS_2", "LOC_NPC_QI_DAO_MANNERS_3", "LOC_NPC_QI_DAO_MANNERS_4"])
+activities = Array[String](["LOC_NPC_QI_DAO_ACTIVITIES_1", "LOC_NPC_QI_DAO_ACTIVITIES_2", "LOC_NPC_QI_DAO_ACTIVITIES_3", "LOC_NPC_QI_DAO_ACTIVITIES_4"])
 opinions = Array[NpcOpinionDef]([SubResource("Opinion_sect")])
 tells = Array[NpcTellDef]([SubResource("Tell_gate")])
 power_scale = 18.0

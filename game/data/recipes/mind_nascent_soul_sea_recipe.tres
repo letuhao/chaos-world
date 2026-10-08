@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"mind_nascent_soul_sea_recipe"
-display_name = "Insight Sea Formula"
+display_name = "LOC_RECIPES_MIND_NASCENT_SOUL_SEA_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"mind_nascent_soul_mind_herb", &"mind_nascent_soul_warden_core"])
 outputs = Array[StringName]([&"mind_nascent_soul_sea_catalyst"])

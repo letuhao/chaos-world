@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F51_spirit_hackbutter_breakthrough_chance_penetration_status_resistance"
-display_name = "Spirit Hackbutter Breakthrough chance Penetration Status resistance"
+display_name = "LOC_ITEMS_F51_SPIRIT_HACKBUTTER_BREAKTHROUGH_CHANCE_PENETRATION_STATUS_RESISTANCE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_ascension"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_portrait")
 id = &"unique-0004"
-display_name = "Tamsin Ore"
+display_name = "LOC_PORTRAITS_UNIQUE_0004_DISPLAY_NAME"
 race_id = &"vaultborn"
 visual_traits = Array[StringName]([&"gift:resonant-depth", &"hazard:location-bound", &"path:qi-path", &"role:errand", &"status:once-dispatched"])
 layer_paths = Array[String](["res://assets/characters/portraits/vaultborn.png"])

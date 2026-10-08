@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 id = &"triple_burner"
-display_name = "Triple Burner"
+display_name = "LOC_MERIDIANS_TRIPLE_BURNER_DISPLAY_NAME"
 type = &"primary"
 tier = 6
 capacity_bonus = 0.05

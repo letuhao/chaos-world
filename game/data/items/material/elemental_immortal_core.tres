@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"elemental_immortal_core"
-display_name = "Gale Beast Core"
+display_name = "LOC_ITEMS_ELEMENTAL_IMMORTAL_CORE_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"immortal_sovereign"

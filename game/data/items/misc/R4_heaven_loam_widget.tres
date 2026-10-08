@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"R4_heaven_loam_widget"
-display_name = "Heaven Loam Widget"
+display_name = "LOC_ITEMS_R4_HEAVEN_LOAM_WIDGET_DISPLAY_NAME"
 category = &"misc"
 rarity = &"rare"
 realm = &"great_luo"

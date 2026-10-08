@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"soul_cinder_core"
-display_name = "Cinder Core"
+display_name = "LOC_ITEMS_SOUL_CINDER_CORE_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_sovereign"

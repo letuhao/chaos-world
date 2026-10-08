@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C27_heaven_tanneryhouse_skiver"
-display_name = "Heaven Tanneryhouse Skiver"
+display_name = "LOC_ITEMS_C27_HEAVEN_TANNERYHOUSE_SKIVER_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"primordial_immortal"

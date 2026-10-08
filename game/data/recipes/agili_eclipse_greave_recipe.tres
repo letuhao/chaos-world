@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"agili_eclipse_greave_recipe"
-display_name = "Eclipse Greave Recipe"
+display_name = "LOC_RECIPES_AGILI_ECLIPSE_GREAVE_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"gem_voidcrystal", &"scale_voidwyrm"])
 outputs = Array[StringName]([&"agili_eclipse_greave"])

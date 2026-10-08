@@ -30,7 +30,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d3_thunder_ape_young_pool_transcendent"
-display_name = "Thunder Ape Lesser salvage (transcendent)"
+display_name = "LOC_LOOT_D3_THUNDER_APE_YOUNG_TRANSCENDENT_0_DISPLAY_NAME"
 realm = &"transcendent"
 rarity = &""
 rolls = 1

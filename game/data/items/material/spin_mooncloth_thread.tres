@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"spin_mooncloth_thread"
-display_name = "Mooncloth Thread"
+display_name = "LOC_ITEMS_SPIN_MOONCLOTH_THREAD_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"dao_fruit"

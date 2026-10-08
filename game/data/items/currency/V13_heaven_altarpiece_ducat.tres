@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V13_heaven_altarpiece_ducat"
-display_name = "Heaven Altarpiece Ducat"
+display_name = "LOC_ITEMS_V13_HEAVEN_ALTARPIECE_DUCAT_DISPLAY_NAME"
 category = &"currency"
 rarity = &"rare"
 realm = &"true_immortal"

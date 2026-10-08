@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_bloodline")
 id = &"tideculled"
-display_name = "Tideculled"
-description = "A line maintained by a clan that culled its own branches rather than marrying out of them. The concentration survives because the gene pool was narrowed, not improved, and it crosses races freely — the cull was a political act, never an anatomical one. Its grant favours sustained effort over sudden effort: regen and cultivation pace, nothing that spikes."
+display_name = "LOC_BLOODLINES_TIDECULLED_DISPLAY_NAME"
+description = "LOC_BLOODLINES_TIDECULLED_DESCRIPTION"
 awaken_threshold = 0.42
 percent_modifiers = {"qi_regen": 0.08, "cultivation_rate": 0.05}
 traits = Array[StringName]([&"patient_accumulation"])

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"gemstone_beryl"
-display_name = "Beryl Gemstone"
+display_name = "LOC_ITEMS_GEMSTONE_BERYL_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"core_formation"

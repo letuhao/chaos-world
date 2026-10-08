@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"scroll_thunder_crane_dance"
-display_name = "Thunder Crane Dance"
+display_name = "LOC_ITEMS_SCROLL_THUNDER_CRANE_DANCE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"heaven_immortal"

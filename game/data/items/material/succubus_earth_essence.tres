@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"succubus_earth_essence"
-display_name = "Earth Bloom Essence"
+display_name = "LOC_ITEMS_SUCCUBUS_EARTH_ESSENCE_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_palace"

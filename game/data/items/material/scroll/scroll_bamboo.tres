@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"scroll_bamboo"
-display_name = "Bamboo Scroll"
+display_name = "LOC_ITEMS_SCROLL_BAMBOO_DISPLAY_NAME"
 category = &"material"
 rarity = &"magic"
 realm = &"spirit_sea"
@@ -20,4 +20,4 @@ subcategory = &"scroll"
 grade = &"spirit"
 tags = Array[StringName]([&"uncommon"])
 sources = Array[StringName]([&"craft:scroll_bamboo_recipe", &"domain:crown_void_emperor_domain"])
-description = "A durable bamboo scroll. Holds spirit-grade cultivation methods."
+description = "LOC_ITEMS_SCROLL_BAMBOO_DESCRIPTION"

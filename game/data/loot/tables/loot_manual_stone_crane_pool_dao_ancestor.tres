@@ -66,7 +66,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_manual_stone_crane_pool_dao_ancestor"
-display_name = "Stone Crane salvage (dao_ancestor)"
+display_name = "LOC_LOOT_MANUAL_STONE_CRANE_DAO_ANCESTOR_0_DISPLAY_NAME"
 realm = &"dao_ancestor"
 rarity = &""
 rolls = 1

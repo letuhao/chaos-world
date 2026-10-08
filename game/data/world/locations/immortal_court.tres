@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 location_id = &"immortal_court"
-display_name = "Immortal Court"
+display_name = "LOC_WORLD_IMMORTAL_COURT_DISPLAY_NAME"
 tier = &"immortal_world"
 faction_id = &"mind_dao"
 resources = Array[StringName]([&"immortal_essence", &"star_metal"])

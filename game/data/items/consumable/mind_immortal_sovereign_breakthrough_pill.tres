@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"mind_immortal_sovereign_breakthrough_pill"
-display_name = "Ascendant of Mind Insight Pill"
+display_name = "LOC_ITEMS_MIND_IMMORTAL_SOVEREIGN_BREAKTHROUGH_PILL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"immortal_sovereign"
@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:mind_immortal_sovereign_pill_recipe"])
-description = "Consumed by the Mind Cultivation attempt entering Ascendant of Mind; no equipment modifier."
+description = "LOC_ITEMS_MIND_IMMORTAL_SOVEREIGN_BREAKTHROUGH_PILL_DESCRIPTION"

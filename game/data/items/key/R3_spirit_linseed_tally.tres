@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"R3_spirit_linseed_tally"
-display_name = "Spirit Linseed Tally"
+display_name = "LOC_ITEMS_R3_SPIRIT_LINSEED_TALLY_DISPLAY_NAME"
 category = &"key"
 rarity = &"magic"
 realm = &"spirit_sea"

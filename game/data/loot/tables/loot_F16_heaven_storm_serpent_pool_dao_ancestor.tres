@@ -30,7 +30,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_F16_heaven_storm_serpent_pool_dao_ancestor"
-display_name = "Heaven Storm Serpent salvage (dao_ancestor)"
+display_name = "LOC_LOOT_F16_HEAVEN_STORM_SERPENT_DAO_ANCESTOR_0_DISPLAY_NAME"
 realm = &"dao_ancestor"
 rarity = &""
 rolls = 1

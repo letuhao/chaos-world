@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"H16_spirit_impasto_attack_speed_breakthrough_chance_evasion_fortune_physique"
-display_name = "Spirit Impasto Attack speed Breakthrough chance Evasion Fortune Physique"
+display_name = "LOC_ITEMS_H16_SPIRIT_IMPASTO_ATTACK_SPEED_BREAKTHROUGH_CHANCE_EVASION_FORTUNE_PHYSIQUE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_domain"

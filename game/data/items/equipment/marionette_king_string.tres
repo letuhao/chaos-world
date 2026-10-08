@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"marionette_king_string"
-display_name = "Marionette King String"
+display_name = "LOC_ITEMS_MARIONETTE_KING_STRING_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"dao_ancestor"

@@ -37,17 +37,17 @@ extends UiScreen
 const BRANCH_ROWS := 3
 const BRANCH_SCENE := "res://src/ui/panels/creation_branch_row.tscn"
 ## One line, and the whole of this screen's argument.
-const HEADER_TEXT := "Answer how you arrive. The rest is not yours to pick."
-const OPEN_FOOTER := "Each arrival closes the other two for good. Nothing here changes later."
-const COMMITTED_TEXT := "Arrival committed. What it carried is yours for good."
-const COMMITTED_FOOTER := "The other two are closed. Fates still have to be earned."
+const HEADER_TEXT := "LOC_UI_SCREENS_A072A411A3"
+const OPEN_FOOTER := "LOC_UI_SCREENS_CE1FBFB330"
+const COMMITTED_TEXT := "LOC_UI_SCREENS_D89FBA96E7"
+const COMMITTED_FOOTER := "LOC_UI_SCREENS_DEF9280FED"
 ## The ScreenStack hooks consume nothing on a screen that has already committed:
 ## `ui_cancel` is left free for the stack to pop, exactly as on every read-only one.
 const COMMIT_OK := "committed"
 ## What `%ConfirmButton` is, once it has been wired. A live control that does nothing is
 ## worse than none: it reads as the door and refuses to open.
-const CONFIRM_TEXT := "Arrive this way"
-const CONFIRM_OFFER := "Choose an arrival below"
+const CONFIRM_TEXT := "LOC_UI_SCREENS_02AD3B27AB"
+const CONFIRM_OFFER := "LOC_UI_SCREENS_41E6BAF2EB"
 
 var _candidates: Array[Dictionary] = []
 var _result: Dictionary = {}
@@ -267,11 +267,11 @@ func _render() -> void:
 	if _header == null:
 		return
 	var committed := not committed_origin().is_empty()
-	_header.text = COMMITTED_TEXT if committed else HEADER_TEXT
-	_footer.text = COMMITTED_FOOTER if committed else OPEN_FOOTER
+	_header.text = L.t(COMMITTED_TEXT if committed else HEADER_TEXT)
+	_footer.text = L.t(COMMITTED_FOOTER if committed else OPEN_FOOTER)
 	if _confirm_button != null:
 		_confirm_button.disabled = committed or _focused_origin().is_empty()
-		_confirm_button.text = CONFIRM_OFFER if committed else CONFIRM_TEXT
+		_confirm_button.text = L.t(CONFIRM_OFFER if committed else CONFIRM_TEXT)
 
 
 ## The arrival this screen's own commit button would commit: the FIRST row that may still

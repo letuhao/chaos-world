@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Y22_immortal_wardrobe_signet"
-display_name = "Immortal Wardrobe Signet"
+display_name = "LOC_ITEMS_Y22_IMMORTAL_WARDROBE_SIGNET_DISPLAY_NAME"
 category = &"currency"
 rarity = &"legendary"
 realm = &"mystic_immortal"

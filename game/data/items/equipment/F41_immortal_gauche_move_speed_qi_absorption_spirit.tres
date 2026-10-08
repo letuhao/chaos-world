@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F41_immortal_gauche_move_speed_qi_absorption_spirit"
-display_name = "Immortal Gauche Move speed Qi absorption Spirit"
+display_name = "LOC_ITEMS_F41_IMMORTAL_GAUCHE_MOVE_SPEED_QI_ABSORPTION_SPIRIT_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"immortal_sovereign"

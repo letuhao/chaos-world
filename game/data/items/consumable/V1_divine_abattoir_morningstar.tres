@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V1_divine_abattoir_morningstar"
-display_name = "Divine Abattoir Morningstar"
+display_name = "LOC_ITEMS_V1_DIVINE_ABATTOIR_MORNINGSTAR_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"apti_eclipse_mind"
-display_name = "Eclipse Mind Elixir"
+display_name = "LOC_ITEMS_APTI_ECLIPSE_MIND_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"earth_immortal"

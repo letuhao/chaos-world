@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d4_marionette_king_pool_immortal_sovereign"
-display_name = "Marionette King Lesser salvage (immortal_sovereign)"
+display_name = "LOC_LOOT_D4_MARIONETTE_KING_IMMORTAL_SOVEREIGN_0_DISPLAY_NAME"
 realm = &"immortal_sovereign"
 rarity = &""
 rolls = 1

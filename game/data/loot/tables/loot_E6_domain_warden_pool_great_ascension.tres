@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E6_domain_warden_pool_great_ascension"
-display_name = "Domain Warden salvage (great_ascension)"
+display_name = "LOC_LOOT_E6_DOMAIN_WARDEN_GREAT_ASCENSION_0_DISPLAY_NAME"
 realm = &"great_ascension"
 rarity = &""
 rolls = 1

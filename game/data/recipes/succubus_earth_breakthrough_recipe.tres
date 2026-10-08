@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"succubus_earth_breakthrough_recipe"
-display_name = "Earth Bloom Breakthrough Recipe"
+display_name = "LOC_RECIPES_SUCCUBUS_EARTH_BREAKTHROUGH_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"succubus_earth_essence", &"succubus_earth_heart_core"])
 outputs = Array[StringName]([&"succubus_earth_breakthrough_elixir"])

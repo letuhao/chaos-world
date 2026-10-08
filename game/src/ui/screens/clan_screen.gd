@@ -121,13 +121,13 @@ const NO_REGISTER_SEAM := "no_register_seam"
 ## somebody to a house nobody chose.
 const NO_HOUSE_PICKED := "no_house_picked"
 
-const NO_ACTOR_TEXT := "No hero bound."
+const NO_ACTOR_TEXT := "LOC_UI_SCREENS_6E9BC19A74"
 const NO_ACTOR_FOOTER := ""
-const FOOTER_TEXT := "Enter names the member in the house's register as its heir."
-const TERMS_EMPTY := "This house publishes no terms."
-const NO_HOUSE_TEXT := "You belong to no house."
+const FOOTER_TEXT := "LOC_UI_SCREENS_096C8E740C"
+const TERMS_EMPTY := "LOC_UI_SCREENS_4935F8D031"
+const NO_HOUSE_TEXT := "LOC_UI_SCREENS_8374B9E698"
 ## What a hero who has not yet been admitted is told instead of a silently dead bar.
-const JOIN_HINT_TEXT := "Pick a house you are admitted to, and press Ask."
+const JOIN_HINT_TEXT := "LOC_UI_SCREENS_5D914370DD"
 
 var _house: Label = null
 var _terms: Label = null
@@ -546,17 +546,17 @@ func _render() -> void:
 	if _house == null:
 		return
 	if _actor == null:
-		_house.text = NO_ACTOR_TEXT
+		_house.text = L.t(NO_ACTOR_TEXT)
 		_terms.text = ""
-		_footer.text = NO_ACTOR_FOOTER
+		_footer.text = L.t(NO_ACTOR_FOOTER)
 		_publish_actions()
 		return
 	var codex := ClanApi.summary(_actor)
 	_codex = codex.duplicate(true)
 	var footer := _footer_line(codex)
-	_house.text = _house_line(codex)
-	_terms.text = _terms_line(codex)
-	_footer.text = String(footer.get("text", ""))
+	_house.text = L.t(_house_line(codex))
+	_terms.text = L.t(_terms_line(codex))
+	_footer.text = L.t(String(footer.get("text", "")))
 	_publish_actions()
 
 
@@ -584,7 +584,7 @@ func _footer_line(codex: Dictionary) -> Dictionary:
 func _house_line(codex: Dictionary) -> String:
 	var house := String(codex.get("display_name", ""))
 	if house == "":
-		return NO_HOUSE_TEXT
+		return L.t(NO_HOUSE_TEXT)
 	return (
 		"%s — %s, standing %d (recognised %d)."
 		% [
@@ -603,7 +603,7 @@ func _terms_line(codex: Dictionary) -> String:
 	var owed := _term_list(codex.get("patronage", {}))
 	var owed_back := _term_list(codex.get("duty", {}))
 	if owed.is_empty() and owed_back.is_empty():
-		return TERMS_EMPTY
+		return L.t(TERMS_EMPTY)
 	return (
 		"The house owes: %s. The member owes: %s."
 		% [

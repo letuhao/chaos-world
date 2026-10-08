@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"shard_tide"
-display_name = "Tide Shard"
+display_name = "LOC_ITEMS_SHARD_TIDE_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"true_immortal"

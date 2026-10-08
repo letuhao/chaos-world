@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d3_manta_raylet_pool_spirit_ascension"
-display_name = "Frost Manta Ray Lesser salvage (spirit_ascension)"
+display_name = "LOC_LOOT_D3_MANTA_RAYLET_SPIRIT_ASCENSION_0_DISPLAY_NAME"
 realm = &"spirit_ascension"
 rarity = &""
 rolls = 1

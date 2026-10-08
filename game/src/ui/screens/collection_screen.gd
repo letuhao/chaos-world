@@ -6,8 +6,8 @@ extends UiScreen
 
 const TIER_ROWS := 12
 const TIER_SCENE := "res://src/ui/panels/collection_tier_row.tscn"
-const HEADER_TEXT := "Collect enough, get rewarded. Rewards are narrative, not power."
-const NO_ACTOR_TEXT := "No hero bound."
+const HEADER_TEXT := "LOC_UI_SCREENS_CAC632BC77"
+const NO_ACTOR_TEXT := "LOC_UI_SCREENS_6E9BC19A74"
 
 var _codex: Dictionary = {}
 var _header: Label = null
@@ -47,8 +47,8 @@ func _refresh_view() -> void:
 func _render() -> void:
 	if _header == null:
 		return
-	_header.text = HEADER_TEXT if _actor != null else NO_ACTOR_TEXT
-	_footer.text = "Each tier pays a narrative fate."
+	_header.text = L.t(HEADER_TEXT if _actor != null else NO_ACTOR_TEXT)
+	_footer.text = L.t("LOC_UI_SCREENS_E8D22CCA94")
 
 
 func focus_initial() -> void:

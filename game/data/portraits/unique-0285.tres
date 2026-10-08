@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_portrait")
 id = &"unique-0285"
-display_name = "Selka Renn"
+display_name = "LOC_PORTRAITS_UNIQUE_0285_DISPLAY_NAME"
 race_id = &"tidecaller"
 visual_traits = Array[StringName]([&"burden:the-reckoning-is-her-and-she-is-the-error-term", &"class:paid-by-the-tide-not-the-contract", &"constraint:no-ordinal-exists-to-quote", &"discipline:hold-the-line-without-looking-away", &"gift:nine-hundred-seconds-of-unbroken-attention", &"hazard:her-instrument-is-her-own-body-and-nobody-else-has-one", &"method:state-the-drift-before-the-level", &"path:mind", &"role:the-long-read", &"species:built-for-looking-not-for-being-hit"])
 layer_paths = Array[String](["res://assets/characters/portraits/tidecaller.png"])

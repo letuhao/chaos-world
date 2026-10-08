@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_item")
 id = &"lifespan_extension_elixir"
-display_name = "Lifespan Extension Elixir"
-description = "A shimmering elixir that raises the lifespan the body was born with. It moves the deadline; it does not stop the clock."
+display_name = "LOC_ITEMS_LIFESPAN_EXTENSION_ELIXIR_DISPLAY_NAME"
+description = "LOC_ITEMS_LIFESPAN_EXTENSION_ELIXIR_DESCRIPTION"
 category = &"consumable"
 rarity = &"rare"
 realm = &"qi_refining"

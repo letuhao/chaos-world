@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B10_mortal_byssus_aged"
-display_name = "Mortal Byssus Aged"
+display_name = "LOC_ITEMS_B10_MORTAL_BYSSUS_AGED_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"foundation"

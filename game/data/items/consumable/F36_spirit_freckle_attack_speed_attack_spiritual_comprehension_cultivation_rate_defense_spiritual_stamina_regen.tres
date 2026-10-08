@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F36_spirit_freckle_attack_speed_attack_spiritual_comprehension_cultivation_rate_defense_spiritual_stamina_regen"
-display_name = "Spirit Freckle Attack speed Attack spiritual Comprehension Cultivation rate Defense spiritual Stamina regen"
+display_name = "LOC_ITEMS_F36_SPIRIT_FRECKLE_ATTACK_SPEED_ATTACK_SPIRITUAL_COMPREHENSION_CULTIVATION_RATE_DEFENSE_SPIRITUAL_STAMINA_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_unity"

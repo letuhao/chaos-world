@@ -86,18 +86,15 @@ const OFFICE_ROWS := 8
 const CLAIM_SCENE := "res://src/ui/panels/sect_claim_row.tscn"
 const OFFICE_SCENE := "res://src/ui/panels/nation_office_row.tscn"
 const ACTIONS_SCENE := "res://src/ui/panels/action_set.tscn"
-const HEADER_TEXT := "The institution you are sworn to, and what the office obliges."
-const NO_ACTOR_TEXT := "No hero bound."
-const FOOTER_TEXT := (
-	"Up / Down picks an entry, Accept joins or is seated. Cancel returns."
-	+ " An institution grants recognition and access, and never power."
-)
+const HEADER_TEXT := "LOC_UI_SCREENS_A0FDE1CA31"
+const NO_ACTOR_TEXT := "LOC_UI_SCREENS_6E9BC19A74"
+const FOOTER_TEXT := "LOC_UI_SCREENS_EBF71FDC9C" + "LOC_UI_SCREENS_143BCE0E6E"
 ## The footer while nothing is bound, and while there is nothing to act on. A read-only
 ## sentence was published here for a screen that could do nothing; a screen that can
 ## now act says what its controls are instead.
 const NO_ACTOR_FOOTER := ""
 ## What the action bar offers a hero sworn to nothing: the catalog, one entry at a time.
-const OFFERED_TEXT := "Offered"
+const OFFERED_TEXT := "LOC_UI_SCREENS_A1BF1ADCBE"
 ## The refusals this screen itself raises, before a verb is called. Authored constants
 ## rather than prose, for the same reason the module's are: a panel renders a reason it
 ## did not have to invent.
@@ -585,12 +582,12 @@ func _render() -> void:
 	if _header == null:
 		return
 	if _actor == null:
-		_header.text = NO_ACTOR_TEXT
-		_footer.text = NO_ACTOR_FOOTER
+		_header.text = L.t(NO_ACTOR_TEXT)
+		_footer.text = L.t(NO_ACTOR_FOOTER)
 		_publish_actions()
 		return
-	_header.text = HEADER_TEXT if bool(_codex.get("is_member", false)) else OFFERED_TEXT
-	_footer.text = FOOTER_TEXT
+	_header.text = L.t(HEADER_TEXT if bool(_codex.get("is_member", false)) else OFFERED_TEXT)
+	_footer.text = L.t(FOOTER_TEXT)
 	_publish_actions()
 
 

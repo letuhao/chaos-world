@@ -21,7 +21,7 @@ mitigation_tags = Array[StringName]([&"affinity", &"technique"])
 immunity_tags = Array[StringName]([&"burn"])
 payload = {
 "mechanic": &"feed_siblings",
-"text": "A burning body burns harder. Every other burn already on the target feeds this one.",
+"text": "LOC_STATUSES_FIRE_PYRE_TEXT",
 "sibling_gain": 0.5,
 "sibling_cap": 0.4,
 "modifiers": []

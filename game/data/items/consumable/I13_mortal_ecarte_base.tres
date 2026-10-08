@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"I13_mortal_ecarte_base"
-display_name = "Mortal Ecarte Base"
+display_name = "LOC_ITEMS_I13_MORTAL_ECARTE_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"great_ascension"

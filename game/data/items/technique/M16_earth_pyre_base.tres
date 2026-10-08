@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"M16_earth_pyre_base"
-display_name = "Earth Pyre Base"
+display_name = "LOC_ITEMS_M16_EARTH_PYRE_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_condensation"

@@ -272,7 +272,7 @@ func _state_text() -> String:
 	var line := (
 		FLOOR_TEXT % floor
 		if not floor.is_empty() and not bool(_view.get("reachable", true))
-		else NO_FLOOR
+		else L.t(NO_FLOOR)
 	)
 	var owed := int(_view.get("owed", 0))
 	return line if owed <= 0 else "%s  %s" % [line, L.t(OWE_MARK) % owed]

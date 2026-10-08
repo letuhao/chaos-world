@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"T4_mortal_reedmace_dirge"
-display_name = "Mortal Reedmace Dirge"
+display_name = "LOC_ITEMS_T4_MORTAL_REEDMACE_DIRGE_DISPLAY_NAME"
 category = &"misc"
 rarity = &"common"
 realm = &"foundation"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"scabbard_chaos"
-display_name = "Chaos Scabbard"
+display_name = "LOC_ITEMS_SCABBARD_CHAOS_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"transcendent"

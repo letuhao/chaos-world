@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"votive_void_relic"
-display_name = "Votive of the Void"
+display_name = "LOC_ITEMS_VOTIVE_VOID_RELIC_DISPLAY_NAME"
 category = &"quest"
 rarity = &"legendary"
 realm = &"dao_fruit"

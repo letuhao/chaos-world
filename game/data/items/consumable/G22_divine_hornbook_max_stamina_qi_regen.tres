@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G22_divine_hornbook_max_stamina_qi_regen"
-display_name = "Divine Hornbook Max stamina Qi regen"
+display_name = "LOC_ITEMS_G22_DIVINE_HORNBOOK_MAX_STAMINA_QI_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"transcendent"

@@ -18,7 +18,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d3_stone_crane_dancer_pool_dao_fruit"
-display_name = "Stone Crane Lesser salvage (dao_fruit)"
+display_name = "LOC_LOOT_D3_STONE_CRANE_DANCER_DAO_FRUIT_0_DISPLAY_NAME"
 realm = &"dao_fruit"
 rarity = &""
 rolls = 1

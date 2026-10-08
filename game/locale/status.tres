@@ -1,0 +1,7 @@
+[gd_resource type="Translation" format=3]
+
+[resource]
+locale = "en"
+messages = {
+"LOC_STATUS_8B6951B755": "the blessing was refused",
+}

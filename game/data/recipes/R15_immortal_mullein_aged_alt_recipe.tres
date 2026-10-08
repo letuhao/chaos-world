@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"R15_immortal_mullein_aged_alt_recipe"
-display_name = "Immortal Mullein Aged (Alt) Recipe"
+display_name = "LOC_RECIPES_R15_IMMORTAL_MULLEIN_AGED_ALT_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"R15_immortal_mullein_refined", &"Q7_immortal_dill_sinter", &"sap_ooze"])
 outputs = Array[StringName]([&"R15_immortal_mullein_aged"])

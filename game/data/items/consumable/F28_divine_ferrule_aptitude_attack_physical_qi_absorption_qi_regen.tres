@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F28_divine_ferrule_aptitude_attack_physical_qi_absorption_qi_regen"
-display_name = "Divine Ferrule Aptitude Attack physical Qi absorption Qi regen"
+display_name = "LOC_ITEMS_F28_DIVINE_FERRULE_APTITUDE_ATTACK_PHYSICAL_QI_ABSORPTION_QI_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"

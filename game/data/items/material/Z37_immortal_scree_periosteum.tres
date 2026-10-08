@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Z37_immortal_scree_periosteum"
-display_name = "Immortal Osteology Periosteum"
+display_name = "LOC_ITEMS_Z37_IMMORTAL_SCREE_PERIOSTEUM_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"dao_fruit"

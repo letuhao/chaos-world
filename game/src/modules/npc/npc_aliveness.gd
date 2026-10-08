@@ -65,7 +65,7 @@ const MAX_OPINION_ROWS := 4
 ## an npc with no opinion of you still nods, and refusing to answer would make an
 ## unauthored cast look broken rather than neutral.
 const DEFAULT_TELL_VERB := &"nods_once"
-const DEFAULT_TELL_BODY := "nods once and goes back to what they were doing"
+const DEFAULT_TELL_BODY := "LOC_NPC_735EBAB8F2"
 const DEFAULT_TELL_CONSEQUENCE := &"neutral"
 
 ## The `last_synced` stamps, keyed by npc id. A `static var` because the clock is

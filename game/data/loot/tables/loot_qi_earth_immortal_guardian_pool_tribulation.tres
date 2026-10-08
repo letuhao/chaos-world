@@ -30,7 +30,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_qi_earth_immortal_guardian_pool_tribulation"
-display_name = "Earth Immortal Guardian salvage (tribulation)"
+display_name = "LOC_LOOT_QI_EARTH_IMMORTAL_GUARDIAN_TRIBULATION_0_DISPLAY_NAME"
 realm = &"tribulation"
 rarity = &""
 rolls = 1

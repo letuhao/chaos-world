@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C24_heaven_coulis_health_regen_will_evasion"
-display_name = "Heaven Coulis Health Regen Will Evasion"
+display_name = "LOC_ITEMS_C24_HEAVEN_COULIS_HEALTH_REGEN_WILL_EVASION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"primordial_immortal"

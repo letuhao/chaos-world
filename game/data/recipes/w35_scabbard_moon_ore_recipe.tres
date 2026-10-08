@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"w35_scabbard_moon_ore_recipe"
-display_name = "Scabbard Moon Ore Recipe"
+display_name = "LOC_RECIPES_W35_SCABBARD_MOON_ORE_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"scabbard_moon_ore", &"crystal_opal"])
 outputs = Array[StringName]([&"belt_moon_veil"])

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U2_mortal_sennit_sphere"
-display_name = "Mortal Sennit Sphere"
+display_name = "LOC_ITEMS_U2_MORTAL_SENNIT_SPHERE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"foundation"

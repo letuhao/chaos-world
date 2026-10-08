@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F47_immortal_grandam_dao_heart_fortune_penetration"
-display_name = "Immortal Grandam Dao heart Fortune Penetration"
+display_name = "LOC_ITEMS_F47_IMMORTAL_GRANDAM_DAO_HEART_FORTUNE_PENETRATION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_immortal"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F6_mortal_dahl_spirit_attack_speed_will_qi_cost_reduction"
-display_name = "Mortal Dahl Spirit Attack Speed Will Qi Cost Reduction"
+display_name = "LOC_ITEMS_F6_MORTAL_DAHL_SPIRIT_ATTACK_SPEED_WILL_QI_COST_REDUCTION_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"nascent_soul"

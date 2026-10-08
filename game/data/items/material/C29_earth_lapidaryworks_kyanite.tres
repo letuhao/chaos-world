@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C29_earth_lapidaryworks_kyanite"
-display_name = "Earth Lapidaryworks Kyanite"
+display_name = "LOC_ITEMS_C29_EARTH_LAPIDARYWORKS_KYANITE_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_condensation"

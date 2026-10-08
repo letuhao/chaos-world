@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E15_earth_pressingfloor_gedanite"
-display_name = "Earth Pressingfloor Gedanite"
+display_name = "LOC_ITEMS_E15_EARTH_PRESSINGFLOOR_GEDANITE_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_palace"

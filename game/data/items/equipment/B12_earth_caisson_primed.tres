@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B12_earth_caisson_primed"
-display_name = "Earth Caisson Primed"
+display_name = "LOC_ITEMS_B12_EARTH_CAISSON_PRIMED_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"spirit_palace"

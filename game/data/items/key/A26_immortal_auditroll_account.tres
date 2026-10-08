@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"A26_immortal_auditroll_account"
-display_name = "Immortal Auditroll Account"
+display_name = "LOC_ITEMS_A26_IMMORTAL_AUDITROLL_ACCOUNT_DISPLAY_NAME"
 category = &"key"
 rarity = &"legendary"
 realm = &"mystic_immortal"

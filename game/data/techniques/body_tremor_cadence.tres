@@ -5,8 +5,8 @@
 script = ExtResource("1_def")
 id = &"body_tremor_cadence"
 delivered_by = &"scroll_stone_colossus_core"
-display_name = "Tremor Cadence"
-description = "Sends a resonance down through whatever the practitioner is standing on. Ground-carried, so it finds the feet before it finds the chest."
+display_name = "LOC_TECHNIQUES_BODY_TREMOR_CADENCE_DISPLAY_NAME"
+description = "LOC_TECHNIQUES_BODY_TREMOR_CADENCE_DESCRIPTION"
 tags = Array[StringName]([&"technique", &"body", &"earth", &"area"])
 grade = &"earth"
 rarity = &"common"

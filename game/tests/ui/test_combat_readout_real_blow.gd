@@ -177,7 +177,7 @@ func test_a_real_blow_renders_the_band_row_when_the_root_injects_the_read() -> v
 	)
 	# The mechanism the root named must reach the panel, not be dropped by the seam.
 	assert_eq(
-		String(view["mechanism_line"]),
+		L.t(String(view["mechanism_line"])),
 		"flat subtraction at a meridian (body)",
 		"and the injected mechanism name renders through the panel's own words"
 	)

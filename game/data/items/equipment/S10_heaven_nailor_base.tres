@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"S10_heaven_nailor_base"
-display_name = "Heaven Nailor Base"
+display_name = "LOC_ITEMS_S10_HEAVEN_NAILOR_BASE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"true_immortal"

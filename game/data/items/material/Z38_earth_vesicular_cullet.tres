@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Z38_earth_vesicular_cullet"
-display_name = "Earth Vesicular Cullet"
+display_name = "LOC_ITEMS_Z38_EARTH_VESICULAR_CULLET_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_unity"

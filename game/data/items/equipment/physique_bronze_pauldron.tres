@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"physique_bronze_pauldron"
-display_name = "Bronze Physique Pauldron"
+display_name = "LOC_ITEMS_PHYSIQUE_BRONZE_PAULDRON_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"void_refinement"

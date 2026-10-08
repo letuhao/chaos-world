@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C19_mortal_compote_qi_regen_crit_damage_insight_gain"
-display_name = "Mortal Compote Qi Regen Crit Damage Insight Gain"
+display_name = "LOC_ITEMS_C19_MORTAL_COMPOTE_QI_REGEN_CRIT_DAMAGE_INSIGHT_GAIN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"core_formation"

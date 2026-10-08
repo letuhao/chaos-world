@@ -18,7 +18,7 @@ tick_interval = 1.0
 mitigation_tags = Array[StringName]([&"affinity", &"gear", &"technique"])
 payload = {
 "mechanic": &"brace",
-"text": "Stone stance. The body refuses to yield and keeps ground it would otherwise lose.",
+"text": "LOC_STATUSES_EARTH_BULWARK_TEXT",
 "modifiers": [
 {"stat": &"defense_physical", "op": &"flat", "value": 12.0},
 {"stat": &"damage_reduction", "op": &"flat", "value": 0.12}

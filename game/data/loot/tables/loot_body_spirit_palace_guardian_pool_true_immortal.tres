@@ -42,7 +42,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_body_spirit_palace_guardian_pool_true_immortal"
-display_name = "Jade Body Guardian salvage (true_immortal)"
+display_name = "LOC_LOOT_BODY_SPIRIT_PALACE_GUARDIAN_TRUE_IMMORTAL_0_DISPLAY_NAME"
 realm = &"true_immortal"
 rarity = &""
 rolls = 1

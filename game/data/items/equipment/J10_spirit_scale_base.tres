@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"J10_spirit_scale_base"
-display_name = "Spirit Scale Base"
+display_name = "LOC_ITEMS_J10_SPIRIT_SCALE_BASE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"magic"
 realm = &"spirit_sovereign"

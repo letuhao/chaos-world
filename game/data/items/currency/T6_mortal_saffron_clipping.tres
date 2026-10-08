@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"T6_mortal_saffron_clipping"
-display_name = "Mortal Saffron Clipping"
+display_name = "LOC_ITEMS_T6_MORTAL_SAFFRON_CLIPPING_DISPLAY_NAME"
 category = &"currency"
 rarity = &"common"
 realm = &"body_integration"

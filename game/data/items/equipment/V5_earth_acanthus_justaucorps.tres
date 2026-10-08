@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V5_earth_acanthus_justaucorps"
-display_name = "Earth Acanthus Justaucorps"
+display_name = "LOC_ITEMS_V5_EARTH_ACANTHUS_JUSTAUCORPS_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"spirit_palace"

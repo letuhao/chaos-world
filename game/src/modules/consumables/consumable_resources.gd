@@ -72,7 +72,8 @@ const COST_DARKNESS := &"darkness"
 ## a read, not a meal — so the two pressures are deliberately different shapes rather than
 ## three copies of one dial.
 const ROWS: Dictionary = {
-	FOOD: {
+	FOOD:
+	{
 		"label": "food",
 		"maximum": 10.0,
 		"per_room": 1.0,
@@ -80,7 +81,8 @@ const ROWS: Dictionary = {
 		"cost_magnitude": 0.35,
 		"cost_tick_interval": 2.0,
 	},
-	WATER: {
+	WATER:
+	{
 		"label": "water",
 		"maximum": 10.0,
 		"per_room": 1.0,
@@ -88,7 +90,8 @@ const ROWS: Dictionary = {
 		"cost_magnitude": 0.30,
 		"cost_tick_interval": 2.0,
 	},
-	TORCH: {
+	TORCH:
+	{
 		"label": "torch",
 		"maximum": 12.0,
 		"per_room": 1.0,

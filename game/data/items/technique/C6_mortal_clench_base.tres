@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C6_mortal_clench_base"
-display_name = "Mortal Clench Base"
+display_name = "LOC_ITEMS_C6_MORTAL_CLENCH_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"spirit_transformation"

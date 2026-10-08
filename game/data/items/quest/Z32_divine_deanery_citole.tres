@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Z32_divine_deanery_citole"
-display_name = "Divine Deanery Citole"
+display_name = "LOC_ITEMS_Z32_DIVINE_DEANERY_CITOLE_DISPLAY_NAME"
 category = &"quest"
 rarity = &"legendary"
 realm = &"primordial_origin"

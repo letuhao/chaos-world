@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"I44_immortal_gaira_primed"
-display_name = "Immortal Gaira Primed"
+display_name = "LOC_ITEMS_I44_IMMORTAL_GAIRA_PRIMED_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"earth_immortal"

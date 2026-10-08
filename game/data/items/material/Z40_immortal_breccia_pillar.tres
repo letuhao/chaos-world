@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Z40_immortal_breccia_pillar"
-display_name = "Immortal Breccia Pillar"
+display_name = "LOC_ITEMS_Z40_IMMORTAL_BRECCIA_PILLAR_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"immortal_sovereign"

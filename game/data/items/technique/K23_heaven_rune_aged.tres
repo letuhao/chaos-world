@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"K23_heaven_rune_aged"
-display_name = "Heaven Rune Aged"
+display_name = "LOC_ITEMS_K23_HEAVEN_RUNE_AGED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"golden_immortal"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 faction_id = &"qi_dao"
-display_name = "Qi Dao"
+display_name = "LOC_WORLD_QI_DAO_DISPLAY_NAME"
 dao_alignment = &"qi"
 home_tier = &"spirit_world"
 philosophy = "Creation through energy. The universe is qi in motion; to shape qi is to shape reality."

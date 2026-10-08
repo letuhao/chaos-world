@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"sigil_heaven_ore"
-display_name = "Sigil Heaven Ore"
+display_name = "LOC_ITEMS_SIGIL_HEAVEN_ORE_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"immortal_sovereign"

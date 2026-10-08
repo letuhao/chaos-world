@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"D6_immortal_healthsalve_recipe"
-display_name = "Immortal Renewal Salve Recipe"
+display_name = "LOC_RECIPES_D6_IMMORTAL_HEALTHSALVE_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"herb_phoenix_feather", &"herb_dragonwhisker"])
 outputs = Array[StringName]([&"D6_immortal_healthsalve"])

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"E2_earth_crosslet_aged_recipe"
-display_name = "Earth Crosslet Aged Recipe"
+display_name = "LOC_RECIPES_E2_EARTH_CROSSLET_AGED_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"E2_earth_crosslet_refined", &"wood_ember_ring", &"filament_wool"])
 outputs = Array[StringName]([&"E2_earth_crosslet_aged"])

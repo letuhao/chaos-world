@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"R25_spirit_plover_pinion"
-display_name = "Spirit Plover Pinion"
+display_name = "LOC_ITEMS_R25_SPIRIT_PLOVER_PINION_DISPLAY_NAME"
 category = &"key"
 rarity = &"magic"
 realm = &"spirit_severing"

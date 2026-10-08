@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"X24_immortal_octroi_ark"
-display_name = "Immortal Octroi Ark"
+display_name = "LOC_ITEMS_X24_IMMORTAL_OCTROI_ARK_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"golden_immortal"

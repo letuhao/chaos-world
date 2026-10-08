@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"apti_silver_mind"
-display_name = "Silver Mind Elixir"
+display_name = "LOC_ITEMS_APTI_SILVER_MIND_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_unity"

@@ -17,7 +17,7 @@ rarity_floor = ""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_ember_pilgrim_t2"
-display_name = "Ember Vault Ash Pilgrim (Kindled) - nothing comes loose"
+display_name = "LOC_LOOT_EP2_ASH_CHARM_DISPLAY_NAME"
 realm = &"spirit_unity"
 rarity = &"magic"
 rolls = 0

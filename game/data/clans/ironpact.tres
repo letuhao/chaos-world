@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_clan")
 id = &"ironpact"
-display_name = "The Ironpact"
-description = "A guild-house that sells capacity: members are the muscle it rents out to whoever is paying, and it keeps a roster of names whose labour is worth more than any individual contract. It publishes a stipend, quarters and a share of contract income in exchange for standing orders — a member answers when called. It rivals the Saltledger over the harbour tariffs and answers the Quiet House at every coronation it can reach. Admission wants the household line carried far enough to be recognised as kin rather than as a stranger with a sword."
+display_name = "LOC_CLANS_IRONPACT_DISPLAY_NAME"
+description = "LOC_CLANS_IRONPACT_DESCRIPTION"
 founding_bloodline = &"tideborn"
 ranks = Array[StringName]([&"outer", &"inner", &"core", &"heir", &"head"])
 standing_bands = Array[int]([0, 15, 40, 75, 120])

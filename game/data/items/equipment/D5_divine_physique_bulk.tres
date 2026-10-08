@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"D5_divine_physique_bulk"
-display_name = "Divine Physique Bulk"
+display_name = "LOC_ITEMS_D5_DIVINE_PHYSIQUE_BULK_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"dao_ancestor"

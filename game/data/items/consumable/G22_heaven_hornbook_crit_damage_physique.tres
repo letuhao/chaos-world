@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G22_heaven_hornbook_crit_damage_physique"
-display_name = "Heaven Hornbook Crit damage Physique"
+display_name = "LOC_ITEMS_G22_HEAVEN_HORNBOOK_CRIT_DAMAGE_PHYSIQUE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"great_luo"

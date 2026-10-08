@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Z39_spirit_whetstone_stoa"
-display_name = "Spirit Marginalia Stoa"
+display_name = "LOC_ITEMS_Z39_SPIRIT_WHETSTONE_STOA_DISPLAY_NAME"
 category = &"material"
 rarity = &"magic"
 realm = &"spirit_severing"

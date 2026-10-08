@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C18_mortal_scriptorium_swastika"
-display_name = "Mortal Scriptorium Swastika"
+display_name = "LOC_ITEMS_C18_MORTAL_SCRIPTORIUM_SWASTIKA_DISPLAY_NAME"
 category = &"key"
 rarity = &"common"
 realm = &"body_integration"

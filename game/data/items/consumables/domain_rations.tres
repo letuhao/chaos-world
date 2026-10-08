@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"domain_rations"
-display_name = "Domain Rations"
+display_name = "LOC_ITEMS_DOMAIN_RATIONS_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"qi_refining"
@@ -15,7 +15,7 @@ stackable = true
 max_stack = 10
 tags = Array[StringName]([&"domain", &"survival", &"food"])
 sources = Array[StringName]([&"domain:qi_qi_refining_domain", &"gather:domain_cache"])
-description = "Compact travel rations. Restores 3 food when consumed."
+description = "LOC_ITEMS_DOMAIN_RATIONS_DESCRIPTION"
 ; resource: food
 ; depletion_rate: 1 per room entered
 ; duration: 3 rooms

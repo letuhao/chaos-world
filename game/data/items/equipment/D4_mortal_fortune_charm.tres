@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"D4_mortal_fortune_charm"
-display_name = "Mortal Fortune Charm"
+display_name = "LOC_ITEMS_D4_MORTAL_FORTUNE_CHARM_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"tribulation"

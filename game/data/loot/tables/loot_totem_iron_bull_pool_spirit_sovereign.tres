@@ -18,7 +18,7 @@ rarity_floor = &"magic"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_totem_iron_bull_pool_spirit_sovereign"
-display_name = "Iron Bull Totem salvage (spirit_sovereign)"
+display_name = "LOC_LOOT_TOTEM_IRON_BULL_SPIRIT_SOVEREIGN_0_DISPLAY_NAME"
 realm = &"spirit_sovereign"
 rarity = &""
 rolls = 1

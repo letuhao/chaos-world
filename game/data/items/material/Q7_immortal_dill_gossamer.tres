@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Q7_immortal_dill_gossamer"
-display_name = "Immortal Dill Gossamer"
+display_name = "LOC_ITEMS_Q7_IMMORTAL_DILL_GOSSAMER_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"dao_fruit"

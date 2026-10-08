@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"R11_divine_mastic_contract"
-display_name = "Divine Mastic Contract"
+display_name = "LOC_ITEMS_R11_DIVINE_MASTIC_CONTRACT_DISPLAY_NAME"
 category = &"quest"
 rarity = &"legendary"
 realm = &"transcendent"

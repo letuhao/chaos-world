@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G26_heaven_idyll_penetration_qi_absorption"
-display_name = "Heaven Idyll Penetration Qi absorption"
+display_name = "LOC_ITEMS_G26_HEAVEN_IDYLL_PENETRATION_QI_ABSORPTION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"earth_immortal"

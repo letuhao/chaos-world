@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U9_divine_pivot_perfected"
-display_name = "Divine Pivot Perfected"
+display_name = "LOC_ITEMS_U9_DIVINE_PIVOT_PERFECTED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_ancestor"

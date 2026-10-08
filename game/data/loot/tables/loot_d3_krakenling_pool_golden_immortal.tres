@@ -18,7 +18,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d3_krakenling_pool_golden_immortal"
-display_name = "Abyssal Kraken Lesser salvage (golden_immortal)"
+display_name = "LOC_LOOT_D3_KRAKENLING_GOLDEN_IMMORTAL_0_DISPLAY_NAME"
 realm = &"golden_immortal"
 rarity = &""
 rolls = 1

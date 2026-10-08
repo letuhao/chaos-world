@@ -198,7 +198,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_qi_dao_fruit_guardian"
-display_name = "Dao Fruit Guardian"
+display_name = "LOC_LOOT_QI_DAO_FRUIT_GUARDIAN_POOL_CORE_FORMATION_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

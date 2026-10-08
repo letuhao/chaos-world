@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 inhabitant_id = &"storm_elemental"
-display_name = "Storm Elemental"
+display_name = "LOC_WORLD_STORM_ELEMENTAL_DISPLAY_NAME"
 type = &"elemental"
 tier_ids = Array[StringName]([&"immortal_world", &"transcendent_world"])
 loyalty_min = 0.0

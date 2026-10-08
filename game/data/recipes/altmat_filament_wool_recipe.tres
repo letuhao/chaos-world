@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"altmat_filament_wool_recipe"
-display_name = "Wool Alternate Recipe"
+display_name = "LOC_RECIPES_ALTMAT_FILAMENT_WOOL_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"filament_wool", &"sap_gum"])
 outputs = Array[StringName]([&"mantle_earth"])

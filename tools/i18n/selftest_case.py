@@ -305,6 +305,29 @@ func _hint_text() -> String:
 """
 
 
+_FORMAT_VAR_DECL = """extends Control
+
+
+func _hint_text() -> String:
+\tvar line: String = "Cost %d" % _cost
+\treturn line
+"""
+
+
+@case("i18n: a format in a var declaration rewrites the literal, not the space before it")
+def _format_in_a_var_decl() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        _tree(root, _FORMAT_VAR_DECL, catalog.render("en", {}))
+        _extract(root)
+        text = (root / "game" / "src" / "ui" / "panel.gd").read_text(encoding="utf-8")
+        expect(
+            'var line: String = L.t("LOC_UI_' in text,
+            f"the literal is wrapped in place, with no quote eaten: {text!r}",
+        )
+        expect('") % _cost' in text, f"and the format still runs on the resolved text: {text!r}")
+
+
 @case("i18n: an array-valued display field keys each element")
 def _array_field_keys_each_element() -> None:
     with tempfile.TemporaryDirectory() as tmp:

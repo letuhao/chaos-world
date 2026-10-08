@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"qi_spirit_manifestation_qi_herb"
-display_name = "Spirit Manifestation Qi Herb"
+display_name = "LOC_ITEMS_QI_SPIRIT_MANIFESTATION_QI_HERB_DISPLAY_NAME"
 category = &"material"
 rarity = &"magic"
 realm = &"spirit_manifestation"
@@ -16,4 +16,4 @@ roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"herb"
 grade = &"spirit"
 sources = Array[StringName]([&"gather", &"boss:F11_manifestation_warden"])
-description = "Gathered reagent for the realm's elixir."
+description = "LOC_ITEMS_QI_SPIRIT_MANIFESTATION_QI_HERB_DESCRIPTION"

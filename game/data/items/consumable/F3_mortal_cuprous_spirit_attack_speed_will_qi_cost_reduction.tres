@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F3_mortal_cuprous_spirit_attack_speed_will_qi_cost_reduction"
-display_name = "Mortal Cuprous Spirit Attack Speed Will Qi Cost Reduction"
+display_name = "LOC_ITEMS_F3_MORTAL_CUPROUS_SPIRIT_ATTACK_SPEED_WILL_QI_COST_REDUCTION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"qi_refining"

@@ -18,7 +18,7 @@ rarity_floor = &"magic"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d2_tide_guardian_pool_spirit_domain"
-display_name = "Tide Guardian Lesser salvage (spirit_domain)"
+display_name = "LOC_LOOT_D2_TIDE_GUARDIAN_SPIRIT_DOMAIN_0_DISPLAY_NAME"
 realm = &"spirit_domain"
 rarity = &""
 rolls = 1

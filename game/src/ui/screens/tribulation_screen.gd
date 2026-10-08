@@ -106,7 +106,7 @@ func _refresh_view() -> void:
 func _render_message() -> void:
 	if _message_label == null:
 		return
-	_message_label.text = _message
+	_message_label.text = L.t(_message)
 	match _tone:
 		TONE_ERROR:
 			_message_label.theme_type_variation = &"WarnLabel"
@@ -268,5 +268,5 @@ func _survived_message() -> String:
 	var blessing := _panel.blessing_summary() if _panel != null else {}
 	var status_id := String(blessing.get("id", ""))
 	if not bool(blessing.get("paid", false)) or status_id.is_empty():
-		return "Survived the tribulation"
-	return "Survived the tribulation — %s" % status_id.replace("_", " ")
+		return L.t("LOC_UI_SCREENS_E1D46249B9")
+	return L.t("LOC_UI_SCREENS_1276CDB5BA") % status_id.replace("_", " ")

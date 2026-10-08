@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"accessory_silver_thread_herb"
-display_name = "Silver Thread Herb"
+display_name = "LOC_ITEMS_ACCESSORY_SILVER_THREAD_HERB_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"body_integration"

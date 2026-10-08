@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"X3_divine_abjuration_refined"
-display_name = "Divine Abjuration Refined"
+display_name = "LOC_ITEMS_X3_DIVINE_ABJURATION_REFINED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"transcendent"

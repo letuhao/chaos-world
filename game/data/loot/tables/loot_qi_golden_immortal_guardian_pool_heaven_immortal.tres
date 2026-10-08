@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_qi_golden_immortal_guardian_pool_heaven_immortal"
-display_name = "Golden Immortal Guardian salvage (heaven_immortal)"
+display_name = "LOC_LOOT_QI_GOLDEN_IMMORTAL_GUARDIAN_HEAVEN_IMMORTAL_0_DISPLAY_NAME"
 realm = &"heaven_immortal"
 rarity = &""
 rolls = 1

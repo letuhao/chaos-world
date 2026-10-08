@@ -30,7 +30,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_relic_ash_wyrm_pool_primordial_origin"
-display_name = "Ash Wyrm salvage (primordial_origin)"
+display_name = "LOC_LOOT_RELIC_ASH_WYRM_PRIMORDIAL_ORIGIN_0_DISPLAY_NAME"
 realm = &"primordial_origin"
 rarity = &""
 rolls = 1

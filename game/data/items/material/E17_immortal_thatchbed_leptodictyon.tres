@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E17_immortal_thatchbed_leptodictyon"
-display_name = "Immortal Thatchbed Leptodictyon"
+display_name = "LOC_ITEMS_E17_IMMORTAL_THATCHBED_LEPTODICTYON_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"true_immortal"

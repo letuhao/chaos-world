@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"X16_divine_bailiff_lapse"
-display_name = "Divine Bailiff Lapse"
+display_name = "LOC_ITEMS_X16_DIVINE_BAILIFF_LAPSE_DISPLAY_NAME"
 category = &"key"
 rarity = &"legendary"
 realm = &"transcendent"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"body_golden_immortal_pill_recipe"
-display_name = "Body of Eternity Pill Formula"
+display_name = "LOC_RECIPES_BODY_GOLDEN_IMMORTAL_PILL_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"body_golden_immortal_tempering_herb", &"body_golden_immortal_guardian_core"])
 outputs = Array[StringName]([&"body_golden_immortal_breakthrough_pill"])

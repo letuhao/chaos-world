@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F12_spirit_dubbing_agility_aptitude_cooldown_reduction_status_resistance"
-display_name = "Spirit Dubbing Agility Aptitude Cooldown reduction Status resistance"
+display_name = "LOC_ITEMS_F12_SPIRIT_DUBBING_AGILITY_APTITUDE_COOLDOWN_REDUCTION_STATUS_RESISTANCE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"magic"
 realm = &"spirit_palace"

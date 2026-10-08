@@ -42,7 +42,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_body_great_luo_guardian_pool_dao_fruit"
-display_name = "Body of Origin Guardian salvage (dao_fruit)"
+display_name = "LOC_LOOT_BODY_GREAT_LUO_GUARDIAN_DAO_FRUIT_0_DISPLAY_NAME"
 realm = &"dao_fruit"
 rarity = &""
 rolls = 1

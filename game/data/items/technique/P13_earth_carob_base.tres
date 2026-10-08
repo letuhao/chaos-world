@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"P13_earth_carob_base"
-display_name = "Earth Carob Base"
+display_name = "LOC_ITEMS_P13_EARTH_CAROB_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_sovereign"

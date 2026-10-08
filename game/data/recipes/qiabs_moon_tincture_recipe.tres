@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"qiabs_moon_tincture_recipe"
-display_name = "Moon Tincture Recipe"
+display_name = "LOC_RECIPES_QIABS_MOON_TINCTURE_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"petal_iris", &"sap_dew"])
 outputs = Array[StringName]([&"qiabs_moon_tincture"])

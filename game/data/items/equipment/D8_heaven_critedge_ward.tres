@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"D8_heaven_critedge_ward"
-display_name = "Heaven Critedge Ward"
+display_name = "LOC_ITEMS_D8_HEAVEN_CRITEDGE_WARD_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"great_luo"

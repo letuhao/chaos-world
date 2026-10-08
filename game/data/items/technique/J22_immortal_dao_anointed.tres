@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"J22_immortal_dao_anointed"
-display_name = "Immortal Dao Anointed"
+display_name = "LOC_ITEMS_J22_IMMORTAL_DAO_ANOINTED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_fruit"

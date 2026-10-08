@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E4_palace_vault_warden_pool_spirit_severing"
-display_name = "Palace Vault Warden salvage (spirit_severing)"
+display_name = "LOC_LOOT_E4_PALACE_VAULT_WARDEN_SPIRIT_SEVERING_0_DISPLAY_NAME"
 realm = &"spirit_severing"
 rarity = &""
 rolls = 1

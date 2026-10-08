@@ -1,0 +1,7 @@
+[gd_resource type="Translation" format=3]
+
+[resource]
+locale = "en"
+messages = {
+"LOC_COMBAT_ENGINE_0827141931": "Shield",
+}

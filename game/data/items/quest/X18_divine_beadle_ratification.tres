@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"X18_divine_beadle_ratification"
-display_name = "Divine Beadle Ratification"
+display_name = "LOC_ITEMS_X18_DIVINE_BEADLE_RATIFICATION_DISPLAY_NAME"
 category = &"quest"
 rarity = &"legendary"
 realm = &"primordial_origin"

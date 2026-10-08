@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C27_earth_tanneryhouse_split"
-display_name = "Earth Tanneryhouse Split"
+display_name = "LOC_ITEMS_C27_EARTH_TANNERYHOUSE_SPLIT_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_severing"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"agili_iron_greave"
-display_name = "Iron Greave"
+display_name = "LOC_ITEMS_AGILI_IRON_GREAVE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"core_formation"

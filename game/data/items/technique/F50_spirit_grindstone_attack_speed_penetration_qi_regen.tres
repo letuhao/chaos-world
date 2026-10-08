@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F50_spirit_grindstone_attack_speed_penetration_qi_regen"
-display_name = "Spirit Grindstone Attack speed Penetration Qi regen"
+display_name = "LOC_ITEMS_F50_SPIRIT_GRINDSTONE_ATTACK_SPEED_PENETRATION_QI_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_domain"

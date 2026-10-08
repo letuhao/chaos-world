@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_portrait")
 id = &"unique-0030"
-display_name = "Ashil Vey"
+display_name = "LOC_PORTRAITS_UNIQUE_0030_DISPLAY_NAME"
 race_id = &"commonborn"
 visual_traits = Array[StringName]([&"burden:cull-accounting", &"class:bound-at-birth", &"gift:concentrated-lineage", &"hazard:cannot-clear-the-debt", &"path:none", &"role:cull-survivor", &"standing:bound-before-breath"])
 layer_paths = Array[String](["res://assets/characters/portraits/commonborn.png"])

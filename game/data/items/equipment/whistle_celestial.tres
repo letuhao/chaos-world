@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"whistle_celestial"
-display_name = "Celestial Whistle"
+display_name = "LOC_ITEMS_WHISTLE_CELESTIAL_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"heaven_immortal"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C9_earth_cochineal_refined"
-display_name = "Earth Cochineal Refined"
+display_name = "LOC_ITEMS_C9_EARTH_COCHINEAL_REFINED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_unity"

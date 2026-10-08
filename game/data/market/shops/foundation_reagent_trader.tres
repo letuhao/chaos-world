@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_shop")
 shop_id = &"foundation_reagent_trader"
-display_name = "Foundation Reagent Trader"
+display_name = "LOC_MARKET_FOUNDATION_REAGENT_TRADER_DISPLAY_NAME"
 kind = &"trader"
 stock = Array[Dictionary]([{"def_id": &"alchemy_clarity_pill", "quantity": 6}, {"def_id": &"alchemy_vigor_elixir", "quantity": 4}, {"def_id": &"alchemy_mist_herb", "quantity": 10}])
 ; `buys` carries `alchemy_clarity_pill` - the very first row of this def's own `stock`. A

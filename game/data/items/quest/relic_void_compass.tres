@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"relic_void_compass"
-display_name = "Void Compass Relic"
+display_name = "LOC_ITEMS_RELIC_VOID_COMPASS_DISPLAY_NAME"
 category = &"quest"
 rarity = &"legendary"
 realm = &"earth_immortal"

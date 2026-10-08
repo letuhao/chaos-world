@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Z35_heaven_knapping_zircon"
-display_name = "Heaven Knapping Zircon"
+display_name = "LOC_ITEMS_Z35_HEAVEN_KNAPPING_ZIRCON_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"golden_immortal"

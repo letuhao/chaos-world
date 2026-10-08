@@ -49,10 +49,10 @@ const TIER_ORDER: Array[StringName] = [
 ]
 
 const TIER_LABELS := {
-	&"mortal_world": "Mortal World",
-	&"spirit_world": "Spirit World",
-	&"immortal_world": "Immortal World",
-	&"transcendent_world": "Transcendent World",
+	&"mortal_world": "LOC_UI_SCREENS_CBD16751AF",
+	&"spirit_world": "LOC_UI_SCREENS_7EC5AE4A94",
+	&"immortal_world": "LOC_UI_SCREENS_3150F92782",
+	&"transcendent_world": "LOC_UI_SCREENS_B0FA565FE9",
 }
 
 const NODE_WIDTH := 160.0
@@ -166,7 +166,7 @@ func _retreat_text(result: Dictionary) -> String:
 	var unpaid := int(result.get("unpaid", 0))
 	var paid := int(result.get("paid", 0))
 	if unpaid <= 0:
-		return "You sat for %d periods." % paid
+		return L.t("LOC_UI_SCREENS_5895039F8F") % paid
 	return (
 		"You sat %d of the %d periods you chose - %d were not paid for."
 		% [paid, int(result.get("declared", 0)), unpaid]
@@ -347,7 +347,7 @@ func _build_tier_backdrops(tier_locations: Dictionary, map_size: Vector2) -> voi
 		_map_area.add_child(panel)
 		var label := Label.new()
 		label.name = "TierLabel"
-		label.text = TIER_LABELS.get(tier, String(tier))
+		label.text = L.t(TIER_LABELS.get(tier, String(tier)))
 		label.theme_type_variation = &"SectionTitle"
 		label.position = Vector2(12, y + 8)
 		label.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -381,7 +381,7 @@ func _add_node(loc: Dictionary, pos: Vector2) -> void:
 	var is_current: bool = location_id == _current_location
 	var button := Button.new()
 	button.name = display_name
-	button.text = display_name
+	button.text = L.t(display_name)
 	button.position = pos
 	button.size = Vector2(NODE_WIDTH, NODE_HEIGHT)
 	button.focus_mode = Control.FOCUS_ALL
@@ -442,21 +442,23 @@ func _update_info_panel() -> void:
 		return
 	var loc := _find_location(_selected_location)
 	if loc.is_empty():
-		_info_name.text = "Location Details"
+		_info_name.text = L.t("LOC_UI_SCREENS_A48800A1EC")
 		_info_tier.text = ""
 		_info_faction.text = ""
 		_info_danger.text = ""
 		_info_resources.text = ""
 		_info_inhabitants.text = ""
 		return
-	_info_name.text = loc.get("display_name", "")
+	_info_name.text = L.t(loc.get("display_name", ""))
 	_info_tier.text = (
 		"Tier: %s" % TIER_LABELS.get(StringName(loc.get("tier", &"")), loc.get("tier", ""))
 	)
-	_info_faction.text = "Faction: %s" % loc.get("faction_id", "")
-	_info_danger.text = "Danger: %d/10" % loc.get("danger_level", 0)
-	_info_resources.text = "Resources: %s" % _join_names(loc.get("resources", []))
-	_info_inhabitants.text = "Inhabitants: %s" % _join_names(loc.get("inhabitant_types", []))
+	_info_faction.text = L.t("LOC_UI_SCREENS_0A00771715") % loc.get("faction_id", "")
+	_info_danger.text = L.t("LOC_UI_SCREENS_8EE9B7DC67") % loc.get("danger_level", 0)
+	_info_resources.text = L.t("LOC_UI_SCREENS_42D765F17B") % _join_names(loc.get("resources", []))
+	_info_inhabitants.text = (
+		L.t("LOC_UI_SCREENS_3640D45383") % _join_names(loc.get("inhabitant_types", []))
+	)
 
 
 func _find_location(location_id: StringName) -> Dictionary:

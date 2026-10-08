@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G14_spirit_gleamer_cooldown_reduction_health_regen"
-display_name = "Spirit Gleamer Cooldown reduction Health regen"
+display_name = "LOC_ITEMS_G14_SPIRIT_GLEAMER_COOLDOWN_REDUCTION_HEALTH_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_sea"

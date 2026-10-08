@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"A29_divine_justicery_parole"
-display_name = "Divine Justicery Parole"
+display_name = "LOC_ITEMS_A29_DIVINE_JUSTICERY_PAROLE_DISPLAY_NAME"
 category = &"quest"
 rarity = &"legendary"
 realm = &"primordial_origin"

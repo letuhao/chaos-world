@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_shop")
 shop_id = &"spirit_sea_material_caravan"
-display_name = "Spirit Sea Material Caravan"
+display_name = "LOC_MARKET_SPIRIT_SEA_MATERIAL_CARAVAN_DISPLAY_NAME"
 kind = &"caravan"
 stock = Array[Dictionary]([{"def_id": &"astral_lunar_veil_herb", "quantity": 8}, {"def_id": &"beast_ironhide_bear_hide", "quantity": 6}, {"def_id": &"bow_yew_wood", "quantity": 10}])
 buys = Array[StringName]([&"beast_ironhide_bear_hide", &"boots_leather_hide", &"bow_yew_wood"])

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F40_mortal_gaslight_cooldown_reduction_move_speed_qi_absorption"
-display_name = "Mortal Gaslight Cooldown reduction Move speed Qi absorption"
+display_name = "LOC_ITEMS_F40_MORTAL_GASLIGHT_COOLDOWN_REDUCTION_MOVE_SPEED_QI_ABSORPTION_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"body_integration"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"T6_heaven_saffron_escudo"
-display_name = "Heaven Saffron Escudo"
+display_name = "LOC_ITEMS_T6_HEAVEN_SAFFRON_ESCUDO_DISPLAY_NAME"
 category = &"currency"
 rarity = &"rare"
 realm = &"golden_immortal"

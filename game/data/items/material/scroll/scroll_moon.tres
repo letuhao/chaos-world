@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"scroll_moon"
-display_name = "Moon Scroll"
+display_name = "LOC_ITEMS_SCROLL_MOON_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_ascension"
@@ -20,4 +20,4 @@ subcategory = &"scroll"
 grade = &"earth"
 tags = Array[StringName]([&"rare"])
 sources = Array[StringName]([&"craft:scroll_moon_recipe", &"domain:artifact_storm_phoenix_domain"])
-description = "A scroll glowing with lunar essence. Earth-grade with moon affinity."
+description = "LOC_ITEMS_SCROLL_MOON_DESCRIPTION"

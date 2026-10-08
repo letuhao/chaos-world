@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"G11_heaven_bloom_lens_recipe"
-display_name = "Refined Prism Lens Recipe"
+display_name = "LOC_RECIPES_G11_HEAVEN_BLOOM_LENS_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"G11_heaven_bloom", &"gem_celestite"])
 outputs = Array[StringName]([&"L3_prism_refraction_lens"])

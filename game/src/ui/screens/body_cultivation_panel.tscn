@@ -29,31 +29,31 @@ text = ""
 
 [node name="CultivateButton" type="Button" parent="Layout/Actions"]
 unique_name_in_owner = true
-text = "Cultivate"
+text = "LOC_UI_SCREENS_885890DE9B"
 
 [node name="MeditateButton" type="Button" parent="Layout/Actions"]
 unique_name_in_owner = true
-text = "Meditate"
+text = "LOC_UI_SCREENS_22230C3EBA"
 
 [node name="StrengthenButton" type="Button" parent="Layout/Actions"]
 unique_name_in_owner = true
-text = "Strengthen Channel"
+text = "LOC_UI_SCREENS_F441A0B056"
 
 [node name="RecoverButton" type="Button" parent="Layout/Actions"]
 unique_name_in_owner = true
-text = "Recover"
+text = "LOC_UI_SCREENS_4ADDBF1673"
 
 [node name="BreakthroughButton" type="Button" parent="Layout/Actions"]
 unique_name_in_owner = true
-text = "Breakthrough"
+text = "LOC_UI_SCREENS_FE64ADD216"
 
 [node name="AscendButton" type="Button" parent="Layout/Actions"]
 unique_name_in_owner = true
-text = "Walk Ascent"
+text = "LOC_UI_SCREENS_6B878C2368"
 
 [node name="WorldMapButton" type="Button" parent="Layout/Actions"]
 unique_name_in_owner = true
-text = "World Map"
+text = "LOC_UI_SCREENS_454A2A3590"
 
 [node name="MessageLabel" type="Label" parent="Layout"]
 unique_name_in_owner = true

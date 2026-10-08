@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C7_earth_cloot_base"
-display_name = "Earth Cloot Base"
+display_name = "LOC_ITEMS_C7_EARTH_CLOOT_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_sea"

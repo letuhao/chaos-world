@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F20_spirit_epigonus_agility_attack_physical_fortune_health_regen"
-display_name = "Spirit Epigonus Agility Attack physical Fortune Health regen"
+display_name = "LOC_ITEMS_F20_SPIRIT_EPIGONUS_AGILITY_ATTACK_PHYSICAL_FORTUNE_HEALTH_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_ascension"

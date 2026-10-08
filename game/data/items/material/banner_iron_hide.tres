@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"banner_iron_hide"
-display_name = "Iron Banner Hide"
+display_name = "LOC_ITEMS_BANNER_IRON_HIDE_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"qi_refining"

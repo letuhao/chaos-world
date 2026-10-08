@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_scroll_frost_serpent_pool_great_ascension"
-display_name = "Frost Serpent salvage (great_ascension)"
+display_name = "LOC_LOOT_SCROLL_FROST_SERPENT_GREAT_ASCENSION_0_DISPLAY_NAME"
 realm = &"great_ascension"
 rarity = &""
 rolls = 1

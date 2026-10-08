@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B10_mortal_byssus_perfected"
-display_name = "Mortal Byssus Perfected"
+display_name = "LOC_ITEMS_B10_MORTAL_BYSSUS_PERFECTED_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"void_refinement"

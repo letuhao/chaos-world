@@ -54,7 +54,7 @@ rarity_floor = &"magic"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_body_primordial_origin_guardian_pool_spirit_palace"
-display_name = "Body of the Dao Guardian salvage (spirit_palace)"
+display_name = "LOC_LOOT_BODY_PRIMORDIAL_ORIGIN_GUARDIAN_SPIRIT_PALACE_0_DISPLAY_NAME"
 realm = &"spirit_palace"
 rarity = &""
 rolls = 1

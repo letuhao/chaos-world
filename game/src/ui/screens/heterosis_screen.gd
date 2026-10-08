@@ -4,8 +4,8 @@ extends UiScreen
 ## The heterosis screen: spike magnitude, decay rate, carrier state, generation.
 ## Read-only. A pure consumer of the `collection` facade.
 
-const HEADER_TEXT := "Heterosis: the outbred spike, its decay, and its carrier."
-const NO_ACTOR_TEXT := "No hero bound."
+const HEADER_TEXT := "LOC_UI_SCREENS_C8BFADC109"
+const NO_ACTOR_TEXT := "LOC_UI_SCREENS_6E9BC19A74"
 
 var _codex: Dictionary = {}
 var _header: Label = null
@@ -44,8 +44,8 @@ func _refresh_view() -> void:
 func _render() -> void:
 	if _header == null:
 		return
-	_header.text = HEADER_TEXT if _actor != null else NO_ACTOR_TEXT
-	_footer.text = "Heterosis is carried, not chosen."
+	_header.text = L.t(HEADER_TEXT if _actor != null else NO_ACTOR_TEXT)
+	_footer.text = L.t("LOC_UI_SCREENS_C579B64B54")
 
 
 func focus_initial() -> void:

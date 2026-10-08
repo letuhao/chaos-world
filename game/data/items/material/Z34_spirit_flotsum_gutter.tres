@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Z34_spirit_flotsum_gutter"
-display_name = "Spirit Furnace Gutter"
+display_name = "LOC_ITEMS_Z34_SPIRIT_FLOTSUM_GUTTER_DISPLAY_NAME"
 category = &"material"
 rarity = &"magic"
 realm = &"spirit_domain"

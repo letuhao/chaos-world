@@ -5,8 +5,8 @@
 script = ExtResource("1_def")
 id = &"qi_stoneheart_grasp"
 delivered_by = &"scroll_stoneheart_grasp"
-display_name = "Stoneheart Grasp"
-description = "Closes a fist of packed earth around a single foe. Wood pries it apart; water runs around it and survives less well than it hoped."
+display_name = "LOC_TECHNIQUES_QI_STONEHEART_GRASP_DISPLAY_NAME"
+description = "LOC_TECHNIQUES_QI_STONEHEART_GRASP_DESCRIPTION"
 tags = Array[StringName]([&"technique", &"earth", &"single_target"])
 grade = &"spirit"
 rarity = &"magic"

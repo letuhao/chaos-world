@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F22_spirit_ermine_agility_attack_speed_cultivation_rate_fortune"
-display_name = "Spirit Ermine Agility Attack speed Cultivation rate Fortune"
+display_name = "LOC_ITEMS_F22_SPIRIT_ERMINE_AGILITY_ATTACK_SPEED_CULTIVATION_RATE_FORTUNE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_domain"

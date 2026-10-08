@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F25_spirit_ewelt_agility_cultivation_rate_dao_heart_penetration"
-display_name = "Spirit Ewelt Agility Cultivation rate Dao heart Penetration"
+display_name = "LOC_ITEMS_F25_SPIRIT_EWELT_AGILITY_CULTIVATION_RATE_DAO_HEART_PENETRATION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_condensation"

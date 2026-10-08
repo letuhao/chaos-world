@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_soul")
 id = &"the_one_who_was_carried_out"
-display_name = "The One Who Was Carried Out"
-description = "The second return. This body does not arrive under its own power; someone else finished the journey, and the ledger records who."
+display_name = "LOC_SOUL_THE_ONE_WHO_WAS_CARRIED_OUT_DISPLAY_NAME"
+description = "LOC_SOUL_THE_ONE_WHO_WAS_CARRIED_OUT_DESCRIPTION"
 bearing = "You were brought. That is a debt, and it has a name attached."
 race_id = &"tidecaller"
 order = 1

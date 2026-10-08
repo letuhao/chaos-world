@@ -18,7 +18,7 @@ tick_interval = 2.0
 mitigation_tags = Array[StringName]([&"affinity", &"gear", &"technique"])
 payload = {
 "mechanic": &"wave",
-"text": "What froze is now brittle. One impact splits the whole crack open at once and spends itself in the moment it lands.",
+"text": "LOC_STATUSES_ICE_SHATTER_TEXT",
 "pool": &"health",
 "share_per_pulse": 0.11,
 "spends_on_apply": true,

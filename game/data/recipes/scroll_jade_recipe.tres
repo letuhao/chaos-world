@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"scroll_jade_recipe"
-display_name = "Jade Scroll Recipe"
+display_name = "LOC_RECIPES_SCROLL_JADE_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"crystal_jade", &"bangle_moon_essence"])
 outputs = Array[StringName]([&"scroll_jade"])

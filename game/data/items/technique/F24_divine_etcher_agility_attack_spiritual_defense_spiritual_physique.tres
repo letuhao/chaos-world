@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F24_divine_etcher_agility_attack_spiritual_defense_spiritual_physique"
-display_name = "Divine Etcher Agility Attack spiritual Defense spiritual Physique"
+display_name = "LOC_ITEMS_F24_DIVINE_ETCHER_AGILITY_ATTACK_SPIRITUAL_DEFENSE_SPIRITUAL_PHYSIQUE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"

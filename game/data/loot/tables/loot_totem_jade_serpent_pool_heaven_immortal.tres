@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_totem_jade_serpent_pool_heaven_immortal"
-display_name = "Jade Serpent Totem salvage (heaven_immortal)"
+display_name = "LOC_LOOT_TOTEM_JADE_SERPENT_HEAVEN_IMMORTAL_0_DISPLAY_NAME"
 realm = &"heaven_immortal"
 rarity = &""
 rolls = 1

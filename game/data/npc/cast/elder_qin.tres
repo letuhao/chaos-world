@@ -7,7 +7,7 @@
 script = ExtResource("2_stage")
 stage_id = &"seated"
 index = 0
-display_name = "Seated"
+display_name = "LOC_NPC_ELDER_QIN_DISPLAY_NAME_1"
 stat_multipliers = {}
 tags = Array[StringName]([&"elder", &"council"])
 advance_after = 0
@@ -17,7 +17,7 @@ terminal = false
 script = ExtResource("2_stage")
 stage_id = &"standing_surety"
 index = 1
-display_name = "Standing Surety"
+display_name = "LOC_NPC_ELDER_QIN_DISPLAY_NAME_2"
 stat_multipliers = {}
 tags = Array[StringName]([&"elder", &"council", &"witness", &"surety"])
 advance_after = 0
@@ -26,7 +26,7 @@ terminal = true
 [resource]
 script = ExtResource("1_def")
 npc_id = &"elder_qin"
-display_name = "Elder Qin"
+display_name = "LOC_NPC_ELDER_QIN_DISPLAY_NAME_3"
 inhabitant_id = &"azure_disciple"
 tier = &"story"
 faction = &"qi_dao"

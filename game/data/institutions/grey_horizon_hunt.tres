@@ -6,8 +6,8 @@
 [sub_resource type="Resource" id="position_tracker"]
 script = ExtResource("2_position")
 id = &"tracker"
-display_name = "Tracker"
-description = "The uncapped ordinary office of the Hunt. A tracker owes the house one period of walking the horizon and nothing else, and is paid in nothing, which is the honest shape of the bottom of a guild that has not yet earned anybody's standing."
+display_name = "LOC_INSTITUTIONS_TRACKER_DISPLAY_NAME_1"
+description = "LOC_INSTITUTIONS_TRACKER_DESCRIPTION_1"
 capacity = 0
 duties = Array[StringName]([&"walk_the_horizon", &"report_a_sighting"])
 authorities = Array[StringName]([&"claim_a_carcass"])
@@ -18,8 +18,8 @@ standing_percent_stats = {"agility": 0.0, "stamina_regen": 0.0}
 [sub_resource type="Resource" id="position_quartermaster"]
 script = ExtResource("2_position")
 id = &"quartermaster"
-display_name = "Quartermaster"
-description = "Two at a time, because a quartermaster both strips a kill and writes the writ for it and one body cannot do both well. The office issues the writ, so it is the room that fills rather than the seat that blocks: a third quartermaster is refused until a season passes, and no one is displaced."
+display_name = "LOC_INSTITUTIONS_TRACKER_DISPLAY_NAME_2"
+description = "LOC_INSTITUTIONS_TRACKER_DESCRIPTION_2"
 capacity = 2
 duties = Array[StringName]([&"strip_and_sell", &"settle_the_writs"])
 authorities = Array[StringName]([&"issue_a_writ", &"price_a_carcass"])
@@ -30,8 +30,8 @@ standing_percent_stats = {"physique": 0.0, "comprehension": 0.0}
 [sub_resource type="Resource" id="position_warden"]
 script = ExtResource("2_position")
 id = &"warden"
-display_name = "Warden"
-description = "The one seat, and the only office with the right to expel. It is a seat because the range it holds is contested ground: somebody has to be able to be put out of it, and a seat is the shape that makes removal a public act rather than a quiet edit."
+display_name = "LOC_INSTITUTIONS_TRACKER_DISPLAY_NAME_3"
+description = "LOC_INSTITUTIONS_TRACKER_DESCRIPTION_3"
 capacity = 1
 duties = Array[StringName]([&"hold_the_range", &"judge_a_claim"])
 authorities = Array[StringName]([&"name_a_quartermaster", &"expel", &"release_a_range"])
@@ -44,8 +44,8 @@ script = ExtResource("1_def")
 kind = &"hunting_guild"
 capabilities = Array[StringName]([&"has_offices", &"has_territory"])
 id = &"grey_horizon_hunt"
-display_name = "The Grey Horizon Hunt"
-description = "A hunting guild: rope, wages and a claimed range, and the three claims below confer NOTHING - no yield, no upkeep, no combat edge. They decide who may hunt where, which is the whole of what a claim is (ADR 0085). Cheaper to found than a counting house and far more expensive to hold: three ranges mean a split of this house is charged three times over."
+display_name = "LOC_INSTITUTIONS_TRACKER_DISPLAY_NAME_4"
+description = "LOC_INSTITUTIONS_TRACKER_DESCRIPTION_4"
 positions = Array[InstitutionPositionDef]([SubResource("position_tracker"), SubResource("position_quartermaster"), SubResource("position_warden")])
 top_position_id = &"warden"
 standing_cap = 100

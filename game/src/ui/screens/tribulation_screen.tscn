@@ -10,7 +10,7 @@ script = ExtResource("1")
 
 [node name="Title" type="Label" parent="Layout"]
 theme_type_variation = &"ScreenTitle"
-text = "Thiên Kiếp"
+text = "LOC_UI_SCREENS_026911B008"
 
 [node name="TribulationPanel" parent="Layout" instance=ExtResource("2")]
 unique_name_in_owner = true
@@ -19,19 +19,19 @@ unique_name_in_owner = true
 
 [node name="BeginButton" type="Button" parent="Layout/Actions"]
 unique_name_in_owner = true
-text = "Face the Tribulation"
+text = "LOC_UI_SCREENS_AEFD0F3F46"
 
 [node name="FightButton" type="Button" parent="Layout/Actions"]
 unique_name_in_owner = true
-text = "Fight a Wave"
+text = "LOC_UI_SCREENS_F168672983"
 
 [node name="VerdictButton" type="Button" parent="Layout/Actions"]
 unique_name_in_owner = true
-text = "Fight it Out"
+text = "LOC_UI_SCREENS_8C26C2CB9E"
 
 [node name="WithdrawButton" type="Button" parent="Layout/Actions"]
 unique_name_in_owner = true
-text = "Withdraw"
+text = "LOC_UI_SCREENS_47E5641946"
 
 [node name="MessageLabel" type="Label" parent="Layout"]
 unique_name_in_owner = true

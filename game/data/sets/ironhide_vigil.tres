@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_set")
 id = &"ironhide_vigil"
-display_name = "Ironhide Vigil"
-description = "A mortal-band vigil kit. Two members hold the line, five hold the gate; the body-tempering signature is the set's own, not a member's."
+display_name = "LOC_SETS_IRONHIDE_VIGIL_DISPLAY_NAME"
+description = "LOC_SETS_IRONHIDE_VIGIL_DESCRIPTION"
 realm = &"core_formation"
 rarity = &"rare"
 counting = &"distinct_definition"

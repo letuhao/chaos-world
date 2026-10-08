@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U2_divine_sennit_cup"
-display_name = "Divine Sennit Cup"
+display_name = "LOC_ITEMS_U2_DIVINE_SENNIT_CUP_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"

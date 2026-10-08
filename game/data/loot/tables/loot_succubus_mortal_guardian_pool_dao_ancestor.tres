@@ -18,7 +18,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_succubus_mortal_guardian_pool_dao_ancestor"
-display_name = "Mortal Veil Guardian salvage (dao_ancestor)"
+display_name = "LOC_LOOT_SUCCUBUS_MORTAL_GUARDIAN_DAO_ANCESTOR_0_DISPLAY_NAME"
 realm = &"dao_ancestor"
 rarity = &""
 rolls = 1

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"body_great_ascension_guardian_core"
-display_name = "Iron Body Guardian Core"
+display_name = "LOC_ITEMS_BODY_GREAT_ASCENSION_GUARDIAN_CORE_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"great_ascension"
@@ -16,4 +16,4 @@ roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"beast_core"
 grade = &"mortal"
 sources = Array[StringName]([&"boss:body_great_ascension_guardian"])
-description = "Boss-only channel catalyst."
+description = "LOC_ITEMS_BODY_GREAT_ASCENSION_GUARDIAN_CORE_DESCRIPTION"

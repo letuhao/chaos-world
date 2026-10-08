@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"W6_heaven_bastion_hackle"
-display_name = "Heaven Bastion Hackle"
+display_name = "LOC_ITEMS_W6_HEAVEN_BASTION_HACKLE_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"heaven_immortal"

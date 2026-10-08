@@ -19,13 +19,13 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"ScreenTitle"
-text = "Venture"
+text = "LOC_UI_SCREENS_4059BBA350"
 
 [node name="StatusLabel" type="Label" parent="Layout"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"MetaLabel"
-text = "No venture is standing."
+text = "LOC_UI_SCREENS_BC5F35D9E1"
 
 [node name="Row" type="HBoxContainer" parent="Layout"]
 layout_mode = 2
@@ -39,22 +39,22 @@ size_flags_horizontal = 3
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"PrimaryButton"
-text = "Open"
+text = "LOC_UI_SCREENS_CF9B77061F"
 
 [node name="CloseButton" type="Button" parent="Layout/Row"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Close"
+text = "LOC_UI_SCREENS_BBFA773E5A"
 
 [node name="ReturnButton" type="Button" parent="Layout/Row"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Return"
+text = "LOC_UI_SCREENS_24F096B221"
 
 [node name="DebugButton" type="Button" parent="Layout/Row"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Debug"
+text = "LOC_UI_SCREENS_BD604D99E7"
 
 [node name="EncounterRow" type="HBoxContainer" parent="Layout"]
 layout_mode = 2
@@ -69,23 +69,23 @@ text = ""
 [node name="FateFirstButton" type="Button" parent="Layout/EncounterRow"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Fate"
+text = "LOC_UI_SCREENS_3A7F70BDA7"
 
 [node name="FateSecondButton" type="Button" parent="Layout/EncounterRow"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Fate"
+text = "LOC_UI_SCREENS_3A7F70BDA7"
 
 [node name="DismissButton" type="Button" parent="Layout/EncounterRow"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Walk on"
+text = "LOC_UI_SCREENS_F62FD3B730"
 
 [node name="BuildButton" type="Button" parent="Layout/Move"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"PrimaryButton"
-text = "Build"
+text = "LOC_UI_SCREENS_BBD80CF7E2"
 
 [node name="Move" type="HBoxContainer" parent="Layout"]
 layout_mode = 2
@@ -93,28 +93,28 @@ layout_mode = 2
 [node name="NorthButton" type="Button" parent="Layout/Move"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "North"
+text = "LOC_UI_SCREENS_F8E45B2BE2"
 
 [node name="SouthButton" type="Button" parent="Layout/Move"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "South"
+text = "LOC_UI_SCREENS_6ACE449732"
 
 [node name="WestButton" type="Button" parent="Layout/Move"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "West"
+text = "LOC_UI_SCREENS_DD322F2DC7"
 
 [node name="EastButton" type="Button" parent="Layout/Move"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "East"
+text = "LOC_UI_SCREENS_9BB58B2D1B"
 
 [node name="DestroyButton" type="Button" parent="Layout/Move"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"DangerButton"
-text = "Break"
+text = "LOC_UI_SCREENS_7C9D6BF311"
 
 [node name="WorldHolder" type="Control" parent="Layout"]
 unique_name_in_owner = true

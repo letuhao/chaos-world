@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 inhabitant_id = &"ironhide_bear"
-display_name = "Ironhide Bear"
+display_name = "LOC_WORLD_IRONHIDE_BEAR_DISPLAY_NAME"
 type = &"beast"
 tier_ids = Array[StringName]([&"mortal_world", &"spirit_world", &"immortal_world"])
 loyalty_min = 0.1

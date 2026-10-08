@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"X23_immortal_moidores_trass"
-display_name = "Immortal Moidores Trass"
+display_name = "LOC_ITEMS_X23_IMMORTAL_MOIDORES_TRASS_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"mystic_immortal"

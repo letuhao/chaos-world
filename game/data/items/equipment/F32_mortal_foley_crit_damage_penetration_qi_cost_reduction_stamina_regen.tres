@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F32_mortal_foley_crit_damage_penetration_qi_cost_reduction_stamina_regen"
-display_name = "Mortal Foley Crit damage Penetration Qi cost reduction Stamina regen"
+display_name = "LOC_ITEMS_F32_MORTAL_FOLEY_CRIT_DAMAGE_PENETRATION_QI_COST_REDUCTION_STAMINA_REGEN_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"great_ascension"

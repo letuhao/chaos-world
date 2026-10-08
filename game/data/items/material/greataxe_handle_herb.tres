@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"greataxe_handle_herb"
-display_name = "Greataxe Handle Wood"
+display_name = "LOC_ITEMS_GREATAXE_HANDLE_HERB_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"tribulation"

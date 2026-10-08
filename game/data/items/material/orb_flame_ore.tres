@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"orb_flame_ore"
-display_name = "Orb Flame Ore"
+display_name = "LOC_ITEMS_ORB_FLAME_ORE_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"primordial_immortal"

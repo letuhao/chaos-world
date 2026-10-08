@@ -8,13 +8,13 @@ script = ExtResource("2_step")
 step_id = &"mountain_remembered"
 fact = &"oaths_discharged"
 need = 1
-display_name = "Serve one full term under the mountain that is waiting for you"
+display_name = "LOC_QUEST_THE_RETURNED_INSTRUMENT_DISPLAY_NAME_1"
 
 [resource]
 script = ExtResource("1_quest")
 id = &"the_returned_instrument"
-display_name = "The Returned Instrument"
-description = "The sect only explains itself to someone who has already come back. Until you hold The One Who Returned, this page is not written for you and asking for it earns you nothing but a closed door. Having come back, the one thing still owed is a term of service, and the sect keeps a book of who served it."
+display_name = "LOC_QUEST_THE_RETURNED_INSTRUMENT_DISPLAY_NAME_2"
+description = "LOC_QUEST_THE_RETURNED_INSTRUMENT_DESCRIPTION"
 kind = &"authored"
 tier = 2
 requirement = {"verb": &"has_destiny", "id": &"the_one_who_returned"}

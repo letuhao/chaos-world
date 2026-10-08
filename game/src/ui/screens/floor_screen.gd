@@ -69,9 +69,9 @@ extends UiScreen
 const DROP_ROWS := 8
 const ROW_SCENE := "res://src/ui/panels/floor_drop_row.tscn"
 const ACTIONS_SCENE := "res://src/ui/panels/action_set.tscn"
-const HEADER_TEXT := "What lies on the floor here, and who left it."
-const NO_ACTOR_TEXT := "No hero bound."
-const FOOTER_TEXT := "Up / Down picks a drop, Accept takes it. Cancel returns."
+const HEADER_TEXT := "LOC_UI_SCREENS_BEE4E98069"
+const NO_ACTOR_TEXT := "LOC_UI_SCREENS_6E9BC19A74"
+const FOOTER_TEXT := "LOC_UI_SCREENS_4345F6BD2A"
 
 ## The action ids this screen publishes, in the order the bar shows them. Declared as
 ## constants rather than built per call so the order a test reads is the order the
@@ -447,12 +447,12 @@ func _render() -> void:
 	if _header == null:
 		return
 	if _actor == null:
-		_header.text = NO_ACTOR_TEXT
+		_header.text = L.t(NO_ACTOR_TEXT)
 		_footer.text = ""
 		_publish_actions()
 		return
-	_header.text = HEADER_TEXT
-	_footer.text = FOOTER_TEXT
+	_header.text = L.t(HEADER_TEXT)
+	_footer.text = L.t(FOOTER_TEXT)
 	_publish_actions()
 
 

@@ -198,7 +198,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d2_gale_guardian"
-display_name = "Gale Guardian Lesser"
+display_name = "LOC_LOOT_D2_GALE_GUARDIAN_POOL_DAO_ANCESTOR_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

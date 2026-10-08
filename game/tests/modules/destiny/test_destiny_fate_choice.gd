@@ -19,14 +19,17 @@ const SOLO := &"t_solo"
 
 
 func setup() -> void:
-	DestinyFixtureCatalog.install(
-		[
-			DestinyFixtureCatalog.flat_fate(OATH_A, Stat.DEFENSE_PHYSICAL, 3.0),
-			DestinyFixtureCatalog.flat_fate(OATH_B, Stat.ATTACK_PHYSICAL, 2.0),
-			DestinyFixtureCatalog.flat_fate(OATH_C, Stat.MAX_HEALTH, 25.0),
-			DestinyFixtureCatalog.story_fate(SOLO),
-		],
-		[]
+	(
+		DestinyFixtureCatalog
+		. install(
+			[
+				DestinyFixtureCatalog.flat_fate(OATH_A, Stat.DEFENSE_PHYSICAL, 3.0),
+				DestinyFixtureCatalog.flat_fate(OATH_B, Stat.ATTACK_PHYSICAL, 2.0),
+				DestinyFixtureCatalog.flat_fate(OATH_C, Stat.MAX_HEALTH, 25.0),
+				DestinyFixtureCatalog.story_fate(SOLO),
+			],
+			[]
+		)
 	)
 	# Set up the choice group: OATH_A, OATH_B, and OATH_C are all in the same
 	# choice group. SOLO is not part of any choice group.

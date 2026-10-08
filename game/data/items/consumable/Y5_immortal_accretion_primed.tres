@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Y5_immortal_accretion_primed"
-display_name = "Immortal Accretion Primed"
+display_name = "LOC_ITEMS_Y5_IMMORTAL_ACCRETION_PRIMED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"heaven_immortal"

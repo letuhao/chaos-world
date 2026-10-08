@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"treasure_frost_hermit_crown"
-display_name = "Hermit Crown"
+display_name = "LOC_ITEMS_TREASURE_FROST_HERMIT_CROWN_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"great_luo"

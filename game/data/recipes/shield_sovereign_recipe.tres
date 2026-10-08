@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"shield_sovereign_recipe"
-display_name = "Sovereign Shield Recipe"
+display_name = "LOC_RECIPES_SHIELD_SOVEREIGN_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"shield_heaven_essence", &"shield_moonstone_ore"])
 outputs = Array[StringName]([&"shield_sovereign"])

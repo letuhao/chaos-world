@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"K13_spirit_gem_base_recipe"
-display_name = "Spirit Gem Base Recipe"
+display_name = "LOC_RECIPES_K13_SPIRIT_GEM_BASE_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"mind_spirit_manifestation_mind_herb", &"herb_ghostcap"])
 outputs = Array[StringName]([&"K13_spirit_gem_base"])

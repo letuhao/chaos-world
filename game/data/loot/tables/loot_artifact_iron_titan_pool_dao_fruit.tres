@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_artifact_iron_titan_pool_dao_fruit"
-display_name = "Iron Titan salvage (dao_fruit)"
+display_name = "LOC_LOOT_ARTIFACT_IRON_TITAN_DAO_FRUIT_0_DISPLAY_NAME"
 realm = &"dao_fruit"
 rarity = &""
 rolls = 1

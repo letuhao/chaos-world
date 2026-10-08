@@ -325,9 +325,9 @@ static func _shape_problem(meta: Dictionary) -> String:
 static func _line_problem(meta: Dictionary) -> String:
 	var count := int((meta["lines"] as Array).size())
 	if count == 0:
-		return R_NO_LINES
+		return L.t(R_NO_LINES)
 	if count > MAX_LINES:
-		return R_TOO_MANY_LINES
+		return L.t(R_TOO_MANY_LINES)
 	return ""
 
 

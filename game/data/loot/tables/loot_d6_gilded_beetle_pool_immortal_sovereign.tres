@@ -18,7 +18,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d6_gilded_beetle_pool_immortal_sovereign"
-display_name = "Gilded Beetle Lesser salvage (immortal_sovereign)"
+display_name = "LOC_LOOT_D6_GILDED_BEETLE_IMMORTAL_SOVEREIGN_0_DISPLAY_NAME"
 realm = &"immortal_sovereign"
 rarity = &""
 rolls = 1

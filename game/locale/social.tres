@@ -1,0 +1,15 @@
+[gd_resource type="Translation" format=3]
+
+[resource]
+locale = "en"
+messages = {
+"LOC_SOCIAL_2394299D6F": "Friend",
+"LOC_SOCIAL_49CE5DE18C": "Hostile",
+"LOC_SOCIAL_5D60331830": "Stranger",
+"LOC_SOCIAL_6D556D0E00": "Confidant",
+"LOC_SOCIAL_81E76E5BA6": "Acquaintance",
+"LOC_SOCIAL_A8BD065BA2": "Sworn",
+"LOC_SOCIAL_AB646FBF43": "Suspect",
+"LOC_SOCIAL_C0C7A8485B": "Grudge",
+"LOC_SOCIAL_C10C9355D2": "Nemesis",
+}

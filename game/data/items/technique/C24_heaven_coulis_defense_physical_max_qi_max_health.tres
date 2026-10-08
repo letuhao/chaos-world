@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C24_heaven_coulis_defense_physical_max_qi_max_health"
-display_name = "Heaven Coulis Defense Physical Max Qi Max Health"
+display_name = "LOC_ITEMS_C24_HEAVEN_COULIS_DEFENSE_PHYSICAL_MAX_QI_MAX_HEALTH_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"mystic_immortal"

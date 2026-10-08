@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"X23_immortal_moidores_spore"
-display_name = "Immortal Moidores Spore"
+display_name = "LOC_ITEMS_X23_IMMORTAL_MOIDORES_SPORE_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"true_immortal"

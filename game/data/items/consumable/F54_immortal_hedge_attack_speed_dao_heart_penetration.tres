@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F54_immortal_hedge_attack_speed_dao_heart_penetration"
-display_name = "Immortal Hedge Attack speed Dao heart Penetration"
+display_name = "LOC_ITEMS_F54_IMMORTAL_HEDGE_ATTACK_SPEED_DAO_HEART_PENETRATION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"earth_immortal"

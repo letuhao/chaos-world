@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_boss")
 id = &"relic_tide_serpent"
-display_name = "Tide Serpent"
+display_name = "LOC_BOSSES_RELIC_TIDE_SERPENT_DISPLAY_NAME"
 domain_id = &"relic_tide_serpent_domain"
 loot = Array[StringName]([])
 ; One heavy wave lands at once and spends its whole force the moment it arrives. The

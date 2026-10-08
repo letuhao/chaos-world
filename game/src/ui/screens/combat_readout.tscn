@@ -10,7 +10,7 @@ script = ExtResource("1")
 
 [node name="Title" type="Label" parent="Layout"]
 theme_type_variation = &"ScreenTitle"
-text = "Blow"
+text = "LOC_UI_SCREENS_4546120253"
 
 [node name="ReadoutHeader" type="Label" parent="Layout"]
 unique_name_in_owner = true
@@ -29,11 +29,11 @@ text = ""
 [node name="StrikeButton" type="Button" parent="Layout/Actions"]
 unique_name_in_owner = true
 theme_type_variation = &"PrimaryButton"
-text = "Strike"
+text = "LOC_UI_SCREENS_F9AE58AA35"
 
 [node name="ClearButton" type="Button" parent="Layout/Actions"]
 unique_name_in_owner = true
-text = "Forget the blow"
+text = "LOC_UI_SCREENS_F2CA9C835A"
 
 [node name="ReadoutPanel" parent="Layout" instance=ExtResource("2")]
 unique_name_in_owner = true

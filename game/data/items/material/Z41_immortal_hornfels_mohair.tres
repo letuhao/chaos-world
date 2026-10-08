@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Z41_immortal_hornfels_mohair"
-display_name = "Immortal Combing Mohair"
+display_name = "LOC_ITEMS_Z41_IMMORTAL_HORNFELS_MOHAIR_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"golden_immortal"

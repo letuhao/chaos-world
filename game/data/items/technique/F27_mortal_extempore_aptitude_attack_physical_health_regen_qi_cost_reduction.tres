@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F27_mortal_extempore_aptitude_attack_physical_health_regen_qi_cost_reduction"
-display_name = "Mortal Extempore Aptitude Attack physical Health regen Qi cost reduction"
+display_name = "LOC_ITEMS_F27_MORTAL_EXTEMPORE_APTITUDE_ATTACK_PHYSICAL_HEALTH_REGEN_QI_COST_REDUCTION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"core_formation"

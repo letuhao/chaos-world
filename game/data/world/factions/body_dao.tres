@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 faction_id = &"body_dao"
-display_name = "Body Dao"
+display_name = "LOC_WORLD_BODY_DAO_DISPLAY_NAME"
 dao_alignment = &"body"
 home_tier = &"mortal_world"
 philosophy = "Preservation through form. The body is the foundation of all cultivation; a perfect form endures beyond worlds."

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"H9_divine_spirit_leaf"
-display_name = "Divine Spirit Leaf"
+display_name = "LOC_ITEMS_H9_DIVINE_SPIRIT_LEAF_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"

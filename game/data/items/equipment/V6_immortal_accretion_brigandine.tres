@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V6_immortal_accretion_brigandine"
-display_name = "Immortal Accretion Brigandine"
+display_name = "LOC_ITEMS_V6_IMMORTAL_ACCRETION_BRIGANDINE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"immortal_sovereign"

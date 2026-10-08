@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"I37_mortal_frackle_aged"
-display_name = "Mortal Frackle Aged"
+display_name = "LOC_ITEMS_I37_MORTAL_FRACKLE_AGED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"foundation"

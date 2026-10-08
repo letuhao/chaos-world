@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Z34_mortal_halite_cupellation"
-display_name = "Mortal Flagon Cupellation"
+display_name = "LOC_ITEMS_Z34_MORTAL_HALITE_CUPELLATION_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"nascent_soul"

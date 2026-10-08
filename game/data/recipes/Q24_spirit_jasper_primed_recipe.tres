@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"Q24_spirit_jasper_primed_recipe"
-display_name = "Spirit Jasper Primed Recipe"
+display_name = "LOC_RECIPES_Q24_SPIRIT_JASPER_PRIMED_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"Q24_spirit_jasper_aged", &"fungus_moonspore", &"qi_spirit_sea_qi_herb", &"cloak_gale_feather"])
 outputs = Array[StringName]([&"Q24_spirit_jasper_primed"])

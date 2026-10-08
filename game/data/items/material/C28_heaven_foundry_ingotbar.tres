@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C28_heaven_foundry_ingotbar"
-display_name = "Heaven Foundry Ingotbar"
+display_name = "LOC_ITEMS_C28_HEAVEN_FOUNDRY_INGOTBAR_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"dao_fruit"

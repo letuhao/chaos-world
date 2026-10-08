@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"socket_gem_spirit_utility"
-display_name = "Spirit Utility Gem"
+display_name = "LOC_SOCKET_SOCKET_GEM_SPIRIT_UTILITY_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"magic"
 realm = &"spirit_palace"
@@ -19,4 +19,4 @@ stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"gather", &"domain:totem_jade_serpent_domain"])
 tags = Array[StringName]([&"socket_item", &"socket_kind:utility"])
-description = "Socket item. Utility gem; while its host is worn it adds qi capacity and qi regeneration."
+description = "LOC_SOCKET_SOCKET_GEM_SPIRIT_UTILITY_DESCRIPTION"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C19_mortal_comfrey_cooldown_reduction_crit_chance_penetration"
-display_name = "Mortal Comfrey Cooldown Reduction Crit Chance Penetration"
+display_name = "LOC_ITEMS_C19_MORTAL_COMFREY_COOLDOWN_REDUCTION_CRIT_CHANCE_PENETRATION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"spirit_transformation"

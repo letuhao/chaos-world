@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"I41_immortal_fustic_aged_recipe"
-display_name = "Immortal Fustic Aged Recipe"
+display_name = "LOC_RECIPES_I41_IMMORTAL_FUSTIC_AGED_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"I41_immortal_fustic_refined", &"gem_starfall_opal", &"feather_garuda"])
 outputs = Array[StringName]([&"I41_immortal_fustic_aged"])

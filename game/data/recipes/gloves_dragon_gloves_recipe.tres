@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"gloves_dragon_gloves_recipe"
-display_name = "Dragon Gloves Recipe"
+display_name = "LOC_RECIPES_GLOVES_DRAGON_GLOVES_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"gloves_mithril_ore", &"gloves_gale_essence"])
 outputs = Array[StringName]([&"gloves_dragon_gloves"])

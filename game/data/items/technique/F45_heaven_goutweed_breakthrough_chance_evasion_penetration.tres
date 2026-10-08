@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F45_heaven_goutweed_breakthrough_chance_evasion_penetration"
-display_name = "Heaven Goutweed Breakthrough chance Evasion Penetration"
+display_name = "LOC_ITEMS_F45_HEAVEN_GOUTWEED_BREAKTHROUGH_CHANCE_EVASION_PENETRATION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"true_immortal"

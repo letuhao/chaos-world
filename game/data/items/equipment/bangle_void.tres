@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"bangle_void"
-display_name = "Void Bangle"
+display_name = "LOC_ITEMS_BANGLE_VOID_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"primordial_immortal"

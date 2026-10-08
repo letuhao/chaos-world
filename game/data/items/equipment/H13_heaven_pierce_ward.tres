@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"H13_heaven_pierce_ward"
-display_name = "Heaven Pierce Ward"
+display_name = "LOC_ITEMS_H13_HEAVEN_PIERCE_WARD_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"primordial_immortal"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"petal_azalea"
-display_name = "Azalea Petal"
+display_name = "LOC_ITEMS_PETAL_AZALEA_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"heaven_immortal"

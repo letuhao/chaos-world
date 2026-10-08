@@ -18,7 +18,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_body_heaven_immortal_guardian_pool_primordial_origin"
-display_name = "Body of Destruction Guardian salvage (primordial_origin)"
+display_name = "LOC_LOOT_BODY_HEAVEN_IMMORTAL_GUARDIAN_PRIMORDIAL_ORIGIN_0_DISPLAY_NAME"
 realm = &"primordial_origin"
 rarity = &""
 rolls = 1

@@ -42,7 +42,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E2_ascension_sentinel_pool_foundation"
-display_name = "Ascension Sentinel salvage (foundation)"
+display_name = "LOC_LOOT_E2_ASCENSION_SENTINEL_FOUNDATION_0_DISPLAY_NAME"
 realm = &"foundation"
 rarity = &""
 rolls = 1

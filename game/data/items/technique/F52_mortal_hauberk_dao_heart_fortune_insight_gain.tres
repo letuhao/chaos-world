@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F52_mortal_hauberk_dao_heart_fortune_insight_gain"
-display_name = "Mortal Hauberk Dao heart Fortune Insight gain"
+display_name = "LOC_ITEMS_F52_MORTAL_HAUBERK_DAO_HEART_FORTUNE_INSIGHT_GAIN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"foundation"

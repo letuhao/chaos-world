@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_mind_dao_ancestor_warden_pool_spirit_severing"
-display_name = "Mind Dao Ancestor Warden salvage (spirit_severing)"
+display_name = "LOC_LOOT_MIND_DAO_ANCESTOR_WARDEN_SPIRIT_SEVERING_0_DISPLAY_NAME"
 realm = &"spirit_severing"
 rarity = &""
 rolls = 1

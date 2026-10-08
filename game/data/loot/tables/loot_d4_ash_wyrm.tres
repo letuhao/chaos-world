@@ -234,7 +234,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d4_ash_wyrm"
-display_name = "Ash Wyrm Lesser"
+display_name = "LOC_LOOT_D4_ASH_WYRM_POOL_CORE_FORMATION_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

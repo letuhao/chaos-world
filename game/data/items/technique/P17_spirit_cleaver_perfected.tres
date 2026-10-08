@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"P17_spirit_cleaver_perfected"
-display_name = "Spirit Cleaver Perfected"
+display_name = "LOC_ITEMS_P17_SPIRIT_CLEAVER_PERFECTED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_ascension"

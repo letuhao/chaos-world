@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"rite_eternal_form_recipe"
-display_name = "Eternal Form Rite Recipe"
+display_name = "LOC_RECIPES_RITE_ETERNAL_FORM_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"petal_magnolia", &"fungus_thorncap"])
 outputs = Array[StringName]([&"rite_eternal_form"])

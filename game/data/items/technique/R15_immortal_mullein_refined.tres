@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"R15_immortal_mullein_refined"
-display_name = "Immortal Mullein Refined"
+display_name = "LOC_ITEMS_R15_IMMORTAL_MULLEIN_REFINED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"immortal_sovereign"

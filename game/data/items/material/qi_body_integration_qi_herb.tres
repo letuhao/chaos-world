@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"qi_body_integration_qi_herb"
-display_name = "Body Integration Qi Herb"
+display_name = "LOC_ITEMS_QI_BODY_INTEGRATION_QI_HERB_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"body_integration"
@@ -16,4 +16,4 @@ roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"herb"
 grade = &"mortal"
 sources = Array[StringName]([&"gather", &"boss:F1_integration_warden"])
-description = "Gathered reagent for the realm's elixir."
+description = "LOC_ITEMS_QI_BODY_INTEGRATION_QI_HERB_DESCRIPTION"

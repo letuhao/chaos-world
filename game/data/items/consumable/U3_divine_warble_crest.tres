@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U3_divine_warble_crest"
-display_name = "Divine Warble Crest"
+display_name = "LOC_ITEMS_U3_DIVINE_WARBLE_CREST_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"transcendent"

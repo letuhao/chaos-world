@@ -235,7 +235,7 @@ static func _table_problems(table: LootTableDef, by_id: Dictionary) -> Array[Str
 
 
 static func _entry_problems(table_id: String, entry: LootEntry, by_id: Dictionary) -> Array[String]:
-	var label := "table %s entry '%s'" % [table_id, String(entry.id)]
+	var label := "LOC_LOOT_565A25A0A8" % [table_id, String(entry.id)]
 	var problems: Array[String] = []
 	# --- quantity
 	if entry.quantity < 1:
@@ -490,7 +490,7 @@ static func _encounter_problems(encounter: LootEncounterDef) -> Array[String]:
 		if tier == null:
 			problems.append("encounter %s: has a null tier" % label)
 			continue
-		var tier_label := "encounter %s tier %d" % [label, tier.tier]
+		var tier_label := L.t("LOC_LOOT_FEB6482107") % [label, tier.tier]
 		if tier_ids.has(tier.tier):
 			problems.append("%s: duplicate tier" % tier_label)
 		tier_ids[tier.tier] = true

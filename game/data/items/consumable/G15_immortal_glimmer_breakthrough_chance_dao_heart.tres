@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G15_immortal_glimmer_breakthrough_chance_dao_heart"
-display_name = "Immortal Glimmer Breakthrough chance Dao heart"
+display_name = "LOC_ITEMS_G15_IMMORTAL_GLIMMER_BREAKTHROUGH_CHANCE_DAO_HEART_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_immortal"

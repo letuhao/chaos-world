@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F19_earth_epergne_agility_aptitude_qi_absorption_status_resistance"
-display_name = "Earth Epergne Agility Aptitude Qi absorption Status resistance"
+display_name = "LOC_ITEMS_F19_EARTH_EPERGNE_AGILITY_APTITUDE_QI_ABSORPTION_STATUS_RESISTANCE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_severing"

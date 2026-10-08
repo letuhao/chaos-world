@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E18_heaven_bristleworks_racheon"
-display_name = "Heaven Bristleworks Racheon"
+display_name = "LOC_ITEMS_E18_HEAVEN_BRISTLEWORKS_RACHEON_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"true_immortal"

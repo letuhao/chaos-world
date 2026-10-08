@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E1_mortal_cresses_primed"
-display_name = "Mortal Cresses Primed"
+display_name = "LOC_ITEMS_E1_MORTAL_CRESSES_PRIMED_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"spirit_transformation"

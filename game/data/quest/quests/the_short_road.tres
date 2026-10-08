@@ -8,13 +8,13 @@ script = ExtResource("2_step")
 step_id = &"furnace_lit"
 fact = &"oaths_discharged"
 need = 1
-display_name = "Burn one sworn term out on the mountain that is waiting for you"
+display_name = "LOC_QUEST_THE_SHORT_ROAD_DISPLAY_NAME_1"
 
 [resource]
 script = ExtResource("1_quest")
 id = &"the_short_road"
-display_name = "The Short Road"
-description = "An Emberbody refines faster than anything else on this mountain and dies before the ledger admits it. The sect keeps a book of bodies that burned out on schedule; this is what it wants written at the end of one — and the only line anybody can write in that book is a term of service brought to zero."
+display_name = "LOC_QUEST_THE_SHORT_ROAD_DISPLAY_NAME_2"
+description = "LOC_QUEST_THE_SHORT_ROAD_DESCRIPTION"
 kind = &"systemic"
 tier = 2
 requirement = {}

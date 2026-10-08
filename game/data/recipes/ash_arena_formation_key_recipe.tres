@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"ash_arena_formation_key_recipe"
-display_name = "Arena Formation Key Recipe"
+display_name = "LOC_RECIPES_ASH_ARENA_FORMATION_KEY_RECIPE_DISPLAY_NAME"
 # `ash_arena_formation_key` is the ARENA PUZZLE's payout, not a gate on it, so
 # its recipe is not a key route a hoard depends on — it is the price of the
 # wrong-node retry the formation charges. Iron ore and pine resin: two

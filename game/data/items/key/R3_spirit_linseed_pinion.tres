@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"R3_spirit_linseed_pinion"
-display_name = "Spirit Linseed Pinion"
+display_name = "LOC_ITEMS_R3_SPIRIT_LINSEED_PINION_DISPLAY_NAME"
 category = &"key"
 rarity = &"magic"
 realm = &"spirit_manifestation"

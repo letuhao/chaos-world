@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"divine_nether_essence"
-display_name = "Nether Essence"
+display_name = "LOC_ITEMS_DIVINE_NETHER_ESSENCE_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"dao_ancestor"

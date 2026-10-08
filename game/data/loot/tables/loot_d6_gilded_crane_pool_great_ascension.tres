@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d6_gilded_crane_pool_great_ascension"
-display_name = "Gilded Crane Lesser salvage (great_ascension)"
+display_name = "LOC_LOOT_D6_GILDED_CRANE_GREAT_ASCENSION_0_DISPLAY_NAME"
 realm = &"great_ascension"
 rarity = &""
 rolls = 1

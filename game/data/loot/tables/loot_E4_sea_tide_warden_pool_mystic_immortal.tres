@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E4_sea_tide_warden_pool_mystic_immortal"
-display_name = "Sea Tide Warden salvage (mystic_immortal)"
+display_name = "LOC_LOOT_E4_SEA_TIDE_WARDEN_MYSTIC_IMMORTAL_0_DISPLAY_NAME"
 realm = &"mystic_immortal"
 rarity = &""
 rolls = 1

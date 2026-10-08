@@ -5,8 +5,8 @@
 script = ExtResource("1_def")
 id = &"passive_still_point"
 delivered_by = &"compre_still_page"
-display_name = "Still Point"
-description = "A discipline of holding the qi still at the moment of release. Every technique casts cheaper for it, which is the one thing that compounds at mastery."
+display_name = "LOC_TECHNIQUES_PASSIVE_STILL_POINT_DISPLAY_NAME"
+description = "LOC_TECHNIQUES_PASSIVE_STILL_POINT_DESCRIPTION"
 tags = Array[StringName]([&"passive", &"qi", &"cost"])
 grade = &"earth"
 rarity = &"rare"

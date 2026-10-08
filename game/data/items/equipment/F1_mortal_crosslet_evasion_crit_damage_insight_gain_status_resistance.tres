@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F1_mortal_crosslet_evasion_crit_damage_insight_gain_status_resistance"
-display_name = "Mortal Crosslet Evasion Crit Damage Insight Gain Status Resistance"
+display_name = "LOC_ITEMS_F1_MORTAL_CROSSLET_EVASION_CRIT_DAMAGE_INSIGHT_GAIN_STATUS_RESISTANCE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"void_refinement"

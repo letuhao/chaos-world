@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"Z24_mortal_blight_refined_alt_recipe"
-display_name = "Mortal Blight Refined (Alt) Recipe"
+display_name = "LOC_RECIPES_Z24_MORTAL_BLIGHT_REFINED_ALT_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"Z24_mortal_blight_base", &"gemstone_agate", &"venom_nightshade_herb"])
 outputs = Array[StringName]([&"Z24_mortal_blight_refined"])

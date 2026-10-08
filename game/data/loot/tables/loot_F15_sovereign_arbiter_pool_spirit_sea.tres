@@ -18,7 +18,7 @@ rarity_floor = &"magic"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_F15_sovereign_arbiter_pool_spirit_sea"
-display_name = "Sovereign Arbiter salvage (spirit_sea)"
+display_name = "LOC_LOOT_F15_SOVEREIGN_ARBITER_SPIRIT_SEA_0_DISPLAY_NAME"
 realm = &"spirit_sea"
 rarity = &""
 rolls = 1

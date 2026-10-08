@@ -5,8 +5,8 @@
 script = ExtResource("1_def")
 id = &"body_thunder_claw"
 delivered_by = &"anima_primordial_leaf"
-display_name = "Thunder Claw"
-description = "Discharges from the point of contact outward through the target's own frame. Almost pure lightning riding a physical grip; the deepest body technique in the tree."
+display_name = "LOC_TECHNIQUES_BODY_THUNDER_CLAW_DISPLAY_NAME"
+description = "LOC_TECHNIQUES_BODY_THUNDER_CLAW_DESCRIPTION"
 tags = Array[StringName]([&"technique", &"body", &"lightning", &"strike"])
 grade = &"divine"
 rarity = &"legendary"

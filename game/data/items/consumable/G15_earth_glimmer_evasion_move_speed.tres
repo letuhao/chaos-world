@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G15_earth_glimmer_evasion_move_speed"
-display_name = "Earth Glimmer Evasion Move speed"
+display_name = "LOC_ITEMS_G15_EARTH_GLIMMER_EVASION_MOVE_SPEED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_domain"

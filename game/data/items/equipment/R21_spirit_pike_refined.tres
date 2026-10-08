@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"R21_spirit_pike_refined"
-display_name = "Spirit Pike Refined"
+display_name = "LOC_ITEMS_R21_SPIRIT_PIKE_REFINED_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"magic"
 realm = &"spirit_condensation"

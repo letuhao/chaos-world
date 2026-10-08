@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"mind_dao_fruit_breakthrough_pill"
-display_name = "Dao of Mind Insight Pill"
+display_name = "LOC_ITEMS_MIND_DAO_FRUIT_BREAKTHROUGH_PILL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_fruit"
@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:mind_dao_fruit_pill_recipe", &"boss:F14_dao_fruit_warden"])
-description = "Consumed by the Mind Cultivation attempt entering Dao of Mind; no equipment modifier."
+description = "LOC_ITEMS_MIND_DAO_FRUIT_BREAKTHROUGH_PILL_DESCRIPTION"

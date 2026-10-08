@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"U15_immortal_thrush_aged_recipe"
-display_name = "Immortal Thrush Aged Recipe"
+display_name = "LOC_RECIPES_U15_IMMORTAL_THRUSH_AGED_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"U15_immortal_thrush_refined", &"gemstone_alexandrite", &"filament_voidsilk"])
 outputs = Array[StringName]([&"U15_immortal_thrush_aged"])

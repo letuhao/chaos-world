@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"staff_moonwhisper"
-display_name = "Moonwhisper Staff"
+display_name = "LOC_ITEMS_STAFF_MOONWHISPER_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"earth_immortal"

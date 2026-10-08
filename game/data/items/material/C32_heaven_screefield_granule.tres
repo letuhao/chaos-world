@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C32_heaven_screefield_granule"
-display_name = "Heaven Screefield Granule"
+display_name = "LOC_ITEMS_C32_HEAVEN_SCREEFIELD_GRANULE_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"heaven_immortal"

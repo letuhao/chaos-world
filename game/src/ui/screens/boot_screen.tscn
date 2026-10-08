@@ -27,13 +27,13 @@ layout_mode = 2
 [node name="Title" type="Label" parent="Center/Menu"]
 layout_mode = 2
 theme_type_variation = &"ScreenTitle"
-text = "Chaos World"
+text = "LOC_UI_SCREENS_BD2104B324"
 horizontal_alignment = 1
 
 [node name="Subtitle" type="Label" parent="Center/Menu"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "A cultivation action RPG."
+text = "LOC_UI_SCREENS_F6B11D1060"
 horizontal_alignment = 1
 
 [node name="Gap" type="Control" parent="Center/Menu"]
@@ -44,66 +44,66 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "No hero bound."
+text = "LOC_UI_SCREENS_6E9BC19A74"
 horizontal_alignment = 1
 
 [node name="ContinueButton" type="Button" parent="Center/Menu"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_neighbor_bottom = NodePath("../NewGameButton")
-text = "Continue"
+text = "LOC_UI_SCREENS_2E02623966"
 
 [node name="NewGameButton" type="Button" parent="Center/Menu"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_neighbor_top = NodePath("../ContinueButton")
 focus_neighbor_bottom = NodePath("../SavesButton")
-text = "New Game"
+text = "LOC_UI_SCREENS_528FB1C4E5"
 
 [node name="SavesButton" type="Button" parent="Center/Menu"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_neighbor_top = NodePath("../NewGameButton")
 focus_neighbor_bottom = NodePath("../StoryButton")
-text = "Saves"
+text = "LOC_UI_SCREENS_6A29F08E06"
 
 [node name="StoryButton" type="Button" parent="Center/Menu"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_neighbor_top = NodePath("../SavesButton")
 focus_neighbor_bottom = NodePath("../WorldsButton")
-text = "Story"
+text = "LOC_UI_SCREENS_86B4BA2FF9"
 
 [node name="WorldsButton" type="Button" parent="Center/Menu"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_neighbor_top = NodePath("../StoryButton")
 focus_neighbor_bottom = NodePath("../SettingsButton")
-text = "Worlds"
+text = "LOC_UI_SCREENS_8E4D972882"
 
 [node name="SettingsButton" type="Button" parent="Center/Menu"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_neighbor_top = NodePath("../WorldsButton")
 focus_neighbor_bottom = NodePath("../CreditsButton")
-text = "Settings"
+text = "LOC_UI_SCREENS_C7F73BB54D"
 
 [node name="CreditsButton" type="Button" parent="Center/Menu"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_neighbor_top = NodePath("../SettingsButton")
 focus_neighbor_bottom = NodePath("../QuitButton")
-text = "Credits"
+text = "LOC_UI_SCREENS_BFAC50D642"
 
 [node name="QuitButton" type="Button" parent="Center/Menu"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_neighbor_top = NodePath("../CreditsButton")
-text = "Quit"
+text = "LOC_UI_SCREENS_1A2285D888"
 
 [node name="HintLabel" type="Label" parent="Center/Menu"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"MetaLabel"
-text = "Continue returns to the saved journey. New Game opens arrival."
+text = "LOC_UI_SCREENS_A35AD0C160"
 horizontal_alignment = 1

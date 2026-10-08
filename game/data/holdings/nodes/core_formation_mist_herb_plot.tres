@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_node")
 node_id = &"core_formation_mist_herb_plot"
-display_name = "Mist Herb Plot"
+display_name = "LOC_HOLDINGS_CORE_FORMATION_MIST_HERB_PLOT_DISPLAY_NAME"
 kind = &"herb"
 realm = &"core_formation"
 yield_per_period = 4

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"qi_spirit_unity_breakthrough_pill"
-display_name = "Spirit Unity Refinement Pill"
+display_name = "LOC_ITEMS_QI_SPIRIT_UNITY_BREAKTHROUGH_PILL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_unity"
@@ -16,4 +16,4 @@ roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:qi_spirit_unity_pill_recipe"])
-description = "Consumed by the Qi Cultivation attempt entering Spirit Unity; no equipment modifier."
+description = "LOC_ITEMS_QI_SPIRIT_UNITY_BREAKTHROUGH_PILL_DESCRIPTION"

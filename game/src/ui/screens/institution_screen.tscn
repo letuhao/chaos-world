@@ -20,13 +20,13 @@ layout_mode = 2
 [node name="Title" type="Label" parent="Layout"]
 layout_mode = 2
 theme_type_variation = &"ScreenTitle"
-text = "Institutions"
+text = "LOC_UI_SCREENS_DCD439A732"
 
 [node name="InstitutionHeader" type="Label" parent="Layout"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "No hero bound."
+text = "LOC_UI_SCREENS_6E9BC19A74"
 
 [node name="Scroll" type="ScrollContainer" parent="Layout"]
 layout_mode = 2
@@ -39,7 +39,7 @@ size_flags_horizontal = 3
 [node name="CardsTitle" type="Label" parent="Layout/Scroll/Codex"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "Authored organizations"
+text = "LOC_UI_SCREENS_347D2CB963"
 
 [node name="Cards" type="VBoxContainer" parent="Layout/Scroll/Codex"]
 layout_mode = 2

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"G7_earth_skin_recipe"
-display_name = "Earth Skin Recipe"
+display_name = "LOC_RECIPES_G7_EARTH_SKIN_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"dagger_night_hide", &"weapon_storm_hide"])
 outputs = Array[StringName]([&"G7_earth_skin"])

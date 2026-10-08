@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"Q10_divine_endive_refined_alt_recipe"
-display_name = "Divine Endive Refined (Alt) Recipe"
+display_name = "LOC_RECIPES_Q10_DIVINE_ENDIVE_REFINED_ALT_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"Q10_divine_endive_base", &"divine_chaosvine", &"elemental_transcendent_essence"])
 outputs = Array[StringName]([&"Q10_divine_endive_refined"])

@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_boss")
 id = &"succubus_transcendent_guardian"
-display_name = "Transcendent Radiance Guardian"
+display_name = "LOC_BOSSES_SUCCUBUS_TRANSCENDENT_GUARDIAN_DISPLAY_NAME"
 domain_id = &"succubus_transcendent_domain"
 loot = Array[StringName]([])

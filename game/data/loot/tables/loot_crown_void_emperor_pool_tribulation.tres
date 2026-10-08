@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_crown_void_emperor_pool_tribulation"
-display_name = "Void Emperor salvage (tribulation)"
+display_name = "LOC_LOOT_CROWN_VOID_EMPEROR_TRIBULATION_0_DISPLAY_NAME"
 realm = &"tribulation"
 rarity = &""
 rolls = 1

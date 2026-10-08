@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"L4_void_serpent_null_fang"
-display_name = "Null Serpent Fang"
+display_name = "LOC_ITEMS_L4_VOID_SERPENT_NULL_FANG_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"magic"
 realm = &"spirit_manifestation"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"T8_mortal_samphire_casebook"
-display_name = "Mortal Samphire Casebook"
+display_name = "LOC_ITEMS_T8_MORTAL_SAMPHIRE_CASEBOOK_DISPLAY_NAME"
 category = &"quest"
 rarity = &"common"
 realm = &"qi_refining"

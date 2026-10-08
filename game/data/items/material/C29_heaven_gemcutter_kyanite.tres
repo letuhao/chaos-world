@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C29_heaven_gemcutter_kyanite"
-display_name = "Heaven Gemcutter Kyanite"
+display_name = "LOC_ITEMS_C29_HEAVEN_GEMCUTTER_KYANITE_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"immortal_sovereign"

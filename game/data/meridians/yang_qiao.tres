@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 id = &"yang_qiao"
-display_name = "Yang Qiao"
+display_name = "LOC_MERIDIANS_YANG_QIAO_DISPLAY_NAME"
 type = &"extraordinary"
 tier = 12
 capacity_bonus = 0.05

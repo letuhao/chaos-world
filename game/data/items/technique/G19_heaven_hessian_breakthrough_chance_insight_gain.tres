@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G19_heaven_hessian_breakthrough_chance_insight_gain"
-display_name = "Heaven Hessian Breakthrough chance Insight gain"
+display_name = "LOC_ITEMS_G19_HEAVEN_HESSIAN_BREAKTHROUGH_CHANCE_INSIGHT_GAIN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"dao_fruit"

@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d5_mortal_veil_pool_great_ascension"
-display_name = "Mortal Veil Lesser salvage (great_ascension)"
+display_name = "LOC_LOOT_D5_MORTAL_VEIL_GREAT_ASCENSION_0_DISPLAY_NAME"
 realm = &"great_ascension"
 rarity = &""
 rolls = 1

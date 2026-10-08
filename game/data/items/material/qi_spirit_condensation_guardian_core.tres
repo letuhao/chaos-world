@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"qi_spirit_condensation_guardian_core"
-display_name = "Spirit Condensation Guardian Core"
+display_name = "LOC_ITEMS_QI_SPIRIT_CONDENSATION_GUARDIAN_CORE_DISPLAY_NAME"
 category = &"material"
 rarity = &"magic"
 realm = &"spirit_condensation"
@@ -16,4 +16,4 @@ roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"core"
 grade = &"spirit"
 sources = Array[StringName]([&"boss:qi_spirit_condensation_guardian"])
-description = "Guardian core dropped by Spirit Condensation guardian."
+description = "LOC_ITEMS_QI_SPIRIT_CONDENSATION_GUARDIAN_CORE_DESCRIPTION"

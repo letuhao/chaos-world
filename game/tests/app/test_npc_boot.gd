@@ -90,7 +90,7 @@ func test_boot_installs_the_constructor_so_spawn_stops_returning_null() -> void:
 	var actor := NpcApi.spawn(SMITH)
 	assert_ne(actor, null, "spawn works once the root injected a constructor")
 	assert_eq(actor is Actor, true, "and what comes out is the shared Actor type")
-	assert_eq(actor.display_name, "Smith Bearcutter", "named from the authored def")
+	assert_eq(L.t(actor.display_name), "Smith Bearcutter", "named from the authored def")
 
 
 func test_boot_binds_the_roster_to_the_player_it_was_given() -> void:

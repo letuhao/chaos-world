@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"codex_storm_phoenix_wing"
-display_name = "Storm Phoenix Wing"
+display_name = "LOC_ITEMS_CODEX_STORM_PHOENIX_WING_DISPLAY_NAME"
 category = &"technique"
 rarity = &"magic"
 realm = &"spirit_sovereign"

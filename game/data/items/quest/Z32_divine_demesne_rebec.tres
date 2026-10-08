@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Z32_divine_demesne_rebec"
-display_name = "Divine Demesne Rebec"
+display_name = "LOC_ITEMS_Z32_DIVINE_DEMESNE_REBEC_DISPLAY_NAME"
 category = &"quest"
 rarity = &"legendary"
 realm = &"transcendent"

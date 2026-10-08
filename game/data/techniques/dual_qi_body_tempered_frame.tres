@@ -5,8 +5,8 @@
 script = ExtResource("1_def")
 id = &"dual_qi_body_tempered_frame"
 delivered_by = &"scrollcase_immortal_scroll"
-display_name = "Tempered Frame"
-description = "Repeatedly loads a qi-filled frame until the frame absorbs what the qi cannot. Greater carry and organ vitality, paid for in stamina every minute it is equipped."
+display_name = "LOC_TECHNIQUES_DUAL_QI_BODY_TEMPERED_FRAME_DISPLAY_NAME"
+description = "LOC_TECHNIQUES_DUAL_QI_BODY_TEMPERED_FRAME_DESCRIPTION"
 tags = Array[StringName]([&"passive", &"dual", &"qi_body", &"endurance"])
 grade = &"immortal"
 rarity = &"rare"

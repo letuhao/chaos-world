@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Z31_immortal_convent_urn"
-display_name = "Immortal Convent Urn"
+display_name = "LOC_ITEMS_Z31_IMMORTAL_CONVENT_URN_DISPLAY_NAME"
 category = &"quest"
 rarity = &"legendary"
 realm = &"golden_immortal"

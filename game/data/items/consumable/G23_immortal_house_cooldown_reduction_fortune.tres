@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G23_immortal_house_cooldown_reduction_fortune"
-display_name = "Immortal House Cooldown reduction Fortune"
+display_name = "LOC_ITEMS_G23_IMMORTAL_HOUSE_COOLDOWN_REDUCTION_FORTUNE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_fruit"

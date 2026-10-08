@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"R6_mortal_madder_autograph"
-display_name = "Mortal Madder Autograph"
+display_name = "LOC_ITEMS_R6_MORTAL_MADDER_AUTOGRAPH_DISPLAY_NAME"
 category = &"misc"
 rarity = &"common"
 realm = &"void_refinement"

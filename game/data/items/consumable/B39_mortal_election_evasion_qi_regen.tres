@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B39_mortal_election_evasion_qi_regen"
-display_name = "Mortal Election Evasion Qi Regen"
+display_name = "LOC_ITEMS_B39_MORTAL_ELECTION_EVASION_QI_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"foundation"

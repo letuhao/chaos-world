@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C4_mortal_clary_aged"
-display_name = "Mortal Clary Aged"
+display_name = "LOC_ITEMS_C4_MORTAL_CLARY_AGED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"foundation"

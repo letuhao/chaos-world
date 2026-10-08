@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_node")
 node_id = &"nascent_soul_iron_adit"
-display_name = "Iron Adit"
+display_name = "LOC_HOLDINGS_NASCENT_SOUL_IRON_ADIT_DISPLAY_NAME"
 kind = &"ore"
 realm = &"nascent_soul"
 yield_per_period = 6

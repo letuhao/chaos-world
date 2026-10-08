@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"D4_immortal_fortune_charm_recipe"
-display_name = "Immortal Fortune Charm Recipe"
+display_name = "LOC_RECIPES_D4_IMMORTAL_FORTUNE_CHARM_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"shard_eclipse", &"circlet_void_dust"])
 outputs = Array[StringName]([&"D4_immortal_fortune_charm"])

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"J21_immortal_soul_base"
-display_name = "Immortal Soul Base"
+display_name = "LOC_ITEMS_J21_IMMORTAL_SOUL_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"true_immortal"

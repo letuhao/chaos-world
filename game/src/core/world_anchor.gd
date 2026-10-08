@@ -71,7 +71,7 @@ const ABILITY_BY_COMMIT := {
 }
 
 ## The wording `ascension_unmet` reports when no ascent has begun.
-const NO_ASCENT := "No ascent begun"
+const NO_ASCENT := "LOC_CORE_A5BD955D5A"
 
 ## Ceiling on the stability raises a construction step takes. It names the failure
 ## it catches — a CREATED world whose stability cannot reach the `is_stable`

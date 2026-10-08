@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_bloodline")
 id = &"emberborn"
-display_name = "Emberborn"
-description = "A line from the founding generation of a body that burned through its own reserve and kept going. Recorded alongside the stone line because the two were crossed at the same conception and have stayed crossed since, which is why the concentration is thin and unevenly spread. The grant is defensive and fires continuously: a slower burn rather than a bigger tank."
+display_name = "LOC_BLOODLINES_EMBERBORN_DISPLAY_NAME"
+description = "LOC_BLOODLINES_EMBERBORN_DESCRIPTION"
 awaken_threshold = 0.55
 percent_modifiers = {"defense_physical": 0.06, "health_regen": 0.05}
 traits = Array[StringName]([&"slow_burn"])

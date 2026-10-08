@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B37_divine_dower_max_stamina_aptitude"
-display_name = "Divine Dower Max Stamina Aptitude"
+display_name = "LOC_ITEMS_B37_DIVINE_DOWER_MAX_STAMINA_APTITUDE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"transcendent"

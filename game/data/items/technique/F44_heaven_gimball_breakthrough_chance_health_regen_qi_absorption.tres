@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F44_heaven_gimball_breakthrough_chance_health_regen_qi_absorption"
-display_name = "Heaven Gimball Breakthrough chance Health regen Qi absorption"
+display_name = "LOC_ITEMS_F44_HEAVEN_GIMBALL_BREAKTHROUGH_CHANCE_HEALTH_REGEN_QI_ABSORPTION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"mystic_immortal"

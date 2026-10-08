@@ -18,7 +18,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_monster_stone_golem_pool_transcendent"
-display_name = "Stone Golem salvage (transcendent)"
+display_name = "LOC_LOOT_MONSTER_STONE_GOLEM_TRANSCENDENT_0_DISPLAY_NAME"
 realm = &"transcendent"
 rarity = &""
 rolls = 1

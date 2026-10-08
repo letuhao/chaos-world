@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 inhabitant_id = &"azure_disciple"
-display_name = "Azure Disciple"
+display_name = "LOC_WORLD_AZURE_DISCIPLE_DISPLAY_NAME"
 type = &"humanoid"
 tier_ids = Array[StringName]([&"spirit_world", &"immortal_world", &"transcendent_world"])
 loyalty_min = 0.3

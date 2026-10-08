@@ -56,12 +56,17 @@ static func normalize(payload: Dictionary) -> Dictionary:
 			if not (record is Dictionary):
 				continue
 			var entry := record as Dictionary
-			out["history"].append({
-				"kind": String(entry.get("kind", "")),
-				"id": String(entry.get("id", "")),
-				"detail": String(entry.get("detail", "")),
-				"sequence": int(entry.get("sequence", 0)),
-			})
+			(
+				out["history"]
+				. append(
+					{
+						"kind": String(entry.get("kind", "")),
+						"id": String(entry.get("id", "")),
+						"detail": String(entry.get("detail", "")),
+						"sequence": int(entry.get("sequence", 0)),
+					}
+				)
+			)
 	return out
 
 
@@ -100,7 +105,9 @@ static func cooldown_turn(ledger: Dictionary, encounter_id: StringName) -> int:
 
 
 ## Whether an encounter is on cooldown at the given turn.
-static func on_cooldown(ledger: Dictionary, encounter_id: StringName, current_turn: int, cooldown: int) -> bool:
+static func on_cooldown(
+	ledger: Dictionary, encounter_id: StringName, current_turn: int, cooldown: int
+) -> bool:
 	if cooldown <= 0:
 		return false
 	var cooldowns = ledger.get("cooldowns", {}) as Dictionary

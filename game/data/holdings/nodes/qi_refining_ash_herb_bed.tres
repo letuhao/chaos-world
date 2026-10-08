@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_node")
 node_id = &"qi_refining_ash_herb_bed"
-display_name = "Ash Herb Bed"
+display_name = "LOC_HOLDINGS_QI_REFINING_ASH_HERB_BED_DISPLAY_NAME"
 kind = &"herb"
 realm = &"qi_refining"
 yield_per_period = 2

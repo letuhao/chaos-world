@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d4_tide_serpent_pool_earth_immortal"
-display_name = "Tide Serpent Lesser salvage (earth_immortal)"
+display_name = "LOC_LOOT_D4_TIDE_SERPENT_EARTH_IMMORTAL_0_DISPLAY_NAME"
 realm = &"earth_immortal"
 rarity = &""
 rolls = 1

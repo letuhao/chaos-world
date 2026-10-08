@@ -15,6 +15,7 @@ extends RefCounted
 ## been loaded). A patch that targets a non-existent field is refused with a
 ## named reason.
 
+
 ## Apply a patch to a def. Returns `{ok, reason, detail}`.
 static func apply(def: Resource, patch: Dictionary) -> Dictionary:
 	if def == null:
@@ -58,11 +59,7 @@ static func _apply_add(def: Resource, field: String, value) -> Dictionary:
 			"detail": "'%s' is not a property on %s" % [field, def.get_class()]
 		}
 	if not (current is Array):
-		return {
-			"ok": false,
-			"reason": "not_array",
-			"detail": "'%s' is not an array" % field
-		}
+		return {"ok": false, "reason": "not_array", "detail": "'%s' is not an array" % field}
 	(current as Array).append(value)
 	return {"ok": true, "reason": "", "detail": ""}
 
@@ -76,11 +73,7 @@ static func _apply_remove(def: Resource, field: String, value) -> Dictionary:
 			"detail": "'%s' is not a property on %s" % [field, def.get_class()]
 		}
 	if not (current is Array):
-		return {
-			"ok": false,
-			"reason": "not_array",
-			"detail": "'%s' is not an array" % field
-		}
+		return {"ok": false, "reason": "not_array", "detail": "'%s' is not an array" % field}
 	(current as Array).erase(value)
 	return {"ok": true, "reason": "", "detail": ""}
 
@@ -94,17 +87,9 @@ static func _apply_multiply(def: Resource, field: String, value) -> Dictionary:
 			"detail": "'%s' is not a property on %s" % [field, def.get_class()]
 		}
 	if not (current is float) and not (current is int):
-		return {
-			"ok": false,
-			"reason": "not_number",
-			"detail": "'%s' is not a number" % field
-		}
+		return {"ok": false, "reason": "not_number", "detail": "'%s' is not a number" % field}
 	if not (value is float) and not (value is int):
-		return {
-			"ok": false,
-			"reason": "bad_value",
-			"detail": "multiply value must be a number"
-		}
+		return {"ok": false, "reason": "bad_value", "detail": "multiply value must be a number"}
 	def.set(field, float(current) * float(value))
 	return {"ok": true, "reason": "", "detail": ""}
 
@@ -118,17 +103,9 @@ static func _apply_add_number(def: Resource, field: String, value) -> Dictionary
 			"detail": "'%s' is not a property on %s" % [field, def.get_class()]
 		}
 	if not (current is float) and not (current is int):
-		return {
-			"ok": false,
-			"reason": "not_number",
-			"detail": "'%s' is not a number" % field
-		}
+		return {"ok": false, "reason": "not_number", "detail": "'%s' is not a number" % field}
 	if not (value is float) and not (value is int):
-		return {
-			"ok": false,
-			"reason": "bad_value",
-			"detail": "add_number value must be a number"
-		}
+		return {"ok": false, "reason": "bad_value", "detail": "add_number value must be a number"}
 	def.set(field, float(current) + float(value))
 	return {"ok": true, "reason": "", "detail": ""}
 

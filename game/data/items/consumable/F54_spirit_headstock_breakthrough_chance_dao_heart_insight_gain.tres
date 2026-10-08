@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F54_spirit_headstock_breakthrough_chance_dao_heart_insight_gain"
-display_name = "Spirit Headstock Breakthrough chance Dao heart Insight gain"
+display_name = "LOC_ITEMS_F54_SPIRIT_HEADSTOCK_BREAKTHROUGH_CHANCE_DAO_HEART_INSIGHT_GAIN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_severing"

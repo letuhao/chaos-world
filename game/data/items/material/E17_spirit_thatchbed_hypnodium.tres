@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E17_spirit_thatchbed_hypnodium"
-display_name = "Spirit Thatchbed Hypnodium"
+display_name = "LOC_ITEMS_E17_SPIRIT_THATCHBED_HYPNODIUM_DISPLAY_NAME"
 category = &"material"
 rarity = &"magic"
 realm = &"spirit_unity"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C28_heaven_cupellationhouse_bullionbar"
-display_name = "Heaven Cupellationhouse Bullionbar"
+display_name = "LOC_ITEMS_C28_HEAVEN_CUPELLATIONHOUSE_BULLIONBAR_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"true_immortal"

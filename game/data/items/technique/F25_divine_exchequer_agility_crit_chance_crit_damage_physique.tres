@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F25_divine_exchequer_agility_crit_chance_crit_damage_physique"
-display_name = "Divine Exchequer Agility Crit chance Crit damage Physique"
+display_name = "LOC_ITEMS_F25_DIVINE_EXCHEQUER_AGILITY_CRIT_CHANCE_CRIT_DAMAGE_PHYSIQUE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_ancestor"

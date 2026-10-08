@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U7_heaven_yarrow_cup"
-display_name = "Heaven Yarrow Cup"
+display_name = "LOC_ITEMS_U7_HEAVEN_YARROW_CUP_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"great_luo"

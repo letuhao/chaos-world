@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"nectar_star_essence"
-display_name = "Star Essence"
+display_name = "LOC_ITEMS_NECTAR_STAR_ESSENCE_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"true_immortal"

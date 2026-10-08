@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E8_mortal_resinhouse_dammar"
-display_name = "Mortal Resinhouse Dammar"
+display_name = "LOC_ITEMS_E8_MORTAL_RESINHOUSE_DAMMAR_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"tribulation"

@@ -90,7 +90,7 @@ alignment = 1
 layout_mode = 2
 mouse_filter = 2
 theme_type_variation = &"ScreenTitle"
-text = "Chaos World"
+text = "LOC_UI_SCREENS_BD2104B324"
 horizontal_alignment = 1
 
 [node name="StatusLabel" type="Label" parent="Margin/Column"]
@@ -98,7 +98,7 @@ unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 theme_type_variation = &"SectionTitle"
-text = "Preparing."
+text = "LOC_UI_SCREENS_85FA8FDB40"
 horizontal_alignment = 1
 
 [node name="LoadBar" type="ProgressBar" parent="Margin/Column"]

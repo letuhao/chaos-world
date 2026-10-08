@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d5_thunder_crane_pool_golden_immortal"
-display_name = "Thunder Crane salvage (golden_immortal)"
+display_name = "LOC_LOOT_D5_THUNDER_CRANE_GOLDEN_IMMORTAL_0_DISPLAY_NAME"
 realm = &"golden_immortal"
 rarity = &""
 rolls = 1

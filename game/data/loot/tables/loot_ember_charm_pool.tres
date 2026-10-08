@@ -39,7 +39,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_ember_charm_pool"
-display_name = "Ember Vault Charms"
+display_name = "LOC_LOOT_ECH_HEART_DISPLAY_NAME"
 realm = &"spirit_unity"
 rarity = &"rare"
 rolls = 1

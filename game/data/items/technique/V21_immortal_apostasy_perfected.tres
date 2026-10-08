@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V21_immortal_apostasy_perfected"
-display_name = "Immortal Apostasy Perfected"
+display_name = "LOC_ITEMS_V21_IMMORTAL_APOSTASY_PERFECTED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"mystic_immortal"

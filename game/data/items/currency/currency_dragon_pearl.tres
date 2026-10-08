@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"currency_dragon_pearl"
-display_name = "Dragon Pearl"
+display_name = "LOC_ITEMS_CURRENCY_DRAGON_PEARL_DISPLAY_NAME"
 category = &"currency"
 rarity = &"legendary"
 realm = &"heaven_immortal"

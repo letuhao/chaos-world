@@ -258,7 +258,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_crown_storm_sovereign"
-display_name = "Storm Sovereign"
+display_name = "LOC_LOOT_CROWN_STORM_SOVEREIGN_POOL_DAO_FRUIT_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

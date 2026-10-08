@@ -7,7 +7,7 @@
 script = ExtResource("2_stage")
 stage_id = &"stranger"
 index = 0
-display_name = "Stranger"
+display_name = "LOC_NPC_SMITH_BEARCUTTER_DISPLAY_NAME_1"
 stat_multipliers = {}
 tags = Array[StringName]([&"shopkeeper"])
 advance_after = 0
@@ -17,7 +17,7 @@ terminal = false
 script = ExtResource("2_stage")
 stage_id = &"trusted_smith"
 index = 1
-display_name = "Trusted Smith"
+display_name = "LOC_NPC_SMITH_BEARCUTTER_DISPLAY_NAME_2"
 stat_multipliers = {}
 tags = Array[StringName]([&"shopkeeper", &"forge"])
 advance_after = 0
@@ -26,7 +26,7 @@ terminal = false
 [resource]
 script = ExtResource("1_def")
 npc_id = &"smith_bearcutter"
-display_name = "Smith Bearcutter"
+display_name = "LOC_NPC_SMITH_BEARCUTTER_DISPLAY_NAME_3"
 inhabitant_id = &"azure_disciple"
 tier = &"major"
 faction = &"body_dao"

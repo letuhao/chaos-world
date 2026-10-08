@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F46_immortal_grainery_attack_speed_breakthrough_chance_fortune"
-display_name = "Immortal Grainery Attack speed Breakthrough chance Fortune"
+display_name = "LOC_ITEMS_F46_IMMORTAL_GRAINERY_ATTACK_SPEED_BREAKTHROUGH_CHANCE_FORTUNE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"earth_immortal"

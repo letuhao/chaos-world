@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"Q15_immortal_gavel_base_recipe"
-display_name = "Immortal Gavel Base Recipe"
+display_name = "LOC_RECIPES_Q15_IMMORTAL_GAVEL_BASE_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"qi_dao_fruit_qi_herb", &"petal_magnolia"])
 outputs = Array[StringName]([&"Q15_immortal_gavel_base"])

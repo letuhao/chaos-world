@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U8_mortal_linlet_armlet"
-display_name = "Mortal Linlet Armlet"
+display_name = "LOC_ITEMS_U8_MORTAL_LINLET_ARMLET_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"tribulation"

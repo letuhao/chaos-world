@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 id = &"essence_heart"
-display_name = "Essence Heart"
+display_name = "LOC_BODY_CULTIVATION_ESSENCE_HEART_DISPLAY_NAME"
 best_against = "Blood loss and drain: a heart fed on qi keeps what a flesh heart cannot."
 material = &"blood"
 transforms_into = &"heart"

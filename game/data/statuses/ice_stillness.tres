@@ -18,7 +18,7 @@ tick_interval = 1.0
 mitigation_tags = Array[StringName]([&"affinity", &"pill", &"gear"])
 payload = {
 "mechanic": &"brace",
-"text": "Frost settled where the nerves used to rush. The mind reads what moves and does not move first.",
+"text": "LOC_STATUSES_ICE_STILLNESS_TEXT",
 "modifiers": [
 {"stat": &"insight_gain", "op": &"percent", "value": 0.15},
 {"stat": &"poise", "op": &"percent", "value": 0.1}

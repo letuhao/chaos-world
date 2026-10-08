@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"astral_celestial_dew_essence"
-display_name = "Celestial Dew Essence"
+display_name = "LOC_ITEMS_ASTRAL_CELESTIAL_DEW_ESSENCE_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_manifestation"

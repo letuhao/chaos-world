@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"ledger_iron_page"
-display_name = "Ledger of Iron"
+display_name = "LOC_ITEMS_LEDGER_IRON_PAGE_DISPLAY_NAME"
 category = &"key"
 rarity = &"rare"
 realm = &"earth_immortal"

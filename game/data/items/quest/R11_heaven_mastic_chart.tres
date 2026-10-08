@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"R11_heaven_mastic_chart"
-display_name = "Heaven Mastic Chart"
+display_name = "LOC_ITEMS_R11_HEAVEN_MASTIC_CHART_DISPLAY_NAME"
 category = &"quest"
 rarity = &"rare"
 realm = &"heaven_immortal"

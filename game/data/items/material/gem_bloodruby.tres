@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"gem_bloodruby"
-display_name = "Bloodruby"
+display_name = "LOC_ITEMS_GEM_BLOODRUBY_DISPLAY_NAME"
 category = &"material"
 rarity = &"magic"
 realm = &"spirit_condensation"

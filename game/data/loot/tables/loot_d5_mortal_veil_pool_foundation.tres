@@ -30,7 +30,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d5_mortal_veil_pool_foundation"
-display_name = "Mortal Veil Lesser salvage (foundation)"
+display_name = "LOC_LOOT_D5_MORTAL_VEIL_FOUNDATION_0_DISPLAY_NAME"
 realm = &"foundation"
 rarity = &""
 rolls = 1

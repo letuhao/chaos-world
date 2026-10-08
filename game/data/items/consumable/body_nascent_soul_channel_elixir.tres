@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"body_nascent_soul_channel_elixir"
-display_name = "Marrow Cleansing Channel Elixir"
+display_name = "LOC_ITEMS_BODY_NASCENT_SOUL_CHANNEL_ELIXIR_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"nascent_soul"
@@ -16,4 +16,4 @@ roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"elixir"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:body_nascent_soul_elixir_recipe", &"boss:body_nascent_soul_guardian"])
-description = "Restores one damaged channel or trains one channel step and its linked acupoint quality."
+description = "LOC_ITEMS_BODY_NASCENT_SOUL_CHANNEL_ELIXIR_DESCRIPTION"

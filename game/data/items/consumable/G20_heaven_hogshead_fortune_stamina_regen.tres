@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G20_heaven_hogshead_fortune_stamina_regen"
-display_name = "Heaven Hogshead Fortune Stamina regen"
+display_name = "LOC_ITEMS_G20_HEAVEN_HOGSHEAD_FORTUNE_STAMINA_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"golden_immortal"

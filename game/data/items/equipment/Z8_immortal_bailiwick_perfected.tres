@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Z8_immortal_bailiwick_perfected"
-display_name = "Immortal Bailiwick Perfected"
+display_name = "LOC_ITEMS_Z8_IMMORTAL_BAILIWICK_PERFECTED_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"true_immortal"

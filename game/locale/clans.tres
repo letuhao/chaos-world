@@ -1,0 +1,12 @@
+[gd_resource type="Translation" format=3]
+
+[resource]
+locale = "en"
+messages = {
+"LOC_CLANS_IRONPACT_DESCRIPTION": "A guild-house that sells capacity: members are the muscle it rents out to whoever is paying, and it keeps a roster of names whose labour is worth more than any individual contract. It publishes a stipend, quarters and a share of contract income in exchange for standing orders — a member answers when called. It rivals the Saltledger over the harbour tariffs and answers the Quiet House at every coronation it can reach. Admission wants the household line carried far enough to be recognised as kin rather than as a stranger with a sword.",
+"LOC_CLANS_IRONPACT_DISPLAY_NAME": "The Ironpact",
+"LOC_CLANS_QUIETHOUSE_DESCRIPTION": "A lineage that has spent four generations buying its way out of the ledger. It publishes teaching — technique, attendance, and a chamber to practise in — and takes discretion in return: what is done inside the house is not written down and not repeated. It rivals the Saltledger over who may keep a record, because a house that files everything is a house that cannot be left alone. Admission is measured in the founder's line rather than in the member's purse, which is why it turns members away who could easily afford the fee.",
+"LOC_CLANS_QUIETHOUSE_DISPLAY_NAME": "The Quiet House",
+"LOC_CLANS_SALTLEDGER_DESCRIPTION": "A counting house that has decided access is the only thing worth fighting over. Members trade on every road the house holds, and the house answers that access with a ledger: who may use the roads, at what rate, on whose word. It publishes credit, safe-conduct and trading posts against exclusivity — a member who will not carry a rival's goods. It rivals the Ironpact over the harbour tariffs, because one of them writes the contract and the other decides what it is worth.",
+"LOC_CLANS_SALTLEDGER_DISPLAY_NAME": "The Saltledger",
+}

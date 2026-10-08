@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G16_mortal_godwit_insight_gain_qi_regen"
-display_name = "Mortal Godwit Insight gain Qi regen"
+display_name = "LOC_ITEMS_G16_MORTAL_GODWIT_INSIGHT_GAIN_QI_REGEN_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"tribulation"

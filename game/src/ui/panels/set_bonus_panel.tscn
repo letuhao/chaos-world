@@ -19,7 +19,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "No set selected"
+text = "LOC_UI_PANELS_C69BE29D86"
 
 [node name="MetaLabel" type="Label" parent="Layout"]
 unique_name_in_owner = true
@@ -35,7 +35,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"MetaLabel"
-text = "Members (0)"
+text = "LOC_UI_PANELS_D69F5A9E4D"
 
 [node name="MemberRows" type="VBoxContainer" parent="Layout"]
 unique_name_in_owner = true
@@ -45,7 +45,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"MetaLabel"
-text = "Thresholds (0)"
+text = "LOC_UI_PANELS_1EE28A471A"
 
 [node name="ThresholdRows" type="VBoxContainer" parent="Layout"]
 unique_name_in_owner = true
@@ -55,7 +55,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"MetaLabel"
-text = "Unique signatures"
+text = "LOC_UI_PANELS_D5CE62639E"
 
 [node name="UniqueLabel" type="Label" parent="Layout"]
 unique_name_in_owner = true

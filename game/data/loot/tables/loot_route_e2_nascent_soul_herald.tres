@@ -302,7 +302,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_route_e2_nascent_soul_herald"
-display_name = "Nascent Soul Herald spoils"
+display_name = "LOC_LOOT_GUARANTEED_UNIQUE_DISPLAY_NAME"
 realm = &"nascent_soul"
 rarity = &"legendary"
 rolls = 2

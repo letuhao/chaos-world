@@ -9,7 +9,7 @@ script = ExtResource("1")
 
 [node name="TargetLabel" type="Label" parent="Rows"]
 unique_name_in_owner = true
-text = "No tribulation"
+text = "LOC_UI_PANELS_8A69C51FF6"
 
 [node name="KindLabel" type="Label" parent="Rows"]
 unique_name_in_owner = true
@@ -18,7 +18,7 @@ text = ""
 
 [node name="WaveLabel" type="Label" parent="Rows"]
 unique_name_in_owner = true
-text = "Wave 0/0"
+text = "LOC_UI_PANELS_5941230696"
 
 [node name="RatingLabel" type="Label" parent="Rows"]
 unique_name_in_owner = true

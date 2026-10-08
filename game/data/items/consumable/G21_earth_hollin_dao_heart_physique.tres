@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G21_earth_hollin_dao_heart_physique"
-display_name = "Earth Hollin Dao heart Physique"
+display_name = "LOC_ITEMS_G21_EARTH_HOLLIN_DAO_HEART_PHYSIQUE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_domain"

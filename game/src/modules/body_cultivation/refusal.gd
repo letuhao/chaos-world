@@ -75,7 +75,7 @@ const KIND_GATE_UNMET := "gate_unmet"
 
 ## The one shared sentence, so a guard can tell "a recovery is in progress" from "the recovery
 ## verb is unavailable" without matching on prose.
-const BUSY_LABEL := "The huyệt set is mid-action; try again once it settles"
+const BUSY_LABEL := "LOC_BODY_CULTIVATION_F951B2AB18"
 
 
 ## Why `cultivate` cannot take a training step right now.
@@ -353,7 +353,7 @@ static func _outcome_reason(record: BodyAttempt) -> String:
 			% record.target_rank
 		)
 	if record.status == BodyAttempt.STATUS_CANCELLED:
-		return "The attempt into %s ended before its trial ran" % record.target_rank
+		return L.t("LOC_BODY_CULTIVATION_477ACEAC8C") % record.target_rank
 	return ""
 
 

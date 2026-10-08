@@ -234,7 +234,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_body_spirit_condensation_guardian"
-display_name = "Silver Body Guardian"
+display_name = "LOC_LOOT_BODY_SPIRIT_CONDENSATION_GUARDIAN_CORE_0_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

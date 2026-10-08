@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"I50_earth_geyser_perfected_recipe"
-display_name = "Earth Geyser Perfected Recipe"
+display_name = "LOC_RECIPES_I50_EARTH_GEYSER_PERFECTED_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"I50_earth_geyser_primed", &"W7_earth_bedlam_gypsum", &"E6_earth_charnelhouse_astragalus"])
 outputs = Array[StringName]([&"I50_earth_geyser_perfected"])

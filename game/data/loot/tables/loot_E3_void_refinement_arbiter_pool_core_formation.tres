@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E3_void_refinement_arbiter_pool_core_formation"
-display_name = "Void Refinement Arbiter salvage (core_formation)"
+display_name = "LOC_LOOT_E3_VOID_REFINEMENT_ARBITER_CORE_FORMATION_0_DISPLAY_NAME"
 realm = &"core_formation"
 rarity = &""
 rolls = 1

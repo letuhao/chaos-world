@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"T7_mortal_sallow_brief"
-display_name = "Mortal Sallow Brief"
+display_name = "LOC_ITEMS_T7_MORTAL_SALLOW_BRIEF_DISPLAY_NAME"
 category = &"quest"
 rarity = &"common"
 realm = &"qi_refining"

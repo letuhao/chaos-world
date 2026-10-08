@@ -30,7 +30,7 @@ rarity_floor = &"magic"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_manual_iron_tortoise_pool_spirit_condensation"
-display_name = "Iron Tortoise salvage (spirit_condensation)"
+display_name = "LOC_LOOT_MANUAL_IRON_TORTOISE_SPIRIT_CONDENSATION_0_DISPLAY_NAME"
 realm = &"spirit_condensation"
 rarity = &""
 rolls = 1

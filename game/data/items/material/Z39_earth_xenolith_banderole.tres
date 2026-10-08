@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Z39_earth_xenolith_banderole"
-display_name = "Earth Epistle Banderole"
+display_name = "LOC_ITEMS_Z39_EARTH_XENOLITH_BANDEROLE_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_severing"

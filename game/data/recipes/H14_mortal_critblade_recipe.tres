@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"H14_mortal_critblade_recipe"
-display_name = "Mortal Critblade Recipe"
+display_name = "LOC_RECIPES_H14_MORTAL_CRITBLADE_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"ore_iron_vein", &"gemstone_agate"])
 outputs = Array[StringName]([&"H14_mortal_critblade"])

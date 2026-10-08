@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"N14_earth_nettle_primed_recipe"
-display_name = "Earth Nettle Primed Recipe"
+display_name = "LOC_RECIPES_N14_EARTH_NETTLE_PRIMED_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"N14_earth_nettle_aged", &"herb_ironbark", &"tattoo_earth_herb", &"armor_gale_essence"])
 outputs = Array[StringName]([&"N14_earth_nettle_primed"])

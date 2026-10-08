@@ -5,14 +5,14 @@
 [resource]
 script = ExtResource("1_item")
 id = &"unique_void_coil_coiled_heart"
-display_name = "Coiled Heart of the Void Serpent"
+display_name = "LOC_SETS_UNIQUE_VOID_COIL_COILED_HEART_DISPLAY_NAME"
 category = &"equipment"
 subcategory = &"weapon"
 grade = &"heaven"
 stackable = false
 tags = Array[StringName]([&"unique", &"unique_route:E8_mystic_warden", &"set:void_serpent_coil"])
 sources = Array[StringName]([&"boss:E8_mystic_warden"])
-description = "A serpent heart kept wound around a void-iron core. Locks a fixed physical-cutting signature; the heart contracts once per completed coil."
+description = "LOC_SETS_UNIQUE_VOID_COIL_COILED_HEART_DESCRIPTION"
 rarity = &"legendary"
 realm = &"mystic_immortal"
 fixed_modifiers = Array[Dictionary]([

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"A19_earth_bezold_aged"
-display_name = "Earth Bezold Aged"
+display_name = "LOC_ITEMS_A19_EARTH_BEZOLD_AGED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_domain"

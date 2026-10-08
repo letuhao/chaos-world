@@ -178,12 +178,12 @@ func unheld_choices(ledger: Dictionary) -> Array[StringName]:
 			out.append(fate_id)
 	return out
 
+
 ## Dialogue changes when this fate is held (ADR 0398). Maps a dialog_id to a
 ## text override. When the player holds this fate, the dialog generator
 ## replaces the base text for that dialog_id with the override. Empty means
 ## this fate modifies no dialogue.
 @export var dialog_modifiers: Dictionary = {}
-
 
 ## The difficulty events this fate triggers when earned (ADR 0404).
 ##

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"talisman_stone_ward_recipe"
-display_name = "Stone Ward Talisman Recipe"
+display_name = "LOC_RECIPES_TALISMAN_STONE_WARD_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"talisman_moonstone_shard"])
 outputs = Array[StringName]([&"talisman_stone_ward"])

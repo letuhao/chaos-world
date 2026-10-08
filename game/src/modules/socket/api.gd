@@ -148,12 +148,7 @@ static func preview_reforge(
 	# A preview is not a change, so it is not published: the change notification
 	# stays exactly one event per committed or refused transaction.
 	return ReforgeService.preview(
-		actor,
-		ledger,
-		target_instance_id,
-		option_id,
-		resolve_content(reagent_def_id),
-		rng
+		actor, ledger, target_instance_id, option_id, resolve_content(reagent_def_id), rng
 	)
 
 

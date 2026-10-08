@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"altmat_gemstone_peridot_recipe"
-display_name = "Peridot Alternate Recipe"
+display_name = "LOC_RECIPES_ALTMAT_GEMSTONE_PERIDOT_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"gemstone_peridot", &"petal_jasmine"])
 outputs = Array[StringName]([&"charm_silver_ring"])

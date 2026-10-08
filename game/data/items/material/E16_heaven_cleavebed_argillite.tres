@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E16_heaven_cleavebed_argillite"
-display_name = "Heaven Cleavebed Argillite"
+display_name = "LOC_ITEMS_E16_HEAVEN_CLEAVEBED_ARGILLITE_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"golden_immortal"

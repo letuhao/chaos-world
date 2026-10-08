@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"fungus_whispering_fungus"
-display_name = "Whispering Fungus"
+display_name = "LOC_ITEMS_FUNGUS_WHISPERING_FUNGUS_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"primordial_immortal"

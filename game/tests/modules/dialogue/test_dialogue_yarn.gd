@@ -86,7 +86,9 @@ func test_a_condition_compiles_to_a_gate() -> void:
 ## `-> #id label` names the choice, so a saved press is addressed by name rather than by
 ## position (DialogueChoiceDef's own rule). Without it, the id is positional.
 func test_an_option_may_name_its_own_id() -> void:
-	var out := DialogueYarn.compile("title: a\n---\nX: hi\n-> #named Go on <<jump a>>\n===\n", &"npc", &"d")
+	var out := DialogueYarn.compile(
+		"title: a\n---\nX: hi\n-> #named Go on <<jump a>>\n===\n", &"npc", &"d"
+	)
 	assert_eq(bool(out["ok"]), true, "it compiles: %s" % str(out["problems"]))
 	var def := out["def"] as DialogueDef
 	var first := (def.node(&"a").choices as Array)[0] as DialogueChoiceDef
@@ -94,7 +96,9 @@ func test_an_option_may_name_its_own_id() -> void:
 	assert_eq(first.label, "Go on", "and the label is the rest of the line")
 
 	var plain := DialogueYarn.compile("title: a\n---\nX: hi\n-> No id here\n===\n", &"npc", &"d")
-	var unnamed := ((plain["def"] as DialogueDef).node(&"a").choices as Array)[0] as DialogueChoiceDef
+	var unnamed := (
+		((plain["def"] as DialogueDef).node(&"a").choices as Array)[0] as DialogueChoiceDef
+	)
 	assert_eq(String(unnamed.choice_id), "choice_0", "without an id it falls back to a position")
 
 

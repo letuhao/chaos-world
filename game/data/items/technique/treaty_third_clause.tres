@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"treaty_third_clause"
-display_name = "Treaty: Third Clause"
+display_name = "LOC_ITEMS_TREATY_THIRD_CLAUSE_DISPLAY_NAME"
 category = &"technique"
 rarity = &"magic"
 realm = &"spirit_sovereign"

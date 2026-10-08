@@ -18,7 +18,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_scroll_stone_colossus_pool_heaven_immortal"
-display_name = "Stone Colossus salvage (heaven_immortal)"
+display_name = "LOC_LOOT_SCROLL_STONE_COLOSSUS_HEAVEN_IMMORTAL_0_DISPLAY_NAME"
 realm = &"heaven_immortal"
 rarity = &""
 rolls = 1

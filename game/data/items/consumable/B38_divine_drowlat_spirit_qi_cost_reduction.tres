@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B38_divine_drowlat_spirit_qi_cost_reduction"
-display_name = "Divine Drowlat Spirit Qi Cost Reduction"
+display_name = "LOC_ITEMS_B38_DIVINE_DROWLAT_SPIRIT_QI_COST_REDUCTION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_ancestor"

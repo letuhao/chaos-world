@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F19_divine_epergne_agility_aptitude_poise_spirit"
-display_name = "Divine Epergne Agility Aptitude Poise Spirit"
+display_name = "LOC_ITEMS_F19_DIVINE_EPERGNE_AGILITY_APTITUDE_POISE_SPIRIT_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"transcendent"

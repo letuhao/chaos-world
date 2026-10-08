@@ -77,8 +77,14 @@ func validate_uniqueness() -> Array[String]:
 			continue
 		if seen.has(String(def.hint_fate_id)):
 			problems.append(
-				"prophecy %s: hints at fate '%s', already hinted by prophecy %s"
-				% [String(prophecy_id), String(def.hint_fate_id), String(seen[String(def.hint_fate_id)])]
+				(
+					"prophecy %s: hints at fate '%s', already hinted by prophecy %s"
+					% [
+						String(prophecy_id),
+						String(def.hint_fate_id),
+						String(seen[String(def.hint_fate_id)])
+					]
+				)
 			)
 		else:
 			seen[String(def.hint_fate_id)] = prophecy_id

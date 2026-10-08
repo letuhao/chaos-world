@@ -30,7 +30,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_artifact_iron_titan_pool_core_formation"
-display_name = "Iron Titan salvage (core_formation)"
+display_name = "LOC_LOOT_ARTIFACT_IRON_TITAN_CORE_FORMATION_0_DISPLAY_NAME"
 realm = &"core_formation"
 rarity = &""
 rolls = 1

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B34_heaven_charta_aged"
-display_name = "Heaven Charta Aged"
+display_name = "LOC_ITEMS_B34_HEAVEN_CHARTA_AGED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"true_immortal"

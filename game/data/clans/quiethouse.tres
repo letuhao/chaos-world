@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_clan")
 id = &"quiethouse"
-display_name = "The Quiet House"
-description = "A lineage that has spent four generations buying its way out of the ledger. It publishes teaching — technique, attendance, and a chamber to practise in — and takes discretion in return: what is done inside the house is not written down and not repeated. It rivals the Saltledger over who may keep a record, because a house that files everything is a house that cannot be left alone. Admission is measured in the founder's line rather than in the member's purse, which is why it turns members away who could easily afford the fee."
+display_name = "LOC_CLANS_QUIETHOUSE_DISPLAY_NAME"
+description = "LOC_CLANS_QUIETHOUSE_DESCRIPTION"
 founding_bloodline = &"voidborn"
 ranks = Array[StringName]([&"outer", &"inner", &"core", &"heir", &"head"])
 standing_bands = Array[int]([0, 25, 60, 100, 160])

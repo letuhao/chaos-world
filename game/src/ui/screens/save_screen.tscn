@@ -19,13 +19,13 @@ layout_mode = 2
 [node name="Title" type="Label" parent="Layout"]
 layout_mode = 2
 theme_type_variation = &"ScreenTitle"
-text = "Journeys"
+text = "LOC_UI_SCREENS_449ACE796F"
 
 [node name="HeaderLabel" type="Label" parent="Layout"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "Every journey, and the state it is in."
+text = "LOC_UI_SCREENS_EF13B6BFBF"
 
 [node name="SlotRows" type="VBoxContainer" parent="Layout"]
 unique_name_in_owner = true

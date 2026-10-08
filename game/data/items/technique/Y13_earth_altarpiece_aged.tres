@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Y13_earth_altarpiece_aged"
-display_name = "Earth Altarpiece Aged"
+display_name = "LOC_ITEMS_Y13_EARTH_ALTARPIECE_AGED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_unity"

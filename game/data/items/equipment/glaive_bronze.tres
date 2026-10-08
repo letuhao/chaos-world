@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"glaive_bronze"
-display_name = "Bronze Glaive"
+display_name = "LOC_ITEMS_GLAIVE_BRONZE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"spirit_transformation"

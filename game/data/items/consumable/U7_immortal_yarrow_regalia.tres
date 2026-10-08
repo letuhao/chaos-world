@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U7_immortal_yarrow_regalia"
-display_name = "Immortal Yarrow Regalia"
+display_name = "LOC_ITEMS_U7_IMMORTAL_YARROW_REGALIA_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_immortal"

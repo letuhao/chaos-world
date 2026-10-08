@@ -16,13 +16,12 @@ and invokes Godot headless editor to generate engine .import files.
 from __future__ import annotations
 
 import argparse
-import copy
 import json
-import os
 import shutil
 import sys
 import time
 from pathlib import Path
+
 from PIL import Image
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -59,9 +58,10 @@ class TeeWriter:
 sys.stdout = TeeWriter(sys.stdout, LOG_PATH)
 sys.stderr = TeeWriter(sys.stderr, LOG_PATH)
 
-import geometry
 import derive
+import geometry
 import subcell
+
 from tools.common import ToolError
 from tools.godot import run_godot
 from tools.map_generate import generate
@@ -188,9 +188,13 @@ def compute_matrix_data(
     cov, cols, rows, frac_zero = derive.coverage_grid(runtime_path, fp_cols, fp_rows)
 
     gate = 0.20 if (fp_cols * fp_rows) > 1 else 0.35
-    rule = "ground_contact" if collision_type == "ground_contact" else (
-        "core_ring" if collision_type == "core_ring" else (
-            "full_body" if collision_type in ("solid", "full_body") else "none"
+    rule = (
+        "ground_contact"
+        if collision_type == "ground_contact"
+        else (
+            "core_ring"
+            if collision_type == "core_ring"
+            else ("full_body" if collision_type in ("solid", "full_body") else "none")
         )
     )
     blocks = derive.occluder_mask(rule, cov, gate)
@@ -199,11 +203,7 @@ def compute_matrix_data(
 
     walk_surface = derive.walk_surface_mask(cov, rule, collision_type == "walk_surface")
     block_cell_count = sum(sum(1 for cell in line if cell) for line in blocks)
-    anchor_cell = (
-        [cols // 2, rows - 1]
-        if pivot == "bottom_center"
-        else [cols // 2, rows // 2]
-    )
+    anchor_cell = [cols // 2, rows - 1] if pivot == "bottom_center" else [cols // 2, rows // 2]
 
     fill, sub_cols, sub_rows, crop_x, crop_y, _ = subcell.subcell_fill(runtime_path)
     cols_solid = subcell.trunk_columns(fill, solid=subcell.SOLID_FILL)
@@ -215,9 +215,7 @@ def compute_matrix_data(
     contact_ref = contact * ref_scale
     box_center = fp_cols * cell_px / 2
     contact_center = (
-        box_center + ((run[0] + run[1]) / 2 - canvas_w / 2) * ref_scale
-        if run
-        else box_center
+        box_center + ((run[0] + run[1]) / 2 - canvas_w / 2) * ref_scale if run else box_center
     )
 
     by_scale = {}
@@ -227,14 +225,21 @@ def compute_matrix_data(
             by_scale[str(s)] = [0, 0, fp_cols - 1, fp_rows - 1] if block_cell_count > 0 else None
         else:
             center = box_center + (contact_center - box_center) * s
-            r = subcell.rect_at_scale(contact_ref, s, fp_cols, fp_rows, min_cells=floor_cells, center_px=center)
+            r = subcell.rect_at_scale(
+                contact_ref, s, fp_cols, fp_rows, min_cells=floor_cells, center_px=center
+            )
             by_scale[str(s)] = r
 
     rect = by_scale.get("1.0")
     rect_px = (
         None
         if rect is None
-        else [rect[0] * cell_px, rect[1] * cell_px, (rect[2] + 1) * cell_px, (rect[3] + 1) * cell_px]
+        else [
+            rect[0] * cell_px,
+            rect[1] * cell_px,
+            (rect[2] + 1) * cell_px,
+            (rect[3] + 1) * cell_px,
+        ]
     )
 
     return {
@@ -275,7 +280,9 @@ def save_manifest(pack: dict) -> None:
         print(f"Warning: could not save manifest: {e}", file=sys.stderr)
 
 
-def get_asset_paths(domain: str, sub_domain: str, asset_slug: str, variant_slug: str) -> dict[str, Path]:
+def get_asset_paths(
+    domain: str, sub_domain: str, asset_slug: str, variant_slug: str
+) -> dict[str, Path]:
     """Resolves hierarchical paths:
     pack -> domain -> sub_domain -> asset_slug -> variant files
     """
@@ -306,11 +313,7 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
     Construct game-ready positive prompt and negative prompt based on the 7 Archetypes
     defined in Section 8 of README.md, strictly preventing diorama, chimera, and cultural drift.
     """
-    asset_class = (
-        asset.get("asset_class")
-        or asset.get("type")
-        or "prop_workstation"
-    ).lower()
+    asset_class = (asset.get("asset_class") or asset.get("type") or "prop_workstation").lower()
 
     asset_name = asset.get("name") or asset.get("id", "cultivation_asset")
     material = asset.get("material", "carved wood and polished bronze")
@@ -321,9 +324,16 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
     is_pale = (
         "winter" in var_slug
         or "snow" in var_slug
-        or any(w in asset_name.lower() for w in ("white", "crane", "snow", "jade", "frost", "silver", "pale"))
+        or any(
+            w in asset_name.lower()
+            for w in ("white", "crane", "snow", "jade", "frost", "silver", "pale")
+        )
     )
-    adaptive_bg = "solid neutral contrast grey background (#D0D0D0)" if is_pale else "solid pure white background (#FFFFFF)"
+    adaptive_bg = (
+        "solid neutral contrast grey background (#D0D0D0)"
+        if is_pale
+        else "solid pure white background (#FFFFFF)"
+    )
 
     # Archetype 1: Items, Handheld Tools, Weapons & Pickups
     if any(k in asset_class for k in ("item", "tool", "weapon", "talisman", "consumable", "icon")):
@@ -337,21 +347,24 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
             "diorama, miniature scene, floating island, dirt slab, grass pedestal, ground plane, "
             "floor, surface, shadow on ground, building, house, cottage, farm, fence, landscape, "
             "trees, field, human hands, fingers, holding, multiple items, collection, collage, border, "
-            f"frame, UI, watermark, blurry edges, microscopic high-frequency noise, {ANTI_DRIFT_CLAUSE}"
+            f"frame, UI, watermark, blurry edges, microscopic high-frequency noise, decorative clouds, cloud swirls, vapor wisps, {ANTI_DRIFT_CLAUSE}"
         )
         return pos, neg
 
     # Archetype 6: Ground Terrains, Walk Surfaces & Path Decals
     dom = asset.get("domain", "")
-    if any(k in asset_class for k in ("terrain", "tile", "surface_decal", "ground")) or "terrain" in dom:
+    if (
+        any(k in asset_class for k in ("terrain", "tile", "surface_decal", "ground"))
+        or "terrain" in dom
+    ):
         pos = (
-            f"Seamless flat 2D top-down ground terrain texture of {asset_name.lower()}, {material}, {var_mod}, "
-            "90-degree perpendicular overhead camera angle, completely flat planar surface filling 100% of canvas corner-to-corner, "
-            "gouache painted, dark ink linework, zero perspective, zero horizon, no focal prop."
+            f"Opaque square ground terrain: {asset_name.lower()}, {material}, {var_mod}, "
+            "painterly anime gouache, subtle natural grain, broad uniform ground surface, "
+            "continuous edge-to-edge flat surface filling 100% of canvas, perpendicular 90-degree overhead angle looking straight down."
         )
         neg = (
-            "perspective, 45-degree angle, isometric, horizon, 3D elevation, relief shading, trees, "
-            f"plants, buildings, houses, fences, focal object, standalone prop, pedestal, frame, borders, {ANTI_DRIFT_CLAUSE}"
+            "cliffs, canyon, pillars, columns, rock towers, elevation, horizon, sky, clouds, landscape, "
+            "vista, distant view, perspective, 3D scene, chasm, ravine, valley, walls, border, frame, UI, watermark, props, objects, buildings, trees"
         )
         return pos, neg
 
@@ -362,7 +375,10 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
             "luminous spiritual motes, soft radiant glow edges, glowing magical energy, "
             "isolated on solid pure black background (#000000) for additive alpha blending."
         )
-        neg = "white background, opaque solid shapes, opaque borders, ground, floor, landscape, characters, buildings, terrain, solid geometry, ui frames"
+        neg = (
+            "white background, light background, grey background, opaque solid shapes, opaque borders, "
+            "ground, floor, landscape, characters, buildings, terrain, solid geometry, ui frames, decorative frames"
+        )
         return pos, neg
 
     # Archetype 4: Flora, Spirit Herbs & Sacred Trees
@@ -375,7 +391,8 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
         )
         neg = (
             "diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, "
-            f"surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, {ANTI_DRIFT_CLAUSE}"
+            "surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, "
+            f"tall upright crystals, decorative swirls, floating cloud swirls, {ANTI_DRIFT_CLAUSE}"
         )
         return pos, neg
 
@@ -388,12 +405,26 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
         )
         neg = (
             "diorama, cage, stable, pen, pasture, fence, saddle, reins, rider, trainer, human hands, "
-            f"background scenery, landscape, grass chunk, multiple animals, herd, UI healthbar, floating icons, {ANTI_DRIFT_CLAUSE}"
+            "background scenery, landscape, grass chunk, multiple animals, herd, UI healthbar, floating icons, "
+            f"perch, tree branch, rock pedestal, stone platform, diorama base, four legs on bird, quadruped bird, {ANTI_DRIFT_CLAUSE}"
         )
         return pos, neg
 
     # Archetype 3: Architecture, Sect Facilities & Gateways
-    if any(k in asset_class for k in ("structure", "building", "architecture", "gateway", "gate", "pagoda", "pavilion", "tower", "hall")):
+    if any(
+        k in asset_class
+        for k in (
+            "structure",
+            "building",
+            "architecture",
+            "gateway",
+            "gate",
+            "pagoda",
+            "pavilion",
+            "tower",
+            "hall",
+        )
+    ):
         pos = (
             f"Single isolated 2D RPG architectural building sprite of {asset_name.lower()}, {material}, {var_mod}, "
             "Ancient Chinese Tang-Song Xianxia architectural style, upturned dougong bracket eaves, glazed ceramic roof tiles, "
@@ -435,7 +466,7 @@ def run_pipeline(
         print(f"Error: manifest not found at {PACK_PATH}", file=sys.stderr)
         return 1
 
-    with open(PACK_PATH, "r", encoding="utf-8") as f:
+    with open(PACK_PATH, encoding="utf-8") as f:
         pack = json.load(f)
 
     assets = pack.get("assets", [])
@@ -458,12 +489,14 @@ def run_pipeline(
         variants = asset.get("variants", [])
         if not variants:
             # Single default variant if not explicitly decomposed
-            variants = [{
-                "variant_slug": "default",
-                "name": asset.get("name", asset_slug),
-                "prompt_modifier": "",
-                "status": asset.get("status", "planned"),
-            }]
+            variants = [
+                {
+                    "variant_slug": "default",
+                    "name": asset.get("name", asset_slug),
+                    "prompt_modifier": "",
+                    "status": asset.get("status", "planned"),
+                }
+            ]
 
         for var in variants:
             var_slug = var.get("variant_slug", "default")
@@ -525,10 +558,14 @@ def run_pipeline(
 
         # Skip if already generated
         if paths["runtime_png"].is_file() and paths["variant_json"].is_file():
-            print(f"[{idx}/{len(work_items)}] SKIPPED (already installed): {asset_slug} -> {var_slug}")
+            print(
+                f"[{idx}/{len(work_items)}] SKIPPED (already installed): {asset_slug} -> {var_slug}"
+            )
             skipped_count += 1
             var["status"] = "generated"
-            var["path"] = f"res://assets/packs/{PACK_ID}/runtime/{dom}/{sub_dom}/{asset_slug}/{var_slug}.png"
+            var["path"] = (
+                f"res://assets/packs/{PACK_ID}/runtime/{dom}/{sub_dom}/{asset_slug}/{var_slug}.png"
+            )
             continue
 
         print(f"\n[{idx}/{len(work_items)}] GENERATING: {dom}/{sub_dom}/{asset_slug} [{var_slug}]")
@@ -562,10 +599,10 @@ def run_pipeline(
                     if matches:
                         generated_source = matches[0]
                         break
-                print(f"  [Attempt {attempt+1}] ToolError: {te}")
+                print(f"  [Attempt {attempt + 1}] ToolError: {te}")
                 time.sleep(2)
             except Exception as e:
-                print(f"  [Attempt {attempt+1}] Error: {e}")
+                print(f"  [Attempt {attempt + 1}] Error: {e}")
                 time.sleep(3)
 
         if not generated_source or not generated_source.is_file():
@@ -598,13 +635,17 @@ def run_pipeline(
         )
 
         # 4. Update variant metadata
-        rel_runtime_path = f"res://assets/packs/{PACK_ID}/runtime/{dom}/{sub_dom}/{asset_slug}/{var_slug}.png"
-        var.update({
-            "status": "generated",
-            "path": rel_runtime_path,
-            "generated_on": time.strftime("%Y-%m-%d"),
-            "matrix_data": matrix_data,
-        })
+        rel_runtime_path = (
+            f"res://assets/packs/{PACK_ID}/runtime/{dom}/{sub_dom}/{asset_slug}/{var_slug}.png"
+        )
+        var.update(
+            {
+                "status": "generated",
+                "path": rel_runtime_path,
+                "generated_on": time.strftime("%Y-%m-%d"),
+                "matrix_data": matrix_data,
+            }
+        )
 
         # 5. Emit variant JSON
         var_payload = {
@@ -623,10 +664,14 @@ def run_pipeline(
             "interactive_verb": interactive_verb,
             "matrix_data": matrix_data,
         }
-        paths["variant_json"].write_text(json.dumps(var_payload, indent=2, ensure_ascii=False), encoding="utf-8")
+        paths["variant_json"].write_text(
+            json.dumps(var_payload, indent=2, ensure_ascii=False), encoding="utf-8"
+        )
 
         # 6. Update master asset.json
-        paths["asset_json"].write_text(json.dumps(asset, indent=2, ensure_ascii=False), encoding="utf-8")
+        paths["asset_json"].write_text(
+            json.dumps(asset, indent=2, ensure_ascii=False), encoding="utf-8"
+        )
 
         elapsed = time.time() - t_start
         print(f"  -> SUCCESS ({elapsed:.1f}s): {rel_runtime_path}")
@@ -638,34 +683,53 @@ def run_pipeline(
 
     save_manifest(pack)
     print(f"\nManifest saved to {PACK_PATH}")
-    print(f"Finished pipeline: {success_count} succeeded, {skipped_count} skipped, {failed_count} failed in {time.time()-t0_all:.1f}s")
+    print(
+        f"Finished pipeline: {success_count} succeeded, {skipped_count} skipped, {failed_count} failed in {time.time() - t0_all:.1f}s"
+    )
 
     # Godot headless editor import
     if not skip_godot_import and success_count > 0:
         print("\nInvoking Godot headless editor to import new textures...")
-        res = run_godot(["--headless", "--editor", "--path", str(GAME_DIR), "--import", "--quit"], capture=True, tag="low-cultivation-import")
+        res = run_godot(
+            ["--headless", "--editor", "--path", str(GAME_DIR), "--import", "--quit"],
+            capture=True,
+            tag="low-cultivation-import",
+        )
         print(f"Godot import process finished with returncode {res.returncode}")
 
     return 0 if failed_count == 0 else 1
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Living Map Generation Pipeline for Ancient China Low Cultivation Pack")
+    parser = argparse.ArgumentParser(
+        description="Living Map Generation Pipeline for Ancient China Low Cultivation Pack"
+    )
     parser.add_argument("--domain", type=str, default=None, help="Filter by domain ID")
     parser.add_argument("--sub-domain", type=str, default=None, help="Filter by sub-domain ID")
     parser.add_argument("--asset", type=str, default=None, help="Filter by asset slug or ID")
     parser.add_argument("--variant", type=str, default=None, help="Filter by variant slug")
-    parser.add_argument("--limit", type=int, default=None, help="Limit number of variants to process")
-    parser.add_argument("--skip-import", action="store_true", default=False, help="Skip Godot headless import")
-    parser.add_argument("--dry-run", action="store_true", default=False, help="Show planned file paths without generating")
+    parser.add_argument(
+        "--limit", type=int, default=None, help="Limit number of variants to process"
+    )
+    parser.add_argument(
+        "--skip-import", action="store_true", default=False, help="Skip Godot headless import"
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        default=False,
+        help="Show planned file paths without generating",
+    )
     args = parser.parse_args()
 
-    sys.exit(run_pipeline(
-        domain_filter=args.domain,
-        sub_domain_filter=args.sub_domain,
-        asset_filter=args.asset,
-        variant_filter=args.variant,
-        limit=args.limit,
-        skip_godot_import=args.skip_import,
-        dry_run=args.dry_run,
-    ))
+    sys.exit(
+        run_pipeline(
+            domain_filter=args.domain,
+            sub_domain_filter=args.sub_domain,
+            asset_filter=args.asset,
+            variant_filter=args.variant,
+            limit=args.limit,
+            skip_godot_import=args.skip_import,
+            dry_run=args.dry_run,
+        )
+    )

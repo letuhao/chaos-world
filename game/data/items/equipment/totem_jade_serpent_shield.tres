@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"totem_jade_serpent_shield"
-display_name = "Jade Serpent Shield"
+display_name = "LOC_ITEMS_TOTEM_JADE_SERPENT_SHIELD_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"magic"
 realm = &"spirit_sea"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F41_heaven_germinal_crit_chance_health_regen_spirit"
-display_name = "Heaven Germinal Crit chance Health regen Spirit"
+display_name = "LOC_ITEMS_F41_HEAVEN_GERMINAL_CRIT_CHANCE_HEALTH_REGEN_SPIRIT_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"golden_immortal"

@@ -39,7 +39,10 @@ func test_the_contract_publishes_every_key_the_ledger_normalises() -> void:
 		assert_eq(
 			published.has(value),
 			true,
-			"the ledger normalises '%s' but the contract does not publish it, so a System cannot name it" % value
+			(
+				"the ledger normalises '%s' but the contract does not publish it, so a System cannot name it"
+				% value
+			)
 		)
 
 
@@ -54,7 +57,10 @@ func test_the_contract_publishes_nothing_the_ledger_does_not_normalise() -> void
 		assert_eq(
 			normalised.has(StringName(id)),
 			true,
-			"the contract publishes '%s' but the ledger never normalises it, so writing it is a silent loss" % id
+			(
+				"the contract publishes '%s' but the ledger never normalises it, so writing it is a silent loss"
+				% id
+			)
 		)
 
 
@@ -73,9 +79,7 @@ func test_the_named_constants_agree_with_the_persisted_list() -> void:
 		[DoctrineRule.REDEMPTIONS_KEY, &"redemptions"],
 	]:
 		assert_eq(
-			StringName(pair[0]),
-			pair[1],
-			"'%s' must name the same string the ledger uses" % pair[1]
+			StringName(pair[0]), pair[1], "'%s' must name the same string the ledger uses" % pair[1]
 		)
 
 
@@ -98,7 +102,10 @@ func test_the_system_owned_half_is_the_counter_and_nothing_else() -> void:
 		assert_eq(
 			owned.has(id),
 			false,
-			"'%s' is the framework's to move, so a System writing it is writing a field it does not own" % id
+			(
+				"'%s' is the framework's to move, so a System writing it is writing a field it does not own"
+				% id
+			)
 		)
 
 

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"X26_earth_outlay_starch"
-display_name = "Earth Outlay Starch"
+display_name = "LOC_ITEMS_X26_EARTH_OUTLAY_STARCH_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_sovereign"

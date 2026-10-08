@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"V17_divine_anodyne_refined_alt_recipe"
-display_name = "Divine Anodyne Refined (Alt) Recipe"
+display_name = "LOC_RECIPES_V17_DIVINE_ANODYNE_REFINED_ALT_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"V17_divine_anodyne_base", &"body_dao_ancestor_tempering_herb", &"divine_netherbloom"])
 outputs = Array[StringName]([&"V17_divine_anodyne_refined"])

@@ -46,9 +46,9 @@ const CARD_ROWS := 4
 const CARD_CAP := 16
 const CARD_SPARE_ROWS := 1
 ## Where the author wants the keyboard to land, as one sentence.
-const HEADER_TEXT := "Every kind of organization, the offices it publishes, and your place in one."
-const NO_ACTOR_TEXT := "No hero bound."
-const FOOTER_TEXT := "Up / Down picks an organization, Accept founds or joins it. Cancel returns."
+const HEADER_TEXT := "LOC_UI_SCREENS_A68E30640E"
+const NO_ACTOR_TEXT := "LOC_UI_SCREENS_6E9BC19A74"
+const FOOTER_TEXT := "LOC_UI_SCREENS_36503F1D75"
 const NO_ACTOR_FOOTER := ""
 
 ## The refusals this screen raises ITSELF, before any verb is called. Authored constants
@@ -594,12 +594,12 @@ func _render() -> void:
 	if _header == null:
 		return
 	if _actor == null:
-		_header.text = NO_ACTOR_TEXT
-		_footer.text = NO_ACTOR_FOOTER
+		_header.text = L.t(NO_ACTOR_TEXT)
+		_footer.text = L.t(NO_ACTOR_FOOTER)
 		_publish_actions()
 		return
-	_header.text = HEADER_TEXT
-	_footer.text = FOOTER_TEXT
+	_header.text = L.t(HEADER_TEXT)
+	_footer.text = L.t(FOOTER_TEXT)
 	_publish_actions()
 
 

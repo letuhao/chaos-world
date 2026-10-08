@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"J22_immortal_dao_anointed_recipe"
-display_name = "Immortal Dao Anointed Recipe"
+display_name = "LOC_RECIPES_J22_IMMORTAL_DAO_ANOINTED_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"J22_immortal_dao_refined", &"ore_phoenix_ash"])
 outputs = Array[StringName]([&"J22_immortal_dao_anointed"])

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"X17_divine_barony_quitclaim"
-display_name = "Divine Barony Quitclaim"
+display_name = "LOC_ITEMS_X17_DIVINE_BARONY_QUITCLAIM_DISPLAY_NAME"
 category = &"currency"
 rarity = &"legendary"
 realm = &"primordial_origin"

@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_F20_dao_warden_pool_true_immortal"
-display_name = "Dao Warden salvage (true_immortal)"
+display_name = "LOC_LOOT_F20_DAO_WARDEN_TRUE_IMMORTAL_0_DISPLAY_NAME"
 realm = &"true_immortal"
 rarity = &""
 rolls = 1

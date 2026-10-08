@@ -30,7 +30,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_marine_frost_mantaray_pool_transcendent"
-display_name = "Frost Manta Ray salvage (transcendent)"
+display_name = "LOC_LOOT_MARINE_FROST_MANTARAY_TRANSCENDENT_0_DISPLAY_NAME"
 realm = &"transcendent"
 rarity = &""
 rolls = 1

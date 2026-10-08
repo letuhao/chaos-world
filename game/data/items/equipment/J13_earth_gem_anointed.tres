@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"J13_earth_gem_anointed"
-display_name = "Earth Gem Anointed"
+display_name = "LOC_ITEMS_J13_EARTH_GEM_ANOINTED_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"spirit_condensation"

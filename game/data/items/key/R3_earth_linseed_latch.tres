@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"R3_earth_linseed_latch"
-display_name = "Earth Linseed Latch"
+display_name = "LOC_ITEMS_R3_EARTH_LINSEED_LATCH_DISPLAY_NAME"
 category = &"key"
 rarity = &"rare"
 realm = &"spirit_palace"

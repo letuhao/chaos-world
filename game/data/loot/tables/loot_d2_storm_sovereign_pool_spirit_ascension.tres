@@ -18,7 +18,7 @@ rarity_floor = &"magic"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d2_storm_sovereign_pool_spirit_ascension"
-display_name = "Storm Sovereign Lesser salvage (spirit_ascension)"
+display_name = "LOC_LOOT_D2_STORM_SOVEREIGN_SPIRIT_ASCENSION_0_DISPLAY_NAME"
 realm = &"spirit_ascension"
 rarity = &""
 rolls = 1

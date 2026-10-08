@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"relic_tide_serpent_eye"
-display_name = "Serpent Eye"
+display_name = "LOC_ITEMS_RELIC_TIDE_SERPENT_EYE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"spirit_transformation"

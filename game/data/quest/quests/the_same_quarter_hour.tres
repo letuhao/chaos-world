@@ -8,20 +8,20 @@ script = ExtResource("2_step")
 step_id = &"oath_sworn"
 fact = &"oaths_discharged"
 need = 1
-display_name = "Stand where a sworn term is brought to zero"
+display_name = "LOC_QUEST_THE_SAME_QUARTER_HOUR_DISPLAY_NAME_1"
 
 [sub_resource type="Resource" id="QuestStep_oath_broken"]
 script = ExtResource("2_step")
 step_id = &"oath_broken"
 fact = &"oaths_discharged"
 need = 2
-display_name = "Still be standing there when the second one clears"
+display_name = "LOC_QUEST_THE_SAME_QUARTER_HOUR_DISPLAY_NAME_2"
 
 [resource]
 script = ExtResource("1_quest")
 id = &"the_same_quarter_hour"
-display_name = "The Same Quarter Hour"
-description = "A term was sworn in front of you and broken in front of you, and both happened inside one quarter hour. The sect keeps the second entry and no file on the first, which is not the same as saying it did not see the first. Nobody asked you to be in the room. You were in the room."
+display_name = "LOC_QUEST_THE_SAME_QUARTER_HOUR_DISPLAY_NAME_3"
+description = "LOC_QUEST_THE_SAME_QUARTER_HOUR_DESCRIPTION"
 kind = &"authored"
 tier = 2
 requirement = {}

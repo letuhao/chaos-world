@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V13_immortal_altarpiece_guilder"
-display_name = "Immortal Altarpiece Guilder"
+display_name = "LOC_ITEMS_V13_IMMORTAL_ALTARPIECE_GUILDER_DISPLAY_NAME"
 category = &"currency"
 rarity = &"legendary"
 realm = &"immortal_sovereign"

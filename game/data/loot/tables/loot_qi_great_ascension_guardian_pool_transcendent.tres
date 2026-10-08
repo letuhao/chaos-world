@@ -18,7 +18,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_qi_great_ascension_guardian_pool_transcendent"
-display_name = "Great Ascension Guardian salvage (transcendent)"
+display_name = "LOC_LOOT_QI_GREAT_ASCENSION_GUARDIAN_TRANSCENDENT_0_DISPLAY_NAME"
 realm = &"transcendent"
 rarity = &""
 rolls = 1

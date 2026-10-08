@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B41_earth_episode_defense_spiritual_cultivation_rate"
-display_name = "Earth Episode Defense Spiritual Cultivation Rate"
+display_name = "LOC_ITEMS_B41_EARTH_EPISODE_DEFENSE_SPIRITUAL_CULTIVATION_RATE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_palace"

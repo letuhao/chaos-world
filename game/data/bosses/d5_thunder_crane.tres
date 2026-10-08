@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_boss")
 id = &"d5_thunder_crane"
-display_name = "Thunder Crane"
+display_name = "LOC_BOSSES_D5_THUNDER_CRANE_DISPLAY_NAME"
 domain_id = &"scroll_thunder_crane_domain"
 loot = Array[StringName]([])
 ; The bolt finds the seams: what it passed through, the spirit guard and the instinct to

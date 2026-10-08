@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"C5_heaven_transcript_recipe"
-display_name = "Heaven Transcript Recipe"
+display_name = "LOC_RECIPES_C5_HEAVEN_TRANSCRIPT_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"C5_earth_transcript", &"wood_heavenly_branch"])
 outputs = Array[StringName]([&"C5_heaven_transcript"])

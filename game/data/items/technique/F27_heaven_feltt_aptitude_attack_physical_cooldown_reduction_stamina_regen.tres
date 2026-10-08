@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F27_heaven_feltt_aptitude_attack_physical_cooldown_reduction_stamina_regen"
-display_name = "Heaven Feltt Aptitude Attack physical Cooldown reduction Stamina regen"
+display_name = "LOC_ITEMS_F27_HEAVEN_FELTT_APTITUDE_ATTACK_PHYSICAL_COOLDOWN_REDUCTION_STAMINA_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"heaven_immortal"

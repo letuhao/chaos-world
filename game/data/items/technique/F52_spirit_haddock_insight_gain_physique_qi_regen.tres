@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F52_spirit_haddock_insight_gain_physique_qi_regen"
-display_name = "Spirit Haddock Insight gain Physique Qi regen"
+display_name = "LOC_ITEMS_F52_SPIRIT_HADDOCK_INSIGHT_GAIN_PHYSIQUE_QI_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_manifestation"

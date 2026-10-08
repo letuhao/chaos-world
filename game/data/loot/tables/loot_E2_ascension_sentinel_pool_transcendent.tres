@@ -18,7 +18,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E2_ascension_sentinel_pool_transcendent"
-display_name = "Ascension Sentinel salvage (transcendent)"
+display_name = "LOC_LOOT_E2_ASCENSION_SENTINEL_TRANSCENDENT_0_DISPLAY_NAME"
 realm = &"transcendent"
 rarity = &""
 rolls = 1

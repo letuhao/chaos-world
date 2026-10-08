@@ -30,7 +30,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_tome_cinder_tiger_pool_dao_ancestor"
-display_name = "Cinder Tiger salvage (dao_ancestor)"
+display_name = "LOC_LOOT_TOME_CINDER_TIGER_DAO_ANCESTOR_0_DISPLAY_NAME"
 realm = &"dao_ancestor"
 rarity = &""
 rolls = 1

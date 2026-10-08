@@ -390,9 +390,9 @@ func _render_encounter() -> void:
 	_set_disabled(second, not (live and _pending_fates.size() > 1))
 	_set_disabled(leave, not (live and _dismiss_call.is_valid()))
 	if first != null:
-		first.text = String(_pending_fates[0]) if _pending_fates.size() > 0 else "Fate"
+		first.text = L.t(String(_pending_fates[0]) if _pending_fates.size() > 0 else "Fate")
 	if second != null:
-		second.text = String(_pending_fates[1]) if _pending_fates.size() > 1 else "Fate"
+		second.text = L.t(String(_pending_fates[1]) if _pending_fates.size() > 1 else "Fate")
 
 
 ## The debug overlay as text: node and seed, player cell, holders, loaded and
@@ -491,7 +491,7 @@ func _text_of(label: Label) -> String:
 
 func _set_text(label: Label, text: String) -> void:
 	if label != null:
-		label.text = text
+		label.text = L.t(text)
 
 
 func _set_disabled(control: Button, disabled: bool) -> void:

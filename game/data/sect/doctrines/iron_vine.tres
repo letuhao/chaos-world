@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_doctrine")
 id = &"iron_vine"
-display_name = "The Iron Practice"
-description = "Load and endurance. The Vine teaches that a body is a wall or it is weather, and which one it is today is decided by what was carried yesterday rather than by what is intended tomorrow."
+display_name = "LOC_SECT_IRON_VINE_DISPLAY_NAME"
+description = "LOC_SECT_IRON_VINE_DESCRIPTION"
 teachings = Array[StringName]([&"carry_until_it_bites", &"set_the_foot", &"breathe_under_load"])
 refusals = Array[StringName]([&"unready", &"contradicts"])
 comprehension_floor = 3.0

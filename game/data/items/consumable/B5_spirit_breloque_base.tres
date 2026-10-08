@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B5_spirit_breloque_base"
-display_name = "Spirit Breloque Base"
+display_name = "LOC_ITEMS_B5_SPIRIT_BRELOQUE_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_ascension"

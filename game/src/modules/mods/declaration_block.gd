@@ -90,7 +90,7 @@ const REASONS: Array[String] = [
 ## with nothing in the log. `DoctrineRule.UNDECLARED_POOL` does not catch it,
 ## because that reason catches a System spending a pool it did not itself DECLARE,
 ## which is a different question from whether the id exists at all.
-const RESOURCE_HINT := "add it to this mod's 'resources' in %s, or use a pool core owns"
+const RESOURCE_HINT := "LOC_MODS_A31A8D2FC5"
 
 
 ## Parse `block` as `mod_id`'s declaration. Returns

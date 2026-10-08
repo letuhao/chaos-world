@@ -5,9 +5,9 @@
 [resource]
 script = ExtResource("1_item")
 id = &"qi_great_luo_meridian_catalyst"
-display_name = "Great Luo Resonance Dew"
+display_name = "LOC_ITEMS_QI_GREAT_LUO_MERIDIAN_CATALYST_DISPLAY_NAME"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:qi_great_luo_meridian_catalyst_recipe"])
-description = "Spent to train one Great Luo Immortal meridian the next gate never names, for the flow and reservoir width it grants. No gate asks for it."
+description = "LOC_ITEMS_QI_GREAT_LUO_MERIDIAN_CATALYST_DESCRIPTION"

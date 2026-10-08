@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F13_mortal_dudman_agility_aptitude_crit_damage_health_regen"
-display_name = "Mortal Dudman Agility Aptitude Crit damage Health regen"
+display_name = "LOC_ITEMS_F13_MORTAL_DUDMAN_AGILITY_APTITUDE_CRIT_DAMAGE_HEALTH_REGEN_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"qi_refining"

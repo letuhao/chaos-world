@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"mind_transcendent_mind_herb"
-display_name = "Transcendent Mind Mind Herb"
+display_name = "LOC_ITEMS_MIND_TRANSCENDENT_MIND_HERB_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"transcendent"
@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"herb"
 grade = &"divine"
 sources = Array[StringName]([&"gather", &"boss:F19_ascendant_warden"])
-description = "Gathered reagent for the realm's elixir."
+description = "LOC_ITEMS_MIND_TRANSCENDENT_MIND_HERB_DESCRIPTION"

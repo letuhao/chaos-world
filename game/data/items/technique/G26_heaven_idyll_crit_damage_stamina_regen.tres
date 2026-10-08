@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G26_heaven_idyll_crit_damage_stamina_regen"
-display_name = "Heaven Idyll Crit damage Stamina regen"
+display_name = "LOC_ITEMS_G26_HEAVEN_IDYLL_CRIT_DAMAGE_STAMINA_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"primordial_immortal"

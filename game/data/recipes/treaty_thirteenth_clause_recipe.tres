@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"treaty_thirteenth_clause_recipe"
-display_name = "Thirteenth Treaty Recipe"
+display_name = "LOC_RECIPES_TREATY_THIRTEENTH_CLAUSE_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"tablet_storm", &"shard_tide"])
 outputs = Array[StringName]([&"treaty_thirteenth_clause"])

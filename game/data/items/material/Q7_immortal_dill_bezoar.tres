@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Q7_immortal_dill_bezoar"
-display_name = "Immortal Dill Bezoar"
+display_name = "LOC_ITEMS_Q7_IMMORTAL_DILL_BEZOAR_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"true_immortal"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_node")
 node_id = &"core_formation_burrow"
-display_name = "Burrow"
+display_name = "LOC_HOLDINGS_CORE_FORMATION_BURROW_DISPLAY_NAME"
 kind = &"beast"
 realm = &"core_formation"
 yield_per_period = 5

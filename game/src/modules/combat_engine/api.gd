@@ -30,7 +30,7 @@ extends RefCounted
 ## binding is the only place a path id is ever resolved — deliberately, in `app/`, which
 ## is the composition root and the only layer allowed to know concrete types.
 
-const SHIELD_COMPONENT := &"Shield"
+const SHIELD_COMPONENT := &"LOC_COMBAT_ENGINE_0827141931"
 const MECHANISM_COMPONENT := &"damage_mechanism"
 ## The component id the wound ledger is bound on. It is also the key the payload slot
 ## travels under and the key `BodyLocation.wounds_of` reads, so there is ONE spelling of

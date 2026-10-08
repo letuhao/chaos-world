@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G16_spirit_gneiss_attack_speed_insight_gain"
-display_name = "Spirit Gneiss Attack speed Insight gain"
+display_name = "LOC_ITEMS_G16_SPIRIT_GNEISS_ATTACK_SPEED_INSIGHT_GAIN_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"magic"
 realm = &"spirit_ascension"

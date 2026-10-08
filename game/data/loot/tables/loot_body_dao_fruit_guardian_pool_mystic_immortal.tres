@@ -30,7 +30,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_body_dao_fruit_guardian_pool_mystic_immortal"
-display_name = "Body of Heaven Guardian salvage (mystic_immortal)"
+display_name = "LOC_LOOT_BODY_DAO_FRUIT_GUARDIAN_MYSTIC_IMMORTAL_0_DISPLAY_NAME"
 realm = &"mystic_immortal"
 rarity = &""
 rolls = 1

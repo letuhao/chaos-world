@@ -6,7 +6,7 @@
 [sub_resource type="Resource" id="Stage_riven"]
 script = ExtResource("2_stage")
 stage_id = &"riven"
-display_name = "The Peaks Riven"
+display_name = "LOC_EVENT_THE_RIVEN_PEAK_DISASTER_DISPLAY_NAME_1"
 requires = {}
 duration_periods = 1
 on_enter = [{"fact": &"disaster_struck", "amount": 1}]
@@ -14,7 +14,7 @@ on_enter = [{"fact": &"disaster_struck", "amount": 1}]
 [sub_resource type="Resource" id="Stage_holding"]
 script = ExtResource("2_stage")
 stage_id = &"holding"
-display_name = "Holding"
+display_name = "LOC_EVENT_THE_RIVEN_PEAK_DISASTER_DISPLAY_NAME_2"
 requires = {"verb": &"fact", "id": &"disaster_struck", "need": 1}
 duration_periods = 2
 on_enter = [{"fact": &"disaster_held", "amount": 1}]
@@ -22,7 +22,7 @@ on_enter = [{"fact": &"disaster_held", "amount": 1}]
 [sub_resource type="Resource" id="Stage_aftermath"]
 script = ExtResource("2_stage")
 stage_id = &"aftermath"
-display_name = "Aftermath"
+display_name = "LOC_EVENT_THE_RIVEN_PEAK_DISASTER_DISPLAY_NAME_3"
 requires = {"verb": &"fact", "id": &"disaster_held", "need": 1}
 duration_periods = 0
 on_enter = [{"fact": &"disaster_survived", "amount": 1}]
@@ -30,8 +30,8 @@ on_enter = [{"fact": &"disaster_survived", "amount": 1}]
 [resource]
 script = ExtResource("1_event")
 id = &"the_riven_peak_disaster"
-display_name = "The Riven Peak"
-description = "The eastern peak came apart in one afternoon and stayed broken. Gated on the same weather the plain's beast tide waits on, because a disaster nobody could walk into is not a disaster: this trigger names a real precondition the world produces, so an actor standing in the spirit peaks still has to have been there when the front arrived."
+display_name = "LOC_EVENT_THE_RIVEN_PEAK_DISASTER_DISPLAY_NAME_4"
+description = "LOC_EVENT_THE_RIVEN_PEAK_DISASTER_DESCRIPTION"
 kind = &"disaster"
 trigger = {"verb": &"fact", "id": &"storm_front_sighted", "need": 1}
 location_id = &"spirit_peaks"

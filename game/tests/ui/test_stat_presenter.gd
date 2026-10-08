@@ -123,11 +123,13 @@ func test_a_declared_stat_is_not_labelled_with_its_own_id() -> void:
 
 
 func test_the_measured_misreadable_ids_are_named() -> void:
-	assert_eq(StatPresenter.label_for(&"acupoint_quality"), "Huyệt quality", "not the id")
+	assert_eq(L.t(StatPresenter.label_for(&"acupoint_quality")), "Huyệt quality", "not the id")
 	assert_eq(StatPresenter.label_for(&"crit_chance"), "Crit chance", "not the id")
-	assert_eq(StatPresenter.label_for(&"breakthrough_chance"), "Breakthrough chance", "not the id")
+	assert_eq(
+		L.t(StatPresenter.label_for(&"breakthrough_chance")), "Breakthrough chance", "not the id"
+	)
 	assert_eq(StatPresenter.label_for(&"dao_heart"), "Dao heart", "not the id")
-	assert_eq(StatPresenter.label_for(&"qi_cost_reduction"), "Qi cost reduction", "not the id")
+	assert_eq(L.t(StatPresenter.label_for(&"qi_cost_reduction")), "Qi cost reduction", "not the id")
 
 
 ## An unknown id falls back to its own id, never to a blank. A blank row reads as a

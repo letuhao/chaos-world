@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"C5_grimoire_heaven_route_recipe"
-display_name = "Heaven Grimoire Inscription Route"
+display_name = "LOC_RECIPES_C5_GRIMOIRE_HEAVEN_ROUTE_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"C5_heaven_inscription", &"grimoire_void_ink"])
 outputs = Array[StringName]([&"grimoire_heaven"])

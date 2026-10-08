@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_boss")
 id = &"crown_void_emperor"
-display_name = "Void Emperor"
+display_name = "LOC_BOSSES_CROWN_VOID_EMPEROR_DISPLAY_NAME"
 domain_id = &"crown_void_emperor_domain"
 loot = Array[StringName]([])
 ; The light goes out of a fight: strike, sea and timing all thin at once. The dark pair's

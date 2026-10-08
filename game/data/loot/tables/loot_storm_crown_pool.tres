@@ -39,7 +39,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_storm_crown_pool"
-display_name = "Storm Crypt Crowns"
+display_name = "LOC_LOOT_SCC_EYE_DISPLAY_NAME"
 realm = &"great_ascension"
 rarity = &"legendary"
 rolls = 1

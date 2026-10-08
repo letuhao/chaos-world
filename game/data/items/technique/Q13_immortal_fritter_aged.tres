@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Q13_immortal_fritter_aged"
-display_name = "Immortal Fritter Aged"
+display_name = "LOC_ITEMS_Q13_IMMORTAL_FRITTER_AGED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"mystic_immortal"

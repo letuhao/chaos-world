@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"A29_divine_coroner_caption"
-display_name = "Divine Coroner Caption"
+display_name = "LOC_ITEMS_A29_DIVINE_CORONER_CAPTION_DISPLAY_NAME"
 category = &"quest"
 rarity = &"legendary"
 realm = &"transcendent"

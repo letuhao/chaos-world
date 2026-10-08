@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 id = &"small_intestine"
-display_name = "Small Intestine"
+display_name = "LOC_MERIDIANS_SMALL_INTESTINE_DISPLAY_NAME"
 type = &"primary"
 tier = 3
 capacity_bonus = 0.05

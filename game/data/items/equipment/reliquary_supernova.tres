@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"reliquary_supernova"
-display_name = "Supernova Reliquary"
+display_name = "LOC_ITEMS_RELIQUARY_SUPERNOVA_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"primordial_immortal"

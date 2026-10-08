@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"writ_bronze_chip"
-display_name = "Bronze Writ Chip"
+display_name = "LOC_ITEMS_WRIT_BRONZE_CHIP_DISPLAY_NAME"
 category = &"currency"
 rarity = &"common"
 realm = &"qi_refining"

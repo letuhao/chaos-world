@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G23_heaven_hurter_crit_damage_qi_regen"
-display_name = "Heaven Hurter Crit damage Qi regen"
+display_name = "LOC_ITEMS_G23_HEAVEN_HURTER_CRIT_DAMAGE_QI_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"dao_fruit"

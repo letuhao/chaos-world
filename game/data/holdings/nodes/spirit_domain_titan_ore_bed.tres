@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_node")
 node_id = &"spirit_domain_titan_ore_bed"
-display_name = "Titan Ore Bed"
+display_name = "LOC_HOLDINGS_SPIRIT_DOMAIN_TITAN_ORE_BED_DISPLAY_NAME"
 kind = &"ore"
 realm = &"spirit_domain"
 yield_per_period = 10

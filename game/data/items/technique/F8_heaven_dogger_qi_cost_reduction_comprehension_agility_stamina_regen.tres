@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F8_heaven_dogger_qi_cost_reduction_comprehension_agility_stamina_regen"
-display_name = "Heaven Dogger Qi Cost Reduction Comprehension Agility Stamina Regen"
+display_name = "LOC_ITEMS_F8_HEAVEN_DOGGER_QI_COST_REDUCTION_COMPREHENSION_AGILITY_STAMINA_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"great_luo"

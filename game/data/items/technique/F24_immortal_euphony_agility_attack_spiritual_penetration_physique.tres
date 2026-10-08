@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F24_immortal_euphony_agility_attack_spiritual_penetration_physique"
-display_name = "Immortal Euphony Agility Attack spiritual Penetration Physique"
+display_name = "LOC_ITEMS_F24_IMMORTAL_EUPHONY_AGILITY_ATTACK_SPIRITUAL_PENETRATION_PHYSIQUE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_immortal"

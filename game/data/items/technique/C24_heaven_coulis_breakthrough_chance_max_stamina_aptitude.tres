@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C24_heaven_coulis_breakthrough_chance_max_stamina_aptitude"
-display_name = "Heaven Coulis Breakthrough Chance Max Stamina Aptitude"
+display_name = "LOC_ITEMS_C24_HEAVEN_COULIS_BREAKTHROUGH_CHANCE_MAX_STAMINA_APTITUDE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"immortal_sovereign"

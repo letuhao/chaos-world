@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"divine_voidwyrm_hide"
-display_name = "Voidwyrm Hide"
+display_name = "LOC_ITEMS_DIVINE_VOIDWYRM_HIDE_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"dao_ancestor"

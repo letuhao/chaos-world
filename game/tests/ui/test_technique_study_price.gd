@@ -147,7 +147,7 @@ func test_an_unlearned_entry_publishes_the_price_the_module_computes() -> void:
 	assert_ne(String(view["price_line"]), "", "and the row renders a price line")
 	assert_ne(String(view["price_line"]).find(str(int(round(expected)))), -1, "quoting the figure")
 	assert_eq(
-		String(view["price_line"]),
+		L.t(String(view["price_line"])),
 		"Not learned - costs %d progress" % int(round(expected)),
 		"in words"
 	)

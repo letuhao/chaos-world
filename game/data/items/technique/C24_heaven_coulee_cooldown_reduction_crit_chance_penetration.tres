@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C24_heaven_coulee_cooldown_reduction_crit_chance_penetration"
-display_name = "Heaven Coulee Cooldown Reduction Crit Chance Penetration"
+display_name = "LOC_ITEMS_C24_HEAVEN_COULEE_COOLDOWN_REDUCTION_CRIT_CHANCE_PENETRATION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"heaven_immortal"

@@ -92,12 +92,10 @@ extends UiScreen
 ## because the scene happened to mount fewer rows than the ledger holds.
 const CLAIM_ROWS := 6
 const CLAIM_SCENE := "res://src/ui/panels/custody_claim_row.tscn"
-const HEADER_TEXT := "The claims you hold, and the terms they carry."
-const NO_ACTOR_TEXT := "No hero bound."
+const HEADER_TEXT := "LOC_UI_SCREENS_78D4890AF3"
+const NO_ACTOR_TEXT := "LOC_UI_SCREENS_6E9BC19A74"
 const NO_ACTOR_FOOTER := ""
-const FOOTER_TEXT := (
-	"Up / Down picks a claim, Accept releases the picked one you hold. " + "Cancel returns."
-)
+const FOOTER_TEXT := "LOC_UI_SCREENS_0B6FCF04E5" + "LOC_UI_SCREENS_6A41F1E6E5"
 
 ## The action ids this screen publishes, in the order the bar shows them. Declared
 ## as constants rather than built per call so the order a test reads is the order
@@ -788,12 +786,12 @@ func _render() -> void:
 	if _header == null:
 		return
 	if _actor == null:
-		_header.text = NO_ACTOR_TEXT
-		_footer.text = NO_ACTOR_FOOTER
+		_header.text = L.t(NO_ACTOR_TEXT)
+		_footer.text = L.t(NO_ACTOR_FOOTER)
 		_publish_actions()
 		return
-	_header.text = HEADER_TEXT
-	_footer.text = FOOTER_TEXT
+	_header.text = L.t(HEADER_TEXT)
+	_footer.text = L.t(FOOTER_TEXT)
 	_publish_actions()
 
 

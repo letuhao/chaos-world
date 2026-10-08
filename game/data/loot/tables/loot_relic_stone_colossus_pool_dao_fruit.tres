@@ -18,7 +18,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_relic_stone_colossus_pool_dao_fruit"
-display_name = "Stone Colossus salvage (dao_fruit)"
+display_name = "LOC_LOOT_RELIC_STONE_COLOSSUS_DAO_FRUIT_0_DISPLAY_NAME"
 realm = &"dao_fruit"
 rarity = &""
 rolls = 1

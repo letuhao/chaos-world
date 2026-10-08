@@ -6,7 +6,7 @@
 [sub_resource type="Resource" id="tier_0"]
 script = ExtResource("2_tier")
 tier = 1
-label = "Gate"
+label = "LOC_LOOT_LOOT_QI_GREAT_ASCENSION_TRIAL_LABEL_1"
 realm = &"great_ascension"
 rarity = &"common"
 vitality = 4143.8
@@ -18,7 +18,7 @@ boss_tables = Array[Dictionary]([
 [sub_resource type="Resource" id="tier_1"]
 script = ExtResource("2_tier")
 tier = 2
-label = "Depths"
+label = "LOC_LOOT_LOOT_QI_GREAT_ASCENSION_TRIAL_LABEL_2"
 realm = &"great_ascension"
 rarity = &"rare"
 vitality = 6630.
@@ -30,7 +30,7 @@ boss_tables = Array[Dictionary]([
 [resource]
 script = ExtResource("1_encounter")
 id = &"loot_qi_great_ascension_trial"
-display_name = "Great Ascension Trial"
+display_name = "LOC_LOOT_LOOT_QI_GREAT_ASCENSION_TRIAL_DISPLAY_NAME"
 domain_id = &"qi_great_ascension_trial"
 boss_ids = Array[StringName]([&"qi_great_ascension_warden", &"F5_ascension_warden"])
 key_reach = 0

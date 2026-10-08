@@ -314,7 +314,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_route_e5_severing_edge"
-display_name = "Severing Edge spoils"
+display_name = "LOC_LOOT_GUARANTEED_UNIQUE_DISPLAY_NAME"
 realm = &"spirit_severing"
 rarity = &"legendary"
 rolls = 2

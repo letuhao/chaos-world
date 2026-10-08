@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"bladework_divine_edge_recipe"
-display_name = "Divine Edge Bladework Recipe"
+display_name = "LOC_RECIPES_BLADEWORK_DIVINE_EDGE_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"jade_divine", &"filament_chaosweave"])
 outputs = Array[StringName]([&"bladework_divine_edge"])

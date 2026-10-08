@@ -18,7 +18,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_F5_qi_refining_warden_pool_earth_immortal"
-display_name = "Qi Refining Warden salvage (earth_immortal)"
+display_name = "LOC_LOOT_F5_QI_REFINING_WARDEN_EARTH_IMMORTAL_0_DISPLAY_NAME"
 realm = &"earth_immortal"
 rarity = &""
 rolls = 1

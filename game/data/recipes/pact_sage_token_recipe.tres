@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"pact_sage_token_recipe"
-display_name = "Sage Token Pact Recipe"
+display_name = "LOC_RECIPES_PACT_SAGE_TOKEN_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"crystal_amethyst", &"sap_balsam"])
 outputs = Array[StringName]([&"pact_sage_token"])

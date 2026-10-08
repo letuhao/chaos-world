@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d3_stone_crane_dancer_pool_spirit_sovereign"
-display_name = "Stone Crane Lesser salvage (spirit_sovereign)"
+display_name = "LOC_LOOT_D3_STONE_CRANE_DANCER_SPIRIT_SOVEREIGN_0_DISPLAY_NAME"
 realm = &"spirit_sovereign"
 rarity = &""
 rolls = 1

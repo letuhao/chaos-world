@@ -30,7 +30,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_F16_earth_stoneheart_colossus_pool_mystic_immortal"
-display_name = "Earth Stoneheart Colossus salvage (mystic_immortal)"
+display_name = "LOC_LOOT_F16_EARTH_STONEHEART_COLOSSUS_MYSTIC_IMMORTAL_0_DISPLAY_NAME"
 realm = &"mystic_immortal"
 rarity = &""
 rolls = 1

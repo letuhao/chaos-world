@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"O16_divine_relentless_cycle_primed"
-display_name = "Divine Relentless Cycle Primed"
+display_name = "LOC_ITEMS_O16_DIVINE_RELENTLESS_CYCLE_PRIMED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_ancestor"

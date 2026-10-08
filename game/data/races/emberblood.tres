@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_race")
 id = &"emberblood"
-display_name = "Emberblood"
-description = "A body that runs hot and short. It refines qi faster than anything here and reads intent at the speed of a struck match, at the cost of a lifespan measured in decades rather than centuries and a mind path that closes once the furnace is lit. Fire affinity is structural, not a gift."
+display_name = "LOC_RACES_EMBERBLOOD_DISPLAY_NAME"
+description = "LOC_RACES_EMBERBLOOD_DESCRIPTION"
 dominance = 0.7
 manifestation_threshold = 0.15
 gestation_days = 24.0

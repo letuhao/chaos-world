@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"relic_ancestral_mask"
-display_name = "Ancestral Mask Relic"
+display_name = "LOC_ITEMS_RELIC_ANCESTRAL_MASK_DISPLAY_NAME"
 category = &"quest"
 rarity = &"magic"
 realm = &"spirit_ascension"

@@ -5,14 +5,14 @@
 [resource]
 script = ExtResource("1_item")
 id = &"unique_stormcall_thunder_seal"
-display_name = "Thunder Seal of the Stormcall Circuit"
+display_name = "LOC_SETS_UNIQUE_STORMCALL_THUNDER_SEAL_DISPLAY_NAME"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"spirit"
 stackable = false
 tags = Array[StringName]([&"unique", &"unique_route:E5_severing_edge", &"set:stormcall_circuit"])
 sources = Array[StringName]([&"boss:E5_severing_edge"])
-description = "A pressed seal carrying one stored discharge. Locks a fixed spiritual-cut signature; the seal discharges through the wearer, not beside them."
+description = "LOC_SETS_UNIQUE_STORMCALL_THUNDER_SEAL_DESCRIPTION"
 rarity = &"legendary"
 realm = &"spirit_severing"
 fixed_modifiers = Array[Dictionary]([

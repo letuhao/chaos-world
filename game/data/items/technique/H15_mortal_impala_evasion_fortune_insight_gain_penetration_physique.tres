@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"H15_mortal_impala_evasion_fortune_insight_gain_penetration_physique"
-display_name = "Mortal Impala Evasion Fortune Insight gain Penetration Physique"
+display_name = "LOC_ITEMS_H15_MORTAL_IMPALA_EVASION_FORTUNE_INSIGHT_GAIN_PENETRATION_PHYSIQUE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"core_formation"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"bladework_eclipse_edge_recipe"
-display_name = "Eclipse Edge Bladework Recipe"
+display_name = "LOC_RECIPES_BLADEWORK_ECLIPSE_EDGE_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"jade_immortal", &"crystal_diamond"])
 outputs = Array[StringName]([&"bladework_eclipse_edge"])

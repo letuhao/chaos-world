@@ -51,9 +51,7 @@ func test_ambient_facts_reach_the_ledger_after_advance() -> void:
 		"storm_front_sighted reached the ledger after one period"
 	)
 	assert_eq(
-		WorldFact.count(actor, AMBIENT_VOID_SEAM),
-		0,
-		"void_seam_sounded is not due until period 2"
+		WorldFact.count(actor, AMBIENT_VOID_SEAM), 0, "void_seam_sounded is not due until period 2"
 	)
 
 	pulse.advance_periods(1)
@@ -109,20 +107,14 @@ func test_event_api_begin_succeeds_after_ambient_fact() -> void:
 
 	var refused := EventApi.begin(actor, TIDE_EVENT)
 	assert_eq(bool(refused.get("ok", false)), false, "begin refuses before the ambient fact")
-	assert_eq(
-		String(refused.get("reason", "")),
-		EventState.R_TRIGGER_UNMET,
-		"with trigger_unmet"
-	)
+	assert_eq(String(refused.get("reason", "")), EventState.R_TRIGGER_UNMET, "with trigger_unmet")
 
 	# Put the fact in the ledger directly (not via advance, so the event stays closed)
 	_remember(actor, AMBIENT_STORM)
 
 	var opened := EventApi.begin(actor, TIDE_EVENT)
 	assert_eq(
-		bool(opened.get("ok", false)),
-		true,
-		"begin succeeds once the ambient fact is in the ledger"
+		bool(opened.get("ok", false)), true, "begin succeeds once the ambient fact is in the ledger"
 	)
 
 
@@ -171,7 +163,11 @@ func test_full_chain_ambient_fact_to_open_event() -> void:
 	assert_eq(bool(EventGate.evaluate(actor, def.trigger).get("ok", false)), true, "gate passes")
 	# The pulse opens the event on the same pull, so it is now ACTIVE (not just available)
 	assert_eq(_stage_id(actor, TIDE_EVENT), "moving", "event is open on its first stage")
-	assert_eq(bool(EventApi.begin(actor, TIDE_EVENT).get("ok", false)), false, "begin refuses: already active")
+	assert_eq(
+		bool(EventApi.begin(actor, TIDE_EVENT).get("ok", false)),
+		false,
+		"begin refuses: already active"
+	)
 	assert_eq(
 		String(EventApi.begin(actor, TIDE_EVENT).get("reason", "")),
 		"already_active",

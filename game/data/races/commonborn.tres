@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_race")
 id = &"commonborn"
-display_name = "Commonborn"
-description = "The body everyone is born into before the world has an opinion about them. It stops where mortals stop and lends no discipline, which is exactly why it is weak: nothing about its anatomy favours a path, so a Commonborn must settle on one early and is weakest precisely where a specialist is strongest. Mind is closed to it outright — a body this even has no native faculty for it. Its affinities are broad and shallow, every element faintly legible and none native, so breadth buys flexibility rather than power."
+display_name = "LOC_RACES_COMMONBORN_DISPLAY_NAME"
+description = "LOC_RACES_COMMONBORN_DESCRIPTION"
 dominance = 0.45
 manifestation_threshold = 0.1
 gestation_days = 30.0

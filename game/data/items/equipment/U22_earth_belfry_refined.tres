@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U22_earth_belfry_refined"
-display_name = "Earth Belfry Refined"
+display_name = "LOC_ITEMS_U22_EARTH_BELFRY_REFINED_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"spirit_domain"

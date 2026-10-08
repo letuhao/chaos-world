@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"D6_earth_stamina_tonic_recipe"
-display_name = "Earth Wind Draught Recipe"
+display_name = "LOC_RECIPES_D6_EARTH_STAMINA_TONIC_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"C1_earth_decoction", &"soul_vigor_essence"])
 outputs = Array[StringName]([&"D6_earth_stamina_tonic"])

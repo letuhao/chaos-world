@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F33_mortal_foolscap_penetration_qi_cost_reduction_stamina_regen_status_resistance"
-display_name = "Mortal Foolscap Penetration Qi cost reduction Stamina regen Status resistance"
+display_name = "LOC_ITEMS_F33_MORTAL_FOOLSCAP_PENETRATION_QI_COST_REDUCTION_STAMINA_REGEN_STATUS_RESISTANCE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"void_refinement"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B40_mortal_endowment_poise_status_resistance"
-display_name = "Mortal Endowment Poise Status Resistance"
+display_name = "LOC_ITEMS_B40_MORTAL_ENDOWMENT_POISE_STATUS_RESISTANCE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"body_integration"

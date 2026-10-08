@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"divine_voidwyrm_core"
-display_name = "Voidwyrm Core"
+display_name = "LOC_ITEMS_DIVINE_VOIDWYRM_CORE_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"primordial_origin"

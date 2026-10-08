@@ -5,8 +5,8 @@
 script = ExtResource("1_def")
 id = &"dual_qi_body_metal_lattice"
 delivered_by = &"treaty_thirteenth_clause"
-display_name = "Metal Lattice"
-description = "Stiffens the frame into a lattice qi can be stored in, which is why the technique holds a target in place rather than moving it. Both paths have to be deep."
+display_name = "LOC_TECHNIQUES_DUAL_QI_BODY_METAL_LATTICE_DISPLAY_NAME"
+description = "LOC_TECHNIQUES_DUAL_QI_BODY_METAL_LATTICE_DESCRIPTION"
 tags = Array[StringName]([&"technique", &"dual", &"qi_body", &"metal", &"control"])
 grade = &"heaven"
 rarity = &"rare"

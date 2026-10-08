@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"elemental_transcendent_breakthrough_recipe"
-display_name = "Prism Sovereign Pill Recipe"
+display_name = "LOC_RECIPES_ELEMENTAL_TRANSCENDENT_BREAKTHROUGH_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"elemental_transcendent_essence", &"elemental_transcendent_core"])
 outputs = Array[StringName]([&"elemental_transcendent_breakthrough_pill"])

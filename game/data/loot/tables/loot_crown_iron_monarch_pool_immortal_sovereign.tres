@@ -42,7 +42,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_crown_iron_monarch_pool_immortal_sovereign"
-display_name = "Iron Monarch salvage (immortal_sovereign)"
+display_name = "LOC_LOOT_CROWN_IRON_MONARCH_IMMORTAL_SOVEREIGN_0_DISPLAY_NAME"
 realm = &"immortal_sovereign"
 rarity = &""
 rolls = 1

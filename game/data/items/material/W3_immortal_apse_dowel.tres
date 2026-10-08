@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"W3_immortal_apse_dowel"
-display_name = "Immortal Apse Dowel"
+display_name = "LOC_ITEMS_W3_IMMORTAL_APSE_DOWEL_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"immortal_sovereign"

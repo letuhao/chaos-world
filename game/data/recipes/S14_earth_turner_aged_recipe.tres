@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"S14_earth_turner_aged_recipe"
-display_name = "Earth Turner Aged Recipe"
+display_name = "LOC_RECIPES_S14_EARTH_TURNER_AGED_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"S14_earth_turner_refined", &"venom_fang_core", &"tattoo_earth_herb"])
 outputs = Array[StringName]([&"S14_earth_turner_aged"])

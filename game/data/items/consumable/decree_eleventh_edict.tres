@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"decree_eleventh_edict"
-display_name = "Decree: Eleventh Edict"
+display_name = "LOC_ITEMS_DECREE_ELEVENTH_EDICT_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_ancestor"

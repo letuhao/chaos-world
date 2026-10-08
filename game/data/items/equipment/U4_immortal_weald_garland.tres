@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U4_immortal_weald_garland"
-display_name = "Immortal Weald Garland"
+display_name = "LOC_ITEMS_U4_IMMORTAL_WEALD_GARLAND_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"golden_immortal"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V5_heaven_acanthus_prayer"
-display_name = "Heaven Acanthus Prayer"
+display_name = "LOC_ITEMS_V5_HEAVEN_ACANTHUS_PRAYER_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"immortal_sovereign"

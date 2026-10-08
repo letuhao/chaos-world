@@ -61,12 +61,10 @@ extends UiScreen
 const NODE_ROWS := 16
 const NODE_SCENE := "res://src/ui/panels/resource_node_row.tscn"
 const ACTIONS_SCENE := "res://src/ui/panels/action_set.tscn"
-const HEADER_TEXT := "Take the ground, then work it."
-const NO_ACTOR_TEXT := "No hero bound."
+const HEADER_TEXT := "LOC_UI_SCREENS_E1FACAED67"
+const NO_ACTOR_TEXT := "LOC_UI_SCREENS_6E9BC19A74"
 const NO_ACTOR_FOOTER := ""
-const FOOTER_TEXT := (
-	"Up / Down picks a node, Accept takes or works the picked one. " + "Cancel returns."
-)
+const FOOTER_TEXT := "LOC_UI_SCREENS_9EAB3F9E93" + "LOC_UI_SCREENS_6A41F1E6E5"
 
 ## The action ids this screen publishes, in the order the bar shows them. Declared as
 ## constants rather than built per call so the order a test reads is the order the
@@ -400,12 +398,12 @@ func _render() -> void:
 	if _header == null:
 		return
 	if _actor == null:
-		_header.text = NO_ACTOR_TEXT
-		_footer.text = NO_ACTOR_FOOTER
+		_header.text = L.t(NO_ACTOR_TEXT)
+		_footer.text = L.t(NO_ACTOR_FOOTER)
 		_publish_actions()
 		return
-	_header.text = HEADER_TEXT
-	_footer.text = FOOTER_TEXT
+	_header.text = L.t(HEADER_TEXT)
+	_footer.text = L.t(FOOTER_TEXT)
 	_publish_actions()
 
 

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"W22_earth_cobble_refined_alt_recipe"
-display_name = "Earth Cobble Refined (Alt) Recipe"
+display_name = "LOC_RECIPES_W22_EARTH_COBBLE_REFINED_ALT_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"W22_earth_cobble_base", &"soul_moon_herb", &"carvebone_horn"])
 outputs = Array[StringName]([&"W22_earth_cobble_refined"])

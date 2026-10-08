@@ -63,11 +63,9 @@ extends UiScreen
 const SHOP_ROWS := 5
 const ROW_SCENE := "res://src/ui/panels/market_row.tscn"
 const ACTIONS_SCENE := "res://src/ui/panels/action_set.tscn"
-const HEADER_TEXT := "The stalls here, and what each of them charges."
-const NO_ACTOR_TEXT := "No hero bound."
-const FOOTER_TEXT := (
-	"Up / Down picks a stall, Accept buys the cheapest thing on it. " + "Cancel returns."
-)
+const HEADER_TEXT := "LOC_UI_SCREENS_114BA7455A"
+const NO_ACTOR_TEXT := "LOC_UI_SCREENS_6E9BC19A74"
+const FOOTER_TEXT := "LOC_UI_SCREENS_CE52F50F36" + "LOC_UI_SCREENS_6A41F1E6E5"
 
 ## The action ids this screen publishes, in the order the bar shows them. Declared as
 ## constants rather than built per call so the order a test reads is the order the
@@ -449,12 +447,12 @@ func _render() -> void:
 	if _header == null:
 		return
 	if _actor == null:
-		_header.text = NO_ACTOR_TEXT
+		_header.text = L.t(NO_ACTOR_TEXT)
 		_footer.text = ""
 		_publish_actions()
 		return
-	_header.text = HEADER_TEXT
-	_footer.text = FOOTER_TEXT
+	_header.text = L.t(HEADER_TEXT)
+	_footer.text = L.t(FOOTER_TEXT)
 	_publish_actions()
 
 

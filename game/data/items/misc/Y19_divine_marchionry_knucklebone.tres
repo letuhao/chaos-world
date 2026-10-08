@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Y19_divine_marchionry_knucklebone"
-display_name = "Divine Marchionry Knucklebone"
+display_name = "LOC_ITEMS_Y19_DIVINE_MARCHIONRY_KNUCKLEBONE_DISPLAY_NAME"
 category = &"misc"
 rarity = &"legendary"
 realm = &"dao_ancestor"

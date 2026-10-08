@@ -18,7 +18,7 @@ tick_interval = 2.0
 mitigation_tags = Array[StringName]([&"affinity", &"gear"])
 payload = {
 "mechanic": &"wave",
-"text": "A full wave lands at once: one heavy, unblockable impact that spends its whole force the moment it arrives.",
+"text": "LOC_STATUSES_WATER_DELUGE_TEXT",
 "pool": &"health",
 "share_per_pulse": 0.15,
 "spends_on_apply": true,

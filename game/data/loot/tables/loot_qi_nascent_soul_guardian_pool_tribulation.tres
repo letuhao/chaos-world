@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_qi_nascent_soul_guardian_pool_tribulation"
-display_name = "Nascent Soul Guardian salvage (tribulation)"
+display_name = "LOC_LOOT_QI_NASCENT_SOUL_GUARDIAN_TRIBULATION_0_DISPLAY_NAME"
 realm = &"tribulation"
 rarity = &""
 rolls = 1

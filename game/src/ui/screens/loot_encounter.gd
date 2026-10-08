@@ -452,7 +452,7 @@ func _cleared_ids() -> Array:
 
 func _refresh_view() -> void:
 	_bind_nodes()
-	_header_label.text = _header_text()
+	_header_label.text = L.t(_header_text())
 	_refresh_domains()
 	_render_encounter()
 	_render_lists()
@@ -613,10 +613,10 @@ func _render_encounter() -> void:
 	var carrying := float(state.get("key_reach", 0.0))
 	# Every figure on these two lines belongs to the panel; the screen routes the
 	# panel's sentences to the labels and formats nothing itself (AGENTS.md).
-	_gate_label.text = _boss_panel.gate_text(required, carrying)
+	_gate_label.text = L.t(_boss_panel.gate_text(required, carrying))
 	# The player's own `loot_bonus` is shown whether or not a boss is live, so the
 	# number that shapes every drop is never hidden.
-	_bonus_label.text = _boss_panel.bonus_text(float(state.get("loot_bonus", 0.0)))
+	_bonus_label.text = L.t(_boss_panel.bonus_text(float(state.get("loot_bonus", 0.0))))
 	# Both sides of the fight, and both sides' wording, belong to the panel. The screen
 	# passes the two primitive views through and formats nothing (ADR 0076).
 	_boss_panel.show_fight(active, _player_view())
@@ -666,9 +666,12 @@ func _enabled() -> Dictionary:
 
 func _header_text() -> String:
 	if _actor == null:
-		return "Loot — no actor"
+		return L.t("LOC_UI_SCREENS_823DB255E4")
 	var domain_id := _selected_domain_id()
-	return "Loot — %s" % ("no domain authored" if domain_id.is_empty() else domain_id)
+	return (
+		L.t("LOC_UI_SCREENS_5920A808F3")
+		% ("no domain authored" if domain_id.is_empty() else domain_id)
+	)
 
 
 ## A refusal repaints from the untouched actor, so nothing on screen can drift away

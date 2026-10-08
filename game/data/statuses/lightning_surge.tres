@@ -18,7 +18,7 @@ tick_interval = 1.0
 mitigation_tags = Array[StringName]([&"affinity", &"gear", &"technique"])
 payload = {
 "mechanic": &"sunder",
-"text": "The bolt finds the seams. What it passed through, the spirit guard and the instinct to slip aside do not close behind it.",
+"text": "LOC_STATUSES_LIGHTNING_SURGE_TEXT",
 "modifiers": [
 	{"stat": &"defense_spiritual", "op": "percent", "value": -0.45},
 	{"stat": &"defense_physical", "op": "percent", "value": -0.18}

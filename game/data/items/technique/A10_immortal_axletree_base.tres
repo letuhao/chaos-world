@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"A10_immortal_axletree_base"
-display_name = "Immortal Axletree Sigil"
+display_name = "LOC_ITEMS_A10_IMMORTAL_AXLETREE_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_immortal"

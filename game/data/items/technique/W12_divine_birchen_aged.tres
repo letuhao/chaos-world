@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"W12_divine_birchen_aged"
-display_name = "Divine Birchen Aged"
+display_name = "LOC_ITEMS_W12_DIVINE_BIRCHEN_AGED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"

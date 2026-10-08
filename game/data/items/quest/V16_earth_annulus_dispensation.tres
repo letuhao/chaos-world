@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V16_earth_annulus_dispensation"
-display_name = "Earth Annulus Dispensation"
+display_name = "LOC_ITEMS_V16_EARTH_ANNULUS_DISPENSATION_DISPLAY_NAME"
 category = &"quest"
 rarity = &"rare"
 realm = &"spirit_sea"

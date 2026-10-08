@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"bladework_tide_edge"
-display_name = "Tide Edge Bladework"
+display_name = "LOC_ITEMS_BLADEWORK_TIDE_EDGE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"primordial_immortal"

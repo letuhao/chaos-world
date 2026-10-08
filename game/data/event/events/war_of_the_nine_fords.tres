@@ -6,7 +6,7 @@
 [sub_resource type="Resource" id="Stage_levies_called"]
 script = ExtResource("2_stage")
 stage_id = &"levies_called"
-display_name = "Levies Called"
+display_name = "LOC_EVENT_WAR_OF_THE_NINE_FORDS_DISPLAY_NAME_1"
 requires = {}
 duration_periods = 2
 on_enter = [{"fact": &"sect_war_levied", "amount": 1}, {"fact": &"sect_war_begun", "amount": 1}]
@@ -14,7 +14,7 @@ on_enter = [{"fact": &"sect_war_levied", "amount": 1}, {"fact": &"sect_war_begun
 [sub_resource type="Resource" id="Stage_fords_held"]
 script = ExtResource("2_stage")
 stage_id = &"fords_held"
-display_name = "The Fords Are Held"
+display_name = "LOC_EVENT_WAR_OF_THE_NINE_FORDS_DISPLAY_NAME_2"
 requires = {"verb": &"fact", "id": &"sect_war_begun", "need": 1}
 duration_periods = 3
 on_enter = [{"fact": &"sect_war_contested", "amount": 1}]
@@ -22,7 +22,7 @@ on_enter = [{"fact": &"sect_war_contested", "amount": 1}]
 [sub_resource type="Resource" id="Stage_verdict_read"]
 script = ExtResource("2_stage")
 stage_id = &"verdict_read"
-display_name = "The Verdict Is Read"
+display_name = "LOC_EVENT_WAR_OF_THE_NINE_FORDS_DISPLAY_NAME_3"
 requires = {"verb": &"fact", "id": &"sect_war_contested", "need": 1}
 duration_periods = 0
 on_enter = [{"fact": &"sect_war_decided", "amount": 1}]
@@ -30,8 +30,8 @@ on_enter = [{"fact": &"sect_war_decided", "amount": 1}]
 [resource]
 script = ExtResource("1_event")
 id = &"war_of_the_nine_fords"
-display_name = "War of the Nine Fords"
-description = "The March and the Court of the Star have declared over the River March. Both sides know what is at stake: the ford seats and the standing that rides on them. Nothing here decides the war. A verdict comes from outside, and the tally and the prize belong to the polity that declared them."
+display_name = "LOC_EVENT_WAR_OF_THE_NINE_FORDS_DISPLAY_NAME_4"
+description = "LOC_EVENT_WAR_OF_THE_NINE_FORDS_DESCRIPTION"
 kind = &"sect_war"
 trigger = {"verb": &"all_of", "of": [{"verb": &"fact", "id": &"sect_war_called", "need": 1}, {"verb": &"declare", "other_id": &"court_of_the_star", "territory_id": &"river_march", "mode": &"siege", "transfer": &"ownership", "standing": {"march_of_the_nine_provinces": 12, "court_of_the_star": -12}}]}
 location_id = &"mortal_plains"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_pro")
 id = &"prophecy_of_the_chosen"
-display_name = "Prophecy of the Chosen"
-description = "A vision of a destiny that calls to you from beyond."
+display_name = "LOC_ENCOUNTER_PROPHECY_OF_THE_CHOSEN_DISPLAY_NAME"
+description = "LOC_ENCOUNTER_PROPHECY_OF_THE_CHOSEN_DESCRIPTION"
 hint_fate_id = &"heaven_s_chosen_instrument"
 hint_text = "A name will be spoken in the halls of heaven, and you will answer."

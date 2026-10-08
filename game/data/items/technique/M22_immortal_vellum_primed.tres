@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"M22_immortal_vellum_primed"
-display_name = "Immortal Vellum Primed"
+display_name = "LOC_ITEMS_M22_IMMORTAL_VELLUM_PRIMED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"true_immortal"

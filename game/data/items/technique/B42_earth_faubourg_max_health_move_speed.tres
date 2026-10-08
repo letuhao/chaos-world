@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B42_earth_faubourg_max_health_move_speed"
-display_name = "Earth Faubourg Max Health Move Speed"
+display_name = "LOC_ITEMS_B42_EARTH_FAUBOURG_MAX_HEALTH_MOVE_SPEED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_sovereign"

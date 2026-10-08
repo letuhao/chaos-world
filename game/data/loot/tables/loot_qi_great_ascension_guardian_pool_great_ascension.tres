@@ -30,7 +30,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_qi_great_ascension_guardian_pool_great_ascension"
-display_name = "Great Ascension Guardian salvage (great_ascension)"
+display_name = "LOC_LOOT_QI_GREAT_ASCENSION_GUARDIAN_GREAT_ASCENSION_0_DISPLAY_NAME"
 realm = &"great_ascension"
 rarity = &""
 rolls = 1

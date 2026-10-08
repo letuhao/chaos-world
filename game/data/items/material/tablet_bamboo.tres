@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"tablet_bamboo"
-display_name = "Bamboo Tablet"
+display_name = "LOC_ITEMS_TABLET_BAMBOO_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"spirit_transformation"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"body_spirit_domain_guardian_core"
-display_name = "Body of Dao Guardian Core"
+display_name = "LOC_ITEMS_BODY_SPIRIT_DOMAIN_GUARDIAN_CORE_DISPLAY_NAME"
 category = &"material"
 rarity = &"magic"
 realm = &"spirit_domain"
@@ -16,4 +16,4 @@ roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"beast_core"
 grade = &"spirit"
 sources = Array[StringName]([&"boss:body_spirit_domain_guardian"])
-description = "Boss-only channel catalyst."
+description = "LOC_ITEMS_BODY_SPIRIT_DOMAIN_GUARDIAN_CORE_DESCRIPTION"

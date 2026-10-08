@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F43_immortal_gibbet_crit_chance_move_speed_will"
-display_name = "Immortal Gibbet Crit chance Move speed Will"
+display_name = "LOC_ITEMS_F43_IMMORTAL_GIBBET_CRIT_CHANCE_MOVE_SPEED_WILL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_fruit"

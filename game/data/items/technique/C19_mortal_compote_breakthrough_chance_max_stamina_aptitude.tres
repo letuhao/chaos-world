@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C19_mortal_compote_breakthrough_chance_max_stamina_aptitude"
-display_name = "Mortal Compote Breakthrough Chance Max Stamina Aptitude"
+display_name = "LOC_ITEMS_C19_MORTAL_COMPOTE_BREAKTHROUGH_CHANCE_MAX_STAMINA_APTITUDE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"tribulation"

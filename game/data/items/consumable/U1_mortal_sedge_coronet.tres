@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U1_mortal_sedge_coronet"
-display_name = "Mortal Sedge Coronet"
+display_name = "LOC_ITEMS_U1_MORTAL_SEDGE_CORONET_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"core_formation"

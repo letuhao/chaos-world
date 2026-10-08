@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"O13_heaven_starfall_base"
-display_name = "Heaven Starfall Base"
+display_name = "LOC_ITEMS_O13_HEAVEN_STARFALL_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"great_luo"

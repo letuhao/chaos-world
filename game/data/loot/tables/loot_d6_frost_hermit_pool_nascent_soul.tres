@@ -42,7 +42,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d6_frost_hermit_pool_nascent_soul"
-display_name = "Frost Hermit Lesser salvage (nascent_soul)"
+display_name = "LOC_LOOT_D6_FROST_HERMIT_NASCENT_SOUL_0_DISPLAY_NAME"
 realm = &"nascent_soul"
 rarity = &""
 rolls = 1

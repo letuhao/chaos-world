@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V9_divine_albedo_lading"
-display_name = "Divine Albedo Lading"
+display_name = "LOC_ITEMS_V9_DIVINE_ALBEDO_LADING_DISPLAY_NAME"
 category = &"key"
 rarity = &"legendary"
 realm = &"primordial_origin"

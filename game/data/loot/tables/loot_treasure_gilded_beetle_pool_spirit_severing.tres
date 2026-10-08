@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_treasure_gilded_beetle_pool_spirit_severing"
-display_name = "Gilded Beetle salvage (spirit_severing)"
+display_name = "LOC_LOOT_TREASURE_GILDED_BEETLE_SPIRIT_SEVERING_0_DISPLAY_NAME"
 realm = &"spirit_severing"
 rarity = &""
 rolls = 1

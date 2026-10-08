@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V7_earth_aerie_bardiche"
-display_name = "Earth Aerie Bardiche"
+display_name = "LOC_ITEMS_V7_EARTH_AERIE_BARDICHE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"spirit_sovereign"

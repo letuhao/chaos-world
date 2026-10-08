@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Q18_heaven_gorse_aged"
-display_name = "Heaven Gorse Aged"
+display_name = "LOC_ITEMS_Q18_HEAVEN_GORSE_AGED_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"heaven_immortal"

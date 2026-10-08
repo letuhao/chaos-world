@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"W6_heaven_bastion_gossan"
-display_name = "Heaven Bastion Gossan"
+display_name = "LOC_ITEMS_W6_HEAVEN_BASTION_GOSSAN_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"great_luo"

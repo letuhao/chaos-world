@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"staff_starfall_earth"
-display_name = "Starfall Earth Staff"
+display_name = "LOC_ITEMS_STAFF_STARFALL_EARTH_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"spirit_manifestation"

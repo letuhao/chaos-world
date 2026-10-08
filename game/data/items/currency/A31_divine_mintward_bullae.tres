@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"A31_divine_mintward_bullae"
-display_name = "Divine Mintward Bullae"
+display_name = "LOC_ITEMS_A31_DIVINE_MINTWARD_BULLAE_DISPLAY_NAME"
 category = &"currency"
 rarity = &"legendary"
 realm = &"transcendent"

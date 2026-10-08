@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_set")
 id = &"gilded_bone_pact"
-display_name = "Gilded Bone Pact"
-description = "A transcendent-band pact filed in bone. Each threshold settles one more entry against the wearer's breakthrough record."
+display_name = "LOC_SETS_GILDED_BONE_PACT_DISPLAY_NAME"
+description = "LOC_SETS_GILDED_BONE_PACT_DESCRIPTION"
 realm = &"transcendent"
 rarity = &"legendary"
 counting = &"distinct_definition"

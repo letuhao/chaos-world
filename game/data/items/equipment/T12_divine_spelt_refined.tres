@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"T12_divine_spelt_refined"
-display_name = "Divine Spelt Refined"
+display_name = "LOC_ITEMS_T12_DIVINE_SPELT_REFINED_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"dao_ancestor"

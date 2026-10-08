@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"U23_earth_bracken_refined_alt_recipe"
-display_name = "Earth Bracken Refined (Alt) Recipe"
+display_name = "LOC_RECIPES_U23_EARTH_BRACKEN_REFINED_ALT_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"U23_earth_bracken_base", &"herb_stoneheart", &"feather_raven"])
 outputs = Array[StringName]([&"U23_earth_bracken_refined"])

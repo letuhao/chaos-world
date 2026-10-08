@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"H13_divine_pierce_orb_recipe"
-display_name = "Divine Pierce Orb Recipe"
+display_name = "LOC_RECIPES_H13_DIVINE_PIERCE_ORB_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"astral_galactic_core_ore", &"astral_solar_flare_essence"])
 outputs = Array[StringName]([&"H13_divine_pierce_orb"])

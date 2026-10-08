@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"U9_divine_pivot_refined_alt_recipe"
-display_name = "Divine Pivot Refined (Alt) Recipe"
+display_name = "LOC_RECIPES_U9_DIVINE_PIVOT_REFINED_ALT_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"U9_divine_pivot_base", &"divine_chaos_tablet", &"Q6_divine_daphne_coal"])
 outputs = Array[StringName]([&"U9_divine_pivot_refined"])

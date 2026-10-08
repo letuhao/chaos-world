@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B30_divine_caucho_refined"
-display_name = "Divine Caucho Refined"
+display_name = "LOC_ITEMS_B30_DIVINE_CAUCHO_REFINED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"

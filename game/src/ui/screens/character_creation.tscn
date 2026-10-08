@@ -20,24 +20,24 @@ layout_mode = 2
 [node name="Title" type="Label" parent="Layout"]
 layout_mode = 2
 theme_type_variation = &"ScreenTitle"
-text = "Arrival"
+text = "LOC_UI_SCREENS_DC21D2B4EE"
 
 [node name="CreationHeader" type="Label" parent="Layout"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
 autowrap_mode = 2
-text = "Answer how you arrive. The rest is not yours to pick."
+text = "LOC_UI_SCREENS_A072A411A3"
 
 [node name="ArrivalTitle" type="Label" parent="Layout"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "How you arrive"
+text = "LOC_UI_SCREENS_C83D138C64"
 
 [node name="FaceTitle" type="Label" parent="Layout"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "Your face"
+text = "LOC_UI_SCREENS_7452269BC7"
 
 [node name="Scroll" type="ScrollContainer" parent="Layout"]
 layout_mode = 2
@@ -69,7 +69,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"PrimaryButton"
-text = "Arrive this way"
+text = "LOC_UI_SCREENS_02AD3B27AB"
 disabled = true
 
 [node name="FooterLabel" type="Label" parent="Layout"]

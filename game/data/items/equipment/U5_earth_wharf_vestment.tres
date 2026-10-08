@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U5_earth_wharf_vestment"
-display_name = "Earth Wharf Vestment"
+display_name = "LOC_ITEMS_U5_EARTH_WHARF_VESTMENT_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"spirit_severing"

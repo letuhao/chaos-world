@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"compre_eternal_page"
-display_name = "Eternal Page Manual"
+display_name = "LOC_ITEMS_COMPRE_ETERNAL_PAGE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"heaven_immortal"

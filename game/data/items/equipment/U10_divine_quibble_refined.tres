@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U10_divine_quibble_refined"
-display_name = "Divine Quibble Refined"
+display_name = "LOC_ITEMS_U10_DIVINE_QUIBBLE_REFINED_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"primordial_origin"

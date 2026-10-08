@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_body_tribulation_guardian_pool_nascent_soul"
-display_name = "Copper Body Guardian salvage (nascent_soul)"
+display_name = "LOC_LOOT_BODY_TRIBULATION_GUARDIAN_NASCENT_SOUL_0_DISPLAY_NAME"
 realm = &"nascent_soul"
 rarity = &""
 rolls = 1

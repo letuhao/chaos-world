@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F15_heaven_edelweiss_agility_aptitude_defense_physical_health_regen"
-display_name = "Heaven Edelweiss Agility Aptitude Defense physical Health regen"
+display_name = "LOC_ITEMS_F15_HEAVEN_EDELWEISS_AGILITY_APTITUDE_DEFENSE_PHYSICAL_HEALTH_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"primordial_immortal"

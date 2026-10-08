@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F37_divine_fuchsite_health_regen_loot_bonus_will"
-display_name = "Divine Fuchsite Health regen Loot bonus Will"
+display_name = "LOC_ITEMS_F37_DIVINE_FUCHSITE_HEALTH_REGEN_LOOT_BONUS_WILL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_ancestor"

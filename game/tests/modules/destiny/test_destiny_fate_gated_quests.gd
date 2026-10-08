@@ -19,35 +19,40 @@ const QUEST_MULTI := &"t_quest_multi"
 
 
 func setup() -> void:
-	DestinyFixtureCatalog.install(
-		[
-			DestinyFixtureCatalog.story_fate(FATE_X),
-			DestinyFixtureCatalog.story_fate(FATE_Y),
-			DestinyFixtureCatalog.story_fate(FATE_Z),
-		],
-		[DestinyFixtureCatalog.plain_destiny(&"t_destiny_q")]
+	(
+		DestinyFixtureCatalog
+		. install(
+			[
+				DestinyFixtureCatalog.story_fate(FATE_X),
+				DestinyFixtureCatalog.story_fate(FATE_Y),
+				DestinyFixtureCatalog.story_fate(FATE_Z),
+			],
+			[DestinyFixtureCatalog.plain_destiny(&"t_destiny_q")]
+		)
 	)
-	QuestFixtureCatalog.install(
-		[
-			QuestFixtureCatalog.quest(QUEST_OPEN, QuestDef.KIND_AUTHORED, {}, []),
-			QuestFixtureCatalog.with_fate_gate(
-				QuestFixtureCatalog.quest(QUEST_GATED, QuestDef.KIND_AUTHORED, {}, []),
-				[FATE_X]
-			),
-			QuestFixtureCatalog.with_fate_gate(
-				QuestFixtureCatalog.quest(
-					QUEST_BOTH,
-					QuestDef.KIND_AUTHORED,
-					{"verb": &"has_destiny", "id": &"t_destiny_q"},
-					[]
+	(
+		QuestFixtureCatalog
+		. install(
+			[
+				QuestFixtureCatalog.quest(QUEST_OPEN, QuestDef.KIND_AUTHORED, {}, []),
+				QuestFixtureCatalog.with_fate_gate(
+					QuestFixtureCatalog.quest(QUEST_GATED, QuestDef.KIND_AUTHORED, {}, []), [FATE_X]
 				),
-				[FATE_Y]
-			),
-			QuestFixtureCatalog.with_fate_gate(
-				QuestFixtureCatalog.quest(QUEST_MULTI, QuestDef.KIND_AUTHORED, {}, []),
-				[FATE_X, FATE_Y]
-			),
-		]
+				QuestFixtureCatalog.with_fate_gate(
+					QuestFixtureCatalog.quest(
+						QUEST_BOTH,
+						QuestDef.KIND_AUTHORED,
+						{"verb": &"has_destiny", "id": &"t_destiny_q"},
+						[]
+					),
+					[FATE_Y]
+				),
+				QuestFixtureCatalog.with_fate_gate(
+					QuestFixtureCatalog.quest(QUEST_MULTI, QuestDef.KIND_AUTHORED, {}, []),
+					[FATE_X, FATE_Y]
+				),
+			]
+		)
 	)
 
 

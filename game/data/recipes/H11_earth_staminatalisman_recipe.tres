@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"H11_earth_staminatalisman_recipe"
-display_name = "Earth Stamina Talisman Recipe"
+display_name = "LOC_RECIPES_H11_EARTH_STAMINATALISMAN_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"herb_ironbark", &"ore_mithril"])
 outputs = Array[StringName]([&"H11_earth_staminatalisman"])

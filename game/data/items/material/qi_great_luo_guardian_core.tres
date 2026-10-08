@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"qi_great_luo_guardian_core"
-display_name = "Great Luo Immortal Guardian Core"
+display_name = "LOC_ITEMS_QI_GREAT_LUO_GUARDIAN_CORE_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"great_luo"
@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"core"
 grade = &"immortal"
 sources = Array[StringName]([&"boss:qi_great_luo_guardian"])
-description = "Guardian core dropped by Great Luo Immortal guardian."
+description = "LOC_ITEMS_QI_GREAT_LUO_GUARDIAN_CORE_DESCRIPTION"

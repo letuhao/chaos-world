@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G19_immortal_henge_fortune_insight_gain"
-display_name = "Immortal Henge Fortune Insight gain"
+display_name = "LOC_ITEMS_G19_IMMORTAL_HENGE_FORTUNE_INSIGHT_GAIN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"golden_immortal"

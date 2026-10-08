@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"T4_heaven_reedmace_cameo"
-display_name = "Heaven Reedmace Cameo"
+display_name = "LOC_ITEMS_T4_HEAVEN_REEDMACE_CAMEO_DISPLAY_NAME"
 category = &"misc"
 rarity = &"rare"
 realm = &"mystic_immortal"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G20_earth_hoist_evasion_stamina_regen"
-display_name = "Earth Hoist Evasion Stamina regen"
+display_name = "LOC_ITEMS_G20_EARTH_HOIST_EVASION_STAMINA_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_palace"

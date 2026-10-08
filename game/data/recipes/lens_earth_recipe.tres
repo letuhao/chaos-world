@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"lens_earth_recipe"
-display_name = "Earth Lens Recipe"
+display_name = "LOC_RECIPES_LENS_EARTH_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"gem_earthjade", &"elemental_earth_core"])
 outputs = Array[StringName]([&"lens_earth"])

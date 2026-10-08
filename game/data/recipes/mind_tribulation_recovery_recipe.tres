@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"mind_tribulation_recovery_recipe"
-display_name = "Tribulation Clarity Elixir Formula"
+display_name = "LOC_RECIPES_MIND_TRIBULATION_RECOVERY_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"mind_tribulation_mind_herb", &"mind_tribulation_warden_core"])
 outputs = Array[StringName]([&"mind_tribulation_recovery_elixir"])

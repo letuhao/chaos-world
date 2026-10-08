@@ -225,9 +225,7 @@ static func _known() -> Dictionary:
 
 
 static func _persist(actor: Actor, row: Dictionary) -> void:
-	actor.set_module_data(
-		DialogueState.MODULE_KEY, DialogueState.normalize(row, _known())
-	)
+	actor.set_module_data(DialogueState.MODULE_KEY, DialogueState.normalize(row, _known()))
 
 
 ## A node's lines, copied so a caller cannot mutate the authored Resource through the
@@ -278,7 +276,9 @@ static func _apply_effect(store: DialogueVariables, choice: DialogueChoiceDef) -
 		var key := StringName((row as Dictionary).get("key", ""))
 		var value: Variant = (row as Dictionary).get("value", null)
 		var wrote := store.set_value(key, value)
-		out.append({"key": String(key), "ok": bool(wrote["ok"]), "refusal": String(wrote["refusal"])})
+		out.append(
+			{"key": String(key), "ok": bool(wrote["ok"]), "refusal": String(wrote["refusal"])}
+		)
 	return out
 
 

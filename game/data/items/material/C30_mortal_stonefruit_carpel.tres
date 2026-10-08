@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C30_mortal_stonefruit_carpel"
-display_name = "Mortal Stonefruit Carpel"
+display_name = "LOC_ITEMS_C30_MORTAL_STONEFRUIT_CARPEL_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"core_formation"

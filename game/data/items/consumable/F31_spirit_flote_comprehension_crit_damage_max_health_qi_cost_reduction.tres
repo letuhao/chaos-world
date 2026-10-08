@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F31_spirit_flote_comprehension_crit_damage_max_health_qi_cost_reduction"
-display_name = "Spirit Flote Comprehension Crit damage Max health Qi cost reduction"
+display_name = "LOC_ITEMS_F31_SPIRIT_FLOTE_COMPREHENSION_CRIT_DAMAGE_MAX_HEALTH_QI_COST_REDUCTION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_ascension"

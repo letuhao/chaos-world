@@ -30,7 +30,7 @@ rarity_floor = &"magic"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_crown_iron_monarch_pool_spirit_manifestation"
-display_name = "Iron Monarch salvage (spirit_manifestation)"
+display_name = "LOC_LOOT_CROWN_IRON_MONARCH_SPIRIT_MANIFESTATION_0_DISPLAY_NAME"
 realm = &"spirit_manifestation"
 rarity = &""
 rolls = 1

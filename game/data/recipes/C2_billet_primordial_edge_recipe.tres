@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"C2_billet_primordial_edge_recipe"
-display_name = "Billet Primordial Edge Recipe"
+display_name = "LOC_RECIPES_C2_BILLET_PRIMORDIAL_EDGE_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"C2_heaven_billet", &"astral_galactic_core_ore"])
 outputs = Array[StringName]([&"bladework_primordial_edge"])

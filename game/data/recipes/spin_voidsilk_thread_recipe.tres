@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"spin_voidsilk_thread_recipe"
-display_name = "Voidsilk Thread Recipe"
+display_name = "LOC_RECIPES_SPIN_VOIDSILK_THREAD_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"filament_voidsilk", &"sap_tar"])
 outputs = Array[StringName]([&"spin_voidsilk_thread"])

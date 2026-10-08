@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Z17_heaven_berth_primed"
-display_name = "Heaven Berth Primed"
+display_name = "LOC_ITEMS_Z17_HEAVEN_BERTH_PRIMED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"primordial_immortal"

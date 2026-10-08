@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C25_mortal_coutil_cultivation_rate_attack_physical_attack_spiritual"
-display_name = "Mortal Coutil Cultivation Rate Attack Physical Attack Spiritual"
+display_name = "LOC_ITEMS_C25_MORTAL_COUTIL_CULTIVATION_RATE_ATTACK_PHYSICAL_ATTACK_SPIRITUAL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"great_ascension"

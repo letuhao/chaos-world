@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"curr_spirit_coin"
-display_name = "Spirit Coin"
+display_name = "LOC_ITEMS_CURR_SPIRIT_COIN_DISPLAY_NAME"
 category = &"currency"
 ; ADR 0094: "A numeraire must be `stackable`, `max_stack 9999`, `roll_spec = {}`, and carry
 ; a fixed base worth of 1.0." This file carried every one of those EXCEPT `max_stack`, so it

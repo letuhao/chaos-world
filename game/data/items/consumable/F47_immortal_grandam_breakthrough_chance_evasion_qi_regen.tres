@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F47_immortal_grandam_breakthrough_chance_evasion_qi_regen"
-display_name = "Immortal Grandam Breakthrough chance Evasion Qi regen"
+display_name = "LOC_ITEMS_F47_IMMORTAL_GRANDAM_BREAKTHROUGH_CHANCE_EVASION_QI_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"earth_immortal"

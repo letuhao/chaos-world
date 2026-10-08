@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"divine_seraph_core"
-display_name = "Seraph Core"
+display_name = "LOC_ITEMS_DIVINE_SERAPH_CORE_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"primordial_origin"

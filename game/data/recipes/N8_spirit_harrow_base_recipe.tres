@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"N8_spirit_harrow_base_recipe"
-display_name = "Spirit Harrow Base Recipe"
+display_name = "LOC_RECIPES_N8_SPIRIT_HARROW_BASE_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"greaves_silver_ore", &"torc_moon_essence"])
 outputs = Array[StringName]([&"N8_spirit_harrow_base"])

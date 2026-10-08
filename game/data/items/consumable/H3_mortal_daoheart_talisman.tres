@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"H3_mortal_daoheart_talisman"
-display_name = "Mortal Daoheart Talisman"
+display_name = "LOC_ITEMS_H3_MORTAL_DAOHEART_TALISMAN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"core_formation"

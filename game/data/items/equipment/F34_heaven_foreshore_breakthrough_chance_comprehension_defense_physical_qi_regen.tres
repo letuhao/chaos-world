@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F34_heaven_foreshore_breakthrough_chance_comprehension_defense_physical_qi_regen"
-display_name = "Heaven Foreshore Breakthrough chance Comprehension Defense physical Qi regen"
+display_name = "LOC_ITEMS_F34_HEAVEN_FORESHORE_BREAKTHROUGH_CHANCE_COMPREHENSION_DEFENSE_PHYSICAL_QI_REGEN_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"true_immortal"

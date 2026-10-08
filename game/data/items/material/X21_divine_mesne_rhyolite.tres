@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"X21_divine_mesne_rhyolite"
-display_name = "Divine Mesne Rhyolite"
+display_name = "LOC_ITEMS_X21_DIVINE_MESNE_RHYOLITE_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"primordial_origin"

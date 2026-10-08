@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"scale_basilisk"
-display_name = "Basilisk Scale"
+display_name = "LOC_ITEMS_SCALE_BASILISK_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_manifestation"

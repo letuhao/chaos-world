@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_elemental_heaven_guardian_pool_foundation"
-display_name = "Aether Guardian salvage (foundation)"
+display_name = "LOC_LOOT_ELEMENTAL_HEAVEN_GUARDIAN_FOUNDATION_0_DISPLAY_NAME"
 realm = &"foundation"
 rarity = &""
 rolls = 1

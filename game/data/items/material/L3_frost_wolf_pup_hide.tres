@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"L3_frost_wolf_pup_hide"
-display_name = "Frost Wolf Pup Pelt"
+display_name = "LOC_ITEMS_L3_FROST_WOLF_PUP_HIDE_DISPLAY_NAME"
 category = &"material"
 rarity = &"magic"
 realm = &"spirit_sovereign"

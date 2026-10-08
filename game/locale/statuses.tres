@@ -1,0 +1,33 @@
+[gd_resource type="Translation" format=3]
+
+[resource]
+locale = "en"
+messages = {
+"LOC_STATUSES_DARK_CORROSION_TEXT": "Not a wound. Acid, eating whatever the guard was made of and the flesh under it, deeper for every breath it is left breathing.",
+"LOC_STATUSES_DARK_VEIL_TEXT": "A veil the dark helped weave. What would land is spent finding the body under it.",
+"LOC_STATUSES_DARK_WANE_TEXT": "The light goes out of a fight. Strike, sea and timing all thin at once, and the longer it stays the less there is left to take.",
+"LOC_STATUSES_EARTH_BULWARK_TEXT": "Stone stance. The body refuses to yield and keeps ground it would otherwise lose.",
+"LOC_STATUSES_EARTH_QUAKE_TEXT": "The ground goes out from under them. They cannot be moved, and they cannot close.",
+"LOC_STATUSES_FIRE_FORGE_TEXT": "A furnace kept lit inside. What the cultivator strikes is struck hotter.",
+"LOC_STATUSES_FIRE_IMMOLATION_TEXT": "Fire takes hold and burns hotter the longer it is left alone.",
+"LOC_STATUSES_FIRE_PYRE_TEXT": "A burning body burns harder. Every other burn already on the target feeds this one.",
+"LOC_STATUSES_ICE_RIME_TEXT": "The wet cold locks in. They go stiff from the knees up and lose the balance that would have let them step out of the next one.",
+"LOC_STATUSES_ICE_SHATTER_TEXT": "What froze is now brittle. One impact splits the whole crack open at once and spends itself in the moment it lands.",
+"LOC_STATUSES_ICE_STILLNESS_TEXT": "Frost settled where the nerves used to rush. The mind reads what moves and does not move first.",
+"LOC_STATUSES_LIGHTNING_ARC_TEXT": "The storm keeps its hand on them. Every bolt after the first lands harder than the one before, and none of them is the last.",
+"LOC_STATUSES_LIGHTNING_QUICKEN_TEXT": "The body moves on its own spark now. Hands and feet arrive before thought finishes.",
+"LOC_STATUSES_LIGHTNING_SURGE_TEXT": "The bolt finds the seams. What it passed through, the spirit guard and the instinct to slip aside do not close behind it.",
+"LOC_STATUSES_LIGHT_BRAND_TEXT": "Nothing about them stays hidden. Light finds every place a body keeps covered and keeps those places open, so what lands next is never a surprise.",
+"LOC_STATUSES_LIGHT_HALO_TEXT": "A lit body never goes dark. What the light finds is finished: the sight opens and the strike behind it comes heavier and cleaner.",
+"LOC_STATUSES_METAL_SEVER_TEXT": "The cut will not close. Wounded, the body's own damage reduction is stripped away while the bleeding runs.",
+"LOC_STATUSES_METAL_SUNDER_TEXT": "Blade-work finds the seams. The body's physical guard and its footing are cut away from it.",
+"LOC_STATUSES_METAL_TEMPER_TEXT": "Tempered steel under the skin. The body has been honed like a blade and keeps edges out.",
+"LOC_STATUSES_WATER_CHILL_TEXT": "Cold settles into the meridians. The body moves more slowly and strikes less often.",
+"LOC_STATUSES_WATER_DELUGE_TEXT": "A full wave lands at once: one heavy, unblockable impact that spends its whole force the moment it arrives.",
+"LOC_STATUSES_WATER_WELLSPRING_TEXT": "A wellspring opened below the heart. Qi is deeper and does not stop coming back.",
+"LOC_STATUSES_WIND_GUST_TEXT": "The wind does not stop at the skin. It grinds grit into the guard and takes the breath with it, and the body only makes more slowly.",
+"LOC_STATUSES_WIND_SPREAD_TEXT": "The wind carries fire. Every burn and every bleed already on the target is spread further than any of them would have run alone.",
+"LOC_STATUSES_WIND_STRIDE_TEXT": "A step that carries. The wind walks where the cultivator walks and pays the fare.",
+"LOC_STATUSES_WOOD_BLOOM_TEXT": "Verdant regrowth. The body holds more of itself and knits faster than it should.",
+"LOC_STATUSES_WOOD_PARASITE_TEXT": "The vine drinks the host. Life drains out of it as a share of the pool, and the growth that would have replaced it chokes shut.",
+}

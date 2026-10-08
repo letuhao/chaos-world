@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"qi_void_refinement_qi_herb"
-display_name = "Void Refinement Qi Herb"
+display_name = "LOC_ITEMS_QI_VOID_REFINEMENT_QI_HERB_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"void_refinement"
@@ -16,4 +16,4 @@ roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"herb"
 grade = &"mortal"
 sources = Array[StringName]([&"gather", &"domain:qi_spirit_manifestation_domain"])
-description = "Gathered reagent for the realm's elixir."
+description = "LOC_ITEMS_QI_VOID_REFINEMENT_QI_HERB_DESCRIPTION"

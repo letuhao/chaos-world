@@ -186,6 +186,16 @@ def is_player_text(value: str) -> bool:
     # must not be mistaken for one — the earlier blanket `%` guard dropped every such message.
     if re.fullmatch(r"%[A-Za-z_][A-Za-z0-9_]*", text):
         return False
+    # A build TOKEN is never display text: a path or id fragment woven into a filename or a
+    # lookup key. Keying one broke `load("res:" + ...)` — a key is not a path.
+    if " " not in text:
+        if "/" in text or "\\" in text:
+            return False
+        if re.fullmatch(r"[a-z0-9_]*:", text):
+            return False
+        # A template of specifiers and separators (`"%s/%s"`, `"%s:term:%s"`) is a builder.
+        if re.fullmatch(r"[%a-z0-9_.:+/()\-]*", text) and re.search(r"%[sdf]", text):
+            return False
     if text.startswith(f"{SLUG_PREFIX}_"):
         return False
     # `snake_case` with no space is an identifier (`display_name`, `no_actor`), and an all

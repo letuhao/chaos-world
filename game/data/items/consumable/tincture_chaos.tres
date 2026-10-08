@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"tincture_chaos"
-display_name = "Chaos Tincture"
+display_name = "LOC_ITEMS_TINCTURE_CHAOS_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"

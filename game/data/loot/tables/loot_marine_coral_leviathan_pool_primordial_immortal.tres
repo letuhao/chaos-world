@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_marine_coral_leviathan_pool_primordial_immortal"
-display_name = "Coral Leviathan salvage (primordial_immortal)"
+display_name = "LOC_LOOT_MARINE_CORAL_LEVIATHAN_PRIMORDIAL_IMMORTAL_0_DISPLAY_NAME"
 realm = &"primordial_immortal"
 rarity = &""
 rolls = 1

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F15_mortal_ecarte_agility_aptitude_dao_heart_spirit"
-display_name = "Mortal Ecarte Agility Aptitude Dao heart Spirit"
+display_name = "LOC_ITEMS_F15_MORTAL_ECARTE_AGILITY_APTITUDE_DAO_HEART_SPIRIT_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"tribulation"

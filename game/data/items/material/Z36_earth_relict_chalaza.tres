@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Z36_earth_relict_chalaza"
-display_name = "Earth Drupelet Chalaza"
+display_name = "LOC_ITEMS_Z36_EARTH_RELICT_CHALAZA_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_manifestation"

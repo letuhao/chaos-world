@@ -66,7 +66,7 @@ rarity_floor = &"magic"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_beast_storm_hawk_pool_spirit_severing"
-display_name = "Storm Hawk salvage (spirit_severing)"
+display_name = "LOC_LOOT_BEAST_STORM_HAWK_SPIRIT_SEVERING_0_DISPLAY_NAME"
 realm = &"spirit_severing"
 rarity = &""
 rolls = 1

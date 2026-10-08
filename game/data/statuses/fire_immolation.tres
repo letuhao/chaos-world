@@ -22,7 +22,7 @@ mitigation_tags = Array[StringName]([&"affinity", &"technique", &"pill"])
 immunity_tags = Array[StringName]([&"burn"])
 payload = {
 "mechanic": &"escalating_burn",
-"text": "Fire takes hold and burns hotter the longer it is left alone.",
+"text": "LOC_STATUSES_FIRE_IMMOLATION_TEXT",
 "pool": &"health",
 "share_per_pulse": 0.02,
 "escalation_per_tick": 0.12,

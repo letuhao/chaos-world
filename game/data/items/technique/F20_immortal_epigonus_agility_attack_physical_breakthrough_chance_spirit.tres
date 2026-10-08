@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F20_immortal_epigonus_agility_attack_physical_breakthrough_chance_spirit"
-display_name = "Immortal Epigonus Agility Attack physical Breakthrough chance Spirit"
+display_name = "LOC_ITEMS_F20_IMMORTAL_EPIGONUS_AGILITY_ATTACK_PHYSICAL_BREAKTHROUGH_CHANCE_SPIRIT_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"mystic_immortal"

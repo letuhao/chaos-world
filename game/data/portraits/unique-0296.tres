@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_portrait")
 id = &"unique-0296"
-display_name = "Bryn Haldor"
+display_name = "LOC_PORTRAITS_UNIQUE_0296_DISPLAY_NAME"
 race_id = &"stoneborn"
 visual_traits = Array[StringName]([&"burden:stopped-one-gate-short-by-anatomy", &"class:the-credential-the-house-accepts-and-the-only-one", &"discipline:body-path", &"gift:the-densest-body-in-the-record", &"hazard:the-only-second-body-nobody-qualified-can-reach", &"path:body-path", &"role:corroborating-body-for-a-case-about-his-own-ceiling", &"species:cairnborn-bred-back-toward-flesh", &"standing:arrived-at-seventeen-and-was-taken-in"])
 layer_paths = Array[String](["res://assets/characters/portraits/stoneborn.png"])

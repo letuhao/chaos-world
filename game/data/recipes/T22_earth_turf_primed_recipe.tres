@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"T22_earth_turf_primed_recipe"
-display_name = "Earth Turf Primed Recipe"
+display_name = "LOC_RECIPES_T22_EARTH_TURF_PRIMED_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"T22_earth_turf_aged", &"ring_jade_ore", &"incense_agarwood", &"elemental_earth_essence"])
 outputs = Array[StringName]([&"T22_earth_turf_primed"])

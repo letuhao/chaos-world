@@ -67,10 +67,8 @@ const _RES_SCHEME := "res:" + "//"
 const _READBACK_DIR := "src/modules/techniques/"
 ## Concatenated, not one literal: gdformat will not split a string literal, so a
 ## single 102-char line here fails `gdlint`'s max-line-length for good.
-const HEADER_TEXT := (
-	"Bound for now. The codex keeps everything; " + "this page decides nothing permanent."
-)
-const NO_ACTOR_TEXT := "No hero bound."
+const HEADER_TEXT := "LOC_UI_SCREENS_D983F92213" + "LOC_UI_SCREENS_EC7573531B"
+const NO_ACTOR_TEXT := "LOC_UI_SCREENS_6E9BC19A74"
 ## The path pools the budget row is stated in, in the facade's own order.
 const POOLS := [PathState.QI, PathState.BODY, PathState.MIND, &"universal"]
 
@@ -79,16 +77,16 @@ const POOLS := [PathState.QI, PathState.BODY, PathState.MIND, &"universal"]
 ## refusal HONESTLY instead of restating it as one generic failure. Unknown reasons
 ## fall back to [refusal_text]'s default rather than printing machine vocabulary.
 const REFUSALS := {
-	&"realm_unmet": "Your realm does not reach it yet",
-	&"not_learned": "Not learned yet",
-	&"no_free_slot": "No free slot in its pool",
-	&"not_equipped": "Not bound right now",
-	&"not_active": "That one is a passive, not an action",
-	&"on_cooldown": "Still cooling down",
-	&"insufficient_resources": "Not enough qi or stamina",
-	&"unknown_definition": "No such technique",
+	&"realm_unmet": "LOC_UI_SCREENS_93C6507C09",
+	&"not_learned": "LOC_UI_SCREENS_1628D1F58F",
+	&"no_free_slot": "LOC_UI_SCREENS_AC7B427CC2",
+	&"not_equipped": "LOC_UI_SCREENS_3ABB27ECA8",
+	&"not_active": "LOC_UI_SCREENS_B886437629",
+	&"on_cooldown": "LOC_UI_SCREENS_A00B68F360",
+	&"insufficient_resources": "LOC_UI_SCREENS_691C3F6887",
+	&"unknown_definition": "LOC_UI_SCREENS_68CC28B9CE",
 }
-const REFUSAL_DEFAULT := "Refused"
+const REFUSAL_DEFAULT := "LOC_UI_SCREENS_735EC50D7D"
 
 ## ## The refusal this screen OWNS, which is not a module refusal
 ##
@@ -100,9 +98,9 @@ const REFUSAL_DEFAULT := "Refused"
 ## nothing to land on, which is a different sentence from every module refusal a player
 ## can fix by changing their build.
 const REASON_NO_TARGET := "no_target"
-const NO_TARGET_TEXT := "Nothing to aim at"
-const TARGET_BOUND_TEXT := "Aiming at"
-const NO_TARGET_BODY := "Nothing to aim at, so nothing was fired and nothing was spent."
+const NO_TARGET_TEXT := "LOC_UI_SCREENS_8B898007D5"
+const TARGET_BOUND_TEXT := "LOC_UI_SCREENS_DD29BFE809"
+const NO_TARGET_BODY := "LOC_UI_SCREENS_0E5E48815A"
 ## The readback's own `activity` for a cast that produced a descriptor. RESOLVED from
 ## the loaded script rather than restated as a literal here: `TechniqueCastView.RESOLVED`
 ## is the vocabulary's one definition, and a second copy of the string in `ui/` is
@@ -257,11 +255,11 @@ func _refresh_view() -> void:
 func _render() -> void:
 	if _header == null:
 		return
-	_header.text = HEADER_TEXT if _actor != null else NO_ACTOR_TEXT
+	_header.text = L.t(HEADER_TEXT if _actor != null else NO_ACTOR_TEXT)
 	if _budget != null:
-		_budget.text = _budget_line()
+		_budget.text = L.t(_budget_line())
 	if _target_label != null:
-		_target_label.text = _target_text()
+		_target_label.text = L.t(_target_text())
 		# An unwired target is a STATE, not a failure: the row buttons below it stay
 		# correct either way, and `WarnLabel` would paint a page nobody broke as broken.
 		_target_label.theme_type_variation = (&"MetaLabel" if has_target() else &"WarnLabel")
@@ -272,10 +270,10 @@ func _render() -> void:
 ## rendered as missing data (ADR 0150).
 func _target_text() -> String:
 	if _actor == null:
-		return NO_ACTOR_TEXT
+		return L.t(NO_ACTOR_TEXT)
 	if not has_target():
-		return NO_TARGET_TEXT
-	return "%s %s" % [TARGET_BOUND_TEXT, target_id()]
+		return L.t(NO_TARGET_TEXT)
+	return L.t("LOC_UI_SCREENS_265FC52551") % [L.t(TARGET_BOUND_TEXT), target_id()]
 
 
 # --- Actions, callable headlessly as well as by the buttons ----------------
@@ -466,7 +464,7 @@ func _would_fire(technique_id: StringName) -> bool:
 ## whatever refused it, and `resolved: false` says the honest thing: nothing was hit,
 ## because nothing was fired.
 func _refuse_no_target(technique_id: StringName) -> Dictionary:
-	set_message("%s: %s" % [String(technique_id), NO_TARGET_BODY], TONE_ERROR)
+	set_message("%s: %s" % [String(technique_id), L.t(NO_TARGET_BODY)], TONE_ERROR)
 	refresh()
 	return {
 		"ok": false,
@@ -624,7 +622,7 @@ func _turn_of(_fired: Dictionary, _before: Dictionary, _aimed: Actor) -> Diction
 ## the message has always carried rather than to a fabricated zero.
 func _fired_text(technique_id: StringName, turn: Dictionary) -> String:
 	if turn.is_empty():
-		return "Fired %s" % String(technique_id)
+		return L.t("LOC_UI_SCREENS_575C290942") % String(technique_id)
 	var parts: Array[String] = []
 	var health_lost := float(turn.get("health_lost", 0.0))
 	# `landed` and `activity` come from the spine; a cast that resolved and missed, and
@@ -642,14 +640,15 @@ func _fired_text(technique_id: StringName, turn: Dictionary) -> String:
 	for pool_id in paid.keys():
 		parts.append("%.1f %s spent" % [float(paid[pool_id]), String(pool_id)])
 	if parts.is_empty():
-		return "Fired %s" % String(technique_id)
-	return "Fired %s - %s" % [String(technique_id), ", ".join(parts)]
+		return L.t("LOC_UI_SCREENS_575C290942") % String(technique_id)
+	return L.t("LOC_UI_SCREENS_3118023183") % [String(technique_id), ", ".join(parts)]
 
 
 ## The module's refusal vocabulary, in words a player can act on. An unrecognised reason falls
 ## back rather than printing machine vocabulary at them.
 func refusal_text(reason: String) -> String:
-	return String(REFUSALS.get(StringName(reason), REFUSAL_DEFAULT))
+	# The table holds KEYS, so this accessor resolves — one place, before any caller prints it.
+	return L.t(String(REFUSALS.get(StringName(reason), REFUSAL_DEFAULT)))
 
 
 # --- Filling ----------------------------------------------------------------

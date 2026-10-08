@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F19_immortal_entozoon_agility_aptitude_poise_qi_absorption"
-display_name = "Immortal Entozoon Agility Aptitude Poise Qi absorption"
+display_name = "LOC_ITEMS_F19_IMMORTAL_ENTOZOON_AGILITY_APTITUDE_POISE_QI_ABSORPTION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_fruit"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E7_earth_cardingroom_cop"
-display_name = "Earth Cardingroom Cop"
+display_name = "LOC_ITEMS_E7_EARTH_CARDINGROOM_COP_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_palace"

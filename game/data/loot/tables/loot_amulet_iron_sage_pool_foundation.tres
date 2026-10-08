@@ -30,7 +30,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_amulet_iron_sage_pool_foundation"
-display_name = "Iron Sage salvage (foundation)"
+display_name = "LOC_LOOT_AMULET_IRON_SAGE_FOUNDATION_0_DISPLAY_NAME"
 realm = &"foundation"
 rarity = &""
 rolls = 1

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G10_heaven_engrave"
-display_name = "Heaven Engraving"
+display_name = "LOC_ITEMS_G10_HEAVEN_ENGRAVE_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"immortal_sovereign"

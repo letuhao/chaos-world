@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"T1_spirit_kestrel_lintel"
-display_name = "Spirit Kestrel Lintel"
+display_name = "LOC_ITEMS_T1_SPIRIT_KESTREL_LINTEL_DISPLAY_NAME"
 category = &"key"
 rarity = &"magic"
 realm = &"spirit_severing"

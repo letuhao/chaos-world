@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"K19_earth_blood_refined_recipe"
-display_name = "Earth Blood Refined Recipe"
+display_name = "LOC_RECIPES_K19_EARTH_BLOOD_REFINED_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"K19_earth_blood_base", &"wood_frost_vein"])
 outputs = Array[StringName]([&"K19_earth_blood_refined"])

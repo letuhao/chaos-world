@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U8_heaven_linlet_fragment"
-display_name = "Heaven Linlet Fragment"
+display_name = "LOC_ITEMS_U8_HEAVEN_LINLET_FRAGMENT_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"dao_fruit"

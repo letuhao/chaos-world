@@ -30,7 +30,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_qi_mystic_immortal_guardian_pool_dao_fruit"
-display_name = "Mystic Immortal Guardian salvage (dao_fruit)"
+display_name = "LOC_LOOT_QI_MYSTIC_IMMORTAL_GUARDIAN_DAO_FRUIT_0_DISPLAY_NAME"
 realm = &"dao_fruit"
 rarity = &""
 rolls = 1

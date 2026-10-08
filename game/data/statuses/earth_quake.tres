@@ -20,7 +20,7 @@ tick_interval = 1.0
 mitigation_tags = Array[StringName]([&"affinity", &"gear", &"technique", &"pill"])
 payload = {
 "mechanic": &"root",
-"text": "The ground goes out from under them. They cannot be moved, and they cannot close.",
+"text": "LOC_STATUSES_EARTH_QUAKE_TEXT",
 "modifiers": [
 {"stat": &"move_speed", "op": &"flat", "value": -45.0},
 {"stat": &"poise", "op": &"flat", "value": -10.0}

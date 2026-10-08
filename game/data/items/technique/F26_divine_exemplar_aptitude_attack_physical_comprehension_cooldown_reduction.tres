@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F26_divine_exemplar_aptitude_attack_physical_comprehension_cooldown_reduction"
-display_name = "Divine Exemplar Aptitude Attack physical Comprehension Cooldown reduction"
+display_name = "LOC_ITEMS_F26_DIVINE_EXEMPLAR_APTITUDE_ATTACK_PHYSICAL_COMPREHENSION_COOLDOWN_REDUCTION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"

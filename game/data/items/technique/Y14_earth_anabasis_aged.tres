@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Y14_earth_anabasis_aged"
-display_name = "Earth Anabasis Aged"
+display_name = "LOC_ITEMS_Y14_EARTH_ANABASIS_AGED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_domain"

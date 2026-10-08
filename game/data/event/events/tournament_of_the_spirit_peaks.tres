@@ -6,7 +6,7 @@
 [sub_resource type="Resource" id="Stage_registered"]
 script = ExtResource("2_stage")
 stage_id = &"registered"
-display_name = "The Register Closes"
+display_name = "LOC_EVENT_TOURNAMENT_OF_THE_SPIRIT_PEAKS_DISPLAY_NAME_1"
 requires = {}
 duration_periods = 1
 on_enter = [{"fact": &"tournament_registered", "amount": 1}]
@@ -14,7 +14,7 @@ on_enter = [{"fact": &"tournament_registered", "amount": 1}]
 [sub_resource type="Resource" id="Stage_first_round"]
 script = ExtResource("2_stage")
 stage_id = &"first_round"
-display_name = "The First Round"
+display_name = "LOC_EVENT_TOURNAMENT_OF_THE_SPIRIT_PEAKS_DISPLAY_NAME_2"
 requires = {"verb": &"fact", "id": &"tournament_registered", "need": 1}
 duration_periods = 1
 on_enter = [{"fact": &"tournament_rounds_fought", "amount": 1}]
@@ -22,7 +22,7 @@ on_enter = [{"fact": &"tournament_rounds_fought", "amount": 1}]
 [sub_resource type="Resource" id="Stage_final"]
 script = ExtResource("2_stage")
 stage_id = &"final"
-display_name = "The Final"
+display_name = "LOC_EVENT_TOURNAMENT_OF_THE_SPIRIT_PEAKS_DISPLAY_NAME_3"
 requires = {"verb": &"fact", "id": &"tournament_rounds_fought", "need": 1}
 duration_periods = 1
 on_enter = [{"fact": &"tournament_final_fought", "amount": 1}]
@@ -31,8 +31,8 @@ resolves = {"war_id": &"war_of_the_nine_fords", "winner_id": &"court_of_the_star
 [resource]
 script = ExtResource("1_event")
 id = &"tournament_of_the_spirit_peaks"
-display_name = "The Tournament of the Spirit Peaks"
-description = "Every three years the sects who can reach the peaks send one entrant, and every three years somebody wins the mountain. This event decides WHO ENTERED and HOW FAR THE LADDER GOT. The exchanges themselves were fought elsewhere, and the winner arrives at the final as a verdict from outside."
+display_name = "LOC_EVENT_TOURNAMENT_OF_THE_SPIRIT_PEAKS_DISPLAY_NAME_4"
+description = "LOC_EVENT_TOURNAMENT_OF_THE_SPIRIT_PEAKS_DESCRIPTION"
 kind = &"tournament"
 trigger = {"verb": &"fact", "id": &"tournament_called", "need": 1}
 location_id = &"spirit_peaks"

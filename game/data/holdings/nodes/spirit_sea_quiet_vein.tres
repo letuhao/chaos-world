@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_node")
 node_id = &"spirit_sea_quiet_vein"
-display_name = "Quiet Vein"
+display_name = "LOC_HOLDINGS_SPIRIT_SEA_QUIET_VEIN_DISPLAY_NAME"
 kind = &"spirit_vein"
 realm = &"spirit_sea"
 yield_per_period = 9

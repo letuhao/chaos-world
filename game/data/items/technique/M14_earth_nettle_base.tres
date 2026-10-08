@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"M14_earth_nettle_base"
-display_name = "Earth Nettle Base"
+display_name = "LOC_ITEMS_M14_EARTH_NETTLE_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_sea"

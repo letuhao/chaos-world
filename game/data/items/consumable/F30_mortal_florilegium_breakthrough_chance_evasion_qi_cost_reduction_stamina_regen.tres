@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F30_mortal_florilegium_breakthrough_chance_evasion_qi_cost_reduction_stamina_regen"
-display_name = "Mortal Florilegium Breakthrough chance Evasion Qi cost reduction Stamina regen"
+display_name = "LOC_ITEMS_F30_MORTAL_FLORILEGIUM_BREAKTHROUGH_CHANCE_EVASION_QI_COST_REDUCTION_STAMINA_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"great_ascension"

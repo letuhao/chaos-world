@@ -52,7 +52,7 @@ func test_the_boss_panel_shows_the_live_boss_and_its_pool() -> void:
 	)
 	assert_eq(float(boss["vitality_max"]) > 0.0, true, "it has an authored vitality pool")
 	assert_eq(
-		String(view.summary()["vitality_label"]),
+		L.t(String(view.summary()["vitality_label"])),
 		"%d / %d vitality" % [int(boss["vitality"]), int(boss["vitality_max"])],
 		"the panel, not the screen, owns the vitality wording"
 	)

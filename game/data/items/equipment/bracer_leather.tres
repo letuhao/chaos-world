@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"bracer_leather"
-display_name = "Leather Bracer"
+display_name = "LOC_ITEMS_BRACER_LEATHER_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"nascent_soul"

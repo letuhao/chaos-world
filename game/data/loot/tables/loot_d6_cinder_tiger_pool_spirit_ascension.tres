@@ -42,7 +42,7 @@ rarity_floor = &"magic"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d6_cinder_tiger_pool_spirit_ascension"
-display_name = "Cinder Tiger Lesser salvage (spirit_ascension)"
+display_name = "LOC_LOOT_D6_CINDER_TIGER_SPIRIT_ASCENSION_0_DISPLAY_NAME"
 realm = &"spirit_ascension"
 rarity = &""
 rolls = 1

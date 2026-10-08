@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"curr_immortal_seal"
-display_name = "Immortal Seal"
+display_name = "LOC_ITEMS_CURR_IMMORTAL_SEAL_DISPLAY_NAME"
 category = &"currency"
 rarity = &"legendary"
 realm = &"golden_immortal"

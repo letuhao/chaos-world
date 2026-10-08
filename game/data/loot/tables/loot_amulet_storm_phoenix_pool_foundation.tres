@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_amulet_storm_phoenix_pool_foundation"
-display_name = "Storm Phoenix salvage (foundation)"
+display_name = "LOC_LOOT_AMULET_STORM_PHOENIX_FOUNDATION_0_DISPLAY_NAME"
 realm = &"foundation"
 rarity = &""
 rolls = 1

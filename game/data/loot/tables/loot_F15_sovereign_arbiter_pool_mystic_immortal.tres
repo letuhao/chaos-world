@@ -30,7 +30,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_F15_sovereign_arbiter_pool_mystic_immortal"
-display_name = "Sovereign Arbiter salvage (mystic_immortal)"
+display_name = "LOC_LOOT_F15_SOVEREIGN_ARBITER_MYSTIC_IMMORTAL_0_DISPLAY_NAME"
 realm = &"mystic_immortal"
 rarity = &""
 rolls = 1

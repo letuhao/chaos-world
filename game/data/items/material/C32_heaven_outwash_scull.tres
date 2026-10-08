@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C32_heaven_outwash_scull"
-display_name = "Heaven Outwash Scull"
+display_name = "LOC_ITEMS_C32_HEAVEN_OUTWASH_SCULL_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"true_immortal"

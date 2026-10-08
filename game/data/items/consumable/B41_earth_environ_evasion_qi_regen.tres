@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B41_earth_environ_evasion_qi_regen"
-display_name = "Earth Environ Evasion Qi Regen"
+display_name = "LOC_ITEMS_B41_EARTH_ENVIRON_EVASION_QI_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_palace"

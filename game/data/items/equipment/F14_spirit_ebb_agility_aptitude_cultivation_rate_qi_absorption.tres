@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F14_spirit_ebb_agility_aptitude_cultivation_rate_qi_absorption"
-display_name = "Spirit Ebb Agility Aptitude Cultivation rate Qi absorption"
+display_name = "LOC_ITEMS_F14_SPIRIT_EBB_AGILITY_APTITUDE_CULTIVATION_RATE_QI_ABSORPTION_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"magic"
 realm = &"spirit_unity"

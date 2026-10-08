@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"P1_divine_auger_refined_alt_recipe"
-display_name = "Divine Auger Refined (Alt) Recipe"
+display_name = "LOC_RECIPES_P1_DIVINE_AUGER_REFINED_ALT_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"P1_divine_auger_base", &"divine_voidlotus", &"astral_galactic_core_ore"])
 outputs = Array[StringName]([&"P1_divine_auger_refined"])

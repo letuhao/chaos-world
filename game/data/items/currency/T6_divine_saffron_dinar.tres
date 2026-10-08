@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"T6_divine_saffron_dinar"
-display_name = "Divine Saffron Dinar"
+display_name = "LOC_ITEMS_T6_DIVINE_SAFFRON_DINAR_DISPLAY_NAME"
 category = &"currency"
 rarity = &"legendary"
 realm = &"dao_ancestor"

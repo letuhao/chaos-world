@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"seal_goldthread_charm"
-display_name = "Seal Goldthread Charm"
+display_name = "LOC_ITEMS_SEAL_GOLDTHREAD_CHARM_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"magic"
 realm = &"spirit_ascension"

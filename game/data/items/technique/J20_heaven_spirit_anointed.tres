@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"J20_heaven_spirit_anointed"
-display_name = "Heaven Spirit Anointed"
+display_name = "LOC_ITEMS_J20_HEAVEN_SPIRIT_ANOINTED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"golden_immortal"

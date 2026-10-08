@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V16_mortal_annulus_cadastre"
-display_name = "Mortal Annulus Cadastre"
+display_name = "LOC_ITEMS_V16_MORTAL_ANNULUS_CADASTRE_DISPLAY_NAME"
 category = &"quest"
 rarity = &"common"
 realm = &"qi_refining"

@@ -74,7 +74,7 @@ rarity_floor = ""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_ember_material_pool"
-display_name = "Ember Vault Salvage"
+display_name = "LOC_LOOT_EMP_HIDE_DISPLAY_NAME"
 realm = &"spirit_severing"
 rarity = &"common"
 rolls = 1

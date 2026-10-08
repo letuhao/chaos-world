@@ -51,24 +51,24 @@ const DEFAULT_POWER_SCALE := 20.0
 
 ## The manner an unvoiced place gets. A CONSTANT, not a blank: an npc whose place authors
 ## nothing still has to hold themselves some particular way, or a panel prints nothing.
-const DEFAULT_MANNER := "keeps their eyes on their own work"
+const DEFAULT_MANNER := "LOC_NPC_C1FBD4DC8B"
 
 ## The activity an unvoiced place gets, for the same reason.
-const DEFAULT_ACTIVITY := "standing about"
+const DEFAULT_ACTIVITY := "LOC_NPC_CD66EB8B1D"
 
 ## The opinion an unvoiced place gets. **A minor with no opinion is not a defect to paper
 ## over** — they are somebody who has not lived here long enough to have a view about it,
 ## which is what a minor npc usually is.
-const DEFAULT_OPINION := "has no opinion of you, and says so"
+const DEFAULT_OPINION := "LOC_NPC_2D553A2664"
 
 ## The body an unvoiced place gets, with its verb and consequence.
 const DEFAULT_TELL_VERB := &"nods_once"
-const DEFAULT_TELL_BODY := "nods once and goes back to what they were doing"
+const DEFAULT_TELL_BODY := "LOC_NPC_735EBAB8F2"
 const DEFAULT_TELL_CONSEQUENCE := &"neutral"
 
 ## The name an unvoiced place with no def either gets. `a passer-by` rather than an
 ## invented human: an anonymous face is the honest shape when the world authors none.
-const DEFAULT_NAME := "a passer-by"
+const DEFAULT_NAME := "LOC_NPC_079C179B55"
 
 
 ## ## The composed persona for an untracked npc standing at `location_id`, of `tier`, as
@@ -154,20 +154,20 @@ static func _name(
 	# The place's own name is the last authored resort, and it is honest: an unnamed
 	# person at the well is "someone at {place}" rather than an invented human.
 	if location_id != &"":
-		return "someone at %s" % String(location_id)
-	return DEFAULT_NAME
+		return L.t("LOC_NPC_DB8A06EFCA") % String(location_id)
+	return L.t(DEFAULT_NAME)
 
 
 static func _manner(voice: NpcPlaceVoice, ordinal: int) -> String:
 	if voice != null and voice.has_manners() and ordinal >= 0:
 		return _pick(voice.manners, ordinal)
-	return DEFAULT_MANNER
+	return L.t(DEFAULT_MANNER)
 
 
 static func _activity(voice: NpcPlaceVoice, ordinal: int) -> String:
 	if voice != null and voice.has_activities() and ordinal >= 0:
 		return _pick(voice.activities, ordinal)
-	return DEFAULT_ACTIVITY
+	return L.t(DEFAULT_ACTIVITY)
 
 
 ## ## (2) ONE OPINION, filtered by TIER — and the tier is CONTENT

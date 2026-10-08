@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"salve_silver_ointment"
-display_name = "Silver Ointment Salve"
+display_name = "LOC_ITEMS_SALVE_SILVER_OINTMENT_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_domain"

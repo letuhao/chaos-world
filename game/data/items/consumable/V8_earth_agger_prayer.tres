@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V8_earth_agger_prayer"
-display_name = "Earth Agger Prayer"
+display_name = "LOC_ITEMS_V8_EARTH_AGGER_PRAYER_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_condensation"

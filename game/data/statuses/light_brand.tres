@@ -19,7 +19,7 @@ tick_interval = 1.0
 mitigation_tags = Array[StringName]([&"affinity", &"technique", &"pill"])
 payload = {
 "mechanic": &"bleed",
-"text": "Nothing about them stays hidden. Light finds every place a body keeps covered and keeps those places open, so what lands next is never a surprise.",
+"text": "LOC_STATUSES_LIGHT_BRAND_TEXT",
 "pool": &"health",
 "share_per_pulse": 0.02,
 "modifiers": [

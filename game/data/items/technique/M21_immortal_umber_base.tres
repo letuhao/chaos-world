@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"M21_immortal_umber_base"
-display_name = "Immortal Umber Base"
+display_name = "LOC_ITEMS_M21_IMMORTAL_UMBER_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"heaven_immortal"

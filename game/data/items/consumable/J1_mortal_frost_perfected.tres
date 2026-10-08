@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"J1_mortal_frost_perfected"
-display_name = "Mortal Frost Perfected"
+display_name = "LOC_ITEMS_J1_MORTAL_FROST_PERFECTED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"great_ascension"

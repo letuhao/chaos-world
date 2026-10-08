@@ -176,7 +176,7 @@ func test_memory_renders_authored_prose_keyed_to_the_real_cause() -> void:
 		"the row NAMES the real cause id, not a description of it"
 	)
 	assert_eq(
-		String(incident.get("prose", "")),
+		L.t(String(incident.get("prose", ""))),
 		(
 			"the grey one, third month of the grey year — you walked past my gate while I "
 			+ "was burying my brother, and you did not stop"
@@ -278,7 +278,7 @@ func test_the_memory_cap_reports_what_it_dropped_rather_than_truncating_silently
 func test_a_tell_is_driven_by_the_bond_and_readable_without_a_number() -> void:
 	var stranger := NpcAliveness.tell(_player, _elder, SocialBondClass.STRANGER, &"", false)
 	assert_eq(
-		String(stranger.get("body", "")),
+		L.t(String(stranger.get("body", ""))),
 		"nods once, the way you nod at weather",
 		"a stranger is nodded off"
 	)
@@ -289,7 +289,7 @@ func test_a_tell_is_driven_by_the_bond_and_readable_without_a_number() -> void:
 	# Priority is AUTHORED, so the sworn body outranks the plain one deterministically.
 	var sworn := NpcAliveness.tell(_player, _elder, SocialBondClass.SWORN, &"", true)
 	assert_eq(
-		String(sworn.get("body", "")),
+		L.t(String(sworn.get("body", ""))),
 		"takes the cup in both hands, which he does not do for guests",
 		"a sworn bond changes the body"
 	)
@@ -380,7 +380,7 @@ func test_a_composed_opinion_comes_from_the_place_and_not_from_a_global_roll() -
 func test_the_place_narrows_its_own_view_to_a_tier_and_the_composer_respects_it() -> void:
 	var as_minor := NpcMinorComposer.compose(&"qi_dao", NpcTier.MINOR, 0, _transient)
 	assert_eq(
-		String(as_minor.opinion_prose),
+		L.t(String(as_minor.opinion_prose)),
 		"the sect counts your hours and calls the ledger a virtue",
 		"a minor standing here plausibly holds this view"
 	)

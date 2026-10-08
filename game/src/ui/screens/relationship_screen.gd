@@ -10,8 +10,8 @@ extends UiScreen
 
 const PARTNER_ROWS := 8
 const PARTNER_SCENE := "res://src/ui/panels/partner_row.tscn"
-const HEADER_TEXT := "Partners and the bonds you have earned."
-const NO_ACTOR_TEXT := "No hero bound."
+const HEADER_TEXT := "LOC_UI_SCREENS_3CBD32D2DD"
+const NO_ACTOR_TEXT := "LOC_UI_SCREENS_6E9BC19A74"
 
 var _codex: Dictionary = {}
 var _header: Label = null
@@ -57,8 +57,8 @@ func _refresh_view() -> void:
 func _render() -> void:
 	if _header == null:
 		return
-	_header.text = HEADER_TEXT if _actor != null else NO_ACTOR_TEXT
-	_footer.text = "Select a partner to see their bond."
+	_header.text = L.t(HEADER_TEXT if _actor != null else NO_ACTOR_TEXT)
+	_footer.text = L.t("LOC_UI_SCREENS_4EB0EA9C8E")
 
 
 func focus_initial() -> void:

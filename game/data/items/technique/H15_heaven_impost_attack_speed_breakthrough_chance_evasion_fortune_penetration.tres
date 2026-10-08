@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"H15_heaven_impost_attack_speed_breakthrough_chance_evasion_fortune_penetration"
-display_name = "Heaven Impost Attack speed Breakthrough chance Evasion Fortune Penetration"
+display_name = "LOC_ITEMS_H15_HEAVEN_IMPOST_ATTACK_SPEED_BREAKTHROUGH_CHANCE_EVASION_FORTUNE_PENETRATION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"dao_fruit"

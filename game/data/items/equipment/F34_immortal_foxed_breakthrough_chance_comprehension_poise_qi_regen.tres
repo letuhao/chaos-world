@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F34_immortal_foxed_breakthrough_chance_comprehension_poise_qi_regen"
-display_name = "Immortal Foxed Breakthrough chance Comprehension Poise Qi regen"
+display_name = "LOC_ITEMS_F34_IMMORTAL_FOXED_BREAKTHROUGH_CHANCE_COMPREHENSION_POISE_QI_REGEN_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"heaven_immortal"

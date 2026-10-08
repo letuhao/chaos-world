@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 tier_id = &"mortal_world"
-display_name = "Mortal World"
+display_name = "LOC_WORLD_MORTAL_WORLD_DISPLAY_NAME"
 realm_min = 1
 realm_max = 9
 law_slots = 3

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"B25_earth_carnelian_perfected_recipe"
-display_name = "Earth Carnelian Perfected Recipe"
+display_name = "LOC_RECIPES_B25_EARTH_CARNELIAN_PERFECTED_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"B25_earth_carnelian_primed", &"W8_earth_birchen_lodestone", &"petal_chrysanthemum"])
 outputs = Array[StringName]([&"B25_earth_carnelian_perfected"])

@@ -30,7 +30,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_F19_origin_warden_pool_primordial_immortal"
-display_name = "Origin Warden salvage (primordial_immortal)"
+display_name = "LOC_LOOT_F19_ORIGIN_WARDEN_PRIMORDIAL_IMMORTAL_0_DISPLAY_NAME"
 realm = &"primordial_immortal"
 rarity = &""
 rolls = 1

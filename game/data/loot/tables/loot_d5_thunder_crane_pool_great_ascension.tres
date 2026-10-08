@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d5_thunder_crane_pool_great_ascension"
-display_name = "Thunder Crane salvage (great_ascension)"
+display_name = "LOC_LOOT_D5_THUNDER_CRANE_GREAT_ASCENSION_0_DISPLAY_NAME"
 realm = &"great_ascension"
 rarity = &""
 rolls = 1

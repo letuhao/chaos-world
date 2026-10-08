@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"scroll_stone_colossus_stance"
-display_name = "Stone Colossus Stance"
+display_name = "LOC_ITEMS_SCROLL_STONE_COLOSSUS_STANCE_DISPLAY_NAME"
 category = &"technique"
 rarity = &"magic"
 realm = &"spirit_sea"

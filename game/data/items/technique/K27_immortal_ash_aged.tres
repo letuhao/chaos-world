@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"K27_immortal_ash_aged"
-display_name = "Immortal Ash Aged"
+display_name = "LOC_ITEMS_K27_IMMORTAL_ASH_AGED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"mystic_immortal"

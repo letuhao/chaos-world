@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_relic_stone_colossus_pool_nascent_soul"
-display_name = "Stone Colossus salvage (nascent_soul)"
+display_name = "LOC_LOOT_RELIC_STONE_COLOSSUS_NASCENT_SOUL_0_DISPLAY_NAME"
 realm = &"nascent_soul"
 rarity = &""
 rolls = 1

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"pact_healer_token"
-display_name = "Healer's Pact Token"
+display_name = "LOC_ITEMS_PACT_HEALER_TOKEN_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"magic"
 realm = &"spirit_sea"

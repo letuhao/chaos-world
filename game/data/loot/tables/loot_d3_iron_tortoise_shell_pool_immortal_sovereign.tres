@@ -18,7 +18,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d3_iron_tortoise_shell_pool_immortal_sovereign"
-display_name = "Iron Tortoise Lesser salvage (immortal_sovereign)"
+display_name = "LOC_LOOT_D3_IRON_TORTOISE_SHELL_IMMORTAL_SOVEREIGN_0_DISPLAY_NAME"
 realm = &"immortal_sovereign"
 rarity = &""
 rolls = 1

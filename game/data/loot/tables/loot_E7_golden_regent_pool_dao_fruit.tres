@@ -42,7 +42,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E7_golden_regent_pool_dao_fruit"
-display_name = "Golden Regent salvage (dao_fruit)"
+display_name = "LOC_LOOT_E7_GOLDEN_REGENT_DAO_FRUIT_0_DISPLAY_NAME"
 realm = &"dao_fruit"
 rarity = &""
 rolls = 1

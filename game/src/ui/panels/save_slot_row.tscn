@@ -27,9 +27,9 @@ layout_mode = 2
 [node name="LoadButton" type="Button" parent="Layout/Buttons"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Load"
+text = "LOC_UI_PANELS_DDCB77FF76"
 
 [node name="EraseButton" type="Button" parent="Layout/Buttons"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Erase"
+text = "LOC_UI_PANELS_3CEF6B7D8E"

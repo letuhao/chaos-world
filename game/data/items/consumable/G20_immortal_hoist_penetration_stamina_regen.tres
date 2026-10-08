@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G20_immortal_hoist_penetration_stamina_regen"
-display_name = "Immortal Hoist Penetration Stamina regen"
+display_name = "LOC_ITEMS_G20_IMMORTAL_HOIST_PENETRATION_STAMINA_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"true_immortal"

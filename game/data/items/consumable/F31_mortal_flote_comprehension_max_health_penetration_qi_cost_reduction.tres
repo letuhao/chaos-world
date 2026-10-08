@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F31_mortal_flote_comprehension_max_health_penetration_qi_cost_reduction"
-display_name = "Mortal Flote Comprehension Max health Penetration Qi cost reduction"
+display_name = "LOC_ITEMS_F31_MORTAL_FLOTE_COMPREHENSION_MAX_HEALTH_PENETRATION_QI_COST_REDUCTION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"spirit_transformation"

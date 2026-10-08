@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"votive_divine_relic"
-display_name = "Votive of the Divine"
+display_name = "LOC_ITEMS_VOTIVE_DIVINE_RELIC_DISPLAY_NAME"
 category = &"quest"
 rarity = &"legendary"
 realm = &"primordial_origin"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"D5_mortal_physique_bulk"
-display_name = "Mortal Physique Bulk"
+display_name = "LOC_ITEMS_D5_MORTAL_PHYSIQUE_BULK_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"body_integration"

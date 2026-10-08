@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"A30_immortal_censerhouse_orris"
-display_name = "Immortal Censerhouse Orris"
+display_name = "LOC_ITEMS_A30_IMMORTAL_CENSERHOUSE_ORRIS_DISPLAY_NAME"
 category = &"quest"
 rarity = &"legendary"
 realm = &"great_luo"

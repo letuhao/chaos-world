@@ -50,15 +50,21 @@ func _write_mod(dir_name: String, mod_id: String, config: Array) -> String:
 	var dir_path := _root.path_join(dir_name)
 	DirAccess.make_dir_recursive_absolute(dir_path)
 	var manifest := FileAccess.open(dir_path.path_join("mod.json"), FileAccess.WRITE)
-	manifest.store_string(
-		JSON.stringify(
-			{
-				"id": mod_id,
-				"version": "1.0",
-				"priority": 0,
-				"requires_api": 1,
-				"config": config,
-			}
+	(
+		manifest
+		. store_string(
+			(
+				JSON
+				. stringify(
+					{
+						"id": mod_id,
+						"version": "1.0",
+						"priority": 0,
+						"requires_api": 1,
+						"config": config,
+					}
+				)
+			)
 		)
 	)
 	manifest.close()
@@ -70,8 +76,21 @@ func test_config_defaults_are_loaded_at_boot() -> void:
 		"cfg",
 		"w7_cfg",
 		[
-			{"key": "difficulty", "label": "Difficulty", "type": "choice", "default": "normal", "choices": ["easy", "normal", "hard"]},
-			{"key": "max_enemies", "label": "Max Enemies", "type": "int", "default": 10, "min": 1, "max": 100},
+			{
+				"key": "difficulty",
+				"label": "Difficulty",
+				"type": "choice",
+				"default": "normal",
+				"choices": ["easy", "normal", "hard"]
+			},
+			{
+				"key": "max_enemies",
+				"label": "Max Enemies",
+				"type": "int",
+				"default": 10,
+				"min": 1,
+				"max": 100
+			},
 			{"key": "enable_feature", "label": "Enable Feature", "type": "bool", "default": true},
 		]
 	)
@@ -85,9 +104,7 @@ func test_config_defaults_are_loaded_at_boot() -> void:
 
 func test_set_config_persists_to_disk() -> void:
 	_write_mod(
-		"cfg",
-		"w7_cfg",
-		[{"key": "name", "label": "Name", "type": "string", "default": "Player"}]
+		"cfg", "w7_cfg", [{"key": "name", "label": "Name", "type": "string", "default": "Player"}]
 	)
 	var out := ModsApi.load_order([_root])
 	var ctx: RegistrationContext = out["contexts"][0]
@@ -127,9 +144,7 @@ func test_set_config_validates_range() -> void:
 
 func test_set_config_unknown_key_refused() -> void:
 	_write_mod(
-		"cfg",
-		"w7_cfg",
-		[{"key": "name", "label": "Name", "type": "string", "default": "Player"}]
+		"cfg", "w7_cfg", [{"key": "name", "label": "Name", "type": "string", "default": "Player"}]
 	)
 	var out := ModsApi.load_order([_root])
 	var ctx: RegistrationContext = out["contexts"][0]
@@ -140,9 +155,7 @@ func test_set_config_unknown_key_refused() -> void:
 
 func test_get_config_unknown_key_returns_null() -> void:
 	_write_mod(
-		"cfg",
-		"w7_cfg",
-		[{"key": "name", "label": "Name", "type": "string", "default": "Player"}]
+		"cfg", "w7_cfg", [{"key": "name", "label": "Name", "type": "string", "default": "Player"}]
 	)
 	var out := ModsApi.load_order([_root])
 	var ctx: RegistrationContext = out["contexts"][0]
@@ -153,7 +166,15 @@ func test_choice_type_validates_against_choices() -> void:
 	_write_mod(
 		"cfg",
 		"w7_cfg",
-		[{"key": "color", "label": "Color", "type": "choice", "default": "red", "choices": ["red", "green", "blue"]}]
+		[
+			{
+				"key": "color",
+				"label": "Color",
+				"type": "choice",
+				"default": "red",
+				"choices": ["red", "green", "blue"]
+			}
+		]
 	)
 	var out := ModsApi.load_order([_root])
 	var ctx: RegistrationContext = out["contexts"][0]
@@ -168,7 +189,16 @@ func test_float_type_accepts_int_and_float() -> void:
 	_write_mod(
 		"cfg",
 		"w7_cfg",
-		[{"key": "multiplier", "label": "Multiplier", "type": "float", "default": 1.0, "min": 0.1, "max": 10.0}]
+		[
+			{
+				"key": "multiplier",
+				"label": "Multiplier",
+				"type": "float",
+				"default": 1.0,
+				"min": 0.1,
+				"max": 10.0
+			}
+		]
 	)
 	var out := ModsApi.load_order([_root])
 	var ctx: RegistrationContext = out["contexts"][0]
@@ -180,9 +210,7 @@ func test_float_type_accepts_int_and_float() -> void:
 
 func test_config_file_is_valid_json() -> void:
 	var dir_path := _write_mod(
-		"cfg",
-		"w7_cfg",
-		[{"key": "name", "label": "Name", "type": "string", "default": "Player"}]
+		"cfg", "w7_cfg", [{"key": "name", "label": "Name", "type": "string", "default": "Player"}]
 	)
 	# Write invalid JSON to the config file
 	var config_dir := dir_path.path_join("..").path_join("w7_cfg")

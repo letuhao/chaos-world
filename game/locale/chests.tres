@@ -1,0 +1,7 @@
+[gd_resource type="Translation" format=3]
+
+[resource]
+locale = "en"
+messages = {
+"LOC_CHESTS_FIELD_CAMP_SUPPLIES_DISPLAY_NAME": "A Camp Chest",
+}

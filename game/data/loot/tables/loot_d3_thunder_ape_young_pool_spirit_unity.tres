@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d3_thunder_ape_young_pool_spirit_unity"
-display_name = "Thunder Ape Lesser salvage (spirit_unity)"
+display_name = "LOC_LOOT_D3_THUNDER_APE_YOUNG_SPIRIT_UNITY_0_DISPLAY_NAME"
 realm = &"spirit_unity"
 rarity = &""
 rolls = 1

@@ -48,13 +48,11 @@ const OFFICE_SCENE := "res://src/ui/panels/nation_office_row.tscn"
 const CLAIM_SCENE := "res://src/ui/panels/nation_territory_row.tscn"
 const STANCE_SCENE := "res://src/ui/panels/nation_stance_row.tscn"
 const STANDOFF_SCENE := "res://src/ui/panels/nation_standoff_row.tscn"
-const HEADER_TEXT := "The polity whose law you live under, and who holds its seats."
-const NO_ACTOR_TEXT := "No hero bound."
-const FOUNDED_PREFIX := "Under"
-const UNFOUNDED_TEXT := "You live under no nation."
-const FOOTER_TEXT := (
-	"Read-only: a claim, a war and a prize are declared elsewhere. An unfilled seat" + " is a seat."
-)
+const HEADER_TEXT := "LOC_UI_SCREENS_87467FEC27"
+const NO_ACTOR_TEXT := "LOC_UI_SCREENS_6E9BC19A74"
+const FOUNDED_PREFIX := "LOC_UI_SCREENS_2A268B89B8"
+const UNFOUNDED_TEXT := "LOC_UI_SCREENS_A06C2C578E"
+const FOOTER_TEXT := "LOC_UI_SCREENS_1842DA92B8" + "LOC_UI_SCREENS_B02FEDD02F"
 
 var _board: Dictionary = {}
 var _header: Label = null
@@ -165,11 +163,11 @@ func _render() -> void:
 	if _header == null:
 		return
 	if _actor == null:
-		_header.text = NO_ACTOR_TEXT
+		_header.text = L.t(NO_ACTOR_TEXT)
 		_footer.text = ""
 		return
-	_header.text = HEADER_TEXT if bool(_board.get("founded", false)) else UNFOUNDED_TEXT
-	_footer.text = FOOTER_TEXT
+	_header.text = L.t(HEADER_TEXT if bool(_board.get("founded", false)) else UNFOUNDED_TEXT)
+	_footer.text = L.t(FOOTER_TEXT)
 
 
 # --- ScreenStack hooks ------------------------------------------------------

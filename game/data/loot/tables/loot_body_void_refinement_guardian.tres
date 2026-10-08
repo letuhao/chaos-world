@@ -234,7 +234,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_body_void_refinement_guardian"
-display_name = "Organ Tempering Guardian"
+display_name = "LOC_LOOT_BODY_VOID_REFINEMENT_GUARDIAN_CORE_0_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

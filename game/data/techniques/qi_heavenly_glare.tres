@@ -5,8 +5,8 @@
 script = ExtResource("1_def")
 id = &"qi_heavenly_glare"
 delivered_by = &"sigil_divine_inception"
-display_name = "Heavenly Glare"
-description = "Every particle of the technique is light, with no raw share to soften it. The highest ceiling in the tree and the steepest qi bill that goes with it."
+display_name = "LOC_TECHNIQUES_QI_HEAVENLY_GLARE_DISPLAY_NAME"
+description = "LOC_TECHNIQUES_QI_HEAVENLY_GLARE_DESCRIPTION"
 tags = Array[StringName]([&"technique", &"light", &"pierce"])
 grade = &"divine"
 rarity = &"legendary"

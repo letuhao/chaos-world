@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"bow_yew_wood"
-display_name = "Yew Wood"
+display_name = "LOC_ITEMS_BOW_YEW_WOOD_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"foundation"

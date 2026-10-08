@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F41_spirit_germinal_cooldown_reduction_dao_heart_qi_absorption"
-display_name = "Spirit Germinal Cooldown reduction Dao heart Qi absorption"
+display_name = "LOC_ITEMS_F41_SPIRIT_GERMINAL_COOLDOWN_REDUCTION_DAO_HEART_QI_ABSORPTION_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"magic"
 realm = &"spirit_palace"

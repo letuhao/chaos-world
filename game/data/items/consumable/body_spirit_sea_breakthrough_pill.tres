@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"body_spirit_sea_breakthrough_pill"
-display_name = "Gold Body Tempering Pill"
+display_name = "LOC_ITEMS_BODY_SPIRIT_SEA_BREAKTHROUGH_PILL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_sea"
@@ -16,4 +16,4 @@ roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:body_spirit_sea_pill_recipe", &"boss:E4_sea_tide_warden", &"boss:body_spirit_sea_guardian"])
-description = "Consumed by the Body Cultivation attempt entering Gold Body; no equipment modifier."
+description = "LOC_ITEMS_BODY_SPIRIT_SEA_BREAKTHROUGH_PILL_DESCRIPTION"

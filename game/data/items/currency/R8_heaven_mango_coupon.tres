@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"R8_heaven_mango_coupon"
-display_name = "Heaven Mango Coupon"
+display_name = "LOC_ITEMS_R8_HEAVEN_MANGO_COUPON_DISPLAY_NAME"
 category = &"currency"
 rarity = &"rare"
 realm = &"heaven_immortal"

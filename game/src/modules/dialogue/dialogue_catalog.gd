@@ -107,14 +107,18 @@ func _absorb(def: DialogueDef, path: String) -> void:
 	_by_id[key] = def
 	if not def.has_node(def.entry_node):
 		_problems.append(
-			("%s: entry_node '%s' is not one of this conversation's nodes" % [path, key])
-			% String(def.entry_node)
+			(
+				("%s: entry_node '%s' is not one of this conversation's nodes" % [path, key])
+				% String(def.entry_node)
+			)
 		)
 	var npc_key := String(def.npc_id)
 	if _by_npc.has(npc_key):
 		_problems.append(
-			("%s: npc '%s' already has a conversation ('%s')"
-			% [path, npc_key, _by_npc[npc_key].dialog_id])
+			(
+				"%s: npc '%s' already has a conversation ('%s')"
+				% [path, npc_key, _by_npc[npc_key].dialog_id]
+			)
 		)
 		return
 	_by_npc[npc_key] = def

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F4_earth_curtilage_penetration_breakthrough_chance_fortune_aptitude"
-display_name = "Earth Curtilage Penetration Breakthrough Chance Fortune Aptitude"
+display_name = "LOC_ITEMS_F4_EARTH_CURTILAGE_PENETRATION_BREAKTHROUGH_CHANCE_FORTUNE_APTITUDE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_sea"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"P7_immortal_bluegill_base"
-display_name = "Immortal Bluegill Base"
+display_name = "LOC_ITEMS_P7_IMMORTAL_BLUEGILL_BASE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"immortal_sovereign"

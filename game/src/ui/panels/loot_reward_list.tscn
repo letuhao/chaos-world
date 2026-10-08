@@ -16,12 +16,12 @@ script = ExtResource("1")
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "Reward - 0 drop(s), 0 waiting"
+text = "LOC_UI_PANELS_ACA0285D14"
 
 [node name="TakeAllButton" type="Button" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Take all"
+text = "LOC_UI_PANELS_D3B3B1B348"
 
 [node name="RewardMessage" type="Label" parent="."]
 unique_name_in_owner = true

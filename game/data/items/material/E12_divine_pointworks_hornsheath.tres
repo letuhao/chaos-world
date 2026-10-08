@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E12_divine_pointworks_hornsheath"
-display_name = "Divine Pointworks Hornsheath"
+display_name = "LOC_ITEMS_E12_DIVINE_POINTWORKS_HORNSHEATH_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"transcendent"

@@ -1,0 +1,9 @@
+[gd_resource type="Translation" format=3]
+
+[resource]
+locale = "en"
+messages = {
+"LOC_CORE_86149B21FC": "status is null",
+"LOC_CORE_8B8072C554": "status id is empty",
+"LOC_CORE_A5BD955D5A": "No ascent begun",
+}

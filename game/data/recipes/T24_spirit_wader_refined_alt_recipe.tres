@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"T24_spirit_wader_refined_alt_recipe"
-display_name = "Spirit Wader Refined (Alt) Recipe"
+display_name = "LOC_RECIPES_T24_SPIRIT_WADER_REFINED_ALT_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"T24_spirit_wader_base", &"talisman_mist_herb", &"body_spirit_unity_tempering_herb"])
 outputs = Array[StringName]([&"T24_spirit_wader_refined"])

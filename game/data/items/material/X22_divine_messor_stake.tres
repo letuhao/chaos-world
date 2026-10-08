@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"X22_divine_messor_stake"
-display_name = "Divine Messor Stake"
+display_name = "LOC_ITEMS_X22_DIVINE_MESSOR_STAKE_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"dao_ancestor"

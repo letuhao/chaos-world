@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 id = &"du_mai"
-display_name = "Du Mai"
+display_name = "LOC_MERIDIANS_DU_MAI_DISPLAY_NAME"
 type = &"extraordinary"
 tier = 9
 capacity_bonus = 0.05

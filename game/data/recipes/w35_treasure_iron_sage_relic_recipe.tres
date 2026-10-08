@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"w35_treasure_iron_sage_relic_recipe"
-display_name = "Treasure Iron Sage Relic Recipe"
+display_name = "LOC_RECIPES_W35_TREASURE_IRON_SAGE_RELIC_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"jade_violet", &"gemstone_tourmaline"])
 outputs = Array[StringName]([&"treasure_iron_sage_relic"])

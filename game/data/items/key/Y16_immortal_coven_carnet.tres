@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Y16_immortal_coven_carnet"
-display_name = "Immortal Coven Carnet"
+display_name = "LOC_ITEMS_Y16_IMMORTAL_COVEN_CARNET_DISPLAY_NAME"
 category = &"key"
 rarity = &"legendary"
 realm = &"mystic_immortal"

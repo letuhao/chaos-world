@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"seal_iron_spirit_guard_recipe"
-display_name = "Seal Iron Spirit Guard Recipe"
+display_name = "LOC_RECIPES_SEAL_IRON_SPIRIT_GUARD_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"seal_iron_ore", &"seal_goldthread_herb"])
 outputs = Array[StringName]([&"seal_iron_spirit_guard"])

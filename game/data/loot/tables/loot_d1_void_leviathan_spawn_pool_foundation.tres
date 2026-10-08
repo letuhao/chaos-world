@@ -30,7 +30,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d1_void_leviathan_spawn_pool_foundation"
-display_name = "Void Leviathan Spawn Lesser salvage (foundation)"
+display_name = "LOC_LOOT_D1_VOID_LEVIATHAN_SPAWN_FOUNDATION_0_DISPLAY_NAME"
 realm = &"foundation"
 rarity = &""
 rolls = 1

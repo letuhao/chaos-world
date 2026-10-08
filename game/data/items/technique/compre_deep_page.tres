@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"compre_deep_page"
-display_name = "Deep Page Manual"
+display_name = "LOC_ITEMS_COMPRE_DEEP_PAGE_DISPLAY_NAME"
 category = &"technique"
 rarity = &"rare"
 realm = &"spirit_ascension"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"regalia_storm_sceptre"
-display_name = "Storm Sovereign Sceptre"
+display_name = "LOC_ITEMS_REGALIA_STORM_SCEPTRE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"great_luo"

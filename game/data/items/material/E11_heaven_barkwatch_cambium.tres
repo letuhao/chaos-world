@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E11_heaven_barkwatch_cambium"
-display_name = "Heaven Barkwatch Cambium"
+display_name = "LOC_ITEMS_E11_HEAVEN_BARKWATCH_CAMBIUM_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"dao_fruit"

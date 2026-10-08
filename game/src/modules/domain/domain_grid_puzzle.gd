@@ -192,15 +192,19 @@ static func step(
 	if not gate.is_empty():
 		return gate
 	if not DIRECTIONS.has(direction):
-		return _answer(false, ERR_UNKNOWN_DIRECTION, _merged(about, {"direction": String(direction)}))
+		return _answer(
+			false, ERR_UNKNOWN_DIRECTION, _merged(about, {"direction": String(direction)})
+		)
 	var size := _grid_size(fixture)
 	var missing := _grid_problem(fixture, size)
 	if not missing.is_empty():
 		# Named, not swallowed: a board that cannot be played is an AUTHORING error, and
 		# the detail is what lets the author fix it without reading this file.
 		push_error(
-			"DomainGridPuzzle: fixture '%s' authors an unplayable board — %s"
-			% [String(fixture.get("fixture_id", "")), String(missing.get("detail", ""))]
+			(
+				"DomainGridPuzzle: fixture '%s' authors an unplayable board — %s"
+				% [String(fixture.get("fixture_id", "")), String(missing.get("detail", ""))]
+			)
 		)
 		return _answer(false, String(missing["reason"]), _merged(about, missing))
 	var row := DomainFixtures.state_of(actor, room_id, fixture_id)
@@ -253,7 +257,9 @@ static func view(actor: Actor, room_id: StringName, fixture_id: StringName) -> D
 	if solved:
 		placed["reason"] = ERR_ALREADY_SOLVED
 		placed["ok"] = false
-	return _answer(bool(placed.get("ok", true)), String(placed.get("reason", "")), _merged(about, placed))
+	return _answer(
+		bool(placed.get("ok", true)), String(placed.get("reason", "")), _merged(about, placed)
+	)
 
 
 # ── the two gates ─────────────────────────────────────────────────────────────
@@ -290,8 +296,11 @@ static func _grid_problem(fixture: Dictionary, size: Vector2i) -> Dictionary:
 			"reason": ERR_GRID_TOO_LARGE,
 			"tiles": tiles,
 			"cap": MAX_GRID_TILES,
-			"detail": "the authored footprint is %d tiles against a %d tile ceiling"
-			% [tiles, MAX_GRID_TILES],
+			"detail":
+			(
+				"the authored footprint is %d tiles against a %d tile ceiling"
+				% [tiles, MAX_GRID_TILES]
+			),
 		}
 	if cells_of(fixture.get("grid_targets", [])).is_empty():
 		return {"reason": ERR_NO_GRID, "detail": "the board authors no target"}
@@ -379,7 +388,9 @@ static func _resolve_move(board: Dictionary, direction: StringName) -> Dictionar
 
 ## A refusal carries the two tiles that produced it, because "the push failed" is a
 ## question a player answers by looking at where they stand and where the piece is.
-static func _refused(reason: String, here: Array, into: Array, delta: Vector2i, board: Dictionary) -> Dictionary:
+static func _refused(
+	reason: String, here: Array, into: Array, delta: Vector2i, board: Dictionary
+) -> Dictionary:
 	return {
 		"ok": false,
 		"reason": reason,

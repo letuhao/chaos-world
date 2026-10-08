@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"curr_dragon_bond"
-display_name = "Dragon Bond Token"
+display_name = "LOC_ITEMS_CURR_DRAGON_BOND_DISPLAY_NAME"
 category = &"currency"
 rarity = &"rare"
 realm = &"heaven_immortal"

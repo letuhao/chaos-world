@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"puppet_ash_effigy_core"
-display_name = "Effigy Core"
+display_name = "LOC_ITEMS_PUPPET_ASH_EFFIGY_CORE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"dao_fruit"

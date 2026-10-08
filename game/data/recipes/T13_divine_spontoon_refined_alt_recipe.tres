@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"T13_divine_spontoon_refined_alt_recipe"
-display_name = "Divine Spontoon Refined (Alt) Recipe"
+display_name = "LOC_RECIPES_T13_DIVINE_SPONTOON_REFINED_ALT_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"T13_divine_spontoon_base", &"divine_voidlotus", &"elemental_transcendent_essence"])
 outputs = Array[StringName]([&"T13_divine_spontoon_refined"])

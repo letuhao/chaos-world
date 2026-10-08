@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F4_earth_curtilage_qi_absorption_spirit_attack_speed_will"
-display_name = "Earth Curtilage Qi Absorption Spirit Attack Speed Will"
+display_name = "LOC_ITEMS_F4_EARTH_CURTILAGE_QI_ABSORPTION_SPIRIT_ATTACK_SPEED_WILL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_severing"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B42_earth_faubourg_comprehension_agility"
-display_name = "Earth Faubourg Comprehension Agility"
+display_name = "LOC_ITEMS_B42_EARTH_FAUBOURG_COMPREHENSION_AGILITY_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_manifestation"

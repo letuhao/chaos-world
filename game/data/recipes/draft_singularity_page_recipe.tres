@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"draft_singularity_page_recipe"
-display_name = "Singularity Draft Recipe"
+display_name = "LOC_RECIPES_DRAFT_SINGULARITY_PAGE_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"tablet_divine", &"shard_supernova"])
 outputs = Array[StringName]([&"draft_singularity_page"])

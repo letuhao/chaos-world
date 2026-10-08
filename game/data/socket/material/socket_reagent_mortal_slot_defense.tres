@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"socket_reagent_mortal_slot_defense"
-display_name = "Mortar Defensive Socket Rune"
+display_name = "LOC_SOCKET_SOCKET_REAGENT_MORTAL_SLOT_DEFENSE_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"spirit_transformation"
@@ -18,4 +18,4 @@ stackable = true
 grade = &"mortal"
 sources = Array[StringName]([&"gather", &"domain:elemental_mortal_domain"])
 tags = Array[StringName]([&"socket_reagent", &"slot_creation", &"socket_kind:defense"])
-description = "Consumed to open a defensive socket slot on an owned item."
+description = "LOC_SOCKET_SOCKET_REAGENT_MORTAL_SLOT_DEFENSE_DESCRIPTION"

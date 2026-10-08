@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"A29_divine_shirecourt_indictment"
-display_name = "Divine Shirecourt Indictment"
+display_name = "LOC_ITEMS_A29_DIVINE_SHIRECOURT_INDICTMENT_DISPLAY_NAME"
 category = &"quest"
 rarity = &"legendary"
 realm = &"transcendent"

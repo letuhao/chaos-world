@@ -186,7 +186,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_amulet_storm_phoenix"
-display_name = "Storm Phoenix"
+display_name = "LOC_LOOT_AMULET_STORM_PHOENIX_POOL_DAO_ANCESTOR_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

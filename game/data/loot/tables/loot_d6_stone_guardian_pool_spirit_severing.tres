@@ -30,7 +30,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d6_stone_guardian_pool_spirit_severing"
-display_name = "Stone Guardian Totem Lesser salvage (spirit_severing)"
+display_name = "LOC_LOOT_D6_STONE_GUARDIAN_SPIRIT_SEVERING_0_DISPLAY_NAME"
 realm = &"spirit_severing"
 rarity = &""
 rolls = 1

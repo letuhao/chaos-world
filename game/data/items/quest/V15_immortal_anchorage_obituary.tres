@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V15_immortal_anchorage_obituary"
-display_name = "Immortal Anchorage Obituary"
+display_name = "LOC_ITEMS_V15_IMMORTAL_ANCHORAGE_OBITUARY_DISPLAY_NAME"
 category = &"quest"
 rarity = &"legendary"
 realm = &"great_luo"

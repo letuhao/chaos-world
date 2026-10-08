@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"H11_immortal_staminafeast"
-display_name = "Immortal Stamina Feast"
+display_name = "LOC_ITEMS_H11_IMMORTAL_STAMINAFEAST_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"heaven_immortal"

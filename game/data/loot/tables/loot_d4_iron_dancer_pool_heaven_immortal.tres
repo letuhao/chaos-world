@@ -42,7 +42,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d4_iron_dancer_pool_heaven_immortal"
-display_name = "Iron Dancer Lesser salvage (heaven_immortal)"
+display_name = "LOC_LOOT_D4_IRON_DANCER_HEAVEN_IMMORTAL_0_DISPLAY_NAME"
 realm = &"heaven_immortal"
 rarity = &""
 rolls = 1

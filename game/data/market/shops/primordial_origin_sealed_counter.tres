@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_shop")
 shop_id = &"primordial_origin_sealed_counter"
-display_name = "Primordial Origin Sealed Counter"
+display_name = "LOC_MARKET_PRIMORDIAL_ORIGIN_SEALED_COUNTER_DISPLAY_NAME"
 kind = &"stall"
 stock = Array[Dictionary]([{"def_id": &"curr_primordial_mark", "quantity": 2}, {"def_id": &"trinket_star_curio", "quantity": 1}, {"def_id": &"writ_bronze_chip", "quantity": 4}])
 buys = []

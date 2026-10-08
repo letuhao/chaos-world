@@ -30,7 +30,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_F13_earth_warden_pool_spirit_manifestation"
-display_name = "Earth Warden salvage (spirit_manifestation)"
+display_name = "LOC_LOOT_F13_EARTH_WARDEN_SPIRIT_MANIFESTATION_0_DISPLAY_NAME"
 realm = &"spirit_manifestation"
 rarity = &""
 rolls = 1

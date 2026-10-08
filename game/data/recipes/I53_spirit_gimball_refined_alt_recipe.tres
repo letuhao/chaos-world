@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"I53_spirit_gimball_refined_alt_recipe"
-display_name = "Spirit Gimball Refined (Alt) Recipe"
+display_name = "LOC_RECIPES_I53_SPIRIT_GIMBALL_REFINED_ALT_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"I53_spirit_gimball_base", &"tablet_iron", &"scepter_moon_essence"])
 outputs = Array[StringName]([&"I53_spirit_gimball_refined"])

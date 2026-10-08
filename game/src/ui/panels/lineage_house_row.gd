@@ -163,11 +163,13 @@ func _render() -> void:
 ## Every line this row prints, computed once so `summary()` and `_render()` cannot
 ## disagree about what the row says.
 func _compute_lines() -> void:
-	_name_line = _name_line_of()
-	_position_line = _position_text()
-	_standing_line = _standing_text()
-	_terms_line = _terms_text()
-	_meta = _meta_text()
+	_name_line = L.t(_name_line_of())
+	# Both lines are what `summary()` publishes, so they resolve at the assignment: the labels
+	# resolve too, and a summary that disagreed with its label is the bug this closes.
+	_position_line = L.t(_position_text())
+	_standing_line = L.t(_standing_text())
+	_terms_line = L.t(_terms_text())
+	_meta = L.t(_meta_text())
 
 
 func _name_line_of() -> String:

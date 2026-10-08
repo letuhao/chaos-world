@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F37_spirit_fuchsite_loot_bonus_qi_absorption_will"
-display_name = "Spirit Fuchsite Loot bonus Qi absorption Will"
+display_name = "LOC_ITEMS_F37_SPIRIT_FUCHSITE_LOOT_BONUS_QI_ABSORPTION_WILL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_ascension"

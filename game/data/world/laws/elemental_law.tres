@@ -5,9 +5,9 @@
 [resource]
 script = ExtResource("1")
 law_id = &"elemental_law"
-display_name = "Elemental Law"
+display_name = "LOC_WORLD_ELEMENTAL_LAW_DISPLAY_NAME"
 group = &"elemental"
 value_min = 0.0
 value_max = 1.0
-description = "Governs dominant elements, elemental balance, and seasonal cycles."
+description = "LOC_WORLD_ELEMENTAL_LAW_DESCRIPTION"
 tier_ids = Array[StringName]([&"mortal_world", &"spirit_world", &"immortal_world", &"transcendent_world"])

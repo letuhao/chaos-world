@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F40_earth_gaslight_crit_chance_health_regen_will"
-display_name = "Earth Gaslight Crit chance Health regen Will"
+display_name = "LOC_ITEMS_F40_EARTH_GASLIGHT_CRIT_CHANCE_HEALTH_REGEN_WILL_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"spirit_severing"

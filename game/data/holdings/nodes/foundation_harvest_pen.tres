@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_node")
 node_id = &"foundation_harvest_pen"
-display_name = "Harvest Pen"
+display_name = "LOC_HOLDINGS_FOUNDATION_HARVEST_PEN_DISPLAY_NAME"
 kind = &"beast"
 realm = &"foundation"
 yield_per_period = 4

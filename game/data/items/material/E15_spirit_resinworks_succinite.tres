@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E15_spirit_resinworks_succinite"
-display_name = "Spirit Resinworks Succinite"
+display_name = "LOC_ITEMS_E15_SPIRIT_RESINWORKS_SUCCINITE_DISPLAY_NAME"
 category = &"material"
 rarity = &"magic"
 realm = &"spirit_sea"

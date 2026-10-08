@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F53_divine_hayward_fortune_insight_gain_stamina_regen"
-display_name = "Divine Hayward Fortune Insight gain Stamina regen"
+display_name = "LOC_ITEMS_F53_DIVINE_HAYWARD_FORTUNE_INSIGHT_GAIN_STAMINA_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_ancestor"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 id = &"liver"
-display_name = "Liver"
+display_name = "LOC_MERIDIANS_LIVER_DISPLAY_NAME"
 type = &"primary"
 tier = 6
 capacity_bonus = 0.05

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"K23_heaven_rune_refined"
-display_name = "Heaven Rune Refined"
+display_name = "LOC_ITEMS_K23_HEAVEN_RUNE_REFINED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"true_immortal"

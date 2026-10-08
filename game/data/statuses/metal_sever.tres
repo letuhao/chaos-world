@@ -19,7 +19,7 @@ tick_interval = 1.0
 mitigation_tags = Array[StringName]([&"affinity", &"technique", &"pill"])
 payload = {
 "mechanic": &"bleed",
-"text": "The cut will not close. Wounded, the body's own damage reduction is stripped away while the bleeding runs.",
+"text": "LOC_STATUSES_METAL_SEVER_TEXT",
 "pool": &"health",
 "share_per_pulse": 0.03,
 "modifiers": [{"stat": &"damage_reduction", "op": &"flat", "value": -0.08}],

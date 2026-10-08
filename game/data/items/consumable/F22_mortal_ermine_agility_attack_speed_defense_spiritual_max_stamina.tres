@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F22_mortal_ermine_agility_attack_speed_defense_spiritual_max_stamina"
-display_name = "Mortal Ermine Agility Attack speed Defense spiritual Max stamina"
+display_name = "LOC_ITEMS_F22_MORTAL_ERMINE_AGILITY_ATTACK_SPEED_DEFENSE_SPIRITUAL_MAX_STAMINA_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"tribulation"

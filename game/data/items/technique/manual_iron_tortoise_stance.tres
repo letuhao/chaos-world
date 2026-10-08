@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"manual_iron_tortoise_stance"
-display_name = "Iron Tortoise Stance"
+display_name = "LOC_ITEMS_MANUAL_IRON_TORTOISE_STANCE_DISPLAY_NAME"
 category = &"technique"
 rarity = &"magic"
 realm = &"spirit_severing"

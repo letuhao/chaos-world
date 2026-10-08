@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"amulet_storm_phoenix_feather_recipe"
-display_name = "Storm Phoenix Feather Amulet Recipe"
+display_name = "LOC_RECIPES_AMULET_STORM_PHOENIX_FEATHER_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"crystal_ruby", &"sap_pitch"])
 outputs = Array[StringName]([&"amulet_storm_phoenix_feather"])

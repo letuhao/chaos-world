@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"astral_dawnstar_essence"
-display_name = "Dawnstar Essence"
+display_name = "LOC_ITEMS_ASTRAL_DAWNSTAR_ESSENCE_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"true_immortal"

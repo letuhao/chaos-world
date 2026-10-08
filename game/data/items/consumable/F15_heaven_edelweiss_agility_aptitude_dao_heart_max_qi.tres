@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F15_heaven_edelweiss_agility_aptitude_dao_heart_max_qi"
-display_name = "Heaven Edelweiss Agility Aptitude Dao heart Max qi"
+display_name = "LOC_ITEMS_F15_HEAVEN_EDELWEISS_AGILITY_APTITUDE_DAO_HEART_MAX_QI_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"dao_fruit"

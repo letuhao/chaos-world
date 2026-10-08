@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"D4_earth_will_sigil_recipe"
-display_name = "Earth Will Sigil Recipe"
+display_name = "LOC_RECIPES_D4_EARTH_WILL_SIGIL_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"sigil_gale_essence", &"talisman_glow_essence"])
 outputs = Array[StringName]([&"D4_earth_will_sigil"])

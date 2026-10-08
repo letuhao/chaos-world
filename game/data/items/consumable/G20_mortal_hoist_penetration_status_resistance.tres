@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G20_mortal_hoist_penetration_status_resistance"
-display_name = "Mortal Hoist Penetration Status resistance"
+display_name = "LOC_ITEMS_G20_MORTAL_HOIST_PENETRATION_STATUS_RESISTANCE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"foundation"

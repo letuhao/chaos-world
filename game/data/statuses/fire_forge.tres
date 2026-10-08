@@ -18,7 +18,7 @@ tick_interval = 1.0
 mitigation_tags = Array[StringName]([&"affinity", &"technique", &"gear"])
 payload = {
 "mechanic": &"regrowth",
-"text": "A furnace kept lit inside. What the cultivator strikes is struck hotter.",
+"text": "LOC_STATUSES_FIRE_FORGE_TEXT",
 "modifiers": [
 {"stat": &"attack_spiritual", "op": &"percent", "value": 0.1},
 {"stat": &"crit_damage", "op": &"percent", "value": 0.2}

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"qi_immortal_sovereign_breakthrough_pill"
-display_name = "Immortal Sovereign Refinement Pill"
+display_name = "LOC_ITEMS_QI_IMMORTAL_SOVEREIGN_BREAKTHROUGH_PILL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"immortal_sovereign"
@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:qi_immortal_sovereign_pill_recipe"])
-description = "Consumed by the Qi Cultivation attempt entering Immortal Sovereign; no equipment modifier."
+description = "LOC_ITEMS_QI_IMMORTAL_SOVEREIGN_BREAKTHROUGH_PILL_DESCRIPTION"

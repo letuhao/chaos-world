@@ -147,7 +147,11 @@ static func preview(actor: Actor, instance_id: StringName) -> Dictionary:
 	if inventory != null:
 		instance = inventory.find_by_instance_id(instance_id)
 	var def := _definition_of(inventory, instance) if instance != null else null
-	var quote := TeardownYield.quote(def, instance) if def != null else {"ok": false, "material_id": "", "units": 0, "grade": ""}
+	var quote := (
+		TeardownYield.quote(def, instance)
+		if def != null
+		else {"ok": false, "material_id": "", "units": 0, "grade": ""}
+	)
 	return {
 		"ok": refusal.is_empty(),
 		"reason": refusal,
@@ -263,7 +267,10 @@ static func _attachment_refusal(actor: Actor, instance_id: StringName) -> String
 			for slot_entry in (entry as Dictionary).get("slots", []):
 				# `slots` is a fixed stored array: this reads each entry's `gem` and
 				# appends nothing, so there is no bound to take.
-				if slot_entry is Dictionary and not (slot_entry as Dictionary).get("gem", {}).is_empty():
+				if (
+					slot_entry is Dictionary
+					and not (slot_entry as Dictionary).get("gem", {}).is_empty()
+				):
 					return REASON_SOCKETED
 	var channels: Variant = state.get("channels", {})
 	if channels is Dictionary and (channels as Dictionary).has(key):

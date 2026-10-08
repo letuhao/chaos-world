@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"mind_spirit_unity_recovery_elixir"
-display_name = "Spirit Unity Clarity Elixir"
+display_name = "LOC_ITEMS_MIND_SPIRIT_UNITY_RECOVERY_ELIXIR_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_unity"
@@ -16,4 +16,4 @@ roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"elixir"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:mind_spirit_unity_recovery_recipe", &"domain:qi_spirit_domain_trial"])
-description = "Calms a clouded sea of consciousness and repairs one burned channel after a failed breakthrough."
+description = "LOC_ITEMS_MIND_SPIRIT_UNITY_RECOVERY_ELIXIR_DESCRIPTION"

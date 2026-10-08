@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B25_earth_carnelian_perfected"
-display_name = "Earth Carnelian Perfected"
+display_name = "LOC_ITEMS_B25_EARTH_CARNELIAN_PERFECTED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_ascension"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G18_immortal_gomphus_max_health_attack_spiritual"
-display_name = "Immortal Gomphus Max health Attack spiritual"
+display_name = "LOC_ITEMS_G18_IMMORTAL_GOMPHUS_MAX_HEALTH_ATTACK_SPIRITUAL_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"great_luo"

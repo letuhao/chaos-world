@@ -30,7 +30,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_puppet_iron_dancer_pool_void_refinement"
-display_name = "Iron Dancer salvage (void_refinement)"
+display_name = "LOC_LOOT_PUPPET_IRON_DANCER_VOID_REFINEMENT_0_DISPLAY_NAME"
 realm = &"void_refinement"
 rarity = &""
 rolls = 1

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"divinealt_divine_voidlotus_recipe"
-display_name = "Divine Voidlotus Alternate Recipe"
+display_name = "LOC_RECIPES_DIVINEALT_DIVINE_VOIDLOTUS_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"divine_voidlotus", &"divine_void_essence"])
 outputs = Array[StringName]([&"draught_primordial_tonic"])

@@ -8,27 +8,27 @@ script = ExtResource("2_step")
 step_id = &"terms_written"
 fact = &"sect_post_held"
 need = 1
-display_name = "Write the terms of an office whose end date is not yours"
+display_name = "LOC_QUEST_THE_TERMS_YOU_DRAFTED_DISPLAY_NAME_1"
 
 [sub_resource type="Resource" id="QuestStep_witnesses_signed"]
 script = ExtResource("2_step")
 step_id = &"witnesses_signed"
 fact = &"oaths_discharged"
 need = 3
-display_name = "Stand with three named witnesses while three terms clear"
+display_name = "LOC_QUEST_THE_TERMS_YOU_DRAFTED_DISPLAY_NAME_2"
 
 [sub_resource type="Resource" id="QuestStep_clerk_resigned"]
 script = ExtResource("2_step")
 step_id = &"clerk_resigned"
 fact = &"household_heir_registered"
 need = 1
-display_name = "Watch the register write down a successor instead of a signature"
+display_name = "LOC_QUEST_THE_TERMS_YOU_DRAFTED_DISPLAY_NAME_3"
 
 [resource]
 script = ExtResource("1_quest")
 id = &"the_terms_you_drafted"
-display_name = "The Terms You Drafted"
-description = "The order's clerks remain and you remain, because the room where you swore it is a room whose furniture outlives everyone who sat in it. You did not decide anything since. You are complying with a version of yourself written down on a day when you could not have known what it would cost. This is not an order you joined. It is an order that was written around you while you were in it."
+display_name = "LOC_QUEST_THE_TERMS_YOU_DRAFTED_DISPLAY_NAME_4"
+description = "LOC_QUEST_THE_TERMS_YOU_DRAFTED_DESCRIPTION"
 kind = &"authored"
 tier = 3
 requirement = {"verb": &"has_destiny", "id": &"the_one_who_stayed"}

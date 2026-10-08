@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G13_immortal_glair_qi_absorption_spirit"
-display_name = "Immortal Glair Qi absorption Spirit"
+display_name = "LOC_ITEMS_G13_IMMORTAL_GLAIR_QI_ABSORPTION_SPIRIT_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"golden_immortal"

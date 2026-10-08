@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G9_heaven_aggregate"
-display_name = "Heaven Aggregate"
+display_name = "LOC_ITEMS_G9_HEAVEN_AGGREGATE_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"true_immortal"

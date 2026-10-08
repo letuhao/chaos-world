@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F37_earth_frolic_health_regen_qi_absorption_will"
-display_name = "Earth Frolic Health regen Qi absorption Will"
+display_name = "LOC_ITEMS_F37_EARTH_FROLIC_HEALTH_REGEN_QI_ABSORPTION_WILL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_sea"

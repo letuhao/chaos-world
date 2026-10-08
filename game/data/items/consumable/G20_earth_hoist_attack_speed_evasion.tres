@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G20_earth_hoist_attack_speed_evasion"
-display_name = "Earth Hoist Attack speed Evasion"
+display_name = "LOC_ITEMS_G20_EARTH_HOIST_ATTACK_SPEED_EVASION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_ascension"

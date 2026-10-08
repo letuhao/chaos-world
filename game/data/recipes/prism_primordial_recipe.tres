@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"prism_primordial_recipe"
-display_name = "Primordial Prism Recipe"
+display_name = "LOC_RECIPES_PRISM_PRIMORDIAL_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"jade_divine", &"filament_chaosweave"])
 outputs = Array[StringName]([&"prism_primordial"])

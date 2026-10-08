@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"helm_transcendent_helm"
-display_name = "Transcendent Helm"
+display_name = "LOC_ITEMS_HELM_TRANSCENDENT_HELM_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"transcendent"

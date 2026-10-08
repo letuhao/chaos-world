@@ -30,7 +30,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d1_iron_titan_slag_pool_tribulation"
-display_name = "Iron Titan Slag Lesser salvage (tribulation)"
+display_name = "LOC_LOOT_D1_IRON_TITAN_SLAG_TRIBULATION_0_DISPLAY_NAME"
 realm = &"tribulation"
 rarity = &""
 rolls = 1

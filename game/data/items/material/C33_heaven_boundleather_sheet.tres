@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C33_heaven_boundleather_sheet"
-display_name = "Heaven Boundleather Sheet"
+display_name = "LOC_ITEMS_C33_HEAVEN_BOUNDLEATHER_SHEET_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"golden_immortal"

@@ -100,9 +100,7 @@ static func trigger_encounter(
 ##   - `fate_id`: StringName — the fate that was earned (empty on refusal)
 ##   - `prophecy_id`: StringName — the prophecy earned (empty on refusal)
 static func resolve_encounter(
-	actor: Actor,
-	encounter_id: StringName,
-	fate_index: int
+	actor: Actor, encounter_id: StringName, fate_index: int
 ) -> Dictionary:
 	if actor == null:
 		return _refuse("no_actor")
@@ -177,29 +175,39 @@ static func summary(actor: Actor) -> Dictionary:
 		var def := EncounterCatalog.instance().prophecy_definition(prophecy_id)
 		if def == null:
 			continue
-		out["prophecies"].append({
-			"id": String(def.id),
-			"display_name": String(def.display_name),
-			"description": String(def.description),
-			"hint_text": String(def.hint_text),
-			"hint_fate_id": String(def.hint_fate_id),
-		})
+		(
+			out["prophecies"]
+			. append(
+				{
+					"id": String(def.id),
+					"display_name": String(def.display_name),
+					"description": String(def.description),
+					"hint_text": String(def.hint_text),
+					"hint_fate_id": String(def.hint_fate_id),
+				}
+			)
+		)
 	for encounter_id in EncounterCatalog.instance().encounter_ids():
 		var def := EncounterCatalog.instance().encounter_definition(encounter_id)
 		if def == null:
 			continue
 		var seen := EncounterState.has_seen(ledger, encounter_id)
 		var resolved := EncounterState.has_resolved(ledger, encounter_id)
-		out["encounters"].append({
-			"id": String(def.id),
-			"display_name": String(def.display_name),
-			"description": String(def.description),
-			"seen": seen,
-			"resolved": resolved,
-			"fate_choices": _string_list(def.fate_choices),
-			"prophecy_id": String(def.prophecy_id),
-			"unique": def.unique,
-		})
+		(
+			out["encounters"]
+			. append(
+				{
+					"id": String(def.id),
+					"display_name": String(def.display_name),
+					"description": String(def.description),
+					"seen": seen,
+					"resolved": resolved,
+					"fate_choices": _string_list(def.fate_choices),
+					"prophecy_id": String(def.prophecy_id),
+					"unique": def.unique,
+				}
+			)
+		)
 	return out
 
 
@@ -211,13 +219,18 @@ static func prophecies(actor: Actor) -> Array[Dictionary]:
 		var def := EncounterCatalog.instance().prophecy_definition(prophecy_id)
 		if def == null:
 			continue
-		out.append({
-			"id": String(def.id),
-			"display_name": String(def.display_name),
-			"description": String(def.description),
-			"hint_text": String(def.hint_text),
-			"hint_fate_id": String(def.hint_fate_id),
-		})
+		(
+			out
+			. append(
+				{
+					"id": String(def.id),
+					"display_name": String(def.display_name),
+					"description": String(def.description),
+					"hint_text": String(def.hint_text),
+					"hint_fate_id": String(def.hint_fate_id),
+				}
+			)
+		)
 	return out
 
 
@@ -252,12 +265,17 @@ static func _record(ledger: Dictionary, kind: String, id: StringName, detail: St
 	var history: Array = ledger["history"]
 	if history.size() >= EncounterState.HISTORY_LIMIT:
 		return
-	history.append({
-		"kind": kind,
-		"id": String(id),
-		"detail": detail,
-		"sequence": _next_sequence(ledger),
-	})
+	(
+		history
+		. append(
+			{
+				"kind": kind,
+				"id": String(id),
+				"detail": detail,
+				"sequence": _next_sequence(ledger),
+			}
+		)
+	)
 
 
 static func _persist(actor: Actor, ledger: Dictionary) -> void:

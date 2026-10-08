@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E18_immortal_bristleworks_crinet"
-display_name = "Immortal Bristleworks Crinet"
+display_name = "LOC_ITEMS_E18_IMMORTAL_BRISTLEWORKS_CRINET_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"great_luo"

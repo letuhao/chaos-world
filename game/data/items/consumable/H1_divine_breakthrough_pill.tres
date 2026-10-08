@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"H1_divine_breakthrough_pill"
-display_name = "Divine Breakthrough Pill"
+display_name = "LOC_ITEMS_H1_DIVINE_BREAKTHROUGH_PILL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"transcendent"

@@ -338,7 +338,10 @@ static func advance(actor: Actor, periods: int) -> Dictionary:
 			# A stage that DECIDES another event queues its verdict; it is delivered after
 			# this advance's write, below (DEF-0315).
 			var pending := _pending_verdict(following)
-			if not pending.is_empty() and not _has_verdict(pending_verdicts, String(pending["war_id"])):
+			if (
+				not pending.is_empty()
+				and not _has_verdict(pending_verdicts, String(pending["war_id"]))
+			):
 				pending_verdicts.append(pending)
 			# **The settlement happens, and only then is it announced.**
 			# `world_upkeep_paid` used to fire here with two numbers and no write behind
@@ -396,15 +399,16 @@ static func advance(actor: Actor, periods: int) -> Dictionary:
 	# is RECORDED first, then the contest it decided is resolved.
 	var verdicts: Array[Dictionary] = []
 	for pending in pending_verdicts:
-		var delivered := resolve(
-			actor, StringName(pending["war_id"]), String(pending["winner_id"])
-		)
-		verdicts.append(
-			{
-				"war_id": String(pending["war_id"]),
-				"winner_id": String(pending["winner_id"]),
-				"outcome": delivered,
-			}
+		var delivered := resolve(actor, StringName(pending["war_id"]), String(pending["winner_id"]))
+		(
+			verdicts
+			. append(
+				{
+					"war_id": String(pending["war_id"]),
+					"winner_id": String(pending["winner_id"]),
+					"outcome": delivered,
+				}
+			)
 		)
 	# The ledger is re-read because a delivered verdict mutated it through its own writer.
 	return _ok(

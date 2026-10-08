@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G2_earth_ingot"
-display_name = "Earth Ingot"
+display_name = "LOC_ITEMS_G2_EARTH_INGOT_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_manifestation"

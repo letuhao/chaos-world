@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"I46_divine_gaslight_refined"
-display_name = "Divine Gaslight Refined"
+display_name = "LOC_ITEMS_I46_DIVINE_GASLIGHT_REFINED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"

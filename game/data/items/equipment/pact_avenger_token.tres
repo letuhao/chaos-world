@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"pact_avenger_token"
-display_name = "Avenger's Pact Token"
+display_name = "LOC_ITEMS_PACT_AVENGER_TOKEN_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"earth_immortal"

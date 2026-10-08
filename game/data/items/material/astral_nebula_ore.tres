@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"astral_nebula_ore"
-display_name = "Nebula Ore"
+display_name = "LOC_ITEMS_ASTRAL_NEBULA_ORE_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"heaven_immortal"

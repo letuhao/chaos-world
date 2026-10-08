@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F2_earth_crosswise_spirit_attack_speed_will_qi_cost_reduction"
-display_name = "Earth Crosswise Spirit Attack Speed Will Qi Cost Reduction"
+display_name = "LOC_ITEMS_F2_EARTH_CROSSWISE_SPIRIT_ATTACK_SPEED_WILL_QI_COST_REDUCTION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_severing"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F47_divine_graphitic_attack_speed_breakthrough_chance_evasion"
-display_name = "Divine Graphitic Attack speed Breakthrough chance Evasion"
+display_name = "LOC_ITEMS_F47_DIVINE_GRAPHITIC_ATTACK_SPEED_BREAKTHROUGH_CHANCE_EVASION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"transcendent"

@@ -5,8 +5,8 @@
 script = ExtResource("1_def")
 id = &"passive_echo_resonance"
 delivered_by = &"sigil_immortal_echo"
-display_name = "Echo Resonance Notes"
-description = "Records how a qi technique felt at its best and how to reproduce that exact state on demand. The notes raise technique power and perception together."
+display_name = "LOC_TECHNIQUES_PASSIVE_ECHO_RESONANCE_DISPLAY_NAME"
+description = "LOC_TECHNIQUES_PASSIVE_ECHO_RESONANCE_DESCRIPTION"
 tags = Array[StringName]([&"passive", &"qi", &"power"])
 grade = &"heaven"
 rarity = &"rare"

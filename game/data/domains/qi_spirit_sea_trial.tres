@@ -5,5 +5,5 @@
 [resource]
 script = ExtResource("1_domain")
 id = &"qi_spirit_sea_trial"
-display_name = "Spirit Sea Trial"
+display_name = "LOC_DOMAINS_QI_SPIRIT_SEA_TRIAL_DISPLAY_NAME"
 boss_ids = Array[StringName]([&"qi_spirit_sea_warden", &"F10_sea_warden"])

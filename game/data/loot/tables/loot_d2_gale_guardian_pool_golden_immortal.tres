@@ -30,7 +30,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d2_gale_guardian_pool_golden_immortal"
-display_name = "Gale Guardian Lesser salvage (golden_immortal)"
+display_name = "LOC_LOOT_D2_GALE_GUARDIAN_GOLDEN_IMMORTAL_0_DISPLAY_NAME"
 realm = &"golden_immortal"
 rarity = &""
 rolls = 1

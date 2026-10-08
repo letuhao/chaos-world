@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C28_mortal_smeltery_dingot"
-display_name = "Mortal Smeltery Dingot"
+display_name = "LOC_ITEMS_C28_MORTAL_SMELTERY_DINGOT_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"tribulation"

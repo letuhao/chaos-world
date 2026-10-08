@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"mantle_singularity"
-display_name = "Singularity Mantle"
+display_name = "LOC_ITEMS_MANTLE_SINGULARITY_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"transcendent"

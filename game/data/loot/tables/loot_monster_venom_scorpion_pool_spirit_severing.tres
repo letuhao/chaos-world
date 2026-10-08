@@ -30,7 +30,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_monster_venom_scorpion_pool_spirit_severing"
-display_name = "Venom Scorpion salvage (spirit_severing)"
+display_name = "LOC_LOOT_MONSTER_VENOM_SCORPION_SPIRIT_SEVERING_0_DISPLAY_NAME"
 realm = &"spirit_severing"
 rarity = &""
 rolls = 1

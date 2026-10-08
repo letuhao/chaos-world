@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"tablet_divine"
-display_name = "Divine Tablet"
+display_name = "LOC_ITEMS_TABLET_DIVINE_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"heaven_immortal"

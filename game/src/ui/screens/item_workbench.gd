@@ -65,7 +65,7 @@ func setup(
 ## Re-read the facade and repaint. Signal-driven; nothing here polls.
 func refresh() -> void:
 	_bind_nodes()
-	_header_label.text = _header_text()
+	_header_label.text = L.t(_header_text())
 	_inventory_panel.refresh()
 	_apply_selection()
 
@@ -349,8 +349,8 @@ func _focus_owner_name() -> String:
 ## the actor's realm and the realm an item of this grade would need.
 func _header_text() -> String:
 	if _actor == null:
-		return "Item Workbench — no actor"
-	return "Item Workbench — %s (%s)" % [_actor.id, _actor.realm()]
+		return L.t("LOC_UI_SCREENS_3994EC31FC")
+	return L.t("LOC_UI_SCREENS_35EEB6C52E") % [_actor.id, _actor.realm()]
 
 
 func _on_selection_changed(_row: Dictionary) -> void:

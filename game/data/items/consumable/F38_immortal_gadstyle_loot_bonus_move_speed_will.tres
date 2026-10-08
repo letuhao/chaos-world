@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F38_immortal_gadstyle_loot_bonus_move_speed_will"
-display_name = "Immortal Gadstyle Loot bonus Move speed Will"
+display_name = "LOC_ITEMS_F38_IMMORTAL_GADSTYLE_LOOT_BONUS_MOVE_SPEED_WILL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"earth_immortal"

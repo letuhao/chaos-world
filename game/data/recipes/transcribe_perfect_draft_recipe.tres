@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"transcribe_perfect_draft_recipe"
-display_name = "Perfect Draft Recipe"
+display_name = "LOC_RECIPES_TRANSCRIBE_PERFECT_DRAFT_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"divine_primordial_tablet", &"divine_void_essence"])
 outputs = Array[StringName]([&"transcribe_perfect_draft"])

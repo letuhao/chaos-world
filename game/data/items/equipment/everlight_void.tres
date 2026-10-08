@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"everlight_void"
-display_name = "Void Everlight"
+display_name = "LOC_ITEMS_EVERLIGHT_VOID_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"true_immortal"

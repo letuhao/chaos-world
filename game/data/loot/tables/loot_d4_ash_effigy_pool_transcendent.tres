@@ -30,7 +30,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d4_ash_effigy_pool_transcendent"
-display_name = "Ash Effigy Lesser salvage (transcendent)"
+display_name = "LOC_LOOT_D4_ASH_EFFIGY_TRANSCENDENT_0_DISPLAY_NAME"
 realm = &"transcendent"
 rarity = &""
 rolls = 1

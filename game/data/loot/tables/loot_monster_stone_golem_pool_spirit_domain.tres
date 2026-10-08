@@ -30,7 +30,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_monster_stone_golem_pool_spirit_domain"
-display_name = "Stone Golem salvage (spirit_domain)"
+display_name = "LOC_LOOT_MONSTER_STONE_GOLEM_SPIRIT_DOMAIN_0_DISPLAY_NAME"
 realm = &"spirit_domain"
 rarity = &""
 rolls = 1

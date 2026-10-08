@@ -278,7 +278,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_ember_warden_t1"
-display_name = "Ember Vault Warden (Warded)"
+display_name = "LOC_LOOT_EW1_SIGIL_DISPLAY_NAME"
 realm = &"spirit_severing"
 rarity = &"common"
 rolls = 1

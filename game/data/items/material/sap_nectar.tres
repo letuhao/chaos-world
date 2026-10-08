@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"sap_nectar"
-display_name = "Nectar Sap"
+display_name = "LOC_ITEMS_SAP_NECTAR_DISPLAY_NAME"
 category = &"material"
 rarity = &"magic"
 realm = &"spirit_sovereign"

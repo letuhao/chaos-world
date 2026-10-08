@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E3_integration_arbiter_pool_spirit_severing"
-display_name = "Body Integration Arbiter salvage (spirit_severing)"
+display_name = "LOC_LOOT_E3_INTEGRATION_ARBITER_SPIRIT_SEVERING_0_DISPLAY_NAME"
 realm = &"spirit_severing"
 rarity = &""
 rolls = 1

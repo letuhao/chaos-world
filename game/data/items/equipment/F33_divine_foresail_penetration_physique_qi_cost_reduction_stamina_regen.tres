@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F33_divine_foresail_penetration_physique_qi_cost_reduction_stamina_regen"
-display_name = "Divine Foresail Penetration Physique Qi cost reduction Stamina regen"
+display_name = "LOC_ITEMS_F33_DIVINE_FORESAIL_PENETRATION_PHYSIQUE_QI_COST_REDUCTION_STAMINA_REGEN_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"transcendent"

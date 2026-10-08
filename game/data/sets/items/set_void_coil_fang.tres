@@ -5,14 +5,14 @@
 [resource]
 script = ExtResource("1_item")
 id = &"set_void_coil_fang"
-display_name = "Void Coil Fang"
+display_name = "LOC_SETS_SET_VOID_COIL_FANG_DISPLAY_NAME"
 category = &"equipment"
 subcategory = &"weapon"
 grade = &"heaven"
 stackable = false
 tags = Array[StringName]([&"set:void_serpent_coil"])
 sources = Array[StringName]([&"boss:body_earth_immortal_guardian"])
-description = "A serpent fang that opens and closes along the coil's own rhythm."
+description = "LOC_SETS_SET_VOID_COIL_FANG_DESCRIPTION"
 rarity = &"rare"
 realm = &"earth_immortal"
 fixed_modifiers = Array[Dictionary]([

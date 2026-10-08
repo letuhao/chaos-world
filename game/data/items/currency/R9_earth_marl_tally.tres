@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"R9_earth_marl_tally"
-display_name = "Earth Marl Tally"
+display_name = "LOC_ITEMS_R9_EARTH_MARL_TALLY_DISPLAY_NAME"
 category = &"currency"
 rarity = &"rare"
 realm = &"spirit_palace"

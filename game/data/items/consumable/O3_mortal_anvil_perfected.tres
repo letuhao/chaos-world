@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"O3_mortal_anvil_perfected"
-display_name = "Mortal Anvil Perfected"
+display_name = "LOC_ITEMS_O3_MORTAL_ANVIL_PERFECTED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"tribulation"

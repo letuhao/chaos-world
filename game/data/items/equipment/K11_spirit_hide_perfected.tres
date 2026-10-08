@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"K11_spirit_hide_perfected"
-display_name = "Spirit Hide Perfected"
+display_name = "LOC_ITEMS_K11_SPIRIT_HIDE_PERFECTED_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"magic"
 realm = &"spirit_unity"

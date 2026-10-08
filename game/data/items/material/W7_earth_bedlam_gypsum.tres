@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"W7_earth_bedlam_gypsum"
-display_name = "Earth Bedlam Gypsum"
+display_name = "LOC_ITEMS_W7_EARTH_BEDLAM_GYPSUM_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_palace"

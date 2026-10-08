@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"C8_earth_closh_base_recipe"
-display_name = "Earth Closh Base Recipe"
+display_name = "LOC_RECIPES_C8_EARTH_CLOSH_BASE_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"W7_earth_bedlam_gypsum", &"W8_earth_birchen_inoculum"])
 outputs = Array[StringName]([&"C8_earth_closh_base"])

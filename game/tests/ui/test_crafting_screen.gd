@@ -277,7 +277,7 @@ func test_the_detail_pane_names_items_rather_than_printing_their_ids() -> void:
 	assert_ne(detail, null, "the detail label exists")
 	var authored := _authored_input()
 	assert_ne(authored, null, "the recipe names an authored input")
-	var named := String(authored.display_name)
+	var named := L.t(String(authored.display_name))
 	assert_ne(named, "", "and that input has a display name")
 	assert_ne(named, String(authored.id), "which differs from its id")
 	assert_eq(

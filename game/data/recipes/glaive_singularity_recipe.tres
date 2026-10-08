@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"glaive_singularity_recipe"
-display_name = "Singularity Glaive Recipe"
+display_name = "LOC_RECIPES_GLAIVE_SINGULARITY_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"gem_starfall_opal", &"feather_seraph"])
 outputs = Array[StringName]([&"glaive_singularity"])

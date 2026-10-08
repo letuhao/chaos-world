@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_portrait")
 id = &"unique-0312"
-display_name = "Fenner Ostrel"
+display_name = "LOC_PORTRAITS_UNIQUE_0312_DISPLAY_NAME"
 race_id = &"emberblood"
 visual_traits = Array[StringName]([&"burden:the-reserve-is-the-body-and-a-body-cannot-be-topped-up", &"class:fastest-refiner-who-has-refined-nothing", &"constraint:his-gift-costs-nothing-and-his-path-costs-everything", &"gift:reads-intent-at-the-speed-of-a-struck-match", &"hazard:the-furnace-is-lit-by-the-first-gate-and-never-put-out", &"path:unaffiliated", &"role:the-one-who-says-do-not-go", &"standing:the-second-of-the-two-recorded-bodies"])
 layer_paths = Array[String](["res://assets/characters/portraits/emberblood.png"])

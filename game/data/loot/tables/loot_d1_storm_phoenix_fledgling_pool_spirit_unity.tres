@@ -18,7 +18,7 @@ rarity_floor = &"magic"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d1_storm_phoenix_fledgling_pool_spirit_unity"
-display_name = "Storm Phoenix Fledgling Lesser salvage (spirit_unity)"
+display_name = "LOC_LOOT_D1_STORM_PHOENIX_FLEDGLING_SPIRIT_UNITY_0_DISPLAY_NAME"
 realm = &"spirit_unity"
 rarity = &""
 rolls = 1

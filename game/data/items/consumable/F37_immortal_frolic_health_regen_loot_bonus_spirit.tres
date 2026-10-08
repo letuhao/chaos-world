@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F37_immortal_frolic_health_regen_loot_bonus_spirit"
-display_name = "Immortal Frolic Health regen Loot bonus Spirit"
+display_name = "LOC_ITEMS_F37_IMMORTAL_FROLIC_HEALTH_REGEN_LOOT_BONUS_SPIRIT_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"true_immortal"

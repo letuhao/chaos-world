@@ -30,8 +30,8 @@ extends UiScreen
 ## have, which is the opposite of what it is for.
 const ENTRY_ROWS := 8
 const ENTRY_SCENE := "res://src/ui/panels/technique_entry_row.tscn"
-const HEADER_TEXT := "Known for good. This is the codex, not the loadout."
-const NO_ACTOR_TEXT := "No hero bound."
+const HEADER_TEXT := "LOC_UI_SCREENS_DE8312C223"
+const NO_ACTOR_TEXT := "LOC_UI_SCREENS_6E9BC19A74"
 
 var _live: Dictionary = {}
 var _header: Label = null
@@ -79,7 +79,7 @@ func _refresh_view() -> void:
 func _render() -> void:
 	if _header == null:
 		return
-	_header.text = HEADER_TEXT if _actor != null else NO_ACTOR_TEXT
+	_header.text = L.t(HEADER_TEXT if _actor != null else NO_ACTOR_TEXT)
 	_footer.text = (
 		"Read-only: nothing here is equipped, and nothing here can be lost. "
 		+ "Equipping lives on the loadout screen."

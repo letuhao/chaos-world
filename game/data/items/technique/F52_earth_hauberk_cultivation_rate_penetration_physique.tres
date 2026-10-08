@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F52_earth_hauberk_cultivation_rate_penetration_physique"
-display_name = "Earth Hauberk Cultivation rate Penetration Physique"
+display_name = "LOC_ITEMS_F52_EARTH_HAUBERK_CULTIVATION_RATE_PENETRATION_PHYSIQUE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_unity"

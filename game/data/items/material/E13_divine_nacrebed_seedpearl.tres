@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E13_divine_nacrebed_seedpearl"
-display_name = "Divine Nacrebed Seedpearl"
+display_name = "LOC_ITEMS_E13_DIVINE_NACREBED_SEEDPEARL_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"dao_ancestor"

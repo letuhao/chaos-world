@@ -9,8 +9,8 @@ extends UiScreen
 
 const PILLAR_ROWS := 3
 const PILLAR_SCENE := "res://src/ui/panels/pillar_row.tscn"
-const HEADER_TEXT := "Three pillars: Essence, Desire, Harmony."
-const NO_ACTOR_TEXT := "No hero bound."
+const HEADER_TEXT := "LOC_UI_SCREENS_8516B772E8"
+const NO_ACTOR_TEXT := "LOC_UI_SCREENS_6E9BC19A74"
 
 var _codex: Dictionary = {}
 var _header: Label = null
@@ -62,8 +62,8 @@ func _refresh_view() -> void:
 func _render() -> void:
 	if _header == null:
 		return
-	_header.text = HEADER_TEXT if _actor != null else NO_ACTOR_TEXT
-	_footer.text = "Dual cultivation opens narrative doors, not power."
+	_header.text = L.t(HEADER_TEXT if _actor != null else NO_ACTOR_TEXT)
+	_footer.text = L.t("LOC_UI_SCREENS_A5126321E6")
 
 
 func focus_initial() -> void:

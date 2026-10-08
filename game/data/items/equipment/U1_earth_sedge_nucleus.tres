@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U1_earth_sedge_nucleus"
-display_name = "Earth Sedge Nucleus"
+display_name = "LOC_ITEMS_U1_EARTH_SEDGE_NUCLEUS_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"spirit_palace"

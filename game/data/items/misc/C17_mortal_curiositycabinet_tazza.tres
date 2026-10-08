@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C17_mortal_curiositycabinet_tazza"
-display_name = "Mortal Curiositycabinet Tazza"
+display_name = "LOC_ITEMS_C17_MORTAL_CURIOSITYCABINET_TAZZA_DISPLAY_NAME"
 category = &"misc"
 rarity = &"common"
 realm = &"core_formation"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"divinealt_divine_voidwyrm_hide_recipe"
-display_name = "Divine Voidwyrm Hide Alternate Recipe"
+display_name = "LOC_RECIPES_DIVINEALT_DIVINE_VOIDWYRM_HIDE_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"divine_voidwyrm_hide", &"filament_chaosweave"])
 outputs = Array[StringName]([&"girdle_chaos"])

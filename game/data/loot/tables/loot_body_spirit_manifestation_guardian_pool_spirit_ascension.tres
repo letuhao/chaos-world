@@ -30,7 +30,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_body_spirit_manifestation_guardian_pool_spirit_ascension"
-display_name = "Diamond Body Guardian salvage (spirit_ascension)"
+display_name = "LOC_LOOT_BODY_SPIRIT_MANIFESTATION_GUARDIAN_SPIRIT_ASCENSION_0_DISPLAY_NAME"
 realm = &"spirit_ascension"
 rarity = &""
 rolls = 1

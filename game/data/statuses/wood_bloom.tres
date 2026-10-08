@@ -18,7 +18,7 @@ tick_interval = 1.0
 mitigation_tags = Array[StringName]([&"affinity", &"technique", &"pill"])
 payload = {
 "mechanic": &"regrowth",
-"text": "Verdant regrowth. The body holds more of itself and knits faster than it should.",
+"text": "LOC_STATUSES_WOOD_BLOOM_TEXT",
 "modifiers": [
 {"stat": &"max_health", "op": &"flat", "value": 25.0},
 {"stat": &"health_regen", "op": &"flat", "value": 1.5}

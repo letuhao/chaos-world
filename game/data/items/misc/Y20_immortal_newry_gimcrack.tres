@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Y20_immortal_newry_gimcrack"
-display_name = "Immortal Newry Gimcrack"
+display_name = "LOC_ITEMS_Y20_IMMORTAL_NEWRY_GIMCRACK_DISPLAY_NAME"
 category = &"misc"
 rarity = &"legendary"
 realm = &"golden_immortal"

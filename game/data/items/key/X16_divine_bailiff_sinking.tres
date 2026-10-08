@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"X16_divine_bailiff_sinking"
-display_name = "Divine Bailiff Sinking"
+display_name = "LOC_ITEMS_X16_DIVINE_BAILIFF_SINKING_DISPLAY_NAME"
 category = &"key"
 rarity = &"legendary"
 realm = &"dao_ancestor"

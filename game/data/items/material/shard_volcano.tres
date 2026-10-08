@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"shard_volcano"
-display_name = "Volcano Shard"
+display_name = "LOC_ITEMS_SHARD_VOLCANO_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_severing"

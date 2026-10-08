@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"stele_mortal_stone"
-display_name = "Mortal Stele"
+display_name = "LOC_ITEMS_STELE_MORTAL_STONE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"void_refinement"

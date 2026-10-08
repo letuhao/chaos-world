@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Q16_heaven_ginger_aged"
-display_name = "Heaven Ginger Aged"
+display_name = "LOC_ITEMS_Q16_HEAVEN_GINGER_AGED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"immortal_sovereign"

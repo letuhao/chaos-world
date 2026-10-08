@@ -30,7 +30,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_F17_dao_fruit_warden_pool_void_refinement"
-display_name = "Dao Fruit Warden salvage (void_refinement)"
+display_name = "LOC_LOOT_F17_DAO_FRUIT_WARDEN_VOID_REFINEMENT_0_DISPLAY_NAME"
 realm = &"void_refinement"
 rarity = &""
 rolls = 1

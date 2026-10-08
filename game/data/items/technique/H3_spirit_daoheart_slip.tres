@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"H3_spirit_daoheart_slip"
-display_name = "Spirit Daoheart Slip"
+display_name = "LOC_ITEMS_H3_SPIRIT_DAOHEART_SLIP_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_domain"

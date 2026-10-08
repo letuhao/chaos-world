@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Q8_immortal_dogwood_glaze"
-display_name = "Immortal Dogwood Glaze"
+display_name = "LOC_ITEMS_Q8_IMMORTAL_DOGWOOD_GLAZE_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"great_luo"

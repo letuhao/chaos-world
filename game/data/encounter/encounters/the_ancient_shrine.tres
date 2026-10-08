@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_enc")
 id = &"the_ancient_shrine"
-display_name = "The Ancient Shrine"
-description = "An ancient shrine hums with spiritual energy. A vision floods your mind — a glimpse of a destiny not yet earned."
+display_name = "LOC_ENCOUNTER_THE_ANCIENT_SHRINE_DISPLAY_NAME"
+description = "LOC_ENCOUNTER_THE_ANCIENT_SHRINE_DESCRIPTION"
 trigger_type = &"always"
 trigger_value = &""
 weight = 0.5

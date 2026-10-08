@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"accessory_moonstone_amulet_recipe"
-display_name = "Moonstone Amulet Recipe"
+display_name = "LOC_RECIPES_ACCESSORY_MOONSTONE_AMULET_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"accessory_moonstone_shard", &"accessory_gale_essence"])
 outputs = Array[StringName]([&"accessory_moonstone_amulet"])

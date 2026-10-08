@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"oath_star_vow"
-display_name = "Oath of the Star"
+display_name = "LOC_ITEMS_OATH_STAR_VOW_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"mystic_immortal"

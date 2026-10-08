@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E15_mortal_pressingfloor_copalite"
-display_name = "Mortal Pressingfloor Copalite"
+display_name = "LOC_ITEMS_E15_MORTAL_PRESSINGFLOOR_COPALITE_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"qi_refining"

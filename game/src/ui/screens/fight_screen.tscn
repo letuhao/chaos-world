@@ -10,7 +10,7 @@ script = ExtResource("1")
 
 [node name="Title" type="Label" parent="Layout"]
 theme_type_variation = &"ScreenTitle"
-text = "Fight"
+text = "LOC_UI_SCREENS_2C2D161014"
 
 [node name="FightHeader" type="Label" parent="Layout"]
 unique_name_in_owner = true
@@ -23,16 +23,16 @@ text = ""
 [node name="StartButton" type="Button" parent="Layout/Actions"]
 unique_name_in_owner = true
 theme_type_variation = &"PrimaryButton"
-text = "Take the fight"
+text = "LOC_UI_SCREENS_B7CC3C223B"
 
 [node name="StrikeButton" type="Button" parent="Layout/Actions"]
 unique_name_in_owner = true
 theme_type_variation = &"PrimaryButton"
-text = "Strike"
+text = "LOC_UI_SCREENS_F9AE58AA35"
 
 [node name="LeaveButton" type="Button" parent="Layout/Actions"]
 unique_name_in_owner = true
-text = "Break off"
+text = "LOC_UI_SCREENS_0FD94BE895"
 
 [node name="FightPanel" parent="Layout" instance=ExtResource("2")]
 unique_name_in_owner = true

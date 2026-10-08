@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V15_divine_anchorage_mandate"
-display_name = "Divine Anchorage Mandate"
+display_name = "LOC_ITEMS_V15_DIVINE_ANCHORAGE_MANDATE_DISPLAY_NAME"
 category = &"quest"
 rarity = &"legendary"
 realm = &"transcendent"

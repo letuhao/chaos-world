@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B38_divine_duchy_comprehension_agility"
-display_name = "Divine Duchy Comprehension Agility"
+display_name = "LOC_ITEMS_B38_DIVINE_DUCHY_COMPREHENSION_AGILITY_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"

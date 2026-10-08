@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F46_heaven_gradation_breakthrough_chance_fortune_qi_regen"
-display_name = "Heaven Gradation Breakthrough chance Fortune Qi regen"
+display_name = "LOC_ITEMS_F46_HEAVEN_GRADATION_BREAKTHROUGH_CHANCE_FORTUNE_QI_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"immortal_sovereign"

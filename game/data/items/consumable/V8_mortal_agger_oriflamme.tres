@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V8_mortal_agger_oriflamme"
-display_name = "Mortal Agger Oriflamme"
+display_name = "LOC_ITEMS_V8_MORTAL_AGGER_ORIFLAMME_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"great_ascension"

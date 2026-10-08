@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"qi_spirit_transformation_channel_elixir"
-display_name = "Spirit Transformation Channel Elixir"
+display_name = "LOC_ITEMS_QI_SPIRIT_TRANSFORMATION_CHANNEL_ELIXIR_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"spirit_transformation"
@@ -16,4 +16,4 @@ roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"elixir"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:qi_spirit_transformation_elixir_recipe", &"boss:F6_transformation_warden"])
-description = "Advances one meridian a step, or deepens a strengthened channel."
+description = "LOC_ITEMS_QI_SPIRIT_TRANSFORMATION_CHANNEL_ELIXIR_DESCRIPTION"

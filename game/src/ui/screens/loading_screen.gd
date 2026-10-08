@@ -35,11 +35,11 @@ const NO_LOAD_STARTED := "no_load_started"
 ## One cultivation tip per load, rotated by progress. Presentation copy owned
 ## here, not content: none of these grants anything or names a rule.
 const TIPS: Array[String] = [
-	"A death costs the soul and never the world.",
-	"The world moves when you act, not while you wait.",
-	"Continue returns to the saved journey.",
-	"Each arrival closes the other two for good.",
-	"Gain is proportional to the periods paid, not declared.",
+	"LOC_UI_SCREENS_CA1870FA5C",
+	"LOC_UI_SCREENS_A21B8619C0",
+	"LOC_UI_SCREENS_0C111326B2",
+	"LOC_UI_SCREENS_B740C8CBE5",
+	"LOC_UI_SCREENS_14185ADEDB",
 ]
 
 var _backdrop: TextureRect = null
@@ -144,13 +144,13 @@ func _render() -> void:
 		_bar.value = _index
 	if _status != null:
 		if not _started:
-			_status.text = "Preparing."
+			_status.text = L.t("LOC_UI_SCREENS_85FA8FDB40")
 		elif _index >= _scenes.size():
-			_status.text = "Ready."
+			_status.text = L.t("LOC_UI_SCREENS_A0D73BCD75")
 		else:
-			_status.text = "Loading %d of %d." % [_index, _scenes.size()]
+			_status.text = L.t("LOC_UI_SCREENS_E53E200983") % [_index, _scenes.size()]
 	if _tip != null:
-		_tip.text = _tip_for(_index, _scenes.size())
+		_tip.text = L.t(_tip_for(_index, _scenes.size()))
 
 
 ## The tip for this much progress. Pure function of the counts, so the bar,

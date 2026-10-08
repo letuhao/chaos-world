@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"bladework_supernova_edge"
-display_name = "Supernova Edge Bladework"
+display_name = "LOC_ITEMS_BLADEWORK_SUPERNOVA_EDGE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"immortal_sovereign"

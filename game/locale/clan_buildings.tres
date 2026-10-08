@@ -1,0 +1,16 @@
+[gd_resource type="Translation" format=3]
+
+[resource]
+locale = "en"
+messages = {
+"LOC_CLAN_BUILDINGS_DEFENSIVE_WORKS_DESCRIPTION": "Fortifications and defensive structures. Protects against rival sabotage and unlocks defense verbs.",
+"LOC_CLAN_BUILDINGS_DEFENSIVE_WORKS_DISPLAY_NAME": "Defensive Works",
+"LOC_CLAN_BUILDINGS_HALL_OF_ANCESTORS_DESCRIPTION": "A sacred hall honoring the clan's lineage. Strengthens bloodline recognition and unlocks lineage-related verbs.",
+"LOC_CLAN_BUILDINGS_HALL_OF_ANCESTORS_DISPLAY_NAME": "Hall of Ancestors",
+"LOC_CLAN_BUILDINGS_MEDITATION_CHAMBER_DESCRIPTION": "A quiet chamber for cultivation meditation. Enhances cultivation speed and unlocks meditation verbs.",
+"LOC_CLAN_BUILDINGS_MEDITATION_CHAMBER_DISPLAY_NAME": "Meditation Chamber",
+"LOC_CLAN_BUILDINGS_STOREHOUSE_DESCRIPTION": "A secure storage facility for materials and goods. Increases material storage capacity and unlocks economy verbs.",
+"LOC_CLAN_BUILDINGS_STOREHOUSE_DISPLAY_NAME": "Storehouse",
+"LOC_CLAN_BUILDINGS_TRAINING_GROUNDS_DESCRIPTION": "A dedicated space for combat training. Improves combat experience gain and unlocks training verbs.",
+"LOC_CLAN_BUILDINGS_TRAINING_GROUNDS_DISPLAY_NAME": "Training Grounds",
+}

@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d6_gilded_crane_pool_mystic_immortal"
-display_name = "Gilded Crane Lesser salvage (mystic_immortal)"
+display_name = "LOC_LOOT_D6_GILDED_CRANE_MYSTIC_IMMORTAL_0_DISPLAY_NAME"
 realm = &"mystic_immortal"
 rarity = &""
 rolls = 1

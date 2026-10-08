@@ -139,7 +139,7 @@ func test_the_drop_row_prints_the_figures_and_the_screen_formats_none() -> void:
 	)
 	assert_eq(
 		String(row.summary()["decay_line"]),
-		FloorDropRow.NO_DECAY_TEXT,
+		L.t(FloorDropRow.NO_DECAY_TEXT),
 		"an entry that never decays says so in words rather than printing an expiry"
 	)
 	assert_eq(

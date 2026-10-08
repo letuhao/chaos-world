@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B8_earth_bugbear_primed"
-display_name = "Earth Bugbear Primed"
+display_name = "LOC_ITEMS_B8_EARTH_BUGBEAR_PRIMED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_unity"

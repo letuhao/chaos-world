@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"R8_mortal_mango_shekel"
-display_name = "Mortal Mango Shekel"
+display_name = "LOC_ITEMS_R8_MORTAL_MANGO_SHEKEL_DISPLAY_NAME"
 category = &"currency"
 rarity = &"common"
 realm = &"spirit_transformation"

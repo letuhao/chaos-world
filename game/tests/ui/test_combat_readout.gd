@@ -88,13 +88,15 @@ func _hit(over: Dictionary = {}) -> Dictionary:
 ## returns `{}` for a miss.
 func test_no_blow_reads_as_no_blow_and_not_as_zeroes() -> void:
 	var panel := _panel()
-	assert_eq(panel.verdict_text(), CombatReadoutPanel.NO_DATA, "an empty payload says so")
+	assert_eq(panel.verdict_text(), L.t(CombatReadoutPanel.NO_DATA), "an empty payload says so")
 	# `NO_DATA` is the NOTHING-STRUCK state. A blow that was struck and never arrived is
 	# a DIFFERENT payload — a non-empty `to_dict()` whose `landed` is false — and it must
 	# read as the whiff, because a whiff and a gut-punch are the same event to a player
 	# if both read as nothing.
 	panel.show_hit({"landed": false, "crit": false})
-	assert_eq(panel.verdict_text(), CombatReadoutPanel.MISS_TEXT, "a landed-false blow is a whiff")
+	assert_eq(
+		panel.verdict_text(), L.t(CombatReadoutPanel.MISS_TEXT), "a landed-false blow is a whiff"
+	)
 	assert_eq(panel.stages_text(), "", "and no stage row is decomposed out of it")
 	assert_eq(bool(panel.summary()["has_hit"]), true, "but it WAS struck, so it is not nothing")
 	assert_eq(bool(panel.summary()["missed"]), true, "and summary() reports it as a miss")
@@ -317,8 +319,8 @@ func test_an_unknown_mechanism_falls_back_to_its_raw_underscored_name() -> void:
 ## a rename fails here rather than making the test assert a string nobody ships.
 func test_the_empty_states_are_the_panels_own_sentences() -> void:
 	var panel := _panel()
-	assert_eq(panel.wounds_text(), CombatReadoutPanel.NO_WOUNDS, "no ledger reads as such")
-	assert_eq(panel.effects_text(), CombatReadoutPanel.NO_EFFECTS, "no effects read as such")
+	assert_eq(panel.wounds_text(), L.t(CombatReadoutPanel.NO_WOUNDS), "no ledger reads as such")
+	assert_eq(panel.effects_text(), L.t(CombatReadoutPanel.NO_EFFECTS), "no effects read as such")
 	assert_eq(panel.actor_text(), "", "and no attacker line invents a stat line")
 
 

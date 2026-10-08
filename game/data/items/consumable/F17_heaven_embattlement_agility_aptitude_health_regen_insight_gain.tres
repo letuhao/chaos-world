@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F17_heaven_embattlement_agility_aptitude_health_regen_insight_gain"
-display_name = "Heaven Embattlement Agility Aptitude Health regen Insight gain"
+display_name = "LOC_ITEMS_F17_HEAVEN_EMBATTLEMENT_AGILITY_APTITUDE_HEALTH_REGEN_INSIGHT_GAIN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"true_immortal"

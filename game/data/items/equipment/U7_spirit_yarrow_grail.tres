@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U7_spirit_yarrow_grail"
-display_name = "Spirit Yarrow Grail"
+display_name = "LOC_ITEMS_U7_SPIRIT_YARROW_GRAIL_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"magic"
 realm = &"spirit_severing"

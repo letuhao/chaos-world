@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"S10_heaven_nailor_refined_alt_recipe"
-display_name = "Heaven Nailor Refined (Alt) Recipe"
+display_name = "LOC_RECIPES_S10_HEAVEN_NAILOR_REFINED_ALT_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"S10_heaven_nailor_base", &"blade_star_ore", &"belt_heaven_jade"])
 outputs = Array[StringName]([&"S10_heaven_nailor_refined"])

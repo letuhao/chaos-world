@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d2_ember_guardian_pool_tribulation"
-display_name = "Ember Guardian Lesser salvage (tribulation)"
+display_name = "LOC_LOOT_D2_EMBER_GUARDIAN_TRIBULATION_0_DISPLAY_NAME"
 realm = &"tribulation"
 rarity = &""
 rolls = 1

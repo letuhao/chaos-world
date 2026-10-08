@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_beast_ironhide_bear_pool_tribulation"
-display_name = "Ironhide Bear salvage (tribulation)"
+display_name = "LOC_LOOT_BEAST_IRONHIDE_BEAR_TRIBULATION_0_DISPLAY_NAME"
 realm = &"tribulation"
 rarity = &""
 rolls = 1

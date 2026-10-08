@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_shop")
 shop_id = &"qi_refining_ore_stall"
-display_name = "Qi Refining Ore Stall"
+display_name = "LOC_MARKET_QI_REFINING_ORE_STALL_DISPLAY_NAME"
 kind = &"stall"
 stock = Array[Dictionary]([{"def_id": &"alchemy_cinder_ore", "quantity": 12}, {"def_id": &"armor_iron_ore", "quantity": 8}, {"def_id": &"bangle_copper_ore", "quantity": 6}])
 buys = Array[StringName]([&"alchemy_cinder_ore", &"armor_iron_ore"])

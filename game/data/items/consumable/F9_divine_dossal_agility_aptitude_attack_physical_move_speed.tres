@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F9_divine_dossal_agility_aptitude_attack_physical_move_speed"
-display_name = "Divine Dossal Agility Aptitude Attack physical Move speed"
+display_name = "LOC_ITEMS_F9_DIVINE_DOSSAL_AGILITY_APTITUDE_ATTACK_PHYSICAL_MOVE_SPEED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"transcendent"

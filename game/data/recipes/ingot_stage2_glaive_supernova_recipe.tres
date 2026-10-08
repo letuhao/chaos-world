@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"ingot_stage2_glaive_supernova_recipe"
-display_name = "Supernova Glaive (Voidsteel Bar) Recipe"
+display_name = "LOC_RECIPES_INGOT_STAGE2_GLAIVE_SUPERNOVA_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"ingot_voidsteel_bar", &"scale_voidwyrm"])
 outputs = Array[StringName]([&"glaive_supernova"])

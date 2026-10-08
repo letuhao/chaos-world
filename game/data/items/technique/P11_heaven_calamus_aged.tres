@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"P11_heaven_calamus_aged"
-display_name = "Heaven Calamus Aged"
+display_name = "LOC_ITEMS_P11_HEAVEN_CALAMUS_AGED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"earth_immortal"

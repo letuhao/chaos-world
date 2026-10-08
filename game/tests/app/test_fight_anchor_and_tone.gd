@@ -338,7 +338,9 @@ func test_the_verdict_words_and_the_tone_come_from_the_same_verdict() -> void:
 	screen.call("act_strike")
 	var view := screen.summary()
 	assert_eq(
-		String(view.get("message", "")), "The fight is lost.", "the sentence matches the outcome"
+		L.t(String(view.get("message", ""))),
+		"The fight is lost.",
+		"the sentence matches the outcome"
 	)
 	assert_eq(String(view.get("tone", "")), "error", "and so does the tone")
 

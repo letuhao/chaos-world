@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"socket_gem_immortal_defense"
-display_name = "Immortal Defensive Gem"
+display_name = "LOC_SOCKET_SOCKET_GEM_IMMORTAL_DEFENSE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"true_immortal"
@@ -19,4 +19,4 @@ stackable = false
 grade = &"immortal"
 sources = Array[StringName]([&"gather", &"domain:totem_iron_bull_domain"])
 tags = Array[StringName]([&"socket_item", &"socket_kind:defense"])
-description = "Socket item. Defensive gem; while its host is worn it adds physical defence and health."
+description = "LOC_SOCKET_SOCKET_GEM_IMMORTAL_DEFENSE_DESCRIPTION"

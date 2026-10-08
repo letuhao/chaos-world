@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G13_immortal_glair_cooldown_reduction_loot_bonus"
-display_name = "Immortal Glair Cooldown reduction Loot bonus"
+display_name = "LOC_ITEMS_G13_IMMORTAL_GLAIR_COOLDOWN_REDUCTION_LOOT_BONUS_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"golden_immortal"

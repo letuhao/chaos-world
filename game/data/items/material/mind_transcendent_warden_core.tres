@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"mind_transcendent_warden_core"
-display_name = "Transcendent Mind Oracle Core"
+display_name = "LOC_ITEMS_MIND_TRANSCENDENT_WARDEN_CORE_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"transcendent"
@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"beast_core"
 grade = &"divine"
 sources = Array[StringName]([&"boss:mind_transcendent_warden"])
-description = "Boss-only catalyst for the realm's pill."
+description = "LOC_ITEMS_MIND_TRANSCENDENT_WARDEN_CORE_DESCRIPTION"

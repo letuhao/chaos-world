@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"M20_heaven_tundra_base_recipe"
-display_name = "M20_heaven_tundra_base Recipe"
+display_name = "LOC_RECIPES_M20_HEAVEN_TUNDRA_BASE_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"jade_star", &"filament_stormspun"])
 outputs = Array[StringName]([&"M20_heaven_tundra_base"])

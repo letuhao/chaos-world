@@ -18,7 +18,7 @@ tick_interval = 1.0
 mitigation_tags = Array[StringName]([&"affinity", &"gear", &"pill"])
 payload = {
 "mechanic": &"regrowth",
-"text": "A lit body never goes dark. What the light finds is finished: the sight opens and the strike behind it comes heavier and cleaner.",
+"text": "LOC_STATUSES_LIGHT_HALO_TEXT",
 "modifiers": [
 {"stat": &"crit_damage", "op": &"percent", "value": 0.25},
 {"stat": &"insight_gain", "op": &"percent", "value": 0.2},

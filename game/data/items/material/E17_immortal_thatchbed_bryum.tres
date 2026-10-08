@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E17_immortal_thatchbed_bryum"
-display_name = "Immortal Thatchbed Bryum"
+display_name = "LOC_ITEMS_E17_IMMORTAL_THATCHBED_BRYUM_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"mystic_immortal"

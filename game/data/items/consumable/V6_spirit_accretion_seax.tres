@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V6_spirit_accretion_seax"
-display_name = "Spirit Accretion Seax"
+display_name = "LOC_ITEMS_V6_SPIRIT_ACCRETION_SEAX_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_palace"

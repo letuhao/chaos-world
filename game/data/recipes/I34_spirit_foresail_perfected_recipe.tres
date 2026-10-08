@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"I34_spirit_foresail_perfected_recipe"
-display_name = "Spirit Foresail Perfected Recipe"
+display_name = "LOC_RECIPES_I34_SPIRIT_FORESAIL_PERFECTED_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"I34_spirit_foresail_primed", &"Z34_spirit_flotsum_gutter", &"orb_silver_essence"])
 outputs = Array[StringName]([&"I34_spirit_foresail_perfected"])

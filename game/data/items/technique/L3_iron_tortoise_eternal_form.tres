@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"L3_iron_tortoise_eternal_form"
-display_name = "Iron Tortoise Eternal Form"
+display_name = "LOC_ITEMS_L3_IRON_TORTOISE_ETERNAL_FORM_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"earth_immortal"

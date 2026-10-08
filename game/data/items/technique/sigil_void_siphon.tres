@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"sigil_void_siphon"
-display_name = "Void Siphon Sigil"
+display_name = "LOC_ITEMS_SIGIL_VOID_SIPHON_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_fruit"

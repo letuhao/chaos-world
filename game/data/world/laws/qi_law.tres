@@ -5,9 +5,9 @@
 [resource]
 script = ExtResource("1")
 law_id = &"qi_law"
-display_name = "Qi Law"
+display_name = "LOC_WORLD_QI_LAW_DISPLAY_NAME"
 group = &"qi"
 value_min = 0.1
 value_max = 100.0
-description = "Governs qi density, qi type, and qi tide cycles."
+description = "LOC_WORLD_QI_LAW_DESCRIPTION"
 tier_ids = Array[StringName]([&"mortal_world", &"spirit_world", &"immortal_world", &"transcendent_world"])

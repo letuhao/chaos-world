@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"K17_earth_silver_aged"
-display_name = "Earth Silver Aged"
+display_name = "LOC_ITEMS_K17_EARTH_SILVER_AGED_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"spirit_ascension"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F37_earth_frolic_cooldown_reduction_loot_bonus_qi_absorption"
-display_name = "Earth Frolic Cooldown reduction Loot bonus Qi absorption"
+display_name = "LOC_ITEMS_F37_EARTH_FROLIC_COOLDOWN_REDUCTION_LOOT_BONUS_QI_ABSORPTION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_manifestation"

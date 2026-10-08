@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"W9_spirit_caltrops_nacre"
-display_name = "Spirit Caltrops Nacre"
+display_name = "LOC_ITEMS_W9_SPIRIT_CALTROPS_NACRE_DISPLAY_NAME"
 category = &"material"
 rarity = &"magic"
 realm = &"spirit_condensation"

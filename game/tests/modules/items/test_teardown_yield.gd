@@ -63,13 +63,9 @@ func test_a_higher_rarity_refunds_less_of_its_grade() -> void:
 		var magic := TeardownYield.units_for(_def(grade, &"magic"), _instance(0))
 		var rare := TeardownYield.units_for(_def(grade, &"rare"), _instance(0))
 		var legendary := TeardownYield.units_for(_def(grade, &"legendary"), _instance(0))
-		assert_ne(
-			common >= magic, true, "%s: a magic refunds no more than a common" % grade
-		)
+		assert_ne(common >= magic, true, "%s: a magic refunds no more than a common" % grade)
 		assert_ne(magic >= rare, true, "%s: a rare refunds no more than a magic" % grade)
-		assert_ne(
-			rare >= legendary, true, "%s: a legendary refunds no more than a rare" % grade
-		)
+		assert_ne(rare >= legendary, true, "%s: a legendary refunds no more than a rare" % grade)
 	# And the ratio is exactly the authored policy, not merely monotonic.
 	assert_eq(
 		TeardownYield.units_for(_def(&"divine", &"legendary"), _instance(0)),
@@ -149,9 +145,7 @@ func test_no_definition_means_no_yield_and_no_material() -> void:
 func test_every_grade_declares_a_material() -> void:
 	for grade in ItemGrade.ALL:
 		assert_ne(
-			TeardownYield.material_for(grade) != &"",
-			true,
-			"%s declares a salvage material" % grade
+			TeardownYield.material_for(grade) != &"", true, "%s declares a salvage material" % grade
 		)
 
 
@@ -210,7 +204,10 @@ func test_every_yielded_material_is_consumed_by_an_authored_recipe() -> void:
 		assert_ne(
 			int(consumers.get(material_id, 0)) > 0,
 			true,
-			"%s is consumed by at least one recipe (%d found)" % [material_id, consumers.get(material_id, 0)]
+			(
+				"%s is consumed by at least one recipe (%d found)"
+				% [material_id, consumers.get(material_id, 0)]
+			)
 		)
 
 

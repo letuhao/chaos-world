@@ -25,11 +25,11 @@ const ACTIONS: Array[StringName] = [
 	&"enchant",
 ]
 const ACTION_LABELS := {
-	&"create_slot": "Open socket",
-	&"impute_slot": "Imprint socket",
-	&"insert_socket": "Insert socket item",
-	&"extract_socket": "Extract socket item",
-	&"enchant": "Apply enchantment",
+	&"create_slot": "LOC_UI_SCREENS_DAD7D172D2",
+	&"impute_slot": "LOC_UI_SCREENS_597EC20B42",
+	&"insert_socket": "LOC_UI_SCREENS_11126D3BFD",
+	&"extract_socket": "LOC_UI_SCREENS_0602882E7A",
+	&"enchant": "LOC_UI_SCREENS_9E39C8840D",
 }
 const PRIMARY_ACTION := &"enchant"
 
@@ -175,11 +175,11 @@ func select_gem(index: int) -> void:
 func _refresh_view() -> void:
 	_bind_nodes()
 	var parent: Dictionary = _view.get("parent", {})
-	_parent_label.text = String(parent.get("display_name", "No socket host"))
-	_meta_label.text = _meta_text(parent)
+	_parent_label.text = L.t(String(parent.get("display_name", "No socket host")))
+	_meta_label.text = L.t(_meta_text(parent))
 	_fill_selectors()
 	_fill_rows(parent)
-	_enchant_label.text = _enchant_text()
+	_enchant_label.text = L.t(_enchant_text())
 	if _actions != null:
 		(
 			_actions
@@ -282,7 +282,7 @@ func _reconcile_selection() -> void:
 
 func _meta_text(parent: Dictionary) -> String:
 	if parent.is_empty():
-		return "No item that can carry a socket is owned."
+		return L.t("LOC_UI_SCREENS_EA18C84BB6")
 	var parts: Array = [
 		"%s / %s" % [parent.get("grade", ""), parent.get("subcategory", "")],
 		"%s rarity" % parent.get("rarity_label", ""),
@@ -326,9 +326,9 @@ func _slot_summaries() -> Dictionary:
 func _enchant_text() -> String:
 	var preview: Dictionary = _view.get("enchant_preview", {})
 	if preview.is_empty():
-		return "No item selected."
+		return L.t("LOC_UI_SCREENS_BC2FEAA24E")
 	if not bool(preview.get("ok", false)):
-		return "Enchantment unavailable: %s" % preview.get("reason", "")
+		return L.t("LOC_UI_SCREENS_EFE82D5748") % preview.get("reason", "")
 	return (
 		"Enchantment: %d permitted outcome(s), %d locked option(s), %d of %d treatments used"
 		% [

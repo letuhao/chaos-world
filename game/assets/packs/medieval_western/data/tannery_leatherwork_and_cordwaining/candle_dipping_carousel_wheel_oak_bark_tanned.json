@@ -1,0 +1,167 @@
+{
+  "id": "medieval_western.tannery_leatherwork_and_cordwaining.candle_dipping_carousel_wheel_oak_bark_tanned",
+  "name": "Oak-Bark Tanned Revolving Wheel of Dipped Tallow Tapers",
+  "vietnamese_name": "Bánh Xe Gỗ Quay Nhúng Nến Mỡ Từng Lớp (Thuộc Vỏ Sồi Nâu)",
+  "category": "tannery_leatherwork_and_cordwaining",
+  "sub_category": "tallow_renderers_vat_and_candles",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    2
+  ],
+  "canvas_px": [
+    128,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "low",
+  "interactive_verb": "dip_candles",
+  "gameplay_role": "Supply chain industry element (Revolving Wheel of Dipped Tallow Tapers).",
+  "destructible": false,
+  "material": "wood",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of oak-bark tanned revolving wheel of dipped tallow tapers, rich reddish-brown oak tannin liquor patina, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/tannery_leatherwork_and_cordwaining/candle_dipping_carousel_wheel_oak_bark_tanned.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.tannery_leatherwork_and_cordwaining.candle_dipping_carousel_wheel_oak_bark_tanned:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.387
+      ],
+      [
+        0.412
+      ]
+    ],
+    "frac_zero": 0.7451,
+    "blocks": [
+      [
+        true
+      ],
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      0,
+      1
+    ],
+    "sub_grid": [
+      3,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.508,
+        0.0
+      ],
+      [
+        0.0,
+        0.705,
+        0.206
+      ],
+      [
+        0.403,
+        0.869,
+        0.564
+      ],
+      [
+        0.701,
+        0.945,
+        0.741
+      ],
+      [
+        0.065,
+        0.778,
+        0.354
+      ],
+      [
+        0.0,
+        0.572,
+        0.0
+      ],
+      [
+        0.0,
+        0.399,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      38
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 16,
+    "contact_reference_px": 16.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      256
+    ]
+  }
+}

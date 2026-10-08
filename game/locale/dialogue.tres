@@ -1,0 +1,10 @@
+[gd_resource type="Translation" format=3]
+
+[resource]
+locale = "en"
+messages = {
+"LOC_DIALOGUE_ELDER_WEI_INTRO_LABEL_1": "Ask whose oath is written in that book.",
+"LOC_DIALOGUE_ELDER_WEI_INTRO_LABEL_2": "Then ask who holds the debt now.",
+"LOC_DIALOGUE_ELDER_WEI_INTRO_LABEL_3": "Say nothing more.",
+"LOC_DIALOGUE_ELDER_WEI_INTRO_LABEL_4": "Say nothing more.",
+}

@@ -30,7 +30,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d3_boulder_golem_pool_void_refinement"
-display_name = "Stone Golem Lesser salvage (void_refinement)"
+display_name = "LOC_LOOT_D3_BOULDER_GOLEM_VOID_REFINEMENT_0_DISPLAY_NAME"
 realm = &"void_refinement"
 rarity = &""
 rolls = 1

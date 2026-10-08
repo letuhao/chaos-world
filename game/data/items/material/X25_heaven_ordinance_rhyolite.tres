@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"X25_heaven_ordinance_rhyolite"
-display_name = "Heaven Ordinance Rhyolite"
+display_name = "LOC_ITEMS_X25_HEAVEN_ORDINANCE_RHYOLITE_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"heaven_immortal"

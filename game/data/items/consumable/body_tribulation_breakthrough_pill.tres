@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"body_tribulation_breakthrough_pill"
-display_name = "Copper Body Tempering Pill"
+display_name = "LOC_ITEMS_BODY_TRIBULATION_BREAKTHROUGH_PILL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"tribulation"
@@ -16,4 +16,4 @@ roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:body_tribulation_pill_recipe", &"boss:body_tribulation_guardian"])
-description = "Consumed by the Body Cultivation attempt entering Copper Body; no equipment modifier."
+description = "LOC_ITEMS_BODY_TRIBULATION_BREAKTHROUGH_PILL_DESCRIPTION"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"gem_dragons_eye"
-display_name = "Dragon's Eye"
+display_name = "LOC_ITEMS_GEM_DRAGONS_EYE_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"heaven_immortal"

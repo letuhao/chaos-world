@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B15_divine_calfskin_primed"
-display_name = "Divine Calfskin Primed"
+display_name = "LOC_ITEMS_B15_DIVINE_CALFSKIN_PRIMED_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"transcendent"

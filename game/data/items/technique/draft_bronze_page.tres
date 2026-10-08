@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"draft_bronze_page"
-display_name = "Bronze Draft Page"
+display_name = "LOC_ITEMS_DRAFT_BRONZE_PAGE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_ascension"

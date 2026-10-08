@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_boss")
 id = &"body_dao_fruit_guardian"
-display_name = "Body of Heaven Guardian"
+display_name = "LOC_BOSSES_BODY_DAO_FRUIT_GUARDIAN_DISPLAY_NAME"
 domain_id = &"body_dao_fruit_trial"
 loot = Array[StringName]([])

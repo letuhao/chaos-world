@@ -18,7 +18,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E5_unity_weaver_pool_mystic_immortal"
-display_name = "Unity Weaver salvage (mystic_immortal)"
+display_name = "LOC_LOOT_E5_UNITY_WEAVER_MYSTIC_IMMORTAL_0_DISPLAY_NAME"
 realm = &"mystic_immortal"
 rarity = &""
 rolls = 1

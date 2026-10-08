@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B43_divine_fealty_poise_status_resistance"
-display_name = "Divine Fealty Poise Status Resistance"
+display_name = "LOC_ITEMS_B43_DIVINE_FEALTY_POISE_STATUS_RESISTANCE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"

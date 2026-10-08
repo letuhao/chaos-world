@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"formula_layered_recipe"
-display_name = "Layered Formula Recipe"
+display_name = "LOC_RECIPES_FORMULA_LAYERED_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"tablet_celestial", &"shard_supernova"])
 outputs = Array[StringName]([&"formula_layered"])

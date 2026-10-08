@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"rune_mist_essence"
-display_name = "Mist Rune Essence"
+display_name = "LOC_ITEMS_RUNE_MIST_ESSENCE_DISPLAY_NAME"
 category = &"material"
 rarity = &"magic"
 realm = &"spirit_domain"

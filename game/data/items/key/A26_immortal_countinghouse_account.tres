@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"A26_immortal_countinghouse_account"
-display_name = "Immortal Countinghouse Account"
+display_name = "LOC_ITEMS_A26_IMMORTAL_COUNTINGHOUSE_ACCOUNT_DISPLAY_NAME"
 category = &"key"
 rarity = &"legendary"
 realm = &"great_luo"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"carvebone_rib"
-display_name = "Carved Rib"
+display_name = "LOC_ITEMS_CARVEBONE_RIB_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"tribulation"

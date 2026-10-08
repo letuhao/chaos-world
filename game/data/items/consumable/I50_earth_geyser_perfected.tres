@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"I50_earth_geyser_perfected"
-display_name = "Earth Geyser Perfected"
+display_name = "LOC_ITEMS_I50_EARTH_GEYSER_PERFECTED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_sea"

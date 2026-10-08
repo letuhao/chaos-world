@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"pact_ascendant_token"
-display_name = "Ascendant's Pact Token"
+display_name = "LOC_ITEMS_PACT_ASCENDANT_TOKEN_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"primordial_origin"

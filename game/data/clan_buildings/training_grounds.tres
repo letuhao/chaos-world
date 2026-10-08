@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1")
 id = &"training_grounds"
-display_name = "Training Grounds"
-description = "A dedicated space for combat training. Improves combat experience gain and unlocks training verbs."
+display_name = "LOC_CLAN_BUILDINGS_TRAINING_GROUNDS_DISPLAY_NAME"
+description = "LOC_CLAN_BUILDINGS_TRAINING_GROUNDS_DESCRIPTION"
 category = &"combat"
 max_level = 3
 base_cost_materials = 200

@@ -30,7 +30,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_qi_body_integration_guardian_pool_spirit_sovereign"
-display_name = "Body Integration Guardian salvage (spirit_sovereign)"
+display_name = "LOC_LOOT_QI_BODY_INTEGRATION_GUARDIAN_SPIRIT_SOVEREIGN_0_DISPLAY_NAME"
 realm = &"spirit_sovereign"
 rarity = &""
 rolls = 1

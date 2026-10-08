@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"D9_spirit_windstride_greave"
-display_name = "Spirit Windstride Greave"
+display_name = "LOC_ITEMS_D9_SPIRIT_WINDSTRIDE_GREAVE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"magic"
 realm = &"spirit_palace"

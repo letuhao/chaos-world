@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"mind_true_immortal_channel_elixir"
-display_name = "Awakening Lucidity Elixir"
+display_name = "LOC_ITEMS_MIND_TRUE_IMMORTAL_CHANNEL_ELIXIR_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"true_immortal"
@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"elixir"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:mind_true_immortal_elixir_recipe"])
-description = "Advances one meridian a step, or deepens a strengthened channel."
+description = "LOC_ITEMS_MIND_TRUE_IMMORTAL_CHANNEL_ELIXIR_DESCRIPTION"

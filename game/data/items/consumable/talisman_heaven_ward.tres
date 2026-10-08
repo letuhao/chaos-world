@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"talisman_heaven_ward"
-display_name = "Heaven Ward Talisman"
+display_name = "LOC_ITEMS_TALISMAN_HEAVEN_WARD_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"

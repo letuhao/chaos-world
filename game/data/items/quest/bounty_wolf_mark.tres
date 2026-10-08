@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"bounty_wolf_mark"
-display_name = "Wolf Pack Bounty Mark"
+display_name = "LOC_ITEMS_BOUNTY_WOLF_MARK_DISPLAY_NAME"
 category = &"quest"
 rarity = &"common"
 realm = &"great_ascension"

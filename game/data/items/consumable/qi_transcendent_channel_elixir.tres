@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"qi_transcendent_channel_elixir"
-display_name = "Transcendent Channel Elixir"
+display_name = "LOC_ITEMS_QI_TRANSCENDENT_CHANNEL_ELIXIR_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"transcendent"
@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"elixir"
 grade = &"divine"
 sources = Array[StringName]([&"craft:qi_transcendent_elixir_recipe"])
-description = "Advances one meridian a step, or deepens a strengthened channel."
+description = "LOC_ITEMS_QI_TRANSCENDENT_CHANNEL_ELIXIR_DESCRIPTION"

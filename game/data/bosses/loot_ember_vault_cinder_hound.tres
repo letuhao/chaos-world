@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_boss")
 id = &"loot_ember_vault_cinder_hound"
-display_name = "Ember Vault Cinder Hound"
+display_name = "LOC_BOSSES_LOOT_EMBER_VAULT_CINDER_HOUND_DISPLAY_NAME"
 domain_id = &"loot_ember_vault_domain"
 loot = Array[StringName]([])
 ; A burning thing makes the air around it burn harder. `fire_pyre` is the amplifier half

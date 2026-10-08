@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 id = &"bone_pillar"
-display_name = "Beast-Bone Pillar"
+display_name = "LOC_BODY_CULTIVATION_BONE_PILLAR_DISPLAY_NAME"
 best_against = "Crush and weight: a hollow bone column carries load a flesh one folds under."
 material = &"bone"
 transforms_into = &"spine"

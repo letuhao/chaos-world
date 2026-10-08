@@ -6,7 +6,7 @@
 [sub_resource type="Resource" id="tier_0"]
 script = ExtResource("3_tier")
 tier = 1
-label = "Warded"
+label = "LOC_LOOT_LOOT_EMBER_VAULT_LABEL_1"
 realm = &"spirit_severing"
 rarity = &"common"
 vitality = 12843.8
@@ -19,7 +19,7 @@ boss_tables = Array[Dictionary]([
 [sub_resource type="Resource" id="tier_1"]
 script = ExtResource("3_tier")
 tier = 2
-label = "Kindled"
+label = "LOC_LOOT_LOOT_EMBER_VAULT_LABEL_2"
 realm = &"spirit_unity"
 rarity = &"magic"
 vitality = 20550.0
@@ -32,7 +32,7 @@ boss_tables = Array[Dictionary]([
 [resource]
 script = ExtResource("1_encounter")
 id = &"loot_ember_vault"
-display_name = "Ember Vault"
+display_name = "LOC_LOOT_LOOT_EMBER_VAULT_DISPLAY_NAME"
 domain_id = &"loot_ember_vault_domain"
 boss_ids = Array[StringName]([&"loot_ember_vault_warden", &"loot_ember_vault_cinder_hound", &"loot_ember_vault_ash_pilgrim"])
 key_reach = 0

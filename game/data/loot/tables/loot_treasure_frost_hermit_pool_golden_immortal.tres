@@ -30,7 +30,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_treasure_frost_hermit_pool_golden_immortal"
-display_name = "Frost Hermit salvage (golden_immortal)"
+display_name = "LOC_LOOT_TREASURE_FROST_HERMIT_GOLDEN_IMMORTAL_0_DISPLAY_NAME"
 realm = &"golden_immortal"
 rarity = &""
 rolls = 1

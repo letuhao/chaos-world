@@ -30,7 +30,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d1_storm_phoenix_fledgling_pool_dao_ancestor"
-display_name = "Storm Phoenix Fledgling Lesser salvage (dao_ancestor)"
+display_name = "LOC_LOOT_D1_STORM_PHOENIX_FLEDGLING_DAO_ANCESTOR_0_DISPLAY_NAME"
 realm = &"dao_ancestor"
 rarity = &""
 rolls = 1

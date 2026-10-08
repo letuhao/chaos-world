@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 id = &"crystal_lens"
-display_name = "Crystal Lens"
+display_name = "LOC_BODY_CULTIVATION_CRYSTAL_LENS_DISPLAY_NAME"
 best_against = "Illusion and misdirection: a cut that never resolves."
 material = &"mineral"
 transforms_into = &"eye"

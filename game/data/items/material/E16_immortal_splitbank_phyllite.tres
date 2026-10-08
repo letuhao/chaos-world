@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E16_immortal_splitbank_phyllite"
-display_name = "Immortal Splitbank Phyllite"
+display_name = "LOC_ITEMS_E16_IMMORTAL_SPLITBANK_PHYLLITE_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"golden_immortal"

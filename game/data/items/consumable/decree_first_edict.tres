@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"decree_first_edict"
-display_name = "Decree: First Edict"
+display_name = "LOC_ITEMS_DECREE_FIRST_EDICT_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"body_integration"

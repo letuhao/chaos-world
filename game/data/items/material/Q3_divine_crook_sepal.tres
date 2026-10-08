@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Q3_divine_crook_sepal"
-display_name = "Divine Crook Sepal"
+display_name = "LOC_ITEMS_Q3_DIVINE_CROOK_SEPAL_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"dao_ancestor"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Z35_spirit_millstone_demantoid"
-display_name = "Spirit Millstone Demantoid"
+display_name = "LOC_ITEMS_Z35_SPIRIT_MILLSTONE_DEMANTOID_DISPLAY_NAME"
 category = &"material"
 rarity = &"magic"
 realm = &"spirit_palace"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E8_mortal_tappingpan_dammar"
-display_name = "Mortal Tappingpan Dammar"
+display_name = "LOC_ITEMS_E8_MORTAL_TAPPINGPAN_DAMMAR_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"core_formation"

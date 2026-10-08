@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F2_earth_cull_comprehension_agility_stamina_regen_qi_regen"
-display_name = "Earth Cull Comprehension Agility Stamina Regen Qi Regen"
+display_name = "LOC_ITEMS_F2_EARTH_CULL_COMPREHENSION_AGILITY_STAMINA_REGEN_QI_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_sea"

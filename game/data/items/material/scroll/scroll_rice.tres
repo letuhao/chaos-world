@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"scroll_rice"
-display_name = "Rice Scroll"
+display_name = "LOC_ITEMS_SCROLL_RICE_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"qi_refining"
@@ -20,4 +20,4 @@ subcategory = &"scroll"
 grade = &"mortal"
 tags = Array[StringName]([&"common"])
 sources = Array[StringName]([&"craft:scroll_rice_recipe", &"domain:amulet_storm_phoenix_domain"])
-description = "A scroll made from rice paper. Slightly more refined than hemp."
+description = "LOC_ITEMS_SCROLL_RICE_DESCRIPTION"

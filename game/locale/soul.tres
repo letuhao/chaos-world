@@ -1,0 +1,12 @@
+[gd_resource type="Translation" format=3]
+
+[resource]
+locale = "en"
+messages = {
+"LOC_SOUL_THE_LEDGER_KNOWS_YOUR_NAME_DESCRIPTION": "The third return. By now the record of what you were outlives the body doing the recording, and the two are no longer the same size.",
+"LOC_SOUL_THE_LEDGER_KNOWS_YOUR_NAME_DISPLAY_NAME": "The Ledger Knows Your Name",
+"LOC_SOUL_THE_ONE_WHO_WAS_CARRIED_OUT_DESCRIPTION": "The second return. This body does not arrive under its own power; someone else finished the journey, and the ledger records who.",
+"LOC_SOUL_THE_ONE_WHO_WAS_CARRIED_OUT_DISPLAY_NAME": "The One Who Was Carried Out",
+"LOC_SOUL_THE_WALKER_BACK_THROUGH_ASH_DESCRIPTION": "The first return. Whatever the body was doing when it stopped, the soul arrives walking, and the world is measurably older than it was.",
+"LOC_SOUL_THE_WALKER_BACK_THROUGH_ASH_DISPLAY_NAME": "The Walker Back Through Ash",
+}

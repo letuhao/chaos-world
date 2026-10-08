@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F48_divine_greenockite_breakthrough_chance_penetration_stamina_regen"
-display_name = "Divine Greenockite Breakthrough chance Penetration Stamina regen"
+display_name = "LOC_ITEMS_F48_DIVINE_GREENOCKITE_BREAKTHROUGH_CHANCE_PENETRATION_STAMINA_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_ancestor"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Z34_spirit_halite_gutter"
-display_name = "Spirit Flagon Gutter"
+display_name = "LOC_ITEMS_Z34_SPIRIT_HALITE_GUTTER_DISPLAY_NAME"
 category = &"material"
 rarity = &"magic"
 realm = &"spirit_sea"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"W5_heaven_ashlar_gossan"
-display_name = "Heaven Ashlar Gossan"
+display_name = "LOC_ITEMS_W5_HEAVEN_ASHLAR_GOSSAN_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"dao_fruit"

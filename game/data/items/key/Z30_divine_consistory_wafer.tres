@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Z30_divine_consistory_wafer"
-display_name = "Divine Consistory Wafer"
+display_name = "LOC_ITEMS_Z30_DIVINE_CONSISTORY_WAFER_DISPLAY_NAME"
 category = &"key"
 rarity = &"legendary"
 realm = &"primordial_origin"

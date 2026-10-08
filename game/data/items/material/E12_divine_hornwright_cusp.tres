@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E12_divine_hornwright_cusp"
-display_name = "Divine Hornwright Cusp"
+display_name = "LOC_ITEMS_E12_DIVINE_HORNWRIGHT_CUSP_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"transcendent"

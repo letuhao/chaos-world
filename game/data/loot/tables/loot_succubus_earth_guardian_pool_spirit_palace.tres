@@ -18,7 +18,7 @@ rarity_floor = &"magic"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_succubus_earth_guardian_pool_spirit_palace"
-display_name = "Earth Bloom Guardian salvage (spirit_palace)"
+display_name = "LOC_LOOT_SUCCUBUS_EARTH_GUARDIAN_SPIRIT_PALACE_0_DISPLAY_NAME"
 realm = &"spirit_palace"
 rarity = &""
 rolls = 1

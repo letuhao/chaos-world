@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"sigil_flame"
-display_name = "Sigil of Flame"
+display_name = "LOC_ITEMS_SIGIL_FLAME_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"nascent_soul"

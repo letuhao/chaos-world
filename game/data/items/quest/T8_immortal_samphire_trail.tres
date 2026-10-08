@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"T8_immortal_samphire_trail"
-display_name = "Immortal Samphire Trail"
+display_name = "LOC_ITEMS_T8_IMMORTAL_SAMPHIRE_TRAIL_DISPLAY_NAME"
 category = &"quest"
 rarity = &"legendary"
 realm = &"earth_immortal"

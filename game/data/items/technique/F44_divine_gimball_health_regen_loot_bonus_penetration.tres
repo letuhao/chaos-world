@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F44_divine_gimball_health_regen_loot_bonus_penetration"
-display_name = "Divine Gimball Health regen Loot bonus Penetration"
+display_name = "LOC_ITEMS_F44_DIVINE_GIMBALL_HEALTH_REGEN_LOOT_BONUS_PENETRATION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"

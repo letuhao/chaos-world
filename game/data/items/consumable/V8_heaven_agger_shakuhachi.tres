@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V8_heaven_agger_shakuhachi"
-display_name = "Heaven Agger Shakuhachi"
+display_name = "LOC_ITEMS_V8_HEAVEN_AGGER_SHAKUHACHI_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"primordial_immortal"

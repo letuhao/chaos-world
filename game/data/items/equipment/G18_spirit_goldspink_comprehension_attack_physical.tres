@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G18_spirit_goldspink_comprehension_attack_physical"
-display_name = "Spirit Goldspink Comprehension Attack physical"
+display_name = "LOC_ITEMS_G18_SPIRIT_GOLDSPINK_COMPREHENSION_ATTACK_PHYSICAL_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"magic"
 realm = &"spirit_ascension"

@@ -37,7 +37,7 @@ func test_localize_tree_resolves_a_scene_declared_key() -> void:
 	label.text = "LOC_UI_SCREENS_1BADD5A415"
 	root.add_child(label)
 	assert_eq(L.localize_tree(root), 1, "the scene key resolves")
-	assert_eq(label.text, "Inputs unknown", "to the catalog's English")
+	assert_eq(L.t(label.text), "Inputs unknown", "to the catalog's English")
 	assert_eq(L.localize_tree(root), 0, "and a second pass changes nothing")
 	root.remove_child(label)
 	label.free()

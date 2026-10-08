@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F18_immortal_ensconce_agility_aptitude_insight_gain_will"
-display_name = "Immortal Ensconce Agility Aptitude Insight gain Will"
+display_name = "LOC_ITEMS_F18_IMMORTAL_ENSCONCE_AGILITY_APTITUDE_INSIGHT_GAIN_WILL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"earth_immortal"

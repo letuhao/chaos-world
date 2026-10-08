@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"cut_agate_facet"
-display_name = "Cut Agate Facet"
+display_name = "LOC_ITEMS_CUT_AGATE_FACET_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"nascent_soul"

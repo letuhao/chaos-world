@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F35_mortal_frackle_comprehension_defense_physical_fortune_qi_regen"
-display_name = "Mortal Frackle Comprehension Defense physical Fortune Qi regen"
+display_name = "LOC_ITEMS_F35_MORTAL_FRACKLE_COMPREHENSION_DEFENSE_PHYSICAL_FORTUNE_QI_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"great_ascension"

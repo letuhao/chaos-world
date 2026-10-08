@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Z36_heaven_relict_raphe"
-display_name = "Heaven Drupelet Raphe"
+display_name = "LOC_ITEMS_Z36_HEAVEN_RELICT_RAPHE_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"golden_immortal"

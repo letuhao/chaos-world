@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"I70_divine_hauberk_aged"
-display_name = "Divine Hauberk Aged"
+display_name = "LOC_ITEMS_I70_DIVINE_HAUBERK_AGED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_ancestor"

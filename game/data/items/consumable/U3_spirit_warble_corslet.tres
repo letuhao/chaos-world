@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U3_spirit_warble_corslet"
-display_name = "Spirit Warble Corslet"
+display_name = "LOC_ITEMS_U3_SPIRIT_WARBLE_CORSLET_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_palace"

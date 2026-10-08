@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"scroll_celestial"
-display_name = "Celestial Scroll"
+display_name = "LOC_ITEMS_SCROLL_CELESTIAL_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"transcendent"
@@ -20,4 +20,4 @@ subcategory = &"scroll"
 grade = &"divine"
 tags = Array[StringName]([&"celestial"])
 sources = Array[StringName]([&"craft:scroll_celestial_recipe", &"domain:amulet_iron_sage_domain"])
-description = "The ultimate scroll, containing celestial-grade cultivation truths."
+description = "LOC_ITEMS_SCROLL_CELESTIAL_DESCRIPTION"

@@ -45,15 +45,12 @@ const PRESET_SPARE_ROWS := 2
 const ANCHOR_SPARE_ROWS := 2
 const PRESET_SCENE := "res://src/ui/panels/difficulty_preset_row.tscn"
 const ANCHOR_SCENE := "res://src/ui/panels/anchor_construction_row.tscn"
-const PRESET_PREFIX := "Preset"
-const ANCHOR_PREFIX := "Anchor"
+const PRESET_PREFIX := "LOC_UI_SCREENS_BCA788763D"
+const ANCHOR_PREFIX := "LOC_UI_SCREENS_8F8C77E740"
 
-const HEADER_TEXT := "The soul you are playing under, and the ground you can stand on."
-const NO_ACTOR_TEXT := "No hero bound."
-const FOOTER_TEXT := (
-	"A death costs the soul and never the world. The world never rewinds and nothing is "
-	+ "undone."
-)
+const HEADER_TEXT := "LOC_UI_SCREENS_2F80BB6A2E"
+const NO_ACTOR_TEXT := "LOC_UI_SCREENS_6E9BC19A74"
+const FOOTER_TEXT := "LOC_UI_SCREENS_EB10DBD224" + "undone."
 ## The refusal this screen raises ITSELF, before any verb is called, in the same
 ## `{ok, reason}` vocabulary the modules use so one renderer covers both.
 const NO_SOUL_SEAM := "no_soul_seam"
@@ -316,11 +313,11 @@ func _render() -> void:
 	if _header == null:
 		return
 	if _actor == null:
-		_header.text = NO_ACTOR_TEXT
+		_header.text = L.t(NO_ACTOR_TEXT)
 		_footer.text = ""
 		return
-	_header.text = HEADER_TEXT
-	_footer.text = FOOTER_TEXT
+	_header.text = L.t(HEADER_TEXT)
+	_footer.text = L.t(FOOTER_TEXT)
 
 
 ## Resolved lazily, never in `@onready`: the headless runner drives every screen

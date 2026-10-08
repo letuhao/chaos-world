@@ -6,7 +6,7 @@
 [sub_resource type="Resource" id="tier_0"]
 script = ExtResource("2_tier")
 tier = 1
-label = "Gate"
+label = "LOC_LOOT_LOOT_MIND_CORE_FORMATION_TRIAL_LABEL_1"
 realm = &"core_formation"
 rarity = &"common"
 vitality = 2343.8
@@ -18,7 +18,7 @@ boss_tables = Array[Dictionary]([
 [sub_resource type="Resource" id="tier_1"]
 script = ExtResource("2_tier")
 tier = 2
-label = "Depths"
+label = "LOC_LOOT_LOOT_MIND_CORE_FORMATION_TRIAL_LABEL_2"
 realm = &"core_formation"
 rarity = &"rare"
 vitality = 3750.
@@ -30,7 +30,7 @@ boss_tables = Array[Dictionary]([
 [resource]
 script = ExtResource("1_encounter")
 id = &"loot_mind_core_formation_trial"
-display_name = "Clarity Trial"
+display_name = "LOC_LOOT_LOOT_MIND_CORE_FORMATION_TRIAL_DISPLAY_NAME"
 domain_id = &"mind_core_formation_trial"
 boss_ids = Array[StringName]([&"mind_core_formation_warden", &"F1_core_formation_warden"])
 key_reach = 0

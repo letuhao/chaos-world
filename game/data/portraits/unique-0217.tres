@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_portrait")
 id = &"unique-0217"
-display_name = "Ordra Fellstone"
+display_name = "LOC_PORTRAITS_UNIQUE_0217_DISPLAY_NAME"
 race_id = &"stoneborn"
 visual_traits = Array[StringName]([&"burden:eleven-years-of-nothing-to-report", &"class:control-body-who-is-not-called-one", &"craft:holds-the-immersion-count-not-the-hands", &"gift:her-frame-prints-its-own-outline", &"hazard:the-guilds-currency-is-inert-on-her", &"path:body-path", &"role:the-years-cold", &"standing:the-only-stoneborn-the-guild-can-measure"])
 layer_paths = Array[String](["res://assets/characters/portraits/stoneborn.png"])

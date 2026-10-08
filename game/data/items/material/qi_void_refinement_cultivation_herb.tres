@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"qi_void_refinement_cultivation_herb"
-display_name = "Void Refinement Herb"
+display_name = "LOC_ITEMS_QI_VOID_REFINEMENT_CULTIVATION_HERB_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"void_refinement"
@@ -16,4 +16,4 @@ roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"herb"
 grade = &"mortal"
 sources = Array[StringName]([&"gather", &"domain:qi_spirit_sea_trial"])
-description = "Cultivation herb for Void Refinement. Gathered from the wild."
+description = "LOC_ITEMS_QI_VOID_REFINEMENT_CULTIVATION_HERB_DESCRIPTION"

@@ -62,7 +62,11 @@ func test_a_held_piece_tears_down_into_its_grade_material() -> void:
 
 	assert_eq(bool(result.get("ok", false)), true, "the teardown is accepted")
 	assert_eq(String(result.get("reason", "?")), "", "with no refusal reason")
-	assert_eq(String(result.get("material_id", "")), String(MORTAL_MATERIAL), "paying the grade's material")
+	assert_eq(
+		String(result.get("material_id", "")),
+		String(MORTAL_MATERIAL),
+		"paying the grade's material"
+	)
 
 	# The observable outcome: the piece is GONE and the material is THERE.
 	assert_eq(inventory.count(def.id), 0, "the torn-down piece is no longer carried")
@@ -103,11 +107,7 @@ func test_the_yielded_material_is_then_spent_by_crafting() -> void:
 	var crafted := Crafting.new(recipe.station)
 
 	assert_eq(crafted.craft(recipe, inventory), true, "the recipe consumes the teardown output")
-	assert_eq(
-		inventory.count(MORTAL_MATERIAL),
-		before - 1,
-		"exactly one yielded unit was spent"
-	)
+	assert_eq(inventory.count(MORTAL_MATERIAL), before - 1, "exactly one yielded unit was spent")
 	assert_eq(inventory.count(RECIPE_OUTPUT), 1, "and the craft produced its output")
 
 
@@ -135,11 +135,11 @@ func test_teardown_frees_the_bag_slots_a_full_bag_needs() -> void:
 	var freed := BAG / 2
 	for index in freed:
 		var result := ItemTeardown.tear_down(actor, ids[index])
-		assert_eq(bool(result.get("ok", false)), true, "teardown accepted (%d of %d)" % [index, freed])
+		assert_eq(
+			bool(result.get("ok", false)), true, "teardown accepted (%d of %d)" % [index, freed]
+		)
 
-	assert_eq(
-		inventory.used_slots() < BAG, true, "breaking gear down gave bag slots back"
-	)
+	assert_eq(inventory.used_slots() < BAG, true, "breaking gear down gave bag slots back")
 	assert_eq(inventory.is_full(), false, "so a guaranteed pickup fits again")
 	# And the slots really are reusable, not merely re-counted.
 	var late := _acquire(actor, def, 7777)
@@ -159,7 +159,11 @@ func test_a_preview_changes_nothing() -> void:
 	var quote := ItemTeardown.preview(actor, instance.instance_id)
 
 	assert_eq(bool(quote.get("ok", false)), true, "a holdable piece previews as tearable")
-	assert_eq(String(quote.get("material_id", "")), String(MORTAL_MATERIAL), "quoting the grade's material")
+	assert_eq(
+		String(quote.get("material_id", "")),
+		String(MORTAL_MATERIAL),
+		"quoting the grade's material"
+	)
 	assert_eq(int(quote.get("units", 0)) > 0, true, "quoting a non-zero yield")
 	assert_eq(inventory.count(def.id), 1, "the piece is still carried after a preview")
 	assert_eq(inventory.count(MORTAL_MATERIAL), 0, "and the preview granted nothing")

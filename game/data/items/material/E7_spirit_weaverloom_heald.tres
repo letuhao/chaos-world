@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E7_spirit_weaverloom_heald"
-display_name = "Spirit Weaverloom Heald"
+display_name = "LOC_ITEMS_E7_SPIRIT_WEAVERLOOM_HEALD_DISPLAY_NAME"
 category = &"material"
 rarity = &"magic"
 realm = &"spirit_domain"

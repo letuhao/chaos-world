@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C30_heaven_seedhouse_testa"
-display_name = "Heaven Seedhouse Testa"
+display_name = "LOC_ITEMS_C30_HEAVEN_SEEDHOUSE_TESTA_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"immortal_sovereign"

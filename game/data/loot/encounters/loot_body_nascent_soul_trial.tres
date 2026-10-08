@@ -6,7 +6,7 @@
 [sub_resource type="Resource" id="tier_0"]
 script = ExtResource("2_tier")
 tier = 1
-label = "Gate"
+label = "LOC_LOOT_LOOT_BODY_NASCENT_SOUL_TRIAL_LABEL_1"
 realm = &"nascent_soul"
 rarity = &"common"
 vitality = 2625.
@@ -18,7 +18,7 @@ boss_tables = Array[Dictionary]([
 [sub_resource type="Resource" id="tier_1"]
 script = ExtResource("2_tier")
 tier = 2
-label = "Depths"
+label = "LOC_LOOT_LOOT_BODY_NASCENT_SOUL_TRIAL_LABEL_2"
 realm = &"nascent_soul"
 rarity = &"rare"
 vitality = 4200.
@@ -30,7 +30,7 @@ boss_tables = Array[Dictionary]([
 [resource]
 script = ExtResource("1_encounter")
 id = &"loot_body_nascent_soul_trial"
-display_name = "Marrow Cleansing Trial"
+display_name = "LOC_LOOT_LOOT_BODY_NASCENT_SOUL_TRIAL_DISPLAY_NAME"
 domain_id = &"body_nascent_soul_trial"
 boss_ids = Array[StringName]([&"body_nascent_soul_guardian", &"E2_nascent_soul_herald"])
 key_reach = 0

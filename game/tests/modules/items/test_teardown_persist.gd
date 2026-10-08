@@ -63,9 +63,7 @@ func test_the_result_of_a_teardown_round_trips_through_a_load() -> void:
 	var recipe: RecipeDef = load(RECIPE)
 	var crafting := Crafting.new(recipe.station)
 	assert_eq(crafting.craft(recipe, loaded_inv), true, "the loaded material is spendable")
-	assert_eq(
-		loaded_inv.count(MORTAL_MATERIAL), units - 1, "and spending it really removed a unit"
-	)
+	assert_eq(loaded_inv.count(MORTAL_MATERIAL), units - 1, "and spending it really removed a unit")
 	assert_eq(loaded_inv.count(RECIPE_OUTPUT), 1, "producing the recipe's output")
 
 
@@ -100,7 +98,9 @@ func test_a_teardown_adds_no_payload_section_of_its_own() -> void:
 	var instance := ItemsApi.generate(saved, def, 99)
 	assert_ne(instance, null, "acquired the piece")
 	assert_eq(
-		bool(ItemTeardown.tear_down(saved, instance.instance_id).get("ok", false)), true, "torn down"
+		bool(ItemTeardown.tear_down(saved, instance.instance_id).get("ok", false)),
+		true,
+		"torn down"
 	)
 	var payload := ItemsApi.serialize(saved)
 	var sections: Array = payload.keys()

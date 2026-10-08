@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"A5_divine_alkalis_perfected_recipe"
-display_name = "Divine Alkalis Perfected Recipe"
+display_name = "LOC_RECIPES_A5_DIVINE_ALKALIS_PERFECTED_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"A5_divine_alkalis_primed", &"divine_voidwyrm_core", &"divine_nether_essence"])
 outputs = Array[StringName]([&"A5_divine_alkalis_perfected"])

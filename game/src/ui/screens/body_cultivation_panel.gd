@@ -78,7 +78,7 @@ func set_message(message: String, tone: StringName = &"") -> void:
 	_message = message
 	_tone = tone
 	if _message_label != null:
-		_message_label.text = _message
+		_message_label.text = L.t(_message)
 		_message_label.theme_type_variation = _tone_variation()
 
 
@@ -164,10 +164,10 @@ func _render_attempt_button(view: Dictionary, ready: bool) -> void:
 	var committed := _attempt_committed(view)
 	if committed:
 		_breakthrough_button.disabled = false
-		_breakthrough_button.text = "Resolve into %s" % _attempt_target(view)
+		_breakthrough_button.text = L.t("LOC_UI_SCREENS_0CDCCA9915") % _attempt_target(view)
 		return
 	_breakthrough_button.disabled = not ready
-	_breakthrough_button.text = _breakthrough_label
+	_breakthrough_button.text = L.t(_breakthrough_label)
 
 
 ## Whether an attempt is committed and awaiting its roll.

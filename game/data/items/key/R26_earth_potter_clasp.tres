@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"R26_earth_potter_clasp"
-display_name = "Earth Potter Clasp"
+display_name = "LOC_ITEMS_R26_EARTH_POTTER_CLASP_DISPLAY_NAME"
 category = &"key"
 rarity = &"rare"
 realm = &"spirit_severing"

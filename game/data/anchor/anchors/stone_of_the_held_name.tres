@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_anchor")
 id = &"stone_of_the_held_name"
-display_name = "Stone of the Held Name"
-description = "A standing stone that remembers every soul that failed inside it. It repairs nothing and prevents nothing; what it does is make the next death cost nothing at all, once, to whoever is named on it."
+display_name = "LOC_ANCHOR_STONE_OF_THE_HELD_NAME_DISPLAY_NAME"
+description = "LOC_ANCHOR_STONE_OF_THE_HELD_NAME_DESCRIPTION"
 build_cost = {"coins": 900, "items": {}}
 repair_per_period = 0.0
 realm_floor = &"core_formation"

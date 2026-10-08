@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"Z10_immortal_barge_aged_alt_recipe"
-display_name = "Immortal Barge Aged (Alt) Recipe"
+display_name = "LOC_RECIPES_Z10_IMMORTAL_BARGE_AGED_ALT_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"Z10_immortal_barge_refined", &"X24_immortal_octroi_wad", &"filament_starlinen"])
 outputs = Array[StringName]([&"Z10_immortal_barge_aged"])

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E11_divine_barkwatch_phellem"
-display_name = "Divine Barkwatch Phellem"
+display_name = "LOC_ITEMS_E11_DIVINE_BARKWATCH_PHELLEM_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"dao_ancestor"

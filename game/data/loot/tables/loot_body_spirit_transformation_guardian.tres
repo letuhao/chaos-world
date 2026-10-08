@@ -198,7 +198,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_body_spirit_transformation_guardian"
-display_name = "Tendon Strengthening Guardian"
+display_name = "LOC_LOOT_BODY_SPIRIT_TRANSFORMATION_GUARDIAN_CORE_0_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

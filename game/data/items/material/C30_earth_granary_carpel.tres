@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C30_earth_granary_carpel"
-display_name = "Earth Granary Carpel"
+display_name = "LOC_ITEMS_C30_EARTH_GRANARY_CARPEL_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_sovereign"

@@ -42,7 +42,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E3_integration_arbiter_pool_golden_immortal"
-display_name = "Body Integration Arbiter salvage (golden_immortal)"
+display_name = "LOC_LOOT_E3_INTEGRATION_ARBITER_GOLDEN_IMMORTAL_0_DISPLAY_NAME"
 realm = &"golden_immortal"
 rarity = &""
 rolls = 1

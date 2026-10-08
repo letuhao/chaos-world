@@ -203,11 +203,11 @@ func _refresh_view() -> void:
 func _render() -> void:
 	if _status != null:
 		if _actor == null:
-			_status.text = "No hero bound."
+			_status.text = L.t("LOC_UI_SCREENS_6E9BC19A74")
 		elif can_continue():
-			_status.text = "A saved journey exists. Continue it, or begin anew."
+			_status.text = L.t("LOC_UI_SCREENS_B6B1FA92B2")
 		else:
-			_status.text = "No saved journey. Begin anew."
+			_status.text = L.t("LOC_UI_SCREENS_56B32C4B2B")
 	if _continue_button != null:
 		_continue_button.disabled = not can_continue()
 	if _new_game_button != null:

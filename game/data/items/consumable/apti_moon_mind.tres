@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"apti_moon_mind"
-display_name = "Moon Mind Elixir"
+display_name = "LOC_ITEMS_APTI_MOON_MIND_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"dao_fruit"

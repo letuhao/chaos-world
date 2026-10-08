@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"censer_ash_recipe"
-display_name = "Ash Censer Recipe"
+display_name = "LOC_RECIPES_CENSER_ASH_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"censer_ash_essence"])
 outputs = Array[StringName]([&"censer_ash"])

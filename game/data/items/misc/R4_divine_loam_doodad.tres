@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"R4_divine_loam_doodad"
-display_name = "Divine Loam Doodad"
+display_name = "LOC_ITEMS_R4_DIVINE_LOAM_DOODAD_DISPLAY_NAME"
 category = &"misc"
 rarity = &"legendary"
 realm = &"transcendent"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"mind_primordial_origin_recovery_elixir"
-display_name = "Primordial Origin Clarity Elixir"
+display_name = "LOC_ITEMS_MIND_PRIMORDIAL_ORIGIN_RECOVERY_ELIXIR_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"
@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"elixir"
 grade = &"divine"
 sources = Array[StringName]([&"craft:mind_primordial_origin_recovery_recipe"])
-description = "Calms a clouded sea of consciousness and repairs one burned channel after a failed breakthrough."
+description = "LOC_ITEMS_MIND_PRIMORDIAL_ORIGIN_RECOVERY_ELIXIR_DESCRIPTION"

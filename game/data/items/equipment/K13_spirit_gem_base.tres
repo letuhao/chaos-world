@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"K13_spirit_gem_base"
-display_name = "Spirit Gem Base"
+display_name = "LOC_ITEMS_K13_SPIRIT_GEM_BASE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"magic"
 realm = &"spirit_manifestation"

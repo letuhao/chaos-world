@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U12_divine_sallet_perfected"
-display_name = "Divine Sallet Perfected"
+display_name = "LOC_ITEMS_U12_DIVINE_SALLET_PERFECTED_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"transcendent"

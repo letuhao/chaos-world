@@ -42,7 +42,7 @@ rarity_floor = &"magic"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d1_void_leviathan_spawn_pool_spirit_domain"
-display_name = "Void Leviathan Spawn Lesser salvage (spirit_domain)"
+display_name = "LOC_LOOT_D1_VOID_LEVIATHAN_SPAWN_SPIRIT_DOMAIN_0_DISPLAY_NAME"
 realm = &"spirit_domain"
 rarity = &""
 rolls = 1

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"compre_primordial_page"
-display_name = "Primordial Page Manual"
+display_name = "LOC_ITEMS_COMPRE_PRIMORDIAL_PAGE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_ancestor"

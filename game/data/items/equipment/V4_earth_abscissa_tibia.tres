@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V4_earth_abscissa_tibia"
-display_name = "Earth Abscissa Tibia"
+display_name = "LOC_ITEMS_V4_EARTH_ABSCISSA_TIBIA_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"spirit_domain"

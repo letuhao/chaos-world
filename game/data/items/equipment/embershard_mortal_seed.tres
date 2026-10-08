@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"embershard_mortal_seed"
-display_name = "Mortal Element Seed"
+display_name = "LOC_ITEMS_EMBERSHARD_MORTAL_SEED_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"spirit_transformation"

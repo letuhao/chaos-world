@@ -5,9 +5,9 @@
 [resource]
 script = ExtResource("1_item")
 id = &"qi_true_immortal_dantian_catalyst"
-display_name = "True Law Heart"
+display_name = "LOC_ITEMS_QI_TRUE_IMMORTAL_DANTIAN_CATALYST_DISPLAY_NAME"
 category = &"consumable"
 subcategory = &"tonic"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:qi_true_immortal_dantian_catalyst_recipe"])
-description = "Spent on a True Immortal sitting that overflows a full dantian. The overflow becomes dantian quality past the next realm's floor, and every gate is met without one."
+description = "LOC_ITEMS_QI_TRUE_IMMORTAL_DANTIAN_CATALYST_DESCRIPTION"

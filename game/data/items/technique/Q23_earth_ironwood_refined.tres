@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Q23_earth_ironwood_refined"
-display_name = "Earth Ironwood Refined"
+display_name = "LOC_ITEMS_Q23_EARTH_IRONWOOD_REFINED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_severing"

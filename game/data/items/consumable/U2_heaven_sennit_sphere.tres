@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U2_heaven_sennit_sphere"
-display_name = "Heaven Sennit Sphere"
+display_name = "LOC_ITEMS_U2_HEAVEN_SENNIT_SPHERE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"heaven_immortal"

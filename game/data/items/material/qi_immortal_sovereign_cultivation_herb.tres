@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"qi_immortal_sovereign_cultivation_herb"
-display_name = "Immortal Sovereign Herb"
+display_name = "LOC_ITEMS_QI_IMMORTAL_SOVEREIGN_CULTIVATION_HERB_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"immortal_sovereign"
@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"herb"
 grade = &"immortal"
 sources = Array[StringName]([&"gather", &"domain:monster_stone_golem_domain"])
-description = "Cultivation herb for Immortal Sovereign. Gathered from the wild."
+description = "LOC_ITEMS_QI_IMMORTAL_SOVEREIGN_CULTIVATION_HERB_DESCRIPTION"

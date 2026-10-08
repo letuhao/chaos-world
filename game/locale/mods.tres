@@ -1,0 +1,7 @@
+[gd_resource type="Translation" format=3]
+
+[resource]
+locale = "en"
+messages = {
+"LOC_MODS_A31A8D2FC5": "add it to this mod's 'resources' in %s, or use a pool core owns",
+}

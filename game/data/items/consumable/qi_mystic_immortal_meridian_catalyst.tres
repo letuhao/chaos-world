@@ -5,9 +5,9 @@
 [resource]
 script = ExtResource("1_item")
 id = &"qi_mystic_immortal_meridian_catalyst"
-display_name = "Mystic Resonance Resin"
+display_name = "LOC_ITEMS_QI_MYSTIC_IMMORTAL_MERIDIAN_CATALYST_DISPLAY_NAME"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:qi_mystic_immortal_meridian_catalyst_recipe"])
-description = "Spent to train one Mystic Immortal meridian the next gate never names, for the flow and reservoir width it grants. No gate asks for it."
+description = "LOC_ITEMS_QI_MYSTIC_IMMORTAL_MERIDIAN_CATALYST_DESCRIPTION"

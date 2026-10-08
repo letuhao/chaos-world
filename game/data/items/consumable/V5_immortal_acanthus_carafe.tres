@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V5_immortal_acanthus_carafe"
-display_name = "Immortal Acanthus Carafe"
+display_name = "LOC_ITEMS_V5_IMMORTAL_ACANTHUS_CARAFE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_fruit"

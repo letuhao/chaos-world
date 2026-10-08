@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"I54_spirit_gittern_base"
-display_name = "Spirit Gittern Base"
+display_name = "LOC_ITEMS_I54_SPIRIT_GITTERN_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_sea"

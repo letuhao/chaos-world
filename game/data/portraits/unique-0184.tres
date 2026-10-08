@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_portrait")
 id = &"unique-0184"
-display_name = "Borun Ashkell"
+display_name = "LOC_PORTRAITS_UNIQUE_0184_DISPLAY_NAME"
 race_id = &"stoneborn"
 visual_traits = Array[StringName]([&"burden:born-at-his-own-ceiling", &"class:load-bearing-dense-frame", &"craft:taught-on-the-heap-by-weight-moved-not-by-instruction", &"gift:carries-more-than-anything-else-native-to-the-plain", &"hazard:his-body-is-a-permanent-loss-to-the-ledger", &"path:no-path-available-at-any-cost", &"role:heap-lifter", &"standing:the-only-instrument-of-his-kind-on-the-plain"])
 layer_paths = Array[String](["res://assets/characters/portraits/stoneborn.png"])

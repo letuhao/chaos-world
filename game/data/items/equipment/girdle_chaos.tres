@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"girdle_chaos"
-display_name = "Chaos Girdle"
+display_name = "LOC_ITEMS_GIRDLE_CHAOS_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"dao_ancestor"

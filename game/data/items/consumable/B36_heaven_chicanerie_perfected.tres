@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B36_heaven_chicanerie_perfected"
-display_name = "Heaven Chicanerie Perfected"
+display_name = "LOC_ITEMS_B36_HEAVEN_CHICANERIE_PERFECTED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"golden_immortal"

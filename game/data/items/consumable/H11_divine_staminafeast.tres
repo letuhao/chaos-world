@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"H11_divine_staminafeast"
-display_name = "Divine Stamina Feast"
+display_name = "LOC_ITEMS_H11_DIVINE_STAMINAFEAST_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_ancestor"

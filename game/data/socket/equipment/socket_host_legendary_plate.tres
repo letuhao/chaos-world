@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"socket_host_legendary_plate"
-display_name = "Socket-Bearing Plate"
+display_name = "LOC_SOCKET_SOCKET_HOST_LEGENDARY_PLATE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"primordial_immortal"
@@ -19,4 +19,4 @@ stackable = false
 grade = &"immortal"
 sources = Array[StringName]([&"gather", &"domain:totem_stone_guardian_domain"])
 tags = Array[StringName]([&"socket_host"])
-description = "Equipment that can carry two sockets. The socket subsystem opens, imputes and fills its slots."
+description = "LOC_SOCKET_SOCKET_HOST_LEGENDARY_PLATE_DESCRIPTION"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"H9_mortal_spirit_lamp"
-display_name = "Mortal Spirit Lamp"
+display_name = "LOC_ITEMS_H9_MORTAL_SPIRIT_LAMP_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"great_ascension"

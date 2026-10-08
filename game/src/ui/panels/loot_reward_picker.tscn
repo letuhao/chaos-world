@@ -16,7 +16,7 @@ script = ExtResource("1")
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"MetaLabel"
-text = "No reward waiting"
+text = "LOC_UI_PANELS_96BD396630"
 
 [node name="RewardOption" type="OptionButton" parent="."]
 unique_name_in_owner = true

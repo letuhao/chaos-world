@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_marine_frost_mantaray_pool_body_integration"
-display_name = "Frost Manta Ray salvage (body_integration)"
+display_name = "LOC_LOOT_MARINE_FROST_MANTARAY_BODY_INTEGRATION_0_DISPLAY_NAME"
 realm = &"body_integration"
 rarity = &""
 rolls = 1

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E3_mortal_saddlery_bend"
-display_name = "Mortal Saddlery Bend"
+display_name = "LOC_ITEMS_E3_MORTAL_SADDLERY_BEND_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"nascent_soul"

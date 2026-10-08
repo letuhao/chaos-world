@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F10_spirit_drachm_agility_aptitude_attack_speed_defense_spiritual"
-display_name = "Spirit Drachm Agility Aptitude Attack speed Defense spiritual"
+display_name = "LOC_ITEMS_F10_SPIRIT_DRACHM_AGILITY_APTITUDE_ATTACK_SPEED_DEFENSE_SPIRITUAL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_sovereign"

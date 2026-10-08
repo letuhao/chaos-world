@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"rite_chaos_form"
-display_name = "Chaos Rite"
+display_name = "LOC_ITEMS_RITE_CHAOS_FORM_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"

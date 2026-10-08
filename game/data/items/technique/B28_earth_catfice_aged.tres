@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B28_earth_catfice_aged"
-display_name = "Earth Catfice Aged"
+display_name = "LOC_ITEMS_B28_EARTH_CATFICE_AGED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_sovereign"

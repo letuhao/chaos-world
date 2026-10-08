@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F15_divine_edelweiss_agility_aptitude_defense_physical_move_speed"
-display_name = "Divine Edelweiss Agility Aptitude Defense physical Move speed"
+display_name = "LOC_ITEMS_F15_DIVINE_EDELWEISS_AGILITY_APTITUDE_DEFENSE_PHYSICAL_MOVE_SPEED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_ancestor"

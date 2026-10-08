@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"R25_mortal_plover_peg"
-display_name = "Mortal Plover Peg"
+display_name = "LOC_ITEMS_R25_MORTAL_PLOVER_PEG_DISPLAY_NAME"
 category = &"key"
 rarity = &"common"
 realm = &"tribulation"

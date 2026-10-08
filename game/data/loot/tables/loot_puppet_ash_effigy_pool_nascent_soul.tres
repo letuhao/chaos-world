@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_puppet_ash_effigy_pool_nascent_soul"
-display_name = "Ash Effigy salvage (nascent_soul)"
+display_name = "LOC_LOOT_PUPPET_ASH_EFFIGY_NASCENT_SOUL_0_DISPLAY_NAME"
 realm = &"nascent_soul"
 rarity = &""
 rolls = 1

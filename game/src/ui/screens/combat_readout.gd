@@ -53,9 +53,9 @@ const REASON_REFUSED := "refused"
 const REASON_NO_SELECT := "no_select_seam"
 const REASON_BAD_PATH := "unknown_path"
 ## The panel's own line when no blow has been struck is the panel's, not this screen's.
-const NO_HERO := "No hero bound."
-const NO_SEAM := "Nothing on this screen can strike yet, so there is nothing to read."
-const HEADER_TEXT := "One blow, read to the last stage."
+const NO_HERO := "LOC_UI_SCREENS_6E9BC19A74"
+const NO_SEAM := "LOC_UI_SCREENS_D307948729"
+const HEADER_TEXT := "LOC_UI_SCREENS_FCBB2A160A"
 
 var _readout: CombatReadoutPanel = null
 var _strike_button: Button = null
@@ -410,9 +410,9 @@ func _refresh_view() -> void:
 	_bind_nodes()
 	if _header == null:
 		return
-	_header.text = HEADER_TEXT if actor() != null else NO_HERO
+	_header.text = L.t(HEADER_TEXT if actor() != null else NO_HERO)
 	if _target_label != null:
-		_target_label.text = _target_text()
+		_target_label.text = L.t(_target_text())
 	if _strike_button != null:
 		_strike_button.disabled = not (strike_wired() and _target != null)
 
@@ -420,8 +420,8 @@ func _refresh_view() -> void:
 ## The seam's own state as a sentence, so "nothing can strike" is never drawn as zeros.
 func _target_text() -> String:
 	if _target == null:
-		return NO_SEAM
-	return "Striking %s" % String(_target.id)
+		return L.t(NO_SEAM)
+	return L.t("LOC_UI_SCREENS_8E35B2C089") % String(_target.id)
 
 
 func _reject(reason: String) -> bool:

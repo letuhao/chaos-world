@@ -547,8 +547,10 @@ static func on_location_selected(
 	if not bool(answer["ok"]):
 		return answer
 	if screen != null and screen.has_method(&"set_message"):
+		# `location_name` is a KEY in the world data, so it resolves before the sentence is
+		# woven — a raw key inside a sentence reads as a slug to the player.
 		(screen as Object).call(
-			&"set_message", "Travelled to %s." % String(answer["location_name"])
+			&"set_message", L.t("Travelled to %s.") % L.t(String(answer["location_name"]))
 		)
 	return answer
 

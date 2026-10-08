@@ -53,7 +53,7 @@ func test_a_player_takes_a_drop_someone_else_left_and_the_goods_move_to_their_ba
 		"the rendered line carries the quantity the take will deliver"
 	)
 	assert_ne(
-		String(row["decay_line"]).find(FloorDropRow.NO_DECAY_TEXT),
+		String(row["decay_line"]).find(L.t(FloorDropRow.NO_DECAY_TEXT)),
 		-1,
 		"and an entry that never decays SAYS so, rather than printing a zero a player reads as an expiry"
 	)

@@ -13,11 +13,17 @@ const WHISPER := &"t_whisper"
 func setup() -> void:
 	(
 		DestinyFixtureCatalog
-		.install(
+		. install(
 			[
-				DestinyFixtureCatalog.fated_fate(OATH, Stat.ATTACK_PHYSICAL, 5.0, &"enemy_spawn", 0.5),
-				DestinyFixtureCatalog.fated_fate(PLEDGE, Stat.DEFENSE_PHYSICAL, 3.0, &"combat_difficulty", 0.3),
-				DestinyFixtureCatalog.fated_fate(AWAKENED, Stat.MAX_HEALTH, 25.0, &"social_difficulty", 0.2),
+				DestinyFixtureCatalog.fated_fate(
+					OATH, Stat.ATTACK_PHYSICAL, 5.0, &"enemy_spawn", 0.5
+				),
+				DestinyFixtureCatalog.fated_fate(
+					PLEDGE, Stat.DEFENSE_PHYSICAL, 3.0, &"combat_difficulty", 0.3
+				),
+				DestinyFixtureCatalog.fated_fate(
+					AWAKENED, Stat.MAX_HEALTH, 25.0, &"social_difficulty", 0.2
+				),
 				DestinyFixtureCatalog.story_fate(WHISPER),
 			],
 			[]
@@ -134,9 +140,7 @@ func test_difficulty_events_are_earned_not_selected() -> void:
 	for name in public:
 		for verb in ["remove", "revoke", "deactivate", "clear", "reset"]:
 			assert_eq(
-				name.contains(verb),
-				false,
-				"no public verb contains '%s' ('%s')" % [verb, name]
+				name.contains(verb), false, "no public verb contains '%s' ('%s')" % [verb, name]
 			)
 
 

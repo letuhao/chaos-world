@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"socket_rune_mortal_offense"
-display_name = "Crude Offensive Rune"
+display_name = "LOC_SOCKET_SOCKET_RUNE_MORTAL_OFFENSE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"tribulation"
@@ -18,4 +18,4 @@ stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"gather", &"domain:manual_stone_crane_domain"])
 tags = Array[StringName]([&"socket_item", &"socket_kind:offense"])
-description = "Socket item. Offensive rune; while its host is worn it adds one physical attack modifier."
+description = "LOC_SOCKET_SOCKET_RUNE_MORTAL_OFFENSE_DESCRIPTION"

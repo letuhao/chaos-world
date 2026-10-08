@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"X13_immortal_apothecary_ordinance"
-display_name = "Immortal Apothecary Ordinance"
+display_name = "LOC_ITEMS_X13_IMMORTAL_APOTHECARY_ORDINANCE_DISPLAY_NAME"
 category = &"misc"
 rarity = &"legendary"
 realm = &"true_immortal"

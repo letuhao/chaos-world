@@ -44,9 +44,7 @@ func test_the_tournament_final_delivers_a_verdict() -> void:
 	# The war stays open when the hero travels, so the tournament can run at the peaks.
 	EventApi.set_location(actor, &"spirit_peaks")
 	WorldFact.record(actor, &"tournament_called", 1)
-	assert_eq(
-		bool(EventApi.begin(actor, TOURNAMENT, 0)["ok"]), true, "the tournament opens"
-	)
+	assert_eq(bool(EventApi.begin(actor, TOURNAMENT, 0)["ok"]), true, "the tournament opens")
 
 	# Four periods walks registered -> first_round -> final.
 	var report := EventApi.advance(actor, 4)
@@ -58,7 +56,9 @@ func test_the_tournament_final_delivers_a_verdict() -> void:
 
 	# And the verdict really reached `nation`: `resolve_conflict` accepted it.
 	var outcome := row["outcome"] as Dictionary
-	assert_eq(bool(outcome.get("ok", false)), true, "nation accepted the verdict: %s" % str(outcome))
+	assert_eq(
+		bool(outcome.get("ok", false)), true, "nation accepted the verdict: %s" % str(outcome)
+	)
 
 
 ## A war with no verdict authored stays open — the director does not invent a winner.
@@ -88,8 +88,6 @@ func test_five_verdicts_settle_the_siege() -> void:
 	# The resolving call pays the prize through `_pay`, whose shape carries `closed`/`paid`
 	# rather than `ok` — assert the flags the resolution actually reports.
 	assert_eq(
-		bool(last.get("closed", false)),
-		true,
-		"the fifth verdict closes the war: %s" % str(last)
+		bool(last.get("closed", false)), true, "the fifth verdict closes the war: %s" % str(last)
 	)
 	assert_eq(bool(last.get("paid", false)), true, "and pays the declared prize")

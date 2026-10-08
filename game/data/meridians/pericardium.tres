@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 id = &"pericardium"
-display_name = "Pericardium"
+display_name = "LOC_MERIDIANS_PERICARDIUM_DISPLAY_NAME"
 type = &"primary"
 tier = 6
 capacity_bonus = 0.05

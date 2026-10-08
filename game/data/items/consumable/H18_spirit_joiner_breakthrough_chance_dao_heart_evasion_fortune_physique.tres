@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"H18_spirit_joiner_breakthrough_chance_dao_heart_evasion_fortune_physique"
-display_name = "Spirit Joiner Breakthrough chance Dao heart Evasion Fortune Physique"
+display_name = "LOC_ITEMS_H18_SPIRIT_JOINER_BREAKTHROUGH_CHANCE_DAO_HEART_EVASION_FORTUNE_PHYSIQUE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_unity"

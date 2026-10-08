@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"will_iron_pauldron"
-display_name = "Iron Resolve Pauldron"
+display_name = "LOC_ITEMS_WILL_IRON_PAULDRON_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"nascent_soul"

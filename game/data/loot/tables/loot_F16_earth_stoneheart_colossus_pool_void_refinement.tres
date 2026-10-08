@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_F16_earth_stoneheart_colossus_pool_void_refinement"
-display_name = "Earth Stoneheart Colossus salvage (void_refinement)"
+display_name = "LOC_LOOT_F16_EARTH_STONEHEART_COLOSSUS_VOID_REFINEMENT_0_DISPLAY_NAME"
 realm = &"void_refinement"
 rarity = &""
 rolls = 1

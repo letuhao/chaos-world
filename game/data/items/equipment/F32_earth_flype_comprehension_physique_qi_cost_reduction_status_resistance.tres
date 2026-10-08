@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F32_earth_flype_comprehension_physique_qi_cost_reduction_status_resistance"
-display_name = "Earth Flype Comprehension Physique Qi cost reduction Status resistance"
+display_name = "LOC_ITEMS_F32_EARTH_FLYPE_COMPREHENSION_PHYSIQUE_QI_COST_REDUCTION_STATUS_RESISTANCE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"spirit_condensation"

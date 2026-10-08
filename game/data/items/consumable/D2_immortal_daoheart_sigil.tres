@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"D2_immortal_daoheart_sigil"
-display_name = "Immortal Daoheart Sigil"
+display_name = "LOC_ITEMS_D2_IMMORTAL_DAOHEART_SIGIL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"golden_immortal"

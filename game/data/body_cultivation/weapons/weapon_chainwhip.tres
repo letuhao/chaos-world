@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 id = &"chainwhip"
-display_name = "Chain Whip"
+display_name = "LOC_BODY_CULTIVATION_CHAINWHIP_DISPLAY_NAME"
 best_against = "Reach and circles: the tip lands where the body is not."
 demand = &"speed"
 lean = &"precision"

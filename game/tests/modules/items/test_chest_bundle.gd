@@ -91,8 +91,6 @@ func test_a_full_bag_refuses_the_overflow_by_name() -> void:
 	assert_eq(bool(opened["ok"]), true, "the open still succeeds")
 	assert_eq((opened["refused"] as Array).is_empty(), false, "some rows were refused")
 	assert_eq(
-		String((opened["refused"] as Array)[0]["reason"]),
-		"inventory_full",
-		"refused by name"
+		String((opened["refused"] as Array)[0]["reason"]), "inventory_full", "refused by name"
 	)
 	assert_eq((opened["granted"] as Array).size(), 1, "the guarantee still landed")

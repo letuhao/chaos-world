@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G19_divine_hessian_fortune_qi_regen"
-display_name = "Divine Hessian Fortune Qi regen"
+display_name = "LOC_ITEMS_G19_DIVINE_HESSIAN_FORTUNE_QI_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"

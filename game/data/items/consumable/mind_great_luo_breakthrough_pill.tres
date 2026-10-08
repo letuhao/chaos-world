@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"mind_great_luo_breakthrough_pill"
-display_name = "Transcendence Insight Pill"
+display_name = "LOC_ITEMS_MIND_GREAT_LUO_BREAKTHROUGH_PILL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"great_luo"
@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:mind_great_luo_pill_recipe", &"boss:F14_luo_warden"])
-description = "Consumed by the Mind Cultivation attempt entering Transcendence; no equipment modifier."
+description = "LOC_ITEMS_MIND_GREAT_LUO_BREAKTHROUGH_PILL_DESCRIPTION"

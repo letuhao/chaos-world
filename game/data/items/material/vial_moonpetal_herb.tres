@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"vial_moonpetal_herb"
-display_name = "Moonpetal Herb"
+display_name = "LOC_ITEMS_VIAL_MOONPETAL_HERB_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"body_integration"

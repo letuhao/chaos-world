@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"banner_moon_herb"
-display_name = "Moon Banner Herb"
+display_name = "LOC_ITEMS_BANNER_MOON_HERB_DISPLAY_NAME"
 category = &"material"
 rarity = &"magic"
 realm = &"spirit_severing"

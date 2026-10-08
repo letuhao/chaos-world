@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"N13_earth_mantle_aged_recipe"
-display_name = "Earth Mantle Aged Recipe"
+display_name = "LOC_RECIPES_N13_EARTH_MANTLE_AGED_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"N13_earth_mantle_refined", &"whistle_moon_essence", &"shield_moonstone_ore"])
 outputs = Array[StringName]([&"N13_earth_mantle_aged"])

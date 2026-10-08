@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"glaive_moon_recipe"
-display_name = "Moon Glaive Recipe"
+display_name = "LOC_RECIPES_GLAIVE_MOON_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"gemstone_turquoise", &"scale_basilisk"])
 outputs = Array[StringName]([&"glaive_moon"])

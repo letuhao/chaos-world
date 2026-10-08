@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"I69_divine_haddock_base"
-display_name = "Divine Haddock Base"
+display_name = "LOC_ITEMS_I69_DIVINE_HADDOCK_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"transcendent"

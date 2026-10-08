@@ -21,13 +21,13 @@ layout_mode = 2
 [node name="Title" type="Label" parent="Layout"]
 layout_mode = 2
 theme_type_variation = &"ScreenTitle"
-text = "Sect"
+text = "LOC_UI_SCREENS_31C2F1F922"
 
 [node name="ClaimHeader" type="Label" parent="Layout"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "No hero bound."
+text = "LOC_UI_SCREENS_6E9BC19A74"
 
 [node name="Scroll" type="ScrollContainer" parent="Layout"]
 layout_mode = 2
@@ -40,7 +40,7 @@ size_flags_horizontal = 3
 [node name="ClaimsTitle" type="Label" parent="Layout/Scroll/Codex"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "Your claim"
+text = "LOC_UI_SCREENS_6F671BDD4A"
 
 [node name="Claims" type="VBoxContainer" parent="Layout/Scroll/Codex"]
 layout_mode = 2
@@ -51,7 +51,7 @@ unique_name_in_owner = true
 [node name="OfficesTitle" type="Label" parent="Layout/Scroll/Codex"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "Offices of the sworn sect"
+text = "LOC_UI_SCREENS_83BDF34B3E"
 
 [node name="Offices" type="VBoxContainer" parent="Layout/Scroll/Codex"]
 layout_mode = 2

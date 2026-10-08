@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V4_mortal_abscissa_sigillary"
-display_name = "Mortal Abscissa Sigillary"
+display_name = "LOC_ITEMS_V4_MORTAL_ABSCISSA_SIGILLARY_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"foundation"

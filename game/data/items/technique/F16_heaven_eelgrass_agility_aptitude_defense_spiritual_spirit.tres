@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F16_heaven_eelgrass_agility_aptitude_defense_spiritual_spirit"
-display_name = "Heaven Eelgrass Agility Aptitude Defense spiritual Spirit"
+display_name = "LOC_ITEMS_F16_HEAVEN_EELGRASS_AGILITY_APTITUDE_DEFENSE_SPIRITUAL_SPIRIT_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"primordial_immortal"

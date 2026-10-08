@@ -18,7 +18,7 @@ rarity_floor = &"magic"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E3_void_refinement_arbiter_pool_spirit_ascension"
-display_name = "Void Refinement Arbiter salvage (spirit_ascension)"
+display_name = "LOC_LOOT_E3_VOID_REFINEMENT_ARBITER_SPIRIT_ASCENSION_0_DISPLAY_NAME"
 realm = &"spirit_ascension"
 rarity = &""
 rolls = 1

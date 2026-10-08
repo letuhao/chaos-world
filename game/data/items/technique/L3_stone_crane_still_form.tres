@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"L3_stone_crane_still_form"
-display_name = "Stone Crane Still Form"
+display_name = "LOC_ITEMS_L3_STONE_CRANE_STILL_FORM_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_manifestation"

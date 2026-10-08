@@ -265,10 +265,10 @@ static func _stage_tier(stage: StringName) -> StringName:
 static func _tier_name(tier: StringName) -> String:
 	match tier:
 		InsideWorld.SEED:
-			return "Seed World"
+			return L.t("LOC_MIND_CULTIVATION_604164D7F1")
 		InsideWorld.POCKET:
-			return "Pocket World"
+			return L.t("LOC_MIND_CULTIVATION_1DA78D39AD")
 		InsideWorld.INNER:
-			return "Inner World"
+			return L.t("LOC_MIND_CULTIVATION_1FE9F0035C")
 		_:
-			return "Unknown"
+			return L.t("LOC_MIND_CULTIVATION_BC7819B34F")

@@ -30,7 +30,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_monster_frost_wolf_pool_spirit_condensation"
-display_name = "Frost Wolf salvage (spirit_condensation)"
+display_name = "LOC_LOOT_MONSTER_FROST_WOLF_SPIRIT_CONDENSATION_0_DISPLAY_NAME"
 realm = &"spirit_condensation"
 rarity = &""
 rolls = 1

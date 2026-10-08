@@ -30,7 +30,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_F20_dao_warden_pool_transcendent"
-display_name = "Dao Warden salvage (transcendent)"
+display_name = "LOC_LOOT_F20_DAO_WARDEN_TRANSCENDENT_0_DISPLAY_NAME"
 realm = &"transcendent"
 rarity = &""
 rolls = 1

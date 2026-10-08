@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Z35_mortal_knapping_demantoid"
-display_name = "Mortal Knapping Demantoid"
+display_name = "LOC_ITEMS_Z35_MORTAL_KNAPPING_DEMANTOID_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"tribulation"

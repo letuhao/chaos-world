@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_node")
 node_id = &"nascent_soul_sunwood_grove"
-display_name = "Sunwood Grove"
+display_name = "LOC_HOLDINGS_NASCENT_SOUL_SUNWOOD_GROVE_DISPLAY_NAME"
 kind = &"timber"
 realm = &"nascent_soul"
 yield_per_period = 5

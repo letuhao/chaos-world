@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_qi_nascent_soul_warden_pool_golden_immortal"
-display_name = "Nascent Soul Warden salvage (golden_immortal)"
+display_name = "LOC_LOOT_QI_NASCENT_SOUL_WARDEN_GOLDEN_IMMORTAL_0_DISPLAY_NAME"
 realm = &"golden_immortal"
 rarity = &""
 rolls = 1

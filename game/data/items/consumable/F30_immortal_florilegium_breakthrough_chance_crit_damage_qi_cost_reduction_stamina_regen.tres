@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F30_immortal_florilegium_breakthrough_chance_crit_damage_qi_cost_reduction_stamina_regen"
-display_name = "Immortal Florilegium Breakthrough chance Crit damage Qi cost reduction Stamina regen"
+display_name = "LOC_ITEMS_F30_IMMORTAL_FLORILEGIUM_BREAKTHROUGH_CHANCE_CRIT_DAMAGE_QI_COST_REDUCTION_STAMINA_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"great_luo"

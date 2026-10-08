@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C29_earth_gemcutter_sillimanite"
-display_name = "Earth Gemcutter Sillimanite"
+display_name = "LOC_ITEMS_C29_EARTH_GEMCUTTER_SILLIMANITE_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_manifestation"

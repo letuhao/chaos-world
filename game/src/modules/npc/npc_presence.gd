@@ -31,9 +31,9 @@ static func normalize(presence: StringName) -> StringName:
 static func label(presence: StringName) -> String:
 	match presence:
 		KNOWN:
-			return "Known"
+			return L.t("LOC_NPC_28D7146C1D")
 		PRESENT:
-			return "Present"
+			return L.t("LOC_NPC_4E9F7A31EE")
 		RETIRED:
-			return "Retired"
-	return "Unknown"
+			return L.t("LOC_NPC_ELDER_WEI_DISPLAY_NAME_3")
+	return L.t("LOC_NPC_BC7819B34F")

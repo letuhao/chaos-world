@@ -168,7 +168,9 @@ func test_a_boot_with_no_test_installed_fixture_can_spawn_a_cast_member() -> voi
 	NpcBoot.install(_player())
 	var actor := NpcApi.spawn(SMITH)
 	assert_ne(actor, null, "spawn stopped returning null")
-	assert_eq(actor.display_name, "Smith Bearcutter", "named from the def that was read off disk")
+	assert_eq(
+		L.t(actor.display_name), "Smith Bearcutter", "named from the def that was read off disk"
+	)
 
 
 ## `install` is documented as callable again after a load, and the catalog read must

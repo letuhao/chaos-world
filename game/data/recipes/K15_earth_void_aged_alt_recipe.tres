@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"K15_earth_void_aged_alt_recipe"
-display_name = "K15 Earth Void Aged Alt Recipe"
+display_name = "LOC_RECIPES_K15_EARTH_VOID_AGED_ALT_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"K15_earth_void_refined", &"talisman_glow_essence", &"feather_owl"])
 outputs = Array[StringName]([&"K15_earth_void_aged"])

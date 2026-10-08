@@ -134,11 +134,12 @@ static func permitted_reforge(
 		var low := _floored_min(record, floor, window)
 		(
 			out
-			.append(
+			. append(
 				{
 					"option_id": String(record.get("id", "")),
 					"label": String(record.get("label", "")),
-					"target_type": String((record.get("target", {}) as Dictionary).get("type", "stat")),
+					"target_type":
+					String((record.get("target", {}) as Dictionary).get("type", "stat")),
 					"target_id": String((record.get("target", {}) as Dictionary).get("id", "")),
 					"op": String(record.get("op", "FLAT")),
 					"unit": String(record.get("unit", "magnitude")),
@@ -303,9 +304,7 @@ static func floor_keys(floor: Dictionary) -> Array[String]:
 
 ## The lowest value `record` may legally take given `floor`: its own catalog
 ## window, raised to the floor when it feeds the same measure.
-static func _floored_min(
-	record: Dictionary, floor: Dictionary, window: Dictionary
-) -> float:
+static func _floored_min(record: Dictionary, floor: Dictionary, window: Dictionary) -> float:
 	var probe := OptionCatalog.instance().make_effect(record, 0.0, &"probe")
 	if not _same_measure(probe, floor):
 		return float(window["min"])

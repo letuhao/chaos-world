@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"Z18_earth_bevel_primed_recipe"
-display_name = "Earth Bevel Primed Recipe"
+display_name = "LOC_RECIPES_Z18_EARTH_BEVEL_PRIMED_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"Z18_earth_bevel_aged", &"belt_gale_essence", &"W7_earth_bedlam_humus", &"cloak_starlight_herb"])
 outputs = Array[StringName]([&"Z18_earth_bevel_primed"])

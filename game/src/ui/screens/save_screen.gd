@@ -28,10 +28,10 @@ const NO_ERASE_SEAM := "no_erase_seam"
 ## this screen's, and a title added here without its row is a label nothing
 ## shows — the summary pins the pairing.
 const TITLES := {
-	&"primary": "Continuing journey",
-	&"first": "First journey",
-	&"second": "Second journey",
-	&"third": "Third journey",
+	&"primary": "LOC_UI_SCREENS_595982F5F2",
+	&"first": "LOC_UI_SCREENS_9259D34F05",
+	&"second": "LOC_UI_SCREENS_2067CC9272",
+	&"third": "LOC_UI_SCREENS_B4747AE9F7",
 }
 
 var _rows_box: VBoxContainer = null

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_node")
 node_id = &"qi_refining_copper_seam"
-display_name = "Copper Seam"
+display_name = "LOC_HOLDINGS_QI_REFINING_COPPER_SEAM_DISPLAY_NAME"
 kind = &"ore"
 realm = &"qi_refining"
 yield_per_period = 3

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"P3_immortal_beacon_perfected"
-display_name = "Immortal Beacon Perfected"
+display_name = "LOC_ITEMS_P3_IMMORTAL_BEACON_PERFECTED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_immortal"

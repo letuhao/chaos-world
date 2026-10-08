@@ -295,7 +295,7 @@ const SOCIAL_FACADE := preload("res://src/modules/social/api.gd")
 ## reads as "this npc has nothing to say", and "she does not look up" is a reaction the
 ## player can act on. `minor` composes one from the place instead.
 const GENERIC_TELL_VERB := &"does_not_look_up"
-const GENERIC_TELL_BODY := "does not look up from what they are doing"
+const GENERIC_TELL_BODY := "LOC_NPC_FD2963A2D3"
 const GENERIC_TELL_CONSEQUENCE := &"ignores"
 
 

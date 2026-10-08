@@ -74,7 +74,9 @@ func test_a_slot_is_rendered_as_two_distinct_sets_of_modifiers() -> void:
 		false,
 		"the two sets are never the same rows"
 	)
-	assert_eq(String(view["gem_display_name"]), "Crude Offensive Rune", "the socket item is named")
+	assert_eq(
+		L.t(String(view["gem_display_name"])), "Crude Offensive Rune", "the socket item is named"
+	)
 	assert_eq(String(view["gem_enchantment_line"]), "", "and carries no enchantment of its own")
 	row.free()
 

@@ -5,5 +5,5 @@
 [resource]
 script = ExtResource("1_domain")
 id = &"flame_valley"
-display_name = "Flame Valley"
+display_name = "LOC_DOMAINS_FLAME_VALLEY_DISPLAY_NAME"
 boss_ids = Array[StringName]([&"flame_dragon", &"d3_flame_drake"])

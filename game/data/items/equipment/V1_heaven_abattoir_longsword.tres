@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V1_heaven_abattoir_longsword"
-display_name = "Heaven Abattoir Longsword"
+display_name = "LOC_ITEMS_V1_HEAVEN_ABATTOIR_LONGSWORD_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"primordial_immortal"

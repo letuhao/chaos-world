@@ -18,7 +18,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_relic_ash_wyrm_pool_transcendent"
-display_name = "Ash Wyrm salvage (transcendent)"
+display_name = "LOC_LOOT_RELIC_ASH_WYRM_TRANSCENDENT_0_DISPLAY_NAME"
 realm = &"transcendent"
 rarity = &""
 rolls = 1

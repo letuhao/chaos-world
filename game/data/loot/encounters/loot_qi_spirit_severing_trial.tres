@@ -6,7 +6,7 @@
 [sub_resource type="Resource" id="tier_0"]
 script = ExtResource("2_tier")
 tier = 1
-label = "Gate"
+label = "LOC_LOOT_LOOT_QI_SPIRIT_SEVERING_TRIAL_LABEL_1"
 realm = &"spirit_severing"
 rarity = &"common"
 vitality = 12581.2
@@ -18,7 +18,7 @@ boss_tables = Array[Dictionary]([
 [sub_resource type="Resource" id="tier_1"]
 script = ExtResource("2_tier")
 tier = 2
-label = "Depths"
+label = "LOC_LOOT_LOOT_QI_SPIRIT_SEVERING_TRIAL_LABEL_2"
 realm = &"spirit_severing"
 rarity = &"rare"
 vitality = 20130.
@@ -30,7 +30,7 @@ boss_tables = Array[Dictionary]([
 [resource]
 script = ExtResource("1_encounter")
 id = &"loot_qi_spirit_severing_trial"
-display_name = "Spirit Severing Trial"
+display_name = "LOC_LOOT_LOOT_QI_SPIRIT_SEVERING_TRIAL_DISPLAY_NAME"
 domain_id = &"qi_spirit_severing_trial"
 boss_ids = Array[StringName]([&"qi_spirit_severing_warden", &"F11_severing_warden"])
 key_reach = 0

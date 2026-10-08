@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"C7_earth_cloot_primed_recipe"
-display_name = "Earth Cloot Primed Recipe"
+display_name = "LOC_RECIPES_C7_EARTH_CLOOT_PRIMED_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"C7_earth_cloot_aged", &"astral_comet_tail_ore", &"orb_jade_ore", &"astral_celestial_dew_essence"])
 outputs = Array[StringName]([&"C7_earth_cloot_primed"])

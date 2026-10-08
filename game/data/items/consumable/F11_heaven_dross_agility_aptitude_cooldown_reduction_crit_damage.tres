@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F11_heaven_dross_agility_aptitude_cooldown_reduction_crit_damage"
-display_name = "Heaven Dross Agility Aptitude Cooldown reduction Crit damage"
+display_name = "LOC_ITEMS_F11_HEAVEN_DROSS_AGILITY_APTITUDE_COOLDOWN_REDUCTION_CRIT_DAMAGE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"golden_immortal"

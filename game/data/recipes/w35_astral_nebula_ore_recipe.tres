@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"w35_astral_nebula_ore_recipe"
-display_name = "Astral Nebula Ore Recipe"
+display_name = "LOC_RECIPES_W35_ASTRAL_NEBULA_ORE_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"astral_nebula_ore", &"gem_dragons_eye"])
 outputs = Array[StringName]([&"everlight_moon"])

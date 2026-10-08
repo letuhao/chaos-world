@@ -42,9 +42,7 @@ func _actor(qi: float = 500.0) -> Actor:
 ## contribute its own stats passes them explicitly, so the set bonus is the
 ## only variable under test.
 func _technique(
-	active: bool = false,
-	path: StringName = PathState.QI,
-	passive_options: Array[Dictionary] = []
+	active: bool = false, path: StringName = PathState.QI, passive_options: Array[Dictionary] = []
 ) -> TechniqueDef:
 	_serial += 1
 	var def := TechniqueDef.new()

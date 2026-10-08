@@ -19,7 +19,7 @@ tick_interval = 1.0
 mitigation_tags = Array[StringName]([&"affinity", &"technique", &"pill"])
 payload = {
 "mechanic": &"drain",
-"text": "The wind does not stop at the skin. It grinds grit into the guard and takes the breath with it, and the body only makes more slowly.",
+"text": "LOC_STATUSES_WIND_GUST_TEXT",
 "pool": &"stamina",
 "share_per_pulse": 0.05,
 "modifiers": [

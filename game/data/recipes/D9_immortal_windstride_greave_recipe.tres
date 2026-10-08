@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"D9_immortal_windstride_greave_recipe"
-display_name = "Immortal Windstride Greave Recipe"
+display_name = "LOC_RECIPES_D9_IMMORTAL_WINDSTRIDE_GREAVE_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"scale_voidwyrm", &"feather_seraph"])
 outputs = Array[StringName]([&"D9_immortal_windstride_greave"])

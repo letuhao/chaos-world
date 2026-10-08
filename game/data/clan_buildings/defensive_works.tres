@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1")
 id = &"defensive_works"
-display_name = "Defensive Works"
-description = "Fortifications and defensive structures. Protects against rival sabotage and unlocks defense verbs."
+display_name = "LOC_CLAN_BUILDINGS_DEFENSIVE_WORKS_DISPLAY_NAME"
+description = "LOC_CLAN_BUILDINGS_DEFENSIVE_WORKS_DESCRIPTION"
 category = &"military"
 max_level = 3
 base_cost_materials = 300

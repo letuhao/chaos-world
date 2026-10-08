@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"formation_guard_disc"
-display_name = "Formation Guard Disc"
+display_name = "LOC_ITEMS_FORMATION_GUARD_DISC_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"nascent_soul"

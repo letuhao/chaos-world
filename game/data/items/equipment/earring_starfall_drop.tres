@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"earring_starfall_drop"
-display_name = "Starfall Drop Earring"
+display_name = "LOC_ITEMS_EARRING_STARFALL_DROP_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"great_luo"

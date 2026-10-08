@@ -150,7 +150,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_orb_cinder_wyrm"
-display_name = "Cinder Wyrm"
+display_name = "LOC_LOOT_ORB_CINDER_WYRM_POOL_IMMORTAL_SOVEREIGN_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

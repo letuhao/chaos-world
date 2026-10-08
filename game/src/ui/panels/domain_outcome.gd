@@ -88,7 +88,7 @@ static func accepted(fixture_id: StringName, reason: String) -> String:
 ## The line for a fixture verb that refused. The reason is the MODULE'S and the sentence is
 ## the bridge's table — never a wording chosen here.
 static func refused(fixture_id: StringName, reason: String, worded: String) -> String:
-	return sentence(fixture_id, "%s %s — %s" % [REJECTED_PREFIX, reason, worded])
+	return sentence(fixture_id, "%s %s — %s" % [L.t(REJECTED_PREFIX), reason, worded])
 
 
 ## The line for a free read. Composed through [method sentence] like every other fixture

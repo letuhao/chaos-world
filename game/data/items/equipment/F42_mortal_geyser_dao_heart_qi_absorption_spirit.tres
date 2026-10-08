@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F42_mortal_geyser_dao_heart_qi_absorption_spirit"
-display_name = "Mortal Geyser Dao heart Qi absorption Spirit"
+display_name = "LOC_ITEMS_F42_MORTAL_GEYSER_DAO_HEART_QI_ABSORPTION_SPIRIT_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"qi_refining"

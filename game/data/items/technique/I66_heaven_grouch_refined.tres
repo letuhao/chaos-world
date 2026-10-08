@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"I66_heaven_grouch_refined"
-display_name = "Heaven Grouch Refined"
+display_name = "LOC_ITEMS_I66_HEAVEN_GROUCH_REFINED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"mystic_immortal"

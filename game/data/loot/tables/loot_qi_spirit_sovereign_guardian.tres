@@ -150,7 +150,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_qi_spirit_sovereign_guardian"
-display_name = "Spirit Sovereign Guardian"
+display_name = "LOC_LOOT_QI_SPIRIT_SOVEREIGN_GUARDIAN_POOL_DAO_ANCESTOR_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

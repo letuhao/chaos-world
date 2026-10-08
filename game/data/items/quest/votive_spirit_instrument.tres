@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"votive_spirit_instrument"
-display_name = "Spirit Instrument"
+display_name = "LOC_ITEMS_VOTIVE_SPIRIT_INSTRUMENT_DISPLAY_NAME"
 category = &"quest"
 rarity = &"magic"
 realm = &"spirit_sovereign"

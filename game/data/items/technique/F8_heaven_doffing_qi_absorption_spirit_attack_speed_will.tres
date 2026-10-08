@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F8_heaven_doffing_qi_absorption_spirit_attack_speed_will"
-display_name = "Heaven Doffing Qi Absorption Spirit Attack Speed Will"
+display_name = "LOC_ITEMS_F8_HEAVEN_DOFFING_QI_ABSORPTION_SPIRIT_ATTACK_SPEED_WILL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"heaven_immortal"

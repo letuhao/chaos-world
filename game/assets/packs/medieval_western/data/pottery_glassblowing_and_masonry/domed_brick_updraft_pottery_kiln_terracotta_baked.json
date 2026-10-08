@@ -1,0 +1,205 @@
+{
+  "id": "medieval_western.pottery_glassblowing_and_masonry.domed_brick_updraft_pottery_kiln_terracotta_baked",
+  "name": "Wood-Fired Red Beehive Updraft Wood-Fired Pottery Kiln",
+  "vietnamese_name": "Lò Nung Gốm Hình Tổ Ong Đốt Củi (Đất Nung Đỏ Củi)",
+  "category": "pottery_glassblowing_and_masonry",
+  "sub_category": "potters_wheel_and_updraft_kiln",
+  "type": "structure",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "opaque",
+  "interactive_verb": "fire_kiln",
+  "gameplay_role": "Supply chain industry element (Beehive Updraft Wood-Fired Pottery Kiln).",
+  "destructible": false,
+  "material": "stone",
+  "feudal_culture": "universal_feudal",
+  "prompt_summary": "2D orthographic top-down game sprite of wood-fired red beehive updraft wood-fired pottery kiln, warm unglazed brick red earthenware, Medieval guild and manorial supply chain craftsmanship, gouache hand-painted, ink contours, isolated on white background.",
+  "racial_faction": "western_human_kingdom",
+  "environment_name": "Medieval Western Feudal World (Lãnh Địa Phong Kiến Tây Âu)",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), grounded European medieval palette.",
+  "world_tier": "Western Feudal Realm (Trung Cổ Phương Tây)",
+  "status": "generated",
+  "reference_ids": [
+    "docs/art-direction.md#top-down-world-map"
+  ],
+  "source": "ComfyUI local unet: krea2/raySemiReal_krea2TurboV1Nsfw.safetensors, lora: krea2/Scottie__Krea2.safetensors (1.0)",
+  "license": "Generated locally; source checkpoint license terms apply",
+  "gameplay_gap_hooks": {},
+  "path": "res://assets/packs/medieval_western/runtime/pottery_glassblowing_and_masonry/domed_brick_updraft_pottery_kiln_terracotta_baked.png",
+  "generated_on": "2026-10-08",
+  "prompt_ref": "comfyui-map-v1:medieval_western.pottery_glassblowing_and_masonry.domed_brick_updraft_pottery_kiln_terracotta_baked:auto",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.371,
+        0.429
+      ],
+      [
+        0.811,
+        0.854
+      ]
+    ],
+    "frac_zero": 0.5383,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.361,
+        0.938,
+        0.022,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.548,
+        0.997,
+        0.167,
+        0.067,
+        0.0
+      ],
+      [
+        0.019,
+        0.253,
+        0.995,
+        1.0,
+        0.877,
+        0.763,
+        0.0
+      ],
+      [
+        0.4,
+        0.784,
+        1.0,
+        1.0,
+        1.0,
+        0.84,
+        0.354
+      ],
+      [
+        0.725,
+        0.999,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.656
+      ],
+      [
+        0.839,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.8
+      ],
+      [
+        0.151,
+        0.438,
+        0.945,
+        0.987,
+        0.891,
+        0.534,
+        0.164
+      ]
+    ],
+    "crop_offset": [
+      21,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 120,
+    "contact_reference_px": 120.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

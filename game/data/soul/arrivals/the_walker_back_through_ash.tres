@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_soul")
 id = &"the_walker_back_through_ash"
-display_name = "The Walker Back Through Ash"
-description = "The first return. Whatever the body was doing when it stopped, the soul arrives walking, and the world is measurably older than it was."
+display_name = "LOC_SOUL_THE_WALKER_BACK_THROUGH_ASH_DISPLAY_NAME"
+description = "LOC_SOUL_THE_WALKER_BACK_THROUGH_ASH_DESCRIPTION"
 bearing = "You came back. Nothing was waiting for you, and nothing objected."
 race_id = &"stoneborn"
 order = 0

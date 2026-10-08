@@ -198,7 +198,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d1_ironhide_bear_cub"
-display_name = "Ironhide Bear Cub Lesser"
+display_name = "LOC_LOOT_D1_IRONHIDE_BEAR_CUB_POOL_FOUNDATION_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

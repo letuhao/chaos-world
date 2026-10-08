@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E4_spirit_bullionoffice_clinker"
-display_name = "Spirit Bullionoffice Clinker"
+display_name = "LOC_ITEMS_E4_SPIRIT_BULLIONOFFICE_CLINKER_DISPLAY_NAME"
 category = &"material"
 rarity = &"magic"
 realm = &"spirit_condensation"

@@ -42,7 +42,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_elemental_heaven_guardian_pool_dao_ancestor"
-display_name = "Aether Guardian salvage (dao_ancestor)"
+display_name = "LOC_LOOT_ELEMENTAL_HEAVEN_GUARDIAN_DAO_ANCESTOR_0_DISPLAY_NAME"
 realm = &"dao_ancestor"
 rarity = &""
 rolls = 1

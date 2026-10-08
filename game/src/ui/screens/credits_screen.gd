@@ -18,11 +18,11 @@ extends UiScreen
 ## added to one must be added to the other, and the test pins the count so
 ## the mirror cannot drift silently.
 const LINES: Array[String] = [
-	"Chaos World — a cultivation action RPG.",
-	"Built with Godot 4.7.",
-	"Art generated locally with ComfyUI, in the shared gouache idiom.",
-	"Design recorded in architecture decision records.",
-	"Every system reachable, or reported unwired.",
+	"LOC_UI_SCREENS_0FFA48ACD1",
+	"LOC_UI_SCREENS_92A407230D",
+	"LOC_UI_SCREENS_AA2FCC71A4",
+	"LOC_UI_SCREENS_03735590A8",
+	"LOC_UI_SCREENS_8968B724D5",
 ]
 
 var _lines_box: VBoxContainer = null

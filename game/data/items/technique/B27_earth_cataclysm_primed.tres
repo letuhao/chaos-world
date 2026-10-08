@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B27_earth_cataclysm_primed"
-display_name = "Earth Cataclysm primed"
+display_name = "LOC_ITEMS_B27_EARTH_CATACLYSM_PRIMED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_sea"

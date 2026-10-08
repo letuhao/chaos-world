@@ -12,11 +12,11 @@ script = ExtResource("1")
 
 [node name="Title" type="Label" parent="Layout"]
 theme_type_variation = &"ScreenTitle"
-text = "Luyện Khí"
+text = "LOC_UI_SCREENS_DC34BA8445"
 
 [node name="RealmLabel" type="Label" parent="Layout"]
 unique_name_in_owner = true
-text = "Realm: none"
+text = "LOC_UI_SCREENS_7B6A7382FC"
 
 [node name="ConditionLabel" type="Label" parent="Layout"]
 unique_name_in_owner = true

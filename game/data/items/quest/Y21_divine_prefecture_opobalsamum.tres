@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Y21_divine_prefecture_opobalsamum"
-display_name = "Divine Prefecture Opobalsamum"
+display_name = "LOC_ITEMS_Y21_DIVINE_PREFECTURE_OPOBALSAMUM_DISPLAY_NAME"
 category = &"quest"
 rarity = &"legendary"
 realm = &"dao_ancestor"

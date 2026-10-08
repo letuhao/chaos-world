@@ -18,7 +18,7 @@ tick_interval = 1.0
 mitigation_tags = Array[StringName]([&"affinity", &"gear", &"technique"])
 payload = {
 "mechanic": &"sunder",
-"text": "Blade-work finds the seams. The body's physical guard and its footing are cut away from it.",
+"text": "LOC_STATUSES_METAL_SUNDER_TEXT",
 "modifiers": [
 {"stat": &"defense_physical", "op": &"percent", "value": -0.4},
 {"stat": &"poise", "op": &"percent", "value": -0.35}

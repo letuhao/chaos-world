@@ -5,8 +5,8 @@
 script = ExtResource("1_def")
 id = &"dual_body_mind_quiet_pulse"
 delivered_by = &"compre_clear_page"
-display_name = "Quiet Pulse"
-description = "Slows the heartbeat and the attention in the same count, which neither half can do alone. Barely elemental; almost all of it is the recovery itself."
+display_name = "LOC_TECHNIQUES_DUAL_BODY_MIND_QUIET_PULSE_DISPLAY_NAME"
+description = "LOC_TECHNIQUES_DUAL_BODY_MIND_QUIET_PULSE_DESCRIPTION"
 tags = Array[StringName]([&"technique", &"dual", &"body_mind", &"water", &"recover"])
 grade = &"spirit"
 rarity = &"magic"

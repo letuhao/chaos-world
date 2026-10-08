@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V10_mortal_aleph_patent"
-display_name = "Mortal Aleph Patent"
+display_name = "LOC_ITEMS_V10_MORTAL_ALEPH_PATENT_DISPLAY_NAME"
 category = &"key"
 rarity = &"common"
 realm = &"foundation"

@@ -222,7 +222,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_codex_storm_phoenix"
-display_name = "Storm Phoenix"
+display_name = "LOC_LOOT_CODEX_STORM_PHOENIX_POOL_EARTH_IMMORTAL_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

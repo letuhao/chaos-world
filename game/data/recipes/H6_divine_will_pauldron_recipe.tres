@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"H6_divine_will_pauldron_recipe"
-display_name = "Divine Will Pauldron Recipe"
+display_name = "LOC_RECIPES_H6_DIVINE_WILL_PAULDRON_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"divine_seraph_core", &"astral_galactic_core_ore"])
 outputs = Array[StringName]([&"H6_divine_will_pauldron"])

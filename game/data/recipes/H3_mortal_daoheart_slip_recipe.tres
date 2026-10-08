@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"H3_mortal_daoheart_slip_recipe"
-display_name = "Mortal Daoheart Slip Recipe"
+display_name = "LOC_RECIPES_H3_MORTAL_DAOHEART_SLIP_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"jade_green", &"talisman_cinnabar_ore"])
 outputs = Array[StringName]([&"H3_mortal_daoheart_slip"])

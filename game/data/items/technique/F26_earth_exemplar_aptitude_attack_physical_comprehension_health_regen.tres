@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F26_earth_exemplar_aptitude_attack_physical_comprehension_health_regen"
-display_name = "Earth Exemplar Aptitude Attack physical Comprehension Health regen"
+display_name = "LOC_ITEMS_F26_EARTH_EXEMPLAR_APTITUDE_ATTACK_PHYSICAL_COMPREHENSION_HEALTH_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_condensation"

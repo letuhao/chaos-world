@@ -234,7 +234,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d3_iron_tortoise_shell"
-display_name = "Iron Tortoise Lesser"
+display_name = "LOC_LOOT_D3_IRON_TORTOISE_SHELL_POOL_CORE_FORMATION_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

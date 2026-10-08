@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"I61_earth_greenockite_aged"
-display_name = "Earth Greenockite Aged"
+display_name = "LOC_ITEMS_I61_EARTH_GREENOCKITE_AGED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_palace"

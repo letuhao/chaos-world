@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"G4_supernova_mantle_weave_recipe"
-display_name = "Supernova Mantle Weave Recipe"
+display_name = "LOC_RECIPES_G4_SUPERNOVA_MANTLE_WEAVE_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"G4_heaven_thread", &"shard_supernova"])
 outputs = Array[StringName]([&"mantle_supernova"])

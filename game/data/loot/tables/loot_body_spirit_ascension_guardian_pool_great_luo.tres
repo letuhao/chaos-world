@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_body_spirit_ascension_guardian_pool_great_luo"
-display_name = "Body of Chaos Guardian salvage (great_luo)"
+display_name = "LOC_LOOT_BODY_SPIRIT_ASCENSION_GUARDIAN_GREAT_LUO_0_DISPLAY_NAME"
 realm = &"great_luo"
 rarity = &""
 rolls = 1

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F52_immortal_hauberk_breakthrough_chance_physique_stamina_regen"
-display_name = "Immortal Hauberk Breakthrough chance Physique Stamina regen"
+display_name = "LOC_ITEMS_F52_IMMORTAL_HAUBERK_BREAKTHROUGH_CHANCE_PHYSIQUE_STAMINA_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"earth_immortal"

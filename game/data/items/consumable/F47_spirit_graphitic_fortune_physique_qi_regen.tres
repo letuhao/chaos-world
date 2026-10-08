@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F47_spirit_graphitic_fortune_physique_qi_regen"
-display_name = "Spirit Graphitic Fortune Physique Qi regen"
+display_name = "LOC_ITEMS_F47_SPIRIT_GRAPHITIC_FORTUNE_PHYSIQUE_QI_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_palace"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V28_earth_arterial_aged"
-display_name = "Earth Arterial Aged"
+display_name = "LOC_ITEMS_V28_EARTH_ARTERIAL_AGED_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"spirit_condensation"

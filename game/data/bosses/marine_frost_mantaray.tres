@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_boss")
 id = &"marine_frost_mantaray"
-display_name = "Frost Manta Ray"
+display_name = "LOC_BOSSES_MARINE_FROST_MANTARAY_DISPLAY_NAME"
 domain_id = &"marine_frost_mantaray_domain"
 loot = Array[StringName]([])
 ; What froze is brittle, and one impact splits the whole crack open at once. The ice

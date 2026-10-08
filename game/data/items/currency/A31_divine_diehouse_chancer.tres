@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"A31_divine_diehouse_chancer"
-display_name = "Divine Diehouse Chancer"
+display_name = "LOC_ITEMS_A31_DIVINE_DIEHOUSE_CHANCER_DISPLAY_NAME"
 category = &"currency"
 rarity = &"legendary"
 realm = &"primordial_origin"

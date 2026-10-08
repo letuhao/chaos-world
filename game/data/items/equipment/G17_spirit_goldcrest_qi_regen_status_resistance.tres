@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G17_spirit_goldcrest_qi_regen_status_resistance"
-display_name = "Spirit Goldcrest Qi regen Status resistance"
+display_name = "LOC_ITEMS_G17_SPIRIT_GOLDCREST_QI_REGEN_STATUS_RESISTANCE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"magic"
 realm = &"spirit_condensation"

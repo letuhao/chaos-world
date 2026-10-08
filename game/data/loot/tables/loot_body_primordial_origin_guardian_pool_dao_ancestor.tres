@@ -18,7 +18,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_body_primordial_origin_guardian_pool_dao_ancestor"
-display_name = "Body of the Dao Guardian salvage (dao_ancestor)"
+display_name = "LOC_LOOT_BODY_PRIMORDIAL_ORIGIN_GUARDIAN_DAO_ANCESTOR_0_DISPLAY_NAME"
 realm = &"dao_ancestor"
 rarity = &""
 rolls = 1

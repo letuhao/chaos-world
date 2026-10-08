@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"body_immortal_sovereign_recovery_recipe"
-display_name = "Immortal Sovereign Mending Elixir Formula"
+display_name = "LOC_RECIPES_BODY_IMMORTAL_SOVEREIGN_RECOVERY_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"body_immortal_sovereign_tempering_herb", &"body_immortal_sovereign_guardian_core"])
 outputs = Array[StringName]([&"body_immortal_sovereign_recovery_elixir"])

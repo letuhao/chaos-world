@@ -1,0 +1,11 @@
+[gd_resource type="Translation" format=3]
+
+[resource]
+locale = "en"
+messages = {
+"LOC_MARKET_FOUNDATION_REAGENT_TRADER_DISPLAY_NAME": "Foundation Reagent Trader",
+"LOC_MARKET_PRIMORDIAL_ORIGIN_SEALED_COUNTER_DISPLAY_NAME": "Primordial Origin Sealed Counter",
+"LOC_MARKET_QI_REFINING_ORE_STALL_DISPLAY_NAME": "Qi Refining Ore Stall",
+"LOC_MARKET_SPIRIT_DOMAIN_SPIRIT_AUCTION_DISPLAY_NAME": "Spirit Domain Spirit Auction",
+"LOC_MARKET_SPIRIT_SEA_MATERIAL_CARAVAN_DISPLAY_NAME": "Spirit Sea Material Caravan",
+}

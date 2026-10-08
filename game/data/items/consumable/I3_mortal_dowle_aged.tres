@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"I3_mortal_dowle_aged"
-display_name = "Mortal Dowle Aged"
+display_name = "LOC_ITEMS_I3_MORTAL_DOWLE_AGED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"qi_refining"

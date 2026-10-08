@@ -24,13 +24,13 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"ScreenTitle"
-text = "Domains"
+text = "LOC_UI_SCREENS_A0D641B3F1"
 
 [node name="StatusLabel" type="Label" parent="Layout"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"MetaLabel"
-text = "Not inside a domain"
+text = "LOC_UI_SCREENS_49AF941E12"
 
 [node name="Entry" type="HBoxContainer" parent="Layout"]
 layout_mode = 2
@@ -38,7 +38,7 @@ layout_mode = 2
 [node name="TemplateLabel" type="Label" parent="Layout/Entry"]
 layout_mode = 2
 theme_type_variation = &"MetaLabel"
-text = "Domain"
+text = "LOC_UI_SCREENS_9B10914D8B"
 
 [node name="TemplateOption" type="OptionButton" parent="Layout/Entry"]
 unique_name_in_owner = true
@@ -49,13 +49,13 @@ size_flags_horizontal = 3
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"PrimaryButton"
-text = "Enter domain"
+text = "LOC_UI_SCREENS_9EFF7ED921"
 
 [node name="LeaveButton" type="Button" parent="Layout/Entry"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"DangerButton"
-text = "Leave"
+text = "LOC_UI_SCREENS_7E3520A973"
 
 [node name="Room" type="HBoxContainer" parent="Layout"]
 layout_mode = 2
@@ -63,7 +63,7 @@ layout_mode = 2
 [node name="RoomLabel" type="Label" parent="Layout/Room"]
 layout_mode = 2
 theme_type_variation = &"MetaLabel"
-text = "Room"
+text = "LOC_UI_SCREENS_90E2FCA9E9"
 
 [node name="RoomOption" type="OptionButton" parent="Layout/Room"]
 unique_name_in_owner = true
@@ -73,7 +73,7 @@ size_flags_horizontal = 3
 [node name="VisitButton" type="Button" parent="Layout/Room"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Visit"
+text = "LOC_UI_SCREENS_7C9A8664B1"
 
 [node name="Separator" type="HSeparator" parent="Layout"]
 layout_mode = 2
@@ -93,7 +93,7 @@ layout_mode = 2
 [node name="MapTitle" type="Label" parent="Layout/Columns/MapPanel/MapVBox"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "Floor plan"
+text = "LOC_UI_SCREENS_D5786D3D39"
 
 [node name="MapView" parent="Layout/Columns/MapPanel/MapVBox" instance=ExtResource("5")]
 unique_name_in_owner = true
@@ -131,7 +131,7 @@ layout_mode = 2
 [node name="PopulationTitle" type="Label" parent="Layout/Columns/SidePanel/SideVBox"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "Population by role"
+text = "LOC_UI_SCREENS_4B6907A6F1"
 
 [node name="PopulationLabel" type="Label" parent="Layout/Columns/SidePanel/SideVBox"]
 unique_name_in_owner = true
@@ -143,7 +143,7 @@ text = ""
 [node name="ZonesTitle" type="Label" parent="Layout/Columns/SidePanel/SideVBox"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "Severe environments"
+text = "LOC_UI_SCREENS_280C7B4FC5"
 
 [node name="ZonesLabel" type="Label" parent="Layout/Columns/SidePanel/SideVBox"]
 unique_name_in_owner = true
@@ -174,17 +174,17 @@ layout_mode = 2
 [node name="InspectButton" type="Button" parent="Layout/FixtureRow"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Inspect"
+text = "LOC_UI_SCREENS_18CA87AFEC"
 
 [node name="AttemptButton" type="Button" parent="Layout/FixtureRow"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Strike node"
+text = "LOC_UI_SCREENS_682924E339"
 
 [node name="ClaimButton" type="Button" parent="Layout/FixtureRow"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Open treasure"
+text = "LOC_UI_SCREENS_B6DA8450F0"
 
 [node name="MessageLabel" type="Label" parent="Layout"]
 unique_name_in_owner = true

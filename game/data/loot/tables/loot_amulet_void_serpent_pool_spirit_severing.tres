@@ -42,7 +42,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_amulet_void_serpent_pool_spirit_severing"
-display_name = "Void Serpent salvage (spirit_severing)"
+display_name = "LOC_LOOT_AMULET_VOID_SERPENT_SPIRIT_SEVERING_0_DISPLAY_NAME"
 realm = &"spirit_severing"
 rarity = &""
 rolls = 1

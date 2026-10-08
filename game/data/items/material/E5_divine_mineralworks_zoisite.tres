@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E5_divine_mineralworks_zoisite"
-display_name = "Divine Mineralworks Zoisite"
+display_name = "LOC_ITEMS_E5_DIVINE_MINERALWORKS_ZOISITE_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"primordial_origin"

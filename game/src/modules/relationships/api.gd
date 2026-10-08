@@ -19,6 +19,7 @@ const _PROVIDER_COMPONENT := &"relationships_provider"
 
 static var _events: RelationshipEvents
 
+
 static func _get_events() -> RelationshipEvents:
 	if _events == null:
 		_events = RelationshipEvents.new()
@@ -59,7 +60,10 @@ static func relationship_state(actor: Actor) -> RelationshipState:
 
 # --- Relationship lifecycle ---
 
-static func start_relationship(actor: Actor, partner_id: StringName, type: StringName) -> Dictionary:
+
+static func start_relationship(
+	actor: Actor, partner_id: StringName, type: StringName
+) -> Dictionary:
 	if actor == null or partner_id == &"" or not RelationshipType.is_valid(type):
 		return {"ok": false, "reason": "invalid_args"}
 	var state := relationship_state(actor)
@@ -75,7 +79,9 @@ static func start_relationship(actor: Actor, partner_id: StringName, type: Strin
 	return {"ok": true}
 
 
-static func end_relationship(actor: Actor, partner_id: StringName, reason: StringName) -> Dictionary:
+static func end_relationship(
+	actor: Actor, partner_id: StringName, reason: StringName
+) -> Dictionary:
 	if actor == null or partner_id == &"":
 		return {"ok": false, "reason": "invalid_args"}
 	var state := relationship_state(actor)
@@ -102,7 +108,13 @@ static func relationship_type(actor: Actor, partner_id: StringName) -> StringNam
 
 # --- Interaction logging ---
 
-static func log_interaction(actor: Actor, partner_id: StringName, interaction_type: StringName, emotional_delta: Dictionary = {}) -> Dictionary:
+
+static func log_interaction(
+	actor: Actor,
+	partner_id: StringName,
+	interaction_type: StringName,
+	emotional_delta: Dictionary = {}
+) -> Dictionary:
 	if actor == null or partner_id == &"" or interaction_type == &"":
 		return {"ok": false, "reason": "invalid_args"}
 	var state := relationship_state(actor)
@@ -127,6 +139,7 @@ static func interaction_count(actor: Actor, partner_id: StringName) -> int:
 
 # --- Emotional signature ---
 
+
 static func emotional_signature(actor: Actor, partner_id: StringName) -> Dictionary:
 	var state := relationship_state(actor)
 	if state == null:
@@ -145,6 +158,7 @@ static func emotional_energy(actor: Actor) -> float:
 
 
 # --- Dual cultivation tracking ---
+
 
 static func mark_dual_cultivation_partner(actor: Actor, partner_id: StringName) -> Dictionary:
 	if actor == null or partner_id == &"":
@@ -180,6 +194,7 @@ static func dual_cultivation_history(actor: Actor, partner_id: StringName) -> Ar
 
 # --- Frequent partner advantages ---
 
+
 static func frequent_partner_tier(actor: Actor, partner_id: StringName) -> int:
 	var state := relationship_state(actor)
 	if state == null:
@@ -197,6 +212,7 @@ static func frequent_partner_advantage(actor: Actor, partner_id: StringName) -> 
 
 # --- Read model ---
 
+
 static func summary(actor: Actor) -> Dictionary:
 	var state := relationship_state(actor)
 	if state == null:
@@ -205,13 +221,18 @@ static func summary(actor: Actor) -> Dictionary:
 	for key in state._entries.keys():
 		var entry := state._entries[key] as RelationshipEntry
 		if entry != null and entry.is_active():
-			partners.append({
-				"partner_id": String(entry.partner_id),
-				"relationship_type": String(entry.relationship_type),
-				"frequent_partner_tier": entry.frequent_partner_tier,
-				"is_dual_cultivation_partner": entry.is_dual_cultivation_partner,
-				"total_interactions": entry.total_interactions,
-			})
+			(
+				partners
+				. append(
+					{
+						"partner_id": String(entry.partner_id),
+						"relationship_type": String(entry.relationship_type),
+						"frequent_partner_tier": entry.frequent_partner_tier,
+						"is_dual_cultivation_partner": entry.is_dual_cultivation_partner,
+						"total_interactions": entry.total_interactions,
+					}
+				)
+			)
 	return {
 		"partner_count": partners.size(),
 		"partners": partners,

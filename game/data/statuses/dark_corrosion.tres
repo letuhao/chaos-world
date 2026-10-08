@@ -19,7 +19,7 @@ tick_interval = 1.0
 mitigation_tags = Array[StringName]([&"affinity", &"technique", &"pill"])
 payload = {
 "mechanic": &"escalating_burn",
-"text": "Not a wound. Acid, eating whatever the guard was made of and the flesh under it, deeper for every breath it is left breathing.",
+"text": "LOC_STATUSES_DARK_CORROSION_TEXT",
 "pool": &"health",
 "share_per_pulse": 0.022,
 "escalation_per_tick": 0.06,

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"scrollcase_immortal_codex_recipe"
-display_name = "Immortal Codex Recipe"
+display_name = "LOC_RECIPES_SCROLLCASE_IMMORTAL_CODEX_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"shard_eclipse", &"filament_starlinen"])
 outputs = Array[StringName]([&"scrollcase_immortal_codex"])

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"apti_moon_mind_recipe"
-display_name = "Moon Mind Recipe"
+display_name = "LOC_RECIPES_APTI_MOON_MIND_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"wood_ember_ring", &"monster_frost_wolf_essence"])
 outputs = Array[StringName]([&"apti_moon_mind"])

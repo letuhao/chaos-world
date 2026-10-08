@@ -30,7 +30,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_marine_frost_mantaray_pool_primordial_origin"
-display_name = "Frost Manta Ray salvage (primordial_origin)"
+display_name = "LOC_LOOT_MARINE_FROST_MANTARAY_PRIMORDIAL_ORIGIN_0_DISPLAY_NAME"
 realm = &"primordial_origin"
 rarity = &""
 rolls = 1

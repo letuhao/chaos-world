@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"amulet_void_serpent_fang"
-display_name = "Void Serpent Fang"
+display_name = "LOC_ITEMS_AMULET_VOID_SERPENT_FANG_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"spirit_palace"

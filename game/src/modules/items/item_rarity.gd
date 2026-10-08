@@ -59,10 +59,10 @@ static func sanitize(rarity: StringName) -> StringName:
 static func display_name(rarity: StringName) -> String:
 	match sanitize(rarity):
 		MAGIC:
-			return "Magic"
+			return L.t("LOC_ITEMS_E6791BE7EE")
 		RARE:
-			return "Rare"
+			return L.t("LOC_ITEMS_CCE370D2F9")
 		LEGENDARY:
-			return "Legendary"
+			return L.t("LOC_ITEMS_B7E8916505")
 		_:
-			return "Common"
+			return L.t("LOC_ITEMS_7DE90A6524")

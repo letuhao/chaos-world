@@ -16,22 +16,28 @@ const FATE_C := &"t_fate_c"
 
 
 func setup() -> void:
-	DestinyFixtureCatalog.install(
-		[
-			DestinyFixtureCatalog.story_fate(FATE_A),
-			DestinyFixtureCatalog.story_fate(FATE_B),
-			DestinyFixtureCatalog.story_fate(FATE_C),
-		],
-		[]
+	(
+		DestinyFixtureCatalog
+		. install(
+			[
+				DestinyFixtureCatalog.story_fate(FATE_A),
+				DestinyFixtureCatalog.story_fate(FATE_B),
+				DestinyFixtureCatalog.story_fate(FATE_C),
+			],
+			[]
+		)
 	)
-	EncounterFixtureCatalog.install(
-		[
-			EncounterFixtureCatalog.simple_encounter(ENCOUNTER_A),
-			EncounterFixtureCatalog.prophecy_encounter(ENCOUNTER_B, PROPHECY_A),
-		],
-		[
-			EncounterFixtureCatalog.simple_prophecy(PROPHECY_A, FATE_A),
-		]
+	(
+		EncounterFixtureCatalog
+		. install(
+			[
+				EncounterFixtureCatalog.simple_encounter(ENCOUNTER_A),
+				EncounterFixtureCatalog.prophecy_encounter(ENCOUNTER_B, PROPHECY_A),
+			],
+			[
+				EncounterFixtureCatalog.simple_prophecy(PROPHECY_A, FATE_A),
+			]
+		)
 	)
 
 
@@ -114,7 +120,9 @@ func test_triggering_an_encounter_marks_it_seen() -> void:
 	assert_eq(result["triggered"], true, "an encounter triggered")
 	var encounter_id := StringName(result["encounter_id"])
 	assert_eq(encounter_id != &"", true, "the encounter id is non-empty")
-	assert_eq(EncounterState.has_seen(EncounterApi.state(actor), encounter_id), true, "it is marked seen")
+	assert_eq(
+		EncounterState.has_seen(EncounterApi.state(actor), encounter_id), true, "it is marked seen"
+	)
 
 
 func test_triggering_with_no_eligible_encounters_returns_empty() -> void:
@@ -147,8 +155,7 @@ func test_unique_encounter_cannot_trigger_twice() -> void:
 func test_cooldown_prevents_retriggering() -> void:
 	var actor := _hero()
 	EncounterFixtureCatalog.install(
-		[EncounterFixtureCatalog.cooldown_encounter(ENCOUNTER_A, 5)],
-		[]
+		[EncounterFixtureCatalog.cooldown_encounter(ENCOUNTER_A, 5)], []
 	)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 42
@@ -165,8 +172,7 @@ func test_cooldown_prevents_retriggering() -> void:
 func test_location_trigger_only_fires_at_matching_location() -> void:
 	var actor := _hero()
 	EncounterFixtureCatalog.install(
-		[EncounterFixtureCatalog.location_encounter(ENCOUNTER_A, &"mortal_plains")],
-		[]
+		[EncounterFixtureCatalog.location_encounter(ENCOUNTER_A, &"mortal_plains")], []
 	)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 42

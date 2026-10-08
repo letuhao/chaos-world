@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Y18_immortal_homestead_decoration"
-display_name = "Immortal Homestead Decoration"
+display_name = "LOC_ITEMS_Y18_IMMORTAL_HOMESTEAD_DECORATION_DISPLAY_NAME"
 category = &"misc"
 rarity = &"legendary"
 realm = &"great_luo"

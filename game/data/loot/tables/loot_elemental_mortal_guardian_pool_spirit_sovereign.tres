@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_elemental_mortal_guardian_pool_spirit_sovereign"
-display_name = "Ember Guardian salvage (spirit_sovereign)"
+display_name = "LOC_LOOT_ELEMENTAL_MORTAL_GUARDIAN_SPIRIT_SOVEREIGN_0_DISPLAY_NAME"
 realm = &"spirit_sovereign"
 rarity = &""
 rolls = 1

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"M11_spirit_kelp_aged_recipe"
-display_name = "Spirit Kelp Aged Recipe"
+display_name = "LOC_RECIPES_M11_SPIRIT_KELP_AGED_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"M11_spirit_kelp_refined", &"orb_gold_essence", &"bracer_boar_hide"])
 outputs = Array[StringName]([&"M11_spirit_kelp_aged"])

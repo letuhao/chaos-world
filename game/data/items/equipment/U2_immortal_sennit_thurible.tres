@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U2_immortal_sennit_thurible"
-display_name = "Immortal Sennit Thurible"
+display_name = "LOC_ITEMS_U2_IMMORTAL_SENNIT_THURIBLE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"golden_immortal"

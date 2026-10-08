@@ -16,7 +16,7 @@ script = ExtResource("1")
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"MetaLabel"
-text = "Open domain"
+text = "LOC_UI_PANELS_4708400A59"
 
 [node name="BonusLabel" type="Label" parent="."]
 unique_name_in_owner = true

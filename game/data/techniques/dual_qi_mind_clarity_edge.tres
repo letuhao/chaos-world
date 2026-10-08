@@ -5,8 +5,8 @@
 script = ExtResource("1_def")
 id = &"dual_qi_mind_clarity_edge"
 delivered_by = &"treaty_eleventh_clause"
-display_name = "Clarity Edge"
-description = "Strikes with qi held perfectly still, which only a mind that cannot be startled can do. Mostly light, so a dark-veined body takes it badly."
+display_name = "LOC_TECHNIQUES_DUAL_QI_MIND_CLARITY_EDGE_DISPLAY_NAME"
+description = "LOC_TECHNIQUES_DUAL_QI_MIND_CLARITY_EDGE_DESCRIPTION"
 tags = Array[StringName]([&"technique", &"dual", &"qi_mind", &"light", &"strike"])
 grade = &"heaven"
 rarity = &"rare"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"H18_immortal_joule_breakthrough_chance_evasion_penetration_physique_stamina_regen"
-display_name = "Immortal Joule Breakthrough chance Evasion Penetration Physique Stamina regen"
+display_name = "LOC_ITEMS_H18_IMMORTAL_JOULE_BREAKTHROUGH_CHANCE_EVASION_PENETRATION_PHYSIQUE_STAMINA_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"earth_immortal"

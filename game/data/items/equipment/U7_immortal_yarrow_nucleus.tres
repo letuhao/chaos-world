@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U7_immortal_yarrow_nucleus"
-display_name = "Immortal Yarrow Nucleus"
+display_name = "LOC_ITEMS_U7_IMMORTAL_YARROW_NUCLEUS_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"heaven_immortal"

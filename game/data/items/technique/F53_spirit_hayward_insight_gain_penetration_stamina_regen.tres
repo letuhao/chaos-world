@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F53_spirit_hayward_insight_gain_penetration_stamina_regen"
-display_name = "Spirit Hayward Insight gain Penetration Stamina regen"
+display_name = "LOC_ITEMS_F53_SPIRIT_HAYWARD_INSIGHT_GAIN_PENETRATION_STAMINA_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_condensation"

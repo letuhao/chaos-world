@@ -5,14 +5,14 @@
 [resource]
 script = ExtResource("1_item")
 id = &"set_stormcall_circuit_rod"
-display_name = "Stormcall Rod"
+display_name = "LOC_SETS_SET_STORMCALL_CIRCUIT_ROD_DISPLAY_NAME"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
 stackable = false
 tags = Array[StringName]([&"set:stormcall_circuit"])
 sources = Array[StringName]([&"boss:body_spirit_severing_guardian"])
-description = "A severing-edge rod that keeps a partial discharge in the circuit."
+description = "LOC_SETS_SET_STORMCALL_CIRCUIT_ROD_DESCRIPTION"
 rarity = &"rare"
 realm = &"spirit_severing"
 fixed_modifiers = Array[Dictionary]([

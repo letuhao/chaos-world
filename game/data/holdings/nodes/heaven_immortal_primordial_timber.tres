@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_node")
 node_id = &"heaven_immortal_primordial_timber"
-display_name = "Primordial Timber"
+display_name = "LOC_HOLDINGS_HEAVEN_IMMORTAL_PRIMORDIAL_TIMBER_DISPLAY_NAME"
 kind = &"timber"
 realm = &"heaven_immortal"
 yield_per_period = 12

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"I42_immortal_gadstyle_primed"
-display_name = "Immortal Gadstyle Primed"
+display_name = "LOC_ITEMS_I42_IMMORTAL_GADSTYLE_PRIMED_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"dao_fruit"

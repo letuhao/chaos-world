@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"V6_divine_accretion_coffer"
-display_name = "Divine Accretion Coffer"
+display_name = "LOC_ITEMS_V6_DIVINE_ACCRETION_COFFER_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"primordial_origin"

@@ -30,7 +30,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_codex_storm_phoenix_pool_primordial_origin"
-display_name = "Storm Phoenix salvage (primordial_origin)"
+display_name = "LOC_LOOT_CODEX_STORM_PHOENIX_PRIMORDIAL_ORIGIN_0_DISPLAY_NAME"
 realm = &"primordial_origin"
 rarity = &""
 rolls = 1

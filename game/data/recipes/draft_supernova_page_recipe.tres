@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"draft_supernova_page_recipe"
-display_name = "Supernova Draft Recipe"
+display_name = "LOC_RECIPES_DRAFT_SUPERNOVA_PAGE_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"shard_primordial", &"filament_chaosweave"])
 outputs = Array[StringName]([&"draft_supernova_page"])

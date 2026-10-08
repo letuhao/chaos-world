@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F19_mortal_entozoon_agility_aptitude_poise_will"
-display_name = "Mortal Entozoon Agility Aptitude Poise Will"
+display_name = "LOC_ITEMS_F19_MORTAL_ENTOZOON_AGILITY_APTITUDE_POISE_WILL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"nascent_soul"

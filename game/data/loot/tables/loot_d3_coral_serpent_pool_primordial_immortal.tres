@@ -18,7 +18,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d3_coral_serpent_pool_primordial_immortal"
-display_name = "Coral Leviathan Lesser salvage (primordial_immortal)"
+display_name = "LOC_LOOT_D3_CORAL_SERPENT_PRIMORDIAL_IMMORTAL_0_DISPLAY_NAME"
 realm = &"primordial_immortal"
 rarity = &""
 rolls = 1

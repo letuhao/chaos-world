@@ -17,7 +17,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"SectionTitle"
-text = "Outside a domain"
+text = "LOC_UI_PANELS_7F6FF1B33D"
 
 [node name="VitalityBar" type="ProgressBar" parent="."]
 unique_name_in_owner = true

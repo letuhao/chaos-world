@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"T1_mortal_kestrel_wicket"
-display_name = "Mortal Kestrel Wicket"
+display_name = "LOC_ITEMS_T1_MORTAL_KESTREL_WICKET_DISPLAY_NAME"
 category = &"key"
 rarity = &"common"
 realm = &"body_integration"

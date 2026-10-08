@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F26_spirit_exlibris_aptitude_attack_physical_comprehension_loot_bonus"
-display_name = "Spirit Exlibris Aptitude Attack physical Comprehension Loot bonus"
+display_name = "LOC_ITEMS_F26_SPIRIT_EXLIBRIS_APTITUDE_ATTACK_PHYSICAL_COMPREHENSION_LOOT_BONUS_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_ascension"

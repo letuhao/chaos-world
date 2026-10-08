@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U6_immortal_withe_sphere"
-display_name = "Immortal Withe Sphere"
+display_name = "LOC_ITEMS_U6_IMMORTAL_WITHE_SPHERE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"golden_immortal"

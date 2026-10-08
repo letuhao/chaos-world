@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"I40_immortal_fuchsite_base"
-display_name = "Immortal Fuchsite Base"
+display_name = "LOC_ITEMS_I40_IMMORTAL_FUCHSITE_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"earth_immortal"

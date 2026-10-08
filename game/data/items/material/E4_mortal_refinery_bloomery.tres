@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E4_mortal_refinery_bloomery"
-display_name = "Mortal Refinery Bloomery"
+display_name = "LOC_ITEMS_E4_MORTAL_REFINERY_BLOOMERY_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"foundation"

@@ -186,7 +186,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_qi_primordial_origin_guardian"
-display_name = "Primordial Origin Guardian"
+display_name = "LOC_LOOT_QI_PRIMORDIAL_ORIGIN_GUARDIAN_POOL_BODY_INTEGRATION_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

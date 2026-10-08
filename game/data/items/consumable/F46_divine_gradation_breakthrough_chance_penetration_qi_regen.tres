@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F46_divine_gradation_breakthrough_chance_penetration_qi_regen"
-display_name = "Divine Gradation Breakthrough chance Penetration Qi regen"
+display_name = "LOC_ITEMS_F46_DIVINE_GRADATION_BREAKTHROUGH_CHANCE_PENETRATION_QI_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"

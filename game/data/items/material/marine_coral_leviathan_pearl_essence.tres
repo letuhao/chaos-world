@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"marine_coral_leviathan_pearl_essence"
-display_name = "Coral Leviathan Pearl Essence"
+display_name = "LOC_ITEMS_MARINE_CORAL_LEVIATHAN_PEARL_ESSENCE_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"true_immortal"

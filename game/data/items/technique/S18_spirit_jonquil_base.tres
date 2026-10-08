@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"S18_spirit_jonquil_base"
-display_name = "Spirit Jonquil Base"
+display_name = "LOC_ITEMS_S18_SPIRIT_JONQUIL_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_ascension"

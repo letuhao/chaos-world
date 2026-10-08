@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_relic_ash_wyrm_pool_heaven_immortal"
-display_name = "Ash Wyrm salvage (heaven_immortal)"
+display_name = "LOC_LOOT_RELIC_ASH_WYRM_HEAVEN_IMMORTAL_0_DISPLAY_NAME"
 realm = &"heaven_immortal"
 rarity = &""
 rolls = 1

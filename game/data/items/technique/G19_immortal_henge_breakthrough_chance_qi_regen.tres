@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G19_immortal_henge_breakthrough_chance_qi_regen"
-display_name = "Immortal Henge Breakthrough chance Qi regen"
+display_name = "LOC_ITEMS_G19_IMMORTAL_HENGE_BREAKTHROUGH_CHANCE_QI_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_immortal"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F31_divine_flotsam_comprehension_defense_physical_physique_qi_cost_reduction"
-display_name = "Divine Flotsam Comprehension Defense physical Physique Qi cost reduction"
+display_name = "LOC_ITEMS_F31_DIVINE_FLOTSAM_COMPREHENSION_DEFENSE_PHYSICAL_PHYSIQUE_QI_COST_REDUCTION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"fungus_pale_veil"
-display_name = "Pale Veil"
+display_name = "LOC_ITEMS_FUNGUS_PALE_VEIL_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_manifestation"

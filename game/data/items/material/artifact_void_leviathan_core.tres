@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"artifact_void_leviathan_core"
-display_name = "Void Leviathan Core"
+display_name = "LOC_ITEMS_ARTIFACT_VOID_LEVIATHAN_CORE_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"spirit_transformation"

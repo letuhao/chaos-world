@@ -381,7 +381,7 @@ func test_pressing_the_sit_without_a_bridge_refuses_and_names_the_missing_seam()
 	var world := _world_of(screen)
 	assert_eq(world.get("tone", ""), "error", "the refusal is an error, not a silence")
 	assert_eq(
-		world.get("message_text", ""),
+		L.t(world.get("message_text", "")),
 		"This screen cannot ask for a longer sit",
 		"in the wording the panel owns"
 	)

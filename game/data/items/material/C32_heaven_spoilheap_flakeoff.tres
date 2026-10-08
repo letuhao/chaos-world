@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C32_heaven_spoilheap_flakeoff"
-display_name = "Heaven Spoilheap Flakeoff"
+display_name = "LOC_ITEMS_C32_HEAVEN_SPOILHEAP_FLAKEOFF_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"mystic_immortal"

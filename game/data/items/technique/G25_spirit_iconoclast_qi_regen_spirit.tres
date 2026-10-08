@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G25_spirit_iconoclast_qi_regen_spirit"
-display_name = "Spirit Iconoclast Qi regen Spirit"
+display_name = "LOC_ITEMS_G25_SPIRIT_ICONOCLAST_QI_REGEN_SPIRIT_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_unity"

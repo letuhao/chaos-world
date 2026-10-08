@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F32_immortal_foley_comprehension_max_stamina_physique_qi_cost_reduction"
-display_name = "Immortal Foley Comprehension Max stamina Physique Qi cost reduction"
+display_name = "LOC_ITEMS_F32_IMMORTAL_FOLEY_COMPREHENSION_MAX_STAMINA_PHYSIQUE_QI_COST_REDUCTION_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"mystic_immortal"

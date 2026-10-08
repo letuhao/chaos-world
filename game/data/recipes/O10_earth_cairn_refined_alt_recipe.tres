@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"O10_earth_cairn_refined_alt_recipe"
-display_name = "Earth Cairn Refined (Alt) Recipe"
+display_name = "LOC_RECIPES_O10_EARTH_CAIRN_REFINED_ALT_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"O10_earth_cairn_base", &"scabbard_moon_ore", &"orb_moon_essence"])
 outputs = Array[StringName]([&"O10_earth_cairn_refined"])

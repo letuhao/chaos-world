@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F43_earth_gibbet_cooldown_reduction_dao_heart_health_regen"
-display_name = "Earth Gibbet Cooldown reduction Dao heart Health regen"
+display_name = "LOC_ITEMS_F43_EARTH_GIBBET_COOLDOWN_REDUCTION_DAO_HEART_HEALTH_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_severing"

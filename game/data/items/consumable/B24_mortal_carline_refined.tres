@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B24_mortal_carline_refined"
-display_name = "Mortal Carline Refined"
+display_name = "LOC_ITEMS_B24_MORTAL_CARLINE_REFINED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"core_formation"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"X13_immortal_apothecary_indentum"
-display_name = "Immortal Apothecary Indentum"
+display_name = "LOC_ITEMS_X13_IMMORTAL_APOTHECARY_INDENTUM_DISPLAY_NAME"
 category = &"misc"
 rarity = &"legendary"
 realm = &"immortal_sovereign"

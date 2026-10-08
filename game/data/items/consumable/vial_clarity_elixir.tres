@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"vial_clarity_elixir"
-display_name = "Clarity Elixir"
+display_name = "LOC_ITEMS_VIAL_CLARITY_ELIXIR_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_ascension"

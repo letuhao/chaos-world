@@ -54,7 +54,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E10_transcendent_oracle_pool_transcendent"
-display_name = "Transcendent Oracle salvage (transcendent)"
+display_name = "LOC_LOOT_E10_TRANSCENDENT_ORACLE_TRANSCENDENT_0_DISPLAY_NAME"
 realm = &"transcendent"
 rarity = &""
 rolls = 1

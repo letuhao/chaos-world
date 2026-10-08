@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_node")
 node_id = &"void_refinement_moonwell_spring"
-display_name = "Moonwell Spring"
+display_name = "LOC_HOLDINGS_VOID_REFINEMENT_MOONWELL_SPRING_DISPLAY_NAME"
 kind = &"spirit_vein"
 realm = &"void_refinement"
 yield_per_period = 6

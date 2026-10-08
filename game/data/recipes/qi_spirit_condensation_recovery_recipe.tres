@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"qi_spirit_condensation_recovery_recipe"
-display_name = "Spirit Condensation Renewal Elixir Formula"
+display_name = "LOC_RECIPES_QI_SPIRIT_CONDENSATION_RECOVERY_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"qi_spirit_condensation_cultivation_herb", &"qi_spirit_condensation_guardian_core"])
 outputs = Array[StringName]([&"qi_spirit_condensation_recovery_elixir"])

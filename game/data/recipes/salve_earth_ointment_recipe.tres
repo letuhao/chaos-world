@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"salve_earth_ointment_recipe"
-display_name = "Earth Ointment Recipe"
+display_name = "LOC_RECIPES_SALVE_EARTH_OINTMENT_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"wood_ember_ring", &"monster_frost_wolf_essence"])
 outputs = Array[StringName]([&"salve_earth_ointment"])

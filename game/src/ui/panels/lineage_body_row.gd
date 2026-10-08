@@ -181,7 +181,9 @@ func _refusal_text() -> String:
 func _ceiling_text() -> String:
 	var ceiling := int(_view.get("realm_ceiling", 0))
 	var ceiling_text := (
-		NO_CEILING if ceiling <= 0 else L.t("LOC_UI_PANELS_38F8FB8209") % [REALM_SUFFIX, ceiling]
+		NO_CEILING
+		if ceiling <= 0
+		else L.t("LOC_UI_PANELS_38F8FB8209") % [L.t(REALM_SUFFIX), ceiling]
 	)
 	return (
 		"Ceiling %s · reached R%d · %d %s"

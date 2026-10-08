@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"R10_spirit_marquee_text"
-display_name = "Spirit Marquee Text"
+display_name = "LOC_ITEMS_R10_SPIRIT_MARQUEE_TEXT_DISPLAY_NAME"
 category = &"quest"
 rarity = &"magic"
 realm = &"spirit_domain"

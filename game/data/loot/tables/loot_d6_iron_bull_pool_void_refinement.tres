@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d6_iron_bull_pool_void_refinement"
-display_name = "Iron Bull Totem Lesser salvage (void_refinement)"
+display_name = "LOC_LOOT_D6_IRON_BULL_VOID_REFINEMENT_0_DISPLAY_NAME"
 realm = &"void_refinement"
 rarity = &""
 rolls = 1

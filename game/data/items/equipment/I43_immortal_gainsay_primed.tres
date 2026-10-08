@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"I43_immortal_gainsay_primed"
-display_name = "Immortal Gainsay Primed"
+display_name = "LOC_ITEMS_I43_IMMORTAL_GAINSAY_PRIMED_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"mystic_immortal"

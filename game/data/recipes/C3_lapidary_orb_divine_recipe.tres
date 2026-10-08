@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"C3_lapidary_orb_divine_recipe"
-display_name = "Lapidary Divine Orb Route"
+display_name = "LOC_RECIPES_C3_LAPIDARY_ORB_DIVINE_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"C3_heaven_facet", &"jade_divine"])
 outputs = Array[StringName]([&"orb_divine"])

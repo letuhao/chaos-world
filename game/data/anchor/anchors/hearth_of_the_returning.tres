@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_anchor")
 id = &"hearth_of_the_returning"
-display_name = "Hearth of the Returning"
-description = "A low, sealed hearth that burns without fuel and holds a soul steady while its owner is inside it. It does not close a wound; it gives one somewhere to stop bleeding."
+display_name = "LOC_ANCHOR_HEARTH_OF_THE_RETURNING_DISPLAY_NAME"
+description = "LOC_ANCHOR_HEARTH_OF_THE_RETURNING_DESCRIPTION"
 build_cost = {"coins": 400, "items": {"vial_mending_elixir": 2}}
 repair_per_period = 2.0
 realm_floor = &""

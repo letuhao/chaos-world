@@ -8,27 +8,27 @@ script = ExtResource("2_step")
 step_id = &"defended_pass"
 fact = &"sect_post_held"
 need = 1
-display_name = "Stand a full rotation on the pass"
+display_name = "LOC_QUEST_THE_STATION_YOU_HELD_DISPLAY_NAME_1"
 
 [sub_resource type="Resource" id="QuestStep_terms_discharged"]
 script = ExtResource("2_step")
 step_id = &"terms_discharged"
 fact = &"oaths_discharged"
 need = 3
-display_name = "Discharge three sworn terms in full"
+display_name = "LOC_QUEST_THE_STATION_YOU_HELD_DISPLAY_NAME_2"
 
 [sub_resource type="Resource" id="QuestStep_heir_registered"]
 script = ExtResource("2_step")
 step_id = &"heir_registered"
 fact = &"household_heir_registered"
 need = 1
-display_name = "See your name entered in the household register"
+display_name = "LOC_QUEST_THE_STATION_YOU_HELD_DISPLAY_NAME_3"
 
 [resource]
 script = ExtResource("1_quest")
 id = &"the_station_you_held"
-display_name = "The Station You Held"
-description = "No clerk asked you to stay and no clerk wrote down that you did. The register shows a blank where a rotation should read, and the blank is the record. Pay the sect's arrears from what the pass cost you."
+display_name = "LOC_QUEST_THE_STATION_YOU_HELD_DISPLAY_NAME_4"
+description = "LOC_QUEST_THE_STATION_YOU_HELD_DESCRIPTION"
 kind = &"authored"
 tier = 1
 requirement = {}

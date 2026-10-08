@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Y20_immortal_newry_knack"
-display_name = "Immortal Newry Knack"
+display_name = "LOC_ITEMS_Y20_IMMORTAL_NEWRY_KNACK_DISPLAY_NAME"
 category = &"misc"
 rarity = &"legendary"
 realm = &"true_immortal"

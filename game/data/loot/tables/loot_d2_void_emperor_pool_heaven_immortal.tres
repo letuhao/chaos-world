@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d2_void_emperor_pool_heaven_immortal"
-display_name = "Void Emperor Lesser salvage (heaven_immortal)"
+display_name = "LOC_LOOT_D2_VOID_EMPEROR_HEAVEN_IMMORTAL_0_DISPLAY_NAME"
 realm = &"heaven_immortal"
 rarity = &""
 rolls = 1

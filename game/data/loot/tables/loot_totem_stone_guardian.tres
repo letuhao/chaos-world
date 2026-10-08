@@ -198,7 +198,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_totem_stone_guardian"
-display_name = "Stone Guardian Totem"
+display_name = "LOC_LOOT_TOTEM_STONE_GUARDIAN_POOL_BODY_INTEGRATION_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

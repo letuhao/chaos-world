@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F27_spirit_extempore_aptitude_attack_physical_cooldown_reduction_qi_cost_reduction"
-display_name = "Spirit Extempore Aptitude Attack physical Cooldown reduction Qi cost reduction"
+display_name = "LOC_ITEMS_F27_SPIRIT_EXTEMPORE_APTITUDE_ATTACK_PHYSICAL_COOLDOWN_REDUCTION_QI_COST_REDUCTION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_domain"

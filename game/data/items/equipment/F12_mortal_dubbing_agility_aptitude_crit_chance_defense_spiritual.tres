@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F12_mortal_dubbing_agility_aptitude_crit_chance_defense_spiritual"
-display_name = "Mortal Dubbing Agility Aptitude Crit chance Defense spiritual"
+display_name = "LOC_ITEMS_F12_MORTAL_DUBBING_AGILITY_APTITUDE_CRIT_CHANCE_DEFENSE_SPIRITUAL_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"spirit_transformation"

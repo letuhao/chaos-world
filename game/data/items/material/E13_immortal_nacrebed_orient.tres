@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"E13_immortal_nacrebed_orient"
-display_name = "Immortal Nacrebed Orient"
+display_name = "LOC_ITEMS_E13_IMMORTAL_NACREBED_ORIENT_DISPLAY_NAME"
 category = &"material"
 rarity = &"legendary"
 realm = &"heaven_immortal"

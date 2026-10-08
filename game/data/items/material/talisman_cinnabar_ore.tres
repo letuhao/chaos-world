@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"talisman_cinnabar_ore"
-display_name = "Cinnabar Ore"
+display_name = "LOC_ITEMS_TALISMAN_CINNABAR_ORE_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"body_integration"

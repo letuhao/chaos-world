@@ -18,7 +18,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_orb_cinder_wyrm_pool_mystic_immortal"
-display_name = "Cinder Wyrm salvage (mystic_immortal)"
+display_name = "LOC_LOOT_ORB_CINDER_WYRM_MYSTIC_IMMORTAL_0_DISPLAY_NAME"
 realm = &"mystic_immortal"
 rarity = &""
 rolls = 1

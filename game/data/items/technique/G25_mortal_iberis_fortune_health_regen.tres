@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"G25_mortal_iberis_fortune_health_regen"
-display_name = "Mortal Iberis Fortune Health regen"
+display_name = "LOC_ITEMS_G25_MORTAL_IBERIS_FORTUNE_HEALTH_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"body_integration"

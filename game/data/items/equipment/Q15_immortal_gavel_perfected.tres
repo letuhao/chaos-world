@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Q15_immortal_gavel_perfected"
-display_name = "Immortal Gavel Perfected"
+display_name = "LOC_ITEMS_Q15_IMMORTAL_GAVEL_PERFECTED_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"golden_immortal"

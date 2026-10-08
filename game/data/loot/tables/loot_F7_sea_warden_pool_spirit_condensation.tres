@@ -42,7 +42,7 @@ rarity_floor = &"magic"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_F7_sea_warden_pool_spirit_condensation"
-display_name = "Tide Reflector salvage (spirit_condensation)"
+display_name = "LOC_LOOT_F7_SEA_WARDEN_SPIRIT_CONDENSATION_0_DISPLAY_NAME"
 realm = &"spirit_condensation"
 rarity = &""
 rolls = 1

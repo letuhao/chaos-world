@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d1_iron_sage_disciple_pool_void_refinement"
-display_name = "Iron Sage Disciple Lesser salvage (void_refinement)"
+display_name = "LOC_LOOT_D1_IRON_SAGE_DISCIPLE_VOID_REFINEMENT_0_DISPLAY_NAME"
 realm = &"void_refinement"
 rarity = &""
 rolls = 1

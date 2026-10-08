@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"I65_heaven_grindstone_primed"
-display_name = "Heaven Grindstone Primed"
+display_name = "LOC_ITEMS_I65_HEAVEN_GRINDSTONE_PRIMED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"true_immortal"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"R26_spirit_potter_staple"
-display_name = "Spirit Potter Staple"
+display_name = "LOC_ITEMS_R26_SPIRIT_POTTER_STAPLE_DISPLAY_NAME"
 category = &"key"
 rarity = &"magic"
 realm = &"spirit_ascension"

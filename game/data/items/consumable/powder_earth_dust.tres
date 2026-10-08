@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"powder_earth_dust"
-display_name = "Earth Dust Powder"
+display_name = "LOC_ITEMS_POWDER_EARTH_DUST_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_manifestation"

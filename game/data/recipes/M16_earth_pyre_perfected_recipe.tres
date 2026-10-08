@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"M16_earth_pyre_perfected_recipe"
-display_name = "Earth Pyre Perfected Recipe"
+display_name = "LOC_RECIPES_M16_EARTH_PYRE_PERFECTED_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"M16_earth_pyre_primed", &"censer_ash_essence", &"petal_chrysanthemum"])
 outputs = Array[StringName]([&"M16_earth_pyre_perfected"])

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"spin_stage2_mantle_silver_recipe"
-display_name = "Fine Thread Silver Mantle Recipe"
+display_name = "LOC_RECIPES_SPIN_STAGE2_MANTLE_SILVER_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"spin_fine_thread", &"beast_venom_serpent_hide"])
 outputs = Array[StringName]([&"mantle_silver"])

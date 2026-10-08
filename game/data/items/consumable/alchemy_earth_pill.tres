@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"alchemy_earth_pill"
-display_name = "Earth Clarity Pill"
+display_name = "LOC_ITEMS_ALCHEMY_EARTH_PILL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_sovereign"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"w35_codex_iron_sage_claw_recipe"
-display_name = "Codex Iron Sage Claw Recipe"
+display_name = "LOC_RECIPES_W35_CODEX_IRON_SAGE_CLAW_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"herb_ironbark", &"sap_gum"])
 outputs = Array[StringName]([&"codex_iron_sage_claw"])

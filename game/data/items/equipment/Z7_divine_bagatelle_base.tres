@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Z7_divine_bagatelle_base"
-display_name = "Divine Bagatelle Base"
+display_name = "LOC_ITEMS_Z7_DIVINE_BAGATELLE_BASE_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"transcendent"

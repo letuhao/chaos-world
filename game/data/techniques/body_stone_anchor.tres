@@ -5,8 +5,8 @@
 script = ExtResource("1_def")
 id = &"body_stone_anchor"
 delivered_by = &"scroll_stone_colossus_stance"
-display_name = "Stone Anchor Stance"
-description = "A stance that spends the whole body's weight instead of its speed. No qi, no element; it exists so the practitioner cannot be moved while it is held."
+display_name = "LOC_TECHNIQUES_BODY_STONE_ANCHOR_DISPLAY_NAME"
+description = "LOC_TECHNIQUES_BODY_STONE_ANCHOR_DESCRIPTION"
 tags = Array[StringName]([&"technique", &"body", &"stance", &"no_element"])
 grade = &"mortal"
 rarity = &"common"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F26_divine_exemplar_agility_dao_heart_max_health_penetration"
-display_name = "Divine Exemplar Agility Dao heart Max health Penetration"
+display_name = "LOC_ITEMS_F26_DIVINE_EXEMPLAR_AGILITY_DAO_HEART_MAX_HEALTH_PENETRATION_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"transcendent"

@@ -18,7 +18,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d1_venom_serpent_fledgling_pool_primordial_origin"
-display_name = "Venom Serpent Fledgling Lesser salvage (primordial_origin)"
+display_name = "LOC_LOOT_D1_VENOM_SERPENT_FLEDGLING_PRIMORDIAL_ORIGIN_0_DISPLAY_NAME"
 realm = &"primordial_origin"
 rarity = &""
 rolls = 1

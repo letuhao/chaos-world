@@ -51,7 +51,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_ember_pilgrim_t1"
-display_name = "Ember Vault Ash Pilgrim (Warded)"
+display_name = "LOC_LOOT_EP1_PELT_DISPLAY_NAME"
 realm = &"spirit_severing"
 rarity = &"common"
 rolls = 1

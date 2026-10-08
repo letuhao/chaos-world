@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F54_heaven_headstock_max_stamina_penetration_physique"
-display_name = "Heaven Headstock Max stamina Penetration Physique"
+display_name = "LOC_ITEMS_F54_HEAVEN_HEADSTOCK_MAX_STAMINA_PENETRATION_PHYSIQUE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"heaven_immortal"

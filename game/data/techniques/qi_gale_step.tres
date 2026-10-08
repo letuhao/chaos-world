@@ -5,8 +5,8 @@
 script = ExtResource("1_def")
 id = &"qi_gale_step"
 delivered_by = &"scroll_thunder_crane_wing"
-display_name = "Gale Step"
-description = "A short lateral displacement on a current of air. Half of the qi leaves as raw momentum, so it costs less to move than to strike."
+display_name = "LOC_TECHNIQUES_QI_GALE_STEP_DISPLAY_NAME"
+description = "LOC_TECHNIQUES_QI_GALE_STEP_DESCRIPTION"
 tags = Array[StringName]([&"technique", &"wind", &"reposition"])
 grade = &"spirit"
 rarity = &"magic"

@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_relic_ash_wyrm_pool_qi_refining"
-display_name = "Ash Wyrm salvage (qi_refining)"
+display_name = "LOC_LOOT_RELIC_ASH_WYRM_QI_REFINING_0_DISPLAY_NAME"
 realm = &"qi_refining"
 rarity = &""
 rolls = 1

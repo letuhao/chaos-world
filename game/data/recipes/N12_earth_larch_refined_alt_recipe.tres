@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"N12_earth_larch_refined_alt_recipe"
-display_name = "N12 Earth Larch Refined Alt Recipe"
+display_name = "LOC_RECIPES_N12_EARTH_LARCH_REFINED_ALT_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"N12_earth_larch_base", &"C27_earth_currier_tawed", &"X26_earth_outlay_scum"])
 outputs = Array[StringName]([&"N12_earth_larch_refined"])

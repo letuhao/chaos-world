@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"prism_supernova"
-display_name = "Supernova Prism"
+display_name = "LOC_ITEMS_PRISM_SUPERNOVA_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"heaven_immortal"

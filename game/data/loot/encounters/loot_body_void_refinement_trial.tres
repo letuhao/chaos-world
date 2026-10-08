@@ -6,7 +6,7 @@
 [sub_resource type="Resource" id="tier_0"]
 script = ExtResource("2_tier")
 tier = 1
-label = "Gate"
+label = "LOC_LOOT_LOOT_BODY_VOID_REFINEMENT_TRIAL_LABEL_1"
 realm = &"void_refinement"
 rarity = &"common"
 vitality = 3300.
@@ -18,7 +18,7 @@ boss_tables = Array[Dictionary]([
 [sub_resource type="Resource" id="tier_1"]
 script = ExtResource("2_tier")
 tier = 2
-label = "Depths"
+label = "LOC_LOOT_LOOT_BODY_VOID_REFINEMENT_TRIAL_LABEL_2"
 realm = &"void_refinement"
 rarity = &"rare"
 vitality = 5280.
@@ -30,7 +30,7 @@ boss_tables = Array[Dictionary]([
 [resource]
 script = ExtResource("1_encounter")
 id = &"loot_body_void_refinement_trial"
-display_name = "Organ Tempering Trial"
+display_name = "LOC_LOOT_LOOT_BODY_VOID_REFINEMENT_TRIAL_DISPLAY_NAME"
 domain_id = &"body_void_refinement_trial"
 boss_ids = Array[StringName]([&"body_void_refinement_guardian", &"E3_void_refinement_arbiter"])
 key_reach = 0

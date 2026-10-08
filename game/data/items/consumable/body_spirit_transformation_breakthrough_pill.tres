@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"body_spirit_transformation_breakthrough_pill"
-display_name = "Tendon Strengthening Tempering Pill"
+display_name = "LOC_ITEMS_BODY_SPIRIT_TRANSFORMATION_BREAKTHROUGH_PILL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"spirit_transformation"
@@ -16,4 +16,4 @@ roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:body_spirit_transformation_pill_recipe"])
-description = "Consumed by the Body Cultivation attempt entering Tendon Strengthening; no equipment modifier."
+description = "LOC_ITEMS_BODY_SPIRIT_TRANSFORMATION_BREAKTHROUGH_PILL_DESCRIPTION"

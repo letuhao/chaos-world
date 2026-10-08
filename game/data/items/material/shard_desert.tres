@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"shard_desert"
-display_name = "Desert Shard"
+display_name = "LOC_ITEMS_SHARD_DESERT_DISPLAY_NAME"
 category = &"material"
 rarity = &"magic"
 realm = &"spirit_sovereign"

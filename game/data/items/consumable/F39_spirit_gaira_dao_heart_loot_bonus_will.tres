@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F39_spirit_gaira_dao_heart_loot_bonus_will"
-display_name = "Spirit Gaira Dao heart Loot bonus Will"
+display_name = "LOC_ITEMS_F39_SPIRIT_GAIRA_DAO_HEART_LOOT_BONUS_WILL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_sea"

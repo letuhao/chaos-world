@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"cut_diamond_facet_recipe"
-display_name = "Cut Diamond Facet Recipe"
+display_name = "LOC_RECIPES_CUT_DIAMOND_FACET_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"crystal_diamond", &"ore_void_crystal"])
 outputs = Array[StringName]([&"cut_diamond_facet"])

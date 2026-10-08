@@ -1,0 +1,24 @@
+[gd_resource type="Translation" format=3]
+
+[resource]
+locale = "en"
+messages = {
+"LOC_INSTITUTIONS_CLERK_DESCRIPTION_1": "Every member of the Exchange who holds no other office. It is uncapped by design: a guild that limited its ordinary members would be charging to belong, and the whole of the Exchange's recognition is that anybody who can carry a seal may.",
+"LOC_INSTITUTIONS_CLERK_DESCRIPTION_2": "Five at a time, and the cap is the point. A factor extends credit, so the office is a room that can FILL rather than a seat somebody must vacate: when the five are taken the Exchange is simply shut until a season passes. It pays twice what it asks, because an office that only takes is a debt collector.",
+"LOC_INSTITUTIONS_CLERK_DESCRIPTION_3": "The single seat of the Exchange, and deliberately a SEAT rather than a rank. Whoever holds it can be put out by any three Factors acting together, which is the one exit from a hierarchy an institution needs; the seat exists so that removal is a political event a player can watch rather than a number that moves.",
+"LOC_INSTITUTIONS_CLERK_DESCRIPTION_4": "A counting house on the mortal plains: it weighs lots, calls settlements and extends credit. It claims no ground and teaches nothing, so the whole of what it confers is recognition and access to the commons - which is why it is also the most expensive organization in this build to found. A building, a seal and a ledger that has to survive its founder.",
+"LOC_INSTITUTIONS_CLERK_DISPLAY_NAME_1": "Clerk",
+"LOC_INSTITUTIONS_CLERK_DISPLAY_NAME_2": "Factor",
+"LOC_INSTITUTIONS_CLERK_DISPLAY_NAME_3": "First Ledger",
+"LOC_INSTITUTIONS_CLERK_DISPLAY_NAME_4": "The Lantern Exchange",
+"LOC_INSTITUTIONS_TORRENT_FIELD_CIRCLE_DESCRIPTION": "A farmers' organization, and the one kind here that authors NO offices at all. The ring-irrigation duty rotates by season and belongs to nobody once the season turns, so there is no seat to contest and a founder holds thick standing in no position whatsoever - which is a legitimate state and not a gap (ADR 0064). Cheapest thing in this directory to found: land, seed and a ditch. Thinnest recognition too, because a ditch does not make anybody's name.",
+"LOC_INSTITUTIONS_TORRENT_FIELD_CIRCLE_DISPLAY_NAME": "The Torrent Field Circle",
+"LOC_INSTITUTIONS_TRACKER_DESCRIPTION_1": "The uncapped ordinary office of the Hunt. A tracker owes the house one period of walking the horizon and nothing else, and is paid in nothing, which is the honest shape of the bottom of a guild that has not yet earned anybody's standing.",
+"LOC_INSTITUTIONS_TRACKER_DESCRIPTION_2": "Two at a time, because a quartermaster both strips a kill and writes the writ for it and one body cannot do both well. The office issues the writ, so it is the room that fills rather than the seat that blocks: a third quartermaster is refused until a season passes, and no one is displaced.",
+"LOC_INSTITUTIONS_TRACKER_DESCRIPTION_3": "The one seat, and the only office with the right to expel. It is a seat because the range it holds is contested ground: somebody has to be able to be put out of it, and a seat is the shape that makes removal a public act rather than a quiet edit.",
+"LOC_INSTITUTIONS_TRACKER_DESCRIPTION_4": "A hunting guild: rope, wages and a claimed range, and the three claims below confer NOTHING - no yield, no upkeep, no combat edge. They decide who may hunt where, which is the whole of what a claim is (ADR 0085). Cheaper to found than a counting house and far more expensive to hold: three ranges mean a split of this house is charged three times over.",
+"LOC_INSTITUTIONS_TRACKER_DISPLAY_NAME_1": "Tracker",
+"LOC_INSTITUTIONS_TRACKER_DISPLAY_NAME_2": "Quartermaster",
+"LOC_INSTITUTIONS_TRACKER_DISPLAY_NAME_3": "Warden",
+"LOC_INSTITUTIONS_TRACKER_DISPLAY_NAME_4": "The Grey Horizon Hunt",
+}

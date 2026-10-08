@@ -5,9 +5,9 @@
 [resource]
 script = ExtResource("1_item")
 id = &"qi_tribulation_dantian_catalyst"
-display_name = "Crossing Stabilizer"
+display_name = "LOC_ITEMS_QI_TRIBULATION_DANTIAN_CATALYST_DISPLAY_NAME"
 category = &"consumable"
 subcategory = &"tonic"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:qi_tribulation_dantian_catalyst_recipe"])
-description = "Spent on a Tribulation Crossing sitting that overflows a full dantian. The overflow becomes dantian quality past the next realm's floor, and every gate is met without one."
+description = "LOC_ITEMS_QI_TRIBULATION_DANTIAN_CATALYST_DESCRIPTION"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"body_primordial_immortal_breakthrough_pill"
-display_name = "Body of Unity Tempering Pill"
+display_name = "LOC_ITEMS_BODY_PRIMORDIAL_IMMORTAL_BREAKTHROUGH_PILL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_immortal"
@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:body_primordial_immortal_pill_recipe", &"boss:E9_primordial_warden"])
-description = "Consumed by the Body Cultivation attempt entering Body of Unity; no equipment modifier."
+description = "LOC_ITEMS_BODY_PRIMORDIAL_IMMORTAL_BREAKTHROUGH_PILL_DESCRIPTION"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"X16_divine_bailiff_hallmark"
-display_name = "Divine Bailiff Hallmark"
+display_name = "LOC_ITEMS_X16_DIVINE_BAILIFF_HALLMARK_DISPLAY_NAME"
 category = &"key"
 rarity = &"legendary"
 realm = &"primordial_origin"

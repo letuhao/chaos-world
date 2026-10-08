@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F27_divine_feltt_aptitude_attack_physical_loot_bonus_qi_regen"
-display_name = "Divine Feltt Aptitude Attack physical Loot bonus Qi regen"
+display_name = "LOC_ITEMS_F27_DIVINE_FELTT_APTITUDE_ATTACK_PHYSICAL_LOOT_BONUS_QI_REGEN_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"transcendent"

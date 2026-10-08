@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"transcribe_stage2_compre_first_light_recipe"
-display_name = "Stage 2: First Light from Rough Draft Recipe"
+display_name = "LOC_RECIPES_TRANSCRIBE_STAGE2_COMPRE_FIRST_LIGHT_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"transcribe_rough_draft", &"sap_amber"])
 outputs = Array[StringName]([&"compre_first_light"])

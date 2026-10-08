@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"G12_chaos_grimoire_refinement_recipe"
-display_name = "Chaos Grimoire Refinement Recipe"
+display_name = "LOC_RECIPES_G12_CHAOS_GRIMOIRE_REFINEMENT_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"G12_heaven_alembic", &"astral_dawnstar_essence"])
 outputs = Array[StringName]([&"grimoire_chaos"])

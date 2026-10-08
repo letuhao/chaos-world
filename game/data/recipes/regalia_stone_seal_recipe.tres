@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"regalia_stone_seal_recipe"
-display_name = "Stone Seal Regalia Recipe"
+display_name = "LOC_RECIPES_REGALIA_STONE_SEAL_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"jade_azure", &"sap_nectar"])
 outputs = Array[StringName]([&"regalia_stone_seal"])

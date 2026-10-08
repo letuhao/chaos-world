@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"N12_earth_larch_base"
-display_name = "Earth Larch Base"
+display_name = "LOC_ITEMS_N12_EARTH_LARCH_BASE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_unity"

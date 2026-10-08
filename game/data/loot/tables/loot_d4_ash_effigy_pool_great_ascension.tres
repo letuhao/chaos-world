@@ -30,7 +30,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d4_ash_effigy_pool_great_ascension"
-display_name = "Ash Effigy Lesser salvage (great_ascension)"
+display_name = "LOC_LOOT_D4_ASH_EFFIGY_GREAT_ASCENSION_0_DISPLAY_NAME"
 realm = &"great_ascension"
 rarity = &""
 rolls = 1

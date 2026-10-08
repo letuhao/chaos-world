@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"warband_void_banner"
-display_name = "Void Warband Banner"
+display_name = "LOC_ITEMS_WARBAND_VOID_BANNER_DISPLAY_NAME"
 category = &"misc"
 rarity = &"legendary"
 realm = &"dao_ancestor"

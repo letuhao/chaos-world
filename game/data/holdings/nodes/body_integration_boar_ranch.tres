@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_node")
 node_id = &"body_integration_boar_ranch"
-display_name = "Boar Ranch"
+display_name = "LOC_HOLDINGS_BODY_INTEGRATION_BOAR_RANCH_DISPLAY_NAME"
 kind = &"beast"
 realm = &"body_integration"
 yield_per_period = 7

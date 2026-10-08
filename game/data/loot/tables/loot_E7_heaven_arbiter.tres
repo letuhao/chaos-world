@@ -174,7 +174,7 @@ rarity_floor = &""
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E7_heaven_arbiter"
-display_name = "Heaven Arbiter"
+display_name = "LOC_LOOT_E7_HEAVEN_ARBITER_POOL_DAO_FRUIT_DISPLAY_NAME"
 realm = &""
 rarity = &""
 rolls = 1

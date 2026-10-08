@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 id = &"celestial_11"
-display_name = "Dai Mai Celestial Node 12"
+display_name = "LOC_BODY_CULTIVATION_CELESTIAL_11_DISPLAY_NAME"
 tier = &"celestial"
 unlock_index = 27
 meridian_id = &"dai_mai"

@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d4_iron_dancer_pool_core_formation"
-display_name = "Iron Dancer Lesser salvage (core_formation)"
+display_name = "LOC_LOOT_D4_IRON_DANCER_CORE_FORMATION_0_DISPLAY_NAME"
 realm = &"core_formation"
 rarity = &""
 rolls = 1

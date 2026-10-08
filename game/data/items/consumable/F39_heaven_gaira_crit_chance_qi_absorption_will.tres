@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F39_heaven_gaira_crit_chance_qi_absorption_will"
-display_name = "Heaven Gaira Crit chance Qi absorption Will"
+display_name = "LOC_ITEMS_F39_HEAVEN_GAIRA_CRIT_CHANCE_QI_ABSORPTION_WILL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"dao_fruit"

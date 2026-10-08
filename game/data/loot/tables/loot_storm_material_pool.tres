@@ -51,7 +51,7 @@ rarity_floor = &"magic"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_storm_material_pool"
-display_name = "Storm Crypt Relics"
+display_name = "LOC_LOOT_SMP_PHOENIX_ESSENCE_DISPLAY_NAME"
 realm = &"heaven_immortal"
 rarity = &"magic"
 rolls = 1

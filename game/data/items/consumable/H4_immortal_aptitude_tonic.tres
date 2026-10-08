@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"H4_immortal_aptitude_tonic"
-display_name = "Immortal Aptitude Tonic"
+display_name = "LOC_ITEMS_H4_IMMORTAL_APTITUDE_TONIC_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"heaven_immortal"

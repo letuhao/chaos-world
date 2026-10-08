@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"A18_heaven_bermuda_refined"
-display_name = "Heaven Bermuda Refined"
+display_name = "LOC_ITEMS_A18_HEAVEN_BERMUDA_REFINED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"true_immortal"

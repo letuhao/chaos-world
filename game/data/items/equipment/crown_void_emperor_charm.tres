@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"crown_void_emperor_charm"
-display_name = "Void Emperor Charm"
+display_name = "LOC_ITEMS_CROWN_VOID_EMPEROR_CHARM_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"great_luo"

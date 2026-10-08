@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"R10_spirit_marquee_directive"
-display_name = "Spirit Marquee Directive"
+display_name = "LOC_ITEMS_R10_SPIRIT_MARQUEE_DIRECTIVE_DISPLAY_NAME"
 category = &"quest"
 rarity = &"magic"
 realm = &"spirit_palace"

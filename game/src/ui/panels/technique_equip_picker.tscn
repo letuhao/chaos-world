@@ -19,14 +19,14 @@ layout_mode = 2
 [node name="TitleLabel" type="Label" parent="Layout"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "Unbound techniques"
+text = "LOC_UI_PANELS_B648760520"
 
 [node name="EmptyLabel" type="Label" parent="Layout"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"MetaLabel"
 autowrap_mode = 2
-text = "No technique learned yet."
+text = "LOC_UI_PANELS_186D7AD2C0"
 
 [node name="OfferBox" type="VBoxContainer" parent="Layout"]
 unique_name_in_owner = true

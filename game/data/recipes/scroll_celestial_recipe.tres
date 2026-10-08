@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"scroll_celestial_recipe"
-display_name = "Celestial Scroll Recipe"
+display_name = "LOC_RECIPES_SCROLL_CELESTIAL_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"astral_galactic_core_ore", &"astral_celestial_dew_essence", &"dragon_core"])
 outputs = Array[StringName]([&"scroll_celestial"])

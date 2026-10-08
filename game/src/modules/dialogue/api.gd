@@ -57,9 +57,7 @@ static func start(actor: Actor, npc_id: StringName) -> Dictionary:
 			String(out.get("node_id", ""))
 		)
 	else:
-		DialogueEvents.shared().dialogue_refused.emit(
-			_actor_id(actor), String(out["reason"]), ""
-		)
+		DialogueEvents.shared().dialogue_refused.emit(_actor_id(actor), String(out["reason"]), "")
 	return out
 
 

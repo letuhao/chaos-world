@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"dagger_heaven_fang"
-display_name = "Heaven Fang"
+display_name = "LOC_ITEMS_DAGGER_HEAVEN_FANG_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"heaven_immortal"

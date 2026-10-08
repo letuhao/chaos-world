@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"everlight_glow_recipe"
-display_name = "Glow Everlight Recipe"
+display_name = "LOC_RECIPES_EVERLIGHT_GLOW_RECIPE_DISPLAY_NAME"
 station = &"forge"
 inputs = Array[StringName]([&"everlight_glow_herb"])
 outputs = Array[StringName]([&"everlight_glow"])

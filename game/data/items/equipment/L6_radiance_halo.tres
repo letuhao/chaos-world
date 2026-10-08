@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"L6_radiance_halo"
-display_name = "Radiance Halo"
+display_name = "LOC_ITEMS_L6_RADIANCE_HALO_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"transcendent"

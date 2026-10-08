@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"body_body_integration_tempering_herb"
-display_name = "Blood Refining Tempering Herb"
+display_name = "LOC_ITEMS_BODY_BODY_INTEGRATION_TEMPERING_HERB_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"body_integration"
@@ -16,4 +16,4 @@ roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"herb"
 grade = &"mortal"
 sources = Array[StringName]([&"gather", &"boss:body_body_integration_guardian"])
-description = "Gathered tempering reagent."
+description = "LOC_ITEMS_BODY_BODY_INTEGRATION_TEMPERING_HERB_DESCRIPTION"

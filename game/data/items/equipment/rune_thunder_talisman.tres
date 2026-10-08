@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"rune_thunder_talisman"
-display_name = "Thunder Rune Talisman"
+display_name = "LOC_ITEMS_RUNE_THUNDER_TALISMAN_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"immortal_sovereign"

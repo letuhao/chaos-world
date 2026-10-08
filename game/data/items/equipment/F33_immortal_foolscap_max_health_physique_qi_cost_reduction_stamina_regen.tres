@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F33_immortal_foolscap_max_health_physique_qi_cost_reduction_stamina_regen"
-display_name = "Immortal Foolscap Max health Physique Qi cost reduction Stamina regen"
+display_name = "LOC_ITEMS_F33_IMMORTAL_FOOLSCAP_MAX_HEALTH_PHYSIQUE_QI_COST_REDUCTION_STAMINA_REGEN_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"immortal_sovereign"

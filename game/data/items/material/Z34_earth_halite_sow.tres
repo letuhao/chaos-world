@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"Z34_earth_halite_sow"
-display_name = "Earth Flagon Sow"
+display_name = "LOC_ITEMS_Z34_EARTH_HALITE_SOW_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_ascension"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F52_divine_haddock_dao_heart_evasion_physique"
-display_name = "Divine Haddock Dao heart Evasion Physique"
+display_name = "LOC_ITEMS_F52_DIVINE_HADDOCK_DAO_HEART_EVASION_PHYSIQUE_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_ancestor"

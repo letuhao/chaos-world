@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"A30_immortal_aromatic_fumette"
-display_name = "Immortal Aromatic Fumette"
+display_name = "LOC_ITEMS_A30_IMMORTAL_AROMATIC_FUMETTE_DISPLAY_NAME"
 category = &"quest"
 rarity = &"legendary"
 realm = &"mystic_immortal"

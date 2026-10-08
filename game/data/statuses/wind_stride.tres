@@ -18,7 +18,7 @@ tick_interval = 1.0
 mitigation_tags = Array[StringName]([&"affinity", &"technique", &"pill"])
 payload = {
 "mechanic": &"regrowth",
-"text": "A step that carries. The wind walks where the cultivator walks and pays the fare.",
+"text": "LOC_STATUSES_WIND_STRIDE_TEXT",
 "modifiers": [
 {"stat": &"stamina_regen", "op": &"flat", "value": 2.0},
 {"stat": &"move_speed", "op": &"flat", "value": 8.0}

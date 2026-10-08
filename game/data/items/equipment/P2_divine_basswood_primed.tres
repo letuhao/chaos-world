@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"P2_divine_basswood_primed"
-display_name = "Divine Basswood Primed"
+display_name = "LOC_ITEMS_P2_DIVINE_BASSWOOD_PRIMED_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"dao_ancestor"

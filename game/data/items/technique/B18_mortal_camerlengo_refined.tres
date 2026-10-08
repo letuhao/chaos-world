@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B18_mortal_camerlengo_refined"
-display_name = "Mortal Camerlengo Refined Talisman"
+display_name = "LOC_ITEMS_B18_MORTAL_CAMERLENGO_REFINED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"nascent_soul"

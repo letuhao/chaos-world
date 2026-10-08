@@ -19,4 +19,6 @@ static func all() -> Array[StringName]:
 
 
 static func is_valid(type: StringName) -> bool:
-	return type == NONE or type == FRIEND or type == ROMANTIC or type == SPOUSE or type == DC_PARTNER
+	return (
+		type == NONE or type == FRIEND or type == ROMANTIC or type == SPOUSE or type == DC_PARTNER
+	)

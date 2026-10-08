@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"X25_heaven_ordinance_sleet"
-display_name = "Heaven Ordinance Sleet"
+display_name = "LOC_ITEMS_X25_HEAVEN_ORDINANCE_SLEET_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"true_immortal"

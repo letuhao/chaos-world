@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C31_mortal_skeleton_phalanx"
-display_name = "Mortal Skeleton Phalanx"
+display_name = "LOC_ITEMS_C31_MORTAL_SKELETON_PHALANX_DISPLAY_NAME"
 category = &"material"
 rarity = &"common"
 realm = &"tribulation"

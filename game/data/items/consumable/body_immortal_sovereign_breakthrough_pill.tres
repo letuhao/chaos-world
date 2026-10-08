@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"body_immortal_sovereign_breakthrough_pill"
-display_name = "Body of Earth Tempering Pill"
+display_name = "LOC_ITEMS_BODY_IMMORTAL_SOVEREIGN_BREAKTHROUGH_PILL_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"immortal_sovereign"
@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:body_immortal_sovereign_pill_recipe", &"boss:E9_sovereign_warden"])
-description = "Consumed by the Body Cultivation attempt entering Body of Earth; no equipment modifier."
+description = "LOC_ITEMS_BODY_IMMORTAL_SOVEREIGN_BREAKTHROUGH_PILL_DESCRIPTION"

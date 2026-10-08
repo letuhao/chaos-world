@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_mind_spirit_sea_warden_pool_great_ascension"
-display_name = "Introspection Warden salvage (great_ascension)"
+display_name = "LOC_LOOT_MIND_SPIRIT_SEA_WARDEN_GREAT_ASCENSION_0_DISPLAY_NAME"
 realm = &"great_ascension"
 rarity = &""
 rolls = 1

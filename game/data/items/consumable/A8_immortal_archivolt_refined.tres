@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"A8_immortal_archivolt_refined"
-display_name = "Immortal Archivolt Refined"
+display_name = "LOC_ITEMS_A8_IMMORTAL_ARCHIVOLT_REFINED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"legendary"
 realm = &"golden_immortal"

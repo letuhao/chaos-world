@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_def")
 npc_id = &"drifter"
-display_name = "A Drifter"
+display_name = "LOC_NPC_DRIFTER_DISPLAY_NAME"
 inhabitant_id = &"azure_disciple"
 tier = &"transient"
 faction = &""

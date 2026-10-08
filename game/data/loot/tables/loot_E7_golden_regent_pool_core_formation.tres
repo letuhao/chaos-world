@@ -18,7 +18,7 @@ rarity_floor = &"common"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E7_golden_regent_pool_core_formation"
-display_name = "Golden Regent salvage (core_formation)"
+display_name = "LOC_LOOT_E7_GOLDEN_REGENT_CORE_FORMATION_0_DISPLAY_NAME"
 realm = &"core_formation"
 rarity = &""
 rolls = 1

@@ -42,7 +42,7 @@ rarity_floor = &"magic"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_relic_stone_colossus_pool_spirit_palace"
-display_name = "Stone Colossus salvage (spirit_palace)"
+display_name = "LOC_LOOT_RELIC_STONE_COLOSSUS_SPIRIT_PALACE_0_DISPLAY_NAME"
 realm = &"spirit_palace"
 rarity = &""
 rolls = 1

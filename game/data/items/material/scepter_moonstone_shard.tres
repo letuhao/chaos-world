@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"scepter_moonstone_shard"
-display_name = "Scepter Moonstone Shard"
+display_name = "LOC_ITEMS_SCEPTER_MOONSTONE_SHARD_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"spirit_manifestation"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"relic_sunken_bell"
-display_name = "Sunken Bell Relic"
+display_name = "LOC_ITEMS_RELIC_SUNKEN_BELL_DISPLAY_NAME"
 category = &"quest"
 rarity = &"magic"
 realm = &"spirit_domain"

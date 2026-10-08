@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F14_mortal_ebb_agility_aptitude_crit_damage_qi_absorption"
-display_name = "Mortal Ebb Agility Aptitude Crit damage Qi absorption"
+display_name = "LOC_ITEMS_F14_MORTAL_EBB_AGILITY_APTITUDE_CRIT_DAMAGE_QI_ABSORPTION_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"common"
 realm = &"body_integration"

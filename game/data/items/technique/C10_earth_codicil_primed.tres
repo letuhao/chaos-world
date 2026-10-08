@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C10_earth_codicil_primed"
-display_name = "Earth Codicil Primed"
+display_name = "LOC_ITEMS_C10_EARTH_CODICIL_PRIMED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_domain"

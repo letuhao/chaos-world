@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"K6_mortal_moss_refined"
-display_name = "Mortal Moss Refined"
+display_name = "LOC_ITEMS_K6_MORTAL_MOSS_REFINED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"common"
 realm = &"tribulation"

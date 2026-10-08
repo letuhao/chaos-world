@@ -79,10 +79,7 @@ func test_the_elixir_is_authored_with_the_extend_lifespan_option() -> void:
 		"keyed by NAME (ADR 0050)"
 	)
 	assert_almost_eq(
-		float(lifespan_effects[0].get("value", 0.0)),
-		_elixir_days(),
-		"the authored value",
-		0.01
+		float(lifespan_effects[0].get("value", 0.0)), _elixir_days(), "the authored value", 0.01
 	)
 
 
@@ -98,19 +95,10 @@ func test_the_elixir_raises_the_authored_lifespan() -> void:
 	assert_ne(def, null, "the elixir resolves")
 	if def == null:
 		return
-	assert_ne(
-		ItemsApi.generate(actor, def, 42),
-		null,
-		"the elixir is acquired"
-	)
+	assert_ne(ItemsApi.generate(actor, def, 42), null, "the elixir is acquired")
 	var result := ItemsApi.use_item(actor, ELIXIR, 1)
 	assert_eq(bool(result.get("ok", false)), true, "the elixir is consumed")
-	assert_almost_eq(
-		actor.lifespan_bonus_days,
-		_elixir_days(),
-		"the bonus is applied",
-		0.01
-	)
+	assert_almost_eq(actor.lifespan_bonus_days, _elixir_days(), "the bonus is applied", 0.01)
 	assert_almost_eq(
 		table.effective_lifespan_for(actor),
 		before + _elixir_days(),
@@ -141,11 +129,7 @@ func test_the_elixir_has_no_effect_on_a_body_already_past_its_span() -> void:
 		return
 	# Set the age to exactly the lifespan, so the body is at its span.
 	actor.age_years = _baseline_days() / DAYS_PER_YEAR
-	assert_eq(
-		table.is_past_span(actor),
-		true,
-		"the body is at its span"
-	)
+	assert_eq(table.is_past_span(actor), true, "the body is at its span")
 	var def := Crafting.resolve(ELIXIR)
 	assert_ne(def, null, "the elixir resolves")
 	if def == null:
@@ -153,17 +137,8 @@ func test_the_elixir_has_no_effect_on_a_body_already_past_its_span() -> void:
 	assert_ne(ItemsApi.generate(actor, def, 42), null, "the elixir is acquired")
 	var result := ItemsApi.use_item(actor, ELIXIR, 1)
 	assert_eq(bool(result.get("ok", false)), false, "the elixir is refused")
-	assert_eq(
-		String(result.get("reason", "")),
-		&"no_applicable_effect",
-		"the refusal is named"
-	)
-	assert_almost_eq(
-		actor.lifespan_bonus_days,
-		0.0,
-		"the bonus is not applied",
-		0.01
-	)
+	assert_eq(String(result.get("reason", "")), &"no_applicable_effect", "the refusal is named")
+	assert_almost_eq(actor.lifespan_bonus_days, 0.0, "the bonus is not applied", 0.01)
 	assert_almost_eq(
 		table.effective_lifespan_for(actor),
 		_baseline_days(),
@@ -186,27 +161,15 @@ func test_the_elixir_does_not_make_expiry_survivable() -> void:
 	var result := ItemsApi.use_item(actor, ELIXIR, 1)
 	assert_eq(bool(result.get("ok", false)), true, "the elixir is consumed")
 	# The body is NOT past its span after the elixir.
-	assert_eq(
-		table.is_past_span(actor),
-		false,
-		"the body is not past its span"
-	)
+	assert_eq(table.is_past_span(actor), false, "the body is not past its span")
 	# But if the body reaches the NEW lifespan, it still expires.
 	actor.age_years = (_baseline_days() + _elixir_days()) / DAYS_PER_YEAR
-	assert_eq(
-		table.is_past_span(actor),
-		true,
-		"the body expires at the NEW lifespan"
-	)
+	assert_eq(table.is_past_span(actor), true, "the body expires at the NEW lifespan")
 
 
 func test_the_elixir_option_is_in_the_master_pool() -> void:
 	var catalog := OptionCatalog.instance()
-	assert_eq(
-		catalog.has_option(&"extend_lifespan"),
-		true,
-		"the option is registered"
-	)
+	assert_eq(catalog.has_option(&"extend_lifespan"), true, "the option is registered")
 	assert_eq(
 		catalog.allows_activation(&"extend_lifespan", ItemActivation.CONSUMED),
 		true,

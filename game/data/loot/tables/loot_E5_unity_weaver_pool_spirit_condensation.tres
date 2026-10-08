@@ -66,7 +66,7 @@ rarity_floor = &"magic"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E5_unity_weaver_pool_spirit_condensation"
-display_name = "Unity Weaver salvage (spirit_condensation)"
+display_name = "LOC_LOOT_E5_UNITY_WEAVER_SPIRIT_CONDENSATION_0_DISPLAY_NAME"
 realm = &"spirit_condensation"
 rarity = &""
 rolls = 1

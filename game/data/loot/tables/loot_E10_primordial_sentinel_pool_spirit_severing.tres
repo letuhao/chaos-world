@@ -18,7 +18,7 @@ rarity_floor = &"magic"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E10_primordial_sentinel_pool_spirit_severing"
-display_name = "Primordial Sentinel salvage (spirit_severing)"
+display_name = "LOC_LOOT_E10_PRIMORDIAL_SENTINEL_SPIRIT_SEVERING_0_DISPLAY_NAME"
 realm = &"spirit_severing"
 rarity = &""
 rolls = 1

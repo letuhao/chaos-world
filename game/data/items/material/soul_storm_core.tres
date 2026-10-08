@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"soul_storm_core"
-display_name = "Storm Core"
+display_name = "LOC_ITEMS_SOUL_STORM_CORE_DISPLAY_NAME"
 category = &"material"
 rarity = &"rare"
 realm = &"earth_immortal"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"T20_heaven_trellis_primed"
-display_name = "Heaven Trellis Primed"
+display_name = "LOC_ITEMS_T20_HEAVEN_TRELLIS_PRIMED_DISPLAY_NAME"
 category = &"consumable"
 rarity = &"rare"
 realm = &"mystic_immortal"

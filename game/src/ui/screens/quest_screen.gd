@@ -51,12 +51,12 @@ const BASE_ROWS := 6
 const MAX_EXTRA_ROWS := 9
 const ROW_PREFIX := "QuestRow"
 ## One line, and the whole of this screen's argument.
-const HEADER_TEXT := "What the world is offering, and what you are carrying."
-const OFFERED_TITLE := "Offered"
-const ACTIVE_TITLE := "In flight"
-const DONE_TITLE := "Finished"
-const NONE_TEXT := "Nothing here yet. The world has not offered you anything."
-const ACCEPT_OK := "Quest taken on. Its steps read from the world's memory."
+const HEADER_TEXT := "LOC_UI_SCREENS_455C95E677"
+const OFFERED_TITLE := "LOC_UI_SCREENS_A1BF1ADCBE"
+const ACTIVE_TITLE := "LOC_UI_SCREENS_58B6DC18CF"
+const DONE_TITLE := "LOC_UI_SCREENS_355BCC577D"
+const NONE_TEXT := "LOC_UI_SCREENS_9650DF925D"
+const ACCEPT_OK := "LOC_UI_SCREENS_D0E1AFF384"
 const COMMIT_OK := "quest_accepted"
 
 ## The three states a row can be in. Published here because the row asks the
@@ -199,14 +199,14 @@ func _refresh_view() -> void:
 func _render() -> void:
 	if _header == null:
 		return
-	_header.text = HEADER_TEXT
-	_footer.text = _footer_text()
+	_header.text = L.t(HEADER_TEXT)
+	_footer.text = L.t(_footer_text())
 
 
 func _footer_text() -> String:
 	if not can_accept():
-		return "No commit seam is wired, so nothing here can be taken on."
-	return "A step is satisfied by what the world has already recorded, never by a counter here."
+		return L.t("LOC_UI_SCREENS_C6BE1F6282")
+	return L.t("LOC_UI_SCREENS_C7BA32FC93")
 
 
 # --- ScreenStack hooks ------------------------------------------------------

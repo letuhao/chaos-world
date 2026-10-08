@@ -30,7 +30,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d5_earth_bloom_pool_dao_fruit"
-display_name = "Earth Bloom Lesser salvage (dao_fruit)"
+display_name = "LOC_LOOT_D5_EARTH_BLOOM_DAO_FRUIT_0_DISPLAY_NAME"
 realm = &"dao_fruit"
 rarity = &""
 rolls = 1

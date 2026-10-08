@@ -9,7 +9,7 @@ script = ExtResource("1")
 
 [node name="TitleLabel" type="Label" parent="Rows"]
 unique_name_in_owner = true
-text = "No body path"
+text = "LOC_UI_PANELS_356CFE27B0"
 
 [node name="GrowthLabel0" type="Label" parent="Rows"]
 unique_name_in_owner = true

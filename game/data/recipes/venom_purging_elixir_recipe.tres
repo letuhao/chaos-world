@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"venom_purging_elixir_recipe"
-display_name = "Purging Elixir Recipe"
+display_name = "LOC_RECIPES_VENOM_PURGING_ELIXIR_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"venom_mending_essence", &"venom_fang_core"])
 outputs = Array[StringName]([&"venom_purging_elixir"])

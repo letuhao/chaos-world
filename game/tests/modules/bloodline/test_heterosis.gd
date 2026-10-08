@@ -11,7 +11,9 @@ extends TestCase
 func test_inherit_unchanged_when_divergence_is_zero() -> void:
 	# Same family (D=0): the excess term is identically zero.
 	assert_almost_eq(BloodlineState.inherit(1.0, 1.0, 0.0), 0.745, "pure x pure same family", 0.001)
-	assert_almost_eq(BloodlineState.inherit(0.5, 0.5, 0.0), 0.395, "partial x partial same family", 0.001)
+	assert_almost_eq(
+		BloodlineState.inherit(0.5, 0.5, 0.0), 0.395, "partial x partial same family", 0.001
+	)
 	assert_almost_eq(BloodlineState.inherit(0.0, 0.0, 0.0), 0.045, "outsider x outsider", 0.001)
 
 
@@ -19,7 +21,9 @@ func test_inherit_excess_fires_when_divergence_is_nonzero() -> void:
 	# Unrelated lineages (D=1): the excess term fires.
 	# m=0.5, excess = 0.70 * 0.5 * 1.0 * 0.5 = 0.175
 	# child = 0.5 * 0.70 + 0.045 + 0.175 = 0.570
-	assert_almost_eq(BloodlineState.inherit(1.0, 0.0, 1.0), 0.570, "pure x outsider unrelated", 0.001)
+	assert_almost_eq(
+		BloodlineState.inherit(1.0, 0.0, 1.0), 0.570, "pure x outsider unrelated", 0.001
+	)
 
 
 func test_collision_is_fixed() -> void:
@@ -46,12 +50,16 @@ func test_first_generation_ceiling_is_intact() -> void:
 
 func test_instability_discount_at_carrier_floor() -> void:
 	# At the carrier floor, spike_remaining=0, discount=1.0 (no discount).
-	assert_almost_eq(BloodlineState.instability_discount(0.417), 1.0, "carrier floor no discount", 0.001)
+	assert_almost_eq(
+		BloodlineState.instability_discount(0.417), 1.0, "carrier floor no discount", 0.001
+	)
 
 
 func test_instability_discount_at_peak_spike() -> void:
 	# At first-gen ceiling (0.745), spike_remaining=1.0, discount=0.66 (34% discount).
-	assert_almost_eq(BloodlineState.instability_discount(0.745), 0.66, "peak spike 34% discount", 0.001)
+	assert_almost_eq(
+		BloodlineState.instability_discount(0.745), 0.66, "peak spike 34% discount", 0.001
+	)
 
 
 func test_instability_discount_mid_spike() -> void:

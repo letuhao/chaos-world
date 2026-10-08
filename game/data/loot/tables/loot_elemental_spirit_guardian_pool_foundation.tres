@@ -42,7 +42,7 @@ rarity_floor = &"magic"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_elemental_spirit_guardian_pool_foundation"
-display_name = "Tide Guardian salvage (foundation)"
+display_name = "LOC_LOOT_ELEMENTAL_SPIRIT_GUARDIAN_FOUNDATION_0_DISPLAY_NAME"
 realm = &"foundation"
 rarity = &""
 rolls = 1

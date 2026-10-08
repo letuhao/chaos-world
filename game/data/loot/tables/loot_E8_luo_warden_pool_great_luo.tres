@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E8_luo_warden_pool_great_luo"
-display_name = "Luo Warden salvage (great_luo)"
+display_name = "LOC_LOOT_E8_LUO_WARDEN_GREAT_LUO_0_DISPLAY_NAME"
 realm = &"great_luo"
 rarity = &""
 rolls = 1

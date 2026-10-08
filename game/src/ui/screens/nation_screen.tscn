@@ -22,13 +22,13 @@ layout_mode = 2
 [node name="Title" type="Label" parent="Layout"]
 layout_mode = 2
 theme_type_variation = &"ScreenTitle"
-text = "Nation"
+text = "LOC_UI_SCREENS_135C7E55F4"
 
 [node name="BoardHeader" type="Label" parent="Layout"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "No hero bound."
+text = "LOC_UI_SCREENS_6E9BC19A74"
 
 [node name="Scroll" type="ScrollContainer" parent="Layout"]
 layout_mode = 2
@@ -41,7 +41,7 @@ size_flags_horizontal = 3
 [node name="OfficesTitle" type="Label" parent="Layout/Scroll/Board"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "The board of offices"
+text = "LOC_UI_SCREENS_C5822B45B5"
 
 [node name="Offices" type="VBoxContainer" parent="Layout/Scroll/Board"]
 layout_mode = 2
@@ -58,7 +58,7 @@ unique_name_in_owner = true
 [node name="ClaimsTitle" type="Label" parent="Layout/Scroll/Board"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "Claims over places"
+text = "LOC_UI_SCREENS_83D92C04BC"
 
 [node name="Claims" type="VBoxContainer" parent="Layout/Scroll/Board"]
 layout_mode = 2
@@ -71,7 +71,7 @@ unique_name_in_owner = true
 [node name="StancesTitle" type="Label" parent="Layout/Scroll/Board"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "Stances"
+text = "LOC_UI_SCREENS_D6CD23D047"
 
 [node name="Stances" type="VBoxContainer" parent="Layout/Scroll/Board"]
 layout_mode = 2
@@ -84,7 +84,7 @@ unique_name_in_owner = true
 [node name="StandoffsTitle" type="Label" parent="Layout/Scroll/Board"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "Declared conflicts"
+text = "LOC_UI_SCREENS_D85C3F2016"
 
 [node name="Standoffs" type="VBoxContainer" parent="Layout/Scroll/Board"]
 layout_mode = 2

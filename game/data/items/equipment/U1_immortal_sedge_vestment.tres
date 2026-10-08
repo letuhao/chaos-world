@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"U1_immortal_sedge_vestment"
-display_name = "Immortal Sedge Vestment"
+display_name = "LOC_ITEMS_U1_IMMORTAL_SEDGE_VESTMENT_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"legendary"
 realm = &"immortal_sovereign"

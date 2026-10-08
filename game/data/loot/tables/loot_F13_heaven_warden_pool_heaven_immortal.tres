@@ -54,7 +54,7 @@ rarity_floor = &"legendary"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_F13_heaven_warden_pool_heaven_immortal"
-display_name = "Heaven Warden salvage (heaven_immortal)"
+display_name = "LOC_LOOT_F13_HEAVEN_WARDEN_HEAVEN_IMMORTAL_0_DISPLAY_NAME"
 realm = &"heaven_immortal"
 rarity = &""
 rolls = 1

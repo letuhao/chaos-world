@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 inhabitant_id = &"spirit_herb"
-display_name = "Spirit Herb"
+display_name = "LOC_WORLD_SPIRIT_HERB_DISPLAY_NAME"
 type = &"plant"
 tier_ids = Array[StringName]([&"mortal_world", &"spirit_world", &"immortal_world", &"transcendent_world"])
 loyalty_min = 0.0

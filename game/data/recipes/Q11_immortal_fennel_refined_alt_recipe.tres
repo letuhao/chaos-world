@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_recipe")
 id = &"Q11_immortal_fennel_refined_alt_recipe"
-display_name = "Immortal Fennel Refined (Alt) Recipe"
+display_name = "LOC_RECIPES_Q11_IMMORTAL_FENNEL_REFINED_ALT_RECIPE_DISPLAY_NAME"
 station = &"alchemy"
 inputs = Array[StringName]([&"Q11_immortal_fennel_base", &"orb_celestial_ore", &"mind_mystic_immortal_mind_herb"])
 outputs = Array[StringName]([&"Q11_immortal_fennel_refined"])
