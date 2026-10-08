@@ -64,17 +64,20 @@ func create_anchor() -> void:
 	anchor_created = true
 
 
-## Pay the anchor's reinforcement milestone: the flag, and nothing else.
+## Pay the anchor's reinforcement milestone: the flag, and the stability the arena aid
+## now reads.
 ##
-## It also used to raise stability by 0.1. Its one reader is
-## `Tribulation._arena_quality`, and `Tribulation._preparation_reduction` caps that aid
-## at `PREPARATION_FLOOR` (0.5) — which a world constructed at 0.5 already reaches, so
-## `minf(formation + 0.5, 0.5) == minf(formation + 0.6, 0.5)` for every input and the
-## raise moved `rate()` by zero (BL-0830). `MindAnchor._inside_ok` reads stability as its
-## own conjunct, so no gate lost a term either. `tests/core/test_tribulation_fight.gd`
-## pins the zero.
+## The raise is RESTORED under BL-0830's ruling. It was removed because its one reader,
+## `Tribulation._arena_quality`, was capped-flat: `_preparation_reduction` clamped the
+## summed aids at `PREPARATION_FLOOR` (0.5), a world constructed at 0.5 already reached
+## it, and `minf(formation + 0.5, 0.5) == minf(formation + 0.6, 0.5)` for every input —
+## the raise moved `rate()` by zero. The arena now reads the SPAN
+## `[ARENA_STABILITY_BASE, 1.0]` as `[0, 1]` and contributes its own weight, so a step of
+## `+0.1` is worth a real `+0.02` of the rating and every point of strengthening is
+## marginal. `tests/core/test_tribulation_fight.gd` pins the new value.
 func strengthen_anchor() -> void:
 	anchor_strengthened = true
+	improve_stability(0.1)
 
 
 ## Serialize to dictionary.

@@ -31,6 +31,36 @@ static func attach(actor: Actor) -> void:
 	_ensure_resources(actor)
 	actor.stats.add_provider(QiProvider.new())
 	QiAccess.attach_dantian(actor)
+	# BL-0830: the preparation bond's formation depth needs the gate's own numbers
+	# (required channels, the refinement they must carry, the deepest the realm below
+	# allows) and those live on THIS path's seeds, so the kernel is injected from here
+	# for the same reason `DifficultyApi.attach` injects the preparation credit: `core`
+	# may not name a path's content. Idempotent — a static seam installed by every
+	# attach is one install, not one per body.
+	Tribulation.set_gate_requirement(Callable(QiCultivationApi, "tribulation_gate_requirement"))
+
+
+## The gate kernel `Tribulation.set_gate_requirement` calls: the target realm's required
+## channels, the refinement the gate demands of each, and the deepest refinement the realm
+## BELOW allows (a channel can only be trained up to the cap its standing realm offers, so
+## the pair is what a depth has headroom against). `{}` for a realm the ladder or the
+## seeds do not know — an absent kernel entry, never an invented requirement.
+static func tribulation_gate_requirement(realm_id: StringName) -> Dictionary:
+	var target := QiRealmSeed.for_realm(realm_id)
+	if target == null or target.required_meridians.is_empty():
+		return {}
+	var ladder := RealmDefaults.ladder()
+	var index := ladder.index_of(realm_id)
+	if index <= 0:
+		return {}
+	var below := QiRealmSeed.for_realm(ladder.realms()[index - 1].id)
+	if below == null:
+		return {}
+	return {
+		"channels": target.required_meridians,
+		"required": target.required_channel_refinement,
+		"cap": below.channel_refinement_cap,
+	}
 
 
 # --- Read model and actions for the UI program ------------------------------

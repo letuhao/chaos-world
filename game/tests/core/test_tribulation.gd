@@ -20,14 +20,20 @@ func test_tribulation_start_initializes_state() -> void:
 # input is a one-number data edit rather than a suite rewrite.
 
 
-## The whole formula, read back from the two inputs it is built from.
+## The whole formula, read back from the two inputs it is built from — times the
+## unprepared BASELINE, because BL-0830's ruling gives every legal attempt that much of
+## the rating off before any aid (preparation is an input, and its floor is not zero).
 func test_difficulty_is_waves_times_type_pressure() -> void:
 	var tribulation := Tribulation.new(Tribulation.ELEMENTAL, 3, 1.0)
 	tribulation.start(Actor.new(&"hero"), &"earth_immortal")
 	assert_eq(
 		tribulation.difficulty,
-		float(tribulation.max_waves) * Tribulation.TYPE_PRESSURE[Tribulation.ELEMENTAL],
-		"waves x pressure"
+		(
+			float(tribulation.max_waves)
+			* Tribulation.TYPE_PRESSURE[Tribulation.ELEMENTAL]
+			* (1.0 - Tribulation.PREPARATION_BASELINE)
+		),
+		"waves x pressure, less the unprepared baseline"
 	)
 
 
@@ -39,7 +45,11 @@ func test_every_tribulation_type_is_authored_and_ordered() -> void:
 		var tribulation := Tribulation.new(type, 3, 1.0)
 		tribulation.start(Actor.new(&"hero"), &"earth_immortal")
 		assert_eq(tribulation.difficulty > 0.0, true, "type %s is authored above zero" % type)
-		var pressure := tribulation.difficulty / float(tribulation.max_waves)
+		var pressure := (
+			tribulation.difficulty
+			/ float(tribulation.max_waves)
+			/ (1.0 - Tribulation.PREPARATION_BASELINE)
+		)
 		assert_eq(
 			pressure >= Tribulation.TYPE_PRESSURE[Tribulation.LIGHTNING],
 			true,

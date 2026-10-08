@@ -80,10 +80,10 @@ const NO_ASCENT := "LOC_CORE_A5BD955D5A"
 ## the created world needs it; an INSIDE world's constructor default is already at
 ## the threshold and nothing lowers it (ADR 0172).
 ##
-## That same fact is why `InsideWorld.strengthen_anchor` no longer raises stability:
-## its 0.1 never reached `Tribulation.PREPARATION_FLOOR` through
-## `Tribulation._arena_quality` (BL-0830). Do not restore it as headroom — it was not
-## headroom, it was a second number nothing could fail on.
+## That same fact is why `InsideWorld.strengthen_anchor`'s stability raise was removed
+## once, and RESTORED under BL-0830: its 0.1 moved nothing while the arena aid was a
+## capped-flat read, and the arena now reads the stability SPAN with its own weight, so
+## the step is worth a real +0.02 of the rating. It is headroom that MATTERS now.
 const STABILITY_GUARD := 6
 
 

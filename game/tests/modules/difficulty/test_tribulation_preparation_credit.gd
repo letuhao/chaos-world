@@ -47,9 +47,10 @@ func setup() -> void:
 
 
 func teardown() -> void:
-	# The seam is a `static var` and the runner shares one process across every suite, so
-	# leaving it installed would price every later suite's tribulation.
+	# The seams are `static var`s and the runner shares one process across every suite, so
+	# leaving either installed would price every later suite's tribulation.
 	Tribulation.set_preparation_credit(Callable())
+	Tribulation.set_gate_requirement(Callable())
 	_actor = null
 
 
@@ -117,7 +118,9 @@ func test_a_harder_preset_does_not_help_an_unprepared_actor() -> void:
 		DifficultyApi.select(bare, difficulty_id)
 		var record := _rated(bare)
 		assert_eq(
-			float(record["reduction"]), 0.0, "%s credits an untrained body nothing" % difficulty_id
+			float(record["reduction"]),
+			Tribulation.PREPARATION_BASELINE,
+			"%s credits an untrained body exactly the baseline" % difficulty_id
 		)
 		assert_eq(
 			float(record["rating"]),
@@ -196,15 +199,29 @@ func test_a_null_actor_is_credited_exactly_one() -> void:
 
 
 ## A body carrying enough of itself that the aid measures something non-zero, so the
-## credit has a number to multiply. `expanded` meridians make `formation` positive; the
-## world makes `environment` positive.
+## credit has a number to multiply. Under BL-0830's bond this means a REAL gate: the
+## kernel is installed (the seeds are another path's data), the gate's required channels
+## are refined half-way into the trainable headroom above their demand, and the world
+## sits half-way up the arena span. The world made `environment` positive; the depth makes
+## `formation` positive.
 func _fighter() -> Actor:
 	var actor := Actor.new()
 	actor.id = &"tribulation_credit_bearer"
-	for meridian in actor.meridians.get_all_meridians():
-		actor.meridians.open_meridian(meridian.id)
-		actor.meridians.expand_meridian(meridian.id)
+	Tribulation.set_gate_requirement(Callable(QiCultivationApi, "tribulation_gate_requirement"))
+	var target := QiRealmSeed.for_realm(&"earth_immortal")
+	var below := QiRealmSeed.for_realm(&"spirit_ascension")
+	actor.meridians.unlock_for_realm(&"spirit_ascension")
+	for meridian_id in target.required_meridians:
+		actor.meridians.open_meridian(meridian_id)
+		actor.meridians.expand_meridian(meridian_id)
+		var channel := actor.meridians.get_meridian(meridian_id)
+		if channel == null:
+			continue
+		channel.refinement = (
+			(int(target.required_channel_refinement) + int(below.channel_refinement_cap)) / 2
+		)
 	actor.inside_world = InsideWorld.new(InsideWorld.SEED)
+	actor.inside_world.improve_stability(0.25)
 	# ENDURANCE, NOT JUST RATING. `TribulationEndurance.endurance` is
 	# `MIN + dao_heart * DAO_HEART_TO_ENDURANCE - price * RATING_TO_ENDURANCE` clamped to
 	# `[MIN_ENDURANCE, MAX_ENDURANCE]`, so a stock actor with zero comprehension sits pinned AT
@@ -216,11 +233,11 @@ func _fighter() -> Actor:
 	return actor
 
 
-## A body that has trained and prepared NOTHING: no meridian developed and no inside world,
-## so `_measure_preparation` measures a zero aid on every key and the credit has nothing to
-## multiply. `InsideWorld` is built with stability `0.0`, NOT left at its `0.5` default —
-## `improve_stability` ADDS to whatever the world already carries, so a fresh world is an
-## arena, and a fresh world made the "unprepared" body read as half-prepared.
+## A body that has trained and prepared NOTHING: no channel refined past any gate and no
+## arena above its base, so `_measure_preparation` measures a zero aid on every key and
+## the credit has nothing to multiply. `InsideWorld` is built with stability `0.0`, NOT
+## left at its `0.5` default — `0.5` is exactly `ARENA_STABILITY_BASE` under BL-0830 (a
+## zero arena), and an explicit `0.0` keeps the fixture unambiguous against the span.
 func _unprepared() -> Actor:
 	var actor := Actor.new()
 	actor.id = &"tribulation_unprepared_bearer"
@@ -266,20 +283,22 @@ func _unsealed_endurance() -> float:
 
 ## What `_preparation_reduction` returns, recomputed HERE rather than reached into: the
 ## private helper is the thing under test, and a test that calls it proves nothing about what
-## `rate` did with it. This is `rate`'s own two terms — the recorded aid summed, multiplied by
-## the actor's credit, then capped at `PREPARATION_FLOOR` — spelled out, so a credit that
-## reached the cap and a credit that did not are two different observations.
+## `rate` did with it. This is `rate`'s own terms under BL-0830's bond — the baseline, plus
+## each aid's weight times its measured span, times the actor's credit, capped at
+## `PREPARATION_FLOOR` — spelled out, so a credit that reached the cap and a credit that did
+## not are two different observations.
 ##
-## **The multiplication was missing.** The first version summed the aids and capped, which is
-## `_preparation_reduction` as it stood BEFORE the seam. It therefore returned the same number
-## for every preset, and "hard credits less preparation" failed for the honest reason that the
-## assertion was measuring the pre-wire function rather than the wired one. A helper that
-## re-derives a rule must be updated when the rule changes, or it silently tests history.
+## **A helper that re-derives a rule must be updated when the rule changes.** It was once
+## the pre-seam sum; then the summed-aid-times-credit; the baseline and the per-aid weights
+## landed with BL-0830's ruling and it moved with them. A helper that trails its rule
+## silently tests history.
 func _credits(record: Tribulation, actor: Actor) -> float:
-	var total := 0.0
-	for aid in Tribulation.PREPARATION_AIDS:
-		total += float(record.preparation.get(aid, 0.0))
-	return minf(total * DifficultyApi.preparation_credit_for(actor), Tribulation.PREPARATION_FLOOR)
+	var aid := Tribulation.FORMATION_WEIGHT * float(record.preparation.get("formation", 0.0))
+	aid += Tribulation.ARENA_WEIGHT * float(record.preparation.get("environment", 0.0))
+	return minf(
+		Tribulation.PREPARATION_BASELINE + aid * DifficultyApi.preparation_credit_for(actor),
+		Tribulation.PREPARATION_FLOOR
+	)
 
 
 ## `source` with every comment line removed, so a structural guard reads CODE and not the

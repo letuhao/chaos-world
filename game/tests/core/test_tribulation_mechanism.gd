@@ -316,8 +316,19 @@ func test_a_restored_fight_keeps_the_price_it_was_paid_not_a_re_derived_one() ->
 	assert_eq(restored.difficulty, paid * 0.5, "the recorded rating is what is read back")
 	assert_eq(restored.preparation["formation"], 0.125, "and so is the recorded aid")
 	# A re-derived record would price this fight at `restored.preparation`, not at the
-	# rating actually paid. This is what a resumed fight must not do.
-	assert_eq(restored.rate(actor), tribulation.rate(actor) * 0.875, "the aid is what re-rates")
+	# rating actually paid. This is what a resumed fight must not do. The re-rate is the
+	# BL-0830 bond: the baseline plus the formation weight times the recorded depth,
+	# against the same body's unaided baseline.
+	assert_almost_eq(
+		restored.rate(actor),
+		(
+			tribulation.rate(actor)
+			* (1.0 - (Tribulation.PREPARATION_BASELINE + Tribulation.FORMATION_WEIGHT * 0.125))
+			/ (1.0 - Tribulation.PREPARATION_BASELINE)
+		),
+		"the aid is what re-rates",
+		1e-9
+	)
 	assert_ne(restored.rate(actor), restored.difficulty, "so the two disagree, as they must")
 
 

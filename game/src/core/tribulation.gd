@@ -91,6 +91,33 @@ const PREPARATION_FLOOR := 0.5
 ## preparation is one number in one place and no credit can raise it.
 const MAX_CREDIT := 2.0
 
+## ## The BOND the aids are read through (BL-0830's ruling)
+##
+## The aids used to be a plain fraction (`formation + arena`) clamped at the floor, and for
+## any legal attempt at a gated rise BOTH measured saturated: a body that may enter has
+## already strengthened every required channel, so formation measured ~1.0 and the
+## reduction was a flat free 0.5 — preparation was theatre. The ruled shape makes each aid
+## read its own SPAN, so every point of work is marginal and an unprepared-but-legal
+## attempt gets the baseline alone:
+##
+##     reduction = 0.2 + 0.2 * depth + 0.1 * arena        (capped at PREPARATION_FLOOR)
+##
+## A full record is 0.2 + 0.2 + 0.1 = 0.5 EXACTLY, and the 2:1 depth:arena ratio is the
+## ruling's.
+const PREPARATION_BASELINE := 0.2
+const FORMATION_WEIGHT := 0.2
+const ARENA_WEIGHT := 0.1
+## The stability a world carries before any arena work. The arena aid reads
+## `[ARENA_STABILITY_BASE, 1.0]` as `[0, 1]`, which is what makes the
+## anchor-reinforcement's `+0.1` worth a real `+0.02` of the rating.
+const ARENA_STABILITY_BASE := 0.5
+
+## The kernel of the gate a body stands before: `(realm_id) -> {channels, required, cap}`,
+## INJECTED by the composition root (`QiCultivationApi.attach`, which owns the seeds) for
+## the same reason [member _preparation_credit] is: `core` may not name a path's content.
+## An uninstalled or empty source reads as NO formation credit rather than an invented one.
+static var _gate_requirement: Callable = Callable()
+
 ## ## What preparation is WORTH is injected, and `core` may not name who decides
 ##
 ## ADR 0129's `tribulation_preparation_credit` is a fraction of an authored aid, so it is
@@ -128,6 +155,12 @@ var outcome: StringName = OUTCOME_UNRESOLVED
 ## Passing an empty Callable clears it, so an uninstall is deterministic.
 static func set_preparation_credit(credit: Callable) -> void:
 	_preparation_credit = credit
+
+
+## Install the gate-requirement kernel the formation depth reads (BL-0830). Passing an
+## empty Callable clears it, so an uninstall is deterministic.
+static func set_gate_requirement(source: Callable) -> void:
+	_gate_requirement = source
 
 
 ## Whether a credit is installed, so a caller can tell "no difficulty seam" from "the seam
@@ -330,21 +363,22 @@ func _measure_preparation(actor: Actor) -> Dictionary:
 	var measured := {}
 	for aid in PREPARATION_AIDS:
 		measured[aid] = 0.0
-	measured["formation"] = _developed_share(actor)
+	measured["formation"] = _formation_depth(actor)
 	measured["environment"] = _arena_quality(actor)
 	return measured
 
 
-## How much of the bounded endurance span the recorded aid buys, capped so no
-## preparation can farm the fight away. The injected credit is spent on the MEASURED total
-## and the cap is applied AFTER it, so a credit below one deepens the aid's discount and a
-## credit above one still cannot lift preparation past `PREPARATION_FLOOR` — preparation is
-## an input, never a gate, and that survives the difficulty dial.
+## How much of the bounded endurance span the recorded aids buy, capped so no
+## preparation can farm the fight away. The BASELINE is what every legal attempt gets;
+## each aid contributes its weight times its own measured SPAN, so deepening a channel or
+## reinforcing the anchor moves the rating by a real amount at every point (BL-0830). The
+## injected credit scales the measured aid only — never the baseline — and the cap is
+## applied AFTER it, so a credit below one deepens the aid's discount and a credit above
+## one still cannot lift preparation past `PREPARATION_FLOOR`.
 func _preparation_reduction(actor: Actor) -> float:
-	var total := 0.0
-	for aid in PREPARATION_AIDS:
-		total += float(preparation.get(aid, 0.0))
-	return minf(total * _credit(actor), PREPARATION_FLOOR)
+	var aid := FORMATION_WEIGHT * float(preparation.get("formation", 0.0))
+	aid += ARENA_WEIGHT * float(preparation.get("environment", 0.0))
+	return minf(PREPARATION_BASELINE + aid * _credit(actor), PREPARATION_FLOOR)
 
 
 ## The share this body is credited for its preparation: a fraction, clamped to
@@ -363,25 +397,53 @@ func _credit(actor: Actor) -> float:
 	return clampf(credit, 0.0, MAX_CREDIT)
 
 
-## The share of channels developed PAST merely open. A closed or merely-opened
-## channel is not a formation; a body nobody trained has nothing to fight with.
-func _developed_share(actor: Actor) -> float:
-	var channels := actor.meridians.get_all_meridians()
+## The mean FORMATION DEPTH of the channels the gate demands, where depth is the share of
+## the trainable headroom ABOVE the gate a channel has actually been pushed into:
+##
+##     depth = clamp((refinement - required) / (cap - required), 0, 1)
+##
+## averaged over the required channels. Zero at the legality floor (every channel exactly
+## at its demand) and 1.0 when every required channel sits on the realm's training cap —
+## which is what makes deepening past the gate worth something (BL-0830). The gate's own
+## numbers arrive through the INJECTED kernel, because they live on another path's seeds
+## and `core` may not read those; an uninstalled kernel or an unknown realm reads 0.0, the
+## same fail-safe an absent aid had.
+func _formation_depth(actor: Actor) -> float:
+	if not _gate_requirement.is_valid():
+		return 0.0
+	var raw: Variant = _gate_requirement.call(realm_id)
+	if not (raw is Dictionary):
+		return 0.0
+	var row: Dictionary = raw
+	var required := int(row.get("required", 0))
+	var cap := int(row.get("cap", 0))
+	if cap <= required:
+		# A realm whose demand IS its cap has no headroom to deepen into: the depth is
+		# not measurable, so the aid contributes nothing rather than a division by zero.
+		return 0.0
+	var channels: Array = row.get("channels", [])
 	if channels.is_empty():
 		return 0.0
-	var developed := 0
-	for channel in channels:
-		if channel.state == &"expanded" or channel.state == &"strengthened":
-			developed += 1
-	return float(developed) / float(channels.size())
+	var total := 0.0
+	for meridian_id in channels:
+		var channel := actor.meridians.get_meridian(meridian_id)
+		if channel == null:
+			continue
+		total += clampf(float(channel.refinement - required) / float(cap - required), 0.0, 1.0)
+	return total / float(channels.size())
 
 
-## How sound an arena the actor brings to the fight: the inside world's stability. No
-## world, no arena.
+## How sound an arena the actor brings to the fight: the inside world's stability over
+## the span `[ARENA_STABILITY_BASE, 1.0]`, so the baseline world reads 0.0 and a fully
+## reinforced one reads 1.0 — the span, not the raw number, because a raw read made the
+## anchor-reinforcement's `+0.1` invisible under the floor (BL-0830). No world, no arena.
 func _arena_quality(actor: Actor) -> float:
 	if actor.inside_world == null:
 		return 0.0
-	return clampf(actor.inside_world.stability, 0.0, 1.0)
+	var span := 1.0 - ARENA_STABILITY_BASE
+	if span <= 0.0:
+		return 0.0
+	return clampf((actor.inside_world.stability - ARENA_STABILITY_BASE) / span, 0.0, 1.0)
 
 
 ## Charge one wave's toll. A heart-demon trial spends the DAO HEART itself — the one

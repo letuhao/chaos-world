@@ -41,6 +41,18 @@ func _realm_id(index: int) -> StringName:
 	return RealmDefaults.ladder().realms()[index].id
 
 
+## BL-0830: the formation depth reads the gate's own numbers, which live on the qi seeds
+## and arrive through an injected kernel. This suite measures preparation directly, so it
+## installs the real one — exactly what `QiCultivationApi.attach` does in production.
+func setup() -> void:
+	Tribulation.set_gate_requirement(Callable(QiCultivationApi, "tribulation_gate_requirement"))
+
+
+func teardown() -> void:
+	# The kernel is a `static var` and the runner shares one process across suites.
+	Tribulation.set_gate_requirement(Callable())
+
+
 func _actor(comprehension: float = 40.0) -> Actor:
 	return Actor.new(&"tribulation_hero", {Stat.COMPREHENSION: comprehension})
 
@@ -167,8 +179,9 @@ func test_the_survival_curve_is_pinned_to_a_value_and_not_only_to_its_bounds() -
 		(
 			float(Tribulation.WAVES_BY_TIER[RealmDefaults.IMMORTAL])
 			* float(Tribulation.TYPE_PRESSURE[Tribulation.ELEMENTAL])
+			* (1.0 - Tribulation.PREPARATION_BASELINE)
 		),
-		"the rating is the wave count times the kind's pressure"
+		"the rating is the wave count times the kind's pressure, less the baseline"
 	)
 	var share := TribulationEndurance.endurance(actor, record)
 	assert_eq(
@@ -288,26 +301,42 @@ func test_start_measures_preparation_from_the_actor() -> void:
 	assert_eq(float(tribulation.preparation["environment"]), 0.0, "no world, no arena")
 
 
-## Preparation is real: it lowers the rating a fight is fought at.
+## Preparation is real: it lowers the rating a fight is fought at, by the SPAN each aid
+## measured (BL-0830's ruling). The gate's own numbers come off the qi seeds, so this
+## fixture drives the required channels to the demanded refinement AND to the realm
+## below's training cap — depth 1.0 — and sounds the arena above its baseline.
 func test_preparation_lowers_the_rating() -> void:
 	var actor := _actor_at_r18()
 	var untrained := Tribulation.new(Tribulation.LIGHTNING)
 	untrained.start(actor, &"earth_immortal")
 	actor.inside_world = InsideWorld.new(InsideWorld.SEED)
 	actor.inside_world.improve_stability(0.4)
-	for channel in actor.meridians.get_all_meridians():
-		actor.meridians.open_meridian(channel.id)
-		actor.meridians.expand_meridian(channel.id)
+	var target := QiRealmSeed.for_realm(&"earth_immortal")
+	var below := QiRealmSeed.for_realm(&"spirit_ascension")
+	for meridian_id in target.required_meridians:
+		actor.meridians.open_meridian(meridian_id)
+		actor.meridians.expand_meridian(meridian_id)
+		var channel := actor.meridians.get_meridian(meridian_id)
+		channel.refinement = below.channel_refinement_cap
 	var trained := Tribulation.new(Tribulation.LIGHTNING)
 	trained.start(actor, &"earth_immortal")
-	assert_eq(float(trained.preparation["formation"]), 1.0, "a developed array is measured")
-	assert_eq(float(trained.preparation["environment"]), 0.9, "a stable world is an arena")
+	assert_eq(
+		float(trained.preparation["formation"]), 1.0, "a full past-the-gate depth is measured"
+	)
+	assert_almost_eq(
+		float(trained.preparation["environment"]),
+		0.8,
+		"a world at 0.9 reads 0.8 of the arena span",
+		1e-9
+	)
 	assert_eq(
 		trained.difficulty < untrained.difficulty, true, "a trained actor is fought more gently"
 	)
 
 
-## It cannot be farmed away: no preparation removes more than the authored floor.
+## It cannot be farmed away: no preparation removes more than the authored floor. The
+## BASELINE is outside the aids, so the capped rating relates to the unaided one by
+## `(1 - floor) / (1 - baseline)` — the floor is still the one ceiling on preparation.
 func test_preparation_is_capped_at_the_authored_floor() -> void:
 	var actor := _actor_at_r18()
 	var tribulation := Tribulation.new(Tribulation.LIGHTNING)
@@ -315,35 +344,42 @@ func test_preparation_is_capped_at_the_authored_floor() -> void:
 	var unaided := tribulation.rate(actor)
 	for aid in Tribulation.PREPARATION_AIDS:
 		tribulation.preparation[aid] = 99.0
-	assert_eq(
+	assert_almost_eq(
 		tribulation.rate(actor),
-		unaided * (1.0 - Tribulation.PREPARATION_FLOOR),
-		"an impossible aid buys exactly the floor"
+		unaided * (1.0 - Tribulation.PREPARATION_FLOOR) / (1.0 - Tribulation.PREPARATION_BASELINE),
+		"an impossible aid buys exactly the floor",
+		1e-9
 	)
 
 
-## The `environment` leg is the inside world's stability, and paying the anchor moves it
-## by NOTHING. Both halves are invisible to the tests above, which is how a raise nothing
-## could read shipped as a reward (BL-0830): `test_preparation_lowers_the_rating` opens
-## every channel AND raises stability, so its `formation` of 1.0 alone already pins the
-## reduction at `PREPARATION_FLOOR`, and an `_arena_quality` returning `0.0` would leave it
-## green. Both aids are therefore held OFF the cap here — `formation` stays 0.0 and both
-## worlds sit BELOW 0.5, the only window where an aid is worth its own value. 0.4 is the
-## mutation witness: one raise short of the floor, so restoring `improve_stability(0.1)`
-## pushes the sounded world to 0.5 and saturates the reduction.
-func test_the_environment_leg_is_read_below_the_floor() -> void:
+## The `environment` leg is the inside world's stability read over its SPAN, and the
+## anchor reinforcement now moves the rating by a real amount: BL-0830's ruling restored
+## the `+0.1` the old capped-flat read had made invisible. The baseline world carries
+## `ARENA_STABILITY_BASE`, so it measures no arena at all; one reinforcement is worth
+## `0.1 / span` of the aid and a capped world is the whole arena.
+func test_the_anchor_reinforcement_sounds_the_arena() -> void:
 	var actor := _actor_at_r18()
-	actor.inside_world = InsideWorld.new(InsideWorld.SEED, 1.0, 0.0)
+	actor.inside_world = InsideWorld.new(InsideWorld.SEED)
+	var at_base := Tribulation.new(Tribulation.LIGHTNING)
+	at_base.start(actor, &"earth_immortal")
+	assert_eq(float(at_base.preparation["environment"]), 0.0, "a world at the base is no arena")
+	var rating_at_base := at_base.rate(actor)
 	actor.inside_world.strengthen_anchor()
-	var bare := Tribulation.new(Tribulation.LIGHTNING)
-	bare.start(actor, &"earth_immortal")
-	actor.inside_world.improve_stability(0.4)
+	assert_almost_eq(
+		actor.inside_world.stability, 0.6, "the anchor step raises stability by 0.1", 1e-9
+	)
 	var sounded := Tribulation.new(Tribulation.LIGHTNING)
 	sounded.start(actor, &"earth_immortal")
-	assert_eq(float(bare.preparation["formation"]), 0.0, "no channel developed")
-	assert_eq(float(bare.preparation["environment"]), 0.0, "paying the anchor moves no stability")
-	assert_eq(float(sounded.preparation["environment"]), 0.4, "a sounded world IS the arena")
-	assert_eq(sounded.difficulty < bare.difficulty, true, "and it is spent, not merely reported")
+	assert_almost_eq(
+		float(sounded.preparation["environment"]), 0.2, "0.1 of stability is 0.2 of the span", 1e-9
+	)
+	assert_eq(sounded.rate(actor) < rating_at_base, true, "and it is spent, not merely reported")
+	actor.inside_world.improve_stability(0.4)
+	var full := Tribulation.new(Tribulation.LIGHTNING)
+	full.start(actor, &"earth_immortal")
+	assert_almost_eq(
+		float(full.preparation["environment"]), 1.0, "a capped world is the whole arena", 1e-9
+	)
 
 
 ## The measured aid is part of the fight's price, so a resumed fight is the same
