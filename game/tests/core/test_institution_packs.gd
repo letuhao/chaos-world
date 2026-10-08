@@ -212,22 +212,31 @@ func test_temp_pack_is_discovered_through_the_overlay_seam() -> void:
 	assert_eq(overlaid.has(&"lantern_exchange"), true, "the base tiers are still present")
 
 
-## The shipped pack rows are base-owned and empty today; the three tiers load
-## from the base root as before. This pins the seam the tier moves will land
-## on: when packs ship, their rows layer here, base-owned, in sorted order.
+## The shipped packs land as base-owned rows; the three tiers load from packs
+## as before. This pins the seam the tier moves landed on: pack rows layer in
+## the base merge, base-owned, in sorted order — and nothing else ships a pack.
 func test_shipped_pack_rows_are_empty_and_the_tiers_still_load() -> void:
 	var catalog := InstitutionDefCatalog.instance()
 	var merged := catalog.overlay_merge()
 	assert_eq(bool(merged["ok"]), true, "the base merge succeeded")
-	var pack_seen := false
+	var pack_paths: Array[String] = []
 	for entry in merged["merged"]:
-		if String(entry["path"]).contains("data/packs"):
-			pack_seen = true
-	assert_eq(pack_seen, false, "no shipped packs yet, so no pack row contributes")
-	assert_eq(catalog.has(&"lantern_exchange"), true, "the trading guild loads")
-	assert_eq(catalog.has(&"grey_horizon_hunt"), true, "the hunting guild loads")
-	assert_eq(catalog.has(&"torrent_field_circle"), true, "the farmers' circle loads")
-	assert_eq(String(catalog.owner_of(&"lantern_exchange")), "base", "base-owned")
+		var path := String(entry["path"])
+		if path.contains("data/packs"):
+			pack_paths.append(path)
+	pack_paths.sort()
+	assert_eq(
+		pack_paths,
+		[
+			"res://data/packs/guilds/organizations/grey_horizon_hunt.tres",
+			"res://data/packs/guilds/organizations/lantern_exchange.tres",
+			"res://data/packs/guilds/organizations/torrent_field_circle.tres",
+		],
+		"the shipped packs are exactly the three guild defs"
+	)
+	for guild_id in [&"lantern_exchange", &"grey_horizon_hunt", &"torrent_field_circle"]:
+		assert_eq(catalog.has(guild_id), true, "%s loads" % guild_id)
+		assert_eq(String(catalog.owner_of(guild_id)), "base", "%s is base-owned" % guild_id)
 	assert_eq(catalog.is_loaded(), true, "and the family presents itself as loaded")
 
 
