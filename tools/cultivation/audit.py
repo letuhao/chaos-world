@@ -430,8 +430,13 @@ def validate() -> list[str]:
         findings.append(f"ladder has {len(ladder)} realms, expected 30")
     if len(acupoints) != 60:
         findings.append(f"{len(acupoints)} acupoint definitions, expected 60")
-    if len(meridians) != 20:
-        findings.append(f"{len(meridians)} meridian definitions, expected 20")
+    # BL-0272: the exactly-20 assertion is on the LOADED set — what
+    # `MeridianDefaults.all()` returns — not on the directory listing, because a loader
+    # that reads 19 of the 20 files would leave the twentieth's gates ungraded while
+    # every file-based check stayed green.
+    loaded_meridians = ladder_module.meridian_tiers()
+    if loaded_meridians is not None and len(loaded_meridians) != 20:
+        findings.append(f"{len(loaded_meridians)} meridians load, expected 20")
 
     seeds: list[dict] = []
     for realm_id, _name, _tier in ladder:
@@ -563,14 +568,11 @@ def validate() -> list[str]:
     findings.extend(qi_gate_ladder_findings(ladder))
     findings.extend(qi_catalyst_findings(ladder))
     findings.extend(qi_price_findings())
-    # The authored meridian corpus is checked against the list the runtime plays, not
-    # used to grade anything. Both readings agree today, and that agreement is the
-    # hazard: nothing else would notice the moment one of them moved (BL-0755).
-    findings.extend(
-        meridian_tier_divergence_findings(
-            ladder_module.meridian_tiers(), _meridian_tiers(MERIDIAN_DIR)
-        )
-    )
+    # BL-0272: the loader reads the authored files, so BL-0755's two-copy divergence
+    # check has nothing left to compare. What needs the guard now is the BINDING: the
+    # loader's own DIR must resolve to the corpus this audit grades, or the game loads
+    # a tree no guard has read.
+    findings.extend(meridian_loader_findings(ladder_module.meridian_loader_dir(), MERIDIAN_DIR))
     # Mod-declared cultivation paths: validate their seeds against the contract.
     findings.extend(mod_cultivation_path_findings(ladder))
     # Mod-declared cultivation paths: validate their provider source (ADR 0241).
@@ -717,64 +719,26 @@ def _successors(ladder: list) -> dict[str, str]:
     return out
 
 
-def _meridian_tiers(directory) -> dict[str, int]:
-    """The AUTHORED corpus: `game/data/meridians/*.tres` id -> `tier`.
+def meridian_loader_findings(loader_dir, corpus_dir) -> list[str]:
+    """The loader's `DIR` and the corpus this audit grades must be the same tree.
 
-    Not what the runtime plays. `MeridianNetwork.unlock_for_realm` reads
-    `MeridianDefaults.all()`, and nothing loads these files (BL-0755), so this is read
-    only as the OTHER HALF of `meridian_tier_divergence_findings` — the copy that must
-    not drift from the source. Grading gates with it was grading dead data.
+    BL-0272 made `MeridianDefaults.all()` load `game/data/meridians/*.tres`, so the two
+    readers BL-0755's divergence check compared are now one — there is no second copy to
+    drift from. The hazard that replaced it is a loader pointed somewhere else: it loads
+    nothing, or loads a tree no guard has read, and every tier check stays green while
+    the player's channels come from an unaudited corpus.
     """
-    tiers: dict[str, int] = {}
-    root = Path(directory)
-    if not root.is_dir():
-        return tiers
-    for path in root.glob("*.tres"):
-        scalars = load_seed(path)["scalars"]
-        if "id" in scalars and "tier" in scalars:
-            tiers[str(scalars["id"])] = int(scalars["tier"])
-    return tiers
-
-
-def meridian_tier_divergence_findings(
-    runtime_tiers: dict[str, int] | None, corpus_tiers: dict[str, int]
-) -> list[str]:
-    """Every meridian where the RUNTIME and the authored `.tres` corpus disagree.
-
-    Both exist and only one plays. `unlock_for_realm` walks `MeridianDefaults.all()`,
-    so `_build()` decides whether a channel is ever in the actor's hands, and the
-    twenty `.tres` under `game/data/meridians` are read by nothing. They agree today,
-    which is the whole hazard: a retune of `_build()` would have moved the gates while
-    every finding graded the untouched copy stayed green. Two findings for one defect is
-    two fixes, so membership and tier are reported together under one prefix and the
-    message names which side the game actually honours.
-    """
-    if runtime_tiers is None:
-        return []
-    findings: list[str] = []
-    for meridian_id in sorted(set(runtime_tiers) | set(corpus_tiers)):
-        played = runtime_tiers.get(meridian_id)
-        authored = corpus_tiers.get(meridian_id)
-        if played is None:
-            findings.append(
-                f"qi_meridian_tier_diverges: {meridian_id} is authored in"
-                f" {MERIDIAN_DIR}/{meridian_id}.tres at tier {authored}, but"
-                " MeridianDefaults._build() does not define it, so it unlocks for nobody"
-            )
-        elif authored is None:
-            findings.append(
-                f"qi_meridian_tier_diverges: {meridian_id} unlocks at tier {played} in"
-                f" MeridianDefaults._build(), but {MERIDIAN_DIR}/{meridian_id}.tres is absent"
-                " from the authored corpus"
-            )
-        elif played != authored:
-            findings.append(
-                f"qi_meridian_tier_diverges: {meridian_id} unlocks at tier {played} in"
-                f" MeridianDefaults._build() and tier {authored} in"
-                f" {MERIDIAN_DIR}/{meridian_id}.tres; the runtime's number is the one that"
-                " plays, so the authored copy is already dead data"
-            )
-    return findings
+    if loader_dir is None:
+        return [
+            "qi_meridian_loader_unreadable: MeridianDefaults no longer declares a readable"
+            " DIR constant, so all() loads nothing"
+        ]
+    if Path(loader_dir).resolve() != Path(corpus_dir).resolve():
+        return [
+            f"qi_meridian_loader_misdirected: MeridianDefaults loads {loader_dir}, but the"
+            f" audit grades {corpus_dir}"
+        ]
+    return []
 
 
 def qi_gate_ladder_findings(
@@ -828,10 +792,9 @@ def qi_gate_ladder_findings(
     findings: list[str] = []
     ranks = ladder_module.channel_state_ranks()
     arrival = ladder_module.fresh_channel()
-    # The tiers come from `MeridianDefaults._build()`, the list `unlock_for_realm`
-    # actually iterates. `game/data/meridians` is the AUTHORED copy and nothing loads
-    # it, so grading with it graded a corpus the player never receives (BL-0755);
-    # `meridian_tier_divergence_findings` is what keeps the two from drifting.
+    # The tiers come from the files `MeridianDefaults.all()` loads (BL-0272): the
+    # authored corpus IS the runtime list now, so grading with it grades what the
+    # player receives. `meridian_loader_findings` keeps the loader bound to it.
     tiers = ladder_module.meridian_tiers(meridian_source)
     if ranks is None or arrival is None or tiers is None:
         return [

@@ -255,36 +255,53 @@ def _fixture_seed(row: tuple) -> str:
     )
 
 
-def _fixture_meridian_source(meridians) -> str:
-    """A throwaway `MeridianDefaults`, shaped exactly like the runtime's `_build()`.
+def _fixture_meridian_source(directory) -> str:
+    """A throwaway `MeridianDefaults` over a throwaway corpus.
 
-    The guard grades the tiers the RUNTIME holds, so the fixture stands in for `_build()`
-    rather than for `game/data/meridians` — the authored `.tres` the game never loads,
-    which is the whole of BL-0755. A probe that needs a channel the actor cannot hold
-    still needs a tier to be read from, and the only honest place to read one from is
-    the source the guard now grades.
+    BL-0272 made the loader READ `game/data/meridians/*.tres` through `ContentScan`,
+    so a fixture of `_make` rows no longer exercises the reader at all: this stands in
+    for the loader, and `directory` holds the corpus its `DIR` points at. The shipped
+    constant is a `res://` path; this one is an OS path into the throwaway tree, which
+    the reader accepts and no shipped loader could hold.
     """
-    rows = "\n".join(
-        (
-            f'\tdefs.append(_make(&"{meridian_id}", "{meridian_id}", '
-            f"PRIMARY, {tier}, 0.05, 0.10, 0.05))"
-        )
-        for meridian_id, tier in meridians
-    )
     return "\n".join(
         [
             "class_name MeridianDefaults",
             "extends RefCounted",
             "",
-            'const PRIMARY := &"primary"',
-            "",
-            "static func _build() -> Array[MeridianDef]:",
-            "\tvar defs: Array[MeridianDef] = []",
-            rows,
-            "\treturn defs",
+            f'const DIR := "{directory}"',
             "",
         ]
     )
+
+
+def _stage_meridian_corpus(root: Path, meridians) -> Path:
+    """One `.tres` per fixture meridian, shaped like the shipped corpus files."""
+    directory = root / "meridians"
+    directory.mkdir(parents=True, exist_ok=True)
+    for meridian_id, tier in meridians:
+        (directory / f"{meridian_id}.tres").write_text(
+            "\n".join(
+                [
+                    (
+                        '[gd_resource type="Resource" script_class="MeridianDef"'
+                        " load_steps=2 format=3]"
+                    ),
+                    "",
+                    '[ext_resource type="Script" path="res://src/core/meridian_def.gd" id="1"]',
+                    "",
+                    "[resource]",
+                    'script = ExtResource("1")',
+                    f'id = &"{meridian_id}"',
+                    f'display_name = "{meridian_id}"',
+                    'type = &"primary"',
+                    f"tier = {tier}",
+                    "",
+                ]
+            ),
+            encoding="utf-8",
+        )
+    return directory
 
 
 def _stage_qi_fixture() -> tuple[Path, Path, list, set[str]]:
@@ -298,7 +315,10 @@ def _stage_qi_fixture() -> tuple[Path, Path, list, set[str]]:
         realm_id = row[0]
         (realm_dir / f"{realm_id}.tres").write_text(_fixture_seed(row), encoding="utf-8")
         items.update(f"{realm_id}_{role}" for role in ("pill", "channel_elixir", "recovery_elixir"))
-    meridian_source.write_text(_fixture_meridian_source(FIXTURE_MERIDIANS), encoding="utf-8")
+    meridian_source.write_text(
+        _fixture_meridian_source(_stage_meridian_corpus(root, FIXTURE_MERIDIANS)),
+        encoding="utf-8",
+    )
     ladder_rows = [(realm_id, name, tier) for realm_id, name, tier, *_rest in FIXTURE_REALMS]
     return realm_dir, meridian_source, ladder_rows, items
 

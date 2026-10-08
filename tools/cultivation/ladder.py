@@ -21,6 +21,7 @@ bootstraps a missing seed cannot disagree with the report that reads it.
 from __future__ import annotations
 
 import re
+from pathlib import Path
 
 from ..common import REPO_ROOT
 
@@ -174,37 +175,55 @@ def fresh_channel() -> tuple[str, int] | None:
     return state.group(1), int(depth.group(1))
 
 
-def meridian_tiers(path=None) -> dict[str, int] | None:
-    """`MeridianDefaults._build()` as `{meridian id: unlock tier}`, or None if unreadable.
+def meridian_loader_dir(path=None) -> Path | None:
+    """The directory `MeridianDefaults.all()` loads, read from the loader's own `DIR`.
 
-    READ, never re-derived from `game/data/meridians`: `unlock_for_realm` walks
-    `MeridianDefaults.all()`, so that list is the corpus the gate ladder is graded
-    against, and the twenty `.tres` beside it are authored-but-unloaded (BL-0755).
+    None when the loader or its constant cannot be read — a loader that scans nothing
+    loads nothing, and the audit reports that rather than grading an empty corpus.
 
-    Every `_make` call in `_build()` must parse. Counting rather than trusting the
-    regex is what makes a retune loud instead of silent: a fourth positional argument
-    or a differently-shaped call yields FEWER ids, and a guard that quietly graded 19 of
-    20 meridians would drop the twentieth's gates without a word. None says "this file
-    no longer holds the premise", which is the truth.
+    The shipped constant is a `res://` path, resolved against `game/`. A fixture may
+    point the constant at a throwaway OS path (a probe stages its corpus in a temp
+    tree); that resolves as-is, and no shipped loader could ever hold one.
     """
     target = MERIDIAN_DEFAULTS if path is None else path
     if not target.is_file():
         return None
     text = target.read_text(encoding="utf-8", errors="replace")
-    builder = re.search(r"(?ms)^static func _build\(.*?^\s*return\s+\w+\s*$", text)
-    if not builder:
+    match = re.search(r'(?m)^const DIR\s*:=\s*"([^"]+)"', text)
+    if not match:
         return None
-    body = builder.group(0)
-    # `_make(id, display_name, type, tier, capacity, flow, power)` — tier is the fourth
-    # positional argument, and only `defs.append(_make(` names a definition.
-    rows = re.findall(r"_make\(\s*&\"([^\"]+)\"\s*,\s*\"[^\"]*\"\s*,\s*\w+\s*,\s*(-?\d+)\s*,", body)
-    if not rows or len(rows) != body.count("_make("):
+    raw = match.group(1)
+    if raw.startswith("res://"):
+        return REPO_ROOT / "game" / raw.removeprefix("res://")
+    return Path(raw)
+
+
+def meridian_tiers(path=None) -> dict[str, int] | None:
+    """`MeridianDefaults.all()` as `{meridian id: unlock tier}`, or None if unreadable.
+
+    READ from the files the loader loads (BL-0272): `_build()` scans its own `DIR`
+    through `ContentScan`, so `game/data/meridians/*.tres` IS the runtime corpus now —
+    the authored-but-unloaded second copy BL-0755 guarded against does not exist, and
+    there is nothing left for a divergence check to compare. The directory is derived
+    from the loader's constant, never restated here, so moving the content moves this
+    reader with it.
+
+    None says "the loader or its directory could not be read": a guard that graded an
+    empty dict would call a loader that reads nothing clean, which is the silent false
+    green BL-0755 was.
+    """
+    target = MERIDIAN_DEFAULTS if path is None else path
+    root = meridian_loader_dir(target)
+    if root is None or not root.is_dir():
         return None
     tiers: dict[str, int] = {}
-    for meridian_id, tier in rows:
-        if meridian_id in tiers:
+    for tres in sorted(root.glob("*.tres")):
+        text = tres.read_text(encoding="utf-8", errors="replace")
+        id_match = re.search(r'(?m)^id\s*=\s*&"([^"]+)"', text)
+        tier_match = re.search(r"(?m)^tier\s*=\s*(-?\d+)", text)
+        if not id_match or not tier_match or id_match.group(1) in tiers:
             return None
-        tiers[meridian_id] = int(tier)
+        tiers[id_match.group(1)] = int(tier_match.group(1))
     return tiers
 
 
