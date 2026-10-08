@@ -193,6 +193,24 @@ func teardown() -> void:
 	if live == self:
 		live = null
 	clear_save()
+	_unwire_world_stores()
+
+
+## Unwire what a mount wired. The app installs the world polity store into the
+## relation graph and both writer facades (`InstitutionBoot.install`), and those
+## seams are PROCESS state, so a suite that mounts would otherwise leave a later
+## suite taking the world leg against the store this mount installed — a test can
+## then write the real save slot from a declaration it never asked to persist
+## (DEF-0387). Called from `teardown` so a mount and its teardown are a matched
+## pair; `mount_new` re-installs them on the next mount. The memo is dropped with
+## the store because a store-backed build is never memoized (ADR 0936).
+static func _unwire_world_stores() -> void:
+	SaveApi.install_store(WorldPolityLedger.WORLD_KEY, null)
+	RelationsApi.set_store(null)
+	SectApi.set_world_store(null)
+	NationApi.set_world_store(null)
+	RelationsApi.shared = null
+	RelationsApi._memo = {}
 
 
 # --- The mounted tree --------------------------------------------------------
