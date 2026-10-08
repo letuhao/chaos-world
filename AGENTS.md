@@ -162,6 +162,7 @@ There is no shared power curve. A realm's strength is authored data and lives in
 - **A valuable item is hard to earn.** Worth is priced in effort; an item that is both best and easiest is the defect.
 - **No mechanic may be a strict best response.** If one option is correct against every opponent, it is not a choice and it has removed a dimension from the game. Every axis needs a counter and every counter needs an axis.
 - **Bound the OUTPUT, never the INPUT.** A cap on a mitigation or defense axis dies because that axis must scale with the ladder; a cap on a rate axis (attack speed, cooldown) stays because rate is not what power creep rides. A percent that caps is a ceiling on an input, and inputs are what must grow (ADR 0200).
+- **Nothing is free: every action carries a cost — a resource or time.** A verb that spends neither is a missing mechanic, not a gift, because free spam is a strict best response. Time (a cooldown, an interval, a sitting) counts as a cost, so state which cost an action pays.
 
 ## Institutions: clan, sect, nation
 Three tiers, one vocabulary, and each answers a question no other answers (ADR 0083).
