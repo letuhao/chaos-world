@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=26 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=31 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -279,6 +279,66 @@ guaranteed = true
 quantity = 1
 rarity_floor = &""
 
+[sub_resource type="Resource" id="qi_core_formation_warden_manual_lightning_rapid"]
+script = ExtResource("2_entry")
+id = &"qi_core_formation_warden_manual_lightning_rapid"
+kind = &"item"
+item_id = &"manual_lightning_rapid"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"common"
+
+[sub_resource type="Resource" id="qi_core_formation_warden_manual_ice_rapid"]
+script = ExtResource("2_entry")
+id = &"qi_core_formation_warden_manual_ice_rapid"
+kind = &"item"
+item_id = &"manual_ice_rapid"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"common"
+
+[sub_resource type="Resource" id="qi_core_formation_warden_manual_wind_rapid"]
+script = ExtResource("2_entry")
+id = &"qi_core_formation_warden_manual_wind_rapid"
+kind = &"item"
+item_id = &"manual_wind_rapid"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"common"
+
+[sub_resource type="Resource" id="qi_core_formation_warden_manual_light_rapid"]
+script = ExtResource("2_entry")
+id = &"qi_core_formation_warden_manual_light_rapid"
+kind = &"item"
+item_id = &"manual_light_rapid"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"common"
+
+[sub_resource type="Resource" id="qi_core_formation_warden_manual_dark_rapid"]
+script = ExtResource("2_entry")
+id = &"qi_core_formation_warden_manual_dark_rapid"
+kind = &"item"
+item_id = &"manual_dark_rapid"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"common"
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_qi_core_formation_warden"
@@ -311,4 +371,9 @@ entries = Array[LootEntry]([
 	SubResource("entry_20"),
 	SubResource("entry_21"),
 	SubResource("entry_entry_band_gear"),
+	SubResource("qi_core_formation_warden_manual_lightning_rapid"),
+	SubResource("qi_core_formation_warden_manual_ice_rapid"),
+	SubResource("qi_core_formation_warden_manual_wind_rapid"),
+	SubResource("qi_core_formation_warden_manual_light_rapid"),
+	SubResource("qi_core_formation_warden_manual_dark_rapid"),
 ])

@@ -13,6 +13,7 @@ family the same way: content generation is a Python decision recorded in a scrip
 a hand-typed wave. Run with `uv run python tools/generate_rapid_arts.py`.
 """
 
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).parent.parent
@@ -131,15 +132,91 @@ def _write(path: Path, text: str, wrote: list[str], kept: list[str]) -> None:
     wrote.append(path.name)
 
 
+#: Where each tier's manuals are PAID: the trial's own warden table. The encounter
+#: (`game/data/loot/encounters/loot_<domain>.tres`) binds this table per boss per tier,
+#: and `test_domain_route_acquisition` walks exactly that path — a `domain:` source
+#: with no entry in the domain's boss tables is an orphan the player can never hold,
+#: however deliverable the reachability graph calls it.
+WARDEN_TABLE: dict[int, str] = {
+    1: "loot_qi_foundation_warden",
+    2: "loot_qi_core_formation_warden",
+    3: "loot_qi_earth_immortal_warden",
+}
+
+TABLE_DIR = ROOT / "game" / "data" / "loot" / "tables"
+
+
+def _entry_block(entry_id: str, item_id: str) -> str:
+    return (
+        f'[sub_resource type="Resource" id="{entry_id}"]\n'
+        'script = ExtResource("2_entry")\n'
+        f'id = &"{entry_id}"\n'
+        'kind = &"item"\n'
+        f'item_id = &"{item_id}"\n'
+        'table_id = &""\n'
+        "weight = 1.\n"
+        "chance = -1.0\n"
+        "guaranteed = false\n"
+        "quantity = 1\n"
+        'rarity_floor = &"common"\n'
+        "\n"
+    )
+
+
+def wire_loot_tables() -> tuple[list[str], list[str]]:
+    """Insert one weighted entry per manual into its trial's warden table.
+
+    Idempotent: a table that already pays the manual is left alone, so a re-run is a
+    no-op and a hand retune of an entry survives. Only the `entries` array and the
+    sub_resources above `[resource]` are touched; `load_steps` counts ext + sub + 1,
+    so each added entry bumps it by one.
+    """
+    wired: list[str] = []
+    kept: list[str] = []
+    for tier, table_id in sorted(WARDEN_TABLE.items()):
+        path = TABLE_DIR / f"{table_id}.tres"
+        text = path.read_text(encoding="utf-8")
+        added: list[tuple[str, str]] = []
+        for element, _name, element_tier in ELEMENTS:
+            if element_tier != tier:
+                continue
+            manual = manual_id(element)
+            if f'item_id = &"{manual}"' in text:
+                continue
+            added.append((f"{table_id.removeprefix('loot_')}_manual_{element}_rapid", manual))
+        if not added:
+            kept.append(path.name)
+            continue
+        blocks = "".join(_entry_block(entry_id, item_id) for entry_id, item_id in added)
+        text = text.replace("\n[resource]\n", "\n" + blocks + "[resource]\n", 1)
+        refs = "".join(f'\tSubResource("{entry_id}"),\n' for entry_id, _item_id in added)
+        close = text.rindex("\n])")
+        text = text[: close + 1] + refs + text[close + 1 :]
+        match = re.search(r"load_steps=(\d+)", text)
+        if match:
+            text = text.replace(
+                f"load_steps={match.group(1)}",
+                f"load_steps={int(match.group(1)) + len(added)}",
+                1,
+            )
+        path.write_text(text, encoding="utf-8", newline="\n")
+        wired.append(path.name)
+    return wired, kept
+
+
 def main() -> int:
     wrote: list[str] = []
     kept: list[str] = []
     for element, name, tier in ELEMENTS:
         _write(TECHNIQUES / f"{art_id(element)}.tres", art_tres(element, name, tier), wrote, kept)
         _write(ITEMS / f"{manual_id(element)}.tres", manual_tres(element, name, tier), wrote, kept)
+    wired, tables_kept = wire_loot_tables()
     print(f"wrote {len(wrote)} file(s), kept {len(kept)} existing")
     for row in wrote:
         print(f"  + {row}")
+    print(f"wired {len(wired)} loot table(s), kept {len(tables_kept)} already-paying")
+    for row in wired:
+        print(f"  ~ {row}")
     return 0
 
 

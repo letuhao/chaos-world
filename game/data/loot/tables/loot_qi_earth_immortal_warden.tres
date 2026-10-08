@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=29 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=32 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -315,6 +315,42 @@ guaranteed = true
 quantity = 1
 rarity_floor = &""
 
+[sub_resource type="Resource" id="qi_earth_immortal_warden_manual_void_rapid"]
+script = ExtResource("2_entry")
+id = &"qi_earth_immortal_warden_manual_void_rapid"
+kind = &"item"
+item_id = &"manual_void_rapid"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"common"
+
+[sub_resource type="Resource" id="qi_earth_immortal_warden_manual_chaos_rapid"]
+script = ExtResource("2_entry")
+id = &"qi_earth_immortal_warden_manual_chaos_rapid"
+kind = &"item"
+item_id = &"manual_chaos_rapid"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"common"
+
+[sub_resource type="Resource" id="qi_earth_immortal_warden_manual_time_rapid"]
+script = ExtResource("2_entry")
+id = &"qi_earth_immortal_warden_manual_time_rapid"
+kind = &"item"
+item_id = &"manual_time_rapid"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"common"
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_qi_earth_immortal_warden"
@@ -350,4 +386,7 @@ entries = Array[LootEntry]([
 	SubResource("entry_23"),
 	SubResource("entry_24"),
 	SubResource("entry_entry_band_gear"),
+	SubResource("qi_earth_immortal_warden_manual_void_rapid"),
+	SubResource("qi_earth_immortal_warden_manual_chaos_rapid"),
+	SubResource("qi_earth_immortal_warden_manual_time_rapid"),
 ])
