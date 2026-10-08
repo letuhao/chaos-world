@@ -16,10 +16,13 @@ const LINE := &"hearthborn"
 ## would be adding power; joining must move none of them.
 ##
 ## These are the values for an actor carrying an AWAKE `hearthborn` at 0.5, which
-## `_born()` grants: `hearthborn` publishes `max_health +5%` and `qi_regen +3%`, so the
-## bare-pipeline figures of 150.0 and 1.4 are already scaled to 157.5 and 1.442. The
-## bloodline is what moved them, not the clan — that is the whole point of the test, so
-## the baseline is measured *with* the lineage rather than without it.
+## `_born()` grants: `hearthborn` publishes `max_health +5%` and `qi_regen +3%`,
+## each DISCOUNTED by `BloodlineState.instability_discount(0.5)` (ADR 0894 — the
+## spike counterpart, so a body struggles to stabilise foreign blood), so the
+## bare-pipeline figures of 150.0 and 1.4 are scaled to 156.854725609756 and
+## ~1.4384 rather than 157.5 and 1.442. The bloodline is what moved them, not
+## the clan — that is the whole point of the test, so the baseline is measured
+## *with* the lineage rather than without it.
 ##
 ## **These are measurements, not constants.** Each is the shipped pipeline's output for
 ## `_born()`'s exact build, and every one is written below as the arithmetic that
@@ -36,8 +39,10 @@ const LINE := &"hearthborn"
 ## Nothing about the clan is in either figure — the clan reads no combat stat — which is
 ## the point: the baseline moves with core balance, and the clan test still holds.
 const COMBAT_STATS := {
-	# 50 + physique * 10 = 150.0, then hearthborn's `max_health` PERCENT +0.05.
-	"max_health": 157.5,
+	# 50 + physique * 10 = 150.0, then hearthborn's `max_health` PERCENT +0.05
+	# DISCOUNTED by instability_discount(0.5) to 0.04569817073171 (ADR 0894):
+	# 150.0 * 1.04569817073171 = 156.854725609756.
+	"max_health": 156.854725609756,
 	# physique * 2.0.
 	"attack_physical": 20.0,
 	# spirit * 2.0 + aptitude * 0.5 + will * 0.6, since ADR 0183.
