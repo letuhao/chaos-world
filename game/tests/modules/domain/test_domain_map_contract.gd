@@ -277,6 +277,18 @@ func test_unknown_zone_kind_is_reported() -> void:
 	assert_eq(_contains(problems, "unknown kind"), true, "an unknown zone kind is reported")
 
 
+## BL-0063: the newest kind is covered by the SAME contract, not a parallel path — the
+## kind set the contract reads is the zone def's own catalogue, so a kind added there is
+## covered here by construction, and this test is what proves it.
+func test_a_ley_line_zone_satisfies_the_contract() -> void:
+	var map := handcrafted_map()
+	map.room(&"ember_flue").environment_zones = (
+		[_zone(&"ley_vein", &"ley_line")] as Array[EnvironmentZoneDef]
+	)
+	var problems := DomainMapContract.assert_valid(map)
+	assert_eq(problems.is_empty(), true, "the ley line is a legal zone: %s" % ", ".join(problems))
+
+
 func test_valid_zone_passes() -> void:
 	var map := handcrafted_map()
 	map.room(&"ember_flue").environment_zones = (

@@ -25,6 +25,11 @@ const KINDS: Array[StringName] = [
 	&"pressure",
 	&"sorrow",
 	&"verdant",
+	# BL-0063: a ley line is the earth's own qi running close to the surface. The
+	# quietest kind in the catalogue on purpose — the reward is `qi_density` at the
+	# band ceiling, and the hazard only has to be real enough that standing in it is
+	# a trade rather than free power (AGENTS.md: nothing is free).
+	&"ley_line",
 ]
 
 ## The four levers, namespaced so a typo is caught rather than silently inert. Every
@@ -60,6 +65,10 @@ const MAGNITUDES: Dictionary = {
 	&"pressure": [0.45, 0.90, 1.80],
 	&"sorrow": [0.25, 0.50, 1.00],
 	&"verdant": [0.20, 0.45, 0.90],
+	# BL-0063: the quietest row in the table. A ley line is a place to CULTIVATE, not
+	# a hazard to survive, so even its annihilating band stays under every other
+	# kind's scorch — the density multiplier is what makes it worth standing in.
+	&"ley_line": [0.15, 0.30, 0.60],
 }
 
 ## The status this zone applies. The status id is shared across the three cultivation

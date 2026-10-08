@@ -188,6 +188,17 @@ const SUBSTRATES: Dictionary = {
 		PATH_BODY: SUBSTRATE_QI_THROUGHPUT,
 		PATH_MIND: SUBSTRATE_WILL_PRESSURE,
 	},
+	# BL-0063: a ley line's hazard IS the richness, so each path gets the gentlest
+	# mechanism that still names the thing. Qi's throughput is ceilinged rather than
+	# cut off (a trained path suffers less), the body's regeneration slows, and the
+	# mind hears a hum it can learn to read. The three are DISTINCT by design — a kind
+	# that handed two paths one mechanism would be one hazard wearing two labels.
+	&"ley_line":
+	{
+		PATH_QI: SUBSTRATE_QI_THROUGHPUT,
+		PATH_BODY: SUBSTRATE_REGEN_DEADLINE,
+		PATH_MIND: SUBSTRATE_SIGNAL_NOISE,
+	},
 }
 
 # ── the four levers, expressed against each substrate ─────────────────────────
@@ -268,6 +279,10 @@ const HOSTILE_ELEMENTS: Dictionary = {
 	&"pressure": [],
 	&"sorrow": [&"dark"],
 	&"verdant": [&"wood"],
+	# BL-0063: the earth's own veins. `stoneborn` carries `earth: 9.0` — just under
+	# `AFFINITY_STRONG`, so the root that answers a ley line is the one whose body is
+	# already dense qi, and it answers it PARTIALLY rather than negating it.
+	&"ley_line": [&"earth"],
 }
 
 ## The affinity strength at which a spirit root fully answers a hazard, read against

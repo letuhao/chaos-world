@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="DomainTemplateDef" load_steps=11 format=3]
+[gd_resource type="Resource" script_class="DomainTemplateDef" load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://src/modules/domain/domain_template_def.gd" id="1_template"]
 [ext_resource type="Resource" path="res://src/data/domains/rooms/ash_floor.tres" id="2_floor"]
@@ -10,6 +10,7 @@
 [ext_resource type="Resource" path="res://src/data/domains/rooms/ash_gate.tres" id="8_gate"]
 [ext_resource type="Resource" path="res://src/data/domains/rooms/ash_arena.tres" id="9_arena"]
 [ext_resource type="Resource" path="res://src/data/domains/rooms/ash_heart.tres" id="10_heart"]
+[ext_resource type="Resource" path="res://src/data/domains/rooms/ley_confluence.tres" id="11_ley"]
 
 [sub_resource type="Resource" id="pin_camp"]
 script = ExtResource("4_pin")
@@ -47,9 +48,9 @@ loop_gap_tiles = 6
 corridor_tiles = 3
 min_rooms = 9
 max_rooms = 26
-# Every def in the 8-room pool is built on every seed, or the seed is refused rather
-# than shipped with a hole in its kit. Nine leaves are guaranteed, eight defs have to
-# fit them, and both pins name distinct pool defs, so one leaf is spare.
+# Every def in the 9-room pool is built on every seed, or the seed is refused rather
+# than shipped with a hole in its kit. Nine leaves are guaranteed, nine defs have to
+# fit them, and both pins name distinct pool defs, so no leaf is spare.
 requires_full_kit = true
 entry_anchor = Vector2i(3, 3)
 room_pool = Array[RoomDef]([
@@ -60,6 +61,7 @@ room_pool = Array[RoomDef]([
 	ExtResource("6_vault"),
 	ExtResource("8_gate"),
 	ExtResource("9_arena"),
-	ExtResource("10_heart")
+	ExtResource("10_heart"),
+	ExtResource("11_ley")
 ])
 pins = Array[TemplatePin]([SubResource("pin_camp"), SubResource("pin_vault")])

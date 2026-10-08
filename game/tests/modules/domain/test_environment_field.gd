@@ -473,6 +473,77 @@ func test_re_entry_refreshes_rather_than_stacking() -> void:
 	)
 
 
+# ── BL-0063: the ley line ─────────────────────────────────────────────────────
+
+
+## The one kind whose reward is the zone itself: a qi-rich place whose hazard is the
+## richness. The structural facts a reviewer cannot re-derive from a number — three
+## DISTINCT substrates, earth as the root that answers it, the quietest magnitude row
+## in the table, density at the band ceiling, and the same telegraph every zone gets.
+func test_the_ley_line_is_qi_rich_and_the_quietest_hazard() -> void:
+	var zone := EnvironmentZoneDef.new()
+	zone.zone_id = &"ley_confluence_vein"
+	zone.kind = &"ley_line"
+	zone.intensity = EnvironmentZoneDef.BAND_SCORCH
+	zone.status_id = &"env_scourge"
+	zone.stay_budget = 8.0
+	zone.mitigation_tags = [&"affinity", &"technique", &"pill"] as Array[StringName]
+	zone.bounds = Rect2i(2, 1, 4, 5)
+	zone.qi_density = CultivationGain.QI_DENSITY_MAX
+
+	assert_eq(EnvironmentZoneDef.KINDS.has(&"ley_line"), true, "the kind is in the catalogue")
+	assert_eq(
+		EnvironmentField.effect_for(PathState.QI, &"ley_line"),
+		EnvironmentField.SUBSTRATE_QI_THROUGHPUT,
+		"qi's throughput is ceilinged, not cut off"
+	)
+	assert_eq(
+		EnvironmentField.effect_for(PathState.BODY, &"ley_line"),
+		EnvironmentField.SUBSTRATE_REGEN_DEADLINE,
+		"the body's regeneration slows"
+	)
+	assert_eq(
+		EnvironmentField.effect_for(PathState.MIND, &"ley_line"),
+		EnvironmentField.SUBSTRATE_SIGNAL_NOISE,
+		"the mind hears a hum it can learn to read"
+	)
+	assert_eq(
+		EnvironmentField.HOSTILE_ELEMENTS.get(&"ley_line", []),
+		[&"earth"],
+		"the earth's own root answers it"
+	)
+	assert_eq(
+		zone.magnitude() < float(EnvironmentZoneDef.MAGNITUDES[&"verdant"][0]),
+		true,
+		"the quietest row in the table: %s" % zone.magnitude()
+	)
+	assert_eq(
+		CultivationGain.clamp_density(zone.qi_density),
+		CultivationGain.QI_DENSITY_MAX,
+		"density rides the band ceiling"
+	)
+	var seen := EnvironmentField.telegraph(zone, false)
+	assert_eq(seen["zone_id"], "ley_confluence_vein", "the telegraph names the zone")
+	assert_eq(seen["amount"], zone.magnitude(), "and the magnitude an actor should expect")
+	assert_eq(seen["boundary_visible"], true, "the boundary is visible before entry")
+	assert_eq(seen["mitigation_levers"], ["affinity", "technique", "pill"], "the levers travel too")
+
+
+## The SHIPPED room's zone, telegraphed: BL-0063 asks for a ley-line zone in the room
+## kit plus its telegraph, and this reads the authored `.tres` rather than a copy, so a
+## future edit to the content is what this asserts on.
+func test_the_shipped_ley_confluence_room_carries_a_telegraphed_ley_line() -> void:
+	var room := load("res://src/data/domains/rooms/ley_confluence.tres") as RoomDef
+	assert_ne(room, null, "the room loads")
+	assert_eq(room.environment_zones.size(), 1, "one authored zone")
+	var zone := room.environment_zones[0]
+	assert_eq(zone.kind, &"ley_line", "a ley line")
+	assert_eq(zone.qi_density, CultivationGain.QI_DENSITY_MAX, "density at the band ceiling")
+	var seen := EnvironmentField.telegraph(zone, false)
+	assert_eq(seen["zone_id"], String(zone.zone_id), "the telegraph names the shipped zone")
+	assert_eq(seen["boundary_visible"], true, "and shows its boundary before entry")
+
+
 # ── telegraph before damage ───────────────────────────────────────────────────
 
 
