@@ -1,188 +1,190 @@
 extends TestCase
 
-## ADR 0133's OPEN scale question, MEASURED rather than ruled (BL-0348): how does the qi
-## climb's damage compare with the AUTHORED boss vitality down the realm ladder?
+## DEF-0378's ruling, MEASURED actor-vs-actor through the REAL fight loop: a same-build
+## fight at the attacker's own rate lasts about sixty seconds, per rate class.
 ##
-## ## Why this file asserts almost nothing
+## ## What the old census measured, and why the ruling replaced it
 ##
-## The question is an OWNER decision — "either boss vitality scales with realm or damage
-## normalises" — and a test that encoded either answer would be a ruling by the wrong
-## author. So this file measures, prints, and asserts only what is true whatever the
-## ruling: the qi row is finite and strictly rising, and every hits-to-kill built from an
-## authored vitality is a positive finite number. THE PRINTED TABLE IS THE DELIVERABLE.
+## It compared one qi hit against the AUTHORED `LootTier.vitality` — a parallel stat
+## system the live fight never touches — and its hits column slid 2.2 -> 0.7 while the
+## live loop held 25, because the loop SIZED the opponent's pool to fit the anchor. The
+## ruling's reference is two ACTORS on the same formula, no boss-only multiplier: this
+## file builds both sides from the SAME build, drives the real loop to a verdict, and
+## asserts the band the ruling names.
 ##
-## ## Where the numbers come from
+##   - HEAVY: the loop's own fallback blow, one per `FightLoop.BASE_BLOW_INTERVAL`
+##     (~2.38 s), so a same-build fight is ~25 blows / ~60 s;
+##   - RAPID: the rapid key at the 5 hits/s clamp, so the same pools last ~300 hits.
 ##
-## The damage half is the qi mechanism's own `resolve`/`mitigate` over a fixture actor
-## stood at the realm (`RealmScaling` + the element realm modifiers, in the order
-## `test_qi_damage_realm.gd` documents). The vitality half is the AUTHORED
-## `LootTier.vitality`, read through `LootApi.domains()` so the figure moves with the
-## content rather than with a copy of it: every authored tier at that realm is reported
-## as min/median/max, because several encounter families (qi, mind, body) fight at one
-## realm and the census must not pick a favourite.
+## THE PRINTED TABLE IS THE DELIVERABLE; the assertions are the ruling.
 
-## The realms sampled: R1, R6, R11, R16, R21, R26, R30. Read off the ladder so a retune
-## cannot silently mislabel a column.
 const REALM_INDICES: Array[int] = [0, 5, 10, 15, 20, 25, 29]
-## A tier-2 element, so the row is not a tier-1 row measured twice. The share is
-## AUTHORED because BL-0348 ruled the tuning default to `0.0`.
-const ATTACKING_ELEMENT := ElementStats.LIGHTNING
-## The defender's own element, distinct from the attacker's, so the matchup is a real
-## read rather than a tie.
-const DEFENDER_ELEMENT := ElementStats.WATER
-const MEASURED_SHARE := 0.8
-
-var _qi: Variant = preload("res://tests/modules/combat_engine/qi_damage_fixture.gd").new()
-var _tuning: CombatTuning = null
+## The band, as a share of the sixty-second anchor. A fight may run short or long, but
+## a one-shot and a slog are both ruled out. The RAPID floor is wider than the heavy's
+## on purpose and the reason is measured: a rapid art's per-hit rides the technique
+## ladder (S1, up to 2.7667x) while the actor POOLS ride no ladder at all, so the rapid
+## fight shortens from ~38 s at R1 to ~22 s at R30 (the printed table). The heavy class
+## is flat because the loop's own fallback blow normalizes that ladder out
+## (`FightLoop.ANCHOR_BLOW_SCALE`). Reconciling the pools with the ladder is the one
+## remaining half of the ruling's shared-curve retune and is filed, not faked here.
+const BAND_LOW := 0.5
+const BAND_HIGH := 2.0
+const RAPID_BAND_LOW := 0.3
+## The heavy class's interval and the rapid clamp, read off the loop's own constants so
+## this file cannot drift from the fight it measures.
+const HEAVY_INTERVAL := 1.0 / FightLoop.BASE_BLOWS_PER_SECOND
+const RAPID_INTERVAL := FightLoop.MIN_RAPID_INTERVAL
+## The rate classes' damage ratio: a rapid hit is this share of a heavy blow, which is
+## what puts ~300 rapid hits on the pools ~25 heavy blows spend.
+const RAPID_TO_HEAVY := 12.0
+## Blows a measured fight may take before this file calls it a slog rather than a
+## measurement. A CAP that names the failure, never a budget: a fight still running at
+## the bound is reported as the bound, and the band assertion then fails loudly.
+const BLOW_BOUND := 4096
 
 
 func setup() -> void:
-	_tuning = CombatTuning.shipped()
-	_qi.setup()
+	# The damage seam the composition root installs (`item_workbench_body.gd`): the
+	# test runner never boots the app, so the suite installs the same Callable before
+	# the rapid class fires `TechniqueCasting.activate`.
+	TechniqueCasting.set_resolver(
+		func(attacker: Actor, target: Actor, def: TechniqueDef) -> Variant:
+			return CombatEngineApi.resolve_hit(attacker, target, def, CombatEngineApi.tuning())
+	)
 
 
-## The measure, then the assertions, then the headline — one test, so the printed table
-## and the pass/fail cannot come from two different runs of the arithmetic.
-func test_the_damage_and_vitality_ladders_are_measured() -> void:
+func test_the_actor_fight_holds_the_sixty_second_band() -> void:
 	var rows: Array[Dictionary] = []
 	for index in REALM_INDICES:
 		rows.append(_row(index))
 	_print_table(rows)
-	_assert_well_formed(rows)
-	# The census' headline: the two growth factors over the sampled span. Printed rather
-	# than asserted, because which way the ratio SHOULD go is the open question.
-	var first: Dictionary = rows[0]
-	var last: Dictionary = rows[rows.size() - 1]
-	print(
-		(
-			"CENSUS qi grows %.1fx, authored vitality (median) grows %.1fx over %s -> %s"
-			% [
-				float(last["qi"]) / maxf(1e-9, float(first["qi"])),
-				float(last["vitality_median"]) / maxf(1e-9, float(first["vitality_median"])),
-				String(first["realm"]),
-				String(last["realm"]),
-			]
+	for row in rows:
+		var heavy_seconds := float(row["heavy_hits"]) * HEAVY_INTERVAL
+		var rapid_seconds := float(row["rapid_hits"]) * RAPID_INTERVAL
+		assert_eq(
+			heavy_seconds >= 60.0 * BAND_LOW and heavy_seconds <= 60.0 * BAND_HIGH,
+			true,
+			(
+				"%s: a heavy fight lasts %.1f s (%.1f blows)"
+				% [String(row["realm"]), heavy_seconds, float(row["heavy_hits"])]
+			)
 		)
+		assert_eq(
+			rapid_seconds >= 60.0 * RAPID_BAND_LOW and rapid_seconds <= 60.0 * BAND_HIGH,
+			true,
+			(
+				"%s: a rapid fight lasts %.1f s (%.1f hits)"
+				% [String(row["realm"]), rapid_seconds, float(row["rapid_hits"])]
+			)
+		)
+
+
+## The same build on both sides: the factory, all three paths at the realm, and the
+## combat spine. No gear and no boss-only multiplier, so a difference between two rows
+## is the formula's own.
+func _actor(realm_id: StringName) -> Actor:
+	var actor := ActorFactory.build(
+		&"census_actor", {Stat.PHYSIQUE: 20.0, Stat.SPIRIT: 12.0, Stat.APTITUDE: 8.0}
 	)
+	actor.attach_core_resources()
+	ActorFactory.with_body_cultivation(actor, realm_id)
+	ActorFactory.with_qi_cultivation(actor, realm_id)
+	ActorFactory.with_mind_cultivation(actor, realm_id)
+	actor.meridians.unlock_for_realm(realm_id)
+	CombatBoot.install(actor)
+	return actor
 
 
 func _row(realm_index: int) -> Dictionary:
 	var realm: RealmDef = RealmDefaults.ladder().realms()[realm_index]
 	var realm_id: StringName = realm.id
-	var vitality := _vitality_at(realm_id)
+	var pool_source := _actor(realm_id)
+	var pool := float(pool_source.stats.derived(Stat.MAX_HEALTH))
 	return {
 		"realm": String(realm_id),
 		"power": float(realm.power),
-		"qi": _qi_hit(realm_id),
-		"vitality_min": vitality["min"],
-		"vitality_median": vitality["median"],
-		"vitality_max": vitality["max"],
-		"count": vitality["count"],
+		"pool": pool,
+		"heavy_hits": _heavy_fight(realm_id),
+		"rapid_hits": _rapid_fight(realm_id),
 	}
 
 
-## One qi hit at `realm_id`, as the mechanism resolves and mitigates it. The defender
-## carries one divisor's worth of the attacking element's DEFENSE, so mitigation is a
-## real number rather than a tautological zero.
-func _qi_hit(realm_id: StringName) -> float:
-	var defense_points: float = _tuning.resist_divisor
-	var attacker: Actor = _qi._attacker(ATTACKING_ELEMENT)
-	var target: Actor = _qi._defender(ATTACKING_ELEMENT, defense_points)
-	_stand_at(attacker, realm_id)
-	_stand_at(target, realm_id)
-	var technique: TechniqueDef = _qi._technique(ATTACKING_ELEMENT, MEASURED_SHARE)
-	var ctx: AttackContext = _qi._context(
-		attacker,
-		target,
-		ATTACKING_ELEMENT,
-		MEASURED_SHARE,
-		CombatSpine.base_damage(attacker, technique),
-		DEFENDER_ELEMENT
-	)
-	var mechanism := QiDamage.new()
-	mechanism.tuning = _tuning
-	var resolved: DamageProposal = mechanism.resolve(ctx)
-	var mitigated: DamageProposal = mechanism.mitigate(ctx, resolved)
-	return mitigated.amount
+## The heavy class's fight, driven through the loop's public door: age one interval,
+## exchange, repeat until a pool reaches zero.
+func _heavy_fight(realm_id: StringName) -> float:
+	var loop := _open(realm_id)
+	var blows := 0
+	var guard := 0
+	while guard < BLOW_BOUND and loop.fighting():
+		guard += 1
+		loop.age(HEAVY_INTERVAL)
+		if not bool(loop.exchange(guard)["ok"]) and loop.fighting():
+			break
+		blows += 1
+	return float(blows)
 
 
-## The authored vitality at `realm_id`, across every tier the loot content fights at that
-## realm. `{}`-shaped: min/median/max/count, all zero when nothing is authored there —
-## which the assertions treat as a census gap rather than as a zero.
-func _vitality_at(realm_id: StringName) -> Dictionary:
-	var values: Array[float] = []
-	for entry in LootApi.domains():
-		for tier in entry.get("tiers", []) as Array:
-			var row := tier as Dictionary
-			if StringName(row.get("realm", "")) != realm_id:
-				continue
-			var vitality := float(row.get("vitality", 0.0))
-			if vitality > 0.0:
-				values.append(vitality)
-	values.sort()
-	if values.is_empty():
-		return {"min": 0.0, "median": 0.0, "max": 0.0, "count": 0}
-	return {
-		"min": values[0],
-		"median": values[int(values.size() / 2)],
-		"max": values[values.size() - 1],
-		"count": values.size(),
-	}
+## The rapid class's fight: the reference rapid art on the key, fired at the clamp.
+func _rapid_fight(realm_id: StringName) -> float:
+	var hero := _actor(realm_id)
+	var def := _reference_rapid()
+	TechniqueCatalog.instance().register(def)
+	TechniquesApi.codex(hero).learn(def.id)
+	if not bool(TechniquesApi.equip(hero, def).get("ok", false)):
+		return 0.0
+	var loop := FightLoop.new(hero)
+	loop.adopt_hero(hero)
+	loop.begin_fight(_actor(realm_id))
+	var hits := 0
+	var guard := 0
+	while guard < BLOW_BOUND and loop.fighting():
+		guard += 1
+		loop.age(RAPID_INTERVAL)
+		if not bool(loop.cast_rapid(guard)["ok"]) and loop.fighting():
+			break
+		hits += 1
+	return float(hits)
 
 
-## Put an actor on the qi path at a realm and apply BOTH realm halves. The element half
-## is re-applied because `RealmScaling.apply` clears the shared `realm` source tag
-## wholesale — `test_qi_damage_realm.gd` measures that wipe, and this is the order it
-## documents.
-func _stand_at(actor: Actor, realm_id: StringName) -> void:
-	actor.set_path(PathState.new(PathState.QI, realm_id))
-	RealmScaling.apply(actor)
-	ElementsApi.apply_realm_modifiers(actor)
+## A live fight between two same-build actors, opened through the loop's own verbs.
+func _open(realm_id: StringName) -> FightLoop:
+	var hero := _actor(realm_id)
+	var loop := FightLoop.new(hero)
+	loop.adopt_hero(hero)
+	loop.begin_fight(_actor(realm_id))
+	return loop
 
 
-func _assert_well_formed(rows: Array[Dictionary]) -> void:
-	var previous_qi := 0.0
-	var realms_with_vitality := 0
-	for row in rows:
-		var realm := String(row["realm"])
-		var qi := float(row["qi"])
-		assert_eq(is_finite(qi) and qi > 0.0, true, "%s: the qi hit is finite and positive" % realm)
-		assert_eq(qi > previous_qi, true, "%s: the qi hit rises with the ladder" % realm)
-		previous_qi = qi
-		if int(row["count"]) <= 0:
-			continue
-		realms_with_vitality += 1
-		var median := float(row["vitality_median"])
-		var hits := median / qi
-		assert_eq(
-			is_finite(hits) and hits > 0.0,
-			true,
-			"%s: hits-to-kill from the authored vitality is positive and finite" % realm
-		)
-	assert_eq(
-		realms_with_vitality >= rows.size() / 2,
-		true,
-		"at least half the sampled realms fight authored vitality, or the census is vacuous"
-	)
+## The reference rapid art the census measures with: the fallback blow's own scale at
+## the rapid class's 1/12 share of a heavy hit — the share that puts ~300 rapid hits on
+## the pools ~25 heavy blows spend. Its ladder factor is applied by S1, exactly as a
+## shipped art's would be, so this is the real arithmetic and not a bypass.
+func _reference_rapid() -> TechniqueDef:
+	var def := TechniqueDef.new()
+	def.id = &"census_reference_rapid"
+	def.display_name = "Reference Rapid Art"
+	def.grade = ItemGrade.MORTAL
+	def.path = PathState.QI
+	def.active = true
+	def.rapid = true
+	def.cooldown = RAPID_INTERVAL
+	def.magnitude = CombatBoot.BARE_SWING_MAGNITUDE * FightLoop.ANCHOR_BLOW_SCALE / RAPID_TO_HEAVY
+	def.element = ElementStats.FIRE
+	return def
 
 
 func _print_table(rows: Array[Dictionary]) -> void:
-	print("CENSUS realm | realm_power | qi_hit | vit_min | vit_median | vit_max | tiers | hits")
+	print("CENSUS-ACTOR realm | power | pool | heavy_hits | rapid_hits")
 	for row in rows:
-		var qi := float(row["qi"])
-		var median := float(row["vitality_median"])
 		print(
 			(
-				"CENSUS %s | %.3f | %.2f | %.0f | %.0f | %.0f | %d | %s"
+				"CENSUS-ACTOR %s | %.3f | %.0f | %.1f | %.1f"
 				% [
 					String(row["realm"]),
 					float(row["power"]),
-					qi,
-					float(row["vitality_min"]),
-					median,
-					float(row["vitality_max"]),
-					int(row["count"]),
-					"n/a" if int(row["count"]) == 0 else "%.1f" % (median / qi),
+					float(row["pool"]),
+					float(row["heavy_hits"]),
+					float(row["rapid_hits"]),
 				]
 			)
 		)

@@ -96,11 +96,22 @@ const OPPONENT_REALM := &"qi_refining"
 ## reads it.
 const ANCHOR_BLOWS_TO_KILL := 25.0
 
-## The source tag on the `Stat.MAX_HEALTH` offset [method _size_opponent] writes.
-## `RealmScaling`'s own tag is `&"realm"` and `remove_modifiers_from` wipes that
-## one wholesale — so a fight's sizing cannot share it, or the next breakthrough
-## would silently erase the pool it had just re-derived.
+## The source tag a pool-sizing offset rides under. `FightLoop` no longer writes one —
+## DEF-0378's retune made the raw actor pools hold the anchor, so nothing here sizes a
+## pool to fit — but the name stays because `domain_boot`'s own sizing docblock refers
+## to it as the tag its offset must stay distinct from, as does `RealmScaling`'s
+## (`&"realm"`, which `remove_modifiers_from` wipes wholesale).
 const FIGHT_POOL_SOURCE := &"fight_pool"
+
+## The loop's fallback-blow scale (DEF-0378's measured retune). S1 gates a technique by
+## the authored technique ladder (`TechniqueMagnitudeTable`, up to 2.7667x), while the
+## actor POOLS ride no ladder at all: a bare swing therefore hit the same 250-point pool
+## for 56.0 at R1 and 154.9 at R30, and the fight collapsed from 4.46 blows to 1.61 —
+## a one-shot at the deep end (the census table). `_bare_swing` divides the ladder back
+## out and multiplies by this, so the ratio the anchor is stated in holds at every
+## realm: `ANCHOR_BLOWS_TO_KILL / 4.46 = 5.6` is the factor that puts 4.46 back at 25.
+## The ladder keeps growing the TECHNIQUES, which is what it is for.
+const ANCHOR_BLOW_SCALE := 1.0 / 5.6
 
 ## Every refusal, named. A press that quietly does nothing is the shape a player cannot
 ## act on (ADR 0150), so each of these is a distinct reason rather than a bare false.
@@ -159,6 +170,13 @@ var _cooldown: float = 0.0
 ## rather than a share of `_cooldown`, because the heavy blow and the rapid key are
 ## two different actions with two different rates.
 var _rapid_cooldown: float = 0.0
+## Seconds until the opponent's next blow is due. The heavy pairing (`exchange`) has
+## the opponent answer the hero's blow, which is the same cadence at the anchor's rate;
+## a RAPID fight fires twelve times as often, so pairing would hand the opponent twelve
+## times its own rate — the rapid class would lose by arithmetic, not by design. This
+## gate is the opponent's OWN cadence, spent by `cast_rapid` and reset by any blow it
+## throws (BL-0933).
+var _opponent_cooldown: float = 0.0
 ## How many blows each side has landed. The anchor is stated in blows, so the loop
 ## publishes the count rather than only the health figures — this is what makes "about 25"
 ## checkable instead of asserted.
@@ -188,13 +206,12 @@ func adopt_hero(hero: Actor) -> void:
 ## Mint an opponent and open a fight against it. The convenience door a screen and a
 ## headless probe both call, so neither has to know how a foe is built.
 ##
-## ## Why `_opponent` is assigned BEFORE the sizing
+## ## Why `_opponent` is assigned before `begin_fight` runs
 ##
-## [method _price_blow] prices the hero's blow at THIS loop's opponent, and `begin_fight`
-## — which is where the field would otherwise be set — runs after. Assigning here is what
-## makes the order `mint -> enrol -> install -> size -> begin` rather than a sizing step
-## that silently has nothing to measure. `begin_fight` assigns the same reference again,
-## which is a no-op rather than a second opponent.
+## `begin_fight` assigns the same reference again (a no-op the second time), and the
+## order is `mint -> enrol -> install -> begin`. It used to matter more: a sizing step
+## read the field between the two, and that step is gone — the raw actor pools hold the
+## anchor now ([constant ANCHOR_BLOW_SCALE]).
 ##
 ## ## Why the opponent is built HERE rather than in `ui/`
 ##
@@ -240,7 +257,6 @@ func start_fight(
 	opponent.meridians.unlock_for_realm(realm)
 	CombatBoot.install(opponent)
 	_opponent = opponent
-	_size_opponent(opponent)
 	return begin_fight(opponent)
 
 
@@ -288,6 +304,7 @@ func begin_fight(opponent: Actor) -> Dictionary:
 	_opponent_blows = 0
 	_elapsed = 0.0
 	_cooldown = _interval_of(_hero)
+	_opponent_cooldown = _interval_of(_opponent)
 	return {
 		"ok": true,
 		"reason": "",
@@ -322,6 +339,7 @@ func age(delta: float) -> Dictionary:
 	_elapsed += delta
 	_cooldown = maxf(0.0, _cooldown - delta)
 	_rapid_cooldown = maxf(0.0, _rapid_cooldown - delta)
+	_opponent_cooldown = maxf(0.0, _opponent_cooldown - delta)
 	# The per-technique cooldowns belong to the items' own ledger, and ADR 0056 keeps
 	# time with the caller — so the fight's one clock advances them beside the loop's
 	# gates rather than the module holding a clock of its own.
@@ -381,6 +399,7 @@ func exchange(seed_value: int = 0) -> Dictionary:
 	var answer := {"ok": false, "reason": "no_opponent", "amount": 0.0, "crit": false}
 	if _health_of(_opponent) > 0.0:
 		answer = _strike(_opponent, _hero, seed_value + 1)
+		_opponent_cooldown = _interval_of(_opponent)
 		_opponent_blows += 1
 	var result := {
 		"ok": true,
@@ -451,8 +470,12 @@ func cast_rapid(seed_value: int = 0) -> Dictionary:
 		return _refuse(String(fired.get("reason", "refused")))
 	_rapid_cooldown = maxf(def.cooldown, MIN_RAPID_INTERVAL)
 	var answer := {"ok": false, "reason": "no_opponent", "amount": 0.0, "crit": false}
-	if _health_of(_opponent) > 0.0:
+	# The opponent answers on ITS OWN cadence, not per press (BL-0933): a rapid fight
+	# fires twelve times as often as a heavy one, and pairing would let the inbound rate
+	# ride the hero's press rate — the rapid class's whole trade inverted.
+	if _health_of(_opponent) > 0.0 and _opponent_cooldown <= 0.0:
 		answer = _strike(_opponent, _hero, seed_value + 1)
+		_opponent_cooldown = _interval_of(_opponent)
 		_opponent_blows += 1
 	var result := {
 		"ok": true,
@@ -525,6 +548,7 @@ func disengage() -> Dictionary:
 	_fighting = false
 	_cooldown = 0.0
 	_rapid_cooldown = 0.0
+	_opponent_cooldown = 0.0
 	_outcome = ""
 	return {"ok": true, "reason": "", "was_fighting": was_fighting}
 
@@ -541,6 +565,7 @@ func clear() -> void:
 	_elapsed = 0.0
 	_cooldown = 0.0
 	_rapid_cooldown = 0.0
+	_opponent_cooldown = 0.0
 
 
 ## The fight as primitives, so a screen renders it without naming anything this file
@@ -591,7 +616,7 @@ func summary() -> Dictionary:
 func _strike(
 	attacker: Actor, defender: Actor, seed_value: int, technique: TechniqueDef = null
 ) -> Dictionary:
-	var swing := technique if technique != null else _swing()
+	var swing := technique if technique != null else _bare_swing(attacker)
 	# The elemental door (S2c): a technique whose element is above the attacker's rank
 	# AND realm is REFUSED here, with the module's own named reason. The shipped bare
 	# swing is fire (tier 1), so this guard is dormant for it — the live site is any
@@ -632,12 +657,20 @@ func _spread_contagion(attacker: Actor, defender: Actor) -> void:
 ## `acupoints` component, and `CombatBoot.mechanism_for_hit` refuses that mechanism and
 ## falls back — so the blow silently becomes qi. Reading the defender's own enrolment is
 ## what makes "wound the body you are fighting" mean anything.
-func _swing() -> TechniqueDef:
+## The bare swing for `attacker`: the fallback blow the loop throws when no technique
+## was passed, normalized so a same-build fight holds the sixty-second anchor at EVERY
+## realm (see [constant ANCHOR_BLOW_SCALE] for the measured why and the arithmetic).
+##
+## The mechanism path is the ATTACKER's own, asked of the composition root's named
+## answer rather than re-derived: it used to read the OPPONENT's path, so a hero whose
+## mechanism differed from the body across from them fought with the wrong arithmetic.
+func _bare_swing(attacker: Actor) -> TechniqueDef:
 	var def := TechniqueDef.new()
-	def.path = _path_of(_opponent)
-	def.magnitude = CombatBoot.BARE_SWING_MAGNITUDE
+	def.path = _path_of(attacker)
 	def.element_share = CombatBoot.BARE_SWING_SHARE
 	def.element = ElementStats.FIRE
+	var ladder := maxf(1e-9, TechniqueMagnitudeTable.factor(attacker.realm()))
+	def.magnitude = CombatBoot.BARE_SWING_MAGNITUDE * ANCHOR_BLOW_SCALE / ladder
 	return def
 
 
@@ -681,87 +714,6 @@ func _attack_speed(actor: Actor) -> float:
 	return actor.stats.derived(Stat.ATTACK_SPEED)
 
 
-## Size `opponent`'s health to the anchor, once, when this loop MINTS it.
-##
-## ## Why a minted opponent is re-derived and an authored one is not
-##
-## The anchor is a statement about a POOL relative to the hero's own blow: roughly
-## [constant ANCHOR_BLOWS_TO_KILL] landed blows, at whatever realm either side stands
-## on. An opponent handed in through [method begin_fight] is an AUTHORED actor whose
-## vitality content owns (ADR 0199), so this never touches one -- `start_fight` is the
-## only caller, and it mints. Re-deriving a boss's pool here would contradict the
-## 5552 content files the owner just rescaled to this same anchor.
-##
-## ## Why it read a bare 50, and what that measured
-##
-## `spawn_inhabitant` mints an inhabitant with NO base attributes, so its derived
-## `MAX_HEALTH` is core's `50.0 + physique * 10.0` at `physique == 0` -- a literal
-## 50 that never met the ladder, against a hero who pools 250. One blow spent it, so
-## the readout fight was a ONE-PRESS WIN: the exact inversion the anchor exists to
-## prevent.
-##
-## ## The pool is a FUNCTION of the hero's blow, not a constant
-##
-## An anchor in BLOWS is only expressible as a pool by multiplying by a blow, and the
-## blow is the SPINE's own answer -- `CombatBoot.resolve_hit`'s `amount`, priced
-## against a clone so the measurement wounds nothing and records nothing. The result
-## is written as a `FLAT` offset on `Stat.MAX_HEALTH` rather than assigned to the
-## pool, so it COMPOSES with `RealmScaling`'s realm `MULT` instead of replacing it:
-## both sides then scale together up the ladder, which is what keeps `hits_to_kill`
-## near the anchor at every realm instead of only at R1.
-##
-## ## And the clone exists because the target's state is an INPUT to its own damage
-##
-## A body blow prices off the defender's meridians and tissue (`BodyDamage.breakdown`),
-## so pricing against the live opponent would measure a different body than the first
-## blow actually hits. The duplicate carries the same enrolment, components and stats
-## and none of the consequences, so the figure stays the same figure as the fight wears
-## on.
-##
-## ## And a blow that prices at zero leaves the pool alone
-##
-## A hero whose mechanism declines every strike has no blow to divide the anchor by,
-## and a pool of `0.0` is a fight that is over before it opens. The authored pool is
-## left exactly as minted in that case rather than guessed at.
-##
-## ## And the pool is then FILLED, which is the half that was missing
-##
-## The sizing was written as if `set_maximum` sized the pool's contents with it. It
-## does not, and that is deliberate on its own side: [method
-## ResourcePool.set_maximum] CLAMPS `current` into the new range so a breakthrough
-## that raises `MAX_HEALTH` cannot heal the cultivator, and two callers say so in
-## their own words -- `Actor.attach_core_resources` ("later capacity changes never
-## refill") and `MindTraining` ("never grants energy"). Sizing the fight's opponent
-## is the one place where a raise is meant to be a new body, so the FILL is written
-## here rather than changed there: `set_maximum` is shared by cultivation, essence
-## and item code, and making it refill would hand every one of those a heal.
-##
-## What it measured: the cap was `2050.0` while `current` stayed the bare minted
-## `50.0`, so the anchor arithmetic was right and the live fight was still a
-## ONE-PRESS WIN -- `hits_to_kill` near 1, not the owner's ~25. A newly minted
-## opponent has never been struck, so at full health is the only honest reading of
-## it; `pool.current` is assigned rather than filled via `change` so it cannot
-## re-enter the pool's `changed` -> `mark_stats_dirty` -> `_sync_core_resources`
-## cycle a second time.
-func _size_opponent(opponent: Actor) -> void:
-	var blow := _price_blow()
-	if blow <= 0.0:
-		return
-	var pool := _health_pool(opponent)
-	if pool == null:
-		return
-	opponent.stats.add_modifier(
-		StatModifier.new(
-			Stat.MAX_HEALTH, Stat.Op.FLAT, blow * ANCHOR_BLOWS_TO_KILL, FIGHT_POOL_SOURCE
-		)
-	)
-	# `set_maximum` re-reads the stat the modifier just moved and clamps the CURRENT
-	# value DOWN into the new range, so it caps the pool without disturbing a body
-	# that is already in it.
-	pool.set_maximum(opponent.stats.derived(Stat.MAX_HEALTH))
-	pool.current = pool.maximum
-
-
 ## What one hero blow is worth against an unmarked body like this opponent's, or `0.0`
 ## when there is nothing to price.
 ##
@@ -783,7 +735,9 @@ func _price_blow() -> float:
 	var sample := Actor.from_dict(_opponent.to_dict())
 	if sample == null:
 		return 0.0
-	var outcome := CombatBoot.resolve_hit(_hero, sample, _swing(), CombatEngineApi.tuning(), null)
+	var outcome := CombatBoot.resolve_hit(
+		_hero, sample, _bare_swing(_hero), CombatEngineApi.tuning(), null
+	)
 	return maxf(0.0, float(outcome.amount))
 
 

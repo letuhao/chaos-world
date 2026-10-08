@@ -395,7 +395,7 @@ static func enter_domain(player: Actor, template_id: StringName, seed_value: int
 	# `MechanismSlot.of` ASSERTS when nothing is bound (`spine.gd:139`), so an
 	# un-installed creature is a crash at the first blow rather than a chip. So the
 	# spawn seam installs it, which is a line in `app/` and not a new module: the same
-	# `mint -> enrol -> install -> size -> begin` order `FightLoop.start_fight` already
+	# `mint -> enrol -> install -> begin` order `FightLoop.start_fight` already
 	# documents (`fight_loop.gd:206-222`).
 	for inhabitant in inhabitants:
 		_prepare_inhabitant(inhabitant as Actor, player)
