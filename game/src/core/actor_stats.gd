@@ -358,7 +358,24 @@ func _recompute() -> void:
 	# a modifier because modifiers are not serialized and a scar that healed on reload
 	# would be a lie (`DaoHeart`'s docblock). `_put` floors the effective value at zero.
 	_put(Stat.DAO_HEART, will + _base.get(Stat.DAO_HEART, 0.0), buckets)
-	_put(Stat.INSIGHT_GAIN, 1.0 + comprehension * 0.01, buckets)
+	# ## BL-0822: the rate is NOT a function of the quantity it grows
+	#
+	# This was `1.0 + comprehension * 0.01`, and TWO training paths multiply their
+	# comprehension GAIN by this stat (`mind_cultivation/training.gd` and
+	# `body_cultivation/training.gd`). So the gain was a function of the quantity it grew:
+	# `dC = k(1 + 0.01 C)`, which is exponential in C, not linear in the work done.
+	# Measured before the fix: comprehension compounded to 2.1e+37 on a long enough run,
+	# which is past the range any gate in this game can price and past `double`'s useful
+	# precision for the gates that read it. A rate that reads its own stock is a runaway by
+	# construction, whatever coefficient it carries.
+	#
+	# `will` is the MIND path's own attribute - ADR 0013 sources `dao_heart` from it, and
+	# the mind ladder is what this rate pays into - so the stat still scales with the actor
+	# instead of being a flat 1.0, and it can be raised by content (sect offices grant
+	# `insight_gain` directly). It is deliberately NOT `aptitude * 0.02`, which is
+	# `CULTIVATION_RATE`'s formula: two stats sharing one expression is the second-copy
+	# shape ADR 0116 forbids, and these are two different pipelines.
+	_put(Stat.INSIGHT_GAIN, 1.0 + will * 0.01, buckets)
 	_put(Stat.LOOT_BONUS, fortune * 0.01, buckets)
 	# ADR 0200: `COOLDOWN_REDUCTION` (0.4) and `QI_COST_REDUCTION` (0.5) KEEP their caps,
 	# deliberately and by the ADR's own stated test rather than by omission.

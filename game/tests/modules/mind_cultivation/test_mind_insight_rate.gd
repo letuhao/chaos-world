@@ -4,7 +4,8 @@ extends TestCase
 ## the same stat body and qi both multiply by.
 ##
 ## Comprehension is a SHARED base attribute. `core/actor_stats.gd` derives
-## `INSIGHT_GAIN = 1.0 + comprehension * 0.01`, sect offices grant a PERCENT on it,
+## `INSIGHT_GAIN = 1.0 + will * 0.01` (BL-0822: it was `1.0 + comprehension * 0.01`, which
+## made the rate a function of the quantity it grows), sect offices grant a PERCENT on it,
 ## races and items carry it, and all three cultivation paths add to the same
 ## number. `MindTraining._grant_insight` used to add `gain * INSIGHT_RATE` and
 ## nothing else, so every one of those sources silently did nothing for the one
@@ -35,9 +36,10 @@ const WORK := 200.0
 const RATIO_TOLERANCE := 0.0001
 
 
-func _actor(comprehension: float = 0.0) -> Actor:
+func _actor(comprehension: float = 0.0, will: float = 2.0) -> Actor:
 	var actor := Actor.new(
-		&"mind_insight", {Stat.COMPREHENSION: comprehension, MindStats.SEA_CAPACITY: 1000.0}
+		&"mind_insight",
+		{Stat.COMPREHENSION: comprehension, Stat.WILL: will, MindStats.SEA_CAPACITY: 1000.0}
 	)
 	actor.set_path(PathState.new(MindPath.PATH_ID, RANK))
 	actor.meridians.unlock_for_realm(RANK)
@@ -60,6 +62,36 @@ func _comprehension_gained_by_cultivation(work: float, insight_percent: float = 
 	return actor.stats.get_base(Stat.COMPREHENSION) - before
 
 
+## ## BL-0822, the whole runaway in one assertion: the same sitting pays the same, whatever
+## ## the actor already holds.
+##
+## `INSIGHT_GAIN` used to be `1.0 + comprehension * 0.01` while the gain is
+## `work * INSIGHT_RATE * INSIGHT_GAIN`, so an actor holding more comprehension gained MORE
+## per sitting: `dC = k(1 + 0.01 C)` is exponential in C, not linear in the work, and the
+## measured result was comprehension compounding to 2.1e+37. A rate that reads the stock it
+## grows diverges by construction, whatever coefficient it carries.
+##
+## The two deltas must therefore be EQUAL. A reintroduced feedback makes the richer actor's
+## delta larger, which is the direction the old implementation failed in, so this test does
+## not merely pin today's number - it pins the SHAPE.
+func test_the_gain_does_not_depend_on_the_comprehension_already_held() -> void:
+	var poor := _actor(0.0)
+	var rich := _actor(5000.0)
+	var before_poor := poor.stats.get_base(Stat.COMPREHENSION)
+	var before_rich := rich.stats.get_base(Stat.COMPREHENSION)
+	assert_eq(MindTraining.cultivate(poor, WORK), true, "the empty-handed actor cultivates")
+	assert_eq(MindTraining.cultivate(rich, WORK), true, "and so does the well-read one")
+	var gain_poor := poor.stats.get_base(Stat.COMPREHENSION) - before_poor
+	var gain_rich := rich.stats.get_base(Stat.COMPREHENSION) - before_rich
+	assert_eq(gain_poor > 0.0, true, "the sitting pays something at all: %f" % gain_poor)
+	assert_almost_eq(
+		gain_rich,
+		gain_poor,
+		"5000 comprehension already held buys no more per sitting than none",
+		maxf(RATIO_TOLERANCE * gain_poor, 0.0001)
+	)
+
+
 ## The first and load-bearing one: a PERCENT on the shared stat must move the mind
 ## path's comprehension gain by that PERCENT. With the multiplier absent both
 ## actors gain the same amount and the ratio is 1.0 — this is the mutation the
@@ -79,26 +111,59 @@ func test_a_reduced_insight_gain_scales_the_mind_path_downwards() -> void:
 	assert_almost_eq(halved, plain * 0.5, "half the stat, half the gain", RATIO_TOLERANCE)
 
 
-## The stat is not merely honoured, it is the ONLY thing that varies: the rate has
-## to rise with comprehension, because `INSIGHT_GAIN` is `1.0 + comprehension *
-## 0.01`. Read before and after a comprehension floor and the ratio between the two
-## measured rates must equal the ratio between the two published stat values.
+## ## The rate is FLAT in the stock it grows, and MOVES with the attribute.
 ##
-## The published values are cross-checked, not the source of the expectation: the
-## behavioural assertions above already fix the multiplier's identity, so this one
-## only pins that the curve the mind path rides is core's curve.
-func test_the_rate_rises_with_comprehension_along_the_shared_curve() -> void:
-	var low_comprehension := 0.0
-	var high_comprehension := 500.0
-	var low_rate := _measured_rate(low_comprehension)
-	var high_rate := _measured_rate(high_comprehension)
-	assert_eq(high_rate > low_rate, true, "the shared stat rises with comprehension")
+## This test used to assert the opposite - `high_rate > low_rate`, with comprehension the
+## only input varied - and it was the runaway's own guard: a green suite pinning
+## `1.0 + comprehension * 0.01` is how `dC = k(1 + 0.01 C)` survived long enough to reach
+## 2.1e+37 (BL-0822). A rate that reads the stock it grows diverges by construction, so the
+## assertion is now the invariant that kills the class rather than the coefficient that
+## caused it.
+##
+## The published values are still cross-checked rather than trusted: the behavioural
+## assertions above fix the multiplier's identity, and this one pins that what the mind
+## path RIDES is core's curve and not one of its own.
+func test_the_rate_is_flat_in_comprehension() -> void:
+	var low_rate := _measured_rate(0.0)
+	var high_rate := _measured_rate(500.0)
+	assert_almost_eq(
+		high_rate,
+		low_rate,
+		"500 comprehension already held buys no higher a rate than none",
+		maxf(RATIO_TOLERANCE * low_rate, 0.0001)
+	)
 	assert_almost_eq(
 		high_rate / low_rate,
-		_published_insight_gain(high_comprehension) / _published_insight_gain(low_comprehension),
+		_published_insight_gain(500.0) / _published_insight_gain(0.0),
 		"and the mind path rides core's curve, not one of its own",
 		RATIO_TOLERANCE
 	)
+
+
+## And it is not flat in EVERYTHING, or the feedback could have been removed by deleting
+## the rate instead of repairing it: more `will` is a faster rate, which is what makes
+## `insight_gain` an attribute on the mind path's own axis (ADR 0013 sources `dao_heart`
+## from `will`) rather than a constant.
+func test_a_higher_will_reads_faster() -> void:
+	var plain := _rate_at_will(2.0)
+	var strong := _rate_at_will(40.0)
+	assert_eq(
+		strong > plain,
+		true,
+		"a stronger will reads faster: %f at will 40 vs %f at will 2" % [strong, plain]
+	)
+
+
+## The rate one sitting pays, at a given `will`, on an actor holding no comprehension: the
+## only input that moves is the attribute the rate is derived from.
+func _rate_at_will(will: float) -> float:
+	var actor := _actor(0.0, will)
+	var before := actor.stats.get_base(Stat.COMPREHENSION)
+	var progress_before := actor.path(MindPath.PATH_ID).progress
+	assert_eq(MindTraining.cultivate(actor, WORK), true, "cultivation applied at will %f" % will)
+	var work_done := actor.path(MindPath.PATH_ID).progress - progress_before
+	assert_ne(work_done, 0.0, "the sitting really did work")
+	return (actor.stats.get_base(Stat.COMPREHENSION) - before) / work_done
 
 
 ## Insight per unit of cultivation work, measured through the production action at

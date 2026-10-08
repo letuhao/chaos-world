@@ -22,7 +22,20 @@ extends TestCase
 const REALM_DIR := "res://data/body_cultivation/realms/"
 const DOMAIN_DIR := "res://data/domains/"
 const REALM_COUNT := 30
-## One strike spends this much vitality (the composition root's strike damage).
+## The blow this fight is priced against, in vitality, for the realm the BAND authored.
+##
+## ADR 0198: a boss's pool is `BASE_HEALTH * RealmDef.power` and a same-realm actor's blow
+## is that pool over `HITS_TO_KILL`, so the fight is 25 blows at EVERY realm. These are the
+## anchor's own two constants and they are restated here deliberately - a test that called
+## the generator would prove only that the generator agrees with itself.
+const HITS_TO_KILL := 25.0
+const BASE_HEALTH := 75.0
+
+## The R1 blow, and the FALLBACK for a band whose realm does not resolve. It was the only
+## value this suite used, which is what made the test wrong rather than the content:
+## measured, `dao_ancestor` authors 28524.0 vitality (75 x power 380.32), so a flat 25 needs
+## 1141 strikes against a `MAX_STRIKES` budget of 64 and the hunt stopped with
+## `strikes_exhausted:64` on a band priced exactly right.
 const STRIKE_DAMAGE := 25.0
 ## Stops when a boss's authored vitality stops falling. Names the condition: a
 ## table that never resolves a defeat would otherwise strike forever.
@@ -187,6 +200,23 @@ func _hero() -> Actor:
 	return actor
 
 
+## The blow that clears the live boss in `HITS_TO_KILL` strikes: the pool it was spawned
+## with, over the anchor's blow count.
+##
+## Read off the fight's OWN `vitality_max` rather than derived from the band's realm, because
+## the realm is NOT on the published view and the pool is: measured,
+## `LootApi.summary(actor)["active"]["tier_realm"]` reads EMPTY for
+## `body_dao_ancestor_trial` while its `vitality_max` reads 28524.0 - the anchor's own
+## `75 x power(380.32)`. A realm-keyed lookup therefore fell back to the R1 blow and reported
+## `strikes_exhausted:64 blow=25.00 ... pool=28524.00` on content that is priced exactly
+## right. Keying off the pool also makes this independent of the ladder: whatever a band was
+## priced at, the hunt takes 25 blows.
+func _blow_for_pool(pool: float) -> float:
+	if pool <= 0.0:
+		return STRIKE_DAMAGE
+	return pool / HITS_TO_KILL
+
+
 ## Clear one authored band of `domain_id` and take everything it owed, the way the
 ## Hunt screen does: enter, strike until the boss is defeated, claim. Returns the
 ## reason the run stopped so a caller can name it.
@@ -194,6 +224,10 @@ func _hunt(actor: Actor, domain_id: String, tier: int) -> String:
 	var entered := LootApi.enter_domain(actor, StringName(domain_id), tier, 20260902)
 	if not bool(entered.get("ok", false)):
 		return "enter:" + String(entered.get("reason", "?"))
+	# What this fight is priced against, read off the boss the run just spawned rather than
+	# assumed: its own pool, over the anchor's blow count.
+	var opening := LootApi.summary(actor)["active"] as Dictionary
+	var blow := _blow_for_pool(float(opening.get("vitality_max", 0.0)))
 	var strikes := 0
 	while strikes < MAX_STRIKES:
 		var active := LootApi.summary(actor)["active"] as Dictionary
@@ -204,13 +238,23 @@ func _hunt(actor: Actor, domain_id: String, tier: int) -> String:
 			return _claim_all(actor)
 		if bool(active.get("defeated", false)):
 			return _claim_all(actor)
-		var result := LootApi.strike(actor, STRIKE_DAMAGE, 20260902)
+		var result := LootApi.strike(actor, blow, 20260902)
 		if not bool(result.get("ok", false)):
 			return "strike:" + String(result.get("reason", "?"))
 		if bool(result.get("duplicate", false)):
 			return _claim_all(actor)
 		strikes += 1
-	return "strikes_exhausted:%d" % MAX_STRIKES
+	# The numbers ride the verdict: `strikes_exhausted` alone cannot tell a blow that never
+	# landed from a pool the anchor did not price, and those need different fixes.
+	return (
+		"strikes_exhausted:%d blow=%.2f tier_realm=%s pool=%.2f"
+		% [
+			MAX_STRIKES,
+			blow,
+			String(opening.get("tier_realm", "")),
+			float(opening.get("vitality_max", 0.0)),
+		]
+	)
 
 
 ## Claim every outstanding payload, so one unclaimed drop cannot look like a
