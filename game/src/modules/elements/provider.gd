@@ -18,11 +18,13 @@ extends StatProvider
 ## FALSE of `light`/`dark`, which have one each -- so the dominance is a property of
 ## the shipped data, not of a rule.
 ##
-## The fix taxes the MASTERY term only:
-## `element_power_<e> = affinity * (1 + mastery * 0.1 / (1 + (tier - 1) * TIER_MASTERY_STEP))`.
-## Tier 1's divisor is exactly `1.0` -- `(tier - 1)` is `0` -- so **tier 1 is
-## bit-for-bit unchanged** and `tests/modules/elements/test_element_provider.gd::
-## test_mastery_scales_power` needs no edit. The tax falls only on the dominant tier.
+## The fix taxes the MASTERY term only, and BL-0938's bond bounds how far that term can
+## run at all:
+## `element_power_<e> = affinity * (1 + POWER_CEILING * saturation(mastery) /
+## (1 + (tier - 1) * TIER_MASTERY_STEP))`.
+## Tier 1's divisor is exactly `1.0` -- `(tier - 1)` is `0` -- so the tax still falls
+## only on the dominant tier, and every tier's mastery term is bounded by
+## `affinity * (1 + POWER_CEILING)` at the asymptote instead of growing forever.
 ##
 ## ## The tax divides the MASTERY term, never the affinity
 ##
@@ -41,12 +43,20 @@ extends StatProvider
 
 ## The extra mastery tax per tier above the first, on the MASTERY term only.
 ##
-## At `0.10`, tier 2's mastery coefficient is `0.1 / 1.1 = 0.0909...` against tier 1's
-## `0.1`, a 9.1% reduction on the mastery term -- which lands tier 2's 1.100000 row mean
-## almost exactly on tier 1's 0.950000 without touching a single `ElementDef`. Tier 3
-## divides by 1.2 for the same reason: the tax compounds with the tier a player had to
-## reach, and `ElementMastery.MAX_ELEMENT_TIER` is 3.
+## At `0.10`, tier 2's mastery ceiling is `POWER_CEILING / 1.1` against tier 1's
+## `POWER_CEILING` -- the same 9.1% relative cut the old linear term carried, which lands
+## tier 2's 1.100000 row mean almost exactly on tier 1's 0.950000 without touching a
+## single `ElementDef`. Tier 3 divides by 1.2 for the same reason: the tax compounds with
+## the tier a player had to reach, and `ElementMastery.MAX_ELEMENT_TIER` is 3.
 const TIER_MASTERY_STEP := 0.10
+
+## What FULL mastery in an element is worth on the offence half, through BL-0938's
+## saturating curve: at the asymptote `element_power_<e>` is the affinity times
+## `1 + POWER_CEILING` (the owner's x4 ruling -- elemental resistance and weakness
+## exploitation become the pivot), and a tier's divisor taxes that ceiling exactly as it
+## taxed the old linear term. This is the number an authored resistance is measured
+## against, and the reason the mastery channel can no longer out-run the realm ladder.
+const POWER_CEILING := 3.0
 
 ## ## ADR 0215: the per-element crit pair's four coefficients, and why they are CONSTANTS
 ## ## here and not fields on a tuning resource
@@ -76,8 +86,13 @@ const TIER_MASTERY_STEP := 0.10
 const CRIT_BASE := 0.05
 ## What one point of that element's AFFINITY is worth on the offence half.
 const CRIT_AFFINITY_STEP := 0.004
-## What one point of that element's MASTERY is worth on the offence half.
-const CRIT_MASTERY_STEP := 0.002
+## What FULL mastery is worth on the crit offence half, through the SAME saturating curve
+## the power half reads (BL-0938: one curve shared by power and crit). Paired to the
+## defence side's reachable span: the only lever a non-elemental defender can move is
+## `will` (`CRIT_RESIST_WILL_STEP`, ~0.165 at the authored top), so a ceiling orders of
+## magnitude above it would make the crit unanswerable -- a second free ladder wearing a
+## contest's name.
+const CRIT_MASTERY_CEILING := 0.6
 ## What an actor with no affinity and no will resists an element's crit at.
 const CRIT_RESIST_BASE := 0.05
 ## What one point of that element's AFFINITY is worth on the defence half. Half the
@@ -104,7 +119,14 @@ func contribute(context: StatContext) -> Dictionary:
 		# exactly once, with no stale input and no double application (ADR 0026).
 		var mastery := context.value(ElementStats.mastery_id(element))
 		out[ElementStats.power_id(element)] = maxf(
-			0.0, affinity * (1.0 + _mastery_rate(element) * mastery)
+			0.0,
+			(
+				affinity
+				* (
+					1.0
+					+ POWER_CEILING * ElementMastery.saturation(mastery) / _tier_divisor(element)
+				)
+			)
 		)
 		out[ElementStats.defense_id(element)] = maxf(0.0, affinity * 0.5 + will * 0.2)
 		# ADR 0215. The per-element CRIT pair, published for the SAME set of elements
@@ -114,11 +136,16 @@ func contribute(context: StatContext) -> Dictionary:
 		# `element_crit_resist_<e>` a defect, so there is no point at which one exists
 		# and the other does not.
 		#
-		# Both are UNBOUNDED MAGNITUDES. A cap here is the ADR 0200 defect in a second
-		# uniform — the defender's ceiling loses by construction as the ladder rises —
-		# and the contest that reads them is a ratio, so neither half needs one.
+		# Both are MAGNITUDES the contest divides, so neither AFFINITY term needs a cap --
+		# but the mastery term rides BL-0938's saturating curve, because THAT was the
+		# unbounded faucet, and its ceiling is paired to the defender's `will` span above.
 		out[ElementStats.crit_id(element)] = maxf(
-			0.0, CRIT_BASE + affinity * CRIT_AFFINITY_STEP + mastery * CRIT_MASTERY_STEP
+			0.0,
+			(
+				CRIT_BASE
+				+ affinity * CRIT_AFFINITY_STEP
+				+ CRIT_MASTERY_CEILING * ElementMastery.saturation(mastery)
+			)
 		)
 		out[ElementStats.crit_resist_id(element)] = maxf(
 			0.0,
@@ -132,7 +159,12 @@ func contribute(context: StatContext) -> Dictionary:
 	for element in _rules.ids():
 		omni_mastery += maxf(0.0, context.value(ElementStats.mastery_id(element)))
 	out[ElementStats.crit_id(ElementStats.OMNI)] = maxf(
-		0.0, CRIT_BASE + omni_affinity * CRIT_AFFINITY_STEP + omni_mastery * CRIT_MASTERY_STEP
+		0.0,
+		(
+			CRIT_BASE
+			+ omni_affinity * CRIT_AFFINITY_STEP
+			+ CRIT_MASTERY_CEILING * ElementMastery.saturation(omni_mastery)
+		)
 	)
 	out[ElementStats.crit_resist_id(ElementStats.OMNI)] = maxf(
 		0.0,
@@ -141,12 +173,13 @@ func contribute(context: StatContext) -> Dictionary:
 	# ADR 0004's "pure qi is a real omni channel": the MAGNITUDE pair an ELEMENTLESS
 	# attack reads, on the same rule the per-element pair above uses with `affinity`
 	# read as the SUM and `mastery` as the SUM. A mono-affinity body with all its
-	# mastery in that element reads its own element's power exactly, and breadth pays
-	# linearly on both halves -- the trade pure qi makes is no matchup swing (always
-	# NEUTRAL) for no matchup upside. The mastery rate is `_mastery_rate(OMNI)`, which
-	# reads as tier 1 because the omni channel is not an element and has no tier to tax.
+	# mastery in a TIER-1 element reads its own element's power exactly, and breadth pays
+	# through the same saturating curve -- the trade pure qi makes is no matchup swing
+	# (always NEUTRAL) for no matchup upside. The mastery term is the tier-1 ceiling
+	# (`POWER_CEILING` in full), because the omni channel is not an element and has no
+	# tier to tax.
 	out[ElementStats.power_id(ElementStats.OMNI)] = maxf(
-		0.0, omni_affinity * (1.0 + _mastery_rate(ElementStats.OMNI) * omni_mastery)
+		0.0, omni_affinity * (1.0 + POWER_CEILING * ElementMastery.saturation(omni_mastery))
 	)
 	out[ElementStats.defense_id(ElementStats.OMNI)] = maxf(0.0, omni_affinity * 0.5 + will * 0.2)
 	return out
@@ -163,19 +196,19 @@ func _affinity_sum(context: StatContext, elements: Array) -> float:
 	return total
 
 
-## `0.1 / (1 + (tier - 1) * TIER_MASTERY_STEP)`: the mastery coefficient this element's
-## tier is allowed to pay.
+## `1 + (tier - 1) * TIER_MASTERY_STEP`: the divisor a tier's mastery CEILING is paid
+## through.
 ##
-## Exactly `0.1` at tier 1 -- the number `ElementProvider` has always contributed -- and
-## strictly less above it. A null def, a tier below 1 and a non-finite mastery all
-## resolve to tier 1, so there is no path through this function that returns a
-## non-finite coefficient and poisons `element_power_<e>` for every actor carrying it.
-func _mastery_rate(element: StringName) -> float:
+## Exactly `1.0` at tier 1 -- so tier 1 keeps the biggest mastery term -- and strictly
+## more above it. A null def, a tier below 1 and a non-finite divisor all resolve to tier
+## 1, so there is no path through this function that returns a non-finite coefficient and
+## poisons `element_power_<e>` for every actor carrying it.
+func _tier_divisor(element: StringName) -> float:
 	var entry := _rules.element(element)
 	if entry == null:
-		return 0.1
+		return 1.0
 	var tier := maxi(1, entry.tier)
 	var divisor := 1.0 + float(tier - 1) * TIER_MASTERY_STEP
 	if not is_finite(divisor) or divisor <= 0.0:
-		return 0.1
-	return 0.1 / divisor
+		return 1.0
+	return divisor

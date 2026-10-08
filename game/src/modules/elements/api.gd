@@ -244,7 +244,13 @@ static func strip_realm_modifiers(actor: Actor, rules: ElementRules = null) -> v
 const PRACTICE_STEP := 25.0
 
 
-static func practise(actor: Actor, element_id: StringName, amount: float = PRACTICE_STEP) -> bool:
+## One sitting on `element_id`. BL-0938: the mastery channel is saturating AND capped, so
+## this answers with a named-refusal dictionary (`no_spark`, `mastery_capped`) rather
+## than a bare bool — a caller can tell "no spark" from "this realm tier caps the
+## element now".
+static func practise(
+	actor: Actor, element_id: StringName, amount: float = PRACTICE_STEP
+) -> Dictionary:
 	return ElementTraining.practise(actor, element_id, amount)
 
 

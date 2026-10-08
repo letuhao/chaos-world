@@ -16,7 +16,13 @@ func test_mastery_scales_power() -> void:
 	var actor := Actor.new(&"mage", {ElementStats.mastery_id(ElementStats.FIRE): 5.0})
 	actor.set_affinity(ElementStats.FIRE, 10.0)
 	ElementsApi.attach(actor)
-	assert_almost_eq(actor.stats.derived(ElementStats.power_id(ElementStats.FIRE)), 15.0, "scaled")
+	# BL-0938: the mastery term rides the saturating curve `m / (m + 300)` at the
+	# owner's x4 ceiling, so five points are worth less than the old linear five.
+	assert_almost_eq(
+		actor.stats.derived(ElementStats.power_id(ElementStats.FIRE)),
+		10.0 * (1.0 + 3.0 * 5.0 / 305.0),
+		"scaled"
+	)
 
 
 func test_resistance_from_affinity_and_will() -> void:
@@ -47,8 +53,11 @@ func test_the_omni_pair_reads_the_summed_affinity_and_mastery() -> void:
 	ElementsApi.attach(actor)
 	assert_almost_eq(
 		actor.stats.derived(ElementStats.power_id(ElementStats.OMNI)),
-		14.0 * (1.0 + 0.1 * 7.0),
-		"the omni power is the summed affinity scaled by the summed mastery at the tier-1 rate"
+		14.0 * (1.0 + 3.0 * 7.0 / 307.0),
+		(
+			"the omni power is the summed affinity scaled by the summed mastery on the tier-1"
+			+ " saturating curve"
+		)
 	)
 	assert_almost_eq(
 		actor.stats.derived(ElementStats.defense_id(ElementStats.OMNI)),

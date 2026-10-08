@@ -281,7 +281,8 @@ func act_practise() -> void:
 		set_message("No element to train.", TONE_ERROR)
 		refresh()
 		return
-	if ElementsApi.practise(_actor, pick, ElementsApi.PRACTICE_STEP):
+	var result := ElementsApi.practise(_actor, pick, ElementsApi.PRACTICE_STEP)
+	if bool(result.get("ok", false)):
 		set_message("Trained %s." % _name_of(pick), TONE_OK)
 	else:
 		set_message("%s cannot be trained." % _name_of(pick), TONE_ERROR)

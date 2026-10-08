@@ -142,7 +142,11 @@ static func earn_element_mastery(actor: Actor, target: QiRealmSeed) -> bool:
 		waited < GATE_BOUND and ElementsApi.total_mastery(actor) < target.element_mastery_required
 	):
 		waited += 1
-		if not ElementsApi.practise(actor, ElementStats.FIRE, target.element_mastery_required):
+		if not bool(
+			ElementsApi.practise(actor, ElementStats.FIRE, target.element_mastery_required).get(
+				"ok", false
+			)
+		):
 			return false
 	return ElementsApi.total_mastery(actor) >= target.element_mastery_required
 

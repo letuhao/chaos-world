@@ -26,9 +26,15 @@ extends RefCounted
 ## `element_mastery_<e>` options. That is the novel shape: the spark decides the cheap
 ## path, a rare resource buys the other.
 ##
-## The verb NEVER refuses for a full bar: mastery has no cap, because the channel it
-## feeds is a magnitude the provider multiplies (ADR 0200's rule — the OUTPUT is what
-## is bounded, never the input).
+## ## The cap, and why the verb CAN refuse now
+##
+## BL-0938's ruling bounded the channel at both ends: the provider's output saturates,
+## and the INPUT is capped per element by the tier the body is preparing for
+## (`ElementMastery.cap_for`). So a sitting that would cross the cap lands exactly ON it
+## — every point paid still pays, nothing is silently truncated away beyond the cap —
+## and a sitting at the cap refuses with the named `mastery_capped` reason rather than
+## taking the player's time for nothing. The one condition a player must change to keep
+## growing is named by the refusal: rise a realm tier.
 
 ## The items facade, for the elixir door's ONE spend (`has_item` + `consume_item`).
 ## A facade preload rather than a bare class reference, the same shape every other
@@ -48,19 +54,27 @@ static func can_practise(actor: Actor, element_id: StringName, rules: ElementRul
 
 
 ## One sitting on `element_id`: raises `element_mastery_<e>` by
-## `amount * RealmRate.factor(rank)`.
-static func practise(actor: Actor, element_id: StringName, amount: float) -> bool:
-	if actor == null or amount <= 0.0 or not is_finite(amount):
-		return false
-	if not can_practise(actor, element_id):
-		return false
-	var rank := _rank_of(actor)
-	_set_mastery(
-		actor,
-		element_id,
-		ElementMastery.mastery_of(actor, element_id) + amount * RealmRate.factor(rank)
-	)
-	return true
+## `amount * RealmRate.factor(rank)`, clamped to the element's cap. Named refusals, the
+## module's usual shape: `no_actor`, `bad_amount`, `unknown_element`, `no_spark` (the
+## practice gate's own rule), `mastery_capped` (the element is at the cap its realm tier
+## allows).
+static func practise(actor: Actor, element_id: StringName, amount: float) -> Dictionary:
+	if actor == null:
+		return {"ok": false, "reason": "no_actor"}
+	if amount <= 0.0 or not is_finite(amount):
+		return {"ok": false, "reason": "bad_amount"}
+	var rules := ElementDefaults.rules()
+	if rules == null or rules.element(element_id) == null:
+		return {"ok": false, "reason": "unknown_element"}
+	if not can_practise(actor, element_id, rules):
+		return {"ok": false, "reason": "no_spark"}
+	var cap := ElementMastery.cap_for(actor)
+	var current := ElementMastery.mastery_of(actor, element_id)
+	if current >= cap:
+		return {"ok": false, "reason": "mastery_capped", "cap": cap}
+	var gain := minf(amount * RealmRate.factor(ElementMastery.rank_of(actor)), cap - current)
+	_set_mastery(actor, element_id, current + gain)
+	return {"ok": true, "gain": gain, "cap": cap}
 
 
 # --- the elixir door (ADR 0917) -------------------------------------------------
@@ -95,8 +109,10 @@ static func elixir_gain(element_id: StringName) -> float:
 ##
 ## Refusals are named dictionaries, the module's usual shape: `unknown_element`,
 ## `no_spark` (the practice gate's own rule — a body refines what it can sense),
-## `no_elixir` (the pack holds none), `refused` (the inventory would not spend it).
-## Nothing is consumed unless the mastery moved.
+## `mastery_capped` (BL-0938: the element sits at the cap its realm tier allows, so
+## nothing could move), `no_elixir` (the pack holds none), `refused` (the inventory
+## would not spend it). Nothing is consumed unless the mastery moved, and a drink that
+## would cross the cap lands ON it and reports the gain it actually applied.
 static func use_elixir(actor: Actor, element_id: StringName) -> Dictionary:
 	if actor == null:
 		return {"ok": false, "reason": "no_actor"}
@@ -105,13 +121,17 @@ static func use_elixir(actor: Actor, element_id: StringName) -> Dictionary:
 		return {"ok": false, "reason": "unknown_element"}
 	if not can_practise(actor, element_id):
 		return {"ok": false, "reason": "no_spark"}
+	var cap := ElementMastery.cap_for(actor)
+	var current := ElementMastery.mastery_of(actor, element_id)
+	if current >= cap:
+		return {"ok": false, "reason": "mastery_capped", "cap": cap}
 	var elixir := ElementStats.mastery_elixir_id(element_id)
 	if not _ITEMS.has_item(actor, elixir):
 		return {"ok": false, "reason": "no_elixir", "item": String(elixir)}
 	if not _ITEMS.consume_item(actor, elixir):
 		return {"ok": false, "reason": "refused", "item": String(elixir)}
-	var gain := elixir_gain(element_id)
-	_set_mastery(actor, element_id, ElementMastery.mastery_of(actor, element_id) + gain)
+	var gain := minf(elixir_gain(element_id), cap - current)
+	_set_mastery(actor, element_id, current + gain)
 	return {"ok": true, "gain": gain, "item": String(elixir)}
 
 
@@ -127,19 +147,6 @@ static func awaken(actor: Actor, element_id: StringName, amount: float) -> bool:
 		return false
 	actor.set_affinity(element_id, actor.affinities.get_value(element_id) + amount)
 	return true
-
-
-## The rank a sitting is priced at: the elemental path's own standing when the actor
-## has enrolled it, the highest realm across its paths otherwise, and the first rung
-## when it has no path at all.
-static func _rank_of(actor: Actor) -> StringName:
-	var state := actor.path(ElementMastery.PATH_ID)
-	if state != null:
-		return state.rank_id
-	var realm := RealmScaling.highest_realm(actor)
-	if realm != null:
-		return realm.id
-	return RealmDefaults.ladder().realms()[0].id
 
 
 static func _set_mastery(actor: Actor, element_id: StringName, value: float) -> void:

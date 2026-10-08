@@ -95,7 +95,11 @@ func test_the_reported_element_gate_is_the_enforced_gate() -> void:
 	# Back through the public verbs: one sitting sized to the gate re-opens it. The
 	# spark is already there — the probe's own earn opened it — so `practise` accepts.
 	assert_eq(
-		ElementsApi.practise(actor, ElementStats.FIRE, target.element_mastery_required),
+		bool(
+			ElementsApi.practise(actor, ElementStats.FIRE, target.element_mastery_required).get(
+				"ok", false
+			)
+		),
 		true,
 		"one sitting sized to the gate"
 	)

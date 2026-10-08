@@ -109,7 +109,9 @@ func test_advance_is_paid_in_mastery_against_the_injected_curve() -> void:
 	var guard := 0
 	while ElementMastery.total_mastery(actor) < _qi_threshold(target.id) and guard < 400:
 		guard += 1
-		assert_eq(ElementsApi.practise(actor, ElementStats.FIRE), true, "a sitting")
+		assert_eq(
+			bool(ElementsApi.practise(actor, ElementStats.FIRE).get("ok", false)), true, "a sitting"
+		)
 	var advanced := ElementsApi.advance(actor)
 	assert_eq(bool(advanced.get("ok", false)), true, "the rung is paid")
 	assert_eq(String(advanced.get("rank", "")), String(target.id), "and the rank moved")

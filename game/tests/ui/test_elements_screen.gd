@@ -136,7 +136,11 @@ func test_advance_refuses_short_mastery_and_names_the_rise() -> void:
 	# Meet the threshold through the facade's own curve, then press the screen's door.
 	var threshold := float(view["threshold"])
 	assert_eq(threshold > 0.0, true, "the injected curve published a threshold")
-	assert_eq(ElementsApi.practise(actor, ElementStats.FIRE, threshold), true, "the curve is met")
+	assert_eq(
+		bool(ElementsApi.practise(actor, ElementStats.FIRE, threshold).get("ok", false)),
+		true,
+		"the curve is met"
+	)
 	screen.act_advance()
 	view = screen.summary()
 	assert_eq(String(view["rank"]), "foundation", "one rung up")

@@ -1,17 +1,27 @@
 extends TestCase
 
-## ADR 0069's tier-2 dominance fix: the per-tier MASTERY divisor, asserted as a SHAPE
+## ADR 0069's tier-2 dominance fix and BL-0938's mastery bond, asserted as a SHAPE
 ## rather than as a restatement of a number. `combat_engine/test_qi_damage_realm.gd`
 ## pins the same contract from the damage side; this suite pins it from the provider's
-## own vocabulary — `TIER_MASTERY_STEP`, `ElementStats.BASE_ELEMENTS` — so a retune of
-## the step does not require walking into another module's suite to find out.
-
+## own vocabulary — `TIER_MASTERY_STEP`, `POWER_CEILING`, `ElementMastery.MASTERY_HALF`,
+## `ElementStats.BASE_ELEMENTS` — so a retune of the step or the ceiling does not require
+## walking into another module's suite to find out.
+##
 ## The reference implementation, written out in the test rather than reusing
-## `ElementProvider._mastery_rate`. That is the whole point of a shape test: it must
-## pin the CONTRACT (`0.1 / divisor`, tax on the mastery term only), not call the code
-## under test and declare the result correct. A test that delegated would pass whatever
-## the provider did.
-const BASE_MASTERY_RATE := 0.1
+## `ElementProvider`'s own helpers. That is the whole point of a shape test: it must pin
+## the CONTRACT (a saturating ceiling `C * m / (m + HALF)`, taxed by the tier divisor and
+## nothing else), not call the code under test and declare the result correct. A test
+## that delegated would pass whatever the provider did.
+const BASE_MASTERY_CEILING := 3.0
+
+## The saturation half, written out for the same reason: the contract is `m / (m + 300)`.
+const BASE_MASTERY_HALF := 300.0
+
+
+func _ceiling_term(mastery: float) -> float:
+	if mastery <= 0.0:
+		return 0.0
+	return BASE_MASTERY_CEILING * mastery / (mastery + BASE_MASTERY_HALF)
 
 
 func _divisor(tier: int) -> float:
@@ -25,35 +35,38 @@ func _power(rules: ElementRules, element: StringName, affinity: float, mastery: 
 	return actor.stats.derived(ElementStats.power_id(element))
 
 
-# --- tier 1 is bit-for-bit unchanged ---------------------------------------------
+# --- tier 1 pays the full ceiling ----------------------------------------------------
 
 
-## TIER 1 IS BIT-IDENTICAL. `assert_eq`, not `assert_almost_eq`: ADR 0069's contract is
-## that the divisor is exactly `1.0` at tier 1, so the contribution is the same double
-## it has always been and the long-standing `test_mastery_scales_power` figure of
-## `15.0` survives unmodified. An epsilon here would let a small silent regression
-## through on the half of the population that must not move at all.
-func test_tier_one_element_power_is_bit_identical_with_the_divisor() -> void:
+## TIER 1 PAYS THE FULL CEILING. The divisor is exactly `1.0` at tier 1, so the
+## contribution is `affinity * (1 + C * m / (m + HALF))` to float precision and nothing
+## else — asserted tight because this is the half of the population that must carry the
+## bond's whole mastery term.
+func test_tier_one_element_power_pays_the_full_ceiling() -> void:
 	var rules := ElementsApi.default_rules()
 	for element in ElementStats.BASE_ELEMENTS:
 		for mastery in [0.0, 1.0, 5.0, 9.0, 50.0]:
-			assert_eq(
+			assert_almost_eq(
 				_power(rules, element, 10.0, mastery),
-				10.0 * (1.0 + BASE_MASTERY_RATE * mastery),
-				"%s at mastery %s must be exactly the un-taxed figure" % [element, mastery]
+				10.0 * (1.0 + _ceiling_term(mastery)),
+				(
+					"%s at mastery %s must be exactly the untaxed saturated figure"
+					% [element, mastery]
+				),
+				1e-9
 			)
 
 
 ## The same claim from the divisor's own arithmetic: at tier 1 the divisor is exactly
-## `1.0` and therefore the mastery coefficient is exactly `0.1`, so the two sides of the
-## contract agree BEFORE any actor is built. A tier-1 element whose `ElementDef` had
-## drifted off tier 1 would be caught by the case above; this is the diagnostic.
+## `1.0` and therefore the whole ceiling is paid, so the two sides of the contract agree
+## BEFORE any actor is built. A tier-1 element whose `ElementDef` had drifted off tier 1
+## would be caught by the case above; this is the diagnostic.
 func test_the_tier_one_divisor_is_exactly_one_and_pays_no_tax() -> void:
 	assert_eq(_divisor(1), 1.0, "tier 1 divides by exactly 1.0")
 	assert_eq(
-		BASE_MASTERY_RATE / _divisor(1),
-		BASE_MASTERY_RATE,
-		"and so its mastery coefficient is exactly the number it always was"
+		BASE_MASTERY_CEILING / _divisor(1),
+		BASE_MASTERY_CEILING,
+		"and so its mastery ceiling is exactly the number the provider declares"
 	)
 
 
@@ -67,10 +80,10 @@ func test_tier_two_element_power_is_strictly_reduced_by_the_divisor() -> void:
 	var rules := ElementsApi.default_rules()
 	for element in ElementStats.ADVANCED_ELEMENTS:
 		var taxed := _power(rules, element, 10.0, 5.0)
-		var untaxed := 10.0 * (1.0 + BASE_MASTERY_RATE * 5.0)
+		var untaxed := 10.0 * (1.0 + _ceiling_term(5.0))
 		assert_almost_eq(
 			taxed,
-			10.0 * (1.0 + BASE_MASTERY_RATE * 5.0 / _divisor(2)),
+			10.0 * (1.0 + _ceiling_term(5.0) / _divisor(2)),
 			"%s pays exactly the tier-2 divisor" % element,
 			1e-6
 		)
@@ -82,15 +95,16 @@ func test_tier_two_element_power_is_strictly_reduced_by_the_divisor() -> void:
 
 
 ## THE SHAPE, as a measured relationship rather than a restated constant: the tier-2
-## tax is the same fraction on every advanced element and lands near the shipped
-## balance figure ADR 0069 measured, rather than on a number copied out of the ADR that
-## would still pass after the data underneath it moved.
+## tax is the same fraction on every advanced element, and it is read where the ceiling
+## is REAL (saturation 0.5) rather than at a mastery the saturating curve makes nearly
+## free. A band rather than a pinned figure, so retuning `TIER_MASTERY_STEP` stays a
+## balance decision rather than a test failure.
 func test_the_tier_two_tax_is_one_relationship_across_every_advanced_element() -> void:
 	var rules := ElementsApi.default_rules()
 	var ratios: Array[float] = []
 	for element in ElementStats.ADVANCED_ELEMENTS:
-		var taxed := _power(rules, element, 10.0, 10.0)
-		var untaxed := 10.0 * (1.0 + BASE_MASTERY_RATE * 10.0)
+		var taxed := _power(rules, element, 10.0, 300.0)
+		var untaxed := 10.0 * (1.0 + _ceiling_term(300.0))
 		ratios.append(taxed / untaxed)
 	var lowest: float = ratios.min()
 	var highest: float = ratios.max()
@@ -101,19 +115,16 @@ func test_the_tier_two_tax_is_one_relationship_across_every_advanced_element() -
 		1e-9
 	)
 	# And the size of that one tax, as a band on the whole contribution rather than a
-	# restated constant. The divisor rides the MASTERY term, so at affinity 10 and
-	# mastery 10 the mastery term is itself 10.0 and the observed 0.954545 is the 9.09%
-	# cut on it diluted by the untaxed affinity of 10.0. The tax's own size is
-	# `0.1 / (0.1 + 0.1/1.1)` = 0.909090, asserted as a STRICT inequality below rather
-	# than a pinned figure, so retuning `TIER_MASTERY_STEP` is a balance decision and
-	# not a test failure.
+	# restated constant. The divisor rides the MASTERY term, so at saturation 0.5 the
+	# mastery term is 1.5 and the observed ratio is the 9.09% cut on it diluted by the
+	# untaxed affinity of 10.0.
 	assert_eq(
 		lowest > 0.85 and lowest < 1.0,
 		true,
 		"the tier-2 tax is a real but partial cut on the whole contribution; read %s" % lowest
 	)
 	assert_eq(
-		BASE_MASTERY_RATE / _divisor(2) < BASE_MASTERY_RATE,
+		BASE_MASTERY_CEILING / _divisor(2) < BASE_MASTERY_CEILING,
 		true,
 		"and on the mastery term alone the cut is strict, which is the shape that matters"
 	)
@@ -130,10 +141,10 @@ func test_tier_three_element_power_is_strictly_reduced_again() -> void:
 	var rules := ElementsApi.default_rules()
 	for element in ElementStats.TIER_THREE_ELEMENTS:
 		var tier_three := _power(rules, element, 10.0, 5.0)
-		var tier_two := 10.0 * (1.0 + BASE_MASTERY_RATE * 5.0 / _divisor(2))
+		var tier_two := 10.0 * (1.0 + _ceiling_term(5.0) / _divisor(2))
 		assert_almost_eq(
 			tier_three,
-			10.0 * (1.0 + BASE_MASTERY_RATE * 5.0 / _divisor(3)),
+			10.0 * (1.0 + _ceiling_term(5.0) / _divisor(3)),
 			"%s pays exactly the tier-3 divisor" % element,
 			1e-6
 		)
@@ -226,7 +237,7 @@ func test_mastery_still_pays_at_every_tier_so_no_actor_loses_power_by_levelling(
 ## A tier is an authored integer and `ElementMastery.MAX_ELEMENT_TIER` is 3, but the
 ## tax must not be able to produce a non-finite or negative contribution from a
 ## malformed def — a NaN here would poison `element_power_<e>` for every actor carrying
-## the provider, which is the failure mode `ElementProvider._mastery_rate` documents.
+## the provider, which is the failure mode `ElementProvider._tier_divisor` documents.
 func test_a_malformed_tier_resolves_to_no_tax_and_never_a_non_finite_power() -> void:
 	var rules := ElementsApi.default_rules()
 	for tier in [-5, 0, 1, ElementMastery.MAX_ELEMENT_TIER, 50]:

@@ -7,6 +7,74 @@ extends RefCounted
 const PATH_ID := &"elemental_mastery"
 const MAX_ELEMENT_TIER := 3
 
+## ## The mastery BOND (BL-0938): one saturating curve and a cap keyed to the rise
+##
+## Mastery had no cost and no bound: `practise` was free and unlimited and the provider
+## multiplied `mastery * 0.1` LINEARLY, so a few dozen sittings (measured: ~61 free
+## presses to 2700) read `element_power_<e>` ~271x, past the whole authored realm ladder
+## and priced in nothing. The bond is two parts and both are needed:
+##
+## 1. The OUTPUT saturates — `saturation(m) = m / (m + MASTERY_HALF)`, shared by the
+##    power and crit terms, so every further point still pays but is worth less. At
+##    `MASTERY_HALF` the curve is exactly half; it approaches 1.0 and never reaches it.
+## 2. The INPUT is capped per element, keyed to the tier the body is PREPARING FOR: the
+##    last realm of a tier reads the tier above, which is what keeps the qi ladder's
+##    three authored element gates (900/1800/2700 at the tier rises) reachable on ONE
+##    element — 1200/2000/3000 sit above them by construction (BL-0938's ruling).
+##
+## The cap is a policy on the TRAINING verbs (`ElementTraining.practise` / `use_elixir`),
+## not a clamp on the read: a save that predates the cap keeps its mastery and its power,
+## it just cannot grow further until the body rises.
+const MASTERY_HALF := 300.0
+
+## Per-element mastery ceiling by REALM TIER (`RealmDefaults.MORTAL`..`TRANSCENDENT`).
+## Keyed by tier, never by ladder position: a realm inserted between two rises cannot
+## shift a cap onto the wrong band, and the four rows sit above the three authored
+## element gates (900/1800/2700) so the mono-element traversal keeps passing.
+const CAP_BY_TIER := {1: 600.0, 2: 1200.0, 3: 2000.0, 4: 3000.0}
+
+
+## The saturating mastery curve, shared by `ElementProvider`'s power and crit terms.
+## Non-finite and non-positive mastery read `0.0` — the same fail-safe the old linear
+## read had, so a malformed channel contributes nothing instead of poisoning every
+## derived stat the provider publishes.
+static func saturation(mastery: float) -> float:
+	if not is_finite(mastery) or mastery <= 0.0:
+		return 0.0
+	return mastery / (mastery + MASTERY_HALF)
+
+
+## The rank a mastery question is priced at: the elemental path's own standing when the
+## actor has enrolled it, the highest realm across its paths otherwise, and the first
+## rung when it has no path at all. ONE home for the pick — a sitting's rate and its cap
+## must never disagree about which realm a body stands in.
+static func rank_of(actor: Actor) -> StringName:
+	if actor != null:
+		var state := actor.path(PATH_ID)
+		if state != null:
+			return state.rank_id
+		var realm := RealmScaling.highest_realm(actor)
+		if realm != null:
+			return realm.id
+	return RealmDefaults.ladder().realms()[0].id
+
+
+## The per-element mastery cap at `rank_id`: the tier the body is PREPARING FOR, which is
+## the NEXT realm's tier on the last rung of a tier and the standing tier everywhere
+## else. An unknown rank reads tier 1, the same fail-safe `max_tier` uses.
+static func cap_at_rank(rank_id: StringName) -> float:
+	var ladder := RealmDefaults.ladder()
+	var next := ladder.next(rank_id)
+	var tier := ladder.tier_of(next.id) if next != null else ladder.tier_of(rank_id)
+	if tier <= 0:
+		tier = 1
+	return float(CAP_BY_TIER.get(tier, CAP_BY_TIER[1]))
+
+
+## The per-element mastery cap for `actor`'s standing.
+static func cap_for(actor: Actor) -> float:
+	return cap_at_rank(rank_of(actor))
+
 
 static func path_def() -> CultivationPathDef:
 	var def := CultivationPathDef.new()

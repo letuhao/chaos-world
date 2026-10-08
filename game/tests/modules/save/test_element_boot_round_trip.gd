@@ -80,7 +80,9 @@ func _prepare(hero: Actor) -> void:
 		true,
 		"and the once source opens further (%s)" % String(once_result.get("reason", ""))
 	)
-	assert_eq(ElementsApi.practise(hero, FIRE, 25.0), true, "and a sitting trains")
+	assert_eq(
+		bool(ElementsApi.practise(hero, FIRE, 25.0).get("ok", false)), true, "and a sitting trains"
+	)
 
 
 ## The element state of `actor`, as the roster and the module's own record publish it.

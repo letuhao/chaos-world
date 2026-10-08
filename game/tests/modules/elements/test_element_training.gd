@@ -16,7 +16,11 @@ func test_a_sitting_raises_mastery_by_the_shared_rate() -> void:
 	var actor := _actor()
 	actor.set_affinity(ElementStats.FIRE, 5.0)
 	assert_eq(ElementTraining.can_practise(actor, ElementStats.FIRE), true, "a spark may practise")
-	assert_eq(ElementsApi.practise(actor, ElementStats.FIRE), true, "the sitting lands")
+	assert_eq(
+		bool(ElementsApi.practise(actor, ElementStats.FIRE).get("ok", false)),
+		true,
+		"the sitting lands"
+	)
 	assert_almost_eq(
 		ElementMastery.mastery_of(actor, ElementStats.FIRE),
 		ElementsApi.PRACTICE_STEP * RealmRate.factor(&"qi_refining"),
@@ -30,7 +34,11 @@ func test_no_spark_no_sitting() -> void:
 	assert_eq(
 		ElementTraining.can_practise(actor, ElementStats.LIGHTNING), false, "no spark, no gate"
 	)
-	assert_eq(ElementsApi.practise(actor, ElementStats.LIGHTNING), false, "and no gain")
+	assert_eq(
+		String(ElementsApi.practise(actor, ElementStats.LIGHTNING).get("reason", "")),
+		"no_spark",
+		"and no gain"
+	)
 	assert_almost_eq(
 		ElementMastery.mastery_of(actor, ElementStats.LIGHTNING), 0.0, "nothing was written", 1e-9
 	)
@@ -40,7 +48,11 @@ func test_an_unknown_element_is_refused() -> void:
 	var actor := _actor()
 	actor.set_affinity(&"no_such_element", 5.0)
 	assert_eq(ElementTraining.can_practise(actor, &"no_such_element"), false, "not in the rules")
-	assert_eq(ElementsApi.practise(actor, &"no_such_element"), false, "so no sitting")
+	assert_eq(
+		String(ElementsApi.practise(actor, &"no_such_element").get("reason", "")),
+		"unknown_element",
+		"so no sitting"
+	)
 
 
 func test_the_elemental_paths_own_rank_prices_the_sitting() -> void:
@@ -49,8 +61,14 @@ func test_the_elemental_paths_own_rank_prices_the_sitting() -> void:
 	var high := _actor(&"element_high")
 	high.set_affinity(ElementStats.FIRE, 5.0)
 	high.set_path(PathState.new(ElementMastery.PATH_ID, &"spirit_sea"))
-	assert_eq(ElementsApi.practise(low, ElementStats.FIRE), true, "the first sits")
-	assert_eq(ElementsApi.practise(high, ElementStats.FIRE), true, "the second sits")
+	assert_eq(
+		bool(ElementsApi.practise(low, ElementStats.FIRE).get("ok", false)), true, "the first sits"
+	)
+	assert_eq(
+		bool(ElementsApi.practise(high, ElementStats.FIRE).get("ok", false)),
+		true,
+		"the second sits"
+	)
 	assert_eq(
 		(
 			ElementMastery.mastery_of(high, ElementStats.FIRE)
@@ -65,7 +83,9 @@ func test_mastery_reaches_the_power_the_damage_path_reads() -> void:
 	var actor := _actor()
 	actor.set_affinity(ElementStats.FIRE, 10.0)
 	var before := actor.stats.derived(ElementStats.power_id(ElementStats.FIRE))
-	assert_eq(ElementsApi.practise(actor, ElementStats.FIRE), true, "one sitting")
+	assert_eq(
+		bool(ElementsApi.practise(actor, ElementStats.FIRE).get("ok", false)), true, "one sitting"
+	)
 	var after := actor.stats.derived(ElementStats.power_id(ElementStats.FIRE))
 	assert_eq(after > before, true, "and the power the damage path reads rose")
 
@@ -79,7 +99,11 @@ func test_a_rare_resource_opens_an_element_the_race_never_gave() -> void:
 	assert_eq(
 		ElementTraining.can_practise(actor, ElementStats.LIGHTNING), true, "the spark is real"
 	)
-	assert_eq(ElementsApi.practise(actor, ElementStats.LIGHTNING), true, "and it trains")
+	assert_eq(
+		bool(ElementsApi.practise(actor, ElementStats.LIGHTNING).get("ok", false)),
+		true,
+		"and it trains"
+	)
 	assert_eq(
 		actor.stats.derived(ElementStats.power_id(ElementStats.LIGHTNING)) > 0.0,
 		true,
