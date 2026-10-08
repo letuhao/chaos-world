@@ -16,7 +16,7 @@ extends RefCounted
 ##   - A percent rides the member's own growth, so a nation is a real edge at its
 ##     realm and exactly as strong at R5 as at R30.
 ##   - No ladder of authored seats can sum into an uncapped multiplier, because the
-##     value is `InstitutionClaim.standing_percent` — already capped in `core/`.
+##     value is `InstitutionLedger.standing_percent` — already capped in `core/`.
 ##   - Nothing here is a FLAT and nothing here is `set_base`, so a claim cannot
 ##     smuggle a member through a gate that reads base allocation (ADR 0052/0054).
 ##
@@ -25,7 +25,8 @@ extends RefCounted
 ##
 ## The module's signal bus lives here rather than on the facade, exactly as
 ## `DestinyProjection` does it: a GDScript signal belongs to an instance and
-## `NationApi` is a namespace of statics holding the facade's twelve verbs.
+## `NationApi` is a namespace of statics. Anything that needs to observe a claim
+## connects here, and nothing outside the module emits through it.
 
 static var bus: NationEvents = null
 
@@ -43,6 +44,14 @@ static func events() -> NationEvents:
 ## `office_defs` maps office id → `NationOfficeDef` and `nation_id` names the
 ## polity for the source tag. An empty allowlist applies nothing, so a nation that
 ## recognises no stat writes nothing at all.
+##
+## The grant is one `InstitutionProjection.grant` per held office under a
+## PER-OFFICE tag, never one call over the union of allowlists:
+## `InstitutionProjection.grant` writes ONE percent per id per tag, so handing it
+## the union would grant the one percent and silently DROP the sum every office
+## after the first contributed. Per-office tags keep every seat's recognition,
+## and `strip` still clears all of them at once because every tag sits under
+## `SOURCE_PREFIX`.
 static func apply(
 	actor: Actor, ledger: Dictionary, office_defs: Dictionary, nation_id: StringName
 ) -> Dictionary:
@@ -50,15 +59,7 @@ static func apply(
 		return {}
 	strip(actor)
 	var granted := build(ledger, office_defs, nation_id)
-	for stat_id in granted.keys():
-		actor.stats.add_modifier(
-			StatModifier.new(
-				StringName(String(stat_id)),
-				Stat.Op.PERCENT,
-				float(granted[stat_id]),
-				NationState.source_for(nation_id)
-			)
-		)
+	_grant_each(actor, ledger, office_defs, nation_id)
 	return granted
 
 
@@ -68,24 +69,58 @@ static func apply(
 static func strip(actor: Actor) -> void:
 	if actor == null:
 		return
-	# The source tag is per NATION, so removing the applied one clears every seat's
-	# contribution at once. A stray tag from a nation this actor no longer lives
-	# under is removed too, so a schism cannot leave the old half's recognition
-	# welded to whoever joined it.
+	# Every tag this module writes sits under `SOURCE_PREFIX` — the one per-nation
+	# tag older saves granted under, and the per-office tags `_grant_each` writes
+	# now — so removing the applied ones clears every seat's contribution at once.
+	# A stray tag from a nation this actor no longer lives under is removed too,
+	# so a schism cannot leave the old half's recognition welded to whoever
+	# joined it.
 	for source in own_sources(actor):
 		actor.stats.remove_modifiers_from(source)
+
+
+## The stat source tag one OFFICE contributes under: the nation's tag with the
+## office appended. Still under `SOURCE_PREFIX`, so `is_own_source` answers for
+## it and `strip` clears it with the rest; still namespaced per office, so one
+## seat's grant can never satisfy another seat's strip.
+static func office_source_for(nation_id: StringName, office_id: StringName) -> StringName:
+	if nation_id == &"" or office_id == &"":
+		return &""
+	return InstitutionLedger.source_tagged(
+		NationState.SOURCE_PREFIX + String(nation_id) + ":", office_id
+	)
 
 
 ## What the ledger projects, as `{stat_id: percent}`, WITHOUT touching an actor.
 ## Split out from `apply` so the shape is testable without a stat stack, and so
 ## `attach` can record exactly what it granted (ADR 0084).
+##
+## The sum across held offices, deliberately: every held seat recognises its own
+## allowlist at the same bounded percent, so two seats recognising one stat grant
+## it twice. The stack holds the same sum via the per-office grants `_grant_each`
+## writes — the record and the modifiers agree because both walk `_held`.
 static func build(ledger: Dictionary, office_defs: Dictionary, nation_id: StringName) -> Dictionary:
 	var out := {}
 	if nation_id == &"":
 		return out
-	var percent := InstitutionClaim.standing_percent(int(ledger.get("standing", 0)))
+	var percent := InstitutionLedger.standing_percent(int(ledger.get("standing", 0)))
 	if percent <= 0.0:
 		return out
+	for row in _held(ledger, office_defs):
+		var def: NationOfficeDef = row["office"]
+		for stat_id in def.percent_stats():
+			out[String(stat_id)] = float(out.get(String(stat_id), 0.0)) + percent
+	return out
+
+
+## Every held office that names shipped content, as `{office_id, office}` rows in
+## ledger order. Vacant seats grant nothing, and a seat naming an office the
+## build does not ship is skipped the way `normalize` drops it. The ONE walk
+## `build` and `_grant_each` share, so "held" has one meaning in this file: a
+## `for` over the ledger's own keys filling a NEW array, which can never grow
+## what it walks.
+static func _held(ledger: Dictionary, office_defs: Dictionary) -> Array:
+	var out: Array = []
 	var offices: Dictionary = ledger.get("offices", {}) as Dictionary
 	for office_id in offices.keys():
 		if String(offices[office_id]) == "":
@@ -93,9 +128,34 @@ static func build(ledger: Dictionary, office_defs: Dictionary, nation_id: String
 		var def = office_defs.get(String(office_id), null)
 		if not (def is NationOfficeDef):
 			continue
-		for stat_id in (def as NationOfficeDef).percent_stats():
-			out[String(stat_id)] = float(out.get(String(stat_id), 0.0)) + percent
+		out.append({"office_id": String(office_id), "office": def})
 	return out
+
+
+## Grant every held office its own recognition under its own tag. The loop
+## `apply` owns: one `InstitutionProjection.grant` per seat, each a pure function
+## of (allowlist, standing, tag) with nothing tier-shaped inside it.
+static func _grant_each(
+	actor: Actor, ledger: Dictionary, office_defs: Dictionary, nation_id: StringName
+) -> void:
+	if nation_id == &"":
+		return
+	var standing := int(ledger.get("standing", 0))
+	# No percent, no modifiers: without this guard a member nobody recognises
+	# would collect a row of `0.0` modifiers, which `build` — and the old `apply`
+	# before it — correctly reads as nothing granted.
+	if InstitutionLedger.standing_percent(standing) <= 0.0:
+		return
+	for row in _held(ledger, office_defs):
+		var def: NationOfficeDef = row["office"]
+		var tag := office_source_for(nation_id, StringName(String(row["office_id"])))
+		if tag == &"":
+			continue
+		# A refused grant (an allowlist id no sheet can name) writes nothing for
+		# that office while the summed record still counts it: the record is what
+		# the ledger owes and the refusal names the content fault. Shipped content
+		# validates, so the two agree everywhere a test can reach.
+		InstitutionProjection.grant(actor, def.standing_percent_stats, standing, tag)
 
 
 ## The total this module contributes to `stat_id`, read from the modifier stack

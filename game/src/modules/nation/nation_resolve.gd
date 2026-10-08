@@ -1,6 +1,7 @@
 class_name NationResolve
 extends RefCounted
 
+
 ## The conflict machinery behind `NationApi.resolve_conflict`: the tally, the
 ## forced close, and the payment of a DECLARED prize.
 ##
@@ -19,12 +20,6 @@ extends RefCounted
 ## tribunal's ruling — and this file never calls combat, never reads a combat stat
 ## and never owns a generator (ADR 0085). Every accrual it settles takes an
 ## explicit `periods` count from a caller that owns time (DEF-0111).
-
-## How far into a standoff a verdict must be, by mode (ADR 0085). A mode changes
-## the quota and the prize shape only, never how a verdict is produced.
-const QUOTAS := {NationState.CONTEST: 3, NationState.SIEGE: 5, NationState.TRIBUNAL: 1}
-
-
 ## A standoff that is still being fought, and one that is already closed: the two
 ## stages that are not the settlement itself. They differ in exactly what a caller
 ## must ask — has it ended, and if so how — and in nothing else, which is the whole
@@ -70,7 +65,7 @@ static func unpaid_verdict(
 	# An open standoff has no winner yet: the verdict counted, and the war is still
 	# being fought. `detail` carries the names the CALLER supplied for this verdict.
 	view.merge(detail, true)
-	return _ok(
+	return NationState.ok(
 		ledger,
 		NationState.verdict_view(
 			standoff, settled, String(view.get("outcome", NationState.OUTCOME_OPEN)), view
@@ -99,7 +94,7 @@ static func close(
 	forced: String,
 	regard: Callable
 ) -> Dictionary:
-	var tuning := _tuning()
+	var tuning := NationCatalog.instance().tuning()
 	var deltas: Dictionary = (standoff["prize"] as Dictionary).get("standing", {})
 	var withdrew := forced == NationState.OUTCOME_WITHDRAWAL
 	# Whether the war produced a winner who is owed the prize. A `contest` that met
@@ -142,8 +137,8 @@ static func close(
 	standoff["standing_gained"] = gained
 	standoff["standing_lost"] = lost
 	(ledger["standoffs"] as Dictionary)[String(standoff_id)] = standoff
-	_advance(ledger)
-	_record(ledger, outcome, StringName(winner), loser)
+	NationState.advance(ledger)
+	NationState.record(ledger, outcome, StringName(winner), loser)
 	# A closed war is the one deed a nation records publicly about its own people, and
 	# it is what `fought_for_a_nation` is authored for. **Only the standing side gets
 	# it**: a war fought and lost is not a credential, and a cause applied to both
@@ -155,22 +150,25 @@ static func close(
 	NationProjection.events().conflict_resolved.emit(
 		String(actor.id), String(standoff_id), winner, outcome
 	)
-	return _ok(
-		ledger,
-		(
-			NationState
-			. verdict_view(
-				standoff,
-				true,
-				outcome,
-				{
-					"standoff_id": String(standoff_id),
-					"winner_id": winner,
-					"loser_id": loser,
-					"standing_gained": gained,
-					"standing_lost": lost,
-					"territory_transferred": transferred,
-				}
+	return (
+		NationState
+		. ok(
+			ledger,
+			(
+				NationState
+				. verdict_view(
+					standoff,
+					true,
+					outcome,
+					{
+						"standoff_id": String(standoff_id),
+						"winner_id": winner,
+						"loser_id": loser,
+						"standing_gained": gained,
+						"standing_lost": lost,
+						"territory_transferred": transferred,
+					}
+				)
 			)
 		)
 	)
@@ -216,19 +214,6 @@ static func _pay(ledger: Dictionary, nation_id: String, delta: int, home_id: Str
 	return int(ledger["standing"]) - before
 
 
-static func _advance(ledger: Dictionary) -> void:
-	ledger["sequence"] = NationState.next_sequence(ledger)
-
-
-static func _record(ledger: Dictionary, kind: String, id: StringName, detail: String) -> void:
-	var history: Array = ledger["history"]
-	if history.size() >= NationState.HISTORY_LIMIT:
-		return
-	history.append(
-		{"kind": kind, "id": String(id), "detail": detail, "sequence": int(ledger["sequence"])}
-	)
-
-
 ## Persist, rebuild the bounded PERCENT recognition, and keep the component in
 ## step. The three effects are one operation because a ledger without a projection
 ## is the one state a player cannot recover from.
@@ -263,27 +248,3 @@ static func _project(actor: Actor, ledger: Dictionary) -> void:
 	next["applied_percent"] = granted
 	actor.set_module_data(NationState.MODULE_KEY, next)
 	_mirror(actor, next)
-
-
-## The shipped tuning, or `null` when the build does not ship one.
-##
-## `load()` returns `null` for a `.tres` that cannot be read, and every field of
-## `NationTuning` defaults to `0`, so a caller that treated that null as a tuning
-## would read "a defeat costs nothing, and a side breaks at zero exhaustion". The
-## second is not a harmless default: exhaustion is compared with `>=`, so a break of
-## zero declares EVERY side exhausted the moment it loses once, and every standoff
-## in the build refuses its first verdict. It happened here exactly that way. So the
-## absence is resolved where the tuning is resolved — `NationCatalog.tuning()` hands
-## back a zeroed struct rather than null, and the break is read through
-## `NationCatalog.war_break()`, which keeps a non-positive break as "nobody ever
-## breaks" rather than as "everybody is already broken". `shipped()` stays as the
-## load it was, for a caller that genuinely wants to know.
-static func _tuning() -> NationTuning:
-	return NationCatalog.instance().tuning()
-
-
-static func _ok(ledger: Dictionary, detail: Dictionary = {}) -> Dictionary:
-	var out := {"ok": true, "nation_id": String(ledger.get("nation_id", ""))}
-	for key in detail.keys():
-		out[String(key)] = detail[key]
-	return out

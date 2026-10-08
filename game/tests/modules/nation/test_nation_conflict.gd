@@ -430,10 +430,20 @@ func test_the_module_grants_recognition_only_and_never_power() -> void:
 			_strip_comments(
 				FileAccess.get_file_as_string("res://src/modules/nation/nation_projection.gd")
 			)
+			. contains("InstitutionProjection.grant")
+		),
+		true,
+		"the projection grants through the standard writer, never a local modifier loop"
+	)
+	assert_eq(
+		(
+			_strip_comments(
+				FileAccess.get_file_as_string("res://src/core/institution_projection.gd")
+			)
 			. contains("Stat.Op.PERCENT")
 		),
 		true,
-		"and the whole recognition surface is a bounded PERCENT"
+		"and the standard's whole recognition surface is a bounded PERCENT"
 	)
 
 

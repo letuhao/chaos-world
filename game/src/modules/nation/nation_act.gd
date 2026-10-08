@@ -6,14 +6,12 @@ extends RefCounted
 ##
 ## ## Why this is an internal script and not a `NationApi` method
 ##
-## `NationApi` has exactly one slot left of ADR 0084's twelve-method cap, and a
-## facade that grows past its cap is the ISP failure `tools/arch/rules.py` fails the
-## build for. Spending the last slot on a verb a background tick calls once a period
-## — while the same reasoning put `SectApi.act` in `sect_act.gd` because that facade
-## was already full — would leave the two tiers shaped differently for no reason a
-## caller could see.
+## The facade is held to its fan-in budget (`rules.MAX_FACADE_FAN_IN`), so a verb a
+## background tick calls once a period does not become a published method — the same
+## reasoning that put `SectApi.act` in `sect_act.gd` — which would leave the two tiers
+## shaped differently for no reason a caller could see.
 ##
-## So both tiers propose through a component, and `NationApi` keeps its slot free.
+## So both tiers propose through a component, and `NationApi` keeps its surface small.
 ## `app/institution_resolver.gd` is the one place that calls either.
 ##
 ## ## Propose, never resolve

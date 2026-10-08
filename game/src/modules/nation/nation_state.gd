@@ -139,14 +139,18 @@ const VERDICT_KEYS: Array[String] = [
 ]
 
 
-## The stat source id one nation contributes under.
+## The stat source id one nation contributes under. A delegate: the construction
+## is shared and the namespace is not — `InstitutionLedger.source_tagged` takes
+## the prefix as an argument precisely so a `nation:` modifier can never satisfy
+## another tier's strip half, which is the bug the prefix exists to prevent.
 static func source_for(nation_id: StringName) -> StringName:
-	return StringName("%s%s" % [SOURCE_PREFIX, nation_id])
+	return InstitutionLedger.source_tagged(SOURCE_PREFIX, nation_id)
 
 
-## True when a stat modifier source belongs to this module.
+## True when a stat modifier source belongs to this module. A delegate for the
+## same reason: the shape is shared, the namespace is the caller's.
 static func is_own_source(source: StringName) -> bool:
-	return String(source).begins_with(SOURCE_PREFIX)
+	return InstitutionLedger.owns_source(SOURCE_PREFIX, source)
 
 
 ## The empty ledger.
@@ -217,7 +221,7 @@ static func normalize(payload: Dictionary, known_ids: Dictionary = {}) -> Dictio
 		return out
 	var data := payload as Dictionary
 
-	out["nation_id"] = String(data.get("nation_id", ""))
+	out["nation_id"] = _text(data.get("nation_id", ""), "")
 	out["sequence"] = maxi(0, int(data.get("sequence", 0)))
 	var cap := maxi(1, int(data.get("standing_cap", 100)))
 	out["standing_cap"] = cap
@@ -226,7 +230,11 @@ static func normalize(payload: Dictionary, known_ids: Dictionary = {}) -> Dictio
 	var claims = data.get("claims", {})
 	if claims is Dictionary:
 		for territory_id in (claims as Dictionary).keys():
-			var key := String(territory_id)
+			# A non-text key is corruption, not content: it is dropped rather than
+			# coerced, because a coerced key would persist a claim no build defines.
+			if not _is_text(territory_id):
+				continue
+			var key := _text(territory_id, "")
 			if not _known(key, known_ids):
 				continue
 			var entry = (claims as Dictionary)[territory_id]
@@ -248,7 +256,11 @@ static func normalize(payload: Dictionary, known_ids: Dictionary = {}) -> Dictio
 		# "one row per unordered pair" true of the OUTPUT rather than of the input.
 		var rebuilt: Dictionary = {}
 		for raw_key in (stances as Dictionary).keys():
-			var pair := split_pair_key(String(raw_key))
+			# `String(...)` RAISES on a float rather than yielding text, so a raw
+			# cast here would abort the whole load on one corrupt stance key.
+			if not _is_text(raw_key):
+				continue
+			var pair := split_pair_key(_text(raw_key, ""))
 			if pair.size() != 2 or pair[0] == pair[1]:
 				continue
 			var entry = (stances as Dictionary)[raw_key]
@@ -262,7 +274,9 @@ static func normalize(payload: Dictionary, known_ids: Dictionary = {}) -> Dictio
 	var offices = data.get("offices", {})
 	if offices is Dictionary:
 		for office_id in (offices as Dictionary).keys():
-			var key := String(office_id)
+			if not _is_text(office_id):
+				continue
+			var key := _text(office_id, "")
 			if not _known(key, known_ids):
 				continue
 			var holder = (offices as Dictionary)[office_id]
@@ -274,12 +288,14 @@ static func normalize(payload: Dictionary, known_ids: Dictionary = {}) -> Dictio
 	if standoffs is Dictionary:
 		for standoff_id in (standoffs as Dictionary).keys():
 			var entry = (standoffs as Dictionary)[standoff_id]
+			if not _is_text(standoff_id):
+				continue
 			if not (entry is Dictionary):
 				continue
 			var standoff := _standoff_entry(entry as Dictionary)
 			if standoff.is_empty():
 				continue
-			out["standoffs"][String(standoff_id)] = standoff
+			out["standoffs"][_text(standoff_id, "")] = standoff
 
 	# What the projection last applied. A `StatModifier` cannot be lowered by a
 	# stripped base attribute and `remove_modifiers_from` only knows a source tag,
@@ -291,8 +307,10 @@ static func normalize(payload: Dictionary, known_ids: Dictionary = {}) -> Dictio
 	if applied is Dictionary:
 		for stat_id in (applied as Dictionary).keys():
 			var value = (applied as Dictionary)[stat_id]
+			if not _is_text(stat_id):
+				continue
 			if value is float or value is int:
-				out["applied_percent"][String(stat_id)] = float(value)
+				out["applied_percent"][_text(stat_id, "")] = float(value)
 
 	var history = data.get("history", [])
 	if history is Array:
@@ -350,6 +368,34 @@ static func offices(ledger: Dictionary) -> Dictionary:
 ## the same order after a restore as they were before it.
 static func next_sequence(ledger: Dictionary) -> int:
 	return maxi(0, int(ledger.get("sequence", 0))) + 1
+
+
+## Move the ledger one step forward. The ONE writer of `sequence`, owned here
+## because the ledger is owned here: the copies that lived in `api.gd` and
+## `nation_resolve.gd` were the same fact written twice.
+static func advance(ledger: Dictionary) -> void:
+	ledger["sequence"] = next_sequence(ledger)
+
+
+## Append one history line, bounded by `HISTORY_LIMIT` so a save cannot grow
+## without limit. Same move as `advance`: one envelope, one writer.
+static func record(ledger: Dictionary, kind: String, id: StringName, detail: String) -> void:
+	var history: Array = ledger["history"]
+	if history.size() >= HISTORY_LIMIT:
+		return
+	history.append(
+		{"kind": kind, "id": String(id), "detail": detail, "sequence": int(ledger["sequence"])}
+	)
+
+
+## A success answer carrying this ledger's polity. The shape every verb in this
+## module returns, owned here for the same reason as `advance`: two copies of
+## this envelope existed, one per file that answered.
+static func ok(ledger: Dictionary, detail: Dictionary = {}) -> Dictionary:
+	var out := {"ok": true, "nation_id": String(ledger.get("nation_id", ""))}
+	for key in detail.keys():
+		out[String(key)] = detail[key]
+	return out
 
 
 ## Whether `verb` is one of the closed diplomacy set.
@@ -468,12 +514,14 @@ static func _claim_entry(entry) -> Dictionary:
 	if not (entry is Dictionary):
 		return {}
 	var data := entry as Dictionary
-	var territory_id := String(data.get("territory_id", ""))
+	# `_text`, never a raw `String(...)` cast: the cast RAISES on a float id and
+	# would abort the load, while a corrupt id reads as absent and the entry drops.
+	var territory_id := _text(data.get("territory_id", ""), "")
 	if territory_id == "":
 		return {}
 	var out := {
 		"territory_id": territory_id,
-		"holder_id": String(data.get("holder_id", "")),
+		"holder_id": _text(data.get("holder_id", ""), ""),
 		"held_since": int(data.get("held_since", 0)),
 		"tier_index": int(data.get("tier_index", 0)),
 		"challenger_id": "",
@@ -482,14 +530,14 @@ static func _claim_entry(entry) -> Dictionary:
 	# A challenger is an id, never a number. The default is a DENIAL (`""`), which
 	# is ADR 0083's first state: this claim has no challenger, and the row still
 	# says so rather than omitting the key.
-	out["challenger_id"] = String(data.get("challenger_id", ""))
+	out["challenger_id"] = _text(data.get("challenger_id", ""), "")
 	return out
 
 
 static func _stance_entry(entry: Dictionary) -> Dictionary:
 	return {
-		"verb": String(entry.get("verb", "")),
-		"other_id": String(entry.get("other_id", "")),
+		"verb": _text(entry.get("verb", ""), ""),
+		"other_id": _text(entry.get("other_id", ""), ""),
 		"sequence": int(entry.get("sequence", 0)),
 	}
 
@@ -505,27 +553,29 @@ static func _standoff_entry(entry: Dictionary) -> Dictionary:
 	var normalized_sides := {}
 	if sides is Dictionary:
 		for side_id in (sides as Dictionary).keys():
-			normalized_sides[String(side_id)] = _side_entry((sides as Dictionary)[side_id])
+			if not _is_text(side_id):
+				continue
+			normalized_sides[_text(side_id, "")] = _side_entry((sides as Dictionary)[side_id])
 	var out := {
-		"standoff_id": String(entry.get("standoff_id", "")),
-		"other_id": String(entry.get("other_id", "")),
+		"standoff_id": _text(entry.get("standoff_id", ""), ""),
+		"other_id": _text(entry.get("other_id", ""), ""),
 		## The side that DECLARED this standoff, which is not always the ledger's own
 		## `nation_id` — an actor may carry a nation's ledger under a different id than
 		## the polity it found. Settlement pays the declaring side, so dropping this on
 		## a round-trip would make a saved war pay nobody. Defaulted to `""`, and read as
 		## "the ledger's own side" when absent, so an OLD save keeps settling.
-		"home_id": String(entry.get("home_id", "")),
-		"territory_id": String(entry.get("territory_id", "")),
-		"mode": String(entry.get("mode", "")),
+		"home_id": _text(entry.get("home_id", ""), ""),
+		"territory_id": _text(entry.get("territory_id", ""), ""),
+		"mode": _text(entry.get("mode", ""), ""),
 		"quota": maxi(1, int(entry.get("quota", 1))),
-		"winner_id": String(entry.get("winner_id", "")),
+		"winner_id": _text(entry.get("winner_id", ""), ""),
 		## What the closing call actually landed, so a verdict arriving after the war
 		## is closed reports the war's own settlement instead of `0`. Both default to
 		## `0`, which is the truth for a standoff closed before these existed and for
 		## one whose settlement was paid to another ledger.
 		"standing_gained": maxi(0, int(entry.get("standing_gained", 0))),
 		"standing_lost": maxi(0, int(entry.get("standing_lost", 0))),
-		"outcome": String(entry.get("outcome", "")),
+		"outcome": _text(entry.get("outcome", ""), ""),
 		"closed": bool(entry.get("closed", false)),
 		"declared_sequence": int(entry.get("declared_sequence", 0)),
 		"sides": normalized_sides,
@@ -535,7 +585,9 @@ static func _standoff_entry(entry: Dictionary) -> Dictionary:
 	var out_tributes := {}
 	if tributes is Dictionary:
 		for side_id in (tributes as Dictionary).keys():
-			out_tributes[String(side_id)] = maxi(0, int((tributes as Dictionary)[side_id]))
+			if not _is_text(side_id):
+				continue
+			out_tributes[_text(side_id, "")] = maxi(0, int((tributes as Dictionary)[side_id]))
 	out["tributes"] = out_tributes
 	return out
 
@@ -560,14 +612,33 @@ static func _prize_entry(prize) -> Dictionary:
 	if not (prize is Dictionary):
 		return {}
 	var data := prize as Dictionary
-	var transfer := String(data.get("transfer", ""))
+	var transfer := _text(data.get("transfer", ""), "")
 	if transfer != "" and not TRANSFERS.has(StringName(transfer)):
 		return {}
-	var out := {"mode": String(data.get("mode", "")), "transfer": transfer, "standing": {}}
+	var out := {"mode": _text(data.get("mode", ""), ""), "transfer": transfer, "standing": {}}
 	var standings = data.get("standing", {})
 	if standings is Dictionary:
 		var rows := {}
 		for side_id in (standings as Dictionary).keys():
-			rows[String(side_id)] = int((standings as Dictionary)[side_id])
+			if not _is_text(side_id):
+				continue
+			rows[_text(side_id, "")] = int((standings as Dictionary)[side_id])
 		out["standing"] = rows
 	return out
+
+
+## `value` when it really is text, or `fallback` when it is not. A delegate to
+## `InstitutionLedger.text`: `String(42.0)` RAISES in GDScript rather than yielding
+## `"42.0"`, so a raw cast on a corrupt save field would abort the whole load
+## instead of reading as the unaffiliated member it actually is. The reasoning
+## lives in one place and this is the read, not a second copy of it.
+static func _text(value: Variant, fallback: String) -> String:
+	return InstitutionLedger.text(value, fallback)
+
+
+## Whether `value` is genuinely text. A delegate, paired with `_text` which
+## converts: `normalize` must tell a corrupt key from an absent one, and those
+## are not repaired the same way. The same ASK/CONVERT pair the sibling tiers
+## hold, read from one place rather than written a third time.
+static func _is_text(value: Variant) -> bool:
+	return InstitutionLedger.is_text(value)

@@ -151,3 +151,25 @@ func test_founding_a_polity_seats_its_board_including_the_vacancies() -> void:
 	var def := _catalog().nation_definition(MARCH)
 	assert_eq(int(summary["standing"]), def.own_claim().standing, "the polity's authored standing")
 	assert_eq(int(summary["standing_cap"]), def.own_claim().standing_cap, "and its cap")
+
+
+## A changed overlay stack drops the cached tree, so a mod root that stops shipping
+## a nation cannot keep serving it. Asserted through `set_overlay_roots([])` — the
+## stack value is unchanged, so the case is self-cleaning and the next suite reads
+## the shipped tree exactly as before.
+func test_changing_the_overlay_stack_drops_the_cached_tree() -> void:
+	assert_ne(NationCatalog.shared, null, "a tree is cached")
+	NationCatalog.set_overlay_roots([])
+	assert_eq(
+		NationCatalog.shared, null, "a changed stack invalidates the tree rather than serving it"
+	)
+	assert_ne(NationCatalog.instance().nation_ids().size(), 0, "and the shipped tree rebuilds")
+
+
+## `clear()` drops the tree AND the stack, so a leaked fixture root cannot become
+## the next suite's content in the one shared runner process. Self-cleaning for the
+## same reason: nothing is left installed afterwards.
+func test_clear_drops_the_tree_and_the_stack() -> void:
+	NationCatalog.clear()
+	assert_eq(NationCatalog.shared, null, "the cached tree is gone")
+	assert_ne(NationCatalog.instance().nation_ids().size(), 0, "and the shipped tree rebuilds")
