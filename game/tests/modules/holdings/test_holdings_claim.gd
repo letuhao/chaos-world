@@ -129,9 +129,21 @@ func test_an_unresolvable_holder_refuses_with_the_resolver_s_own_reason() -> voi
 	assert_eq(String(result["reason"]), "unknown_sect", "and passes the reason through verbatim")
 
 
-func test_an_unknown_owner_kind_refuses_closed() -> void:
+## The kind vocabulary is OPEN (ADR 0933) and the RESOLVER is the one gate that answers
+## "does this name something real". So this case installs a resolver that refuses an
+## unregistered kind — the shape `test_holdings_claim_floor.gd` already pins — and asserts
+## the refusal reaches the caller BY NAME rather than defaulting to `actor`.
+func test_an_unknown_owner_kind_refuses_through_the_resolver() -> void:
+	HoldingsApi.set_resolver(
+		func(kind: String, _id: String) -> Dictionary:
+			return (
+				{"ok": true}
+				if kind == "actor" or kind == "sect"
+				else {"ok": false, "reason": HoldingsState.UNKNOWN_OWNER_KIND}
+			)
+	)
 	var result := HoldingsApi.claim(_actor, &"vein_test", _owner(&"x", &"guild"))
-	assert_eq(bool(result["ok"]), false, "an unknown kind refuses")
+	assert_eq(bool(result["ok"]), false, "an unregistered kind refuses")
 	assert_eq(
 		String(result["reason"]),
 		HoldingsState.UNKNOWN_OWNER_KIND,

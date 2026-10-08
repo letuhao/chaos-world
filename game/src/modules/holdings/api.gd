@@ -367,12 +367,17 @@ static func _challenge(
 ## Resolve a holder through the injected seam. Refuses closed, and refuses LOUDLY when
 ## nothing is installed, because an institution silently unable to hold anything is worse
 ## than an error.
+##
+## **The kind vocabulary is NOT checked here.** It is OPEN (ADR 0933): a modder's kind must
+## be able to hold a node, and the only thing that can answer "does this name something
+## real" is the installed resolver — which refuses `unknown_owner_kind` /
+## `unknown_institution` by name. A static `OwnerRef.KINDS` check here would answer that
+## question a second time and would refuse every kind this build has not heard of, which is
+## the closed-set defect D5 removed.
 static func _resolve(owner: Dictionary) -> Dictionary:
 	if owner.is_empty():
 		return {"ok": false, "reason": HoldingsState.NO_HOLDER}
 	var kind := StringName(owner.get("kind", ""))
-	if not OwnerRef.KINDS.has(kind):
-		return {"ok": false, "reason": HoldingsState.UNKNOWN_OWNER_KIND}
 	if not _resolver.is_valid():
 		return {"ok": false, "reason": HoldingsState.NO_RESOLVER}
 	var answered: Variant = _resolver.call(String(kind), String(owner.get("id", "")))

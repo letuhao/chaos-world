@@ -394,12 +394,14 @@ static func _key(owner: Dictionary) -> String:
 	return ref.storage_key() if not ref.is_empty() else ""
 
 
+## **The kind vocabulary is NOT checked here** — it is open (ADR 0933) and the installed
+## resolver is the one gate that can answer "does this name something real", refusing
+## `unknown_owner_kind` / `unknown_institution` by name. A static `OwnerRef.KINDS` check
+## would answer it a second time and refuse every kind this build has not heard of.
 static func _resolve(owner: Dictionary) -> Dictionary:
 	if owner.is_empty():
 		return {"ok": false, "reason": UNKNOWN_OWNER}
 	var kind := StringName(owner.get("kind", ""))
-	if not OwnerRef.KINDS.has(kind):
-		return {"ok": false, "reason": UNKNOWN_OWNER_KIND}
 	if not _resolver.is_valid():
 		return {"ok": false, "reason": NO_RESOLVER}
 	var answered: Variant = _resolver.call(String(kind), String(owner.get("id", "")))

@@ -29,13 +29,6 @@ extends RefCounted
 ## not. `{}` means there is no thing at all. These are different answers and a screen that
 ## collapses them cannot render a claim on unowned ground.
 
-## The kinds whose resolution path ships STATICALLY with the resolver: `actor`, resolved
-## by id because it is the one kind with no catalog, and the three institution tiers whose
-## catalogs ship in this build. **Not the acceptance vocabulary** — see the class note: the
-## kind set is OPEN, and any kind `InstitutionRegistry` knows is an equally valid holder.
-## Read this as "resolves without the registry", never as "the only kinds".
-const KINDS: Array[StringName] = [&"actor", &"clan", &"sect", &"nation"]
-
 ## The refusal an empty kind reaches HERE, and the one an unregistered kind reaches at the
 ## resolver — one rule, one name, written once.
 const UNKNOWN_KIND := "unknown_owner_kind"
