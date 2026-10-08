@@ -60,7 +60,9 @@ const FORBIDDEN_VERBS := [
 const PUBLISHED := [
 	"claim_of",
 	"clear",
+	"expel",
 	"found",
+	"has_authority",
 	"holds",
 	"join",
 	"leave",
@@ -68,6 +70,7 @@ const PUBLISHED := [
 	"reproject",
 	"roster_of",
 	"rosters",
+	"serve",
 	"source_tag",
 	"summary",
 ]
@@ -211,7 +214,7 @@ func test_the_published_surface_grants_no_power() -> void:
 	# A module facade's cap does not apply here — `core/` is a LAYER, not a module — but the
 	# published set is short on purpose: every name is a verb a caller presses or a read it
 	# could not have reached through another verb.
-	assert_eq(PUBLISHED.size(), 12, "twelve verbs, each with a caller or a named reason")
+	assert_eq(PUBLISHED.size(), 15, "fifteen verbs, each with a caller or a named reason")
 
 
 ## ## NOTHING IN THE FAMILY OWNS A CLOCK

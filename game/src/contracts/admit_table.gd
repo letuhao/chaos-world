@@ -370,6 +370,6 @@ func _all_vacant(unmet: Array) -> bool:
 	if unmet.is_empty():
 		return false
 	for entry in unmet:
-		if not (entry is Dictionary) or String((entry as Dictionary).get("actual", "")) != "vacant":
+		if not (entry is Dictionary) or str((entry as Dictionary).get("actual", "")) != "vacant":
 			return false
 	return true
