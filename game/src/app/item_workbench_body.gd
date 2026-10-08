@@ -369,6 +369,26 @@ func _attach_body_modules(actor: Actor) -> void:
 	_wire_locale_roots(registrations.get("locale_roots", []))
 	# Attach mod modules after all base phases (ADR 0184).
 	_attach_mod_modules(pipeline, actor, registrations.get("modules", {}))
+	# ## The authored starter kit, and why it is LAST (BL-0904 / BL-0909)
+	#
+	# A body whose bag opens empty has no row to select, no Generate to press and no Equip
+	# to press, so every acquisition the game is built around starts from nothing. The kit
+	# is [StarterKit]'s and the rows are `destiny`'s (`DestinyApi.starter_pack`), read here
+	# because turning authored ids into real instances is the composition root's job and
+	# not the module's.
+	#
+	# AFTER the mod modules, because a mod may install a destiny that REGISTERS a pack, and
+	# a kit drawn before that registration would hand out the default the mod exists to
+	# replace. It is a no-op on a restored body: the draw is a monotone world fact.
+	var kit := StarterKit.grant(actor)
+	if not bool(kit.get("ok", false)):
+		push_warning(
+			"ItemWorkbenchBody: the starter kit was refused (%s)" % String(kit.get("reason", ""))
+		)
+	elif not (kit.get("refused", []) as Array).is_empty():
+		# Named, not swallowed: a kit naming an item the tree does not define is a content
+		# bug, and a player promised it would otherwise open on a bag missing a row.
+		push_warning("ItemWorkbenchBody: the starter kit could not deliver: %s" % str(kit["refused"]))
 	# Wire mod event subscriptions onto the events buses (ADR 0184).
 	_wire_subscriptions(registrations.get("subscriptions", []))
 
@@ -713,12 +733,17 @@ func stand_restored_in_the_world(body: Actor) -> Dictionary:
 ##     active technique fires, pays its qi, starts its cooldown and returns an
 ##     EMPTY damage descriptor, because nothing ever handed it the spine.
 ##
-## ## Why `bind_learner` and not a closure
+## ## Why the learner is `ElementArts` and not a closure
 ##
-## `TechniqueDelivery.bind_learner` already forwards to `TechniquesApi.learn`, so
-## binding it is passing the module's own entry point rather than a lambda defined
-## in here. If a future edit needs the root's own logic in the loop, that is a
-## closure over THIS root — and the seam still keeps the dependency one-way.
+## The wrapper pairs a TECHNIQUES read (is the root-refining art learned) with an
+## ELEMENTS write (its one-time affinity grant) — the cross-module pair this root
+## exists to own. It lives in `app/element_arts.gd` rather than as a lambda here so
+## a test can call the exact callable the seam gets, and the seam keeps the
+## dependency one-way.
+##
+## `ElementArts.install()` registers the arts' two sources (the opening grant and
+## the repeatable refine) on the elements facade. Idempotent, so running per build
+## is safe.
 ##
 ## Called from `_build_actor` and NOT from `_ready`: `_ready` runs once but a
 ## caller that rebuilds an actor (`ActorFactory` is public) would otherwise leave a
@@ -726,7 +751,8 @@ func stand_restored_in_the_world(body: Actor) -> Dictionary:
 ## the actor it was installed for does not. Installing here means every actor this
 ## root builds is wired, which is the property that was missing.
 func _bind_technique_seams() -> void:
-	TechniqueDelivery.install(Callable(TechniqueDelivery, "bind_learner"))
+	ElementArts.install()
+	TechniqueDelivery.install(Callable(ElementArts, "learn_with_root_grant"))
 	TechniqueCasting.set_resolver(Callable(self, "_resolve_technique_hit"))
 
 
