@@ -345,8 +345,11 @@ func test_severe_zones_are_listed_with_their_levers() -> void:
 		assert_ne(String(row["room_id"]).is_empty(), true, "and says which room it sits in")
 		# The levers are the zone's own mitigation tags, and an empty set is LEGITIMATE
 		# (a zone nothing counters is authored content), so this asserts the shape rather
-		# than a non-empty list.
-		assert_ne((row["mitigation_tags"] as Array).size() >= 0, true, "levers are a list")
+		# than a non-empty list. `as Array` answers null for anything that is not one, and
+		# the old `size() >= 0` form was TRUE for every value — so `assert_ne(..., true)`
+		# failed the moment any generated room carried a zone into this loop, which no
+		# authored run did until the camp's ley spring was authored (G4, ADR 0926).
+		assert_ne(row["mitigation_tags"] as Array, null, "levers are a list")
 	assert_ne(str(screen.summary()["zones_text"]).is_empty(), true, "and they are rendered as text")
 
 
