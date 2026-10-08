@@ -35,7 +35,7 @@ extends RefCounted
 ## and a defaulted period would be an invented tick wearing a button's clothes.
 
 ## The owner ref a player-authored harvest carries. An `actor` holder is the only kind a
-## single player can be, and `OwnerRef.KINDS` is the closed set this must land inside.
+## single player can be; whether a kind is real is the resolver's answer (ADR 0933).
 const OWNER_KIND := "actor"
 
 

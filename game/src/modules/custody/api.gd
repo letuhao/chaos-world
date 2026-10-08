@@ -13,10 +13,12 @@ extends RefCounted
 ##
 ## ## Zero edges to the institution modules
 ##
-## A holder may be an `actor`, a `clan`, a `sect` or a `nation` — four modules that do not
-## contain each other, and `tools arch`'s bare-reference detector excludes `modules/*`, so
-## calling into them would build a cycle the gate cannot see. Resolution is an **injected
-## `Callable`** over the closed `OwnerRef.KINDS`, the `NpcApi.set_minter` seam verbatim.
+## A holder may be an `actor`, a `clan`, a `sect`, a `nation` — or any kind a pack
+## registers (ADR 0933) — and those modules do not contain each other, while
+## `tools arch`'s bare-reference detector excludes `modules/*`, so calling into them
+## would build a cycle the gate cannot see. Resolution is an **injected `Callable`**,
+## the `NpcApi.set_minter` seam verbatim: the kind vocabulary is OPEN (ADR 0933), so
+## only the installed resolver can answer whether a name is real.
 ##
 ## ## The coin leg runs FIRST
 ##

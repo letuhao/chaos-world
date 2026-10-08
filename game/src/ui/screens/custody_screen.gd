@@ -134,10 +134,10 @@ const NO_TRANSFER_TARGET := "no_transfer_target"
 ## wearing a button's clothes (DEF-0111).
 const SETTLE_PERIODS := 1
 
-## The one `OwnerRef` kind this screen derives for itself. `OwnerRef.KINDS` is the
-## closed set — actor, clan, sect, nation — and a single player is an `actor`, so
-## this is the only kind a page press can speak for. Every other kind is a holder
-## some caller names.
+## The one `OwnerRef` kind this screen derives for itself. A single player is an
+## `actor`, so this is the only kind a page press can speak for. Every other kind is
+## a holder some caller names, and whether the name is real is the resolver's answer,
+## never a closed list here (ADR 0933).
 const OWNER_KIND := "actor"
 ## `CustodyState.SUBJECT_KINDS` ships `npc`, and `player` is a closed value reserved
 ## for a `PlayerDef` that does not exist yet. Spelled here rather than read off
@@ -176,9 +176,9 @@ var _capture_subject: String = ""
 var _capture_kind: String = ""
 var _capture_term: String = ""
 var _capture_periods: int = 0
-## The staged transfer. `to_holder` is an `OwnerRef` over the module's closed
-## `KINDS`, so only a caller can name one; the two parties are the wallets the
-## caller agreed, forwarded verbatim and never derived here.
+## The staged transfer. `to_holder` is an `OwnerRef` whose kind only a caller can
+## name — the vocabulary is open (ADR 0933) — and the two parties are the wallets
+## the caller agreed, forwarded verbatim and never derived here.
 var _transfer_target: Dictionary = {}
 var _transfer_coins: int = 0
 var _transfer_payer: Actor = null
@@ -281,7 +281,7 @@ func staged_capture() -> Dictionary:
 
 
 ## Stage the transfer [method act_transfer] will commit. `to_holder` is an `OwnerRef`
-## — `{kind, id}` over the module's closed `KINDS`. `coins` is the AGREED settlement
+## — `{kind, id}` over the open kind vocabulary (ADR 0933). `coins` is the AGREED settlement
 ## and both parties are the wallets it runs between; `coins == 0` is a legal hand-off
 ## that skips the exchange entirely (ADR 0104), and the module refuses
 ## `no_settlement_party` itself when coins are named and a party is not.
@@ -802,8 +802,8 @@ func _render() -> void:
 ## `capture` needs a staged subject AND a term, because ADR 0104 leaves the CONDITION
 ## in the caller and a capture with nothing staged would be a grab with no cause.
 ## `transfer` needs a claim this hero holds and a staged target holder, which is a
-## button's one thing it cannot supply: a holder is an `OwnerRef` over the module's
-## closed `KINDS`, and an invented one is a claim handed to somebody nobody agreed to.
+## button's one thing it cannot supply: a holder is an `OwnerRef` the caller names,
+## and an invented one is a claim handed to somebody nobody agreed to.
 ## `release` needs a claim this hero holds, because `holder_mismatch` is the refusal a
 ## player who is told nothing may still be told why. `settle` needs a held claim with
 ## periods left, because a settled term refuses `claim_settled` and a released claim

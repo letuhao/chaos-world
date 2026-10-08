@@ -408,7 +408,7 @@ static func _resolve(owner: Dictionary) -> Dictionary:
 ## **The floor is kind-agnostic on purpose.** The old rule refused every non-`actor` holder
 ## outright, which meant an institution could never take a floored node — a gate that
 ## answers one kind is not a gate, it is a type check. A count of ledger rows is a fact for
-## all four `OwnerRef.KINDS` equally, and `_held_by` is that count.
+## every kind equally — the vocabulary is open (ADR 0933) — and `_held_by` is that count.
 static func _meets_floor(state: Dictionary, def: ResourceNodeDef, owner: Dictionary) -> bool:
 	if def == null or def.claim_floor <= 0:
 		return true
