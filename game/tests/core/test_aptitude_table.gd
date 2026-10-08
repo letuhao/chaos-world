@@ -97,6 +97,26 @@ func test_a_magnitude_edge_never_targets_a_realm_scaled_channel() -> void:
 		)
 
 
+## A MAGNITUDE edge must also never feed a channel a CONSUMER reads against a FIXED
+## SCALE. `damage_reduction` is clamped to `CombatTuning.damage_reduction_cap`
+## (`1 - minf(reduction, cap)` in both damage mechanisms), and `amplification` is
+## divided by the constant `amp_scale` at S7 — so a ladder-scaled input saturates both:
+## measured `damage_reduction` 0.1425 (R21) -> 2.2978 (R30) dropped the blow a defender
+## takes to x0.10, and with that corrected the ladder-scaled `amplification` overshot
+## the other way (a 9-blow fight against the anchor's 23). Same class as the status
+## contest channels above: a fixed scale cannot read a magnitude.
+func test_a_fixed_scale_consumer_does_not_ride_the_ladder() -> void:
+	var table := _table()
+	for edge in table.to_edges():
+		if edge.channel != Stat.DAMAGE_REDUCTION and edge.channel != CombatStats.AMPLIFICATION:
+			continue
+		assert_eq(
+			edge.mode,
+			AptitudeEdge.Mode.CONTEST,
+			"%s is read against a fixed scale, never a ladder magnitude" % String(edge.channel)
+		)
+
+
 func test_one_channel_carries_one_climb_behavior() -> void:
 	var table := _table()
 	var modes := {}

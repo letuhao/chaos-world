@@ -90,3 +90,22 @@ func sync_core(resources: Dictionary, stats: ActorStats, _invalidator: StatsInva
 		pool.regen = stats.derived(regen_id)
 		pool.set_maximum(stats.derived(CORE_POOL_STATS[pool_id]))
 	_syncing = false
+
+
+## Fill every core pool to its current maximum: the verb a freshly MINTED body uses.
+##
+## `sync_core` deliberately only CLAMPS `current` when a capacity changes (ADR 0025: an
+## item that raises `max_health` never refills), so a body whose capacity rose during
+## CONSTRUCTION would otherwise enter play at its old figure: the pool is created at the
+## unscaled `MAX_HEALTH` before any path exists, every realm enrolment then raises the
+## capacity, and `current` stays where it was born. The actor-vs-actor census measured
+## exactly that — 250 / 381425 at R30 — and the sixty-second anchor collapsed to a single
+## blow (DEF-0384).
+##
+## This is for a MINT and nothing else. NOT a restore (whose `current` is the save), NOT
+## an equip (ADR 0025), NOT a breakthrough (a lived body keeps its wounds).
+func refill_core(resources: Dictionary) -> void:
+	for pool_id in CORE_POOL_STATS:
+		var pool := resources.get(pool_id) as ResourcePool
+		if pool != null:
+			pool.change(pool.maximum - pool.current)

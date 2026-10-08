@@ -4,7 +4,13 @@
 ; {channel, source, k, mode}. CONTEST rows are ladder-free; MAGNITUDE rows read the
 ; actor's ladder value (its realm power, pushed by RealmScaling) — and a MAGNITUDE row
 ; must never target a RealmScaling.SCALED_STATS channel, which the ladder already
-; scales (tests/core/test_aptitude_table.gd refuses it).
+; scales, NOR a channel a CONSUMER reads against a FIXED SCALE: `damage_reduction` is
+; clamped to `CombatTuning.damage_reduction_cap` and `amplification` is divided by the
+; constant `amp_scale` at S7, so under MAGNITUDE the ladder saturates both — measured
+; `damage_reduction` 0.1425 -> 2.2978 across R21..R30 (the blow a defender takes fell to
+; x0.10, and once that was fixed the LADDER-scaled `amplification` overshot the other
+; way, a 9-blow fight against the anchor's 23; DEF-0384). Both are CONTEST for the same
+; reason the status channels are.
 ;
 ; The coefficients are an INITIAL AUTHORED PASS, not balance: retune by editing here.
 ;
@@ -28,11 +34,11 @@ script = ExtResource("1")
 edge_rows = Array[Dictionary]([
 {"channel": &"attack_physical", "source": &"might", "k": 0.4, "mode": "contest"},
 {"channel": &"attack_spiritual", "source": &"might", "k": 0.4, "mode": "contest"},
-{"channel": &"amplification", "source": &"might", "k": 0.2, "mode": "magnitude"},
+{"channel": &"amplification", "source": &"might", "k": 0.2, "mode": "contest"},
 {"channel": &"defense_physical", "source": &"fortitude", "k": 0.4, "mode": "contest"},
 {"channel": &"defense_spiritual", "source": &"fortitude", "k": 0.4, "mode": "contest"},
 {"channel": &"absorption", "source": &"fortitude", "k": 0.2, "mode": "magnitude"},
-{"channel": &"damage_reduction", "source": &"fortitude", "k": 0.05, "mode": "magnitude"},
+{"channel": &"damage_reduction", "source": &"fortitude", "k": 0.05, "mode": "contest"},
 {"channel": &"shield.capacity", "source": &"vigor", "k": 0.3, "mode": "magnitude"},
 {"channel": &"shield.regen", "source": &"vigor", "k": 0.02, "mode": "magnitude"},
 {"channel": &"shield.toughness", "source": &"vigor", "k": 0.05, "mode": "magnitude"},

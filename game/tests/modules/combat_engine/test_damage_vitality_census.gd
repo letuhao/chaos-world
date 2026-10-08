@@ -20,16 +20,12 @@ extends TestCase
 
 const REALM_INDICES: Array[int] = [0, 5, 10, 15, 20, 25, 29]
 ## The band, as a share of the sixty-second anchor. A fight may run short or long, but
-## a one-shot and a slog are both ruled out. The RAPID floor is wider than the heavy's
-## on purpose and the reason is measured: a rapid art's per-hit rides the technique
-## ladder (S1, up to 2.7667x) while the actor POOLS ride no ladder at all, so the rapid
-## fight shortens from ~38 s at R1 to ~22 s at R30 (the printed table). The heavy class
-## is flat because the loop's own fallback blow normalizes that ladder out
-## (`FightLoop.ANCHOR_BLOW_SCALE`). Reconciling the pools with the ladder is the one
-## remaining half of the ruling's shared-curve retune and is filed, not faked here.
+## a one-shot and a slog are both ruled out — for BOTH rate classes, which is the point
+## of DEF-0384/ADR 0934: the pools ride the same two curated curves a per-hit does
+## (`realm.power` and the technique ladder), a minted body enters FULL at its realm's
+## capacity, and the loop's fallback-blow normalization is deleted.
 const BAND_LOW := 0.5
 const BAND_HIGH := 2.0
-const RAPID_BAND_LOW := 0.3
 ## The heavy class's interval and the rapid clamp, read off the loop's own constants so
 ## this file cannot drift from the fight it measures.
 const HEAVY_INTERVAL := 1.0 / FightLoop.BASE_BLOWS_PER_SECOND
@@ -70,7 +66,7 @@ func test_the_actor_fight_holds_the_sixty_second_band() -> void:
 			)
 		)
 		assert_eq(
-			rapid_seconds >= 60.0 * RAPID_BAND_LOW and rapid_seconds <= 60.0 * BAND_HIGH,
+			rapid_seconds >= 60.0 * BAND_LOW and rapid_seconds <= 60.0 * BAND_HIGH,
 			true,
 			(
 				"%s: a rapid fight lasts %.1f s (%.1f hits)"
@@ -82,6 +78,21 @@ func test_the_actor_fight_holds_the_sixty_second_band() -> void:
 ## The same build on both sides: the factory, all three paths at the realm, and the
 ## combat spine. No gear and no boss-only multiplier, so a difference between two rows
 ## is the formula's own.
+## DEF-0384's second measured defect, pinned: the pool is created at the UNSCALED
+## capacity before any realm exists, `sync_core` only CLAMPS `current` (ADR 0025), and
+## without the enrolment verbs' mint refill a body enrolled at R30 entered the fight at
+## 250 / 381425 — a one-blow fight, which is what this census measured before the fix.
+func test_a_body_enrolled_at_a_realm_starts_full() -> void:
+	var realm_id: StringName = (
+		RealmDefaults.ladder().realms()[REALM_INDICES[REALM_INDICES.size() - 1]].id
+	)
+	var actor := _actor(realm_id)
+	var pool := actor.resource(&"health") as ResourcePool
+	assert_ne(pool, null, "the actor carries a health pool")
+	assert_almost_eq(pool.current, pool.maximum, "a mint ends FULL at its realm's capacity", 1e-6)
+	assert_eq(pool.maximum > 250.0, true, "at a realm whose capacity is above the unscaled base")
+
+
 func _actor(realm_id: StringName) -> Actor:
 	var actor := ActorFactory.build(
 		&"census_actor", {Stat.PHYSIQUE: 20.0, Stat.SPIRIT: 12.0, Stat.APTITUDE: 8.0}
@@ -92,6 +103,11 @@ func _actor(realm_id: StringName) -> Actor:
 	ActorFactory.with_mind_cultivation(actor, realm_id)
 	actor.meridians.unlock_for_realm(realm_id)
 	CombatBoot.install(actor)
+	# DEF-0384(d): the PRODUCTION build verb — the realm MULT on the shared stats and the
+	# pools, the element halves and the aptitude points — so the printed table measures
+	# the real absolute pools and attacks rather than an unscaled fixture whose drift
+	# cancels out of its own ratios.
+	ActorFactory.refresh_build(actor)
 	return actor
 
 

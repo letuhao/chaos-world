@@ -47,6 +47,20 @@ pin rather than a fix.
   `_ensure_providers` adds a contribution for an id core itself computes
   (`_derived.has(id)`) to the core pass's bucketed figure, with the bucket on the bonus
   once and the flats not re-applied.
+- **A MINT ends FULL at its realm's capacity.** The pools are created before any realm
+  exists and `sync_core` only CLAMPS `current` (ADR 0025's no-free-heal rule), so a body
+  enrolled at R30 entered play at `250 / 381425` — the census's own probe — and the first
+  blow ended the fight. `ActorPools.refill_core` / `Actor.refill_core_resources` fill to
+  the current maximum, and every public enrolment verb ends on
+  `ActorFactory._finish_mint` (`RealmScaling.apply` then the fill). Create-path only: a
+  restore comes through `_attach_*` and keeps its saved `current`, and an equip never
+  refills.
+- **An aptitude edge whose consumer has a FIXED SCALE is CONTEST, never MAGNITUDE.**
+  Two rows were ladder magnitudes and both saturated at depth:
+  `damage_reduction` (clamped to `damage_reduction_cap`; measured 0.1425 → 2.2978 across
+  R21..R30, the blow a defender takes falling to ×0.10) and `amplification` (divided by
+  the constant `amp_scale` at S7; with the first corrected, it overshot to a 9-blow
+  fight). Both are CONTEST now, with the structural pin in `test_aptitude_table`.
 - **Item (b) is pinned, not changed**: `test_qi_damage_realm` asserts the mechanism's
   `magnitude` equals `100 * ladder` at the top realm, so a future mechanism that rebuilt
   a raw magnitude from `technique.magnitude` fails at the seam. The stale
@@ -55,8 +69,10 @@ pin rather than a fix.
 
 ## Consequences
 
-- **Every class holds the anchor flat at every sampled realm**, printed by the census;
-  the pool and the per-hit now share both factors, so the ratio has no per-realm term.
+- **The census is FLAT**: 23 heavy blows and 192 rapid hits at every sampled realm,
+  R1 → R30, with both classes asserting the same 0.5–2.0 band of the sixty-second
+  anchor — the ruling's "exact" target, measured (`test_damage_vitality_census.gd`,
+  17/0).
 - The absolute pools grow by up to 2.7667x more across the ladder than they did. Nothing
   outside `RealmScaling` reads the pools as an authored constant — both curves are
   authored data (ADR 0055), one file each.

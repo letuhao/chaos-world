@@ -224,6 +224,13 @@ func attach_core_resources() -> void:
 	_pools().attach_core(resources, stats, _invalidator)
 
 
+## Fill the core pools to their current maximum. The verb a freshly MINTED body uses
+## (the enrolment verbs call it), never a restore, an equip or a breakthrough — see
+## [method ActorPools.refill_core] for the measured why.
+func refill_core_resources() -> void:
+	_pools().refill_core(resources)
+
+
 ## The pools delegate, minted on first use. The only place `_pools_helper` is assigned,
 ## so there is one helper per actor rather than one per call.
 func _pools() -> ActorPools:

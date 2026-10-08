@@ -272,7 +272,8 @@ static func _build_fertility_child(actor_id: StringName, base: Dictionary) -> Ac
 ## place that knows the attach order (ADR 0002, ADR 0012/0023).
 static func with_body_cultivation(actor: Actor, rank_id: StringName = &"qi_refining") -> Actor:
 	actor.set_path(PathState.new(BodyPath.PATH_ID, rank_id))
-	return _attach_body(actor)
+	_attach_body(actor)
+	return _finish_mint(actor)
 
 
 ## Enrol the actor on the qi path, in the same shape as the body enrolment above.
@@ -284,14 +285,37 @@ static func with_body_cultivation(actor: Actor, rank_id: StringName = &"qi_refin
 ## body alone, and the qi screen mounts bound to an actor it cannot read.
 static func with_qi_cultivation(actor: Actor, rank_id: StringName = &"qi_refining") -> Actor:
 	actor.set_path(PathState.new(QiPath.PATH_ID, rank_id))
-	return _attach_qi(actor)
+	_attach_qi(actor)
+	return _finish_mint(actor)
 
 
 ## Enrol the actor on the mind path. Same reason as the qi enrolment above, and
 ## `MindCultivationApi` was never attached to the player at all.
 static func with_mind_cultivation(actor: Actor, rank_id: StringName = &"qi_refining") -> Actor:
 	actor.set_path(PathState.new(MindPath.PATH_ID, rank_id))
-	return _attach_mind(actor)
+	_attach_mind(actor)
+	return _finish_mint(actor)
+
+
+## The tail every public enrolment verb ends on: a MINT ends FULL, at its realm's size.
+##
+## Two steps and the order is the whole point. `build` created the core pools at the
+## unscaled capacity before any realm existed, and nothing in the enrolment helpers below
+## applies the shared-stat MULT — the caller does (`refresh_build`, or a breakthrough),
+## which is exactly why the pool's MAXIMUM was still 250 when a refill tried to fill it.
+## So this applies the realm FIRST (`RealmScaling.apply`, idempotent, so each enrolment
+## may re-run it) and then fills: `sync_core` only CLAMPS `current` when a capacity
+## changes (ADR 0025's no-free-heal rule), and without the fill a body enrolled at a
+## realm above R1 entered play at its old figure — the census measured 250 / 381425 at
+## R30 and a one-blow fight (DEF-0384).
+##
+## Create-path only, by the enrolment verbs' own docblock: an enrolment OVERWRITES a
+## path, so a restore never comes through here — it uses `_attach_*` directly and its
+## `current` is the save. This deliberately lives OUTSIDE `_attach_*` for that reason.
+static func _finish_mint(actor: Actor) -> Actor:
+	RealmScaling.apply(actor)
+	actor.refill_core_resources()
+	return actor
 
 
 ## ## Why enrolling and attaching are two verbs and not one
