@@ -530,11 +530,18 @@ func _print_spread(rows: Array[Dictionary]) -> void:
 		)
 	)
 	var pool_lo := float(rows[0]["qi"]["pool"])
+	var pool_hi := float(rows[rows.size() - 1]["qi"]["pool"])
 	print("=== AUTHORED VITALITY POOL (ADR 0133's open desync) ====================")
+	# MEASURED, not quoted. This was the hardcoded prose "realms' vitality pool is authored
+	# 40.0 -> 800.0 (loot_*.tres, loot_route_elemental_transcendent_domain: 500/800), i.e.
+	# ~20x across 30 realms" - and the anchor landed UNDERNEATH it (BL-0919: every encounter
+	# tier re-emitted at `BASE_HEALTH * RealmDef.power`), so the sentence went on describing
+	# a corpus that no longer existed. A count in prose decays; a count the run prints
+	# cannot, which is the rule this line now follows.
 	print(
 		(
-			"realms' vitality pool is authored 40.0 -> 800.0 (loot_*.tres, "
-			+ "loot_route_elemental_transcendent_domain: 500/800), i.e. ~20x across 30 realms."
+			"realms' reference pool is authored %.1f -> %.1f, i.e. %.2fx across 30 realms."
+			% [pool_lo, pool_hi, pool_hi / pool_lo if pool_lo > 0.0 else 0.0]
 		)
 	)
 	print(
