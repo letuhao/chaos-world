@@ -114,6 +114,16 @@ const R_SAME_ACTOR := "same_actor"
 ## reported so a reader can see the lever rather than guess at it.
 const R_NOT_READY := "not_ready"
 
+## The rapid key's own refusals (BL-0933): nothing equipped on the key, or the
+## techniques module not attached so there is nothing to cast with.
+const R_NO_RAPID := "no_rapid_technique"
+const R_NO_CASTING := "no_casting"
+
+## The rapid key's interval floor: five hits per second, clamped for performance. A
+## rapid technique declares its own cast interval and the loop reads the LONGER of the
+## two, so no authored value can spin a fight faster than the clamp allows.
+const MIN_RAPID_INTERVAL := 0.2
+
 ## ## And the outcome words
 ##
 ## `CombatExchange`'s own vocabulary, reused verbatim rather than restated: a caller that
@@ -144,6 +154,11 @@ var _outcome: String = ""
 ## Seconds until this fighter's next blow is available. Accumulates DOWN from
 ## `BASE_BLOW_INTERVAL / attack_speed`, so a bigger speed grants a SMALLER interval.
 var _cooldown: float = 0.0
+## Seconds until the RAPID key may fire again (BL-0933): set to
+## `maxf(def.cooldown, MIN_RAPID_INTERVAL)` after each landed cast. A second gate
+## rather than a share of `_cooldown`, because the heavy blow and the rapid key are
+## two different actions with two different rates.
+var _rapid_cooldown: float = 0.0
 ## How many blows each side has landed. The anchor is stated in blows, so the loop
 ## publishes the count rather than only the health figures — this is what makes "about 25"
 ## checkable instead of asserted.
@@ -306,11 +321,20 @@ func age(delta: float) -> Dictionary:
 		return {"ok": true, "reason": "", "ready": true, "blows_remaining": 0.0}
 	_elapsed += delta
 	_cooldown = maxf(0.0, _cooldown - delta)
+	_rapid_cooldown = maxf(0.0, _rapid_cooldown - delta)
+	# The per-technique cooldowns belong to the items' own ledger, and ADR 0056 keeps
+	# time with the caller — so the fight's one clock advances them beside the loop's
+	# gates rather than the module holding a clock of its own.
+	var casting := _casting()
+	if casting != null:
+		casting.tick(_hero, delta)
 	return {
 		"ok": true,
 		"reason": "",
 		"ready": _cooldown <= 0.0,
 		"blows_remaining": _cooldown,
+		"rapid_ready": _rapid_cooldown <= 0.0,
+		"rapid_remaining": _rapid_cooldown,
 		"elapsed": _elapsed,
 	}
 
@@ -391,6 +415,69 @@ func exchange(seed_value: int = 0) -> Dictionary:
 	return result
 
 
+## Fire the technique bound to the rapid key: the right-click attack (BL-0933).
+##
+## ## The rate is the TECHNIQUE's, clamped
+##
+## `TechniqueDef.cooldown` is the cast interval, and the loop reads
+## `maxf(def.cooldown, MIN_RAPID_INTERVAL)` — so a rapid art declares its own rate and
+## the 5 hits/s floor is the loop's, not the content's. The heavy blow's own gate
+## (`_cooldown`) is untouched: pressing one action never preempts the other.
+##
+## ## The activation is the whole cast
+##
+## `TechniqueCasting.activate` pays qi and stamina all-or-nothing, resolves the hit
+## through the installed resolver (`CombatBoot.resolve_hit`, the same spine every other
+## blow uses), starts the technique's own cooldown and grants mastery. An unaffordable
+## or uninstalled cast refuses BY NAME and charges nothing, and this loop's gate is not
+## started by a cast that never happened.
+##
+## The opponent answers in the same call, exactly as `exchange` pairs a blow (ADR 0126:
+## a turn is both sides' contributions from one set of rolls).
+func cast_rapid(seed_value: int = 0) -> Dictionary:
+	var refusal := _refusal_for_exchange()
+	if not refusal.is_empty():
+		return _refuse(String(refusal.get("reason", R_NOT_FIGHTING)))
+	var def := _rapid_def()
+	if def == null:
+		return _refuse(R_NO_RAPID)
+	if _rapid_cooldown > 0.0:
+		return _refuse(R_NOT_READY)
+	var casting := _casting()
+	if casting == null or not TechniqueCasting.has_resolver():
+		return _refuse(R_NO_CASTING)
+	var fired := casting.activate(_hero, def, _opponent)
+	if not bool(fired.get("ok", false)):
+		return _refuse(String(fired.get("reason", "refused")))
+	_rapid_cooldown = maxf(def.cooldown, MIN_RAPID_INTERVAL)
+	var answer := {"ok": false, "reason": "no_opponent", "amount": 0.0, "crit": false}
+	if _health_of(_opponent) > 0.0:
+		answer = _strike(_opponent, _hero, seed_value + 1)
+		_opponent_blows += 1
+	var result := {
+		"ok": true,
+		"reason": "",
+		"outcome": OUTCOME_ONGOING,
+		"model": &"combat_engine",
+		"rapid": fired,
+		"opponent_blow": answer,
+		"hero_health": _health_of(_hero),
+		"hero_health_max": _maximum_of(_hero),
+		"opponent_health": _health_of(_opponent),
+		"opponent_health_max": _maximum_of(_opponent),
+		"hero_blows": _hero_blows,
+		"opponent_blows": _opponent_blows,
+		"elapsed": _elapsed,
+		"wounds": _wounds_of(_opponent),
+		"rapid_remaining": _rapid_cooldown,
+	}
+	if _health_of(_opponent) <= 0.0:
+		return _decide(OUTCOME_HERO_WON, result)
+	if _health_of(_hero) <= 0.0:
+		return _decide(OUTCOME_HERO_LOST, result)
+	return result
+
+
 ## The reason this exchange may not be thrown, as `{"reason": ...}`, or `{}` when it may.
 ## Every check is a GUARD on state, in the order a caller would reason about them, and a
 ## corpse spends nothing — refused before the roll, exactly as `CombatDuelHit` refuses
@@ -412,6 +499,24 @@ func _refusal_for_exchange() -> Dictionary:
 	return {}
 
 
+## The hero's cast ledger, or null when the techniques module is not attached.
+func _casting() -> TechniqueCasting:
+	if _hero == null:
+		return null
+	return _hero.component(TechniquesApi.CASTING_COMPONENT) as TechniqueCasting
+
+
+## The def bound to the rapid key (BL-0933), or null when nothing is equipped there or
+## the id has left the catalogue.
+func _rapid_def() -> TechniqueDef:
+	if _hero == null:
+		return null
+	var technique_id := TechniquesApi.slots(_hero).rapid_id()
+	if technique_id == &"":
+		return null
+	return TechniqueCatalog.instance().definition(technique_id)
+
+
 ## End the fight without a verdict — walking away from a live fight. The combat-scope
 ## purge (ADR 0089) belongs to the caller, because ADR 0106 gives `StatusLoop.exit_combat`
 ## the verb and this file holds no clock to purge from.
@@ -419,6 +524,7 @@ func disengage() -> Dictionary:
 	var was_fighting := _fighting
 	_fighting = false
 	_cooldown = 0.0
+	_rapid_cooldown = 0.0
 	_outcome = ""
 	return {"ok": true, "reason": "", "was_fighting": was_fighting}
 
@@ -434,6 +540,7 @@ func clear() -> void:
 	_opponent_blows = 0
 	_elapsed = 0.0
 	_cooldown = 0.0
+	_rapid_cooldown = 0.0
 
 
 ## The fight as primitives, so a screen renders it without naming anything this file
@@ -457,6 +564,8 @@ func summary() -> Dictionary:
 		"hero_blows": _hero_blows,
 		"opponent_blows": _opponent_blows,
 		"blows_remaining": _cooldown,
+		"rapid_remaining": _rapid_cooldown,
+		"rapid_id": String(&"" if _rapid_def() == null else _rapid_def().id),
 		"attack_speed": _attack_speed(_hero),
 		"blow_interval": _interval_of(_hero),
 		"wound_count": (ledger.get("severity", {}) as Dictionary).size(),
