@@ -87,12 +87,26 @@ func _init() -> void:
 ## per realm on the shared ladder, each carrying the required fields.
 ## `seed_dir` overrides the default seed directory
 ## (`res://data/<name>/realms/`); it is resolved relative to `res://`.
+##
+## When `provides` contains "organization_pack", the pack's organizations are
+## validated the same way (D6: a pack IS a mod): every `.tres` under the org
+## dir must load as an `InstitutionDef` whose authored content passes, and any
+## kind the pack hands capability implementations for is graded through
+## `InstitutionContract.register` — the refusal (`contract_failed` with its
+## findings) travels BY NAME, never re-derived here (D3). `seed_dir` names the
+## pack's `organizations/` dir: it is the SAME pipeline key the manifest, the
+## context seam and the loader already play through untouched, which is why a
+## pack manifest needs no second loader. `capabilities_by_kind` maps a kind id
+## to the capability instances the pack ships for it; a kind with no entry is
+## content-graded only, and its implementations are graded when the app
+## registers the kind.
 func register(
 	name: String,
 	api_gd_path: String,
 	deps: PackedStringArray,
 	provides: Array[String] = [],
-	seed_dir: String = ""
+	seed_dir: String = "",
+	capabilities_by_kind: Dictionary = {}
 ) -> Dictionary:
 	if _rows.has(name):
 		return _error("duplicate_module", "'%s' is already registered" % name)
@@ -108,6 +122,10 @@ func register(
 		var seed_findings := _validate_cultivation_seeds(name, seed_dir)
 		if not seed_findings.is_empty():
 			return _error("invalid_cultivation_seeds", "; ".join(seed_findings))
+	if provides.has("organization_pack"):
+		var org_findings := _validate_organization_pack(name, seed_dir, capabilities_by_kind)
+		if not org_findings.is_empty():
+			return _error("invalid_organization_pack", "; ".join(org_findings))
 	_rows[name] = {"api": api_gd_path, "deps": clean, "provides": provides}
 	_registered.append(name)
 	return {"ok": true, "reason": "", "detail": ""}
@@ -140,6 +158,59 @@ func _validate_cultivation_seeds(module_name: String, seed_dir: String) -> Array
 			realm_id = "(unknown)"
 		for finding in CultivationPathContract.validate_seed(seed):
 			findings.append("%s: %s" % [realm_id, finding])
+	return findings
+
+
+## Validate that an organization pack's `.tres` files carry sound content and
+## that any handed capability implementations pass their own contract suites.
+## Mirrors [_validate_cultivation_seeds]: the registry refuses a pack whose
+## SCHEMA is invalid at registration, so a broken pack costs its load (D8) —
+## never a silent skip, and a refused pack registers nothing.
+## Bounded by the directory's own file count: each file is visited once,
+## and no body appends to the container it is walking (INC-0002).
+func _validate_organization_pack(
+	module_name: String, org_dir: String, capabilities_by_kind: Dictionary
+) -> Array[String]:
+	var findings: Array[String] = []
+	var dir := org_dir if org_dir != "" else "res://data/packs/%s/organizations/" % module_name
+	var paths: Array[String] = []
+	for path in ContentScan.files_under(dir, "tres"):
+		paths.append(path)
+	if paths.is_empty():
+		findings.append(
+			"no organizations found in %s; an organization pack must provide at least one" % dir
+		)
+		return findings
+	var kinds := {}
+	for path in paths:
+		var def := load(path) as InstitutionDef
+		if def == null:
+			findings.append("organization at %s failed to load as an InstitutionDef" % path)
+			continue
+		var content := def.check_content()
+		if not bool(content.get("ok", false)):
+			var org_id := String(def.id) if String(def.id) != "" else "(unknown)"
+			findings.append("%s: %s" % [org_id, String(content.get("reason", ""))])
+			continue
+		kinds[String(def.kind)] = true
+	# D3 through the dispatcher's OWN verdict: a throwaway dispatcher grades the
+	# pack's implementations, so validation leaves no registration behind and the
+	# refusal reason is `InstitutionContract`'s own name, never a copy of it.
+	# A `for` over the pack's OWN kind snapshot, reading (never growing) the
+	# instances the caller handed in.
+	for kind in kinds.keys():
+		var handed = capabilities_by_kind.get(String(kind))
+		if handed == null:
+			continue
+		if not (handed is Array):
+			findings.append("%s: capabilities entry is not an array" % String(kind))
+			continue
+		var impls: Array = []
+		for entry in handed as Array:
+			impls.append(entry)
+		var verdict := InstitutionContract.new().register(StringName(String(kind)), impls)
+		if not bool(verdict.get("ok", false)):
+			findings.append("%s: %s" % [String(kind), String(verdict.get("reason", ""))])
 	return findings
 
 

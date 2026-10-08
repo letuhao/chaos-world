@@ -50,6 +50,27 @@ extends RefCounted
 ## `test_institution_def_catalog.gd` so the boundary stays visible instead of becoming
 ## a silent skip.
 ##
+## ## A PACK is a mod whose organizations ship together (D6)
+##
+## Layout: `game/data/packs/<pack_id>/organizations/*.tres` plus a `mod.json`
+## the existing loader already reads — `provides: ["organization_pack"]`, one
+## `modules[]` entry with `provides: ["organization_pack"]` and `seed_dir`
+## naming the pack's `organizations/` dir, and `content_roots:
+## [{family: "institutions", dir: "./organizations"}]` so the mod seam layers
+## the same tree this catalog merges. No second loader: the manifest shape is
+## exactly what `ModManifest.parse` and `ModLoader._stamp_context` already
+## play through untouched, and a new org kind is a pack with `.tres` files
+## plus optional capability scripts and zero base-game edits.
+##
+## ## The pack's cost, counter and scarcity (D8)
+##
+## A pack that fails its contract costs its load: `ModuleRegistry` refuses the
+## whole pack at registration (`invalid_organization_pack`), and a refused
+## merge registers nothing here either. Capabilities are the counter — every
+## claimed implementation must pass its own suite at registration or the kind
+## is refused by name. Content roots are scarce: an id collision needs a
+## declared override on the later root or the merge refuses by name.
+##
 ## ## NOTHING HERE TICKS
 ##
 ## No `_process`, no `Time.get_ticks*`, no `get_tree()` (DEF-0111).
@@ -63,6 +84,21 @@ extends RefCounted
 ## here, its own constant and its own walk both go. Until then they agree, and a test
 ## asserts they do.
 const INSTITUTIONS_ROOT := "res://data/institutions"
+## The directory shipped organization packs live under. One pack per
+## subdirectory; a pack's organizations live in its `organizations/` child, so
+## the family row for a pack is `<PACKS_ROOT>/<pack_id>/organizations`.
+## Scanned as BASE rows (owner `base`), in sorted pack order, between the base
+## root and the mod overlays: a pack is shipped content, so it layers exactly
+## where shipped content layers, and a pack id colliding with no declared
+## override refuses the whole family — content roots are scarce, and the
+## declared-override collision policy is the scarcity (D8). An absent
+## directory is empty, never a crash: until the tier moves land there are no
+## shipped packs, so zero pack rows is the honest answer, not a missing dir.
+const PACKS_ROOT := "res://data/packs"
+## The child directory inside a pack that carries its organizations. Fixed, so
+## a pack manifest's `content_roots` dir and this scan cannot disagree about
+## where a pack's content lives: `game/data/packs/<pack_id>/organizations/`.
+const PACK_ORGANIZATIONS_SUBDIR := "organizations"
 ## The one def class this family merges. Also the `def_class` the family row declares,
 ## so the Python gate and this scan are graded against the same name.
 const DEF_SCRIPT_CLASS := "InstitutionDef"
@@ -132,8 +168,9 @@ static func clear() -> void:
 	shared = null
 
 
-## The merge stack: the base root as a base-owned row, then the overlay rows in order.
-## The base row carries the family's id_field so the merge reads the correct property
+## The merge stack: the base root as a base-owned row, then the shipped pack
+## rows in sorted pack order, then the overlay rows in load order. The base row
+## carries the family's id_field so the merge reads the correct property
 ## even when an overlay row omits it.
 func _merge_stack() -> Array:
 	var stack: Array = [
@@ -144,9 +181,48 @@ func _merge_stack() -> Array:
 			"id_field": ID_FIELD,
 		}
 	]
+	for row in _pack_rows():
+		stack.append(row)
 	for row in _overlay_stack:
 		stack.append(row)
 	return stack
+
+
+## One base-owned merge row per shipped pack, in sorted pack-id order. Sorted
+## because `DirAccess` iteration order is not stable across platforms, and an
+## unstable base order is a content authority that changes between runs.
+## A `for` over a materialised, sorted id list: the body appends to a NEW row
+## array, never to the list being walked, so no bound grows in lockstep with
+## its own body (`test_no_unbounded_wait.gd`).
+func _pack_rows() -> Array:
+	var ids: Array[String] = []
+	var dir := DirAccess.open(PACKS_ROOT)
+	if dir == null:
+		return []
+	# The `DirAccess` terminator (`entry != ""`): the loop drains the listing and
+	# cannot spin on anything it is itself growing.
+	dir.list_dir_begin()
+	var entry := dir.get_next()
+	while entry != "":
+		if not entry.begins_with(".") and dir.current_is_dir():
+			ids.append(entry)
+		entry = dir.get_next()
+	dir.list_dir_end()
+	ids.sort()
+	var rows: Array = []
+	for pack_id in ids:
+		(
+			rows
+			. append(
+				{
+					"dir": PACKS_ROOT.path_join(pack_id).path_join(PACK_ORGANIZATIONS_SUBDIR),
+					"owner": BASE_OWNER,
+					"declared_overrides": [],
+					"id_field": ID_FIELD,
+				}
+			)
+		)
+	return rows
 
 
 ## Merge the family's overlay stack through `CatalogOverlay`. Returns its dictionary
