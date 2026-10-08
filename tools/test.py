@@ -20,6 +20,12 @@ RUNNER_REL = "res://tests/run_tests.gd"
 _TALLY_RELPATH = Path("Godot") / "app_userdata" / "Chaos World" / "test-tally.txt"
 _RESULTS_RE = re.compile(r"^Results: ", re.MULTILINE)
 
+# The clock ceiling THIS command gets, in seconds. Not a copy of `godot.TIMEOUT_SECONDS`:
+# the full suite is bounded by the corpus rather than by a scene, it measured 14m54s, and
+# at the shared 900 it was killed before it could print a tally (BL-0945). The RAM and log
+# ceilings still guard the machine, and a kill is now reported with its partial tally.
+FULL_SUITE_TIMEOUT_SECONDS = 2400
+
 
 def _tally_path() -> Path | None:
     appdata = os.environ.get("APPDATA")
@@ -133,9 +139,31 @@ def run(args) -> int:
     cmd = ["--headless", "--path", str(GAME_DIR), "-s", RUNNER_REL]
     if args.suite:
         cmd += ["--", "--suite", args.suite]
-    result = godot.run_godot(cmd, capture=True)
-    output = result.stdout or ""
-    errors = result.stderr or ""
+    # ## `test` gets its own clock, and a killed run still reports
+    #
+    # Unlike every other command this tool runs, `test`'s work is bounded by the CORPUS and
+    # not by a scene. Measured 2026-10-08: the full suite ran 14m54s and was killed at the
+    # shared 900s ceiling BEFORE it could print a tally, so the gate's last step had no
+    # whole-tree verdict at all and every measurement had to be a slice (BL-0945). The RAM
+    # and log ceilings are what protect the machine; a clock ceiling on a run that is
+    # KNOWN slow is a guillotine. Raised for this command only, and paired with the
+    # recovery below so a kill still says how far it got.
+    try:
+        result = godot.run_godot(cmd, capture=True, timeout=FULL_SUITE_TIMEOUT_SECONDS)
+    except ToolError as exc:
+        # A killed run is the one whose numbers somebody needs. `run_godot` RAISES rather
+        # than returning, so the tally the runner mirrors to `user://` is recovered here or
+        # not at all - and a raise with no numbers is what made a 15-minute run
+        # indistinguishable from a run that measured nothing.
+        killed = str(exc)
+        output = ""
+        errors = ""
+        result = None
+    else:
+        killed = ""
+        output = result.stdout or ""
+        errors = result.stderr or ""
+    exit_code = result.returncode if result is not None else "killed"
     if args.out:
         # Written BEFORE any failure return: a red run is the one whose output somebody
         # needs, and an artifact written only on success keeps the evidence out of every
@@ -143,14 +171,25 @@ def run(args) -> int:
         target = Path(args.out)
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(
-            "exit=%s\n--- STDOUT ---\n%s\n--- STDERR ---\n%s\n"
-            % (result.returncode, output, errors),
+            f"exit={exit_code}\n--- STDOUT ---\n{output}\n--- STDERR ---\n{errors}\n",
             encoding="utf-8",
         )
     # Re-emit so a captured run still reads like a streamed one.
     print(output, end="")
     if errors:
         print(errors, end="", file=sys.stderr)
+    if killed:
+        # The clock ceiling fired, so this run produced no stdout of its own and the ONLY
+        # measurement it has is the tally the runner mirrors to `user://` after every suite.
+        # Reporting it is the difference between "the run was too slow" and "the run
+        # measured nothing" - and the second is what a bare raise said for 15 minutes.
+        fail(f"the run was killed by the launcher's clock ceiling: {killed}")
+        tally = _read_tally()
+        if tally:
+            warn(f"  partial tally at the kill, so this is a floor and not a result: {tally}")
+        else:
+            warn("  no partial tally survived the kill")
+        return 1
     aborted = _error_lines(output + "\n" + errors)
     if aborted:
         fail(
