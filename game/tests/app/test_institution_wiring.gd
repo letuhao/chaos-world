@@ -205,7 +205,7 @@ func test_the_institutions_family_is_declared_with_the_data_directory_the_catalo
 	var catalog := InstitutionDefCatalog.instance()
 	assert_eq(
 		String(InstitutionDefCatalog.INSTITUTIONS_ROOT),
-		"res://data/institutions",
+		"res://data/packs/guilds/organizations",
 		"the family's root is the directory the shipped organizations actually live in"
 	)
 	# And the shipped content is answerable through it, which is what a mod's root stacks

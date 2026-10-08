@@ -40,8 +40,8 @@ extends TestCase
 ## grow in lockstep with its own body and `test_no_unbounded_wait.gd` has nothing to reject.
 
 ## The shipped organizations, read and NEVER written.
-const LANTERN := "res://data/institutions/lantern_exchange.tres"
-const HUNT := "res://data/institutions/grey_horizon_hunt.tres"
+const LANTERN := "res://data/packs/guilds/organizations/lantern_exchange.tres"
+const HUNT := "res://data/packs/guilds/organizations/grey_horizon_hunt.tres"
 
 ## ## The shipped organization ids
 ##

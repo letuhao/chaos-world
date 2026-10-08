@@ -395,7 +395,8 @@ func test_a_lesson_spends_the_teacher_and_publishes_what_it_paid() -> void:
 ## on it is one a panel could render.
 func test_a_doctrines_refusals_are_authored_content_not_composed_prose() -> void:
 	for authored in [
-		"res://data/sect/doctrines/still_water.tres", "res://data/sect/doctrines/iron_vine.tres"
+		"res://data/packs/sect/organizations/doctrines/still_water.tres",
+		"res://data/packs/sect/organizations/doctrines/iron_vine.tres"
 	]:
 		var def := load(authored) as SectDoctrineDef
 		assert_ne(def, null, "%s loads" % authored)

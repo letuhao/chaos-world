@@ -7,7 +7,8 @@ extends RefCounted
 ##
 ## `SectCatalog._ensure_loaded` filters on `script_class="SectDef"`, so a
 ## `SectDoctrineDef` sitting in the same tree is skipped rather than mis-cast. Two
-## independent scans are what lets both types ship under `res://data/sect/` — the
+## independent scans are what lets both types ship under
+## `res://data/packs/sect/organizations/` — the
 ## one rule ADR 0083 and ADR 0084 leave no room to bend is that a definition is a
 ## `.tres` and adding a school of thought must never be a code change (BL-0186).
 ##
@@ -22,8 +23,8 @@ extends RefCounted
 ## own transmission and dropping it would take that away — which is the same
 ## conservative answer `DestinyState` makes across unrelated fates and destinies.
 
-## `res://data/sect/doctrines` — the authored doctrine definitions.
-const DOCTRINES_ROOT := "res://data/sect/doctrines"
+## `res://data/packs/sect/organizations/doctrines` — the authored doctrine definitions.
+const DOCTRINES_ROOT := "res://data/packs/sect/organizations/doctrines"
 ## The `script_class` a `.tres` must declare to be read as a doctrine.
 const DOCTRINE_SCRIPT_CLASS := "SectDoctrineDef"
 ## The def property holding this family's id.

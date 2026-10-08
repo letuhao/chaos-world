@@ -3,8 +3,8 @@ extends RefCounted
 
 ## The authored sect content tree, loaded once and cached.
 ##
-## Sect definitions live in `res://data/sect/` and are ordinary `.tres` resources
-## carrying a `script_class`, loaded the same way `FateCatalog` loads its tree: a
+## Sect definitions live in `res://data/packs/sect/organizations/` and are ordinary
+## `.tres` resources carrying a `script_class`, loaded the same way `FateCatalog` loads its tree: a
 ## text scan for `script_class=` so a `.tres` belonging to some other resource type
 ## in the same directory is skipped rather than mis-cast.
 ##
@@ -15,8 +15,8 @@ extends RefCounted
 ## treats an empty known-content filter as "accept what you were handed" rather
 ## than "deny everything" — which is the same rule `destiny` and `race` follow.
 
-## `res://data/sect` — the authored sect definitions.
-const SECTS_ROOT := "res://data/sect"
+## `res://data/packs/sect/organizations` — the authored sect definitions.
+const SECTS_ROOT := "res://data/packs/sect/organizations"
 ## The `script_class` a `.tres` must declare to be read as a sect.
 const SECT_SCRIPT_CLASS := "SectDef"
 ## The def property holding this family's id.

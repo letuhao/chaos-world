@@ -42,7 +42,7 @@ extends TestCase
 ## nothing to reject.
 
 ## The shipped trading guild, READ and never mutated.
-const LANTERN := "res://data/institutions/lantern_exchange.tres"
+const LANTERN := "res://data/packs/guilds/organizations/lantern_exchange.tres"
 const LANTERN_ID := "lantern_exchange"
 
 

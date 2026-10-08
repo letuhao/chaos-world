@@ -30,9 +30,9 @@ const POSITION_FILE := "res://src/core/institution_position_def.gd"
 
 ## The three shipped organizations, by path, and the kinds they declare. Written
 ## here as EXPECTATIONS to compare against — never as a list the boot reads.
-const LANTERN := "res://data/institutions/lantern_exchange.tres"
-const GREY_HORIZON := "res://data/institutions/grey_horizon_hunt.tres"
-const TORRENT_FIELD := "res://data/institutions/torrent_field_circle.tres"
+const LANTERN := "res://data/packs/guilds/organizations/lantern_exchange.tres"
+const GREY_HORIZON := "res://data/packs/guilds/organizations/grey_horizon_hunt.tres"
+const TORRENT_FIELD := "res://data/packs/guilds/organizations/torrent_field_circle.tres"
 
 const TRADING_GUILD := &"trading_guild"
 const HUNTING_GUILD := &"hunting_guild"
@@ -221,7 +221,11 @@ func test_the_boot_source_names_no_kind_no_organization_and_no_def_path() -> voi
 	# had to assert in step so it could not rot; with the second one gone the boot's source
 	# must be UNABLE to name a directory at all, which is what makes a reintroduced second
 	# scan a red assertion rather than a silent split.
-	assert_eq(_calls(body, "res://data/institutions"), 0, "and it names no content root of its own")
+	assert_eq(
+		_calls(body, "res://data/packs/guilds/organizations"),
+		0,
+		"and it names no content root of its own"
+	)
 	assert_eq(_calls(body, "ContentScan"), 0, "and it walks no directory itself")
 
 

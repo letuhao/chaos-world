@@ -3,7 +3,7 @@ extends RefCounted
 
 ## The authored nation content tree, loaded once and cached.
 ##
-## Definitions live in `res://data/nation/` and are ordinary `.tres` resources
+## Definitions live in `res://data/packs/nation/organizations/` and are ordinary `.tres` resources
 ## carrying a `script_class`, loaded the way `RaceCatalog` loads its tree: a text
 ## scan for `script_class=` so a `.tres` of some other resource type sitting in the
 ## same directory is skipped rather than mis-cast.
@@ -13,7 +13,7 @@ extends RefCounted
 ## declares no `world` and no `clan` dependency and a `.tres` reference would be a
 ## `res://` edge the boundary checker reads as a real one.
 
-const NATIONS_ROOT := "res://data/nation"
+const NATIONS_ROOT := "res://data/packs/nation/organizations"
 const NATION_SCRIPT_CLASS := "NationDef"
 const TERRITORY_SCRIPT_CLASS := "NationTerritoryDef"
 const TUNING_PATH := "res://src/modules/nation/nation_tuning.tres"

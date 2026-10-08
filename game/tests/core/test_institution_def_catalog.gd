@@ -6,9 +6,10 @@ extends TestCase
 ##
 ## ## Why the fixtures are written to the OS temp dir
 ##
-## Two reasons, and the second is the one that matters. First, `game/data/institutions/`
-## is authored content: a case that adds a `.tres` there changes what every later suite
-## and every audit grades. Second — and this is the `PortraitCatalog.with_probe` lesson —
+## Two reasons, and the second is the one that matters. First,
+## `game/data/packs/guilds/organizations/` is authored content: a case that adds
+## a `.tres` there changes what every later suite and every audit grades.
+## Second — and this is the `PortraitCatalog.with_probe` lesson —
 ## **a guard asserted against shipped content cannot be distinguished from that content
 ## being broken.** The check either fires because it works or because the fixture is
 ## wrong, and only one of those is evidence. So every case below builds its own tree.
@@ -86,11 +87,46 @@ func test_the_family_resolves_and_its_def_class_loads() -> void:
 func test_the_base_root_is_where_the_shipped_organizations_live() -> void:
 	assert_eq(
 		InstitutionDefCatalog.INSTITUTIONS_ROOT,
-		"res://data/institutions",
+		"res://data/packs/guilds/organizations",
 		"the family scans the authored institutions directory"
 	)
 	var shipped := ContentScan.files_under(InstitutionDefCatalog.INSTITUTIONS_ROOT)
 	assert_eq(shipped.size() > 0, true, "and it is not empty on this tree")
+
+
+## ## The legacy tier roots carry NO defs after the pack move
+##
+## The move relocated every tier into `game/data/packs/<pack>/organizations/`, and no
+## catalog scans the old roots — so a `.tres` left behind there loads NOWHERE, which
+## is silent content loss rather than a loud double load. An absent directory reads
+## as empty (`ContentScan` degrades a missing dir to no contribution), so this fires
+## only when a stray file actually exists.
+## A `for` over a four-literal array, reading only: the body appends to nothing.
+func test_the_legacy_tier_roots_carry_no_defs_after_the_pack_move() -> void:
+	for legacy in [
+		"res://data/sect", "res://data/nation", "res://data/clans", "res://data/institutions"
+	]:
+		assert_eq(
+			ContentScan.files_under(legacy).is_empty(),
+			true,
+			"%s carries no defs: a stray there would load nowhere" % legacy
+		)
+
+
+## ## The merge stack names no directory twice
+##
+## The base root IS a pack dir (`packs/guilds/organizations`), and `_pack_rows`
+## yields every pack's `organizations/` dir — so without the skip in `_merge_stack`
+## the same dir would merge twice and `CatalogOverlay` would refuse the whole
+## family (an undeclared collision of every id with itself, registering nothing).
+## A `for` over the stack's own snapshot, reading only: the body writes a fresh
+## local set, never the stack being walked.
+func test_the_merge_stack_names_no_directory_twice() -> void:
+	var seen := {}
+	for row in InstitutionDefCatalog.instance()._merge_stack():
+		var dir := String((row as Dictionary).get("dir", ""))
+		assert_eq(seen.has(dir), false, "%s merges once, never twice" % dir)
+		seen[dir] = true
 
 
 ## ## The boot holds NO base root of its own — there is ONE loader, not two in step

@@ -4,7 +4,7 @@ extends TestCase
 ##
 ## The FIELD and its ONE consumer shipped first (`InstitutionPositionDef.standing_percent_stats`
 ## and `InstitutionProjection.grant`, ADR 0084) and the CONTENT did not: all three `.tres` files
-## under `res://data/institutions` authored an EMPTY allowlist on every office, so the recognition
+## under `res://data/packs/guilds/organizations` authored an EMPTY allowlist on every office, so the recognition
 ## a guild confers was authored-but-unreachable — a player who founded The Lantern Exchange
 ## received a seat, a duty and a treasury and NOT one point of recognition.
 ##
@@ -42,11 +42,11 @@ extends TestCase
 ## The ONE directory every authored organization lives in, swept as the corpus it is rather
 ## than written down as a file list: a fourth guild dropped in is measured here with no edit
 ## to this file.
-const INSTITUTIONS_DIR := "res://data/institutions"
+const INSTITUTIONS_DIR := "res://data/packs/guilds/organizations"
 ## The two guilds DEF-0343 is about, read for the per-office and per-guild shape assertions.
 ## The farmers' circle is deliberately absent: it authors no office at all — see the class note.
-const LANTERN := "res://data/institutions/lantern_exchange.tres"
-const HUNT := "res://data/institutions/grey_horizon_hunt.tres"
+const LANTERN := "res://data/packs/guilds/organizations/lantern_exchange.tres"
+const HUNT := "res://data/packs/guilds/organizations/grey_horizon_hunt.tres"
 ## The office ids the DEF names as the pair that must differ: the ordinary member and the one
 ## seat of the counting house.
 const CLERK := &"clerk"

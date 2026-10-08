@@ -32,7 +32,7 @@ extends TestCase
 
 ## The shipped organizations, read and NEVER written. `load()` caches process-wide and the
 ## runner drives every suite in ONE process, so a write here leaks into every suite after it.
-const LANTERN := "res://data/institutions/lantern_exchange.tres"
+const LANTERN := "res://data/packs/guilds/organizations/lantern_exchange.tres"
 const LANTERN_ID := &"lantern_exchange"
 const HUNT_ID := &"grey_horizon_hunt"
 const SEAT := &"first_ledger"

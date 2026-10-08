@@ -27,7 +27,7 @@ extends TestCase
 ## appends to the container it walks — so no bound grows in lockstep with its own body.
 
 ## The shipped guild, read and NEVER written.
-const LANTERN := "res://data/institutions/lantern_exchange.tres"
+const LANTERN := "res://data/packs/guilds/organizations/lantern_exchange.tres"
 const LANTERN_ID := &"lantern_exchange"
 const SEAT := &"first_ledger"
 const CLERK := &"clerk"

@@ -33,7 +33,7 @@ extends TestCase
 
 ## The shipped trading guild, READ and never mutated. A copy of a `.tres` that
 ## `load()` has cached would leak into every suite after this one.
-const LANTERN := "res://data/institutions/lantern_exchange.tres"
+const LANTERN := "res://data/packs/guilds/organizations/lantern_exchange.tres"
 ## The authored offices the authority case is about: the one seat that authors
 ## `expel` and the ordinary office that does not.
 const SEAT := &"first_ledger"

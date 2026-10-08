@@ -75,15 +75,12 @@ extends RefCounted
 ##
 ## No `_process`, no `Time.get_ticks*`, no `get_tree()` (DEF-0111).
 
-## The one directory every authored organization lives in, base game content.
-## ## Kept beside `InstitutionBoot.CONTENT_ROOT` rather than replacing it
-##
-## This constant and that one name the same directory, and collapsing them needs an
-## edit under `app/`, which another session held when this shipped. The duplication is
-## one-directional and recorded for the follow-up: when the boot delegates its scan
-## here, its own constant and its own walk both go. Until then they agree, and a test
-## asserts they do.
-const INSTITUTIONS_ROOT := "res://data/institutions"
+## The one directory the base game scans for its own organizations: the guilds
+## pack's `organizations/` dir. A pack dir like any other, so `_merge_stack`
+## skips the pack row that would merge it twice — a same-id collision with no
+## declared override refuses the whole family, even against itself. Def ids are
+## unchanged by the pack move, so saves survive it.
+const INSTITUTIONS_ROOT := "res://data/packs/guilds/organizations"
 ## The directory shipped organization packs live under. One pack per
 ## subdirectory; a pack's organizations live in its `organizations/` child, so
 ## the family row for a pack is `<PACKS_ROOT>/<pack_id>/organizations`.
@@ -171,7 +168,12 @@ static func clear() -> void:
 ## The merge stack: the base root as a base-owned row, then the shipped pack
 ## rows in sorted pack order, then the overlay rows in load order. The base row
 ## carries the family's id_field so the merge reads the correct property
-## even when an overlay row omits it.
+## even when an overlay row omits it. A pack row naming the base root's own
+## dir is SKIPPED: the guilds pack's `organizations/` dir IS the base root, and
+## merging one dir twice is an undeclared collision of every id with itself.
+## A `for` over `_pack_rows()`' own snapshot, appending only to the stack it
+## builds — the body never grows the array being walked, so the bound is the
+## shipped pack count (`test_no_unbounded_wait.gd`).
 func _merge_stack() -> Array:
 	var stack: Array = [
 		{
@@ -182,6 +184,8 @@ func _merge_stack() -> Array:
 		}
 	]
 	for row in _pack_rows():
+		if String((row as Dictionary).get("dir", "")) == INSTITUTIONS_ROOT:
+			continue
 		stack.append(row)
 	for row in _overlay_stack:
 		stack.append(row)
@@ -191,6 +195,8 @@ func _merge_stack() -> Array:
 ## One base-owned merge row per shipped pack, in sorted pack-id order. Sorted
 ## because `DirAccess` iteration order is not stable across platforms, and an
 ## unstable base order is a content authority that changes between runs.
+## `_merge_stack` drops the row whose dir is the base root's own (the guilds
+## pack): pack rows are unique among themselves, so that is the only duplicate.
 ## A `for` over a materialised, sorted id list: the body appends to a NEW row
 ## array, never to the list being walked, so no bound grows in lockstep with
 ## its own body (`test_no_unbounded_wait.gd`).

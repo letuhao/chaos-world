@@ -31,7 +31,7 @@ extends TestCase
 
 ## The shipped guild this suite founds. Read, never mutated — see
 ## `_guild_with_an_allowlist`.
-const LANTERN := "res://data/institutions/lantern_exchange.tres"
+const LANTERN := "res://data/packs/guilds/organizations/lantern_exchange.tres"
 ## The office the allowlist is authored onto, and the office recognition STARTS at,
 ## so a case can show that a seat and a standing are two independent facts.
 const SEAT := &"first_ledger"
@@ -84,10 +84,10 @@ const FORBIDDEN_CONTENT_CALLS := ["set_base", "add_base", "add_provider", "add_s
 ## nations are included because `NationOfficeDef` is a THIRD copy of the field and the
 ## measurement has to cover all three families at once.
 const SHIPPED_ALLOWLISTS := [
-	"res://data/sect/jade_court.tres",
-	"res://data/sect/iron_vine.tres",
-	"res://data/nation/march_of_the_nine_provinces.tres",
-	"res://data/nation/court_of_the_star.tres",
+	"res://data/packs/sect/organizations/jade_court.tres",
+	"res://data/packs/sect/organizations/iron_vine.tres",
+	"res://data/packs/nation/organizations/march_of_the_nine_provinces.tres",
+	"res://data/packs/nation/organizations/court_of_the_star.tres",
 ]
 
 var _registry: InstitutionRegistry = null
