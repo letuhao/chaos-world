@@ -136,16 +136,24 @@ func _run() -> void:
 	for _frame in FRAMES:
 		await process_frame
 	var report := _inspect(path, app)
-	var rows_at_boot := _bag_rows(app)
-	report["rows_at_boot"] = rows_at_boot
+	# ## Why the baseline is read AFTER the pin rather than here
+	#
+	# The app opens on the character-creation route, so a bag read at this point answers
+	# for a route that has no bag on it at all. Measured on the shipped tree it returned
+	# -1, and that -1 then failed the pin and every restore compared against it ("the bag
+	# listed 7 rows when pinned and -1 before it") — the probe reporting a game fault it
+	# had manufactured by asking the wrong screen. Only the workbench can answer what the
+	# player starts with, and the pin already stands there when it reads.
 	# Pin the starting bag BEFORE the first hunt, through the workbench's own Save
 	# control. Every cell restores it, so the sweep's budget is independent of the
 	# bag's 24 slots: without this the search banks one or two drops per fight and
 	# fills the bag with its own hoarding by about the twelfth cell, and every later
 	# pickup overflows into the world container instead of reaching the bag. That is
 	# the probe measuring its own setup, and it is what this pair of steps removes.
-	var pin_report: Dictionary = await _pin_starting_bag(app, rows_at_boot)
+	var pin_report: Dictionary = await _pin_starting_bag(app)
 	report["pin"] = pin_report
+	var rows_at_boot := int(pin_report.get("rows", -1))
+	report["rows_at_boot"] = rows_at_boot
 	var nav_report: Dictionary = await _press_nav(app)
 	report["nav"] = nav_report
 	# One boss is not a guarantee of gear: a fight may pay a consumable or a token,
@@ -952,6 +960,11 @@ func _bag_rows(app: Node) -> int:
 
 ## Snapshot the bag the player starts with, through the workbench's own Save control.
 ##
+## **The count this returns IS the baseline.** `_run` reads `rows_at_boot` out of it rather
+## than counting the bag itself, because a bag can only be counted on the workbench and the
+## app opens on the character-creation route — a read anywhere else answers for a screen
+## that has no bag at all, and the -1 it returns fails every check that compares to it.
+##
 ## The sweep fights up to MAX_EQUIP_HUNTS bosses and banks every drop it claims, and
 ## the bag is 24 slots with NO production verb that takes an unwanted item back out:
 ## the workbench offers use, equip, unequip, generate, save and load, and none of
@@ -963,15 +976,20 @@ func _bag_rows(app: Node) -> int:
 ## fault it caused. Pinning the starting bag once and restoring it before each cell
 ## is what a player does with Save and Load, and it is also what makes
 ## `rows_at_boot` a per-cell baseline again instead of a number cell one already beat.
-func _pin_starting_bag(app: Node, rows_at_boot: int) -> Dictionary:
+func _pin_starting_bag(app: Node) -> Dictionary:
 	var pinned := await _press_persistence(app, SAVE_BUTTON, SAVED_WORDING)
 	if not bool(pinned.get("ok", false)):
 		return pinned
 	var rows := int(pinned.get("rows", -1))
-	if rows != rows_at_boot:
+	var before := int(pinned.get("rows_before", -1))
+	# Both readings are taken on the workbench by `_press_persistence`, so this compares
+	# like with like: a Save that CHANGED the bag is the fault, and a route with no bag on
+	# it is not. Reading one of the two anywhere else is what made this check report "-1
+	# before it" against a bag that was demonstrably holding seven rows.
+	if rows < 0 or rows != before:
 		return {
 			"ok": false,
-			"why": "the bag listed %d rows when pinned and %d before it" % [rows, rows_at_boot],
+			"why": "the bag listed %d rows when pinned and %d before it" % [rows, before],
 		}
 	return pinned
 
@@ -1030,13 +1048,14 @@ func _press_persistence(app: Node, button_name: String, wording: String) -> Dict
 				% verb
 			),
 		}
+	var rows_before := _bag_rows(app)
 	if not _press(bar, button_name):
 		return {"ok": false, "why": "the action bar's %s control is not a live control" % wording}
 	await process_frame
 	var said := String((screen.call(&"summary") as Dictionary).get("message", "")).strip_edges()
 	if not said.begins_with(wording):
 		return {"ok": false, "why": "the screen published '%s', not %s" % [said, wording]}
-	return {"ok": true, "rows": _bag_rows(app), "said": said}
+	return {"ok": true, "rows": _bag_rows(app), "rows_before": rows_before, "said": said}
 
 
 ## Select the first row the bag lists. Bounded by nothing because it reads one
