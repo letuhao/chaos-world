@@ -57,6 +57,34 @@ static var shared: RelationsApi = null
 ## to hang state on, so this is the one thing `shared` exists to hold.
 static var _memo: Dictionary = {}
 
+## The world polity store, when one is installed. `app/` installs THE SAME instance
+## the save owns (`SaveApi.store_for(WorldPolityLedger.WORLD_KEY)`), so a stance a
+## writer verb declares and the stance the graph reads cannot be two different
+## worlds.
+static var _store: RefCounted = null
+
+
+## Install the world polity store — any object with `read_ledger()` — so a bare
+## `graph()` reads the stances the writer facades recorded, not only the authored
+## catalog (DEF-0179).
+##
+## ## Why the store is injected, and why it is not `module_data`
+##
+## A stance between two institutions is a WORLD fact, but the actor-scoped ledgers
+## are the only persistence root a module may reach. Storing it per actor is not a
+## simplification, it is a **correctness bug**: two actors each keep their own copy,
+## so a rival reads a declared war as never declared and overwrites it — precisely
+## the one-sided write ADR 0047 forbids. So the ledger is owned by an injected store
+## and every read goes to THAT; `set_store(null)` is the ordinary uninstall, and
+## with none installed the graph answers the authored catalog exactly as it did
+## before this seam existed.
+##
+## The names are deliberately not `load`/`save`: those are global GDScript builtins,
+## and a `RefCounted` method of that name resolves to the builtin — a compile error
+## rather than a loud failure.
+static func set_store(store: RefCounted) -> void:
+	_store = store
+
 
 ## The graph, or the memoized copy when one has been taken. Rebuild it by assigning
 ## `RelationsApi.shared = null` — legal, free, and produces the identical dictionary,
@@ -65,23 +93,33 @@ static var _memo: Dictionary = {}
 ## ## The memo is a SPEEDUP over a rebuild, never a source of its own
 ##
 ## It is not invalidated on a write, because **there is nothing to invalidate on**:
-## `RelationGraph` reads `summary(null)` from every owner, so what it sees is the
-## AUTHORED catalog, and it holds no per-actor state for an owner write to change.
+## the memo holds the PURE AUTHORED build alone. A store-backed build is never
+## memoized — the ledger is the thing that moves — and an explicitly handed ledger
+## always wins over the store. With no store installed and no argument, the memo
+## still covers the bare call exactly as before, because the authored catalog is the
+## one input that cannot change at runtime.
 ##
 ## ## Player-driven stances arrive through the world ledger, never an actor
 ##
 ## A stance the player declares — a schism, a war — lives on the WORLD polity
 ## ledger beside the actor (ADR 0931), and reaches `graph()`, `stance()` and
-## `hostile_to()` when the caller hands that ledger in as `world_polity`. Reading
-## the caller's actor instead would make the graph world-wide in name and
-## single-player in fact, which DEF-0179 forbids. Bare `graph()` still answers the
-## authored catalog only. The memo covers the bare call alone: a ledger-handed
-## call always rebuilds, because the ledger is the thing that moves.
+## `hostile_to()` when the caller hands that ledger in as `world_polity` OR when a
+## store was installed with [method set_store], which is the production path `app/`
+## wires. Reading the caller's actor instead would make the graph world-wide in name
+## and single-player in fact, which DEF-0179 forbids. An explicitly handed ledger
+## always wins over the store. Bare `graph()` with no store still answers the
+## authored catalog only.
 static func graph(world_polity: Dictionary = {}) -> Dictionary:
-	if shared != null and not _memo.is_empty() and world_polity.is_empty():
+	var explicit := not world_polity.is_empty()
+	var authored_only := _store == null and not explicit
+	if shared != null and not _memo.is_empty() and authored_only:
 		return _memo.duplicate(true)
-	var built := RelationGraph.build(world_polity)
-	if shared != null and world_polity.is_empty():
+	var effective := world_polity
+	if not explicit and _store != null and _store.has_method(&"read_ledger"):
+		var held = _store.call(&"read_ledger")
+		effective = (held as Dictionary) if held is Dictionary else {}
+	var built := RelationGraph.build(effective)
+	if shared != null and authored_only:
 		_memo = built
 	return built
 

@@ -21,6 +21,22 @@ func _fresh() -> Dictionary:
 	return RelationsApi.graph()
 
 
+func setup() -> void:
+	# The store seam is PROCESS state: an earlier suite that mounted the app leaves
+	# the `polity` store installed (InstitutionBoot.install wires it), and a
+	# store-backed build is never memoized — so this suite's memo contract only
+	# holds with no store. Establish that precondition rather than inherit it.
+	RelationsApi.set_store(null)
+	RelationsApi.shared = null
+	RelationsApi._memo = {}
+
+
+func teardown() -> void:
+	RelationsApi.set_store(null)
+	RelationsApi.shared = null
+	RelationsApi._memo = {}
+
+
 func test_no_memo_and_a_memo_return_the_identical_dictionary() -> void:
 	var cold := _fresh()
 	RelationsApi.shared = RelationsApi.new()
@@ -53,14 +69,17 @@ func test_wiping_the_memo_returns_the_identical_dictionary_including_the_epoch()
 ##
 ## This case used to assert that a stance the PLAYER declared appears in the graph
 ## on the next read through a warm memo. It does not, and no amount of cache
-## invalidation would make it: `RelationGraph` reads `summary(null)` from every
-## owner, so it sees the AUTHORED catalog and holds no per-actor state for a
-## player's write to change. That is DEF-0179, rooted in DEF-0119 — an institution
-## ledger has no world-wide home yet — and it is not a caching defect.
+## invalidation would make it: the player's `set_stance` write lives on the ACTOR's
+## own ledger, and this suite leaves the world store uninstalled, so the graph it
+## reads is the AUTHORED catalog. That limit is asserted rather than hidden: a green
+## run here must not be read as "the graph knows about every war the player
+## started". The store-backed path — where a declared stance DOES reach the bare
+## graph — is DEF-0179's production wiring and is pinned by
+## `test_relations_world_store.gd`, `test_sect_world_stance.gd` and
+## `test_nation_world_stance.gd`.
 ##
 ## So the two halves are asserted apart. The memo is exact for everything it can
-## actually see, and the limit is asserted rather than hidden: a green run here must
-## not be read as "the graph knows about every war the player started".
+## actually see.
 func test_a_memo_is_exact_for_the_authored_tree_and_player_writes_are_out_of_scope() -> void:
 	var actor := Actor.new(&"polity_a", {Stat.PHYSIQUE: 10.0})
 	NationApi.attach(actor)
@@ -97,7 +116,7 @@ func test_a_memo_is_exact_for_the_authored_tree_and_player_writes_are_out_of_sco
 	assert_eq(
 		RelationsApi.graph().has(key),
 		false,
-		"while the world-wide graph does not (DEF-0179): it reads authored stances only",
+		"while the store-less world graph does not: it reads authored stances only",
 	)
 
 

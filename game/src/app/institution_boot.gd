@@ -71,6 +71,19 @@ extends RefCounted
 ## are `InstitutionMembership`'s public verbs, so a hero can found a trading guild, join a
 ## hunting guild and LEAVE both houses from the screen, and the recognition those verbs
 ## project is the same bounded percent every other institution kind projects.
+##
+## ## The world polity store reaches the graph and the two writer facades
+##
+## `install()` also installs the SAME `polity` store `item_workbench_app` put into
+## `SaveApi` (DEF-0179): `RelationsApi.set_store` so a bare `graph()` reads the
+## declared stances, and `SectApi.set_world_store` / `NationApi.set_world_store` so a
+## declaration writes them. ONE instance, because two stores for one envelope key
+## would be two worlds that can drift, and the save and the graph would then answer
+## differently about the same pair. The app installs the store before any actor is
+## built and this boot runs from the attach pipeline, so the lookup finds it; a test
+## or a headless run with no store installed gets `null`, which leaves every seam
+## uninstalled and every verb authored-only — byte-identical to the behavior before
+## this wiring existed.
 
 ## The family's merge refused: two roots declaring one id with no override on the later
 ## one. The catalog leaves itself EMPTY in that state on purpose, so this boot registers
@@ -103,6 +116,10 @@ static var last_report: Dictionary = {}
 ## what returns a registry to nothing.
 static func install(registry: InstitutionRegistry = null) -> Dictionary:
 	var target := registry if registry != null else InstitutionRegistry.instance()
+	# The world store seam runs FIRST and unconditionally: it is independent of
+	# whether the content family loads, and a refused family must not leave the graph
+	# reading one world while the writers write another.
+	_wire_world_stores()
 	var catalog := InstitutionDefCatalog.instance()
 	var report := {
 		"ok": true,
@@ -178,6 +195,23 @@ static func _published(report: Dictionary, target: InstitutionRegistry) -> Dicti
 				)
 			)
 	return report
+
+
+## Install the world polity store into every seam that reads or writes it.
+##
+## ## ONE instance, read from `SaveApi`, never constructed here
+##
+## `item_workbench_app._ready` installs the `polity` `WorldLedgerStore` before any
+## actor is built, and the attach pipeline calls this boot after that, so the store
+## is the same object the save writes through. Constructing a second store here
+## would be a second world for one envelope key: the save and the graph could then
+## disagree about the same pair. The lookup is duck-typed (`RefCounted`), so a test
+## or a headless run with no store gets `null` and every seam stays uninstalled.
+static func _wire_world_stores() -> void:
+	var store := SaveApi.store_for(WorldPolityLedger.WORLD_KEY)
+	RelationsApi.set_store(store)
+	SectApi.set_world_store(store)
+	NationApi.set_world_store(store)
 
 
 ## Register ONE def's kind. Public so a test and a mod hook can register a def that did

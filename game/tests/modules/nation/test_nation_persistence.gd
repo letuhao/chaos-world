@@ -11,6 +11,13 @@ extends TestCase
 const MARCH := &"march_of_the_nine_provinces"
 
 
+func setup() -> void:
+	# The world store seam is PROCESS state: a suite that mounted the app leaves a
+	# real store installed (InstitutionBoot.install wires it), and this suite's
+	# cases measure the actor-side ledger with no world leg. Establish that.
+	NationApi.set_world_store(null)
+
+
 func test_an_old_payload_without_version_or_applied_record_folds_in_on_load() -> void:
 	# Bytes as a save from before the projection recorded what it projected: no
 	# version, no applied record, no history, offices held by name.

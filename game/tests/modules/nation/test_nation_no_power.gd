@@ -33,6 +33,10 @@ const PUBLISHED := [
 	"release_territory",
 	"resolve_conflict",
 	"set_stance",
+	# DEF-0179. The injection seam that lets a declared war write the world polity
+	# ledger; it grants nothing, which is why it joins this list rather than the
+	# forbidden one.
+	"set_world_store",
 	"state",
 	"summary",
 ]

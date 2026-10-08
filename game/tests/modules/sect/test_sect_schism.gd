@@ -26,10 +26,15 @@ const PLACES: Array[StringName] = [&"t_yard", &"t_terrace", &"t_orchard"]
 func setup() -> void:
 	SectFixtureCatalog.install([_parent(), _half()])
 	SectFixtureCatalog.install_doctrine([SectFixtureCatalog.doctrine(DOCTRINE)])
+	# The world store seam is PROCESS state: a suite that mounted the app leaves a
+	# real store installed (InstitutionBoot.install wires it), and this suite's
+	# cases measure the actor-side split with no world leg. Establish that.
+	SectApi.set_world_store(null)
 
 
 func teardown() -> void:
 	SectFixtureCatalog.teardown()
+	SectApi.set_world_store(null)
 
 
 func _parent() -> SectDef:
@@ -409,7 +414,12 @@ func test_the_facade_publishes_one_new_verb_and_no_second_stat_surface() -> void
 			published.append(name)
 	assert_eq(published.has("declare_schism"), true, "the split verb is on the facade")
 	assert_eq(
-		published.size(), 12, "and the facade is exactly at the twelve-method cap, not over it"
+		published.size(),
+		13,
+		(
+			"and the facade is exactly thirteen: the twelve ADR 0084 verbs plus the "
+			+ "DEF-0179 `set_world_store` injection seam, and no second stat surface"
+		),
 	)
 	# No second way to hand out recognition. A split moves standing; it does not
 	# grant, and a verb named any of these would be a second stat composer.

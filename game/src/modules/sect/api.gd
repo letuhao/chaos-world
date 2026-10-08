@@ -191,6 +191,22 @@ const ALREADY_SECEDED := SectSchism.R_ALREADY_SECEDED
 ## it refuses rather than happening.
 const NOTHING_TO_SPLIT := SectSchism.R_NOTHING_TO_SPLIT
 
+## The world polity store, when one is installed. `app/` installs THE SAME instance
+## the save owns (`SaveApi.store_for(WorldPolityLedger.WORLD_KEY)`), so the schism
+## this verb declares and the stance the graph reads cannot be two worlds.
+static var _world_store: RefCounted = null
+
+
+## Install the world polity store — any object with `read_ledger()` /
+## `write_ledger(ledger)` — so a declaration also writes the WORLD half of the fact
+## (DEF-0179). The member's ledger records what the split COST; the pair's hostility
+## is true of the two INSTITUTIONS, so it lives on the world polity ledger beside the
+## actor (ADR 0931) and is injected because this module may not name the persistence
+## root. With none installed the world leg is skipped and the verb is byte-identical
+## to what it was before this seam existed.
+static func set_world_store(store: RefCounted) -> void:
+	_world_store = store
+
 
 ## Attach the module to `actor`. Restores any ledger a prior `Actor.from_dict`
 ## carried, normalizes it against the current catalog, and rebuilds the stat
@@ -683,13 +699,22 @@ static func teach(
 ##
 ## ## The caller keeps its sect; the ledger records what the split cost
 ##
-## ADR 0083 records where a polity-wide ledger lives as an OPEN question, and this
-## slice does not answer it: `declare_schism` does **not** mint a sect, does not
-## re-roster the seceding half and does not move ground. It writes ONE line under
-## `schisms`, keyed by the seceding sect id, carrying what was divided, what each
-## half paid and what each half settled to — and settles the declaring member's own
-## standing, because a member who split their institution has paid for it.
+## `declare_schism` does **not** mint a sect, does not re-roster the seceding half
+## and does not move ground. It writes ONE line under `schisms`, keyed by the
+## seceding sect id, carrying what was divided, what each half paid and what each
+## half settled to — and settles the declaring member's own standing, because a
+## member who split their institution has paid for it.
 ## Every read of that line is a key inside `summary()`, never a thirteenth method.
+##
+## ## The split is TWO facts, and each is written where its subject lives
+##
+## The member's cost stays on the actor's ledger; the pair's hostility is true of
+## the two INSTITUTIONS, so a declaration also writes the `schism` stance for the
+## `(parent, seceding)` pair onto the world polity ledger — what makes it visible to
+## the relation graph (DEF-0179). The world leg runs after every actor-side check
+## and before any actor mutation, so a refusal from it leaves BOTH ledgers as found.
+## A repeat whose world flag is already open is a NO-OP there and the verb proceeds:
+## a declaration is a fact, not a counter.
 ##
 ## ## Refusals, in the order they are asked
 ##
@@ -724,6 +749,13 @@ static func declare_schism(
 	# it is a punishment with no alternative stated.
 	if SectState.standing(read) < 2:
 		return SectPayloads.schism_refused(NOTHING_TO_SPLIT, read, half_id)
+	# The WORLD half of the declaration, after every actor-side check and before
+	# any actor mutation: a refusal from this leg must leave BOTH ledgers byte-for-
+	# byte as found, and the actor mutation below cannot fail, so a split that is
+	# recorded at all is recorded on both.
+	var world_refusal := _declare_world_schism(parent_id, half_id)
+	if world_refusal != "":
+		return SectPayloads.schism_refused(world_refusal, read, half_id)
 	var unassigned := SectSchism.unassigned(def, assigned)
 	var price := SectSchism.price(catalog.tuning(), unassigned)
 	var bill := SectSchism.settle(SectState.standing(read), price)
@@ -903,6 +935,35 @@ static func _write_claim(ledger: Dictionary, claim: InstitutionClaim) -> void:
 	ledger["standing"] = int(payload["standing"])
 	ledger["standing_cap"] = int(payload["standing_cap"])
 	ledger["obligation"] = payload["obligation"]
+
+
+## The world leg of [method declare_schism]: record the pair's `schism` stance on
+## the world polity ledger, and answer `""` when the verb may proceed.
+##
+## `already_declared` is a NO-OP rather than a refusal, because the world already
+## records exactly the fact this call would write: a second member of the parent pays
+## their OWN cost on their OWN ledger (the actor side permits it — `already_seceded`
+## reads only the declaring actor) and the pair flag cannot be raised twice. Any
+## OTHER refusal — `no_pair`, unreachable after the checks above — refuses the WHOLE
+## verb by that named reason and writes nothing anywhere. The write RESULT is ignored
+## deliberately, matching `HoldingsApi._save`: a store that refuses a write it was
+## handed is a persistence fault this module cannot repair, and the next `graph()`
+## re-reads the store.
+static func _declare_world_schism(parent_id: StringName, half_id: String) -> String:
+	if _world_store == null or not _world_store.has_method(&"read_ledger"):
+		return ""
+	var world = _world_store.call(&"read_ledger")
+	var declared := InstitutionRelation.declare_schism(
+		(world as Dictionary) if world is Dictionary else {}, String(parent_id), half_id
+	)
+	if bool(declared.get("ok", false)):
+		if _world_store.has_method(&"write_ledger"):
+			_world_store.call(&"write_ledger", declared["ledger"])
+		return ""
+	var reason := String(declared.get("reason", ""))
+	if reason == InstitutionRelation.R_ALREADY_DECLARED:
+		return ""
+	return reason
 
 
 ## Persist, rebuild the projection, then announce. The three effects are one

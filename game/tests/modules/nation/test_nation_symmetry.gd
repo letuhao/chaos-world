@@ -17,6 +17,13 @@ const COURT := &"court_of_the_star"
 const SELF := &"polity_a"
 
 
+func setup() -> void:
+	# The world store seam is PROCESS state: a suite that mounted the app leaves a
+	# real store installed (InstitutionBoot.install wires it), and this suite's
+	# cases measure the actor-side ledger with no world leg. Establish that.
+	NationApi.set_world_store(null)
+
+
 func _actor(nation_id: StringName = MARCH) -> Actor:
 	var actor := Actor.new(&"polity_a", {Stat.PHYSIQUE: 10.0})
 	NationApi.attach(actor)

@@ -108,6 +108,22 @@ const CAUSE_EXPELLED := &"expelled_from_nation"
 const CAUSE_HELD_OFFICE := &"held_nation_office"
 const CAUSE_FOUGHT := &"fought_for_a_nation"
 
+## The world polity store, when one is installed. `app/` installs THE SAME instance
+## the save owns (`SaveApi.store_for(WorldPolityLedger.WORLD_KEY)`), so the war this
+## verb declares and the stance the graph reads cannot be two worlds.
+static var _world_store: RefCounted = null
+
+
+## Install the world polity store — any object with `read_ledger()` /
+## `write_ledger(ledger)` — so a declaration also writes the WORLD half of the fact
+## (DEF-0179). The actor's ledger records the standoff, its prize and its cost; the
+## pair's hostility is true of the two INSTITUTIONS, so it lives on the world polity
+## ledger beside the actor (ADR 0931) and is injected because this module may not
+## name the persistence root. With none installed the world leg is skipped and the
+## verb is byte-identical to what it was before this seam existed.
+static func set_world_store(store: RefCounted) -> void:
+	_world_store = store
+
 
 ## Attach the module to `actor`. Restores any ledger a prior `Actor.from_dict`
 ## carried, normalizes it against the current catalog, and rebuilds the bounded
@@ -361,6 +377,19 @@ static func set_stance(actor: Actor, other_id: StringName, verb: StringName) -> 
 ##
 ## This is the ONLY path to a `war` stance, and it is why `set_stance` refuses that
 ## verb (ADR 0085).
+##
+## ## The war is TWO facts, and each is written where its subject lives
+##
+## The standoff, its prize and its cost stay on the actor's ledger; the pair's
+## hostility is true of the two INSTITUTIONS, so a declaration also writes the `war`
+## stance for the `(declarer, other)` pair onto the world polity ledger — what makes
+## it visible to the relation graph (DEF-0179). The world leg runs after every
+## actor-side check and before `_declare`, so a refusal from it leaves BOTH ledgers
+## as found; a repeat whose world flag is already open is a NO-OP there and the verb
+## proceeds, because a declaration is a fact, not a counter. Closing a war through
+## [method resolve_conflict] does not close the world flag either, mirroring the
+## actor side exactly: `nation_resolve.gd` removes no `war` stance row, and inventing
+## a closure here would be a rule the actor side does not follow.
 static func declare_war(
 	actor: Actor, other_id: StringName, territory_id: StringName, prize: Dictionary
 ) -> Dictionary:
@@ -384,6 +413,13 @@ static func declare_war(
 	var ledger := _ledger(actor)
 	if not NationState.founded(ledger):
 		return NationState.refuse(NationState.R_UNKNOWN_NATION, {"nation_id": ""})
+	# The WORLD half of the declaration, after every actor-side check and before
+	# `_declare`: a refusal from this leg must leave BOTH ledgers byte-for-byte as
+	# found, and nothing below can fail, so a war that is declared at all is
+	# declared on both.
+	var world_refusal := _declare_world_war(self_id, String(other_id))
+	if world_refusal != "":
+		return NationState.refuse(world_refusal, {"other_id": String(other_id)})
 	var id := _declare(ledger, self_id, String(other_id), territory_id, StringName(mode))
 	_declare_prize(ledger, id, prize)
 	NationState.advance(ledger)
@@ -764,6 +800,35 @@ static func _take(ledger: Dictionary, territory_id: StringName, def: NationTerri
 		"challenger_id": "",
 		"yield_accrued": maxi(1, int(roundf(_catalog().tuning().yield_for(tier)))),
 	}
+
+
+## The world leg of [method declare_war]: record the pair's `war` stance on the
+## world polity ledger, and answer `""` when the verb may proceed.
+##
+## `already_declared` is a NO-OP rather than a refusal, because the world already
+## records exactly the fact this call would write: a second member of the declaring
+## polity can open their own standoff (the actor's own ledger is the only one
+## `_declare` reads) and the pair flag cannot be raised twice. Any OTHER refusal —
+## `no_pair`, unreachable after the checks above — refuses the WHOLE verb by that
+## named reason and writes nothing anywhere. The write RESULT is ignored
+## deliberately, matching `HoldingsApi._save`: a store that refuses a write it was
+## handed is a persistence fault this module cannot repair, and the next `graph()`
+## re-reads the store.
+static func _declare_world_war(self_id: String, other_id: String) -> String:
+	if _world_store == null or not _world_store.has_method(&"read_ledger"):
+		return ""
+	var world = _world_store.call(&"read_ledger")
+	var declared := InstitutionRelation.declare_war(
+		(world as Dictionary) if world is Dictionary else {}, self_id, other_id
+	)
+	if bool(declared.get("ok", false)):
+		if _world_store.has_method(&"write_ledger"):
+			_world_store.call(&"write_ledger", declared["ledger"])
+		return ""
+	var reason := String(declared.get("reason", ""))
+	if reason == InstitutionRelation.R_ALREADY_DECLARED:
+		return ""
+	return reason
 
 
 ## Write a standoff shell: two sides, a quota read from the MODE, an exhaustion

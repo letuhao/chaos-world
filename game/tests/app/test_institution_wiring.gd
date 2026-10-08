@@ -48,9 +48,35 @@ const SEAM_CALL_SITES := [
 var _born: Array = []
 
 
+## A tiny in-memory world polity store, duck-typed exactly like `WorldLedgerStore`:
+## `read_ledger`/`write_ledger` over one dictionary, no disk.
+class FakeWorldStore:
+	extends RefCounted
+	var ledger: Dictionary = {}
+
+	func _init(initial: Dictionary = {}) -> void:
+		ledger = initial
+
+	func read_ledger() -> Dictionary:
+		return ledger
+
+	func write_ledger(next: Dictionary) -> Dictionary:
+		ledger = next
+		return {"ok": true}
+
+
 func setup() -> void:
 	InstitutionMembership.clear()
 	InstitutionDefCatalog.clear()
+	# The store seams are PROCESS state, and an earlier suite that mounted the app
+	# leaves a real `polity` store installed. Establish the suite's preconditions
+	# explicitly rather than inheriting them from whoever ran last.
+	SaveApi.install_store(WorldPolityLedger.WORLD_KEY, null)
+	RelationsApi.set_store(null)
+	SectApi.set_world_store(null)
+	NationApi.set_world_store(null)
+	RelationsApi.shared = null
+	RelationsApi._memo = {}
 
 
 func teardown() -> void:
@@ -58,6 +84,17 @@ func teardown() -> void:
 	InstitutionDefCatalog.clear()
 	if InstitutionRegistry.shared != null:
 		InstitutionRegistry.shared.clear()
+	# The world store seams this suite installs, uninstalled through the SAME
+	# `SaveApi` clear the production uninstall path uses — so a leaked store cannot
+	# change `RelationsApi.graph()`'s memo rule for the next suite (DEF-0179).
+	SectFixtureCatalog.teardown()
+	SaveApi.install_store(WorldPolityLedger.WORLD_KEY, null)
+	SaveApi.install_store("soul", null)
+	RelationsApi.set_store(null)
+	SectApi.set_world_store(null)
+	NationApi.set_world_store(null)
+	RelationsApi.shared = null
+	RelationsApi._memo = {}
 
 
 # --- The screen is ROUTED --------------------------------------------------------
@@ -270,7 +307,132 @@ func test_the_bound_reader_publishes_a_claim_the_card_renders() -> void:
 	registry.clear()
 
 
+# --- The world polity store reaches the graph and both writers (DEF-0179) ---------
+
+
+## ## `install()` injects the SAME store the save owns into all three seams
+##
+## `item_workbench_app._ready` installs the `polity` `WorldLedgerStore` before the
+## actor is built, and the attach pipeline runs `InstitutionBoot.install()` after
+## that — so the lookup finds it. Proved through BEHAVIOR: a declaration by each
+## writer facade lands on the fake, and the graph reads the same fake back with no
+## ledger argument.
+func test_install_injects_the_world_polity_store_into_the_reader_and_both_writers() -> void:
+	var store := FakeWorldStore.new(WorldPolityLedger.empty())
+	SaveApi.install_store(WorldPolityLedger.WORLD_KEY, store)
+	InstitutionBoot.install()
+	# THE SECT WRITER: a real declaration lands on the fake.
+	(
+		SectFixtureCatalog
+		. install(
+			[
+				SectFixtureCatalog.foundable_sect(&"t_foundry"),
+				SectFixtureCatalog.foundable_sect(&"t_half"),
+			]
+		)
+	)
+	SectFixtureCatalog.install_doctrine([SectFixtureCatalog.doctrine(&"t_foundry_doctrine")])
+	var keeper := _actor(&"keeper")
+	keeper.add_resource(ResourcePool.new(SectFounding.FUNDING_POOL, 1000.0))
+	SectApi.attach(keeper)
+	assert_eq(
+		bool(SectApi.found(keeper, &"t_foundry", &"t_foundry_doctrine", "keeper")["ok"]),
+		true,
+		"the fixture founder exists"
+	)
+	assert_eq(bool(SectApi.declare_schism(keeper, &"t_half", [])["ok"]), true, "the split landed")
+	assert_eq(
+		_world_has_pair(store.ledger, "t_half", "t_foundry"),
+		true,
+		"the fake carries the schism, so the sect seam is injected"
+	)
+	# THE READER: the bare graph sees the pair with no ledger argument.
+	var sect_key := RelationKey.pair_key(
+		RelationKey.node_key("sect", "t_half"), RelationKey.node_key("sect", "t_foundry")
+	)
+	assert_eq(RelationsApi.graph().has(sect_key), true, "the graph reads the same store")
+	# THE NATION WRITER: the same chain for a war.
+	var polity := _actor(&"polity_a")
+	NationApi.attach(polity)
+	NationApi.found(polity, &"march_of_the_nine_provinces", "polity_a")
+	assert_eq(
+		String(NationApi.state(polity)["nation_id"]),
+		"march_of_the_nine_provinces",
+		"the polity exists"
+	)
+	var prize := {"mode": "contest", "transfer": "ownership", "standing": {}}
+	assert_eq(
+		bool(NationApi.declare_war(polity, &"court_of_the_star", &"river_march", prize)["ok"]),
+		true,
+		"the war landed"
+	)
+	assert_eq(
+		_world_has_pair(store.ledger, "polity_a", "court_of_the_star"),
+		true,
+		"the fake carries the war, so the nation seam is injected"
+	)
+	var war_key := RelationKey.pair_key(
+		RelationKey.node_key("nation", "polity_a"),
+		RelationKey.node_key("nation", "court_of_the_star")
+	)
+	assert_eq(RelationsApi.graph().has(war_key), true, "and the graph sees the war too")
+
+
+## ## A headless run with no `polity` store leaves every seam uninstalled
+##
+## The lookup is by KEY: a store installed for another world (`soul` here) must not
+## be picked up, and a `polity` store that IS installed must stop reaching the graph
+## the moment it is cleared — which is the `install_store(key, null)` path the
+## teardowns use.
+func test_with_no_polity_store_the_seams_stay_uninstalled_and_clearing_uninstalls() -> void:
+	# A decoy store on a DIFFERENT key: the seams must not pick it up.
+	var decoy := FakeWorldStore.new(WorldPolityLedger.empty())
+	SaveApi.install_store("soul", decoy)
+	InstitutionBoot.install()
+	# Behaviorally authored-only: the bare call is memoizable again, which is the
+	# pure-catalog path — a store-backed build is never memoized.
+	RelationsApi.shared = RelationsApi.new()
+	RelationsApi._memo = {}
+	RelationsApi.graph()
+	assert_eq(
+		RelationsApi._memo.is_empty(),
+		false,
+		"no polity store: the bare call is authored-only and memoized"
+	)
+	# Now install a polity store carrying a war and re-run the boot: the graph sees it.
+	var store := FakeWorldStore.new(WorldPolityLedger.empty())
+	var war := InstitutionRelation.declare_war(WorldPolityLedger.empty(), "n_a", "n_b")
+	store.write_ledger(war["ledger"])
+	SaveApi.install_store(WorldPolityLedger.WORLD_KEY, store)
+	InstitutionBoot.install()
+	var key := RelationKey.pair_key(
+		RelationKey.node_key("nation", "n_a"), RelationKey.node_key("nation", "n_b")
+	)
+	assert_eq(RelationsApi.graph().has(key), true, "the installed store reaches the graph")
+	# Clear it through the SaveApi uninstall path and re-run the boot: the seam goes
+	# away, so a teardown that clears the key really restores isolation.
+	SaveApi.install_store(WorldPolityLedger.WORLD_KEY, null)
+	InstitutionBoot.install()
+	assert_eq(RelationsApi.graph().has(key), false, "clearing the key uninstalls the seam")
+
+
 # --- Helpers ----------------------------------------------------------------------
+
+
+## Whether `ledger` carries a debt row naming the pair, in either direction. A walk
+## over the ledger's own key snapshot into a fresh boolean; nothing is appended to
+## the container being walked, so the bound is fixed before the first pass.
+func _world_has_pair(ledger: Dictionary, a_id: String, b_id: String) -> bool:
+	var live := WorldPolityLedger.normalize_payload(ledger)
+	for key in (live["debts"] as Dictionary).keys():
+		var row = (live["debts"] as Dictionary)[key]
+		if not (row is Dictionary):
+			continue
+		var debtor := String((row as Dictionary).get("debtor_id", ""))
+		var creditor := String((row as Dictionary).get("creditor_id", ""))
+		if WorldPolityLedger.pair_key(debtor, creditor) == WorldPolityLedger.pair_key(a_id, b_id):
+			return true
+	return false
 
 
 func _screen() -> InstitutionScreen:

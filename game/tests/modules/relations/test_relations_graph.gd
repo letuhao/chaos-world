@@ -22,13 +22,21 @@ const DAO_ALLIED_PAIR := "dao:mind_dao|dao:qi_dao"
 
 
 func setup() -> void:
+	# The store seams are PROCESS state: a suite that mounted the app leaves the
+	# `polity` store installed (InstitutionBoot.install wires it), and this suite's
+	# authored-only contract only holds with no store — so it establishes that
+	# precondition rather than inheriting it from whoever ran last.
+	RelationsApi.set_store(null)
 	RelationsApi.shared = null
 	RelationsApi._memo = {}
+	SectApi.set_world_store(null)
 
 
 func teardown() -> void:
+	RelationsApi.set_store(null)
 	RelationsApi.shared = null
 	RelationsApi._memo = {}
+	SectApi.set_world_store(null)
 
 
 func _node(kind: String, id: String) -> String:
@@ -243,12 +251,11 @@ func test_a_declared_schism_is_recorded_and_normalised_but_not_yet_in_the_world_
 			RelationKey.HOSTILE,
 			"which the graph NORMALISES to hostile — the graph decides, the sect does not",
 		)
-		# And the honest limit, asserted rather than hidden: `graph()` reads the
-		# AUTHORED catalog with `summary(null)`, so a split the PLAYER declared is
-		# not in it yet. That is the same missing piece as DEF-0119 — where a
-		# world-wide institution ledger persists — and it is recorded as DEF-0179.
-		# Until that lands the graph answers for authored dao stances only, and a
-		# green run here must not be read as "the graph knows about this war".
+		# And the honest limit, asserted rather than hidden: with NO store installed
+		# `graph()` reads the AUTHORED catalog only, so a split the PLAYER declared
+		# is not in it. The store-backed path that DOES see it is the production
+		# wiring (DEF-0179, closed) and is pinned by
+		# `test_relations_world_store.gd` and `test_sect_world_stance.gd`.
 		var edge := (
 			RelationsApi
 			. stance(

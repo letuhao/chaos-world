@@ -44,6 +44,10 @@ const MIN_ASSERTIONS := 1
 
 func setup() -> void:
 	expect_assertions(MIN_ASSERTIONS)
+	# The world store seam is PROCESS state: a suite that mounted the app leaves a
+	# real store installed (InstitutionBoot.install wires it), and this suite's
+	# cases measure the actor-side standoff with no world leg. Establish that.
+	NationApi.set_world_store(null)
 
 
 func _actor() -> Actor:

@@ -169,10 +169,20 @@ static func erase(slot: StringName) -> Dictionary:
 ## The store is written into the facade rather than passed per call, because the modules hold
 ## theirs in a `static var` and a caller that re-reads the store without reinstalling it gets
 ## the PREVIOUS slot's world.
+##
+## **`null` CLEARS the entry rather than being refused.** The suites that install an in-memory
+## store for one test already call `install_store(key, null)` in teardown expecting exactly
+## that cleanup; refusing it left a leaked store installed for every later suite in the shared
+## process — and a leaked `polity` store silently changes `RelationsApi.graph()`'s memo rule
+## for all of them. A non-null object that cannot read a ledger is still refused by name,
+## because that is a caller bug rather than an uninstall.
 static func install_store(key: String, store: RefCounted) -> Dictionary:
 	if not WORLD_KEYS.has(key):
 		return {"ok": false, "reason": "unknown_world_key", "key": key}
-	if store == null or not store.has_method(&"read_ledger"):
+	if store == null:
+		_stores.erase(key)
+		return {"ok": true, "reason": "", "key": key}
+	if not store.has_method(&"read_ledger"):
 		return {"ok": false, "reason": "not_a_store", "key": key}
 	_stores[key] = store
 	return {"ok": true, "reason": "", "key": key}
