@@ -96,6 +96,9 @@ func _earn_rest_of_gate(hero: Actor) -> void:
 	Probe.recover_all(hero)
 	Probe.fill_and_refine(hero, seed)
 	Probe.stock(hero, seed.breakthrough_item)
+	# The deepest tier also asks for a dao heart (BL-0932), earned from content: the
+	# probe equips the authored artifact that grants it.
+	Probe.ensure_dao_heart(hero, target.id)
 
 
 ## Earn the gate and press the screen's own Breakthrough until the realm is entered.

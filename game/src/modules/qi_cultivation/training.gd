@@ -138,10 +138,10 @@ static func _quality_ceiling(rank_id: StringName) -> float:
 	return 0.0 if seed == null else seed.dantian_quality_required
 
 
-## Undo the damage a qi deviation left behind: heal the dantian scar and repair
-## one burned channel. Consumes the realm's recovery item, so every realm needs
-## one authored (ADR 0031). All-or-nothing: the item is spent only when there is
-## something to repair.
+## Undo the damage a qi deviation left behind: heal the dantian scar, repair one
+## burned channel, and mend a cracked dao heart (BL-0932). Consumes the realm's
+## recovery item, so every realm needs one authored (ADR 0031). All-or-nothing: the
+## item is spent only when there is something to repair.
 static func recover(actor: Actor, meridian_id: StringName) -> bool:
 	var state := actor.path(QiPath.PATH_ID)
 	var dantian := QiAccess.dantian(actor)
@@ -154,13 +154,18 @@ static func recover(actor: Actor, meridian_id: StringName) -> bool:
 	var channel := actor.meridians.get_meridian(meridian_id)
 	if channel == null:
 		return false
-	if not dantian.injured and not channel.injured:
+	# A cracked dao heart is a THIRD thing a deviation leaves, so it counts toward
+	# "something to repair": the elixir that closes the wound closes the crack.
+	var cracked := DaoHeart.crack_of(actor) < 0.0
+	if not dantian.injured and not channel.injured and not cracked:
 		return false
 	if not _ITEMS.consume_item(actor, seed.recovery_item):
 		return false
 	dantian.heal()
 	if channel.injured:
 		actor.meridians.repair_meridian(meridian_id)
+	if cracked:
+		DaoHeart.rebuild(actor, -DaoHeart.crack_of(actor))
 	synchronize(actor)
 	actor.mark_stats_dirty()
 	return true

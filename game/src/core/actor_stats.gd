@@ -353,7 +353,11 @@ func _recompute() -> void:
 	_put(Stat.CULTIVATION_RATE, 1.0 + aptitude * 0.02, buckets)
 	_put(Stat.QI_ABSORPTION, aptitude * 0.5 + spirit * 0.2, buckets)
 	_put(Stat.BREAKTHROUGH_CHANCE, 0.1 + comprehension * 0.01 + will * 0.005, buckets)
-	_put(Stat.DAO_HEART, will, buckets)
+	# `will` PLUS this actor's heart scar: a crack is a NEGATIVE offset on the dao
+	# heart's own base (`DaoHeart.crack`/`rebuild`), added here rather than applied as
+	# a modifier because modifiers are not serialized and a scar that healed on reload
+	# would be a lie (`DaoHeart`'s docblock). `_put` floors the effective value at zero.
+	_put(Stat.DAO_HEART, will + _base.get(Stat.DAO_HEART, 0.0), buckets)
 	_put(Stat.INSIGHT_GAIN, 1.0 + comprehension * 0.01, buckets)
 	_put(Stat.LOOT_BONUS, fortune * 0.01, buckets)
 	# ADR 0200: `COOLDOWN_REDUCTION` (0.4) and `QI_COST_REDUCTION` (0.5) KEEP their caps,

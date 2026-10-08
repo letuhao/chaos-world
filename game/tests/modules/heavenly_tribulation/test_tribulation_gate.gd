@@ -382,14 +382,34 @@ func test_a_harder_tribulation_is_endured_less_often() -> void:
 	)
 
 
-## A wounded dao heart is endured less often, so the fight rewards what the paths
-## spend their training on.
-func test_a_wounded_dao_heart_is_endured_less_often() -> void:
+## Wounded COMPREHENSION is endured less often, so the fight rewards what the paths
+## spend their training on. (This name used to claim dao heart while wounding
+## comprehension — the misnomer BL-0932 found; the heart has its own test below.)
+func test_a_wounded_comprehension_is_endured_less_often() -> void:
 	var hero := _hero()
 	TribulationFight.begin(hero)
 	var whole := TribulationEndurance.endurance(hero, hero.tribulation)
 	hero.stats.set_base(Stat.COMPREHENSION, 5.0)
 	assert_eq(TribulationEndurance.endurance(hero, hero.tribulation) < whole, true, "strain costs")
+
+
+## And the SECOND axis is real: a cracked dao heart is endured less often with
+## comprehension untouched — the gear, set and consumable grants the ruling unfroze
+## move this number.
+func test_a_cracked_dao_heart_is_endured_less_often() -> void:
+	var hero := _hero()
+	hero.stats.set_base(Stat.WILL, 20.0)
+	TribulationFight.begin(hero)
+	var whole := TribulationEndurance.endurance(hero, hero.tribulation)
+	DaoHeart.crack(hero, 5.0)
+	var cracked := TribulationEndurance.endurance(hero, hero.tribulation)
+	assert_eq(cracked < whole, true, "a crack costs")
+	assert_almost_eq(
+		whole - cracked,
+		5.0 * TribulationEndurance.DAO_HEART_TO_ENDURANCE,
+		"and it costs exactly the heart term",
+		0.0001
+	)
 
 
 ## The prepared share is published while no fight is in the air, so a screen can

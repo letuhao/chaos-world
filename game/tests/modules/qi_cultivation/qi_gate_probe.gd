@@ -291,8 +291,34 @@ static func prepared(rank_id: StringName, target: QiRealmSeed) -> Actor:
 	recover_all(actor)
 	fill_and_refine(actor, target)
 	stock(actor, target.breakthrough_item)
+	if not ensure_dao_heart(actor, target.id):
+		return actor
 	_prepared[rank_id] = actor
 	return actor
+
+
+## Stand ready for the DEEPEST tier's dao-heart ask (BL-0932) the way a player meets
+## it: authored gear, whose fixed modifiers are what APPLY (a consumable's stat targets
+## are reported, never applied — ADR 0001). The two uniques below are the ones the
+## realm-tier guard admits at the boundary that asks: `unique_void_coil_coiled_heart`
+## grants +20 and is wearable from the Immortal tier up, `unique_ironhide_hearthguard`
+## grants +6 from the Mortal tier — 26 together against the ask of 24. The lantern's
+## +40 is refused until the Transcendent tier is reached, so it cannot answer this ask.
+## Tiers that ask nothing return true immediately.
+static func ensure_dao_heart(actor: Actor, target_realm_id: StringName) -> bool:
+	if actor == null:
+		return false
+	var tier := RealmDefaults.ladder().tier_of(target_realm_id)
+	var required := float(Breakthrough.DAO_HEART_BY_TIER.get(tier, 0.0))
+	if required <= 0.0 or actor.stats.derived(Stat.DAO_HEART) >= required:
+		return true
+	for def_id in [&"unique_void_coil_coiled_heart", &"unique_ironhide_hearthguard"]:
+		var def := _def(def_id)
+		if def == null or not stock(actor, def_id, 1):
+			return false
+		if not ItemsApi.equip_item(actor, def.subcategory, def):
+			return false
+	return actor.stats.derived(Stat.DAO_HEART) >= required
 
 
 ## Forget the cached pre-states. A suite that mutates one between assertions needs

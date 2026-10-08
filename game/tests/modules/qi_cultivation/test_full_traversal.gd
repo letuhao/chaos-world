@@ -83,7 +83,15 @@ func _prepare(actor: Actor) -> QiRealmSeed:
 func _satisfy_tier_gates(actor: Actor, target: RealmDef) -> void:
 	if target.index >= Breakthrough.IMMORTAL_REALM_THRESHOLD:
 		Probe.fight(actor, target)
+	_ensure_dao_heart(actor, target)
 	Probe.walk_ascent(actor)
+
+
+## The DEEPEST trials ask for a dao heart (BL-0932), earned here the way a player earns
+## it: the probe equips the authored artifact whose grant opens the tier, so the walk
+## proves the gate is REACHABLE through play rather than a wall.
+func _ensure_dao_heart(actor: Actor, target: RealmDef) -> void:
+	Probe.ensure_dao_heart(actor, target.id)
 
 
 func _breakthrough(actor: Actor, rng: RandomNumberGenerator) -> bool:

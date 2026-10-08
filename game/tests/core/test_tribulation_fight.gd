@@ -151,13 +151,15 @@ func test_endurance_is_bounded_at_both_ends() -> void:
 
 ## Bounded at both ends is NOT pinned to a value, and two formulas can share a clamp
 ## and still disagree about every fight inside it. The record's deleted `endurance()`
-## read `MAX - rating * PER` where the live curve reads
-## `MIN + dao_heart * 0.01 - rating * PER`: for this exact fight it answered 0.1675
-## while the roll that decided the fight used 0.3192. That is the whole reason there
-## is one curve, so this pins the arithmetic, not just its limits.
+## read `MAX - rating * PER` while the live curve reads
+## `MIN + comprehension * 0.01 + dao_heart * 0.01 - rating * PER`: for this exact fight
+## it answered 0.1675 while the roll that decided the fight used 0.3192. That is the
+## whole reason there is one curve, so this pins the arithmetic — BOTH terms of it —
+## not just its limits.
 func test_the_survival_curve_is_pinned_to_a_value_and_not_only_to_its_bounds() -> void:
 	var actor := _actor_at_r18()
 	actor.stats.set_base(Stat.COMPREHENSION, 70.0)
+	actor.stats.set_base(Stat.WILL, 30.0)
 	var record := Tribulation.new(Tribulation.ELEMENTAL)
 	record.start(actor, &"earth_immortal")
 	assert_eq(
@@ -173,10 +175,11 @@ func test_the_survival_curve_is_pinned_to_a_value_and_not_only_to_its_bounds() -
 		share,
 		(
 			TribulationEndurance.MIN_ENDURANCE
-			+ 70.0 * TribulationEndurance.DAO_HEART_TO_ENDURANCE
+			+ 70.0 * TribulationEndurance.COMPREHENSION_TO_ENDURANCE
+			+ 30.0 * TribulationEndurance.DAO_HEART_TO_ENDURANCE
 			- record.difficulty * Tribulation.ENDURANCE_PER_RATING
 		),
-		"the share is the authored slope applied to this actor and this rating"
+		"the share is the two authored slopes applied to this actor and this rating"
 	)
 	assert_eq(
 		share > TribulationEndurance.MIN_ENDURANCE and share < TribulationEndurance.MAX_ENDURANCE,
@@ -232,9 +235,11 @@ func test_a_harder_tribulation_is_endured_less_often() -> void:
 # --- The wave toll ------------------------------------------------------------
 
 
-## Every wave a fight drags on costs dao-heart strain. The old phase machine
-## advanced a counter and charged nothing.
-func test_every_wave_costs_dao_heart_strain() -> void:
+## Every wave a fight drags on costs the body it is fought with. The old phase machine
+## advanced a counter and charged nothing. The currency of a COMMON trial is
+## comprehension; a heart-demon's is the dao heart itself (the branch is pinned in
+## `test_dao_heart.gd`).
+func test_every_wave_costs_comprehension_strain() -> void:
 	var actor := _actor_at_r18()
 	Breakthrough.begin_tribulation(actor, 18)
 	var tribulation := actor.tribulation

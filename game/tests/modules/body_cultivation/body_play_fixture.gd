@@ -243,7 +243,29 @@ func satisfy_tier_gates(actor: Actor, target: RealmDef) -> void:
 				while waves < MAX_TRIBULATION_WAVES and Breakthrough.advance_tribulation(actor):
 					waves += 1
 				Breakthrough.resolve_tribulation(actor, true)
+	_ensure_dao_heart(actor, target)
 	_walk_ascent(actor, target)
+
+
+## The deepest tier asks for a dao heart (BL-0932), earned the way a player earns it:
+## authored gear, whose fixed modifiers are what APPLY. The two uniques below are what
+## the realm-tier guard admits at the boundary that asks (+20 from the Immortal tier up,
+## +6 from the Mortal tier — 26 against the ask of 24); the lantern's +40 is refused
+## until the tier it belongs to is reached. A tier that asks nothing is a no-op, and
+## this asserts nothing — a failed equip simply leaves the gate shut and the calling
+## suite's own assertion names it.
+func _ensure_dao_heart(actor: Actor, target: RealmDef) -> void:
+	var required := float(
+		Breakthrough.DAO_HEART_BY_TIER.get(RealmDefaults.ladder().tier_of(target.id), 0.0)
+	)
+	if required <= 0.0 or actor.stats.derived(Stat.DAO_HEART) >= required:
+		return
+	for def_id in [&"unique_void_coil_coiled_heart", &"unique_ironhide_hearthguard"]:
+		var def := Crafting.resolve(def_id)
+		if def == null:
+			return
+		ItemsApi.inventory(actor).add(def, 1)
+		ItemsApi.equip_item(actor, def.subcategory, def)
 
 
 ## Bounded by `MAX_ASCENT_STEPS`, which names an ascent that will not finish, not a

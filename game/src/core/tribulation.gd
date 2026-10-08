@@ -45,9 +45,11 @@ const TYPE_PRESSURE := {
 	TEMPORAL: 1.15,
 }
 
-## What one wave of a fight costs the body it is fought with, in dao heart. Charged
-## on every descended wave, including the deciding one, so surviving has to be worth
-## the waves it took (ADR 0061).
+## What one wave of a fight costs the body it is fought with. Charged on every
+## descended wave, including the deciding one, so surviving has to be worth the waves
+## it took (ADR 0061). The currency is the tribulation's own: a heart-demon trial
+## spends the DAO HEART, and every other trial strains COMPREHENSION — the two terms
+## `TribulationEndurance` reads (BL-0932).
 const WAVE_TOLL := 1.0
 
 ## The share of fights survived is bounded at BOTH ends and never reaches either: a
@@ -382,9 +384,14 @@ func _arena_quality(actor: Actor) -> float:
 	return clampf(actor.inside_world.stability, 0.0, 1.0)
 
 
-## Charge one wave's toll of dao-heart strain. Floored at zero: strain cannot leave a
-## hero with a negative dao heart.
+## Charge one wave's toll. A heart-demon trial spends the DAO HEART itself — the one
+## trial whose currency is the stat it is named for — through `DaoHeart.crack`, which
+## floors the scar so strain cannot leave a hero with a negative heart. Every other
+## trial strains COMPREHENSION at its base, floored the same way.
 func _charge_toll(actor: Actor) -> void:
+	if type == HEART_DEMON:
+		DaoHeart.crack(actor, WAVE_TOLL)
+		return
 	var comprehension := actor.stats.get_base(Stat.COMPREHENSION)
 	actor.stats.set_base(Stat.COMPREHENSION, maxf(0.0, comprehension - WAVE_TOLL))
 

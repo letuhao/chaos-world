@@ -143,6 +143,10 @@ func test_the_ladder_walks_r1_to_r30_without_one_catalyst() -> void:
 			break
 		Probe.fight(actor, target)
 		Probe.walk_ascent(actor)
+		# The deepest tier's dao heart is earned from content, like everything else in
+		# this walk (BL-0932): the probe equips the authored artifact that grants it.
+		if not Probe.ensure_dao_heart(actor, target.id):
+			break
 		var ready := _ready(actor, target_seed)
 		assert_eq(ready, true, "the %s gate closed on a catalyst-free inventory" % target.id)
 		if not ready:

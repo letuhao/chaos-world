@@ -115,9 +115,14 @@ func test_the_panel_says_when_no_tribulation_is_owed() -> void:
 		return
 	panel.set_state({"owed": false, "gate_open": true})
 	var row := panel.summary() as Dictionary
-	assert_eq(L.t(bool(row["owed"])), false, "nothing owed")
-	assert_ne(String(row["verdict"]), "", "and the row still says something about it")
-	assert_eq(String(row["verdict"]), _verdict_text(panel), "the verdict line matches")
+	# NOT `L.t(...)`: a bool is not a translation key, and wrapping it failed this whole
+	# suite's parse — the panel's own key carries the verdict text.
+	assert_eq(bool(row["owed"]), false, "nothing owed")
+	# The verdict lives on the LABEL rather than in `summary()` (`_verdict_panel` above
+	# reads it the same way), and below the gate it must still say something rather than
+	# render an empty fight.
+	assert_ne(_verdict_text(panel), "", "and the row still says something about it")
+	assert_eq(String(row["target"]), "", "with no tribulation named")
 	panel.free()
 
 
@@ -467,8 +472,10 @@ func test_a_survived_tribulation_names_the_blessing_it_paid() -> void:
 	if screen == null:
 		return
 	screen.setup(hero)
-	# The production render path: exactly what `_report` does after a decided result.
-	screen.call("_show_blessing", result)
+	# The production render path, `_report`: it is the ONLY place the survived message is
+	# composed (`_show_blessing` feeds the panel and leaves the outcome line empty — this
+	# test drove the two halves by hand and asserted a line nobody had written).
+	screen.call("_report", result, "", &"")
 	screen.call("refresh")
 
 	var panel := (screen.summary() as Dictionary)["tribulation"] as Dictionary

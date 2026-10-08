@@ -155,7 +155,25 @@ func _satisfy_tier_gates(actor: Actor, target: RealmDef) -> void:
 			while Breakthrough.advance_tribulation(actor) and wave_guard < WAVE_BOUND:
 				wave_guard += 1
 			Breakthrough.resolve_tribulation(actor, true)
+	_ensure_dao_heart(actor, target)
 	_walk_ascent(actor, target)
+
+
+## The deepest tier asks for a dao heart (BL-0932), earned from authored gear: the two
+## uniques the realm-tier guard admits at the boundary that asks (+20 and +6, against
+## the ask of 24). A tier that asks nothing is a no-op.
+func _ensure_dao_heart(actor: Actor, target: RealmDef) -> void:
+	var required := float(
+		Breakthrough.DAO_HEART_BY_TIER.get(RealmDefaults.ladder().tier_of(target.id), 0.0)
+	)
+	if required <= 0.0 or actor.stats.derived(Stat.DAO_HEART) >= required:
+		return
+	for def_id in [&"unique_void_coil_coiled_heart", &"unique_ironhide_hearthguard"]:
+		var def := Crafting.resolve(def_id)
+		if def == null:
+			return
+		ItemsApi.inventory(actor).add(def, 1)
+		ItemsApi.equip_item(actor, def.subcategory, def)
 
 
 ## Walk the Transcendent ascent with core's own entry point (ADR 0041): the ascent

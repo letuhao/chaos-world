@@ -21,10 +21,20 @@ extends RefCounted
 ## The bounds and the slope are `Tribulation`'s, not restated here: the record owns
 ## the rating, so it owns the range that rating is spent across, and a second copy of
 ## the five numbers is a second answer to "how often does this actor survive". This
-## file adds the one term the record cannot know — the actor's own dao heart.
+## file adds the two terms the record cannot know — the actor's comprehension and the
+## actor's own dao heart.
 const MIN_ENDURANCE := Tribulation.MIN_ENDURANCE
 const MAX_ENDURANCE := Tribulation.MAX_ENDURANCE
-## One point of the actor's own dao heart is this much of the span.
+## One point of comprehension, and one point of the actor's own dao heart, are each
+## this much of the span — TWO separate terms, never one under the other's name.
+##
+## The comprehension term used to be carried by a helper called `_dao_heart` that
+## returned comprehension, so the name promised a stat this file never read (BL-0932).
+## The two are genuinely different axes: comprehension is the trained insight the entry
+## gate already pins, and the dao heart is the stat gear, sets and consumables grant
+## (`core_dao_heart`) — reading only the first made every one of those grants
+## decorative.
+const COMPREHENSION_TO_ENDURANCE := 0.01
 const DAO_HEART_TO_ENDURANCE := 0.01
 ## What one point of a fight's rating is worth, off `Tribulation`'s span. The span
 ## itself is not re-declared here: an alias nothing reads is a second name for the
@@ -42,6 +52,7 @@ static func endurance(actor: Actor, record: Tribulation = null) -> float:
 	return clampf(
 		(
 			MIN_ENDURANCE
+			+ _comprehension(actor) * COMPREHENSION_TO_ENDURANCE
 			+ _dao_heart(actor) * DAO_HEART_TO_ENDURANCE
 			- _price(actor, record) * RATING_TO_ENDURANCE
 		),
@@ -59,8 +70,17 @@ static func survives(actor: Actor, record: Tribulation, rng: RandomNumberGenerat
 	return draw < endurance(actor, record)
 
 
-static func _dao_heart(actor: Actor) -> float:
+## The actor's trained comprehension, at its BASE: a wave toll lowers the base
+## (`Tribulation._charge_toll`), and the endurance must see what the fight already
+## spent.
+static func _comprehension(actor: Actor) -> float:
 	return actor.stats.get_base(Stat.COMPREHENSION)
+
+
+## The actor's own dao heart, at its DERIVED value: this is where every authored grant
+## lands (`core_dao_heart` options, sets, bedels), and where a crack shows (`DaoHeart`).
+static func _dao_heart(actor: Actor) -> float:
+	return actor.stats.derived(Stat.DAO_HEART)
 
 
 ## What this fight is fought at: the live record's own rating while one is running,

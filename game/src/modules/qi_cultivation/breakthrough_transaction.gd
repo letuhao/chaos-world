@@ -10,8 +10,12 @@ extends RefCounted
 
 const _ITEMS := preload("res://src/modules/items/api.gd")
 ## The element gate's mastery read, through the elements facade (ADR 0004's "master
-## elements to rise"): the qi path names no element stats of its own.
+## elements to rise"): the qi path names no element stat of its own.
 const _ELEMENTS := preload("res://src/modules/elements/api.gd")
+## How hard a failed breakthrough cracks the dao heart (BL-0932). This path's number,
+## not core's: the deviation is the qi path's failure shape, and `QiTraining.recover`
+## spends the realm's recovery elixir to mend whatever a deviation left behind.
+const HEART_CRACK_ON_DEVIATION := 2.0
 
 
 ## Preview the breakthrough. Returns a dictionary with:
@@ -79,6 +83,8 @@ static func preview(actor: Actor) -> Dictionary:
 		result["unmet_conditions"].append("world_not_stable")
 	if not Breakthrough.ascension_ok(actor, target.index):
 		result["unmet_conditions"].append("ascension_not_complete")
+	if not Breakthrough.dao_heart_ok(actor, target.index):
+		result["unmet_conditions"].append("dao_heart_too_low")
 
 	# Calculate chance. Reads the dantian and nothing else (ADR 0051's rule).
 	result["chance"] = QiChance.of(dantian)
@@ -206,6 +212,10 @@ static func _deviate(
 		actor.meridians.damage_meridian(
 			seed.required_meridians[_pick(rng, seed.required_meridians.size())]
 		)
+	# And the shock CRACKS the dao heart (BL-0932): the deviation is where the ruling
+	# names the crack, and `QiTraining.recover`'s elixir is what mends it. The crack is
+	# floored by `DaoHeart.crack`, so no deviation can leave a negative heart.
+	DaoHeart.crack(actor, HEART_CRACK_ON_DEVIATION)
 	actor.mark_stats_dirty()
 
 

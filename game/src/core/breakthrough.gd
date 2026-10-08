@@ -23,6 +23,23 @@ extends RefCounted
 const IMMORTAL_REALM_THRESHOLD := 18
 ## First realm index of the Transcendent tier (ADR 0005: realms 28-30, 1-based).
 const TRANSCENDENT_REALM_THRESHOLD := 27
+## The dao heart the deepest trials demand, keyed by REALM TIER — the same key
+## `Tribulation.WAVES_BY_TIER` uses, and never by ladder position (ADR 0050: an
+## inserted realm must not shift every realm above it).
+##
+## The DEEPEST trials are the Transcendent tier's: the 9-wave fights at the top of the
+## ladder (the Immortal tier's are 7). Only that tier asks — every realm below it
+## answers zero — and the ask is high enough to be a build decision: a will-only body
+## fails it, while the authored gear the realm-tier guard admits at the boundary that
+## asks (`unique_void_coil_coiled_heart` +20, `unique_ironhide_hearthguard` +6, against
+## the ask of 24) opens it. `test_dao_heart.gd` proves both sides through the real
+## preview and the real items.
+const DAO_HEART_BY_TIER := {
+	RealmDefaults.MORTAL: 0.0,
+	RealmDefaults.SPIRIT: 0.0,
+	RealmDefaults.IMMORTAL: 0.0,
+	RealmDefaults.TRANSCENDENT: 24.0,
+}
 
 
 static func can_advance(
@@ -255,6 +272,19 @@ static func ascension_ok(actor: Actor, next_index: int) -> bool:
 	return actor.ascension != null and actor.ascension.is_complete()
 
 
+## Whether this actor's dao heart carries the deepest trials. A tier that authors zero,
+## and a realm the ladder does not hold, answer true — the honest reading for "this
+## gate does not apply here".
+static func dao_heart_ok(actor: Actor, next_index: int) -> bool:
+	if actor == null:
+		return false
+	var realm_id := _realm_id_at(next_index)
+	if realm_id == &"":
+		return true
+	var required := float(DAO_HEART_BY_TIER.get(RealmDefaults.ladder().tier_of(realm_id), 0.0))
+	return required <= 0.0 or actor.stats.derived(Stat.DAO_HEART) >= required
+
+
 ## Every tier gate the target realm requires, in one call. Per-system conditions
 ## delegate here so module code and core cannot drift apart.
 static func tier_gates_met(actor: Actor, next_index: int) -> bool:
@@ -263,6 +293,7 @@ static func tier_gates_met(actor: Actor, next_index: int) -> bool:
 		and inside_world_ok(actor, next_index)
 		and world_ok(actor, next_index)
 		and ascension_ok(actor, next_index)
+		and dao_heart_ok(actor, next_index)
 	)
 
 
@@ -289,6 +320,8 @@ static func try_advance_gated(
 	if not world_ok(actor, next_index):
 		return false
 	if not ascension_ok(actor, next_index):
+		return false
+	if not dao_heart_ok(actor, next_index):
 		return false
 	return try_advance(actor, path_id, condition, context)
 

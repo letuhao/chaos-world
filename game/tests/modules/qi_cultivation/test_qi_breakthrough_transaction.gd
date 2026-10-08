@@ -159,3 +159,40 @@ func test_execute_matches_preview_on_readiness() -> void:
 		true,
 		"condition agrees with the preview: %s" % str(preview["unmet_conditions"])
 	)
+
+
+# --- a deviation cracks the dao heart (BL-0932) -------------------------------
+
+
+## A generator whose first draw is at or above every legal chance (`QiChance`'s ceiling
+## is 0.95), so the attempt fails deterministically however the fixture is built.
+func _failing_roll() -> RandomNumberGenerator:
+	var rng := RandomNumberGenerator.new()
+	for seed_value in range(1, 4096):
+		rng.seed = seed_value
+		if rng.randf() >= QiChance.MAX_CHANCE:
+			rng.seed = seed_value
+			return rng
+	return rng
+
+
+## A failed breakthrough is where the ruling names the crack: the same deviation that
+## scars the dantian leaves the dao heart cracked, and `QiTraining.recover`'s elixir is
+## what mends it (`test_qi_recovery`).
+func test_a_deviation_cracks_the_dao_heart() -> void:
+	var actor := _actor()
+	actor.stats.set_base(Stat.WILL, 10.0)
+	_prepare(actor)
+	assert_almost_eq(DaoHeart.crack_of(actor), 0.0, "whole before the attempt")
+	assert_eq(
+		QiBreakthroughTransaction.execute(actor, _failing_roll()), false, "the attempt fails"
+	)
+	assert_almost_eq(
+		DaoHeart.crack_of(actor),
+		-QiBreakthroughTransaction.HEART_CRACK_ON_DEVIATION,
+		"and the deviation cracked the heart"
+	)
+	assert_almost_eq(
+		actor.stats.derived(Stat.DAO_HEART), 8.0, "the heart reads the crack", 0.0001
+	)
+	assert_eq(actor.path(PATH).rank_id, &"qi_refining", "with no advance")

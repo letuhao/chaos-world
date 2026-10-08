@@ -523,6 +523,7 @@ func _climb_and_prepare(index: int) -> Actor:
 		var source := Probe.realm_at(tier - 1)
 		var target := Probe.realm_at(tier)
 		_prepare(actor, source, target)
+		_ensure_heart(actor, target)
 		var rng := _winning(float(MindAdvancement.preview(actor).get("chance", -1.0)))
 		assert_eq(
 			MindAdvancement.try_breakthrough(actor, rng),
@@ -532,7 +533,31 @@ func _climb_and_prepare(index: int) -> Actor:
 		Probe.strengthen_anchor(actor)
 	# The boundary this file measures, prepared but never entered.
 	_prepare(actor, Probe.realm_at(index), Probe.realm_at(index + 1))
+	_ensure_heart(actor, Probe.realm_at(index + 1))
 	return actor
+
+
+## The deepest tier asks for a dao heart (BL-0932), earned here the way a player earns
+## it: authored gear, whose fixed modifiers are what APPLY, and the two uniques below
+## are what the realm-tier guard admits at the boundary that asks — 26 against the ask
+## of 24 (the lantern's +40 is refused until the tier it belongs to is reached).
+func _ensure_heart(actor: Actor, target: RealmDef) -> void:
+	var required := float(
+		Breakthrough.DAO_HEART_BY_TIER.get(RealmDefaults.ladder().tier_of(target.id), 0.0)
+	)
+	if required <= 0.0 or actor.stats.derived(Stat.DAO_HEART) >= required:
+		return
+	for def_id in [&"unique_void_coil_coiled_heart", &"unique_ironhide_hearthguard"]:
+		var def := Crafting.resolve(def_id)
+		assert_ne(def, null, "the authored %s resolves" % def_id)
+		if def == null:
+			return
+		ItemsApi.inventory(actor).add(def, 1)
+		assert_eq(
+			ItemsApi.equip_item(actor, def.subcategory, def),
+			true,
+			"%s equips, opening the deepest tier's heart gate" % def_id
+		)
 
 
 ## Walk the whole ascent, one deliberate step at a time, through core's own entry

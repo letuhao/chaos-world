@@ -210,3 +210,18 @@ func test_every_qi_recovery_item_resolves_to_real_content() -> void:
 		assert_ne(found, null, "recovery item %s exists" % seed.recovery_item)
 		if found != null:
 			assert_eq(found.category, &"consumable", "%s is a consumable" % seed.recovery_item)
+
+
+## A cracked dao heart is something to repair by itself (BL-0932): a body with a whole
+## dantian and whole channels still spends the elixir to mend it, and the verb still
+## refuses when there is nothing at all to repair — pinned from both sides.
+func test_the_recovery_elixir_mends_a_cracked_heart() -> void:
+	var actor := _actor()
+	actor.stats.set_base(Stat.WILL, 10.0)
+	_stock(actor, _recovery_id())
+	DaoHeart.crack(actor, 2.0)
+	assert_almost_eq(DaoHeart.crack_of(actor), -2.0, "cracked")
+	assert_eq(QiTraining.recover(actor, &"lung"), true, "the elixir mends the heart alone")
+	assert_almost_eq(DaoHeart.crack_of(actor), 0.0, "healed")
+	assert_almost_eq(actor.stats.derived(Stat.DAO_HEART), 10.0, "and the heart reads whole", 0.0001)
+	assert_eq(QiTraining.recover(actor, &"lung"), false, "and a whole body pays nothing")
