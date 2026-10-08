@@ -66,20 +66,22 @@ static var _memo: Dictionary = {}
 ##
 ## It is not invalidated on a write, because **there is nothing to invalidate on**:
 ## `RelationGraph` reads `summary(null)` from every owner, so what it sees is the
-## AUTHORED catalog, and it holds no per-actor state for an owner write to change. A
-## stance the PLAYER declares lives on that actor's ledger and reaches a panel
-## through the owner's own `summary(actor)` — it is not in here, and that is DEF-0179
-## rather than a caching bug. Its root is DEF-0119: an institution ledger has no
-## world-wide home yet.
+## AUTHORED catalog, and it holds no per-actor state for an owner write to change.
 ##
-## So the memo answers the only question it can: "the authored tree has not changed
-## since I looked". When an institution ledger does get a home, a content fingerprint
-## belongs here — and until then, "rebuild when asked" is the honest memo.
-static func graph() -> Dictionary:
-	if shared != null and not _memo.is_empty():
+## ## Player-driven stances arrive through the world ledger, never an actor
+##
+## A stance the player declares — a schism, a war — lives on the WORLD polity
+## ledger beside the actor (ADR 0931), and reaches `graph()`, `stance()` and
+## `hostile_to()` when the caller hands that ledger in as `world_polity`. Reading
+## the caller's actor instead would make the graph world-wide in name and
+## single-player in fact, which DEF-0179 forbids. Bare `graph()` still answers the
+## authored catalog only. The memo covers the bare call alone: a ledger-handed
+## call always rebuilds, because the ledger is the thing that moves.
+static func graph(world_polity: Dictionary = {}) -> Dictionary:
+	if shared != null and not _memo.is_empty() and world_polity.is_empty():
 		return _memo.duplicate(true)
-	var built := RelationGraph.build()
-	if shared != null:
+	var built := RelationGraph.build(world_polity)
+	if shared != null and world_polity.is_empty():
 		_memo = built
 	return built
 
@@ -105,11 +107,11 @@ static func _fingerprint(edges: Dictionary) -> String:
 ## swapped and you get the identical dictionary: the row is stored once under the
 ## lexicographically ordered pair, so a one-sided opinion is structurally impossible
 ## (ADR 0047 as extended by ADR 0085).
-static func stance(a_node: String, b_node: String) -> Dictionary:
+static func stance(a_node: String, b_node: String, world_polity: Dictionary = {}) -> Dictionary:
 	var key := RelationKey.pair_key(String(a_node), String(b_node))
 	if key == "":
 		return {}
-	var held = graph().get(key, null)
+	var held = graph(world_polity).get(key, null)
 	return (held as Dictionary).duplicate(true) if held is Dictionary else {}
 
 
@@ -119,10 +121,13 @@ static func stance(a_node: String, b_node: String) -> Dictionary:
 ##
 ## An unreadable or absent node answers `{}` rather than a neutral row, for the same
 ## reason `stance()` does.
-static func hostile_to(node_key: String) -> Dictionary:
+static func hostile_to(node_key: String, world_polity: Dictionary = {}) -> Dictionary:
 	var out: Dictionary = {}
-	for key in graph().keys():
-		var held = graph()[key]
+	# Bound once: two builds could disagree, and a ledger-handed build must never
+	# be read through the bare one.
+	var edges := graph(world_polity)
+	for key in edges.keys():
+		var held = edges[key]
 		if not (held is Dictionary):
 			continue
 		var edge: Dictionary = held as Dictionary

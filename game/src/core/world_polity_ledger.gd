@@ -40,10 +40,12 @@ extends RefCounted
 ##
 ## ## ## Consequence: this file names no actor, and there is a test for that
 ##
-## No row here may hold a key that is a known actor id, and `institutional_line_ids`
-## exists so a caller cannot smuggle one in through a computed term id. The bound
-## holds on the SUBJECT string (`a|b`, two institution ids, canonical order), so it
-## cannot be defeated by an awkward term name.
+## No row here may hold a key that is a known actor id. The bound holds on the
+## SUBJECT string (two institution ids in canonical order), so it cannot be defeated
+## by an awkward term name — and an id carrying a separator (`|`, `->`, `#`) is
+## refused at the verb rather than split (ADR 0931). "Known" is decided by the
+## caller: the ledger cannot tell an actor id from an institution id, so writers
+## pass institution ids and the suite pins the refusal shapes.
 ##
 ## ## ## `core/` may only use `contracts/`, and this file uses neither
 ##
@@ -66,11 +68,24 @@ const WORLD_KEY := "polity"
 ## always be detected. `NationState.PAIR_SEPARATOR` is the same precedent.
 const PAIR_SEPARATOR := "|"
 
+## The separator joining a grant's canonical pair to its node id (`a->b#node`). A
+## character no authored institution or node id contains; a node id carrying it (or
+## `|` or `->`) is refused at the verb and dropped by the normalizer, never split.
+const GRANT_SEPARATOR := "#"
+
 ## The containers this ledger owns, in the exact shape it normalizes. `SaveSlot` and
 ## `app/world_ledger_store.gd` both need to know a polity ledger by its containers, and
 ## neither may reach this file's normalizer, so the table is authored here and asserted
 ## against the store's copy by test.
 const CONTAINERS: Array[String] = ["institutions", "debts"]
+
+## `grants` rides the same slot and normalizes beside the routed containers, but is
+## deliberately NOT in [constant CONTAINERS]: the routed identity is pinned to the
+## two by `tests/core/test_world_polity_ledger.gd`, and widening it is a save-format
+## decision for the slice that owns the envelope (ADR 0931). The store's shape rule
+## ignores containers it does not route, so a grants-carrying payload still lands on
+## `polity`.
+const GRANT_CONTAINER := "grants"
 
 ## The bound on institution rows. A hand-edited save asking for two million institutions
 ## is refused by the cap rather than read, exactly as `SectState.ROSTER_LIMIT` is.
@@ -78,6 +93,9 @@ const INSTITUTION_LIMIT := 64
 ## The bound on debt lines. One row per ORDERED pair, so two institutions owe at most
 ## two lines to each other; the cap is a corrupt-save guard, not a budget.
 const DEBT_LIMIT := 256
+## The bound on grant rows. One row per pair per node; the cap is a corrupt-save
+## guard, not a budget, for the same reason [constant DEBT_LIMIT] is.
+const GRANT_LIMIT := 128
 ## The bound on term ids inside one line, for the same reason.
 const TERM_LIMIT := 16
 ## A debt period count is clamped here rather than trusted: a corrupt save must not be
@@ -213,24 +231,32 @@ static func normalize_payload(payload: Dictionary) -> Dictionary:
 			var ids := split_directed_key(directed)
 			if ids.is_empty() or ids[0] == ids[1]:
 				continue
+			if ids[0].contains(PAIR_SEPARATOR) or ids[1].contains(PAIR_SEPARATOR):
+				continue
+			if ids[0].contains("->") or ids[1].contains("->"):
+				continue
 			if not is_institutional(pair_key(ids[0], ids[1])):
 				continue
 			# ## THE FOLD: one row per unordered PAIR, stored under its canonical
 			# ## DIRECTED spelling, so both spellings collide on one row.
 			#
 			# `a->b` and `b->a` name one obligation, so the fold reduces both to the
-			# lexicographically-ordered pair and re-spells it as a directed key whose
-			# OBLIGOR is the smaller id. That single stored key is what `owed` reads:
-			# `owed(A, B)` looks up `directed_key(A, B)` and `owed(B, A)` looks up the
-			# opposite spelling, so the debtor's side finds the row and the creditor's side
-			# correctly finds none. One row, two directions, no second opinion (BL-0192).
+			# lexicographically-ordered pair and stores ONE row under that canonical
+			# directed key. That single stored key is what `owed` reads: `owed` looks
+			# the pair's canonical row up and answers its lines only when the row's
+			# recorded direction matches the question, so the debtor's side finds the
+			# row and the creditor's side correctly finds none. One row, two
+			# directions, no second opinion (BL-0192).
 			#
 			# The earlier version stored under `directed` — the spelling that ARRIVED — so
 			# two spellings of one pair landed as two rows and each side could read a
 			# different answer, which is the one-sided opinion this fold exists to forbid.
 			#
-			# The row is built from the CANONICAL spelling, so `debtor_id`/`creditor_id`
-			# always agree with the key they are stored under, whichever spelling arrived.
+			# The row keeps the WINNER's direction: the entry's ids win when they name
+			# this pair in either order, and the canonical spelling is only the fallback
+			# for a row that cannot name its own sides. Relabelling every winner onto
+			# the key (the earlier shape) misattributed the debt whenever the reversed
+			# spelling won — "rival owes house" read back as "house owes rival" (ADR 0931).
 			var pair_ids := split_pair_key(undirected_of(directed))
 			if pair_ids.size() != 2:
 				continue
@@ -238,6 +264,10 @@ static func normalize_payload(payload: Dictionary) -> Dictionary:
 			if canonical == "":
 				continue
 			var row := _debt_row((debts as Dictionary)[key], canonical)
+			if row.is_empty():
+				# An unreadable row, or one with nothing owed on any line: dropped
+				# rather than persisted as a fact nothing can ask for.
+				continue
 			var held = (out["debts"] as Dictionary).get(canonical)
 			if (
 				held is Dictionary
@@ -255,6 +285,44 @@ static func normalize_payload(payload: Dictionary) -> Dictionary:
 				# `t_rival_house->...` regardless of the sequences they carry.
 				continue
 			(out["debts"] as Dictionary)[canonical] = row
+	# The grant rows are folded pair by pair beside the debts, under their own
+	# container. A grant names the same pair twice — once as the directed pair the
+	# fold canonicalizes, once as the node it is granted under — so the key is the
+	# canonical directed spelling plus [constant GRANT_SEPARATOR] plus the node id,
+	# and both spellings of one grant collide on one row exactly like debts do. The
+	# lower sequence wins for the same reason: a hand-edited save cannot raise a
+	# grant by respelling it (ADR 0931).
+	out[GRANT_CONTAINER] = {}
+	var grants = payload.get(GRANT_CONTAINER, {})
+	if grants is Dictionary:
+		for key in _sorted_keys(grants as Dictionary):
+			if (out[GRANT_CONTAINER] as Dictionary).size() >= GRANT_LIMIT:
+				break
+			var head := _grant_head(String(key))
+			var node := _grant_node(String(key))
+			var gids := split_directed_key(head)
+			if gids.is_empty() or gids[0] == gids[1] or node == "":
+				continue
+			if gids[0].contains(PAIR_SEPARATOR) or gids[1].contains(PAIR_SEPARATOR):
+				continue
+			if gids[0].contains("->") or gids[1].contains("->"):
+				continue
+			if not is_institutional(pair_key(gids[0], gids[1])):
+				continue
+			var gpair := split_pair_key(undirected_of(head))
+			if gpair.size() != 2:
+				continue
+			var gcanonical := directed_key(gpair[0], gpair[1]) + GRANT_SEPARATOR + node
+			var grow := _grant_row((grants as Dictionary)[key], gcanonical)
+			if grow.is_empty():
+				continue
+			var gheld = (out[GRANT_CONTAINER] as Dictionary).get(gcanonical)
+			if (
+				gheld is Dictionary
+				and int((gheld as Dictionary).get("sequence", 0)) <= int(grow["sequence"])
+			):
+				continue
+			(out[GRANT_CONTAINER] as Dictionary)[gcanonical] = grow
 	return out
 
 
@@ -305,14 +373,29 @@ static func pairs_of(ledger: Dictionary, institution_id: String) -> Array:
 ## Zero when there is no such line, because "nobody opened this debt" and "this debt
 ## is settled" are the same state — `InstitutionClaim.owed` states the rule and this
 ## reads through the same shape rather than restating it.
+##
+## The pair's canonical row is read and its recorded direction checked, so a debt the
+## larger id owes the smaller answers on the larger's side. Looking the caller's own
+## spelling up (the earlier shape) could only ever find rows the smaller id owed.
 static func owed(
 	ledger: Dictionary, debtor_id: String, creditor_id: String, term_id: String
 ) -> int:
-	var directed := directed_key(debtor_id, creditor_id)
-	if directed == "" or term_id == "":
+	if term_id == "":
 		return 0
-	var row = (ledger.get("debts", {}) as Dictionary).get(directed)
+	var unordered := pair_key(debtor_id, creditor_id)
+	if unordered == "":
+		return 0
+	var pair_ids := split_pair_key(unordered)
+	if pair_ids.size() != 2:
+		return 0
+	var canonical := directed_key(pair_ids[0], pair_ids[1])
+	var row = (ledger.get("debts", {}) as Dictionary).get(canonical)
 	if not (row is Dictionary):
+		return 0
+	if (
+		String((row as Dictionary).get("debtor_id", "")) != debtor_id
+		or String((row as Dictionary).get("creditor_id", "")) != creditor_id
+	):
 		return 0
 	var lines = (row as Dictionary).get("lines", {}) as Dictionary
 	return clampi(int(lines.get(term_id, 0)), 0, PERIOD_CAP)
@@ -343,21 +426,82 @@ static func _institution_row(entry) -> Dictionary:
 	}
 
 
-## One debt row, coerced. `lines` keeps only positive counts, `terms` is capped at
-## [constant TERM_LIMIT], and the two institution ids are re-derived from the KEY rather
-## than trusted from the row — a row that names a third institution is folded onto the
-## pair its key says, because the key is what makes the symmetry structural.
+## One debt row, coerced. `lines` keeps only positive counts and is capped at
+## [constant TERM_LIMIT]; a row with nothing owed on any line is dropped rather than
+## persisted, because a settled line and a never-opened one are the same state.
+##
+## The entry's ids win when they name this pair in either order; the canonical
+## spelling is only the fallback for a row that cannot name its own sides. Trusting
+## the entry here is what lets the larger id owe the smaller — relabelling every row
+## onto the key made that direction inexpressible (ADR 0931). A row naming a THIRD
+## institution still falls back, because the key is what makes the symmetry structural.
 static func _debt_row(entry, directed: String) -> Dictionary:
 	var ids := split_directed_key(directed)
+	var debtor := ids[0] if ids.size() == 2 else ""
+	var creditor := ids[1] if ids.size() == 2 else ""
+	if not (entry is Dictionary):
+		return {}
+	var row = entry as Dictionary
+	var named_debtor := _text(row.get("debtor_id", ""))
+	var named_creditor := _text(row.get("creditor_id", ""))
+	if (
+		ids.size() == 2
+		and named_debtor != ""
+		and named_creditor != ""
+		and pair_key(named_debtor, named_creditor) == pair_key(ids[0], ids[1])
+	):
+		debtor = named_debtor
+		creditor = named_creditor
+	var out := {"debtor_id": debtor, "creditor_id": creditor, "sequence": 0, "lines": {}}
+	out["sequence"] = maxi(0, int(row.get("sequence", 0)))
+	var lines = row.get("lines", {})
+	if lines is Dictionary:
+		for term_id in _sorted_keys(lines as Dictionary):
+			if (out["lines"] as Dictionary).size() >= TERM_LIMIT:
+				break
+			var owed := int((lines as Dictionary)[term_id])
+			if owed > 0:
+				(out["lines"] as Dictionary)[String(term_id)] = mini(owed, PERIOD_CAP)
+	if (out["lines"] as Dictionary).is_empty():
+		return {}
+	return out
+
+
+## One grant row, coerced. Unlike a debt row, a grant with no open lines is still a
+## fact — "this node is held by grant" — so an empty `lines` is kept rather than
+## dropped. A non-dictionary entry is still dropped: structure that cannot be read
+## is never defaulted into a grant.
+##
+## The direction rule is the debt row's: the entry's ids win when they name the pair
+## in either order. The fallback grants the larger id's holding from the smaller —
+## the term-debtor (the grantee, who owes the terms) is the smaller id, exactly as
+## the debt fallback makes the smaller id the debtor.
+static func _grant_row(entry, grant_key: String) -> Dictionary:
+	var head := _grant_head(grant_key)
+	var node := _grant_node(grant_key)
+	var gids := split_directed_key(head)
+	var grantor := gids[1] if gids.size() == 2 else ""
+	var grantee := gids[0] if gids.size() == 2 else ""
+	if not (entry is Dictionary):
+		return {}
+	var row = entry as Dictionary
+	var named_grantor := _text(row.get("grantor_id", ""))
+	var named_grantee := _text(row.get("grantee_id", ""))
+	if (
+		gids.size() == 2
+		and named_grantor != ""
+		and named_grantee != ""
+		and pair_key(named_grantor, named_grantee) == pair_key(gids[0], gids[1])
+	):
+		grantor = named_grantor
+		grantee = named_grantee
 	var out := {
-		"debtor_id": ids[0] if ids.size() == 2 else "",
-		"creditor_id": ids[1] if ids.size() == 2 else "",
+		"grantor_id": grantor,
+		"grantee_id": grantee,
+		"node_id": node,
 		"sequence": 0,
 		"lines": {},
 	}
-	if not (entry is Dictionary):
-		return out
-	var row = entry as Dictionary
 	out["sequence"] = maxi(0, int(row.get("sequence", 0)))
 	var lines = row.get("lines", {})
 	if lines is Dictionary:
@@ -368,6 +512,33 @@ static func _debt_row(entry, directed: String) -> Dictionary:
 			if owed > 0:
 				(out["lines"] as Dictionary)[String(term_id)] = mini(owed, PERIOD_CAP)
 	return out
+
+
+## The pair half of a grant key (`a->b` of `a->b#node`), or `""` when the key names
+## no grant. A node id carrying the separator reads as no grant at all — the key is
+## unreadable, never guessed at.
+static func _grant_head(grant_key: String) -> String:
+	var at := grant_key.find(GRANT_SEPARATOR)
+	if at <= 0:
+		return ""
+	return grant_key.substr(0, at)
+
+
+## The node half of a grant key, or `""` when it is absent or carries key syntax
+## (`#`, `|` or `->`) of its own. A node id that could be re-split is not a node id.
+static func _grant_node(grant_key: String) -> String:
+	var at := grant_key.find(GRANT_SEPARATOR)
+	if at <= 0 or at + GRANT_SEPARATOR.length() >= grant_key.length():
+		return ""
+	var node := grant_key.substr(at + GRANT_SEPARATOR.length())
+	if (
+		node == ""
+		or node.contains(GRANT_SEPARATOR)
+		or node.contains(PAIR_SEPARATOR)
+		or node.contains("->")
+	):
+		return ""
+	return node
 
 
 ## `value` when it really is text, otherwise `""`. The one text coercion in this file:
@@ -384,9 +555,14 @@ static func _text(value) -> String:
 ## raw array: the order is load-bearing — two runs over the same payload must fold in
 ## the same sequence and persist the same bytes — so a hand-edited save whose two
 ## spellings of one pair disagree produces the SAME winner every time.
+##
+## A key that is not text is SKIPPED, never coerced: a raw `String(...)` raises at
+## runtime on an int, a float or a dictionary, so trusting it here would abort the
+## whole load on one corrupt key instead of reading as empty.
 static func _sorted_keys(source: Dictionary) -> Array[String]:
 	var strings: Array[String] = []
 	for key in source.keys():
-		strings.append(String(key))
+		if key is String or key is StringName:
+			strings.append(String(key))
 	strings.sort()
 	return strings

@@ -61,11 +61,17 @@ const FACTION_SCRIPT_CLASS := "WorldFactionDef"
 
 
 ## Every edge the three owners currently publish, keyed by the canonical pair.
-static func build() -> Dictionary:
+## `world_polity` is the world polity ledger a caller hands in (ADR 0931): the
+## player-driven stances it records — schisms, wars — reach the graph only through
+## it, never through any owner's `summary(null)`, because a world-wide graph must
+## never be answered from one caller's actor (DEF-0179). Bare `build()` still
+## answers the authored catalog only.
+static func build(world_polity: Dictionary = {}) -> Dictionary:
 	var rows: Dictionary = {}
 	_read_dao(rows)
 	_read_nation(rows)
 	_read_sect(rows)
+	_read_polity(rows, world_polity)
 	return rows
 
 
@@ -153,6 +159,58 @@ static func _read_sect(rows: Dictionary) -> void:
 			RelationKey.HOSTILE,
 			RelationKey.KIND_SECT
 		)
+
+
+## Player-driven hostility, read from the world polity ledger the caller handed in
+## (DEF-0179 as answered by ADR 0931). The ledger persists world-wide on the save
+## envelope beside the actor, so enumerating IT — rather than reading one caller's
+## actor — is what keeps the graph world-wide in fact as well as in name.
+##
+## Only stance flags become edges: a debt term (`blood_price`) maps to no stance
+## and is skipped, so the graph has no opinion on what a pair owes. `schism` is
+## the sect verb (`SectSchism.VERB`, spelled literally because only facades are
+## named from here) and every other flag is the nation's (`NationState.VERBS`).
+## Provenance is `polity` — where the row was READ — never ownership of it.
+static func _read_polity(rows: Dictionary, world_polity: Dictionary) -> void:
+	var debts = world_polity.get("debts", {})
+	if not (debts is Dictionary):
+		return
+	var keys: Array[String] = []
+	for key in (debts as Dictionary).keys():
+		keys.append(String(key))
+	keys.sort()
+	# A `for` over a snapshot, folding into a DIFFERENT dictionary: the body writes
+	# only `rows`, never the container being walked, so the bound is fixed before
+	# the first iteration and cannot grow in lockstep with it.
+	for key in keys:
+		var row = (debts as Dictionary)[key]
+		if not (row is Dictionary):
+			continue
+		var debtor := String((row as Dictionary).get("debtor_id", ""))
+		var creditor := String((row as Dictionary).get("creditor_id", ""))
+		if debtor == "" or creditor == "":
+			continue
+		var lines = (row as Dictionary).get("lines", {})
+		if not (lines is Dictionary):
+			continue
+		# The inner walk reads only: it appends to nothing and mutates nothing, so
+		# it is bounded by the row's own line count.
+		for term in (lines as Dictionary).keys():
+			if int((lines as Dictionary)[term]) <= 0:
+				continue
+			var verb := String(term)
+			var stance := RelationKey.stance_of(verb)
+			if stance == "":
+				continue
+			var kind := RelationKey.KIND_SECT if verb == "schism" else RelationKey.KIND_NATION
+			_merge(
+				rows,
+				RelationKey.node_key(kind, debtor),
+				RelationKey.node_key(kind, creditor),
+				verb,
+				stance,
+				"polity"
+			)
 
 
 ## Fold one owner's reading into the ONE canonical row for the pair.
