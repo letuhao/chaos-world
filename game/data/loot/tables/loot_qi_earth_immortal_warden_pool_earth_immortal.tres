@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=8 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -63,6 +63,42 @@ guaranteed = false
 quantity = 1
 rarity_floor = &"legendary"
 
+[sub_resource type="Resource" id="entry_5"]
+script = ExtResource("2_entry")
+id = &"qi_earth_immortal_warden_earth_immortal_5"
+kind = &"item"
+item_id = &"manual_void_root_refining"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"legendary"
+
+[sub_resource type="Resource" id="entry_6"]
+script = ExtResource("2_entry")
+id = &"qi_earth_immortal_warden_earth_immortal_6"
+kind = &"item"
+item_id = &"manual_chaos_root_refining"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"legendary"
+
+[sub_resource type="Resource" id="entry_7"]
+script = ExtResource("2_entry")
+id = &"qi_earth_immortal_warden_earth_immortal_7"
+kind = &"item"
+item_id = &"manual_time_root_refining"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"legendary"
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_qi_earth_immortal_warden_pool_earth_immortal"
@@ -76,8 +112,14 @@ entries = Array[LootEntry]([
 	SubResource("entry_1"),
 	SubResource("entry_2"),
 	SubResource("entry_3"),
-	SubResource("entry_4")
+	SubResource("entry_4"),
+	SubResource("entry_5"),
+	SubResource("entry_6"),
+	SubResource("entry_7")
 ])
+
+
+
 
 
 

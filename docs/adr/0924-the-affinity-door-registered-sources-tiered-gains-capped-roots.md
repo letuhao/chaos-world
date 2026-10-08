@@ -27,9 +27,12 @@ that has to be rebuilt per feature.
   must allow it — never a second opinion (ADR 0044).
 - **The price is tiered and capped** (owner ruling 2026-10-08): a treasure pays
   +2/+3/+5 by tier, an awakening elixir doubles it (+4/+6/+10), and a root stops at
-  12/15/18 by tier. The cap bounds the INNATE axis only: mastery stays uncapped and
-  the realm multiplier is shared, so the climb keeps scaling while a root stays
-  finite. A grant never overshoots the cap — the last treasure pays the room left.
+  12/15/18 by tier. A root-refining art mirrors the treasure's opening when it is
+  learned and then refines +1 a press — free, because the art itself was the price —
+  so the three families pay the same currency at different rates. The cap bounds the
+  INNATE axis only: mastery stays uncapped and the realm multiplier is shared, so the
+  climb keeps scaling while a root stays finite. A grant never overshoots the cap —
+  the last treasure pays the room left.
 - **The families ship as authored content**: 13 awakening treasures
   (`element_<e>_awakening_treasure`, domain drops — the six elemental domains and the
   realm-matched qi warden pools) and 13 awakening elixirs

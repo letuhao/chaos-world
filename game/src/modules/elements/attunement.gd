@@ -49,6 +49,11 @@ const AWAKENING_ELIXIR_SUFFIX := "_awakening_elixir"
 const TREASURE_GAIN_BY_TIER := {1: 2.0, 2: 3.0, 3: 5.0}
 const ELIXIR_GAIN_BY_TIER := {1: 4.0, 2: 6.0, 3: 10.0}
 
+## What a root-refining art's two loops pay: the learn-time opening mirrors the
+## treasure's per-tier grant, and the refine is the slow +1 that runs to the cap.
+const ART_GRANT_BY_TIER := {1: 2.0, 2: 3.0, 3: 5.0}
+const ART_REFINE_STEP := 1.0
+
 ## Where a root stops, by tier. The innate axis is finite by design; the scaling
 ## axes (mastery, the realm multiplier) are what keep growing.
 const CAP_BY_TIER := {1: 12.0, 2: 15.0, 3: 18.0}
@@ -200,6 +205,35 @@ static func offer(actor: Actor, element_id: StringName) -> Dictionary:
 ## at its cap (`at_cap`), no source whose requirement is met (`no_source`), and a
 ## source that refused to be spent (`refused`).
 static func attune(actor: Actor, element_id: StringName) -> Dictionary:
+	var gate := _gate(actor, element_id)
+	if not bool(gate.get("ok", false)):
+		return gate
+	var available := offers(actor, element_id)
+	if available.is_empty():
+		return {"ok": false, "reason": R_NO_SOURCE}
+	return _apply(actor, available[0], gate)
+
+
+## Apply ONE registered source by id (ADR 0924): the learn-time grant a caller knows
+## by name, rather than the pick-the-best form `attune` is. The same gate, cap and
+## once-record rules apply, and an unknown or already-spent source reads `no_source`.
+static func attune_source(actor: Actor, source_id: StringName) -> Dictionary:
+	var source: AffinitySource = _registered.get(source_id)
+	if source == null:
+		return {"ok": false, "reason": R_NO_SOURCE}
+	var gate := _gate(actor, source.element)
+	if not bool(gate.get("ok", false)):
+		return gate
+	if source.once and _spent(actor).has(String(source.id)):
+		return {"ok": false, "reason": R_NO_SOURCE}
+	if not bool(source.check.call(actor)):
+		return {"ok": false, "reason": R_NO_SOURCE}
+	return _apply(actor, source, gate)
+
+
+## The gate and the cap, in one place: the element must exist, the climb must allow
+## its tier (`usable`), and the root must have room.
+static func _gate(actor: Actor, element_id: StringName) -> Dictionary:
 	if actor == null:
 		return {"ok": false, "reason": R_NO_ACTOR}
 	var rules := ElementDefaults.rules()
@@ -212,13 +246,15 @@ static func attune(actor: Actor, element_id: StringName) -> Dictionary:
 	var current := actor.affinities.get_value(element_id)
 	if current >= cap:
 		return {"ok": false, "reason": R_AT_CAP, "cap": cap}
-	var available := offers(actor, element_id)
-	if available.is_empty():
-		return {"ok": false, "reason": R_NO_SOURCE}
-	var source := available[0]
+	return {"ok": true, "element": element_id, "cap": cap, "current": current}
+
+
+## Spend `source` and write the grant, capped at the room the gate measured.
+static func _apply(actor: Actor, source: AffinitySource, gate: Dictionary) -> Dictionary:
 	if not bool(source.consume.call(actor)):
 		return {"ok": false, "reason": R_REFUSED, "source": String(source.id)}
-	var gain := minf(source.amount, cap - current)
+	var element_id: StringName = gate.get("element", &"")
+	var gain := minf(source.amount, float(gate.get("cap", 0.0)) - float(gate.get("current", 0.0)))
 	ElementTraining.awaken(actor, element_id, gain)
 	if source.once:
 		_remember_spent(actor, source.id)

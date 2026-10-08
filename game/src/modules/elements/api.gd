@@ -329,6 +329,13 @@ static func attune(actor: Actor, element_id: StringName) -> Dictionary:
 	return ElementAttunement.attune(actor, element_id)
 
 
+## Apply ONE registered source by id (ADR 0924): the learn-time grant a caller knows
+## by name. `attune` is the pick-the-best form; both share the gate, the cap and the
+## once-record.
+static func attune_source(actor: Actor, source_id: StringName) -> Dictionary:
+	return ElementAttunement.attune_source(actor, source_id)
+
+
 ## Drink the element's authored mastery elixir (ADR 0917): the ELIXIR door of the
 ## mastery loop — "practice, domains and elixirs". Consumes one item and raises the
 ## element's mastery by the element's tier's gain; returns a named refusal dictionary,

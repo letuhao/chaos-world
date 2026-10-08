@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="TechniqueDef" format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_def"]
+[resource]
+script = ExtResource("1_def")
+id = &"passive_metal_root_refining"
+delivered_by = &"manual_metal_root_refining"
+display_name = "LOC_TECHNIQUES_PASSIVE_METAL_ROOT_REFINING_DISPLAY_NAME"
+description = "LOC_TECHNIQUES_PASSIVE_METAL_ROOT_REFINING_DESCRIPTION"
+tags = Array[StringName]([&"passive", &"qi", &"root_refining", &"metal"])
+grade = &"mortal"
+rarity = &"common"
+element = &""
+schools = Array[StringName]([&"cultivation"])
+active = false
+path = &"qi_cultivation"
+min_path_realm = {&"qi_cultivation": 1}
+mastery_rungs = 5
+magnitude = 1.0
+passive_options = Array[Dictionary]([
+	{"option_id": &"cult_qi_affinity", "value": 2.0},
+	{"option_id": &"cult_muscle_fiber", "value": 3.0},
+])
