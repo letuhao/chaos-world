@@ -495,3 +495,22 @@ func test_the_walk_is_read_from_summary_and_a_vacancy_is_a_visible_row() -> void
 	assert_eq(
 		bool(unopened["succession"]["vacant"]), false, "an office nobody vacated is not vacant"
 	)
+
+
+## `is_open` marks begun-not-finished: the seam a reported `already_open`
+## refusal reads (Slice 8a — the re-open reset lives in `sect/api.gd`, outside
+## this slice, so this pins the predicate the one-line edit asks, not the gate
+## itself). A finished walk is closed, which is why the contract's `wait` on one
+## refuses `walk_complete` rather than ageing a seat that is seated.
+func test_is_open_marks_a_begun_unfinished_walk() -> void:
+	var actor := _member(&"keeper")
+	var idle := SectApi.state(actor)
+	assert_eq(SectSuccession.is_open(idle, STEWARD), false, "nothing has started")
+	SectApi.advance_succession(actor, STEWARD, &"open")
+	assert_eq(SectSuccession.is_open(SectApi.state(actor), STEWARD), true, "the walk is open")
+	for _stage in _def().position(STEWARD).walk_length():
+		SectApi.advance_succession(actor, STEWARD, &"wait", 1)
+		SectApi.advance_succession(actor, STEWARD, &"step")
+	assert_eq(
+		SectSuccession.is_open(SectApi.state(actor), STEWARD), false, "a finished walk is closed"
+	)

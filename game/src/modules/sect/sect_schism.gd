@@ -68,8 +68,15 @@ const R_ALREADY_SECEDED := "already_seceded"
 ## would produce two halves of zero and charge both of them for the privilege,
 ## which is the worst possible trade and a refusal rather than a formality.
 const R_NOTHING_TO_SPLIT := "nothing_to_split"
+## The declaration charges nothing at all. A free schism is the strictly-positive
+## action ADR 0085 exists to forbid, so a declaration whose whole bill is zero is
+## refused by name rather than planned (`Schismatic.R_NO_PRICE`). Read through
+## [method is_free_price] so the rule is one predicate, not a comparison each
+## caller re-derives — and note `SectTuning` defaults BOTH costs to `0`, so a
+## tuning that never authored a price ships exactly this refusal, not a free split.
+const R_NO_PRICE := "no_price"
 
-## The same six, keyed by the name each refusal is written with, so a caller can
+## The same seven, keyed by the name each refusal is written with, so a caller can
 ## look a reason up without holding the constant.
 const REASONS := {
 	R_NO_ACTOR: R_NO_ACTOR,
@@ -79,6 +86,7 @@ const REASONS := {
 	R_CANNOT_SECEDE_FROM_ITSELF: R_CANNOT_SECEDE_FROM_ITSELF,
 	R_ALREADY_SECEDED: R_ALREADY_SECEDED,
 	R_NOTHING_TO_SPLIT: R_NOTHING_TO_SPLIT,
+	R_NO_PRICE: R_NO_PRICE,
 }
 
 
@@ -118,18 +126,50 @@ static func price(tuning: SectTuning, unassigned: int) -> int:
 	return tuning.schism_price(unassigned)
 
 
+## Whether `price` is no price at all: the free-schism gate. A bill of zero or
+## less plans a split nobody paid for, which is the strictly-positive action this
+## whole file exists to price — so the declaring verb reads this predicate and
+## refuses by name ([constant R_NO_PRICE], the `Schismatic.R_NO_PRICE` rule)
+## rather than planning it. Takes the WHOLE bill (`price()` above), never one half of it: a base cost
+## of zero with an unassigned place still to pay for is a priced split, not a free
+## one, and only the total knows which it is.
+static func is_free_price(price: int) -> bool:
+	return price <= 0
+
+
 ## How many of the sect's authored places the declaration left UNASSIGNED.
 ##
-## Counted against `SectDef.territory_ids` rather than against the argument, so the
-## caller cannot shrink the bill by handing in a short list, and a place id the
-## sect never claimed is not a place a split can abandon. The loop is bounded by
-## the authored content on both sides.
+## Counted by walking the AUTHORED `territory_ids` and asking whether each is
+## named in `assigned`, so the caller cannot shrink the bill: a short assignment
+## list leaves more places unassigned rather than fewer, an id the sect never
+## claimed is not a place a split can abandon, an empty word names no place at
+## all, and naming one place twice abandons it once. (`Schismatic._unassigned`
+## is the same walk; the two agree by construction rather than by review.)
+## The walk is a `for` over the authored snapshot, writing nothing into it: the
+## bound is the content's own length.
 static func unassigned(def: SectDef, assigned: Array[StringName]) -> int:
 	if def == null:
 		return 0
-	var held := def.territory_ids
-	var taken := 0
-	for place_id in assigned:
-		if place_id == &"" or held.has(place_id):
-			taken += 1
-	return maxi(0, held.size() - taken)
+	var seen := {}
+	var count := 0
+	for place_id in def.territory_ids:
+		if place_id == &"":
+			continue
+		var key := String(place_id)
+		if seen.has(key):
+			continue
+		seen[key] = true
+		if not _names_place(assigned, key):
+			count += 1
+	return count
+
+
+## Whether `assigned` names the authored place `key`, matched by TEXT: an
+## authored array may hold `StringName`s while a declaration built from a save
+## holds plain `String`s, and `Array.has()` is type-strict. A `for` over the
+## caller's list, reading only: the bound is the declaration's own length.
+static func _names_place(assigned: Array[StringName], key: String) -> bool:
+	for entry in assigned:
+		if String(entry) == key:
+			return true
+	return false
