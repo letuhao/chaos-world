@@ -381,8 +381,23 @@ static func stand_in_the_tree(
 	if entry == null:
 		return {"ok": false, "reason": "not_a_world_entry"}
 	entry.name = STAGE_ENTRY_NODE
-	parent.add_child(entry)
-	entry.add_child(body)
+	# ## Why the adds are DEFERRED, and what it costs
+	#
+	# The app restores a body from its own `_ready`, which runs INSIDE the parent's
+	# child-setup. Godot 4.7 refuses `add_child` there - "Parent node is busy setting up
+	# children, `add_child()` failed" - so the entry never entered the tree, and the
+	# access violation that followed took the whole boot with it (`tools boot` phase one:
+	# exit 3221225477, the only failure the gate still had).
+	#
+	# The deferral costs ONE frame of TREE order, not the references: `entry`, `body` and
+	# every answer below are live either way, `_mounted_player` and `_current` are written
+	# synchronously as before, and a caller holding the returned `player` can use it
+	# immediately. What it buys is a boot that survives its own restore.
+	#
+	# Order is preserved because deferred calls run in the order they were queued: the
+	# entry is in the tree before the body is added to it.
+	parent.add_child.call_deferred(entry)
+	entry.add_child.call_deferred(body)
 	body.name = STAGE_BODY_NODE
 	# PUBLISH, or the body is standing in the tree and the stage still says it has
 	# none. `_mounted_player` is what `player()` returns and what `summary()` reports,
