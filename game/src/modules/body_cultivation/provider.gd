@@ -76,6 +76,14 @@ func contribute(context: StatContext) -> Dictionary:
 	}
 
 
+## Core-owned contributions are ADDITIONS to core's own bucketed value, not
+## replacements (ADR 0937): this provider shapes the four shared combat stats by
+## emitting a BONUS on top of them, and the layer applies the bucket to the bonus
+## exactly once.
+func adds_to_core() -> bool:
+	return true
+
+
 ## The realm factor, or neutral when the path is unstarted. An unknown realm id
 ## resolves to neutral inside `RealmRate`, so a path holding a stale rank
 ## degrades instead of throwing.

@@ -183,18 +183,21 @@ func _ensure_providers() -> void:
 	var buckets := _buckets()
 	for provider in _providers:
 		var contributed := provider.contribute(_context)
+		# The ADDITIVE shape is an OPT-IN, and only the re-emit family takes it
+		# (ADR 0937): a provider that shapes a core-owned id by emitting a BONUS on top
+		# of it (`BodyProvider`) declares `adds_to_core()`, and the modifier bucket
+		# lands on the bonus ONCE. Re-emitting `context.value(id) + bonus` through the
+		# replacement path below applied the realm multiplier twice — a body actor's
+		# physical attack read power^2 while its pools read power^1, and the
+		# actor-vs-actor census collapsed to 0.15 blows at R30 (DEF-0384's measurement).
+		# Every other provider's contribution is a REPLACEMENT baseline for the ids it
+		# owns, bucketed exactly once (ADR 0026) — the qi provider's absorption and the
+		# dantian's capacity are fresh baselines, and making the addition universal
+		# double-counted them (the qi family measured +7 absorption and +100 capacity).
+		var additive := bool(provider.adds_to_core())
 		for id in contributed.keys():
 			var b: Dictionary = buckets.get(id, {})
-			if _derived.has(id):
-				# A provider contribution for a CORE-OWNED id is an ADDITION to core's
-				# own bucketed value, never a replacement (ADR 0026: "the core baseline
-				# always survives"), and the modifier bucket lands on the addition ONCE.
-				# The re-emit shape this replaces read `context.value(id) + bonus` and
-				# then multiplied by the bucket again, squaring the realm multiplier:
-				# a body actor's physical attack read power^2 while its pools read
-				# power^1, and the actor-vs-actor census collapsed to 0.15 blows at R30
-				# (DEF-0384's measurement). Flats are NOT re-applied to the addition —
-				# core's base already took them.
+			if additive and _derived.has(id):
 				_provider_cache[id] = maxf(
 					0.0,
 					(
