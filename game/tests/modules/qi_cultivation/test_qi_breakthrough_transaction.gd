@@ -184,15 +184,11 @@ func test_a_deviation_cracks_the_dao_heart() -> void:
 	actor.stats.set_base(Stat.WILL, 10.0)
 	_prepare(actor)
 	assert_almost_eq(DaoHeart.crack_of(actor), 0.0, "whole before the attempt")
-	assert_eq(
-		QiBreakthroughTransaction.execute(actor, _failing_roll()), false, "the attempt fails"
-	)
+	assert_eq(QiBreakthroughTransaction.execute(actor, _failing_roll()), false, "the attempt fails")
 	assert_almost_eq(
 		DaoHeart.crack_of(actor),
 		-QiBreakthroughTransaction.HEART_CRACK_ON_DEVIATION,
 		"and the deviation cracked the heart"
 	)
-	assert_almost_eq(
-		actor.stats.derived(Stat.DAO_HEART), 8.0, "the heart reads the crack", 0.0001
-	)
+	assert_almost_eq(actor.stats.derived(Stat.DAO_HEART), 8.0, "the heart reads the crack", 0.0001)
 	assert_eq(actor.path(PATH).rank_id, &"qi_refining", "with no advance")

@@ -232,9 +232,7 @@ func act_teardown() -> bool:
 	var answer := ItemsApi.teardown(_actor, instance.instance_id)
 	if not bool(answer.get("ok", false)):
 		return _reject(String(answer.get("reason", "teardown_rejected")))
-	_action_bar.report(
-		&"torn_down", int(answer.get("units", 0)), String(answer.get("def_id", ""))
-	)
+	_action_bar.report(&"torn_down", int(answer.get("units", 0)), String(answer.get("def_id", "")))
 	_settle()
 	return true
 

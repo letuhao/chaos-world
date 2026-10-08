@@ -55,7 +55,9 @@ func _hero(actor_id: StringName = &"t_starter") -> Actor:
 	return actor
 
 
-func _rows(weapon: StringName, armor: StringName, consumable: StringName, token: StringName) -> Array:
+func _rows(
+	weapon: StringName, armor: StringName, consumable: StringName, token: StringName
+) -> Array:
 	return [
 		{"role": DestinyStarterPack.ROLE_WEAPON, "item_id": weapon, "count": 1},
 		{"role": DestinyStarterPack.ROLE_ARMOR, "item_id": armor, "count": 1},
@@ -98,9 +100,7 @@ func test_the_drawn_kit_is_visible_to_the_bag_the_workbench_reads() -> void:
 	assert_eq(inv.used_slots() > 0, true, "the bag the workbench reads is not empty")
 	for item_id in [DEFAULT_WEAPON, DEFAULT_ARMOR, DEFAULT_CONSUMABLE, DEFAULT_TOKEN]:
 		assert_eq(
-			inv.has(item_id as StringName, 1),
-			true,
-			"'%s' is listed in the bag" % String(item_id)
+			inv.has(item_id as StringName, 1), true, "'%s' is listed in the bag" % String(item_id)
 		)
 
 
@@ -127,9 +127,7 @@ func test_a_second_body_draws_its_own_kit() -> void:
 	var report := StarterKit.grant(second)
 	assert_eq(bool(report["already"]), false, "the second body had not drawn yet")
 	assert_eq(
-		ItemsApi.inventory(second).has_instance(DEFAULT_WEAPON),
-		true,
-		"and it holds its own sword"
+		ItemsApi.inventory(second).has_instance(DEFAULT_WEAPON), true, "and it holds its own sword"
 	)
 
 
@@ -140,9 +138,7 @@ func test_a_second_body_draws_its_own_kit() -> void:
 ## needed: "the registered ids are present" is satisfied by an appending grant, and
 ## only "every default id is ABSENT" is not.
 func test_a_registered_pack_replaces_the_default_in_the_bag() -> void:
-	DestinyFixtureCatalog.install(
-		[], [DestinyFixtureCatalog.plain_destiny(PACKED)]
-	)
+	DestinyFixtureCatalog.install([], [DestinyFixtureCatalog.plain_destiny(PACKED)])
 	var actor := _hero()
 	DestinyApi.earn_destiny(actor, PACKED)
 	assert_eq(
@@ -164,7 +160,9 @@ func test_a_registered_pack_replaces_the_default_in_the_bag() -> void:
 		"the default's sword is ABSENT — a merged kit would still carry it"
 	)
 	assert_eq(inv.has(DEFAULT_TOKEN), false, "and so is the default's token, which was 25 coins")
-	assert_eq(inv.has_instance(OTHER_WEAPON), true, "the registered kit's weapon is what the bag holds")
+	assert_eq(
+		inv.has_instance(OTHER_WEAPON), true, "the registered kit's weapon is what the bag holds"
+	)
 	assert_eq(inv.count(OTHER_TOKEN), 7, "and its token lands at the authored count")
 
 
@@ -176,9 +174,7 @@ func test_a_registered_pack_replaces_the_default_in_the_bag() -> void:
 ## caught here; it is REPORTED rather than skipped, because a player promised a row
 ## that does not exist would otherwise open on a bag quietly missing it.
 func test_a_row_naming_an_item_the_tree_cannot_resolve_is_refused_by_name() -> void:
-	DestinyFixtureCatalog.install(
-		[], [DestinyFixtureCatalog.plain_destiny(PACKED)]
-	)
+	DestinyFixtureCatalog.install([], [DestinyFixtureCatalog.plain_destiny(PACKED)])
 	var actor := _hero()
 	DestinyApi.earn_destiny(actor, PACKED)
 	DestinyApi.register_starter_pack(
@@ -212,11 +208,7 @@ func test_a_null_actor_is_refused_by_name() -> void:
 ## be told apart without opening the bag.
 func test_the_summary_reports_whether_the_kit_was_drawn() -> void:
 	var actor := _hero()
-	assert_eq(
-		bool(StarterKit.summary(actor)["drawn"]),
-		false,
-		"before the draw the read says so"
-	)
+	assert_eq(bool(StarterKit.summary(actor)["drawn"]), false, "before the draw the read says so")
 	StarterKit.grant(actor)
 	assert_eq(bool(StarterKit.summary(actor)["drawn"]), true, "and after it, so")
 	assert_eq(StarterKit.summary(null), {}, "a null actor answers the empty dictionary")

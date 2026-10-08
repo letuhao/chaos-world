@@ -66,17 +66,9 @@ func test_a_carried_wearable_breaks_down_and_pays_material() -> void:
 	)
 	var answer := ItemsApi.teardown(actor, instance.instance_id)
 	assert_eq(bool(answer["ok"]), true, "the break-down is accepted: %s" % str(answer))
-	assert_eq(
-		String(answer["reason"]), "", "an accepted break-down carries no refusal reason"
-	)
-	assert_eq(
-		int(answer["units"]) > 0, true, "and it pays at least one material: %s" % str(answer)
-	)
-	assert_eq(
-		inventory.find_by_instance_id(instance.instance_id),
-		null,
-		"the piece left the bag"
-	)
+	assert_eq(String(answer["reason"]), "", "an accepted break-down carries no refusal reason")
+	assert_eq(int(answer["units"]) > 0, true, "and it pays at least one material: %s" % str(answer))
+	assert_eq(inventory.find_by_instance_id(instance.instance_id), null, "the piece left the bag")
 	assert_eq(
 		inventory.has(StringName(String(answer["material_id"])), int(answer["units"])),
 		true,
@@ -134,9 +126,7 @@ func test_the_action_bar_offers_the_sink_and_the_screen_dispatches_it() -> void:
 		"the action bar's ACTIONS table carries the verb, so a button can be lit for it"
 	)
 	assert_eq(
-		bar.contains("%TeardownButton"),
-		true,
-		"and the bar binds the control it is offered through"
+		bar.contains("%TeardownButton"), true, "and the bar binds the control it is offered through"
 	)
 	var scene := FileAccess.get_file_as_string(BAR_TSCN)
 	assert_eq(
