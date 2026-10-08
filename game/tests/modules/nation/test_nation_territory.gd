@@ -304,3 +304,151 @@ func _holder_actor_with_ground() -> Actor:
 	(ledger["claims"] as Dictionary)[String(HELD)] = existing
 	rival.set_module_data(NationState.MODULE_KEY, NationState.normalize(ledger))
 	return rival
+
+
+# --- Slice 8b: the claim fans out to shared place-plans -----------------------
+#
+# `Territorial` (Slice 1) needed NO widening: a sovereign's claim over places
+# fans out to one plan per place in the def's `location_ids`, and every refusal
+# below names the same fault on both sides. The two sovereign-side gates with
+# no contract counterpart live one layer up BY DESIGN, not as gaps:
+# (1) the standing floor (`standing_below_floor`) is the sovereign's admission
+# rule — the contract's `check()` is the seam a kind authors its own in;
+# (2) the yield accrual is the L3 sovereign income, and ADR 0085's no-yield
+# rule polices the PLAN, which is measured below to carry no yield surface.
+# DEF-0325 rides along untouched: the mapping passes one def's ids as BOTH the
+# claim and the universe (the single-world assumption), so two worlds claiming
+# the same place still collide — blocked on DEF-0323, reported, not fixed.
+#
+# Every loop below is a `for` over the def's own authored list; no body writes
+# to the list it walks.
+
+
+## A sovereign take fans out to one shared plan per covered place: every place
+## the def names plans through `Territorial`, and applying the plans makes the
+## next claim over the same place refuse `already_claimed` on both sides.
+func test_a_sovereign_take_fans_out_to_one_shared_plan_per_place() -> void:
+	var def := NationCatalog.instance().territory_definition(HELD)
+	assert_ne(def, null, "the claim is authored")
+	var covered: Array[String] = []
+	for place in def.location_ids:
+		covered.append(String(place))
+	assert_eq(covered.is_empty(), false, "or the case fans out over nothing")
+	var impl := Territorial.new()
+	var places: Array = []
+	for place in covered:
+		var planned := impl.claim(_place_ctx(places, covered, place))
+		assert_eq(bool(planned.get("ok", false)), true, "%s plans: %s" % [place, planned])
+		assert_eq(
+			String((planned["plan"] as Dictionary)["place"]), place, "naming the place planned"
+		)
+		# The applier writes what the plan says: the ledger grows one place.
+		places.append(place)
+	for place in covered:
+		assert_eq(
+			bool(impl.holds(_places_ctx(places), StringName(place))["has"]),
+			true,
+			"the written claim reads held"
+		)
+		assert_eq(
+			String(impl.claim(_place_ctx(places, covered, place)).get("reason", "")),
+			Territorial.R_ALREADY_CLAIMED,
+			"and a re-claim refuses by name"
+		)
+	# And the sovereign agrees, at its own granularity: its take is refused as
+	# already held, in its own word for the same fault.
+	var actor := _actor()
+	NationApi.claim_territory(actor, HELD)
+	assert_eq(
+		String(NationApi.claim_territory(actor, HELD).get("reason", "")),
+		"territory_already_held",
+		"the sovereign's word for a re-claim"
+	)
+
+
+## The refusal vocabulary names the same faults: an unauthored place, a place
+## already this house's, and a place another holder keeps. The sovereign's
+## challenge path — one standoff, no ground moved — is the SOVEREIGN's booking
+## of the contract's `held_by_another` decision, and both are measured here.
+func test_territorial_refusals_name_the_sovereigns_faults() -> void:
+	var impl := Territorial.new()
+	var ghost := _place_ctx([], ["probe_meadow"], "probe_nowhere")
+	assert_eq(
+		String(impl.claim(ghost).get("reason", "")),
+		Territorial.R_UNKNOWN_PLACE,
+		"content defines no such place"
+	)
+	var actor := _actor()
+	assert_eq(
+		String(NationApi.claim_territory(actor, UNKNOWN).get("reason", "")),
+		"unknown_territory",
+		"the sovereign's word for the same fault"
+	)
+	var taken := _place_ctx([], ["probe_meadow", "probe_harbour"], "probe_harbour", "probe_rival")
+	assert_eq(
+		String(impl.claim(taken).get("reason", "")),
+		Territorial.R_HELD_BY_ANOTHER,
+		"overlapping ownership is refused by name"
+	)
+	assert_eq(
+		String((impl.claim(taken) as Dictionary).get("holder", "")),
+		"probe_rival",
+		"naming who keeps it"
+	)
+	# The sovereign books that decision as exactly one standoff that moves no
+	# ground — the load-bearing invariant, read through the shared vocabulary.
+	var rival := _holder_actor_with_ground()
+	var before := _claims(rival)
+	var challenge := NationApi.claim_territory(rival, HELD)
+	assert_eq(bool(challenge.get("ok", false)), true, "the challenge is booked: %s" % challenge)
+	assert_eq(
+		String(_claims(rival)[String(HELD)]["holder_id"]),
+		String(before[String(HELD)]["holder_id"]),
+		"holder_id byte-identical: the decision moved no ground"
+	)
+
+
+## ADR 0085's no-yield rule, measured on the sovereign's own answers: a take
+## and a challenge carry ids only — no key naming a yield, an upkeep or a
+## combat surface. The accrual that DOES move standing is the L3 income verb,
+## deliberately without a contract counterpart: the capability plans claims,
+## and only the sovereign settles them.
+func test_sovereign_claim_answers_carry_no_yield_surface() -> void:
+	var actor := _actor()
+	var take := NationApi.claim_territory(actor, HELD)
+	assert_eq(bool(take.get("ok", false)), true, "the take succeeded: %s" % take)
+	for answer in [take, NationApi.claim_territory(_holder_actor_with_ground(), HELD)]:
+		for key in (answer as Dictionary).keys():
+			assert_eq(
+				_names_a_yield_surface(String(key)),
+				false,
+				"no yield surface on a claim answer: '%s'" % key
+			)
+
+
+## One place-claim context: the places this house keeps, the universe content
+## defines, the place asked about, and who the world reports as holding it.
+func _place_ctx(places: Array, authored: Array, place: String, holder: String = "") -> Dictionary:
+	return {
+		"kind": "contract_probe",
+		"institution": "contract_probe",
+		"member": "probe_member",
+		"places": places.duplicate(true),
+		"authored": authored.duplicate(true),
+		"holder": holder,
+		"place": place,
+	}
+
+
+## The held-set behind a `holds` read.
+func _places_ctx(places: Array) -> Dictionary:
+	return {"kind": "contract_probe", "institution": "contract_probe", "places": places}
+
+
+## Whether `key` names a yield surface a claim must never carry — the
+## contract's own predicate, restated so this suite pins the sovereign to it.
+func _names_a_yield_surface(key: String) -> bool:
+	for marker in ["yield", "upkeep", "income", "tax", "bonus", "defen", "combat", "power"]:
+		if key.contains(marker):
+			return true
+	return false
