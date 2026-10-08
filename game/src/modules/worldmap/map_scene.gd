@@ -181,6 +181,59 @@ func build_at(cell: Vector2i) -> Dictionary:
 	return {"ok": true, "reason": ""}
 
 
+## Harvest the resource standing on `cell`: the prop's `yield` is read once
+## and the whole node is marked spent, so leaving and returning keeps it
+## picked instead of regrown. The mark also FREES the cells it sealed — a
+## harvested vein stops blocking the ground it stood on — through the same
+## overlay `blocked` uses. Refuses `nothing_here` when no harvestable prop
+## covers the cell and `spent` when it was already taken. Inside a domain
+## node there is no chunk to harvest.
+func gather_at(cell: Vector2i) -> Dictionary:
+	if WorldmapApi.return_depth() > 0:
+		return {"ok": false, "reason": "inside_domain", "archetype": "", "yield": {}}
+	var cc := _chunk_coords(cell)
+	var local := _local_of(cell)
+	var chunk := _streamer.chunk_data(_node_id, cc.x, cc.y, _size, _seed)
+	for prop in chunk.props:
+		var placement := prop as Dictionary
+		var base := placement.get("cell", Vector2i.ZERO) as Vector2i
+		var fp := placement.get("footprint", Vector2i.ONE) as Vector2i
+		if (
+			local.x < base.x
+			or local.y < base.y
+			or local.x >= base.x + fp.x
+			or local.y >= base.y + fp.y
+		):
+			continue
+		var harvest := placement.get("yield", {}) as Dictionary
+		if harvest.is_empty():
+			# Decor over a node is not the node: a flower may share the cell a
+			# vein surfaces through, and stopping here would refuse a harvest
+			# the ground still holds. Keep scanning for what yields.
+			continue
+		if chunk.prop_spent(placement):
+			return {
+				"ok": false,
+				"reason": "spent",
+				"archetype": String(placement.get("archetype", "")),
+				"yield": {},
+			}
+		for dy in fp.y:
+			for dx in fp.x:
+				_streamer.mutate(_node_id, cc.x, cc.y, base.x + dx, base.y + dy, false, true)
+		refresh_chunk(_chunk_id_of(cell))
+		var out := {}
+		for key in harvest.keys():
+			out[String(key)] = maxi(0, int(harvest[key]))
+		return {
+			"ok": true,
+			"reason": "",
+			"archetype": String(placement.get("archetype", "")),
+			"yield": out,
+		}
+	return {"ok": false, "reason": "nothing_here", "archetype": "", "yield": {}}
+
+
 ## Render every chunk in the scene range, drop holders outside it, and hide
 ## holders outside the render range. Data range is wider and stays cached:
 ## unloading forgets nodes, never knowledge. A hidden holder costs nodes but
@@ -559,6 +612,10 @@ func _render_chunk_into(holder: Node2D, cx: int, cy: int) -> void:
 			sprite.scale = Vector2(CELL_PX, CELL_PX) / tile.get_size()
 			holder.add_child(sprite)
 	for prop in chunk.props:
+		# A harvested node stops rendering the moment it is spent; the seed
+		# would draw it again on every reload otherwise.
+		if chunk.prop_spent(prop as Dictionary):
+			continue
 		_render_prop(holder, origin, prop as Dictionary)
 
 

@@ -28,6 +28,10 @@ func run(ctx: Dictionary, chunk: Dictionary) -> Dictionary:
 	if entries.is_empty():
 		return {"props": props}
 	var cells := WorldmapPlacement.open_cells(terrain, size)
+	var stood := chunk.get("props", []) as Array
+	var cleared := WorldmapPlacement.cleared_cells(
+		WorldmapPlacement.authored_patch(ctx).get("cleared", []) as Array
+	)
 	var index := 0
 	for cell in cells:
 		var at := cell as Vector2i
@@ -37,14 +41,21 @@ func run(ctx: Dictionary, chunk: Dictionary) -> Dictionary:
 			index += 1
 			if density <= 0.0 or WorldmapRng.unit(seed, "resource", index) > density:
 				continue
-			var prop := _place(seed, index, environment, row, at, size)
+			var prop := _place(seed, index, environment, row, at, size, stood, cleared)
 			if not prop.is_empty():
 				props.append(prop)
 	return {"props": props}
 
 
 func _place(
-	seed: int, index: int, environment: String, entry: Dictionary, at: Vector2i, size: int
+	seed: int,
+	index: int,
+	environment: String,
+	entry: Dictionary,
+	at: Vector2i,
+	size: int,
+	stood: Array,
+	cleared: Array
 ) -> Dictionary:
 	var archetype := String(entry.get("archetype", ""))
 	var parts := archetype.split(".")
@@ -56,6 +67,12 @@ func _place(
 	var asset := WorldmapRng.pick(seed, "resource_asset", index, matches) as Dictionary
 	var fp := asset.get("footprint", Vector2i.ONE) as Vector2i
 	if not WorldmapPlacement.footprint_fits(at, fp, size):
+		return {}
+	# Sealed ground grows nothing: an authored anchor holds, so a vein never
+	# surfaces inside a gate, and a reserved door pad stays clear.
+	if WorldmapPlacement.footprint_taken(stood, at, fp):
+		return {}
+	if WorldmapPlacement.footprint_cleared(at, fp, cleared):
 		return {}
 	var harvest := {}
 	for key in (entry.get("yield", {}) as Dictionary).keys():

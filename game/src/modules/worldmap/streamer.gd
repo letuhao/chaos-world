@@ -126,14 +126,20 @@ func unload(chunk_id: String) -> void:
 
 
 ## Record a persistent change on a chunk. Applies to the cached copy at once
-## and to every future regeneration through the overlay.
-func mutate(node_id: String, cx: int, cy: int, x: int, y: int, blocked: bool) -> void:
+## and to every future regeneration through the overlay. `spent` marks a
+## harvested node; it rides the same overlay so one save persists both.
+func mutate(
+	node_id: String, cx: int, cy: int, x: int, y: int, blocked: bool, spent: bool = false
+) -> void:
 	var id := "%s:%d,%d" % [node_id, cx, cy]
 	var overlay := _mutations.get(id, {}) as Dictionary
-	overlay["%d,%d" % [x, y]] = {"blocked": blocked}
+	var row := {"blocked": blocked}
+	if spent:
+		row["spent"] = true
+	overlay["%d,%d" % [x, y]] = row
 	_mutations[id] = overlay
 	if _data_cache.has(id):
-		(_data_cache[id] as WorldChunk).mutate(x, y, blocked)
+		(_data_cache[id] as WorldChunk).mutate(x, y, blocked, spent)
 
 
 ## Chunk ids within `radius` of a focus, in row order. Bounded by definition:
@@ -169,9 +175,10 @@ func summary() -> Dictionary:
 
 
 ## The mutation overlay as the save envelope should carry it: chunk id ->
-## cell key -> `{"blocked": bool}`. Untouched chunks are absent, never empty:
-## regeneration reproduces them from the seed, so persisting them would be a
-## second copy of the world that could disagree with the first.
+## cell key -> `{"blocked": bool, "spent": bool?}`. Untouched chunks are
+## absent, never empty: regeneration reproduces them from the seed, so
+## persisting them would be a second copy of the world that could disagree
+## with the first.
 func export_mutations() -> Dictionary:
 	return _mutations.duplicate(true)
 

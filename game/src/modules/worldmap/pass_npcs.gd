@@ -36,7 +36,20 @@ func run(ctx: Dictionary, chunk: Dictionary) -> Dictionary:
 		var at := _doorstep(terrain, placement, size)
 		if at == Vector2i(-1, -1):
 			continue
-		marks.append({"cell": [at.x, at.y], "role": String(roles[index])})
+		var raw = roles[index]
+		var role := ""
+		var npc_id := ""
+		if raw is Dictionary:
+			role = String((raw as Dictionary).get("role", ""))
+			npc_id = String((raw as Dictionary).get("npc_id", ""))
+		else:
+			role = String(raw)
+		var mark := {"cell": [at.x, at.y], "role": role}
+		# A role is what the ground answers; an id names the individual when
+		# content knows one, so a marker can reach a conversation directly.
+		if not npc_id.is_empty():
+			mark["npc_id"] = npc_id
+		marks.append(mark)
 		index += 1
 	return {"npc_spawns": marks}
 

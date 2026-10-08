@@ -22,10 +22,18 @@ func register_pass(stage: WorldmapContract) -> Dictionary:
 	return {"ok": true, "reason": "", "layer": String(layer)}
 
 
-## Registered layer names, sorted.
+## Registered layer names, sorted by NAME. Sort strings, not the StringName
+## keys: their `<` compares interned addresses, and a debug list whose order
+## drifts between processes is a list nobody can diff.
 func layers() -> Array:
-	var out := _passes.keys()
-	out.sort()
+	var out: Array = _passes.keys()
+	var names: Array = []
+	for name in out:
+		names.append(String(name))
+	names.sort()
+	out = []
+	for name in names:
+		out.append(StringName(name))
 	return out
 
 
@@ -54,6 +62,7 @@ func generate(
 		"size": chunk_size,
 		"environment": String(config.get("environment", "")),
 		"scatter": config.get("scatter", []),
+		"authored": config.get("authored", []),
 		"authored_terrain": config.get("authored_terrain", []),
 		"water": config.get("water", true),
 		"palette": config.get("palette", ["ground_tile.base_ground"]),
@@ -104,10 +113,17 @@ func generate(
 
 ## Dependency order over the registered layers. A requirement no pass
 ## provides fails here with its name, before any pixel is imagined.
+##
+## Same-wave order sorts by NAME, not by interned pointer: `layers()` hands
+## back StringName keys and `StringName <` compares interned addresses, so
+## iterating them raw made the pipeline order arbitrary. Measured 2026-10-08:
+## `scatter` ran before `authored` and planted a shrub inside the authored
+## gate, which is exactly the ordering the authored pass exists to prevent.
 func _order() -> Array:
 	var order: Array = []
 	var provided := {}
-	var pending := layers()
+	var pending: Array = layers().duplicate()
+	pending.sort_custom(_by_name)
 	while not pending.is_empty():
 		var progressed := false
 		for layer in pending.duplicate():
@@ -126,3 +142,9 @@ func _order() -> Array:
 			push_error("WorldmapGenerator: unsatisfiable requires() among %s" % str(pending))
 			return []
 	return order
+
+
+## Sort two layer keys by their spelling. A String comparison, deliberately:
+## the StringName one compares addresses.
+static func _by_name(a: StringName, b: StringName) -> bool:
+	return String(a) < String(b)

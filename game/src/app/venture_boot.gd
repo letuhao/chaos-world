@@ -27,7 +27,7 @@ extends RefCounted
 const WORLD_NODE := "VentureWorld"
 const HOLDER_NAME := "WorldHolder"
 
-const NODES: Array[String] = ["overworld", "cave", "far"]
+const NODES: Array[String] = ["overworld", "cave", "far", "plains", "arena"]
 const ENV := "mortal_greenwood"
 
 
@@ -105,7 +105,7 @@ static func _maybe_encounter(screen: Control, scene: WorldmapScene) -> Dictionar
 		return {}
 	var node := String(summary.get("node", ""))
 	var cell := scene.player_cell()
-	if not _marked(scene, node, cell):
+	if _poi_here(scene, "encounter").is_empty():
 		return {}
 	EncounterApi.attach(actor)
 	var rng := RandomNumberGenerator.new()
@@ -119,27 +119,43 @@ static func _maybe_encounter(screen: Control, scene: WorldmapScene) -> Dictionar
 	return {"id": String(rolled.get("encounter_id", "")), "fates": fates}
 
 
-## Whether the map cell carries an encounter marker. Reads the metadata POIs
-## of the player's chunk from the data cache — generating nothing, since a
-## stood-on chunk is always cached.
-static func _marked(scene: WorldmapScene, node: String, cell: Vector2i) -> bool:
+## The POI of `kind` on the player's cell, or `{}`. Reads the metadata of the
+## player's chunk from the data cache — generating nothing, since a stood-on
+## chunk is always cached. One address for every marker kind: encounters and
+## speakers are answered by the same read instead of two diverging walks.
+static func _poi_here(scene: WorldmapScene, kind: String) -> Dictionary:
 	var streamer := scene.streamer()
 	if streamer == null:
-		return false
-	var size := int(scene.debug_summary().get("chunk_size", 8))
+		return {}
+	var summary := scene.debug_summary()
+	var cell := scene.player_cell()
+	var size := int(summary.get("chunk_size", 8))
 	var cc := Vector2i(floori(float(cell.x) / size), floori(float(cell.y) / size))
 	var chunk := streamer.chunk_data(
-		node, cc.x, cc.y, size, int(scene.debug_summary().get("seed", 0))
+		String(summary.get("node", "")), cc.x, cc.y, size, int(summary.get("seed", 0))
 	)
 	var meta := chunk.layers.get("metadata", {}) as Dictionary
 	for poi in meta.get("pois", []) as Array:
 		var row := poi as Dictionary
-		if String(row.get("kind", "")) != "encounter":
+		if String(row.get("kind", "")) != kind:
 			continue
 		var at := row.get("cell", []) as Array
 		if int(at[0]) == cell.x - cc.x * size and int(at[1]) == cell.y - cc.y * size:
-			return true
-	return false
+			return row
+	return {}
+
+
+## The NPC standing on the player's cell as primitives, or `{}`. A role-only
+## marker answers the role; a marker that names an individual carries the
+## `npc_id` a conversation is opened by.
+static func _speaker_here(scene: WorldmapScene) -> Dictionary:
+	var poi := _poi_here(scene, "npc")
+	if poi.is_empty():
+		return {}
+	var out := {"role": String(poi.get("role", ""))}
+	if String(poi.get("npc_id", "")) != "":
+		out["npc_id"] = String(poi.get("npc_id", ""))
+	return out
 
 
 ## Answer a pending encounter with a fate choice, or walk away from it.
@@ -186,6 +202,57 @@ static func build(screen: Control) -> Dictionary:
 		_persist(scene)
 		_record_position(scene)
 	return outcome
+
+
+## Harvest the resource node on the player's cell and hand its yield to the
+## inventory. The node is spent the moment the ground gives it up, so the
+## overlay rides out at once — a harvest a quit can undo is a free farm.
+## A full bag does not un-harvest: the node is consumed, the refused units are
+## named in the delivery answer. Unopened and actor-less refuse by name.
+static func gather(screen: Control) -> Dictionary:
+	var scene := _scene_of(screen)
+	if scene == null:
+		return {"ok": false, "reason": "unopened", "gained": {}}
+	var actor := screen.call("actor") as Actor
+	if actor == null:
+		return {"ok": false, "reason": "no_actor", "gained": {}}
+	var outcome := scene.gather_at(scene.player_cell())
+	if not bool(outcome.get("ok", false)):
+		return {
+			"ok": false,
+			"reason": String(outcome.get("reason", "")),
+			"archetype": String(outcome.get("archetype", "")),
+			"gained": {},
+		}
+	_persist(scene)
+	var delivered := MapGatherAction.deliver(actor, outcome.get("yield", {}) as Dictionary)
+	return {
+		"ok": bool(delivered.get("ok", false)),
+		"reason": String(delivered.get("reason", "")),
+		"archetype": String(outcome.get("archetype", "")),
+		"gained": (delivered.get("gained", {}) as Dictionary).duplicate(),
+	}
+
+
+## Speak with the NPC marker under the player's feet. A marker that names an
+## individual opens that conversation through the dialogue module; a role-only
+## marker has nobody to speak as, so it refuses. Returns the dialogue module's
+## own verdict, with the marker's role attached.
+static func talk(screen: Control) -> Dictionary:
+	var scene := _scene_of(screen)
+	if scene == null:
+		return {"ok": false, "reason": "unopened"}
+	var actor := screen.call("actor") as Actor
+	if actor == null:
+		return {"ok": false, "reason": "no_actor"}
+	var speaker := _speaker_here(scene)
+	var npc_id := String(speaker.get("npc_id", ""))
+	if npc_id.is_empty():
+		return {"ok": false, "reason": "unknown_speaker"}
+	DialogueApi.attach(actor)
+	var opened := DialogueApi.start(actor, StringName(npc_id))
+	opened["role"] = String(speaker.get("role", ""))
+	return opened
 
 
 ## Leave the domain node and stand back on the exact cell left from.
@@ -286,6 +353,9 @@ static func read(screen: Control) -> Dictionary:
 		((summary.get("streamer", {}) as Dictionary).get("loaded", []) as Array).duplicate()
 	)
 	view["domain"] = (summary.get("domain", {}) as Dictionary).duplicate(true)
+	# Who stands where the player stands: the elder at his doorstep, a
+	# role-only marker, or nobody. The talk verb answers the same read.
+	view["here"] = _speaker_here(scene)
 	return view
 
 
@@ -416,6 +486,8 @@ static func _demo_graph() -> WorldmapGraph:
 	graph.add_node({"id": "overworld", "kind": &"wilderness", "parent": ""})
 	graph.add_node({"id": "cave", "kind": &"dungeon", "parent": "overworld"})
 	graph.add_node({"id": "far", "kind": &"universe", "parent": ""})
+	graph.add_node({"id": "plains", "kind": &"wilderness", "parent": "overworld"})
+	graph.add_node({"id": "arena", "kind": &"dungeon", "parent": "plains"})
 	(
 		graph
 		. add_edge(
@@ -453,6 +525,50 @@ static func _demo_graph() -> WorldmapGraph:
 				"kind": &"portal",
 				"from_cell": Vector2i(2, 1),
 				"to_cell": Vector2i(5, 5),
+			}
+		)
+	)
+	# The starter zone (DEF-0064): a road out of the overworld and back. Door
+	# cells are measured-open ground on BOTH sides (probes, seeds 1234 /
+	# 20261007): the plains side is additionally reserved in the plains
+	# config, so no seed-grown prop can ever seal the way home.
+	(
+		graph
+		. add_edge(
+			{
+				"from": "overworld",
+				"to": "plains",
+				"kind": &"road",
+				"from_cell": Vector2i(6, 1),
+				"to_cell": Vector2i(0, 2),
+			}
+		)
+	)
+	(
+		graph
+		. add_edge(
+			{
+				"from": "plains",
+				"to": "overworld",
+				"kind": &"road",
+				"from_cell": Vector2i(0, 3),
+				"to_cell": Vector2i(6, 2),
+			}
+		)
+	)
+	# The arena's threshold is the gate's mouth IN the plains: containment
+	# says the arena stands in the plains, and this edge is what agrees. The
+	# gate landmark sits north of the threshold, so walking into the mouth is
+	# walking under the gate.
+	(
+		graph
+		. add_edge(
+			{
+				"from": "plains",
+				"to": "arena",
+				"kind": &"doorway",
+				"from_cell": Vector2i(8, 5),
+				"to_cell": Vector2i(1, 1),
 			}
 		)
 	)
@@ -517,6 +633,92 @@ static func _demo_configs() -> Dictionary:
 			"data_radius": 1,
 			"scene_radius": 1,
 			"scatter": [],
+		},
+		"plains":
+		# The Mortal Plains starter zone (DEF-0064): hand-placed anchors — a
+		# shelter with the elder at its doorstep, and a gate whose mouth is
+		# the arena threshold — on procedural hunting ground with beasts to
+		# meet, herbs and ore to harvest. Landmarks are AUTHORED here (the
+		# `poi` entry), so the generic landmark roll is off; the door pads are
+		# reserved, so no seed-grown prop can seal the way home or the way in.
+		{
+			"environment": "mortal_plains",
+			"chunk_size": 12,
+			"seed": 20261007,
+			"entry_row": 2,
+			"data_radius": 2,
+			"scene_radius": 1,
+			"palette": ["ground_tile.base_ground", "ground_tile.soft_ground"],
+			"roads": 1,
+			# Authored pins belong to a PLACE: chunk (0, 0) of this node is the
+			# starter clearing — a shelter with the elder, and a gate whose
+			# mouth is the arena threshold — while every other plains chunk
+			# stays fully procedural. Reserved cells keep the door pads and
+			# the gate's mouth clear of seed-grown props.
+			"authored":
+			[
+				{
+					"chunk": [0, 0],
+					"props":
+					[
+						{
+							"archetype": "settlement_and_domain_prop.shelter",
+							"cell": [2, 2],
+							"blocking": true
+						},
+						{
+							"archetype": "landmark_and_environment_detail.domain_entrance",
+							"cell": [6, 1],
+							"blocking": true,
+							"poi": true
+						},
+					],
+					"cleared": [[0, 2], [0, 3], [2, 4], [3, 4], [8, 5]],
+				},
+			],
+			"scatter":
+			[
+				{"archetype": "flora.shrub", "density": 0.03, "blocking": true},
+				{"archetype": "flora.flower_cluster", "density": 0.05, "blocking": false},
+			],
+			"resources":
+			[
+				{
+					"archetype": "flora.cultivation_herb",
+					"density": 0.08,
+					"blocking": false,
+					"yield": {"alchemy_ash_herb": 1}
+				},
+				{
+					"archetype": "stone_and_ore.ore_vein",
+					"density": 0.04,
+					"blocking": true,
+					"yield": {"alchemy_cinder_ore": 2}
+				},
+			],
+			"landmark_density": 0.0,
+			"encounter_tables":
+			[{"id": "plains_beasts", "weight": 3.0}, {"id": "plains_game", "weight": 1.0}],
+			"encounter_density": 0.25,
+			"npc_roles": [{"role": "elder", "npc_id": "elder_wei"}],
+		},
+		"arena":
+		# The boss arena: a real run AND a real band, so the starter
+		{
+			# zone's gate landmark points at a fight that pays.
+			"environment": "mortal_plains",
+			"chunk_size": 6,
+			"seed": 41,
+			"entry_row": 1,
+			"data_radius": 1,
+			"scene_radius": 1,
+			"water": false,
+			"authored_terrain": _flat_ground(6),
+			"scatter": [],
+			"domain_template": "ember_grotto",
+			"domain_seed": 20261003,
+			"loot_domain": "beast_ironhide_bear_domain",
+			"loot_tier": 1,
 		},
 	}
 

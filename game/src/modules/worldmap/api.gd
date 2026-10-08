@@ -251,6 +251,7 @@ static func default_generator() -> WorldmapGenerator:
 	generator.register_pass(WorldmapTerrainPass.new())
 	generator.register_pass(WorldmapWaterPass.new())
 	generator.register_pass(WorldmapElevationPass.new())
+	generator.register_pass(WorldmapAuthoredPass.new())
 	generator.register_pass(WorldmapScatterPass.new())
 	generator.register_pass(WorldmapResourcesPass.new())
 	generator.register_pass(WorldmapStructuresPass.new())

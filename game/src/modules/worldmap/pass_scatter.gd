@@ -25,6 +25,10 @@ func run(ctx: Dictionary, chunk: Dictionary) -> Dictionary:
 	var terrain := chunk.get("terrain", []) as Array
 	var entries := ctx.get("scatter", []) as Array
 	var props: Array = []
+	var stood := chunk.get("props", []) as Array
+	var cleared := WorldmapPlacement.cleared_cells(
+		WorldmapPlacement.authored_patch(ctx).get("cleared", []) as Array
+	)
 	var index := 0
 	for y in size:
 		for x in size:
@@ -39,7 +43,7 @@ func run(ctx: Dictionary, chunk: Dictionary) -> Dictionary:
 					index += 1
 					continue
 				index += 1
-				var prop := _place(seed, index, environment, row, x, y, size)
+				var prop := _place(seed, index, environment, row, x, y, size, stood, cleared)
 				if not prop.is_empty():
 					props.append(prop)
 	return {"props": props}
@@ -55,7 +59,15 @@ func _is_water(terrain: Array, x: int, y: int) -> bool:
 
 
 func _place(
-	seed: int, index: int, environment: String, entry: Dictionary, x: int, y: int, size: int
+	seed: int,
+	index: int,
+	environment: String,
+	entry: Dictionary,
+	x: int,
+	y: int,
+	size: int,
+	stood: Array,
+	cleared: Array
 ) -> Dictionary:
 	var archetype := String(entry.get("archetype", ""))
 	var parts := archetype.split(".")
@@ -67,6 +79,14 @@ func _place(
 	var asset := WorldmapRng.pick(seed, "scatter_asset", index, matches) as Dictionary
 	var fp := asset.get("footprint", Vector2i.ONE) as Vector2i
 	if x + fp.x > size or y + fp.y > size:
+		return {}
+	# Never plant inside what stands or on reserved ground: authored anchors
+	# hold their ground, so a shrub cannot root in a gate, and a door pad the
+	# author reserved stays walkable. Footprint-wide, because a canopy's
+	# shade may overlap a trunk cell even when its root does not.
+	if WorldmapPlacement.footprint_taken(stood, Vector2i(x, y), fp):
+		return {}
+	if WorldmapPlacement.footprint_cleared(Vector2i(x, y), fp, cleared):
 		return {}
 	return {
 		"asset": String(asset.get("id", "")),

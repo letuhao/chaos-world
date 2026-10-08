@@ -70,16 +70,14 @@ func run(ctx: Dictionary, chunk: Dictionary) -> Dictionary:
 		)
 	for mark in layers.get("npc_spawns", []) as Array:
 		var row := mark as Dictionary
-		(
-			pois
-			. append(
-				{
-					"kind": "npc",
-					"cell": (row.get("cell", [0, 0]) as Array).duplicate(),
-					"role": String(row.get("role", "")),
-				}
-			)
-		)
+		var npc_poi := {
+			"kind": "npc",
+			"cell": (row.get("cell", [0, 0]) as Array).duplicate(),
+			"role": String(row.get("role", "")),
+		}
+		if String(row.get("npc_id", "")) != "":
+			npc_poi["npc_id"] = String(row.get("npc_id", ""))
+		pois.append(npc_poi)
 	for prop in chunk.get("props", []) as Array:
 		var placement := prop as Dictionary
 		var arch := String(placement.get("archetype", ""))

@@ -43,6 +43,7 @@ func test_the_standard_set_registers_every_layer() -> void:
 	assert_eq(
 		names,
 		[
+			"authored",
 			"collision",
 			"elevation",
 			"encounters",

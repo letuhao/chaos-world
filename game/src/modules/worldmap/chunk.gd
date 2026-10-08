@@ -58,10 +58,34 @@ func standable(x: int, y: int) -> bool:
 	return bool((walkable[y] as Array)[x])
 
 
+## Whether `(x, y)` is spent ground: a harvested node the seed must not grow
+## back. Separate from `blocked` on purpose — harvesting a vein frees the cell
+## it sealed, and a second visit still finds it picked, not regrown.
+func spent(x: int, y: int) -> bool:
+	return bool((mutations.get("%d,%d" % [x, y], {}) as Dictionary).get("spent", false))
+
+
+## Whether every cell of a placement is spent. A prop is consumed whole, so a
+## footprint with any spent cell is a consumed node.
+func prop_spent(placement: Dictionary) -> bool:
+	var base := placement.get("cell", Vector2i(-1, -1)) as Vector2i
+	var fp := placement.get("footprint", Vector2i.ONE) as Vector2i
+	for dy in fp.y:
+		for dx in fp.x:
+			if spent(base.x + dx, base.y + dy):
+				return true
+	return false
+
+
 ## Record a persistent change. Mutations are the ONLY thing a save must
-## persist for a touched chunk; everything else regenerates.
-func mutate(x: int, y: int, blocked: bool) -> void:
-	mutations["%d,%d" % [x, y]] = {"blocked": blocked}
+## persist for a touched chunk; everything else regenerates. `spent` is
+## written only when true, so a plain seal/free keeps the one-key shape every
+## reader already knows.
+func mutate(x: int, y: int, blocked: bool, spent_one: bool = false) -> void:
+	var row := {"blocked": blocked}
+	if spent_one:
+		row["spent"] = true
+	mutations["%d,%d" % [x, y]] = row
 
 
 ## Primitives only, for a save envelope or a test.

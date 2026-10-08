@@ -61,3 +61,61 @@ static func cell_taken(props: Array, cell: Vector2i) -> bool:
 		):
 			return true
 	return false
+
+
+## Whether a cell is sealed by water. Terrain is rows of archetype strings;
+## `water_feature.*` is the one family that cannot carry a prop.
+static func cell_is_water(terrain: Array, x: int, y: int) -> bool:
+	if y < 0 or y >= terrain.size():
+		return true
+	var row := terrain[y] as Array
+	if x < 0 or x >= row.size():
+		return true
+	return String(row[x]).begins_with("water_feature")
+
+
+## The authored patch for THIS chunk, or `{}`. A patch names its chunk
+## (`{"chunk": [cx, cy], "props": [...], "cleared": [...]}`) because authored
+## ground belongs to a PLACE: the first draft applied the same pins to every
+## chunk of the node, which planted the starter shelter in each preloaded
+## neighbour and reported itself on their water (measured 2026-10-08).
+static func authored_patch(ctx: Dictionary) -> Dictionary:
+	var cell := [int(ctx.get("cx", 0)), int(ctx.get("cy", 0))]
+	for patch in ctx.get("authored", []) as Array:
+		if patch is Dictionary and ((patch as Dictionary).get("chunk", []) as Array) == cell:
+			return patch as Dictionary
+	return {}
+
+
+## The config's reserved cells as `Vector2i`s. Config authors `[x, y]` pairs;
+## the placement math wants cells, so one conversion lives here rather than
+## in every pass.
+static func cleared_cells(raw: Array) -> Array:
+	var out: Array = []
+	for cell in raw:
+		if cell is Vector2i:
+			out.append(cell)
+		elif cell is Array and (cell as Array).size() == 2:
+			out.append(Vector2i(int((cell as Array)[0]), int((cell as Array)[1])))
+	return out
+
+
+## Sealed ground also grows nothing: a placement never takes a cell the
+## config reserved (a door pad, a clearing). What is reserved is reserved for
+## the author, not for the seed.
+static func footprint_cleared(cell: Vector2i, fp: Vector2i, cleared: Array) -> bool:
+	for dy in fp.y:
+		for dx in fp.x:
+			if Vector2i(cell.x + dx, cell.y + dy) in cleared:
+				return true
+	return false
+
+
+## Whether any cell of a footprint rooted at `cell` is sealed. What a
+## scatter or resource pass asks before rooting something broad.
+static func footprint_taken(props: Array, cell: Vector2i, fp: Vector2i) -> bool:
+	for dy in fp.y:
+		for dx in fp.x:
+			if cell_taken(props, Vector2i(cell.x + dx, cell.y + dy)):
+				return true
+	return false
