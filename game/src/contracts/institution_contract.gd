@@ -14,12 +14,12 @@ extends RefCounted
 ##
 ## ## The capability set is OPEN, and that is the pack's licence
 ##
-## A sort of closed name list — "only these nine ids may register" — would be
+## A sort of closed name list — "only these ten ids may register" — would be
 ## the closed `OwnerRef.KINDS` defect one layer up: a modder shipping a whole new
 ## organization kind could then never ship a capability this build has not heard
 ## of. So registration refuses on FAILURE, never on unfamiliarity: an
 ## implementation must (1) be an `InstitutionCapability`, (2) name itself, and
-## (3) pass its own `contract_findings()` suite. The nine shipped capabilities
+## (3) pass its own `contract_findings()` suite. The ten shipped capabilities
 ## are published in [constant STANDARD] as VOCABULARY — a panel renders it, a
 ## test asserts each one ships a suite — and nothing gates on it.
 ##
@@ -113,7 +113,7 @@ const REASONS: Dictionary = {
 	R_UNKNOWN_KIND: R_UNKNOWN_KIND,
 }
 
-## The nine capabilities the STANDARD ships, as published vocabulary. **A gate
+## The ten capabilities the STANDARD ships, as published vocabulary. **A gate
 ## would be wrong here** — see the class note: registration is refused on a
 ## failed suite, never on an unfamiliar id. A test asserts every id below ships
 ## a class whose suite is empty, so this list cannot drift from the family.
@@ -123,6 +123,7 @@ const STANDARD: Array[StringName] = [
 	&"diplomatic",
 	&"dutiable",
 	&"expellable",
+	&"progressive",
 	&"schismatic",
 	&"successive",
 	&"teachable",

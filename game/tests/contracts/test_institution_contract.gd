@@ -116,7 +116,7 @@ func teardown() -> void:
 ## it is published under, and the base — which names nothing — reports that fact
 ## in its own suite rather than registering silently under an empty name.
 func test_every_standard_capability_ships_a_named_class() -> void:
-	assert_eq(InstitutionContract.STANDARD.size(), 9, "the standard publishes nine capabilities")
+	assert_eq(InstitutionContract.STANDARD.size(), 10, "the standard publishes ten capabilities")
 	for capability_id in InstitutionContract.STANDARD:
 		var impl := _class_for(capability_id)
 		assert_ne(impl, null, "%s ships a class" % capability_id)
@@ -399,7 +399,7 @@ func test_clear_drops_every_row_and_answers_how_many() -> void:
 
 
 ## The class every STANDARD id is published under. A table keyed by the id
-## rather than a `match`, because nine arms are nine `return`s and gdlint's
+## rather than a `match`, because ten arms are ten `return`s and gdlint's
 ## `max-returns` is six; a missing id is a `null` the case above names, never a
 ## silently absent row.
 func _class_for(capability_id: StringName) -> InstitutionCapability:
@@ -409,6 +409,7 @@ func _class_for(capability_id: StringName) -> InstitutionCapability:
 		&"diplomatic": Diplomatic,
 		&"dutiable": Dutiable,
 		&"expellable": Expellable,
+		&"progressive": Progressive,
 		&"schismatic": Schismatic,
 		&"successive": Successive,
 		&"teachable": Teachable,
