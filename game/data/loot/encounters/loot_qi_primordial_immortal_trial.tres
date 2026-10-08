@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"primordial_immortal"
 rarity = &"common"
-vitality = 5898.8
+vitality = 13221.4
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_primordial_immortal_warden", "table_id": &"loot_qi_primordial_immortal_warden"},
 	{"boss_id": &"F18_primordial_warden", "table_id": &"loot_F18_primordial_warden"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"primordial_immortal"
 rarity = &"rare"
-vitality = 9438.
+vitality = 21154.2
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_primordial_immortal_warden", "table_id": &"loot_qi_primordial_immortal_warden"},
 	{"boss_id": &"F18_primordial_warden", "table_id": &"loot_F18_primordial_warden"},

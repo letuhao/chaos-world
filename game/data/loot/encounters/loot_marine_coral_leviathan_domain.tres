@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"qi_refining"
 rarity = &"common"
-vitality = 132.
+vitality = 157.3
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"marine_coral_leviathan", "table_id": &"loot_marine_coral_leviathan"},
 	{"boss_id": &"d3_coral_serpent", "table_id": &"loot_d3_coral_serpent"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"qi_refining"
 rarity = &"rare"
-vitality = 211.2
+vitality = 251.7
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"marine_coral_leviathan", "table_id": &"loot_marine_coral_leviathan"},
 	{"boss_id": &"d3_coral_serpent", "table_id": &"loot_d3_coral_serpent"},

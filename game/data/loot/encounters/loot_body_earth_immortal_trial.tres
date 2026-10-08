@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"earth_immortal"
 rarity = &"common"
-vitality = 1472.2
+vitality = 2768.8
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"body_earth_immortal_guardian", "table_id": &"loot_body_earth_immortal_guardian"},
 	{"boss_id": &"E7_earth_warden", "table_id": &"loot_E7_earth_warden"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"earth_immortal"
 rarity = &"rare"
-vitality = 2355.6
+vitality = 4430.2
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"body_earth_immortal_guardian", "table_id": &"loot_body_earth_immortal_guardian"},
 	{"boss_id": &"E7_earth_warden", "table_id": &"loot_E7_earth_warden"},

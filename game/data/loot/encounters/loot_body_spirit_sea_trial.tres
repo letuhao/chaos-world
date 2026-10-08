@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"spirit_sea"
 rarity = &"common"
-vitality = 277.5
+vitality = 394.1
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"body_spirit_sea_guardian", "table_id": &"loot_body_spirit_sea_guardian"},
 	{"boss_id": &"E4_sea_tide_warden", "table_id": &"loot_E4_sea_tide_warden"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"spirit_sea"
 rarity = &"rare"
-vitality = 444.
+vitality = 630.6
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"body_spirit_sea_guardian", "table_id": &"loot_body_spirit_sea_guardian"},
 	{"boss_id": &"E4_sea_tide_warden", "table_id": &"loot_E4_sea_tide_warden"},

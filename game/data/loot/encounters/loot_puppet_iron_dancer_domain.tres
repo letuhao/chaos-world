@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"foundation"
 rarity = &"common"
-vitality = 132.
+vitality = 157.3
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"puppet_iron_dancer", "table_id": &"loot_puppet_iron_dancer"},
 	{"boss_id": &"d4_iron_dancer", "table_id": &"loot_d4_iron_dancer"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"foundation"
 rarity = &"rare"
-vitality = 211.2
+vitality = 251.7
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"puppet_iron_dancer", "table_id": &"loot_puppet_iron_dancer"},
 	{"boss_id": &"d4_iron_dancer", "table_id": &"loot_d4_iron_dancer"},

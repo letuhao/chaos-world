@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"qi_refining"
 rarity = &"common"
-vitality = 132.
+vitality = 157.3
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"succubus_immortal_guardian", "table_id": &"loot_succubus_immortal_guardian"},
 	{"boss_id": &"d5_immortal_tide", "table_id": &"loot_d5_immortal_tide"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"qi_refining"
 rarity = &"rare"
-vitality = 211.2
+vitality = 251.7
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"succubus_immortal_guardian", "table_id": &"loot_succubus_immortal_guardian"},
 	{"boss_id": &"d5_immortal_tide", "table_id": &"loot_d5_immortal_tide"},

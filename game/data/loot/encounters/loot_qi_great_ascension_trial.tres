@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"great_ascension"
 rarity = &"common"
-vitality = 165.8
+vitality = 211.9
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_great_ascension_warden", "table_id": &"loot_qi_great_ascension_warden"},
 	{"boss_id": &"F5_ascension_warden", "table_id": &"loot_F5_ascension_warden"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"great_ascension"
 rarity = &"rare"
-vitality = 265.2
+vitality = 339.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_great_ascension_warden", "table_id": &"loot_qi_great_ascension_warden"},
 	{"boss_id": &"F5_ascension_warden", "table_id": &"loot_F5_ascension_warden"},

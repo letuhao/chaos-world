@@ -18,7 +18,9 @@ const SOURCE := &"realm"
 ## That is exactly the asymmetry that made mitigation collapse: the attacker's elemental
 ## power rode a 551x ladder while the defender's elemental mitigation stayed where it was
 ## authored, so by R3 the defense term was noise and the only thing a designer could read
-## as "the mitigation number" was a CAP.
+## as "the mitigation number" was a CAP. The three POOLS have since moved to their own
+## list below (`POOL_STATS`) because they ride a second curated curve as well — ADR 0933 —
+## and the list here is now the power-only half.
 ##
 ## ## `STATUS_DEFENSE`, and why the old `STATUS_RESISTANCE` cap had to die with it
 ##
@@ -55,10 +57,23 @@ const SOURCE := &"realm"
 ## sharper still: a rate must NEVER track a magnitude (ADR 0050). `MOVE_SPEED` is a
 ## magnitude but is left out because nothing on the combat path reads it and scaling it is
 ## a movement decision, not a combat one.
+## The three POOL magnitudes: they ride BOTH curated curves — `realm.power` AND the
+## authored technique ladder (`TechniqueMagnitudeTable.factor`, up to 2.7667x) — because
+## a fight's length is a pool divided by a per-hit, and a per-hit rides both (S1's ladder
+## gate and the actor's scaled attack). With the pools on `realm.power` alone the ratio
+## drifted by the ladder's whole span: the actor-vs-actor census measured a rapid fight
+## shortening 38 s (R1) -> 22 s (R30) while the heavy class held only because the loop
+## divided the ladder back out of its fallback blow. The loop's normalization is deleted
+## and the pools ride both curves now (DEF-0384, ADR 0933), so every class holds the
+## anchor flat. Read through the table's own `factor(id)`, which lives in `core/`, so no
+## module edge is added and no second curve is invented here.
+const POOL_STATS := [Stat.MAX_HEALTH, Stat.MAX_QI, Stat.MAX_STAMINA]
+
+## The remaining magnitudes: `realm.power` ONLY. A per-hit's other half (the attack
+## stat) rides this list, which is why a pool needs the ladder on top and an attack stat
+## must not have it — putting the ladder on both sides of the ratio would count one
+## realm's progress twice.
 const SCALED_STATS := [
-	Stat.MAX_HEALTH,
-	Stat.MAX_QI,
-	Stat.MAX_STAMINA,
 	Stat.ATTACK_PHYSICAL,
 	Stat.ATTACK_SPIRITUAL,
 	Stat.DEFENSE_PHYSICAL,
@@ -76,12 +91,25 @@ static func apply(actor: Actor) -> void:
 		actor.stats.set_aptitude_ladder(1.0)
 		return
 	var power := realm.power
+	# ADR 0933: the pools ride the technique ladder on top of `realm.power`, read through
+	# the authored table's own `factor(id)` so this is the SAME gate S1 applies to a
+	# technique's magnitude — one curve, one read, no per-realm correction anywhere.
+	var ladder := TechniqueMagnitudeTable.factor(realm.id)
 	# ADR 0882: the ONE push of the aptitude ladder, and this function already runs at
 	# breakthrough (`core/breakthrough.gd`), which is one of the two stages the aptitude
 	# layer re-resolves at. A MAGNITUDE edge reads this; a CONTEST edge never does.
 	actor.stats.set_aptitude_ladder(power)
 	for id in SCALED_STATS:
 		actor.stats.add_modifier(StatModifier.new(id, Stat.Op.MULT, power, SOURCE))
+	for id in POOL_STATS:
+		actor.stats.add_modifier(StatModifier.new(id, Stat.Op.MULT, power * ladder, SOURCE))
+	# The modifiers move the DERIVED capacities; the resource pools captured their own
+	# maximum when they were attached (`ActorPools.attach_core`) and nothing resizes them
+	# on a stat rebuild alone. `Actor.mark_stats_dirty` is the actor's own sync door
+	# (`_sync_core_resources`), so a realm write is what makes the pool a realm-sized
+	# pool — without this line the eight scaled stats move and the fight's pools do not,
+	# which is the DEF-0384 defect wearing a fresh multiplier.
+	actor.mark_stats_dirty()
 
 
 static func highest_realm(actor: Actor) -> RealmDef:

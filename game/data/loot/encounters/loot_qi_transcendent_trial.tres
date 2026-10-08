@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"transcendent"
 rarity = &"common"
-vitality = 19671.8
+vitality = 50736.3
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_transcendent_warden", "table_id": &"loot_qi_transcendent_warden"},
 	{"boss_id": &"F20_transcendent_warden", "table_id": &"loot_F20_transcendent_warden"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"transcendent"
 rarity = &"rare"
-vitality = 31474.8
+vitality = 81178.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_transcendent_warden", "table_id": &"loot_qi_transcendent_warden"},
 	{"boss_id": &"F20_transcendent_warden", "table_id": &"loot_F20_transcendent_warden"},

@@ -75,10 +75,10 @@ TIER_RARITY: dict[int, str] = {1: "common", 2: "rare"}
 
 # The owner's ruling (ADR 0197): two actors of the same power, no healing, no dodging,
 # should finish a fight in 60 seconds, which at the ladder's own blow rate is **25
-# landed blows**. The ladder already delivers that -- `RealmScaling.SCALED_STATS`
-# carries both `Stat.MAX_HEALTH` and `Stat.ATTACK_PHYSICAL`, so an actor's health pool
-# and its attack grow by the SAME authored `RealmDef.power` and the blow count is
-# constant down the whole ladder. The ladder and the curve are therefore NOT touched.
+# landed blows**. The ladder already delivers that -- the actor pool rides BOTH authored
+# curves (`RealmDef.power` AND the technique ladder, ADR 0934), the attack rides
+# `RealmDef.power`, and a per-hit's magnitude rides the ladder -- so the blow count is
+# constant down the whole ladder. The ladder and the curves are therefore NOT touched.
 #
 # What was wrong is AUTHORED BOSS VITALITY, which was flat at 40-800 (~20x) against a
 # realm table that spans 1.0-551.46 (551x). A boss's pool is spent by the same blows
@@ -88,9 +88,10 @@ TIER_RARITY: dict[int, str] = {1: "common", 2: "rare"}
 # ## The formula
 #
 #     vitality(realm) = HITS_TO_KILL * BASE_HEALTH * RealmDef.power(realm)
-#                     = 25 * 75 * power            (= 1875 at R1, 1033987.5 at R30)
+#                       * TechniqueMagnitudeTable.factor(realm)
+#                     = 25 * 75 * power * ladder
 #
-# Three terms, and **every one is already authored**:
+# Four terms, and **every one is already authored**:
 #
 # - `HITS_TO_KILL` (25) is the owner's blow count, and is the anchor itself.
 # - `BASE_HEALTH` (75) is `Stat.MAX_HEALTH` of the anchor's own reference actor: the
@@ -98,10 +99,14 @@ TIER_RARITY: dict[int, str] = {1: "common", 2: "rare"}
 #   `75 / 3.0 == 25` blows. One constant, quoted from the actor table, not a new curve.
 # - `RealmDef.power` is the authored ladder `core/realm_power_table.tres`, keyed by
 #   realm id -- the SAME axis `RealmScaling` already multiplies an actor's health by.
+# - `TechniqueMagnitudeTable.factor(realm)` is the authored technique ladder the POOL
+#   rides on top of power since ADR 0934. A per-hit's magnitude rides it too, and the
+#   rule is that both sides of the pool/per-hit ratio carry the same curves; without
+#   this term a deep boss would die in `1 / ladder` of its authored blows.
 #
-# So the boss's pool tracks an actor's pool along the axis the ladder already owns.
+# So the boss's pool tracks an actor's pool along the axes the fight already uses.
 # There is no new scale and no formula to fall back on: ADR 0050 says a magnitude is
-# `RealmDef.power`, and this is one.
+# `RealmDef.power`, and this is one -- times the one other authored curve a blow reads.
 #
 # ## Why the previous formula was wrong, and it was not a rounding error
 #
@@ -118,9 +123,9 @@ TIER_RARITY: dict[int, str] = {1: "common", 2: "rare"}
 #
 # A world domain's band realm is the LOWEST realm any of its drops belongs to, and 59
 # of the shipped world bands carry a `qi_refining` or `foundation` label purely because
-# they drop something low. Priced straight off that label, R1 of them get 1875.0 and an
-# R30-reaching domain 1033987.5 -- a 551x spread between two creatures whose own drops
-# say nothing about their strength.
+# they drop something low. Priced straight off that label, R1 of them get one tier-1 pool
+# and an R30-reaching domain ~1526x that -- a spread between two creatures whose own
+# drops say nothing about their strength.
 #
 # `WORLD_DOMAIN_FLOOR` is a deliberately conservative LABEL FLOOR for a band whose
 # declared realm is not a claim about the fight: the ladder rung such a band's pool is
@@ -169,6 +174,18 @@ def realm_power() -> dict[str, float]:
     return _POWER
 
 
+def _ladder_factor(realm_id: str) -> float:
+    """The authored technique ladder's factor at `realm_id` (ADR 0934).
+
+    Read from the same `.tres` the runtime reads. A realm the table does not carry reads
+    `1.0`, which is the table's own missing-entry rule -- a content gap must not crash a
+    whole seeding run.
+    """
+    from ..technique_power import read_table
+
+    return read_table().get(realm_id, 1.0)
+
+
 def _floor_power() -> float:
     """`RealmDef.power` at [constant WORLD_DOMAIN_FLOOR], resolved through the ladder.
 
@@ -181,8 +198,24 @@ def _floor_power() -> float:
     return realm_power()[realms[WORLD_DOMAIN_FLOOR]]
 
 
+def _floor_scaled_power() -> float:
+    """What a floored band is priced at: the floor realm's power TIMES its ladder factor.
+
+    Both curves are strictly rising with the ladder, so `max` of two products IS the
+    product of the realm with the larger power -- the floor still only ever RAISES a
+    label that under-reports, and the ladder cannot invert the ordering.
+    """
+    from ..realm_power import load_realms
+
+    realms = [realm_id for realm_id, _name, _tier in load_realms()]
+    floor_realm = realms[WORLD_DOMAIN_FLOOR]
+    return _floor_power() * _ladder_factor(floor_realm)
+
+
 def vitality(realm_id: str, tier: int, *, ladder: bool = True) -> float:
-    """A band's authored vitality: the anchor's pool, at `realm_id`'s authored power.
+    """A band's authored vitality: the anchor's pool, at `realm_id`'s authored power AND
+    the authored technique ladder (ADR 0934 -- the actor pool rides both curves, so a band
+    that priced one of them would die in `1 / ladder` of its authored blows).
 
     `realm_id` is the band's OWN declared realm and `tier` its ordinal, so the caller
     stops passing a ladder index and the id-keying scheme gets to do its job. `ladder`
@@ -199,9 +232,10 @@ def vitality(realm_id: str, tier: int, *, ladder: bool = True) -> float:
             f"no RealmDef.power for realm {realm_id!r}; run "
             "`uv run python -m tools realm_power emit` before seeding content"
         )
+    scaled = power * _ladder_factor(realm_id)
     if not ladder:
-        power = max(power, _floor_power())
-    base = BASE_HEALTH * power
+        scaled = max(scaled, _floor_scaled_power())
+    base = BASE_HEALTH * scaled
     return round(base * HARD_TIER_MULTIPLIER, 1) if tier != TIERS[0] else round(base, 1)
 
 

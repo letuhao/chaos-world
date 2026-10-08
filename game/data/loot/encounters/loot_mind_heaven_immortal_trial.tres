@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"heaven_immortal"
 rarity = &"common"
-vitality = 1943.2
+vitality = 3785.2
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"mind_heaven_immortal_warden", "table_id": &"loot_mind_heaven_immortal_warden"},
 	{"boss_id": &"F13_heaven_warden", "table_id": &"loot_F13_heaven_warden"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"heaven_immortal"
 rarity = &"rare"
-vitality = 3109.2
+vitality = 6056.3
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"mind_heaven_immortal_warden", "table_id": &"loot_mind_heaven_immortal_warden"},
 	{"boss_id": &"F13_heaven_warden", "table_id": &"loot_F13_heaven_warden"},

@@ -103,14 +103,13 @@ const ANCHOR_BLOWS_TO_KILL := 25.0
 ## (`&"realm"`, which `remove_modifiers_from` wipes wholesale).
 const FIGHT_POOL_SOURCE := &"fight_pool"
 
-## The loop's fallback-blow scale (DEF-0378's measured retune). S1 gates a technique by
-## the authored technique ladder (`TechniqueMagnitudeTable`, up to 2.7667x), while the
-## actor POOLS ride no ladder at all: a bare swing therefore hit the same 250-point pool
-## for 56.0 at R1 and 154.9 at R30, and the fight collapsed from 4.46 blows to 1.61 —
-## a one-shot at the deep end (the census table). `_bare_swing` divides the ladder back
-## out and multiplies by this, so the ratio the anchor is stated in holds at every
-## realm: `ANCHOR_BLOWS_TO_KILL / 4.46 = 5.6` is the factor that puts 4.46 back at 25.
-## The ladder keeps growing the TECHNIQUES, which is what it is for.
+## The loop's fallback-blow scale (DEF-0378's measured retune; DEF-0384 removed the last
+## per-realm correction). S1 gates every technique by the authored ladder
+## (`TechniqueMagnitudeTable`, up to 2.7667x), the actor pools ride BOTH `realm.power` and
+## that same ladder (ADR 0933), and a bare swing therefore needs NO normalization at all:
+## the ratio the anchor is stated in holds at every realm by construction.
+## `ANCHOR_BLOWS_TO_KILL / 4.46 = 5.6` is the factor that puts the measured 4.46 blows
+## back at 25, and it is the only number this constant carries.
 const ANCHOR_BLOW_SCALE := 1.0 / 5.6
 
 ## Every refusal, named. A press that quietly does nothing is the shape a player cannot
@@ -658,8 +657,9 @@ func _spread_contagion(attacker: Actor, defender: Actor) -> void:
 ## falls back — so the blow silently becomes qi. Reading the defender's own enrolment is
 ## what makes "wound the body you are fighting" mean anything.
 ## The bare swing for `attacker`: the fallback blow the loop throws when no technique
-## was passed, normalized so a same-build fight holds the sixty-second anchor at EVERY
-## realm (see [constant ANCHOR_BLOW_SCALE] for the measured why and the arithmetic).
+## was passed. Its magnitude rides S1's ladder exactly as a shipped technique's does —
+## DEF-0384 removed the division that used to cancel it, because the pools ride the
+## ladder too (ADR 0933) and the ratio is flat without any per-realm correction.
 ##
 ## The mechanism path is the ATTACKER's own, asked of the composition root's named
 ## answer rather than re-derived: it used to read the OPPONENT's path, so a hero whose
@@ -669,8 +669,7 @@ func _bare_swing(attacker: Actor) -> TechniqueDef:
 	def.path = _path_of(attacker)
 	def.element_share = CombatBoot.BARE_SWING_SHARE
 	def.element = ElementStats.FIRE
-	var ladder := maxf(1e-9, TechniqueMagnitudeTable.factor(attacker.realm()))
-	def.magnitude = CombatBoot.BARE_SWING_MAGNITUDE * ANCHOR_BLOW_SCALE / ladder
+	def.magnitude = CombatBoot.BARE_SWING_MAGNITUDE * ANCHOR_BLOW_SCALE
 	return def
 
 

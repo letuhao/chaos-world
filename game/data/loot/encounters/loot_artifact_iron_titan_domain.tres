@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"qi_refining"
 rarity = &"common"
-vitality = 132.
+vitality = 157.3
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"artifact_iron_titan", "table_id": &"loot_artifact_iron_titan"},
 	{"boss_id": &"d1_iron_titan_slag", "table_id": &"loot_d1_iron_titan_slag"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"qi_refining"
 rarity = &"rare"
-vitality = 211.2
+vitality = 251.7
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"artifact_iron_titan", "table_id": &"loot_artifact_iron_titan"},
 	{"boss_id": &"d1_iron_titan_slag", "table_id": &"loot_d1_iron_titan_slag"},

@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"tribulation"
 rarity = &"common"
-vitality = 186.
+vitality = 246.3
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"body_tribulation_guardian", "table_id": &"loot_body_tribulation_guardian"},
 	{"boss_id": &"E3_tribulation_arbiter", "table_id": &"loot_E3_tribulation_arbiter"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"tribulation"
 rarity = &"rare"
-vitality = 297.6
+vitality = 394.1
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"body_tribulation_guardian", "table_id": &"loot_body_tribulation_guardian"},
 	{"boss_id": &"E3_tribulation_arbiter", "table_id": &"loot_E3_tribulation_arbiter"},

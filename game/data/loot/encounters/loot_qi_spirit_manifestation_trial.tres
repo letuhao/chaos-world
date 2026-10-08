@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"spirit_manifestation"
 rarity = &"common"
-vitality = 412.5
+vitality = 628.5
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_spirit_manifestation_warden", "table_id": &"loot_qi_spirit_manifestation_warden"},
 	{"boss_id": &"F11_manifestation_warden", "table_id": &"loot_F11_manifestation_warden"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"spirit_manifestation"
 rarity = &"rare"
-vitality = 660.
+vitality = 1005.6
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_spirit_manifestation_warden", "table_id": &"loot_qi_spirit_manifestation_warden"},
 	{"boss_id": &"F11_manifestation_warden", "table_id": &"loot_F11_manifestation_warden"},

@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"qi_refining"
 rarity = &"common"
-vitality = 132.
+vitality = 157.3
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_body_integration_guardian", "table_id": &"loot_qi_body_integration_guardian"},
 	{"boss_id": &"qi_great_ascension_guardian", "table_id": &"loot_qi_great_ascension_guardian"},
@@ -22,7 +22,7 @@ tier = 2
 label = "Depths"
 realm = &"qi_refining"
 rarity = &"rare"
-vitality = 211.2
+vitality = 251.7
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_body_integration_guardian", "table_id": &"loot_qi_body_integration_guardian"},
 	{"boss_id": &"qi_great_ascension_guardian", "table_id": &"loot_qi_great_ascension_guardian"},

@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"spirit_unity"
 rarity = &"common"
-vitality = 614.2
+vitality = 1003.9
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_spirit_unity_warden", "table_id": &"loot_qi_spirit_unity_warden"},
 	{"boss_id": &"F11_unity_warden", "table_id": &"loot_F11_unity_warden"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"spirit_unity"
 rarity = &"rare"
-vitality = 982.8
+vitality = 1606.3
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_spirit_unity_warden", "table_id": &"loot_qi_spirit_unity_warden"},
 	{"boss_id": &"F11_unity_warden", "table_id": &"loot_F11_unity_warden"},

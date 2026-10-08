@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"spirit_condensation"
 rarity = &"common"
-vitality = 227.2
+vitality = 311.6
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"body_spirit_condensation_guardian", "table_id": &"loot_body_spirit_condensation_guardian"},
 	{"boss_id": &"E4_condensation_warden", "table_id": &"loot_E4_condensation_warden"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"spirit_condensation"
 rarity = &"rare"
-vitality = 363.6
+vitality = 498.6
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"body_spirit_condensation_guardian", "table_id": &"loot_body_spirit_condensation_guardian"},
 	{"boss_id": &"E4_condensation_warden", "table_id": &"loot_E4_condensation_warden"},

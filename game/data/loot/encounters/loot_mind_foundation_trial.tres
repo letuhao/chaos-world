@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"foundation"
 rarity = &"common"
-vitality = 84.
+vitality = 87.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"mind_foundation_warden", "table_id": &"loot_mind_foundation_warden"},
 	{"boss_id": &"F1_foundation_warden", "table_id": &"loot_F1_foundation_warden"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"foundation"
 rarity = &"rare"
-vitality = 134.4
+vitality = 139.2
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"mind_foundation_warden", "table_id": &"loot_mind_foundation_warden"},
 	{"boss_id": &"F1_foundation_warden", "table_id": &"loot_F1_foundation_warden"},

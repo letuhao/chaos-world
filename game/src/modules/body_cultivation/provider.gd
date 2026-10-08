@@ -57,11 +57,17 @@ func contribute(context: StatContext) -> Dictionary:
 	var speed_bonus := muscle_fiber * 0.5 * shaped
 
 	return {
-		# Core-owned: additive so the core baseline always survives.
-		BodyStats.PHYSICAL_ATTACK: context.value(BodyStats.PHYSICAL_ATTACK) + attack_bonus,
-		BodyStats.PHYSICAL_DEFENSE: context.value(BodyStats.PHYSICAL_DEFENSE) + defense_bonus,
-		BodyStats.MOVE_SPEED: context.value(BodyStats.MOVE_SPEED) + speed_bonus,
-		BodyStats.POISE: context.value(BodyStats.POISE) + poise_bonus,
+		# Core-owned: contributed as the ADDITION to core's own value, never a
+		# replacement — `ActorStats._ensure_providers` adds each of these to the
+		# core pass's bucketed figure, so the core baseline always survives (ADR 0026)
+		# and the realm multiplier lands on the bonus exactly once. Re-emitting
+		# `context.value(id) + bonus` here was the double-application the actor-vs-actor
+		# census measured (DEF-0384): `attack_physical` read power^2 under
+		# `RealmScaling`, and the sixty-second anchor collapsed at depth.
+		BodyStats.PHYSICAL_ATTACK: attack_bonus,
+		BodyStats.PHYSICAL_DEFENSE: defense_bonus,
+		BodyStats.MOVE_SPEED: speed_bonus,
+		BodyStats.POISE: poise_bonus,
 		# Module-owned: no core baseline, so the body module defines them outright.
 		BodyStats.CARRY_CAPACITY: (bone_density * 10.0 + muscle_fiber * 5.0) * shaped,
 		BodyStats.REGENERATION: organ_vitality * 0.3 * shaped,

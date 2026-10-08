@@ -71,6 +71,36 @@ func test_the_element_fraction_is_realm_invariant() -> void:
 	assert_eq(fractions.size(), 2, "two realms measured")
 
 
+## DEF-0384(b): the mechanism's `magnitude` IS S1's gated output, and therefore BOTH of
+## its terms — the raw and the elemental — ride the technique ladder exactly once. That
+## was the one open question in the ruling's shared-curve reconciliation: the elemental
+## term was feared ladder-free, and it is not, because `AttackContext.magnitude` is
+## written from `CombatSpine.base_damage`. Pinned at a deep realm so a future mechanism
+## that rebuilt a raw magnitude from `technique.magnitude` fails HERE rather than as a
+## slow drift in the actor-vs-actor census.
+func test_the_mechanism_reads_the_ladder_gated_magnitude_not_the_raw_one() -> void:
+	var attacker := _attacker()
+	attacker.set_path(PathState.new(PathState.QI, &"primordial_origin"))
+	RealmScaling.apply(attacker)
+	ElementsApi.apply_realm_modifiers(attacker, _rules)
+	var technique := _technique(ElementStats.FIRE, 0.8)
+	assert_eq(technique.magnitude, 100.0, "the fixture's authored magnitude")
+	var ctx := _context(
+		attacker,
+		_defender(ElementStats.FIRE, 0.0),
+		ElementStats.FIRE,
+		0.8,
+		CombatSpine.base_damage(attacker, technique),
+		ElementStats.WOOD
+	)
+	var parts := QiDamage.new().breakdown(ctx)
+	var ladder := TechniqueMagnitudeTable.factor(&"primordial_origin")
+	assert_eq(ladder > 1.0, true, "the ladder is real at the top realm")
+	assert_almost_eq(
+		float(parts["magnitude"]), 100.0 * ladder, "S1's gated output, not the raw 100.0", 1e-6
+	)
+
+
 ## ADR 0200: BOTH halves ride the ladder, and this file's own docblock said why it
 ## would not.
 ##

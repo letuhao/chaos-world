@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"great_luo"
 rarity = &"common"
-vitality = 7786.5
+vitality = 18075.8
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_great_luo_warden", "table_id": &"loot_qi_great_luo_warden"},
 	{"boss_id": &"F17_great_luo_warden", "table_id": &"loot_F17_great_luo_warden"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"great_luo"
 rarity = &"rare"
-vitality = 12458.4
+vitality = 28921.3
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_great_luo_warden", "table_id": &"loot_qi_great_luo_warden"},
 	{"boss_id": &"F17_great_luo_warden", "table_id": &"loot_F17_great_luo_warden"},

@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"true_immortal"
 rarity = &"common"
-vitality = 4468.5
+vitality = 9670.3
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"mind_true_immortal_warden", "table_id": &"loot_mind_true_immortal_warden"},
 	{"boss_id": &"F15_true_warden", "table_id": &"loot_F15_true_warden"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"true_immortal"
 rarity = &"rare"
-vitality = 7149.6
+vitality = 15472.4
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"mind_true_immortal_warden", "table_id": &"loot_mind_true_immortal_warden"},
 	{"boss_id": &"F15_true_warden", "table_id": &"loot_F15_true_warden"},

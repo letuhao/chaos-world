@@ -39,10 +39,11 @@ var attacker: StatContext = null
 ## The target's side at query time.
 var target: StatContext = null
 
-## The attack's base magnitude AFTER the S1 rate gate (`RealmRate.factor`) — S1's
-## OUTPUT, never the technique's raw magnitude. That is what makes "S1 before S2"
-## and "S1 before S4" observable at all: a mechanism reading `base` cannot see a
-## pre-gate value, and cannot see the ladder's influence on whether the hit lands.
+## The attack's base magnitude AFTER the S1 gate — `CombatSpine.base_damage`, which is
+## the technique's authored magnitude through the authored technique ladder
+## (`TechniqueMagnitudeTable.factor`). S1's OUTPUT, never the technique's raw magnitude:
+## that is what makes "S1 before S2" and "S1 before S4" observable at all — a mechanism
+## reading `base` cannot see a pre-gate value.
 var base: float = 0.0
 
 ## The injected generator, or null for a deterministic caller. A mechanism that

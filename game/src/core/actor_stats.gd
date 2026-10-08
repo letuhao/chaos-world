@@ -184,9 +184,29 @@ func _ensure_providers() -> void:
 	for provider in _providers:
 		var contributed := provider.contribute(_context)
 		for id in contributed.keys():
-			# A provider's contribution is the baseline for the stat; the modifier
-			# stack applies exactly once on top (ADR 0026).
 			var b: Dictionary = buckets.get(id, {})
+			if _derived.has(id):
+				# A provider contribution for a CORE-OWNED id is an ADDITION to core's
+				# own bucketed value, never a replacement (ADR 0026: "the core baseline
+				# always survives"), and the modifier bucket lands on the addition ONCE.
+				# The re-emit shape this replaces read `context.value(id) + bonus` and
+				# then multiplied by the bucket again, squaring the realm multiplier:
+				# a body actor's physical attack read power^2 while its pools read
+				# power^1, and the actor-vs-actor census collapsed to 0.15 blows at R30
+				# (DEF-0384's measurement). Flats are NOT re-applied to the addition —
+				# core's base already took them.
+				_provider_cache[id] = maxf(
+					0.0,
+					(
+						float(_derived.get(id, 0.0))
+						+ (
+							float(contributed[id])
+							* (1.0 + float(b.get("percent", 0.0)))
+							* float(b.get("mult", 1.0))
+						)
+					)
+				)
+				continue
 			var value := (
 				(float(contributed[id]) + float(b.get("flat", 0.0)))
 				* (1.0 + float(b.get("percent", 0.0)))

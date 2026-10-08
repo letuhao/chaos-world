@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"foundation"
 rarity = &"common"
-vitality = 132.
+vitality = 157.3
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"codex_void_serpent", "table_id": &"loot_codex_void_serpent"},
 	{"boss_id": &"d2_void_serpent", "table_id": &"loot_d2_void_serpent"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"foundation"
 rarity = &"rare"
-vitality = 211.2
+vitality = 251.7
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"codex_void_serpent", "table_id": &"loot_codex_void_serpent"},
 	{"boss_id": &"d2_void_serpent", "table_id": &"loot_d2_void_serpent"},
