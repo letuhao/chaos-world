@@ -320,7 +320,7 @@ static func read(ledger: Dictionary) -> Dictionary:
 	out["kind"] = text(ledger.get("kind", ""), "")
 	out["position"] = position
 	out["holds_position"] = position != ""
-	out["standing_cap"] = maxi(1, int(ledger.get("standing_cap", 100)))
+	out["standing_cap"] = maxi(1, int(ledger.get("standing_cap", InstitutionClaim.DEFAULT_STANDING_CAP)))
 	out["standing"] = clampi(int(ledger.get("standing", 0)), 0, int(out["standing_cap"]))
 	out["normalized"] = float(out["standing"]) / float(out["standing_cap"])
 	return out

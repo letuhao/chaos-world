@@ -47,6 +47,13 @@ const STANDING_RATE := 0.001
 ## The maximum recognition any claim can ever contribute, as a percent. At the
 ## authored cap of 100 standing that is `0.10`.
 const STANDING_PERCENT_CAP := 0.10
+## The cap a claim carries when nothing authors one, and the value every repair
+## site floors to. **The ONE number for this default** (DEF-0339): it was written
+## as a bare `100` in `InstitutionClaim.from_dict`, `InstitutionLedger.read`,
+## `InstitutionFounding._standing_cap` and `ClanState.DEFAULT_STANDING_CAP`, so a
+## retune was four edits that could drift — the ADR 0066 failure mode. Each of
+## those now aliases this constant; a fifth literal is the bug.
+const DEFAULT_STANDING_CAP := 100
 
 ## A position id, or `""` for an unaffiliated member. Discretely authored: this
 ## is a `.tres` id, never an index into a ladder.
@@ -59,7 +66,7 @@ const STANDING_PERCENT_CAP := 0.10
 @export var obligation: Dictionary = {}
 ## The ceiling `standing` clamps to. Authored per institution, so the political
 ## range is content rather than a constant buried in a ledger.
-@export var standing_cap: int = 100
+@export var standing_cap: int = DEFAULT_STANDING_CAP
 
 
 ## The bounded percent this standing projects onto an allowlisted stat
@@ -163,7 +170,7 @@ static func from_dict(data: Dictionary) -> InstitutionClaim:
 	var claim := InstitutionClaim.new()
 	claim.position = StringName(data.get("position", ""))
 	claim.standing = maxi(0, int(data.get("standing", 0)))
-	claim.standing_cap = maxi(1, int(data.get("standing_cap", 100)))
+	claim.standing_cap = maxi(1, int(data.get("standing_cap", DEFAULT_STANDING_CAP)))
 	var lines = data.get("obligation", {})
 	if lines is Dictionary:
 		for key in (lines as Dictionary).keys():

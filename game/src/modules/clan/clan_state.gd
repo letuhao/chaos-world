@@ -45,17 +45,14 @@ const TRAIT_PREFIX := "clan:"
 ## Second `Actor.traits` mirror: the member's position, namespaced so it can never
 ## collide with the clan mirror or with a trait an unrelated module grants.
 const RANK_PREFIX := "clan_rank:"
-## The ceiling a clan standing is measured against when its def authors none, and the
-## value `InstitutionClaim`'s own `from_dict` defaults to.
+## The ceiling a clan standing is measured against when its def authors none.
 ##
-## **A LITERAL, and the fourth in the tree — stated rather than hidden.**
-## `InstitutionClaim.from_dict`, `InstitutionLedger.read` and
-## `InstitutionFounding._standing_cap` each write the same `100` and `core/` publishes no
-## named constant for it, so there is nothing here to alias. Hand-writing a fifth would be
-## worse than naming this one: if `core/` ever publishes `DEFAULT_STANDING_CAP`, this and
-## those three become aliases of it in the same change. **`core/` is outside every module's
-## claim**, so that fix is not this slice's to make.
-const DEFAULT_STANDING_CAP := 100
+## **AN ALIAS of `InstitutionClaim.DEFAULT_STANDING_CAP`, which now owns the one
+## number** (DEF-0339). It used to be the fourth bare `100` in the tree; the
+## other three (`InstitutionClaim.from_dict`, `InstitutionLedger.read`,
+## `InstitutionFounding._standing_cap`) alias the same constant, so a retune is
+## one edit. This name is kept because a clan reader asks a clan question.
+const DEFAULT_STANDING_CAP := InstitutionClaim.DEFAULT_STANDING_CAP
 
 
 ## The stat source id one clan would contribute under.

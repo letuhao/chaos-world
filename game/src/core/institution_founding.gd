@@ -322,8 +322,12 @@ static func _draw(actor: Actor, price: Dictionary) -> void:
 ## cap that cannot be computed would report a normalized ratio of zero and read as an
 ## institution nobody respects.
 static func _standing_cap(profile: Dictionary) -> int:
-	var authored = profile.get("standing_cap", 100)
-	var cap := 100 if not (authored is int or authored is float) else int(authored)
+	var authored = profile.get("standing_cap", InstitutionClaim.DEFAULT_STANDING_CAP)
+	var cap := (
+		InstitutionClaim.DEFAULT_STANDING_CAP
+		if not (authored is int or authored is float)
+		else int(authored)
+	)
 	return maxi(1, cap)
 
 
