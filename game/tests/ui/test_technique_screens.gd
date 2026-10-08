@@ -236,7 +236,7 @@ func test_both_screens_report_raw_values_and_nest_their_rows() -> void:
 		"the budget is the module's, not the screen's"
 	)
 	var slots: Array = loadout_view["slots"]
-	assert_eq(slots.size(), 7, "Mortal publishes seven slots")
+	assert_eq(slots.size(), 8, "Mortal publishes eight slots, the rapid key included")
 	# Matched by POOL rather than by position: `slot_keys` publishes the three path
 	# pools in `PathState.ALL` order and the qi technique lands wherever qi sits in
 	# that order, so "the first slot" is an accident of the vocabulary rather than a
@@ -279,18 +279,19 @@ func test_the_loadout_says_it_is_the_limited_half() -> void:
 	assert_eq(bool(view["is_loadout"]), true, "the loadout says so")
 	assert_eq(view.has("read_only"), false, "and is not the read-only half")
 	# Every slot the facade publishes is on the page, each with its pool and its
-	# occupant — the 7/8/9/10 budget is legible because nothing is collapsed.
+	# occupant — the 8/9/10/11 budget is legible because nothing is collapsed.
 	var kinds: Array = []
 	for slot in view["slots"]:
 		kinds.append(String((slot as Dictionary)["kind"]))
-	assert_eq(kinds.size(), 7, "seven rows")
+	assert_eq(kinds.size(), 8, "eight rows")
 	assert_eq(kinds.count(PathState.QI), 3, "qi holds three")
 	assert_eq(kinds.count(PathState.BODY), 2, "body holds two")
 	assert_eq(kinds.count(PathState.MIND), 2, "mind holds two")
+	assert_eq(kinds.count(TechniqueSlots.RAPID), 1, "and the rapid key is one")
 
 
 func test_the_budget_grows_with_the_realm_tier() -> void:
-	for tier_case in [[MORTAL, 7], [SPIRIT, 8]]:
+	for tier_case in [[MORTAL, 8], [SPIRIT, 9]]:
 		var actor := _actor(tier_case[0])
 		var loadout := _loadout()
 		loadout.setup(actor)

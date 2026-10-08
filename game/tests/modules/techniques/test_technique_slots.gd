@@ -36,11 +36,12 @@ func _technique(path_id: StringName) -> TechniqueDef:
 
 
 func test_slot_capacity_follows_the_published_tier_table() -> void:
-	# Four tiers, four published rows: 7 / 8 / 9 / 10 slots total.
-	assert_eq(TechniqueSlots.slot_keys(1).size(), 7, "Mortal R1-9 totals seven")
-	assert_eq(TechniqueSlots.slot_keys(2).size(), 8, "Spirit R10-18 totals eight")
-	assert_eq(TechniqueSlots.slot_keys(3).size(), 9, "Immortal R19-27 totals nine")
-	assert_eq(TechniqueSlots.slot_keys(4).size(), 10, "Transcendent R28-30 totals ten")
+	# Four tiers, four published rows: 8 / 9 / 10 / 11 slots total, the rapid key
+	# included at every tier (BL-0933).
+	assert_eq(TechniqueSlots.slot_keys(1).size(), 8, "Mortal R1-9 totals eight")
+	assert_eq(TechniqueSlots.slot_keys(2).size(), 9, "Spirit R10-18 totals nine")
+	assert_eq(TechniqueSlots.slot_keys(3).size(), 10, "Immortal R19-27 totals ten")
+	assert_eq(TechniqueSlots.slot_keys(4).size(), 11, "Transcendent R28-30 totals eleven")
 	# Per-path counts are fixed for the whole ladder; only the universal pool grows.
 	for tier in [1, 2, 3, 4]:
 		var keys := TechniqueSlots.slot_keys(tier)
@@ -51,6 +52,11 @@ func test_slot_capacity_follows_the_published_tier_table() -> void:
 			_count_of(keys, TechniqueSlots.UNIVERSAL),
 			tier - 1,
 			"universal grows by one per tier (tier %d)" % tier
+		)
+		assert_eq(
+			_count_of(keys, TechniqueSlots.RAPID),
+			1,
+			"the rapid key is one at every tier (tier %d)" % tier
 		)
 
 
@@ -311,6 +317,83 @@ func test_rebuild_clears_a_contribution_whose_binding_is_gone() -> void:
 		0,
 		"and the contribution is swept even though unequip was bypassed"
 	)
+
+
+# --- The rapid key (BL-0933) ---------------------------------------------------
+
+
+## A rapid technique: active, one cast interval, and the rapid flag.
+func _rapid(suffix: String) -> TechniqueDef:
+	var def := TechniqueDef.new()
+	def.id = StringName("rapid_%s" % suffix)
+	def.display_name = "Rapid Art"
+	def.grade = ItemGrade.MORTAL
+	def.path = PathState.QI
+	def.active = true
+	def.rapid = true
+	def.cooldown = 0.2
+	return def
+
+
+## The rapid key is granted at EVERY tier and holds exactly one technique: learning
+## many and equipping one is the model, so a second rapid equip MOVES rather than
+## stacks.
+func test_the_rapid_slot_holds_one_at_every_tier() -> void:
+	for realm_id in [MORTAL, SPIRIT, IMMORTAL, TRANSCENDENT]:
+		var actor := _actor(realm_id)
+		var first := _rapid("first_%s" % realm_id)
+		var second := _rapid("second_%s" % realm_id)
+		TechniquesApi.codex(actor).learn(first.id)
+		TechniquesApi.codex(actor).learn(second.id)
+		assert_eq(
+			bool(TechniquesApi.equip(actor, first)["ok"]), true, "%s: first equips" % realm_id
+		)
+		assert_eq(
+			TechniquesApi.slots(actor).rapid_id(), first.id, "%s: onto the rapid key" % realm_id
+		)
+		assert_eq(
+			bool(TechniquesApi.equip(actor, second)["ok"]), true, "%s: the second equips" % realm_id
+		)
+		assert_eq(
+			TechniquesApi.slots(actor).rapid_id(), second.id, "%s: and MOVES the key" % realm_id
+		)
+		assert_eq(
+			TechniquesApi.slots(actor).is_equipped(first.id),
+			false,
+			"%s: never stacks, so the first is unequipped" % realm_id
+		)
+
+
+## A rapid technique takes the rapid key and NOTHING else. Equipping one at Mortal —
+## where the universal pool is EMPTY — proves the two are separate budgets.
+func test_a_rapid_technique_spends_only_the_rapid_slot() -> void:
+	var actor := _actor(MORTAL)
+	var def := _rapid("only")
+	TechniquesApi.codex(actor).learn(def.id)
+	assert_eq(
+		bool(TechniquesApi.equip(actor, def)["ok"]),
+		true,
+		"equips at Mortal, where no universal slot exists"
+	)
+	var bound := TechniquesApi.slots(actor).all()
+	assert_eq(bound.size(), 1, "exactly one slot is spent")
+	assert_eq(
+		TechniqueSlots.kind_of(bound.keys()[0] as StringName),
+		TechniqueSlots.RAPID,
+		"and it is the rapid key"
+	)
+
+
+## Unequipping frees the key and the art stays learned (ADR 0053's rule, applied to
+## the new kind): re-equipping is one call.
+func test_unequipping_a_rapid_technique_frees_the_key() -> void:
+	var actor := _actor(MORTAL)
+	var def := _rapid("freed")
+	TechniquesApi.codex(actor).learn(def.id)
+	TechniquesApi.equip(actor, def)
+	assert_eq(TechniquesApi.slots(actor).unequip(def.id).is_empty(), false, "the key was held")
+	assert_eq(TechniquesApi.slots(actor).rapid_id(), &"", "and is free again")
+	assert_eq(TechniquesApi.codex(actor).knows(def.id), true, "the art is still learned")
 
 
 ## A passive carrying one stat option, so a contribution actually lands.

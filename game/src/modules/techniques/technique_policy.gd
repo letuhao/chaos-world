@@ -26,6 +26,11 @@ const PATH_SLOTS := {PathState.QI: 3, PathState.BODY: 2, PathState.MIND: 2}
 ## it onto the wrong count.
 const UNIVERSAL_SLOTS_BY_TIER := {1: 0, 2: 1, 3: 2, 4: 3}
 
+## The dedicated rapid key (BL-0933): ONE at every tier, because it is the right-click
+## key rather than a budget. It holds one rapid technique at a time, and `slot_keys`
+## derives its key from this count so the number has one home.
+const RAPID_SLOTS := 1
+
 ## Tier assumed for an actor whose realm is not on the ladder, and for a fresh
 ## actor with no path at all. Mortal is the conservative read: it grants the
 ## smallest slot budget, never a larger one.
@@ -36,11 +41,11 @@ const DEFAULT_TIER := 1
 const PASSIVE_OPTION_CAP := 2
 
 
-## Slot budget for a realm tier: `{qi, body, mind, universal, total}`. Totals are
-## 7 / 8 / 9 / 10 across the four tiers.
+## Slot budget for a realm tier: `{qi, body, mind, universal, rapid, total}`. Totals
+## are 8 / 9 / 10 / 11 across the four tiers, the rapid key included at every one.
 static func slot_budget(tier: int) -> Dictionary:
 	var universal := int(UNIVERSAL_SLOTS_BY_TIER.get(tier, 0))
-	var out := {"universal": universal, "total": universal}
+	var out := {"universal": universal, "rapid": RAPID_SLOTS, "total": universal + RAPID_SLOTS}
 	for path_id in PathState.ALL:
 		var count := int(PATH_SLOTS.get(path_id, 0))
 		out[path_id] = count

@@ -63,6 +63,13 @@ extends Resource
 ## namespaced set of `StatModifier`s while equipped.
 @export var active: bool = true
 
+## Whether this technique is RAPID (BL-0933): it takes the dedicated rapid slot — the
+## one right-click key — and never a path or universal slot, and the fight loop fires
+## it at its own cast interval, clamped at 5 hits/s for performance. Many may be
+## learned; ONE is equipped at a time. A rapid def routes to the rapid slot before
+## anything else, so a shared rapid technique still costs no universal slot.
+@export var rapid: bool = false
+
 # --- Path gate (ADR 0059) -----------------------------------------------------
 
 ## `PathState.ALL` id, the `SHARED` marker below, or `"<a>+<b>"` for a DUAL

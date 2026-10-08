@@ -10,13 +10,14 @@ extends RefCounted
 ##
 ## The published budget:
 ##
-##   | Tier         | realms | qi | body | mind | universal | total |
-##   | Mortal       | 1-9    | 3  | 2    | 2    | 0         | 7     |
-##   | Spirit       | 10-18  | 3  | 2    | 2    | 1         | 8     |
-##   | Immortal     | 19-27  | 3  | 2    | 2    | 2         | 9     |
-##   | Transcendent | 28-30  | 3  | 2    | 2    | 3         | 10    |
+##   | Tier         | realms | qi | body | mind | universal | rapid | total |
+##   | Mortal       | 1-9    | 3  | 2    | 2    | 0         | 1     | 8     |
+##   | Spirit       | 10-18  | 3  | 2    | 2    | 1         | 1     | 9     |
+##   | Immortal     | 19-27  | 3  | 2    | 2    | 2         | 1     | 10    |
+##   | Transcendent | 28-30  | 3  | 2    | 2    | 3         | 1     | 11    |
 ##
-## Per-path counts are fixed for the whole ladder; only the universal pool grows.
+## Per-path counts are fixed for the whole ladder; only the universal pool grows, and
+## the RAPID key is one at every tier (BL-0933): it is a key, not a budget.
 ## The tier comes from `RealmDefaults.ladder().tier_of()`, never from a ladder index,
 ## so an inserted realm cannot shift every actor below it onto the wrong count.
 ##
@@ -36,6 +37,12 @@ const VERSION := 1
 ## a key is `slot_key(UNIVERSAL, index)`.
 const UNIVERSAL := &"universal"
 const SLOT_PATH := &"slot_path"
+
+## The dedicated rapid slot (BL-0933): ONE slot, granted at every tier, holding the
+## single rapid technique the right-click key fires. It is not tier-sized — the key is
+## one key — so `slot_keys` appends it for every tier, and a rapid technique takes it
+## and nothing else.
+const RAPID := &"rapid"
 
 ## technique_id -> the slot key it occupies. A key is `slot_key(kind, index)`,
 ## e.g. `slot_path_qi_cultivation0`; how many of each exist is the tier's budget,
@@ -118,6 +125,8 @@ static func slot_keys(tier: int) -> Array[StringName]:
 			out.append(slot_key(path_id, index))
 	for index in int(budget[UNIVERSAL]):
 		out.append(slot_key(UNIVERSAL, index))
+	for index in int(budget[RAPID]):
+		out.append(slot_key(RAPID, index))
 	return out
 
 
@@ -158,6 +167,11 @@ func all() -> Dictionary:
 ## The technique id occupying `slot_key`, or an empty string.
 func equipped_at(slot_key: StringName) -> StringName:
 	return _slots.get(slot_key, &"")
+
+
+## The technique bound to the rapid slot — the right-click key — or an empty id.
+func rapid_id() -> StringName:
+	return equipped_at(TechniqueSlots.slot_key(TechniqueSlots.RAPID, 0))
 
 
 ## Whether `technique_id` is equipped right now.
@@ -215,6 +229,11 @@ func equipped(tier: int) -> Array[StringName]:
 ## technique, two for a DUAL one. Empty when the budget cannot hold the whole
 ## claim, because a DUAL technique is never half-placed.
 func claimable(tier: int, def: TechniqueDef) -> Array[StringName]:
+	# A rapid technique routes FIRST and alone (BL-0933): its whole purpose is the one
+	# right-click key, and letting it also spend a path slot would tax a build for a key
+	# that already has a home.
+	if def.rapid:
+		return _claim_rapid(tier)
 	var out: Array[StringName] = []
 	if TechniqueSlots.requires_universal(def):
 		var universal_slot := _first_free_of(tier, UNIVERSAL)
@@ -289,6 +308,15 @@ func clear() -> void:
 		return
 	_slots.clear()
 	changed.emit()
+
+
+## The rapid slot when it is free: the one-slot claim a rapid technique takes.
+func _claim_rapid(tier: int) -> Array[StringName]:
+	var claim: Array[StringName] = []
+	var slot := _first_free_of(tier, TechniqueSlots.RAPID)
+	if slot != &"":
+		claim.append(slot)
+	return claim
 
 
 func _first_free_of(tier: int, kind: StringName) -> StringName:

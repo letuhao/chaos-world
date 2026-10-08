@@ -268,6 +268,15 @@ static func equip(actor: Actor, def_or_id) -> Dictionary:
 	if not refused.is_empty():
 		return refused
 	var claim := slots(actor).claimable(_tier(actor), def)
+	if claim.is_empty() and def.rapid:
+		# "Learn many, equip one" (BL-0933): the rapid key holds ONE art, so a second
+		# rapid equip REPLACES the occupant rather than refusing. The release happens
+		# here and only here, after `_refuse_equip` has already answered, so a refused
+		# equip still changes nothing.
+		var occupant := slots(actor).rapid_id()
+		if occupant != &"":
+			slots(actor).unequip(occupant)
+			claim = slots(actor).claimable(_tier(actor), def)
 	if claim.is_empty():
 		return _refused("no_free_slot", def.id)
 	# Re-equipping moves rather than stacks: `bind` releases the previous binding
