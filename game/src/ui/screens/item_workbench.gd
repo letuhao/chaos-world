@@ -202,6 +202,43 @@ func act_unequip() -> bool:
 	return true
 
 
+## Break the selected bag row down into the materials it is worth. **The sink** (BL-0921).
+##
+## A guaranteed wearable the hero cannot use — or a piece whose subtype loses to the one
+## already worn, with five slots against eight competing subtypes — is worth more as
+## materials than as a bag slot, and until this existed the bar offered no verb that took
+## an item OUT of the bag at all.
+##
+## The RULE is [Teardown]'s: nine named refusals, and a worn, unique, set-member, socketed
+## or enchanted piece is protected. This action reports whichever refusal the press met,
+## the way `act_unequip` reports `unequip_block_reason`, rather than pre-filtering the list
+## into a button that can never light: a refusal the player can read is a rule they can
+## learn, and a grey button teaches nothing.
+##
+## The row is looked up as an INSTANCE, because a stack has no instance to break down and
+## `Teardown` answers `unknown_instance` for one — which is more honest than a silent
+## no-op that leaves the player wondering whether the press registered.
+func act_teardown() -> bool:
+	_bind_nodes()
+	var row := _inventory_panel.selected_row()
+	if row.is_empty() or row.get("def") == null:
+		return _reject("no_selection")
+	var inventory := ItemsApi.inventory(_actor)
+	if inventory == null:
+		return _reject("no_inventory")
+	var instance := inventory.find_instance(StringName(String(row.get("def_id", ""))))
+	if instance == null:
+		return _reject("unknown_instance")
+	var answer := ItemsApi.teardown(_actor, instance.instance_id)
+	if not bool(answer.get("ok", false)):
+		return _reject(String(answer.get("reason", "teardown_rejected")))
+	_action_bar.report(
+		&"torn_down", int(answer.get("units", 0)), String(answer.get("def_id", ""))
+	)
+	_settle()
+	return true
+
+
 ## Roll a fresh realization of the selected definition and acquire it into the
 ## inventory. The facade owns realization and ownership, so this action never
 ## has to know how an item is minted or where it lands.
@@ -375,3 +412,5 @@ func _on_action_requested(action: StringName, _payload: Dictionary) -> void:
 			act_save()
 		&"load":
 			act_load()
+		&"teardown":
+			act_teardown()

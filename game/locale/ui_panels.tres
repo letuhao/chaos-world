@@ -540,4 +540,6 @@ messages = {
 "LOC_UI_PANELS_FEBCB8D5F9": "The roster of this place is not wired to anything.",
 "LOC_UI_PANELS_FF5695E571": "Body unnamed",
 "LOC_UI_PANELS_FF7D5CC83D": "Reward - %d drop(s), %d waiting",
+"LOC_UI_PANELS_TEARDOWN_BUTTON": "Break down",
+"LOC_UI_PANELS_TORN_DOWN": "Broke %s into %d material(s)",
 }

@@ -396,6 +396,13 @@ static func stand_in_the_tree(
 	#
 	# Order is preserved because deferred calls run in the order they were queued: the
 	# entry is in the tree before the body is added to it.
+	# A body that is ALREADY parented cannot be added again: Godot refuses with "already has
+	# a parent", and that is precisely the state a stage re-mount leaves behind - a save and
+	# restore, or two suites sharing one process. Detach from wherever it stands first, so
+	# the body the caller is handed back is the one standing in the tree it just asked for.
+	var previous := body.get_parent()
+	if previous != null:
+		previous.remove_child(body)
 	parent.add_child.call_deferred(entry)
 	entry.add_child.call_deferred(body)
 	body.name = STAGE_BODY_NODE

@@ -183,6 +183,35 @@ static func unequip_to_inventory(actor: Actor, slot: StringName) -> bool:
 	return true
 
 
+## Break a carried, unworn piece of equipment down into crafting materials
+## (BL-0921). **The sink**, published at last.
+##
+## The bag is 24 slots, eight authored subtypes compete for five wearable slots and the
+## drop tables GUARANTEE wearables, so equipment accrues with nowhere to go until a
+## guaranteed pickup stops fitting. [ItemTeardown] has owned the whole rule since it
+## shipped - nine named refusals, a worn piece must come off first, and uniques, set
+## members, socketed and enchanted pieces are protected - and the rule was unreachable
+## because this verb did not exist. Same relation as `equip_item` to `Equipment`.
+##
+## The READ is [method teardown_preview]; both answer the shape [ItemTeardown] produced
+## them with, because both are one call into it, so a bar that greys a row greys the row
+## that would actually refuse.
+static func teardown(actor: Actor, instance_id: StringName) -> Dictionary:
+	return ItemTeardown.tear_down(actor, instance_id)
+
+
+## What [method teardown] would do with `instance_id`, and whether it would do it. Never
+## mutates: the panel asks, the press answers.
+static func teardown_preview(actor: Actor, instance_id: StringName) -> Dictionary:
+	return ItemTeardown.preview(actor, instance_id)
+
+
+## The closed refusal set, so a caller can name the rule a break-down broke without
+## reaching the module it lives in.
+static func teardown_refusals() -> Array[String]:
+	return ItemTeardown.refusal_reasons()
+
+
 ## Realize `def` from a seeded roll and acquire it into the actor's inventory.
 ## The realized effects, rarity and realm travel on the returned instance, so a
 ## caller never has to know how an item becomes owned (ADR 0025). Returns null

@@ -20,6 +20,7 @@ const ACTIONS: Array[StringName] = [
 	&"generate",
 	&"save",
 	&"load",
+	&"teardown",
 ]
 ## Canonical equipment slots offered by the selector. Presentation list, kept in
 ## step with the items module's slot ids.
@@ -42,6 +43,7 @@ const OUTCOME_TEXT := {
 	&"generated": "LOC_UI_PANELS_42A8FBA959",
 	&"saved": "LOC_UI_PANELS_82FCF35221",
 	&"loaded": "LOC_UI_PANELS_D32EC875C9",
+	&"torn_down": "LOC_UI_PANELS_TORN_DOWN",
 }
 
 var _enabled: Dictionary = {}
@@ -60,6 +62,7 @@ var _unequip_button: Button = null
 var _generate_button: Button = null
 var _save_button: Button = null
 var _load_button: Button = null
+var _teardown_button: Button = null
 var _message_label: Label = null
 
 
@@ -195,6 +198,7 @@ func _bind_nodes() -> void:
 	_generate_button = get_node_or_null("%GenerateButton") as Button
 	_save_button = get_node_or_null("%SaveButton") as Button
 	_load_button = get_node_or_null("%LoadButton") as Button
+	_teardown_button = get_node_or_null("%TeardownButton") as Button
 	_message_label = get_node_or_null("%MessageLabel") as Label
 	if _slot_option != null and not _slot_option.item_selected.is_connected(_on_slot_selected):
 		_slot_option.item_selected.connect(_on_slot_selected)
@@ -226,6 +230,8 @@ func _button(action: StringName) -> Button:
 			return _generate_button
 		&"save":
 			return _save_button
+		&"teardown":
+			return _teardown_button
 		_:
 			return _load_button
 
