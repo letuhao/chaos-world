@@ -105,6 +105,17 @@ def register(subparsers) -> None:
         action="store_true",
         help="skip the --import pass (only safe when .godot/ is already populated)",
     )
+    parser.add_argument(
+        "--out",
+        default="",
+        metavar="PATH",
+        help=(
+            "write the run's whole stdout and stderr to PATH. A suite's own `print()`s "
+            "reach the terminal the run happened on and nothing else - the launcher's "
+            "`-run.out` holds Godot's own log, not the stdout this tool captured - so a "
+            "measurement that only prints is unverifiable from any file."
+        ),
+    )
 
 
 def run(args) -> int:
@@ -125,6 +136,17 @@ def run(args) -> int:
     result = godot.run_godot(cmd, capture=True)
     output = result.stdout or ""
     errors = result.stderr or ""
+    if args.out:
+        # Written BEFORE any failure return: a red run is the one whose output somebody
+        # needs, and an artifact written only on success keeps the evidence out of every
+        # investigation that mattered.
+        target = Path(args.out)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(
+            "exit=%s\n--- STDOUT ---\n%s\n--- STDERR ---\n%s\n"
+            % (result.returncode, output, errors),
+            encoding="utf-8",
+        )
     # Re-emit so a captured run still reads like a streamed one.
     print(output, end="")
     if errors:

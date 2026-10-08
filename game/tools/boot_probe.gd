@@ -209,6 +209,12 @@ func _run() -> void:
 			continue
 		if not bool(hunt_report.get("ok", false)):
 			cell["hunt"] = hunt_report.get("why", "minted nothing")
+			# The fight's own numbers ride along, so a red cell names WHICH defect it is
+			# rather than repeating a sentence three different faults all produce.
+			var numbers: Dictionary = hunt_report.duplicate()
+			numbers.erase("why")
+			numbers.erase("ok")
+			cell["numbers"] = numbers
 			sweep.append(cell)
 			continue
 		fights += 1
@@ -497,17 +503,41 @@ func _hunt(app: Node, nth: int, where: Dictionary) -> Dictionary:
 		}
 	var fight := await _strike_until_dead(screen)
 	var why := _why_fight_did_not_pay(screen, fight)
-	if why != "":
-		return {"ok": false, "why": why}
+	# ## The numbers travel with the verdict, on BOTH paths
+	#
+	# The failure used to return a sentence and nothing else, so a red cell said "the band
+	# was cleared and paid nothing" with no way to tell a fight that never landed a strike
+	# from one that killed a dozen bosses and was paid for none of them. Those are
+	# different defects with one wording, and the sentence cannot separate them. The
+	# module-level measurement says every domain pays (`test_loot_domain_payment.gd`:
+	# walked=24 entered=24 refused=0 PAID=24 SILENT=0), so whatever this is, it lives in
+	# THIS path - and this is the reading that shows which.
 	var after := screen.call(&"summary") as Dictionary
-	return {
-		"ok": true,
+	var numbers := {
 		"domain": domain,
 		"tier": tier,
 		"strikes": int(fight.get("strikes", 0)),
+		"in_domain": bool(after.get("in_domain", false)),
 		"reward_count": int(after.get("reward_count", 0)),
 		"pending_drops": int(after.get("pending_drops", 0)),
+		"boss_id": String(after.get("boss_id", "")),
+		"gate": String(after.get("gate", "")),
+		# The vitality pair and the player's own death sentence. "The band was cleared and
+		# paid nothing" has a second reading the earlier wording could not reach: the HERO
+		# lost. `LootBossPanel._defeat_text` counts the PLAYER's defeats ("Defeated N
+		# times - last to X"), so a hero who dies two strikes in leaves exactly this shape -
+		# `in_domain` false, no boss, no reward - and it is not the content's fault.
+		"vitality": float(after.get("vitality", 0.0)),
+		"vitality_max": float(after.get("vitality_max", 0.0)),
+		"defeat_label": String(after.get("defeat_label", "")),
+		"player_label": String(after.get("player_label", "")),
 	}
+	if why != "":
+		numbers["ok"] = false
+		numbers["why"] = why
+		return numbers
+	numbers["ok"] = true
+	return numbers
 
 
 ## Pick the fight's drop up out of the reward list and confirm it reached the bag.

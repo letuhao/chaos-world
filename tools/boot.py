@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import json
 import re
+from pathlib import Path
 
 from . import godot
 from .common import GAME_DIR, ToolError, fail, game_exists, ok
@@ -51,6 +52,18 @@ def register(subparsers) -> None:
         type=int,
         default=BOOT_FRAMES,
         help=f"frames to run before exiting (default {BOOT_FRAMES})",
+    )
+    parser.add_argument(
+        "--out",
+        default="",
+        metavar="PATH",
+        help=(
+            "write the probe's own report to PATH as JSON. The human summary this tool "
+            "prints and the probe's `BOOTJSON` line BOTH fail to reach an artifact: the "
+            "launcher's `-run.out` holds Godot's own log, not the stdout the tool "
+            "captured. A run was therefore verifiable only from the terminal it happened "
+            "to be printed to, which is how a stale verdict survived in this gate."
+        ),
     )
 
 
@@ -199,7 +212,32 @@ def run(args) -> int:
     else:
         fail(f"the main scene booted but is empty: {why}")
         failures.append("empty")
+    artifact = {
+        "ok": not failures,
+        "scene": scene,
+        "frames": args.frames,
+        "survived": survived,
+        "came_up": came_up,
+        "why": why,
+        "failures": failures,
+        "report": report,
+    }
+    if args.out:
+        _write_report(args.out, artifact)
     if failures:
         fail("boot gate failed: " + ", ".join(failures))
         return 1
     return 0
+
+
+def _write_report(path: str, artifact: dict) -> None:
+    """Persist the verdict and the probe's own report, so a run outlives its terminal.
+
+    The write happens BEFORE the failure return, deliberately: a red run is the one
+    whose numbers somebody needs, and an artifact written only on success would keep
+    the probe's evidence out of every investigation that mattered.
+    """
+    target = Path(path)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(json.dumps(artifact, indent=2, sort_keys=True), encoding="utf-8")
+    ok(f"wrote the boot report to {target}")
