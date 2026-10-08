@@ -285,6 +285,13 @@ func _attach_steps() -> Array[Dictionary]:
 		{"name": &"destiny", "run": func(a): DestinyApi.attach(a)},
 		{"name": &"event", "run": func(a): EventApi.attach(a)},
 		{"name": &"quest", "run": func(a): QuestApi.attach(a)},
+		# The conversation module (ADR 0862). Beside the other ledgers, and last of them:
+		# it reads only its own `module_data` row and its own catalog, so it has no
+		# ordering dependency on any of the above. It shipped with ZERO production
+		# callers, so an actor never carried a dialogue row and `DialogueApi.start`
+		# could not be reached from the shipped program at all - the shape BL-0663
+		# closed for `quest`.
+		{"name": &"dialogue", "run": func(a): DialogueApi.attach(a)},
 		{"name": &"npc", "run": func(a): NpcBoot.install(a)},
 		{"name": &"domain", "run": func(_a): DomainBoot.install()},
 		{"name": &"combat", "run": func(a): CombatBoot.install(a)},
