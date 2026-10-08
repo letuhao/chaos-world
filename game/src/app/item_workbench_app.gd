@@ -57,6 +57,12 @@ const ROUTE_SOCKET := &"socket_forge"
 ## callers, so no player could ever be on a quest; this route plus `_quests` is
 ## what makes a quest something a player can SEE and take.
 const ROUTE_QUEST := &"quest"
+## The conversation page (ADR 0862, DEF-0014). Unlike `ROUTE_QUEST` it needs NO seam:
+## `dialogue` is in `rules.UI_MODULES`, and `DialogueApi.choose` moves the actor's OWN
+## dialogue row — never another module's ledger — so the screen calls the facade itself.
+## This arm exists so the route is bound at all: a listed route with no arm mounts an
+## unbound screen.
+const ROUTE_DIALOGUE := &"dialogue"
 const ROUTE_BODY := &"body_cultivation"
 const ROUTE_WORLD_MAP := &"world_map"
 const ROUTE_CRAFTING := &"crafting"
@@ -265,6 +271,10 @@ var _world_clock: WorldClock = null
 
 
 func _ready() -> void:
+	# The app's OWN subtree — the nav bar included — is scene text with no call site of its own,
+	# so it resolves here, before anything reads a label (the ADR 0918 pass, which `src/ui`
+	# scenes get from `_bind_nodes`). An app scene under `game/scenes/` has no such hook.
+	L.localize_tree(self)
 	_stack = get_node_or_null("%ScreenStack") as ScreenStack
 	if _stack == null:
 		push_error("ItemWorkbenchApp: the scene must carry a ScreenStack named %ScreenStack")
@@ -1137,6 +1147,12 @@ func _bind_route_screen(route_id: StringName, screen: Control) -> void:
 			# player can take a quest at all.
 			screen.call("setup", _actor)
 			_quests.bind(screen)
+		ROUTE_DIALOGUE:
+			# No seam to bind: the screen reads `DialogueApi.current` and calls
+			# `start` / `choose` itself, which is why `dialogue` was added to
+			# `rules.UI_MODULES`. The arm is still required — a route in the table with
+			# no arm here would mount a screen nobody ever told which actor to render.
+			screen.call("setup", _actor)
 		ROUTE_CRAFTING:
 			# Recipes are pushed in, never discovered by `ui/`: `ItemsApi` publishes
 			# no catalog, so which recipes are listed is a composition-root call

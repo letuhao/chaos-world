@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/ui/screens/dialogue_screen.gd" id="1"]
+[ext_resource type="PackedScene" path="res://src/ui/panels/action_set.tscn" id="2"]
+
+[node name="DialogueScreen" type="Control"]
+script = ExtResource("1")
+
+[node name="Layout" type="VBoxContainer" parent="."]
+
+[node name="SpeakerLabel" type="Label" parent="Layout"]
+unique_name_in_owner = true
+theme_type_variation = &"ScreenTitle"
+text = ""
+
+[node name="LinesLabel" type="Label" parent="Layout"]
+unique_name_in_owner = true
+autowrap_mode = 2
+text = ""
+
+[node name="Actions" parent="Layout" instance=ExtResource("2")]
+unique_name_in_owner = true

@@ -478,6 +478,21 @@ const ROUTES: Array[Dictionary] = [
 		"key": "a",
 		"root": false,
 	},
+	{
+		# The conversation screen (ADR 0862, DEF-0014). Key `.`: every letter, digit and
+		# `-` is already claimed by a route, and this table's own rule says a route past
+		# the tenth takes any unused PRINTABLE character with a matching action. The
+		# screen is a pure facade consumer — `dialogue` is in `rules.UI_MODULES`, and
+		# `DialogueApi.choose` moves the actor's OWN dialogue row, never another module's
+		# ledger, so no Callable seam is needed here.
+		"id": &"dialogue",
+		"node": "DialogueScreen",
+		"label": "Talk",
+		"hint": "The conversations the world has written, and what they answer.",
+		"scene": "res://src/ui/screens/dialogue_screen.tscn",
+		"key": ".",
+		"root": false,
+	},
 ]
 
 
