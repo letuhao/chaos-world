@@ -158,19 +158,12 @@ func expel(ctx: Dictionary) -> Dictionary:
 				{"expelled": int(priced["expelled"]), "expeller": int(priced["expeller"])},
 			)
 		)
-	if not _authors_expel(ctx.get("authorities", [])):
-		return InstitutionCapability.refuse(R_NOT_AUTHORISED)
 	var member := InstitutionCapability.text(ctx.get("member", ""), "")
 	var target := InstitutionCapability.text(ctx.get("target", ""), "")
-	if target == "":
-		return InstitutionCapability.refuse(R_NO_TARGET)
-	if target == member:
-		return InstitutionCapability.refuse(R_CANNOT_EXPEL_SELF)
-	if not InstitutionCapability.flag(ctx.get("target_member", false)):
-		return InstitutionCapability.refuse(R_TARGET_NOT_A_MEMBER)
+	var fault := _purge_fault(ctx, member, target)
+	if not fault.is_empty():
+		return fault
 	var forced := InstitutionCapability.flag(ctx.get("force", false))
-	if not forced and _authors_expel(ctx.get("target_authorities", [])):
-		return InstitutionCapability.refuse(R_CANNOT_EXPEL_EQUAL_OR_ABOVE)
 	return (
 		InstitutionCapability
 		. ok(
@@ -188,6 +181,28 @@ func expel(ctx: Dictionary) -> Dictionary:
 			}
 		)
 	)
+
+
+## The authority and target faults of one expulsion, or `{}` when the purge may
+## proceed. Split out of [method expel] so the verb keeps its named refusals
+## while staying inside gdlint's `max-returns`: authority held, target named,
+## not self, a member, not a peer (unless forced) — five checks, all about WHO
+## is being cast out and by what leave.
+func _purge_fault(ctx: Dictionary, member: String, target: String) -> Dictionary:
+	if not _authors_expel(ctx.get("authorities", [])):
+		return InstitutionCapability.refuse(R_NOT_AUTHORISED)
+	if target == "":
+		return InstitutionCapability.refuse(R_NO_TARGET)
+	if target == member:
+		return InstitutionCapability.refuse(R_CANNOT_EXPEL_SELF)
+	if not InstitutionCapability.flag(ctx.get("target_member", false)):
+		return InstitutionCapability.refuse(R_TARGET_NOT_A_MEMBER)
+	if (
+		not InstitutionCapability.flag(ctx.get("force", false))
+		and _authors_expel(ctx.get("target_authorities", []))
+	):
+		return InstitutionCapability.refuse(R_CANNOT_EXPEL_EQUAL_OR_ABOVE)
+	return {}
 
 
 ## ## The authored data this capability reads cannot be READ.

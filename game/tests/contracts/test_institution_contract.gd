@@ -398,28 +398,25 @@ func test_clear_drops_every_row_and_answers_how_many() -> void:
 # --- helpers --------------------------------------------------------------------------
 
 
-## The class every STANDARD id is published under. A `match` rather than a
-## lookup table so a missing arm is a `null` the case above names, never a
+## The class every STANDARD id is published under. A table keyed by the id
+## rather than a `match`, because eight arms are eight `return`s and gdlint's
+## `max-returns` is six; a missing id is a `null` the case above names, never a
 ## silently absent row.
 func _class_for(capability_id: StringName) -> InstitutionCapability:
-	match capability_id:
-		&"admit_table":
-			return AdmitTable.new()
-		&"authorised":
-			return Authorised.new()
-		&"dutiable":
-			return Dutiable.new()
-		&"expellable":
-			return Expellable.new()
-		&"schismatic":
-			return Schismatic.new()
-		&"successive":
-			return Successive.new()
-		&"teachable":
-			return Teachable.new()
-		&"territorial":
-			return Territorial.new()
-	return null
+	var classes := {
+		&"admit_table": AdmitTable,
+		&"authorised": Authorised,
+		&"dutiable": Dutiable,
+		&"expellable": Expellable,
+		&"schismatic": Schismatic,
+		&"successive": Successive,
+		&"teachable": Teachable,
+		&"territorial": Territorial,
+	}
+	var script = classes.get(capability_id)
+	if not (script is GDScript):
+		return null
+	return (script as GDScript).new()
 
 
 ## The findings whose text contains `needle`, so a case can assert WHICH rule

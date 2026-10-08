@@ -122,11 +122,25 @@ func requirement(ctx: Dictionary, requirement_id: StringName) -> Dictionary:
 		# DOES NOT EXIST — ADR 0083's FIRST state, and the whole reason a
 		# caller cannot collapse this with the refusal below.
 		return {}
-	var row := authored as Dictionary
 	var values = ctx.get("values", {})
 	if not (values is Dictionary):
 		return InstitutionCapability.refuse(InstitutionCapability.R_MALFORMED, {"field": "values"})
-	var held = InstitutionCapability.entry(values as Dictionary, requirement_id)
+	return _evaluate(
+		authored as Dictionary,
+		requirement_id,
+		InstitutionCapability.entry(values as Dictionary, requirement_id)
+	)
+
+
+## ## One authored row judged against the candidate's value — the second half of
+## ## [method requirement], split out for gdlint's `max-returns`.
+##
+## `{vacant: true}` when `held` is absent — a VISIBLE row in its own tone, never
+## a zero; a success when the row asks nothing (`need` is absent) or the value
+## clears the bar; a named refusal carrying its `unmet` entry otherwise. The
+## three shapes are the whole point of this file, so the branch that produces
+## each one is deliberately one `return` apiece.
+func _evaluate(row: Dictionary, requirement_id: StringName, held: Variant) -> Dictionary:
 	if held == null:
 		var vacant := {
 			"vacant": true,
@@ -142,37 +156,13 @@ func requirement(ctx: Dictionary, requirement_id: StringName) -> Dictionary:
 		return InstitutionCapability.ok(vacant)
 	var need = row.get("need", null)
 	if need == null:
-		# A row with no bar at all is present-and-satisfied: the authored
-		# statement is "this requirement asks nothing of the value", which is
-		# what an invitation-only row compiles to.
-		return (
-			InstitutionCapability
-			. ok(
-				{
-					"has": true,
-					"id": String(requirement_id),
-					"kind": InstitutionCapability.text(row.get("kind", ""), ""),
-					"actual": held,
-				}
-			)
-		)
+		return _satisfied(row, requirement_id, held)
 	if not (need is int or need is float) or not (held is int or held is float):
 		return InstitutionCapability.refuse(
 			InstitutionCapability.R_MALFORMED, {"field": "requirements.%s" % String(requirement_id)}
 		)
 	if float(held) >= float(need):
-		return (
-			InstitutionCapability
-			. ok(
-				{
-					"has": true,
-					"id": String(requirement_id),
-					"kind": InstitutionCapability.text(row.get("kind", ""), ""),
-					"required": float(need),
-					"actual": float(held),
-				}
-			)
-		)
+		return _satisfied(row, requirement_id, held, need)
 	return (
 		InstitutionCapability
 		. refuse(
@@ -190,6 +180,25 @@ func requirement(ctx: Dictionary, requirement_id: StringName) -> Dictionary:
 			}
 		)
 	)
+
+
+## The success shape of a row the candidate satisfied, with or without an
+## authored bar. ONE builder for the two successes so the keys a caller reads
+## cannot differ between a row that asks nothing and one that asks a number —
+## `required` is present only where there was one to report.
+func _satisfied(
+	row: Dictionary, requirement_id: StringName, held: Variant, need: Variant = null
+) -> Dictionary:
+	var out := {
+		"has": true,
+		"id": String(requirement_id),
+		"kind": InstitutionCapability.text(row.get("kind", ""), ""),
+		"actual": held,
+	}
+	if need != null:
+		out["required"] = float(need)
+		out["actual"] = float(held)
+	return InstitutionCapability.ok(out)
 
 
 ## ## Would this candidate be admitted? The whole table as one verdict.

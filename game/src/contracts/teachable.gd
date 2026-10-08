@@ -160,37 +160,22 @@ func fitness(ctx: Dictionary) -> Dictionary:
 ## Refusal order, every refusal above the plan: doctrine named, teacher named,
 ## student named, not self, teacher fits, student sworn, comprehension in band,
 ## periods positive.
+##
+## The checks are grouped into two helpers so each refusal keeps its own path
+## while the verb stays inside gdlint's `max-returns`: [method _pair_fault]
+## answers the naming rules and [method _qualification_fault] the bar the pair
+## must clear. `{}` from either means that group passed.
 func lesson(ctx: Dictionary) -> Dictionary:
-	var doctrine := InstitutionCapability.text(ctx.get("doctrine", ""), "")
-	if doctrine == "":
-		return InstitutionCapability.refuse(R_NO_DOCTRINE)
-	var teacher := InstitutionCapability.text(ctx.get("member", ""), "")
-	if teacher == "":
-		return InstitutionCapability.refuse(InstitutionCapability.R_NO_ACTOR)
-	var student := InstitutionCapability.text(ctx.get("target", ""), "")
-	if student == "":
-		return InstitutionCapability.refuse(R_NO_STUDENT)
-	if student == teacher:
-		return InstitutionCapability.refuse(R_SAME_ACTOR)
+	var pair := _pair_fault(ctx)
+	if not pair.is_empty():
+		return pair
 	var priced := fitness(ctx)
 	if not bool(priced.get("ok", false)):
 		return priced
-	if not bool(priced["teaches"]):
-		return (
-			InstitutionCapability
-			. refuse(
-				R_TEACHER_UNFIT,
-				{"fit": int(priced["fit"]), "floor": int(priced["floor"])},
-			)
-		)
-	if not InstitutionCapability.flag(ctx.get("student_sworn", false)):
-		return InstitutionCapability.refuse(R_STUDENT_NOT_SWORN)
-	var band := _band(ctx)
-	if band.get("refused", "") != "":
-		return InstitutionCapability.refuse(String(band["refused"]))
 	var periods := InstitutionCapability.count(ctx.get("periods", 0), 0)
-	if periods < 1:
-		return InstitutionCapability.refuse(InstitutionCapability.R_NO_PERIODS)
+	var qualified := _qualification_fault(ctx, priced, periods)
+	if not qualified.is_empty():
+		return qualified
 	var rate := InstitutionCapability.count(ctx.get("fit_per_period", 0), 0)
 	return (
 		InstitutionCapability
@@ -198,9 +183,9 @@ func lesson(ctx: Dictionary) -> Dictionary:
 			{
 				"plan":
 				{
-					"teacher": teacher,
-					"student": student,
-					"doctrine": doctrine,
+					"teacher": InstitutionCapability.text(ctx.get("member", ""), ""),
+					"student": InstitutionCapability.text(ctx.get("target", ""), ""),
+					"doctrine": InstitutionCapability.text(ctx.get("doctrine", ""), ""),
 					"periods": periods,
 					"fit_gain": maxi(0, rate) * periods,
 					"cause": "taught",
@@ -291,6 +276,52 @@ func contract_findings() -> Array[String]:
 
 
 # --- Internals ---------------------------------------------------------------
+
+
+## The naming fault in one lesson's context, or `{}` when the pair is named.
+##
+## Split out of [method lesson] so the verb keeps its refusal paths while
+## staying inside gdlint's `max-returns`: doctrine named, teacher named, student
+## named, not self — four checks, and every one of them is about WHO the lesson
+## is between rather than about whether the pair qualifies.
+func _pair_fault(ctx: Dictionary) -> Dictionary:
+	if InstitutionCapability.text(ctx.get("doctrine", ""), "") == "":
+		return InstitutionCapability.refuse(R_NO_DOCTRINE)
+	var teacher := InstitutionCapability.text(ctx.get("member", ""), "")
+	if teacher == "":
+		return InstitutionCapability.refuse(InstitutionCapability.R_NO_ACTOR)
+	var student := InstitutionCapability.text(ctx.get("target", ""), "")
+	if student == "":
+		return InstitutionCapability.refuse(R_NO_STUDENT)
+	if student == teacher:
+		return InstitutionCapability.refuse(R_SAME_ACTOR)
+	return {}
+
+
+## The bar a NAMED pair must clear, or `{}` when the lesson may proceed: teacher
+## fits, student sworn, comprehension in band, periods positive.
+##
+## `priced` is [method fitness]'s own answer, passed in rather than re-derived,
+## because the verb has already paid for it; `periods` is the count the verb
+## read. Order is the documented one — a teacher under the floor is refused
+## before anybody is asked whether the student is sworn.
+func _qualification_fault(ctx: Dictionary, priced: Dictionary, periods: int) -> Dictionary:
+	if not bool(priced["teaches"]):
+		return (
+			InstitutionCapability
+			. refuse(
+				R_TEACHER_UNFIT,
+				{"fit": int(priced["fit"]), "floor": int(priced["floor"])},
+			)
+		)
+	if not InstitutionCapability.flag(ctx.get("student_sworn", false)):
+		return InstitutionCapability.refuse(R_STUDENT_NOT_SWORN)
+	var band := _band(ctx)
+	if band.get("refused", "") != "":
+		return InstitutionCapability.refuse(String(band["refused"]))
+	if periods < 1:
+		return InstitutionCapability.refuse(InstitutionCapability.R_NO_PERIODS)
+	return {}
 
 
 ## `{refused: <named reason>}` or `{floor, ceiling}` — the comprehension band a

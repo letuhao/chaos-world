@@ -246,18 +246,12 @@ func advance(ctx: Dictionary) -> Dictionary:
 	var stood := walk(ctx)
 	if not bool(stood.get("ok", false)):
 		return stood
-	var length := int(stood["length"])
-	if length < 1:
-		return InstitutionCapability.refuse(R_NO_WALK_AUTHORED, {"office": office})
-	if bool(stood["complete"]):
-		return InstitutionCapability.refuse(R_WALK_COMPLETE, {"office": office})
-	var cost := maxi(0, _count(ctx.get("stage_periods", 0)))
-	var held := int(stood["held_periods"])
-	if held < cost:
-		return InstitutionCapability.refuse(
-			R_PERIOD_NOT_ELAPSED, {"held_periods": held, "stage_periods": cost}
-		)
+	var fault := _stage_fault(stood, ctx)
+	if not fault.is_empty():
+		return fault
 	var stage := int(stood["stage"]) + 1
+	var length := int(stood["length"])
+	var cost := maxi(0, _count(ctx.get("stage_periods", 0)))
 	var complete := stage >= length
 	return (
 		InstitutionCapability
@@ -270,13 +264,37 @@ func advance(ctx: Dictionary) -> Dictionary:
 					"stage": stage,
 					"side": String(SEATED if complete else VACANT),
 					"complete": complete,
-					"held_periods": held - cost,
+					"held_periods": int(stood["held_periods"]) - cost,
 					"spent": cost,
 					"cause": "succession_advanced",
 				},
 			}
 		)
 	)
+
+
+## The reasons the NEXT stage may not be taken, or `{}` when it may. Split out
+## of [method advance] so the verb keeps its named refusals while staying inside
+## gdlint's `max-returns`: a walk authored, not complete, the period elapsed —
+## three checks, all about the WALK's state rather than about the caller.
+##
+## `stood` is [method walk]'s own clamped read, passed in rather than re-derived:
+## the verb has already paid for it, and a second read is a second place the
+## clamp could drift.
+func _stage_fault(stood: Dictionary, ctx: Dictionary) -> Dictionary:
+	var office := InstitutionCapability.text(ctx.get("office", ""), "")
+	var length := int(stood["length"])
+	if length < 1:
+		return InstitutionCapability.refuse(R_NO_WALK_AUTHORED, {"office": office})
+	if bool(stood["complete"]):
+		return InstitutionCapability.refuse(R_WALK_COMPLETE, {"office": office})
+	var cost := maxi(0, _count(ctx.get("stage_periods", 0)))
+	var held := int(stood["held_periods"])
+	if held < cost:
+		return InstitutionCapability.refuse(
+			R_PERIOD_NOT_ELAPSED, {"held_periods": held, "stage_periods": cost}
+		)
+	return {}
 
 
 ## ## The authored data this capability reads cannot be READ.

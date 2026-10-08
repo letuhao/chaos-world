@@ -196,12 +196,9 @@ func declare(ctx: Dictionary) -> Dictionary:
 	var priced := settle(ctx)
 	if not bool(priced.get("ok", false)):
 		return priced
-	if int(priced["undivided"]) < 2:
-		return InstitutionCapability.refuse(
-			R_NOTHING_TO_SPLIT, {"undivided": int(priced["undivided"])}
-		)
-	if int(priced["price"]) <= 0:
-		return InstitutionCapability.refuse(R_NO_PRICE)
+	var fault := _declaration_fault(priced)
+	if not fault.is_empty():
+		return fault
 	return (
 		InstitutionCapability
 		. ok(
@@ -223,6 +220,26 @@ func declare(ctx: Dictionary) -> Dictionary:
 			}
 		)
 	)
+
+
+## The two gates on the NUMBER a declaration charges: there is standing to
+## divide, and the declaration is really a price. Split out of [method declare]
+## so the verb keeps its named refusals while staying inside gdlint's
+## `max-returns`.
+##
+## `priced` is [method settle]'s own read, passed in rather than re-derived.
+## `no_price` is deliberately the ONLY gate on the number: a declaration whose
+## price EXCEEDS a half's inheritance still declares — settling at zero with the
+## shortfall published — because a schism nobody can afford is a missing verb,
+## not a rule.
+func _declaration_fault(priced: Dictionary) -> Dictionary:
+	if int(priced["undivided"]) < 2:
+		return InstitutionCapability.refuse(
+			R_NOTHING_TO_SPLIT, {"undivided": int(priced["undivided"])}
+		)
+	if int(priced["price"]) <= 0:
+		return InstitutionCapability.refuse(R_NO_PRICE)
+	return {}
 
 
 ## ## The authored data this capability reads cannot be READ.
