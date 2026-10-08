@@ -78,6 +78,9 @@ const ACUPOINTS_COMPONENT := &"acupoints"
 ## rather than retyped, because a fight that spent a different pool than the engine does
 ## would report health the engine never touched.
 const HEALTH_POOL := &"health"
+## The ACTION resources a costed technique drains and the fight clock regenerates.
+## Health is not one of them: the anchor is a no-heal fight (see [method age]).
+const ACTION_POOLS: Array[StringName] = [&"stamina", &"qi"]
 
 ## The realm a minted opponent is enrolled at when the caller names none. The gate band
 ## of the shipped ladder, which is what every other root-built inhabitant starts on
@@ -339,6 +342,17 @@ func age(delta: float) -> Dictionary:
 	_cooldown = maxf(0.0, _cooldown - delta)
 	_rapid_cooldown = maxf(0.0, _rapid_cooldown - delta)
 	_opponent_cooldown = maxf(0.0, _opponent_cooldown - delta)
+	# The fight's ONE clock also advances the ACTION resources' regeneration, for both
+	# fighters. Nothing else in the tree ticks `ResourcePool.regen` (it is derived and
+	# synced onto the pool but read by no consumer), so without this every costed
+	# technique is a finite magazine: the rapid class's 2.0 stamina per hit starves after
+	# ~60 casts on an R1 pool, and the sixty-second anchor's ~190 hits are unreachable
+	# (DEF-0385's nothing-is-free cost must be payable at its own rate).
+	#
+	# HEALTH is deliberately NOT ticked: the anchor is a no-heal fight (DEF-0378), and a
+	# regenerating health pool would quietly repeal it.
+	_tick_action_regen(_hero, delta)
+	_tick_action_regen(_opponent, delta)
 	# The per-technique cooldowns belong to the items' own ledger, and ADR 0056 keeps
 	# time with the caller — so the fight's one clock advances them beside the loop's
 	# gates rather than the module holding a clock of its own.
@@ -354,6 +368,18 @@ func age(delta: float) -> Dictionary:
 		"rapid_remaining": _rapid_cooldown,
 		"elapsed": _elapsed,
 	}
+
+
+## Advance one fighter's action pools by their own regeneration over `delta` seconds.
+## Bounded by [constant ACTION_POOLS] and by the pool's own `regen`; a negative or
+## non-finite delta is refused by the caller before this runs.
+func _tick_action_regen(actor: Actor, delta: float) -> void:
+	if actor == null or delta <= 0.0:
+		return
+	for pool_id in ACTION_POOLS:
+		var pool := actor.resource(pool_id) as ResourcePool
+		if pool != null and pool.regen > 0.0:
+			pool.change(pool.regen * delta)
 
 
 ## Throw one blow and take the answer, in one exchange. This is the whole verb.

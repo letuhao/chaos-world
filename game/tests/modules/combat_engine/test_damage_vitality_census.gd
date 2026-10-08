@@ -31,8 +31,12 @@ const BAND_HIGH := 2.0
 const HEAVY_INTERVAL := 1.0 / FightLoop.BASE_BLOWS_PER_SECOND
 const RAPID_INTERVAL := FightLoop.MIN_RAPID_INTERVAL
 ## The rate classes' damage ratio: a rapid hit is this share of a heavy blow, which is
-## what puts ~300 rapid hits on the pools ~25 heavy blows spend.
+## what puts ~300 rapid hits on the pools ~25 heavy blows spend. The ART authors it
+## (DEF-0385's family), and this file only reads the shipped def.
 const RAPID_TO_HEAVY := 12.0
+## The shipped rapid art the census equips: the fire one (its own element's affinity and
+## mastery ride the hit, which is what makes a per-element art a build's basic attack).
+const SHIPPED_RAPID_PATH := "res://data/techniques/qi_fire_rapid.tres"
 ## Blows a measured fight may take before this file calls it a slog rather than a
 ## measurement. A CAP that names the failure, never a budget: a fight still running at
 ## the bound is reported as the bound, and the band assertion then fails loudly.
@@ -171,21 +175,14 @@ func _open(realm_id: StringName) -> FightLoop:
 	return loop
 
 
-## The reference rapid art the census measures with: the fallback blow's own scale at
-## the rapid class's 1/12 share of a heavy hit — the share that puts ~300 rapid hits on
-## the pools ~25 heavy blows spend. Its ladder factor is applied by S1, exactly as a
-## shipped art's would be, so this is the real arithmetic and not a bypass.
+## The reference rapid art the census measures with is a SHIPPED one (DEF-0385's
+## ruling): the fire art of the rapid family. Its authored fields ARE the class's
+## contract — share 1.0, the 1/12 magnitude, the 0.2 cooldown, and a small stamina cost
+## the fight clock's action regeneration pays for — so this measures the real art rather
+## than an in-memory twin. A missing file is a content defect the assertion names.
 func _reference_rapid() -> TechniqueDef:
-	var def := TechniqueDef.new()
-	def.id = &"census_reference_rapid"
-	def.display_name = "Reference Rapid Art"
-	def.grade = ItemGrade.MORTAL
-	def.path = PathState.QI
-	def.active = true
-	def.rapid = true
-	def.cooldown = RAPID_INTERVAL
-	def.magnitude = CombatBoot.BARE_SWING_MAGNITUDE * FightLoop.ANCHOR_BLOW_SCALE / RAPID_TO_HEAVY
-	def.element = ElementStats.FIRE
+	var def := load(SHIPPED_RAPID_PATH) as TechniqueDef
+	assert_ne(def, null, "the shipped fire rapid art loads from %s" % SHIPPED_RAPID_PATH)
 	return def
 
 

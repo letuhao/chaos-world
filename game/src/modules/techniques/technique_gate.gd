@@ -87,7 +87,14 @@ static func unmet(actor: Actor, def: TechniqueDef) -> Array[Dictionary]:
 		var required := int(def.min_path_realm[path_id])
 		if required <= 0:
 			continue
-		var actual := path_ordinal(actor, StringName(path_id))
+		# `min_path_realm` is authored as a 1-BASED ladder realm number — the content
+		# contract asserts it sits inside `1..29` — while `path_ordinal` is the 0-based
+		# ladder INDEX the rest of the module reads. The comparison therefore adds the
+		# one: without it every authored floor fired one realm EARLY
+		# (`qi_chaos_edict`'s `28` admitted at dao_ancestor, not transcendent) and no art
+		# for R1 could be authored at all (a floor of `1` refused R1, whose ordinal is
+		# `0`); DEF-0385's first rapid generation measured exactly that as a 0-hit fight.
+		var actual := path_ordinal(actor, StringName(path_id)) + 1
 		if actual >= required:
 			continue
 		(
