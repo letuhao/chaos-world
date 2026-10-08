@@ -26,16 +26,18 @@ extends RefCounted
 ##
 ## ## Reads fold into `summary()`, and that is deliberate
 ##
-## This facade is capped at twelve public methods and eleven are spoken for by the
-## verbs below. Every read a screen or a sibling module needs — which sect, which
-## office, who founded it, who is on the roster and how full each office is, the
-## walk in progress on a seat, how much standing, what is owed, what the allowlist
-## projects, whether a gate opens — is a **key inside `summary()`**, never a
-## thirteenth method. The precedent is `DestinyApi`, which folds its catalog reads
-## into `summary()` for exactly this reason, and the reason it is the right shape
-## rather than a compromise: a panel needs the whole screen in one call anyway, and
-## a sibling module that wants one field can read it out of a documented key instead
-## of being handed a reason to grow the facade.
+## Every read a screen or a sibling module needs — which sect, which office, who
+## founded it, who is on the roster and how full each office is, the walk in
+## progress on a seat, how much standing, what is owed, what the allowlist
+## projects, whether a gate opens — is a **key inside `summary()`**, never a new
+## method. The precedent is `DestinyApi`, which folds its catalog reads into
+## `summary()` for exactly this reason, and the reason it is the right shape
+## rather than a compromise: a panel needs the whole screen in one call anyway,
+## and a sibling module that wants one field can read it out of a documented key
+## instead of being handed a reason to grow the facade. The rule behind it is
+## fan-in (`rules.MAX_FACADE_FAN_IN`), not a method count: a facade many units
+## import is a god object however many verbs it publishes, so a new need goes on
+## the facade only when no `summary()` key and no named component can carry it.
 ##
 ## ## Every refusal is a named game rule
 ##
@@ -112,7 +114,7 @@ const UNKNOWN_POSITION := "unknown_position"
 ## The doctrine id the catalog does not ship. A doctrine nothing defines teaches
 ## nothing, so a `found` naming one is naming content this build does not have.
 const UNKNOWN_DOCTRINE := SectFounding.R_UNKNOWN_DOCTRINE
-## The standing bar was not met. **A route, not a wall** — see `_below_floor`.
+## The standing bar was not met. **A route, not a wall** — see `SectPayloads.below_floor`.
 const STANDING_BELOW_FLOOR := SectDef.STANDING_BELOW_FLOOR
 ## The office's authored cap is reached. An overflow is a **refused admit**,
 ## never a silent trim.
@@ -224,10 +226,10 @@ static func attach(actor: Actor) -> void:
 static func join(actor: Actor, sect_id: StringName) -> Dictionary:
 	var read := _claim(actor)
 	if SectState.is_affiliated(read):
-		return _refuse(ALREADY_SWORN, read)
+		return SectPayloads.refuse(ALREADY_SWORN, read)
 	var def := SectCatalog.instance().sect_definition(sect_id)
 	if def == null:
-		return _refuse(UNKNOWN_SECT, read)
+		return SectPayloads.refuse(UNKNOWN_SECT, read)
 	var claim := def.new_claim()
 	var ledger := read.duplicate(true)
 	ledger["institution"] = String(def.id)
@@ -237,7 +239,7 @@ static func join(actor: Actor, sect_id: StringName) -> Dictionary:
 	ledger["obligation"] = def.member_obligation_lines()
 	_regard(actor, def.id, CAUSE_SWORN)
 	_persist(actor, ledger, "join")
-	return _ok(ledger)
+	return SectPayloads.ok(ledger)
 
 
 ## ## Founding: the sect comes into being, and the price is authored
@@ -264,26 +266,34 @@ static func found(
 	actor: Actor, sect_id: StringName, doctrine_id: StringName, founder_id: String
 ) -> Dictionary:
 	if actor == null:
-		return _refuse(NO_ACTOR, SectState.empty())
+		return SectPayloads.refuse(NO_ACTOR, SectState.empty())
 	var catalog := SectCatalog.instance()
 	var def := catalog.sect_definition(sect_id)
 	if def == null:
-		return _refuse(UNKNOWN_SECT, _claim(actor))
+		return SectPayloads.refuse(UNKNOWN_SECT, _claim(actor))
 	var doctrine := SectDoctrineCatalog.instance().doctrine(doctrine_id)
 	if doctrine == null:
-		return _refuse(UNKNOWN_DOCTRINE, _claim(actor))
+		return SectPayloads.refuse(UNKNOWN_DOCTRINE, _claim(actor))
 	var read := _claim(actor)
 	if SectFounding.founded(read):
-		return _refuse(ALREADY_FOUNDED, read)
+		return SectPayloads.refuse(ALREADY_FOUNDED, read)
 	var top := def.top_position()
 	if top == null:
-		return _refuse(NO_TOP_POSITION, read)
+		return SectPayloads.refuse(NO_TOP_POSITION, read)
 	var price := SectFounding.cost(def)
 	var report := InstitutionFounding.found(
 		SectFounding.registry(), actor, SectFounding.profile(def, doctrine), founder_id, read
 	)
 	if not bool(report["ok"]):
-		return _found_refused(String(report["reason"]), read, def, price)
+		# The funnel for a refusal the GENERIC writer returned: the reason needs
+		# no mapping, but the PAYLOAD does, because the shortfall's two numbers
+		# and the authored coin are this tier's to publish. Any other reason
+		# passes through the ordinary refusal shape, so a future generic refusal
+		# cannot be swallowed. `force` is absent on purpose: BL-0174 prices an
+		# institution's existence and an override would make the price decorative.
+		if String(report["reason"]) == FOUNDING_COST_UNMET:
+			return SectPayloads.found_unmet(read, def, price)
+		return SectPayloads.refuse(String(report["reason"]), read)
 	# ## The generic writer returns a CLAIM; this module owns the ENVELOPE
 	#
 	# `write` builds the eleven keys a claim is; `SectState.normalize` builds the sixteen
@@ -313,7 +323,7 @@ static func found(
 	# "yes for everybody the house promoted, no for the one who made it" is a gate that
 	# reports politics rather than fact.
 	SectFacts.record_post_held(actor)
-	return _ok(ledger)
+	return SectPayloads.ok(ledger)
 
 
 ## Leave the sect `actor` is sworn to. Returns `{ok: bool, reason: String}`.
@@ -339,7 +349,7 @@ static func found(
 static func leave(actor: Actor) -> Dictionary:
 	var read := _claim(actor)
 	if not SectState.is_affiliated(read):
-		return _refuse(NOT_A_MEMBER, read)
+		return SectPayloads.refuse(NOT_A_MEMBER, read)
 	var ledger := read.duplicate(true)
 	var sect_id := SectState.institution(ledger)
 	_record(ledger, "leave", sect_id, "")
@@ -349,7 +359,7 @@ static func leave(actor: Actor) -> Dictionary:
 	var cleared := SectState.normalize({})
 	cleared["history"] = ledger["history"]
 	_persist(actor, cleared, "leave")
-	return _ok(cleared)
+	return SectPayloads.ok(cleared)
 
 
 ## Move `actor`'s standing in their sect by `amount`. Returns
@@ -363,7 +373,7 @@ static func leave(actor: Actor) -> Dictionary:
 static func move_standing(actor: Actor, amount: int) -> Dictionary:
 	var read := _claim(actor)
 	if not SectState.is_affiliated(read):
-		return _refuse(NOT_A_MEMBER, read)
+		return SectPayloads.refuse(NOT_A_MEMBER, read)
 	if amount == 0:
 		return {"ok": false, "reason": NO_CHANGE, "applied": 0, "ledger": read}
 	var ledger := read.duplicate(true)
@@ -422,16 +432,16 @@ static func promote(
 ) -> Dictionary:
 	var read := _claim(actor)
 	if not SectState.is_affiliated(read):
-		return _refuse(NOT_A_MEMBER, read)
+		return SectPayloads.refuse(NOT_A_MEMBER, read)
 	var sect_id := SectState.institution(read)
 	var def := SectCatalog.instance().sect_definition(sect_id)
 	if def == null:
-		return _refuse(UNKNOWN_SECT, read)
+		return SectPayloads.refuse(UNKNOWN_SECT, read)
 	var office := def.position(position_id)
 	if office == null:
-		return _refuse(UNKNOWN_POSITION, read)
+		return SectPayloads.refuse(UNKNOWN_POSITION, read)
 	if SectState.standing(read) < office.standing_floor and not force:
-		return _below_floor(read, office)
+		return SectPayloads.below_floor(read, office)
 	# `force` is the override that opens the route, and it opens BOTH halves of it.
 	# A council that will overrule a floor is overruling the room as well: the two
 	# refusals are one decision, and honouring one while the other still refuses
@@ -440,7 +450,7 @@ static func promote(
 	# admit is reading a true sentence.
 	var seat := def.seat_state(office.id, held)
 	if not bool(seat["has_room"]) and not force:
-		return _refuse(String(seat["reason"]), read)
+		return SectPayloads.refuse(String(seat["reason"]), read)
 	var ledger := read.duplicate(true)
 	# Whether this call SEATS somebody or tells the holder of a seat they still hold it.
 	# Read before the write, and it is the whole of what `sect_post_held` counts: an
@@ -465,7 +475,7 @@ static func promote(
 	# on a refused promotion, so a refusal records nothing at all.
 	if seated:
 		SectFacts.record_post_held(actor)
-	return _ok(ledger)
+	return SectPayloads.ok(ledger)
 
 
 ## ## Succession: WALKED, never rolled (ADR 0084, ADR 0058)
@@ -510,15 +520,15 @@ static func advance_succession(
 ) -> Dictionary:
 	var read := _claim(actor)
 	if not SectState.is_affiliated(read):
-		return _refuse(NOT_A_MEMBER, read)
+		return SectPayloads.refuse(NOT_A_MEMBER, read)
 	var def := SectCatalog.instance().sect_definition(SectState.institution(read))
 	if def == null:
-		return _refuse(UNKNOWN_SECT, read)
+		return SectPayloads.refuse(UNKNOWN_SECT, read)
 	var office := def.position(position_id)
 	if office == null:
-		return _refuse(UNKNOWN_POSITION, read)
+		return SectPayloads.refuse(UNKNOWN_POSITION, read)
 	if not office.is_walkable_method():
-		return _refuse(WALK_COMPLETE, read)
+		return SectPayloads.refuse(WALK_COMPLETE, read)
 	var ledger := read.duplicate(true)
 	match String(action):
 		"open":
@@ -529,7 +539,7 @@ static func advance_succession(
 		_:
 			var row := SectSuccession.walk(ledger, office.id)
 			if row.is_empty():
-				return _refuse(NO_SUCH_WALK, read)
+				return SectPayloads.refuse(NO_SUCH_WALK, read)
 			# A walk is finished when the ledger says so OR when it has already walked
 			# the office's authored length. The second half is the honest reading of a
 			# hand-edited save: a row claiming stage eight of a three-stage walk is not
@@ -540,7 +550,7 @@ static func advance_succession(
 				or String(row["side"]) != SectSuccession.VACANT
 				or SectSuccession.walked_of(ledger, office) >= office.walk_length()
 			):
-				return _refuse(WALK_COMPLETE, read)
+				return SectPayloads.refuse(WALK_COMPLETE, read)
 			# The vacancy clock is the LEDGER's, never this argument's. `periods`
 			# advances that clock on `open` and `wait` and is meaningless on `step`:
 			# a step is the thing that WAITS for the clock, so letting the argument
@@ -550,11 +560,11 @@ static func advance_succession(
 			# the seat has actually sat vacant for, and refusing writes nothing.
 			var held := int(row.get("held_periods", 0))
 			if not SectSuccession.may_step(office, held):
-				return _period_not_elapsed(read, office, held)
+				return SectPayloads.period_not_elapsed(read, office, held)
 			SectSuccession.step(ledger, office)
 	_record(ledger, "succession_%s" % String(action), office.id, "")
 	_persist(actor, ledger, "succession")
-	return _ok(ledger)
+	return SectPayloads.ok(ledger)
 
 
 ## ## Teaching: the verb with a real cost on the teacher (BL-0187, BL-0188)
@@ -592,25 +602,25 @@ static func teach(
 	var teacher_id := "" if teacher == null else String(teacher.id)
 	var student_id := "" if student == null else String(student.id)
 	if teacher_id == "" or student_id == "" or teacher_id == student_id:
-		return _refuse(SAME_ACTOR if teacher_id != "" else NO_ACTOR, t_ledger)
+		return SectPayloads.refuse(SAME_ACTOR if teacher_id != "" else NO_ACTOR, t_ledger)
 	var sect_id := SectState.institution(t_ledger)
 	var def := SectCatalog.instance().sect_definition(sect_id)
 	if def == null:
-		return _refuse(UNKNOWN_SECT, t_ledger)
+		return SectPayloads.refuse(UNKNOWN_SECT, t_ledger)
 	var doctrine := SectDoctrineCatalog.instance().doctrine(doctrine_id)
 	if doctrine == null:
-		return _refuse(UNKNOWN_DOCTRINE, t_ledger)
+		return SectPayloads.refuse(UNKNOWN_DOCTRINE, t_ledger)
 	if not SectState.is_affiliated(s_ledger):
-		return _refuse(STUDENT_NOT_SWORN, t_ledger)
+		return SectPayloads.refuse(STUDENT_NOT_SWORN, t_ledger)
 	if not SectTeaching.teacher_fits(t_ledger, doctrine):
-		return _refuse(TEACHER_UNFIT, t_ledger)
+		return SectPayloads.refuse(TEACHER_UNFIT, t_ledger)
 	if not SectTeaching.student_admitted(def, s_ledger):
-		return _refuse(STANDING_BELOW_FLOOR, t_ledger)
+		return SectPayloads.refuse(STANDING_BELOW_FLOOR, t_ledger)
 	# BASE allocation only. `derived` would let this module's own standing percent
 	# fund the gate that decides whether this module may teach (ADR 0052/0054).
 	var comprehension := student.stats.get_base(Stat.COMPREHENSION)
 	if not doctrine.admits_comprehension(comprehension):
-		return _refuse(
+		return SectPayloads.refuse(
 			(
 				COMPREHENSION_BELOW_FLOOR
 				if comprehension < doctrine.comprehension_band().x
@@ -627,7 +637,7 @@ static func teach(
 	# different numbers, which is the whole of BL-0188 being wrong.
 	var cost := tax * float(maxi(1, periods))
 	if not SectTeaching.can_pay(teacher, cost):
-		return _refuse(NOTHING_TO_TEACH, t_ledger)
+		return SectPayloads.refuse(NOTHING_TO_TEACH, t_ledger)
 	var written := s_ledger.duplicate(true)
 	# `fit_per_period`, the RATE — `SectTeaching.apply_fit` multiplies it by `periods`
 	# itself. Handing it `SectTeaching.gain(...)`, which has already multiplied by
@@ -636,7 +646,7 @@ static func teach(
 	# student's gain were two different numbers.
 	var gained := SectTeaching.apply_fit(written, doctrine.id, doctrine.fit_per_period, periods)
 	if gained <= 0:
-		return _refuse(NOTHING_TO_TEACH, t_ledger)
+		return SectPayloads.refuse(NOTHING_TO_TEACH, t_ledger)
 	SectTeaching.charge(teacher, cost)
 	# The trail is written on the STUDENT, because the student's ledger is the one
 	# that changed: standing, fit, position and the founder's lines are all the
@@ -645,7 +655,7 @@ static func teach(
 	_record(written, "taught", doctrine.id, "%d periods" % periods)
 	_persist(teacher, t_ledger, "teach")
 	_persist(student, written, "taught")
-	return _taught(written, gained, tax)
+	return SectPayloads.taught(written, gained, tax)
 
 
 ## ## Schism: a sect can split, and the split costs BOTH halves (BL-0197)
@@ -692,28 +702,28 @@ static func declare_schism(
 	actor: Actor, seceding_id: StringName, assigned: Array[StringName] = []
 ) -> Dictionary:
 	if actor == null:
-		return _refuse(NO_ACTOR_SPLIT, SectState.empty())
+		return SectPayloads.refuse(NO_ACTOR_SPLIT, SectState.empty())
 	var read := _claim(actor)
 	if not SectState.is_affiliated(read):
-		return _refuse(NOT_A_MEMBER, read)
+		return SectPayloads.refuse(NOT_A_MEMBER, read)
 	var parent_id := SectState.institution(read)
 	var catalog := SectCatalog.instance()
 	var def := catalog.sect_definition(parent_id)
 	if def == null:
-		return _refuse(UNKNOWN_SECT, read)
+		return SectPayloads.refuse(UNKNOWN_SECT, read)
 	var half_id := String(seceding_id)
 	if half_id == "" or catalog.sect_definition(seceding_id) == null:
-		return _schism_refuse(UNKNOWN_HALF, read, half_id)
+		return SectPayloads.schism_refused(UNKNOWN_HALF, read, half_id)
 	if half_id == String(parent_id):
-		return _schism_refuse(SELF_SECESSION, read, half_id)
+		return SectPayloads.schism_refused(SELF_SECESSION, read, half_id)
 	if not SectState.schism(read, seceding_id).is_empty():
-		return _schism_refuse(ALREADY_SECEDED, read, half_id)
+		return SectPayloads.schism_refused(ALREADY_SECEDED, read, half_id)
 	# One point of undivided standing splits into two halves of nothing, and both
 	# would then be charged for the privilege. Refuse rather than happen: a split
 	# that leaves both halves worse off than not splitting is not a political cost,
 	# it is a punishment with no alternative stated.
 	if SectState.standing(read) < 2:
-		return _schism_refuse(NOTHING_TO_SPLIT, read, half_id)
+		return SectPayloads.schism_refused(NOTHING_TO_SPLIT, read, half_id)
 	var unassigned := SectSchism.unassigned(def, assigned)
 	var price := SectSchism.price(catalog.tuning(), unassigned)
 	var bill := SectSchism.settle(SectState.standing(read), price)
@@ -739,7 +749,7 @@ static func declare_schism(
 	# the parent did not divide itself.
 	_regard(actor, seceding_id, CAUSE_FOUNDED)
 	_persist(actor, ledger, "schism", applied)
-	return _schism(ledger, parent_id, half_id, bill, unassigned, applied)
+	return SectPayloads.schism(ledger, parent_id, half_id, bill, unassigned, applied)
 
 
 ## Whether gated content may open for `actor`.
@@ -825,52 +835,34 @@ static func _regard(actor: Actor, institution_id: StringName, cause_id: StringNa
 
 ## Cast a member out, at the expelling institution's expense (ADR 0084).
 ##
-## Underscore-prefixed, so it does **not** count against the twelve-method cap —
-## which is why it lives here rather than on the facade. It is still a real verb:
+## Underscore-prefixed, so it is not part of the published surface — which is why
+## it lives here rather than on the facade. It is still a real verb:
 ## it returns the `{ok, reason}` shape, a refused expulsion writes nothing, and the
 ## cause is the harsher `CAUSE_EXPELLED`, so "you were cast out" never reads as
 ## "you left". `SectGate`'s `holds_authority` is what asks whether the caller may.
 static func _expel(actor: Actor, position_id: StringName, force: bool = false) -> Dictionary:
 	var read := _claim(actor)
 	if not SectState.is_affiliated(read):
-		return _refuse(NOT_A_MEMBER, read)
+		return SectPayloads.refuse(NOT_A_MEMBER, read)
 	var sect_id := SectState.institution(read)
 	var def := SectCatalog.instance().sect_definition(sect_id)
 	if def == null:
-		return _refuse(UNKNOWN_SECT, read)
+		return SectPayloads.refuse(UNKNOWN_SECT, read)
 	var office := def.position(position_id)
 	if office == null:
-		return _refuse(UNKNOWN_POSITION, read)
+		return SectPayloads.refuse(UNKNOWN_POSITION, read)
 	# The seat being vacated is the whole of the difference from `leave`: an expulsion
 	# with no office named would be a resignation wearing a harsher word, and the
 	# roster a reader consults afterwards would say the member resigned.
 	if SectState.position(read) != office.id and not force:
-		return _refuse(NOT_A_MEMBER, read)
+		return SectPayloads.refuse(NOT_A_MEMBER, read)
 	var ledger := read.duplicate(true)
 	var cleared := SectState.normalize({})
 	_record(ledger, "expelled", office.id, "")
 	cleared["history"] = ledger["history"]
 	_regard(actor, sect_id, CAUSE_EXPELLED)
 	_persist(actor, cleared, "expelled")
-	return _ok(cleared)
-
-
-## ## A refused verb writes nothing
-##
-## Every mutating verb hands back the ledger it found, so a caller can see that a
-## refusal left `actor.module_data` byte-for-byte as it was (ADR 0044) and can
-## still render the claim without a second read. The shapes themselves live in
-## `SectPayloads`, which is where the module's whole response contract is written
-## down once.
-static func _refuse(reason: String, ledger: Dictionary) -> Dictionary:
-	return SectPayloads.refuse(reason, ledger)
-
-
-## The success shape. `applied` is present on every verb so a caller can read one
-## key without knowing which verb it called — the standing delta is the only one
-## that is ever non-zero, and it is non-zero exactly when standing moved.
-static func _ok(ledger: Dictionary) -> Dictionary:
-	return SectPayloads.ok(ledger)
+	return SectPayloads.ok(cleared)
 
 
 ## Read the ledger for a verb that may write. Normalized against the catalog, so
@@ -942,59 +934,3 @@ static func _persist(
 				bus.standing_changed.emit(
 					String(actor.id), sect_id, standing_delta, SectState.standing(written)
 				)
-
-
-static func _below_floor(ledger: Dictionary, office: SectPositionDef) -> Dictionary:
-	return SectPayloads.below_floor(ledger, office)
-
-
-## `founding_cost_unmet`, with both numbers so a panel can show the shortfall rather
-## than only the refusal. `force` is absent on purpose: there is no override for
-## founding. BL-0174 prices an institution's existence and an override would make
-## the price decorative. Also the funnel for a refusal the GENERIC writer returned: the
-## reason needs no mapping, but the PAYLOAD does, because the shortfall's two numbers
-## and the authored coin are this tier's to publish. Any other reason passes through the
-## ordinary refusal shape, so a future generic refusal cannot be swallowed.
-static func _found_refused(
-	reason: String, ledger: Dictionary, def: SectDef, price: Dictionary
-) -> Dictionary:
-	if reason == FOUNDING_COST_UNMET:
-		return SectPayloads.found_unmet(ledger, def, price)
-	return _refuse(reason, ledger)
-
-
-## A refused `declare_schism`, naming the half it was refused for. The half id is
-## published so a panel can say WHICH split could not happen, rather than only that
-## one of them did not.
-static func _schism_refuse(reason: String, ledger: Dictionary, half_id: String) -> Dictionary:
-	return SectPayloads.schism_refused(reason, ledger, half_id)
-
-
-## The schism success shape, and every number that decides it. See
-## `SectPayloads.schism` — the shape and the reason for publishing each field.
-static func _schism(
-	ledger: Dictionary,
-	parent_id: String,
-	half_id: String,
-	bill: Dictionary,
-	unassigned: int,
-	applied: int
-) -> Dictionary:
-	return SectPayloads.schism(ledger, parent_id, half_id, bill, unassigned, applied)
-
-
-## `period_not_elapsed`, with both counts. See `SectPayloads.period_not_elapsed`.
-static func _period_not_elapsed(
-	ledger: Dictionary, office: SectPositionDef, held: int
-) -> Dictionary:
-	return SectPayloads.period_not_elapsed(ledger, office, held)
-
-
-## The teaching success shape, where `standing_delta` is always 0 and published so a
-## consumer can check that for itself. See `SectPayloads.taught`.
-static func _taught(ledger: Dictionary, gained: int, tax: float) -> Dictionary:
-	return SectPayloads.taught(ledger, gained, tax)
-
-
-static func _strings(values: Array[StringName]) -> Array:
-	return SectReadModel.strings(values)

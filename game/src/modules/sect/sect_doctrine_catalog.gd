@@ -53,8 +53,21 @@ static func instance() -> SectDoctrineCatalog:
 ## declared_overrides, id_field}`. Later rows overlay earlier ones; an id
 ## collision needs a declared override on the LATER root or the merge fails
 ## loudly (ADR 0240).
+##
+## The cached tree is DROPPED here, because a changed stack invalidates it — the
+## same seam `SectCatalog` and `InstitutionDefCatalog` invalidate, for the same
+## reason: a stale tree reads as working content that is not there.
 static func set_overlay_roots(stack: Array) -> void:
 	_overlay_stack = stack
+	shared = null
+
+
+## Forget every loaded def AND every overlay root. Static, because both are process
+## state: the stack is a static and the tree hangs off the shared instance, so a
+## non-static `clear` could reach one and not the other.
+static func clear() -> void:
+	_overlay_stack = []
+	shared = null
 
 
 ## The merge stack: the base root as a base-owned row, then the overlay rows
@@ -113,7 +126,3 @@ func _ensure_loaded() -> void:
 		var def := load(String(entry["path"])) as SectDoctrineDef
 		if def != null and def.id != &"":
 			_doctrines[String(def.id)] = def
-
-
-func _scan(root: String) -> Array[String]:
-	return ContentScan.files_under(root)

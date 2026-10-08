@@ -213,6 +213,44 @@ func test_a_payload_naming_a_sect_this_build_does_not_ship_is_refused_rather_tha
 	assert_eq(int(state["applied_standing"]), 0, "and so is the applied standing")
 
 
+func test_an_old_payload_missing_newer_keys_folds_in_on_load() -> void:
+	# A save written before `schisms`, `succession` and `treasury` existed: the
+	# claim fields only, plus a legacy `..._hall` treasury line from before the
+	# generic founding writer renamed the opening line to `..._all`.
+	var restored := _hero(&"old_save")
+	(
+		restored
+		. set_module_data(
+			MODULE_KEY,
+			{
+				"version": 1,
+				"institution": "t_house",
+				"position": "t_steward",
+				"standing": 40,
+				"standing_cap": 100,
+				"treasury": {"treasury_t_house_hall": 3},
+			}
+		)
+	)
+	SectApi.attach(restored)
+	var state := SectApi.state(restored)
+	assert_eq(String(state["institution"]), "t_house", "the claim folds in")
+	assert_eq(String(state["position"]), "t_steward", "including the office")
+	assert_eq(int(state["standing"]), 40, "including the earned standing")
+	assert_eq((state["schisms"] as Dictionary).is_empty(), true, "no invented splits")
+	assert_eq((state["succession"] as Dictionary).is_empty(), true, "no invented walks")
+	assert_eq(
+		int((state["treasury"] as Dictionary).get("treasury_t_house_hall", 0)),
+		3,
+		"the legacy line is kept by the prefix filter"
+	)
+	# The folded ledger then round-trips byte-identical through a JSON hop: fold
+	# once on load, carry verbatim afterwards.
+	var again := Actor.from_dict(JSON.parse_string(JSON.stringify(restored.to_dict())))
+	SectApi.attach(again)
+	assert_eq(SectApi.state(again), state, "fold once, carry verbatim")
+
+
 func test_an_unreadable_ledger_is_diagnosed_as_empty_rather_than_partially_applied() -> void:
 	# Rule, in two halves, because the difference between them is the whole point.
 	#

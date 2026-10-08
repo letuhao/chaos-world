@@ -95,14 +95,18 @@ const STAGE_LIMIT := 8
 const SCHISM_LIMIT := 32
 
 
-## The stat source id one sect contributes under.
+## The stat source id one sect contributes under. A delegate: the construction
+## is shared and the namespace is not — `InstitutionLedger.source_tagged` takes
+## the prefix as an argument precisely so a `sect:` modifier can never satisfy a
+## clan strip half, which is the bug the prefix exists to prevent.
 static func source_for(sect_id: StringName) -> StringName:
-	return StringName("%s%s" % [SOURCE_PREFIX, sect_id])
+	return InstitutionLedger.source_tagged(SOURCE_PREFIX, sect_id)
 
 
-## True when a stat modifier source belongs to this module.
+## True when a stat modifier source belongs to this module. A delegate for the
+## same reason: the shape is shared, the namespace is the caller's.
 static func is_own_source(source: StringName) -> bool:
-	return String(source).begins_with(SOURCE_PREFIX)
+	return InstitutionLedger.owns_source(SOURCE_PREFIX, source)
 
 
 ## The `Actor.traits` mirror id one sect membership is reflected under.
@@ -113,12 +117,14 @@ static func is_own_source(source: StringName) -> bool:
 ## be satisfied by an item, and an institution must never be bought past (ADR
 ## 0076's rule, applied here).
 static func trait_for(sect_id: StringName) -> StringName:
-	return StringName("%s%s" % [SOURCE_PREFIX, sect_id])
+	return InstitutionLedger.source_tagged(SOURCE_PREFIX, sect_id)
 
 
-## True when a trait mirror id belongs to this module.
+## True when a trait mirror id belongs to this module. A delegate: the trait
+## mirror and the stat source share one namespace (`sect:<sect_id>`), so one
+## shared read answers for both carriers.
 static func is_own_trait(trait_id: StringName) -> bool:
-	return String(trait_id).begins_with(SOURCE_PREFIX)
+	return InstitutionLedger.owns_source(SOURCE_PREFIX, trait_id)
 
 
 ## The office the claim names, or `&""` for a member who holds none. **A member
@@ -451,6 +457,14 @@ static func _text(value: Variant, fallback: String) -> String:
 	return InstitutionLedger.text(value, fallback)
 
 
+## Whether `value` is genuinely text. A delegate, paired with `_text` which
+## converts: `normalize` must tell a corrupt field from an absent one, and those
+## are not repaired the same way. The same ASK/CONVERT pair `ClanState` holds,
+## read from one place rather than written twice.
+static func _is_text(value: Variant) -> bool:
+	return InstitutionLedger.is_text(value)
+
+
 ## Whether the fields that ARE the claim arrive as the types they must be.
 ##
 ## An absent field is readable — a missing `position` is a member who holds no
@@ -468,7 +482,7 @@ static func _text(value: Variant, fallback: String) -> String:
 static func _claim_fields_readable(data: Dictionary) -> bool:
 	for key in ["institution", "position", "doctrine", FOUNDER_KEY]:
 		var value = data.get(key, null)
-		if value != null and not (value is String or value is StringName):
+		if value != null and not _is_text(value):
 			return false
 	for key in ["standing", "standing_cap", "applied_standing"]:
 		var value = data.get(key, null)

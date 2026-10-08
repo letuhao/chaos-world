@@ -6,11 +6,13 @@ extends RefCounted
 ##
 ## ## Why this is a component and not a `SectApi` method
 ##
-## `SectApi` publishes twelve verbs, `rules.MAX_FACADE_PUBLIC_METHODS` is twelve, and
-## `test_sect_no_power.gd` pins the exact list. ADR 0084's own answer to "this facade
-## has no room" is `SectAct`: the decision lives beside `SectSuccession` and
-## `SectTeaching`, reached by name rather than by a thirteenth method. So does this,
-## and `SectDuty.serve(actor, periods)` is the whole of the surface.
+## A facade many units import is a god object however many verbs it publishes
+## (`rules.MAX_FACADE_FAN_IN`), so the surface stays the published join-and-read
+## verbs and `test_sect_no_power.gd` pins the exact list. ADR 0084's own answer
+## to "this facade has no room" is `SectAct`: the decision lives beside
+## `SectSuccession` and `SectTeaching`, reached by name rather than by a new
+## method. So does this, and `SectDuty.serve(actor, periods)` is the whole of
+## the surface.
 ##
 ## ## The live balance bug this closes
 ##

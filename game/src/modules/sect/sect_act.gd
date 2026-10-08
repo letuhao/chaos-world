@@ -6,13 +6,13 @@ extends RefCounted
 ##
 ## ## Why this is an internal script and not a `SectApi` method
 ##
-## ADR 0084's twelve-method cap is spent: `SectApi` publishes exactly twelve verbs
-## and the twelfth is `declare_schism`. Growing a facade past its cap is the ISP
-## failure `tools/arch/rules.py` fails the build for, and the repo's own answer to
-## "this facade has no room" is to **fold the read into `summary()`** rather than
-## widen the surface. So the sect's decision lives here — beside `SectSuccession` and
-## `SectTeaching`, which are the same shape: a component holding the rule, reached
-## only through the facade or through the resolver `app/` is handed.
+## The facade's published surface is the join-and-read verbs `test_sect_no_power.gd`
+## pins, and the rule behind it is fan-in (`rules.MAX_FACADE_FAN_IN`), not a method
+## count. The repo's own answer to "this facade has no room" is to **fold the read
+## into `summary()`** rather than widen the surface. So the sect's decision lives
+## here — beside `SectSuccession` and `SectTeaching`, which are the same shape: a
+## component holding the rule, reached only through the facade or through the
+## resolver `app/` is handed.
 ##
 ## ## Propose, never resolve
 ##

@@ -28,8 +28,7 @@ const FORBIDDEN_VERBS := [
 
 ## The verbs that ARE the facade. Asserted as a whole, not just by the absence of
 ## the forbidden ones, so a verb added later fails here rather than slipping past the
-## word list — and so the cap of twelve is visible in a test rather than only in a
-## Python constant.
+## word list — and so the surface is visible in a test rather than only in code.
 const PUBLISHED := [
 	"advance_succession",
 	"attach",
@@ -129,7 +128,6 @@ func test_the_facade_exposes_no_power_granting_verb_at_all() -> void:
 	# And the surface is exactly the join-and-read one, so an unlisted verb added
 	# later still fails rather than slipping past the word list.
 	assert_eq(published, PUBLISHED, "the facade is the join-and-read surface ADR 0084 describes")
-	assert_eq(published.size() <= 12, true, "and it is inside the twelve-method cap")
 
 
 ## The complement of the case above: nothing in the facade's own body reaches for a
@@ -375,9 +373,7 @@ func test_the_projection_is_derived_so_reapplying_it_is_free_of_consequence() ->
 ##
 ## Underscore-prefixed names are dropped here exactly as `tools/arch/enforce.py`
 ## drops them: `FUNC_RE` then `if not name.startswith("_")` (see the facade-counting
-## block in `_violation`). The gate and this helper therefore count the same verbs,
-## so `published.size() <= 12` here is the cap `tools arch` actually enforces rather
-## than a private method being counted against the facade that never shipped it.
+## block in `_violation`). The gate and this helper therefore count the same verbs.
 func _published_verbs() -> Array[String]:
 	var out: Array[String] = []
 	var script: GDScript = load("res://src/modules/sect/api.gd")

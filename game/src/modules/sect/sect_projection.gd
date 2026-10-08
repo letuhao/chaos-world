@@ -22,9 +22,8 @@ extends RefCounted
 
 ## The module's signal bus. It lives on the projection rather than the facade
 ## because a GDScript signal belongs to an instance and a facade is a namespace of
-## statics: `SectApi` is at its twelve-method cap and a thirteenth for a bus would
-## breach it for no gain. Anything that needs to observe a claim connects here,
-## and nothing outside the module emits through it.
+## statics. Anything that needs to observe a claim connects here, and nothing
+## outside the module emits through it.
 static var bus: SectEvents = null
 
 
@@ -117,6 +116,20 @@ static func contribution(actor: Actor, stat_id: StringName) -> float:
 ## ever inferred from the other. That gap is the whole politics layer; collapsing
 ## it into one number would build a spreadsheet.
 ##
+## ## The modifier loop is `InstitutionProjection.grant`, never a second copy
+##
+## The grant is a pure function of (allowlist, standing, source): the same bounded
+## PERCENT on the same authored ids under the same tag. A per-tier loop would be a
+## second place that formula could drift (ADR 0066), so this builds the call and
+## keeps only the envelope — the `applied_standing` / `granted_percent` record
+## `apply` rewrites every pass, which is this tier's own because the ledger keys
+## are.
+##
+## A refused grant (an allowlist id no sheet can name) grants nothing and keeps the
+## empty record, exactly as the office-missing path does: an authored fault is not
+## a member's recognition, and a modifier that provably moves nothing must not be
+## recorded as if it did.
+##
 ## Returns the ledger **as this pass recorded it**, and `apply` is the one thing
 ## that writes it. A half-rebuilt projection whose record only reached the caller
 ## would be indistinguishable from a member who had been granted nothing — which is
@@ -128,21 +141,14 @@ static func _grant(actor: Actor, sect_id: StringName, ledger: Dictionary) -> Dic
 	var office := def.position(SectState.position(next)) if def != null else null
 	if office == null:
 		return next
-	var percent := InstitutionClaim.standing_percent(SectState.standing(next))
 	var source := SectState.source_for(sect_id)
-	var granted: Dictionary = {}
-	for stat_id in office.standing_percent_stats.keys():
-		# PERCENT and nothing else. A FLAT here would be decisive at R2 and noise
-		# by roughly realm 12 (ADR 0063), and a FLAT on a rate stat is the silent
-		# no-op ADR 0068 measured on 44 items. A PERCENT rides the member's own
-		# growth, so the office is a real edge at its realm and exactly as strong
-		# at R5 as at R30.
-		actor.stats.add_modifier(
-			StatModifier.new(StringName(stat_id), Stat.Op.PERCENT, percent, source)
-		)
-		granted[String(stat_id)] = percent
+	var report := InstitutionProjection.grant(
+		actor, office.standing_percent_stats, SectState.standing(next), source
+	)
+	if not bool(report.get("ok", false)):
+		return next
 	next["applied_standing"] = SectState.standing(next)
-	next["granted_percent"] = granted
+	next["granted_percent"] = report["granted"]
 	return next
 
 

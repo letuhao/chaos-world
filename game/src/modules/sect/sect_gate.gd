@@ -67,6 +67,19 @@ const VERBS: Array[StringName] = [
 	VERB_NONE_OF,
 ]
 
+## The shared authority lookup, held once because a capability is stateless: the
+## office arrives as primitives in the context each call builds, so one instance
+## answers every evaluation. `holds_authority` is the tree's one reader of
+## authored `authorities` data, which is why this gate — and not clan's, whose
+## def authors no such field — is the tier the `Authorised` contract fits.
+static var _authorised: Authorised = null
+
+
+static func _capability() -> Authorised:
+	if _authorised == null:
+		_authorised = Authorised.new()
+	return _authorised
+
 
 ## The full verdict, always this shape:
 ## `{ok: bool, reason: String, unmet: Array[Dictionary]}` where every unmet entry
@@ -208,6 +221,13 @@ static func _holds_position(requirement: Dictionary) -> Dictionary:
 ## Authority is authored data (ADR 0084), so this is a lookup in the office's own
 ## `authorities` list and never a comparison between offices. "May this member
 ## expel another" is a `.tres` question, and this is the gate that asks it.
+##
+## The lookup itself is `Authorised.authorise`, never a second implementation:
+## the office is handed over as primitives (`office`, `authorities`, `duties`)
+## because `contracts/` may not name the authored office resource, and the
+## verdict is folded back into this gate's own `{ok, reason, unmet}` shape so the
+## two refusal states (`no_office`, `unknown_authority`) stay one player-facing
+## sentence — "may X" is unmet either way, and the `actual` names which.
 static func _holds_authority(requirement: Dictionary) -> Dictionary:
 	var authority_id := StringName(requirement.get("authority", ""))
 	if authority_id == &"":
@@ -216,7 +236,8 @@ static func _holds_authority(requirement: Dictionary) -> Dictionary:
 	var sect_id := SectState.institution(ledger)
 	var def := SectCatalog.instance().sect_definition(sect_id)
 	var office := def.position(SectState.position(ledger)) if def != null else null
-	if office != null and def.has_authority(office.id, authority_id):
+	var verdict := _capability().authorise(_authority_ctx(office), authority_id)
+	if bool(verdict.get("ok", false)):
 		return _pass()
 	return _fail(
 		&"authority",
@@ -225,6 +246,20 @@ static func _holds_authority(requirement: Dictionary) -> Dictionary:
 		"" if office == null else _string_list(office.authorities),
 		"May '%s'" % authority_id
 	)
+
+
+## The office as the `Authorised` contract reads it: primitives only, because
+## `contracts/` depends on nothing and may not name `SectPositionDef`. Keys are
+## compared as text inside the capability, so a `String`-keyed save and a
+## `StringName`-authored def answer the same way.
+static func _authority_ctx(office: SectPositionDef) -> Dictionary:
+	if office == null:
+		return {"office": "", "authorities": [], "duties": []}
+	return {
+		"office": String(office.id),
+		"authorities": office.authorities,
+		"duties": office.duties,
+	}
 
 
 ## Transmission, never recognition. Fit is a bounded integer per doctrine and it
