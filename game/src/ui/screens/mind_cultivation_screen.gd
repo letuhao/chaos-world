@@ -65,6 +65,13 @@ func _summary() -> Dictionary:
 	view["actions"] = _actions.summary() if _actions != null else {}
 	if _channels != null:
 		view["channel_list"] = _channels.summary()
+	# BL-0833: the inside world's own numbers, read off the provider-published stats so
+	# the world/anchor row carries what the world IS — size, stability, qi density and
+	# time flow — and not only the anchor milestone. Raw primitives; the panel formats.
+	view["world_size"] = _actor.stats.derived(&"inside_world_size")
+	view["world_stability"] = _actor.stats.derived(&"inside_world_stability")
+	view["world_qi_density"] = _actor.stats.derived(&"inside_world_qi_density")
+	view["world_time_flow"] = _actor.stats.derived(&"inside_world_time_flow")
 	return view
 
 

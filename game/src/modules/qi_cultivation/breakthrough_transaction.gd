@@ -86,6 +86,14 @@ static func preview(actor: Actor) -> Dictionary:
 	if not Breakthrough.dao_heart_ok(actor, target.index):
 		result["unmet_conditions"].append("dao_heart_too_low")
 
+	# BL-0833: the ascension trio the tier-gate block above already gates on, PUBLISHED
+	# here so a screen renders the stage, the dao level and completion from the one
+	# preview it consumes. `Breakthrough.ascension_ok` reads the ascension OBJECT, so
+	# these provider-published stats were read by nothing before this line.
+	result["ascension_stage"] = actor.stats.derived(&"ascension_stage")
+	result["ascension_dao_level"] = actor.stats.derived(&"ascension_dao_level")
+	result["ascension_complete"] = actor.stats.derived(&"ascension_complete")
+
 	# Calculate chance. Reads the dantian and nothing else (ADR 0051's rule).
 	result["chance"] = QiChance.of(dantian)
 	result["can_attempt"] = result["unmet_conditions"].is_empty()
