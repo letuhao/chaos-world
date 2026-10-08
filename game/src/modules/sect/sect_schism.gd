@@ -130,7 +130,8 @@ static func price(tuning: SectTuning, unassigned: int) -> int:
 ## less plans a split nobody paid for, which is the strictly-positive action this
 ## whole file exists to price — so the declaring verb reads this predicate and
 ## refuses by name ([constant R_NO_PRICE], the `Schismatic.R_NO_PRICE` rule)
-## rather than planning it. Takes the WHOLE bill (`price()` above), never one half of it: a base cost
+## rather than planning it. Takes the WHOLE bill (`price()` above), never one
+## half of it: a base cost of zero with an unassigned place still to pay for is
 ## of zero with an unassigned place still to pay for is a priced split, not a free
 ## one, and only the total knows which it is.
 static func is_free_price(price: int) -> bool:
