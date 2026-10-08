@@ -38,7 +38,9 @@ SCOPE_ROOTS = (
 ## The growth guard covers the code we write, not the data we author: a `.gd` sink can be
 ## fixed with `L.t`, a `.tscn`/`.tres` one cannot yet, so gating growth there would be a
 ## failure with no recourse.
-GUARD_ROOT = "game/src/ui"
+## Every layer that composes wording, not only `ui/`: a module's default manner and a realm name
+## are player-facing too, so a new file there with hardcoded English fails the same guard.
+GUARD_ROOTS = ("game/src/ui", "game/src/modules", "game/src/core")
 GAPS_REL = "game/locale/gaps.json"
 
 ## Surfaces a dry run can target, keyed by the kind each produces.
@@ -215,7 +217,9 @@ def _guard_counts(scans: list[tuple[str, Scan]]) -> dict[str, int]:
     """Sink counts per UI script: the number `check` fails if it GROWS."""
     counts: dict[str, int] = {}
     for rel, result in scans:
-        if policy.scope_kind(rel) != "gd" or not rel.startswith(GUARD_ROOT + "/"):
+        if policy.scope_kind(rel) != "gd":
+            continue
+        if not any(rel.startswith(root + "/") for root in GUARD_ROOTS):
             continue
         if result.findings:
             counts[rel] = len(result.findings)

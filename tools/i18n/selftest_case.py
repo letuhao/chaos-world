@@ -207,6 +207,16 @@ tooltip_text = "Route slot 1"
 """
 
 
+@case("i18n: the growth guard covers a MODULE file, not only `ui/`")
+def _guard_covers_a_module() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        write(root / "game" / "src" / "modules" / "probe" / "row.gd", _HARDCODED)
+        write(root / "game" / "locale" / "ui.tres", catalog.render("en", {}))
+        write(root / "game" / "locale" / "gaps.json", "{}")
+        expect(_check(root) == 1, "a module file with hardcoded English fails the guard")
+
+
 @case("i18n: an APP-owned scene holds a BARE key, never a call (a scene cannot parse one)")
 def _app_scene_holds_a_bare_key() -> None:
     with tempfile.TemporaryDirectory() as tmp:
