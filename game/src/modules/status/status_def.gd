@@ -78,11 +78,23 @@ const TIER_TWO_ELEMENTS: Array[StringName] = [
 	&"dark",
 ]
 
-## Every element a status may ride: all ten. A status on an element outside this set is
-## REJECTED at construction, never clamped — an unknown element is a load-time refusal
-## because a def that names nothing resolvable would otherwise load and silently never
-## apply (ADR 0039's rule, applied to the vocabulary rather than to a number).
-const AUTHORED_ELEMENTS: Array[StringName] = TIER_ONE_ELEMENTS + TIER_TWO_ELEMENTS
+## Tier 3 (ADR 0925): the closed cycle above the ladder. Restated for the same reason
+## as the other two, and pinned against `ElementStats.TIER_THREE_ELEMENTS` by the
+## catalogue test.
+const TIER_THREE_ELEMENTS: Array[StringName] = [
+	&"void",
+	&"chaos",
+	&"time",
+]
+
+## Every element a status may ride: all thirteen. A status on an element outside this
+## set is REJECTED at construction, never clamped — an unknown element is a load-time
+## refusal because a def that names nothing resolvable would otherwise load and
+## silently never apply (ADR 0039's rule, applied to the vocabulary rather than to a
+## number).
+const AUTHORED_ELEMENTS: Array[StringName] = (
+	TIER_ONE_ELEMENTS + TIER_TWO_ELEMENTS + TIER_THREE_ELEMENTS
+)
 const KINDS: Array[StringName] = [
 	&"dot",
 	&"stat_modifier",
@@ -103,9 +115,11 @@ const MAGNITUDE_UNITS: Array[StringName] = [
 	&"stat_modifier",
 	&"sibling_amp",
 ]
-## How the status resolves. Ten mechanics, ten statuses: the two statuses of one
-## element are never the same effect wearing a different element (ADR 0090 refuses a
-## catalogue that is twenty damage numbers).
+## How the status resolves. The vocabulary is CLOSED, so a typo is an authoring error
+## rather than an inert def, and the two statuses of one element are never the same
+## effect wearing a different element (ADR 0090 refuses a catalogue that is twenty
+## damage numbers). `discord` is ADR 0925's addition: the chaos carrier that imposes
+## one member of its authored `table` (the draw is `StatusApi.discord_member`).
 const MECHANICS: Array[StringName] = [
 	&"bleed",
 	&"drain",
@@ -117,6 +131,7 @@ const MECHANICS: Array[StringName] = [
 	&"feed_siblings",
 	&"brace",
 	&"root",
+	&"discord",
 ]
 ## The four mitigation levers, identical to `EnvironmentZoneDef.LEVERS`. Restated for
 ## the same reason `TIER_ONE_ELEMENTS` is, and asserted equal by the test tree; one
@@ -252,6 +267,19 @@ func text() -> String:
 	return String(payload.get("text", ""))
 
 
+## The status ids a `discord` carrier may impose (ADR 0925), deduplicated and
+## order-preserving. Empty for every other mechanic. Resolvability is the catalogue's
+## problem to report, not a def's to crash on: `problems()` checks the shape here and
+## the tests resolve the entries.
+func table() -> Array[StringName]:
+	var out: Array[StringName] = []
+	for entry in payload.get("table", []):
+		var member := StringName(entry)
+		if member != &"" and not out.has(member):
+			out.append(member)
+	return out
+
+
 func is_permanent() -> bool:
 	return duration < 0.0
 
@@ -309,7 +337,7 @@ func problems() -> Array[String]:
 	elif not AUTHORED_ELEMENTS.has(element):
 		out.append(
 			(
-				"element '%s' is not one of the ten authored elements; allowed: %s"
+				"element '%s' is not one of the thirteen authored elements; allowed: %s"
 				% [String(element), _names(AUTHORED_ELEMENTS)]
 			)
 		)
@@ -489,6 +517,14 @@ func _mechanic_problems() -> Array[String]:
 		)
 		if not spends:
 			out.append("element_power channel never spends its magnitude")
+	# ADR 0925: a discord carrier is its TABLE — an empty one is a def that lands and
+	# does nothing, and naming itself would recurse one draw deep.
+	if name == &"discord":
+		var members := table()
+		if members.is_empty():
+			out.append("is a discord carrier with no table to draw from")
+		if members.has(id):
+			out.append("a discord carrier names itself in its own table")
 	return out
 
 

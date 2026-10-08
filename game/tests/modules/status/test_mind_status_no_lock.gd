@@ -135,9 +135,9 @@ func test_the_mind_vocabulary_does_not_touch_the_element_catalogue() -> void:
 		)
 	assert_eq(
 		element_ids.size(),
-		27,
+		30,
 		(
-			"and the element catalogue is the twenty plus the seven blessings (mind_daze: %d)"
+			"and the element catalogue is the pairs, the blessings and the triad (mind_daze: %d)"
 			% element_ids.size()
 		)
 	)

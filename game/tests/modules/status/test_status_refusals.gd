@@ -115,7 +115,7 @@ func test_every_authored_element_is_admitted_where_only_an_invented_one_is_refus
 	var problems := invented.problems()
 	assert_eq(problems.size(), 1, "one problem for an element nobody authored")
 	assert_eq(
-		String(problems[0]).contains("not one of the ten authored elements"),
+		String(problems[0]).contains("not one of the thirteen authored elements"),
 		true,
 		"the refusal names the ten authored elements (aether)"
 	)
@@ -215,7 +215,9 @@ func test_a_refused_def_is_reported_not_silently_dropped() -> void:
 		if String(entry.get("id", "")) == String(def.id):
 			found = true
 			assert_ne(
-				String(entry.get("reason", "")).contains("not one of the ten authored elements"),
+				String(entry.get("reason", "")).contains(
+					"not one of the thirteen authored elements"
+				),
 				false,
 				"and the reported reason is the element gate's, not an empty string"
 			)

@@ -8,3 +8,6 @@
 {"id": "wind", "tier": 2, "defense_option": "element_defense_wind", "statuses": ["wind_gust", "wind_spread", "wind_stride"], "combat_status": "wind_gust", "cultivation_status": "wind_stride", "ward_item": "ward_wind_ward", "ward_recipe": "ward_wind_ward_recipe"}
 {"id": "light", "tier": 2, "defense_option": "element_defense_light", "statuses": ["light_brand", "light_halo"], "combat_status": "light_brand", "cultivation_status": "light_halo", "ward_item": "ward_light_ward", "ward_recipe": "ward_light_ward_recipe"}
 {"id": "dark", "tier": 2, "defense_option": "element_defense_dark", "statuses": ["dark_corrosion", "dark_wane", "dark_veil"], "combat_status": "dark_corrosion", "cultivation_status": "dark_veil", "ward_item": "ward_dark_ward", "ward_recipe": "ward_dark_ward_recipe"}
+{"id": "void", "tier": 3, "statuses": ["void_severance"], "combat_status": "void_severance"}
+{"id": "chaos", "tier": 3, "statuses": ["chaos_discord"], "combat_status": "chaos_discord"}
+{"id": "time", "tier": 3, "statuses": ["time_drag"], "combat_status": "time_drag"}

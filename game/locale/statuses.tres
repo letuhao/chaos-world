@@ -3,6 +3,7 @@
 [resource]
 locale = "en"
 messages = {
+"LOC_STATUSES_CHAOS_DISCORD_TEXT": "The blow lands as a decree with no author. The body chooses its own affliction from a table it cannot read.",
 "LOC_STATUSES_DARK_CORROSION_TEXT": "Not a wound. Acid, eating whatever the guard was made of and the flesh under it, deeper for every breath it is left breathing.",
 "LOC_STATUSES_DARK_VEIL_TEXT": "A veil the dark helped weave. What would land is spent finding the body under it.",
 "LOC_STATUSES_DARK_WANE_TEXT": "The light goes out of a fight. Strike, sea and timing all thin at once, and the longer it stays the less there is left to take.",
@@ -22,6 +23,8 @@ messages = {
 "LOC_STATUSES_METAL_SEVER_TEXT": "The cut will not close. Wounded, the body's own damage reduction is stripped away while the bleeding runs.",
 "LOC_STATUSES_METAL_SUNDER_TEXT": "Blade-work finds the seams. The body's physical guard and its footing are cut away from it.",
 "LOC_STATUSES_METAL_TEMPER_TEXT": "Tempered steel under the skin. The body has been honed like a blade and keeps edges out.",
+"LOC_STATUSES_TIME_DRAG_TEXT": "For one held breath the world runs through honey. Every motion costs more than it did, and the next one costs more again.",
+"LOC_STATUSES_VOID_SEVERANCE_TEXT": "The cut does not bleed. Qi leaves the wound before blood does, and what would have refilled it has forgotten the way.",
 "LOC_STATUSES_WATER_CHILL_TEXT": "Cold settles into the meridians. The body moves more slowly and strikes less often.",
 "LOC_STATUSES_WATER_DELUGE_TEXT": "A full wave lands at once: one heavy, unblockable impact that spends its whole force the moment it arrives.",
 "LOC_STATUSES_WATER_WELLSPRING_TEXT": "A wellspring opened below the heart. Qi is deeper and does not stop coming back.",

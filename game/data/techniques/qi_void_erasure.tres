@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="TechniqueDef" format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_def"]
+[resource]
+script = ExtResource("1_def")
+id = &"qi_void_erasure"
+delivered_by = &"sigil_void_erasure"
+display_name = "LOC_TECHNIQUES_QI_VOID_ERASURE_DISPLAY_NAME"
+description = "LOC_TECHNIQUES_QI_VOID_ERASURE_DESCRIPTION"
+tags = Array[StringName]([&"technique", &"void", &"sever"])
+grade = &"divine"
+rarity = &"legendary"
+element = &"void"
+schools = Array[StringName]([&"emitting", &"elemental"])
+active = true
+path = &"qi_cultivation"
+min_path_realm = {&"qi_cultivation": 27}
+qi_cost = 200
+stamina_cost = 21
+cooldown = 19
+mastery_rungs = 5
+magnitude = 4.2
+element_share = 1.0

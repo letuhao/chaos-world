@@ -972,23 +972,54 @@ static func _stage_status_request(ctx: AttackContext, technique: Variant) -> voi
 	# ADR 0884: the status's own `kind` rides the request so S12 can read the
 	# per-category channel without knowing a `status` module class.
 	var def := StatusApi.definition(status_id)
-	(
-		ctx
-		. set_data(
-			StatusApply.REQUEST_KEY,
-			{
-				"id": status_id,
-				"element": element,
-				"kind": &"" if def == null else def.kind,
-				"immunity_tags": [] if def == null else def.immunity_tags,
-				"family": &"" if def == null else def.family,
-				"categories": [] if def == null else def.categories,
-				"potency": 0.0 if def == null else def.potency_base,
-				"chance": gate,
-				"scope": StatusApply.SCOPE_COMBAT,
-			}
+	var request := {
+		"id": status_id,
+		"element": element,
+		"kind": &"" if def == null else def.kind,
+		"immunity_tags": [] if def == null else def.immunity_tags,
+		"family": &"" if def == null else def.family,
+		"categories": [] if def == null else def.categories,
+		"potency": 0.0 if def == null else def.potency_base,
+		"chance": gate,
+		"scope": StatusApply.SCOPE_COMBAT,
+	}
+	if def != null and def.mechanic() == &"discord":
+		request[StatusApply.KEY_DISCORD] = _discord_members(def, element)
+	ctx.set_data(StatusApply.REQUEST_KEY, request)
+
+
+## ADR 0925's discord: a chaos carrier lands ONE member of its authored table, drawn
+## at landing time (S12 owns the rng). The draw is the ENGINE's and the TABLE is the
+## app's, so every member's request is composed here and staged INSIDE the carrier's
+## request — the same seam ADR 0105's request already uses, and the reason S12 can
+## impose a member without a `status` edge.
+##
+## Members are staged as full requests with `chance: 1.0`: the carrier already passed
+## the gate, so a member's own landing is the resist split and nothing else. A member
+## def that does not resolve is skipped rather than staged as a guess.
+static func _discord_members(carrier: StatusDef, element: StringName) -> Array:
+	var members: Array = []
+	for member_id in carrier.table():
+		var member := StatusApi.definition(member_id)
+		if member == null:
+			continue
+		(
+			members
+			. append(
+				{
+					"id": member_id,
+					"element": element,
+					"kind": member.kind,
+					"immunity_tags": member.immunity_tags,
+					"family": member.family,
+					"categories": member.categories,
+					"potency": member.potency_base,
+					"chance": 1.0,
+					"scope": StatusApply.SCOPE_COMBAT,
+				}
+			)
 		)
-	)
+	return members
 
 
 ## The element a technique carries, or `&""`. Variant-read exactly as

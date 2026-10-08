@@ -17,6 +17,9 @@ const FAMILY_BY_ELEMENT := {
 	&"light": &"radiance",
 	&"dark": &"decay",
 	&"wind": &"gale",
+	&"void": &"nullity",
+	&"chaos": &"discord",
+	&"time": &"chrono",
 }
 
 
@@ -26,7 +29,7 @@ func test_every_shipped_def_carries_its_family_and_categories() -> void:
 	# imported from the catalogue suite because this file's claim is that the TREE's
 	# content is what the catalogue publishes, and a shared constant would make both
 	# sides move together.
-	assert_eq(ids.size(), 27, "the pair content plus the seven blessings")
+	assert_eq(ids.size(), 30, "the pairs, the blessings and the triad (ADR 0925)")
 	for status_id in ids:
 		var def := StatusCatalog.instance().definition(status_id)
 		assert_ne(def, null, "%s resolves" % String(status_id))

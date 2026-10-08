@@ -82,7 +82,11 @@ func _in_run(actor: Actor) -> bool:
 ## saying "tier-1" is asserting about half of them.
 func _all_elements() -> Array[String]:
 	var out: Array[String] = []
-	for element in ElementStats.BASE_ELEMENTS + ElementStats.ADVANCED_ELEMENTS:
+	for element in (
+		ElementStats.BASE_ELEMENTS
+		+ ElementStats.ADVANCED_ELEMENTS
+		+ ElementStats.TIER_THREE_ELEMENTS
+	):
 		out.append(String(element))
 	out.sort()
 	return out
@@ -507,11 +511,20 @@ func test_the_mapping_is_authored_content_rather_than_a_table_in_code() -> void:
 		)
 	assert_eq(
 		claimants.size(),
-		ElementStats.BASE_ELEMENTS.size() + ElementStats.ADVANCED_ELEMENTS.size(),
-		"every element claims exactly one status, tier-1 and tier-2 alike (ADR 0110)"
+		(
+			ElementStats.BASE_ELEMENTS.size()
+			+ ElementStats.ADVANCED_ELEMENTS.size()
+			+ ElementStats.TIER_THREE_ELEMENTS.size()
+		),
+		(
+			"every element claims exactly one status, tier-1 and tier-2 alike (ADR 0110) and the "
+			+ "triad its single expression (ADR 0925)"
+		)
 	)
 	assert_eq(
-		_sorted_order(claimants.keys()), _all_elements(), "and they are exactly the ten elements"
+		_sorted_order(claimants.keys()),
+		_all_elements(),
+		"and they are exactly the thirteen elements"
 	)
 
 
@@ -575,7 +588,7 @@ func test_status_for_element_answers_empty_for_everything_that_maps_to_nothing()
 		&"lightning_arc",
 		"and a tier-2 element DOES map now (ADR 0110 published it)"
 	)
-	assert_eq(StatusApi.status_ids().size(), 20, "the catalogue ships all twenty defs")
+	assert_eq(StatusApi.status_ids().size(), 30, "the catalogue ships all thirty defs")
 
 
 # --- internals ------------------------------------------------------------------

@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="StatusDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/status/status_def.gd" id="1_status"]
+
+[resource]
+script = ExtResource("1_status")
+id = &"void_severance"
+element = &"void"
+on_landed_blow = true
+kind = &"dot"
+family = &"nullity"
+categories = Array[StringName]([&"dot"])
+scope = &"combat"
+stacking = &"stack"
+duration = 12.0
+magnitude_unit = &"health_share"
+magnitude_cap = 6.0
+tick_interval = 1.0
+mitigation_tags = Array[StringName]([&"affinity", &"technique", &"pill"])
+payload = {
+"mechanic": &"drain",
+"text": "LOC_STATUSES_VOID_SEVERANCE_TEXT",
+"pool": &"qi",
+"share_per_pulse": 0.03,
+"modifiers": [
+{"stat": &"qi_regen", "op": &"flat", "value": -1.0},
+{"stat": &"max_qi", "op": &"flat", "value": -20.0}
+],
+"counter": {"every_hits": 12, "reset_on_burst": true},
+}

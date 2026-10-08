@@ -14,12 +14,15 @@ that ships.
 ## What is asserted, for every element, and why each one is a separate claim
 
 1. **Declared** — the element is in `ElementStats.BASE_ELEMENTS` +
-   `ADVANCED_ELEMENTS`, and in `StatusDef.AUTHORED_ELEMENTS`.
+   `ADVANCED_ELEMENTS` + `TIER_THREE_ELEMENTS`, and in `StatusDef.AUTHORED_ELEMENTS`.
 2. **SSOT row** — exactly one `game/data/elements/element-coverage.jsonl` record, and
    that record names no element the element table does not have.
 3. **Two authored statuses** — exactly two `.tres` under `game/data/statuses/` declare
    `element = <e>`, and the SSOT names the same two ids. A third is a gap the claim does
-   not cover; a different pair is a drift between the record and the content.
+   not cover; a different pair is a drift between the record and the content. A TIER-3
+   element (ADR 0925) ships its SINGLE combat expression instead: the triad's pair rule
+   is the ADR's, and the blessing package it does not yet ship is tracked rather than
+   silently absent.
 4. **Status files exist and parse** — each id resolves to a real file whose declared
    `id` and `element` match, so a rename cannot leave the record naming a ghost.
 5. **Statuses are reachable through a shipped producer** — a COMBAT-scope status needs
@@ -28,7 +31,7 @@ that ships.
    naming its element (`TribulationBlessing.award` is its only production payer). Both
    are read out of `game/src`, not out of the SSOT, so a producer deleted in code fails
    here even with a perfectly consistent record.
-6. **An authored, obtainable ward** — an item carries
+6. **An authored, obtainable ward** (tiers 1-2) — an item carries
    `element_defense_<e>` in `fixed_modifiers`, its declared realm/rarity are on the
    realm ladder with a rarity the audit knows, and its magnitude is inside the option's
    own realm/rarity window (`data._magnitude_bounds`, the same numbers `tools data
@@ -36,16 +39,17 @@ that ships.
    item must resolve through a declared source whose whole craft chain terminates at a
    `gather`/`boss`/`domain` route. An authored-but-unreachable ward is exactly the
    "obtainable" claim failing.
-7. **A craftable recipe** — the SSOT's `ward_recipe` exists, and it names the element's
-   ward in `outputs` and a `station`, with inputs that are themselves resolvable.
+7. **A craftable recipe** (tiers 1-2) — the SSOT's `ward_recipe` exists, and it names
+   the element's ward in `outputs` and a `station`, with inputs that are themselves
+   resolvable.
 
 ## Why the expected set is derived, never pinned
 
 A pinned literal list is the ADR 0066 failure mode: a new element added to
-`ElementStats` would fail a guard that enumerates the old ten, and the natural response
-would be to edit the literal — which is precisely how a coverage claim stops covering.
-Every element under test comes from the ELEMENT TABLE, so joining is automatic and the
-only way to make this go red is to genuinely drop coverage.
+`ElementStats` would fail a guard that enumerates the old ten (now thirteen), and the
+natural response would be to edit the literal — which is precisely how a coverage claim
+stops covering. Every element under test comes from the ELEMENT TABLE, so joining is
+automatic and the only way to make this go red is to genuinely drop coverage.
 
 ## Where the numbers live
 
@@ -93,7 +97,7 @@ class CoverageError(Exception):
 def register(subparsers) -> None:
     parser = subparsers.add_parser(
         "element_coverage",
-        help="assert every element ships its pair, one blessing and an obtainable ward",
+        help="assert every element ships its statuses, producers and an obtainable ward",
     )
     parser.add_argument(
         "--json",
@@ -127,16 +131,37 @@ def _stringnames(text: str, key: str) -> tuple[str, ...]:
 
 
 def _gd_literal_consts(text: str, const_name: str) -> tuple[str, ...]:
-    """The `&"..."` values of a GDScript constant that composes two literal arrays.
+    """The `&"..."` values of a GDScript constant that composes literal arrays.
 
-    `status_def.gd:85` declares `AUTHORED_ELEMENTS = TIER_ONE_ELEMENTS + TIER_TWO_ELEMENTS`,
-    so the name itself holds no literals. Reading only its own bracket would yield zero and
-    call every element un-authored; the set is the union of the two arrays it adds.
+    `status_def.gd` declares `AUTHORED_ELEMENTS = TIER_ONE_ELEMENTS + TIER_TWO_ELEMENTS
+    + TIER_THREE_ELEMENTS` (the third added by ADR 0925), so the name itself holds no
+    literals. Reading only its own bracket would yield zero and call every element
+    un-authored; the set is the union of the arrays it adds.
+
+    The right-hand side is read to the END OF ITS STATEMENT, not to the first newline
+    or the first blank line: a formatter may wrap a long sum inside parentheses, and
+    the next `const` may follow without a blank line between them (so a blank-line
+    terminator over-reads and resolves consts that are not part of this one).
     """
-    match = re.search(r"const " + const_name + r"\s*:?[^=\n]*=\s*(.*)", text)
-    if not match:
+    head = re.search(r"const " + const_name + r"\s*:?[^=\n]*=\s*", text)
+    if not head:
         return ()
-    parts = re.findall(r"[A-Z_][A-Z0-9_]*", match.group(1).split("\n")[0])
+    rest = text[head.end() :]
+    if rest.startswith("("):
+        depth = 0
+        end = 0
+        for index, char in enumerate(rest):
+            if char == "(":
+                depth += 1
+            elif char == ")":
+                depth -= 1
+                if depth == 0:
+                    end = index + 1
+                    break
+        rhs = rest[:end]
+    else:
+        rhs = rest.split("\n", 1)[0]
+    parts = re.findall(r"[A-Z_][A-Z0-9_]*", rhs)
     out: list[str] = []
     for part in parts:
         body = re.search(r"const " + part + r"\s*:?[^=\n]*=\s*\[(.*?)\]", text, re.S)
@@ -175,20 +200,23 @@ def _gd_bare_consts(text: str, const_name: str) -> tuple[str, ...]:
     return tuple(out)
 
 
-def authored_elements() -> tuple[tuple[str, ...], tuple[str, ...], tuple[str, ...]]:
-    """`(base, advanced, status_def)` element lists, read from GDScript.
+def authored_elements() -> tuple[
+    tuple[str, ...], tuple[str, ...], tuple[str, ...], tuple[str, ...]
+]:
+    """`(base, advanced, tier_three, status_def)` element lists, read from GDScript.
 
     The element table is the ONE place the expected set comes from. It is read rather
     than imported because `tools/` is outside `res://` and GDScript must never import
     from it (AGENTS.md:130); a regex over the declared constants is the reading that
-    cannot silently return an empty set, because an empty read fails the "ten elements
+    cannot silently return an empty set, because an empty read fails the "elements
     are declared" assertion below rather than making every later loop vacuous.
     """
     stats = _read(GAME_DIR / ELEMENT_STATS_RELATIVE)
     base = _gd_bare_consts(stats, "BASE_ELEMENTS")
     advanced = _gd_bare_consts(stats, "ADVANCED_ELEMENTS")
+    tier_three = _gd_bare_consts(stats, "TIER_THREE_ELEMENTS")
     declared = _gd_literal_consts(_read(GAME_DIR / STATUS_DEF_RELATIVE), "AUTHORED_ELEMENTS")
-    return base, advanced, declared
+    return base, advanced, tier_three, declared
 
 
 def blessing_elements() -> tuple[str, ...]:
@@ -381,29 +409,50 @@ def check_element(element: str, row: dict | None, tree: dict) -> dict:
 
     # 1. declared
     require(element in tree["status_def_elements"], "not in StatusDef.AUTHORED_ELEMENTS")
-    verdict["tier"] = 1 if element in tree["base"] else 2
+    triad = element in tree["tier_three"]
+    verdict["tier"] = 3 if triad else (1 if element in tree["base"] else 2)
 
     # 2. SSOT row
     require(row is not None, "has no row in element-coverage.jsonl")
     require(row.get("id") == element, f"row declares id {row.get('id')!r}")
-    expected_option = f"element_defense_{element}"
-    require(
-        row.get("defense_option") == expected_option,
-        f"row names defense option {row.get('defense_option')!r}, expected {expected_option!r}",
-    )
-    for field in ("statuses", "combat_status", "cultivation_status", "ward_item", "ward_recipe"):
-        require(field in row, f"row has no {field!r} field")
+    if triad:
+        # ADR 0925: the triad's package is its single combat status. The ward, its
+        # recipe and the blessing are tiers-1-2 claims; extending them to tier 3 is
+        # tracked rather than silently demanded or silently skipped.
+        for field in ("statuses", "combat_status"):
+            require(field in row, f"row has no {field!r} field")
+    else:
+        expected_option = f"element_defense_{element}"
+        require(
+            row.get("defense_option") == expected_option,
+            f"row names defense option {row.get('defense_option')!r}, expected {expected_option!r}",
+        )
+        for field in (
+            "statuses",
+            "combat_status",
+            "cultivation_status",
+            "ward_item",
+            "ward_recipe",
+        ):
+            require(field in row, f"row has no {field!r} field")
 
     # 3. the element's pair plus at most one blessing, and the row names them all
     authored = sorted(
         status_id for status_id, def_ in tree["statuses"].items() if def_["element"] == element
     )
     verdict["statuses"] = authored
-    require(
-        2 <= len(authored) <= 3,
-        f"has {len(authored)} authored status(es) {authored}, expected its pair plus at most "
-        f"one blessing (ADR 0920)",
-    )
+    if triad:
+        require(
+            len(authored) == 1,
+            f"has {len(authored)} authored status(es) {authored}; the triad ships one "
+            f"combat expression (ADR 0925)",
+        )
+    else:
+        require(
+            2 <= len(authored) <= 3,
+            f"has {len(authored)} authored status(es) {authored}, expected its pair plus at most "
+            f"one blessing (ADR 0920)",
+        )
     declared = sorted(str(status_id) for status_id in row["statuses"])
     require(
         declared == authored,
@@ -426,17 +475,24 @@ def check_element(element: str, row: dict | None, tree: dict) -> dict:
     combat = [s for s in authored if tree["statuses"][s]["scope"] == "combat"]
     cultivation = [s for s in authored if tree["statuses"][s]["scope"] == "cultivation"]
     require(bool(combat), "ships no COMBAT-scope status, so no landed blow can inflict one")
-    # ADR 0920: every element ships exactly ONE blessing, and the row must name it.
-    require(cultivation, "ships no CULTIVATION-scope blessing (ADR 0920)")
-    require(
-        len(cultivation) == 1,
-        f"ships {len(cultivation)} cultivation defs {cultivation}; exactly one blessing",
-    )
-    row_cultivation_named = str(row["cultivation_status"] or "")
-    require(
-        bool(row_cultivation_named),
-        "leaves cultivation_status empty; every element ships one (ADR 0920)",
-    )
+    if triad:
+        # ADR 0925: the triad ships no blessing yet; the package is tracked.
+        require(
+            not cultivation,
+            f"ships {sorted(cultivation)}; the triad ships no blessing in ADR 0925",
+        )
+    else:
+        # ADR 0920: every element ships exactly ONE blessing, and the row must name it.
+        require(cultivation, "ships no CULTIVATION-scope blessing (ADR 0920)")
+        require(
+            len(cultivation) == 1,
+            f"ships {len(cultivation)} cultivation defs {cultivation}; exactly one blessing",
+        )
+        row_cultivation_named = str(row["cultivation_status"] or "")
+        require(
+            bool(row_cultivation_named),
+            "leaves cultivation_status empty; every element ships one (ADR 0920)",
+        )
     # ADR 0105: a blow carries ONE element and every element ships TWO combat defs, so
     # EXACTLY ONE of the pair may claim `on_landed_blow`. StatusCatalog refuses a second
     # claimer at load rather than tie-breaking on catalogue order, so demanding that
@@ -458,7 +514,7 @@ def check_element(element: str, row: dict | None, tree: dict) -> dict:
         s for s in combat if tree["statuses"][s]["landed"] or s in afflictions
     ) + sorted(cultivation)
     require(
-        len(verdict["reachable"]) >= 2,
+        len(verdict["reachable"]) >= (1 if triad else 2),
         f"only {len(verdict['reachable'])} of its {len(authored)} statuses have a "
         f"shipped producer: {authored}",
     )
@@ -471,7 +527,7 @@ def check_element(element: str, row: dict | None, tree: dict) -> dict:
         tree["statuses"][row_combat]["landed"],
         f"row names combat_status {row_combat!r}, which does not claim the landed blow",
     )
-    row_cultivation = str(row["cultivation_status"] or "")
+    row_cultivation = str(row.get("cultivation_status") or "")
     if row_cultivation:
         require(
             row_cultivation in cultivation,
@@ -485,6 +541,12 @@ def check_element(element: str, row: dict | None, tree: dict) -> dict:
         )
 
     # 6. an authored ward, in-window
+    if triad:
+        # The triad's package ends at its combat status (ADR 0925): no ward, no recipe,
+        # no obtainability claim to make yet.
+        if findings:
+            raise CoverageError("; ".join(findings))
+        return verdict
     ward = tree["defense_items"].get(element)
     require(
         ward is not None,
@@ -576,10 +638,11 @@ def _items_by_id() -> dict[str, str]:
 
 
 def build_tree() -> dict:
-    base, advanced, status_def = authored_elements()
+    base, advanced, tier_three, status_def = authored_elements()
     return {
         "base": base,
         "advanced": advanced,
+        "tier_three": tier_three,
         "status_def_elements": status_def,
         "blessing_elements": blessing_elements(),
         "boss_afflictions": boss_afflictions(),
@@ -598,8 +661,8 @@ def audit(tree: dict | None = None) -> tuple[list[dict], list[str]]:
     tree = tree if tree is not None else build_tree()
     problems: list[str] = []
 
-    base, advanced = tree["base"], tree["advanced"]
-    elements = list(base) + list(advanced)
+    base, advanced, tier_three = tree["base"], tree["advanced"], tree["tier_three"]
+    elements = list(base) + list(advanced) + list(tier_three)
     if not elements:
         problems.append("the element table declares no elements at all")
     if len(set(elements)) != len(elements):
@@ -665,11 +728,11 @@ def run(args) -> int:
     if problems:
         fail(f"element coverage failed: {len(problems)} gap(s)")
         return 1
-    ok("every element ships its pair, one blessing and an obtainable elemental ward")
+    ok("every element ships its statuses, producers, and a ward where the package owes one")
     return 0
 
 
 def build_elements() -> tuple[str, ...]:
     """The expected element set, derived from the element table rather than pinned."""
-    base, advanced, _ = authored_elements()
-    return tuple(base) + tuple(advanced)
+    base, advanced, tier_three, _ = authored_elements()
+    return tuple(base) + tuple(advanced) + tuple(tier_three)

@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="TechniqueDef" format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_def"]
+[resource]
+script = ExtResource("1_def")
+id = &"qi_time_arrest"
+delivered_by = &"sigil_time_arrest"
+display_name = "LOC_TECHNIQUES_QI_TIME_ARREST_DISPLAY_NAME"
+description = "LOC_TECHNIQUES_QI_TIME_ARREST_DESCRIPTION"
+tags = Array[StringName]([&"technique", &"time", &"drag"])
+grade = &"divine"
+rarity = &"legendary"
+element = &"time"
+schools = Array[StringName]([&"emitting", &"elemental"])
+active = true
+path = &"qi_cultivation"
+min_path_realm = {&"qi_cultivation": 29}
+qi_cost = 210
+stamina_cost = 22
+cooldown = 20
+mastery_rungs = 5
+magnitude = 4.4
+element_share = 1.0

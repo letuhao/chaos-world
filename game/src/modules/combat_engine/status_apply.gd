@@ -204,6 +204,14 @@ const KEY_SCOPE := &"scope"
 const KEY_DURATION := &"duration"
 const KEY_POTENCY := &"potency"
 
+## ADR 0925's discord: the member requests a chaos carrier may impose, staged INSIDE
+## the carrier's request by the app's ctx builder (`combat_boot.gd::_discord_members`)
+## and drawn here at landing time, where the rng lives. Each entry is a full request
+## dict, so this stage imposes a member through the SAME pipeline as any landed status
+## without knowing a `status` module class — the reason the table can cross the seam
+## as data.
+const KEY_DISCORD := &"discord"
+
 ## Scope ids as ADR 0086 names them, read as `StringName`s because `StatusEffect`'s
 ## `enum Scope` is a contracts-layer type this file must not name. `COMBAT` is the only
 ## scope `Stat.STATUS_RESISTANCE` touches (ADR 0086: "a blessing the game pays out must
@@ -284,7 +292,43 @@ static func apply(
 	if not bool(resolved.get(&"open", false)):
 		StatusEvents.note_resisted(target.id, status_id, REFUSE_RESISTED)
 		return _refused(REFUSE_RESISTED)
-	return _written(target, tuning, request, resolved)
+	var written := _written(target, tuning, request, resolved)
+	if bool(written.get(APPLIED, false)):
+		_impose_discord(attacker, target, tuning, request, rng, technique, hit_index)
+	return written
+
+
+## ADR 0925: a landed DISCORD carrier imposes ONE member of its staged table. The
+## draw is here because the rng is; the table is data the app staged
+## ([constant KEY_DISCORD]), so this stage never reads the status catalogue. A null
+## generator reads the FIRST member — the deterministic reading, so a caller holding
+## no randomness gets a real debuff rather than a refused one.
+##
+## A member already held is skipped rather than refreshed: the carrier's own merge
+## rules are about the carrier, and re-applying a held member would let one discord
+## endlessly reset a sibling's duration. The next discord draws again.
+static func _impose_discord(
+	attacker: Actor,
+	target: Actor,
+	tuning: CombatTuning,
+	request: Dictionary,
+	rng: Variant,
+	technique: Variant,
+	hit_index: int
+) -> void:
+	if target == null:
+		return
+	var staged: Variant = request.get(KEY_DISCORD, [])
+	if not staged is Array or (staged as Array).is_empty():
+		return
+	var members := staged as Array
+	var pick: Dictionary = members[0] if rng == null else members[int(rng.randi()) % members.size()]
+	var member_id := StringName(pick.get(KEY_ID, &""))
+	if member_id == &"" or target.has_status(member_id):
+		return
+	var resolved := resolve_roll(attacker, target, tuning, pick, rng, technique, hit_index)
+	if bool(resolved.get(&"ready", false)) and bool(resolved.get(&"open", false)):
+		_written(target, tuning, pick, resolved)
 
 
 ## ADR 0886: the ONE owner of S12's arithmetic — id and gate validation, the immunity

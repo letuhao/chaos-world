@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="StatusDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/status/status_def.gd" id="1_status"]
+
+[resource]
+script = ExtResource("1_status")
+id = &"chaos_discord"
+element = &"chaos"
+on_landed_blow = true
+kind = &"control"
+icd = 10.0
+family = &"discord"
+categories = Array[StringName]([&"control"])
+scope = &"combat"
+stacking = &"refresh"
+duration = 10.0
+magnitude_unit = &"stat_modifier"
+magnitude_cap = 0.7
+tick_interval = 1.0
+mitigation_tags = Array[StringName]([&"affinity", &"gear", &"technique", &"pill"])
+payload = {
+"mechanic": &"discord",
+"text": "LOC_STATUSES_CHAOS_DISCORD_TEXT",
+"table": [&"metal_sever", &"water_chill", &"wind_gust"],
+"modifiers": [
+{"stat": &"poise", "op": &"percent", "value": -0.2}
+],
+}

@@ -55,9 +55,18 @@ const TIER_TWO_IDS: Array[StringName] = [
 	&"dark_wane",
 ]
 
+## The three tier-3 ids (ADR 0925), one per triad element. The triad ships its single
+## combat expression each rather than a pair: the cycle above the ladder is the design,
+## and the pair rules below read it as a one-member set.
+const TIER_THREE_IDS: Array[StringName] = [
+	&"void_severance",
+	&"chaos_discord",
+	&"time_drag",
+]
+
 ## Every id the catalogue publishes. Asserted as an exact SET rather than as a size, so a
-## twenty-first def fails loudly and a substituted one fails just as loudly.
-const EXPECTED_IDS: Array[StringName] = TIER_ONE_IDS + TIER_TWO_IDS
+## thirty-first def fails loudly and a substituted one fails just as loudly.
+const EXPECTED_IDS: Array[StringName] = TIER_ONE_IDS + TIER_TWO_IDS + TIER_THREE_IDS
 
 ## The seven CULTIVATION blessings authored by ADR 0920, one per element that shipped
 ## none, so every element now pays exactly ONE permanent blessing. Kept separate from
@@ -98,6 +107,14 @@ const TIER_ONE_MECHANICS: Dictionary = {
 	&"earth": [&"brace", &"root"],
 }
 
+## The `mechanic` each triad element's single expression is built from (ADR 0925),
+## pinned for the same reason [constant TIER_ONE_MECHANICS] is.
+const TIER_THREE_MECHANICS: Dictionary = {
+	&"void": &"drain",
+	&"chaos": &"discord",
+	&"time": &"slow",
+}
+
 ## One claimed landed-blow status per element, `element -> id`. Pinned because
 ## `StatusApi.status_for_element` is a LOOK-UP: a catalogue that quietly re-pointed a slot
 ## would keep every count in this file true while changing what a blow actually inflicts.
@@ -112,6 +129,9 @@ const CLAIMED_BY_ELEMENT: Dictionary = {
 	&"wind": &"wind_gust",
 	&"light": &"light_brand",
 	&"dark": &"dark_corrosion",
+	&"void": &"void_severance",
+	&"chaos": &"chaos_discord",
+	&"time": &"time_drag",
 }
 
 ## The magnitude channels that spend a pool. A PAIR is only the shape ADR 0090 asks for
@@ -122,7 +142,7 @@ const PULSE_UNITS: Array[StringName] = [&"health_share", &"element_power"]
 ## The text `StatusDef.problems()` reports for an element outside
 ## `StatusDef.AUTHORED_ELEMENTS`: the GATE this file tests, named rather than rebuilt.
 ## ADR 0110 moved this gate from "tier-2 is out" to "the tenth element is in".
-const UNKNOWN_ELEMENT_GATE := "not one of the ten authored elements"
+const UNKNOWN_ELEMENT_GATE := "not one of the thirteen authored elements"
 
 ## Ids no `.tres` claims and `rejected()` has never heard of. The public spelling of ADR
 ## 0090's "refused, not deferred-and-forgotten" — and the only refusal that SURVIVED the
@@ -131,8 +151,8 @@ const UNKNOWN_ELEMENT_GATE := "not one of the ten authored elements"
 ## element. ADR 0110 changed neither of those things, so they are still unpublished.
 const UNPUBLISHED_IDS: Array[StringName] = [&"light_expose", &"dark_erasure"]
 
-## All ten elements, assembled rather than restated so a tenth would be caught here.
-## `gdlintrc` scopes class variables to lowercase snake, so this is not CONSTANT_CASE
+## All thirteen elements, assembled rather than restated so a fourteenth would be caught
+## here. `gdlintrc` scopes class variables to lowercase snake, so this is not CONSTANT_CASE
 ## despite being a `static var` — the same shape as any other module-scoped cache, and
 ## deliberately not `_`-prefixed so it cannot collide with the reader below.
 static var all_elements_cache: Array[StringName] = []
@@ -142,6 +162,7 @@ func _all_elements() -> Array[StringName]:
 	if all_elements_cache.is_empty():
 		all_elements_cache.assign(ElementStats.BASE_ELEMENTS)
 		all_elements_cache.append_array(ElementStats.ADVANCED_ELEMENTS)
+		all_elements_cache.append_array(ElementStats.TIER_THREE_ELEMENTS)
 	return all_elements_cache
 
 
@@ -392,21 +413,34 @@ func test_every_status_rides_an_element_that_exists() -> void:
 				% [String(status_id), String(def.element)]
 			)
 		)
-	# And every element is COVERED — exactly two, not zero. An element with no authored
-	# status is one a landed blow could never inflict, which was `lightning`'s state for
-	# the whole of ADR 0090 and is no longer any element's.
+	# And every element is COVERED. Tiers 1-2 ship their pair plus at most one blessing;
+	# the triad (ADR 0925) ships its single combat expression and no blessing — the
+	# blessing package for tier 3 is a follow-up the ADR records rather than a silent
+	# absence, and an element with no authored status at all would still fail here.
 	for element in _all_elements():
 		var on_element := _ids_on(element)
-		assert_eq(
-			on_element.size() >= 2 and on_element.size() <= 3,
-			true,
-			"%s ships its pair plus at most one blessing" % String(element)
-		)
 		var blessings := 0
 		for id in on_element:
 			var def := StatusApi.definition(StringName(id)) as StatusDef
 			if def != null and not def.is_combat_scope():
 				blessings += 1
+		if StatusDef.TIER_THREE_ELEMENTS.has(element):
+			assert_eq(
+				on_element.size(),
+				1,
+				"%s ships its single combat expression (ADR 0925)" % String(element)
+			)
+			assert_eq(
+				blessings,
+				0,
+				"%s ships no blessing; the tier-3 package is tracked (ADR 0925)" % String(element)
+			)
+			continue
+		assert_eq(
+			on_element.size() >= 2 and on_element.size() <= 3,
+			true,
+			"%s ships its pair plus at most one blessing" % String(element)
+		)
 		assert_eq(blessings, 1, "%s ships exactly one cultivation blessing" % String(element))
 
 
@@ -441,6 +475,11 @@ func test_each_element_ships_two_statuses_with_different_mechanics() -> void:
 	var per_element := _per_element(_authored())
 	for element in _all_elements():
 		var pair: Array = _pair_without_blessings(per_element.get(element, []))
+		if StatusDef.TIER_THREE_ELEMENTS.has(element):
+			# ADR 0925: the triad ships ONE expression each — there is no second member
+			# to contrast, and the cycle above the ladder is the design that says so.
+			assert_eq(pair.size(), 1, "%s ships its single expression" % String(element))
+			continue
 		assert_eq(pair.size(), 2, "%s ships its two pair defs" % String(element))
 		var first := pair[0] as StatusDef
 		var second := pair[1] as StatusDef
@@ -470,12 +509,13 @@ func test_each_element_ships_two_statuses_with_different_mechanics() -> void:
 
 
 func test_the_closed_mechanic_vocabulary_is_used_whole() -> void:
-	# `StatusDef.MECHANICS` is a closed ten-name vocabulary and `status_def.gd` is not this
-	# file's to widen. ADR 0090 named all ten through tier-1; ADR 0110 requires every
-	# advanced element to REUSE a tier-1 mechanic rather than invent a shape the runtime
-	# does not resolve. So the claim is a fixed point rather than a count: the vocabulary
-	# is used whole, tier-1 keeps ADR 0090's own per-element pairing exactly, and no
-	# advanced element names a mechanic tier-1 has never resolved.
+	# `StatusDef.MECHANICS` is a closed vocabulary and `status_def.gd` is not this file's
+	# to widen. ADR 0090 named ten through tier-1; ADR 0110 requires every advanced element
+	# to REUSE a tier-1 mechanic rather than invent a shape the runtime does not resolve;
+	# ADR 0925 adds the eleventh (`discord`), used by the chaos carrier. So the claim is a
+	# fixed point rather than a count: the vocabulary is used whole, tier-1 keeps ADR
+	# 0090's own per-element pairing exactly, and no advanced element names a mechanic
+	# tier-1 has never resolved.
 	var authored := _authored()
 	var per_element := _per_element(authored)
 	var used: Dictionary = {}
@@ -484,6 +524,14 @@ func test_the_closed_mechanic_vocabulary_is_used_whole() -> void:
 	assert_eq(used.size(), StatusDef.MECHANICS.size(), "the whole closed vocabulary is used")
 	for mechanic in StatusDef.MECHANICS:
 		assert_eq(used.has(mechanic), true, "%s is authored somewhere" % String(mechanic))
+	# ADR 0925: the triad's single mechanics are pinned for the same reason tier-1's are —
+	# a re-pointed shape keeps every count true while changing what lands.
+	for element in StatusDef.TIER_THREE_ELEMENTS:
+		assert_eq(
+			_mechanics_of(_pair_without_blessings(per_element.get(element, []) as Array)),
+			[String(TIER_THREE_MECHANICS[element])],
+			"%s names its own mechanic" % String(element)
+		)
 
 	var tier_one_mechanics: Dictionary = {}
 	for element in ElementStats.BASE_ELEMENTS:

@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="StatusDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/status/status_def.gd" id="1_status"]
+
+[resource]
+script = ExtResource("1_status")
+id = &"time_drag"
+element = &"time"
+on_landed_blow = true
+kind = &"control"
+icd = 9.0
+family = &"chrono"
+categories = Array[StringName]([&"control"])
+scope = &"combat"
+stacking = &"refresh"
+duration = 9.0
+magnitude_unit = &"stat_modifier"
+magnitude_cap = 0.7
+tick_interval = 1.0
+mitigation_tags = Array[StringName]([&"affinity", &"gear", &"technique", &"pill"])
+payload = {
+"mechanic": &"slow",
+"text": "LOC_STATUSES_TIME_DRAG_TEXT",
+"modifiers": [
+{"stat": &"attack_speed", "op": &"percent", "value": -0.35},
+{"stat": &"move_speed", "op": &"flat", "value": -25.0}
+],
+}
