@@ -55,7 +55,7 @@ const BASE_DEPS := {
 	"relations": ["nation", "sect", "world"],
 	"relationships": ["social"],
 	"save": [],
-	"sect": ["clan", "social"],
+	"sect": ["social"],
 	"set_bonus": ["items"],
 	"social": ["economy", "items"],
 	"socket": ["items"],
