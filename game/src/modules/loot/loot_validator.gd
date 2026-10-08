@@ -235,7 +235,7 @@ static func _table_problems(table: LootTableDef, by_id: Dictionary) -> Array[Str
 
 
 static func _entry_problems(table_id: String, entry: LootEntry, by_id: Dictionary) -> Array[String]:
-	var label := "LOC_LOOT_565A25A0A8" % [table_id, String(entry.id)]
+	var label := L.t("LOC_LOOT_565A25A0A8") % [table_id, String(entry.id)]
 	var problems: Array[String] = []
 	# --- quantity
 	if entry.quantity < 1:
