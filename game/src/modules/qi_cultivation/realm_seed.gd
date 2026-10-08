@@ -29,12 +29,14 @@ static var _cache: Dictionary = {}
 ##   overflows the reservoir, and the overflow becomes quality past the next
 ##   realm's own floor — roll certainty the free verb cannot reach, because
 ##   `cultivate` stops refining at that floor.
-## - `meridian_catalyst` pays for one step on a channel the next realm's gate
-##   does NOT name, which no gate asks for and no elixir is spent on.
+## - `meridian_catalyst` pays for one step of depth PAST the standing realm's
+##   refinement cap — the one purchase the channel elixir cannot make, because
+##   `train_channel` refuses at the cap by design (ADR 0096's restored second half;
+##   the off-gate-channel form was measured and deleted, see `training.gd`).
 ##
-## `QiTraining.cultivate` and `QiTraining.train_off_gate_channel` are the only
-## two readers; `tools/cultivation/audit.py` fails a catalyst that no gate
-## refuses AND a catalyst no verb consumes.
+## `QiTraining.cultivate` and `QiTraining.deepen_past_cap` are the only two
+## readers; `tools/cultivation/audit.py` fails a catalyst that no gate refuses AND
+## a catalyst no verb consumes.
 @export var dantian_catalyst: StringName = &""
 @export var meridian_catalyst: StringName = &""
 @export var progress_required: float = 100.0

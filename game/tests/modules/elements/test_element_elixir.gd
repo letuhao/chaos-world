@@ -35,11 +35,11 @@ func test_drinking_an_elixir_raises_mastery_and_spends_the_item() -> void:
 	actor.set_affinity(ElementStats.FIRE, 10.0)
 	var elixir := ElementStats.mastery_elixir_id(ElementStats.FIRE)
 	assert_eq(_stock(actor, elixir), true, "the authored elixir is in the pack")
-	var before := ElementsApi.mastery_of(actor, ElementStats.FIRE)
+	var before := ElementMastery.mastery_of(actor, ElementStats.FIRE)
 	var outcome := ElementsApi.use_elixir(actor, ElementStats.FIRE)
 	assert_eq(bool(outcome.get("ok", false)), true, "the elixir is drunk: %s" % str(outcome))
 	assert_almost_eq(
-		ElementsApi.mastery_of(actor, ElementStats.FIRE),
+		ElementMastery.mastery_of(actor, ElementStats.FIRE),
 		before + ElementTraining.elixir_gain(ElementStats.FIRE),
 		"mastery rose by the tier's gain"
 	)
@@ -60,7 +60,7 @@ func test_a_body_with_no_spark_cannot_refine_an_element() -> void:
 	)
 	assert_eq(ItemsApi.has_item(actor, elixir), true, "and nothing was spent")
 	assert_almost_eq(
-		ElementsApi.mastery_of(actor, ElementStats.LIGHTNING), 0.0, "and no mastery moved"
+		ElementMastery.mastery_of(actor, ElementStats.LIGHTNING), 0.0, "and no mastery moved"
 	)
 
 

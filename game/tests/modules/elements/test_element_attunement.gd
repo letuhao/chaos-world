@@ -63,7 +63,7 @@ func _row(actor: Actor, element_id: StringName) -> Dictionary:
 func test_a_treasure_opens_a_root_the_race_never_gave() -> void:
 	var actor := _actor()
 	_stand_at(actor, &"spirit_condensation")
-	assert_eq(ElementsApi.can_practise(actor, LIGHTNING), false, "no lightning spark")
+	assert_eq(ElementTraining.can_practise(actor, LIGHTNING), false, "no lightning spark")
 	assert_eq(
 		ElementsApi.use_elixir(actor, LIGHTNING).get("reason", ""),
 		"no_spark",
@@ -75,7 +75,7 @@ func test_a_treasure_opens_a_root_the_race_never_gave() -> void:
 	assert_almost_eq(
 		actor.affinities.get_value(LIGHTNING), 3.0, "at the tier-2 treasure's gain", 1e-6
 	)
-	assert_eq(ElementsApi.can_practise(actor, LIGHTNING), true, "the spark is real")
+	assert_eq(ElementTraining.can_practise(actor, LIGHTNING), true, "the spark is real")
 	assert_eq(ElementsApi.practise(actor, LIGHTNING), true, "and it trains")
 	assert_eq(
 		ElementsApi.use_elixir(actor, LIGHTNING).get("reason", ""),

@@ -46,6 +46,12 @@ func _stock(actor: Actor, item_id: StringName, count: int = 1) -> void:
 	ItemsApi.inventory(actor).add(def, count)
 
 
+## The mastery a screen's roster publishes for one element — the read a consumer has,
+## rather than a module verb.
+func _mastery_of(screen: ElementsScreen, element_id: StringName) -> float:
+	return float(_row(screen.summary(), element_id).get("mastery", 0.0))
+
+
 ## No actor, no view; a bare body is not enrolled.
 func test_the_screen_reports_no_actor_and_an_unawakened_path() -> void:
 	var screen := _screen()
@@ -101,13 +107,13 @@ func test_use_elixir_reports_absence_then_infuses() -> void:
 	assert_eq(
 		String(screen.summary()["message"]), "Fire elixir absent.", "an empty pack names the price"
 	)
-	var before := ElementsApi.mastery_of(actor, ElementStats.FIRE)
+	var before := _mastery_of(screen, ElementStats.FIRE)
 	var def := Crafting.resolve(ElementStats.mastery_elixir_id(ElementStats.FIRE))
 	assert_ne(def, null, "the authored elixir resolves")
 	ItemsApi.inventory(actor).add(def, 1)
 	screen.act_use_elixir()
 	assert_almost_eq(
-		ElementsApi.mastery_of(actor, ElementStats.FIRE),
+		_mastery_of(screen, ElementStats.FIRE),
 		before + ElementTraining.elixir_gain(ElementStats.FIRE),
 		"one drink pays the tier's gain"
 	)

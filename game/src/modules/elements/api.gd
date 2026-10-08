@@ -236,10 +236,6 @@ static func strip_realm_modifiers(actor: Actor, rules: ElementRules = null) -> v
 		actor.stats.mark_dirty()
 
 
-static func multiplier(rules: ElementRules, attacker: StringName, defender: StringName) -> float:
-	return rules.multiplier(attacker, defender)
-
-
 ## ## The mastery loop's doors (ADR 0004's second half)
 ##
 ## The practice STEP is owned here, the way `QiCultivationApi` owns its
@@ -248,16 +244,8 @@ static func multiplier(rules: ElementRules, attacker: StringName, defender: Stri
 const PRACTICE_STEP := 25.0
 
 
-static func can_practise(actor: Actor, element_id: StringName) -> bool:
-	return ElementTraining.can_practise(actor, element_id)
-
-
 static func practise(actor: Actor, element_id: StringName, amount: float = PRACTICE_STEP) -> bool:
 	return ElementTraining.practise(actor, element_id, amount)
-
-
-static func mastery_of(actor: Actor, element_id: StringName) -> float:
-	return ElementMastery.mastery_of(actor, element_id)
 
 
 ## Every element's mastery summed: the currency the elemental climb is paid in, and the

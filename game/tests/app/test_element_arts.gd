@@ -49,11 +49,11 @@ func test_every_element_ships_its_art_and_manual() -> void:
 ## the app installs.
 func test_learning_the_art_opens_the_root_once() -> void:
 	var actor := _hero()
-	assert_eq(ElementsApi.can_practise(actor, FIRE), false, "no fire spark yet")
+	assert_eq(ElementTraining.can_practise(actor, FIRE), false, "no fire spark yet")
 	var outcome := ElementArts.learn_with_root_grant(actor, ElementArts.art_id(FIRE))
 	assert_eq(bool(outcome.get("ok", false)), true, "the art is learned")
 	assert_almost_eq(actor.affinities.get_value(FIRE), 2.0, "and the opening lands", 1e-6)
-	assert_eq(ElementsApi.can_practise(actor, FIRE), true, "the spark is real")
+	assert_eq(ElementTraining.can_practise(actor, FIRE), true, "the spark is real")
 	var again := ElementArts.grant_on_learn(actor, ElementArts.art_id(FIRE))
 	assert_eq(bool(again.get("ok", false)), false, "the opening does not repeat")
 	assert_almost_eq(actor.affinities.get_value(FIRE), 2.0, "and nothing more was written", 1e-6)
