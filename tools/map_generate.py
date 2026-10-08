@@ -120,10 +120,15 @@ KREA2_LORAS = (
     ("916", "krea2/DBX Anime Style V1.safetensors", "dbx_anime_style", 0.0),
     ("915", "krea2/GachaStyleKrea2FINAL.safetensors", "gacha_style", 0.0),
 )
-REMBG_COMPARE_MODELS = ("u2netp", "u2net", "silueta", "isnet-general-use", "isnet-anime", "RMBG-2.0")
-DEFAULT_NEGATIVE = (
-    "ground plane, floor, tiles, terrain texture, shadows on ground, environment, scenery, landscape, room, walls, text, letters, watermark, border, UI, extra objects, duplicate subject, isometric view, 3D render, photorealism, noisy texture"
+REMBG_COMPARE_MODELS = (
+    "u2netp",
+    "u2net",
+    "silueta",
+    "isnet-general-use",
+    "isnet-anime",
+    "RMBG-2.0",
 )
+DEFAULT_NEGATIVE = "ground plane, floor, tiles, terrain texture, shadows on ground, environment, scenery, landscape, room, walls, text, letters, watermark, border, UI, extra objects, duplicate subject, isometric view, 3D render, photorealism, noisy texture"
 
 # Adapted from the supplied standalone ComfyUI workflow. Model, prompt, size,
 # sampler, steps, guidance, seed, and background-removal model are CLI inputs.
@@ -638,9 +643,7 @@ def generate(
         if record["alpha"] in ("transparent", "cutout")
         else "opaque"
     )
-    lora_slug = (
-        args.lora.strip().replace("/", "_").replace(" ", "_").replace(":", "-") or "base"
-    )
+    lora_slug = args.lora.strip().replace("/", "_").replace(" ", "_").replace(":", "-") or "base"
     lora_slug = f"{lora_slug}-s{args.lora_strength:g}"
     output = (
         REPO_ROOT
@@ -959,9 +962,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--rembg-post-processing", action=argparse.BooleanOptionalAction, default=False
     )
-    parser.add_argument(
-        "--alpha-matting", action=argparse.BooleanOptionalAction, default=False
-    )
+    parser.add_argument("--alpha-matting", action=argparse.BooleanOptionalAction, default=False)
     parser.add_argument("--alpha-foreground-threshold", type=int, default=240)
     parser.add_argument("--alpha-background-threshold", type=int, default=10)
     parser.add_argument("--alpha-erode-size", type=int, default=0)

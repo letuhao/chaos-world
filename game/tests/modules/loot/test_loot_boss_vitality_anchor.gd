@@ -6,19 +6,20 @@ extends TestCase
 ##
 ## The owner ruled (2026-10-04): two actors of the same power, no healing, no dodging,
 ## should finish in **60 seconds**, and at the ladder's own blow rate that is **25 landed
-## blows**. `RealmScaling.SCALED_STATS` carries BOTH `Stat.MAX_HEALTH` and
-## `Stat.ATTACK_PHYSICAL`, so an actor's pool and its attack grow by the same authored
-## `RealmDef.power` and the blow count is constant down the whole ladder — the ladder is
-## self-consistent and this ADR does not touch it.
+## blows**. Since DEF-0384/ADR 0934 an actor's pool rides BOTH authored curves —
+## `RealmDef.power` AND the technique ladder — while its attack rides `RealmDef.power` and
+## a blow's magnitude rides the ladder, so the blow count is still constant down the whole
+## ladder. The ladder and the curves are therefore NOT touched.
 ##
 ## What was wrong is AUTHORED BOSS VITALITY: flat at 40-800 (~20x) against a realm table
 ## spanning 1.0-551.46 (551x). So the fix is CONTENT, and the property worth guarding is
 ## the ratio, not the absolute number:
 ##
 ## ```
-## blows_needed(realm) = BASE_HEALTH * RealmDef.power(realm) / HITS_TO_KILL
+## blows_needed(realm) = BASE_HEALTH * power(realm) * ladder(realm) / HITS_TO_KILL
 ## hits_to_kill        = vitality / blows_needed
-##                    = (HITS_TO_KILL * BASE_HEALTH * power) / (BASE_HEALTH * power / HITS_TO_KILL)
+##                    = (HITS_TO_KILL * BASE_HEALTH * power * ladder)
+##                      / (BASE_HEALTH * power * ladder / HITS_TO_KILL)
 ##                    = HITS_TO_KILL ^ 2
 ## ```
 ##
@@ -80,6 +81,21 @@ func _power(realm_id: StringName) -> float:
 	return RealmDefaults.ladder().realm(realm_id).power
 
 
+## The authored technique ladder's factor at `realm_id` (ADR 0934): the SECOND curve an
+## actor pool — and therefore an authored band — rides. Read through the table's own call,
+## so a ladder retune moves this test with the content instead of breaking it.
+func _ladder_factor(realm_id: StringName) -> float:
+	return TechniqueMagnitudeTable.factor(realm_id)
+
+
+## What a floored world band is priced at: the floor realm's power TIMES its ladder
+## factor. Both curves are strictly rising, so the max of two products is the product of
+## the realm with the larger power — the floor only ever RAISES a label that under-reports.
+func _floor_scaled_power() -> float:
+	var floor_realm := StringName(_ladder()[WORLD_FLOOR_INDEX])
+	return _power(floor_realm) * _ladder_factor(floor_realm)
+
+
 ## The ladder's realm ids in order, so a column is never a literal typed here.
 func _ladder() -> Array:
 	var out: Array = []
@@ -91,7 +107,7 @@ func _ladder() -> Array:
 ## One 60-second bout at `realm_id`: how much of a same-realm actor's pool one blow
 ## spends, expressed as the pool itself divided by the anchor's blow count.
 func _blow_at(realm_id: StringName) -> float:
-	return BASE_HEALTH * _power(realm_id) / HITS_TO_KILL
+	return BASE_HEALTH * _power(realm_id) * _ladder_factor(realm_id) / HITS_TO_KILL
 
 
 ## Every shipped `LootTier`, as `{encounter_id, tier}`.
@@ -148,7 +164,7 @@ func test_the_anchor_holds_for_a_ladder_trial_at_every_realm_it_shapes() -> void
 		# hits_to_kill measured as vitality / (pool / HITS_TO_KILL), i.e. the ratio the
 		# ruling is about, rather than `vitality / BASE_HEALTH` which would be a
 		# different (and much larger) number wearing the same name.
-		var pool := BASE_HEALTH * _power(realm_id)
+		var pool := BASE_HEALTH * _power(realm_id) * _ladder_factor(realm_id)
 		var htk := tier.vitality / (pool / HITS_TO_KILL)
 		rows.append(
 			(
@@ -199,6 +215,7 @@ func test_a_world_band_never_prices_a_fight_below_the_drop_label_it_borrowed() -
 	var worlds := 0
 	var floored := 0
 	var floor_power := _power(StringName(_ladder()[WORLD_FLOOR_INDEX]))
+	var floor_scaled := _floor_scaled_power()
 	for encounter_id in content.encounter_ids():
 		var encounter := content.encounter_by_id(StringName(encounter_id))
 		if encounter == null:
@@ -213,7 +230,9 @@ func test_a_world_band_never_prices_a_fight_below_the_drop_label_it_borrowed() -
 			# 134 carried a label below the floor and were raised, and the other 6 are
 			# genuinely deep (loot_ember_vault at 12843.8, loot_route_elemental_transcendent
 			# _domain at 491793.8) and are priced off their own realm, not the floor.
-			var expect := BASE_HEALTH * maxf(_power(tier.realm), floor_power)
+			var expect := (
+				BASE_HEALTH * maxf(_power(tier.realm) * _ladder_factor(tier.realm), floor_scaled)
+			)
 			if tier.tier != 1:
 				expect *= HARD_TIER_MULTIPLIER
 			assert_almost_eq(
