@@ -6,10 +6,10 @@
 [sub_resource type="Resource" id="tier_0"]
 script = ExtResource("2_tier")
 tier = 1
-label = "LOC_LOOT_LOOT_MIND_PRIMORDIAL_IMMORTAL_TRIAL_LABEL_1"
+label = "Gate"
 realm = &"primordial_immortal"
 rarity = &"common"
-vitality = 147468.8
+vitality = 5898.8
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"mind_primordial_immortal_warden", "table_id": &"loot_mind_primordial_immortal_warden"},
 	{"boss_id": &"F15_primordial_warden", "table_id": &"loot_F15_primordial_warden"},
@@ -18,10 +18,10 @@ boss_tables = Array[Dictionary]([
 [sub_resource type="Resource" id="tier_1"]
 script = ExtResource("2_tier")
 tier = 2
-label = "LOC_LOOT_LOOT_MIND_PRIMORDIAL_IMMORTAL_TRIAL_LABEL_2"
+label = "Depths"
 realm = &"primordial_immortal"
 rarity = &"rare"
-vitality = 235950.
+vitality = 9438.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"mind_primordial_immortal_warden", "table_id": &"loot_mind_primordial_immortal_warden"},
 	{"boss_id": &"F15_primordial_warden", "table_id": &"loot_F15_primordial_warden"},
@@ -30,7 +30,7 @@ boss_tables = Array[Dictionary]([
 [resource]
 script = ExtResource("1_encounter")
 id = &"loot_mind_primordial_immortal_trial"
-display_name = "LOC_LOOT_LOOT_MIND_PRIMORDIAL_IMMORTAL_TRIAL_DISPLAY_NAME"
+display_name = "LOC_DOMAINS_MIND_PRIMORDIAL_IMMORTAL_TRIAL_DISPLAY_NAME"
 domain_id = &"mind_primordial_immortal_trial"
 boss_ids = Array[StringName]([&"mind_primordial_immortal_warden", &"F15_primordial_warden"])
 key_reach = 0

@@ -6,10 +6,10 @@
 [sub_resource type="Resource" id="tier_0"]
 script = ExtResource("2_tier")
 tier = 1
-label = "LOC_LOOT_LOOT_BODY_QI_REFINING_TRIAL_LABEL_1"
+label = "Gate"
 realm = &"qi_refining"
 rarity = &"common"
-vitality = 1875.
+vitality = 75.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"body_qi_refining_guardian", "table_id": &"loot_body_qi_refining_guardian"},
 	{"boss_id": &"E1_qi_refinement_warden", "table_id": &"loot_E1_qi_refinement_warden"},
@@ -18,10 +18,10 @@ boss_tables = Array[Dictionary]([
 [sub_resource type="Resource" id="tier_1"]
 script = ExtResource("2_tier")
 tier = 2
-label = "LOC_LOOT_LOOT_BODY_QI_REFINING_TRIAL_LABEL_2"
+label = "Depths"
 realm = &"qi_refining"
 rarity = &"rare"
-vitality = 3000.
+vitality = 120.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"body_qi_refining_guardian", "table_id": &"loot_body_qi_refining_guardian"},
 	{"boss_id": &"E1_qi_refinement_warden", "table_id": &"loot_E1_qi_refinement_warden"},
@@ -30,7 +30,7 @@ boss_tables = Array[Dictionary]([
 [resource]
 script = ExtResource("1_encounter")
 id = &"loot_body_qi_refining_trial"
-display_name = "LOC_LOOT_LOOT_BODY_QI_REFINING_TRIAL_DISPLAY_NAME"
+display_name = "LOC_DOMAINS_BODY_QI_REFINING_TRIAL_DISPLAY_NAME"
 domain_id = &"body_qi_refining_trial"
 boss_ids = Array[StringName]([&"body_qi_refining_guardian", &"E1_qi_refinement_warden"])
 key_reach = 0

@@ -6,10 +6,10 @@
 [sub_resource type="Resource" id="tier_0"]
 script = ExtResource("2_tier")
 tier = 1
-label = "LOC_LOOT_LOOT_BODY_BODY_INTEGRATION_TRIAL_LABEL_1"
+label = "Gate"
 realm = &"body_integration"
 rarity = &"common"
-vitality = 3693.8
+vitality = 147.8
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"body_body_integration_guardian", "table_id": &"loot_body_body_integration_guardian"},
 	{"boss_id": &"E3_integration_arbiter", "table_id": &"loot_E3_integration_arbiter"},
@@ -18,10 +18,10 @@ boss_tables = Array[Dictionary]([
 [sub_resource type="Resource" id="tier_1"]
 script = ExtResource("2_tier")
 tier = 2
-label = "LOC_LOOT_LOOT_BODY_BODY_INTEGRATION_TRIAL_LABEL_2"
+label = "Depths"
 realm = &"body_integration"
 rarity = &"rare"
-vitality = 5910.
+vitality = 236.4
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"body_body_integration_guardian", "table_id": &"loot_body_body_integration_guardian"},
 	{"boss_id": &"E3_integration_arbiter", "table_id": &"loot_E3_integration_arbiter"},
@@ -30,7 +30,7 @@ boss_tables = Array[Dictionary]([
 [resource]
 script = ExtResource("1_encounter")
 id = &"loot_body_body_integration_trial"
-display_name = "LOC_LOOT_LOOT_BODY_BODY_INTEGRATION_TRIAL_DISPLAY_NAME"
+display_name = "LOC_DOMAINS_BODY_BODY_INTEGRATION_TRIAL_DISPLAY_NAME"
 domain_id = &"body_body_integration_trial"
 boss_ids = Array[StringName]([&"body_body_integration_guardian", &"E3_integration_arbiter"])
 key_reach = 0

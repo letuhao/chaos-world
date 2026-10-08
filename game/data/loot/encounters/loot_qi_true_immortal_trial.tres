@@ -6,10 +6,10 @@
 [sub_resource type="Resource" id="tier_0"]
 script = ExtResource("2_tier")
 tier = 1
-label = "LOC_LOOT_LOOT_QI_TRUE_IMMORTAL_TRIAL_LABEL_1"
+label = "Gate"
 realm = &"true_immortal"
 rarity = &"common"
-vitality = 111712.5
+vitality = 4468.5
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_true_immortal_warden", "table_id": &"loot_qi_true_immortal_warden"},
 	{"boss_id": &"F18_true_warden", "table_id": &"loot_F18_true_warden"},
@@ -18,10 +18,10 @@ boss_tables = Array[Dictionary]([
 [sub_resource type="Resource" id="tier_1"]
 script = ExtResource("2_tier")
 tier = 2
-label = "LOC_LOOT_LOOT_QI_TRUE_IMMORTAL_TRIAL_LABEL_2"
+label = "Depths"
 realm = &"true_immortal"
 rarity = &"rare"
-vitality = 178740.
+vitality = 7149.6
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_true_immortal_warden", "table_id": &"loot_qi_true_immortal_warden"},
 	{"boss_id": &"F18_true_warden", "table_id": &"loot_F18_true_warden"},
@@ -30,7 +30,7 @@ boss_tables = Array[Dictionary]([
 [resource]
 script = ExtResource("1_encounter")
 id = &"loot_qi_true_immortal_trial"
-display_name = "LOC_LOOT_LOOT_QI_TRUE_IMMORTAL_TRIAL_DISPLAY_NAME"
+display_name = "LOC_DOMAINS_QI_TRUE_IMMORTAL_TRIAL_DISPLAY_NAME"
 domain_id = &"qi_true_immortal_trial"
 boss_ids = Array[StringName]([&"qi_true_immortal_warden", &"F18_true_warden"])
 key_reach = 0

@@ -6,10 +6,10 @@
 [sub_resource type="Resource" id="tier_0"]
 script = ExtResource("2_tier")
 tier = 1
-label = "LOC_LOOT_LOOT_MIND_SPIRIT_SEVERING_TRIAL_LABEL_1"
+label = "Gate"
 realm = &"spirit_severing"
 rarity = &"common"
-vitality = 12581.2
+vitality = 503.2
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"mind_spirit_severing_warden", "table_id": &"loot_mind_spirit_severing_warden"},
 	{"boss_id": &"F8_severing_warden", "table_id": &"loot_F8_severing_warden"},
@@ -18,10 +18,10 @@ boss_tables = Array[Dictionary]([
 [sub_resource type="Resource" id="tier_1"]
 script = ExtResource("2_tier")
 tier = 2
-label = "LOC_LOOT_LOOT_MIND_SPIRIT_SEVERING_TRIAL_LABEL_2"
+label = "Depths"
 realm = &"spirit_severing"
 rarity = &"rare"
-vitality = 20130.
+vitality = 805.2
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"mind_spirit_severing_warden", "table_id": &"loot_mind_spirit_severing_warden"},
 	{"boss_id": &"F8_severing_warden", "table_id": &"loot_F8_severing_warden"},
@@ -30,7 +30,7 @@ boss_tables = Array[Dictionary]([
 [resource]
 script = ExtResource("1_encounter")
 id = &"loot_mind_spirit_severing_trial"
-display_name = "LOC_LOOT_LOOT_MIND_SPIRIT_SEVERING_TRIAL_DISPLAY_NAME"
+display_name = "LOC_DOMAINS_MIND_SPIRIT_SEVERING_TRIAL_DISPLAY_NAME"
 domain_id = &"mind_spirit_severing_trial"
 boss_ids = Array[StringName]([&"mind_spirit_severing_warden", &"F8_severing_warden"])
 key_reach = 0

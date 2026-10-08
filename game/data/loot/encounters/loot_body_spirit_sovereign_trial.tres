@@ -6,10 +6,10 @@
 [sub_resource type="Resource" id="tier_0"]
 script = ExtResource("2_tier")
 tier = 1
-label = "LOC_LOOT_LOOT_BODY_SPIRIT_SOVEREIGN_TRIAL_LABEL_1"
+label = "Gate"
 realm = &"spirit_sovereign"
 rarity = &"common"
-vitality = 22856.2
+vitality = 914.2
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"body_spirit_sovereign_guardian", "table_id": &"loot_body_spirit_sovereign_guardian"},
 	{"boss_id": &"E6_sovereign_warden", "table_id": &"loot_E6_sovereign_warden"},
@@ -18,10 +18,10 @@ boss_tables = Array[Dictionary]([
 [sub_resource type="Resource" id="tier_1"]
 script = ExtResource("2_tier")
 tier = 2
-label = "LOC_LOOT_LOOT_BODY_SPIRIT_SOVEREIGN_TRIAL_LABEL_2"
+label = "Depths"
 realm = &"spirit_sovereign"
 rarity = &"rare"
-vitality = 36570.
+vitality = 1462.8
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"body_spirit_sovereign_guardian", "table_id": &"loot_body_spirit_sovereign_guardian"},
 	{"boss_id": &"E6_sovereign_warden", "table_id": &"loot_E6_sovereign_warden"},
@@ -30,7 +30,7 @@ boss_tables = Array[Dictionary]([
 [resource]
 script = ExtResource("1_encounter")
 id = &"loot_body_spirit_sovereign_trial"
-display_name = "LOC_LOOT_LOOT_BODY_SPIRIT_SOVEREIGN_TRIAL_DISPLAY_NAME"
+display_name = "LOC_DOMAINS_BODY_SPIRIT_SOVEREIGN_TRIAL_DISPLAY_NAME"
 domain_id = &"body_spirit_sovereign_trial"
 boss_ids = Array[StringName]([&"body_spirit_sovereign_guardian", &"E6_sovereign_warden"])
 key_reach = 0

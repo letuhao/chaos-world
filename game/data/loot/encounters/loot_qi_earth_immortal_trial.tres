@@ -6,10 +6,10 @@
 [sub_resource type="Resource" id="tier_0"]
 script = ExtResource("2_tier")
 tier = 1
-label = "LOC_LOOT_LOOT_QI_EARTH_IMMORTAL_TRIAL_LABEL_1"
+label = "Gate"
 realm = &"earth_immortal"
 rarity = &"common"
-vitality = 36806.2
+vitality = 1472.2
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_earth_immortal_warden", "table_id": &"loot_qi_earth_immortal_warden"},
 	{"boss_id": &"F16_earth_stoneheart_colossus", "table_id": &"loot_F16_earth_stoneheart_colossus"},
@@ -18,10 +18,10 @@ boss_tables = Array[Dictionary]([
 [sub_resource type="Resource" id="tier_1"]
 script = ExtResource("2_tier")
 tier = 2
-label = "LOC_LOOT_LOOT_QI_EARTH_IMMORTAL_TRIAL_LABEL_2"
+label = "Depths"
 realm = &"earth_immortal"
 rarity = &"rare"
-vitality = 58890.
+vitality = 2355.6
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_earth_immortal_warden", "table_id": &"loot_qi_earth_immortal_warden"},
 	{"boss_id": &"F16_earth_stoneheart_colossus", "table_id": &"loot_F16_earth_stoneheart_colossus"},
@@ -30,7 +30,7 @@ boss_tables = Array[Dictionary]([
 [resource]
 script = ExtResource("1_encounter")
 id = &"loot_qi_earth_immortal_trial"
-display_name = "LOC_LOOT_LOOT_QI_EARTH_IMMORTAL_TRIAL_DISPLAY_NAME"
+display_name = "LOC_DOMAINS_QI_EARTH_IMMORTAL_TRIAL_DISPLAY_NAME"
 domain_id = &"qi_earth_immortal_trial"
 boss_ids = Array[StringName]([&"qi_earth_immortal_warden", &"F16_earth_stoneheart_colossus"])
 key_reach = 0

@@ -6,10 +6,10 @@
 [sub_resource type="Resource" id="tier_0"]
 script = ExtResource("2_tier")
 tier = 1
-label = "LOC_LOOT_LOOT_MIND_GREAT_ASCENSION_TRIAL_LABEL_1"
+label = "Gate"
 realm = &"great_ascension"
 rarity = &"common"
-vitality = 4143.8
+vitality = 165.8
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"mind_great_ascension_warden", "table_id": &"loot_mind_great_ascension_warden"},
 	{"boss_id": &"F2_ascension_warden", "table_id": &"loot_F2_ascension_warden"},
@@ -18,10 +18,10 @@ boss_tables = Array[Dictionary]([
 [sub_resource type="Resource" id="tier_1"]
 script = ExtResource("2_tier")
 tier = 2
-label = "LOC_LOOT_LOOT_MIND_GREAT_ASCENSION_TRIAL_LABEL_2"
+label = "Depths"
 realm = &"great_ascension"
 rarity = &"rare"
-vitality = 6630.
+vitality = 265.2
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"mind_great_ascension_warden", "table_id": &"loot_mind_great_ascension_warden"},
 	{"boss_id": &"F2_ascension_warden", "table_id": &"loot_F2_ascension_warden"},
@@ -30,7 +30,7 @@ boss_tables = Array[Dictionary]([
 [resource]
 script = ExtResource("1_encounter")
 id = &"loot_mind_great_ascension_trial"
-display_name = "LOC_LOOT_LOOT_MIND_GREAT_ASCENSION_TRIAL_DISPLAY_NAME"
+display_name = "LOC_DOMAINS_MIND_GREAT_ASCENSION_TRIAL_DISPLAY_NAME"
 domain_id = &"mind_great_ascension_trial"
 boss_ids = Array[StringName]([&"mind_great_ascension_warden", &"F2_ascension_warden"])
 key_reach = 0

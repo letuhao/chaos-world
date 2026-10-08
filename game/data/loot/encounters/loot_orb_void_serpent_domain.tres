@@ -6,10 +6,10 @@
 [sub_resource type="Resource" id="tier_0"]
 script = ExtResource("2_tier")
 tier = 1
-label = "LOC_LOOT_LOOT_ORB_VOID_SERPENT_DOMAIN_LABEL_1"
+label = "Gate"
 realm = &"foundation"
 rarity = &"common"
-vitality = 3300.
+vitality = 132.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"orb_void_serpent", "table_id": &"loot_orb_void_serpent"},
 	{"boss_id": &"d4_void_serpent", "table_id": &"loot_d4_void_serpent"},
@@ -18,10 +18,10 @@ boss_tables = Array[Dictionary]([
 [sub_resource type="Resource" id="tier_1"]
 script = ExtResource("2_tier")
 tier = 2
-label = "LOC_LOOT_LOOT_ORB_VOID_SERPENT_DOMAIN_LABEL_2"
+label = "Depths"
 realm = &"foundation"
 rarity = &"rare"
-vitality = 5280.
+vitality = 211.2
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"orb_void_serpent", "table_id": &"loot_orb_void_serpent"},
 	{"boss_id": &"d4_void_serpent", "table_id": &"loot_d4_void_serpent"},
@@ -30,7 +30,7 @@ boss_tables = Array[Dictionary]([
 [resource]
 script = ExtResource("1_encounter")
 id = &"loot_orb_void_serpent_domain"
-display_name = "LOC_LOOT_LOOT_ORB_VOID_SERPENT_DOMAIN_DISPLAY_NAME"
+display_name = "LOC_DOMAINS_ORB_VOID_SERPENT_DOMAIN_DISPLAY_NAME"
 domain_id = &"orb_void_serpent_domain"
 boss_ids = Array[StringName]([&"orb_void_serpent", &"d4_void_serpent"])
 key_reach = 0

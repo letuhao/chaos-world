@@ -201,7 +201,7 @@ def vitality(realm_id: str, tier: int, *, ladder: bool = True) -> float:
         )
     if not ladder:
         power = max(power, _floor_power())
-    base = HITS_TO_KILL * BASE_HEALTH * power
+    base = BASE_HEALTH * power
     return round(base * HARD_TIER_MULTIPLIER, 1) if tier != TIERS[0] else round(base, 1)
 
 

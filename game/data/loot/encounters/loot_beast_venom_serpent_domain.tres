@@ -6,10 +6,10 @@
 [sub_resource type="Resource" id="tier_0"]
 script = ExtResource("2_tier")
 tier = 1
-label = "LOC_LOOT_LOOT_BEAST_VENOM_SERPENT_DOMAIN_LABEL_1"
+label = "Gate"
 realm = &"qi_refining"
 rarity = &"common"
-vitality = 3300.
+vitality = 132.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"beast_venom_serpent", "table_id": &"loot_beast_venom_serpent"},
 	{"boss_id": &"d1_venom_serpent_fledgling", "table_id": &"loot_d1_venom_serpent_fledgling"},
@@ -18,10 +18,10 @@ boss_tables = Array[Dictionary]([
 [sub_resource type="Resource" id="tier_1"]
 script = ExtResource("2_tier")
 tier = 2
-label = "LOC_LOOT_LOOT_BEAST_VENOM_SERPENT_DOMAIN_LABEL_2"
+label = "Depths"
 realm = &"qi_refining"
 rarity = &"rare"
-vitality = 5280.
+vitality = 211.2
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"beast_venom_serpent", "table_id": &"loot_beast_venom_serpent"},
 	{"boss_id": &"d1_venom_serpent_fledgling", "table_id": &"loot_d1_venom_serpent_fledgling"},
@@ -30,7 +30,7 @@ boss_tables = Array[Dictionary]([
 [resource]
 script = ExtResource("1_encounter")
 id = &"loot_beast_venom_serpent_domain"
-display_name = "LOC_LOOT_LOOT_BEAST_VENOM_SERPENT_DOMAIN_DISPLAY_NAME"
+display_name = "LOC_DOMAINS_BEAST_VENOM_SERPENT_DOMAIN_DISPLAY_NAME"
 domain_id = &"beast_venom_serpent_domain"
 boss_ids = Array[StringName]([&"beast_venom_serpent", &"d1_venom_serpent_fledgling"])
 key_reach = 0

@@ -111,7 +111,20 @@ func _bands() -> Array:
 ## The bands a LADDER trial owns, whose `realm` is a canonical realm and therefore a
 ## claim about the fight. The generator's `_trial_` prefix is the shipped naming, so the
 ## split is read off the encounter id rather than re-derived from content nobody here owns.
-func _ladder_band(tier: LootTier) -> bool:
+##
+## ## The id test is the whole function, and it was missing
+##
+## Only the realm-lookup half was here, so a WORLD band passed it: `loot_*_domain` bands
+## carry a canonical realm LABEL too (`qi_refining`, `foundation`, ...) because that label
+## is the lowest realm any of their drops belongs to, not a claim about the fight. They
+## are priced off the floor instead (`design.WORLD_DOMAIN_FLOOR`), which is what the
+## second test measures - so asserting the realm formula over them charged the corpus with
+## 140 failures that the generator had never made. Measured before this fix: 320 tier-rows
+## in the corpus, 180 priced off their own realm and 140 floored, and every one of the 140
+## counted as a defect here.
+func _ladder_band(encounter_id: String, tier: LootTier) -> bool:
+	if not encounter_id.contains("_trial"):
+		return false
 	return tier.realm != &"" and RealmDefaults.ladder().realm(tier.realm) != null
 
 
@@ -124,7 +137,7 @@ func test_the_anchor_holds_for_a_ladder_trial_at_every_realm_it_shapes() -> void
 	var ladder_bands := 0
 	for band in _bands():
 		var tier: LootTier = band["tier"]
-		if not _ladder_band(tier):
+		if not _ladder_band(String(band["encounter_id"]), tier):
 			continue
 		ladder_bands += 1
 		var realm_id := tier.realm
@@ -152,15 +165,21 @@ func test_the_anchor_holds_for_a_ladder_trial_at_every_realm_it_shapes() -> void
 			),
 			maxf(RELATIVE_TOLERANCE * expect, 0.05)
 		)
+		# The deep tier carries `HARD_TIER_MULTIPLIER` the pool ON PURPOSE, so its anchor is
+		# that many blows longer: 25 blows is the TIER-1 anchor and 40 is the same fight one
+		# tier deeper. Asserting the tier-1 band over tier 2 charged every deep band with a
+		# defect the anchor itself authored - measured, tier 2 read htk 40.0 against a band
+		# of 22.5..27.5 on every ladder band in the corpus.
+		var anchor := HITS_TO_KILL * (HARD_TIER_MULTIPLIER if tier.tier != 1 else 1.0)
 		assert_eq(
-			htk >= HITS_TO_KILL * 0.9 and htk <= HITS_TO_KILL * 1.1,
+			htk >= anchor * 0.9 and htk <= anchor * 1.1,
 			true,
 			(
 				(
 					"%s tier %d takes %.1f of a same-realm actor's blows; the anchor band is "
 					+ "%.1f..%.1f"
 				)
-				% [realm_id, tier.tier, htk, HITS_TO_KILL * 0.9, HITS_TO_KILL * 1.1]
+				% [realm_id, tier.tier, htk, anchor * 0.9, anchor * 1.1]
 			)
 		)
 	print("ADR 0198 -- a same-realm boss's hits_to_kill, across the ladder:")
@@ -185,10 +204,16 @@ func test_a_world_band_never_prices_a_fight_below_the_drop_label_it_borrowed() -
 		if encounter == null:
 			continue
 		for tier in encounter.tiers:
-			if tier == null or _ladder_band(tier):
+			if tier == null or _ladder_band(String(encounter_id), tier):
 				continue
 			worlds += 1
-			var expect := HITS_TO_KILL * BASE_HEALTH * floor_power
+			# The anchor at the band's own power when that power is ABOVE the floor, and at
+			# the floor otherwise - the same `max` the generator applies, because the floor
+			# only ever RAISES a label that under-reports. Measured: of the 140 world bands,
+			# 134 carried a label below the floor and were raised, and the other 6 are
+			# genuinely deep (loot_ember_vault at 12843.8, loot_route_elemental_transcendent
+			# _domain at 491793.8) and are priced off their own realm, not the floor.
+			var expect := BASE_HEALTH * maxf(_power(tier.realm), floor_power)
 			if tier.tier != 1:
 				expect *= HARD_TIER_MULTIPLIER
 			assert_almost_eq(

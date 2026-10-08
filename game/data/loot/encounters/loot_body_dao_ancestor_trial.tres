@@ -6,10 +6,10 @@
 [sub_resource type="Resource" id="tier_0"]
 script = ExtResource("2_tier")
 tier = 1
-label = "LOC_LOOT_LOOT_BODY_DAO_ANCESTOR_TRIAL_LABEL_1"
+label = "Gate"
 realm = &"dao_ancestor"
 rarity = &"common"
-vitality = 713100.
+vitality = 28524.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"body_dao_ancestor_guardian", "table_id": &"loot_route_body_dao_ancestor_guardian"},
 	{"boss_id": &"E10_dao_warden", "table_id": &"loot_E10_dao_warden"},
@@ -18,10 +18,10 @@ boss_tables = Array[Dictionary]([
 [sub_resource type="Resource" id="tier_1"]
 script = ExtResource("2_tier")
 tier = 2
-label = "LOC_LOOT_LOOT_BODY_DAO_ANCESTOR_TRIAL_LABEL_2"
+label = "Depths"
 realm = &"dao_ancestor"
 rarity = &"rare"
-vitality = 1140960.
+vitality = 45638.4
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"body_dao_ancestor_guardian", "table_id": &"loot_route_body_dao_ancestor_guardian"},
 	{"boss_id": &"E10_dao_warden", "table_id": &"loot_E10_dao_warden"},
@@ -30,7 +30,7 @@ boss_tables = Array[Dictionary]([
 [resource]
 script = ExtResource("1_encounter")
 id = &"loot_body_dao_ancestor_trial"
-display_name = "LOC_LOOT_LOOT_BODY_DAO_ANCESTOR_TRIAL_DISPLAY_NAME"
+display_name = "LOC_DOMAINS_BODY_DAO_ANCESTOR_TRIAL_DISPLAY_NAME"
 domain_id = &"body_dao_ancestor_trial"
 boss_ids = Array[StringName]([&"body_dao_ancestor_guardian", &"E10_dao_warden"])
 key_reach = 0

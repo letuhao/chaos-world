@@ -6,10 +6,10 @@
 [sub_resource type="Resource" id="tier_0"]
 script = ExtResource("2_tier")
 tier = 1
-label = "LOC_LOOT_LOOT_ELEMENTAL_SPIRIT_DOMAIN_LABEL_1"
+label = "Gate"
 realm = &"qi_refining"
 rarity = &"common"
-vitality = 3300.
+vitality = 132.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"elemental_spirit_guardian", "table_id": &"loot_elemental_spirit_guardian"},
 	{"boss_id": &"d2_tide_guardian", "table_id": &"loot_d2_tide_guardian"},
@@ -18,10 +18,10 @@ boss_tables = Array[Dictionary]([
 [sub_resource type="Resource" id="tier_1"]
 script = ExtResource("2_tier")
 tier = 2
-label = "LOC_LOOT_LOOT_ELEMENTAL_SPIRIT_DOMAIN_LABEL_2"
+label = "Depths"
 realm = &"qi_refining"
 rarity = &"rare"
-vitality = 5280.
+vitality = 211.2
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"elemental_spirit_guardian", "table_id": &"loot_elemental_spirit_guardian"},
 	{"boss_id": &"d2_tide_guardian", "table_id": &"loot_d2_tide_guardian"},
@@ -30,7 +30,7 @@ boss_tables = Array[Dictionary]([
 [resource]
 script = ExtResource("1_encounter")
 id = &"loot_elemental_spirit_domain"
-display_name = "LOC_LOOT_LOOT_ELEMENTAL_SPIRIT_DOMAIN_DISPLAY_NAME"
+display_name = "LOC_DOMAINS_ELEMENTAL_SPIRIT_DOMAIN_DISPLAY_NAME"
 domain_id = &"elemental_spirit_domain"
 boss_ids = Array[StringName]([&"elemental_spirit_guardian", &"d2_tide_guardian"])
 key_reach = 0

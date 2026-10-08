@@ -6,10 +6,10 @@
 [sub_resource type="Resource" id="tier_0"]
 script = ExtResource("2_tier")
 tier = 1
-label = "LOC_LOOT_LOOT_QI_NASCENT_SOUL_TRIAL_LABEL_1"
+label = "Gate"
 realm = &"nascent_soul"
 rarity = &"common"
-vitality = 2625.
+vitality = 105.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_nascent_soul_warden", "table_id": &"loot_qi_nascent_soul_warden"},
 	{"boss_id": &"F5_nascent_soul_warden", "table_id": &"loot_F5_nascent_soul_warden"},
@@ -18,10 +18,10 @@ boss_tables = Array[Dictionary]([
 [sub_resource type="Resource" id="tier_1"]
 script = ExtResource("2_tier")
 tier = 2
-label = "LOC_LOOT_LOOT_QI_NASCENT_SOUL_TRIAL_LABEL_2"
+label = "Depths"
 realm = &"nascent_soul"
 rarity = &"rare"
-vitality = 4200.
+vitality = 168.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_nascent_soul_warden", "table_id": &"loot_qi_nascent_soul_warden"},
 	{"boss_id": &"F5_nascent_soul_warden", "table_id": &"loot_F5_nascent_soul_warden"},
@@ -30,7 +30,7 @@ boss_tables = Array[Dictionary]([
 [resource]
 script = ExtResource("1_encounter")
 id = &"loot_qi_nascent_soul_trial"
-display_name = "LOC_LOOT_LOOT_QI_NASCENT_SOUL_TRIAL_DISPLAY_NAME"
+display_name = "LOC_DOMAINS_QI_NASCENT_SOUL_TRIAL_DISPLAY_NAME"
 domain_id = &"qi_nascent_soul_trial"
 boss_ids = Array[StringName]([&"qi_nascent_soul_warden", &"F5_nascent_soul_warden"])
 key_reach = 0
