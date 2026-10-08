@@ -185,8 +185,11 @@ func capability_id() -> StringName:
 func contract_findings() -> Array[String]:
 	var found: Array[String] = []
 	if capability_id() == &"":
-		found.append(
-			"identity: capability_id() is empty, so a mis-filed implementation cannot be refused by name"
+		(
+			found
+			. append(
+				"identity: capability_id() is empty, so a mis-filed implementation cannot be refused by name"
+			)
 		)
 	var probe := {"kind": "contract_probe", "institution": "contract_probe"}
 	var check_handed := probe.duplicate(true)
@@ -196,9 +199,7 @@ func contract_findings() -> Array[String]:
 	var join_handed := probe.duplicate(true)
 	_probe_verb(found, "on_join", probe, on_join(join_handed), join_handed)
 	var period_handed := probe.duplicate(true)
-	_probe_verb(
-		found, "on_period", probe, on_period(period_handed, 1), period_handed
-	)
+	_probe_verb(found, "on_period", probe, on_period(period_handed, 1), period_handed)
 	return found
 
 
@@ -223,9 +224,7 @@ func own_reasons() -> Array[String]:
 ## shared half of every capability's own suite: an implementation that answers
 ## with a DIFFERENT named reason is as broken as one that succeeded, and a probe
 ## that only checked `ok == false` would not see the difference.
-func expect_refusal(
-	found: Array[String], verb: String, answer: Variant, reason: String
-) -> void:
+func expect_refusal(found: Array[String], verb: String, answer: Variant, reason: String) -> void:
 	_judge(found, verb, answer)
 	if not (answer is Dictionary):
 		return
@@ -234,9 +233,7 @@ func expect_refusal(
 		found.append("%s: should have been refused with '%s'" % [verb, reason])
 		return
 	if InstitutionCapability.text(row.get("reason", ""), "") != reason:
-		found.append(
-			"%s: refused as '%s' instead of '%s'" % [verb, row.get("reason", ""), reason]
-		)
+		found.append("%s: refused as '%s' instead of '%s'" % [verb, row.get("reason", ""), reason])
 
 
 # --- Internals ---------------------------------------------------------------
@@ -281,13 +278,6 @@ func _judge(found: Array[String], verb: String, answer: Variant) -> void:
 		found.append("%s: refused with '%s', which is not a named reason" % [verb, reason])
 	if not is_primitive_payload(row):
 		found.append("%s: the answer carries a value a save cannot round-trip" % verb)
-
-
-## The id this capability is dispatched under, and the tail of every dispatcher
-## row keyed by it. Empty by default, which is what makes an unnamed capability
-## unregistrable rather than silently filed under nothing.
-func capability_id() -> StringName:
-	return &""
 
 
 ## Vets a scenario this capability has an opinion about, before anything is

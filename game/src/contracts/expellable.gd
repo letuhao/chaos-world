@@ -121,12 +121,15 @@ func costs(ctx: Dictionary) -> Dictionary:
 		)
 	var expelled_cost := int(expired)
 	var expeller_cost := int(expeller)
-	return InstitutionCapability.ok(
-		{
-			"expelled": expelled_cost,
-			"expeller": expeller_cost,
-			"asymmetric": expeller_cost > expelled_cost,
-		}
+	return (
+		InstitutionCapability
+		. ok(
+			{
+				"expelled": expelled_cost,
+				"expeller": expeller_cost,
+				"asymmetric": expeller_cost > expelled_cost,
+			}
+		)
 	)
 
 
@@ -148,9 +151,12 @@ func expel(ctx: Dictionary) -> Dictionary:
 	if not bool(priced.get("ok", false)):
 		return priced
 	if not bool(priced["asymmetric"]):
-		return InstitutionCapability.refuse(
-			R_COST_NOT_ASYMMETRIC,
-			{"expelled": int(priced["expelled"]), "expeller": int(priced["expeller"])},
+		return (
+			InstitutionCapability
+			. refuse(
+				R_COST_NOT_ASYMMETRIC,
+				{"expelled": int(priced["expelled"]), "expeller": int(priced["expeller"])},
+			)
 		)
 	if not _authors_expel(ctx.get("authorities", [])):
 		return InstitutionCapability.refuse(R_NOT_AUTHORISED)
@@ -165,19 +171,22 @@ func expel(ctx: Dictionary) -> Dictionary:
 	var forced := InstitutionCapability.flag(ctx.get("force", false))
 	if not forced and _authors_expel(ctx.get("target_authorities", [])):
 		return InstitutionCapability.refuse(R_CANNOT_EXPEL_EQUAL_OR_ABOVE)
-	return InstitutionCapability.ok(
-		{
-			"plan":
+	return (
+		InstitutionCapability
+		. ok(
 			{
-				"member": member,
-				"target": target,
-				"office": InstitutionCapability.text(ctx.get("target_office", ""), ""),
-				"forced": forced,
-				"cost_expelled": int(priced["expelled"]),
-				"cost_expeller": int(priced["expeller"]),
-				"cause": "expelled",
-			},
-		}
+				"plan":
+				{
+					"member": member,
+					"target": target,
+					"office": InstitutionCapability.text(ctx.get("target_office", ""), ""),
+					"forced": forced,
+					"cost_expelled": int(priced["expelled"]),
+					"cost_expeller": int(priced["expeller"]),
+					"cause": "expelled",
+				},
+			}
+		)
 	)
 
 
@@ -191,14 +200,18 @@ func expel(ctx: Dictionary) -> Dictionary:
 func check(ctx: Dictionary) -> Dictionary:
 	for field in ["authorities", "target_authorities"]:
 		if ctx.has(field) and not (ctx[field] is Array):
-			return InstitutionCapability.refuse(
-				InstitutionCapability.R_MALFORMED, {"field": field}
-			)
-	if ctx.has("cost_expelled") and not (ctx["cost_expelled"] is int or ctx["cost_expelled"] is float):
+			return InstitutionCapability.refuse(InstitutionCapability.R_MALFORMED, {"field": field})
+	if (
+		ctx.has("cost_expelled")
+		and not (ctx["cost_expelled"] is int or ctx["cost_expelled"] is float)
+	):
 		return InstitutionCapability.refuse(
 			InstitutionCapability.R_MALFORMED, {"field": "cost_expelled"}
 		)
-	if ctx.has("cost_expeller") and not (ctx["cost_expeller"] is int or ctx["cost_expeller"] is float):
+	if (
+		ctx.has("cost_expeller")
+		and not (ctx["cost_expeller"] is int or ctx["cost_expeller"] is float)
+	):
 		return InstitutionCapability.refuse(
 			InstitutionCapability.R_MALFORMED, {"field": "cost_expeller"}
 		)

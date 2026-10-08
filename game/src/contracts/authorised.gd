@@ -123,9 +123,7 @@ func check(ctx: Dictionary) -> Dictionary:
 			InstitutionCapability.R_MALFORMED, {"field": "authorities"}
 		)
 	if not _is_id_list(ctx.get("duties", [])):
-		return InstitutionCapability.refuse(
-			InstitutionCapability.R_MALFORMED, {"field": "duties"}
-		)
+		return InstitutionCapability.refuse(InstitutionCapability.R_MALFORMED, {"field": "duties"})
 	return {"ok": true, "reason": "", "unmet": []}
 
 

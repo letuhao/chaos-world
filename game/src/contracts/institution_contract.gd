@@ -196,9 +196,7 @@ func register(kind: StringName, capabilities: Array = []) -> Dictionary:
 			)
 		accepted[String(capability_id)] = impl
 	_rows[key] = {"capabilities": accepted}
-	return InstitutionCapability.ok(
-		{"kind": key, "capabilities": _names(accepted)}
-	)
+	return InstitutionCapability.ok({"kind": key, "capabilities": _names(accepted)})
 
 
 ## Drop every row, and answer how many were dropped. `tests/run_tests.gd` drives
@@ -280,9 +278,10 @@ func check(kind: StringName, ctx: Dictionary) -> Dictionary:
 	# fresh array: the body never writes to the list being walked, so the bound
 	# is the kind's own capability count.
 	for capability_id in capabilities_of(kind):
-		var impl := ((row as Dictionary)["capabilities"] as Dictionary)[
-			String(capability_id)
-		] as InstitutionCapability
+		var impl := (
+			((row as Dictionary)["capabilities"] as Dictionary)[String(capability_id)]
+			as InstitutionCapability
+		)
 		var answer := impl.check(ctx)
 		if not bool(answer.get("ok", false)):
 			return _refused_by(answer, capability_id)
@@ -331,9 +330,10 @@ func _fold(kind: StringName, ctx: Dictionary, verb: StringName, periods: int) ->
 		return InstitutionCapability.refuse(R_UNKNOWN_KIND)
 	var plan: Dictionary = {}
 	for capability_id in capabilities_of(kind):
-		var impl := ((row as Dictionary)["capabilities"] as Dictionary)[
-			String(capability_id)
-		] as InstitutionCapability
+		var impl := (
+			((row as Dictionary)["capabilities"] as Dictionary)[String(capability_id)]
+			as InstitutionCapability
+		)
 		var answer := (
 			impl.on_period(ctx, periods) if verb == &"on_period" else _propose(impl, verb, ctx)
 		)
