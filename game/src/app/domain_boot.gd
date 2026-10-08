@@ -435,6 +435,10 @@ static func enter_domain(player: Actor, template_id: StringName, seed_value: int
 ## remembers where you have been even though the inhabitants do not (BL-0252).
 static func leave_domain(player: Actor) -> Dictionary:
 	var left := DomainApi.leave(player)
+	# The place goes with the run. A hero who leaves a rich room and cultivates in the
+	# overworld must not keep the room's density — the same publish-don't-skip rule
+	# `_apply_zones` states (ADR 0214/0926).
+	CultivationGain.publish_density(player, CultivationGain.NEUTRAL)
 	# **The floor goes before the run does.** A world realized from this run's map is
 	# still standing its tiles under whoever opened the screen, and the map those tiles
 	# were stamped from is about to stop existing. Detached and freed here rather than
@@ -730,11 +734,22 @@ static func _refs_of(room_id: StringName) -> Array:
 ## health the player loses are the same number.
 static func _apply_zones(player: Actor, map: DomainMap, room_id: StringName) -> Dictionary:
 	var out: Dictionary = {}
-	if player == null or map == null or room_id == &"" or not map.has_room(room_id):
+	if player == null:
+		return out
+	if map == null or room_id == &"" or not map.has_room(room_id):
+		# No room is a place with no density, and NEUTRAL is PUBLISHED rather than
+		# skipped: a hero who leaves a rich room must not keep its number through a key
+		# nobody cleared (`CultivationGain.publish_density`'s own contract, ADR 0214/0926).
+		CultivationGain.publish_density(player, CultivationGain.NEUTRAL)
 		return out
 	var room := map.room(room_id)
 	if room == null:
+		CultivationGain.publish_density(player, CultivationGain.NEUTRAL)
 		return out
+	# The room's ambient richness, published BEFORE the hazard loop and BEFORE the path
+	# check below: density is a fact about the ROOM, not about which of its zones the
+	# actor stands in or which path they cultivate (ADR 0214/0926).
+	CultivationGain.publish_density(player, _room_density(room))
 	# The weather is a property of the RUN, so it is published from here rather than
 	# from a per-room verb — and `bind_shift_holder` does the publish AND the binding the
 	# map's own `zones()` read model needs, so the minimap and the hazard cannot disagree
@@ -751,6 +766,20 @@ static func _apply_zones(player: Actor, map: DomainMap, room_id: StringName) -> 
 	for zone in room.environment_zones:
 		out[zone.zone_id] = EnvironmentField.apply(player, zone, path_id)
 	return out
+
+
+## The richest authored density in `room`, or `CultivationGain.NEUTRAL` when it authors
+## no zone. A room is ONE place: the zones inside it are volumes of the same place, so
+## the richest one answers for the room rather than an iteration order.
+static func _room_density(room: RoomDef) -> float:
+	var zones := room.environment_zones
+	if zones.is_empty():
+		return CultivationGain.NEUTRAL
+	var density := zones[0].qi_density
+	# Bounded `for` from the second zone: the first already seeded the answer.
+	for index in range(1, zones.size()):
+		density = maxf(density, zones[index].qi_density)
+	return density
 
 
 ## The room graph the map screen's minimap draws: the laid-out rects, the corridor

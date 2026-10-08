@@ -1,6 +1,19 @@
-[gd_resource type="Resource" script_class="RoomDef" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="RoomDef" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://src/modules/domain/room_def.gd" id="1_room"]
+[ext_resource type="Script" path="res://src/modules/domain/environment_zone_def.gd" id="2_zone"]
+
+[sub_resource type="Resource" id="zone_ley_spring"]
+script = ExtResource("2_zone")
+zone_id = &"ash_camp_ley_spring"
+kind = &"verdant"
+intensity = 1
+status_id = &"env_scourge"
+stay_budget = 8.0
+qi_density = 1.2
+tags = Array[StringName]([&"wood"])
+mitigation_tags = Array[StringName]([&"gear", &"affinity"])
+bounds = Rect2i(6, 1, 2, 2)
 
 [resource]
 script = ExtResource("1_room")
@@ -17,3 +30,4 @@ actor_spawn_refs = Array[Dictionary]([
 fixtures = Array[Dictionary]([
 	{"fixture_id": &"ash_camp_offering", "kind": &"treasure", "tags": Array[StringName]([&"treasure_unkeyed", &"social"]), "position": Vector2i(4, 3), "bounds": Rect2i(4, 3, 2, 2), "reward_item_id": &"ash_camp_pilgrims_ration", "reward_count": 1, "key_item_id": &"", "requires_realm": &"", "telegraph_s": 0.0, "damage_share": 0.0, "status_id": &"", "duration_s": 0.0, "mitigation_tags": Array[StringName]([])}
 ])
+environment_zones = Array[EnvironmentZoneDef]([SubResource("zone_ley_spring")])

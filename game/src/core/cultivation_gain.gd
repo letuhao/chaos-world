@@ -2,20 +2,22 @@ class_name CultivationGain
 extends RefCounted
 
 ## How much one unit of cultivation work is WORTH right now, beyond the realm's own rate
-## (ADR 0214).
+## (ADR 0214; ADR 0926 extends it with the actor's own rate).
 ##
 ## ## This is a RATE, and that is the whole point
 ##
-## The gain expression in all three paths is one multiplication:
+## The gain expression in all three paths is one multiplication, then one call:
 ##
 ## ```
-## gain = amount * RealmRate.factor(realm_id) * (1.0 + meridians.get_flow_bonus()) * PLACE
+## gain = amount * RealmRate.factor(realm_id) * (1.0 + meridians.get_flow_bonus())
+## gain = CultivationGain.scale_gain(actor, gain)
 ## ```
 ##
-## `PLACE` is what this file supplies. It multiplies the GAIN TERM ONLY: never `amount`
-## (a price), never a reservoir's capacity, never a `magnitude_unit` stat. Anything that
-## multiplies `gain` is a rate; anything that adds to `amount` is not, and adding to
-## `amount` would make a dense place cheap rather than rich.
+## `scale_gain` is what this file supplies, and it is TWO bounded factors MULTIPLIED:
+## the PLACE's density and the ACTOR's own rate stat. Both multiply the GAIN TERM ONLY:
+## never `amount` (a price), never a reservoir's capacity, never a `magnitude_unit` stat.
+## Anything that multiplies `gain` is a rate; anything that adds to `amount` is not, and
+## adding to `amount` would make a dense place cheap rather than rich.
 ##
 ## ## Why it lives in `core` and not in `domain`
 ##
@@ -27,9 +29,11 @@ extends RefCounted
 ## (`LAYER_DEPS["core"] == {"core", "contracts"}`), so holding the curve here creates
 ## ZERO new edges — the same argument `core/realm_rate.gd` already makes for itself.
 ##
-## The PLACE side is written by `domain` (it owns the zones) and the GAIN side is read by
-## the three cultivation paths, and the two halves meet only as one number on an `Actor`.
-## That is the same plain-data seam `EnvironmentField.GEAR_TAGS_KEY` already is.
+## The PLACE side is written by the composition root (`DomainBoot._apply_zones`, from the
+## zones `domain` owns) and the GAIN side is read by the three cultivation paths, and the
+## two halves meet only as one number on an `Actor`. That is the same plain-data seam
+## `EnvironmentField.GEAR_TAGS_KEY` already is. The ACTOR's own rate is not published at
+## all: it is a derived stat, read where it lives.
 ##
 ## ## It is NOT `inside_world_qi_density`, and neither may read the other
 ##
@@ -39,24 +43,26 @@ extends RefCounted
 ## cultivator's cultivation speed scale off their own private world, which is the
 ## "magnitude riding a rate" failure in a new place.
 ##
-## ## The bound is `RATE_STEP`-safe by construction
+## ## Both bounds are `RATE_STEP`-safe by construction
 ##
 ## `RealmRate.RATE_STEP` is `1.02` and `tests/core/test_realm_rate.gd` computes the
 ## authored ceiling from the three `progress_required` ladders — qi's deepest transition
-## at `2900/2800` ≈ **1.0357**. This multiplier is realm-INDEPENDENT and bounded by
-## [constant MAX_DEVIATION], so the widest single-place swing a domain can deliver is
-## `1.25x` — below the 1.0357 per-realm step's own compounded ceiling is not the claim;
-## the claim is that it is applied to the GAIN and never to `RealmRate.factor` itself, so
-## `RATE_STEP` remains the only per-realm number and no domain can re-price a realm. A
-## 2x multiplier would let a domain deliver a breakthrough's work for free; a quarter is
-## a decision a player makes by standing in a place, not a ladder they skip.
+## at `2900/2800` ≈ **1.0357**. Neither factor is realm-DEPENDENT: the density is bounded
+## by [constant MAX_DEVIATION] (the widest single-place swing is `1.25x`) and the actor's
+## rate by [method rate_ceiling] — the ladder's ENTIRE span, DERIVED from the shared
+## curve rather than typed, so one actor's speed can never be worth the whole climb.
+## Neither is applied to `RealmRate.factor` itself, so `RATE_STEP` remains the only
+## per-realm number and no place and no wardrobe can re-price a realm. A 2x multiplier
+## would let a place deliver a breakthrough's work for free; a bounded constant is a
+## decision a player makes by standing somewhere or equipping something, not a ladder
+## they skip.
 ##
 ## ## Never SUMMED, always composed
 ##
-## `1.25` in a dense room and `1.25` from a meridian bonus are two factors multiplied, not
-## `1.25 + 1.25`. Summing rate factors is what once made a single breakthrough worth more
-## than everything else combined (AGENTS.md §Realm scale), and it is the specific shape
-## ADR 0214 refuses.
+## `1.25` in a dense room, `1.12` from the actor's own rate and `1.25` from a meridian
+## bonus are three factors multiplied, not `1.25 + 1.12 + 1.25`. Summing rate factors is
+## what once made a single breakthrough worth more than everything else combined
+## (AGENTS.md §Realm scale), and it is the specific shape ADR 0214 refuses.
 
 ## Neutral: a room with no zone, a run with no weather, an actor with nothing published.
 ## The multiplier is `1.0` here, so every existing path is unchanged until a place
@@ -83,6 +89,11 @@ const QI_DENSITY_MAX := 1.0 + MAX_DEVIATION
 ## shared number and a body cultivator cannot get a private cultivation-speed multiplier
 ## the gate arithmetic never sees (ADR 0214).
 const DENSITY_KEY := &"place_qi_density"
+
+## The floor of the actor's own rate read. A rate of zero would make every sitting worth
+## nothing and stall the path silently, which is the failure a floor exists to refuse; a
+## debuff may slow cultivation to a quarter, never to a dead stop.
+const RATE_FLOOR := 0.25
 
 
 ## The authored density, clamped into [constant QI_DENSITY_MIN], [constant
@@ -133,11 +144,42 @@ static func density_of(actor: Actor) -> float:
 	return clamp_density(float(value))
 
 
-## `gain` multiplied by `actor`'s ambient place density — the WHOLE of ADR 0214's rule,
-## and the one call each of the three paths makes.
+## The ceiling of the actor's own rate read: the ladder's ENTIRE rate span
+## (`RealmRate.rate_span()`), so one actor's speed can never be worth the whole climb.
 ##
-## Applied to the gain TERM only, and never summed with `RealmRate.factor` or the meridian
-## flow bonus. `amount` is untouched: a dense place makes one unit of work worth more, it
-## does not make the work cheaper to buy.
+## DERIVED from the shared curve rather than typed, so a retune of the ladder moves it —
+## the discipline `tests/core/test_realm_rate.gd` already enforces on every other rate
+## bound. It is a ceiling on the READ, not on the derivation: the stat's own value is
+## still what it is, and no shipped actor reaches the ceiling (the authored `aptitude`
+## scale tops out near `13`, so the derived rate tops out near `1.26`).
+static func rate_ceiling() -> float:
+	return RealmRate.rate_span()
+
+
+## `actor`'s own cultivation rate, clamped into [constant RATE_FLOOR], [method
+## rate_ceiling].
+##
+## `Stat.CULTIVATION_RATE` is derived in `core` (`actor_stats.gd`: `1.0 + aptitude *
+## 0.02`) and granted by item options, bloodlines, sets, fates and consumables as PERCENT
+## modifiers — dozens of authored grants that were DECORATIVE until this read existed
+## (BL-0931). An actor with no derivation at all (a bare `ActorStats` whose core provider
+## was never mounted) answers [constant NEUTRAL]: `derived()` returns `0.0` for an id
+## nobody published, and reads-absent-instead-of-0 is a different fact from a rate of
+## zero, which is why the check is `has()` rather than a comparison.
+static func rate_of(actor: Actor) -> float:
+	if actor == null:
+		return NEUTRAL
+	if not actor.stats.derived_all().has(Stat.CULTIVATION_RATE):
+		return NEUTRAL
+	return clampf(actor.stats.derived(Stat.CULTIVATION_RATE), RATE_FLOOR, rate_ceiling())
+
+
+## `gain` multiplied by `actor`'s gain-side factors — the WHOLE of the rule, and the one
+## call each of the three paths makes.
+##
+## Two factors, MULTIPLIED: the ambient place density ([method density_of]) and the
+## actor's own rate ([method rate_of]). Applied to the gain TERM only, and never summed
+## with `RealmRate.factor` or the meridian flow bonus. `amount` is untouched: a dense
+## place makes one unit of work worth more, it does not make the work cheaper to buy.
 static func scale_gain(actor: Actor, gain: float) -> float:
-	return gain * density_of(actor)
+	return gain * density_of(actor) * rate_of(actor)

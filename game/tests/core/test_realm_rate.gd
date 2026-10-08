@@ -17,6 +17,10 @@ extends TestCase
 ##     because a path that re-derived the curve would be numerically identical
 ##     today and free to drift tomorrow.
 ##   - no `*RealmProfile` class may be reintroduced by copying an old file back.
+##   - the three paths must be seen multiplying their gain through the ONE shared factor
+##     (`CultivationGain.scale_gain`, ADR 0926), and that helper must read the ladder's
+##     SPAN rather than the ladder itself — a per-realm read there would make the factor
+##     compound with the ladder, which is the thing the factor is bounded to prevent.
 ##   - every path must be seen READING the shared curve, so a path cannot quietly
 ##     go back to a local implementation under another name.
 ##
@@ -279,6 +283,47 @@ func test_the_training_and_provider_call_sites_read_the_shared_curve() -> void:
 			"%s prices through the shared rate" % relative
 		)
 	assert_eq(expected.size(), 7, "and all seven call sites are covered")
+
+
+## The gain-side multiplier is read through ONE shared helper, and the pin is a source
+## scan for the reason the fourth copy taught: a value assertion cannot see a path that
+## multiplies its gain by a local number — `amount * factor * flow * 1.1` is numerically
+## identical to the shared call today and free to drift tomorrow.
+##
+## The three paths are the ones `CultivationGain.scale_gain` documents. `dual_cultivation`
+## is deliberately NOT on this list: it advances on its own rate stat
+## (`DUAL_CULTIVATION_RATE`), and wiring that id is its own decision (DEF-0356 tracks it).
+func test_the_three_paths_multiply_through_the_shared_gain_factor() -> void:
+	var paths := [
+		"qi_cultivation/training.gd",
+		"body_cultivation/training.gd",
+		"mind_cultivation/training.gd",
+	]
+	for relative in paths:
+		var source := FileAccess.get_file_as_string("res://src/modules/%s" % relative)
+		assert_ne(source, "", "%s is readable" % relative)
+		assert_eq(
+			source.contains("CultivationGain.scale_gain("),
+			true,
+			"%s multiplies its gain through the shared factor" % relative
+		)
+	assert_eq(paths.size(), 3, "and all three paths are covered")
+
+
+## The shared factor must not grow a second curve of its own. It READS the ladder's span
+## (`RealmRate.rate_span()`) and must never read the ladder itself: a per-realm read there
+## would make the factor a function of the realm — compounding with `1.02^ordinal` — which
+## is exactly what "the multiplier cannot outrun the ladder" forbids.
+func test_the_gain_factor_reads_the_span_and_never_the_ladder() -> void:
+	var source := FileAccess.get_file_as_string("res://src/core/cultivation_gain.gd")
+	assert_ne(source, "", "the gain helper is readable")
+	assert_eq(
+		source.contains("RealmRate.rate_span()"),
+		true,
+		"the ceiling is derived from the shared span"
+	)
+	assert_eq(source.contains("RealmDefaults"), false, "and never reads the ladder itself")
+	assert_eq(source.contains("const RATE_STEP"), false, "nor authors a step of its own")
 
 
 ## The three `*RealmProfile` classes are gone and stay gone. Copying an old

@@ -55,6 +55,9 @@ static func cultivate(actor: Actor, amount: float) -> bool:
 	# work. A bounded per-realm number, not the realm's magnitude — see
 	# `core/realm_rate.gd`. Same rate, same realm, as body and mind.
 	var gain := amount * RealmRate.factor(state.rank_id) * (1.0 + actor.meridians.get_flow_bonus())
+	# The sitting's worth in THIS place and for THIS actor: the place's bounded density
+	# and the actor's own rate, one shared call — see `core/cultivation_gain.gd`.
+	gain = CultivationGain.scale_gain(actor, gain)
 	# The room is read BEFORE the fill, because what the reservoir refuses is the
 	# quantity this sitting is priced on (ADR 0195).
 	var room := maxf(0.0, dantian.effective_capacity() - dantian.current(actor))

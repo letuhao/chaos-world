@@ -67,6 +67,8 @@ static func cultivate(actor: Actor, amount: float) -> bool:
 	# bounded per-realm number — see `core/realm_rate.gd`. Same rate, same realm,
 	# as body and qi.
 	var gain := amount * RealmRate.factor(state.rank_id) * (1.0 + actor.meridians.get_flow_bonus())
+	# The place's density and the actor's own rate, one shared call (ADR 0214, ADR 0926).
+	gain = CultivationGain.scale_gain(actor, gain)
 	sea.fill(actor, gain)
 	# Deep meditation sharpens clarity and purity toward the seed's targets.
 	sea.set_clarity(minf(seed.clarity_required, sea.clarity + gain / 1000.0))

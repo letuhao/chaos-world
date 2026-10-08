@@ -66,6 +66,9 @@ static func cultivate(actor: Actor, amount: float) -> bool:
 	var energy := (
 		amount * RealmRate.factor(state.rank_id) * (1.0 + actor.meridians.get_flow_bonus())
 	)
+	# The place's density and the actor's own rate: one shared call, so a body
+	# cultivator cannot miss a factor a qi cultivator gets (ADR 0214, ADR 0926).
+	energy = CultivationGain.scale_gain(actor, energy)
 	# Fill the shared body_integrity pool, not per-acupoint storage.
 	acupoint_set.fill(energy)
 	# Raise quality toward the seed target for all open points. The target is a
