@@ -42,9 +42,9 @@ extends RefCounted
 ## Admission may require a purity threshold, but passing never raises purity
 ## (ADR 0063). A clan cannot manufacture a lineage it does not have.
 ##
-## The facade is at its twelve-method cap, so anything a panel or a sibling module
-## needs that is not a verb below lives on `ClanGate` or `ClanCatalog` behind a verb,
-## never as a thirteenth method.
+## The facade is held to its fan-in budget (`rules.MAX_FACADE_FAN_IN`), so anything
+## a panel or a sibling module needs that is not a verb below lives on `ClanGate` or
+## `ClanCatalog` behind a verb, never as another published method.
 
 ## The stat-provider component slot. Underscored because it is wiring, not a question.
 const _PROVIDER_COMPONENT := &"clan_provider"
@@ -401,9 +401,9 @@ static func admission_unmet(actor: Actor, clan_id: StringName) -> Array[Dictiona
 ## resolver does read, and `test_clan_social_edge.gd` greps the module for any bare
 ## `Social[A-Z]` name outside it.
 ##
-## Underscore-prefixed, so it does **not** count against the twelve-method facade cap —
+## Underscore-prefixed, so it does **not** widen the facade's published surface —
 ## which is why ADR 0083's answer to a full facade, a component named beside it, applies
-## here rather than a thirteenth published method.
+## here rather than a newly published method.
 ##
 ## ## The scale is ADR 0064's hinge, and it is a READ of purity
 ##

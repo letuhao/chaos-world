@@ -121,6 +121,39 @@ func test_a_legacy_payload_with_no_clan_state_loads_cleanly_as_the_empty_ledger(
 	assert_eq(String(ClanApi.rank_of(restored)), "", "and no position is held")
 
 
+## An OLD clan payload — version-less and with no `applied` record, as saves written
+## before the projection started recording what it projected — folds in whole on load
+## (D7). `normalize` stamps the current schema and `attach` re-derives the projection
+## from the ledger, so the mirrors and the applied record exist after the load even
+## though neither was in the bytes.
+func test_an_old_payload_without_version_or_applied_record_folds_in_on_load() -> void:
+	var legacy := {
+		"clan": String(HOUSE),
+		"rank": "outer",
+		"standing": 25,
+	}
+	var actor := Actor.new(&"returning", {Stat.PHYSIQUE: 10.0})
+	actor.set_module_data(MODULE_KEY, legacy)
+	ClanApi.attach(actor)
+	assert_eq(String(ClanApi.clan_of(actor)), String(HOUSE), "the membership folds in")
+	assert_eq(String(ClanApi.rank_of(actor)), "outer", "with the position it granted")
+	assert_eq(ClanApi.standing_of(actor), 25, "and the earned standing")
+	assert_eq(
+		actor.traits.has(ClanState.trait_for(HOUSE)),
+		true,
+		"and the projection re-derives the mirrors rather than trusting the payload"
+	)
+	var stored: Dictionary = actor.get_module_data(MODULE_KEY)
+	assert_eq(
+		int(stored.get("version", 0)), ClanState.SCHEMA_VERSION, "re-stamped at the current schema"
+	)
+	assert_eq(
+		(stored.get("applied", {}) as Dictionary).is_empty(),
+		false,
+		"with an applied record for the next strip to reverse"
+	)
+
+
 func test_normalize_drops_an_entry_naming_content_the_catalog_no_longer_ships() -> void:
 	var payload := {
 		"version": 1,

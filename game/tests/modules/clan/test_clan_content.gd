@@ -365,3 +365,25 @@ func test_the_summary_publishes_the_obligations_so_a_screen_needs_no_second_call
 	assert_eq((full["clans"]["quiethouse"] as Dictionary)["held"], false, "the others are not held")
 	assert_eq((full["clans"]["saltledger"] as Dictionary)["held"], true, "and this one is")
 	assert_eq(ClanApi.summary(null)["has_actor"], false, "a null actor is safe to ask about")
+
+
+## A changed overlay stack drops the cached tree, so a mod root that stops shipping a
+## house cannot keep serving it. Asserted through `set_overlay_roots([])` — the stack
+## value is unchanged, so the case is self-cleaning and the next suite's `setup()`
+## rebuilds from the shipped tree exactly as before.
+func test_changing_the_overlay_stack_drops_the_cached_tree() -> void:
+	ClanFixtureCatalog.install([ClanFixtureCatalog.open(&"t_house")])
+	assert_ne(ClanCatalog.shared, null, "a tree is cached")
+	ClanCatalog.set_overlay_roots([])
+	assert_eq(
+		ClanCatalog.shared, null, "a changed stack invalidates the tree rather than serving it"
+	)
+
+
+## `clear()` drops the tree AND the stack, so a leaked fixture root cannot become the
+## next suite's content in the one shared runner process. Self-cleaning for the same
+## reason: nothing is left installed afterwards.
+func test_clear_drops_the_tree_and_the_stack() -> void:
+	ClanFixtureCatalog.install([ClanFixtureCatalog.open(&"t_house")])
+	ClanCatalog.clear()
+	assert_eq(ClanCatalog.shared, null, "the cached tree is gone")

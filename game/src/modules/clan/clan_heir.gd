@@ -21,10 +21,10 @@ extends RefCounted
 ##
 ## ## Reached by name, the way `ClanGate` is
 ##
-## `ClanApi` publishes twelve verbs and `rules.MAX_FACADE_PUBLIC_METHODS` is twelve, so
-## a thirteenth is a build failure rather than a judgement call. ADR 0083's answer — a
-## component holding the rule, named beside the facade — is the one used here, which is
-## also what `ClanGate` and `ClanCatalog` already are.
+## The facade is held to its fan-in budget rather than grown verb by verb, so a new
+## membership-adjacent rule does not become a newly published method. ADR 0083's
+## answer — a component holding the rule, named beside the facade — is the one used
+## here, which is also what `ClanGate` and `ClanCatalog` already are.
 ##
 ## ## `heir` is named here and refused against, never derived
 ##
