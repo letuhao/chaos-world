@@ -269,13 +269,16 @@ static func total_mastery(actor: Actor) -> float:
 
 ## Every element a screen renders, one row each, as primitives: the id, the authored
 ## display name, the tier, the actor's mastery, whether the body carries a SPARK for it
-## (the practice gate), and whether it is USABLE right now (the rank+realm door). The
-## screen passes these raw values to its rows; it never reaches into `ElementDefaults`.
+## (the practice gate), whether it is USABLE right now (the rank+realm door), and the
+## affinity door's read — the root's value and cap and what an Attune press would pay
+## (ADR 0924). The screen passes these raw values to its rows; it never reaches into
+## `ElementDefaults`.
 static func roster(actor: Actor) -> Array:
 	var rules := default_rules()
 	var out: Array = []
 	for entry in ElementDefaults.all():
 		var def := entry as ElementDef
+		var attune := ElementAttunement.offer(actor, def.id)
 		(
 			out
 			. append(
@@ -286,6 +289,13 @@ static func roster(actor: Actor) -> Array:
 					"mastery": ElementMastery.mastery_of(actor, def.id),
 					"spark": ElementTraining.can_practise(actor, def.id, rules),
 					"usable": ElementMastery.usable(actor, def.id, rules),
+					# The affinity door's read (ADR 0924): the root's value and cap,
+					# and what an Attune press would pay or refuse with.
+					"affinity": attune.get("affinity", 0.0),
+					"affinity_cap": attune.get("cap", 0.0),
+					"attune_gain": attune.get("gain", 0.0),
+					"attune_label": attune.get("label", ""),
+					"attune_blocked": attune.get("blocked", ""),
 				}
 			)
 		)
@@ -296,6 +306,27 @@ static func roster(actor: Actor) -> Array:
 ## itself, and the practice gate follows.
 static func awaken(actor: Actor, element_id: StringName, amount: float) -> bool:
 	return ElementTraining.awaken(actor, element_id, amount)
+
+
+## Register a way to open an element's root (ADR 0924): an awakening treasure, an
+## awakening elixir, a root-refining art, or anything a future feature ships. The
+## module resolves the grant (the tier gate, the cap, the affinity write); the source
+## owns its own requirement and consumption.
+static func register_affinity_source(source: AffinitySource) -> bool:
+	return ElementAttunement.register(source)
+
+
+## Forget every registered source. Tests and reboots only: the two item families are
+## derived and need no registration.
+static func clear_registered_sources() -> void:
+	ElementAttunement.clear_registered_sources()
+
+
+## Attune `element_id`: spend the best available source and raise the affinity
+## (BL-0926's door). A body with no spark for the element gets one here, and the
+## practise and elixir doors follow.
+static func attune(actor: Actor, element_id: StringName) -> Dictionary:
+	return ElementAttunement.attune(actor, element_id)
 
 
 ## Drink the element's authored mastery elixir (ADR 0917): the ELIXIR door of the

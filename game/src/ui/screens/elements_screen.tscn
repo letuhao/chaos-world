@@ -26,6 +26,9 @@ text = ""
 [node name="MasteryRow" parent="Layout" instance=ExtResource("3")]
 unique_name_in_owner = true
 
+[node name="AffinityRow" parent="Layout" instance=ExtResource("3")]
+unique_name_in_owner = true
+
 [node name="ElementList" type="VBoxContainer" parent="Layout"]
 unique_name_in_owner = true
 

@@ -34,6 +34,7 @@ var _rank_label: Label = null
 var _conditions_label: Label = null
 var _element_list: VBoxContainer = null
 var _mastery_row: StatRow = null
+var _affinity_row: StatRow = null
 var _rows: Dictionary = {}
 ## The element the element-scoped verbs act on. See the docblock above.
 var _selected_element: StringName = SELECTION_NONE
@@ -58,6 +59,7 @@ func _summary() -> Dictionary:
 	}
 	_feed_children(live)
 	view["mastery_row"] = _mastery_row.summary() if _mastery_row != null else {}
+	view["affinity_row"] = _affinity_row.summary() if _affinity_row != null else {}
 	view["actions"] = _actions.summary() if _actions != null else {}
 	view["element_rows"] = _rows_summary()
 	return view
@@ -78,6 +80,11 @@ func _refresh_view() -> void:
 ## Hand the facade's raw values to the child panels. Shared by `refresh()` and
 ## `summary()` so a child's reported state is never one refresh stale.
 func _feed_children(live: Dictionary) -> void:
+	_feed_mastery(live)
+	_feed_affinity()
+
+
+func _feed_mastery(live: Dictionary) -> void:
 	if _mastery_row == null:
 		return
 	var mastery := float(live.get("mastery", 0.0))
@@ -91,6 +98,31 @@ func _feed_children(live: Dictionary) -> void:
 				# A bar needs a positive maximum: at an unreadable threshold the row
 				# shows the mastery against itself rather than dividing by zero.
 				"maximum": threshold if threshold > 0.0 else maxf(1.0, mastery),
+				"decimals": 0,
+				"mode": StatRow.MODE_BAR,
+			}
+		)
+	)
+
+
+## The selected element's root, against its tier's cap (ADR 0924's affinity door).
+## The row hides itself when nothing is selected: a StatRow with an empty name is
+## invisible, which is the one hiding rule the panels already share.
+func _feed_affinity() -> void:
+	if _affinity_row == null:
+		return
+	var pick := _pick_element()
+	if pick == SELECTION_NONE:
+		_affinity_row.set_state({"name": "", "current": 0.0, "maximum": 1.0})
+		return
+	var row := _row_of(pick)
+	(
+		_affinity_row
+		. set_state(
+			{
+				"name": "%s affinity" % String(row.get("name", pick)),
+				"current": float(row.get("affinity", 0.0)),
+				"maximum": maxf(1.0, float(row.get("affinity_cap", 1.0))),
 				"decimals": 0,
 				"mode": StatRow.MODE_BAR,
 			}
@@ -142,10 +174,11 @@ func _render_actions(live: Dictionary) -> void:
 		_actions
 		. set_state(
 			{
-				"actions": [&"awaken", &"practise", &"elixir", &"advance"],
+				"actions": [&"awaken", &"attune", &"practise", &"elixir", &"advance"],
 				"labels":
 				{
 					"awaken": "Awaken",
+					"attune": "Attune",
 					"practise": "Practise",
 					"elixir": "Use Elixir",
 					"advance": "Advance",
@@ -153,8 +186,15 @@ func _render_actions(live: Dictionary) -> void:
 				"enabled":
 				{
 					"awaken": not enrolled,
-					"practise": enrolled and pick != SELECTION_NONE,
-					"elixir": enrolled and pick != SELECTION_NONE,
+					# The Attune press lands when the facade's own read says so: no
+					# second opinion about the gate, the cap or the sources.
+					"attune":
+					(
+						pick != SELECTION_NONE
+						and String(_row_of(pick).get("attune_blocked", "x")) == ""
+					),
+					"practise": enrolled and _sparked(pick),
+					"elixir": enrolled and _sparked(pick),
 					"advance": enrolled and bool(live.get("can_advance", false)),
 				},
 				"primary": &"advance",
@@ -202,6 +242,33 @@ func act_awaken() -> void:
 		set_message("The elements answer.", TONE_OK)
 	else:
 		set_message("Already awakened.", TONE_ERROR)
+	refresh()
+
+
+## Open the selected element's root (ADR 0924): spend the best available source — an
+## awakening elixir, an awakening treasure, or a registered art — and raise the
+## affinity. The numbers live in the affinity row; the message names the element.
+func act_attune() -> void:
+	if _actor == null:
+		return
+	var pick := _pick_element()
+	if pick == SELECTION_NONE:
+		set_message("No root to open.", TONE_ERROR)
+		refresh()
+		return
+	var result := ElementsApi.attune(_actor, pick)
+	if bool(result.get("ok", false)):
+		set_message("Attuned %s." % _name_of(pick), TONE_OK)
+	else:
+		var reason := String(result.get("reason", ""))
+		if reason == "element_locked":
+			set_message("%s is beyond your realm." % _name_of(pick), TONE_ERROR)
+		elif reason == "at_cap":
+			set_message("%s's root is full." % _name_of(pick), TONE_ERROR)
+		elif reason == "no_source":
+			set_message("No awakening treasure for %s." % _name_of(pick), TONE_ERROR)
+		else:
+			set_message("The root refused.", TONE_ERROR)
 	refresh()
 
 
@@ -281,22 +348,56 @@ func _steps() -> Dictionary:
 	return {"practise": ElementsApi.PRACTICE_STEP}
 
 
-## The least-trained element the body carries a SPARK for, or `SELECTION_NONE`. Stable
-## order (the roster's) so a tie picks the same element every refresh.
+## The least-trained element the screen acts on: one the body carries a SPARK for
+## (the practise and elixir doors) OR one whose root an Attune press would open —
+## the unsparked element a held treasure is for. Ties, in order: the element a press
+## would actually open (an unsparked root cannot be practised), then the weakest root
+## (lowest affinity), so the element just opened stays the one being trained. Stable
+## order (the roster's) decides everything else.
 func _pick_element() -> StringName:
 	_selected_element = SELECTION_NONE
 	if _actor == null:
 		return _selected_element
 	var best_mastery := 0.0
+	var best_open := false
+	var best_affinity := 0.0
 	for entry in ElementsApi.roster(_actor):
 		var row := entry as Dictionary
-		if not bool(row.get("spark", false)):
+		var sparked := bool(row.get("spark", false))
+		var open_now := String(row.get("attune_blocked", "")) == ""
+		if not sparked and not open_now:
 			continue
 		var mastery := float(row.get("mastery", 0.0))
+		var affinity := float(row.get("affinity", 0.0))
+		var better := false
 		if _selected_element == SELECTION_NONE or mastery < best_mastery:
+			better = true
+		elif mastery == best_mastery and open_now and not best_open:
+			better = true
+		elif mastery == best_mastery and open_now == best_open and affinity < best_affinity:
+			better = true
+		if better:
 			_selected_element = StringName(row.get("id", ""))
 			best_mastery = mastery
+			best_open = open_now
+			best_affinity = affinity
 	return _selected_element
+
+
+## One roster row by id, `{}` when the roster does not hold it.
+func _row_of(element_id: StringName) -> Dictionary:
+	if _actor == null or element_id == SELECTION_NONE:
+		return {}
+	for entry in ElementsApi.roster(_actor):
+		var row := entry as Dictionary
+		if StringName(row.get("id", "")) == element_id:
+			return row
+	return {}
+
+
+## Whether the pick carries a spark — the practise and elixir doors' own gate.
+func _sparked(element_id: StringName) -> bool:
+	return element_id != SELECTION_NONE and bool(_row_of(element_id).get("spark", false))
 
 
 ## The authored display name of an element id, from the roster the facade publishes.
@@ -328,6 +429,7 @@ func _bind_nodes() -> void:
 	_conditions_label = get_node_or_null("%ConditionLabel") as Label
 	_element_list = get_node_or_null("%ElementList") as VBoxContainer
 	_mastery_row = get_node_or_null("%MasteryRow") as StatRow
+	_affinity_row = get_node_or_null("%AffinityRow") as StatRow
 	if _actions != null and not _actions.action_requested.is_connected(_on_action):
 		_actions.action_requested.connect(_on_action)
 
@@ -343,11 +445,11 @@ func focus_initial() -> void:
 	var live := ElementsApi.preview(_actor) if _actor != null else {}
 	var target := _button_name(&"awaken")
 	if not live.is_empty():
-		target = (
-			_button_name(&"advance")
-			if bool(live.get("can_advance", false))
-			else _button_name(&"practise")
-		)
+		if bool(live.get("can_advance", false)):
+			target = _button_name(&"advance")
+		else:
+			var pick := _pick_element()
+			target = _button_name(&"practise") if _sparked(pick) else _button_name(&"attune")
 	_focus_target = target
 	var button := _find_button(target)
 	if button != null and button.is_inside_tree():
@@ -358,6 +460,8 @@ func _on_action(action: StringName) -> void:
 	match action:
 		&"awaken":
 			act_awaken()
+		&"attune":
+			act_attune()
 		&"practise":
 			act_practise()
 		&"elixir":

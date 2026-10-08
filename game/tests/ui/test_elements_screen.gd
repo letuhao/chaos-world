@@ -30,6 +30,22 @@ func _row(view: Dictionary, element_id: StringName) -> Dictionary:
 	return {}
 
 
+## Stand the actor at a realm on BOTH climbs the tier door reads (the elemental rank
+## and the qi climb), so an advanced tier is legitimately open.
+func _stand_at(actor: Actor, realm_id: StringName) -> void:
+	actor.set_path(PathState.new(ElementMastery.PATH_ID, realm_id))
+	actor.set_path(PathState.new(PathState.QI, realm_id))
+
+
+## Stock one authored item, asserted to resolve.
+func _stock(actor: Actor, item_id: StringName, count: int = 1) -> void:
+	var def := Crafting.resolve(item_id)
+	assert_ne(def, null, "the authored item resolves: %s" % String(item_id))
+	if def == null:
+		return
+	ItemsApi.inventory(actor).add(def, count)
+
+
 ## No actor, no view; a bare body is not enrolled.
 func test_the_screen_reports_no_actor_and_an_unawakened_path() -> void:
 	var screen := _screen()
@@ -134,3 +150,63 @@ func test_the_route_names_the_screen_and_its_key_is_bound() -> void:
 	assert_eq(String(action), "nav_route_a", "its key is a")
 	assert_eq(InputMap.has_action(action), true, "and the action is declared in project.godot")
 	assert_eq(ScreenRoutes.route_for_action(action), &"elements", "and resolves back to it")
+
+
+## The affinity door on the screen (ADR 0924): a held treasure makes its element the
+## pick (an unsparked root cannot be practised, so the press that can land wins the
+## tie), the Attune press opens it, and the affinity row shows the root growing.
+func test_attune_opens_the_unsparked_pick_and_the_affinity_row_grows() -> void:
+	var screen := _screen()
+	var actor := _hero()
+	_stand_at(actor, &"spirit_condensation")
+	_stock(actor, ElementAttunement.treasure_id(ElementStats.LIGHTNING))
+	screen.setup(actor)
+	var view := screen.summary()
+	assert_eq(String(view["selected"]), "lightning", "the held treasure picks the element it opens")
+	assert_eq(
+		bool((view["actions"] as Dictionary)["enabled"]["attune"]),
+		true,
+		"and the Attune press is offered"
+	)
+	screen.act_attune()
+	view = screen.summary()
+	assert_eq(String(view["message"]), "Attuned Lightning.", "the press names the element")
+	assert_eq(bool(_row(view, ElementStats.LIGHTNING)["spark"]), true, "the spark is real")
+	assert_almost_eq(
+		float(_row(view, ElementStats.LIGHTNING)["affinity"]), 3.0, "the root opened", 1e-6
+	)
+	var affinity_row := view["affinity_row"] as Dictionary
+	assert_eq(String(affinity_row.get("name", "")), "Lightning affinity", "the row names the root")
+	assert_almost_eq(float(affinity_row.get("current", 0.0)), 3.0, "and shows its value", 1e-6)
+	assert_almost_eq(float(affinity_row.get("maximum", 0.0)), 15.0, "against the tier-2 cap", 1e-6)
+	screen.free()
+
+
+## Without a source the Attune press refuses by naming the family that is missing.
+func test_attune_without_a_source_names_the_missing_treasure() -> void:
+	var screen := _screen()
+	screen.setup(_hero())
+	screen.act_attune()
+	assert_eq(
+		String(screen.summary()["message"]),
+		"No awakening treasure for Fire.",
+		"the refusal names the family that is missing"
+	)
+	screen.free()
+
+
+## A locked element is never the pick and never offers the press, treasure or not:
+## the climb is the door, and the screen says so by offering nothing.
+func test_attune_is_not_offered_for_a_locked_element_even_with_a_treasure() -> void:
+	var screen := _screen()
+	var actor := _hero()
+	_stock(actor, ElementAttunement.treasure_id(ElementStats.LIGHTNING))
+	screen.setup(actor)
+	var view := screen.summary()
+	assert_eq(String(view["selected"]), "fire", "a locked element is never the pick")
+	assert_eq(
+		bool((view["actions"] as Dictionary)["enabled"]["attune"]),
+		false,
+		"and no Attune press is offered"
+	)
+	screen.free()

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"element_void_awakening_elixir"
+display_name = "LOC_ITEMS_ELEMENT_VOID_AWAKENING_ELIXIR_DISPLAY_NAME"
+category = &"consumable"
+subcategory = &"elixir"
+rarity = &"legendary"
+realm = &"earth_immortal"
+grade = &"heaven"
+sources = Array[StringName]([&"craft:element_void_awakening_elixir_recipe"])
