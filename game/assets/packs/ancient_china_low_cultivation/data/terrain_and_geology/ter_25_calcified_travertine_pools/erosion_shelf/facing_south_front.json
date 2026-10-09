@@ -1,0 +1,88 @@
+{
+  "asset_id": "ancient_china_low_cultivation.terrain_and_geology.ter_25_calcified_travertine_pools.erosion_shelf",
+  "domain": "terrain_and_geology",
+  "sub_domain": "ter_25_calcified_travertine_pools",
+  "asset_slug": "erosion_shelf",
+  "variant_slug": "facing_south_front",
+  "name": "South Facing View",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_25_calcified_travertine_pools/erosion_shelf/facing_south_front.png",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "walk_surface",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.58,
+        0.592
+      ]
+    ],
+    "frac_zero": 0.835,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.135,
+        0.603,
+        0.125
+      ],
+      [
+        0.646,
+        0.996,
+        0.507
+      ],
+      [
+        0.608,
+        0.924,
+        0.554
+      ]
+    ],
+    "crop_offset": [
+      84,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 68,
+    "contact_reference_px": 68.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

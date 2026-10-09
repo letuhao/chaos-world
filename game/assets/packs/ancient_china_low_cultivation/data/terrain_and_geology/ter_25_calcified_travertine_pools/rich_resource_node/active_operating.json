@@ -1,0 +1,184 @@
+{
+  "asset_id": "ancient_china_low_cultivation.terrain_and_geology.ter_25_calcified_travertine_pools.rich_resource_node",
+  "domain": "terrain_and_geology",
+  "sub_domain": "ter_25_calcified_travertine_pools",
+  "asset_slug": "rich_resource_node",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_25_calcified_travertine_pools/rich_resource_node/active_operating.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "mine_ore",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.484,
+        0.287
+      ],
+      [
+        0.749,
+        0.755
+      ]
+    ],
+    "frac_zero": 0.5759,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.021,
+        0.88,
+        0.45,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.222,
+        1.0,
+        0.867,
+        0.141,
+        0.007,
+        0.0
+      ],
+      [
+        0.0,
+        0.563,
+        1.0,
+        1.0,
+        0.51,
+        0.127,
+        0.0
+      ],
+      [
+        0.234,
+        0.876,
+        1.0,
+        1.0,
+        0.969,
+        0.54,
+        0.002
+      ],
+      [
+        0.498,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.992,
+        0.204
+      ],
+      [
+        0.663,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.998,
+        0.658
+      ],
+      [
+        0.133,
+        0.537,
+        0.625,
+        0.885,
+        0.675,
+        0.3,
+        0.021
+      ]
+    ],
+    "crop_offset": [
+      23,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 64,
+    "contact_reference_px": 64.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

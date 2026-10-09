@@ -1,0 +1,184 @@
+{
+  "asset_id": "ancient_china_low_cultivation.terrain_and_geology.ter_25_calcified_travertine_pools.quarry_cut_block",
+  "domain": "terrain_and_geology",
+  "sub_domain": "ter_25_calcified_travertine_pools",
+  "asset_slug": "quarry_cut_block",
+  "variant_slug": "ruined_rubble",
+  "name": "Broken Shattered Rubble",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_25_calcified_travertine_pools/quarry_cut_block/ruined_rubble.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "quarry_stone",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.607,
+        0.338
+      ],
+      [
+        0.755,
+        0.776
+      ]
+    ],
+    "frac_zero": 0.523,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.332,
+        0.9,
+        0.272,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.613,
+        1.0,
+        0.759,
+        0.179,
+        0.053,
+        0.0
+      ],
+      [
+        0.118,
+        0.88,
+        1.0,
+        1.0,
+        1.0,
+        0.416,
+        0.067
+      ],
+      [
+        0.308,
+        1.0,
+        1.0,
+        1.0,
+        0.993,
+        0.98,
+        0.299
+      ],
+      [
+        0.674,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.768
+      ],
+      [
+        0.496,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.985,
+        0.49
+      ],
+      [
+        0.027,
+        0.495,
+        0.735,
+        0.916,
+        0.791,
+        0.279,
+        0.01
+      ]
+    ],
+    "crop_offset": [
+      19,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 105,
+    "contact_reference_px": 105.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}
