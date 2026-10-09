@@ -38,6 +38,10 @@ static func attach(actor: Actor) -> void:
 	# may not name a path's content. Idempotent — a static seam installed by every
 	# attach is one install, not one per body.
 	Tribulation.set_gate_requirement(Callable(QiCultivationApi, "tribulation_gate_requirement"))
+	# BL-0951: the tribulation prices the past realms through the carried foundation, and
+	# the record lives in the foundation module — so the source is injected from here for
+	# the same reason the gate kernel is. Idempotent: one install, not one per body.
+	Tribulation.set_foundation_source(Callable(FoundationApi, "tribulation_foundation"))
 
 
 ## The gate kernel `Tribulation.set_gate_requirement` calls: the target realm's required

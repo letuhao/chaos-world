@@ -112,6 +112,10 @@ static func attach(actor: Actor) -> void:
 		# network stays empty until the first cultivate(), and strengthen() then
 		# rejects every meridian because it cannot find the channel.
 		actor.meridians.unlock_for_realm(rank)
+	# BL-0951: the tribulation prices the past realms through the carried foundation;
+	# the source is injected here for the same reason the qi path injects its gate
+	# kernel — `core` may not name the module that owns the record. Idempotent.
+	Tribulation.set_foundation_source(Callable(FoundationApi, "tribulation_foundation"))
 
 
 ## The weapon/material practice ledger, or null on a body nobody attached one to.

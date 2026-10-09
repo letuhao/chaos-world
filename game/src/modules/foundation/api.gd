@@ -39,6 +39,21 @@ static func foundation(actor: Actor) -> float:
 	)
 
 
+## The foundation a tribulation is fought at: the carried aggregate, or `1.0` when the
+## actor has left no realm yet. An empty record is not a sloppy record — a fight the
+## tribulation tests start at a realm directly has no departures to judge, so it rates
+## the baseline rather than the harshest fight. A real climb always leaves realms behind
+## it, so in play this default never fires; in a fixture it keeps the shipped endurance
+## band exactly where the census measured it.
+static func tribulation_foundation(actor: Actor) -> float:
+	if actor == null:
+		return 1.0
+	var record := FoundationRecord.normalize(actor.get_module_data(FoundationRecord.SLOT))
+	if FoundationRecord.count(record) == 0:
+		return 1.0
+	return FoundationRecord.aggregate(record)
+
+
 ## Write the PERFECTION snapshot for a realm the actor is leaving. ONCE per realm: a
 ## second write for the same realm is refused by name, because a past the actor already
 ## spent must not be rewritable (ADR 0939).

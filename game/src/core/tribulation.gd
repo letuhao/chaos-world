@@ -91,6 +91,15 @@ const PREPARATION_FLOOR := 0.5
 ## preparation is one number in one place and no credit can raise it.
 const MAX_CREDIT := 2.0
 
+## How much harder a fight rates at zero carried foundation (BL-0951 / ADR 0939): the
+## rating is multiplied by `1 + FOUNDATION_PRESSURE * (1 - foundation)`, so a perfect
+## record rates EXACTLY the baseline and an empty-of-merit one rates 30% harder. Past
+## realms, not this one — preparation already prices the current realm's training
+## (BL-0830), and spending the same depth twice would count one realm's work two times.
+## A pure function of the value, so the term is realm-invariant: two fights at the same
+## foundation differ only by their own waves, pressure and preparation.
+const FOUNDATION_PRESSURE := 0.3
+
 ## ## The BOND the aids are read through (BL-0830's ruling)
 ##
 ## The aids used to be a plain fraction (`formation + arena`) clamped at the floor, and for
@@ -135,12 +144,24 @@ static var _gate_requirement: Callable = Callable()
 ## rating's authored inputs, the wave count, or the endurance span.
 static var _preparation_credit: Callable = Callable()
 
+## The carried foundation a fight is rated at, INJECTED for the same reason the gate
+## kernel is: `core` may not name the module that owns the record. The composition root
+## (each path's `attach`, which owns its seeds) installs `FoundationApi`
+## `.tribulation_foundation`; an uninstalled, invalid, non-numeric or non-finite source
+## reads as exactly `1.0` — the perfect-record baseline — because a fight nobody judged
+## must rate as fought, never harsher. The callable takes the actor and returns a float.
+static var _foundation_source: Callable = Callable()
+
 var type: StringName = LIGHTNING
 var phase: StringName = WARNING
 var wave: int = 0
 var max_waves: int = 3
 var difficulty: float = 1.0
 var preparation: Dictionary = {}
+## The carried foundation this fight was priced at, snapshotted by `start` like the
+## rating itself: a save between waves resumes the same fight, not a re-derived one.
+## `1.0` is the perfect record — the baseline every fight rated before this existed.
+var foundation: float = 1.0
 ## The realm this tribulation was fought for. A survivor unlocks only the gate
 ## for the realm it was fought at, so one tribulation cannot satisfy every
 ## high-tier gate forever (ADR 0020, bound in ADR 0032). Empty means "unbound":
@@ -161,6 +182,18 @@ static func set_preparation_credit(credit: Callable) -> void:
 ## empty Callable clears it, so an uninstall is deterministic.
 static func set_gate_requirement(source: Callable) -> void:
 	_gate_requirement = source
+
+
+## Install the foundation source the rating reads (BL-0951). Passing an empty Callable
+## clears it, so an uninstall is deterministic.
+static func set_foundation_source(source: Callable) -> void:
+	_foundation_source = source
+
+
+## Whether a foundation source is installed, so a caller can tell "no foundation seam"
+## from "the seam says the record is perfect" rather than reading the same silence.
+static func has_foundation_source() -> bool:
+	return not _foundation_source.is_null() and _foundation_source.is_valid()
 
 
 ## Whether a credit is installed, so a caller can tell "no difficulty seam" from "the seam
@@ -188,6 +221,7 @@ func start(actor: Actor, p_realm_id: StringName) -> void:
 	outcome = OUTCOME_UNRESOLVED
 	max_waves = _compute_waves(p_realm_id)
 	preparation = _measure_preparation(actor)
+	foundation = _foundation(actor)
 	difficulty = rate(actor)
 
 
@@ -289,7 +323,32 @@ func rate(actor: Actor) -> float:
 		var affinity: float = actor.relationships[partner_id]
 		if affinity < 0.0:
 			rating += absf(affinity) * 0.01
-	return rating * (1.0 - _preparation_reduction(actor))
+	# BL-0951: the past realms price the fight through the carried foundation, AFTER the
+	# current realm's preparation priced it — two different histories, never the same
+	# depth twice.
+	return rating * (1.0 - _preparation_reduction(actor)) * foundation_multiplier(foundation)
+
+
+## The foundation term of the rating, as a pure function of the value: `1.0` at a perfect
+## record, `1 + FOUNDATION_PRESSURE` at zero. STATIC so a test can pin the realm-invariant
+## term without staging a fight, and so no second copy of the weight can drift.
+static func foundation_multiplier(value: float) -> float:
+	return 1.0 + FOUNDATION_PRESSURE * (1.0 - clampf(value, 0.0, 1.0))
+
+
+## The carried foundation this fight is priced at, through the injected source. Uninstalled,
+## invalid, non-numeric or non-finite all read as exactly `1.0` — the perfect-record
+## baseline — because a fight nobody judged must rate as fought, never harsher.
+func _foundation(actor: Actor) -> float:
+	if not has_foundation_source():
+		return 1.0
+	var raw: Variant = _foundation_source.call(actor)
+	if not (raw is float or raw is int):
+		return 1.0
+	var value := float(raw)
+	if not is_finite(value):
+		return 1.0
+	return clampf(value, 0.0, 1.0)
 
 
 ## Get the rewards dictionary for a successful tribulation.
@@ -316,6 +375,7 @@ func to_dict() -> Dictionary:
 		"max_waves": max_waves,
 		"difficulty": difficulty,
 		"preparation": preparation.duplicate(),
+		"foundation": foundation,
 		"realm_id": String(realm_id),
 		"outcome": String(outcome),
 	}
@@ -335,6 +395,9 @@ static func from_dict(data: Dictionary) -> Tribulation:
 	tribulation.max_waves = int(data.get("max_waves", 3))
 	tribulation.difficulty = float(data.get("difficulty", 1.0))
 	tribulation.preparation = data.get("preparation", {}).duplicate()
+	# A payload written before the foundation term existed priced the baseline, so it
+	# loads as the perfect record rather than as an unread key.
+	tribulation.foundation = float(data.get("foundation", 1.0))
 	tribulation.realm_id = StringName(data.get("realm_id", ""))
 	# A payload written before outcomes existed decided nothing, so it loads
 	# unresolved and must be re-decided rather than inheriting a win.
