@@ -1,0 +1,184 @@
+{
+  "asset_id": "ancient_china_low_cultivation.terrain_and_geology.ter_22_peat_moss_bog.quarry_cut_block",
+  "domain": "terrain_and_geology",
+  "sub_domain": "ter_22_peat_moss_bog",
+  "asset_slug": "quarry_cut_block",
+  "variant_slug": "pristine_dormant",
+  "name": "Pristine Dormant State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_22_peat_moss_bog/quarry_cut_block/pristine_dormant.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "quarry_stone",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.626,
+        0.622
+      ],
+      [
+        0.791,
+        0.807
+      ]
+    ],
+    "frac_zero": 0.486,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.135,
+        0.604,
+        0.949,
+        0.602,
+        0.115,
+        0.0
+      ],
+      [
+        0.14,
+        0.973,
+        1.0,
+        1.0,
+        1.0,
+        0.945,
+        0.02
+      ],
+      [
+        0.188,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.971,
+        0.106
+      ],
+      [
+        0.324,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.998,
+        0.435
+      ],
+      [
+        0.874,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.887
+      ],
+      [
+        0.371,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.974,
+        0.355
+      ],
+      [
+        0.0,
+        0.352,
+        0.486,
+        0.824,
+        0.512,
+        0.271,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      31
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 148,
+    "contact_reference_px": 148.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

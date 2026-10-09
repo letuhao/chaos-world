@@ -1,0 +1,1609 @@
+{
+  "id": "ancient_china_low_cultivation.terrain_and_geology.ter_22_peat_moss_bog.monumental_peak_spire",
+  "archetype": "monumental_peak_spire_ter_22_peat_moss_bog",
+  "name": "Peat Moss Bog - Towering Geological Needle Spire",
+  "vietnamese_name": "Nê Than Thảo Điện - Đỉnh Nhọn Cô Phong Kính Thiên",
+  "hanzi": "泥炭草甸 · 巍峨地质孤峰",
+  "category": "ter_22_peat_moss_bog",
+  "category_code": "TER-22",
+  "domain": "terrain_and_geology",
+  "sub_domain": "ter_22_peat_moss_bog",
+  "asset_class": "landmark_mountain",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    4,
+    4
+  ],
+  "canvas_px": [
+    512,
+    512
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "climb_peak",
+  "gameplay_role": "landmark_mountain entity supporting Peat Moss Bog gameplay",
+  "destructible": false,
+  "material": "stratified pale karst limestone and loose mineral scree",
+  "cultivation_element": "thunder",
+  "prompt_summary": "Single isolated 2D top-down world-map natural landmark sprite of peat moss bog - towering geological needle spire, authentic peat moss bog materials, East Asian Xianxia craftsmanship, steep high-angle top-down RPG map perspective, rocky summit crest and stepped cliff strata dominant from overhead, natural mountain geology, zero diorama grass pedestal, fine dark #263A35 ink contours, solid pure white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Terrains & Geological Formations",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "facing_south_front",
+      "name": "South Facing View",
+      "prompt_modifier": "summit crest and southern stepped cliff strata descending toward camera",
+      "variant_id": "facing_south_front",
+      "variant_name": "South Facing View",
+      "description": "summit crest and southern stepped cliff strata descending toward camera",
+      "prompt": "Single isolated 2D top-down world-map natural landmark sprite of towering geological needle spire, stratified pale karst limestone and loose mineral scree, summit crest and southern stepped cliff strata descending toward camera, Ancient Chinese Xianxia landscape style, steep high-angle top-down RPG map perspective looking down from above, summit crest and upper rock terraces fully visible from above, stepped crag shelves and gnarled cliff pine seen from overhead, sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, gouache hand-painted with dark #263A35 ink contours, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, eye-level view, side-view portrait, flat elevation, landscape painting, grass patch, turf, lawn, meadow, green ground plane, soil patch, path, cobblestone, road, grass rim, turf skirt, dirt mound base, green turf, moss ring around base, diorama base plate, dirt path in front, frame, border, UI, watermark, human figures, birds in sky, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_22_peat_moss_bog/monumental_peak_spire/facing_south_front.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.004,
+            0.462,
+            0.421,
+            0.015
+          ],
+          [
+            0.183,
+            0.888,
+            0.846,
+            0.278
+          ],
+          [
+            0.751,
+            1.0,
+            1.0,
+            0.761
+          ],
+          [
+            0.286,
+            0.891,
+            0.889,
+            0.382
+          ]
+        ],
+        "frac_zero": 0.5114,
+        "blocks": [
+          [
+            false,
+            true,
+            true,
+            false
+          ],
+          [
+            false,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 13,
+        "anchor_cell": [
+          2,
+          3
+        ],
+        "sub_grid": [
+          15,
+          15
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.129,
+            0.896,
+            0.831,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.289,
+            1.0,
+            1.0,
+            0.044,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.693,
+            1.0,
+            1.0,
+            0.49,
+            0.668,
+            0.286,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.01,
+            0.463,
+            0.218,
+            0.885,
+            1.0,
+            1.0,
+            0.622,
+            0.451,
+            0.705,
+            0.266,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.31,
+            0.417,
+            0.522,
+            0.946,
+            1.0,
+            1.0,
+            0.828,
+            0.432,
+            0.415,
+            0.232,
+            0.06,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.015,
+            0.222,
+            0.811,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.932,
+            0.402,
+            0.521,
+            0.198,
+            0.023,
+            0.0
+          ],
+          [
+            0.0,
+            0.018,
+            0.544,
+            0.812,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.96,
+            0.617,
+            0.494,
+            0.068,
+            0.04
+          ],
+          [
+            0.228,
+            0.416,
+            0.8,
+            0.985,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.928,
+            0.566,
+            0.035,
+            0.0
+          ],
+          [
+            0.414,
+            0.929,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.982,
+            0.271,
+            0.0
+          ],
+          [
+            0.321,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.737,
+            0.0
+          ],
+          [
+            0.001,
+            0.803,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.906,
+            0.159
+          ],
+          [
+            0.035,
+            0.907,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.965,
+            0.223,
+            0.0
+          ],
+          [
+            0.0,
+            0.049,
+            0.786,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.861,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.132,
+            0.562,
+            0.984,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.971,
+            0.688,
+            0.202,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.576,
+            0.812,
+            0.667,
+            0.744,
+            0.939,
+            0.381,
+            0.05,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          24,
+          17
+        ],
+        "trunk_columns": [
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "contact_px": 154,
+        "contact_reference_px": 154.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            3,
+            3
+          ],
+          "1.0": [
+            0,
+            0,
+            3,
+            3
+          ],
+          "1.15": [
+            0,
+            0,
+            3,
+            3
+          ],
+          "1.35": [
+            0,
+            0,
+            3,
+            3
+          ],
+          "1.6": [
+            0,
+            0,
+            3,
+            3
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          3,
+          3
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          512,
+          512
+        ]
+      }
+    },
+    {
+      "variant_slug": "facing_north_back",
+      "name": "North Facing View",
+      "prompt_modifier": "sheer northern rock face and upper summit plateau surface dominant from overhead",
+      "variant_id": "facing_north_back",
+      "variant_name": "North Facing View",
+      "description": "sheer northern rock face and upper summit plateau surface dominant from overhead",
+      "prompt": "Single isolated 2D top-down world-map natural landmark sprite of towering geological needle spire, stratified pale karst limestone and loose mineral scree, sheer northern rock face and upper summit plateau surface dominant from overhead, Ancient Chinese Xianxia landscape style, steep high-angle top-down RPG map perspective looking down from above, sheer northern crag face and upper summit plateau surface fully visible from above, weathered northern rock terraces descending away from summit, sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, gouache hand-painted with dark #263A35 ink contours, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, eye-level view, side-view portrait, flat elevation, landscape painting, grass patch, turf, lawn, meadow, green ground plane, soil patch, path, cobblestone, road, grass rim, turf skirt, dirt mound base, green turf, moss ring around base, diorama base plate, dirt path in front, frame, border, UI, watermark, human figures, birds in sky, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_22_peat_moss_bog/monumental_peak_spire/facing_north_back.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.0,
+            0.608,
+            0.353,
+            0.0
+          ],
+          [
+            0.16,
+            0.895,
+            0.801,
+            0.149
+          ],
+          [
+            0.872,
+            1.0,
+            1.0,
+            0.875
+          ],
+          [
+            0.382,
+            0.856,
+            0.926,
+            0.431
+          ]
+        ],
+        "frac_zero": 0.5867,
+        "blocks": [
+          [
+            false,
+            true,
+            true,
+            false
+          ],
+          [
+            false,
+            true,
+            true,
+            false
+          ],
+          [
+            true,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 12,
+        "anchor_cell": [
+          2,
+          3
+        ],
+        "sub_grid": [
+          12,
+          15
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.296,
+            0.952,
+            0.553,
+            0.001,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.039,
+            0.981,
+            1.0,
+            1.0,
+            0.205,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.031,
+            1.0,
+            1.0,
+            1.0,
+            0.195,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.247,
+            1.0,
+            1.0,
+            1.0,
+            0.262,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.004,
+            0.298,
+            1.0,
+            1.0,
+            1.0,
+            0.649,
+            0.08,
+            0.01,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.459,
+            0.752,
+            1.0,
+            1.0,
+            1.0,
+            0.812,
+            0.653,
+            0.3,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.73,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.984,
+            0.506,
+            0.0,
+            0.0
+          ],
+          [
+            0.047,
+            0.7,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.995,
+            0.835,
+            0.098
+          ],
+          [
+            0.499,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.988,
+            0.321
+          ],
+          [
+            0.807,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.831
+          ],
+          [
+            0.885,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.944
+          ],
+          [
+            0.163,
+            0.892,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.44
+          ],
+          [
+            0.0,
+            0.611,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.934,
+            0.186
+          ],
+          [
+            0.0,
+            0.228,
+            0.942,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.981,
+            0.645,
+            0.148,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.065,
+            0.333,
+            0.274,
+            0.743,
+            0.954,
+            0.851,
+            0.326,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          64,
+          16
+        ],
+        "trunk_columns": [
+          5,
+          6,
+          7
+        ],
+        "contact_px": 93,
+        "contact_reference_px": 93.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            3,
+            3
+          ],
+          "1.0": [
+            0,
+            0,
+            3,
+            3
+          ],
+          "1.15": [
+            0,
+            0,
+            3,
+            3
+          ],
+          "1.35": [
+            0,
+            0,
+            3,
+            3
+          ],
+          "1.6": [
+            0,
+            0,
+            3,
+            3
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          3,
+          3
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          512,
+          512
+        ]
+      }
+    },
+    {
+      "variant_slug": "facing_west_left",
+      "name": "West Facing Profile",
+      "prompt_modifier": "elongated rock ridge running North-South, western cliff strata visible from overhead",
+      "variant_id": "facing_west_left",
+      "variant_name": "West Facing Profile",
+      "description": "elongated rock ridge running North-South, western cliff strata visible from overhead",
+      "prompt": "Single isolated 2D top-down world-map natural landmark sprite of towering geological needle spire, stratified pale karst limestone and loose mineral scree, elongated rock ridge running North-South, western cliff strata visible from overhead, Ancient Chinese Xianxia landscape style, steep high-angle top-down RPG map perspective looking down from above, landmark rotated 90 degrees with elongated rock spine running North-South, western stepped cliff strata and summit crest visible from overhead, sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, gouache hand-painted with dark #263A35 ink contours, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, eye-level view, side-view portrait, flat elevation, landscape painting, grass patch, turf, lawn, meadow, green ground plane, soil patch, path, cobblestone, road, grass rim, turf skirt, dirt mound base, green turf, moss ring around base, diorama base plate, dirt path in front, frame, border, UI, watermark, human figures, birds in sky, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_22_peat_moss_bog/monumental_peak_spire/facing_west_left.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.0,
+            0.324,
+            0.313,
+            0.0
+          ],
+          [
+            0.11,
+            0.745,
+            0.666,
+            0.078
+          ],
+          [
+            0.654,
+            1.0,
+            1.0,
+            0.812
+          ],
+          [
+            0.374,
+            0.701,
+            0.955,
+            0.335
+          ]
+        ],
+        "frac_zero": 0.62,
+        "blocks": [
+          [
+            false,
+            true,
+            true,
+            false
+          ],
+          [
+            false,
+            true,
+            true,
+            false
+          ],
+          [
+            true,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 12,
+        "anchor_cell": [
+          2,
+          3
+        ],
+        "sub_grid": [
+          13,
+          15
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.366,
+            0.93,
+            0.126,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.619,
+            1.0,
+            0.386,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.91,
+            1.0,
+            0.472,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.939,
+            1.0,
+            0.504,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.633,
+            0.99,
+            1.0,
+            0.666,
+            0.01,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.008,
+            0.928,
+            1.0,
+            1.0,
+            0.733,
+            0.66,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.67,
+            0.562,
+            1.0,
+            1.0,
+            1.0,
+            0.962,
+            0.948,
+            0.411,
+            0.067,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.077,
+            0.979,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.999,
+            0.942,
+            0.122,
+            0.0
+          ],
+          [
+            0.089,
+            0.732,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.739,
+            0.022
+          ],
+          [
+            0.322,
+            0.977,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.77
+          ],
+          [
+            0.046,
+            0.897,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.736
+          ],
+          [
+            0.285,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.985,
+            0.538,
+            0.038
+          ],
+          [
+            0.003,
+            0.597,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.784,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.018,
+            0.534,
+            0.974,
+            0.814,
+            0.508,
+            0.899,
+            1.0,
+            1.0,
+            1.0,
+            0.659,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.072,
+            0.114,
+            0.0,
+            0.483,
+            0.965,
+            0.909,
+            0.383,
+            0.004,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          52,
+          17
+        ],
+        "trunk_columns": [
+          6,
+          7,
+          8,
+          9
+        ],
+        "contact_px": 96,
+        "contact_reference_px": 96.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            3,
+            3
+          ],
+          "1.0": [
+            0,
+            0,
+            3,
+            3
+          ],
+          "1.15": [
+            0,
+            0,
+            3,
+            3
+          ],
+          "1.35": [
+            0,
+            0,
+            3,
+            3
+          ],
+          "1.6": [
+            0,
+            0,
+            3,
+            3
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          3,
+          3
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          512,
+          512
+        ]
+      }
+    },
+    {
+      "variant_slug": "facing_east_profile",
+      "name": "East Facing Profile",
+      "prompt_modifier": "elongated rock ridge running North-South, eastern cliff strata visible from overhead",
+      "variant_id": "facing_east_profile",
+      "variant_name": "East Facing Profile",
+      "description": "elongated rock ridge running North-South, eastern cliff strata visible from overhead",
+      "prompt": "Single isolated 2D top-down world-map natural landmark sprite of towering geological needle spire, stratified pale karst limestone and loose mineral scree, elongated rock ridge running North-South, eastern cliff strata visible from overhead, Ancient Chinese Xianxia landscape style, steep high-angle top-down RPG map perspective looking down from above, landmark rotated 90 degrees with elongated rock spine running North-South, eastern stepped cliff strata and summit crest visible from overhead, sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, gouache hand-painted with dark #263A35 ink contours, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, eye-level view, side-view portrait, flat elevation, landscape painting, grass patch, turf, lawn, meadow, green ground plane, soil patch, path, cobblestone, road, grass rim, turf skirt, dirt mound base, green turf, moss ring around base, diorama base plate, dirt path in front, frame, border, UI, watermark, human figures, birds in sky, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_22_peat_moss_bog/monumental_peak_spire/facing_east_profile.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.0,
+            0.69,
+            0.087,
+            0.0
+          ],
+          [
+            0.072,
+            0.902,
+            0.644,
+            0.024
+          ],
+          [
+            0.727,
+            1.0,
+            1.0,
+            0.802
+          ],
+          [
+            0.247,
+            0.794,
+            0.96,
+            0.513
+          ]
+        ],
+        "frac_zero": 0.6725,
+        "blocks": [
+          [
+            false,
+            true,
+            false,
+            false
+          ],
+          [
+            false,
+            true,
+            true,
+            false
+          ],
+          [
+            true,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 11,
+        "anchor_cell": [
+          2,
+          3
+        ],
+        "sub_grid": [
+          11,
+          15
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.223,
+            0.957,
+            0.216,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.705,
+            1.0,
+            0.469,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.729,
+            1.0,
+            0.469,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.923,
+            1.0,
+            0.635,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.03,
+            0.921,
+            1.0,
+            0.8,
+            0.084,
+            0.04,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.224,
+            1.0,
+            1.0,
+            0.869,
+            0.612,
+            0.462,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.153,
+            0.333,
+            1.0,
+            1.0,
+            1.0,
+            0.957,
+            0.724,
+            0.0,
+            0.007,
+            0.0
+          ],
+          [
+            0.0,
+            0.492,
+            0.923,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.893,
+            0.618,
+            0.19,
+            0.0
+          ],
+          [
+            0.203,
+            0.892,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.599,
+            0.0
+          ],
+          [
+            0.614,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.73
+          ],
+          [
+            0.616,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.636
+          ],
+          [
+            0.024,
+            0.828,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.896,
+            0.009
+          ],
+          [
+            0.0,
+            0.593,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.885,
+            0.0
+          ],
+          [
+            0.0,
+            0.002,
+            0.234,
+            0.899,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.819,
+            0.198,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.15,
+            0.552,
+            0.805,
+            0.971,
+            0.619,
+            0.037,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          88,
+          17
+        ],
+        "trunk_columns": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "contact_px": 114,
+        "contact_reference_px": 114.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            3,
+            3
+          ],
+          "1.0": [
+            0,
+            0,
+            3,
+            3
+          ],
+          "1.15": [
+            0,
+            0,
+            3,
+            3
+          ],
+          "1.35": [
+            0,
+            0,
+            3,
+            3
+          ],
+          "1.6": [
+            0,
+            0,
+            3,
+            3
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          3,
+          3
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          512,
+          512
+        ]
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "TER-22",
+    "domain": "terrain_and_geology",
+    "interaction": "climb_peak",
+    "collision_behavior": "solid",
+    "element": "thunder",
+    "tier": 5
+  },
+  "category_id": "ter_22_peat_moss_bog",
+  "domain_id": "terrain_and_geology",
+  "pinyin": "Nítàn Cǎodiàn · Towering Geological Needle Spire",
+  "archetype_name": "Towering Geological Needle Spire",
+  "footprint_subcells": {
+    "w": 16,
+    "h": 16
+  },
+  "footprint_px": {
+    "w": 512,
+    "h": 512
+  },
+  "cell_span": {
+    "w": 4,
+    "h": 4
+  },
+  "collision": {
+    "type": "solid",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": true,
+    "height_layer": "ground"
+  },
+  "primary_material": "weathered_karst_limestone",
+  "secondary_material": "crag_scree",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Thunder affinity (Spirit Transformation (Hóa Thần / 化神))",
+  "elevation_tier": 5,
+  "mortal_realm_tier": "Spirit Transformation (Hóa Thần / 化神)",
+  "asset_slug": "monumental_peak_spire"
+}
