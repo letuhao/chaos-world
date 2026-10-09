@@ -1,0 +1,89 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_16_bramble_iron_thorn_briars.harvestable_ripe",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_16_bramble_iron_thorn_briars",
+  "asset_slug": "harvestable_ripe",
+  "variant_slug": "ruined_rubble",
+  "name": "Broken Shattered Rubble",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_16_bramble_iron_thorn_briars/harvestable_ripe/ruined_rubble.png",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "none",
+  "interactive_verb": "gather_herb",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.488
+      ]
+    ],
+    "frac_zero": 0.7051,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.34,
+        0.77,
+        0.087
+      ],
+      [
+        0.466,
+        0.529,
+        0.392
+      ],
+      [
+        0.411,
+        0.854,
+        0.208
+      ]
+    ],
+    "crop_offset": [
+      23,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 56,
+    "contact_reference_px": 56.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
