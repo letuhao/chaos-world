@@ -132,7 +132,8 @@ func _init(mint_body: Callable = Callable(), rebind: Callable = Callable()) -> v
 ## Resolve a death for `actor`. The ONE entry point; every other method here is its step.
 ##
 ## Returns `{ok, reason, cause, died, guardian, damage, soul, arrival, body_id, incarnated,
-## fact, fact_count, marks, ungranted_marks}`. `ok` is true whenever a death was resolved — a
+## fact, fact_count, marks, ungranted_marks, karmic_foundation}`. `ok` is true whenever a
+## death was resolved — a
 ## death the player survived via a guardian is a resolved death, not a refusal — and `reason`
 ## names what happened so a screen can say it without inferring an outcome from a message.
 ##
@@ -224,6 +225,7 @@ func resolve(actor: Actor, base_cost: int = BASE_DEATH_COST) -> Dictionary:
 			# to ask which branch it came from (ADR 0190).
 			"marks": [] as Array[StringName],
 			"ungranted_marks": [] as Array[StringName],
+			"karmic_foundation": 0.0,
 		}
 	# No guardian. THE AGE CAUSE SITS HERE — above the soul's damage and below nothing, so it
 	# cannot re-body a hero who was rescued, and above the gate, so an out-of-bodies age death
@@ -262,6 +264,7 @@ func resolve(actor: Actor, base_cost: int = BASE_DEATH_COST) -> Dictionary:
 			# (ADR 0190).
 			"marks": [] as Array[StringName],
 			"ungranted_marks": [] as Array[StringName],
+			"karmic_foundation": 0.0,
 		}
 	return _rebody(actor, arrival, damaged, cause)
 
@@ -533,6 +536,7 @@ func _rebody(
 			# be able to produce.
 			"marks": SoulArrivalMarks.marks_for(arrival),
 			"ungranted_marks": SoulArrivalMarks.marks_for(arrival),
+			"karmic_foundation": 0.0,
 		}
 	var minted := _mint_body.call(String(arrival), next_incarnation) as Dictionary
 	if not bool(minted.get("ok", false)):
@@ -551,6 +555,7 @@ func _rebody(
 			"fact_count": _record_death(actor),
 			"marks": SoulArrivalMarks.marks_for(arrival),
 			"ungranted_marks": SoulArrivalMarks.marks_for(arrival),
+			"karmic_foundation": 0.0,
 		}
 	var body := minted.get("actor", null) as Actor
 	var body_id := "" if body == null else String(body.id)
@@ -563,6 +568,9 @@ func _rebody(
 	# verdict reporting an empty success.
 	var marks: Array[StringName] = []
 	var ungranted_marks: Array[StringName] = []
+	# The starting foundation the karmic memory seeded onto the new body (S14), `0.0` when no
+	# body came back. An ADDITIVE verdict key, like the marks pair above.
+	var karmic_foundation := 0.0
 	if body != null:
 		_carry_facts(actor, body)
 		# Beside the fact carry, above the rebind, and for the same reason it is not below it:
@@ -581,6 +589,12 @@ func _rebody(
 		var granted := SoulArrivalMarks.grant(body, arrival)
 		marks = granted.get("marks", []) as Array[StringName]
 		ungranted_marks = granted.get("ungranted", []) as Array[StringName]
+		# THIRD, and AFTER the marks (BL-0951 / ADR 0939, S14): the karmic-memory floor is
+		# read from the fates the grant above just earned, so it must run after them — seeding
+		# before the marks would read a body that does not yet hold the death it is raised for.
+		# The floor rides the record, which the rebind below carries as `module_data`.
+		var karmic := KarmicFoundation.apply(body)
+		karmic_foundation = karmic.get("foundation", 0.0)
 	var reborn := SoulApi.reincarnate(actor, body_id)
 	if body != null and _rebind.is_valid():
 		# Every screen, roster and attached module follows the body. A half-swapped body is the
@@ -617,6 +631,7 @@ func _rebody(
 		# nothing, and renaming or removing one would be a UI break.
 		"marks": marks,
 		"ungranted_marks": ungranted_marks,
+		"karmic_foundation": karmic_foundation,
 	}
 
 
@@ -639,4 +654,5 @@ func _refuse(reason: String) -> Dictionary:
 		"fact_count": 0,
 		"marks": [] as Array[StringName],
 		"ungranted_marks": [] as Array[StringName],
+		"karmic_foundation": 0.0,
 	}

@@ -34,7 +34,7 @@ const SCHEMA_VERSION := 1
 ## The empty record. A fresh actor carries this rather than a missing key, so "no
 ## realms left yet" and "the module is not attached" are different states.
 static func blank() -> Dictionary:
-	return {"version": SCHEMA_VERSION, "snapshots": {}}
+	return {"version": SCHEMA_VERSION, "snapshots": {}, "karmic": 0.0}
 
 
 ## A usable record from anything `module_data` may hold. A payload written before a
@@ -55,6 +55,11 @@ static func normalize(raw: Dictionary) -> Dictionary:
 			if not is_finite(perfection):
 				continue
 			(record["snapshots"] as Dictionary)[StringName(key)] = clampf(perfection, 0.0, 1.0)
+	var karmic: Variant = raw.get("karmic", 0.0)
+	if karmic is float or karmic is int:
+		var value := float(karmic)
+		if is_finite(value):
+			record["karmic"] = clampf(value, 0.0, 1.0)
 	record["version"] = SCHEMA_VERSION
 	return record
 
@@ -90,4 +95,22 @@ static func with_snapshot(
 ) -> Dictionary:
 	var out := normalize(record)
 	(out["snapshots"] as Dictionary)[realm_id] = clampf(perfection, 0.0, 1.0)
+	return out
+
+
+## The KARMIC-MEMORY floor (BL-0951 / ADR 0939, S14): a small value a re-embodied soul
+## carries into its next body from the deaths it has already died. It is NOT a departed
+## realm's perfection — no realm was left — so it is a SEPARATE field rather than a
+## synthetic snapshot, and [method FoundationApi.foundation] reads it as a FLOOR under the
+## snapshot mean. A synthetic snapshot would be worse: every reader that walks the snapshot
+## map (`mend_target`, a path's gate arithmetic) would treat a realm nobody left as a realm
+## that was.
+static func karmic(record: Dictionary) -> float:
+	return float(record.get("karmic", 0.0))
+
+
+## A copy of `record` with the karmic-memory floor set. Pure: the caller applies it.
+static func with_karmic(record: Dictionary, value: float) -> Dictionary:
+	var out := normalize(record)
+	out["karmic"] = clampf(value, 0.0, 1.0)
 	return out

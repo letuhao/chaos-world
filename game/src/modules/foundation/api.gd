@@ -79,7 +79,50 @@ const R_FORBIDDEN_NO_YEARS := "no_years_left_to_burn"
 static func foundation(actor: Actor) -> float:
 	if actor == null:
 		return 0.0
-	return FoundationRecord.aggregate(
+	var record := FoundationRecord.normalize(actor.get_module_data(FoundationRecord.SLOT))
+	# The karmic-memory floor (BL-0951 / ADR 0939, S14): a soul that has died before starts
+	# with a little more than nothing, so the carried mean never reads BELOW what its deaths
+	# earned it. A FLOOR and not an addition — a body whose own past already exceeds it is
+	# unchanged, so a careful cultivator's deaths never inflate a good record.
+	return maxf(FoundationRecord.aggregate(record), FoundationRecord.karmic(record))
+
+
+## Seed the KARMIC-MEMORY floor (BL-0951 / ADR 0939, S14): a re-embodied soul carries a
+## little foundation from the deaths it has already died, so its next body starts above
+## nothing.
+##
+## ## Why the value is injected, never read here
+##
+## The floor's SOURCE is the soul's karmic memory, which lives in `destiny`'s fates — and
+## `destiny` already depends on `foundation` (S12), so this module reading destiny would be
+## a cycle the boundary gate forbids. So the app-layer rebirth path (the one layer that may
+## read both) computes the value and calls THIS to set it: the module never learns where it
+## came from, only that a floor was set.
+##
+## The value is clamped into `[0, 1]` by the record, and the answer names the floor and the
+## resulting foundation so a caller can assert the raise landed. A non-positive value is
+## refused by name: there is nothing to seed, and a silent no-op would read as a raise.
+static func seed_karmic(actor: Actor, value: float) -> Dictionary:
+	if actor == null:
+		return {"ok": false, "reason": R_NO_ACTOR}
+	if not is_finite(value) or value <= 0.0:
+		return {"ok": false, "reason": R_BAD_AMOUNT}
+	var record := FoundationRecord.normalize(actor.get_module_data(FoundationRecord.SLOT))
+	record = FoundationRecord.with_karmic(record, value)
+	actor.set_module_data(FoundationRecord.SLOT, record)
+	return {
+		"ok": true,
+		"reason": "",
+		"karmic": FoundationRecord.karmic(record),
+		"foundation": foundation(actor),
+	}
+
+
+## The actor's karmic-memory floor, `0.0` when it has none (BL-0951 / ADR 0939, S14).
+static func karmic(actor: Actor) -> float:
+	if actor == null:
+		return 0.0
+	return FoundationRecord.karmic(
 		FoundationRecord.normalize(actor.get_module_data(FoundationRecord.SLOT))
 	)
 
