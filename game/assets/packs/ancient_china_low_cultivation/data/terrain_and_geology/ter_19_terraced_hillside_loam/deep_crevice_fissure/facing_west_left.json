@@ -1,0 +1,95 @@
+{
+  "asset_id": "ancient_china_low_cultivation.terrain_and_geology.ter_19_terraced_hillside_loam.deep_crevice_fissure",
+  "domain": "terrain_and_geology",
+  "sub_domain": "ter_19_terraced_hillside_loam",
+  "asset_slug": "deep_crevice_fissure",
+  "variant_slug": "facing_west_left",
+  "name": "West Facing Profile",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_19_terraced_hillside_loam/deep_crevice_fissure/facing_west_left.png",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.348,
+        0.834,
+        0.486
+      ]
+    ],
+    "frac_zero": 0.8996,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.183,
+        0.533,
+        0.02
+      ],
+      [
+        0.723,
+        0.991,
+        0.732
+      ],
+      [
+        0.286,
+        0.868,
+        0.577
+      ]
+    ],
+    "crop_offset": [
+      147,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 61,
+    "contact_reference_px": 61.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
