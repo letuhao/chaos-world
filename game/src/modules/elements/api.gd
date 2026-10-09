@@ -3,7 +3,6 @@ extends RefCounted
 
 ## Public facade for the `elements` module (ADR 0004).
 
-
 ## ## The mastery loop's doors (ADR 0004's second half)
 ##
 ## The practice STEP is owned here, the way `QiCultivationApi` owns its

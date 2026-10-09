@@ -13,6 +13,7 @@ extends RefCounted
 ## Everything here takes its input as an argument and returns primitives or arrays, so a
 ## suite asserts against a value rather than against this class's state.
 
+
 ## The authored def ids a generated map actually built, as the part of each namespaced
 ## room id before the `#`.
 static func built_def_ids(map: DomainMap) -> Dictionary:

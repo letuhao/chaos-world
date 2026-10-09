@@ -984,5 +984,3 @@ func _missing_shape(fixture: Dictionary) -> Array[String]:
 			if not fixture.has(key):
 				missing.append(key)
 	return missing
-
-

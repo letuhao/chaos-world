@@ -76,7 +76,6 @@ const LASTLIGHT := &"lastlight"
 ## after `band_for` instead — which is also what split that method from its own docblock.
 static var _table_cache: AgeBandTable = null
 
-
 ## One authored band per name, mapping name -> fraction of the lifespan at which it is
 ## ENTERED. The whole of the table: four names, four absolute fractions, and nothing derived
 ## from anything.

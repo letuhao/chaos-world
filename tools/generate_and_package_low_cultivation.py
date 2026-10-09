@@ -641,26 +641,48 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
             )
         elif any(w in plant_id for w in ("grass", "spirit_gathering", "viper_grass")):
             asset_name = (
-                asset_name.replace("Millennial Ancestor Wood Heart", "Sacred Ancient Thousand-Year Mother Rhizome")
+                asset_name.replace(
+                    "Millennial Ancestor Wood Heart", "Sacred Ancient Thousand-Year Mother Rhizome"
+                )
                 .replace("Moss-Covered Fallen Log", "Decaying Grass Mound with Ripened Seed Husks")
                 .replace("Impenetrable Wild Thicket", "Dense Lush Wild Spirit Grass Meadow Colony")
-                .replace("Broad Leaf Collecting Spirit Dew", "Dew-Laden Slender Grass Blades Collecting Pure Spirit Nectar")
-                .replace("Mature Flourishing Specimen", "Mature Standing Specimen with Golden Seed Tassels")
+                .replace(
+                    "Broad Leaf Collecting Spirit Dew",
+                    "Dew-Laden Slender Grass Blades Collecting Pure Spirit Nectar",
+                )
+                .replace(
+                    "Mature Flourishing Specimen",
+                    "Mature Standing Specimen with Golden Seed Tassels",
+                )
             )
         elif any(w in plant_id for w in ("fern", "moon_swallowing")):
             asset_name = (
-                asset_name.replace("Millennial Ancestor Wood Heart", "Massive Ancient Moon-Fern Crown Rhizome")
-                .replace("Moss-Covered Fallen Log", "Decaying Forest Bed of Silver-Pearl Fern Fronds")
+                asset_name.replace(
+                    "Millennial Ancestor Wood Heart", "Massive Ancient Moon-Fern Crown Rhizome"
+                )
+                .replace(
+                    "Moss-Covered Fallen Log", "Decaying Forest Bed of Silver-Pearl Fern Fronds"
+                )
                 .replace("Impenetrable Wild Thicket", "Dense Impenetrable Moon-Fern Colony")
-                .replace("Broad Leaf Collecting Spirit Dew", "Arching Silver Fern Fronds Collecting Moonlight Dew")
-                .replace("Mature Flourishing Specimen", "Mature Standing Moon-Fern with Luminous Fronds")
+                .replace(
+                    "Broad Leaf Collecting Spirit Dew",
+                    "Arching Silver Fern Fronds Collecting Moonlight Dew",
+                )
+                .replace(
+                    "Mature Flourishing Specimen", "Mature Standing Moon-Fern with Luminous Fronds"
+                )
             )
         elif any(w in plant_id for w in ("tea", "mountain_tea")):
             asset_name = (
-                asset_name.replace("Millennial Ancestor Wood Heart", "Ancient Thousand-Year Mother Tea Bush Crown")
+                asset_name.replace(
+                    "Millennial Ancestor Wood Heart", "Ancient Thousand-Year Mother Tea Bush Crown"
+                )
                 .replace("Moss-Covered Fallen Log", "Old Gnarled Pruned Tea Base with Fresh Shoots")
                 .replace("Impenetrable Wild Thicket", "Dense Misty Mountain Tea Shrub Colony")
-                .replace("Broad Leaf Collecting Spirit Dew", "Tender Golden Tea Tips Collecting Mountain Mist Dew")
+                .replace(
+                    "Broad Leaf Collecting Spirit Dew",
+                    "Tender Golden Tea Tips Collecting Mountain Mist Dew",
+                )
             )
 
         # Sanitize workstation modifiers for flora: replace fireplaces/hearths/locks with authentic botanical growth states
@@ -721,7 +743,16 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
             implement_desc = "double-edged Chinese straight sword or Daoist flying sword"
         elif any(
             w in low_name
-            for w in ("shovel", "spade", "trowel", "sickle", "scythe", "harvester", "pick", "pickaxe")
+            for w in (
+                "shovel",
+                "spade",
+                "trowel",
+                "sickle",
+                "scythe",
+                "harvester",
+                "pick",
+                "pickaxe",
+            )
         ):
             implement_desc = "authentic Xianxia herb harvesting implement and Daoist field tool"
         else:
@@ -1004,7 +1035,9 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
             gable_spec = "high-angle triangular thatched timber gable end"
             material_neg = "ceramic tiles, glazed tiles, blue roof tiles, dark roof tiles, terracotta tiles, dougong brackets, imperial palace, temple hall, "
         else:
-            material = material.replace("glazed ceramic roof tiles", "dark charcoal terracotta roof tiles (#2C2C30)")
+            material = material.replace(
+                "glazed ceramic roof tiles", "dark charcoal terracotta roof tiles (#2C2C30)"
+            )
             roof_spec = "broad dark charcoal-slate terracotta roof tiles (#2C2C30) with warm cinnabar timber dougong eaves dominant and fully visible overhead (70%-80% of height), "
             gable_spec = "high-angle triangular dougong timber gable end"
             material_neg = "thatched straw roof, straw hut, hay, rustic shack, cyan roof, teal roof tiles, turquoise glaze, blue roof tiles, green moss wash, cold blue tint, "
@@ -1246,9 +1279,7 @@ def run_pipeline(
         else:
             import hashlib
 
-            seed_hash = int(
-                hashlib.md5(f"{asset_slug}_{var_slug}".encode()).hexdigest()[:6], 16
-            )
+            seed_hash = int(hashlib.md5(f"{asset_slug}_{var_slug}".encode()).hexdigest()[:6], 16)
             args.seed = 10000 + (seed_hash % 20000)
 
         if force:

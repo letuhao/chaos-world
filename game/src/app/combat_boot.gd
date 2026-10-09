@@ -955,4 +955,3 @@ static func _with_status_request(base: Callable, technique: Variant) -> Callable
 				out = built
 		CombatRequestStaging.stage_status_request(out, technique)
 		return out
-

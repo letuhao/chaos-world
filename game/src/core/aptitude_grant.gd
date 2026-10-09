@@ -27,7 +27,6 @@ const TABLE_PATH := "res://src/core/aptitude_grants.tres"
 ## beside [method shipped].
 static var _shipped: AptitudeGrant = null
 
-
 ## One row per major: `{path: StringName, posture: StringName, per_realm: float}`.
 @export var rows: Array[Dictionary] = []
 ## What ONE learned technique adds, into the DOMINANT posture's four aptitudes (split

@@ -14,6 +14,7 @@ extends RefCounted
 ## that lands on an illegal orientation falls back to the other one, so the roll only ever
 ## adds variety.
 
+
 ## The axis `rect` prefers, `&"x"` or `&"y"`, or `&""` when neither can take a cut that
 ## leaves two legal children. X wins a tie, because a horizontal cut of a square reads as
 ## the first slice of a grid.

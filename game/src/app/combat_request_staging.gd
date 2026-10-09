@@ -16,6 +16,7 @@ extends RefCounted
 ## `MindDamage._kind_of` is the only function that reads that vocabulary, so there is one
 ## place a kind can be added.
 
+
 ## Stage one ADR 0105 request onto `ctx.data`, or nothing when the blow carries
 ## no claimable element. Separated so the shape (one gate, element-carried) is
 ## asserted in one place rather than in every mechanism arm that builds a context.

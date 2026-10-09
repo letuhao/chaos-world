@@ -924,9 +924,7 @@ def main(argv: list[str] | None = None) -> int:
         "--audit", action="store_true", help="Audit all generated candidate variants"
     )
 
-    parser.add_argument(
-        "--force", action="store_true", help="Force overwrite existing renders"
-    )
+    parser.add_argument("--force", action="store_true", help="Force overwrite existing renders")
 
     args = parser.parse_args(argv)
 

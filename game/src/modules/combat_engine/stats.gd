@@ -154,7 +154,6 @@ const LIFESTEAL_PREFIX := "lifesteal."
 const LEECH_RESIST_PREFIX := "leech_resist."
 const POOLS: Array[StringName] = [&"health", &"qi", &"stamina"]
 
-
 ## ## ADR 0877. The CONTEST pairs, and why this is a derivation rather than a comment
 ##
 ## Every trigger contest this module owns is a flat delta over `rate_scale`

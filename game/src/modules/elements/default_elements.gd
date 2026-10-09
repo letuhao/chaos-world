@@ -4,7 +4,6 @@ extends RefCounted
 ## The default element set (ADR 0004): tier 1 五行 + tier 2 advanced. New elements
 ## can be appended here or authored as ElementDef `.tres` resources.
 
-
 ## The shipped rules table, built ONCE. `ElementsApi.default_rules()` forwards here so
 ## the module has one cache, and the path/training files can reach the rules without
 ## naming the facade — a two-way class reference between a facade and its own module
