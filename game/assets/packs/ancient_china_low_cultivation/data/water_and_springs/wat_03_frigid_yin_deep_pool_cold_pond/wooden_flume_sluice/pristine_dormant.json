@@ -1,0 +1,123 @@
+{
+  "asset_id": "ancient_china_low_cultivation.water_and_springs.wat_03_frigid_yin_deep_pool_cold_pond.wooden_flume_sluice",
+  "domain": "water_and_springs",
+  "sub_domain": "wat_03_frigid_yin_deep_pool_cold_pond",
+  "asset_slug": "wooden_flume_sluice",
+  "variant_slug": "pristine_dormant",
+  "name": "Pristine Dormant State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_03_frigid_yin_deep_pool_cold_pond/wooden_flume_sluice/pristine_dormant.png",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "operate_sluice",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.572,
+        0.597
+      ]
+    ],
+    "frac_zero": 0.821,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.269,
+        0.58,
+        0.109
+      ],
+      [
+        0.569,
+        0.969,
+        0.675
+      ],
+      [
+        0.56,
+        0.923,
+        0.599
+      ]
+    ],
+    "crop_offset": [
+      80,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 72,
+    "contact_reference_px": 72.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

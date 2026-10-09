@@ -1,0 +1,185 @@
+{
+  "asset_id": "ancient_china_low_cultivation.water_and_springs.wat_03_frigid_yin_deep_pool_cold_pond.stone_basin_spring",
+  "domain": "water_and_springs",
+  "sub_domain": "wat_03_frigid_yin_deep_pool_cold_pond",
+  "asset_slug": "stone_basin_spring",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_03_frigid_yin_deep_pool_cold_pond/stone_basin_spring/active_operating.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "drink_spring",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.513,
+        0.407
+      ],
+      [
+        0.807,
+        0.816
+      ]
+    ],
+    "frac_zero": 0.5345,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.116,
+        0.431,
+        0.597,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.615,
+        0.902,
+        0.961,
+        0.3,
+        0.0,
+        0.0
+      ],
+      [
+        0.08,
+        0.866,
+        1.0,
+        1.0,
+        0.949,
+        0.208,
+        0.0
+      ],
+      [
+        0.219,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.564,
+        0.031
+      ],
+      [
+        0.66,
+        0.998,
+        1.0,
+        1.0,
+        1.0,
+        0.922,
+        0.312
+      ],
+      [
+        0.77,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.997,
+        0.538
+      ],
+      [
+        0.228,
+        0.662,
+        0.893,
+        0.933,
+        0.84,
+        0.467,
+        0.007
+      ]
+    ],
+    "crop_offset": [
+      25,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 149,
+    "contact_reference_px": 149.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}
