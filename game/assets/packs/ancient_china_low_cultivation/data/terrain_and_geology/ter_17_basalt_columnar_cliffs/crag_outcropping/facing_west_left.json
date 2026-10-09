@@ -1,0 +1,147 @@
+{
+  "asset_id": "ancient_china_low_cultivation.terrain_and_geology.ter_17_basalt_columnar_cliffs.crag_outcropping",
+  "domain": "terrain_and_geology",
+  "sub_domain": "ter_17_basalt_columnar_cliffs",
+  "asset_slug": "crag_outcropping",
+  "variant_slug": "facing_west_left",
+  "name": "West Facing Profile",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_17_basalt_columnar_cliffs/crag_outcropping/facing_west_left.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "mine_stone",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.431,
+        0.341
+      ],
+      [
+        0.74,
+        0.796
+      ]
+    ],
+    "frac_zero": 0.638,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.846,
+        0.188,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.222,
+        0.993,
+        0.332,
+        0.027,
+        0.0
+      ],
+      [
+        0.112,
+        0.649,
+        1.0,
+        0.864,
+        0.266,
+        0.0
+      ],
+      [
+        0.448,
+        1.0,
+        1.0,
+        1.0,
+        0.94,
+        0.184
+      ],
+      [
+        0.773,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.826
+      ],
+      [
+        0.478,
+        0.992,
+        1.0,
+        1.0,
+        1.0,
+        0.421
+      ],
+      [
+        0.0,
+        0.598,
+        0.731,
+        0.892,
+        0.396,
+        0.017
+      ]
+    ],
+    "crop_offset": [
+      39,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 94,
+    "contact_reference_px": 94.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
