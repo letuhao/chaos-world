@@ -46,14 +46,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_17_wild_wisteria_canopy/tender_sapling/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.282
+            0.414
           ]
         ],
-        "frac_zero": 0.7866,
+        "frac_zero": 0.673,
         "blocks": [
           [
             false
@@ -75,28 +75,30 @@
         ],
         "sub_fill": [
           [
-            0.159,
-            0.349,
-            0.112
+            0.27,
+            0.768,
+            0.322
           ],
           [
-            0.417,
-            0.535,
-            0.344
+            0.658,
+            0.597,
+            0.618
           ],
           [
-            0.105,
-            0.309,
-            0.056
+            0.061,
+            0.388,
+            0.027
           ]
         ],
         "crop_offset": [
-          22,
-          17
+          16,
+          16
         ],
-        "trunk_columns": [],
-        "contact_px": 16,
-        "contact_reference_px": 16.0,
+        "trunk_columns": [
+          1
+        ],
+        "contact_px": 24,
+        "contact_reference_px": 24.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -119,14 +121,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_17_wild_wisteria_canopy/tender_sapling/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.315
+            0.43
           ]
         ],
-        "frac_zero": 0.7828,
+        "frac_zero": 0.6751,
         "blocks": [
           [
             false
@@ -148,30 +150,30 @@
         ],
         "sub_fill": [
           [
-            0.186,
-            0.276,
-            0.072
+            0.286,
+            0.754,
+            0.259
           ],
           [
-            0.463,
-            0.493,
-            0.404
+            0.693,
+            0.569,
+            0.727
           ],
           [
-            0.157,
-            0.539,
-            0.0
+            0.036,
+            0.45,
+            0.045
           ]
         ],
         "crop_offset": [
-          24,
-          17
+          18,
+          16
         ],
         "trunk_columns": [
           1
         ],
-        "contact_px": 36,
-        "contact_reference_px": 36.0,
+        "contact_px": 26,
+        "contact_reference_px": 26.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -194,14 +196,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_17_wild_wisteria_canopy/tender_sapling/damaged_weathered.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.27
+            0.402
           ]
         ],
-        "frac_zero": 0.8071,
+        "frac_zero": 0.7039,
         "blocks": [
           [
             false
@@ -223,36 +225,41 @@
         ],
         "sub_fill": [
           [
-            0.052,
-            0.455,
-            0.038
+            0.251,
+            0.731,
+            0.355
           ],
           [
-            0.375,
-            0.585,
-            0.307
+            0.503,
+            0.581,
+            0.433
           ],
           [
-            0.021,
-            0.508,
-            0.0
+            0.072,
+            0.611,
+            0.013
           ]
         ],
         "crop_offset": [
           18,
-          17
+          16
         ],
         "trunk_columns": [
           1
         ],
-        "contact_px": 26,
-        "contact_reference_px": 26.0,
+        "contact_px": 41,
+        "contact_reference_px": 41.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
           "1.15": null,
           "1.35": null,
-          "1.6": null
+          "1.6": [
+            0,
+            0,
+            0,
+            0
+          ]
         },
         "block_rect": null,
         "block_rect_px": null
@@ -269,14 +276,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_17_wild_wisteria_canopy/tender_sapling/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.335
+            0.503
           ]
         ],
-        "frac_zero": 0.7622,
+        "frac_zero": 0.6694,
         "blocks": [
           [
             false
@@ -298,36 +305,42 @@
         ],
         "sub_fill": [
           [
-            0.188,
-            0.455,
-            0.145
+            0.372,
+            0.817,
+            0.265
           ],
           [
-            0.509,
-            0.569,
-            0.462
+            0.44,
+            0.59,
+            0.421
           ],
           [
-            0.132,
-            0.395,
-            0.035
+            0.434,
+            0.784,
+            0.239
           ]
         ],
         "crop_offset": [
-          21,
-          17
+          20,
+          16
         ],
         "trunk_columns": [
+          0,
           1
         ],
-        "contact_px": 32,
-        "contact_reference_px": 32.0,
+        "contact_px": 68,
+        "contact_reference_px": 68.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
           "1.15": null,
           "1.35": null,
-          "1.6": null
+          "1.6": [
+            0,
+            0,
+            0,
+            0
+          ]
         },
         "block_rect": null,
         "block_rect_px": null

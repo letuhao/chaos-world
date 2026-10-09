@@ -21,10 +21,10 @@
   "matrix_data": {
     "coverage": [
       [
-        0.395
+        0.477
       ]
     ],
-    "frac_zero": 0.7271,
+    "frac_zero": 0.6716,
     "blocks": [
       [
         false
@@ -46,28 +46,30 @@
     ],
     "sub_fill": [
       [
-        0.251,
-        0.677,
-        0.117
+        0.281,
+        0.822,
+        0.273
       ],
       [
-        0.624,
-        0.69,
-        0.5
+        0.74,
+        0.78,
+        0.692
       ],
       [
-        0.075,
-        0.346,
-        0.033
+        0.108,
+        0.449,
+        0.075
       ]
     ],
     "crop_offset": [
-      22,
-      17
+      18,
+      16
     ],
-    "trunk_columns": [],
-    "contact_px": 30,
-    "contact_reference_px": 30.0,
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 23,
+    "contact_reference_px": 23.0,
     "blocked_by_scale": {
       "0.85": null,
       "1.0": null,

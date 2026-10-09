@@ -46,14 +46,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_17_wild_wisteria_canopy/spirit_dew_collector/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.44
+            0.456
           ]
         ],
-        "frac_zero": 0.6777,
+        "frac_zero": 0.6686,
         "blocks": [
           [
             false
@@ -75,30 +75,30 @@
         ],
         "sub_fill": [
           [
-            0.23,
-            0.439,
-            0.177
+            0.268,
+            0.794,
+            0.29
           ],
           [
-            0.576,
-            0.643,
-            0.465
+            0.575,
+            0.587,
+            0.574
           ],
           [
-            0.274,
-            0.833,
-            0.24
+            0.106,
+            0.745,
+            0.133
           ]
         ],
         "crop_offset": [
-          18,
+          17,
           16
         ],
         "trunk_columns": [
           1
         ],
-        "contact_px": 61,
-        "contact_reference_px": 61.0,
+        "contact_px": 47,
+        "contact_reference_px": 47.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -126,14 +126,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_17_wild_wisteria_canopy/spirit_dew_collector/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.444
+            0.475
           ]
         ],
-        "frac_zero": 0.6949,
+        "frac_zero": 0.6674,
         "blocks": [
           [
             false
@@ -155,41 +155,36 @@
         ],
         "sub_fill": [
           [
-            0.289,
-            0.587,
-            0.155
+            0.308,
+            0.84,
+            0.301
           ],
           [
-            0.509,
-            0.584,
-            0.418
+            0.704,
+            0.662,
+            0.693
           ],
           [
-            0.323,
-            0.76,
-            0.11
+            0.031,
+            0.663,
+            0.025
           ]
         ],
         "crop_offset": [
-          23,
+          17,
           17
         ],
         "trunk_columns": [
           1
         ],
-        "contact_px": 58,
-        "contact_reference_px": 58.0,
+        "contact_px": 34,
+        "contact_reference_px": 34.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
           "1.15": null,
           "1.35": null,
-          "1.6": [
-            0,
-            0,
-            0,
-            0
-          ]
+          "1.6": null
         },
         "block_rect": null,
         "block_rect_px": null
@@ -206,14 +201,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_17_wild_wisteria_canopy/spirit_dew_collector/damaged_weathered.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.357
+            0.45
           ]
         ],
-        "frac_zero": 0.7362,
+        "frac_zero": 0.6829,
         "blocks": [
           [
             false
@@ -235,24 +230,24 @@
         ],
         "sub_fill": [
           [
-            0.23,
-            0.409,
-            0.142
+            0.326,
+            0.808,
+            0.367
           ],
           [
-            0.613,
-            0.537,
-            0.319
+            0.575,
+            0.5,
+            0.593
           ],
           [
-            0.115,
-            0.637,
-            0.069
+            0.107,
+            0.69,
+            0.016
           ]
         ],
         "crop_offset": [
-          20,
-          17
+          18,
+          16
         ],
         "trunk_columns": [
           1
@@ -286,14 +281,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_17_wild_wisteria_canopy/spirit_dew_collector/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.486
+            0.499
           ]
         ],
-        "frac_zero": 0.6707,
+        "frac_zero": 0.6696,
         "blocks": [
           [
             false
@@ -315,32 +310,31 @@
         ],
         "sub_fill": [
           [
-            0.32,
-            0.71,
-            0.171
+            0.411,
+            0.836,
+            0.351
           ],
           [
-            0.352,
-            0.532,
-            0.306
+            0.421,
+            0.486,
+            0.335
           ],
           [
-            0.454,
-            0.968,
-            0.437
+            0.416,
+            0.849,
+            0.295
           ]
         ],
         "crop_offset": [
-          20,
+          19,
           17
         ],
         "trunk_columns": [
           0,
-          1,
-          2
+          1
         ],
-        "contact_px": 71,
-        "contact_reference_px": 71.0,
+        "contact_px": 72,
+        "contact_reference_px": 72.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
