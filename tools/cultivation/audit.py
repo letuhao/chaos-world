@@ -68,6 +68,7 @@ def _family_ids(family_name: str) -> set[str]:
 # `tools/arch/families.json` and the validation follows.
 REALM_DIR = _family_dir("body_realms")
 QI_REALM_DIR = _family_dir("qi_realms")
+MIND_REALM_DIR = _family_dir("mind_realms")
 MERIDIAN_DIR = _family_dir("meridians")
 # The one runtime file whose arithmetic the gate-soundness checks mirror. It is
 # read, never edited: the tool's model of the runtime is only allowed to be as
@@ -566,6 +567,8 @@ def validate() -> list[str]:
     findings.extend(_gate_soundness_findings(ladder, seeds))
     findings.extend(_qi_gate_soundness_findings(ladder))
     findings.extend(foundation_floor_findings(ladder))
+    findings.extend(foundation_floor_findings(ladder, REALM_DIR))
+    findings.extend(foundation_floor_findings(ladder, MIND_REALM_DIR))
     findings.extend(qi_gate_ladder_findings(ladder))
     findings.extend(qi_catalyst_findings(ladder))
     findings.extend(qi_price_findings())
@@ -742,7 +745,7 @@ def meridian_loader_findings(loader_dir, corpus_dir) -> list[str]:
     return []
 
 
-def foundation_floor_findings(ladder: list) -> list[str]:
+def foundation_floor_findings(ladder: list, directory=None) -> list[str]:
     """Every authored `min_foundation` must be REACHABLE, and the first one must be zero.
 
     BL-0951 / ADR 0939: a breakthrough into a realm demands the carried foundation —
@@ -754,10 +757,15 @@ def foundation_floor_findings(ladder: list) -> list[str]:
     - a floor on the SECOND realm, because entering it there are NO snapshots and the
       aggregate is exactly 0.0 — the first wall a player meets would be a wall nobody
       can ever clear, in any run, at any skill.
+
+    `directory` defaults to the qi seeds and is passed explicitly for every other path
+    that authors its own floors (the shared module owns the record; each path owns its
+    own demand — ADR 0939 ruling 1).
     """
+    root = Path(QI_REALM_DIR if directory is None else directory)
     findings: list[str] = []
     for index, (realm_id, _name, _tier) in enumerate(ladder):
-        path = QI_REALM_DIR / f"{realm_id}.tres"
+        path = root / f"{realm_id}.tres"
         if not path.is_file():
             continue
         text = path.read_text(encoding="utf-8", errors="replace")

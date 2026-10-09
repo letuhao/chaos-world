@@ -32,6 +32,11 @@ extends Resource
 @export var required_meridians: Array[StringName] = []
 @export var required_refinement: int = 1
 @export var refinement_cap: int = 1
+## BL-0951 / ADR 0939: the FOUNDATION FLOOR for entering this realm. The actor's carried
+## foundation (the mean perfection of every realm it has left) must stand at or above
+## this, or the breakthrough is refused by name (`foundation_insufficient`) and shown in
+## the preview BEFORE the wall is hit. Authored data, never a curve.
+@export var min_foundation: float = 0.0
 @export var integrity_maximum: float = 100.0
 @export var rewards: Dictionary = {}
 # Insight floor (comprehension requirement for entry).
@@ -73,6 +78,13 @@ var meridian_work: float:
 ## This realm's position on the shared ladder, or 0 when it is not on it. Cached
 ## because the derived getters above call it and `RealmLadder.index_of` is a scan.
 var _index_cache: int = -2
+
+
+## BL-0951's wall, as ONE predicate: the carried foundation clears this realm's authored
+## floor. The body condition reads THIS, so the preview's unmet list and the enforced
+## gate cannot disagree (ADR 0044) — the same rule `QiRealmSeed.foundation_met` follows.
+func foundation_met(foundation: float) -> bool:
+	return foundation >= min_foundation
 
 
 func ladder_index() -> int:

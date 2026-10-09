@@ -2,6 +2,9 @@ class_name BodyBreakthroughCondition
 extends BreakthroughCondition
 
 const _ITEMS := preload("res://src/modules/items/api.gd")
+## The foundation record's read (BL-0951): the wall lives in THIS condition, so the
+## preview's unmet list and the enforced gate cannot disagree (ADR 0044).
+const _FOUNDATION := preload("res://src/modules/foundation/api.gd")
 
 
 func can_breakthrough(actor: Actor, state: PathState, _context: Dictionary) -> bool:
@@ -66,6 +69,11 @@ func describe_unmet(actor: Actor, state: PathState) -> Array[String]:
 		unmet.append("Damaged channels need repair: %s" % ", ".join(wounded))
 	if not _channels_ready(actor, seed):
 		unmet.append("Required channels are not trained deep enough")
+	# BL-0951: the foundation wall. The carried foundation must clear the target seed's
+	# authored floor; below it the refusal is NAMED, and because the preview renders this
+	# same list, the wall is visible before it is hit (ADR 0044).
+	if not seed.foundation_met(_FOUNDATION.foundation(actor)):
+		unmet.append("foundation_insufficient")
 	# Reported gate by gate, never as one omnibus line. A player told "tribulation,
 	# inside world, ascension" cannot act on any of them: the tribulation is fought
 	# somewhere else entirely, the inside world is grown by training, and the ascent

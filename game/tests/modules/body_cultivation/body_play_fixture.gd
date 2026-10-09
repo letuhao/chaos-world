@@ -43,7 +43,25 @@ func actor(at_realm: StringName = &"qi_refining", physique: float = 20.0) -> Act
 	BodyCultivationApi.attach_acupoints(actor)
 	ItemsApi.attach(actor, INVENTORY_SLOTS)
 	BodyTraining.synchronize(actor)
+	# BL-0951: a fixture standing at `at_realm` implies it LEFT every realm below it, and
+	# a real climb would have snapshotted each departure. Backfill at 1.0 so the foundation
+	# wall reads the history such a climb must have had — without it the fixture is a state
+	# no player can reach and every enterability check meets a wall it never had a chance
+	# to clear.
+	backfill_foundation(actor)
 	return actor
+
+
+## One 1.0 snapshot per realm below the actor's standing body realm, in ladder order.
+## Bounded by the ladder and terminated by the rank itself.
+func backfill_foundation(actor: Actor) -> void:
+	var state := actor.path(BodyPath.PATH_ID)
+	if state == null:
+		return
+	for realm in RealmDefaults.ladder().realms():
+		if realm.id == state.rank_id:
+			return
+		FoundationApi.snapshot(actor, realm.id, 1.0)
 
 
 ## Top the actor up on one consumable. The quantity is far below `max_stack` so

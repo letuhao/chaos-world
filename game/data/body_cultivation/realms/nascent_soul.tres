@@ -16,6 +16,7 @@ integrity_target = 0.701500
 required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen"])
 required_refinement = 3
 refinement_cap = 4
+min_foundation = 0.05
 integrity_maximum = 130.0
 rewards = {
 "physique": 2.0,

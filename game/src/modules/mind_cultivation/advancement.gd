@@ -23,6 +23,9 @@ extends RefCounted
 ## `try_breakthrough` stays as the one-shot convenience wrapper over both steps.
 
 const _ITEMS := preload("res://src/modules/items/api.gd")
+## The foundation record's read and write (BL-0951): the preview reports the wall and the
+## departure snapshots the realm's perfection, both through the foundation facade.
+const _FOUNDATION := preload("res://src/modules/foundation/api.gd")
 
 ## Module-owned attempt record. Core serializes it as raw data and this module
 ## rebuilds the typed attempt from it, so core never imports this class.
@@ -121,6 +124,11 @@ static func preview(actor: Actor) -> Dictionary:
 		var channel := actor.meridians.get_meridian(id)
 		if channel == null or not channel.meets(source_seed.required_channel_state):
 			conditions.append("Channel %s not ready" % id)
+	# BL-0951: the foundation wall. The carried foundation must clear the target seed's
+	# authored floor; below it the refusal is NAMED, and the condition enforces the same
+	# predicate (ADR 0044).
+	if not seed.foundation_met(_FOUNDATION.foundation(actor)):
+		conditions.append("foundation_insufficient")
 	# The four shared tier gates and the anchor are SEPARATE clauses and all of them
 	# are owed. ADR 0024 delegated the anchor to `MindAnchor` and nothing else, so
 	# the shared list is reported here rather than assumed by the condition.
@@ -498,9 +506,16 @@ static func resolve_attempt(actor: Actor) -> bool:
 	# Draining first would hand the actor a full reservoir's worth of progress for a
 	# breakthrough that never happened, and the drain is reachable precisely because
 	# the advance can now refuse where `try_advance` never could.
+	# BL-0951: the realm being LEFT is captured before the advance, because the write is
+	# once per realm and the depth is measured against the gate just passed.
+	var leaving := state.rank_id
 	if not Breakthrough.try_advance_gated(actor, MindPath.PATH_ID):
 		_end(actor, committed, false)
 		return false
+	# The departure is real: record the realm's perfection now, through this path's own
+	# measure (the channels refined toward the realm's authored cap; the mind's gate
+	# demands the channel STATE only, so every refinement step is depth past the gate).
+	_FOUNDATION.snapshot(actor, leaving, MindCultivationApi.departure_perfection(actor, leaving))
 	for key in seed.rewards:
 		var id := StringName(key)
 		actor.stats.set_base(id, actor.stats.get_base(id) + float(seed.rewards[key]))

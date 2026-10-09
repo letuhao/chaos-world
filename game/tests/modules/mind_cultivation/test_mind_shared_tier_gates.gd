@@ -608,6 +608,16 @@ func _prepare(actor: Actor, source: RealmDef, target: RealmDef) -> void:
 			if not MindTraining.train_channel(actor, meridian_id):
 				break
 			channel = actor.meridians.get_meridian(meridian_id)
+		# BL-0951: refine to the realm's authored cap — the mind's foundation measure is
+		# refinement/cap, so a fixture that stops at the channel STATE departs at 0.0 and
+		# meets the wall on the way up. Bounded by a counter that names the cap.
+		var depth_guard := 0
+		while channel.refinement < source_seed.channel_refinement_cap and depth_guard < 64:
+			depth_guard += 1
+			Probe.stock(actor, source_seed.training_item)
+			if not MindTraining.train_channel(actor, meridian_id):
+				break
+			channel = actor.meridians.get_meridian(meridian_id)
 		assert_eq(
 			MeridianState.STATE_ORDER.get(channel.state, 0) >= wanted,
 			true,

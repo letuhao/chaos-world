@@ -8,6 +8,8 @@ extends TestCase
 ## calls, so a single press and a save-spanning attempt cannot diverge. What
 ## these tests pin is the *record*, not the outcome — the outcome is a roll.
 
+const Play := preload("res://tests/modules/body_cultivation/body_play_fixture.gd")
+
 
 func _actor() -> Actor:
 	var actor := Actor.new(&"attempt_hero", {Stat.PHYSIQUE: 20.0})
@@ -57,9 +59,17 @@ func _prepare(actor: Actor) -> BodyRealmSeed:
 		while actor.meridians.refine_meridian(meridian_id, seed.required_refinement) and guard < 32:
 			guard += 1
 	var points: AcupointSet = actor.component(&"acupoints")
+	# BL-0951: a real run's huyệt saturate at the STANDING realm's authored target
+	# (`BodyTraining.strengthen` trains them there unconditionally), so the fixture
+	# mirrors that level — at the target realm's bare requirement the departures would
+	# snapshot 0.0 and the foundation wall would refuse a state a player cannot hold.
+	var source := BodyRealmSeed.for_realm(state.rank_id)
+	var point_level := seed.quality_required
+	if source != null:
+		point_level = maxf(point_level, source.quality_target)
 	for point in points.points:
 		point.clear_block()
-		point.quality = maxf(point.quality, seed.quality_required)
+		point.quality = maxf(point.quality, point_level)
 	points.fill(seed.integrity_maximum)
 	state.progress = seed.progress_required
 	if actor.stats.get_base(Stat.PHYSIQUE) < seed.physique_required:
@@ -373,6 +383,10 @@ func test_resolve_cancels_when_the_tier_gate_shut_under_the_attempt() -> void:
 	# first realm through the same helper every other fixture uses.
 	actor.path(BodyPath.PATH_ID).rank_id = source
 	actor.meridians.unlock_for_realm(source)
+	# BL-0951: standing at R18 implies the climb that got here; backfill the history a
+	# real walk would have snapshotted, or the foundation wall refuses an attempt this
+	# test needs the gate to open for.
+	Play.new().backfill_foundation(actor)
 	# `_prepare` raises the quality of the points that EXIST but never grows the
 	# set, and the gate reads every huyệt the current realm has unlocked. Sync
 	# first, so the points R1..R17 introduced are present for `_prepare` to

@@ -21,6 +21,9 @@ extends RefCounted
 ## reloaded attempt and a single-press attempt cannot diverge.
 
 const _ITEMS := preload("res://src/modules/items/api.gd")
+## The foundation record's write (BL-0951): the realm being left gets its perfection
+## snapshotted at departure, through the foundation facade like every other module edge.
+const _FOUNDATION := preload("res://src/modules/foundation/api.gd")
 
 ## Module-owned attempt record. Serialized as raw data and rebuilt by this
 ## module, so core never imports this class.
@@ -326,9 +329,16 @@ static func resolve_attempt(actor: Actor) -> bool:
 	# The gate is the last thing that can still refuse, and a refusal must leave
 	# the actor exactly as it was found: no realm, no rewards, no drained pool.
 	# Granting first would pay the award for a breakthrough that never happened.
+	# BL-0951: the realm being LEFT is captured before the advance, because the write is
+	# once per realm and the depth is measured against the gate just passed.
+	var leaving := state.rank_id
 	if not Breakthrough.try_advance_gated(actor, BodyPath.PATH_ID):
 		_end(actor, committed, false)
 		return false
+	# The departure is real: record the realm's perfection now, through this path's own
+	# measure (BL-0951: the acupoint quality past the next gate, against the standing
+	# realm's authored target — the refinement axis has no headroom by design).
+	_FOUNDATION.snapshot(actor, leaving, BodyCultivationApi.departure_perfection(actor, target.id))
 	for key in seed.rewards:
 		var id := StringName(key)
 		actor.stats.set_base(id, actor.stats.get_base(id) + float(seed.rewards[key]))

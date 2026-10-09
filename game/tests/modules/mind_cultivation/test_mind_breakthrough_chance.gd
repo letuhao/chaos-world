@@ -43,6 +43,9 @@ func _actor_at(rank_id: StringName) -> Actor:
 	MindCultivationApi.attach(actor)
 	MindCultivationApi.attach_sea(actor)
 	MindTraining.synchronize(actor)
+	# BL-0951: a fixture standing at `rank_id` implies it LEFT every realm below it; backfill
+	# the history a real climb would have snapshotted, or the foundation wall refuses.
+	Probe.backfill_foundation(actor)
 	return actor
 
 

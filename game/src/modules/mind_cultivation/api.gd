@@ -21,6 +21,26 @@ const CULTIVATE_STEP := 10.0
 const MEDITATE_STEP := 0.1
 
 
+## BL-0951: the mind's PERFECTION at departure — the share of the realm's required
+## channels refined toward its authored `channel_refinement_cap`. The mind's gate demands
+## the channel STATE only (no refinement floor), so every refinement step is depth past
+## the gate and the cap is the ceiling. The shape mirrors qi's measure; the measure is
+## this path's own (ADR 0939 ruling 1).
+static func departure_perfection(actor: Actor, realm_id: StringName) -> float:
+	var seed := MindRealmSeed.for_realm(realm_id)
+	if actor == null or seed == null or seed.required_meridians.is_empty():
+		return 0.0
+	if seed.channel_refinement_cap <= 0:
+		return 0.0
+	var total := 0.0
+	for meridian_id in seed.required_meridians:
+		var channel := actor.meridians.get_meridian(meridian_id)
+		if channel == null:
+			continue
+		total += clampf(float(channel.refinement) / float(seed.channel_refinement_cap), 0.0, 1.0)
+	return total / float(seed.required_meridians.size())
+
+
 static func attach(actor: Actor) -> void:
 	_ensure_resources(actor)
 	if not MindAccess.has_provider(actor, MindProvider):

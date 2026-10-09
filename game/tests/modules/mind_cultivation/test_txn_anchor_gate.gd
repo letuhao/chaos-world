@@ -46,6 +46,9 @@ func _stages() -> Array[StringName]:
 	]
 
 
+const Probe := preload("res://tests/modules/mind_cultivation/mind_gate_probe.gd")
+
+
 func _bare() -> Actor:
 	var actor := Actor.new(&"txn_anchor_hero", {Stat.COMPREHENSION: 0.0, Stat.WILL: 0.0})
 	actor.set_path(PathState.new(MindPath.PATH_ID, _realm_at(0).id))
@@ -64,6 +67,9 @@ func _at(rank_id: StringName) -> Actor:
 	MindCultivationApi.attach_sea(actor)
 	ItemsApi.attach(actor, 500)
 	MindTraining.synchronize(actor)
+	# BL-0951: a fixture standing at `rank_id` implies it LEFT every realm below it; backfill
+	# the history a real climb would have snapshotted, or the foundation wall refuses.
+	Probe.backfill_foundation(actor)
 	return actor
 
 

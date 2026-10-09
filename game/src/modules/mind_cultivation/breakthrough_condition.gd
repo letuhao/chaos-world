@@ -2,6 +2,9 @@ class_name MindBreakthroughCondition
 extends BreakthroughCondition
 
 const _ITEMS := preload("res://src/modules/items/api.gd")
+## The foundation record's read (BL-0951): the wall lives in THIS condition, so the
+## preview's list and the enforced gate cannot disagree (ADR 0044).
+const _FOUNDATION := preload("res://src/modules/foundation/api.gd")
 
 
 ## Entry into realm R requires the *completed* milestones of R-1, not R's own
@@ -31,8 +34,16 @@ func can_breakthrough(actor: Actor, state: PathState, _context: Dictionary) -> b
 		and sea.ratio(actor) >= target_seed.sea_fill_required
 		and _ITEMS.has_item(actor, target_seed.breakthrough_item)
 		and _channels_ready(actor, source_seed)
+		and _foundation_ready(actor, target_seed)
 		and _anchor_ready(actor, target)
 	)
+
+
+## BL-0951 / ADR 0939: the foundation wall — the carried foundation must clear the TARGET
+## seed's authored floor. It lives HERE so `MindAdvancement.preview` and the enforced gate
+## cannot disagree about it (ADR 0044).
+func _foundation_ready(actor: Actor, target_seed: MindRealmSeed) -> bool:
+	return target_seed.foundation_met(_FOUNDATION.foundation(actor))
 
 
 func describe() -> String:

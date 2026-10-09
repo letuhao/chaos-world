@@ -27,6 +27,7 @@
         "contracts",
         "core",
         "destiny",
+        "foundation",
         "items",
         "race"
       ]
@@ -228,6 +229,7 @@
         "contracts",
         "core",
         "destiny",
+        "foundation",
         "items",
         "race"
       ]

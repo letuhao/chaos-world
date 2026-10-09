@@ -18,6 +18,7 @@ sea_tier = &"shallow"
 required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver"])
 required_channel_state = &"strengthened"
 channel_refinement_cap = 9
+min_foundation = 0.3
 sea_capacity = 300.0
 insight_required = 35.0
 rewards = {

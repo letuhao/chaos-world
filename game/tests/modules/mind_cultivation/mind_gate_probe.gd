@@ -96,7 +96,23 @@ static func fresh_actor(rank_id: StringName) -> Actor:
 	MindCultivationApi.attach_sea(actor)
 	ItemsApi.attach(actor, 500)
 	MindTraining.synchronize(actor)
+	# BL-0951: a fixture standing at `rank_id` implies it LEFT every realm below it, and a
+	# real climb would have snapshotted each departure. Backfill at 1.0 so the foundation
+	# wall reads the history such a climb must have had.
+	backfill_foundation(actor)
 	return actor
+
+
+## One 1.0 snapshot per realm below the actor's standing mind realm, in ladder order.
+## Bounded by the ladder and terminated by the rank itself.
+static func backfill_foundation(actor: Actor) -> void:
+	var state := actor.path(MindPath.PATH_ID)
+	if state == null:
+		return
+	for realm in RealmDefaults.ladder().realms():
+		if realm.id == state.rank_id:
+			return
+		FoundationApi.snapshot(actor, realm.id, 1.0)
 
 
 ## The strongest pre-state a player standing in `rank_id` can hold, reached only
@@ -214,6 +230,17 @@ static func train_channels(actor: Actor, source_seed: MindRealmSeed) -> bool:
 			channel = actor.meridians.get_meridian(meridian_id)
 		if not channel.meets(source_seed.required_channel_state):
 			return false
+		# BL-0951: the strongest pre-state also refines each required channel toward the
+		# realm's authored cap — the mind's foundation measure is refinement/cap, and a
+		# fixture that stopped at the channel STATE would depart at 0.0 and meet the wall
+		# at R4. Bounded by a counter that names the cap it failed to reach.
+		var depth_guard := 0
+		while channel.refinement < source_seed.channel_refinement_cap and depth_guard < 64:
+			depth_guard += 1
+			stock(actor, source_seed.training_item)
+			if not MindCultivationApi.train_channel(actor, meridian_id):
+				return false
+			channel = actor.meridians.get_meridian(meridian_id)
 	return true
 
 

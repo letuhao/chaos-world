@@ -27,6 +27,11 @@ static var _cache: Dictionary = {}
 @export var required_meridians: Array[StringName] = []
 @export var required_channel_state: StringName = MeridianState.STRENGTHENED
 @export var channel_refinement_cap: int = 1
+## BL-0951 / ADR 0939: the FOUNDATION FLOOR for entering this realm. The actor's carried
+## foundation (the mean perfection of every realm it has left) must stand at or above
+## this, or the breakthrough is refused by name (`foundation_insufficient`) and shown in
+## the preview BEFORE the wall is hit. Authored data, never a curve.
+@export var min_foundation: float = 0.0
 @export var sea_capacity: float = 100.0
 @export var rewards: Dictionary = {}
 ## Unread. `comprehension_required` above is the ENFORCED entry gate
@@ -34,6 +39,13 @@ static var _cache: Dictionary = {}
 ## half of it at all 30 realms, so a weaker copy of a threshold that already binds
 ## can never bind itself. Delete it with the case that pins it — see BL-0146.
 @export var insight_required: float = 0.0
+
+
+## BL-0951's wall, as ONE predicate: the carried foundation clears this realm's authored
+## floor. The condition and the preview both call THIS, so the reported gate is the
+## enforced gate (ADR 0044) — the same rule `QiRealmSeed.foundation_met` follows.
+func foundation_met(foundation: float) -> bool:
+	return foundation >= min_foundation
 
 
 static func for_realm(realm_id: StringName) -> MindRealmSeed:

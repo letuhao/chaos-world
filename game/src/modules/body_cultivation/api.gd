@@ -33,6 +33,57 @@ const MATERIAL_CAPACITY := 128
 ## no component copy of it: a second, divergent source of truth for core state is
 ## exactly what ADR 0057 removes, and the copy made the wrong read look like a
 ## working one.
+## BL-0951: the body's PERFECTION at departure — how far past the next gate's quality
+## requirement the actor trained, against the standing realm's authored `quality_target`
+## as the ceiling. The REFINEMENT axis has no headroom by design (the next gate demands
+## this realm's cap at all 29 boundaries, so `Tribulation.formation_depth` reads 0.0 for
+## every body departure), and the measurable axis is the acupoint quality: the denominator
+## `quality_target(source) - quality_required(target)` is 0.07 at every boundary, which is
+## exactly what makes deepening worth something. The shape (a clamped mean over the gate's
+## own channels) mirrors the qi measure; the MEASURE is this path's own, which is
+## ADR 0939 ruling 1's split.
+static func departure_perfection(actor: Actor, target_id: StringName) -> float:
+	if actor == null:
+		return 0.0
+	var state := actor.path(BodyPath.PATH_ID)
+	var target := BodyRealmSeed.for_realm(target_id)
+	var source := BodyRealmSeed.for_realm(state.rank_id) if state != null else null
+	if target == null or source == null or target.required_meridians.is_empty():
+		return 0.0
+	var denominator := source.quality_target - target.quality_required
+	if denominator <= 0.0:
+		return 0.0
+	var points := actor.component(&"acupoints") as AcupointSet
+	if points == null:
+		return 0.0
+	var total := 0.0
+	for meridian_id in target.required_meridians:
+		total += _channel_quality_depth(points, meridian_id, target.quality_required, denominator)
+	return total / float(target.required_meridians.size())
+
+
+## The mean clamped depth of one meridian's acupoints: `(quality - gate) / denominator`,
+## averaged over the points that belong to it. A meridian with no points contributes 0.0,
+## which is the honest answer for a gate channel the body does not carry.
+static func _channel_quality_depth(
+	points: AcupointSet, meridian_id: StringName, gate: float, denominator: float
+) -> float:
+	var total := 0.0
+	var count := 0
+	for definition in AcupointDefaults.definitions():
+		if definition.meridian_id != meridian_id:
+			continue
+		for point in points.points:
+			if point.id != definition.id:
+				continue
+			count += 1
+			if not point.blocked:
+				total += clampf((point.quality - gate) / denominator, 0.0, 1.0)
+	if count == 0:
+		return 0.0
+	return total / float(count)
+
+
 static func attach(actor: Actor) -> void:
 	_ensure_resources(actor)
 	var provider := BodyProvider.new()

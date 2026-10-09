@@ -21,7 +21,7 @@ const LAYER_DEPS := ["contracts", "core"]
 const BASE_DEPS := {
 	"anchor": ["items", "soul"],
 	"bloodline": ["race"],
-	"body_cultivation": ["destiny", "items", "race"],
+	"body_cultivation": ["destiny", "foundation", "items", "race"],
 	"clan": ["bloodline", "race", "social"],
 	"collection": ["destiny", "dual_cultivation", "fertility", "social"],
 	"combat": ["destiny", "loot", "status"],
@@ -44,7 +44,7 @@ const BASE_DEPS := {
 	"items": ["destiny", "status"],
 	"loot": ["items", "status"],
 	"market": ["economy", "items"],
-	"mind_cultivation": ["destiny", "items", "race"],
+	"mind_cultivation": ["destiny", "foundation", "items", "race"],
 	"mods": [],
 	"nation": ["sect", "social"],
 	"npc": ["social"],
