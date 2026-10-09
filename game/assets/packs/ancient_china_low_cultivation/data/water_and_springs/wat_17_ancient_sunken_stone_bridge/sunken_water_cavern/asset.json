@@ -1,0 +1,680 @@
+{
+  "id": "ancient_china_low_cultivation.water_and_springs.wat_17_ancient_sunken_stone_bridge.sunken_water_cavern",
+  "archetype": "sunken_water_cavern_wat_17_ancient_sunken_stone_bridge",
+  "name": "Ancient Sunken Stone Bridge - Subterranean Submerged Sump",
+  "vietnamese_name": "Trầm Thủy Cổ Đặng - Cửa Động Ngập Nước Âm U",
+  "hanzi": "沉水古磴 · 地下伏流溶洞口",
+  "category": "wat_17_ancient_sunken_stone_bridge",
+  "category_code": "WAT-17",
+  "domain": "water_and_springs",
+  "sub_domain": "wat_17_ancient_sunken_stone_bridge",
+  "asset_class": "landmark_mountain",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "obstacle",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "enter_cave",
+  "gameplay_role": "landmark_mountain entity supporting Ancient Sunken Stone Bridge gameplay",
+  "destructible": false,
+  "material": "stratified pale karst limestone and loose mineral scree",
+  "cultivation_element": "water",
+  "prompt_summary": "Single isolated 2D top-down world-map natural landmark sprite of ancient sunken stone bridge - subterranean submerged sump, authentic ancient sunken stone bridge materials, East Asian Xianxia craftsmanship, steep high-angle top-down RPG map perspective, rocky summit crest and stepped cliff strata dominant from overhead, natural mountain geology, zero diorama grass pedestal, fine dark #263A35 ink contours, solid pure white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Water Systems & Spiritual Springs",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "facing_south_front",
+      "name": "South Facing View",
+      "prompt_modifier": "summit crest and southern stepped cliff strata descending toward camera",
+      "variant_id": "facing_south_front",
+      "variant_name": "South Facing View",
+      "description": "summit crest and southern stepped cliff strata descending toward camera",
+      "prompt": "Single isolated 2D top-down world-map natural landmark sprite of subterranean submerged sump, stratified pale karst limestone and loose mineral scree, summit crest and southern stepped cliff strata descending toward camera, Ancient Chinese Xianxia landscape style, steep high-angle top-down RPG map perspective looking down from above, summit crest and upper rock terraces fully visible from above, stepped crag shelves and gnarled cliff pine seen from overhead, sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, gouache hand-painted with dark #263A35 ink contours, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, eye-level view, side-view portrait, flat elevation, landscape painting, grass patch, turf, lawn, meadow, green ground plane, soil patch, path, cobblestone, road, grass rim, turf skirt, dirt mound base, green turf, moss ring around base, diorama base plate, dirt path in front, frame, border, UI, watermark, human figures, birds in sky, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_17_ancient_sunken_stone_bridge/sunken_water_cavern/facing_south_front.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.27,
+            0.792,
+            0.327
+          ],
+          [
+            0.644,
+            0.932,
+            0.648
+          ]
+        ],
+        "frac_zero": 0.7066,
+        "blocks": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.003,
+            0.069,
+            0.513,
+            0.434,
+            0.003,
+            0.0
+          ],
+          [
+            0.027,
+            0.306,
+            0.888,
+            0.963,
+            0.407,
+            0.184,
+            0.0
+          ],
+          [
+            0.132,
+            0.717,
+            1.0,
+            1.0,
+            0.839,
+            0.396,
+            0.0
+          ],
+          [
+            0.293,
+            0.979,
+            1.0,
+            1.0,
+            1.0,
+            0.558,
+            0.0
+          ],
+          [
+            0.611,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.888,
+            0.142
+          ],
+          [
+            0.67,
+            0.996,
+            1.0,
+            1.0,
+            1.0,
+            0.771,
+            0.076
+          ],
+          [
+            0.065,
+            0.415,
+            0.843,
+            0.676,
+            0.585,
+            0.177,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          91,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 53,
+        "contact_reference_px": 53.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "facing_north_back",
+      "name": "North Facing View",
+      "prompt_modifier": "sheer northern rock face and upper summit plateau surface dominant from overhead",
+      "variant_id": "facing_north_back",
+      "variant_name": "North Facing View",
+      "description": "sheer northern rock face and upper summit plateau surface dominant from overhead",
+      "prompt": "Single isolated 2D top-down world-map natural landmark sprite of subterranean submerged sump, stratified pale karst limestone and loose mineral scree, sheer northern rock face and upper summit plateau surface dominant from overhead, Ancient Chinese Xianxia landscape style, steep high-angle top-down RPG map perspective looking down from above, sheer northern crag face and upper summit plateau surface fully visible from above, weathered northern rock terraces descending away from summit, sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, gouache hand-painted with dark #263A35 ink contours, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, eye-level view, side-view portrait, flat elevation, landscape painting, grass patch, turf, lawn, meadow, green ground plane, soil patch, path, cobblestone, road, grass rim, turf skirt, dirt mound base, green turf, moss ring around base, diorama base plate, dirt path in front, frame, border, UI, watermark, human figures, birds in sky, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_17_ancient_sunken_stone_bridge/sunken_water_cavern/facing_north_back.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.335,
+            0.922,
+            0.291
+          ],
+          [
+            0.692,
+            0.977,
+            0.668
+          ]
+        ],
+        "frac_zero": 0.6695,
+        "blocks": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.051,
+            0.669,
+            0.902,
+            0.185,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.344,
+            1.0,
+            1.0,
+            0.695,
+            0.115,
+            0.0
+          ],
+          [
+            0.092,
+            0.784,
+            1.0,
+            1.0,
+            1.0,
+            0.774,
+            0.0
+          ],
+          [
+            0.466,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.956,
+            0.316
+          ],
+          [
+            0.806,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.66
+          ],
+          [
+            0.408,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.958,
+            0.255
+          ],
+          [
+            0.062,
+            0.55,
+            0.882,
+            0.97,
+            0.791,
+            0.454,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          82,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "contact_px": 130,
+        "contact_reference_px": 130.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "facing_west_left",
+      "name": "West Facing Profile",
+      "prompt_modifier": "elongated rock ridge running North-South, western cliff strata visible from overhead",
+      "variant_id": "facing_west_left",
+      "variant_name": "West Facing Profile",
+      "description": "elongated rock ridge running North-South, western cliff strata visible from overhead",
+      "prompt": "Single isolated 2D top-down world-map natural landmark sprite of subterranean submerged sump, stratified pale karst limestone and loose mineral scree, elongated rock ridge running North-South, western cliff strata visible from overhead, Ancient Chinese Xianxia landscape style, steep high-angle top-down RPG map perspective looking down from above, landmark rotated 90 degrees with elongated rock spine running North-South, western stepped cliff strata and summit crest visible from overhead, sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, gouache hand-painted with dark #263A35 ink contours, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, eye-level view, side-view portrait, flat elevation, landscape painting, grass patch, turf, lawn, meadow, green ground plane, soil patch, path, cobblestone, road, grass rim, turf skirt, dirt mound base, green turf, moss ring around base, diorama base plate, dirt path in front, frame, border, UI, watermark, human figures, birds in sky, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_17_ancient_sunken_stone_bridge/sunken_water_cavern/facing_west_left.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.26,
+            0.843,
+            0.219
+          ],
+          [
+            0.581,
+            0.951,
+            0.606
+          ]
+        ],
+        "frac_zero": 0.7295,
+        "blocks": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.658,
+            0.618,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.196,
+            0.972,
+            0.896,
+            0.051,
+            0.0,
+            0.0
+          ],
+          [
+            0.062,
+            0.75,
+            1.0,
+            0.997,
+            0.729,
+            0.229,
+            0.0
+          ],
+          [
+            0.462,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.74,
+            0.0
+          ],
+          [
+            0.735,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.957,
+            0.3
+          ],
+          [
+            0.336,
+            0.978,
+            1.0,
+            1.0,
+            1.0,
+            0.61,
+            0.0
+          ],
+          [
+            0.0,
+            0.154,
+            0.821,
+            0.842,
+            0.463,
+            0.093,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          91,
+          16
+        ],
+        "trunk_columns": [
+          2,
+          3,
+          4
+        ],
+        "contact_px": 74,
+        "contact_reference_px": 74.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "facing_east_profile",
+      "name": "East Facing Profile",
+      "prompt_modifier": "elongated rock ridge running North-South, eastern cliff strata visible from overhead",
+      "variant_id": "facing_east_profile",
+      "variant_name": "East Facing Profile",
+      "description": "elongated rock ridge running North-South, eastern cliff strata visible from overhead",
+      "prompt": "Single isolated 2D top-down world-map natural landmark sprite of subterranean submerged sump, stratified pale karst limestone and loose mineral scree, elongated rock ridge running North-South, eastern cliff strata visible from overhead, Ancient Chinese Xianxia landscape style, steep high-angle top-down RPG map perspective looking down from above, landmark rotated 90 degrees with elongated rock spine running North-South, eastern stepped cliff strata and summit crest visible from overhead, sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, gouache hand-painted with dark #263A35 ink contours, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, eye-level view, side-view portrait, flat elevation, landscape painting, grass patch, turf, lawn, meadow, green ground plane, soil patch, path, cobblestone, road, grass rim, turf skirt, dirt mound base, green turf, moss ring around base, diorama base plate, dirt path in front, frame, border, UI, watermark, human figures, birds in sky, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_17_ancient_sunken_stone_bridge/sunken_water_cavern/facing_east_profile.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.123,
+            0.708,
+            0.423
+          ],
+          [
+            0.799,
+            0.958,
+            0.619
+          ]
+        ],
+        "frac_zero": 0.7445,
+        "blocks": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.079,
+            0.93,
+            0.076,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.41,
+            1.0,
+            0.438,
+            0.0
+          ],
+          [
+            0.0,
+            0.348,
+            0.857,
+            1.0,
+            0.999,
+            0.077
+          ],
+          [
+            0.425,
+            0.999,
+            1.0,
+            1.0,
+            1.0,
+            0.505
+          ],
+          [
+            0.687,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.697
+          ],
+          [
+            0.849,
+            1.0,
+            1.0,
+            1.0,
+            0.951,
+            0.201
+          ],
+          [
+            0.351,
+            0.933,
+            0.955,
+            0.674,
+            0.171,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          100,
+          17
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "contact_px": 110,
+        "contact_reference_px": 110.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "WAT-17",
+    "domain": "water_and_springs",
+    "interaction": "enter_cave",
+    "collision_behavior": "obstacle",
+    "element": "water",
+    "tier": 9
+  },
+  "category_id": "wat_17_ancient_sunken_stone_bridge",
+  "domain_id": "water_and_springs",
+  "pinyin": "Chénshuǐ Gǔdèng · Subterranean Submerged Sump",
+  "archetype_name": "Subterranean Submerged Sump",
+  "footprint_subcells": {
+    "w": 12,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 384,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 3,
+    "h": 2
+  },
+  "collision": {
+    "type": "obstacle",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": false,
+    "height_layer": "ground"
+  },
+  "primary_material": "weathered_karst_limestone",
+  "secondary_material": "crag_scree",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Water affinity (Tribulation Crossing (Độ Kiếp / 渡劫))",
+  "elevation_tier": 9,
+  "mortal_realm_tier": "Tribulation Crossing (Độ Kiếp / 渡劫)",
+  "asset_slug": "sunken_water_cavern"
+}
