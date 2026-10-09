@@ -1,0 +1,649 @@
+{
+  "id": "ancient_china_low_cultivation.terrain_and_geology.ter_07_low_grade_spirit_stone_vein.crag_outcropping",
+  "archetype": "crag_outcropping_ter_07_low_grade_spirit_stone_vein",
+  "name": "Low-Grade Spirit Stone Vein - Jagged Natural Rock Outcropping",
+  "vietnamese_name": "Vi Hình Linh Thạch Khoáng Mạch - Mỏm Đá Nhọn Tự Nhiên",
+  "hanzi": "微型灵石矿脉 · 突兀犬牙岩块",
+  "category": "ter_07_low_grade_spirit_stone_vein",
+  "category_code": "TER-07",
+  "domain": "terrain_and_geology",
+  "sub_domain": "ter_07_low_grade_spirit_stone_vein",
+  "asset_class": "landmark_mountain",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "obstacle",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "mine_stone",
+  "gameplay_role": "landmark_mountain entity supporting Low-Grade Spirit Stone Vein gameplay",
+  "destructible": false,
+  "material": "stratified pale karst limestone and loose mineral scree",
+  "cultivation_element": "earth",
+  "prompt_summary": "Single isolated 2D top-down world-map natural landmark sprite of low-grade spirit stone vein - jagged natural rock outcropping, authentic low-grade spirit stone vein materials, East Asian Xianxia craftsmanship, steep high-angle top-down RPG map perspective, rocky summit crest and stepped cliff strata dominant from overhead, natural mountain geology, zero diorama grass pedestal, fine dark #263A35 ink contours, solid pure white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Terrains & Geological Formations",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "facing_south_front",
+      "name": "South Facing View",
+      "prompt_modifier": "summit crest and southern stepped cliff strata descending toward camera",
+      "variant_id": "facing_south_front",
+      "variant_name": "South Facing View",
+      "description": "summit crest and southern stepped cliff strata descending toward camera",
+      "prompt": "Single isolated 2D top-down world-map natural landmark sprite of jagged natural rock outcropping, stratified pale karst limestone and loose mineral scree, summit crest and southern stepped cliff strata descending toward camera, Ancient Chinese Xianxia landscape style, steep high-angle top-down RPG map perspective looking down from above, summit crest and upper rock terraces fully visible from above, stepped crag shelves and gnarled cliff pine seen from overhead, sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, gouache hand-painted with dark #263A35 ink contours, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, eye-level view, side-view portrait, flat elevation, landscape painting, grass patch, turf, lawn, meadow, green ground plane, soil patch, path, cobblestone, road, grass rim, turf skirt, dirt mound base, green turf, moss ring around base, diorama base plate, dirt path in front, frame, border, UI, watermark, human figures, birds in sky, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_07_low_grade_spirit_stone_vein/crag_outcropping/facing_south_front.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.509,
+            0.465
+          ],
+          [
+            0.82,
+            0.764
+          ]
+        ],
+        "frac_zero": 0.5545,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.039,
+            0.857,
+            0.617,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.003,
+            0.288,
+            1.0,
+            0.91,
+            0.462,
+            0.212,
+            0.0
+          ],
+          [
+            0.181,
+            0.774,
+            1.0,
+            1.0,
+            0.562,
+            0.384,
+            0.047
+          ],
+          [
+            0.389,
+            0.998,
+            1.0,
+            1.0,
+            1.0,
+            0.297,
+            0.0
+          ],
+          [
+            0.854,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.969,
+            0.539
+          ],
+          [
+            0.733,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.586,
+            0.055
+          ],
+          [
+            0.105,
+            0.652,
+            0.946,
+            0.84,
+            0.546,
+            0.134,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          37,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 101,
+        "contact_reference_px": 101.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            0,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "facing_north_back",
+      "name": "North Facing View",
+      "prompt_modifier": "sheer northern rock face and upper summit plateau surface dominant from overhead",
+      "variant_id": "facing_north_back",
+      "variant_name": "North Facing View",
+      "description": "sheer northern rock face and upper summit plateau surface dominant from overhead",
+      "prompt": "Single isolated 2D top-down world-map natural landmark sprite of jagged natural rock outcropping, stratified pale karst limestone and loose mineral scree, sheer northern rock face and upper summit plateau surface dominant from overhead, Ancient Chinese Xianxia landscape style, steep high-angle top-down RPG map perspective looking down from above, sheer northern crag face and upper summit plateau surface fully visible from above, weathered northern rock terraces descending away from summit, sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, gouache hand-painted with dark #263A35 ink contours, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, eye-level view, side-view portrait, flat elevation, landscape painting, grass patch, turf, lawn, meadow, green ground plane, soil patch, path, cobblestone, road, grass rim, turf skirt, dirt mound base, green turf, moss ring around base, diorama base plate, dirt path in front, frame, border, UI, watermark, human figures, birds in sky, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_07_low_grade_spirit_stone_vein/crag_outcropping/facing_north_back.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.46,
+            0.412
+          ],
+          [
+            0.763,
+            0.758
+          ]
+        ],
+        "frac_zero": 0.5419,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.547,
+            0.914,
+            0.255,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.02,
+            0.972,
+            1.0,
+            0.511,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.519,
+            1.0,
+            1.0,
+            0.815,
+            0.442,
+            0.0
+          ],
+          [
+            0.151,
+            0.993,
+            1.0,
+            1.0,
+            1.0,
+            0.887,
+            0.208
+          ],
+          [
+            0.799,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.736
+          ],
+          [
+            0.442,
+            0.964,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.394
+          ],
+          [
+            0.0,
+            0.473,
+            0.909,
+            0.874,
+            0.685,
+            0.362,
+            0.003
+          ]
+        ],
+        "crop_offset": [
+          18,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "contact_px": 122,
+        "contact_reference_px": 122.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "facing_west_left",
+      "name": "West Facing Profile",
+      "prompt_modifier": "elongated rock ridge running North-South, western cliff strata visible from overhead",
+      "variant_id": "facing_west_left",
+      "variant_name": "West Facing Profile",
+      "description": "elongated rock ridge running North-South, western cliff strata visible from overhead",
+      "prompt": "Single isolated 2D top-down world-map natural landmark sprite of jagged natural rock outcropping, stratified pale karst limestone and loose mineral scree, elongated rock ridge running North-South, western cliff strata visible from overhead, Ancient Chinese Xianxia landscape style, steep high-angle top-down RPG map perspective looking down from above, landmark rotated 90 degrees with elongated rock spine running North-South, western stepped cliff strata and summit crest visible from overhead, sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, gouache hand-painted with dark #263A35 ink contours, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, eye-level view, side-view portrait, flat elevation, landscape painting, grass patch, turf, lawn, meadow, green ground plane, soil patch, path, cobblestone, road, grass rim, turf skirt, dirt mound base, green turf, moss ring around base, diorama base plate, dirt path in front, frame, border, UI, watermark, human figures, birds in sky, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_07_low_grade_spirit_stone_vein/crag_outcropping/facing_west_left.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.396,
+            0.345
+          ],
+          [
+            0.778,
+            0.8
+          ]
+        ],
+        "frac_zero": 0.6429,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.812,
+            0.204,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.14,
+            1.0,
+            0.377,
+            0.0,
+            0.0
+          ],
+          [
+            0.031,
+            0.562,
+            1.0,
+            0.723,
+            0.267,
+            0.0
+          ],
+          [
+            0.472,
+            1.0,
+            1.0,
+            1.0,
+            0.883,
+            0.35
+          ],
+          [
+            0.793,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.822
+          ],
+          [
+            0.548,
+            0.997,
+            1.0,
+            1.0,
+            1.0,
+            0.439
+          ],
+          [
+            0.0,
+            0.713,
+            0.957,
+            0.585,
+            0.448,
+            0.002
+          ]
+        ],
+        "crop_offset": [
+          40,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 76,
+        "contact_reference_px": 76.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            0,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "facing_east_profile",
+      "name": "East Facing Profile",
+      "prompt_modifier": "elongated rock ridge running North-South, eastern cliff strata visible from overhead",
+      "variant_id": "facing_east_profile",
+      "variant_name": "East Facing Profile",
+      "description": "elongated rock ridge running North-South, eastern cliff strata visible from overhead",
+      "prompt": "Single isolated 2D top-down world-map natural landmark sprite of jagged natural rock outcropping, stratified pale karst limestone and loose mineral scree, elongated rock ridge running North-South, eastern cliff strata visible from overhead, Ancient Chinese Xianxia landscape style, steep high-angle top-down RPG map perspective looking down from above, landmark rotated 90 degrees with elongated rock spine running North-South, eastern stepped cliff strata and summit crest visible from overhead, sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, gouache hand-painted with dark #263A35 ink contours, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, eye-level view, side-view portrait, flat elevation, landscape painting, grass patch, turf, lawn, meadow, green ground plane, soil patch, path, cobblestone, road, grass rim, turf skirt, dirt mound base, green turf, moss ring around base, diorama base plate, dirt path in front, frame, border, UI, watermark, human figures, birds in sky, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_07_low_grade_spirit_stone_vein/crag_outcropping/facing_east_profile.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.202,
+            0.521
+          ],
+          [
+            0.731,
+            0.781
+          ]
+        ],
+        "frac_zero": 0.6792,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.509,
+            0.434,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.764,
+            0.616,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.155,
+            0.968,
+            0.889,
+            0.256,
+            0.0
+          ],
+          [
+            0.253,
+            0.935,
+            1.0,
+            1.0,
+            0.879,
+            0.219
+          ],
+          [
+            0.742,
+            1.0,
+            1.0,
+            1.0,
+            0.932,
+            0.219
+          ],
+          [
+            0.268,
+            1.0,
+            1.0,
+            1.0,
+            0.882,
+            0.344
+          ],
+          [
+            0.12,
+            0.835,
+            0.754,
+            0.512,
+            0.164,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          46,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3
+        ],
+        "contact_px": 63,
+        "contact_reference_px": 63.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            0,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "TER-07",
+    "domain": "terrain_and_geology",
+    "interaction": "mine_stone",
+    "collision_behavior": "obstacle",
+    "element": "earth",
+    "tier": 7
+  },
+  "category_id": "ter_07_low_grade_spirit_stone_vein",
+  "domain_id": "terrain_and_geology",
+  "pinyin": "Wēixíng Língshí Kuàngmài · Jagged Natural Rock Outcropping",
+  "archetype_name": "Jagged Natural Rock Outcropping",
+  "footprint_subcells": {
+    "w": 8,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 256,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 2,
+    "h": 2
+  },
+  "collision": {
+    "type": "obstacle",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": false,
+    "height_layer": "ground"
+  },
+  "primary_material": "weathered_karst_limestone",
+  "secondary_material": "crag_scree",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Earth affinity (Body Integration (Hợp Thể / 合体))",
+  "elevation_tier": 7,
+  "mortal_realm_tier": "Body Integration (Hợp Thể / 合体)",
+  "asset_slug": "crag_outcropping"
+}

@@ -1,0 +1,88 @@
+{
+  "asset_id": "ancient_china_low_cultivation.terrain_and_geology.ter_07_low_grade_spirit_stone_vein.erosion_shelf",
+  "domain": "terrain_and_geology",
+  "sub_domain": "ter_07_low_grade_spirit_stone_vein",
+  "asset_slug": "erosion_shelf",
+  "variant_slug": "facing_south_front",
+  "name": "South Facing View",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_07_low_grade_spirit_stone_vein/erosion_shelf/facing_south_front.png",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "walk_surface",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.524,
+        0.578
+      ]
+    ],
+    "frac_zero": 0.8315,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.084,
+        0.636,
+        0.103
+      ],
+      [
+        0.529,
+        1.0,
+        0.588
+      ],
+      [
+        0.485,
+        0.917,
+        0.57
+      ]
+    ],
+    "crop_offset": [
+      82,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 67,
+    "contact_reference_px": 67.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
