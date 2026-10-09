@@ -1,0 +1,90 @@
+{
+  "asset_id": "ancient_china_low_cultivation.water_and_springs.wat_01_emerald_mountain_brook.natural_spring_source",
+  "domain": "water_and_springs",
+  "sub_domain": "wat_01_emerald_mountain_brook",
+  "asset_slug": "natural_spring_source",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_01_emerald_mountain_brook/natural_spring_source/damaged_weathered.png",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "taste_water",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.574
+      ]
+    ],
+    "frac_zero": 0.6698,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.145,
+        0.739,
+        0.01
+      ],
+      [
+        0.562,
+        1.0,
+        0.417
+      ],
+      [
+        0.648,
+        0.918,
+        0.618
+      ]
+    ],
+    "crop_offset": [
+      18,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 77,
+    "contact_reference_px": 77.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

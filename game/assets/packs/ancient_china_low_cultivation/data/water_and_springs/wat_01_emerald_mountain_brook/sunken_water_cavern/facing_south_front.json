@@ -1,0 +1,154 @@
+{
+  "asset_id": "ancient_china_low_cultivation.water_and_springs.wat_01_emerald_mountain_brook.sunken_water_cavern",
+  "domain": "water_and_springs",
+  "sub_domain": "wat_01_emerald_mountain_brook",
+  "asset_slug": "sunken_water_cavern",
+  "variant_slug": "facing_south_front",
+  "name": "South Facing View",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_01_emerald_mountain_brook/sunken_water_cavern/facing_south_front.png",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "enter_cave",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.215,
+        0.777,
+        0.379
+      ],
+      [
+        0.532,
+        0.87,
+        0.648
+      ]
+    ],
+    "frac_zero": 0.7197,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.064,
+        0.451,
+        0.508,
+        0.034,
+        0.0
+      ],
+      [
+        0.0,
+        0.254,
+        0.771,
+        0.998,
+        0.451,
+        0.318,
+        0.014
+      ],
+      [
+        0.061,
+        0.635,
+        0.999,
+        1.0,
+        0.932,
+        0.421,
+        0.028
+      ],
+      [
+        0.13,
+        0.953,
+        1.0,
+        1.0,
+        1.0,
+        0.769,
+        0.014
+      ],
+      [
+        0.626,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.463
+      ],
+      [
+        0.189,
+        0.977,
+        1.0,
+        1.0,
+        1.0,
+        0.784,
+        0.0
+      ],
+      [
+        0.005,
+        0.222,
+        0.446,
+        0.568,
+        0.432,
+        0.154,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      90,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 27,
+    "contact_reference_px": 27.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

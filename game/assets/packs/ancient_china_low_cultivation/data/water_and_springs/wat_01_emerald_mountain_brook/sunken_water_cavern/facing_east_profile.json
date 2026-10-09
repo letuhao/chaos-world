@@ -1,0 +1,152 @@
+{
+  "asset_id": "ancient_china_low_cultivation.water_and_springs.wat_01_emerald_mountain_brook.sunken_water_cavern",
+  "domain": "water_and_springs",
+  "sub_domain": "wat_01_emerald_mountain_brook",
+  "asset_slug": "sunken_water_cavern",
+  "variant_slug": "facing_east_profile",
+  "name": "East Facing Profile",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_01_emerald_mountain_brook/sunken_water_cavern/facing_east_profile.png",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "enter_cave",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.137,
+        0.845,
+        0.302
+      ],
+      [
+        0.635,
+        0.968,
+        0.701
+      ]
+    ],
+    "frac_zero": 0.7492,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.456,
+        0.741,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.88,
+        0.98,
+        0.063,
+        0.0
+      ],
+      [
+        0.008,
+        0.54,
+        1.0,
+        1.0,
+        0.781,
+        0.0
+      ],
+      [
+        0.275,
+        1.0,
+        1.0,
+        1.0,
+        0.949,
+        0.236
+      ],
+      [
+        0.761,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.853
+      ],
+      [
+        0.403,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.466
+      ],
+      [
+        0.008,
+        0.667,
+        0.942,
+        0.771,
+        0.349,
+        0.002
+      ]
+    ],
+    "crop_offset": [
+      102,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3
+    ],
+    "contact_px": 97,
+    "contact_reference_px": 97.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
