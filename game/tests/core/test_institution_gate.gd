@@ -8,7 +8,6 @@ extends TestCase
 ## composite tail, different verb tables. So the shared half is tested here once, and
 ## each kind's own table is tested in its own module.
 
-
 ## A resolver with one verb of each outcome shape, so the composite fold can be driven
 ## without a tier module loaded. `ok_verb` passes, `no_verb` fails with an entry,
 ## `bad_verb` REFUSES.
@@ -21,6 +20,7 @@ const COMPOSITES := {
 	&"any_of": [false, false],
 	&"none_of": [false, true],
 }
+
 
 ## The three COMPOSITE verbs dispatch back into `InstitutionGate.composite` — and that
 ## is not decoration, it is the pattern every implementer must follow. A tier's resolver
@@ -45,9 +45,7 @@ func _resolve(requirement: Dictionary) -> Dictionary:
 			)
 		&"bad_verb":
 			return InstitutionGate.refuse(InstitutionGate.R_MALFORMED, "unreadable", "bad_verb")
-	return InstitutionGate.refuse(
-		InstitutionGate.R_UNKNOWN_VERB, "no such verb", String(verb)
-	)
+	return InstitutionGate.refuse(InstitutionGate.R_UNKNOWN_VERB, "no such verb", String(verb))
 
 
 ## The three shapes, kept apart. `malformed` and `unknown_verb` are REFUSALS — the
