@@ -1,0 +1,90 @@
+{
+  "asset_id": "ancient_china_low_cultivation.water_and_springs.wat_20_boiling_geyser_vent.natural_spring_source",
+  "domain": "water_and_springs",
+  "sub_domain": "wat_20_boiling_geyser_vent",
+  "asset_slug": "natural_spring_source",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_20_boiling_geyser_vent/natural_spring_source/damaged_weathered.png",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "taste_water",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.584
+      ]
+    ],
+    "frac_zero": 0.6717,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.113,
+        0.79,
+        0.011
+      ],
+      [
+        0.525,
+        1.0,
+        0.448
+      ],
+      [
+        0.674,
+        0.94,
+        0.631
+      ]
+    ],
+    "crop_offset": [
+      19,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 76,
+    "contact_reference_px": 76.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
