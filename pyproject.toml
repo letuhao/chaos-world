@@ -20,3 +20,28 @@ target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.per-file-ignores]
+# E501 -- the pack generators assemble PROMPT TEXT for the image model, one sentence per
+# line. A long line there is a long sentence, not a code smell, and this tree keeps
+# adjacent string literals JOINED: `ruff format` rejoins them and INC-0015 depends on them
+# staying joined, so splitting the line is not an available fix. E501 stays enforced on
+# every other file; these twelve opt out, and a file that stops being prompts should be
+# removed from the list rather than left to accumulate real findings.
+"tools/map_generate.py" = ["E501"]
+"tools/medieval_sphere1_crossroads.py" = ["E501"]
+"tools/medieval_sphere2_architecture.py" = ["E501"]
+"tools/medieval_sphere3_faith.py" = ["E501"]
+"tools/medieval_sphere4_supply_chains.py" = ["E501"]
+"tools/medieval_sphere5_commerce.py" = ["E501"]
+"tools/medieval_sphere6_warfare.py" = ["E501"]
+"tools/medieval_sphere7_ecology.py" = ["E501"]
+"tools/faultlands_pack.py" = ["E501"]
+"tools/pack_progress_summary.py" = ["E501"]
+
+# E402 -- these scripts insert the repository root on `sys.path` and only then import
+# `tools.*`. The import CANNOT move above the insert without breaking the script, so the
+# rule has nothing to say here. Scoped to the three that do it, not to `tools/`.
+"tools/sync_categories_json_with_generators.py" = ["E402"]
+"tools/generate_and_package_low_cultivation.py" = ["E501", "E402"]
+"tools/test_candidate_archetypes.py" = ["E501", "E402"]

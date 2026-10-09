@@ -55,7 +55,6 @@ def audit_generated_assets(category_filter: str | None = None) -> int:
             var_slug = var.get("variant_slug", "")
             img_path = RUNTIME_DIR / dom / cat / slug / f"{var_slug}.png"
             import_path = RUNTIME_DIR / dom / cat / slug / f"{var_slug}.png.import"
-            data_json_path = DATA_DIR / dom / cat / slug / f"{var_slug}.json"
 
             # Check 1: PNG exists
             if not img_path.exists():

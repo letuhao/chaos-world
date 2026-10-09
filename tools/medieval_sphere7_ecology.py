@@ -1392,7 +1392,7 @@ def generate_sphere7(make_asset: Callable) -> list[dict]:
 
     for sub_id, archetypes, target_count in subs_ground:
         sub_items = []
-        for a_slug, a_name, a_vn, fp, col, blk, vis, vrb, atype, mat in archetypes:
+        for a_slug, a_name, a_vn, fp, col, blk, vis, vrb, _atype, mat in archetypes:
             for v_slug, v_name, v_vn, cult, desc in var5_ground:
                 slug = f"{a_slug}_{v_slug}"
                 name = f"{v_name} {a_name}"

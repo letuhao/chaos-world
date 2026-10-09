@@ -1149,7 +1149,7 @@ def run_pipeline(
             import hashlib
 
             seed_hash = int(
-                hashlib.md5(f"{asset_slug}_{var_slug}".encode("utf-8")).hexdigest()[:6], 16
+                hashlib.md5(f"{asset_slug}_{var_slug}".encode()).hexdigest()[:6], 16
             )
             args.seed = 10000 + (seed_hash % 20000)
 
