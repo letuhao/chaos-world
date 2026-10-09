@@ -1,0 +1,654 @@
+{
+  "id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_06_peach_wood_ghost_warding.mature_flourishing",
+  "archetype": "mature_flourishing_flo_06_peach_wood_ghost_warding",
+  "name": "Peach Wood (Ghost Warding) - Mature Flourishing Specimen",
+  "vietnamese_name": "Tích Tà Đào Lâm - Cây Trưởng Thành Xanh Tốt",
+  "hanzi": "辟邪桃林 · 成熟繁茂全株",
+  "category": "flo_06_peach_wood_ghost_warding",
+  "category_code": "FLO-06",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_06_peach_wood_ghost_warding",
+  "asset_class": "flora_tree",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "obstacle",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect_plant",
+  "gameplay_role": "flora_tree entity supporting Peach Wood (Ghost Warding) gameplay",
+  "destructible": true,
+  "material": "weathered gnarled pine bark and resinous timber",
+  "cultivation_element": "wood",
+  "prompt_summary": "Single isolated 2D RPG game prop of peach wood (ghost warding) - mature flourishing specimen, authentic peach wood (ghost warding) materials, East Asian Xianxia craftsmanship, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese craftsmanship, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Natural Flora & Spiritual Plants",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "pristine_dormant",
+      "name": "Pristine Dormant State",
+      "prompt_modifier": "cold clean polished state, unlit hearth, intact locks",
+      "variant_id": "pristine_dormant",
+      "variant_name": "Pristine Dormant State",
+      "description": "cold clean polished state, unlit hearth, intact locks",
+      "prompt": "Single isolated 2D top-down RPG map sprite of mature flourishing specimen, weathered gnarled pine bark and resinous timber, cold clean polished state, unlit hearth, intact locks, Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), plant canopy, branching crown, bamboo culms and foliage viewed foreshortened from overhead, spread outward on ground plane, gouache hand-painted with dark #263A35 ink contours, flat grounded root base, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_06_peach_wood_ghost_warding/mature_flourishing/pristine_dormant.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.366,
+            0.51
+          ],
+          [
+            0.481,
+            0.361
+          ]
+        ],
+        "frac_zero": 0.643,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.439,
+            0.881,
+            0.382,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.274,
+            0.764,
+            0.622,
+            0.85,
+            0.355,
+            0.0
+          ],
+          [
+            0.021,
+            0.545,
+            0.623,
+            0.507,
+            0.697,
+            0.763,
+            0.235
+          ],
+          [
+            0.646,
+            0.666,
+            0.45,
+            0.728,
+            0.502,
+            0.69,
+            0.281
+          ],
+          [
+            0.085,
+            0.241,
+            0.582,
+            0.84,
+            0.396,
+            0.191,
+            0.0
+          ],
+          [
+            0.003,
+            0.51,
+            0.843,
+            0.938,
+            0.618,
+            0.498,
+            0.0
+          ],
+          [
+            0.016,
+            0.744,
+            0.948,
+            0.429,
+            0.03,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          23,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3
+        ],
+        "contact_px": 69,
+        "contact_reference_px": 69.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            0,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "active_operating",
+      "name": "Active Operating State",
+      "prompt_modifier": "active glowing spiritual flames, heat haze, open functioning elements",
+      "variant_id": "active_operating",
+      "variant_name": "Active Operating State",
+      "description": "active glowing spiritual flames, heat haze, open functioning elements",
+      "prompt": "Single isolated 2D top-down RPG map sprite of mature flourishing specimen, weathered gnarled pine bark and resinous timber, active glowing spiritual flames, heat haze, open functioning elements, Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), plant canopy, branching crown, bamboo culms and foliage viewed foreshortened from overhead, spread outward on ground plane, gouache hand-painted with dark #263A35 ink contours, flat grounded root base, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_06_peach_wood_ghost_warding/mature_flourishing/active_operating.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.389,
+            0.451
+          ],
+          [
+            0.568,
+            0.565
+          ]
+        ],
+        "frac_zero": 0.627,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.073,
+            0.724,
+            0.722,
+            0.05,
+            0.0
+          ],
+          [
+            0.076,
+            0.462,
+            0.644,
+            0.677,
+            0.743,
+            0.075
+          ],
+          [
+            0.44,
+            0.66,
+            0.494,
+            0.477,
+            0.755,
+            0.446
+          ],
+          [
+            0.509,
+            0.38,
+            0.586,
+            0.653,
+            0.215,
+            0.47
+          ],
+          [
+            0.327,
+            0.71,
+            0.751,
+            0.768,
+            0.316,
+            0.142
+          ],
+          [
+            0.032,
+            0.791,
+            1.0,
+            1.0,
+            0.932,
+            0.29
+          ],
+          [
+            0.049,
+            0.602,
+            0.903,
+            0.886,
+            0.643,
+            0.085
+          ]
+        ],
+        "crop_offset": [
+          32,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 116,
+        "contact_reference_px": 116.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "damaged_weathered",
+      "name": "Damaged Weathered State",
+      "prompt_modifier": "mossy aged patina, chipped corners, cracked surfaces",
+      "variant_id": "damaged_weathered",
+      "variant_name": "Damaged Weathered State",
+      "description": "mossy aged patina, chipped corners, cracked surfaces",
+      "prompt": "Single isolated 2D top-down RPG map sprite of mature flourishing specimen, weathered gnarled pine bark and resinous timber, mossy aged patina, chipped corners, cracked surfaces, Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), plant canopy, branching crown, bamboo culms and foliage viewed foreshortened from overhead, spread outward on ground plane, gouache hand-painted with dark #263A35 ink contours, flat grounded root base, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_06_peach_wood_ghost_warding/mature_flourishing/damaged_weathered.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.373,
+            0.478
+          ],
+          [
+            0.489,
+            0.368
+          ]
+        ],
+        "frac_zero": 0.6622,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.031,
+            0.61,
+            0.828,
+            0.16,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.477,
+            0.674,
+            0.733,
+            0.718,
+            0.04,
+            0.0
+          ],
+          [
+            0.101,
+            0.495,
+            0.553,
+            0.518,
+            0.701,
+            0.768,
+            0.234
+          ],
+          [
+            0.653,
+            0.476,
+            0.723,
+            0.516,
+            0.521,
+            0.429,
+            0.016
+          ],
+          [
+            0.087,
+            0.283,
+            0.438,
+            0.889,
+            0.384,
+            0.031,
+            0.0
+          ],
+          [
+            0.053,
+            0.745,
+            0.965,
+            0.974,
+            0.539,
+            0.078,
+            0.0
+          ],
+          [
+            0.016,
+            0.66,
+            0.889,
+            0.443,
+            0.143,
+            0.081,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          29,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3
+        ],
+        "contact_px": 64,
+        "contact_reference_px": 64.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            0,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "ruined_rubble",
+      "name": "Broken Shattered Rubble",
+      "prompt_modifier": "collapsed fractured shards, scavengeable parts",
+      "variant_id": "ruined_rubble",
+      "variant_name": "Broken Shattered Rubble",
+      "description": "collapsed fractured shards, scavengeable parts",
+      "prompt": "Single isolated 2D top-down RPG map sprite of mature flourishing specimen, weathered gnarled pine bark and resinous timber, collapsed fractured shards, scavengeable parts, Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), plant canopy, branching crown, bamboo culms and foliage viewed foreshortened from overhead, spread outward on ground plane, gouache hand-painted with dark #263A35 ink contours, flat grounded root base, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_06_peach_wood_ghost_warding/mature_flourishing/ruined_rubble.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.407,
+            0.429
+          ],
+          [
+            0.585,
+            0.589
+          ]
+        ],
+        "frac_zero": 0.5999,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.044,
+            0.629,
+            0.814,
+            0.16,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.507,
+            0.683,
+            0.653,
+            0.729,
+            0.206,
+            0.0
+          ],
+          [
+            0.338,
+            0.583,
+            0.564,
+            0.579,
+            0.49,
+            0.408,
+            0.0
+          ],
+          [
+            0.411,
+            0.603,
+            0.349,
+            0.706,
+            0.527,
+            0.833,
+            0.347
+          ],
+          [
+            0.007,
+            0.545,
+            0.832,
+            0.696,
+            0.281,
+            0.527,
+            0.014
+          ],
+          [
+            0.229,
+            0.945,
+            0.999,
+            1.0,
+            0.943,
+            0.432,
+            0.0
+          ],
+          [
+            0.144,
+            0.77,
+            0.922,
+            0.976,
+            0.832,
+            0.303,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          26,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 135,
+        "contact_reference_px": 135.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "FLO-06",
+    "domain": "flora_and_spirit_plants",
+    "interaction": "inspect_plant",
+    "collision_behavior": "obstacle",
+    "element": "wood",
+    "tier": 5
+  },
+  "category_id": "flo_06_peach_wood_ghost_warding",
+  "domain_id": "flora_and_spirit_plants",
+  "pinyin": "Pìxié Táolín · Mature Flourishing Specimen",
+  "archetype_name": "Mature Flourishing Specimen",
+  "footprint_subcells": {
+    "w": 8,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 256,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 2,
+    "h": 2
+  },
+  "collision": {
+    "type": "obstacle",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": false,
+    "height_layer": "ground"
+  },
+  "primary_material": "ancient_pine_wood",
+  "secondary_material": "evergreen_needles",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Wood affinity (Spirit Transformation (Hóa Thần / 化神))",
+  "elevation_tier": 5,
+  "mortal_realm_tier": "Spirit Transformation (Hóa Thần / 化神)",
+  "asset_slug": "mature_flourishing"
+}

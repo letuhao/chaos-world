@@ -1,0 +1,272 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_06_peach_wood_ghost_warding.ancient_ancestor_core",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_06_peach_wood_ghost_warding",
+  "asset_slug": "ancient_ancestor_core",
+  "variant_slug": "pristine_dormant",
+  "name": "Pristine Dormant State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_06_peach_wood_ghost_warding/ancient_ancestor_core/pristine_dormant.png",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "commune_spirit",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.127,
+        0.639,
+        0.234
+      ],
+      [
+        0.394,
+        0.748,
+        0.407
+      ],
+      [
+        0.362,
+        0.838,
+        0.153
+      ]
+    ],
+    "frac_zero": 0.6325,
+    "blocks": [
+      [
+        false,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 7,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      10,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.143,
+        0.699,
+        0.829,
+        0.28,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.023,
+        0.762,
+        0.842,
+        0.939,
+        0.929,
+        0.358,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.113,
+        0.844,
+        0.74,
+        0.562,
+        0.652,
+        0.59,
+        0.462,
+        0.141,
+        0.0
+      ],
+      [
+        0.02,
+        0.325,
+        0.309,
+        0.064,
+        0.775,
+        0.314,
+        0.491,
+        0.799,
+        0.938,
+        0.371
+      ],
+      [
+        0.501,
+        0.932,
+        0.647,
+        0.471,
+        0.646,
+        0.809,
+        0.433,
+        0.615,
+        0.708,
+        0.459
+      ],
+      [
+        0.31,
+        0.264,
+        0.689,
+        0.334,
+        0.642,
+        0.841,
+        0.407,
+        0.371,
+        0.491,
+        0.014
+      ],
+      [
+        0.0,
+        0.0,
+        0.231,
+        0.798,
+        0.996,
+        0.997,
+        0.51,
+        0.545,
+        0.453,
+        0.0
+      ],
+      [
+        0.0,
+        0.021,
+        0.587,
+        0.878,
+        1.0,
+        1.0,
+        0.742,
+        0.425,
+        0.21,
+        0.0
+      ],
+      [
+        0.0,
+        0.36,
+        0.949,
+        1.0,
+        1.0,
+        1.0,
+        0.834,
+        0.57,
+        0.051,
+        0.0
+      ],
+      [
+        0.0,
+        0.419,
+        1.0,
+        1.0,
+        1.0,
+        0.823,
+        0.316,
+        0.041,
+        0.008,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.32,
+        0.661,
+        0.744,
+        0.34,
+        0.632,
+        0.091,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      32,
+      17
+    ],
+    "trunk_columns": [
+      3,
+      4
+    ],
+    "contact_px": 72,
+    "contact_reference_px": 72.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      384
+    ]
+  }
+}
