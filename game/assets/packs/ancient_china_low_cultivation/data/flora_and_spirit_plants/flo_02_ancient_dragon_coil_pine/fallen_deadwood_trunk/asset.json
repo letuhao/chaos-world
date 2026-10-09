@@ -46,15 +46,15 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_02_ancient_dragon_coil_pine/fallen_deadwood_trunk/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.492,
-            0.55
+            0.456,
+            0.481
           ]
         ],
-        "frac_zero": 0.8362,
+        "frac_zero": 0.8554,
         "blocks": [
           [
             false,
@@ -78,43 +78,37 @@
         ],
         "sub_fill": [
           [
-            0.158,
-            0.579,
-            0.192
+            0.175,
+            0.604,
+            0.127
           ],
           [
-            0.361,
-            0.701,
-            0.354
+            0.35,
+            0.588,
+            0.327
           ],
           [
-            0.74,
-            0.937,
-            0.509
+            0.619,
+            0.88,
+            0.301
           ]
         ],
         "crop_offset": [
-          85,
-          16
+          86,
+          17
         ],
         "trunk_columns": [
           0,
-          1,
-          2
+          1
         ],
-        "contact_px": 77,
-        "contact_reference_px": 77.0,
+        "contact_px": 73,
+        "contact_reference_px": 73.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
           "1.15": null,
           "1.35": null,
-          "1.6": [
-            0,
-            0,
-            0,
-            0
-          ]
+          "1.6": null
         },
         "block_rect": null,
         "block_rect_px": null
@@ -131,15 +125,15 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_02_ancient_dragon_coil_pine/fallen_deadwood_trunk/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.523,
-            0.565
+            0.476,
+            0.511
           ]
         ],
-        "frac_zero": 0.836,
+        "frac_zero": 0.8517,
         "blocks": [
           [
             false,
@@ -163,43 +157,37 @@
         ],
         "sub_fill": [
           [
-            0.201,
-            0.606,
-            0.182
+            0.214,
+            0.716,
+            0.125
           ],
           [
-            0.448,
-            0.683,
-            0.23
+            0.402,
+            0.637,
+            0.396
           ],
           [
-            0.775,
-            0.919,
-            0.564
+            0.522,
+            0.9,
+            0.321
           ]
         ],
         "crop_offset": [
-          87,
+          85,
           17
         ],
         "trunk_columns": [
           0,
-          1,
-          2
+          1
         ],
-        "contact_px": 76,
-        "contact_reference_px": 76.0,
+        "contact_px": 70,
+        "contact_reference_px": 70.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
           "1.15": null,
           "1.35": null,
-          "1.6": [
-            0,
-            0,
-            0,
-            0
-          ]
+          "1.6": null
         },
         "block_rect": null,
         "block_rect_px": null
@@ -216,15 +204,15 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_02_ancient_dragon_coil_pine/fallen_deadwood_trunk/damaged_weathered.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.477,
-            0.532
+            0.458,
+            0.523
           ]
         ],
-        "frac_zero": 0.8391,
+        "frac_zero": 0.8406,
         "blocks": [
           [
             false,
@@ -248,23 +236,23 @@
         ],
         "sub_fill": [
           [
-            0.178,
-            0.624,
-            0.155
+            0.114,
+            0.647,
+            0.202
           ],
           [
-            0.319,
-            0.645,
-            0.37
+            0.271,
+            0.711,
+            0.332
           ],
           [
-            0.724,
-            0.928,
-            0.475
+            0.69,
+            0.941,
+            0.428
           ]
         ],
         "crop_offset": [
-          84,
+          82,
           17
         ],
         "trunk_columns": [
@@ -272,8 +260,8 @@
           1,
           2
         ],
-        "contact_px": 75,
-        "contact_reference_px": 75.0,
+        "contact_px": 78,
+        "contact_reference_px": 78.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -301,15 +289,15 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_02_ancient_dragon_coil_pine/fallen_deadwood_trunk/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.486,
-            0.51
+            0.485,
+            0.499
           ]
         ],
-        "frac_zero": 0.8444,
+        "frac_zero": 0.8538,
         "blocks": [
           [
             false,
@@ -333,32 +321,31 @@
         ],
         "sub_fill": [
           [
-            0.141,
-            0.548,
-            0.158
+            0.146,
+            0.586,
+            0.098
           ],
           [
-            0.385,
-            0.62,
-            0.334
+            0.364,
+            0.634,
+            0.291
           ],
           [
-            0.703,
-            0.927,
-            0.463
+            0.713,
+            0.894,
+            0.318
           ]
         ],
         "crop_offset": [
-          85,
+          88,
           16
         ],
         "trunk_columns": [
           0,
-          1,
-          2
+          1
         ],
-        "contact_px": 77,
-        "contact_reference_px": 77.0,
+        "contact_px": 78,
+        "contact_reference_px": 78.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,

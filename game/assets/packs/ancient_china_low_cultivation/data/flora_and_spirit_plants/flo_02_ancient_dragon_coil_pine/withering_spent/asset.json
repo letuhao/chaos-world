@@ -46,14 +46,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_02_ancient_dragon_coil_pine/withering_spent/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.439
+            0.417
           ]
         ],
-        "frac_zero": 0.7079,
+        "frac_zero": 0.7213,
         "blocks": [
           [
             false
@@ -75,30 +75,30 @@
         ],
         "sub_fill": [
           [
-            0.148,
-            0.638,
-            0.145
+            0.185,
+            0.666,
+            0.098
           ],
           [
-            0.37,
-            0.562,
-            0.479
+            0.516,
+            0.617,
+            0.571
           ],
           [
-            0.329,
-            0.887,
-            0.267
+            0.232,
+            0.708,
+            0.039
           ]
         ],
         "crop_offset": [
-          21,
-          17
+          19,
+          16
         ],
         "trunk_columns": [
           1
         ],
-        "contact_px": 66,
-        "contact_reference_px": 66.0,
+        "contact_px": 49,
+        "contact_reference_px": 49.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -126,14 +126,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_02_ancient_dragon_coil_pine/withering_spent/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.458
+            0.44
           ]
         ],
-        "frac_zero": 0.7032,
+        "frac_zero": 0.713,
         "blocks": [
           [
             false
@@ -155,31 +155,30 @@
         ],
         "sub_fill": [
           [
-            0.179,
-            0.638,
-            0.129
+            0.155,
+            0.751,
+            0.119
           ],
           [
-            0.423,
-            0.499,
-            0.439
+            0.47,
+            0.625,
+            0.492
           ],
           [
-            0.485,
-            0.893,
-            0.255
+            0.26,
+            0.811,
+            0.175
           ]
         ],
         "crop_offset": [
-          21,
-          17
+          19,
+          16
         ],
         "trunk_columns": [
-          0,
           1
         ],
-        "contact_px": 69,
-        "contact_reference_px": 69.0,
+        "contact_px": 60,
+        "contact_reference_px": 60.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -207,14 +206,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_02_ancient_dragon_coil_pine/withering_spent/damaged_weathered.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.432
+            0.467
           ]
         ],
-        "frac_zero": 0.7042,
+        "frac_zero": 0.6985,
         "blocks": [
           [
             false
@@ -236,30 +235,30 @@
         ],
         "sub_fill": [
           [
-            0.169,
-            0.653,
-            0.094
+            0.165,
+            0.768,
+            0.108
           ],
           [
-            0.409,
-            0.571,
-            0.441
+            0.453,
+            0.659,
+            0.487
           ],
           [
-            0.31,
-            0.896,
-            0.225
+            0.325,
+            0.906,
+            0.248
           ]
         ],
         "crop_offset": [
-          19,
+          18,
           16
         ],
         "trunk_columns": [
           1
         ],
-        "contact_px": 62,
-        "contact_reference_px": 62.0,
+        "contact_px": 61,
+        "contact_reference_px": 61.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -287,14 +286,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_02_ancient_dragon_coil_pine/withering_spent/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.483
+            0.468
           ]
         ],
-        "frac_zero": 0.6942,
+        "frac_zero": 0.7087,
         "blocks": [
           [
             false
@@ -316,31 +315,31 @@
         ],
         "sub_fill": [
           [
-            0.205,
-            0.614,
-            0.127
+            0.217,
+            0.743,
+            0.118
           ],
           [
-            0.414,
-            0.525,
-            0.458
+            0.45,
+            0.575,
+            0.396
           ],
           [
-            0.566,
-            0.938,
-            0.298
+            0.428,
+            0.861,
+            0.213
           ]
         ],
         "crop_offset": [
           21,
-          17
+          16
         ],
         "trunk_columns": [
           0,
           1
         ],
-        "contact_px": 67,
-        "contact_reference_px": 67.0,
+        "contact_px": 66,
+        "contact_reference_px": 66.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
