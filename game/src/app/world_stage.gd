@@ -108,11 +108,6 @@ const STAGE_BODY_NODE := "WorldStagePlayer"
 ## bounded read rather than an open-ended one.
 const MAX_INTERACTABLES := 64
 
-## The ceiling on the routed-press log. Bounded for the same reason
-## `MAX_INTERACTABLES` bounds the row list: an unbounded history on a composition-root
-## object is a leak, and a press per frame would make a run grow by the frame rate.
-const MAX_INTERACTIONS_LOGGED := 8
-
 ## How deep the playfield walk goes looking for interactable nodes when the entry's own
 ## accessor answers with nothing. The authored `ResourceNodes` group is one level of
 ## markers below the entry, so this is slack for a scene that nests further — and a
@@ -120,16 +115,11 @@ const MAX_INTERACTIONS_LOGGED := 8
 ## authored with a cycle. `tools/arch`'s recursive-walk rule requires a cap of some kind.
 const RESOURCE_SCAN_DEPTH := 8
 
-static var _handler: Callable = Callable()
 ## The stage `app/` installed, and the most recently mounted body. Both exist so
 ## a signal-driven consumer — `WorldMapScreen`'s `location_selected` — can reach
 ## a mount without `ui/` referencing `app/`, which the boundary rules forbid.
 static var _current: WorldStage = null
 static var _mounted_player: PlayerAdapter = null
-## Tell the event module where the player is. Installed by `app/` as
-## `Callable(EventApi, "set_location")`; a null one means "nothing is listening",
-## which is REPORTED on the mount rather than guessed around.
-static var _location_publisher: Callable = Callable()
 
 var _bounds: Rect2 = DEFAULT_BOUNDS
 var _location_id: StringName = &""
@@ -149,19 +139,21 @@ var _published: Dictionary = {"ok": false, "reason": "not_published"}
 ## reads ONE answer for this stage, and so a stage that never reconciles still has the
 ## epoch floor to answer with.
 var _reconcile: WorldStageReconcile = WorldStageReconcile.new()
-## Every press this stage has ROUTED, oldest first and bounded by
-## `MAX_INTERACTIONS_LOGGED`. Kept rather than a single last-answer so a probe can see
-## that TWO presses produced TWO answers — the N-times symptom an unguarded
-## `interacted` connection causes (AGENTS.md) is invisible against one slot.
-var _interactions: Array[Dictionary] = []
+## Every press this stage has ROUTED, oldest first and bounded. Kept rather than a
+## single last-answer so a probe can see that TWO presses produced TWO answers — the
+## N-times symptom an unguarded `interacted` connection causes (AGENTS.md) is invisible
+## against one slot. The storage, the cap and the three reads live in
+## [WorldStageInteractionLog], extracted when this file outgrew the line budget.
+var _log: WorldStageInteractionLog = WorldStageInteractionLog.new()
 
 
 ## ## The interaction seam's own health, and what the ONE production caller decided
 ##
 ## For a probe that has to tell "the composition root installed nothing" from "the
 ## composition root installed something that refuses". Reads the INSTALLED seam, not
-## `_interactions` — a stage that has not been pressed yet and a stage whose press was
-## refused are two different facts and must not answer the same way.
+## [member WorldStageInteractionLog._rows]'s log — a stage that has not been pressed yet
+## and a stage whose press was refused are two different facts and must not answer the
+## same way.
 ##
 ## The seam had **no production caller at all**, so every press in the shipped game
 ## answered `no_handler`: a body in a place that could still do nothing, which is the
@@ -190,42 +182,29 @@ var _interactions: Array[Dictionary] = []
 ## resource and inhabitant TYPES, so most presses are not a board at all and are
 ## refused by name (`not_a_quest_board`) rather than by silence.
 static func has_interaction_handler() -> bool:
-	return _handler.is_valid()
+	return WorldStageSeams.has_handler()
 
 
-## Install the interaction seam. `app/` passes a callable taking
-## `(actor, location_id, target_name)` and answering a `{ok, ...}` dictionary.
-##
-## With nothing installed an interaction is still received and still returns a
-## dictionary — it simply answers `no_handler`. That is the `HoldingsApi._resolve`
-## posture: a null injection fails loudly with a named reason rather than
-## dereferencing nothing (ADR 0002).
-##
-## **The handler is installed at boot, not per mount**, so `interact()` has a
-## consumer from the first press rather than only after a travel. Installing it in
-## `mount` instead would leave a body that arrived by the composition root's own
-## call one press short of doing anything — the same "wired, but the only caller
-## is a test" shape this file exists to close.
+## Install the interaction seam. **This name is the one callers spell, and it is not the
+## seam's home**: the callable's contract, the `no_handler` default and the
+## boot-not-per-mount rule all live in [WorldStageSeams.set_handler], which is where the
+## callable is stored and where a reader changing the seam has to go.
 static func set_interaction_handler(handler: Callable) -> void:
-	_handler = handler
+	WorldStageSeams.set_handler(handler)
 
 
-## Install the seam that tells the EVENT module where the player is.
-## `app/` passes `Callable(EventApi, "set_location")`; the callable is
-## `func(actor: Actor, location_id: StringName) -> Dictionary`.
-##
-## Passing an empty `Callable` clears the binding, so a test (or a boot order that
-## deliberately runs without the event module) can uninstall it deterministically
-## rather than only overwrite it — the `CombatBoot.set_attack_resolver` shape.
+## Install the seam that tells the EVENT module where the player is. The callable's
+## contract and the empty-`Callable`-clears rule live in [WorldStageSeams.set_publisher],
+## the shape [method set_reconciler] already points at for the same reason.
 static func set_location_publisher(publisher: Callable) -> void:
-	_location_publisher = publisher
+	WorldStageSeams.set_publisher(publisher)
 
 
 ## Whether the world is being told where the player is. Published on `summary()`
 ## so a probe can tell "the seam is missing" from "the seam is installed and the
 ## event module refused the place".
 static func has_location_publisher() -> bool:
-	return _location_publisher.is_valid()
+	return WorldStageSeams.has_publisher()
 
 
 ## Install the seam that folds a place's clock when somebody arrives (ADR 0170 (a)).
@@ -633,7 +612,7 @@ func leave() -> Dictionary:
 	# The routed-press log goes with the body: these presses belong to the actor that
 	# stood here, and leaving it holding a REBORN hero's answer would be the
 	# half-swapped-body failure `adopt_actor` already guards against one layer up.
-	_interactions = []
+	_log.clear()
 	_player = null
 	_actor = null
 	_location_id = &""
@@ -729,8 +708,8 @@ func summary() -> Dictionary:
 		"interactable_count": _interactables.size(),
 		"node_count": _nodes.size(),
 		"npc_count": _spawned_npcs.size(),
-		"handler_installed": _handler.is_valid(),
-		"location_publisher_installed": _location_publisher.is_valid(),
+		"handler_installed": WorldStageSeams.has_handler(),
+		"location_publisher_installed": WorldStageSeams.has_publisher(),
 		"world_told": bool(_published.get("ok", false)),
 		"world_told_reason": String(_published.get("reason", "")),
 		# FLATTENED, not the dictionary [method last_interaction] returns. ADR 0038's
@@ -741,7 +720,7 @@ func summary() -> Dictionary:
 		"last_interaction_target": String(_last_row().get("target", "")),
 		"last_interaction_ok": bool(_last_row().get("ok", false)),
 		"last_interaction_reason": String(_last_row().get("reason", "")),
-		"last_interaction_count": _interactions.size(),
+		"last_interaction_count": _log.count(),
 	}
 	# ## The reconcile seam's own health, this place's age through it, and the DERIVED
 	# state under the epoch overlay — MERGED rather than written inline, for the reason
@@ -757,7 +736,7 @@ func summary() -> Dictionary:
 ## The last routed press, or `{}`. Internal, so [method summary] can flatten it
 ## without the public accessor and the summary carrying different shapes.
 func _last_row() -> Dictionary:
-	return {} if _interactions.is_empty() else (_interactions[-1] as Dictionary)
+	return _log.last()
 
 
 ## Route one interaction — the consumer of `PlayerAdapter.interacted`.
@@ -781,9 +760,9 @@ func interact(target_name: String) -> Dictionary:
 		_player.global_position = _clamp_body(_player.global_position)
 	if target_name == "":
 		return _remember({"ok": false, "reason": "no_target", "target": target_name})
-	if not _handler.is_valid():
+	if not WorldStageSeams.has_handler():
 		return _remember({"ok": false, "reason": "no_handler", "target": target_name})
-	var answer: Variant = _handler.call(_actor, _location_id, target_name)
+	var answer: Variant = WorldStageSeams.handler().call(_actor, _location_id, target_name)
 	if not answer is Dictionary:
 		return _remember({"ok": false, "reason": "handler_returned_nothing", "target": target_name})
 	return _remember(answer as Dictionary)
@@ -801,22 +780,19 @@ func _remember(answer: Dictionary) -> Dictionary:
 	# cannot say WHERE a press happened cannot tell two places apart. `target` is
 	# different — the handler knows it, so its value wins when it publishes one.
 	row["location_id"] = String(_location_id)
-	_interactions.append(row)
-	while _interactions.size() > MAX_INTERACTIONS_LOGGED:
-		_interactions.pop_front()
-	return row
+	return _log.file(row)
 
 
 ## The last press the stage routed, or `{}` when none has been. Duplicated because
 ## this is the UI contract and a caller mutating the stage's own log would be a way to
 ## rewrite a record it never made.
 func last_interaction() -> Dictionary:
-	return {} if _interactions.is_empty() else (_interactions[-1] as Dictionary).duplicate()
+	return _log.last()
 
 
 ## Every press the stage routed, oldest first. Duplicated for the same reason.
 func interactions() -> Array[Dictionary]:
-	return _interactions.duplicate()
+	return _log.all()
 
 
 # --- internals ---------------------------------------------------------------
@@ -842,9 +818,9 @@ func interactions() -> Array[Dictionary]:
 func _publish_location(actor: Actor, location_id: StringName) -> Dictionary:
 	if actor == null:
 		return {"ok": false, "reason": "no_actor"}
-	if not _location_publisher.is_valid():
+	if not WorldStageSeams.has_publisher():
 		return {"ok": false, "reason": "no_publisher"}
-	var answered: Variant = _location_publisher.call(actor, location_id)
+	var answered: Variant = WorldStageSeams.publisher().call(actor, location_id)
 	if not answered is Dictionary:
 		return {"ok": false, "reason": "publisher_returned_nothing"}
 	var out: Dictionary = (answered as Dictionary).duplicate()
