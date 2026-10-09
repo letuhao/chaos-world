@@ -1,0 +1,519 @@
+{
+  "id": "ancient_china_low_cultivation.water_and_springs.wat_04_silt_laden_mortal_canal.riverbank_reed_edge",
+  "archetype": "riverbank_reed_edge_wat_04_silt_laden_mortal_canal",
+  "name": "Silt-Laden Mortal Canal - Marshy Riverbank Shoreline",
+  "vietnamese_name": "Tào Vận Trọc Cừ - Bờ Sông Lau Sậy Ven Bãi",
+  "hanzi": "漕运浊渠 · 芦苇湿地水岸",
+  "category": "wat_04_silt_laden_mortal_canal",
+  "category_code": "WAT-04",
+  "domain": "water_and_springs",
+  "sub_domain": "wat_04_silt_laden_mortal_canal",
+  "asset_class": "terrain_tile",
+  "type": "tile",
+  "alpha": "opaque",
+  "pivot": "center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "forage_reeds",
+  "gameplay_role": "terrain_tile entity supporting Silt-Laden Mortal Canal gameplay",
+  "destructible": false,
+  "material": "compact mineral soil with fine clay granules",
+  "cultivation_element": "water",
+  "prompt_summary": "Seamless flat top-down ground terrain texture tile of silt-laden mortal canal - marshy riverbank shoreline, authentic silt-laden mortal canal materials, East Asian Xianxia craftsmanship, pure 90-degree top-down planar view, gouache watercolor hand-painted texture with fine mineral speckles, zero vertical perspective, edge-to-edge full canvas coverage.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Water Systems & Spiritual Springs",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "dry_temperate",
+      "name": "Dry Normal State",
+      "prompt_modifier": "standard dry earthen surface, clear natural grain",
+      "variant_id": "dry_temperate",
+      "variant_name": "Dry Normal State",
+      "description": "standard dry earthen surface, clear natural grain",
+      "prompt": "Seamless 2D ground texture map of silt-laden mortal canal - marshy riverbank shoreline, compact mineral soil with fine clay granules, standard dry earthen surface, clear natural grain, painterly anime gouache, continuous uniform natural earth texture, monolithic unbroken flat ground plane, macro top-down perpendicular 90-degree satellite overhead view looking straight down at soil surface, edge-to-edge seamless soil texture filling 100% of canvas.",
+      "negative_prompt": "tiles, pavers, flagstones, stone slabs, paving, grid lines, tile seams, grout, cracks between tiles, subdivided stones, stepping stones, stone blocks, rock slabs, river stones, pebbles in a line, furrows, trenches, channels, walking path, stepping path, crater, arena, depression, circular hollow, ring of cliffs, surrounding rocks, border cliffs, perimeter rocks, border, frame, circular frame, ring of rocks, corner bushes, perimeter foliage, vignette, diorama, cliffs, canyon, pillars, columns, rock towers, elevation, horizon, sky, clouds, landscape, vista, distant view, perspective, 3D scene, chasm, ravine, valley, walls, UI, watermark, props, objects, buildings, trees",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_04_silt_laden_mortal_canal/riverbank_reed_edge/dry_temperate.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            1.0,
+            1.0
+          ]
+        ],
+        "frac_zero": 0.0,
+        "blocks": [
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            true,
+            true
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          0
+        ],
+        "sub_grid": [
+          8,
+          4
+        ],
+        "sub_fill": [
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        ],
+        "crop_offset": [
+          0,
+          0
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "contact_px": 256,
+        "contact_reference_px": 256.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "wet_monsoon",
+      "name": "Wet Saturated Rain",
+      "prompt_modifier": "darkened damp ground with reflective standing water puddles",
+      "variant_id": "wet_monsoon",
+      "variant_name": "Wet Saturated Rain",
+      "description": "darkened damp ground with reflective standing water puddles",
+      "prompt": "Seamless 2D ground texture map of silt-laden mortal canal - marshy riverbank shoreline, compact mineral soil with fine clay granules, darkened damp ground with reflective standing water puddles, painterly anime gouache, continuous uniform natural earth texture, monolithic unbroken flat ground plane, macro top-down perpendicular 90-degree satellite overhead view looking straight down at soil surface, edge-to-edge seamless soil texture filling 100% of canvas.",
+      "negative_prompt": "tiles, pavers, flagstones, stone slabs, paving, grid lines, tile seams, grout, cracks between tiles, subdivided stones, stepping stones, stone blocks, rock slabs, river stones, pebbles in a line, furrows, trenches, channels, walking path, stepping path, crater, arena, depression, circular hollow, ring of cliffs, surrounding rocks, border cliffs, perimeter rocks, border, frame, circular frame, ring of rocks, corner bushes, perimeter foliage, vignette, diorama, cliffs, canyon, pillars, columns, rock towers, elevation, horizon, sky, clouds, landscape, vista, distant view, perspective, 3D scene, chasm, ravine, valley, walls, UI, watermark, props, objects, buildings, trees",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_04_silt_laden_mortal_canal/riverbank_reed_edge/wet_monsoon.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            1.0,
+            1.0
+          ]
+        ],
+        "frac_zero": 0.0,
+        "blocks": [
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            true,
+            true
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          0
+        ],
+        "sub_grid": [
+          8,
+          4
+        ],
+        "sub_fill": [
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        ],
+        "crop_offset": [
+          0,
+          0
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "contact_px": 256,
+        "contact_reference_px": 256.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "winter_snow_crust",
+      "name": "Winter Frost Crust",
+      "prompt_modifier": "fine white crystalline frost dusting over crevices",
+      "variant_id": "winter_snow_crust",
+      "variant_name": "Winter Frost Crust",
+      "description": "fine white crystalline frost dusting over crevices",
+      "prompt": "Seamless 2D ground texture map of silt-laden mortal canal - marshy riverbank shoreline, compact mineral soil with fine clay granules, fine white crystalline frost dusting over crevices, painterly anime gouache, continuous uniform natural earth texture, monolithic unbroken flat ground plane, macro top-down perpendicular 90-degree satellite overhead view looking straight down at soil surface, edge-to-edge seamless soil texture filling 100% of canvas.",
+      "negative_prompt": "tiles, pavers, flagstones, stone slabs, paving, grid lines, tile seams, grout, cracks between tiles, subdivided stones, stepping stones, stone blocks, rock slabs, river stones, pebbles in a line, furrows, trenches, channels, walking path, stepping path, crater, arena, depression, circular hollow, ring of cliffs, surrounding rocks, border cliffs, perimeter rocks, border, frame, circular frame, ring of rocks, corner bushes, perimeter foliage, vignette, diorama, cliffs, canyon, pillars, columns, rock towers, elevation, horizon, sky, clouds, landscape, vista, distant view, perspective, 3D scene, chasm, ravine, valley, walls, UI, watermark, props, objects, buildings, trees",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_04_silt_laden_mortal_canal/riverbank_reed_edge/winter_snow_crust.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            1.0,
+            1.0
+          ]
+        ],
+        "frac_zero": 0.0,
+        "blocks": [
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            true,
+            true
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          0
+        ],
+        "sub_grid": [
+          8,
+          4
+        ],
+        "sub_fill": [
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        ],
+        "crop_offset": [
+          0,
+          0
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "contact_px": 256,
+        "contact_reference_px": 256.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "yin_corrupted",
+      "name": "Baleful Yin Corrupted",
+      "prompt_modifier": "scorched ash-grey blighted ground with wisps of dark violet miasma",
+      "variant_id": "yin_corrupted",
+      "variant_name": "Baleful Yin Corrupted",
+      "description": "scorched ash-grey blighted ground with wisps of dark violet miasma",
+      "prompt": "Seamless 2D ground texture map of silt-laden mortal canal - marshy riverbank shoreline, compact mineral soil with fine clay granules, scorched ash-grey blighted ground with wisps of dark violet miasma, painterly anime gouache, continuous uniform natural earth texture, monolithic unbroken flat ground plane, macro top-down perpendicular 90-degree satellite overhead view looking straight down at soil surface, edge-to-edge seamless soil texture filling 100% of canvas.",
+      "negative_prompt": "tiles, pavers, flagstones, stone slabs, paving, grid lines, tile seams, grout, cracks between tiles, subdivided stones, stepping stones, stone blocks, rock slabs, river stones, pebbles in a line, furrows, trenches, channels, walking path, stepping path, crater, arena, depression, circular hollow, ring of cliffs, surrounding rocks, border cliffs, perimeter rocks, border, frame, circular frame, ring of rocks, corner bushes, perimeter foliage, vignette, diorama, cliffs, canyon, pillars, columns, rock towers, elevation, horizon, sky, clouds, landscape, vista, distant view, perspective, 3D scene, chasm, ravine, valley, walls, UI, watermark, props, objects, buildings, trees",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_04_silt_laden_mortal_canal/riverbank_reed_edge/yin_corrupted.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            1.0,
+            1.0
+          ]
+        ],
+        "frac_zero": 0.0,
+        "blocks": [
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            true,
+            true
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          0
+        ],
+        "sub_grid": [
+          8,
+          4
+        ],
+        "sub_fill": [
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        ],
+        "crop_offset": [
+          0,
+          0
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "contact_px": 256,
+        "contact_reference_px": 256.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "WAT-04",
+    "domain": "water_and_springs",
+    "interaction": "forage_reeds",
+    "collision_behavior": "walk_surface",
+    "element": "water",
+    "tier": 4
+  },
+  "category_id": "wat_04_silt_laden_mortal_canal",
+  "domain_id": "water_and_springs",
+  "pinyin": "Cáoyùn Zhuóqú · Marshy Riverbank Shoreline",
+  "archetype_name": "Marshy Riverbank Shoreline",
+  "footprint_subcells": {
+    "w": 8,
+    "h": 4
+  },
+  "footprint_px": {
+    "w": 256,
+    "h": 128
+  },
+  "cell_span": {
+    "w": 2,
+    "h": 1
+  },
+  "collision": {
+    "type": "walk_surface",
+    "shape": "box",
+    "solid": false,
+    "blocks_movement": false,
+    "blocks_projectiles": false,
+    "vision_block": false,
+    "height_layer": "ground"
+  },
+  "primary_material": "earthen_loam",
+  "secondary_material": "mineral_silt",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Water affinity (Nascent Soul (Nguyên Anh / 元婴))",
+  "elevation_tier": 4,
+  "mortal_realm_tier": "Nascent Soul (Nguyên Anh / 元婴)",
+  "asset_slug": "riverbank_reed_edge"
+}

@@ -1,0 +1,87 @@
+{
+  "asset_id": "ancient_china_low_cultivation.water_and_springs.wat_04_silt_laden_mortal_canal.stepped_cascade_drop",
+  "domain": "water_and_springs",
+  "sub_domain": "wat_04_silt_laden_mortal_canal",
+  "asset_slug": "stepped_cascade_drop",
+  "variant_slug": "facing_east_profile",
+  "name": "East Facing Profile",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_04_silt_laden_mortal_canal/stepped_cascade_drop/facing_east_profile.png",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.525,
+        0.623
+      ]
+    ],
+    "frac_zero": 0.866,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.006,
+        0.752,
+        0.013
+      ],
+      [
+        0.618,
+        1.0,
+        0.474
+      ],
+      [
+        0.815,
+        0.689,
+        0.07
+      ]
+    ],
+    "crop_offset": [
+      90,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 61,
+    "contact_reference_px": 61.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

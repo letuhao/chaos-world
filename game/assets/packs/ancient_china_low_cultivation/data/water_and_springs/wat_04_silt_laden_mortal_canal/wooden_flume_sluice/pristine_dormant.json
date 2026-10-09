@@ -1,0 +1,127 @@
+{
+  "asset_id": "ancient_china_low_cultivation.water_and_springs.wat_04_silt_laden_mortal_canal.wooden_flume_sluice",
+  "domain": "water_and_springs",
+  "sub_domain": "wat_04_silt_laden_mortal_canal",
+  "asset_slug": "wooden_flume_sluice",
+  "variant_slug": "pristine_dormant",
+  "name": "Pristine Dormant State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_04_silt_laden_mortal_canal/wooden_flume_sluice/pristine_dormant.png",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "operate_sluice",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.58,
+        0.527
+      ]
+    ],
+    "frac_zero": 0.8032,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      4,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.398,
+        0.574,
+        0.707,
+        0.054
+      ],
+      [
+        0.395,
+        0.668,
+        0.646,
+        0.15
+      ],
+      [
+        0.691,
+        0.853,
+        0.54,
+        0.355
+      ]
+    ],
+    "crop_offset": [
+      73,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "contact_px": 70,
+    "contact_reference_px": 70.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}
