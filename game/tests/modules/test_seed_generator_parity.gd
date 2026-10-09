@@ -19,7 +19,7 @@ extends TestCase
 ##
 ## DEF-0130: the body ladder was deliberately retuned (HEAD -> working tree) to
 ## `tools/cultivation/ladder.py`, which fixes DEF-0079 (five realms had
-## `chance_base >= chance_cap`, so huyệt quality could not enter the roll) and
+## `chance_base >= chance_cap`, so acupoint quality could not enter the roll) and
 ## DEF-0104 (26 of 30 realms gated on a physique floor the ladder already
 ## granted). Three of the identities this file pinned did not survive it, and
 ## each is handled below on its own merits rather than re-pinned wholesale:
@@ -104,7 +104,7 @@ const MILESTONE_PHYSIQUE_RATIO := 0.02
 ## ladder.PHYSIQUE_REWARD: base physique the ladder grants for clearing a realm.
 const PHYSIQUE_REWARD := 2.0
 
-## ladder.QUALITY_CEILING_BASE / QUALITY_STEP: the huyệt quality ceiling.
+## ladder.QUALITY_CEILING_BASE / QUALITY_STEP: the acupoint quality ceiling.
 const QUALITY_CEILING_BASE := 0.62
 const QUALITY_STEP := 0.0105
 
@@ -115,7 +115,7 @@ const QUALITY_HEADROOM := 0.08
 const INTEGRITY_GAP := 0.05
 
 ## ladder.CHANCE_BASE_START / CHANCE_BASE_DECAY: the floor a realm offers with no
-## huyệt work behind it. It DECLINES with depth (DEF-0079: the old pair rose into
+## acupoint work behind it. It DECLINES with depth (DEF-0079: the old pair rose into
 ## a falling ceiling and crossed at R26, leaving `chance_base >= chance_cap` on
 ## five realms).
 const CHANCE_BASE_START := 0.49
@@ -457,7 +457,7 @@ func test_body_physique_gate_clears_what_the_ladder_grants_for_free() -> void:
 func test_body_quality_ladders_match_generator() -> void:
 	# The quality ceiling, the entry gate a fixed headroom below it, and the
 	# reservoir target above it. Before the retune the gate WAS the ceiling, which
-	# pinned average huyệt quality at the moment of an attempt to a single number
+	# pinned average acupoint quality at the moment of an attempt to a single number
 	# and made acupoint quality unable to enter the roll anywhere.
 	var realms := RealmDefaults.ladder().realms()
 	for index in range(realms.size()):
@@ -482,7 +482,7 @@ func test_body_quality_ladders_match_generator() -> void:
 func test_body_chance_band_matches_generator_and_stays_live() -> void:
 	# `BodyAdvancement._chance` is `chance_base + quality * 0.5` clamped to
 	# `chance_cap`, so a cap that is not strictly above `base + quality*0.5` at the
-	# top of the span an actor can hold swallows the huyệt term. DEF-0079 recorded
+	# top of the span an actor can hold swallows the acupoint term. DEF-0079 recorded
 	# exactly that on five realms. Assert both the recipe and the property.
 	var realms := RealmDefaults.ladder().realms()
 	for index in range(realms.size()):

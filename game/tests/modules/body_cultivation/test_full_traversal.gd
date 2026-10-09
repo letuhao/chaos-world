@@ -93,7 +93,7 @@ func _pool_full(actor: Actor) -> bool:
 
 
 ## Cultivate until the realm's progress floor is met, the shared body reservoir
-## is full, and every unlocked huyệt has reached the next realm's quality floor.
+## is full, and every unlocked acupoint has reached the next realm's quality floor.
 ## All three are outputs of the same action, and the gate checks all three, so
 ## preparation must too.
 func _cultivate_until(actor: Actor, progress_required: float, quality_required: float) -> void:
@@ -111,7 +111,7 @@ func _cultivate_until(actor: Actor, progress_required: float, quality_required: 
 			return
 
 
-## True while any huyệt the actor holds is still short of the next realm's
+## True while any acupoint the actor holds is still short of the next realm's
 ## quality floor. `synchronize` only ever adds points the current realm has
 ## unlocked, so iterating the set directly is equivalent to filtering the
 ## definitions by unlock_index — and far cheaper inside the cultivate loop.
@@ -403,14 +403,14 @@ func test_traversal_save_load_preserves_progress() -> void:
 	assert_eq(restored.meridians.get_meridian(&"lung") != null, true, "meridians restored")
 
 
-## The R4 round-trip above only ever sees the 36 minor huyệt. Major (R10) and
+## The R4 round-trip above only ever sees the 36 minor acupoint. Major (R10) and
 ## celestial (R19) tiers, deep refinement, the shared reservoir, and progress
 ## were never round-tripped, so a save bug at the top of the ladder would pass
 ## every test in the suite.
 func test_save_load_at_a_high_realm_round_trips_every_layer() -> void:
-	# Stand at spirit_sea (index 11): 48 huyệt unlocked, refinement in the teens.
+	# Stand at spirit_sea (index 11): 48 acupoint unlocked, refinement in the teens.
 	var actor := _actor(&"spirit_sea")
-	# Train the network and the huyệt through the public actions so the state is
+	# Train the network and the acupoint through the public actions so the state is
 	# real rather than written in.
 	for _round in 24:
 		BodyTraining.cultivate(actor, 25.0)
@@ -434,7 +434,7 @@ func test_save_load_at_a_high_realm_round_trips_every_layer() -> void:
 		if definition.unlock_index <= RealmDefaults.ladder().index_of(&"spirit_sea"):
 			expected_points += 1
 	var points: AcupointSet = actor.component(&"acupoints")
-	assert_eq(points.points.size(), expected_points, "48 huyệt at spirit tier")
+	assert_eq(points.points.size(), expected_points, "48 acupoint at spirit tier")
 	assert_eq(expected_points, 48, "sanity: minor plus major")
 	var deepest := 0
 	for channel in actor.meridians.get_all_meridians():
@@ -455,7 +455,7 @@ func test_save_load_at_a_high_realm_round_trips_every_layer() -> void:
 
 	assert_eq(restored.path(BodyPath.PATH_ID).rank_id, &"spirit_sea", "high rank preserved")
 	var restored_points: AcupointSet = restored.component(&"acupoints")
-	assert_eq(restored_points.points.size(), 48, "all 48 huyệt restored")
+	assert_eq(restored_points.points.size(), 48, "all 48 acupoint restored")
 	for point in restored_points.points:
 		var saved_point: Array = snapshot[point.id]
 		assert_almost_eq(point.quality, saved_point[0], "quality of %s" % point.id)

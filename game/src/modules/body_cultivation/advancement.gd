@@ -167,7 +167,7 @@ static func _id(value: BodyAttempt) -> String:
 ## can walk around is not a rule. It is a precondition and never a modifier.
 ##
 ## Refusing while `busy` is what keeps a two-phase attempt from interleaving with
-## `cultivate`/`strengthen`/`recover` on the same huyệt set. `try_breakthrough`
+## `cultivate`/`strengthen`/`recover` on the same acupoint set. `try_breakthrough`
 ## holds `busy` across both halves and therefore calls `_start` directly — which reads
 ## the same gate, so holding `busy` buys no way around it.
 ##
@@ -317,7 +317,7 @@ static func resolve_attempt(actor: Actor) -> bool:
 		_end(actor, committed, false)
 		return false
 	committed.mark_trial_complete()
-	# Rebuilt from the record, never from a live stream: the roll and the huyệt a
+	# Rebuilt from the record, never from a live stream: the roll and the acupoint a
 	# deviation jams both come off this one generator, so a resolve after a reload
 	# lands on the same body as a resolve without one.
 	var generator := BodyAttemptRoll.replay(committed.rng_state)
@@ -446,7 +446,7 @@ static func cancel(actor: Actor) -> bool:
 ## there is no second implementation that can drift from the first.
 ##
 ## `busy` is held across both halves so a body cultivation action cannot
-## interleave on the same huyệt set, and cleared on every exit.
+## interleave on the same acupoint set, and cleared on every exit.
 ##
 ## `rng` reaches `start_attempt` and stops there: the resolve reads the record, so
 ## the one press and the save-spanning attempt roll from the same seed by
@@ -481,7 +481,7 @@ static func _body_allows(actor: Actor) -> bool:
 	return RaceGate.realm_ceiling_unmet(actor).is_empty()
 
 
-## Deviation: lose half the progress, jam a huyệt and tear the channel the
+## Deviation: lose half the progress, jam a acupoint and tear the channel the
 ## actor trained deepest, and cost integrity (ADR 0015/0023).
 static func _deviate(
 	actor: Actor,

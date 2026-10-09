@@ -296,12 +296,12 @@ func test_a_wound_with_no_elixir_is_named_as_the_missing_elixir() -> void:
 	)
 
 
-## A jammed huyệt is the other wound this verb closes, and it reaches a channel that
-## is not injured at all — so it proves the report asks about BLOCKED huyệt and not
+## A jammed acupoint is the other wound this verb closes, and it reaches a channel that
+## is not injured at all — so it proves the report asks about BLOCKED acupoint and not
 ## only torn channels.
 func test_a_jam_is_a_wound_the_elixir_closes() -> void:
 	var actor := _hero()
-	assert_ne(_jam(actor, _first_candidate(actor)), &"", "a huyệt on this channel exists")
+	assert_ne(_jam(actor, _first_candidate(actor)), &"", "a acupoint on this channel exists")
 	assert_eq(BodyCultivationApi.recover_next(actor), false, "an empty pack repairs nothing")
 	assert_eq(
 		_kinds(_unavailable(actor, "recover")),
@@ -377,7 +377,7 @@ func test_a_healthy_channel_is_priced_by_the_channel_elixir() -> void:
 
 
 ## **The residual ADR 0150 recorded as unfixed.** A channel at its refinement cap with
-## its huyệt trained to target used to read as "No channel elixir to spend", because the
+## its acupoint trained to target used to read as "No channel elixir to spend", because the
 ## screen was handed one `bool` over a walk it could not see.
 func test_a_capped_channel_is_not_blamed_on_a_missing_elixir() -> void:
 	var actor := _prepared()

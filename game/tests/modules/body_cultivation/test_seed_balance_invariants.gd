@@ -16,8 +16,8 @@ extends TestCase
 # --- The quality gate is a gate ---------------------------------------------
 
 
-## The huyệt quality floor must sit ABOVE what a fresh acupoint already carries.
-## `AcupointDefaults.from_definition` builds every huyệt at 0.5, so a floor at or
+## The acupoint quality floor must sit ABOVE what a fresh acupoint already carries.
+## `AcupointDefaults.from_definition` builds every acupoint at 0.5, so a floor at or
 ## under that is passed by an actor that has done nothing at all. The shipped ladder
 ## ran 0.400-0.490 across R1-R8 and made the first eight breakthroughs a formality.
 func test_quality_gate_is_above_the_quality_a_fresh_acupoint_carries() -> void:
@@ -63,10 +63,10 @@ func test_quality_gate_is_reachable_from_the_realm_below() -> void:
 
 
 ## And there must be HEADROOM between them, not just reachability. The gap is the span
-## of huyệt quality an actor can choose to hold at the moment of the attempt: the gate
+## of acupoint quality an actor can choose to hold at the moment of the attempt: the gate
 ## is what `_acupoints_ready` demands, the ceiling is what `cultivate` will not exceed,
 ## and everything between is what the breakthrough roll is pricing. Pinning the gate
-## onto the ceiling pins that span to zero, so average huyệt quality at the moment of
+## onto the ceiling pins that span to zero, so average acupoint quality at the moment of
 ## an attempt is one number and training the body cannot change the outcome.
 func test_quality_gate_leaves_headroom_below_the_previous_ceiling() -> void:
 	var realms := RealmDefaults.ladder().realms()
@@ -79,7 +79,7 @@ func test_quality_gate_leaves_headroom_below_the_previous_ceiling() -> void:
 			target.quality_required < source.quality_target,
 			true,
 			(
-				"no huyệt quality span to price at %s: gate %.3f is not below the %.3f ceiling"
+				"no acupoint quality span to price at %s: gate %.3f is not below the %.3f ceiling"
 				% [realms[index].id, target.quality_required, source.quality_target]
 			)
 		)
@@ -87,7 +87,7 @@ func test_quality_gate_leaves_headroom_below_the_previous_ceiling() -> void:
 
 ## The ceiling itself must rise with depth and stay a RATIO inside (0, 1]. It is the
 ## cap `cultivate` refines toward, so a ceiling at or below the fresh 0.5 would pin
-## quality there forever and make the whole huyệt axis inert.
+## quality there forever and make the whole acupoint axis inert.
 func test_quality_ceiling_rises_and_stays_a_ratio() -> void:
 	var previous := 0.0
 	for realm in RealmDefaults.ladder().realms():
@@ -111,9 +111,9 @@ func test_quality_ceiling_rises_and_stays_a_ratio() -> void:
 # --- The chance band is a band ----------------------------------------------
 
 
-## Every realm must offer a range of outcomes that huyệt training can move within.
+## Every realm must offer a range of outcomes that acupoint training can move within.
 ## `BodyAdvancement._chance` clamps to `chance_cap`, so a floor at or above the
-## ceiling swallows the huyệt term entirely — the shipped ladder crossed at R26 and
+## ceiling swallows the acupoint term entirely — the shipped ladder crossed at R26 and
 ## five realms had `chance_base >= chance_cap`.
 func test_chance_floor_is_below_the_chance_ceiling() -> void:
 	for realm in RealmDefaults.ladder().realms():
@@ -131,7 +131,7 @@ func test_chance_floor_is_below_the_chance_ceiling() -> void:
 
 
 ## The stronger form, and the one that actually matters: the band must be live across
-## every huyệt quality an actor can HOLD while attempting this realm. That span is
+## every acupoint quality an actor can HOLD while attempting this realm. That span is
 ## `quality_required` (what `_acupoints_ready` demands) to the previous realm's
 ## `quality_target` (what `cultivate` will not exceed). A zero-width span means the
 ## two authored numbers can each look reasonable and still price nothing.
@@ -197,7 +197,7 @@ func test_work_requirement_is_the_progress_requirement() -> void:
 		assert_eq(seed.progress_required > 0.0, true, "budget is positive at %s" % realm.id)
 
 
-## The two sub-budgets cut the same budget against the huyệt and channel counts, so
+## The two sub-budgets cut the same budget against the acupoint and channel counts, so
 ## they can only be a share of it. They are derived for that reason; this asserts the
 ## derivation is the one the ladder expects rather than a stale authored number.
 func test_sub_budgets_are_cuts_of_the_budget() -> void:
@@ -208,7 +208,7 @@ func test_sub_budgets_are_cuts_of_the_budget() -> void:
 		assert_eq(
 			seed.acupoint_work <= seed.progress_required,
 			true,
-			"huyệt budget is a share of the budget at %s" % realm.id
+			"acupoint budget is a share of the budget at %s" % realm.id
 		)
 		assert_eq(
 			seed.meridian_work <= seed.progress_required,

@@ -83,7 +83,7 @@ func _attacker() -> Actor:
 
 
 ## A defender with a REAL location axis: twenty unlocked meridians through
-## `unlock_for_realm`, a real `AcupointSet` of authored huyệt, and the
+## `unlock_for_realm`, a real `AcupointSet` of authored acupoint, and the
 ## `body_integrity` pool a wound is measured against.
 ##
 ## `qi_refining` is the realm index the shipped meridian defs unlock at tier 0, so every
@@ -96,7 +96,7 @@ func _attacker() -> Actor:
 ## integrity pool, the provider, the progress tracker and the meridian channels, while the
 ## acupoint SET — the `AcupointSet` component the location axis reads — is attached
 ## separately, exactly as `actor_factory.gd` does for a real actor. Calling only `attach`
-## left every body with twenty meridians and NO huyệt, so `_points_of` answered `[]`, every
+## left every body with twenty meridians and NO acupoint, so `_points_of` answered `[]`, every
 ## site came back `locked` at the neutral `1.0`, and the whole location vocabulary the
 ## suite exists to assert never ran.
 func _defender(meridians: Array = ["lung"], states: Dictionary = {}) -> Actor:
@@ -270,7 +270,7 @@ func _meridian_ids(actor: Actor) -> Array[StringName]:
 	return out
 
 
-## The huyệt bound to one meridian on this actor, read through the authored map the
+## The acupoint bound to one meridian on this actor, read through the authored map the
 ## mechanism itself uses (`BodyLocation.meridian_of_point`), so a test asserting on a
 ## point is asserting on the same partition the location axis saw.
 func _points_on(actor: Actor, meridian_id: StringName) -> Array[Acupoint]:

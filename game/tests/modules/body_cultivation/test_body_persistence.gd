@@ -11,7 +11,7 @@ extends TestCase
 ##
 ## That guarantee rests on two things travelling with the record:
 ##   - `preparation.chance`, so the roll is decided by the body the attempt paid
-##     for rather than by whatever the huyệt look like on reload; and
+##     for rather than by whatever the acupoint look like on reload; and
 ##   - `rng_state`, so the roll itself is reproducible rather than a fresh draw.
 ##
 ## A record that survived the round trip with neither is not a saved attempt. It
@@ -129,7 +129,7 @@ func _winning_seed() -> int:
 	return _seed_beating(_committed_chance())
 
 
-## Blank every huyệt, which drops `average_quality` to zero and therefore the LIVE
+## Blank every acupoint, which drops `average_quality` to zero and therefore the LIVE
 ## chance to the realm's `chance_base` — well below the chance a prepared actor
 ## committed against.
 func _blank_all_huyet(actor: Actor) -> void:
@@ -187,9 +187,9 @@ func test_a_pending_attempt_survives_save_and_load() -> void:
 	assert_eq(reloaded.rng_state, committed.rng_state, "the roll's seed travelled with it")
 	assert_ne(BodyAdvancement.active_attempt(restored) == null, true, "still resolvable")
 	# The body travelled too, or the restored attempt has nothing to resolve
-	# against. `Actor.from_dict` parks the raw huyệt data in `module_data`; the
+	# against. `Actor.from_dict` parks the raw acupoint data in `module_data`; the
 	# typed set is rebuilt on attach, which is what the composition root does.
-	assert_ne(restored.get_module_data(&"acupoints").is_empty(), true, "raw huyệt data restored")
+	assert_ne(restored.get_module_data(&"acupoints").is_empty(), true, "raw acupoint data restored")
 	# Re-attach the module as the composition root would, then resolve.
 	BodyCultivationApi.attach(restored)
 	BodyCultivationApi.attach_acupoints(restored)
@@ -244,7 +244,7 @@ func test_the_restored_attempt_resolves_to_the_same_outcome() -> void:
 	)
 
 
-## `preparation.chance` is authoritative. Blanking every huyệt after the attempt
+## `preparation.chance` is authoritative. Blanking every acupoint after the attempt
 ## is committed drops the LIVE chance to the realm's `chance_base`, well below the
 ## chance the attempt paid for. If resolve re-evaluated instead of reading the
 ## record, the same rng that wins on the committed chance would lose on the live

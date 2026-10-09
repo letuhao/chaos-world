@@ -59,7 +59,7 @@ func _prepare(actor: Actor) -> BodyRealmSeed:
 		while actor.meridians.refine_meridian(meridian_id, seed.required_refinement) and guard < 32:
 			guard += 1
 	var points: AcupointSet = actor.component(&"acupoints")
-	# BL-0951: a real run's huyệt saturate at the STANDING realm's authored target
+	# BL-0951: a real run's acupoint saturate at the STANDING realm's authored target
 	# (`BodyTraining.strengthen` trains them there unconditionally), so the fixture
 	# mirrors that level — at the target realm's bare requirement the departures would
 	# snapshot 0.0 and the foundation wall would refuse a state a player cannot hold.
@@ -244,7 +244,7 @@ func test_a_terminal_record_does_not_lock_out_the_next_attempt() -> void:
 
 
 ## A two-phase attempt that skipped the re-entrancy guard could interleave with a
-## cultivate/strengthen on the same huyệt set. `try_breakthrough` already held
+## cultivate/strengthen on the same acupoint set. `try_breakthrough` already held
 ## `busy`; `start_attempt` did not, so driving the two halves from a screen left
 ## the guard decorative.
 func test_start_attempt_refuses_while_the_acupoints_are_busy() -> void:
@@ -388,7 +388,7 @@ func test_resolve_cancels_when_the_tier_gate_shut_under_the_attempt() -> void:
 	# test needs the gate to open for.
 	Play.new().backfill_foundation(actor)
 	# `_prepare` raises the quality of the points that EXIST but never grows the
-	# set, and the gate reads every huyệt the current realm has unlocked. Sync
+	# set, and the gate reads every acupoint the current realm has unlocked. Sync
 	# first, so the points R1..R17 introduced are present for `_prepare` to
 	# train; otherwise the gate reports "quality below the realm requirement" for
 	# points the actor has never heard of.
@@ -481,7 +481,7 @@ func test_the_one_press_path_goes_through_the_persisted_attempt() -> void:
 	assert_eq(record.is_active(), false, "no attempt left in flight")
 
 
-## `busy` is what stops a body action interleaving on the same huyệt set. It was
+## `busy` is what stops a body action interleaving on the same acupoint set. It was
 ## cleared on every exit of the old hand-rolled path; assert it is still cleared,
 ## including on the refusal path, so a refused breakthrough cannot wedge the actor.
 ## The return value is deliberately not asserted: it is a roll, and every exit
@@ -581,7 +581,9 @@ func test_every_realm_leaves_breakthrough_risk() -> void:
 		var perfect_quality := seed.quality_target
 		var worst_case := seed.chance_base + perfect_quality * 0.5
 		var effective := minf(worst_case, seed.chance_cap)
-		assert_eq(effective < 0.95, true, "realm %s can still fail with perfect huyệt" % realm.id)
+		assert_eq(
+			effective < 0.95, true, "realm %s can still fail with perfect acupoint" % realm.id
+		)
 
 
 func test_resonance_lifts_the_meridian_network_from_the_seed() -> void:

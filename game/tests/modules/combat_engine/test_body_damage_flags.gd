@@ -41,7 +41,7 @@ extends "res://tests/modules/combat_engine/body_damage_fixture.gd"
 ## attacker.
 ##
 ## The cultivator's half is asserted against the real `AcupointSet` methods, so the claim
-## is "the shipped body vocabulary excludes a jammed huyệt from its own average" and not
+## is "the shipped body vocabulary excludes a jammed acupoint from its own average" and not
 ## "a dictionary somewhere says so". The average RISING when the best point is jammed is
 ## the observable that makes "excluded" true: a set that averaged over every point would
 ## fall.
@@ -50,7 +50,7 @@ func test_a_jammed_huyet_is_a_lost_investment_and_the_best_aim_point() -> void:
 	var target := _defender(["lung"], {"lung": MeridianState.OPEN})
 	var points_on_target: AcupointSet = target.component(&"acupoints")
 	var points := _points_on(target, &"lung")
-	assert_eq(points.size() > 1, true, "the lung really carries several huyệt")
+	assert_eq(points.size() > 1, true, "the lung really carries several acupoint")
 	# Start from a body where one point is strictly the best, so jamming it must both
 	# drop the average and hand the attacker a bigger number than it had.
 	points[0].quality = 0.9
@@ -75,8 +75,8 @@ func test_a_jammed_huyet_is_a_lost_investment_and_the_best_aim_point() -> void:
 		)
 	)
 	# Re-derived over the actor's WHOLE set, and independently of the method under test.
-	# The old expectation was rebuilt from `_points_on(target, "lung")` — three huyệt —
-	# while `average_quality` averages every non-blocked huyệt the actor carries, which is
+	# The old expectation was rebuilt from `_points_on(target, "lung")` — three acupoint —
+	# while `average_quality` averages every non-blocked acupoint the actor carries, which is
 	# why it read `expected 0.3, got 0.488...`.
 	assert_almost_eq(average_after, _open_mean(points_on_target), "the mean of the survivors")
 
@@ -103,7 +103,7 @@ func test_a_jammed_huyet_is_a_lost_investment_and_the_best_aim_point() -> void:
 
 
 ## The jam is decided by the FLAG, not by the quality behind it: the multiplier a jammed
-## huyệt is worth is the SAME whatever quality was trained into it, and clearing the jam
+## acupoint is worth is the SAME whatever quality was trained into it, and clearing the jam
 ## restores the quality term exactly.
 ##
 ## ## Why this is asserted through the FLAG and not against a tuned `blocked_mult`
@@ -132,7 +132,7 @@ func test_the_jam_not_the_quality_is_what_makes_a_point_the_best_aim() -> void:
 	# ranking it is setting up. Naming `points[1]` asserted an outcome the data never
 	# promised: `expected minor_12, got minor_0`.
 	var jammed := _best_open_on(target, &"lung")
-	assert_ne(jammed, null, "the lung carries a huyệt a named aim resolves to")
+	assert_ne(jammed, null, "the lung carries a acupoint a named aim resolves to")
 	var best_open := jammed
 	for point in _points_on(target, &"lung"):
 		if String(point.id) > String(best_open.id):
@@ -170,7 +170,7 @@ func test_the_jam_not_the_quality_is_what_makes_a_point_the_best_aim() -> void:
 	)
 	# `trained` was read while this point was OPEN at MAXIMUM quality, so it is
 	# `1 + point_quality_step` -- the TOP of the quality range, and the strongest an
-	# open huyệt can ever be. The jam must therefore be worth STRICTLY MORE than that:
+	# open acupoint can ever be. The jam must therefore be worth STRICTLY MORE than that:
 	# this assertion used to be an equality, which was only true while `blocked_mult`
 	# TIED the step and so restated the tie it was supposed to be the requirement about.
 	assert_almost_eq(
@@ -182,7 +182,7 @@ func test_the_jam_not_the_quality_is_what_makes_a_point_the_best_aim() -> void:
 		float(trained["point_multiplier"]) < float(at_max["point_multiplier"]),
 		true,
 		(
-			"so the flag moved it above the best an open huyệt can be worth: %s -> %s"
+			"so the flag moved it above the best an open acupoint can be worth: %s -> %s"
 			% [float(trained["point_multiplier"]), float(at_max["point_multiplier"])]
 		)
 	)
@@ -190,7 +190,7 @@ func test_the_jam_not_the_quality_is_what_makes_a_point_the_best_aim() -> void:
 	# The inversion, now in the form ADR 0070 asks for and the shipped balance supports: a
 	# jam outranks EVERY open point, including a fully-trained one. `blocked_mult` clears
 	# `1 + point_quality_step` by 0.1, so the jammed node is ranked and struck strictly
-	# above a max-quality huyệt -- which is the whole claim, and the claim the shipped
+	# above a max-quality acupoint -- which is the whole claim, and the claim the shipped
 	# `1.5` against a `0.5` step could NOT make (it tied exactly). Asserted as a STRICT
 	# ordering because a tie is not the inversion: on a tie `random` aim could only find
 	# the jam by lowest-id, which is a property of the ids rather than of the flag.
@@ -219,7 +219,7 @@ func test_the_jam_not_the_quality_is_what_makes_a_point_the_best_aim() -> void:
 		float(at_zero["point_multiplier"]) > float(open_site["point_multiplier"]),
 		true,
 		(
-			"so the jam STRICTLY outranks even a perfectly trained huyệt -- which is the "
+			"so the jam STRICTLY outranks even a perfectly trained acupoint -- which is the "
 			+ "inversion ADR 0070 states as a requirement, and what `blocked_mult > 1 + "
 			+ "point_quality_step` exists to guarantee"
 		)
@@ -266,7 +266,7 @@ func test_a_hand_edited_quality_can_neither_reduce_a_hit_nor_exceed_the_share() 
 		assert_eq(float(parts["total"]) >= 0.0, true, label + ": and non-negative")
 
 
-## The sign rule a jammed huyệt must obey, and the one the suite can actually observe.
+## The sign rule a jammed acupoint must obey, and the one the suite can actually observe.
 ##
 ## ## Why this asserts the SHIPPED value rather than an authored one
 ##
@@ -681,7 +681,7 @@ func _closed_resistance(_unused_defence: float = 0.0) -> float:
 ## `point_score`, ties broken by id — read through the PUBLIC `BodyLocation.site_of`, so
 ## this helper cannot disagree with the ranking it is used to set up.
 ##
-## Named rather than indexed because the three huyệt on the lung (`minor_0`,
+## Named rather than indexed because the three acupoint on the lung (`minor_0`,
 ## `minor_12`, `minor_24`) are siblings whose relative order depends on the interning of
 ## their ids, not on their quality. Picking `points[1]` asserted an outcome the data never
 ## promised.
@@ -701,7 +701,7 @@ func target_rank(state: StringName) -> int:
 	return int(MeridianState.STATE_ORDER.get(state, 0))
 
 
-## The mean of every NON-BLOCKED huyệt on the actor, computed independently of
+## The mean of every NON-BLOCKED acupoint on the actor, computed independently of
 ## `AcupointSet.average_quality` — so the assertion is about what that method must EQUAL
 ## rather than a restatement of it.
 func _open_mean(points_on_target: AcupointSet) -> float:
@@ -753,7 +753,7 @@ func _meridian_armour_step() -> float:
 ## ## The shipped value SATISFIES this, and that is the point of asserting it
 ##
 ## The value used to ship as `1.5` against a `0.5` step, which TIES a maximum-quality
-## open huyệt exactly: `random` aim could then only ever find a jam on the lowest-id
+## open acupoint exactly: `random` aim could then only ever find a jam on the lowest-id
 ## tie-break, so the docblock and the `.tres` disagreed and ADR 0070's requirement was
 ## unmet. A tie is not an inversion — it makes the jam's value a property of the ids
 ## rather than of the flag. The shipped `combat_damage.tres` now clears the bound, and

@@ -103,12 +103,12 @@ static func cultivate(actor: Actor, amount: float) -> bool:
 ##
 ## A blockage is cleared even when `meridian_id` names a meridian the actor has
 ## NOT unlocked, and nothing else changes in that case. That case is a migration
-## path, not a route: `BodyAdvancement` will not jam a huyệt whose meridian is
+## path, not a route: `BodyAdvancement` will not jam a acupoint whose meridian is
 ## off the network, so the shipped failure branch cannot produce one. What it can
 ## produce is an actor carrying one — a save written before that rule, whose
 ## `blocked` flag travelled through `Acupoint.from_dict` untouched. Refusing
 ## there leaves that actor with no route to the next realm at all, which is the
-## one outcome this action exists to prevent, so it frees the huyệt and still
+## one outcome this action exists to prevent, so it frees the acupoint and still
 ## charges the item.
 ##
 ## All-or-nothing: nothing is mutated unless the item is present and consumed.
@@ -152,7 +152,7 @@ static func recover(actor: Actor, meridian_id: StringName) -> bool:
 ## A BURNED CHANNEL IS NOT TRAINED, IT IS REPAIRED, AND THE REPAIR HAS ITS OWN
 ## PRICE. Every realm authors both roles: `strengthening_item` walks the ladder,
 ## `recovery_item` undoes what a deviation left behind, which is the torn channel
-## AND the huyệt jammed on it (ADR 0031). Charging the channel elixir for the
+## AND the acupoint jammed on it (ADR 0031). Charging the channel elixir for the
 ## repair left `recover` — and `recover_next`, the facade verb added for exactly
 ## this wound — with no route a player could afford, so the authored third role
 ## was demanded by nothing and the missing verb went unnoticed: a torn channel
@@ -165,7 +165,7 @@ static func recover(actor: Actor, meridian_id: StringName) -> bool:
 ## repaired the channel and left the jam standing.
 ##
 ## The cost of delegating, stated rather than hidden: the repair press no longer
-## trains the huyệt bound to this channel and no longer marks the realm's training
+## trains the acupoint bound to this channel and no longer marks the realm's training
 ## milestone. A repair is not a training step. The very next press on the
 ## now-healthy channel does both, and the wound itself was `recover`'s to close.
 static func strengthen(actor: Actor, meridian_id: StringName) -> bool:
@@ -254,8 +254,8 @@ static func at_channel_cap(channel: MeridianState, seed: BodyRealmSeed) -> bool:
 	return channel.state == &"strengthened" and channel.refinement >= seed.refinement_cap
 
 
-## Whether this channel's huyệt still have training left in them. A channel at its
-## refinement cap can still be worth a press while one of its huyệt is jammed or
+## Whether this channel's acupoint still have training left in them. A channel at its
+## refinement cap can still be worth a press while one of its acupoint is jammed or
 ## below `target`, so this is the other half of the cap question — and it is public
 ## because `BodyRefusal` asks the same question to name a refusal, rather than
 ## re-implementing it and being wrong in a second direction.

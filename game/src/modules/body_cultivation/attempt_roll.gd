@@ -14,7 +14,7 @@ extends RefCounted
 ## envelope. So the roll has to be reproducible across a reload, or a resolve after a
 ## reload disagrees with the attempt the player already paid for — which is the whole
 ## reason the record exists. ONE seed in the record is what buys that: the roll, and
-## the huyệt a deviation jams, both come off a generator rebuilt from it.
+## the acupoint a deviation jams, both come off a generator rebuilt from it.
 ##
 ## Drawing at RESOLVE time from the actor's live rng is one line shorter and is the
 ## wrong shape. The actor that comes back from a save has no live rng, so the outcome
@@ -73,7 +73,7 @@ static func seed_for(rng: RandomNumberGenerator = null) -> int:
 
 
 ## The generator a committed attempt resolves against, built from the record's seed
-## and from nothing else. Every draw after the first — the roll, and the huyệt a
+## and from nothing else. Every draw after the first — the roll, and the acupoint a
 ## deviation jams — comes off this one generator, so a resolve after a reload lands on
 ## the same body as a resolve without one.
 ##

@@ -7,8 +7,8 @@ extends "res://tests/modules/combat_engine/body_damage_fixture.gd"
 ##
 ## ```
 ## gross        = ctx.magnitude * attacker ATTACK_PHYSICAL
-## meridian     = resolve_location(...)              # 20 meridians, not 60 huyệt
-## point        = the huyệt within it
+## meridian     = resolve_location(...)              # 20 meridians, not 60 acupoint
+## point        = the acupoint within it
 ## channel      = target.meridians.get_meridian(meridian_id)
 ## D            = DEFENSE_PHYSICAL * MERIDIAN_ARMOUR_STEP * channel.state_rank()
 ##              + tissue_defence(meridian_id, target)   (a MAGNITUDE, ADR 0200)

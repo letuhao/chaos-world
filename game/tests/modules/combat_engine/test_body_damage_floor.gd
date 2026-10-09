@@ -55,7 +55,7 @@ extends "res://tests/modules/combat_engine/body_damage_fixture.gd"
 ## The damage expectation is `floor * site["multiplier"]` — the struck site's OWN
 ## multiplier, never a restatement of the multiplier's formula. A hand-derived
 ## `1 + point_quality_step * quality` expected `2.5` against a real `2.875` on every row,
-## because the struck huyệt is not the one `_defender()` hands back first and the suite
+## because the struck acupoint is not the one `_defender()` hands back first and the suite
 ## never looked at which. The claim is "the location multiplier is still acted on", and
 ## `sites[].damage` is that claim in the mechanism's own published numbers.
 ##
@@ -139,7 +139,7 @@ func test_min_penetration_ratio_floors_and_the_multiplier_still_deals_damage() -
 ## non-zero" but "the floor is a number a location multiplier can still act on", which is
 ## what ADR 0070 says the ratio exists to protect.
 ##
-## A jammed huyệt and an open one on the same channel are struck by the SAME floored
+## A jammed acupoint and an open one on the same channel are struck by the SAME floored
 ## penetration and must answer with two DIFFERENT damages. If the floor ever multiplied
 ## nothing these two would agree, and this is the only assertion in the suite that
 ## distinguishes "floored" from "floored to an inert zero".
@@ -159,7 +159,7 @@ func test_the_floor_is_a_number_the_location_multiplier_still_acts_on() -> void:
 	assert_eq(
 		float(hard["multiplier"]) > float(soft["multiplier"]),
 		true,
-		"a JAMMED huyệt is the better aim point on that same penetration"
+		"a JAMMED acupoint is the better aim point on that same penetration"
 	)
 	assert_eq(
 		float(hard["damage"]) > float(soft["damage"]),
@@ -317,9 +317,9 @@ func test_more_defence_hurts_monotonically_and_saturates_rather_than_vanishing()
 ##
 ## ## The old test measured the wrong thing for the right reason, and what that was
 ##
-## The original loop differenced `total`, which is `penetration x` the struck huyệt's
+## The original loop differenced `total`, which is `penetration x` the struck acupoint's
 ## multiplier. Every `_walled()` builds a FRESH actor, and a fresh `named` aim resolves
-## whichever huyệt the body happens to offer first, so differencing two `total` rows
+## whichever acupoint the body happens to offer first, so differencing two `total` rows
 ## differences two multipliers as well as the armour. It also differenced every row against
 ## the `armour 0.0` row, which could therefore never itself be a measurement row, and it
 ## took the expected step from `defence_of(<an actor with no wall>)`, which is brief 0a's

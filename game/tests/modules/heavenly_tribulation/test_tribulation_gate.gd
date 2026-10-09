@@ -55,7 +55,7 @@ func _hero(index: int = -1) -> Actor:
 	return actor
 
 
-## The same hero with the body's huyệt set attached, which `recover_next` needs:
+## The same hero with the body's acupoint set attached, which `recover_next` needs:
 ## `BodyTraining.recover` refuses an actor with no acupoint set, so without this a
 ## loss could be inflicted but never repaired.
 func _recoverable_hero() -> Actor:

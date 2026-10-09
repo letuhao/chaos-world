@@ -19,12 +19,12 @@ extends Resource
 ## rather than two numbers kept equal by hand.
 @export var progress_required: float = 100.0
 @export var physique_required: float = 10.0
-## The huyệt quality floor for entry, and the huyệt quality ceiling training can
+## The acupoint quality floor for entry, and the acupoint quality ceiling training can
 ## reach in the realm BELOW. They are not the same number, and the difference is
 ## the player's decision: `_acupoints_ready` demands the floor, `cultivate` pays
 ## out to the ceiling, and the gap between them is what a breakthrough roll buys.
 ## Pinning the floor onto the ceiling (as these two used to be, 0.400 and 0.400 at
-## R1) left average huyệt quality at the moment of an attempt a single number on
+## R1) left average acupoint quality at the moment of an attempt a single number on
 ## every realm, so acupoint quality could not enter the roll anywhere.
 @export var quality_required: float = 0.5
 @export var quality_target: float = 0.5
@@ -60,8 +60,8 @@ var work_required: float:
 	get:
 		return progress_required
 
-## The price of one full pass of every huyệt this realm has unlocked, cut from the
-## budget against that huyệt count. Derived for the same reason as `work_required`:
+## The price of one full pass of every acupoint this realm has unlocked, cut from the
+## budget against that acupoint count. Derived for the same reason as `work_required`:
 ## these two were byte-identical in all 30 seeds with no reader anywhere in `src/`,
 ## and a hand-maintained copy of a cut of the budget has nothing to say that
 ## computing it does not.

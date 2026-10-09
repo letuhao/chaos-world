@@ -69,7 +69,7 @@ func test_severity_crosses_the_wound_threshold_and_then_the_necrosis_threshold()
 	var points := _points_on(target, &"lung")
 	var channel := target.meridians.get_meridian(&"lung")
 	var wounds := BodyWounds.new()
-	assert_eq(points.size() > 1, true, "the lung carries several huyệt to choose between")
+	assert_eq(points.size() > 1, true, "the lung carries several acupoint to choose between")
 
 	wounds.add(target, &"lung", _severity_for(target, _tuning.wound_threshold), _tuning)
 	assert_eq(channel.injured, true, "crossing WOUND_THRESHOLD calls damage_meridian")

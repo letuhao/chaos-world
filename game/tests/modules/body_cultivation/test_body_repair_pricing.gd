@@ -12,7 +12,7 @@ extends TestCase
 ##
 ## Delegating rather than reimplementing is what keeps one repair at one price. The
 ## body half of that delegation buys something the old injury branch never did: the
-## huyệt jammed on the torn channel by the same deviation is freed too, because
+## acupoint jammed on the torn channel by the same deviation is freed too, because
 ## `recover` is (ADR 0031) the only action that clears a blockage.
 ##
 ## Driven through the FACADE only — `BodyTraining` is the module's internals, and
@@ -214,7 +214,7 @@ func test_the_repair_is_one_act_at_one_price_through_either_route() -> void:
 	)
 
 
-## What delegation BUYS on this path, and the old injury branch never had: the huyệt
+## What delegation BUYS on this path, and the old injury branch never had: the acupoint
 ## the same deviation jammed on the torn channel is freed by the same press. ADR 0031
 ## makes `recover` the ONLY action that clears a blockage, so a repair priced
 ## separately but implemented inline would have left the jam standing behind a wound
@@ -224,7 +224,7 @@ func test_the_delegated_repair_also_frees_the_huyet_the_deviation_jammed() -> vo
 	var seed := _seed(actor)
 	var torn := _first_candidate(actor)
 	var point_id := _jam_first_huyet(actor, torn)
-	assert_ne(point_id, &"", "a huyệt on this meridian exists")
+	assert_ne(point_id, &"", "a acupoint on this meridian exists")
 	actor.meridians.damage_meridian(torn)
 	_stock(actor, seed.recovery_item)
 	assert_eq(BodyCultivationApi.strengthen_next(actor), true, "the press is accepted")

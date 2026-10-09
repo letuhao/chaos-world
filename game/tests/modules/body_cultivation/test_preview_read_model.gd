@@ -7,7 +7,7 @@ extends TestCase
 ## The claim it has to earn is "does not mutate". Two tests carry it, because
 ## neither alone is enough:
 ##
-##   1. STATE. `to_dict()` plus the full huyệt vector, the whole meridian
+##   1. STATE. `to_dict()` plus the full acupoint vector, the whole meridian
 ##      network, the reservoir's current AND maximum, the work budget, the
 ##      insight floor, and the milestone ledger are compared before and after.
 ##   2. SIGNAL. `BodyTraining.synchronize` emits on the meridian network
@@ -90,7 +90,7 @@ func test_repeated_previews_agree_and_the_actor_never_drifts() -> void:
 
 
 ## The detector a state diff cannot be. `BodyTraining.synchronize` is the one
-## call `preview` must never make: it unlocks channels, tops the huyệt set up,
+## call `preview` must never make: it unlocks channels, tops the acupoint set up,
 ## resizes the reservoir, and writes the resonance rank — every one of which
 ## belongs to a training action the player chose, not to a read.
 func test_preview_emits_no_mutation_signal_on_the_body() -> void:

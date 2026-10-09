@@ -81,7 +81,7 @@ var surplus: float = 0.0
 var stat_id: StringName = &""
 ## The channel this part rides, or `&""`. Same reason as `stat_id`.
 var meridian_id: StringName = &""
-## The huyệt this part rides, or `&""`.
+## The acupoint this part rides, or `&""`.
 var point_id: StringName = &""
 
 

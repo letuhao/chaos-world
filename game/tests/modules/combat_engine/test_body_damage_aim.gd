@@ -13,7 +13,7 @@ extends "res://tests/modules/combat_engine/body_damage_fixture.gd"
 ## and checks its seed did not move.
 ##
 ## The degradation half is here too because it is the same subject: what the mechanism
-## does when the target has no meridians, no huyệt, or no authored technique. Both are
+## does when the target has no meridians, no acupoint, or no authored technique. Both are
 ## "what does this path do when its own vocabulary is incomplete".
 
 # --- aim is deterministic, in all three modes ----------------------------------
@@ -64,7 +64,7 @@ func test_the_same_target_state_resolves_the_same_location_twice() -> void:
 
 
 ## `random` aim is the HIGHEST-scoring point on the body, not a roll. So jamming the
-## weakest huyệt on a channel REDIRECTS the aim to it — the read a player is owed, and
+## weakest acupoint on a channel REDIRECTS the aim to it — the read a player is owed, and
 ## only true if the choice is a ranking over live state.
 ##
 ## The ranking is then checked EXHAUSTIVELY against the actor's own twenty channels,
@@ -92,7 +92,7 @@ func test_random_aim_finds_the_highest_multiplier_and_never_rolls() -> void:
 
 	var contender := _first_meridian_with_points(target)
 	var contender_points := _points_on(target, contender)
-	assert_ne(String(contender), "", "the contender really has a huyệt")
+	assert_ne(String(contender), "", "the contender really has a acupoint")
 	var before := _score_of(resolver, target, &"", BodyLocation.MODE_RANDOM)
 	contender_points[0].block()
 	var moved := resolver.site_of(target, null, BodyLocation.MODE_RANDOM)
@@ -512,7 +512,7 @@ func test_a_body_with_no_meridians_is_ungated_and_still_takes_the_hit() -> void:
 	)
 
 
-## A network with no huyệt on the actor: the meridian exists, the weak point does not,
+## A network with no acupoint on the actor: the meridian exists, the weak point does not,
 ## and the site says so at the NEUTRAL multiplier rather than inventing one — "the
 ## meridian was struck, nothing on it answered". And `broad` still reaches every
 ## meridian, because no acupoints is not "no meridians" and conflating them would
@@ -623,7 +623,7 @@ func _score_of(resolver: BodyLocation, target: Actor, aim: StringName, mode: Str
 	return float(site.get("multiplier", 0.0)) + float(site.get("point_score", 0.0))
 
 
-## The lowest-id meridian on this body that actually carries a huyệt, so a test which
+## The lowest-id meridian on this body that actually carries a acupoint, so a test which
 ## jams "a different channel" is reproducible rather than order-dependent.
 func _first_meridian_with_points(target: Actor) -> StringName:
 	var ids := _meridian_ids(target)

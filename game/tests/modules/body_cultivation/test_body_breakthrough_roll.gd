@@ -10,7 +10,7 @@ extends TestCase
 ## 0.202272. The lowest `chance_base` authored anywhere on the 30-realm body ladder
 ## is 0.2580 and the highest is 0.4900, and `_chance` only ever RAISES chance above
 ## `chance_base` — so 0.202272 sits below every realm's band, and
-## `if generator.randf() >= chance` was false for every realm at every huyệt quality.
+## `if generator.randf() >= chance` was false for every realm at every acupoint quality.
 ##
 ## **So the shipped defect was not that attempts failed. It was that they could not
 ## fail.** Every body breakthrough in play was a certain success: the deviation and
@@ -376,7 +376,7 @@ func test_a_deviation_is_recoverable_and_the_next_attempt_can_win() -> void:
 ## verdict.
 ##
 ## The wound is compared as well as the verdict, because a deviation that jammed a
-## DIFFERENT huyệt after a reload is a different trial with the same answer.
+## DIFFERENT acupoint after a reload is a different trial with the same answer.
 func test_a_reloaded_attempt_resolves_to_the_outcome_and_wound_it_would_have() -> void:
 	var agreed := 0
 	var same_wound := 0
@@ -420,7 +420,7 @@ func test_a_reloaded_attempt_resolves_to_the_outcome_and_wound_it_would_have() -
 	assert_eq(
 		same_wound == wounds_compared,
 		true,
-		"and every deviation jammed the same huyệt on both sides of the save"
+		"and every deviation jammed the same acupoint on both sides of the save"
 	)
 
 
@@ -513,7 +513,7 @@ func _commit_and_read_seed(hero: Actor) -> BodyAttempt:
 	return committed
 
 
-## Which huyệt the deviation jammed, sorted so the comparison is order-independent.
+## Which acupoint the deviation jammed, sorted so the comparison is order-independent.
 func _jammed(actor: Actor) -> Array[String]:
 	var out: Array[String] = []
 	for point in BodyCultivationApi.acupoints(actor):

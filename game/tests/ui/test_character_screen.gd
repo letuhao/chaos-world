@@ -94,7 +94,7 @@ func test_every_derived_stat_is_reachable_not_silently_dropped() -> void:
 		names[String(row.get("name", ""))] = true
 	for key in stats:
 		# Rows are labelled, not keyed by id: `acupoint_quality` is shown as
-		# "Huyệt quality", so this compares the stat id to the label the sheet would
+		# "Acupoint quality", so this compares the stat id to the label the sheet would
 		# print for it. Comparing id to id instead would pass again the moment the
 		# sheet went back to printing raw ids.
 		assert_eq(
@@ -164,7 +164,7 @@ func test_fraction_stats_are_not_rounded_on_the_sheet() -> void:
 	screen.setup(actor)
 	var rows := _by_name(_screen_rows(screen))
 	assert_eq(
-		rows.get("Huyệt quality", {}).get("text", ""),
+		rows.get("Acupoint quality", {}).get("text", ""),
 		"0.50",
 		"acupoint_quality = 0.5 must read 0.50, not 1"
 	)

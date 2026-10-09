@@ -96,7 +96,7 @@ func _render() -> void:
 		]
 	)
 	_acupoint_label.text = (
-		"Huyệt %d (%d jammed) · quality %.2f"
+		"Acupoints %d (%d jammed) · quality %.2f"
 		% [
 			int(_state.get("acupoints", 0)),
 			int(_state.get("blocked", 0)),

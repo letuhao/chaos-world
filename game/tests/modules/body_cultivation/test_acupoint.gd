@@ -1,6 +1,6 @@
 extends TestCase
 
-## ADR 0015/0023: Huyệt (acupoints) — block, clear, serialization.
+## ADR 0015/0023: acupoint (acupoints) — block, clear, serialization.
 ## Body essence is stored in the shared body_integrity pool, not per-acupoint.
 
 

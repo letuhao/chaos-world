@@ -208,7 +208,7 @@ func _held(actor: Actor, item_id: StringName) -> int:
 ## The three are chosen to be deterministic, so this is not a probabilistic claim:
 ##
 ##   no pill        refused at `consume_item`, nothing spent
-##   no huyệt set   refused at `points == null`, nothing spent
+##   no acupoint set   refused at `points == null`, nothing spent
 ##   no realm ahead refused at `_next_index`, nothing spent
 ##
 ## A deviation is the fourth cause and cannot be forced through the facade, which
@@ -225,7 +225,7 @@ func test_four_different_refusals_each_name_their_own_cause() -> void:
 	_take_item(no_pill, _pill_id(no_pill))
 	var refusal_pill := _press_breakthrough(screen, no_pill)
 
-	# (2) No huyệt set at all, so the verb refuses before it can look at anything.
+	# (2) No acupoint set at all, so the verb refuses before it can look at anything.
 	var no_points := _body_hero()
 	no_points.set_component(&"acupoints", null)
 	var refusal_points := _press_breakthrough(screen, no_points)
@@ -240,7 +240,7 @@ func test_four_different_refusals_each_name_their_own_cause() -> void:
 	assert_eq(
 		refusal_points.contains("Acupoint quality below the realm requirement"),
 		true,
-		"a missing huyệt set names the acupoint requirement"
+		"a missing acupoint set names the acupoint requirement"
 	)
 	assert_eq(refusal_top, M_NO_REALM_AHEAD, "the terminal realm names the ladder's end")
 	# The three are genuinely three sentences, which is the whole point: one message
@@ -253,7 +253,9 @@ func test_four_different_refusals_each_name_their_own_cause() -> void:
 	# an accurate summary.
 	assert_eq(BodyCultivationApi.attempt_breakthrough(no_pill), false, "the pill really is missing")
 	assert_eq(
-		BodyCultivationApi.attempt_breakthrough(no_points), false, "the huyệt set really is absent"
+		BodyCultivationApi.attempt_breakthrough(no_points),
+		false,
+		"the acupoint set really is absent"
 	)
 	assert_eq(
 		BodyCultivationApi.attempt_breakthrough(at_top),
@@ -318,7 +320,7 @@ func test_a_refused_breakthrough_costs_the_hero_nothing() -> void:
 func test_a_damaged_hero_with_no_elixir_is_told_the_elixir_is_missing() -> void:
 	var hero := _prepared_hero()
 	# A real deviation's wound: `BodyAdvancement._deviate` tears the required channel
-	# the hero trained deepest and jams a huyệt on it. The tear is the one the
+	# the hero trained deepest and jams a acupoint on it. The tear is the one the
 	# breakthrough checklist names, so this inflicts the TARGET realm's required
 	# channel — which is the list `_wounded_channels` reads.
 	var target_seed := BodyRealmSeed.for_realm(

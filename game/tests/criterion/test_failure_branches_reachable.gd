@@ -95,7 +95,7 @@ func _hero(index: int = -1) -> Actor:
 
 
 ## The same hero with the body module attached the way `app/` attaches it, so the
-## cultivation verbs have a reservoir, a provider and a huyệt set to act on.
+## cultivation verbs have a reservoir, a provider and a acupoint set to act on.
 func _body_hero(index: int = 0) -> Actor:
 	var actor := _hero(index)
 	ItemsApi.attach(actor)

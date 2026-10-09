@@ -6,7 +6,7 @@ extends RefCounted
 ## It builds an actor and brings it to the brink of the next realm through the
 ## same public actions a screen calls: `cultivate`, `meditate`, `strengthen`,
 ## `recover`, and the breakthrough itself. It never writes a stat, a channel
-## state, a refinement depth, a huyệt quality, or a progress value directly —
+## state, a refinement depth, a acupoint quality, or a progress value directly —
 ## hand-written preparation is what let every gate in
 ## `BodyBreakthroughCondition` go untested, because a prepared actor satisfies
 ## a gate by construction and no gate is ever seen refusing.
@@ -18,7 +18,7 @@ extends RefCounted
 
 ## Every loop below is bounded and the cap names the condition that failed to
 ## converge. None of these is "large enough that it will probably get there".
-const MAX_CHANNEL_STEPS := 256  # one channel to the realm cap, plus its huyệt
+const MAX_CHANNEL_STEPS := 256  # one channel to the realm cap, plus its acupoint
 const MAX_CULTIVATE_STEPS := 2048  # work budget at the shallowest authored rate
 const MAX_MEDITATE_STEPS := 8192  # deepest authored insight floor at the slowest gain
 const MAX_RECOVERY_STEPS := 64  # one wound per channel, per meridian
@@ -33,7 +33,7 @@ const INVENTORY_SLOTS := 128
 var _defs: Dictionary = {}
 
 
-## A body cultivator with the module, its huyệt set, and an inventory attached,
+## A body cultivator with the module, its acupoint set, and an inventory attached,
 ## at `at_realm`. The starting physique is the only authored number here: it is
 ## the actor's base stat, not a gate outcome.
 func actor(at_realm: StringName = &"qi_refining", physique: float = 20.0) -> Actor:
@@ -101,7 +101,7 @@ func reservoir_full(actor: Actor) -> bool:
 	return pool != null and pool.maximum > 0.0 and pool.ratio() >= 1.0
 
 
-## Any huyệt the actor HOLDS that is still short of `quality`.
+## Any acupoint the actor HOLDS that is still short of `quality`.
 ##
 ## Blocked points are excluded on purpose: `cultivate` skips them, so asking
 ## about one would be asking a question no number of cultivate steps can answer.
@@ -149,14 +149,14 @@ func recover_damage(actor: Actor) -> void:
 
 
 ## Train one channel to `depth_cap` (or the target realm's `required_refinement`
-## when it is negative), and the huyệt bound to it up to the current realm's
+## when it is negative), and the acupoint bound to it up to the current realm's
 ## ceiling. Only `BodyTraining.strengthen` is used, so elixir cost, injury
-## repair, and huyệt training all behave as in play.
+## repair, and acupoint training all behave as in play.
 ##
-## A non-negative `depth_cap` switches the huyệt pass off. `strengthen` refines
-## and trains huyệt in the SAME call, so a channel trained "to depth and no
+## A non-negative `depth_cap` switches the acupoint pass off. `strengthen` refines
+## and trains acupoint in the SAME call, so a channel trained "to depth and no
 ## further" is not reachable through it — the fourth call both refines one step
-## and lifts a huyệt. That mode exists for the depth-gate test, which needs a
+## and lifts a acupoint. That mode exists for the depth-gate test, which needs a
 ## channel that is `strengthened` and one step short.
 func train_channel(
 	actor: Actor, meridian_id: StringName, target: BodyRealmSeed, depth_cap: int = -1
@@ -207,7 +207,7 @@ func _channel_points_below(actor: Actor, meridian_id: StringName, quality: float
 
 
 ## Cultivate until the work budget is paid, the reservoir is full, and every
-## huyệt the realm has unlocked has reached the target realm's quality floor.
+## acupoint the realm has unlocked has reached the target realm's quality floor.
 ## All three are outputs of the same action and the gate checks all three, so
 ## the preparation must too.
 func cultivate_until(actor: Actor, progress_required: float, quality_required: float) -> void:
@@ -303,8 +303,8 @@ func _walk_ascent(actor: Actor, target: RealmDef) -> void:
 ## reports afterwards is attributable to the one injected fault:
 ##   `skip_channel` — one required meridian is never trained (the channel-STATE
 ##     clause of `_channels_ready`).
-##   `jam_point`    — one huyệt is jammed before cultivation can train it, the
-##     way a deviation jams one. A blocked huyệt is skipped by `cultivate`, so
+##   `jam_point`    — one acupoint is jammed before cultivation can train it, the
+##     way a deviation jams one. A blocked acupoint is skipped by `cultivate`, so
 ##     no number of cultivate steps raises it and the quality floor stays unmet.
 ##   `depth_cap`    — every required channel reaches `strengthened` but stops one
 ##     refinement step short (the channel-DEPTH clause of `_channels_ready`).
@@ -331,7 +331,7 @@ func prepare(
 	if jam_point != &"":
 		_jam(actor, jam_point)
 	# Cultivation first: it raises the work budget, refills the reservoir, and
-	# lifts every huyệt, so a channel trained afterwards is training depth and
+	# lifts every acupoint, so a channel trained afterwards is training depth and
 	# nothing else. Order matters — reversing it lets the channel step be the
 	# thing that pays the work budget, which hides a broken `cultivate`.
 	cultivate_until(actor, seed.progress_required, seed.quality_required)
@@ -350,7 +350,7 @@ func _jam(actor: Actor, point_id: StringName) -> void:
 			return
 
 
-## The first huyệt bound to a meridian that is BOTH on the network the actor has
+## The first acupoint bound to a meridian that is BOTH on the network the actor has
 ## unlocked AND not one the target realm requires.
 ##
 ## Both halves matter. A required meridian would be un-jammed by the channel
@@ -440,7 +440,7 @@ func deviate(actor: Actor) -> bool:
 
 ## Everything about a body that a read must leave alone and a save must carry,
 ## as plain data. `to_dict` alone is not enough: it reads the reservoir and the
-## huyệt set through components, and a component that failed to serialize would
+## acupoint set through components, and a component that failed to serialize would
 ## still leave a payload that looks complete.
 func snapshot(actor: Actor) -> Dictionary:
 	var points := {}
@@ -522,7 +522,7 @@ static func rng(seed_value: int) -> RandomNumberGenerator:
 
 
 ## Re-attach the modules the composition root owns when it loads a save. The
-## typed huyệt set and the provider do not survive `from_dict` on their own.
+## typed acupoint set and the provider do not survive `from_dict` on their own.
 static func load_save(payload: Dictionary) -> Actor:
 	var actor := Actor.from_dict(payload)
 	BodyCultivationApi.attach(actor)

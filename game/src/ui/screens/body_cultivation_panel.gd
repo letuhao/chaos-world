@@ -540,7 +540,7 @@ func act_ascend() -> bool:
 	return stepped
 
 
-## Repair a deviation: frees a jammed huyệt or heals a torn channel using the realm's recovery
+## Repair a deviation: frees a jammed acupoint or heals a torn channel using the realm's recovery
 ## item.
 ##
 ## The two causes are DISJOINT BY CONSTRUCTION in the module's report, which is what this screen

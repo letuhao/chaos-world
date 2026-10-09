@@ -44,10 +44,10 @@ const KIND_NO_BODY_PATH := "no_body_path"
 ## is synchronous — and published anyway, because a report that went silent here is exactly the
 ## unnamed `false` this file exists to prevent.
 const KIND_BUSY := "huyet_set_busy"
-## No `AcupointSet` is attached, so the verbs acting on huyệt have nothing to act.
+## No `AcupointSet` is attached, so the verbs acting on acupoint have nothing to act.
 const KIND_NO_HUYETS := "no_huyet_set"
-## Every huyệt is jammed: a real player-reachable state, and one `cultivate` refuses on,
-## because a deviation jams a huyệt and nothing heals it but the recovery verb.
+## Every acupoint is jammed: a real player-reachable state, and one `cultivate` refuses on,
+## because a deviation jams a acupoint and nothing heals it but the recovery verb.
 const KIND_NO_OPEN_HUYETS := "no_open_huyet"
 ## The realm has no authored `BodyRealmSeed`. A content gap, named as one.
 const KIND_NO_REALM_SEED := "realm_seed_unauthored"
@@ -60,7 +60,7 @@ const KIND_RECOVERY_ITEM_UNAUTHORED := "recovery_item_unauthored"
 const KIND_NO_RECOVERY_ITEM := "no_recovery_item"
 ## A channel is trainable and the realm's channel elixir is not held.
 const KIND_NO_CHANNEL_ELIXIR := "no_channel_elixir"
-## The channel is at this realm's refinement ceiling and its huyệt are trained to target, so
+## The channel is at this realm's refinement ceiling and its acupoint are trained to target, so
 ## training it would buy nothing. `id` names the channel.
 const KIND_CHANNEL_AT_CAP := "channel_at_cap"
 ## The seed names a channel no tier has opened. `id` names it.
@@ -89,11 +89,11 @@ static func cultivate_unavailable(actor: Actor) -> Array[Dictionary]:
 		return out
 	var points: AcupointSet = actor.component(&"acupoints")
 	if points == null:
-		out.append(_clause(KIND_NO_HUYETS, &"", "No huyệt set is attached to this body"))
+		out.append(_clause(KIND_NO_HUYETS, &"", "No acupoint set is attached to this body"))
 		return out
 	if points.open_count() == 0:
 		out.append(
-			_clause(KIND_NO_OPEN_HUYETS, &"", "Every huyệt is jammed; recover before training")
+			_clause(KIND_NO_OPEN_HUYETS, &"", "Every acupoint is jammed; recover before training")
 		)
 		return out
 	_add_seed_clause(out, state.rank_id)
@@ -142,7 +142,7 @@ static func recover_unavailable(actor: Actor) -> Array[Dictionary]:
 
 
 ## The meridians `recover_next` would try, in the order it tries them: a blocked
-## huyệt's channel first (it names its own channel), then any injured channel.
+## acupoint's channel first (it names its own channel), then any injured channel.
 ##
 ## THE WALK `BodyCultivationApi.recover_next` PERFORMS, in one definition. Were these
 ## two lists to disagree, the screen would report a cause the verb never hit, which is
@@ -198,7 +198,7 @@ static func strengthen_unavailable(actor: Actor) -> Array[Dictionary]:
 		return out
 	var points: AcupointSet = actor.component(&"acupoints")
 	if points == null:
-		out.append(_clause(KIND_NO_HUYETS, &"", "No huyệt set is attached to this body"))
+		out.append(_clause(KIND_NO_HUYETS, &"", "No acupoint set is attached to this body"))
 		return out
 	var seed := BodyRealmSeed.for_realm(state.rank_id)
 	if seed == null:

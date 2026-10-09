@@ -230,7 +230,7 @@ func test_resolving_a_granted_attempt_again_pays_nothing() -> void:
 	# The pool is emptied on grant; capture it rather than asserting full/empty,
 	# since `synchronize` resizes the reservoir to the realm just entered.
 	# `AcupointSet` deliberately does not hand the pool out (it mediates access),
-	# so the reservoir is read off the actor's resources, not off the huyệt set.
+	# so the reservoir is read off the actor's resources, not off the acupoint set.
 	var reservoir: ResourcePool = actor.resource(BodyStats.BODY_INTEGRITY)
 	assert_ne(reservoir, null, "the body carries a reservoir")
 	var drained: float = reservoir.current
@@ -266,7 +266,7 @@ func test_resolving_a_failed_attempt_again_grants_nothing() -> void:
 	assert_eq(failed.trial_complete, true, "and the trial ran")
 	var wounded: float = actor.resource(BodyStats.BODY_INTEGRITY).current
 	assert_eq(wounded < integrity, true, "the deviation cost integrity")
-	assert_eq(points.blocked_count() >= 1, true, "and jammed a huyệt")
+	assert_eq(points.blocked_count() >= 1, true, "and jammed a acupoint")
 	assert_eq(BodyAdvancement.resolve_attempt(actor), false, "second resolve grants nothing")
 	var after_second: float = actor.resource(BodyStats.BODY_INTEGRITY).current
 	assert_almost_eq(after_second, wounded, "a failed attempt is not re-applied")

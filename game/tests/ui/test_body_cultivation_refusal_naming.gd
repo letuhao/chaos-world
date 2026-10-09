@@ -279,7 +279,7 @@ func test_the_panel_no_longer_contradicts_its_own_gate_line() -> void:
 	var panel := _screen()
 	var actor := _play.actor()
 	panel.setup(actor)
-	assert_ne(_jam(actor, _first_candidate(actor)), &"", "a huyệt on this channel exists")
+	assert_ne(_jam(actor, _first_candidate(actor)), &"", "a acupoint on this channel exists")
 	var gate := BodyCultivationApi.panel_state(actor)
 	assert_ne(int(gate.get("blocked", 0)) > 0, false, "the gate names the jam")
 	panel.act_recover()
@@ -341,12 +341,12 @@ func test_each_breakthrough_refusal_is_rendered_rather_than_assumed() -> void:
 	)
 	pillless.free()
 
-	# A busy huyệt set: the re-entrancy guard, named.
+	# A busy acupoint set: the re-entrancy guard, named.
 	var busy := _screen()
 	var held := _prepared()
 	busy.setup(held)
 	(held.component(&"acupoints") as AcupointSet).busy = true
-	assert_eq(busy.act_breakthrough(), false, "a busy huyệt set refuses")
+	assert_eq(busy.act_breakthrough(), false, "a busy acupoint set refuses")
 	assert_ne(
 		_message(busy).contains("mid-action"), false, "and the guard is named (%s)" % _message(busy)
 	)

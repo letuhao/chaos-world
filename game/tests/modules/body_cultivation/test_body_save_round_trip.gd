@@ -10,7 +10,7 @@ extends TestCase
 ## ladder's own data says the body must have.
 ##
 ## What it covers that nothing else does:
-##   - the last three CELESTIAL huyệt, which unlock at ladder index 27
+##   - the last three CELESTIAL acupoint, which unlock at ladder index 27
 ##   - the reservoir's MAXIMUM, not just its current value
 ##   - a channel's depth at the standing realm's own ceiling
 ##   - an UNREPAIRED injury, saved mid-wound: a save that quietly healed a body
@@ -41,11 +41,11 @@ func _tier_count(actor: Actor, tier: StringName) -> int:
 
 ## The snapshot with the two slots this module does not own removed.
 ##
-## `module_data` holds the RAW huyệt and milestone dictionaries `Actor.from_dict`
+## `module_data` holds the RAW acupoint and milestone dictionaries `Actor.from_dict`
 ## parks for the module to rebuild: empty on a live body, populated on a freshly
 ## loaded one, so comparing them compares the load sequence rather than the body.
 ## `item_state` is the items module's payload entirely. Neither is dropped
-## silently — the typed huyệt set, the channels, the reservoir, the path and the
+## silently — the typed acupoint set, the channels, the reservoir, the path and the
 ## milestone ledger are each compared directly, and each is rebuilt FROM those
 ## raw slots, so a slot that failed to travel would show up there.
 func _body_only(snapshot: Dictionary) -> Dictionary:
@@ -64,14 +64,14 @@ func test_a_save_at_the_transcendent_tier_round_trips_every_layer() -> void:
 	assert_eq(rank, &"transcendent", "climbed from R1 to R28 through public actions")
 	var home := BodyRealmSeed.for_realm(rank)
 	assert_ne(home, null, "the standing realm has a seed")
-	# Celestial huyệt open at ladder index 18; the last three open at 27. A body
+	# Celestial acupoint open at ladder index 18; the last three open at 27. A body
 	# at index 27 holds every tier, and an earlier round trip could not.
 	assert_eq(
 		BodyCultivationApi.acupoints(actor).size(),
 		60,
-		"every huyệt tier is open, celestial included"
+		"every acupoint tier is open, celestial included"
 	)
-	assert_eq(_tier_count(actor, &"celestial"), 12, "all 12 celestial huyệt are held")
+	assert_eq(_tier_count(actor, &"celestial"), 12, "all 12 celestial acupoint are held")
 	# Depth is what this realm demanded on entry: its own requirement, one step
 	# under its ceiling. Nothing in this realm can buy the step above that, which
 	# is why the deepest channel must sit exactly on the floor.
@@ -101,10 +101,12 @@ func test_a_save_at_the_transcendent_tier_round_trips_every_layer() -> void:
 	var differences := _play.diff(before, _body_only(_play.snapshot(restored)), "actor")
 	assert_eq(differences.is_empty(), true, "the save lost state: %s" % "; ".join(differences))
 	# The restored body is a body the game can still act on, not just a payload
-	# that compares equal: it holds every huyệt, its channels are intact, and the
+	# that compares equal: it holds every acupoint, its channels are intact, and the
 	# reservoir is bound to it again.
 	assert_eq(
-		BodyCultivationApi.acupoints(restored).size(), 60, "the restored body still has every huyệt"
+		BodyCultivationApi.acupoints(restored).size(),
+		60,
+		"the restored body still has every acupoint"
 	)
 	assert_eq(_deepest(restored), _deepest(actor), "and the same channel depth")
 	assert_eq(restored.meridians.resonance_rank, home.resonance_rank, "and its resonance")
@@ -123,10 +125,10 @@ func test_the_reservoir_maximum_survives_a_save() -> void:
 	assert_ne(expected, 0.0, "sanity: the reservoir is sized")
 	var restored := BodyPlayFixture.load_save(actor.to_dict())
 	assert_almost_eq(_play.reservoir(restored).maximum, expected, "the reservoir ceiling survived")
-	# And it is still BOUND to the huyệt set, so filling the body fills the
+	# And it is still BOUND to the acupoint set, so filling the body fills the
 	# reservoir the restored body reads.
 	var restored_points: AcupointSet = restored.component(&"acupoints")
-	assert_ne(restored_points, null, "the restored body has a huyệt set")
+	assert_ne(restored_points, null, "the restored body has a acupoint set")
 	restored_points.fill(1.0)
 	assert_almost_eq(
 		_play.reservoir(restored).current, expected, "filling moved the restored reservoir"
@@ -179,7 +181,7 @@ func test_an_unrepaired_injury_survives_a_save_and_still_blocks() -> void:
 	assert_eq(restored.meridians.get_meridian(torn).is_injured(), false, "and it is gone")
 
 
-## A jammed huyệt is the other half of a deviation's wound, and it lives on a
+## A jammed acupoint is the other half of a deviation's wound, and it lives on a
 ## different object than the injured channel — a payload that carried the flag on
 ## `MeridianState` and not on `Acupoint` would lose it silently, and a load that
 ## dropped it would make the blockage free.
@@ -191,13 +193,13 @@ func test_a_jammed_huyet_survives_a_save() -> void:
 	for point in BodyCultivationApi.acupoints(actor):
 		if point.blocked:
 			jammed = point.id
-	assert_ne(jammed, &"", "the deviation jammed a huyệt")
+	assert_ne(jammed, &"", "the deviation jammed a acupoint")
 	var restored := BodyPlayFixture.load_save(actor.to_dict())
 	var restored_point: Acupoint = null
 	for point in BodyCultivationApi.acupoints(restored):
 		if point.id == jammed:
 			restored_point = point
-	assert_ne(restored_point, null, "the jammed huyệt is on the restored body")
+	assert_ne(restored_point, null, "the jammed acupoint is on the restored body")
 	assert_eq(restored_point.blocked, true, "and it is still jammed")
 	# Recovery through the public action clears it, which is what makes the saved
 	# jam a cost rather than a dead end.
@@ -206,7 +208,7 @@ func test_a_jammed_huyet_survives_a_save() -> void:
 	var meridian := AcupointDefaults.meridian_of(jammed)
 	assert_ne(meridian, &"", "the jam names a channel")
 	assert_eq(BodyTraining.recover(restored, meridian), true, "the jam was healed")
-	assert_eq(restored_point.blocked, false, "and the huyệt is open again")
+	assert_eq(restored_point.blocked, false, "and the acupoint is open again")
 
 
 ## A milestone ledger earned across 28 realms must not be re-awarded on load.

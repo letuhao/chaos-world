@@ -16,7 +16,7 @@ extends Resource
 ##
 ## ## Every number a balance pass moves lives in `InjuryTuning`, not here
 ##
-## This file is the SHAPE — which part, on which meridian, at which huyệt, and
+## This file is the SHAPE — which part, on which meridian, at which acupoint, and
 ## which stat it degrades. The magnitudes (how much the stat falls, what a rebuild
 ## costs, how likely a rebuild beats the original) are one shared curve in
 ## `injury_tuning.tres`, for the reason AGENTS.md states about every other rate:
@@ -24,10 +24,10 @@ extends Resource
 ##
 ## ## Why `meridian_id` AND `point_id`
 ##
-## `BodyDamage` resolves at the MERIDIAN and treats the huyệt as the weak point
+## `BodyDamage` resolves at the MERIDIAN and treats the acupoint as the weak point
 ## within it (ADR 0070), so a part can be named at either granularity. A part
-## bound to a channel moves the channel's aggregate; a part bound to a huyệt moves
-## that huyệt's own quality. A part that names neither is refused rather than
+## bound to a channel moves the channel's aggregate; a part bound to a acupoint moves
+## that acupoint's own quality. A part that names neither is refused rather than
 ## guessed — an injury with no location cannot degrade a stat, and silently
 ## degrading the whole body would make the number meaningless.
 
@@ -54,7 +54,7 @@ extends Resource
 @export var display_name: String = ""
 ## The channel this part rides, or `&""` for a part with no channel.
 @export var meridian_id: StringName = &""
-## The huyệt this part rides, or `&""` for a part that is the channel itself.
+## The acupoint this part rides, or `&""` for a part that is the channel itself.
 @export var point_id: StringName = &""
 ## The stat this part's loss is felt in. A `StringName` because the answer is
 ## core's and the module's own (`Stat.DEFENSE_PHYSICAL`, `BodyStats.MUSCLE_FIBER`);

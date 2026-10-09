@@ -267,7 +267,7 @@ func breakdown(ctx: AttackContext) -> Dictionary:
 	# the opposite: such a body is UNGATED, which is the flat subtraction "with no armour
 	# at all", not "with no damage". An empty site list therefore pays out the STRUCK
 	# figure once, at the neutral `1.0` — the same number a strike at a meridian with no
-	# huyệt on the actor already pays (`BodyLocation._site_in` falls back to `1.0` and
+	# acupoint on the actor already pays (`BodyLocation._site_in` falls back to `1.0` and
 	# reports `locked`), so "no location axis" and "no weak point" price identically.
 	# One packet, one effect list: the loop below contributes no row for a body that has
 	# no meridian to name.

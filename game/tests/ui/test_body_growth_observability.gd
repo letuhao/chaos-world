@@ -309,7 +309,7 @@ func _is_number(text: String) -> bool:
 ## stat — which is what this asserts, and it fails the moment it stops.
 ##
 ## `acupoint_count` is `open_count()` while the vitals row prints the TOTAL, so the
-## two diverge the moment a deviation jams a huyệt; total >= open is the invariant.
+## two diverge the moment a deviation jams a acupoint; total >= open is the invariant.
 func test_the_acupoint_stats_are_observable_on_the_vitals_row() -> void:
 	var actor := _actor()
 	var screen := _screen()
@@ -326,7 +326,7 @@ func test_the_acupoint_stats_are_observable_on_the_vitals_row() -> void:
 		"and its jammed count IS acupoint_blocked_count"
 	)
 	var points: AcupointSet = actor.component(&"acupoints")
-	assert_ne(points, null, "the hero carries a huyệt set")
+	assert_ne(points, null, "the hero carries a acupoint set")
 	if points != null:
 		assert_eq(
 			float(actor.stats.derived(BodyStats.ACUPOINT_COUNT)),
@@ -336,7 +336,7 @@ func test_the_acupoint_stats_are_observable_on_the_vitals_row() -> void:
 		assert_eq(
 			int(vitals.get("acupoints", 0)) >= float(actor.stats.derived(BodyStats.ACUPOINT_COUNT)),
 			true,
-			"and the row prints the total, so a jammed huyệt is legible as the difference"
+			"and the row prints the total, so a jammed acupoint is legible as the difference"
 		)
 	screen.free()
 

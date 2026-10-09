@@ -1,14 +1,14 @@
 class_name BodyLocation
 extends LocationResolver
 
-## Where a body strike LANDS: the meridian, the huyệt within it, and the multiplier that
+## Where a body strike LANDS: the meridian, the acupoint within it, and the multiplier that
 ## follows (ADR 0070, and `contracts/location_resolver.gd` for the shape of the answer).
 ##
 ## ## Granularity is the MERIDIAN, and the map is DATA
 ##
 ## `resolve_location` returns ONE `(meridian_id, point_id, multiplier)` triple — 20 aim
 ## buckets, legible at 2D sprite scale — and `broad_sites` returns one row per unlocked
-## meridian. The 60 huyệt are the weak point WITHIN a location, never a second axis. The
+## meridian. The 60 acupoint are the weak point WITHIN a location, never a second axis. The
 ## point -> meridian map is read from the authored `.tres` files through
 ## `CombatTuning.acupoint_data_dir`, so **no `.gd` here knows how many points a meridian
 ## has**: the shipped data is 3 for the fourteen primary/organ meridians, 4 for
@@ -29,7 +29,7 @@ extends LocationResolver
 ##
 ## ## What is locked, and what is a lever
 ##
-## A huyệt the body HASN'T unlocked cannot be struck: there is no acupoint on the actor
+## A acupoint the body HASN'T unlocked cannot be struck: there is no acupoint on the actor
 ## to hit, so the site falls back to the first point of the best-scoring channel, whose
 ## multiplier reads the neutral `1.0` — visibly ungated rather than silently 1.5x.
 ## `CombatStats.PENETRATION` is a resistance CUTTER and never appears here, because this is
@@ -189,7 +189,7 @@ func _site_in(network: Variant, target: Variant, meridian_id: StringName) -> Dic
 		"tier": String(_read(_id_of(_read(point, &"tier", &"")), &"", &"")),
 	}
 	if site["point_id"] == "":
-		# A channel with no huyệt ON the actor: the meridian exists, the weak point does
+		# A channel with no acupoint ON the actor: the meridian exists, the weak point does
 		# not. The site is still returned at the neutral multiplier so a caller can say
 		# "the meridian was struck, nothing on it answered" instead of reporting no hit.
 		site["locked"] = true
@@ -246,7 +246,7 @@ func _best_point(target: Variant, meridian_id: StringName, tuning: CombatTuning)
 	return best
 
 
-## The `point_multiplier` a huyệt is worth, MINUS ONE, as a RANKING score. Deliberately
+## The `point_multiplier` a acupoint is worth, MINUS ONE, as a RANKING score. Deliberately
 ## SHAPE-equivalent to [method _point_multiplier_of] and built from the SAME two
 ## quantities in the SAME ratio — a ranking that ranked on anything else could pick a
 ## point whose own multiplier is LOWER than a point it beat, and `random` aim would then
@@ -254,7 +254,7 @@ func _best_point(target: Variant, meridian_id: StringName, tuning: CombatTuning)
 ## (`1.0 -> blocked_mult`, with no `quality` involved), and it lifts a jammed point above a
 ## maximum-quality one exactly by `blocked_mult - (1 + point_quality_step)`, which is the
 ## same margin by which it raises the multiplier — so ranking and damage cannot disagree
-## about which huyệt is the weak point.
+## about which acupoint is the weak point.
 func _point_score(point: Variant, tuning: CombatTuning) -> float:
 	if point == null:
 		return 0.0
@@ -287,7 +287,7 @@ func _best_meridian(network: Variant, target: Variant) -> StringName:
 	return best
 
 
-## The actor's huyệt bound to one meridian, through the authored map. `[]` for a body
+## The actor's acupoint bound to one meridian, through the authored map. `[]` for a body
 ## nobody attached an acupoint set to — a training dummy, not a crash.
 func _points_of(target: Variant, meridian_id: StringName) -> Array:
 	var out: Array = []
@@ -309,7 +309,7 @@ func _acupoint_set(target: Variant) -> Variant:
 	return (holder as Dictionary).get(ACUPOINTS_KEY, null)
 
 
-## The meridian a huyệt trains, or `&""` when the id is unknown. The whole map, read
+## The meridian a acupoint trains, or `&""` when the id is unknown. The whole map, read
 ## once from DATA. Each authored `.tres` is read through `get()` for `id` and
 ## `meridian_id`, so this names no class of the module that owns the files; the result is
 ## cached per directory and re-read when the tuning points somewhere else.
@@ -320,7 +320,7 @@ static func meridian_of_point(point_id: StringName) -> StringName:
 	return _id_of(map.get(String(point_id), &""))
 
 
-## Every huyệt the authored definitions carry, as `{point_id: meridian_id}`. Built by
+## Every acupoint the authored definitions carry, as `{point_id: meridian_id}`. Built by
 ## listing the directory rather than by counting: the shipped data is 60 files over 20
 ## meridians at 3/4/2 per meridian, and a `3` written anywhere in a `.gd` would be a
 ## statement about content that lives somewhere else.

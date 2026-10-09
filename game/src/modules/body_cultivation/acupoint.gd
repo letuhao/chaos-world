@@ -1,7 +1,7 @@
 class_name Acupoint
 extends RefCounted
 
-## Huyệt — acupoint structure (ADR 0015/0023). Each acupoint owns trained quality
+## acupoint — acupoint structure (ADR 0015/0023). Each acupoint owns trained quality
 ## and recoverable blockage. Body essence is stored in the shared body_integrity
 ## ResourcePool (ADR 0012), not per-acupoint; fill and drain mutate that pool
 ## through the owning AcupointSet.

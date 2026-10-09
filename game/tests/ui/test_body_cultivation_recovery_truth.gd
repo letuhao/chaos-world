@@ -94,7 +94,7 @@ func _tear_every_channel(actor: Actor) -> void:
 		actor.meridians.damage_meridian(channel.id)
 
 
-## Jam one huyệt on `meridian_id`, and report its id so the assertion can name it.
+## Jam one acupoint on `meridian_id`, and report its id so the assertion can name it.
 func _jam_a_huyet(actor: Actor, meridian_id: StringName) -> StringName:
 	for point in BodyCultivationApi.acupoints(actor):
 		if AcupointDefaults.meridian_of(point.id) == meridian_id:
@@ -129,7 +129,7 @@ func test_a_refused_recovery_names_the_price_when_a_huyet_is_jammed() -> void:
 	var actor := _actor()
 	panel.setup(actor)
 	var point_id := _jam_a_huyet(actor, _first_candidate(actor))
-	assert_ne(point_id, &"", "a huyệt on this meridian exists")
+	assert_ne(point_id, &"", "a acupoint on this meridian exists")
 	assert_eq(panel.act_recover(), false, "no elixir, no repair")
 	var said := _message(panel)
 	assert_eq(said == DENIAL, false, "a jam must not be denied (%s)" % said)
@@ -231,7 +231,7 @@ func test_the_panel_no_longer_contradicts_its_own_gate_line() -> void:
 	panel.setup(actor)
 	var meridian_id := _first_candidate(actor)
 	var point_id := _jam_a_huyet(actor, meridian_id)
-	assert_ne(point_id, &"", "a huyệt on this meridian exists")
+	assert_ne(point_id, &"", "a acupoint on this meridian exists")
 	var blocked_before: int = BodyCultivationApi.panel_state(actor).get("blocked", 0)
 	assert_eq(blocked_before > 0, true, "the facade reports the jam")
 	assert_eq(panel.act_recover(), false, "no elixir, no repair")

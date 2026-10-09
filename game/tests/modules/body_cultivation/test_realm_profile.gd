@@ -103,7 +103,7 @@ func _all_equal(values: Array[float], tolerance: float = 0.0001) -> bool:
 ## What is this suite's to own is the SHAPE those two numbers must keep
 ## together, read out of the data rather than pasted from a curve:
 ##
-##   - the reservoir is charged at least as far as the huyệt are trained, so
+##   - the reservoir is charged at least as far as the acupoint are trained, so
 ##     U(R) must sit strictly above the quality ceiling it is reached with;
 ##   - and both steps are UNIFORM, so no realm can be retuned out of line with
 ##     the rest of the ladder.
@@ -163,7 +163,7 @@ func _assert_whole_labour(actual: float, expected: float, label: String) -> void
 ## no oracle left to check it against — what the ladder deleted along with the
 ## formula that generated it. What remains, and what the generator still writes,
 ## is the recipe: the budget rises strictly with depth, and the two sub-budgets
-## are that budget cut against the huyệt count the PREVIOUS realm unlocked
+## are that budget cut against the acupoint count the PREVIOUS realm unlocked
 ## (i.e. max(1, index)), matching the retuner's divisor.
 func test_work_budget_rises_with_depth_and_cuts_into_sub_budgets() -> void:
 	var ladder := RealmDefaults.ladder()
@@ -311,12 +311,12 @@ func test_resonance_ranks_for_high_realms() -> void:
 ## mean anything, all read out of the data rather than pasted from a curve:
 ##
 ##   - a floor strictly under the ceiling, or `BodyAdvancement._chance`'s clamp
-##     swallows the huyệt term and training the body cannot change the outcome;
+##     swallows the acupoint term and training the body cannot change the outcome;
 ##   - no realm a certain success, so the deviation loop stays reachable;
 ##   - the ceiling strictly ABOVE what a fully trained body can roll, so it is a
 ##     backstop against over-training rather than the thing that prices the
 ##     attempt — a cap an ordinary body already meets would make the last of the
-##     huyệt work free;
+##     acupoint work free;
 ##   - and the floor DECLINES with depth, which is what keeps the ceiling
 ##     meaningful further up the ladder.
 ##
@@ -395,7 +395,7 @@ func test_channel_training_names_real_meridians() -> void:
 ## `quality_required == previous.quality_target`, which was only ever true
 ## while the generator pinned the gate onto the ceiling — and that pinning is
 ## itself the bug this suite now guards against, because a gate level with the
-## ceiling leaves no span of huyệt quality for the breakthrough roll to price.
+## ceiling leaves no span of acupoint quality for the breakthrough roll to price.
 ## So the two halves are:
 ##
 ##   1. REACHABLE — the gate is at or below what the realm below can train to;
@@ -431,7 +431,7 @@ func test_entry_gates_are_reachable_from_the_previous_realm() -> void:
 			gate < ceiling,
 			true,
 			(
-				"no huyệt quality to price at %s: gate %.4f is level with ceiling %.4f"
+				"no acupoint quality to price at %s: gate %.4f is level with ceiling %.4f"
 				% [realms[index].id, gate, ceiling]
 			)
 		)

@@ -43,7 +43,7 @@ var pill_consumed: bool = false
 var costs_paid: bool = false
 ## The preparation the attempt was committed against. The roll reads its
 ## `chance`, never a re-evaluation: an attempt that spans a save must resolve
-## against the body it paid for, not against whatever the huyệt look like on
+## against the body it paid for, not against whatever the acupoint look like on
 ## reload.
 var preparation: Dictionary = {}
 var trial_complete: bool = false

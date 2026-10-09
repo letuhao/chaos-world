@@ -428,7 +428,7 @@ extends Resource
 ## and can still be struck -- which is the refusal the flat subtraction exists to make
 ## expressible (ADR 0070's fourth reason for refusing Keepverse's ratio).
 @export var meridian_armour_step: float = 0.0
-## What one full point of huyệt quality (ADR 0015's own `0..1` scale) is worth as a
+## What one full point of acupoint quality (ADR 0015's own `0..1` scale) is worth as a
 ## multiplier: `point_multiplier = 1 + point_quality_step * quality`. Read clamped to
 ## `0..1` on read, so a hand-edited `.tres` cannot author a point that is BOTH the best
 ## aim point and a damage REDUCER.
@@ -441,7 +441,7 @@ extends Resource
 ## half of it: `get_bonus() == 0.5` takes the channel's AGGREGATE bonus away from every
 ## path, and this is where the same flag gives the attacker its share back.
 @export var injured_mult_step: float = 0.0
-## The multiplier on a JAMMED huyệt -- `Acupoint.blocked` read with its OTHER meaning.
+## The multiplier on a JAMMED acupoint -- `Acupoint.blocked` read with its OTHER meaning.
 ## For the cultivator it is a lost investment (`AcupointSet.open_count` drops and
 ## `average_quality` ignores the point); for the attacker it is the best aim point on
 ## the body. This must exceed `1 + point_quality_step` for `random` aim to be able to
@@ -484,7 +484,7 @@ extends Resource
 ## ADR 0028's one-reservoir rule means this stays the body's SINGLE pool: severity is a
 ## float on the meridian, never a second reservoir.
 @export var integrity_pool_id: StringName = &""
-## The directory of the authored huyệt definitions, read as DATA to build the
+## The directory of the authored acupoint definitions, read as DATA to build the
 ## point -> meridian map the location axis needs. No point count, no meridian list and no
 ## "3 per meridian" constant lives in any `.gd`: the shipped data is 3 for the fourteen
 ## primary/organ meridians, 4 for `chong_mai`/`dai_mai`/`du_mai`/`ren_mai` and 2 for the
@@ -499,7 +499,7 @@ extends Resource
 ## `BodyAdvancement._deviate` charges `integrity_maximum * 0.25` through the identical
 ## shape, so a good fighter costs a cultivator a realm through the wound the existing
 ## failure path already writes. Necrosis is IRREVERSIBLE downward -- decay floors here
-## -- so a jammed huyệt is clearable only through the existing ADR 0031 recovery-item
+## -- so a jammed acupoint is clearable only through the existing ADR 0031 recovery-item
 ## path and never by waiting.
 @export var necrosis_threshold: float = 0.0
 ## The quality floor necrosis imposes on a meridian's SURVIVING points, so a gash is not

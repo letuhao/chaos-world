@@ -15,7 +15,7 @@ extends RefCounted
 ## ## The `.tres` files are read, never counted
 ##
 ## No count of parts appears in any `.gd`, for the reason `BodyLocation` states
-## about the huyệt: the shipped catalog's size is content, and a balance pass is
+## about the acupoint: the shipped catalog's size is content, and a balance pass is
 ## entitled to move it without touching this module. The directory is enumerated
 ## once and cached per directory path, so a caller pointing at a different
 ## directory re-reads rather than answering with another folder's parts.
@@ -99,7 +99,7 @@ static func defs_on_meridian(meridian_id: StringName) -> Array[InjuryDef]:
 	return out
 
 
-## The parts riding one huyệt, in sorted id order. Bounded by the authored
+## The parts riding one acupoint, in sorted id order. Bounded by the authored
 ## catalog, which this loop reads and does not grow.
 static func defs_on_point(point_id: StringName) -> Array[InjuryDef]:
 	var out: Array[InjuryDef] = []

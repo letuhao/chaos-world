@@ -164,7 +164,7 @@ func test_recovery_without_the_item_changes_nothing() -> void:
 # --- The wound has a location ----------------------------------------------
 
 
-## A deviation tears the channel the actor trained DEEPEST and jams a huyệt on
+## A deviation tears the channel the actor trained DEEPEST and jams a acupoint on
 ## that same meridian. It used to always be lung, for every realm.
 func test_deviation_targets_the_deepest_channel_and_its_own_huyet() -> void:
 	var target: StringName = &""
@@ -196,7 +196,7 @@ func test_deviation_targets_the_deepest_channel_and_its_own_huyet() -> void:
 			break
 	assert_eq(deviated, true, "a deviation landed")
 	assert_eq(landed_on_target, true, "the deepest channel was torn, not lung")
-	assert_eq(jammed_on_target, true, "a huyệt on the torn channel was jammed too")
+	assert_eq(jammed_on_target, true, "a acupoint on the torn channel was jammed too")
 
 
 ## The wound lands on the channel the actor trained DEEPEST. That is a statement

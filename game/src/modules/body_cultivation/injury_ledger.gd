@@ -163,7 +163,7 @@ func stat_of(part_id: StringName) -> StringName:
 ##
 ## `no_part` — the catalog carries no such part. `no_stat` — the part names no
 ## stat, so there is nothing to degrade. `no_site` — the part rides no meridian or
-## huyệt, so it has no location and degrading "the whole body" would make the
+## acupoint, so it has no location and degrading "the whole body" would make the
 ## number meaningless. `already` — the part is already broken, which is the
 ## idempotency guard.
 ##
@@ -194,7 +194,7 @@ func destroy(actor: Actor, part_id: StringName) -> Dictionary:
 	# The EXISTING core verb, for the reason the module docblock gives: an injured
 	# channel halves its aggregate bonus for EVERY path, and a flag invented here
 	# would be halved by nothing. Only the CHANNEL is torn — a part bound to a
-	# huyệt alone has no channel to injure, and pretending otherwise would damage
+	# acupoint alone has no channel to injure, and pretending otherwise would damage
 	# a channel the part never touched.
 	if def.meridian_id != &"" and actor.meridians.get_meridian(def.meridian_id) != null:
 		actor.meridians.damage_meridian(def.meridian_id)

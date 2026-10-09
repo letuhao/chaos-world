@@ -9,7 +9,7 @@ extends TestCase
 ## and the refusal costs nothing.
 ##
 ## The body's authored floors cannot bite a real run on the shipped content, and that is
-## measured rather than assumed: `BodyTraining.strengthen` trains the huyệt toward the
+## measured rather than assumed: `BodyTraining.strengthen` trains the acupoint toward the
 ## realm's `quality_target` unconditionally, so the quality axis saturates under MINIMAL
 ## legal play — a walk that stops every channel at the gate still departs at perfection
 ## 1.000 on every realm (the diagnostic that established this lived in this file's

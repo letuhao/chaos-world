@@ -115,13 +115,13 @@ func test_training_the_missing_channel_reopens_the_gate() -> void:
 # --- Acupoint quality -----------------------------------------------------
 
 
-## `_acupoints_ready` demands a quality floor on every huyệt the realm has
+## `_acupoints_ready` demands a quality floor on every acupoint the realm has
 ## unlocked.
 ##
 ## The fault is INJECTED, and deliberately so. Cultivation raises every open
-## huyệt toward the current realm's ceiling, and that ceiling is authored a
+## acupoint toward the current realm's ceiling, and that ceiling is authored a
 ## fixed margin ABOVE the next realm's floor — so on a body that has paid its
-## work budget no huyệt can be below the floor, and a huyệt a deviation jams is
+## work budget no acupoint can be below the floor, and a acupoint a deviation jams is
 ## cleared again by the channel training the same gate demands. The clause is a
 ## defensive invariant, not a reachable player state. Writing the fault is what
 ## puts it under test at all: with the clause deleted this actor reports ready
@@ -136,11 +136,11 @@ func test_a_huyet_below_the_quality_floor_is_named_and_is_the_only_block() -> vo
 			< target.quality_required
 		),
 		true,
-		"sanity: an untrained huyệt is below %s's floor" % target.id
+		"sanity: an untrained acupoint is below %s's floor" % target.id
 	)
 	_play.prepare(actor)
 	var points := _first_meridian_points(actor)
-	assert_eq(points.is_empty(), false, "found a huyệt to starve")
+	assert_eq(points.is_empty(), false, "found a acupoint to starve")
 	points[0].quality = target.quality_required - 0.02
 	var unmet := _unmet(actor)
 	assert_eq(unmet.size(), 1, "exactly one thing is missing: %s" % ", ".join(unmet))
@@ -151,20 +151,20 @@ func test_a_huyet_below_the_quality_floor_is_named_and_is_the_only_block() -> vo
 	)
 
 
-## Cultivation is the way out of a starved huyệt, through the same public
+## Cultivation is the way out of a starved acupoint, through the same public
 ## action a screen calls. The refusal has to be escapable.
 func test_cultivating_reopens_the_quality_gate() -> void:
 	var actor := _play.actor()
 	var target := _play.seed_for(actor)
 	_play.prepare(actor)
 	_first_meridian_points(actor)[0].quality = target.quality_required - 0.02
-	assert_eq(_unmet(actor).size(), 1, "blocked while the huyệt is starved")
+	assert_eq(_unmet(actor).size(), 1, "blocked while the acupoint is starved")
 	_play.cultivate_until(actor, target.progress_required, target.quality_required)
 	assert_eq(_unmet(actor).is_empty(), true, "gate reopened")
 
 
 ## The gate reads quality, not blockage. That is a real distinction and it is
-## load-bearing: a jammed huyệt must not read as "quality below the floor" while
+## load-bearing: a jammed acupoint must not read as "quality below the floor" while
 ## its quality is fine, or a player repairing a body would be told to redo work
 ## they had already done.
 func test_a_jammed_huyet_alone_is_not_a_block() -> void:
@@ -173,13 +173,13 @@ func test_a_jammed_huyet_alone_is_not_a_block() -> void:
 	var jammed := _first_meridian_points(actor)[0]
 	assert_eq(jammed.blocked, false, "sanity: nothing is jammed yet")
 	jammed.block()
-	assert_eq(_unmet(actor).is_empty(), true, "a healthy jammed huyệt blocks nothing")
+	assert_eq(_unmet(actor).is_empty(), true, "a healthy jammed acupoint blocks nothing")
 	# Blockage is still not free, it is just not a gate: the read model reports
-	# it and no huyệt disappears from the body.
+	# it and no acupoint disappears from the body.
 	var panel := BodyCultivationApi.panel_state(actor)
 	assert_eq(panel["blocked"], 1, "the panel reports the jam")
 	assert_eq(
-		panel["acupoints"], BodyCultivationApi.acupoints(actor).size(), "and no huyệt vanished"
+		panel["acupoints"], BodyCultivationApi.acupoints(actor).size(), "and no acupoint vanished"
 	)
 
 
@@ -203,7 +203,7 @@ func test_a_spent_reservoir_is_named_and_is_the_only_block() -> void:
 	var points: AcupointSet = actor.component(&"acupoints")
 	# One whole unit under the target, so the comparison is not a float tie.
 	var keep := target.integrity_target * pool.maximum - 1.0
-	assert_eq(points.drain(pool.current - keep), true, "spent through the huyệt set")
+	assert_eq(points.drain(pool.current - keep), true, "spent through the acupoint set")
 	assert_eq(pool.ratio() < target.integrity_target, true, "sanity: it really is short")
 	var unmet := _unmet(actor)
 	assert_eq(unmet.size(), 1, "exactly one thing is missing: %s" % ", ".join(unmet))
@@ -335,7 +335,7 @@ func test_a_body_without_the_realm_pill_is_named_and_costs_nothing() -> void:
 # --- Helpers --------------------------------------------------------------
 
 
-## The huyệt on the first channel the set holds — always a minor one, always on
+## The acupoint on the first channel the set holds — always a minor one, always on
 ## a channel the realm owns, so a fault placed here is one the game can clear.
 func _first_meridian_points(actor: Actor) -> Array[Acupoint]:
 	var points := BodyCultivationApi.acupoints(actor)

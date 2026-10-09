@@ -109,12 +109,12 @@ func test_each_breakthrough_refusal_has_its_own_kind() -> void:
 		"and the pill is one of them, quoted verbatim from `describe_unmet`"
 	)
 
-	# 3. No huyệt set to work on: the re-entrancy guard. Set directly because no
+	# 3. No acupoint set to work on: the re-entrancy guard. Set directly because no
 	#    player-facing press can observe it — every window is synchronous — and an
 	#    unnamed `false` is exactly what ADR 0150 exists to prevent.
 	var busy := _prepared()
 	(busy.component(&"acupoints") as AcupointSet).busy = true
-	assert_eq(BodyCultivationApi.attempt_breakthrough(busy), false, "a busy huyệt set refuses")
+	assert_eq(BodyCultivationApi.attempt_breakthrough(busy), false, "a busy acupoint set refuses")
 	assert_eq(_kinds(_unavailable(busy)), [BodyRefusal.KIND_BUSY], "named as the guard")
 
 	# 4. A real deviation: nothing named blocked the press, so the roll ran, and the

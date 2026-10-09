@@ -110,7 +110,7 @@ func test_the_screen_binds_its_child_row_and_buttons() -> void:
 	assert_eq(
 		int(view.get("vitals", {}).get("acupoints", 0)),
 		AcupointDefaults.MINOR_COUNT,
-		"the row sees the huyệt"
+		"the row sees the acupoint"
 	)
 	panel.free()
 
@@ -145,7 +145,7 @@ func test_summary_is_primitives_with_a_nested_child_summary() -> void:
 	assert_eq(vitals.is_empty(), false, "the vitals row is populated")
 	assert_eq(bool(vitals.get("bound", false)), true, "the row resolved its labels")
 	assert_eq(
-		int(vitals.get("acupoints", 0)), AcupointDefaults.MINOR_COUNT, "the row sees the huyệt"
+		int(vitals.get("acupoints", 0)), AcupointDefaults.MINOR_COUNT, "the row sees the acupoint"
 	)
 	panel.free()
 
@@ -240,7 +240,7 @@ func test_vitals_row_nests_under_the_screen_summary() -> void:
 	vitals.set_state(BodyCultivationApi.panel_state(_actor()))
 	var view := vitals.summary()
 	assert_eq(view.get("realm", ""), String(&"qi_refining"), "realm surfaced")
-	assert_eq(view.get("acupoints", 0), AcupointDefaults.MINOR_COUNT, "huyệt surfaced")
+	assert_eq(view.get("acupoints", 0), AcupointDefaults.MINOR_COUNT, "acupoint surfaced")
 	assert_eq(view.get("ready", true), false, "gate surfaced")
 	assert_eq(view.get("unmet", []) is Array, true, "unmet is an array of strings")
 	vitals.free()

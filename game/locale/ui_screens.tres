@@ -4,7 +4,7 @@
 locale = "en"
 messages = {
 "LOC_UI_SCREENS_009C245528": "No hero is bound to this screen",
-"LOC_UI_SCREENS_026911B008": "Thiên Kiếp",
+"LOC_UI_SCREENS_026911B008": "Heaven Sword",
 "LOC_UI_SCREENS_02AD3B27AB": "Arrive this way",
 "LOC_UI_SCREENS_03735590A8": "Design recorded in architecture decision records.",
 "LOC_UI_SCREENS_05207104D5": "Auction",
@@ -269,7 +269,7 @@ messages = {
 "LOC_UI_SCREENS_D983F92213": "Bound for now. The codex keeps everything; ",
 "LOC_UI_SCREENS_DAD7D172D2": "Open socket",
 "LOC_UI_SCREENS_DC21D2B4EE": "Arrival",
-"LOC_UI_SCREENS_DC34BA8445": "Luyện Khí",
+"LOC_UI_SCREENS_DC34BA8445": "Qi Refinement",
 "LOC_UI_SCREENS_DC8745BA30": "House",
 "LOC_UI_SCREENS_DCD439A732": "Institutions",
 "LOC_UI_SCREENS_DD29BFE809": "Aiming at",
@@ -280,7 +280,7 @@ messages = {
 "LOC_UI_SCREENS_E1D46249B9": "Survived the tribulation",
 "LOC_UI_SCREENS_E1FACAED67": "Take the ground, then work it.",
 "LOC_UI_SCREENS_E53E200983": "Loading %d of %d.",
-"LOC_UI_SCREENS_E7B40D6454": "Tu Niệm",
+"LOC_UI_SCREENS_E7B40D6454": "Breath Regulation",
 "LOC_UI_SCREENS_E876F6BA60": "No fixture in this room",
 "LOC_UI_SCREENS_E8AB972321": "Earned, and yours for good:",
 "LOC_UI_SCREENS_E8D22CCA94": "Each tier pays a narrative fate.",

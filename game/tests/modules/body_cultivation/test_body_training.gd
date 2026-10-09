@@ -156,7 +156,7 @@ func test_recover_clears_a_blocked_acupoint() -> void:
 	var meridian_id := AcupointDefaults.meridian_of(points[0].id)
 	points[0].block()
 	_stock(actor, &"body_qi_refining_recovery_elixir")
-	assert_eq(BodyTraining.recover(actor, meridian_id), true, "blocked huyệt repaired")
+	assert_eq(BodyTraining.recover(actor, meridian_id), true, "blocked acupoint repaired")
 	assert_eq(points[0].blocked, false, "blockage cleared")
 
 

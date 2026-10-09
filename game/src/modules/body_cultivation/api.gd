@@ -434,7 +434,7 @@ static func begin_breakthrough(actor: Actor) -> Dictionary:
 ##
 ## The roll comes out of the record's own seed, which is why this takes no
 ## generator: a reload resolves the attempt the player committed rather than a new
-## trial against whatever the huyệt look like now.
+## trial against whatever the acupoint look like now.
 static func resolve_breakthrough(actor: Actor) -> bool:
 	return BodyAdvancement.resolve_attempt(actor)
 
@@ -465,7 +465,7 @@ static func attempt_breakthrough(actor: Actor) -> bool:
 	return BodyAdvancement.try_breakthrough(actor)
 
 
-## Close the first wound a recovery item can heal: a blocked huyệt first (it
+## Close the first wound a recovery item can heal: a blocked acupoint first (it
 ## names its own channel), then an injured channel. Consumes the realm's
 ## recovery item. Returns true when a repair happened, so a panel can tell a
 ## real recovery from a no-op.
