@@ -46,14 +46,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_06_peach_wood_ghost_warding/harvestable_ripe/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.446
+            0.468
           ]
         ],
-        "frac_zero": 0.7299,
+        "frac_zero": 0.7102,
         "blocks": [
           [
             false
@@ -75,30 +75,30 @@
         ],
         "sub_fill": [
           [
-            0.398,
-            0.673,
-            0.123
+            0.281,
+            0.722,
+            0.108
           ],
           [
-            0.496,
-            0.575,
-            0.338
+            0.59,
+            0.687,
+            0.577
           ],
           [
-            0.278,
-            0.689,
-            0.0
+            0.28,
+            0.727,
+            0.018
           ]
         ],
         "crop_offset": [
-          24,
-          17
+          21,
+          16
         ],
         "trunk_columns": [
           1
         ],
-        "contact_px": 46,
-        "contact_reference_px": 46.0,
+        "contact_px": 49,
+        "contact_reference_px": 49.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -126,14 +126,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_06_peach_wood_ghost_warding/harvestable_ripe/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.498
+            0.494
           ]
         ],
-        "frac_zero": 0.71,
+        "frac_zero": 0.7076,
         "blocks": [
           [
             false
@@ -155,31 +155,31 @@
         ],
         "sub_fill": [
           [
-            0.446,
-            0.673,
-            0.086
+            0.217,
+            0.785,
+            0.071
           ],
           [
-            0.539,
-            0.613,
-            0.411
+            0.599,
+            0.736,
+            0.557
           ],
           [
-            0.443,
-            0.626,
-            0.047
+            0.393,
+            0.74,
+            0.103
           ]
         ],
         "crop_offset": [
-          26,
+          21,
           18
         ],
         "trunk_columns": [
           0,
           1
         ],
-        "contact_px": 50,
-        "contact_reference_px": 50.0,
+        "contact_px": 43,
+        "contact_reference_px": 43.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -207,14 +207,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_06_peach_wood_ghost_warding/harvestable_ripe/damaged_weathered.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.506
+            0.508
           ]
         ],
-        "frac_zero": 0.7363,
+        "frac_zero": 0.6849,
         "blocks": [
           [
             false
@@ -236,31 +236,31 @@
         ],
         "sub_fill": [
           [
-            0.471,
-            0.692,
-            0.099
+            0.261,
+            0.694,
+            0.11
           ],
           [
-            0.558,
-            0.597,
-            0.304
+            0.58,
+            0.663,
+            0.504
           ],
           [
-            0.398,
-            0.697,
-            0.003
+            0.454,
+            0.92,
+            0.183
           ]
         ],
         "crop_offset": [
-          26,
-          17
+          21,
+          16
         ],
         "trunk_columns": [
           0,
           1
         ],
-        "contact_px": 46,
-        "contact_reference_px": 46.0,
+        "contact_px": 61,
+        "contact_reference_px": 61.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -288,14 +288,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_06_peach_wood_ghost_warding/harvestable_ripe/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.483
+            0.486
           ]
         ],
-        "frac_zero": 0.7048,
+        "frac_zero": 0.6954,
         "blocks": [
           [
             false
@@ -317,31 +317,31 @@
         ],
         "sub_fill": [
           [
-            0.312,
-            0.742,
-            0.15
+            0.224,
+            0.706,
+            0.138
           ],
           [
-            0.41,
-            0.493,
-            0.388
+            0.499,
+            0.583,
+            0.42
           ],
           [
-            0.439,
-            0.917,
-            0.224
+            0.46,
+            0.886,
+            0.253
           ]
         ],
         "crop_offset": [
-          22,
-          17
+          21,
+          16
         ],
         "trunk_columns": [
           0,
           1
         ],
-        "contact_px": 57,
-        "contact_reference_px": 57.0,
+        "contact_px": 66,
+        "contact_reference_px": 66.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
