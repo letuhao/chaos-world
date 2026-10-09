@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.races_and_tribal_enclaves.rac_07_wood_spirit_living_tree_canopies.featherfolk_cliff_aerie"
+display_name = "Wood Spirit Living Tree Canopies - Woven Branch Cliffside Aerie"
+pinyin = "Mùlíngcháo · Woven Branch Cliffside Aerie"
+hanzi = "木灵活树织巢 · 羽族崖顶编枝巢居"
+domain_id = &"races_and_tribal_enclaves"
+category_id = &"rac_07_wood_spirit_living_tree_canopies"
+asset_class = &"structure_cottage"
+archetype_name = "Woven Branch Cliffside Aerie"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/races_and_tribal_enclaves/rac_07_wood_spirit_living_tree_canopies/featherfolk_cliff_aerie/rot_south_facade.png"
+footprint_cells = Vector2i(3, 2)
+canvas_px = Vector2i(384, 256)
+collision_type = &"solid"
+primary_material = &"bamboo"
+secondary_material = &"thatched_straw"
+cultivation_element = &"wood"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"climb_aerie"

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.mortal_and_jianghu.mor_12_jianghu_martial_arts_hall_wuguan.courtyard_gatehouse"
+display_name = "Jianghu Martial Arts Hall (Wuguan) - Traditional Timber Compound Gate"
+pinyin = "Wēiyuǎn Wǔguǎn · Traditional Timber Compound Gate"
+hanzi = "威远武馆 · 门楼木制院门"
+domain_id = &"mortal_and_jianghu"
+category_id = &"mor_12_jianghu_martial_arts_hall_wuguan"
+asset_class = &"structure_building"
+archetype_name = "Traditional Timber Compound Gate"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_12_jianghu_martial_arts_hall_wuguan/courtyard_gatehouse/rot_south_facade.png"
+footprint_cells = Vector2i(3, 2)
+canvas_px = Vector2i(384, 256)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"earth"
+elevation_tier = 1
+mortal_realm_tier = "Qi Refining (Luyện Khí / 练气)"
+interactive_verb = &"open_gate"

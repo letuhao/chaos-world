@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.artifacts_and_paraphernalia.art_03_flying_sword_iron_pine_pattern.cardinal_west_facing"
+display_name = "Flying Sword (Iron / Pine Pattern) - Directional Pointer Facing West"
+pinyin = "Sōngwén Fēijiàn · Directional Pointer Facing West"
+hanzi = "百炼松纹飞剑 · 正西朝向平飞姿态"
+domain_id = &"artifacts_and_paraphernalia"
+category_id = &"art_03_flying_sword_iron_pine_pattern"
+asset_class = &"item_weapon"
+archetype_name = "Directional Pointer Facing West"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/artifacts_and_paraphernalia/art_03_flying_sword_iron_pine_pattern/cardinal_west_facing/pos_inventory_icon_45deg.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"none"
+primary_material = &"ancient_pine_wood"
+secondary_material = &"evergreen_needles"
+cultivation_element = &"wood"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"direct_projectile"

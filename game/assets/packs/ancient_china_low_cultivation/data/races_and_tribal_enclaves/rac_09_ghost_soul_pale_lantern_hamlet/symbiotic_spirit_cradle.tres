@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.races_and_tribal_enclaves.rac_09_ghost_soul_pale_lantern_hamlet.symbiotic_spirit_cradle"
+display_name = "Ghost-Soul Pale Lantern Hamlet - Living Vines Woven Symbiotic Nursery"
+pinyin = "Yóuhúnzhēn · Living Vines Woven Symbiotic Nursery"
+hanzi = "游魂幽冥水乡 · 藤蔓编结灵胎生灵之窝"
+domain_id = &"races_and_tribal_enclaves"
+category_id = &"rac_09_ghost_soul_pale_lantern_hamlet"
+asset_class = &"flora_herb"
+archetype_name = "Living Vines Woven Symbiotic Nursery"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/races_and_tribal_enclaves/rac_09_ghost_soul_pale_lantern_hamlet/symbiotic_spirit_cradle/pristine_dormant.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"none"
+primary_material = &"spiritual_root_stalk"
+secondary_material = &"medicinal_blossom"
+cultivation_element = &"ghost"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"nurture_spirit"

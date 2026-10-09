@@ -1,0 +1,26 @@
+{
+  "asset_id": "ancient_china_low_cultivation.art_03_flying_sword_iron_pine_pattern.diagonal_inventory_icon_art_03_flying_sword_iron_pine_pattern",
+  "variant_slug": "cardinal_west_facing",
+  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/artifacts_and_paraphernalia/art_03_flying_sword_iron_pine_pattern/diagonal_inventory_icon_art_03_flying_sword_iron_pine_pattern/cardinal_west_facing.png",
+  "width": 512,
+  "height": 512,
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    512,
+    512
+  ],
+  "collision_type": "solid",
+  "matrix_data": {
+    "subgrid_rows": 4,
+    "subgrid_cols": 4,
+    "walk_surface": false,
+    "elevation_step": 0,
+    "cliff_drop": false,
+    "contact_pixels": [],
+    "source_render_seed": 9805,
+    "source_candidate": "azure_frost_flying_sword"
+  }
+}

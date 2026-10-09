@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.fauna_and_spirit_beasts.beas_34_giant_river_crab_tie_xie.sleeping_in_lair"
+display_name = "Giant River Crab (Tie Xie) - Curled Up Asleep in Straw Nest"
+pinyin = "Tiě'áo Xiè · Curled Up Asleep in Straw Nest"
+hanzi = "铁螯青溪蟹 · 蜷缩巢穴沉睡"
+domain_id = &"fauna_and_spirit_beasts"
+category_id = &"beas_34_giant_river_crab_tie_xie"
+asset_class = &"fauna_beast"
+archetype_name = "Curled Up Asleep in Straw Nest"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/fauna_and_spirit_beasts/beas_34_giant_river_crab_tie_xie/sleeping_in_lair/idle_standing.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"solid"
+primary_material = &"bamboo"
+secondary_material = &"thatched_straw"
+cultivation_element = &"water"
+elevation_tier = 8
+mortal_realm_tier = "Great Ascension (Đại Thừa / 大乘)"
+interactive_verb = &"sneak_past"

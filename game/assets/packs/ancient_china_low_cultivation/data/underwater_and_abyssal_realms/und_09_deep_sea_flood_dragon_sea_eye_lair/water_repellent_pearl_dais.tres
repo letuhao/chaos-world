@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.underwater_and_abyssal_realms.und_09_deep_sea_flood_dragon_sea_eye_lair.water_repellent_pearl_dais"
+display_name = "Deep Sea Flood Dragon Sea-Eye Lair - Carved Coral Water-Repelling Altar"
+pinyin = "Hǎiyǎnxué · Carved Coral Water-Repelling Altar"
+hanzi = "蹈海蛟龙海眼穴 · 定水神珠镇海玉台"
+domain_id = &"underwater_and_abyssal_realms"
+category_id = &"und_09_deep_sea_flood_dragon_sea_eye_lair"
+asset_class = &"prop_workstation"
+archetype_name = "Carved Coral Water-Repelling Altar"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/underwater_and_abyssal_realms/und_09_deep_sea_flood_dragon_sea_eye_lair/water_repellent_pearl_dais/pristine_dormant.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"walk_surface"
+primary_material = &"liquid_water"
+secondary_material = &"riverbed_pebbles"
+cultivation_element = &"water"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"activate_pearl"

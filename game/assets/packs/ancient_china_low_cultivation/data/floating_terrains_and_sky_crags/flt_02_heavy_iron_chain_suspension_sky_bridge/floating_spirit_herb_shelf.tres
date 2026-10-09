@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.floating_terrains_and_sky_crags.flt_02_heavy_iron_chain_suspension_sky_bridge.floating_spirit_herb_shelf"
+display_name = "Heavy Iron Chain Suspension Sky-Bridge - Suspended Soil Patch Growing Herbs"
+pinyin = "Tiěsuǒqiáo · Suspended Soil Patch Growing Herbs"
+hanzi = "天堑万丈铁锁桥 · 微型浮土悬药畦"
+domain_id = &"floating_terrains_and_sky_crags"
+category_id = &"flt_02_heavy_iron_chain_suspension_sky_bridge"
+asset_class = &"prop_workstation"
+archetype_name = "Suspended Soil Patch Growing Herbs"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/floating_terrains_and_sky_crags/flt_02_heavy_iron_chain_suspension_sky_bridge/floating_spirit_herb_shelf/pristine_dormant.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"walk_surface"
+primary_material = &"spiritual_root_stalk"
+secondary_material = &"medicinal_blossom"
+cultivation_element = &"metal"
+elevation_tier = 6
+mortal_realm_tier = "Void Refinement (Luyện Hư / 炼虚)"
+interactive_verb = &"tend_sky_herbs"

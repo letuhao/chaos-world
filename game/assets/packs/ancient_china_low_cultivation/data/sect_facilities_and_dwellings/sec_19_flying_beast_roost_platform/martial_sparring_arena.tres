@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_19_flying_beast_roost_platform.martial_sparring_arena"
+display_name = "Flying Beast Roost & Platform - Elevated Flagstone Sparring Ring"
+pinyin = "Línghè Chéngfēngtái · Elevated Flagstone Sparring Ring"
+hanzi = "灵鹤乘风台 · 条石筑就演武台"
+domain_id = &"sect_facilities_and_dwellings"
+category_id = &"sec_19_flying_beast_roost_platform"
+asset_class = &"prop_workstation"
+archetype_name = "Elevated Flagstone Sparring Ring"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_19_flying_beast_roost_platform/martial_sparring_arena/pristine_dormant.png"
+footprint_cells = Vector2i(4, 4)
+canvas_px = Vector2i(512, 512)
+collision_type = &"walk_surface"
+primary_material = &"thick_pelt_fur"
+secondary_material = &"ivory_fangs"
+cultivation_element = &"wind"
+elevation_tier = 2
+mortal_realm_tier = "Foundation Establishment (Trúc Cơ / 筑基)"
+interactive_verb = &"duel_challenger"

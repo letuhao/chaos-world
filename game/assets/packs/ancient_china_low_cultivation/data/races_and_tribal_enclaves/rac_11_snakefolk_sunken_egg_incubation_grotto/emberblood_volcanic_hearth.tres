@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.races_and_tribal_enclaves.rac_11_snakefolk_sunken_egg_incubation_grotto.emberblood_volcanic_hearth"
+display_name = "Snakefolk Sunken Egg Incubation Grotto - Obsidian Volcanic Smelting Hearth"
+pinyin = "Língshécháo · Obsidian Volcanic Smelting Hearth"
+hanzi = "灵蛇地宫温巢 · 赤血熔岩黑曜石炉"
+domain_id = &"races_and_tribal_enclaves"
+category_id = &"rac_11_snakefolk_sunken_egg_incubation_grotto"
+asset_class = &"prop_workstation"
+archetype_name = "Obsidian Volcanic Smelting Hearth"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/races_and_tribal_enclaves/rac_11_snakefolk_sunken_egg_incubation_grotto/emberblood_volcanic_hearth/pristine_dormant.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"solid"
+primary_material = &"carved_wood"
+secondary_material = &"polished_bronze"
+cultivation_element = &"earth"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"stoke_fire"

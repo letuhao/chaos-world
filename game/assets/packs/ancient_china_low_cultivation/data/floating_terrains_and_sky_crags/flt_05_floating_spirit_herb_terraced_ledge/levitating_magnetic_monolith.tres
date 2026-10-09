@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.floating_terrains_and_sky_crags.flt_05_floating_spirit_herb_terraced_ledge.levitating_magnetic_monolith"
+display_name = "Floating Spirit Herb Terraced Ledge - Floating Black Magnetite Monolith"
+pinyin = "Fúcuìtái · Floating Black Magnetite Monolith"
+hanzi = "悬崖浮翠药台 · 悬浮元磁玄黑巨岩"
+domain_id = &"floating_terrains_and_sky_crags"
+category_id = &"flt_05_floating_spirit_herb_terraced_ledge"
+asset_class = &"landmark_mountain"
+archetype_name = "Floating Black Magnetite Monolith"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/floating_terrains_and_sky_crags/flt_05_floating_spirit_herb_terraced_ledge/levitating_magnetic_monolith/facing_south_front.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"solid"
+primary_material = &"spiritual_root_stalk"
+secondary_material = &"medicinal_blossom"
+cultivation_element = &"wind"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"mine_magnetite"

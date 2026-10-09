@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.races_and_tribal_enclaves.rac_03_tidecaller_conch_mother_of_pearl.fox_clan_illusion_pavilion"
+display_name = "Tidecaller Conch & Mother-of-Pearl - Translucent Silk Gauze Fox Pavilion"
+pinyin = "Jiāorénzhài · Translucent Silk Gauze Fox Pavilion"
+hanzi = "鲛人螺贝水寨 · 青丘幻彩狐族纱亭"
+domain_id = &"races_and_tribal_enclaves"
+category_id = &"rac_03_tidecaller_conch_mother_of_pearl"
+asset_class = &"structure_building"
+archetype_name = "Translucent Silk Gauze Fox Pavilion"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/races_and_tribal_enclaves/rac_03_tidecaller_conch_mother_of_pearl/fox_clan_illusion_pavilion/rot_south_facade.png"
+footprint_cells = Vector2i(3, 3)
+canvas_px = Vector2i(384, 384)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"earth"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"visit_clan"

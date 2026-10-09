@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.evil_sects_and_demonic.evi_12_flayed_skin_talisman_inscribing_screen.myriad_gu_breeding_vat"
+display_name = "Flayed Skin Talisman Inscribing Screen - Myriad Gu Breeding Earth Vat"
+pinyin = "Rénpífú · Myriad Gu Breeding Earth Vat"
+hanzi = "鞣制人皮符屏 · 万蛊争斗大瓮"
+domain_id = &"evil_sects_and_demonic"
+category_id = &"evi_12_flayed_skin_talisman_inscribing_screen"
+asset_class = &"prop_container"
+archetype_name = "Myriad Gu Breeding Earth Vat"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/evil_sects_and_demonic/evi_12_flayed_skin_talisman_inscribing_screen/myriad_gu_breeding_vat/pristine_dormant.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"solid"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"poison"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"harvest_gu"

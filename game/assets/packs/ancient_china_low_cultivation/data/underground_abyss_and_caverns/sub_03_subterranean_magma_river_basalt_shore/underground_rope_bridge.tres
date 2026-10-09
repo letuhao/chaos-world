@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.underground_abyss_and_caverns.sub_03_subterranean_magma_river_basalt_shore.underground_rope_bridge"
+display_name = "Subterranean Magma River & Basalt Shore - Frayed Hemp Rope Chasm Footbridge"
+pinyin = "Róngyánhé · Frayed Hemp Rope Chasm Footbridge"
+hanzi = "地火熔岩赤火溪 · 幽壑破旧麻绳吊桥"
+domain_id = &"underground_abyss_and_caverns"
+category_id = &"sub_03_subterranean_magma_river_basalt_shore"
+asset_class = &"structure_building"
+archetype_name = "Frayed Hemp Rope Chasm Footbridge"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/underground_abyss_and_caverns/sub_03_subterranean_magma_river_basalt_shore/underground_rope_bridge/rot_south_facade.png"
+footprint_cells = Vector2i(3, 1)
+canvas_px = Vector2i(384, 128)
+collision_type = &"walk_surface"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"fire"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"cross_chasm"

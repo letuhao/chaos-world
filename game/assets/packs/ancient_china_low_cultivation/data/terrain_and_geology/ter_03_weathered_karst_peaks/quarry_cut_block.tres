@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.terrain_and_geology.ter_03_weathered_karst_peaks.quarry_cut_block"
+display_name = "Weathered Karst Peaks - Excavated Quarry Stone Block"
+pinyin = "Kāsītè Gūfēng · Excavated Quarry Stone Block"
+hanzi = "喀斯特孤峰 · 开采方整石料"
+domain_id = &"terrain_and_geology"
+category_id = &"ter_03_weathered_karst_peaks"
+asset_class = &"prop_workstation"
+archetype_name = "Excavated Quarry Stone Block"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_03_weathered_karst_peaks/quarry_cut_block/pristine_dormant.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"solid"
+primary_material = &"carved_wood"
+secondary_material = &"polished_bronze"
+cultivation_element = &"wind"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"quarry_stone"

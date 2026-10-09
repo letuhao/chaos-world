@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.mining_and_metallurgy.min_02_mine_tunnel_timber_shoring_sets.vitrified_slag_disposal_heap"
+display_name = "Mine Tunnel Timber Shoring Sets - Vitrified Smelting Slag Mound"
+pinyin = "Kēngmù · Vitrified Smelting Slag Mound"
+hanzi = "坑道加固木撑 · 玻璃质冶炼矿渣堆"
+domain_id = &"mining_and_metallurgy"
+category_id = &"min_02_mine_tunnel_timber_shoring_sets"
+asset_class = &"terrain_tile"
+archetype_name = "Vitrified Smelting Slag Mound"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/mining_and_metallurgy/min_02_mine_tunnel_timber_shoring_sets/vitrified_slag_disposal_heap/dry_temperate.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"walk_surface"
+primary_material = &"earthen_loam"
+secondary_material = &"mineral_silt"
+cultivation_element = &"fire"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"scavenge_slag"

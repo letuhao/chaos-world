@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.floating_terrains_and_sky_crags.flt_09_cloud_riding_pavilion_on_floating_rock.iron_chain_suspension_bridge"
+display_name = "Cloud-Riding Pavilion on Floating Rock - Giant Rusted Iron Chain Skybridge"
+pinyin = "Chéngyúnxiè · Giant Rusted Iron Chain Skybridge"
+hanzi = "乘云悬石小榭 · 横跨天堑巨锁悬桥"
+domain_id = &"floating_terrains_and_sky_crags"
+category_id = &"flt_09_cloud_riding_pavilion_on_floating_rock"
+asset_class = &"structure_building"
+archetype_name = "Giant Rusted Iron Chain Skybridge"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/floating_terrains_and_sky_crags/flt_09_cloud_riding_pavilion_on_floating_rock/iron_chain_suspension_bridge/rot_south_facade.png"
+footprint_cells = Vector2i(4, 1)
+canvas_px = Vector2i(512, 128)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"metal"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"cross_bridge"

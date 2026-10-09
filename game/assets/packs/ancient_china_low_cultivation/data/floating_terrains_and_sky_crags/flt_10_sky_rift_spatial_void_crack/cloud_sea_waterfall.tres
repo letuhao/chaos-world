@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.floating_terrains_and_sky_crags.flt_10_sky_rift_spatial_void_crack.cloud_sea_waterfall"
+display_name = "Sky-Rift Spatial Void Crack - Cascading Cloud Mist Waterfall Chute"
+pinyin = "Xūkōng Lièfèng · Cascading Cloud Mist Waterfall Chute"
+hanzi = "虚空碎裂裂缝 · 悬岛倾泻云雾飞瀑"
+domain_id = &"floating_terrains_and_sky_crags"
+category_id = &"flt_10_sky_rift_spatial_void_crack"
+asset_class = &"landmark_mountain"
+archetype_name = "Cascading Cloud Mist Waterfall Chute"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/floating_terrains_and_sky_crags/flt_10_sky_rift_spatial_void_crack/cloud_sea_waterfall/facing_south_front.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"obstacle"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"wind"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"None"

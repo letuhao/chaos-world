@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.secret_realms_and_grotto_heavens.sec_r10_heavenly_book_floating_jade_pedestal.nine_tier_trial_pagoda"
+display_name = "Heavenly Book Floating Jade Pedestal - Ancient Weathered Granite Trial Pagoda"
+pinyin = "Tiānshūtái · Ancient Weathered Granite Trial Pagoda"
+hanzi = "天书悬浮传功玉台 · 九重试炼风化石塔"
+domain_id = &"secret_realms_and_grotto_heavens"
+category_id = &"sec_r10_heavenly_book_floating_jade_pedestal"
+asset_class = &"structure_temple"
+archetype_name = "Ancient Weathered Granite Trial Pagoda"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/secret_realms_and_grotto_heavens/sec_r10_heavenly_book_floating_jade_pedestal/nine_tier_trial_pagoda/rot_south_facade.png"
+footprint_cells = Vector2i(3, 4)
+canvas_px = Vector2i(384, 512)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"void"
+elevation_tier = 6
+mortal_realm_tier = "Void Refinement (Luyện Hư / 炼虚)"
+interactive_verb = &"enter_trial"

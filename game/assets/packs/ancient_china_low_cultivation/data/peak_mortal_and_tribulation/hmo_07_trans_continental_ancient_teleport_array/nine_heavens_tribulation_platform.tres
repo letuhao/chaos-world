@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.peak_mortal_and_tribulation.hmo_07_trans_continental_ancient_teleport_array.nine_heavens_tribulation_platform"
+display_name = "Trans-Continental Ancient Teleport Array - Stepped Lightning-Attracting Array Dais"
+pinyin = "Chuánsòngzhèn · Stepped Lightning-Attracting Array Dais"
+hanzi = "跨陆八荒古传送阵 · 九天引雷渡劫石台"
+domain_id = &"peak_mortal_and_tribulation"
+category_id = &"hmo_07_trans_continental_ancient_teleport_array"
+asset_class = &"prop_workstation"
+archetype_name = "Stepped Lightning-Attracting Array Dais"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/peak_mortal_and_tribulation/hmo_07_trans_continental_ancient_teleport_array/nine_heavens_tribulation_platform/pristine_dormant.png"
+footprint_cells = Vector2i(4, 4)
+canvas_px = Vector2i(512, 512)
+collision_type = &"walk_surface"
+primary_material = &"carved_wood"
+secondary_material = &"polished_bronze"
+cultivation_element = &"thunder"
+elevation_tier = 8
+mortal_realm_tier = "Great Ascension (Đại Thừa / 大乘)"
+interactive_verb = &"commence_tribulation"

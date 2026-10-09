@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.mining_and_metallurgy.min_01_deep_mine_shaft_headframe_windlass.ingot_casting_mold_rack"
+display_name = "Deep Mine Shaft Headframe & Windlass - Tiered Ingot Casting Mold Frame"
+pinyin = "Jǐngjià · Tiered Ingot Casting Mold Frame"
+hanzi = "绞盘深井井架 · 铸模冷水倒锭排架"
+domain_id = &"mining_and_metallurgy"
+category_id = &"min_01_deep_mine_shaft_headframe_windlass"
+asset_class = &"prop_workstation"
+archetype_name = "Tiered Ingot Casting Mold Frame"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/mining_and_metallurgy/min_01_deep_mine_shaft_headframe_windlass/ingot_casting_mold_rack/pristine_dormant.png"
+footprint_cells = Vector2i(2, 1)
+canvas_px = Vector2i(256, 128)
+collision_type = &"solid"
+primary_material = &"raw_metal_ore"
+secondary_material = &"quartz_vein"
+cultivation_element = &"metal"
+elevation_tier = 2
+mortal_realm_tier = "Foundation Establishment (Trúc Cơ / 筑基)"
+interactive_verb = &"cast_ingots"

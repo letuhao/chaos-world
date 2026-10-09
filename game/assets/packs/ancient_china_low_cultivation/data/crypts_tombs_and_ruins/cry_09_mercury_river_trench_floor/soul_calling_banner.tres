@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.crypts_tombs_and_ruins.cry_09_mercury_river_trench_floor.soul_calling_banner"
+display_name = "Mercury River Trench Floor - Torn Tattered Soul Summoning Flag"
+pinyin = "Shuǐyín Jiānghǎi · Torn Tattered Soul Summoning Flag"
+hanzi = "水银地宫江海 · 破败白绫招魂幡"
+domain_id = &"crypts_tombs_and_ruins"
+category_id = &"cry_09_mercury_river_trench_floor"
+asset_class = &"prop_workstation"
+archetype_name = "Torn Tattered Soul Summoning Flag"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/crypts_tombs_and_ruins/cry_09_mercury_river_trench_floor/soul_calling_banner/pristine_dormant.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"none"
+primary_material = &"liquid_water"
+secondary_material = &"riverbed_pebbles"
+cultivation_element = &"water"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"read_talisman"

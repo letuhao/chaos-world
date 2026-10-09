@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_27_blood_sacrifice_demon_pit.sect_boundary_stele"
+display_name = "Blood Sacrifice Demon Pit - Carved Mountain Boundary Monolith"
+pinyin = "Yǎnggǔ Xuèchí · Carved Mountain Boundary Monolith"
+hanzi = "养蛊炼血池 · 界定灵山界碑"
+domain_id = &"sect_facilities_and_dwellings"
+category_id = &"sec_27_blood_sacrifice_demon_pit"
+asset_class = &"landmark_mountain"
+archetype_name = "Carved Mountain Boundary Monolith"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_27_blood_sacrifice_demon_pit/sect_boundary_stele/facing_south_front.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"solid"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"ice"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"read_stele"

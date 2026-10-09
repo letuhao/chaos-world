@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.fauna_and_spirit_beasts.beas_04_giant_pit_viper_python.alpha_beast_king"
+display_name = "Giant Pit Viper (Python) - Massive Mutated Crowned Alpha King"
+pinyin = "Bānlán Jùyǎnmǎng · Massive Mutated Crowned Alpha King"
+hanzi = "斑斓巨岩蟒 · 巨大畸变兽王"
+domain_id = &"fauna_and_spirit_beasts"
+category_id = &"beas_04_giant_pit_viper_python"
+asset_class = &"fauna_beast"
+archetype_name = "Massive Mutated Crowned Alpha King"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/fauna_and_spirit_beasts/beas_04_giant_pit_viper_python/alpha_beast_king/idle_standing.png"
+footprint_cells = Vector2i(3, 3)
+canvas_px = Vector2i(384, 384)
+collision_type = &"solid"
+primary_material = &"thick_pelt_fur"
+secondary_material = &"ivory_fangs"
+cultivation_element = &"earth"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"challenge_boss"

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.terrain_and_geology.ter_04_danxia_red_sandstone_crags.monumental_peak_spire"
+display_name = "Danxia Red Sandstone Crags - Towering Geological Needle Spire"
+pinyin = "Dānxiá Hóngyán · Towering Geological Needle Spire"
+hanzi = "丹霞红岩 · 巍峨地质孤峰"
+domain_id = &"terrain_and_geology"
+category_id = &"ter_04_danxia_red_sandstone_crags"
+asset_class = &"landmark_mountain"
+archetype_name = "Towering Geological Needle Spire"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_04_danxia_red_sandstone_crags/monumental_peak_spire/facing_south_front.png"
+footprint_cells = Vector2i(4, 4)
+canvas_px = Vector2i(512, 512)
+collision_type = &"solid"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"water"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"climb_peak"

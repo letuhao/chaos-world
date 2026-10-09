@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.religious_sanctuaries.rel_02_zhengyi_maoshan_altar_table.mountain_cliff_hermitage"
+display_name = "Zhengyi / Maoshan Altar Table - Suspended Timber Cliff Hermitage"
+pinyin = "Jiǔtiān Fǎtán · Suspended Timber Cliff Hermitage"
+hanzi = "茅山九天法坛 · 悬空岩壁避世庵"
+domain_id = &"religious_sanctuaries"
+category_id = &"rel_02_zhengyi_maoshan_altar_table"
+asset_class = &"structure_temple"
+archetype_name = "Suspended Timber Cliff Hermitage"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_02_zhengyi_maoshan_altar_table/mountain_cliff_hermitage/rot_south_facade.png"
+footprint_cells = Vector2i(3, 2)
+canvas_px = Vector2i(384, 256)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"earth"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"seek_blessing"

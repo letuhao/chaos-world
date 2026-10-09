@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.dao_companions_and_sanctuary_living.com_d01_dao_companion_secluded_tea_gazebo.carved_jade_dressing_screen"
+display_name = "Dao Companion Secluded Tea Gazebo - Four-Panel Folding Lacquer Dressing Screen"
+pinyin = "Pǐnmíngtíng · Four-Panel Folding Lacquer Dressing Screen"
+hanzi = "伴侣听风品茗亭 · 雕花翠玉四折更衣屏"
+domain_id = &"dao_companions_and_sanctuary_living"
+category_id = &"com_d01_dao_companion_secluded_tea_gazebo"
+asset_class = &"prop_workstation"
+archetype_name = "Four-Panel Folding Lacquer Dressing Screen"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/dao_companions_and_sanctuary_living/com_d01_dao_companion_secluded_tea_gazebo/carved_jade_dressing_screen/pristine_dormant.png"
+footprint_cells = Vector2i(2, 1)
+canvas_px = Vector2i(256, 128)
+collision_type = &"solid"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"wood"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"change_attire"

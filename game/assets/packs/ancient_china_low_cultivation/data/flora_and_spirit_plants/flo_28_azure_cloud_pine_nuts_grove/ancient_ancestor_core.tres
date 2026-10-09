@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.flora_and_spirit_plants.flo_28_azure_cloud_pine_nuts_grove.ancient_ancestor_core"
+display_name = "Azure Cloud Pine Nuts Grove - Millennial Ancestor Wood Heart"
+pinyin = "Qīngyún Sōngzǐshù · Millennial Ancestor Wood Heart"
+hanzi = "青云松子树 · 千载古木母株"
+domain_id = &"flora_and_spirit_plants"
+category_id = &"flo_28_azure_cloud_pine_nuts_grove"
+asset_class = &"flora_tree"
+archetype_name = "Millennial Ancestor Wood Heart"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_28_azure_cloud_pine_nuts_grove/ancient_ancestor_core/pristine_dormant.png"
+footprint_cells = Vector2i(3, 3)
+canvas_px = Vector2i(384, 384)
+collision_type = &"solid"
+primary_material = &"ancient_pine_wood"
+secondary_material = &"evergreen_needles"
+cultivation_element = &"wood"
+elevation_tier = 1
+mortal_realm_tier = "Qi Refining (Luyện Khí / 练气)"
+interactive_verb = &"commune_spirit"

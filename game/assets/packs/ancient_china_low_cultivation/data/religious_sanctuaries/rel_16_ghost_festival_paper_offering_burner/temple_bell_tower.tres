@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.religious_sanctuaries.rel_16_ghost_festival_paper_offering_burner.temple_bell_tower"
+display_name = "Ghost Festival Paper Offering Burner - Open Timber Grand Bell Pavilion"
+pinyin = "Shāozhǐ Jīnlú · Open Timber Grand Bell Pavilion"
+hanzi = "烧纸金炉 · 悬挂铜钟钟楼"
+domain_id = &"religious_sanctuaries"
+category_id = &"rel_16_ghost_festival_paper_offering_burner"
+asset_class = &"structure_temple"
+archetype_name = "Open Timber Grand Bell Pavilion"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_16_ghost_festival_paper_offering_burner/temple_bell_tower/rot_south_facade.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"metal"
+elevation_tier = 2
+mortal_realm_tier = "Foundation Establishment (Trúc Cơ / 筑基)"
+interactive_verb = &"strike_bell"

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.crypts_tombs_and_ruins.cry_17_broken_flying_sword_heap.subterranean_crypt_portal"
+display_name = "Broken Flying Sword Heap - Heavily Sealed Stone Tomb Portal"
+pinyin = "Cánjiànzhǒng · Heavily Sealed Stone Tomb Portal"
+hanzi = "残破灵剑冢 · 双扉巨锁墓门"
+domain_id = &"crypts_tombs_and_ruins"
+category_id = &"cry_17_broken_flying_sword_heap"
+asset_class = &"structure_building"
+archetype_name = "Heavily Sealed Stone Tomb Portal"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/crypts_tombs_and_ruins/cry_17_broken_flying_sword_heap/subterranean_crypt_portal/rot_south_facade.png"
+footprint_cells = Vector2i(3, 2)
+canvas_px = Vector2i(384, 256)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"metal"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"unseal_portal"

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.terrain_and_geology.ter_01_loess_plateau_yellow_soil.crag_outcropping"
+display_name = "Loess Plateau & Yellow Soil - Jagged Natural Rock Outcropping"
+pinyin = "Huángtǔ Gāoyuán · Jagged Natural Rock Outcropping"
+hanzi = "黄土高原 · 突兀犬牙岩块"
+domain_id = &"terrain_and_geology"
+category_id = &"ter_01_loess_plateau_yellow_soil"
+asset_class = &"landmark_mountain"
+archetype_name = "Jagged Natural Rock Outcropping"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_01_loess_plateau_yellow_soil/crag_outcropping/facing_south_front.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"obstacle"
+primary_material = &"earthen_loam"
+secondary_material = &"mineral_silt"
+cultivation_element = &"earth"
+elevation_tier = 1
+mortal_realm_tier = "Qi Refining (Luyện Khí / 练气)"
+interactive_verb = &"mine_stone"

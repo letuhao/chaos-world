@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.secret_realms_and_grotto_heavens.sec_r04_ancient_nine_tier_trial_tower.sealed_ancient_hermit_cave"
+display_name = "Ancient Nine-Tier Trial Tower - Ivy-Clothed Sealed Cavern Entrance"
+pinyin = "Shìliàntǎ · Ivy-Clothed Sealed Cavern Entrance"
+hanzi = "远古九重试炼石塔 · 藤萝缠锁古洞封印口"
+domain_id = &"secret_realms_and_grotto_heavens"
+category_id = &"sec_r04_ancient_nine_tier_trial_tower"
+asset_class = &"structure_building"
+archetype_name = "Ivy-Clothed Sealed Cavern Entrance"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/secret_realms_and_grotto_heavens/sec_r04_ancient_nine_tier_trial_tower/sealed_ancient_hermit_cave/rot_south_facade.png"
+footprint_cells = Vector2i(3, 2)
+canvas_px = Vector2i(384, 256)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"void"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"break_seal"

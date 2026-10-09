@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.atmospheric_vfx_and_phenomena.vfx_07_baleful_yin_qi_cemetery_black_smoke_curls.gently_falling_petals"
+display_name = "Baleful Yin-Qi & Cemetery Black Smoke Curls - Fluttering Organic Petals Diagonally Drifting"
+pinyin = "Yīnshàyān · Fluttering Organic Petals Diagonally Drifting"
+hanzi = "阴煞地气黑烟丝 · 随风斜飘漫天落瓣"
+domain_id = &"atmospheric_vfx_and_phenomena"
+category_id = &"vfx_07_baleful_yin_qi_cemetery_black_smoke_curls"
+asset_class = &"vfx_particle"
+archetype_name = "Fluttering Organic Petals Diagonally Drifting"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/atmospheric_vfx_and_phenomena/vfx_07_baleful_yin_qi_cemetery_black_smoke_curls/gently_falling_petals/subtle_ambient.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"none"
+primary_material = &"ethereal_spiritual_qi"
+secondary_material = &"astral_light_motes"
+cultivation_element = &"wood"
+elevation_tier = 6
+mortal_realm_tier = "Void Refinement (Luyện Hư / 炼虚)"
+interactive_verb = &"None"

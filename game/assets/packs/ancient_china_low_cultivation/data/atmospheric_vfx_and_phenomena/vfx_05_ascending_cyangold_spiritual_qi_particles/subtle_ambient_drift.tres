@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.atmospheric_vfx_and_phenomena.vfx_05_ascending_cyangold_spiritual_qi_particles.subtle_ambient_drift"
+display_name = "Ascending Cyan/Gold Spiritual Qi Particles - Sparse Soft Floating Particles & Drift"
+pinyin = "Língguāng · Sparse Soft Floating Particles & Drift"
+hanzi = "升腾灵光粒子 · 微弱升腾散漫光点"
+domain_id = &"atmospheric_vfx_and_phenomena"
+category_id = &"vfx_05_ascending_cyangold_spiritual_qi_particles"
+asset_class = &"vfx_particle"
+archetype_name = "Sparse Soft Floating Particles & Drift"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/atmospheric_vfx_and_phenomena/vfx_05_ascending_cyangold_spiritual_qi_particles/subtle_ambient_drift/subtle_ambient.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(256, 256)
+collision_type = &"none"
+primary_material = &"raw_metal_ore"
+secondary_material = &"quartz_vein"
+cultivation_element = &"yang"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"None"

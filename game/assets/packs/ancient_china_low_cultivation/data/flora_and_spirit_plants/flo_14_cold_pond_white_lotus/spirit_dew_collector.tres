@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.flora_and_spirit_plants.flo_14_cold_pond_white_lotus.spirit_dew_collector"
+display_name = "Cold-Pond White Lotus - Broad Leaf Collecting Spirit Dew"
+pinyin = "Hántán Xuělián · Broad Leaf Collecting Spirit Dew"
+hanzi = "寒潭雪莲 · 凝露承露阔叶"
+domain_id = &"flora_and_spirit_plants"
+category_id = &"flo_14_cold_pond_white_lotus"
+asset_class = &"flora_herb"
+archetype_name = "Broad Leaf Collecting Spirit Dew"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_14_cold_pond_white_lotus/spirit_dew_collector/pristine_dormant.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"none"
+primary_material = &"spiritual_root_stalk"
+secondary_material = &"medicinal_blossom"
+cultivation_element = &"ice"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"collect_dew"

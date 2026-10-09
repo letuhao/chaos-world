@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.world_events_and_calamities.cal_09_desecrated_ancestor_tablet_shrine_ruins.divine_impact_crater"
+display_name = "Desecrated Ancestor Tablet Shrine Ruins - Glassy Molten Rock Impact Crater Basin"
+pinyin = "Cáncí · Glassy Molten Rock Impact Crater Basin"
+hanzi = "战火残毁祖师宗祠 · 大能神通轰击琉璃大坑"
+domain_id = &"world_events_and_calamities"
+category_id = &"cal_09_desecrated_ancestor_tablet_shrine_ruins"
+asset_class = &"landmark_mountain"
+archetype_name = "Glassy Molten Rock Impact Crater Basin"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/world_events_and_calamities/cal_09_desecrated_ancestor_tablet_shrine_ruins/divine_impact_crater/facing_south_front.png"
+footprint_cells = Vector2i(4, 4)
+canvas_px = Vector2i(512, 512)
+collision_type = &"obstacle"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"earth"
+elevation_tier = 7
+mortal_realm_tier = "Body Integration (Hợp Thể / 合体)"
+interactive_verb = &"gather_slag"

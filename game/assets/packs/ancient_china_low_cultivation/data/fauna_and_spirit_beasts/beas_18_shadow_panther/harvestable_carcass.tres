@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.fauna_and_spirit_beasts.beas_18_shadow_panther.harvestable_carcass"
+display_name = "Shadow Panther - Fresh Fallen Beast Carcass"
+pinyin = "Yōuyǐng Hēibào · Fresh Fallen Beast Carcass"
+hanzi = "幽影黑豹 · 卧地待采兽尸"
+domain_id = &"fauna_and_spirit_beasts"
+category_id = &"beas_18_shadow_panther"
+asset_class = &"fauna_beast"
+archetype_name = "Fresh Fallen Beast Carcass"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/fauna_and_spirit_beasts/beas_18_shadow_panther/harvestable_carcass/idle_standing.png"
+footprint_cells = Vector2i(2, 1)
+canvas_px = Vector2i(256, 128)
+collision_type = &"walk_surface"
+primary_material = &"thick_pelt_fur"
+secondary_material = &"ivory_fangs"
+cultivation_element = &"earth"
+elevation_tier = 9
+mortal_realm_tier = "Tribulation Crossing (Độ Kiếp / 渡劫)"
+interactive_verb = &"harvest_pelt"

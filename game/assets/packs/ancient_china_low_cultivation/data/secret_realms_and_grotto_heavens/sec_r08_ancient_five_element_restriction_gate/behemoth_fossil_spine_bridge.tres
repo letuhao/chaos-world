@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.secret_realms_and_grotto_heavens.sec_r08_ancient_five_element_restriction_gate.behemoth_fossil_spine_bridge"
+display_name = "Ancient Five-Element Restriction Gate - Primordial Beast Ribs Spanning Chasm"
+pinyin = "Wǔxíngshímén · Primordial Beast Ribs Spanning Chasm"
+hanzi = "五行禁制流光石门 · 上古荒兽脊柱化石天桥"
+domain_id = &"secret_realms_and_grotto_heavens"
+category_id = &"sec_r08_ancient_five_element_restriction_gate"
+asset_class = &"landmark_mountain"
+archetype_name = "Primordial Beast Ribs Spanning Chasm"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/secret_realms_and_grotto_heavens/sec_r08_ancient_five_element_restriction_gate/behemoth_fossil_spine_bridge/facing_south_front.png"
+footprint_cells = Vector2i(4, 2)
+canvas_px = Vector2i(512, 256)
+collision_type = &"solid"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"wuxing_omni"
+elevation_tier = 7
+mortal_realm_tier = "Body Integration (Hợp Thể / 合体)"
+interactive_verb = &"cross_bridge"

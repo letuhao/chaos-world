@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.peak_mortal_and_tribulation.hmo_07_trans_continental_ancient_teleport_array.dengtian_ascension_stairs"
+display_name = "Trans-Continental Ancient Teleport Array - Colossal White Marble Staircase to Sky"
+pinyin = "Chuánsòngzhèn · Colossal White Marble Staircase to Sky"
+hanzi = "跨陆八荒古传送阵 · 通天白玉云梯长阶"
+domain_id = &"peak_mortal_and_tribulation"
+category_id = &"hmo_07_trans_continental_ancient_teleport_array"
+asset_class = &"structure_building"
+archetype_name = "Colossal White Marble Staircase to Sky"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/peak_mortal_and_tribulation/hmo_07_trans_continental_ancient_teleport_array/dengtian_ascension_stairs/rot_south_facade.png"
+footprint_cells = Vector2i(3, 3)
+canvas_px = Vector2i(384, 384)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"thunder"
+elevation_tier = 9
+mortal_realm_tier = "Tribulation Crossing (Độ Kiếp / 渡劫)"
+interactive_verb = &"ascend_stairs"

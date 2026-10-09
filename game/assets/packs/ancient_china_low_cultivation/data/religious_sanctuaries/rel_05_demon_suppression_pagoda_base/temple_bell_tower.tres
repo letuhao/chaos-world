@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.religious_sanctuaries.rel_05_demon_suppression_pagoda_base.temple_bell_tower"
+display_name = "Demon Suppression Pagoda Base - Open Timber Grand Bell Pavilion"
+pinyin = "Zhènmótǎ · Open Timber Grand Bell Pavilion"
+hanzi = "镇魔铁链宝塔 · 悬挂铜钟钟楼"
+domain_id = &"religious_sanctuaries"
+category_id = &"rel_05_demon_suppression_pagoda_base"
+asset_class = &"structure_temple"
+archetype_name = "Open Timber Grand Bell Pavilion"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_05_demon_suppression_pagoda_base/temple_bell_tower/rot_south_facade.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"earth"
+elevation_tier = 2
+mortal_realm_tier = "Foundation Establishment (Trúc Cơ / 筑基)"
+interactive_verb = &"strike_bell"

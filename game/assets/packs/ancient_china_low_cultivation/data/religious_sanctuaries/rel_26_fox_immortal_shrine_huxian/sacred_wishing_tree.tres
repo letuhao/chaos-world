@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.religious_sanctuaries.rel_26_fox_immortal_shrine_huxian.sacred_wishing_tree"
+display_name = "Fox Immortal Shrine (Huxian) - Ancient Banyan Draped with Red Ribbons"
+pinyin = "Húxiān Yěmiào · Ancient Banyan Draped with Red Ribbons"
+hanzi = "狐仙保家野庙 · 系满红丝愿树"
+domain_id = &"religious_sanctuaries"
+category_id = &"rel_26_fox_immortal_shrine_huxian"
+asset_class = &"flora_tree"
+archetype_name = "Ancient Banyan Draped with Red Ribbons"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_26_fox_immortal_shrine_huxian/sacred_wishing_tree/pristine_dormant.png"
+footprint_cells = Vector2i(3, 3)
+canvas_px = Vector2i(384, 384)
+collision_type = &"obstacle"
+primary_material = &"ancient_pine_wood"
+secondary_material = &"evergreen_needles"
+cultivation_element = &"earth"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"tie_prayer_ribbon"

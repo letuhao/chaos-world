@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.underground_abyss_and_caverns.sub_10_echoing_wind_chasm_earth_flute.bioluminescent_mushroom_forest"
+display_name = "Echoing Wind Chasm / Earth Flute - Glowing Cyan Giant Fungi Canopy"
+pinyin = "Dìlàihè · Glowing Cyan Giant Fungi Canopy"
+hanzi = "地籁天风回音壑 · 荧光伞盖巨蕈丛林"
+domain_id = &"underground_abyss_and_caverns"
+category_id = &"sub_10_echoing_wind_chasm_earth_flute"
+asset_class = &"flora_tree"
+archetype_name = "Glowing Cyan Giant Fungi Canopy"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/underground_abyss_and_caverns/sub_10_echoing_wind_chasm_earth_flute/bioluminescent_mushroom_forest/pristine_dormant.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"obstacle"
+primary_material = &"ancient_pine_wood"
+secondary_material = &"evergreen_needles"
+cultivation_element = &"wood"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"harvest_spores"

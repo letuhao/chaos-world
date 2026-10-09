@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.water_and_springs.wat_12_mountain_torrent_washout.stone_basin_spring"
+display_name = "Mountain Torrent Washout - Carved Stone Spring Basin"
+pinyin = "Bàohóng Chōnggōu · Carved Stone Spring Basin"
+hanzi = "暴洪冲沟 · 琢石蓄水灵泉"
+domain_id = &"water_and_springs"
+category_id = &"wat_12_mountain_torrent_washout"
+asset_class = &"prop_workstation"
+archetype_name = "Carved Stone Spring Basin"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_12_mountain_torrent_washout/stone_basin_spring/pristine_dormant.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"solid"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"water"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"drink_spring"

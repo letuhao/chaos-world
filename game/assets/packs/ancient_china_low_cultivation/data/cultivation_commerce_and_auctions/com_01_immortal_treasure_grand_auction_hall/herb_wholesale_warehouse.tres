@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.cultivation_commerce_and_auctions.com_01_immortal_treasure_grand_auction_hall.herb_wholesale_warehouse"
+display_name = "Immortal Treasure Grand Auction Hall - Tiered Stacks of Fragrant Burlap Herb Sacks"
+pinyin = "Pàimàidiàn · Tiered Stacks of Fragrant Burlap Herb Sacks"
+hanzi = "万宝巨型拍卖大殿 · 层叠麻袋大宗药材库"
+domain_id = &"cultivation_commerce_and_auctions"
+category_id = &"com_01_immortal_treasure_grand_auction_hall"
+asset_class = &"prop_container"
+archetype_name = "Tiered Stacks of Fragrant Burlap Herb Sacks"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/cultivation_commerce_and_auctions/com_01_immortal_treasure_grand_auction_hall/herb_wholesale_warehouse/pristine_dormant.png"
+footprint_cells = Vector2i(3, 2)
+canvas_px = Vector2i(384, 256)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"wood"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"inspect_wholesale"

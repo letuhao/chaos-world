@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.mining_and_metallurgy.min_01_deep_mine_shaft_headframe_windlass.blast_smelting_furnace"
+display_name = "Deep Mine Shaft Headframe & Windlass - Tall Stone Blast Smelting Furnace"
+pinyin = "Jǐngjià · Tall Stone Blast Smelting Furnace"
+hanzi = "绞盘深井井架 · 高耸石砌炼铁高炉"
+domain_id = &"mining_and_metallurgy"
+category_id = &"min_01_deep_mine_shaft_headframe_windlass"
+asset_class = &"structure_building"
+archetype_name = "Tall Stone Blast Smelting Furnace"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/mining_and_metallurgy/min_01_deep_mine_shaft_headframe_windlass/blast_smelting_furnace/rot_south_facade.png"
+footprint_cells = Vector2i(3, 3)
+canvas_px = Vector2i(384, 384)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"fire"
+elevation_tier = 2
+mortal_realm_tier = "Foundation Establishment (Trúc Cơ / 筑基)"
+interactive_verb = &"smelt_metal"

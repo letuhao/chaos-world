@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.religious_sanctuaries.rel_12_ancestral_spirit_tablet_chamber.earth_god_altar"
+display_name = "Ancestral Spirit Tablet Chamber - Rural Stone Altar to the Earth God"
+pinyin = "Páiwèishì · Rural Stone Altar to the Earth God"
+hanzi = "历代宗族牌位室 · 路隅矮石土地庙"
+domain_id = &"religious_sanctuaries"
+category_id = &"rel_12_ancestral_spirit_tablet_chamber"
+asset_class = &"structure_temple"
+archetype_name = "Rural Stone Altar to the Earth God"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_12_ancestral_spirit_tablet_chamber/earth_god_altar/rot_south_facade.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"earth"
+elevation_tier = 2
+mortal_realm_tier = "Foundation Establishment (Trúc Cơ / 筑基)"
+interactive_verb = &"offer_incense"

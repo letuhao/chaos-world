@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.water_and_springs.wat_15_bamboo_water_pipeline.clear_stream_flow"
+display_name = "Bamboo Water Pipeline - Crystal Clear Running Water Tile"
+pinyin = "Xuánkōng Máozhú Shuǐqú · Crystal Clear Running Water Tile"
+hanzi = "悬空毛竹水渠 · 清澈流动溪水"
+domain_id = &"water_and_springs"
+category_id = &"wat_15_bamboo_water_pipeline"
+asset_class = &"terrain_tile"
+archetype_name = "Crystal Clear Running Water Tile"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_15_bamboo_water_pipeline/clear_stream_flow/dry_temperate.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"walk_surface"
+primary_material = &"iron_bamboo"
+secondary_material = &"foliage"
+cultivation_element = &"water"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"None"

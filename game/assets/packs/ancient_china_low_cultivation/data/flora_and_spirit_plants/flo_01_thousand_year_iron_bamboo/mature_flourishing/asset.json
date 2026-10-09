@@ -1,0 +1,625 @@
+{
+  "id": "ancient_china_low_cultivation.flora_and_spirit_plants.mature_flourishing_flo_01_thousand_year_iron_bamboo",
+  "archetype": "mature_flourishing_flo_01_thousand_year_iron_bamboo",
+  "name": "Thousand-Year Iron Bamboo - Mature Flourishing Specimen",
+  "vietnamese_name": "Thiết Tiết Thanh Trúc - Cây Trưởng Thành Xanh Tốt",
+  "hanzi": "铁节青竹 · 成熟繁茂全株",
+  "category": "flo_01_thousand_year_iron_bamboo",
+  "category_code": "FLO-01",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_01_thousand_year_iron_bamboo",
+  "asset_class": "flora_tree",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "obstacle",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect_plant",
+  "gameplay_role": "flora_tree entity supporting Thousand-Year Iron Bamboo gameplay",
+  "destructible": true,
+  "material": "dense fibrous green bamboo with metallic sheen",
+  "cultivation_element": "wood",
+  "prompt_summary": "Single isolated 2D RPG game prop of thousand-year iron bamboo - mature flourishing specimen, authentic thousand-year iron bamboo materials, East Asian Xianxia craftsmanship, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese craftsmanship, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Natural Flora & Spiritual Plants",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "pristine_dormant",
+      "name": "Pristine Dormant State",
+      "prompt_modifier": "cold clean polished state, unlit hearth, intact locks",
+      "variant_id": "pristine_dormant",
+      "variant_name": "Pristine Dormant State",
+      "description": "cold clean polished state, unlit hearth, intact locks",
+      "prompt": "Single isolated 2D RPG plant sprite of thousand-year iron bamboo - mature flourishing specimen, dense fibrous green bamboo with metallic sheen, cold clean polished state, unlit hearth, intact locks, Ancient Chinese herbal lore aesthetic, traditional Bencao Gangmu medicinal plant style, gouache hand-painted with dark ink contours, ground root base contact only, zero terrain mound, isolated on solid plain white background.",
+      "negative_prompt": "diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_01_thousand_year_iron_bamboo/mature_flourishing_flo_01_thousand_year_iron_bamboo/pristine_dormant.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.46,
+            0.435
+          ],
+          [
+            0.372,
+            0.375
+          ]
+        ],
+        "frac_zero": 0.6565,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.396,
+            0.705,
+            0.113,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.353,
+            0.908,
+            0.992,
+            0.707,
+            0.092,
+            0.0
+          ],
+          [
+            0.089,
+            0.561,
+            0.985,
+            0.933,
+            0.987,
+            0.281,
+            0.0
+          ],
+          [
+            0.649,
+            0.931,
+            0.891,
+            0.765,
+            0.938,
+            0.889,
+            0.186
+          ],
+          [
+            0.251,
+            0.377,
+            0.629,
+            0.925,
+            0.521,
+            0.604,
+            0.387
+          ],
+          [
+            0.0,
+            0.004,
+            0.27,
+            0.615,
+            0.167,
+            0.042,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.362,
+            0.651,
+            0.009,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          21,
+          18
+        ],
+        "trunk_columns": [
+          2,
+          3
+        ],
+        "contact_px": 54,
+        "contact_reference_px": 54.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "active_operating",
+      "name": "Active Operating State",
+      "prompt_modifier": "active glowing spiritual flames, heat haze, open functioning elements",
+      "variant_id": "active_operating",
+      "variant_name": "Active Operating State",
+      "description": "active glowing spiritual flames, heat haze, open functioning elements",
+      "prompt": "Single isolated 2D RPG plant sprite of thousand-year iron bamboo - mature flourishing specimen, dense fibrous green bamboo with metallic sheen, active glowing spiritual flames, heat haze, open functioning elements, Ancient Chinese herbal lore aesthetic, traditional Bencao Gangmu medicinal plant style, gouache hand-painted with dark ink contours, ground root base contact only, zero terrain mound, isolated on solid plain white background.",
+      "negative_prompt": "diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_01_thousand_year_iron_bamboo/mature_flourishing_flo_01_thousand_year_iron_bamboo/active_operating.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.472,
+            0.45
+          ],
+          [
+            0.417,
+            0.397
+          ]
+        ],
+        "frac_zero": 0.7082,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          5,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.017,
+            0.182,
+            0.649,
+            0.118,
+            0.0
+          ],
+          [
+            0.06,
+            0.776,
+            1.0,
+            0.579,
+            0.006
+          ],
+          [
+            0.415,
+            0.871,
+            0.777,
+            0.762,
+            0.317
+          ],
+          [
+            0.351,
+            0.593,
+            0.942,
+            0.541,
+            0.412
+          ],
+          [
+            0.149,
+            0.421,
+            0.638,
+            0.372,
+            0.094
+          ],
+          [
+            0.015,
+            0.493,
+            0.717,
+            0.351,
+            0.027
+          ],
+          [
+            0.142,
+            0.562,
+            0.974,
+            0.519,
+            0.099
+          ]
+        ],
+        "crop_offset": [
+          50,
+          18
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3
+        ],
+        "contact_px": 136,
+        "contact_reference_px": 136.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "damaged_weathered",
+      "name": "Damaged Weathered State",
+      "prompt_modifier": "mossy aged patina, chipped corners, cracked surfaces",
+      "variant_id": "damaged_weathered",
+      "variant_name": "Damaged Weathered State",
+      "description": "mossy aged patina, chipped corners, cracked surfaces",
+      "prompt": "Single isolated 2D RPG plant sprite of thousand-year iron bamboo - mature flourishing specimen, dense fibrous green bamboo with metallic sheen, mossy aged patina, chipped corners, cracked surfaces, Ancient Chinese herbal lore aesthetic, traditional Bencao Gangmu medicinal plant style, gouache hand-painted with dark ink contours, ground root base contact only, zero terrain mound, isolated on solid plain white background.",
+      "negative_prompt": "diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_01_thousand_year_iron_bamboo/mature_flourishing_flo_01_thousand_year_iron_bamboo/damaged_weathered.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.469,
+            0.475
+          ],
+          [
+            0.31,
+            0.315
+          ]
+        ],
+        "frac_zero": 0.7048,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.14,
+            0.714,
+            0.582,
+            0.047,
+            0.0
+          ],
+          [
+            0.021,
+            0.694,
+            0.98,
+            0.98,
+            0.298,
+            0.0
+          ],
+          [
+            0.271,
+            0.692,
+            0.716,
+            0.628,
+            0.902,
+            0.26
+          ],
+          [
+            0.176,
+            0.402,
+            0.696,
+            0.646,
+            0.327,
+            0.09
+          ],
+          [
+            0.0,
+            0.228,
+            0.714,
+            0.463,
+            0.169,
+            0.0
+          ],
+          [
+            0.0,
+            0.054,
+            0.743,
+            0.492,
+            0.061,
+            0.0
+          ],
+          [
+            0.037,
+            0.472,
+            0.986,
+            0.89,
+            0.25,
+            0.003
+          ]
+        ],
+        "crop_offset": [
+          37,
+          18
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3
+        ],
+        "contact_px": 140,
+        "contact_reference_px": 140.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "ruined_rubble",
+      "name": "Broken Shattered Rubble",
+      "prompt_modifier": "collapsed fractured shards, scavengeable parts",
+      "variant_id": "ruined_rubble",
+      "variant_name": "Broken Shattered Rubble",
+      "description": "collapsed fractured shards, scavengeable parts",
+      "prompt": "Single isolated 2D RPG plant sprite of thousand-year iron bamboo - mature flourishing specimen, dense fibrous green bamboo with metallic sheen, collapsed fractured shards, scavengeable parts, Ancient Chinese herbal lore aesthetic, traditional Bencao Gangmu medicinal plant style, gouache hand-painted with dark ink contours, ground root base contact only, zero terrain mound, isolated on solid plain white background.",
+      "negative_prompt": "diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_01_thousand_year_iron_bamboo/mature_flourishing_flo_01_thousand_year_iron_bamboo/ruined_rubble.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.458,
+            0.449
+          ],
+          [
+            0.456,
+            0.411
+          ]
+        ],
+        "frac_zero": 0.6669,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.133,
+            0.647,
+            0.564,
+            0.041,
+            0.0
+          ],
+          [
+            0.067,
+            0.666,
+            1.0,
+            0.993,
+            0.638,
+            0.021
+          ],
+          [
+            0.46,
+            0.875,
+            0.749,
+            0.463,
+            0.408,
+            0.081
+          ],
+          [
+            0.06,
+            0.267,
+            0.686,
+            0.425,
+            0.758,
+            0.376
+          ],
+          [
+            0.102,
+            0.255,
+            0.712,
+            0.514,
+            0.044,
+            0.0
+          ],
+          [
+            0.071,
+            0.386,
+            0.925,
+            0.652,
+            0.261,
+            0.0
+          ],
+          [
+            0.289,
+            0.746,
+            0.958,
+            0.918,
+            0.684,
+            0.194
+          ]
+        ],
+        "crop_offset": [
+          34,
+          18
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 181,
+        "contact_reference_px": 181.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "FLO-01",
+    "domain": "flora_and_spirit_plants",
+    "interaction": "inspect_plant",
+    "collision_behavior": "obstacle",
+    "element": "wood",
+    "tier": 1
+  },
+  "category_id": "flo_01_thousand_year_iron_bamboo",
+  "domain_id": "flora_and_spirit_plants",
+  "pinyin": "Tiějié Qīngzhú · Mature Flourishing Specimen",
+  "archetype_name": "Mature Flourishing Specimen",
+  "footprint_subcells": {
+    "w": 8,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 256,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 2,
+    "h": 2
+  },
+  "collision": {
+    "type": "obstacle",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": false,
+    "height_layer": "ground"
+  },
+  "primary_material": "iron_bamboo",
+  "secondary_material": "foliage",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Wood affinity (Qi Refining (Luyện Khí / 练气))",
+  "elevation_tier": 1,
+  "mortal_realm_tier": "Qi Refining (Luyện Khí / 练气)"
+}

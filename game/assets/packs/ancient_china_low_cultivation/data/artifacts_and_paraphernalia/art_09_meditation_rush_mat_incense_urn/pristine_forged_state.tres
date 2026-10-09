@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.artifacts_and_paraphernalia.art_09_meditation_rush_mat_incense_urn.pristine_forged_state"
+display_name = "Meditation Rush Mat & Incense Urn - Masterwork Flawless Forged Specimen"
+pinyin = "Pútuán Xiāngjǐ · Masterwork Flawless Forged Specimen"
+hanzi = "蒲团香几 · 宝光内敛神兵原品"
+domain_id = &"artifacts_and_paraphernalia"
+category_id = &"art_09_meditation_rush_mat_incense_urn"
+asset_class = &"item_tool"
+archetype_name = "Masterwork Flawless Forged Specimen"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/artifacts_and_paraphernalia/art_09_meditation_rush_mat_incense_urn/pristine_forged_state/pos_inventory_icon_45deg.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"none"
+primary_material = &"carved_wood"
+secondary_material = &"polished_bronze"
+cultivation_element = &"earth"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"inspect_relic"

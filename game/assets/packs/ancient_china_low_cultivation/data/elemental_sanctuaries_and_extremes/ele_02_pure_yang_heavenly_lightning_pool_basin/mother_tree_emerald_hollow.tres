@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.elemental_sanctuaries_and_extremes.ele_02_pure_yang_heavenly_lightning_pool_basin.mother_tree_emerald_hollow"
+display_name = "Pure Yang Heavenly Lightning Pool Basin - Glowing Hollow Core of Primordial Wood"
+pinyin = "Yǐnléichí · Glowing Hollow Core of Primordial Wood"
+hanzi = "九霄神雷引雷池 · 青木神髓万年古树心"
+domain_id = &"elemental_sanctuaries_and_extremes"
+category_id = &"ele_02_pure_yang_heavenly_lightning_pool_basin"
+asset_class = &"flora_tree"
+archetype_name = "Glowing Hollow Core of Primordial Wood"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/elemental_sanctuaries_and_extremes/ele_02_pure_yang_heavenly_lightning_pool_basin/mother_tree_emerald_hollow/pristine_dormant.png"
+footprint_cells = Vector2i(3, 3)
+canvas_px = Vector2i(384, 384)
+collision_type = &"solid"
+primary_material = &"ancient_pine_wood"
+secondary_material = &"evergreen_needles"
+cultivation_element = &"thunder"
+elevation_tier = 8
+mortal_realm_tier = "Great Ascension (Đại Thừa / 大乘)"
+interactive_verb = &"commune_life"

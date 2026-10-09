@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.water_and_springs.wat_04_silt_laden_mortal_canal.riverbank_reed_edge"
+display_name = "Silt-Laden Mortal Canal - Marshy Riverbank Shoreline"
+pinyin = "Cáoyùn Zhuóqú · Marshy Riverbank Shoreline"
+hanzi = "漕运浊渠 · 芦苇湿地水岸"
+domain_id = &"water_and_springs"
+category_id = &"wat_04_silt_laden_mortal_canal"
+asset_class = &"terrain_tile"
+archetype_name = "Marshy Riverbank Shoreline"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_04_silt_laden_mortal_canal/riverbank_reed_edge/dry_temperate.png"
+footprint_cells = Vector2i(2, 1)
+canvas_px = Vector2i(256, 128)
+collision_type = &"walk_surface"
+primary_material = &"earthen_loam"
+secondary_material = &"mineral_silt"
+cultivation_element = &"water"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"forage_reeds"

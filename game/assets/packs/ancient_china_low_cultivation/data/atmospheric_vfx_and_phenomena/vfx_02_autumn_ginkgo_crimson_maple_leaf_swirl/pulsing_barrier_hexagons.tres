@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.atmospheric_vfx_and_phenomena.vfx_02_autumn_ginkgo_crimson_maple_leaf_swirl.pulsing_barrier_hexagons"
+display_name = "Autumn Ginkgo & Crimson Maple Leaf Swirl - Shimmering Honeycomb Forcefield Mesh"
+pinyin = "Yínxìngfēng · Shimmering Honeycomb Forcefield Mesh"
+hanzi = "银杏红枫旋风 · 六角蜂窝微光结界网"
+domain_id = &"atmospheric_vfx_and_phenomena"
+category_id = &"vfx_02_autumn_ginkgo_crimson_maple_leaf_swirl"
+asset_class = &"vfx_particle"
+archetype_name = "Shimmering Honeycomb Forcefield Mesh"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/atmospheric_vfx_and_phenomena/vfx_02_autumn_ginkgo_crimson_maple_leaf_swirl/pulsing_barrier_hexagons/subtle_ambient.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"none"
+primary_material = &"ethereal_spiritual_qi"
+secondary_material = &"astral_light_motes"
+cultivation_element = &"wind"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"None"

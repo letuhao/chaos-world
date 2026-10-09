@@ -1,0 +1,26 @@
+{
+  "asset_id": "ancient_china_low_cultivation.sec_01_mountain_sect_entry_gate_shanmen.pill_alchemy_chamber_sec_01_mountain_sect_entry_gate_shanmen",
+  "variant_slug": "rot_east_flank",
+  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_01_mountain_sect_entry_gate_shanmen/pill_alchemy_chamber_sec_01_mountain_sect_entry_gate_shanmen/rot_east_flank.png",
+  "width": 768,
+  "height": 768,
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    768,
+    768
+  ],
+  "collision_type": "solid",
+  "matrix_data": {
+    "subgrid_rows": 4,
+    "subgrid_cols": 4,
+    "walk_surface": false,
+    "elevation_step": 0,
+    "cliff_drop": false,
+    "contact_pixels": [],
+    "source_render_seed": 11302,
+    "source_candidate": "pill_alchemy_pavilion_rotations"
+  }
+}

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.world_events_and_calamities.cal_01_beast_tide_breached_city_gate.claw_torn_iron_caltrops"
+display_name = "Beast Tide Breached City Gate - Mangled Iron Barricades & Snapped Chains"
+pinyin = "Shòucháomén · Mangled Iron Barricades & Snapped Chains"
+hanzi = "狂暴兽潮撞裂城门 · 巨爪踩瘪铁荆棘拒马"
+domain_id = &"world_events_and_calamities"
+category_id = &"cal_01_beast_tide_breached_city_gate"
+asset_class = &"prop_workstation"
+archetype_name = "Mangled Iron Barricades & Snapped Chains"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/world_events_and_calamities/cal_01_beast_tide_breached_city_gate/claw_torn_iron_caltrops/pristine_dormant.png"
+footprint_cells = Vector2i(2, 1)
+canvas_px = Vector2i(256, 128)
+collision_type = &"obstacle"
+primary_material = &"raw_metal_ore"
+secondary_material = &"quartz_vein"
+cultivation_element = &"blood"
+elevation_tier = 6
+mortal_realm_tier = "Void Refinement (Luyện Hư / 炼虚)"
+interactive_verb = &"salvage_scrap"

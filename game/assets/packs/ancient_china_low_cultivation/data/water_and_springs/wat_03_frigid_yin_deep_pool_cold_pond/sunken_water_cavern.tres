@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.water_and_springs.wat_03_frigid_yin_deep_pool_cold_pond.sunken_water_cavern"
+display_name = "Frigid Yin Deep Pool (Cold Pond) - Subterranean Submerged Sump"
+pinyin = "Jiǔyōu Hántán · Subterranean Submerged Sump"
+hanzi = "九幽寒潭 · 地下伏流溶洞口"
+domain_id = &"water_and_springs"
+category_id = &"wat_03_frigid_yin_deep_pool_cold_pond"
+asset_class = &"landmark_mountain"
+archetype_name = "Subterranean Submerged Sump"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_03_frigid_yin_deep_pool_cold_pond/sunken_water_cavern/facing_south_front.png"
+footprint_cells = Vector2i(3, 2)
+canvas_px = Vector2i(384, 256)
+collision_type = &"obstacle"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"water"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"enter_cave"

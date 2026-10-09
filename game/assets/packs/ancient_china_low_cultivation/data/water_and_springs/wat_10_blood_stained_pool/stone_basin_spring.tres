@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.water_and_springs.wat_10_blood_stained_pool.stone_basin_spring"
+display_name = "Blood-Stained Pool - Carved Stone Spring Basin"
+pinyin = "Fúshī Xuèshuǐkēng · Carved Stone Spring Basin"
+hanzi = "伏尸血水坑 · 琢石蓄水灵泉"
+domain_id = &"water_and_springs"
+category_id = &"wat_10_blood_stained_pool"
+asset_class = &"prop_workstation"
+archetype_name = "Carved Stone Spring Basin"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_10_blood_stained_pool/stone_basin_spring/pristine_dormant.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"solid"
+primary_material = &"liquid_water"
+secondary_material = &"riverbed_pebbles"
+cultivation_element = &"water"
+elevation_tier = 1
+mortal_realm_tier = "Qi Refining (Luyện Khí / 练气)"
+interactive_verb = &"drink_spring"

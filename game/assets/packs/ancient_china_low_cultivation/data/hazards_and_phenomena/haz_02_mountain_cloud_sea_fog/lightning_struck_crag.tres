@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.hazards_and_phenomena.haz_02_mountain_cloud_sea_fog.lightning_struck_crag"
+display_name = "Mountain Cloud-Sea Fog - Conductive Lightning Strike Crag"
+pinyin = "Piāomiǎo Yúnhǎilán · Conductive Lightning Strike Crag"
+hanzi = "缥缈云海岚 · 焦黑引雷孤石"
+domain_id = &"hazards_and_phenomena"
+category_id = &"haz_02_mountain_cloud_sea_fog"
+asset_class = &"landmark_mountain"
+archetype_name = "Conductive Lightning Strike Crag"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_02_mountain_cloud_sea_fog/lightning_struck_crag/facing_south_front.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"solid"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"thunder"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"gather_lightning_ash"

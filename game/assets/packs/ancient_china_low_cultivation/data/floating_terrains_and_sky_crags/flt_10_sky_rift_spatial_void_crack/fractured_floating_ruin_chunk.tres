@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.floating_terrains_and_sky_crags.flt_10_sky_rift_spatial_void_crack.fractured_floating_ruin_chunk"
+display_name = "Sky-Rift Spatial Void Crack - Cracked Flying Eaves Floating Slab"
+pinyin = "Xūkōng Lièfèng · Cracked Flying Eaves Floating Slab"
+hanzi = "虚空碎裂裂缝 · 坠星残垣浮空瓦砾"
+domain_id = &"floating_terrains_and_sky_crags"
+category_id = &"flt_10_sky_rift_spatial_void_crack"
+asset_class = &"landmark_mountain"
+archetype_name = "Cracked Flying Eaves Floating Slab"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/floating_terrains_and_sky_crags/flt_10_sky_rift_spatial_void_crack/fractured_floating_ruin_chunk/facing_south_front.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"solid"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"wind"
+elevation_tier = 6
+mortal_realm_tier = "Void Refinement (Luyện Hư / 炼虚)"
+interactive_verb = &"inspect_ruins"

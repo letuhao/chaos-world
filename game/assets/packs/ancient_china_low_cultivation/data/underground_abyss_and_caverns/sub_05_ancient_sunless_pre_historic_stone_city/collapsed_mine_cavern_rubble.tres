@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.underground_abyss_and_caverns.sub_05_ancient_sunless_pre_historic_stone_city.collapsed_mine_cavern_rubble"
+display_name = "Ancient Sunless Pre-Historic Stone City - Shattered Stone & Snapped Timber Heap"
+pinyin = "Dìdǐ Shíchéng · Shattered Stone & Snapped Timber Heap"
+hanzi = "地底盲目石殿城 · 地底崩塌落石废墟"
+domain_id = &"underground_abyss_and_caverns"
+category_id = &"sub_05_ancient_sunless_pre_historic_stone_city"
+asset_class = &"prop_workstation"
+archetype_name = "Shattered Stone & Snapped Timber Heap"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/underground_abyss_and_caverns/sub_05_ancient_sunless_pre_historic_stone_city/collapsed_mine_cavern_rubble/pristine_dormant.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"obstacle"
+primary_material = &"carved_wood"
+secondary_material = &"polished_bronze"
+cultivation_element = &"earth"
+elevation_tier = 6
+mortal_realm_tier = "Void Refinement (Luyện Hư / 炼虚)"
+interactive_verb = &"clear_rubble"

@@ -1,0 +1,426 @@
+{
+  "id": "ancient_china_low_cultivation.terrain_and_geology.flat_surface_tile_ter_05_dry_cracked_clay_flats",
+  "archetype": "flat_surface_tile_ter_05_dry_cracked_clay_flats",
+  "name": "Dry Cracked Clay Flats - Pristine Flat Surface Tile",
+  "vietnamese_name": "Quy Liệt Hãn Địa - Nguyên Bản Phiến Thổ",
+  "hanzi": "龟裂旱地 · 平整地表地砖",
+  "category": "ter_05_dry_cracked_clay_flats",
+  "category_code": "TER-05",
+  "domain": "terrain_and_geology",
+  "sub_domain": "ter_05_dry_cracked_clay_flats",
+  "asset_class": "terrain_tile",
+  "type": "tile",
+  "alpha": "opaque",
+  "pivot": "center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "terrain_tile entity supporting Dry Cracked Clay Flats gameplay",
+  "destructible": false,
+  "material": "compact mineral soil with fine clay granules",
+  "cultivation_element": "earth",
+  "prompt_summary": "Seamless flat top-down ground terrain texture tile of dry cracked clay flats - pristine flat surface tile, authentic dry cracked clay flats materials, East Asian Xianxia craftsmanship, pure 90-degree top-down planar view, gouache watercolor hand-painted texture with fine mineral speckles, zero vertical perspective, edge-to-edge full canvas coverage.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Terrains & Geological Formations",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "dry_temperate",
+      "name": "Dry Normal State",
+      "prompt_modifier": "standard dry earthen surface, clear natural grain",
+      "variant_id": "dry_temperate",
+      "variant_name": "Dry Normal State",
+      "description": "standard dry earthen surface, clear natural grain",
+      "prompt": "Opaque square ground terrain: dry cracked clay flats - pristine flat surface tile, compact mineral soil with fine clay granules, standard dry earthen surface, clear natural grain, painterly anime gouache, subtle natural grain, broad uniform ground surface, continuous edge-to-edge flat surface filling 100% of canvas, perpendicular 90-degree overhead angle looking straight down.",
+      "negative_prompt": "cliffs, canyon, pillars, columns, rock towers, elevation, horizon, sky, clouds, landscape, vista, distant view, perspective, 3D scene, chasm, ravine, valley, walls, border, frame, UI, watermark, props, objects, buildings, trees",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_05_dry_cracked_clay_flats/flat_surface_tile_ter_05_dry_cracked_clay_flats/dry_temperate.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            1.0
+          ]
+        ],
+        "frac_zero": 0.0,
+        "blocks": [
+          [
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            true
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          0,
+          0
+        ],
+        "sub_grid": [
+          4,
+          4
+        ],
+        "sub_fill": [
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        ],
+        "crop_offset": [
+          0,
+          0
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "contact_px": 128,
+        "contact_reference_px": 128.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "wet_monsoon",
+      "name": "Wet Saturated Rain",
+      "prompt_modifier": "darkened damp ground with reflective standing water puddles",
+      "variant_id": "wet_monsoon",
+      "variant_name": "Wet Saturated Rain",
+      "description": "darkened damp ground with reflective standing water puddles",
+      "prompt": "Opaque square ground terrain: dry cracked clay flats - pristine flat surface tile, compact mineral soil with fine clay granules, darkened damp ground with reflective standing water puddles, painterly anime gouache, subtle natural grain, broad uniform ground surface, continuous edge-to-edge flat surface filling 100% of canvas, perpendicular 90-degree overhead angle looking straight down.",
+      "negative_prompt": "cliffs, canyon, pillars, columns, rock towers, elevation, horizon, sky, clouds, landscape, vista, distant view, perspective, 3D scene, chasm, ravine, valley, walls, border, frame, UI, watermark, props, objects, buildings, trees",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_05_dry_cracked_clay_flats/flat_surface_tile_ter_05_dry_cracked_clay_flats/wet_monsoon.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            1.0
+          ]
+        ],
+        "frac_zero": 0.0,
+        "blocks": [
+          [
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            true
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          0,
+          0
+        ],
+        "sub_grid": [
+          4,
+          4
+        ],
+        "sub_fill": [
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        ],
+        "crop_offset": [
+          0,
+          0
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "contact_px": 128,
+        "contact_reference_px": 128.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "winter_snow_crust",
+      "name": "Winter Frost Crust",
+      "prompt_modifier": "fine white crystalline frost dusting over crevices",
+      "variant_id": "winter_snow_crust",
+      "variant_name": "Winter Frost Crust",
+      "description": "fine white crystalline frost dusting over crevices",
+      "prompt": "Opaque square ground terrain: dry cracked clay flats - pristine flat surface tile, compact mineral soil with fine clay granules, fine white crystalline frost dusting over crevices, painterly anime gouache, subtle natural grain, broad uniform ground surface, continuous edge-to-edge flat surface filling 100% of canvas, perpendicular 90-degree overhead angle looking straight down.",
+      "negative_prompt": "cliffs, canyon, pillars, columns, rock towers, elevation, horizon, sky, clouds, landscape, vista, distant view, perspective, 3D scene, chasm, ravine, valley, walls, border, frame, UI, watermark, props, objects, buildings, trees",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_05_dry_cracked_clay_flats/flat_surface_tile_ter_05_dry_cracked_clay_flats/winter_snow_crust.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            1.0
+          ]
+        ],
+        "frac_zero": 0.0,
+        "blocks": [
+          [
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            true
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          0,
+          0
+        ],
+        "sub_grid": [
+          4,
+          4
+        ],
+        "sub_fill": [
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        ],
+        "crop_offset": [
+          0,
+          0
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "contact_px": 128,
+        "contact_reference_px": 128.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "yin_corrupted",
+      "name": "Baleful Yin Corrupted",
+      "prompt_modifier": "scorched ash-grey blighted ground with wisps of dark violet miasma",
+      "variant_id": "yin_corrupted",
+      "variant_name": "Baleful Yin Corrupted",
+      "description": "scorched ash-grey blighted ground with wisps of dark violet miasma",
+      "prompt": "Opaque square ground terrain: dry cracked clay flats - pristine flat surface tile, compact mineral soil with fine clay granules, scorched ash-grey blighted ground with wisps of dark violet miasma, painterly anime gouache, subtle natural grain, broad uniform ground surface, continuous edge-to-edge flat surface filling 100% of canvas, perpendicular 90-degree overhead angle looking straight down.",
+      "negative_prompt": "cliffs, canyon, pillars, columns, rock towers, elevation, horizon, sky, clouds, landscape, vista, distant view, perspective, 3D scene, chasm, ravine, valley, walls, border, frame, UI, watermark, props, objects, buildings, trees",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_05_dry_cracked_clay_flats/flat_surface_tile_ter_05_dry_cracked_clay_flats/yin_corrupted.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            1.0
+          ]
+        ],
+        "frac_zero": 0.0,
+        "blocks": [
+          [
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            true
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          0,
+          0
+        ],
+        "sub_grid": [
+          4,
+          4
+        ],
+        "sub_fill": [
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        ],
+        "crop_offset": [
+          0,
+          0
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "contact_px": 128,
+        "contact_reference_px": 128.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "TER-05",
+    "domain": "terrain_and_geology",
+    "interaction": "examine",
+    "collision_behavior": "walk_surface",
+    "element": "earth",
+    "tier": 4
+  },
+  "category_id": "ter_05_dry_cracked_clay_flats",
+  "domain_id": "terrain_and_geology",
+  "pinyin": "Jūnliè Hàndì · Pristine Flat Surface Tile",
+  "archetype_name": "Pristine Flat Surface Tile",
+  "footprint_subcells": {
+    "w": 4,
+    "h": 4
+  },
+  "footprint_px": {
+    "w": 128,
+    "h": 128
+  },
+  "cell_span": {
+    "w": 1,
+    "h": 1
+  },
+  "collision": {
+    "type": "walk_surface",
+    "shape": "box",
+    "solid": false,
+    "blocks_movement": false,
+    "blocks_projectiles": false,
+    "vision_block": false,
+    "height_layer": "ground"
+  },
+  "primary_material": "earthen_loam",
+  "secondary_material": "mineral_silt",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Earth affinity (Nascent Soul (Nguyên Anh / 元婴))",
+  "elevation_tier": 4,
+  "mortal_realm_tier": "Nascent Soul (Nguyên Anh / 元婴)"
+}

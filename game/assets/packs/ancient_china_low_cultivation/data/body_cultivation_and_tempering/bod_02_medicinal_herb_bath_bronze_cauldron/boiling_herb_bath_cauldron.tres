@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.body_cultivation_and_tempering.bod_02_medicinal_herb_bath_bronze_cauldron.boiling_herb_bath_cauldron"
+display_name = "Medicinal Herb Bath Bronze Cauldron - Boiling Medicinal Broth Bronze Ding"
+pinyin = "Yàoyùdǐng · Boiling Medicinal Broth Bronze Ding"
+hanzi = "滚沸药浴淬体鼎 · 沸腾药汁淬体三足铜鼎"
+domain_id = &"body_cultivation_and_tempering"
+category_id = &"bod_02_medicinal_herb_bath_bronze_cauldron"
+asset_class = &"prop_workstation"
+archetype_name = "Boiling Medicinal Broth Bronze Ding"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/body_cultivation_and_tempering/bod_02_medicinal_herb_bath_bronze_cauldron/boiling_herb_bath_cauldron/pristine_dormant.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"solid"
+primary_material = &"cast_bronze"
+secondary_material = &"refractory_clay"
+cultivation_element = &"wood"
+elevation_tier = 6
+mortal_realm_tier = "Void Refinement (Luyện Hư / 炼虚)"
+interactive_verb = &"bathe_medicinal"

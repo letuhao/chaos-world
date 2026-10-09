@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.fauna_and_spirit_beasts.beas_02_crimson_eyed_spirit_wolf.aggressive_combat_posture"
+display_name = "Crimson-Eyed Spirit Wolf - Bared-Fangs Aggressive Combat Stance"
+pinyin = "Chìmù Língláng · Bared-Fangs Aggressive Combat Stance"
+hanzi = "赤目青灵狼 · 龇牙扑杀战姿"
+domain_id = &"fauna_and_spirit_beasts"
+category_id = &"beas_02_crimson_eyed_spirit_wolf"
+asset_class = &"fauna_beast"
+archetype_name = "Bared-Fangs Aggressive Combat Stance"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/fauna_and_spirit_beasts/beas_02_crimson_eyed_spirit_wolf/aggressive_combat_posture/idle_standing.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"solid"
+primary_material = &"thick_pelt_fur"
+secondary_material = &"ivory_fangs"
+cultivation_element = &"earth"
+elevation_tier = 1
+mortal_realm_tier = "Qi Refining (Luyện Khí / 练气)"
+interactive_verb = &"attack_beast"

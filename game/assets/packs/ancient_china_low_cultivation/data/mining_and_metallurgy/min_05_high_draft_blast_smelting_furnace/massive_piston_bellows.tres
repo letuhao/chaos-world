@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.mining_and_metallurgy.min_05_high_draft_blast_smelting_furnace.massive_piston_bellows"
+display_name = "High-Draft Blast Smelting Furnace - Giant Two-Man Wooden Piston Bellows"
+pinyin = "Gāolú · Giant Two-Man Wooden Piston Bellows"
+hanzi = "炼铁化铜耐火高炉 · 双动巨型木风箱"
+domain_id = &"mining_and_metallurgy"
+category_id = &"min_05_high_draft_blast_smelting_furnace"
+asset_class = &"prop_workstation"
+archetype_name = "Giant Two-Man Wooden Piston Bellows"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/mining_and_metallurgy/min_05_high_draft_blast_smelting_furnace/massive_piston_bellows/pristine_dormant.png"
+footprint_cells = Vector2i(2, 1)
+canvas_px = Vector2i(256, 128)
+collision_type = &"solid"
+primary_material = &"cast_bronze"
+secondary_material = &"refractory_clay"
+cultivation_element = &"fire"
+elevation_tier = 2
+mortal_realm_tier = "Foundation Establishment (Trúc Cơ / 筑基)"
+interactive_verb = &"pump_bellows"

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.races_and_tribal_enclaves.rac_10_giant_avian_cliffside_cloud_eyrie.emberblood_volcanic_hearth"
+display_name = "Giant Avian Cliffside Cloud Eyrie - Obsidian Volcanic Smelting Hearth"
+pinyin = "Yǔzúcháo · Obsidian Volcanic Smelting Hearth"
+hanzi = "羽族绝壁鹰巢 · 赤血熔岩黑曜石炉"
+domain_id = &"races_and_tribal_enclaves"
+category_id = &"rac_10_giant_avian_cliffside_cloud_eyrie"
+asset_class = &"prop_workstation"
+archetype_name = "Obsidian Volcanic Smelting Hearth"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/races_and_tribal_enclaves/rac_10_giant_avian_cliffside_cloud_eyrie/emberblood_volcanic_hearth/pristine_dormant.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"solid"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"wind"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"stoke_fire"

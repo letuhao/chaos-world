@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.mining_and_metallurgy.min_11_thunder_talisman_blasting_drill_hole.ore_washing_sluice_flume"
+display_name = "Thunder Talisman Blasting Drill Hole - Timber Mineral Washing Sluice"
+pinyin = "Pàoyǎn · Timber Mineral Washing Sluice"
+hanzi = "破岩天雷符炮眼 · 阶梯木质洗矿水槽"
+domain_id = &"mining_and_metallurgy"
+category_id = &"min_11_thunder_talisman_blasting_drill_hole"
+asset_class = &"prop_workstation"
+archetype_name = "Timber Mineral Washing Sluice"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/mining_and_metallurgy/min_11_thunder_talisman_blasting_drill_hole/ore_washing_sluice_flume/pristine_dormant.png"
+footprint_cells = Vector2i(3, 1)
+canvas_px = Vector2i(384, 128)
+collision_type = &"solid"
+primary_material = &"raw_metal_ore"
+secondary_material = &"quartz_vein"
+cultivation_element = &"fire"
+elevation_tier = 2
+mortal_realm_tier = "Foundation Establishment (Trúc Cơ / 筑基)"
+interactive_verb = &"pan_ore"

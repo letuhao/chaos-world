@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.fauna_and_spirit_beasts.beas_22_river_water_ghost_shui_gui.juvenile_cub"
+display_name = "River Water Ghost (Shui Gui) - Small Playful Juvenile Offspring"
+pinyin = "Nìwáng Shuǐguǐ · Small Playful Juvenile Offspring"
+hanzi = "溺亡水鬼 · 幼小嬉戏灵崽"
+domain_id = &"fauna_and_spirit_beasts"
+category_id = &"beas_22_river_water_ghost_shui_gui"
+asset_class = &"fauna_beast"
+archetype_name = "Small Playful Juvenile Offspring"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/fauna_and_spirit_beasts/beas_22_river_water_ghost_shui_gui/juvenile_cub/idle_standing.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"none"
+primary_material = &"liquid_water"
+secondary_material = &"riverbed_pebbles"
+cultivation_element = &"water"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"tame_cub"

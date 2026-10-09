@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.evil_sects_and_demonic.evi_05_demonic_cauldron_chamber_lu_ding.blood_demon_sacrificial_pond"
+display_name = "Demonic Cauldron Chamber (Lu Ding) - Blood Demon Sacrificial Basin"
+pinyin = "Lúdǐngshì · Blood Demon Sacrificial Basin"
+hanzi = "幽闭炉鼎采补室 · 血魔凝煞血池"
+domain_id = &"evil_sects_and_demonic"
+category_id = &"evi_05_demonic_cauldron_chamber_lu_ding"
+asset_class = &"prop_workstation"
+archetype_name = "Blood Demon Sacrificial Basin"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/evil_sects_and_demonic/evi_05_demonic_cauldron_chamber_lu_ding/blood_demon_sacrificial_pond/pristine_dormant.png"
+footprint_cells = Vector2i(3, 2)
+canvas_px = Vector2i(384, 256)
+collision_type = &"obstacle"
+primary_material = &"cast_bronze"
+secondary_material = &"refractory_clay"
+cultivation_element = &"blood"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"draw_blood_essence"

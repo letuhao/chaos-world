@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.mining_and_metallurgy.min_05_high_draft_blast_smelting_furnace.ore_washing_sluice_flume"
+display_name = "High-Draft Blast Smelting Furnace - Timber Mineral Washing Sluice"
+pinyin = "Gāolú · Timber Mineral Washing Sluice"
+hanzi = "炼铁化铜耐火高炉 · 阶梯木质洗矿水槽"
+domain_id = &"mining_and_metallurgy"
+category_id = &"min_05_high_draft_blast_smelting_furnace"
+asset_class = &"prop_workstation"
+archetype_name = "Timber Mineral Washing Sluice"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/mining_and_metallurgy/min_05_high_draft_blast_smelting_furnace/ore_washing_sluice_flume/pristine_dormant.png"
+footprint_cells = Vector2i(3, 1)
+canvas_px = Vector2i(384, 128)
+collision_type = &"solid"
+primary_material = &"cast_bronze"
+secondary_material = &"refractory_clay"
+cultivation_element = &"fire"
+elevation_tier = 2
+mortal_realm_tier = "Foundation Establishment (Trúc Cơ / 筑基)"
+interactive_verb = &"pan_ore"

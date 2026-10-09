@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.artifacts_and_paraphernalia.art_07_peach_wood_ghost_slaying_sword.qi_overflowing_surge"
+display_name = "Peach Wood Ghost-Slaying Sword - Aura Saturated Resonating State"
+pinyin = "Táomùjiàn · Aura Saturated Resonating State"
+hanzi = "辟邪百年桃木剑 · 灵气奔涌超载态"
+domain_id = &"artifacts_and_paraphernalia"
+category_id = &"art_07_peach_wood_ghost_slaying_sword"
+asset_class = &"item_weapon"
+archetype_name = "Aura Saturated Resonating State"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/artifacts_and_paraphernalia/art_07_peach_wood_ghost_slaying_sword/qi_overflowing_surge/pos_inventory_icon_45deg.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"none"
+primary_material = &"carved_wood"
+secondary_material = &"polished_bronze"
+cultivation_element = &"wood"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"unleash_power"

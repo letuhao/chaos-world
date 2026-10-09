@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.secret_realms_and_grotto_heavens.sec_r07_ancient_pill_recipe_monument_stele.heavenly_book_floating_pedestal"
+display_name = "Ancient Pill Recipe Monument Stele - Octagonal Jade Dais with Hovering Scripture"
+pinyin = "Dānfāngbēi · Octagonal Jade Dais with Hovering Scripture"
+hanzi = "太古丹方残断石碑 · 悬空天书传承温玉台"
+domain_id = &"secret_realms_and_grotto_heavens"
+category_id = &"sec_r07_ancient_pill_recipe_monument_stele"
+asset_class = &"prop_workstation"
+archetype_name = "Octagonal Jade Dais with Hovering Scripture"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/secret_realms_and_grotto_heavens/sec_r07_ancient_pill_recipe_monument_stele/heavenly_book_floating_pedestal/pristine_dormant.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"solid"
+primary_material = &"carved_wood"
+secondary_material = &"polished_bronze"
+cultivation_element = &"fire"
+elevation_tier = 7
+mortal_realm_tier = "Body Integration (Hợp Thể / 合体)"
+interactive_verb = &"read_heavenly_book"

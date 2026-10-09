@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.terrain_and_geology.ter_22_peat_moss_bog.rich_resource_node"
+display_name = "Peat Moss Bog - Mineral Ore Exposed Outcrop"
+pinyin = "Nítàn Cǎodiàn · Mineral Ore Exposed Outcrop"
+hanzi = "泥炭草甸 · 富集矿石露头"
+domain_id = &"terrain_and_geology"
+category_id = &"ter_22_peat_moss_bog"
+asset_class = &"prop_workstation"
+archetype_name = "Mineral Ore Exposed Outcrop"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_22_peat_moss_bog/rich_resource_node/pristine_dormant.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"solid"
+primary_material = &"raw_metal_ore"
+secondary_material = &"quartz_vein"
+cultivation_element = &"thunder"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"mine_ore"

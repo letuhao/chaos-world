@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.underwater_and_abyssal_realms.und_01_sunken_crystal_dragon_palace_ruins.crystal_dragon_palace_gate"
+display_name = "Sunken Crystal Dragon Palace Ruins - Iridescent Pearl Shell Palace Gate"
+pinyin = "Shuǐjīnggōng · Iridescent Pearl Shell Palace Gate"
+hanzi = "水晶龙宫残垣 · 琉璃贝阙水府龙门"
+domain_id = &"underwater_and_abyssal_realms"
+category_id = &"und_01_sunken_crystal_dragon_palace_ruins"
+asset_class = &"structure_temple"
+archetype_name = "Iridescent Pearl Shell Palace Gate"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/underwater_and_abyssal_realms/und_01_sunken_crystal_dragon_palace_ruins/crystal_dragon_palace_gate/rot_south_facade.png"
+footprint_cells = Vector2i(4, 3)
+canvas_px = Vector2i(512, 384)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"water"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"enter_palace"

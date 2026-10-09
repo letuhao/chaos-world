@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.spirit_farming_and_sericulture.far_02_spirit_insect_pest_repelling_brazier.pest_repelling_smoke_brazier"
+display_name = "Spirit Insect Pest Repelling Brazier - Copper Smoker Dispelling Insect Swarms"
+pinyin = "Qūchónglú · Copper Smoker Dispelling Insect Swarms"
+hanzi = "驱蝗逐蛊熏烟炉 · 驱蝗逐蛊铜熏香烟炉"
+domain_id = &"spirit_farming_and_sericulture"
+category_id = &"far_02_spirit_insect_pest_repelling_brazier"
+asset_class = &"prop_workstation"
+archetype_name = "Copper Smoker Dispelling Insect Swarms"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/spirit_farming_and_sericulture/far_02_spirit_insect_pest_repelling_brazier/pest_repelling_smoke_brazier/pristine_dormant.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"solid"
+primary_material = &"raw_metal_ore"
+secondary_material = &"quartz_vein"
+cultivation_element = &"wood"
+elevation_tier = 1
+mortal_realm_tier = "Qi Refining (Luyện Khí / 练气)"
+interactive_verb = &"stoke_insect_smoke"

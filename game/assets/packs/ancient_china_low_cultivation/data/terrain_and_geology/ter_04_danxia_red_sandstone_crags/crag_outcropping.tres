@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.terrain_and_geology.ter_04_danxia_red_sandstone_crags.crag_outcropping"
+display_name = "Danxia Red Sandstone Crags - Jagged Natural Rock Outcropping"
+pinyin = "Dānxiá Hóngyán · Jagged Natural Rock Outcropping"
+hanzi = "丹霞红岩 · 突兀犬牙岩块"
+domain_id = &"terrain_and_geology"
+category_id = &"ter_04_danxia_red_sandstone_crags"
+asset_class = &"landmark_mountain"
+archetype_name = "Jagged Natural Rock Outcropping"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_04_danxia_red_sandstone_crags/crag_outcropping/facing_south_front.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"obstacle"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"water"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"mine_stone"

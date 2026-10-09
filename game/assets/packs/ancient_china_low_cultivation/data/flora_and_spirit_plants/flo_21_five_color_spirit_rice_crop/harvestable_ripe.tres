@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.flora_and_spirit_plants.flo_21_five_color_spirit_rice_crop.harvestable_ripe"
+display_name = "Five-Color Spirit Rice Crop - Ripe Fruit / Herb Cluster"
+pinyin = "Wǔsè Língdào · Ripe Fruit / Herb Cluster"
+hanzi = "五色灵稻 · 灵实饱满可采"
+domain_id = &"flora_and_spirit_plants"
+category_id = &"flo_21_five_color_spirit_rice_crop"
+asset_class = &"flora_herb"
+archetype_name = "Ripe Fruit / Herb Cluster"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_21_five_color_spirit_rice_crop/harvestable_ripe/pristine_dormant.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"none"
+primary_material = &"spiritual_root_stalk"
+secondary_material = &"medicinal_blossom"
+cultivation_element = &"ice"
+elevation_tier = 2
+mortal_realm_tier = "Foundation Establishment (Trúc Cơ / 筑基)"
+interactive_verb = &"gather_herb"

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.fauna_and_spirit_beasts.beas_03_iron_feathered_hawk.harvestable_carcass"
+display_name = "Iron-Feathered Hawk - Fresh Fallen Beast Carcass"
+pinyin = "Tiěyǔ Hēifēngdiāo · Fresh Fallen Beast Carcass"
+hanzi = "铁羽黑风雕 · 卧地待采兽尸"
+domain_id = &"fauna_and_spirit_beasts"
+category_id = &"beas_03_iron_feathered_hawk"
+asset_class = &"fauna_beast"
+archetype_name = "Fresh Fallen Beast Carcass"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/fauna_and_spirit_beasts/beas_03_iron_feathered_hawk/harvestable_carcass/idle_standing.png"
+footprint_cells = Vector2i(2, 1)
+canvas_px = Vector2i(256, 128)
+collision_type = &"walk_surface"
+primary_material = &"raw_metal_ore"
+secondary_material = &"quartz_vein"
+cultivation_element = &"wind"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"harvest_pelt"

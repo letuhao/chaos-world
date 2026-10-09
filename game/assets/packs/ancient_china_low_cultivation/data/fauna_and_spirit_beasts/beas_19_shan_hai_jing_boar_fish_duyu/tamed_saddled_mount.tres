@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.fauna_and_spirit_beasts.beas_19_shan_hai_jing_boar_fish_duyu.tamed_saddled_mount"
+display_name = "Shan Hai Jing: Boar-Fish (Duyu) - Domesticated Beast with Riding Saddle"
+pinyin = "Chóuyú · Domesticated Beast with Riding Saddle"
+hanzi = "山海经·鯈鱼 · 配鞍驯养坐骑"
+domain_id = &"fauna_and_spirit_beasts"
+category_id = &"beas_19_shan_hai_jing_boar_fish_duyu"
+asset_class = &"fauna_beast"
+archetype_name = "Domesticated Beast with Riding Saddle"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/fauna_and_spirit_beasts/beas_19_shan_hai_jing_boar_fish_duyu/tamed_saddled_mount/idle_standing.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"solid"
+primary_material = &"thick_pelt_fur"
+secondary_material = &"ivory_fangs"
+cultivation_element = &"earth"
+elevation_tier = 1
+mortal_realm_tier = "Qi Refining (Luyện Khí / 练气)"
+interactive_verb = &"mount_beast"

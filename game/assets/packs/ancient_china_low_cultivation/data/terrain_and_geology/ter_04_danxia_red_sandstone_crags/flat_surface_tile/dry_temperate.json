@@ -1,0 +1,26 @@
+{
+  "asset_id": "ancient_china_low_cultivation.ter_04_danxia_red_sandstone_crags.flat_surface_tile_ter_04_danxia_red_sandstone_crags",
+  "variant_slug": "dry_temperate",
+  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_04_danxia_red_sandstone_crags/flat_surface_tile_ter_04_danxia_red_sandstone_crags/dry_temperate.png",
+  "width": 512,
+  "height": 512,
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    512,
+    512
+  ],
+  "collision_type": "solid",
+  "matrix_data": {
+    "subgrid_rows": 4,
+    "subgrid_cols": 4,
+    "walk_surface": true,
+    "elevation_step": 0,
+    "cliff_drop": false,
+    "contact_pixels": [],
+    "source_render_seed": 9431,
+    "source_candidate": "danxia_red_crag_stone"
+  }
+}

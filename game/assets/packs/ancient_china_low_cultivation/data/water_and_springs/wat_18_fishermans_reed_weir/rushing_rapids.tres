@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.water_and_springs.wat_18_fishermans_reed_weir.rushing_rapids"
+display_name = "Fisherman's Reed Weir - Frothing White Rapids & Chute"
+pinyin = "Yúmín Zhúduàn · Frothing White Rapids & Chute"
+hanzi = "渔民竹簖 · 白浪汹涌湍滩"
+domain_id = &"water_and_springs"
+category_id = &"wat_18_fishermans_reed_weir"
+asset_class = &"terrain_tile"
+archetype_name = "Frothing White Rapids & Chute"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_18_fishermans_reed_weir/rushing_rapids/dry_temperate.png"
+footprint_cells = Vector2i(2, 1)
+canvas_px = Vector2i(256, 128)
+collision_type = &"obstacle"
+primary_material = &"earthen_loam"
+secondary_material = &"mineral_silt"
+cultivation_element = &"water"
+elevation_tier = 9
+mortal_realm_tier = "Tribulation Crossing (Độ Kiếp / 渡劫)"
+interactive_verb = &"None"

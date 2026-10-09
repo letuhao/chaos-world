@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.mining_and_metallurgy.min_09_miner_encampment_huts_sump_basin.ore_washing_sluice_flume"
+display_name = "Miner Encampment Huts & Sump Basin - Timber Mineral Washing Sluice"
+pinyin = "Wōpéng · Timber Mineral Washing Sluice"
+hanzi = "矿奴窝棚与积水井 · 阶梯木质洗矿水槽"
+domain_id = &"mining_and_metallurgy"
+category_id = &"min_09_miner_encampment_huts_sump_basin"
+asset_class = &"prop_workstation"
+archetype_name = "Timber Mineral Washing Sluice"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/mining_and_metallurgy/min_09_miner_encampment_huts_sump_basin/ore_washing_sluice_flume/pristine_dormant.png"
+footprint_cells = Vector2i(3, 1)
+canvas_px = Vector2i(384, 128)
+collision_type = &"solid"
+primary_material = &"raw_metal_ore"
+secondary_material = &"quartz_vein"
+cultivation_element = &"metal"
+elevation_tier = 2
+mortal_realm_tier = "Foundation Establishment (Trúc Cơ / 筑基)"
+interactive_verb = &"pan_ore"

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.water_and_springs.wat_05_roaring_gorge_waterfall.deep_water_pool"
+display_name = "Roaring Gorge Waterfall - Deep Serene Mountain Tarn"
+pinyin = "Lièxiá Fēipù · Deep Serene Mountain Tarn"
+hanzi = "裂峡飞瀑 · 深邃静谧潭水"
+domain_id = &"water_and_springs"
+category_id = &"wat_05_roaring_gorge_waterfall"
+asset_class = &"terrain_tile"
+archetype_name = "Deep Serene Mountain Tarn"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_05_roaring_gorge_waterfall/deep_water_pool/dry_temperate.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"obstacle"
+primary_material = &"earthen_loam"
+secondary_material = &"mineral_silt"
+cultivation_element = &"water"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"draw_water"

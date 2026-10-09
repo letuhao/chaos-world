@@ -1,0 +1,26 @@
+{
+  "asset_id": "ancient_china_low_cultivation.rel_01_solitary_mountain_daoist_hermitage.daoist_temple_hall_rel_01_solitary_mountain_daoist_hermitage",
+  "variant_slug": "rot_east_flank",
+  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_01_solitary_mountain_daoist_hermitage/daoist_temple_hall_rel_01_solitary_mountain_daoist_hermitage/rot_east_flank.png",
+  "width": 768,
+  "height": 768,
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    768,
+    768
+  ],
+  "collision_type": "solid",
+  "matrix_data": {
+    "subgrid_rows": 4,
+    "subgrid_cols": 4,
+    "walk_surface": false,
+    "elevation_step": 0,
+    "cliff_drop": false,
+    "contact_pixels": [],
+    "source_render_seed": 10903,
+    "source_candidate": "pure_yang_daoist_temple"
+  }
+}

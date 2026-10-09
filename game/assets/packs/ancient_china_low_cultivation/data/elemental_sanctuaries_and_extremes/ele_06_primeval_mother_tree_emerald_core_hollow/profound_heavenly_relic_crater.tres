@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.elemental_sanctuaries_and_extremes.ele_06_primeval_mother_tree_emerald_core_hollow.profound_heavenly_relic_crater"
+display_name = "Primeval Mother Tree Emerald Core Hollow - Glassy Impact Depression with Relic Core"
+pinyin = "Gǔshùxīn · Glassy Impact Depression with Relic Core"
+hanzi = "青木神髓古树心 · 玄天残宝坠落琉璃坑"
+domain_id = &"elemental_sanctuaries_and_extremes"
+category_id = &"ele_06_primeval_mother_tree_emerald_core_hollow"
+asset_class = &"landmark_mountain"
+archetype_name = "Glassy Impact Depression with Relic Core"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/elemental_sanctuaries_and_extremes/ele_06_primeval_mother_tree_emerald_core_hollow/profound_heavenly_relic_crater/facing_south_front.png"
+footprint_cells = Vector2i(3, 3)
+canvas_px = Vector2i(384, 384)
+collision_type = &"solid"
+primary_material = &"ancient_pine_wood"
+secondary_material = &"evergreen_needles"
+cultivation_element = &"wood"
+elevation_tier = 9
+mortal_realm_tier = "Tribulation Crossing (Độ Kiếp / 渡劫)"
+interactive_verb = &"excavate_relic"

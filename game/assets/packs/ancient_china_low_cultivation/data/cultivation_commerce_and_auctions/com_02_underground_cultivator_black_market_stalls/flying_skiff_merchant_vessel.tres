@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.cultivation_commerce_and_auctions.com_02_underground_cultivator_black_market_stalls.flying_skiff_merchant_vessel"
+display_name = "Underground Cultivator Black Market Stalls - Wooden Flying Ship with Moored Rigging"
+pinyin = "Hēishì · Wooden Flying Ship with Moored Rigging"
+hanzi = "阴暗黑市斗笠地摊 · 系缆云游飞舟商船"
+domain_id = &"cultivation_commerce_and_auctions"
+category_id = &"com_02_underground_cultivator_black_market_stalls"
+asset_class = &"structure_building"
+archetype_name = "Wooden Flying Ship with Moored Rigging"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/cultivation_commerce_and_auctions/com_02_underground_cultivator_black_market_stalls/flying_skiff_merchant_vessel/rot_south_facade.png"
+footprint_cells = Vector2i(4, 2)
+canvas_px = Vector2i(512, 256)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"yin"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"board_vessel"

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.world_events_and_calamities.cal_01_beast_tide_breached_city_gate.beast_slaughter_trench"
+display_name = "Beast Tide Breached City Gate - Deep Earth Trench with Piled Beast Bones"
+pinyin = "Shòucháomén · Deep Earth Trench with Piled Beast Bones"
+hanzi = "狂暴兽潮撞裂城门 · 兽潮伏诛万骨填坑"
+domain_id = &"world_events_and_calamities"
+category_id = &"cal_01_beast_tide_breached_city_gate"
+asset_class = &"terrain_tile"
+archetype_name = "Deep Earth Trench with Piled Beast Bones"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/world_events_and_calamities/cal_01_beast_tide_breached_city_gate/beast_slaughter_trench/dry_temperate.png"
+footprint_cells = Vector2i(3, 2)
+canvas_px = Vector2i(384, 256)
+collision_type = &"obstacle"
+primary_material = &"earthen_loam"
+secondary_material = &"mineral_silt"
+cultivation_element = &"blood"
+elevation_tier = 7
+mortal_realm_tier = "Body Integration (Hợp Thể / 合体)"
+interactive_verb = &"harvest_bones"

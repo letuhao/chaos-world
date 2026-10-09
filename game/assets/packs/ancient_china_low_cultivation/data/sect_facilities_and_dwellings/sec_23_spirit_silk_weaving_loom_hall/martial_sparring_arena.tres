@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_23_spirit_silk_weaving_loom_hall.martial_sparring_arena"
+display_name = "Spirit Silk Weaving Loom Hall - Elevated Flagstone Sparring Ring"
+pinyin = "Zhīyún Yǔyīfáng · Elevated Flagstone Sparring Ring"
+hanzi = "织云羽衣坊 · 条石筑就演武台"
+domain_id = &"sect_facilities_and_dwellings"
+category_id = &"sec_23_spirit_silk_weaving_loom_hall"
+asset_class = &"prop_workstation"
+archetype_name = "Elevated Flagstone Sparring Ring"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_23_spirit_silk_weaving_loom_hall/martial_sparring_arena/pristine_dormant.png"
+footprint_cells = Vector2i(4, 4)
+canvas_px = Vector2i(512, 512)
+collision_type = &"walk_surface"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"earth"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"duel_challenger"

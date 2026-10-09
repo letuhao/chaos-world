@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.body_cultivation_and_tempering.bod_08_mountain_cleaving_blade_practice_rock.red_hot_iron_sand_basin"
+display_name = "Mountain-Cleaving Blade Practice Rock - Heated Iron Sand Tub for Palm Hardening"
+pinyin = "Shìlìyán · Heated Iron Sand Tub for Palm Hardening"
+hanzi = "裂山断石试力岩 · 烈火铁砂淬掌生铁缸"
+domain_id = &"body_cultivation_and_tempering"
+category_id = &"bod_08_mountain_cleaving_blade_practice_rock"
+asset_class = &"prop_workstation"
+archetype_name = "Heated Iron Sand Tub for Palm Hardening"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/body_cultivation_and_tempering/bod_08_mountain_cleaving_blade_practice_rock/red_hot_iron_sand_basin/pristine_dormant.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"solid"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"fire"
+elevation_tier = 7
+mortal_realm_tier = "Body Integration (Hợp Thể / 合体)"
+interactive_verb = &"strike_iron_sand"

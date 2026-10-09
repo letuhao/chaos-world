@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.atmospheric_vfx_and_phenomena.vfx_04_summer_monsoon_rain_sheet_splash_ripples.surging_spiral_torrent"
+display_name = "Summer Monsoon Rain Sheet & Splash Ripples - Dense Swirling Vortex of Concentrated Energy"
+pinyin = "Bàoyǔjiànshuǐ · Dense Swirling Vortex of Concentrated Energy"
+hanzi = "暴雨如注地面溅水 · 浓密涡流奔涌光柱"
+domain_id = &"atmospheric_vfx_and_phenomena"
+category_id = &"vfx_04_summer_monsoon_rain_sheet_splash_ripples"
+asset_class = &"vfx_particle"
+archetype_name = "Dense Swirling Vortex of Concentrated Energy"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/atmospheric_vfx_and_phenomena/vfx_04_summer_monsoon_rain_sheet_splash_ripples/surging_spiral_torrent/subtle_ambient.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"none"
+primary_material = &"ethereal_spiritual_qi"
+secondary_material = &"astral_light_motes"
+cultivation_element = &"water"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"None"

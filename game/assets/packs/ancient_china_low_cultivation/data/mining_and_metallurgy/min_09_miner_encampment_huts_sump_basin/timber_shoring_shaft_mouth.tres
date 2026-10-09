@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.mining_and_metallurgy.min_09_miner_encampment_huts_sump_basin.timber_shoring_shaft_mouth"
+display_name = "Miner Encampment Huts & Sump Basin - Timber-Shored Deep Mine Portal"
+pinyin = "Wōpéng · Timber-Shored Deep Mine Portal"
+hanzi = "矿奴窝棚与积水井 · 杉木排架深矿井口"
+domain_id = &"mining_and_metallurgy"
+category_id = &"min_09_miner_encampment_huts_sump_basin"
+asset_class = &"structure_building"
+archetype_name = "Timber-Shored Deep Mine Portal"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/mining_and_metallurgy/min_09_miner_encampment_huts_sump_basin/timber_shoring_shaft_mouth/rot_south_facade.png"
+footprint_cells = Vector2i(3, 2)
+canvas_px = Vector2i(384, 256)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"metal"
+elevation_tier = 1
+mortal_realm_tier = "Qi Refining (Luyện Khí / 练气)"
+interactive_verb = &"enter_mine"

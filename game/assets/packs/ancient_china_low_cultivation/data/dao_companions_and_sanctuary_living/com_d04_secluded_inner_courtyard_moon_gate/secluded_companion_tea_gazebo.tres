@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.dao_companions_and_sanctuary_living.com_d04_secluded_inner_courtyard_moon_gate.secluded_companion_tea_gazebo"
+display_name = "Secluded Inner Courtyard Moon Gate - Octagonal Cedar Kiosk with Twin Porcelain Cups"
+pinyin = "Yuèliàngmén · Octagonal Cedar Kiosk with Twin Porcelain Cups"
+hanzi = "幽闺通幽月亮门 · 伴侣听风品茗八角亭"
+domain_id = &"dao_companions_and_sanctuary_living"
+category_id = &"com_d04_secluded_inner_courtyard_moon_gate"
+asset_class = &"structure_cottage"
+archetype_name = "Octagonal Cedar Kiosk with Twin Porcelain Cups"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/dao_companions_and_sanctuary_living/com_d04_secluded_inner_courtyard_moon_gate/secluded_companion_tea_gazebo/rot_south_facade.png"
+footprint_cells = Vector2i(3, 3)
+canvas_px = Vector2i(384, 384)
+collision_type = &"solid"
+primary_material = &"bamboo"
+secondary_material = &"thatched_straw"
+cultivation_element = &"wood"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"share_tea"

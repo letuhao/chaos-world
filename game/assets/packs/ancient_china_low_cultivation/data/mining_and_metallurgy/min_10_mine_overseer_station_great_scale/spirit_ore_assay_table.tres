@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.mining_and_metallurgy.min_10_mine_overseer_station_great_scale.spirit_ore_assay_table"
+display_name = "Mine Overseer Station & Great Scale - Mineral Assay Testing Bench & Scales"
+pinyin = "Chèngpéng · Mineral Assay Testing Bench & Scales"
+hanzi = "监工点卯大秤棚 · 灵矿品位化验木案"
+domain_id = &"mining_and_metallurgy"
+category_id = &"min_10_mine_overseer_station_great_scale"
+asset_class = &"prop_workstation"
+archetype_name = "Mineral Assay Testing Bench & Scales"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/mining_and_metallurgy/min_10_mine_overseer_station_great_scale/spirit_ore_assay_table/pristine_dormant.png"
+footprint_cells = Vector2i(2, 1)
+canvas_px = Vector2i(256, 128)
+collision_type = &"solid"
+primary_material = &"raw_metal_ore"
+secondary_material = &"quartz_vein"
+cultivation_element = &"metal"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"assay_ore"

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.cultivation_commerce_and_auctions.com_05_spirit_stone_bank_escrow_vault.hidden_waterway_smuggler_pier"
+display_name = "Spirit Stone Bank & Escrow Vault - Rickety Wooden Jetty with Moored Sampan"
+pinyin = "Língshízhuāng · Rickety Wooden Jetty with Moored Sampan"
+hanzi = "灵石庄通商钱庄 · 暗河走私泊船烂木栈"
+domain_id = &"cultivation_commerce_and_auctions"
+category_id = &"com_05_spirit_stone_bank_escrow_vault"
+asset_class = &"structure_building"
+archetype_name = "Rickety Wooden Jetty with Moored Sampan"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/cultivation_commerce_and_auctions/com_05_spirit_stone_bank_escrow_vault/hidden_waterway_smuggler_pier/rot_south_facade.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"walk_surface"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"metal"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"meet_smuggler"

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.terrain_and_geology.ter_24_copper_rust_ore_bank.scree_slope_rubble"
+display_name = "Copper-Rust Ore Bank - Loose Scree & Pebble Slope"
+pinyin = "Tóngxiù Kuàngjī · Loose Scree & Pebble Slope"
+hanzi = "铜锈矿积 · 滑坡碎石碎砾"
+domain_id = &"terrain_and_geology"
+category_id = &"ter_24_copper_rust_ore_bank"
+asset_class = &"terrain_tile"
+archetype_name = "Loose Scree & Pebble Slope"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_24_copper_rust_ore_bank/scree_slope_rubble/dry_temperate.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"walk_surface"
+primary_material = &"earthen_loam"
+secondary_material = &"mineral_silt"
+cultivation_element = &"metal"
+elevation_tier = 6
+mortal_realm_tier = "Void Refinement (Luyện Hư / 炼虚)"
+interactive_verb = &"None"

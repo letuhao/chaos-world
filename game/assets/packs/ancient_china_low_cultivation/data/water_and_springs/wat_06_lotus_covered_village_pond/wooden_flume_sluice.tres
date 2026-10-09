@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.water_and_springs.wat_06_lotus_covered_village_pond.wooden_flume_sluice"
+display_name = "Lotus-Covered Village Pond - Timber Irrigation Sluice Gate"
+pinyin = "Cūnkǒu Hétáng · Timber Irrigation Sluice Gate"
+hanzi = "村口荷塘 · 木制引水分水闸"
+domain_id = &"water_and_springs"
+category_id = &"wat_06_lotus_covered_village_pond"
+asset_class = &"prop_workstation"
+archetype_name = "Timber Irrigation Sluice Gate"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_06_lotus_covered_village_pond/wooden_flume_sluice/pristine_dormant.png"
+footprint_cells = Vector2i(2, 1)
+canvas_px = Vector2i(256, 128)
+collision_type = &"solid"
+primary_material = &"carved_wood"
+secondary_material = &"polished_bronze"
+cultivation_element = &"ice"
+elevation_tier = 6
+mortal_realm_tier = "Void Refinement (Luyện Hư / 炼虚)"
+interactive_verb = &"operate_sluice"

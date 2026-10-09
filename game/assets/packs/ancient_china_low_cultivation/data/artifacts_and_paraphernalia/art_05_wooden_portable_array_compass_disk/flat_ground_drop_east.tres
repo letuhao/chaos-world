@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.artifacts_and_paraphernalia.art_05_wooden_portable_array_compass_disk.flat_ground_drop_east"
+display_name = "Wooden Portable Array Compass Disk - Horizontal Ground Drop Orientation"
+pinyin = "Zhènfǎ Luópán · Horizontal Ground Drop Orientation"
+hanzi = "阵法罗盘 · 水平平铺地面掉落物"
+domain_id = &"artifacts_and_paraphernalia"
+category_id = &"art_05_wooden_portable_array_compass_disk"
+asset_class = &"item_tool"
+archetype_name = "Horizontal Ground Drop Orientation"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/artifacts_and_paraphernalia/art_05_wooden_portable_array_compass_disk/flat_ground_drop_east/pos_inventory_icon_45deg.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"none"
+primary_material = &"carved_wood"
+secondary_material = &"polished_bronze"
+cultivation_element = &"wood"
+elevation_tier = 2
+mortal_realm_tier = "Foundation Establishment (Trúc Cơ / 筑基)"
+interactive_verb = &"pick_up"

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.mining_and_metallurgy.min_02_mine_tunnel_timber_shoring_sets.wooden_ore_cart_rails"
+display_name = "Mine Tunnel Timber Shoring Sets - Heavy Oak Ore Cart on Iron Rails"
+pinyin = "Kēngmù · Heavy Oak Ore Cart on Iron Rails"
+hanzi = "坑道加固木撑 · 铁轨实木矿石推车"
+domain_id = &"mining_and_metallurgy"
+category_id = &"min_02_mine_tunnel_timber_shoring_sets"
+asset_class = &"prop_container"
+archetype_name = "Heavy Oak Ore Cart on Iron Rails"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/mining_and_metallurgy/min_02_mine_tunnel_timber_shoring_sets/wooden_ore_cart_rails/pristine_dormant.png"
+footprint_cells = Vector2i(2, 1)
+canvas_px = Vector2i(256, 128)
+collision_type = &"solid"
+primary_material = &"raw_metal_ore"
+secondary_material = &"quartz_vein"
+cultivation_element = &"metal"
+elevation_tier = 1
+mortal_realm_tier = "Qi Refining (Luyện Khí / 练气)"
+interactive_verb = &"push_cart"

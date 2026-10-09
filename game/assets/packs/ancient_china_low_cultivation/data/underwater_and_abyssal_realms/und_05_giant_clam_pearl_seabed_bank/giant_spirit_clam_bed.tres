@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.underwater_and_abyssal_realms.und_05_giant_clam_pearl_seabed_bank.giant_spirit_clam_bed"
+display_name = "Giant Clam Pearl Seabed Bank - Open Iridescent Clam with Glowing Pearl"
+pinyin = "Jùbàngzhōu · Open Iridescent Clam with Glowing Pearl"
+hanzi = "巨蚌吐珠海沙洲 · 吐珠巨灵蚌张壳态"
+domain_id = &"underwater_and_abyssal_realms"
+category_id = &"und_05_giant_clam_pearl_seabed_bank"
+asset_class = &"prop_container"
+archetype_name = "Open Iridescent Clam with Glowing Pearl"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/underwater_and_abyssal_realms/und_05_giant_clam_pearl_seabed_bank/giant_spirit_clam_bed/pristine_dormant.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"solid"
+primary_material = &"carved_wood"
+secondary_material = &"polished_bronze"
+cultivation_element = &"water"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"extract_pearl"

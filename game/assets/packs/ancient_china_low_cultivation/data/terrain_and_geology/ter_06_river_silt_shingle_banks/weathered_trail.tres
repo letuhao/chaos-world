@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.terrain_and_geology.ter_06_river_silt_shingle_banks.weathered_trail"
+display_name = "River Silt & Shingle Banks - Worn Footpath Dirt Trail"
+pinyin = "Hétān Suìshí · Worn Footpath Dirt Trail"
+hanzi = "河滩碎石 · 风化踩踏小径"
+domain_id = &"terrain_and_geology"
+category_id = &"ter_06_river_silt_shingle_banks"
+asset_class = &"terrain_tile"
+archetype_name = "Worn Footpath Dirt Trail"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_06_river_silt_shingle_banks/weathered_trail/dry_temperate.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"walk_surface"
+primary_material = &"earthen_loam"
+secondary_material = &"mineral_silt"
+cultivation_element = &"water"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"None"

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.underground_abyss_and_caverns.sub_06_thousand_year_tree_deep_root_labyrinth.nether_cold_black_tarn"
+display_name = "Thousand-Year Tree Deep Root Labyrinth - Lightless Subterranean Frigid Tarn"
+pinyin = "Chuāndìgēn · Lightless Subterranean Frigid Tarn"
+hanzi = "万年古木穿地根 · 九幽极寒无光黑水潭"
+domain_id = &"underground_abyss_and_caverns"
+category_id = &"sub_06_thousand_year_tree_deep_root_labyrinth"
+asset_class = &"terrain_tile"
+archetype_name = "Lightless Subterranean Frigid Tarn"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/underground_abyss_and_caverns/sub_06_thousand_year_tree_deep_root_labyrinth/nether_cold_black_tarn/dry_temperate.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"obstacle"
+primary_material = &"ancient_pine_wood"
+secondary_material = &"evergreen_needles"
+cultivation_element = &"earth"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"draw_nether_water"

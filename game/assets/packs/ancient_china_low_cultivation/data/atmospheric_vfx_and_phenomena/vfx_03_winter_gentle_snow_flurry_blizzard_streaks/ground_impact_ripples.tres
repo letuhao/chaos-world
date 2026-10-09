@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.atmospheric_vfx_and_phenomena.vfx_03_winter_gentle_snow_flurry_blizzard_streaks.ground_impact_ripples"
+display_name = "Winter Gentle Snow Flurry & Blizzard Streaks - Concentric Expanding Wavefront Ripples"
+pinyin = "Fēixuěkuángfēng · Concentric Expanding Wavefront Ripples"
+hanzi = "漫天飞雪狂风 · 同心圆环地面冲击涟漪"
+domain_id = &"atmospheric_vfx_and_phenomena"
+category_id = &"vfx_03_winter_gentle_snow_flurry_blizzard_streaks"
+asset_class = &"vfx_particle"
+archetype_name = "Concentric Expanding Wavefront Ripples"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/atmospheric_vfx_and_phenomena/vfx_03_winter_gentle_snow_flurry_blizzard_streaks/ground_impact_ripples/subtle_ambient.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"none"
+primary_material = &"ethereal_spiritual_qi"
+secondary_material = &"astral_light_motes"
+cultivation_element = &"wind"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"None"

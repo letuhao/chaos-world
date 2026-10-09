@@ -108,6 +108,53 @@ class ComfyArgs:
     lora_strength = 1.0
 
 
+def convert_black_bg_to_alpha(img: Image.Image, noise_floor: int = 8) -> Image.Image:
+    """Convert a luminous VFX sprite generated on pure black (#000000)
+    into a clean transparent RGBA sprite with unmultiplied color to avoid dark fringes.
+    """
+    rgb = img.convert("RGB")
+    w, h = rgb.size
+    raw_bytes = bytearray(rgb.tobytes())
+    out_bytes = bytearray(w * h * 4)
+
+    scale_table = [0.0] * 256
+    for i in range(1, 256):
+        scale_table[i] = 255.0 / i
+
+    floor_range = 255 - noise_floor
+    in_idx = 0
+    out_idx = 0
+    total_pixels = w * h
+
+    for _ in range(total_pixels):
+        r = raw_bytes[in_idx]
+        g = raw_bytes[in_idx + 1]
+        b = raw_bytes[in_idx + 2]
+        in_idx += 3
+
+        max_c = r if r > g else g
+        if b > max_c:
+            max_c = b
+
+        if max_c <= noise_floor:
+            pass
+        else:
+            pa = int((max_c - noise_floor) * 255 / floor_range)
+            if pa > 255:
+                pa = 255
+            scale = scale_table[max_c]
+            nr = int(r * scale)
+            ng = int(g * scale)
+            nb = int(b * scale)
+            out_bytes[out_idx] = 255 if nr > 255 else nr
+            out_bytes[out_idx + 1] = 255 if ng > 255 else ng
+            out_bytes[out_idx + 2] = 255 if nb > 255 else nb
+            out_bytes[out_idx + 3] = pa
+        out_idx += 4
+
+    return Image.frombytes("RGBA", (w, h), bytes(out_bytes))
+
+
 def normalize_image(
     source_path: Path,
     dest_path: Path,
@@ -115,6 +162,7 @@ def normalize_image(
     alpha_mode: str,
     pivot: str = "bottom_center",
     margin: int = 16,
+    is_vfx: bool = False,
 ) -> None:
     dest_path.parent.mkdir(parents=True, exist_ok=True)
     target_w, target_h = target_size
@@ -122,8 +170,11 @@ def normalize_image(
     with Image.open(source_path) as opened:
         img = opened.copy()
 
-    if alpha_mode == "transparent":
-        rgba = img.convert("RGBA")
+    if alpha_mode in ("transparent", "cutout"):
+        if is_vfx:
+            rgba = convert_black_bg_to_alpha(img)
+        else:
+            rgba = img.convert("RGBA")
         alpha = rgba.split()[-1]
         bbox = alpha.getbbox()
         cropped = rgba.crop(bbox) if bbox else rgba
@@ -315,9 +366,24 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
     """
     asset_class = (asset.get("asset_class") or asset.get("type") or "prop_workstation").lower()
 
-    asset_name = asset.get("name") or asset.get("id", "cultivation_asset")
+    raw_asset_name = asset.get("name") or asset.get("id", "cultivation_asset")
+    # Clean up multi-part titles like "Domain - Specific Building" for concise prompting
+    if " - " in raw_asset_name:
+        parts = raw_asset_name.split(" - ")
+        asset_name = parts[-1].strip()
+    else:
+        asset_name = raw_asset_name
+
     material = asset.get("material", "carved wood and polished bronze")
     var_mod = var.get("prompt_modifier") or var.get("prompt") or ""
+    # Strip any negation words in var_mod to prevent FLUX T5 positive-trigger inversion
+    var_mod = (
+        var_mod.replace("zero front entrance steps", "solid continuous rear wall")
+        .replace("zero entrance steps", "solid continuous rear wall")
+        .replace("zero ground shadow", "")
+        .replace("zero pedestal", "")
+        .strip(" ,")
+    )
     var_slug = var.get("variant_slug", "")
 
     # Adaptive background contrast keying: prevent white/snow assets from being clipped by RMBG-2.0
@@ -337,34 +403,144 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
 
     # Archetype 1: Items, Handheld Tools, Weapons & Pickups
     if any(k in asset_class for k in ("item", "tool", "weapon", "talisman", "consumable", "icon")):
+        # Sanitize tool materials if mismatched by heuristic
+        low_name = asset_name.lower()
+        if any(w in low_name for w in ("shovel", "spade", "trowel")):
+            if any(b in material.lower() for b in ("herb", "stalk", "leaf", "dew", "soil", "dirt")):
+                material = "carved translucent mutton-fat nephrite jade blade, polished brass ferrule socket, dark rosewood handle"
+        elif any(w in low_name for w in ("pick", "pickaxe", "mining")):
+            if any(b in material.lower() for b in ("herb", "stalk", "leaf", "dew", "soil", "dirt")):
+                material = "forged heavy cold iron pick head with chisel point, reinforced bronze bands, aged hardwood shaft"
+        elif any(w in low_name for w in ("sickle", "scythe", "harvester")):
+            if any(b in material.lower() for b in ("herb", "stalk", "leaf", "dew", "soil", "dirt")):
+                material = "forged cold iron crescent blade with sharp curved edge, polished dark rosewood handle wrapped in cord"
+
+        is_ground_drop = "ground" in var_slug or "drop" in var_slug or "flat" in var_slug
+        shadow_clause = (
+            "subtle micro contact shadow directly underneath only, resting flat,"
+            if is_ground_drop
+            else "zero ground shadow, zero pedestal,"
+        )
+        item_neg = (
+            "diorama, miniature scene, floating island, dirt slab, grass pedestal, room, building, landscape, "
+            f"trees, field, human hands, fingers, holding, multiple items, collection, frame, UI, watermark, {ANTI_DRIFT_CLAUSE}"
+            if is_ground_drop
+            else (
+                "diorama, miniature scene, floating island, dirt slab, grass pedestal, ground plane, "
+                "floor, surface, shadow on ground, building, house, cottage, farm, fence, landscape, "
+                "trees, field, human hands, fingers, holding, multiple items, collection, collage, border, "
+                f"frame, UI, watermark, blurry edges, microscopic high-frequency noise, decorative clouds, cloud swirls, vapor wisps, {ANTI_DRIFT_CLAUSE}"
+            )
+        )
         pos = (
             f"Single isolated 2D game asset of {asset_name.lower()}, {material}, {var_mod}, "
             "Ancient Chinese Xianxia cultivation mortal realm aesthetic, double-edged Chinese straight sword or authentic Daoist implement, "
             "bold readable silhouette, clean grouped value planes, chunky stylized proportions for 2D icon clarity, "
-            f"fine dark #263A35 ink contours, gouache hand-painted, centered on {adaptive_bg}."
+            f"fine dark #263A35 ink contours, gouache hand-painted, {shadow_clause} centered on {adaptive_bg}."
+        )
+        return pos, item_neg
+
+    # Archetype 3b: Natural Geological Landmarks & Mountain Spires
+    if any(
+        k in asset_class for k in ("landmark", "mountain", "peak", "cliff", "spire", "crag_pillar")
+    ):
+        is_rear = any(k in var_slug for k in ("rear", "back", "north"))
+        is_west = any(k in var_slug for k in ("west", "left"))
+        is_east = any(k in var_slug for k in ("east", "right"))
+
+        if is_rear:
+            landmark_pos = (
+                "steep high-angle top-down RPG map perspective looking down from above, "
+                "sheer northern crag face and upper summit plateau surface fully visible from above, "
+                "weathered northern rock terraces descending away from summit,"
+            )
+        elif is_west:
+            landmark_pos = (
+                "steep high-angle top-down RPG map perspective looking down from above, "
+                "landmark rotated 90 degrees with elongated rock spine running North-South, "
+                "western stepped cliff strata and summit crest visible from overhead,"
+            )
+        elif is_east:
+            landmark_pos = (
+                "steep high-angle top-down RPG map perspective looking down from above, "
+                "landmark rotated 90 degrees with elongated rock spine running North-South, "
+                "eastern stepped cliff strata and summit crest visible from overhead,"
+            )
+        else:
+            landmark_pos = (
+                "steep high-angle top-down RPG map perspective looking down from above, "
+                "summit crest and upper rock terraces fully visible from above, "
+                "stepped crag shelves and gnarled cliff pine seen from overhead,"
+            )
+
+        pos = (
+            f"Single isolated 2D top-down world-map natural landmark sprite of {asset_name.lower()}, {material}, {var_mod}, "
+            f"Ancient Chinese Xianxia landscape style, {landmark_pos} "
+            "sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, "
+            "crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, "
+            "gouache hand-painted with dark #263A35 ink contours, isolated on solid plain white background."
         )
         neg = (
-            "diorama, miniature scene, floating island, dirt slab, grass pedestal, ground plane, "
-            "floor, surface, shadow on ground, building, house, cottage, farm, fence, landscape, "
-            "trees, field, human hands, fingers, holding, multiple items, collection, collage, border, "
-            f"frame, UI, watermark, blurry edges, microscopic high-frequency noise, decorative clouds, cloud swirls, vapor wisps, {ANTI_DRIFT_CLAUSE}"
+            "diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, "
+            "eye-level view, side-view portrait, flat elevation, landscape painting, "
+            "grass patch, turf, lawn, meadow, green ground plane, soil patch, path, cobblestone, road, "
+            "grass rim, turf skirt, dirt mound base, green turf, moss ring around base, diorama base plate, dirt path in front, "
+            f"frame, border, UI, watermark, human figures, birds in sky, {ANTI_DRIFT_CLAUSE}"
         )
         return pos, neg
 
     # Archetype 6: Ground Terrains, Walk Surfaces & Path Decals
     dom = asset.get("domain", "")
-    if (
-        any(k in asset_class for k in ("terrain", "tile", "surface_decal", "ground"))
-        or "terrain" in dom
-    ):
+    is_ground = any(
+        k in asset_class for k in ("terrain_tile", "ground_tile", "walk_surface", "surface_decal")
+    ) or (
+        "terrain" in dom
+        and not any(
+            k in asset_class
+            for k in (
+                "landmark",
+                "mountain",
+                "peak",
+                "cliff",
+                "spire",
+                "crag_pillar",
+                "boulder",
+                "prop",
+            )
+        )
+    )
+    if is_ground:
+        # Determine actual ground soil/rock material from category or raw_name
+        cat_id = asset.get("category_id") or asset.get("sub_domain") or ""
+        # Strip triggering tokens like 'tile' and 'flat surface tile' that cause paver/grid hallucinations
+        clean_name = (
+            raw_asset_name.lower()
+            .replace("pristine flat surface tile", "")
+            .replace("flat surface tile", "")
+            .replace("surface tile", "")
+            .replace("tile", "")
+            .replace("crags", "soil")
+            .replace("peaks", "limestone floor")
+            .strip(" -_")
+        )
+        if not clean_name or len(clean_name) < 3:
+            clean_name = cat_id.replace("_", " ").strip()
+            for pfx in ("ter 01 ", "ter 02 ", "ter 03 ", "ter 04 ", "ter 05 ", "ter 06 ", "ter 07 ", "ter 08 "):
+                clean_name = clean_name.replace(pfx, "")
+
         pos = (
-            f"Opaque square ground terrain: {asset_name.lower()}, {material}, {var_mod}, "
-            "painterly anime gouache, subtle natural grain, broad uniform ground surface, "
-            "continuous edge-to-edge flat surface filling 100% of canvas, perpendicular 90-degree overhead angle looking straight down."
+            f"Seamless 2D ground texture map of {clean_name}, {material}, {var_mod}, "
+            "painterly anime gouache, continuous uniform natural earth texture, monolithic unbroken flat ground plane, "
+            "macro top-down perpendicular 90-degree satellite overhead view looking straight down at soil surface, "
+            "edge-to-edge seamless soil texture filling 100% of canvas."
         )
         neg = (
+            "tiles, pavers, flagstones, stone slabs, paving, grid lines, tile seams, grout, cracks between tiles, subdivided stones, "
+            "stepping stones, stone blocks, rock slabs, river stones, pebbles in a line, furrows, trenches, channels, walking path, stepping path, "
+            "crater, arena, depression, circular hollow, ring of cliffs, surrounding rocks, border cliffs, perimeter rocks, "
+            "border, frame, circular frame, ring of rocks, corner bushes, perimeter foliage, vignette, diorama, "
             "cliffs, canyon, pillars, columns, rock towers, elevation, horizon, sky, clouds, landscape, "
-            "vista, distant view, perspective, 3D scene, chasm, ravine, valley, walls, border, frame, UI, watermark, props, objects, buildings, trees"
+            "vista, distant view, perspective, 3D scene, chasm, ravine, valley, walls, UI, watermark, props, objects, buildings, trees"
         )
         return pos, neg
 
@@ -384,12 +560,14 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
     # Archetype 4: Flora, Spirit Herbs & Sacred Trees
     if any(k in asset_class for k in ("flora", "herb", "tree", "plant")):
         pos = (
-            f"Single isolated 2D RPG plant sprite of {asset_name.lower()}, {material}, {var_mod}, "
-            "Ancient Chinese herbal lore aesthetic, traditional Bencao Gangmu medicinal plant style, "
-            "gouache hand-painted with dark ink contours, ground root base contact only, zero terrain mound, "
+            f"Single isolated 2D top-down RPG map sprite of {asset_name.lower()}, {material}, {var_mod}, "
+            "Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), "
+            "plant canopy, branching crown, bamboo culms and foliage viewed foreshortened from overhead, spread outward on ground plane, "
+            "gouache hand-painted with dark #263A35 ink contours, flat grounded root base, short attached micro contact shadow only, "
             "isolated on solid plain white background."
         )
         neg = (
+            "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, "
             "diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, "
             "surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, "
             f"tall upright crystals, decorative swirls, floating cloud swirls, {ANTI_DRIFT_CLAUSE}"
@@ -398,19 +576,28 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
 
     # Archetype 5: Fauna, Spirit Beasts, Demons & Denizens
     if any(k in asset_class for k in ("fauna", "beast", "creature", "monster", "npc")):
+        is_carcass = "dead" in var_slug or "carcass" in var_slug
+        contact_spec = (
+            "contact shadow directly under body only"
+            if is_carcass
+            else "ground foot contact shadow only"
+        )
+        carcass_neg = ", standing upright, flying, walking" if is_carcass else ""
         pos = (
-            f"Single isolated 2D game creature sprite of {asset_name.lower()}, {material}, {var_mod}, "
-            "Shan Hai Jing ancient Chinese mythological bestiary style, gouache painted with dark ink contours, "
-            f"ground foot contact shadow only, zero directional drop shadow, isolated on {adaptive_bg}."
+            f"Single isolated 2D top-down RPG game creature sprite of {asset_name.lower()}, {material}, {var_mod}, "
+            "Shan Hai Jing ancient Chinese mythological aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), "
+            f"back, wings, shoulders and creature body viewed foreshortened from overhead, gouache painted with dark ink contours, "
+            f"{contact_spec}, zero directional drop shadow, isolated on {adaptive_bg}."
         )
         neg = (
+            "flat side view, horizontal profile, eye-level portrait, side-scroller view, straight-on view, "
             "diorama, cage, stable, pen, pasture, fence, saddle, reins, rider, trainer, human hands, "
             "background scenery, landscape, grass chunk, multiple animals, herd, UI healthbar, floating icons, "
-            f"perch, tree branch, rock pedestal, stone platform, diorama base, four legs on bird, quadruped bird, {ANTI_DRIFT_CLAUSE}"
+            f"perch, tree branch, rock pedestal, stone platform, diorama base, four legs on bird, quadruped bird{carcass_neg}, {ANTI_DRIFT_CLAUSE}"
         )
         return pos, neg
 
-    # Archetype 3: Architecture, Sect Facilities & Gateways
+    # Archetype 3a: Architecture, Sect Facilities, Temples & Dwellings
     if any(
         k in asset_class
         for k in (
@@ -423,22 +610,125 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
             "pavilion",
             "tower",
             "hall",
+            "shrine",
+            "temple",
+            "cottage",
+            "house",
+            "dongfu",
+            "dwelling",
         )
     ):
+        is_rear = any(k in var_slug for k in ("rear", "back", "north"))
+        is_west = any(k in var_slug for k in ("west", "left"))
+        is_east = any(k in var_slug for k in ("east", "right"))
+
+        # Architectural style discrimination: Monumental/Formal vs Vernacular/Rustic
+        is_rustic = any(
+            k in asset_class or k in asset_name.lower() or k in material.lower()
+            for k in ("cottage", "hut", "dwelling", "shack", "thatch", "straw", "bamboo", "rustic")
+        )
+
+        if is_rustic:
+            roof_spec = (
+                "authentic uniform golden thatched straw roof surface dominant and fully visible overhead (70%-80% of height), "
+                "split bamboo ridge rafters and thick straw eaves seen from above,"
+            )
+            gable_spec = "high-angle triangular thatched timber gable end"
+            material_neg = "ceramic tiles, glazed tiles, blue roof tiles, dark roof tiles, terracotta tiles, dougong brackets, imperial palace, temple hall, "
+        else:
+            roof_spec = "broad glazed ceramic roof tiles and curved dougong eaves dominant and fully visible overhead (70%-80% of height), "
+            gable_spec = "high-angle triangular dougong timber gable end"
+            material_neg = "thatched straw roof, straw hut, hay, rustic shack, "
+
+        if is_rear:
+            persp_pos = (
+                "steep high-angle top-down RPG map perspective looking down from above, "
+                f"roof ridge running East-West with broad northern rear roof surface {roof_spec} "
+                "solid unbroken timber lattice back wall and stone foundation foreshortened beneath eaves at bottom, "
+                "completely windowless and doorless flat rear wall flush on level ground, clean horizontal baseline, back exterior view,"
+            )
+            dir_neg = (
+                "front entrance door, open doorway, entrance steps, stairs, portal, door plaque, "
+                "front veranda, open portal, descending stairs, central doorway, porch, arched entryway, "
+            )
+        elif is_west:
+            persp_pos = (
+                "steep high-angle top-down RPG map perspective looking down from above, "
+                f"building rotated 90 degrees with roof ridge running North-South, "
+                f"western roof slope and {gable_spec} dominant and fully visible overhead, "
+                "western side wall foreshortened beneath eaves at bottom, side window or railing,"
+            )
+            dir_neg = (
+                "symmetrical front entrance facade, central double doors at bottom, front steps at bottom-center, "
+                "annexed side structure, attached side pavilion, extra side gate, secondary structure, side tower, courtyard wing, "
+            )
+        elif is_east:
+            persp_pos = (
+                "steep high-angle top-down RPG map perspective looking down from above, "
+                f"building rotated 90 degrees with roof ridge running North-South, "
+                f"eastern roof slope and {gable_spec} dominant and fully visible overhead, "
+                "eastern side wall foreshortened beneath eaves at bottom, side window or railing,"
+            )
+            dir_neg = (
+                "symmetrical front entrance facade, central double doors at bottom, front steps at bottom-center, "
+                "annexed side structure, attached side pavilion, extra side gate, secondary structure, side tower, courtyard wing, "
+            )
+        else:
+            # Default / front South facade
+            persp_pos = (
+                "steep high-angle top-down RPG map perspective looking down from above, "
+                f"roof ridge running East-West with broad southern roof surface {roof_spec} "
+                "foreshortened front walls and entrance visible beneath eaves at bottom-center, stone courtyard steps descending at bottom,"
+            )
+            dir_neg = ""
+
         pos = (
-            f"Single isolated 2D RPG architectural building sprite of {asset_name.lower()}, {material}, {var_mod}, "
-            "Ancient Chinese Tang-Song Xianxia architectural style, upturned dougong bracket eaves, glazed ceramic roof tiles, "
-            "carved timber joinery, vermilion columns, gouache hand-painted with dark #263A35 ink contours, "
-            "clean horizontal ground contact baseline, micro contact shadow only, isolated on solid plain white background."
+            f"Single isolated 2D top-down world-map building sprite of {asset_name.lower()}, {material}, {var_mod}, "
+            f"Ancient Chinese Tang-Song Xianxia architectural style, {persp_pos} "
+            "gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, "
+            "isolated on solid plain white background."
         )
         neg = (
+            f"{material_neg}{dir_neg}clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, "
             "diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, "
             "garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, "
+            "eye-level view, flat front elevation drawing, flat side view profile, side-scroller, "
             f"human figures, isometric box frame, cutout diorama base, directional drop shadow, {ANTI_DRIFT_CLAUSE}"
         )
         return pos, neg
 
-    # Default / Archetype 2: Workstations, Heavy Apparatus & Functional Props
+    # Archetype 2b: Containers, Chests & Storage Furnishings
+    is_container_or_furnishing = any(
+        k in asset_class or k in asset_name.lower()
+        for k in (
+            "container",
+            "chest",
+            "casket",
+            "box",
+            "cabinet",
+            "shelf",
+            "wardrobe",
+            "table",
+            "chair",
+            "desk",
+            "seat",
+        )
+    )
+    if is_container_or_furnishing:
+        pos = (
+            f"Single isolated 2D RPG game prop of {asset_name.lower()}, {material}, {var_mod}, "
+            "Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese traditional carved rosewood joinery or Daoist storage implement, "
+            "gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, "
+            "micro ambient contact occlusion directly under base only, isolated on solid plain white background."
+        )
+        neg = (
+            "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, "
+            "room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, "
+            f"multiple objects, human operator, worker, cauldron, furnace, ding, collage, frame, directional cast shadow, {ANTI_DRIFT_CLAUSE}"
+        )
+        return pos, neg
+
+    # Default / Archetype 2a: Workstations, Heavy Apparatus & Functional Props
     pos = (
         f"Single isolated 2D RPG game prop of {asset_name.lower()}, {material}, {var_mod}, "
         "Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, "
@@ -461,6 +751,7 @@ def run_pipeline(
     limit: int | None = None,
     skip_godot_import: bool = False,
     dry_run: bool = False,
+    force: bool = False,
 ) -> int:
     if not PACK_PATH.is_file():
         print(f"Error: manifest not found at {PACK_PATH}", file=sys.stderr)
@@ -483,7 +774,12 @@ def run_pipeline(
             continue
         if sub_domain_filter and sub_dom != sub_domain_filter:
             continue
-        if asset_filter and asset_slug != asset_filter and asset.get("id") != asset_filter:
+        if (
+            asset_filter
+            and asset_slug != asset_filter
+            and asset.get("id") != asset_filter
+            and asset_filter not in asset_slug
+        ):
             continue
 
         variants = asset.get("variants", [])
@@ -504,7 +800,7 @@ def run_pipeline(
                 continue
 
             var_status = var.get("status") or asset.get("status", "planned")
-            if var_status == "planned":
+            if var_status == "planned" or force:
                 work_items.append((asset, var))
 
     if limit:
@@ -557,7 +853,7 @@ def run_pipeline(
         interactive_verb = var.get("interactive_verb") or asset.get("interactive_verb")
 
         # Skip if already generated
-        if paths["runtime_png"].is_file() and paths["variant_json"].is_file():
+        if not force and paths["runtime_png"].is_file() and paths["variant_json"].is_file():
             print(
                 f"[{idx}/{len(work_items)}] SKIPPED (already installed): {asset_slug} -> {var_slug}"
             )
@@ -575,7 +871,16 @@ def run_pipeline(
         pos_prompt, neg_prompt = build_game_ready_prompt(asset, var)
         args.prompt = pos_prompt
         args.negative = neg_prompt
-        args.seed = 7000 + idx
+        if var.get("seed"):
+            args.seed = int(var["seed"])
+        else:
+            import hashlib
+            seed_hash = int(hashlib.md5(f"{asset_slug}_{var_slug}".encode("utf-8")).hexdigest()[:6], 16)
+            args.seed = 10000 + (seed_hash % 20000)
+
+        if force:
+            for old_tmp in temp_gen_dir.glob(f"*{asset_slug}*{var_slug}*"):
+                old_tmp.unlink(missing_ok=True)
 
         generated_source: Path | None = None
         for attempt in range(3):
@@ -585,6 +890,15 @@ def run_pipeline(
                     "name": f"{asset.get('name')} ({var_slug})",
                     "category": sub_dom,
                     "prompt": args.prompt,
+                    "type": asset.get("type", "prop"),
+                    "alpha": asset.get("alpha", "transparent"),
+                    "pivot": asset.get("pivot", "bottom_center"),
+                    "environment_name": asset.get("environment_name", "Mortal World"),
+                    "world_tier": asset.get("world_tier", "Low Cultivation"),
+                    "environment_theme": asset.get(
+                        "environment_theme",
+                        "2D Orthographic top-down, gouache hand-painted, ink contours",
+                    ),
                 }
                 out_path, _, _ = generate(
                     gen_dict,
@@ -615,6 +929,8 @@ def run_pipeline(
             shutil.copy2(generated_source, paths["orig_raw"])
 
         # 2. Normalize runtime PNG
+        asset_class = (asset.get("asset_class") or asset.get("type") or "").lower()
+        is_vfx = any(k in asset_class for k in ("vfx", "particle", "overlay")) or "vfx" in dom
         normalize_image(
             generated_source,
             paths["runtime_png"],
@@ -622,6 +938,7 @@ def run_pipeline(
             alpha_mode,
             pivot=pivot,
             margin=16,
+            is_vfx=is_vfx,
         )
 
         # 3. Compute matrix_data
@@ -720,6 +1037,12 @@ if __name__ == "__main__":
         default=False,
         help="Show planned file paths without generating",
     )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        default=False,
+        help="Force regenerate targets even if already generated",
+    )
     args = parser.parse_args()
 
     sys.exit(
@@ -731,5 +1054,6 @@ if __name__ == "__main__":
             limit=args.limit,
             skip_godot_import=args.skip_import,
             dry_run=args.dry_run,
+            force=args.force,
         )
     )

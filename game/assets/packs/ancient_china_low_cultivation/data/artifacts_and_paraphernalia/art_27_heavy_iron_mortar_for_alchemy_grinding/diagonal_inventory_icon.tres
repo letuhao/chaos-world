@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.artifacts_and_paraphernalia.art_27_heavy_iron_mortar_for_alchemy_grinding.diagonal_inventory_icon"
+display_name = "Heavy Iron Mortar for Alchemy Grinding - Diagonal 45-Degree Inventory Icon"
+pinyin = "Yàojiù · Diagonal 45-Degree Inventory Icon"
+hanzi = "玄铁药臼碾钵 · 45度角背包道具图"
+domain_id = &"artifacts_and_paraphernalia"
+category_id = &"art_27_heavy_iron_mortar_for_alchemy_grinding"
+asset_class = &"item_weapon"
+archetype_name = "Diagonal 45-Degree Inventory Icon"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/artifacts_and_paraphernalia/art_27_heavy_iron_mortar_for_alchemy_grinding/diagonal_inventory_icon/pos_inventory_icon_45deg.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"none"
+primary_material = &"raw_metal_ore"
+secondary_material = &"quartz_vein"
+cultivation_element = &"wood"
+elevation_tier = 2
+mortal_realm_tier = "Foundation Establishment (Trúc Cơ / 筑基)"
+interactive_verb = &"equip_item"

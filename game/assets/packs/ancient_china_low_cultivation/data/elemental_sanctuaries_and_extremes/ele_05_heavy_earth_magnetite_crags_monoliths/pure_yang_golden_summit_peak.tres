@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.elemental_sanctuaries_and_extremes.ele_05_heavy_earth_magnetite_crags_monoliths.pure_yang_golden_summit_peak"
+display_name = "Heavy Earth Magnetite Crags & Monoliths - Alpine Peak Catching Morning Purple Qi"
+pinyin = "Yuáncíyán · Alpine Peak Catching Morning Purple Qi"
+hanzi = "玄黄重土元磁岩 · 纯阳金顶朝阳第一峰"
+domain_id = &"elemental_sanctuaries_and_extremes"
+category_id = &"ele_05_heavy_earth_magnetite_crags_monoliths"
+asset_class = &"landmark_mountain"
+archetype_name = "Alpine Peak Catching Morning Purple Qi"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/elemental_sanctuaries_and_extremes/ele_05_heavy_earth_magnetite_crags_monoliths/pure_yang_golden_summit_peak/facing_south_front.png"
+footprint_cells = Vector2i(4, 4)
+canvas_px = Vector2i(512, 512)
+collision_type = &"solid"
+primary_material = &"ancient_pine_wood"
+secondary_material = &"evergreen_needles"
+cultivation_element = &"earth"
+elevation_tier = 8
+mortal_realm_tier = "Great Ascension (Đại Thừa / 大乘)"
+interactive_verb = &"gather_purple_qi"

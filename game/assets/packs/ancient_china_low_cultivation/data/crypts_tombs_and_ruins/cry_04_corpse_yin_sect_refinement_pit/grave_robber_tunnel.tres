@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.crypts_tombs_and_ruins.cry_04_corpse_yin_sect_refinement_pit.grave_robber_tunnel"
+display_name = "Corpse Yin Sect Refinement Pit - Narrow Breached Tunnel Opening"
+pinyin = "Yǎngshījiào · Narrow Breached Tunnel Opening"
+hanzi = "尸阴养尸深窖 · 盗洞暗探窄口"
+domain_id = &"crypts_tombs_and_ruins"
+category_id = &"cry_04_corpse_yin_sect_refinement_pit"
+asset_class = &"landmark_mountain"
+archetype_name = "Narrow Breached Tunnel Opening"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/crypts_tombs_and_ruins/cry_04_corpse_yin_sect_refinement_pit/grave_robber_tunnel/facing_south_front.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"walk_surface"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"yin"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"crawl_inside"

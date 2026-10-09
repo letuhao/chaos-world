@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.world_events_and_calamities.cal_07_heavenly_tribulation_scorched_glass_earth.ruined_ancestral_altar_shards"
+display_name = "Heavenly Tribulation Scorched Glass Earth - War-Torn Broken Shrine Masonry Rubble"
+pinyin = "Jiāokēng · War-Torn Broken Shrine Masonry Rubble"
+hanzi = "劫火燎原琉璃焦坑 · 兵火残毁宗庙断壁碎石"
+domain_id = &"world_events_and_calamities"
+category_id = &"cal_07_heavenly_tribulation_scorched_glass_earth"
+asset_class = &"prop_workstation"
+archetype_name = "War-Torn Broken Shrine Masonry Rubble"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/world_events_and_calamities/cal_07_heavenly_tribulation_scorched_glass_earth/ruined_ancestral_altar_shards/pristine_dormant.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"obstacle"
+primary_material = &"carved_wood"
+secondary_material = &"polished_bronze"
+cultivation_element = &"fire"
+elevation_tier = 8
+mortal_realm_tier = "Great Ascension (Đại Thừa / 大乘)"
+interactive_verb = &"search_relics"

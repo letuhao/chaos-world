@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.dao_companions_and_sanctuary_living.com_d05_twin_lotuses_intertwined_arch_bridge.inner_garden_circular_moon_gate"
+display_name = "Twin Lotuses Intertwined Arch Bridge - Round Stone Archway Framed in Flowering Vines"
+pinyin = "Liánlǐqiáo · Round Stone Archway Framed in Flowering Vines"
+hanzi = "并蒂同心连理桥 · 幽闺通幽缠藤月亮门"
+domain_id = &"dao_companions_and_sanctuary_living"
+category_id = &"com_d05_twin_lotuses_intertwined_arch_bridge"
+asset_class = &"structure_building"
+archetype_name = "Round Stone Archway Framed in Flowering Vines"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/dao_companions_and_sanctuary_living/com_d05_twin_lotuses_intertwined_arch_bridge/inner_garden_circular_moon_gate/rot_south_facade.png"
+footprint_cells = Vector2i(3, 1)
+canvas_px = Vector2i(384, 128)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"fire"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"pass_gate"

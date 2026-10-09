@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.peak_mortal_and_tribulation.hmo_07_trans_continental_ancient_teleport_array.celestial_gate_mirage"
+display_name = "Trans-Continental Ancient Teleport Array - Shimmering Golden Gateway in Cloud Sea"
+pinyin = "Chuánsòngzhèn · Shimmering Golden Gateway in Cloud Sea"
+hanzi = "跨陆八荒古传送阵 · 云蒸霞蔚南天门虚影"
+domain_id = &"peak_mortal_and_tribulation"
+category_id = &"hmo_07_trans_continental_ancient_teleport_array"
+asset_class = &"structure_temple"
+archetype_name = "Shimmering Golden Gateway in Cloud Sea"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/peak_mortal_and_tribulation/hmo_07_trans_continental_ancient_teleport_array/celestial_gate_mirage/rot_south_facade.png"
+footprint_cells = Vector2i(4, 3)
+canvas_px = Vector2i(512, 384)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"thunder"
+elevation_tier = 9
+mortal_realm_tier = "Tribulation Crossing (Độ Kiếp / 渡劫)"
+interactive_verb = &"gaze_gateway"

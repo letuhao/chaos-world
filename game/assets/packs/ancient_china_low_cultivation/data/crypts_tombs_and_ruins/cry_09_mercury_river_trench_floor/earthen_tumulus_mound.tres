@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.crypts_tombs_and_ruins.cry_09_mercury_river_trench_floor.earthen_tumulus_mound"
+display_name = "Mercury River Trench Floor - Grassy Imperial Burial Tumulus"
+pinyin = "Shuǐyín Jiānghǎi · Grassy Imperial Burial Tumulus"
+hanzi = "水银地宫江海 · 青草覆压大封土堆"
+domain_id = &"crypts_tombs_and_ruins"
+category_id = &"cry_09_mercury_river_trench_floor"
+asset_class = &"landmark_mountain"
+archetype_name = "Grassy Imperial Burial Tumulus"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/crypts_tombs_and_ruins/cry_09_mercury_river_trench_floor/earthen_tumulus_mound/facing_south_front.png"
+footprint_cells = Vector2i(4, 4)
+canvas_px = Vector2i(512, 512)
+collision_type = &"solid"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"water"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"survey_tomb"

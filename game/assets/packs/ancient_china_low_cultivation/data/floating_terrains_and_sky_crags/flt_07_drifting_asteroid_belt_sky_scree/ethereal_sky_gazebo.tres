@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.floating_terrains_and_sky_crags.flt_07_drifting_asteroid_belt_sky_scree.ethereal_sky_gazebo"
+display_name = "Drifting Asteroid Belt & Sky Scree - Cantilevered White Jade Sky Gazebo"
+pinyin = "Luànliúdài · Cantilevered White Jade Sky Gazebo"
+hanzi = "浮空漂石乱流带 · 白玉凌虚悬空飞亭"
+domain_id = &"floating_terrains_and_sky_crags"
+category_id = &"flt_07_drifting_asteroid_belt_sky_scree"
+asset_class = &"structure_temple"
+archetype_name = "Cantilevered White Jade Sky Gazebo"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/floating_terrains_and_sky_crags/flt_07_drifting_asteroid_belt_sky_scree/ethereal_sky_gazebo/rot_south_facade.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"earth"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"view_clouds"

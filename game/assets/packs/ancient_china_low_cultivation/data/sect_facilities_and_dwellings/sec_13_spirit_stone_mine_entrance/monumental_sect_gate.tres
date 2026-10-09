@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_13_spirit_stone_mine_entrance.monumental_sect_gate"
+display_name = "Spirit Stone Mine Entrance - Soaring Sect Mountain Entrance Gate"
+pinyin = "Língshí Kuàngdòng · Soaring Sect Mountain Entrance Gate"
+hanzi = "灵石矿洞口 · 宏伟宗门山门"
+domain_id = &"sect_facilities_and_dwellings"
+category_id = &"sec_13_spirit_stone_mine_entrance"
+asset_class = &"structure_building"
+archetype_name = "Soaring Sect Mountain Entrance Gate"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_13_spirit_stone_mine_entrance/monumental_sect_gate/rot_south_facade.png"
+footprint_cells = Vector2i(4, 2)
+canvas_px = Vector2i(512, 256)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"earth"
+elevation_tier = 1
+mortal_realm_tier = "Qi Refining (Luyện Khí / 练气)"
+interactive_verb = &"pass_gate"

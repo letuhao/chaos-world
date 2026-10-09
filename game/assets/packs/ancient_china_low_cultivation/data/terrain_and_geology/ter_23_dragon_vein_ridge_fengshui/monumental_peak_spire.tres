@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.terrain_and_geology.ter_23_dragon_vein_ridge_fengshui.monumental_peak_spire"
+display_name = "Dragon-Vein Ridge (Fengshui) - Towering Geological Needle Spire"
+pinyin = "Lóngmài Bèijǐ · Towering Geological Needle Spire"
+hanzi = "龙脉背脊 · 巍峨地质孤峰"
+domain_id = &"terrain_and_geology"
+category_id = &"ter_23_dragon_vein_ridge_fengshui"
+asset_class = &"landmark_mountain"
+archetype_name = "Towering Geological Needle Spire"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_23_dragon_vein_ridge_fengshui/monumental_peak_spire/facing_south_front.png"
+footprint_cells = Vector2i(4, 4)
+canvas_px = Vector2i(512, 512)
+collision_type = &"solid"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"earth"
+elevation_tier = 6
+mortal_realm_tier = "Void Refinement (Luyện Hư / 炼虚)"
+interactive_verb = &"climb_peak"

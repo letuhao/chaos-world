@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.underground_abyss_and_caverns.sub_06_thousand_year_tree_deep_root_labyrinth.stalactite_stalagmite_colonnade"
+display_name = "Thousand-Year Tree Deep Root Labyrinth - Massive Layered Limestone Cave Columns"
+pinyin = "Chuāndìgēn · Massive Layered Limestone Cave Columns"
+hanzi = "万年古木穿地根 · 石笋石钟乳擎天柱"
+domain_id = &"underground_abyss_and_caverns"
+category_id = &"sub_06_thousand_year_tree_deep_root_labyrinth"
+asset_class = &"landmark_mountain"
+archetype_name = "Massive Layered Limestone Cave Columns"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/underground_abyss_and_caverns/sub_06_thousand_year_tree_deep_root_labyrinth/stalactite_stalagmite_colonnade/facing_south_front.png"
+footprint_cells = Vector2i(2, 3)
+canvas_px = Vector2i(256, 384)
+collision_type = &"solid"
+primary_material = &"ancient_pine_wood"
+secondary_material = &"evergreen_needles"
+cultivation_element = &"earth"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"inspect_formations"

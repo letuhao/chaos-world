@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.mortal_and_jianghu.mor_16_execution_ground_notice_board.escort_wagon_transport"
+display_name = "Execution Ground & Notice Board - Heavy Jianghu Escort Freight Cart"
+pinyin = "Càishìkǒu Fǎchǎng · Heavy Jianghu Escort Freight Cart"
+hanzi = "菜市口法场 · 镖局护卫大车"
+domain_id = &"mortal_and_jianghu"
+category_id = &"mor_16_execution_ground_notice_board"
+asset_class = &"prop_container"
+archetype_name = "Heavy Jianghu Escort Freight Cart"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_16_execution_ground_notice_board/escort_wagon_transport/pristine_dormant.png"
+footprint_cells = Vector2i(3, 2)
+canvas_px = Vector2i(384, 256)
+collision_type = &"solid"
+primary_material = &"carved_wood"
+secondary_material = &"polished_bronze"
+cultivation_element = &"ice"
+elevation_tier = 2
+mortal_realm_tier = "Foundation Establishment (Trúc Cơ / 筑基)"
+interactive_verb = &"inspect_cargo"

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.dao_companions_and_sanctuary_living.com_d10_star_gazing_sky_pavilion_telescope.charcoal_wine_warming_brazier"
+display_name = "Star-Gazing Sky Pavilion & Telescope - Small Red Clay Stove with Celadon Flagon"
+pinyin = "Guānxīngtái · Small Red Clay Stove with Celadon Flagon"
+hanzi = "望月观星登仙台 · 红泥小火炉温酒几"
+domain_id = &"dao_companions_and_sanctuary_living"
+category_id = &"com_d10_star_gazing_sky_pavilion_telescope"
+asset_class = &"prop_workstation"
+archetype_name = "Small Red Clay Stove with Celadon Flagon"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/dao_companions_and_sanctuary_living/com_d10_star_gazing_sky_pavilion_telescope/charcoal_wine_warming_brazier/pristine_dormant.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"solid"
+primary_material = &"carved_wood"
+secondary_material = &"polished_bronze"
+cultivation_element = &"void"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"warm_wine"

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.secret_realms_and_grotto_heavens.sec_r06_grotto_heaven_spiritual_medicine_pocket.meditating_skeleton_master"
+display_name = "Grotto-Heaven Spiritual Medicine Pocket - Petrified Master Lotus Skeleton with Jade Slip"
+pinyin = "Dòngtiānpǔ · Petrified Master Lotus Skeleton with Jade Slip"
+hanzi = "洞天药圃封闭灵田 · 枯骨打坐手托玉简遗蜕"
+domain_id = &"secret_realms_and_grotto_heavens"
+category_id = &"sec_r06_grotto_heaven_spiritual_medicine_pocket"
+asset_class = &"prop_workstation"
+archetype_name = "Petrified Master Lotus Skeleton with Jade Slip"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/secret_realms_and_grotto_heavens/sec_r06_grotto_heaven_spiritual_medicine_pocket/meditating_skeleton_master/pristine_dormant.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"solid"
+primary_material = &"carved_wood"
+secondary_material = &"polished_bronze"
+cultivation_element = &"wood"
+elevation_tier = 6
+mortal_realm_tier = "Void Refinement (Luyện Hư / 炼虚)"
+interactive_verb = &"claim_legacy"

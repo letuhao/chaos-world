@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.body_cultivation_and_tempering.bod_05_primordial_beast_blood_quenching_basin.waterfall_impact_crag_stone"
+display_name = "Primordial Beast Blood Quenching Basin - Polished Boulder Beneath Roaring Cascade"
+pinyin = "Xùecuìchí · Polished Boulder Beneath Roaring Cascade"
+hanzi = "远古大妖血淬池 · 万斤飞瀑冲击炼体石"
+domain_id = &"body_cultivation_and_tempering"
+category_id = &"bod_05_primordial_beast_blood_quenching_basin"
+asset_class = &"landmark_mountain"
+archetype_name = "Polished Boulder Beneath Roaring Cascade"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/body_cultivation_and_tempering/bod_05_primordial_beast_blood_quenching_basin/waterfall_impact_crag_stone/facing_south_front.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"solid"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"blood"
+elevation_tier = 6
+mortal_realm_tier = "Void Refinement (Luyện Hư / 炼虚)"
+interactive_verb = &"temper_flesh"

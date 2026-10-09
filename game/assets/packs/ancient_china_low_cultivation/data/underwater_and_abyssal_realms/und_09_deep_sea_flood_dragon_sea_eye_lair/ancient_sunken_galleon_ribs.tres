@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.underwater_and_abyssal_realms.und_09_deep_sea_flood_dragon_sea_eye_lair.ancient_sunken_galleon_ribs"
+display_name = "Deep Sea Flood Dragon Sea-Eye Lair - Barnacle-Encrusted Shipwreck Skeleton"
+pinyin = "Hǎiyǎnxué · Barnacle-Encrusted Shipwreck Skeleton"
+hanzi = "蹈海蛟龙海眼穴 · 沉船长满藤壶肋骨架"
+domain_id = &"underwater_and_abyssal_realms"
+category_id = &"und_09_deep_sea_flood_dragon_sea_eye_lair"
+asset_class = &"structure_building"
+archetype_name = "Barnacle-Encrusted Shipwreck Skeleton"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/underwater_and_abyssal_realms/und_09_deep_sea_flood_dragon_sea_eye_lair/ancient_sunken_galleon_ribs/rot_south_facade.png"
+footprint_cells = Vector2i(3, 2)
+canvas_px = Vector2i(384, 256)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"water"
+elevation_tier = 6
+mortal_realm_tier = "Void Refinement (Luyện Hư / 炼虚)"
+interactive_verb = &"search_wreck"

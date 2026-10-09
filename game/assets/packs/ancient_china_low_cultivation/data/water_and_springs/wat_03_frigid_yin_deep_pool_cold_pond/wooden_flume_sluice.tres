@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.water_and_springs.wat_03_frigid_yin_deep_pool_cold_pond.wooden_flume_sluice"
+display_name = "Frigid Yin Deep Pool (Cold Pond) - Timber Irrigation Sluice Gate"
+pinyin = "Jiǔyōu Hántán · Timber Irrigation Sluice Gate"
+hanzi = "九幽寒潭 · 木制引水分水闸"
+domain_id = &"water_and_springs"
+category_id = &"wat_03_frigid_yin_deep_pool_cold_pond"
+asset_class = &"prop_workstation"
+archetype_name = "Timber Irrigation Sluice Gate"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_03_frigid_yin_deep_pool_cold_pond/wooden_flume_sluice/pristine_dormant.png"
+footprint_cells = Vector2i(2, 1)
+canvas_px = Vector2i(256, 128)
+collision_type = &"solid"
+primary_material = &"liquid_water"
+secondary_material = &"riverbed_pebbles"
+cultivation_element = &"ice"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"operate_sluice"

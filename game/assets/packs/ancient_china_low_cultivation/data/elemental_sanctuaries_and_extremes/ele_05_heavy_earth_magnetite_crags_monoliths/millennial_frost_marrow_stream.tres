@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.elemental_sanctuaries_and_extremes.ele_05_heavy_earth_magnetite_crags_monoliths.millennial_frost_marrow_stream"
+display_name = "Heavy Earth Magnetite Crags & Monoliths - Frigid Stream of Liquid Sub-Zero Marrow"
+pinyin = "Yuáncíyán · Frigid Stream of Liquid Sub-Zero Marrow"
+hanzi = "玄黄重土元磁岩 · 万年玄冰凝髓极寒溪"
+domain_id = &"elemental_sanctuaries_and_extremes"
+category_id = &"ele_05_heavy_earth_magnetite_crags_monoliths"
+asset_class = &"terrain_tile"
+archetype_name = "Frigid Stream of Liquid Sub-Zero Marrow"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/elemental_sanctuaries_and_extremes/ele_05_heavy_earth_magnetite_crags_monoliths/millennial_frost_marrow_stream/dry_temperate.png"
+footprint_cells = Vector2i(2, 1)
+canvas_px = Vector2i(256, 128)
+collision_type = &"obstacle"
+primary_material = &"earthen_loam"
+secondary_material = &"mineral_silt"
+cultivation_element = &"earth"
+elevation_tier = 8
+mortal_realm_tier = "Great Ascension (Đại Thừa / 大乘)"
+interactive_verb = &"drink_frost_marrow"

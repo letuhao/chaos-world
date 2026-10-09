@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.hazards_and_phenomena.haz_04_five_poison_valley_miasma.quicksand_sinkhole"
+display_name = "Five-Poison Valley Miasma - Swallowing Fine Quicksand Pit"
+pinyin = "Wǔdú Zhàngwù · Swallowing Fine Quicksand Pit"
+hanzi = "五毒障雾 · 吞噬流沙陷坑"
+domain_id = &"hazards_and_phenomena"
+category_id = &"haz_04_five_poison_valley_miasma"
+asset_class = &"terrain_tile"
+archetype_name = "Swallowing Fine Quicksand Pit"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_04_five_poison_valley_miasma/quicksand_sinkhole/dry_temperate.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"obstacle"
+primary_material = &"earthen_loam"
+secondary_material = &"mineral_silt"
+cultivation_element = &"poison"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"None"

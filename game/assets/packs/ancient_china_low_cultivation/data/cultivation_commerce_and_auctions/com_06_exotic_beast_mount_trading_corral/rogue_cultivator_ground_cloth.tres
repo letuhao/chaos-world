@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.cultivation_commerce_and_auctions.com_06_exotic_beast_mount_trading_corral.rogue_cultivator_ground_cloth"
+display_name = "Exotic Beast Mount Trading Corral - Woven Straw Mat with Scattered Curios"
+pinyin = "Shòuchǎng · Woven Straw Mat with Scattered Curios"
+hanzi = "灵兽驯化交易围栏 · 草席散修杂物交换摊"
+domain_id = &"cultivation_commerce_and_auctions"
+category_id = &"com_06_exotic_beast_mount_trading_corral"
+asset_class = &"prop_workstation"
+archetype_name = "Woven Straw Mat with Scattered Curios"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/cultivation_commerce_and_auctions/com_06_exotic_beast_mount_trading_corral/rogue_cultivator_ground_cloth/pristine_dormant.png"
+footprint_cells = Vector2i(2, 1)
+canvas_px = Vector2i(256, 128)
+collision_type = &"walk_surface"
+primary_material = &"bamboo"
+secondary_material = &"thatched_straw"
+cultivation_element = &"wood"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"barter_trinkets"

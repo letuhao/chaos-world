@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.world_events_and_calamities.cal_04_righteous_demonic_divine_crater_battlefield.cave_in_collapsed_timbering"
+display_name = "Righteous-Demonic Divine Crater Battlefield - Crushed Mining Gallery with Trapped Carts"
+pinyin = "Dànéngkēng · Crushed Mining Gallery with Trapped Carts"
+hanzi = "大能法术轰击巨坑 · 矿道崩塌压毁木排架"
+domain_id = &"world_events_and_calamities"
+category_id = &"cal_04_righteous_demonic_divine_crater_battlefield"
+asset_class = &"structure_building"
+archetype_name = "Crushed Mining Gallery with Trapped Carts"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/world_events_and_calamities/cal_04_righteous_demonic_divine_crater_battlefield/cave_in_collapsed_timbering/rot_south_facade.png"
+footprint_cells = Vector2i(3, 2)
+canvas_px = Vector2i(384, 256)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"earth"
+elevation_tier = 7
+mortal_realm_tier = "Body Integration (Hợp Thể / 合体)"
+interactive_verb = &"excavate_shaft"

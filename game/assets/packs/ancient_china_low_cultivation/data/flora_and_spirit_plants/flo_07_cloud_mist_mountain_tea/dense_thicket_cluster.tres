@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.flora_and_spirit_plants.flo_07_cloud_mist_mountain_tea.dense_thicket_cluster"
+display_name = "Cloud-Mist Mountain Tea - Impenetrable Wild Thicket"
+pinyin = "Yúnwù Xiānmíng · Impenetrable Wild Thicket"
+hanzi = "云雾仙茗 · 茂密野生密丛"
+domain_id = &"flora_and_spirit_plants"
+category_id = &"flo_07_cloud_mist_mountain_tea"
+asset_class = &"flora_tree"
+archetype_name = "Impenetrable Wild Thicket"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_07_cloud_mist_mountain_tea/dense_thicket_cluster/pristine_dormant.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"obstacle"
+primary_material = &"ancient_pine_wood"
+secondary_material = &"evergreen_needles"
+cultivation_element = &"wood"
+elevation_tier = 8
+mortal_realm_tier = "Great Ascension (Đại Thừa / 大乘)"
+interactive_verb = &"cut_thicket"

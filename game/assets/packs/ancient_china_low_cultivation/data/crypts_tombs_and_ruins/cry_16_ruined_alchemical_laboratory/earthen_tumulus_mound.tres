@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.crypts_tombs_and_ruins.cry_16_ruined_alchemical_laboratory.earthen_tumulus_mound"
+display_name = "Ruined Alchemical Laboratory - Grassy Imperial Burial Tumulus"
+pinyin = "Bēngtā Dāngé · Grassy Imperial Burial Tumulus"
+hanzi = "崩塌古丹阁 · 青草覆压大封土堆"
+domain_id = &"crypts_tombs_and_ruins"
+category_id = &"cry_16_ruined_alchemical_laboratory"
+asset_class = &"landmark_mountain"
+archetype_name = "Grassy Imperial Burial Tumulus"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/crypts_tombs_and_ruins/cry_16_ruined_alchemical_laboratory/earthen_tumulus_mound/facing_south_front.png"
+footprint_cells = Vector2i(4, 4)
+canvas_px = Vector2i(512, 512)
+collision_type = &"solid"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"earth"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"survey_tomb"

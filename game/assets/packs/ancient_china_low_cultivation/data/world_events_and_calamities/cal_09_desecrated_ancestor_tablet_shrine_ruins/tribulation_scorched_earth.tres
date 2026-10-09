@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.world_events_and_calamities.cal_09_desecrated_ancestor_tablet_shrine_ruins.tribulation_scorched_earth"
+display_name = "Desecrated Ancestor Tablet Shrine Ruins - Vitrified Blackened Glass Ground Basin"
+pinyin = "Cáncí · Vitrified Blackened Glass Ground Basin"
+hanzi = "战火残毁祖师宗祠 · 天劫雷火烧灼黑玻焦土"
+domain_id = &"world_events_and_calamities"
+category_id = &"cal_09_desecrated_ancestor_tablet_shrine_ruins"
+asset_class = &"terrain_tile"
+archetype_name = "Vitrified Blackened Glass Ground Basin"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/world_events_and_calamities/cal_09_desecrated_ancestor_tablet_shrine_ruins/tribulation_scorched_earth/dry_temperate.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"obstacle"
+primary_material = &"earthen_loam"
+secondary_material = &"mineral_silt"
+cultivation_element = &"blood"
+elevation_tier = 7
+mortal_realm_tier = "Body Integration (Hợp Thể / 合体)"
+interactive_verb = &"None"

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.artifacts_and_paraphernalia.art_18_iron_mining_pick_for_spirit_veins.pristine_forged_state"
+display_name = "Iron Mining Pick for Spirit Veins - Masterwork Flawless Forged Specimen"
+pinyin = "Kāishāngǎo · Masterwork Flawless Forged Specimen"
+hanzi = "破灵开山镐 · 宝光内敛神兵原品"
+domain_id = &"artifacts_and_paraphernalia"
+category_id = &"art_18_iron_mining_pick_for_spirit_veins"
+asset_class = &"item_tool"
+archetype_name = "Masterwork Flawless Forged Specimen"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/artifacts_and_paraphernalia/art_18_iron_mining_pick_for_spirit_veins/pristine_forged_state/pos_inventory_icon_45deg.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"none"
+primary_material = &"raw_metal_ore"
+secondary_material = &"quartz_vein"
+cultivation_element = &"metal"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"inspect_relic"

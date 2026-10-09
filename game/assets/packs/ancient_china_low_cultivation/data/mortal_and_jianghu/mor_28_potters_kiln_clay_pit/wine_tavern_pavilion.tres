@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.mortal_and_jianghu.mor_28_potters_kiln_clay_pit.wine_tavern_pavilion"
+display_name = "Potter's Kiln & Clay Pit - Flagged Wine Tavern Roadhouse"
+pinyin = "Mántouyáo Táopù · Flagged Wine Tavern Roadhouse"
+hanzi = "馒头窑陶铺 · 酒旗招风酒肆"
+domain_id = &"mortal_and_jianghu"
+category_id = &"mor_28_potters_kiln_clay_pit"
+asset_class = &"structure_building"
+archetype_name = "Flagged Wine Tavern Roadhouse"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_28_potters_kiln_clay_pit/wine_tavern_pavilion/rot_south_facade.png"
+footprint_cells = Vector2i(3, 3)
+canvas_px = Vector2i(384, 384)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"earth"
+elevation_tier = 1
+mortal_realm_tier = "Qi Refining (Luyện Khí / 练气)"
+interactive_verb = &"order_drink"

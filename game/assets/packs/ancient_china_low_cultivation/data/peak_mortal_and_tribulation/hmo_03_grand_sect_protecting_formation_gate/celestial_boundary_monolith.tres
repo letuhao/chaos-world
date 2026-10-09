@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.peak_mortal_and_tribulation.hmo_03_grand_sect_protecting_formation_gate.celestial_boundary_monolith"
+display_name = "Grand Sect-Protecting Formation Gate - Giant Stele Piercing the Cloud Layer"
+pinyin = "Tiānménlóu · Giant Stele Piercing the Cloud Layer"
+hanzi = "护山通天天门楼 · 界分凡仙擎天古碑"
+domain_id = &"peak_mortal_and_tribulation"
+category_id = &"hmo_03_grand_sect_protecting_formation_gate"
+asset_class = &"landmark_mountain"
+archetype_name = "Giant Stele Piercing the Cloud Layer"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/peak_mortal_and_tribulation/hmo_03_grand_sect_protecting_formation_gate/celestial_boundary_monolith/facing_south_front.png"
+footprint_cells = Vector2i(1, 3)
+canvas_px = Vector2i(128, 384)
+collision_type = &"solid"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"thunder"
+elevation_tier = 9
+mortal_realm_tier = "Tribulation Crossing (Độ Kiếp / 渡劫)"
+interactive_verb = &"read_inscription"

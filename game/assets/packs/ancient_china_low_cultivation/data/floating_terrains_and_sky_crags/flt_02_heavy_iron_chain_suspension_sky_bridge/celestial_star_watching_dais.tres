@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.floating_terrains_and_sky_crags.flt_02_heavy_iron_chain_suspension_sky_bridge.celestial_star_watching_dais"
+display_name = "Heavy Iron Chain Suspension Sky-Bridge - Inscribed Astrological Sky Dais"
+pinyin = "Tiěsuǒqiáo · Inscribed Astrological Sky Dais"
+hanzi = "天堑万丈铁锁桥 · 云海观星太极仙台"
+domain_id = &"floating_terrains_and_sky_crags"
+category_id = &"flt_02_heavy_iron_chain_suspension_sky_bridge"
+asset_class = &"prop_workstation"
+archetype_name = "Inscribed Astrological Sky Dais"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/floating_terrains_and_sky_crags/flt_02_heavy_iron_chain_suspension_sky_bridge/celestial_star_watching_dais/pristine_dormant.png"
+footprint_cells = Vector2i(3, 3)
+canvas_px = Vector2i(384, 384)
+collision_type = &"walk_surface"
+primary_material = &"raw_metal_ore"
+secondary_material = &"quartz_vein"
+cultivation_element = &"metal"
+elevation_tier = 6
+mortal_realm_tier = "Void Refinement (Luyện Hư / 炼虚)"
+interactive_verb = &"chart_stars"

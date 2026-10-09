@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.fauna_and_spirit_beasts.beas_10_phosphorescent_spirit_butterfly.elemental_crest_infused"
+display_name = "Phosphorescent Spirit Butterfly - Thunder/Flame Blessed Elemental Form"
+pinyin = "Huàncǎi Mídié · Thunder/Flame Blessed Elemental Form"
+hanzi = "幻彩迷蝶 · 五行神光附体"
+domain_id = &"fauna_and_spirit_beasts"
+category_id = &"beas_10_phosphorescent_spirit_butterfly"
+asset_class = &"fauna_beast"
+archetype_name = "Thunder/Flame Blessed Elemental Form"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/fauna_and_spirit_beasts/beas_10_phosphorescent_spirit_butterfly/elemental_crest_infused/idle_standing.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"solid"
+primary_material = &"raw_metal_ore"
+secondary_material = &"quartz_vein"
+cultivation_element = &"thunder"
+elevation_tier = 2
+mortal_realm_tier = "Foundation Establishment (Trúc Cơ / 筑基)"
+interactive_verb = &"commune_element"

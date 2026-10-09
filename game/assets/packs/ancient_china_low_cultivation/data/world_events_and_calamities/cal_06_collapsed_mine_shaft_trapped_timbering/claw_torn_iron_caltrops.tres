@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.world_events_and_calamities.cal_06_collapsed_mine_shaft_trapped_timbering.claw_torn_iron_caltrops"
+display_name = "Collapsed Mine Shaft & Trapped Timbering - Mangled Iron Barricades & Snapped Chains"
+pinyin = "Kuàngtā · Mangled Iron Barricades & Snapped Chains"
+hanzi = "坑道垮塌木架碎裂处 · 巨爪踩瘪铁荆棘拒马"
+domain_id = &"world_events_and_calamities"
+category_id = &"cal_06_collapsed_mine_shaft_trapped_timbering"
+asset_class = &"prop_workstation"
+archetype_name = "Mangled Iron Barricades & Snapped Chains"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/world_events_and_calamities/cal_06_collapsed_mine_shaft_trapped_timbering/claw_torn_iron_caltrops/pristine_dormant.png"
+footprint_cells = Vector2i(2, 1)
+canvas_px = Vector2i(256, 128)
+collision_type = &"obstacle"
+primary_material = &"raw_metal_ore"
+secondary_material = &"quartz_vein"
+cultivation_element = &"metal"
+elevation_tier = 6
+mortal_realm_tier = "Void Refinement (Luyện Hư / 炼虚)"
+interactive_verb = &"salvage_scrap"

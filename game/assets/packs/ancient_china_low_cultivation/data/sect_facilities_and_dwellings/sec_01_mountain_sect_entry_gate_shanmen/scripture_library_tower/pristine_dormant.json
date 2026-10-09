@@ -1,0 +1,26 @@
+{
+  "asset_id": "ancient_china_low_cultivation.sec_01_mountain_sect_entry_gate_shanmen.scripture_library_tower_sec_01_mountain_sect_entry_gate_shanmen",
+  "variant_slug": "pristine_dormant",
+  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_01_mountain_sect_entry_gate_shanmen/scripture_library_tower_sec_01_mountain_sect_entry_gate_shanmen/pristine_dormant.png",
+  "width": 512,
+  "height": 512,
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    512,
+    512
+  ],
+  "collision_type": "solid",
+  "matrix_data": {
+    "subgrid_rows": 4,
+    "subgrid_cols": 4,
+    "walk_surface": false,
+    "elevation_step": 0,
+    "cliff_drop": false,
+    "contact_pixels": [],
+    "source_render_seed": 9601,
+    "source_candidate": "carved_rosewood_spirit_pill_chest"
+  }
+}

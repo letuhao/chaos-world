@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.underground_abyss_and_caverns.sub_01_giant_bioluminescent_mushroom_forest.blind_cave_fish_basin"
+display_name = "Giant Bioluminescent Mushroom Forest - Crystal Clear Underground Pool"
+pinyin = "Jùjùndòng · Crystal Clear Underground Pool"
+hanzi = "巨型荧光菌伞洞 · 纯净钟乳滴水盲鱼池"
+domain_id = &"underground_abyss_and_caverns"
+category_id = &"sub_01_giant_bioluminescent_mushroom_forest"
+asset_class = &"prop_workstation"
+archetype_name = "Crystal Clear Underground Pool"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/underground_abyss_and_caverns/sub_01_giant_bioluminescent_mushroom_forest/blind_cave_fish_basin/pristine_dormant.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"obstacle"
+primary_material = &"raw_metal_ore"
+secondary_material = &"quartz_vein"
+cultivation_element = &"wood"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"catch_cave_fish"

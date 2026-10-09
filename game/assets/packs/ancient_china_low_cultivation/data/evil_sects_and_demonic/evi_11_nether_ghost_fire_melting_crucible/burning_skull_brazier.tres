@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.evil_sects_and_demonic.evi_11_nether_ghost_fire_melting_crucible.burning_skull_brazier"
+display_name = "Nether Ghost Fire Melting Crucible - Green Phosphorus Skull Brazier"
+pinyin = "Guǐhuǒdǐng · Green Phosphorus Skull Brazier"
+hanzi = "幽冥鬼火化骨鼎 · 绿磷幽火骷髅炉"
+domain_id = &"evil_sects_and_demonic"
+category_id = &"evi_11_nether_ghost_fire_melting_crucible"
+asset_class = &"prop_workstation"
+archetype_name = "Green Phosphorus Skull Brazier"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/evil_sects_and_demonic/evi_11_nether_ghost_fire_melting_crucible/burning_skull_brazier/pristine_dormant.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"solid"
+primary_material = &"carved_wood"
+secondary_material = &"polished_bronze"
+cultivation_element = &"ghost"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"kindle_yin_fire"

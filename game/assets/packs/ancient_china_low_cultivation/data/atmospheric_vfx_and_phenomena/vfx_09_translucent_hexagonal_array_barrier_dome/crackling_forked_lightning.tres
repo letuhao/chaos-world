@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.atmospheric_vfx_and_phenomena.vfx_09_translucent_hexagonal_array_barrier_dome.crackling_forked_lightning"
+display_name = "Translucent Hexagonal Array Barrier Dome - Jagged Calamity Arcs Striking Downward"
+pinyin = "Guāngmù · Jagged Calamity Arcs Striking Downward"
+hanzi = "六角蜂窝护宗光幕 · 曲折暴烈劈落雷弧"
+domain_id = &"atmospheric_vfx_and_phenomena"
+category_id = &"vfx_09_translucent_hexagonal_array_barrier_dome"
+asset_class = &"vfx_particle"
+archetype_name = "Jagged Calamity Arcs Striking Downward"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/atmospheric_vfx_and_phenomena/vfx_09_translucent_hexagonal_array_barrier_dome/crackling_forked_lightning/subtle_ambient.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"none"
+primary_material = &"ethereal_spiritual_qi"
+secondary_material = &"astral_light_motes"
+cultivation_element = &"yang"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"None"

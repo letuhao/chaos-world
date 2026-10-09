@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.flora_and_spirit_plants.flo_17_wild_wisteria_canopy.harvested_stump"
+display_name = "Wild Wisteria Canopy - Harvested Stem & Root Base"
+pinyin = "Zǐténg Gǔláng · Harvested Stem & Root Base"
+hanzi = "紫藤古廊 · 采摘后残株根茎"
+domain_id = &"flora_and_spirit_plants"
+category_id = &"flo_17_wild_wisteria_canopy"
+asset_class = &"flora_herb"
+archetype_name = "Harvested Stem & Root Base"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_17_wild_wisteria_canopy/harvested_stump/pristine_dormant.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"none"
+primary_material = &"spiritual_root_stalk"
+secondary_material = &"medicinal_blossom"
+cultivation_element = &"wood"
+elevation_tier = 8
+mortal_realm_tier = "Great Ascension (Đại Thừa / 大乘)"
+interactive_verb = &"None"

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.floating_terrains_and_sky_crags.flt_01_inverted_floating_rock_cone_base.celestial_skiff_mooring_post"
+display_name = "Inverted Floating Rock Cone Base - Iron Chain Flying Vessel Mooring Post"
+pinyin = "Dàoshízhuī · Iron Chain Flying Vessel Mooring Post"
+hanzi = "悬浮孤岛倒石锥 · 飞舟停泊玄铁缆桩"
+domain_id = &"floating_terrains_and_sky_crags"
+category_id = &"flt_01_inverted_floating_rock_cone_base"
+asset_class = &"prop_workstation"
+archetype_name = "Iron Chain Flying Vessel Mooring Post"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/floating_terrains_and_sky_crags/flt_01_inverted_floating_rock_cone_base/celestial_skiff_mooring_post/pristine_dormant.png"
+footprint_cells = Vector2i(1, 2)
+canvas_px = Vector2i(128, 256)
+collision_type = &"solid"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"metal"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"moor_vessel"

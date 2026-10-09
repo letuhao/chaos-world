@@ -1,0 +1,26 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flo_04_low_grade_blood_ginseng.mature_flourishing_flo_04_low_grade_blood_ginseng",
+  "variant_slug": "harvestable_ripe",
+  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_04_low_grade_blood_ginseng/mature_flourishing_flo_04_low_grade_blood_ginseng/harvestable_ripe.png",
+  "width": 512,
+  "height": 512,
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    512,
+    512
+  ],
+  "collision_type": "solid",
+  "matrix_data": {
+    "subgrid_rows": 4,
+    "subgrid_cols": 4,
+    "walk_surface": false,
+    "elevation_step": 0,
+    "cliff_drop": false,
+    "contact_pixels": [],
+    "source_render_seed": 9201,
+    "source_candidate": "blood_crystal_ginseng"
+  }
+}

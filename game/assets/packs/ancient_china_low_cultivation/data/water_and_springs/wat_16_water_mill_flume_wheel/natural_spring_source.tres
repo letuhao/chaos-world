@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.water_and_springs.wat_16_water_mill_flume_wheel.natural_spring_source"
+display_name = "Water Mill Flume & Wheel - Bedrock Natural Spring Orifice"
+pinyin = "Xīliú Shímò Shuǐchē · Bedrock Natural Spring Orifice"
+hanzi = "溪流石磨水车 · 石隙涌水泉眼"
+domain_id = &"water_and_springs"
+category_id = &"wat_16_water_mill_flume_wheel"
+asset_class = &"prop_workstation"
+archetype_name = "Bedrock Natural Spring Orifice"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_16_water_mill_flume_wheel/natural_spring_source/pristine_dormant.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"obstacle"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"ice"
+elevation_tier = 7
+mortal_realm_tier = "Body Integration (Hợp Thể / 合体)"
+interactive_verb = &"taste_water"

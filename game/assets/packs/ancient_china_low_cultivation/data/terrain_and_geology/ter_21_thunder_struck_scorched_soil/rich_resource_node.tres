@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.terrain_and_geology.ter_21_thunder_struck_scorched_soil.rich_resource_node"
+display_name = "Thunder-Struck Scorched Soil - Mineral Ore Exposed Outcrop"
+pinyin = "Jiāoléi Jiāotǔ · Mineral Ore Exposed Outcrop"
+hanzi = "焦雷焦土 · 富集矿石露头"
+domain_id = &"terrain_and_geology"
+category_id = &"ter_21_thunder_struck_scorched_soil"
+asset_class = &"prop_workstation"
+archetype_name = "Mineral Ore Exposed Outcrop"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_21_thunder_struck_scorched_soil/rich_resource_node/pristine_dormant.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"solid"
+primary_material = &"earthen_loam"
+secondary_material = &"mineral_silt"
+cultivation_element = &"thunder"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"mine_ore"

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.water_and_springs.wat_17_ancient_sunken_stone_bridge.natural_spring_source"
+display_name = "Ancient Sunken Stone Bridge - Bedrock Natural Spring Orifice"
+pinyin = "Chénshuǐ Gǔdèng · Bedrock Natural Spring Orifice"
+hanzi = "沉水古磴 · 石隙涌水泉眼"
+domain_id = &"water_and_springs"
+category_id = &"wat_17_ancient_sunken_stone_bridge"
+asset_class = &"prop_workstation"
+archetype_name = "Bedrock Natural Spring Orifice"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_17_ancient_sunken_stone_bridge/natural_spring_source/pristine_dormant.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"obstacle"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"ice"
+elevation_tier = 8
+mortal_realm_tier = "Great Ascension (Đại Thừa / 大乘)"
+interactive_verb = &"taste_water"

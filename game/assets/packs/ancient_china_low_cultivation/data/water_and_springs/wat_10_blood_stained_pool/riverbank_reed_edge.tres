@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.water_and_springs.wat_10_blood_stained_pool.riverbank_reed_edge"
+display_name = "Blood-Stained Pool - Marshy Riverbank Shoreline"
+pinyin = "Fúshī Xuèshuǐkēng · Marshy Riverbank Shoreline"
+hanzi = "伏尸血水坑 · 芦苇湿地水岸"
+domain_id = &"water_and_springs"
+category_id = &"wat_10_blood_stained_pool"
+asset_class = &"terrain_tile"
+archetype_name = "Marshy Riverbank Shoreline"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_10_blood_stained_pool/riverbank_reed_edge/dry_temperate.png"
+footprint_cells = Vector2i(2, 1)
+canvas_px = Vector2i(256, 128)
+collision_type = &"walk_surface"
+primary_material = &"earthen_loam"
+secondary_material = &"mineral_silt"
+cultivation_element = &"water"
+elevation_tier = 1
+mortal_realm_tier = "Qi Refining (Luyện Khí / 练气)"
+interactive_verb = &"forage_reeds"

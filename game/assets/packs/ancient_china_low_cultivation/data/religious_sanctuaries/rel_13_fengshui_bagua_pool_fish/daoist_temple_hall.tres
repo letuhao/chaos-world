@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.religious_sanctuaries.rel_13_fengshui_bagua_pool_fish.daoist_temple_hall"
+display_name = "Fengshui Bagua Pool & Fish - Grand Pure Yang Daoist Sanctuary Hall"
+pinyin = "Bāguàchí · Grand Pure Yang Daoist Sanctuary Hall"
+hanzi = "太极阴阳八卦池 · 三清正统大殿"
+domain_id = &"religious_sanctuaries"
+category_id = &"rel_13_fengshui_bagua_pool_fish"
+asset_class = &"structure_temple"
+archetype_name = "Grand Pure Yang Daoist Sanctuary Hall"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_13_fengshui_bagua_pool_fish/daoist_temple_hall/rot_south_facade.png"
+footprint_cells = Vector2i(4, 3)
+canvas_px = Vector2i(512, 384)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"yang"
+elevation_tier = 1
+mortal_realm_tier = "Qi Refining (Luyện Khí / 练气)"
+interactive_verb = &"worship_dao"

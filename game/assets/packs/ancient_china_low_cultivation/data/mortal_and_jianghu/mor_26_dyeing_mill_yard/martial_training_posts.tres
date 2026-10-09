@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.mortal_and_jianghu.mor_26_dyeing_mill_yard.martial_training_posts"
+display_name = "Dyeing Mill Yard - Plum Blossom Agility Wood Stakes"
+pinyin = "Rǎnbùfáng Cǎijià · Plum Blossom Agility Wood Stakes"
+hanzi = "染布坊彩架 · 梅花木桩练功场"
+domain_id = &"mortal_and_jianghu"
+category_id = &"mor_26_dyeing_mill_yard"
+asset_class = &"prop_workstation"
+archetype_name = "Plum Blossom Agility Wood Stakes"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_26_dyeing_mill_yard/martial_training_posts/pristine_dormant.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"obstacle"
+primary_material = &"carved_wood"
+secondary_material = &"polished_bronze"
+cultivation_element = &"wood"
+elevation_tier = 1
+mortal_realm_tier = "Qi Refining (Luyện Khí / 练气)"
+interactive_verb = &"train_agility"

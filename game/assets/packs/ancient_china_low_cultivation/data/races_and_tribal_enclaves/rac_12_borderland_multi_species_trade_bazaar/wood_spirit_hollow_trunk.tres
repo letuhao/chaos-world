@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.races_and_tribal_enclaves.rac_12_borderland_multi_species_trade_bazaar.wood_spirit_hollow_trunk"
+display_name = "Borderland Multi-Species Trade Bazaar - Hollow Sacred Tree Dwelling Chamber"
+pinyin = "Biānquèshì · Hollow Sacred Tree Dwelling Chamber"
+hanzi = "万灵杂处边榷市 · 木灵寄居中空神树"
+domain_id = &"races_and_tribal_enclaves"
+category_id = &"rac_12_borderland_multi_species_trade_bazaar"
+asset_class = &"structure_cottage"
+archetype_name = "Hollow Sacred Tree Dwelling Chamber"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/races_and_tribal_enclaves/rac_12_borderland_multi_species_trade_bazaar/wood_spirit_hollow_trunk/rot_south_facade.png"
+footprint_cells = Vector2i(3, 3)
+canvas_px = Vector2i(384, 384)
+collision_type = &"solid"
+primary_material = &"bamboo"
+secondary_material = &"thatched_straw"
+cultivation_element = &"wood"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"commune_nature"

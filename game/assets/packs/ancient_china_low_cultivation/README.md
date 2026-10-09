@@ -515,6 +515,12 @@ Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja,
   - `winter_frost`: `"delicate rim of white rime ice along cutting edge, pale frosted wood grain"`.
   - `damaged_chipped`: `"nicked cutting edge with several small notches, splintered pommel, fraying cord bindings"`.
   - `qi_resonating`: `"subtle ethereal cyan spiritual glow running along engraved talismanic blade fuller"`.
+- **Item Position & Rotation Matrices**:
+  - `pos_inventory_icon_45deg`: Macro 45° diagonal presentation for equipment grid / inventory slots (`zero ground shadow, zero pedestal`).
+  - `pos_ground_drop_flat_east`: Lying flat horizontally pointing East in 2D orthographic top-down RPG perspective (`subtle micro contact shadow directly underneath only, resting flat`), anchoring to terrain.
+  - `pos_ground_drop_flat_south`: Pointing South (downward) with 2D vertical foreshortening and micro contact shadow.
+  - `rot_north_0deg`: Upright straight sword/implement pointing vertically North (0°), symmetrical alignment.
+  - `rot_west_270deg`: Horizontal straight orientation pointing West (270°), preserving fixed top-left (10:30) light source and natural downward tassel hang.
 
 ---
 
@@ -541,19 +547,26 @@ Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja,
 
 ---
 
-#### Archetype 3: Architecture, Sect Facilities & Gateways (`structure_building`, `gateway`)
-- **Engine Role**: Sect gates, pill refinement halls, scripture towers, mortal inns, hermit cottages, cave portals.
-- **Framing & Projection**: 2D orthographic top-down 45-degree RPG building facade. Clear horizontal baseline for Godot Y-sort anchoring. Micro ambient occlusion at foundation base only.
+#### Archetype 3a: Architecture, Sect Facilities & Dwellings (`structure_building`, `gateway`, `structure_temple`, `structure_cottage`)
+- **Engine Role**: Sect gates, pill refinement halls, scripture towers, Daoist temple halls, mortal inns, hermit cottages, cave portals.
+- **Framing & Projection**: Steep high-angle top-down RPG world-map perspective (~65°–70° overhead camera angle looking down). The broad roof surface is dominant and occupies 70%–80% of the sprite's vertical height. Front entrance facade, columns, and steps are foreshortened beneath the southern eaves at the bottom. Clear horizontal baseline for Godot Y-sort anchoring. Micro ambient occlusion at foundation base only.
 - **Canvas / Footprint**: 2x2 to 4x4 cells (`256x256` to `512x512` px), `alpha: cutout`, `pivot: bottom_center`.
+- **Architectural Typology Discrimination (Formal vs Rustic)**:
+  - **Formal / Monumental Architecture** (`structure_temple`, `gateway`, `pagoda`, `pavilion`, `hall`, `shrine`):
+    - *Roof & Gable*: `"broad glazed ceramic roof tiles and curved dougong eaves dominant and fully visible overhead (occupying 70%-80% of vertical sprite height), high-angle triangular dougong timber gable end"`
+    - *Negative Ban*: `"thatched straw roof, straw hut, hay, rustic shack, "`
+  - **Vernacular / Rustic Architecture** (`structure_cottage`, `dwelling`, `hut`, `bamboo`, `thatch`):
+    - *Roof & Gable*: `"authentic uniform golden thatched straw roof surface dominant and fully visible overhead (occupying 70%-80% of vertical sprite height), split bamboo ridge rafters and thick straw eaves seen from above, high-angle triangular thatched timber gable end"`
+    - *Negative Ban*: `"ceramic tiles, glazed tiles, blue roof tiles, dark roof tiles, terracotta tiles, dougong brackets, imperial palace, temple hall, "`
 - **Master Positive Formula**:
   ```text
-  Single isolated 2D RPG architectural building sprite of {building_name}, {immutable_geometry_anchor}, {architectural_features_and_materials}, {variant_state}, Ancient Chinese Tang-Song Xianxia architectural style, upturned dougong bracket eaves, glazed ceramic roof tiles, carved timber joinery, vermilion columns, gouache hand-painted with dark #263A35 ink contours, clean horizontal ground contact baseline, micro contact shadow only, isolated on solid plain white background.
+  Single isolated 2D top-down world-map building sprite of {building_name}, {immutable_geometry_anchor}, {architectural_features_and_materials}, {variant_state}, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, {directionally_adaptive_roof_and_perspective}, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.
   ```
 - **Master Negative Formula**:
   ```text
-  diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, human figures, isometric box frame, cutout diorama base, directional drop shadow, {anti_drift_clause}
+  {material_negative_ban}{direction_negative_ban}diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, {anti_drift_clause}
   ```
-- **Variant Awareness Matrix for Buildings**:
+- **Variant Awareness Matrix for Buildings & Structures**:
   - `day_pristine`: `"crisp daylight, vibrant vermilion timber columns, immaculate emerald glazed roof tiles, clean white rice-paper lattice windows, pure albedo exposure"`.
   - `night_lit`: `"pure daylight albedo base materials, warm golden candlelight glowing through rice-paper lattice windows, lit crimson eaves lanterns emitting soft light, no artificial dark blue tinting on walls"`.
   - `night_dark`: `"abandoned unlit facade, cold translucent paper windows, dark unlit lanterns, unpainted timber"`.
@@ -563,6 +576,33 @@ Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja,
   - `rain_storm`: `"dark saturated wet roof tiles, water runoff streaming off eave corners, darkened damp timber pillars"`.
   - `damaged_breached`: `"gaping breach in left roof wing with shattered tiles and splintered rafters, scorch marks on entrance pillars"`.
   - `ruined_rubble`: `"collapsed heap of shattered glazed tiles, splintered charred timber beams, cracked stone foundation slab with weeds"`.
+- **Full 4-Way Directional Rotation Formulas**:
+  - `rot_south_facade` (Front / South): `"steep top-down RPG map angle looking down, roof ridge running East-West with broad southern roof surface dominant from overhead (70%-80% of height), foreshortened front walls and entrance visible beneath eaves at bottom-center, stone courtyard steps descending at bottom"`. Negative: `"eye-level view, flat front elevation drawing, flat side view profile"`.
+  - `rot_north_rear` (Back / North): `"steep top-down RPG map angle looking down, roof ridge running East-West with broad northern rear roof surface dominant from overhead (70%-80% of height), solid timber lattice back wall or rear masonry foreshortened beneath eaves at bottom, zero entrance steps, clean horizontal baseline"`. Negative: `"front entrance door, open doorway, entrance steps, door plaque, front veranda"`.
+  - `rot_west_flank` (Left / West): `"steep top-down RPG map angle looking down, building rotated 90 degrees with roof ridge running North-South, western roof slope and high-angle triangular gable end dominant overhead, western side wall foreshortened beneath eaves at bottom, side window or railing, entrance steps extending toward bottom-right"`. Negative: `"symmetrical front entrance facade, central double doors at bottom, front steps at bottom-center"`.
+  - `rot_east_flank` (Right / East): `"steep top-down RPG map angle looking down, building rotated 90 degrees with roof ridge running North-South, eastern roof slope and high-angle triangular gable end dominant overhead, eastern side wall foreshortened beneath eaves at bottom, side window or railing, entrance steps extending toward bottom-left"`. Negative: `"symmetrical front entrance facade, central double doors at bottom, front steps at bottom-center"`.
+
+---
+
+#### Archetype 3b: Natural Geological Landmarks & Mountain Spires (`landmark_mountain`, `spire`, `cliff`, `crag_pillar`)
+- **Engine Role**: Towering karst mountain spires, cultivation peaks, precipitous meditation cliffs, sacred boulder shrines.
+- **Framing & Projection**: Steep high-angle top-down RPG world-map perspective (~65°–70° overhead camera angle looking down). Summit crest and upper plateau terraces fully visible from above, with stepped rock tiers descending toward the bottom. Bare rock contact base resting on terrain with short attached micro shadow.
+- **Canvas / Footprint**: 2x3 to 3x4 cells (`256x384` to `384x512` px), `alpha: cutout`, `pivot: bottom_center`.
+- **Master Positive Formula**:
+  ```text
+  Single isolated 2D top-down world-map natural landmark sprite of {landmark_name}, {immutable_geometry_anchor}, {geological_material_and_features}, {variant_state}, Ancient Chinese Xianxia landscape style, steep high-angle top-down RPG map perspective looking down from above, {directionally_adaptive_mountain_perspective}, bare natural rock base resting directly on ground, gouache hand-painted with dark #263A35 ink contours, clean grounded baseline, micro contact shadow only, isolated on solid plain white background.
+  ```
+- **Master Negative Formula**:
+  ```text
+  diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, eye-level view, side-view portrait, flat elevation, landscape painting, grass patch, turf, lawn, meadow, green ground plane, soil patch, path, cobblestone, road, frame, border, UI, watermark, human figures, birds in sky, {anti_drift_clause}
+  ```
+- **Full 4-Way Directional Rotation Formulas for Mountain Landmarks**:
+  - `facing_south_front` (Front / South): `"steep top-down RPG map angle looking down onto mountain landmark, summit crest and rocky upper plateau terrace dominant from above, twisted green cliff pine canopy spreading over middle ledge, stepped limestone crag tiers descending toward camera"`.
+  - `facing_north_back` (Back / North): `"steep top-down RPG map angle looking down onto mountain landmark from behind, sheer northern limestone rock face and upper summit plateau surface dominant from overhead, weathered crag terraces descending away from summit, zero trees on northern rock wall"`.
+  - `facing_west_left` (Left / West): `"steep top-down RPG map angle looking down onto mountain landmark rotated 90 degrees, elongated rock ridge running North-South, narrow summit crest and western stepped cliff strata seen from high overhead, protruding pine branch visible on left side"`.
+  - `facing_east_profile` (Right / East): `"steep top-down RPG map angle looking down onto mountain landmark rotated 90 degrees, elongated rock ridge running North-South, narrow summit crest and eastern stepped cliff strata seen from high overhead, protruding pine branch visible on right side"`.
+  - `winter_frost`: `"sheer limestone crag capped in glistening white frost, snow dusting the gnarled pine branches, icicles clinging to rock fissures"`.
+  - `thunder_blessed`: `"azure lightning scorch lines along the monolith spire apex, faint celestial electrical sparks dancing on the summit"`.
 
 ---
 
@@ -636,8 +676,8 @@ Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja,
 #### Archetype 7: Atmospheric VFX & Overlay Particle Sheets (`vfx_particle`, `overlay`)
 - **Engine Role**: Particle emitters, weather overlays, protective formation barriers, spiritual auras.
 - **Framing & Projection**: Planar 2D VFX sprite against solid pitch black `#000000` background.
-- **Pipeline Pipeline Rule**: **BYPASSES RMBG-2.0**. Converted to transparent RGBA via luminance mapping ($\text{Alpha} = \max(R, G, B)$) or imported as additive canvas material in Godot.
-- **Canvas / Footprint**: 1x1 to 4x4 cells (`128x128` to `512x512` px), `alpha: transparent` or `opaque_additive`.
+- **Pipeline Rule**: **Bypasses RMBG-2.0 with Automated Unmultiplied Black-to-Alpha Conversion**. The raw model renders luminous particles on pure black `#000000`, and the pipeline automatically converts it into a pure transparent RGBA PNG ($A = \max(R, G, B)$ with unmultiplied color $\text{RGB} = \text{RGB} / A$). This delivers 100% game-ready alpha transparency for Godot standard sprite rendering without black boxes, dark fringes, or halo erosion.
+- **Canvas / Footprint**: 1x1 to 4x4 cells (`128x128` to `512x512` px), `alpha: transparent`, `pivot: center`.
 - **Master Positive Formula**:
   ```text
   2D game particle VFX sprite of {vfx_name}, {particle_dynamics_and_motion}, {variant_intensity}, luminous spiritual motes, soft radiant glow edges, glowing magical energy, isolated on solid pure black background (#000000) for additive alpha blending.
@@ -675,24 +715,40 @@ Before approving any generated asset wave into the game pack, each output file m
 
 ---
 
-### 8.5 Empirical Candidate Test Results & Validation Log (7 Archetypes)
+### 8.5 Empirical Candidate Test Results & Validation Log (Deep Gaps, Item Positions & Structure Rotations Proven)
 
-The prompt formulas and variant mechanics were verified across all 7 archetypes using local ComfyUI (`krea2/raySemiReal_krea2TurboV1Nsfw` + `Scottie:1.0` LoRA) and automated headless validation.
+The prompt formulas and variant mechanics were verified across all archetypes, deep gameplay state axes, item position/rotation orientations, and map structure/landmark rotations using local ComfyUI (`krea2/raySemiReal_krea2TurboV1Nsfw` + `Scottie:1.0` LoRA) and automated headless validation.
 
-| # | Archetype | Candidate Asset Slug | Canonical Name | Variants Tested | Core Validation Outcome |
+| # | Archetype | Candidate Asset Slug | Canonical Name | Variants Tested & Proven | Core Validation Outcome |
 |---|---|---|---|---|---|
-| **1** | `item_tool` | `crescent_spirit_herb_sickle` | Liềm Cắt Linh Thảo Nguyệt Nha | `pristine`, `rain_soaked`, `winter_frost`, `damaged_chipped` | **PASSED**: 100% clean cutout icon. Zero diorama, zero fence post, zero hands. Silhouette and blade curve identical across all 4 variants. |
-| **2** | `prop_workstation` | `bronze_trigram_pill_furnace` | Bát Quái Thanh Đồng Đan Lô | `dormant_unlit`, `active_fire`, `winter_snow`, `damaged_cracked` | **PASSED**: Authentic 3-legged tripod ding cauldron at 45° angle. Bagua trigram vents, active fire inside belly, snow caps on lid, identical tripod foot contact baseline. |
-| **3** | `structure_building` | `azure_cloud_mountain_gate` | Thanh Vân Sơn Môn Bài Lâu | `day_pristine`, `night_lit`, `winter_snow`, `damaged_breached` | **PASSED**: Tang-Song Dougong architecture with glazed emerald tiles. Flat horizontal ground contact line. Night variant preserves daylight albedo while illuminating red lanterns. |
-| **4** | `flora_herb` | `blood_crystal_ginseng` | Huyết Tinh Linh Sâm | `ripe_blooming`, `harvested_stump` | **PASSED**: Botanical Xianxia herb sprite. Zero diorama pots/dirt chunks. Harvested variant shows clipped stem and flat root stump. |
-| **5** | `fauna_beast` | `azure_crest_cloud_crane` | Thanh Đỉnh Linh Vân Hạc | `idle_standing`, `alert_aggressive` | **PASSED**: Adaptive `#D0D0D0` contrast background eliminated 100% of white plumage cutout holes. Pure crane anatomy on slender legs, zero perches/cages. |
-| **6** | `terrain_tile` | `danxia_red_crag_stone` | Đan Hà Hồng Sa Thạch Điền | `dry_temperate`, `wet_rain` | **PASSED**: Full-bleed opaque canvas (`alpha: opaque`, bypassing RemBG). Material-first phrasing prevents 3D canyon vistas; rain variant produces matching reflective water sheets. |
-| **7** | `vfx_particle` | `ascending_spiritual_qi_motes` | Thanh Kim Linh Quang Thăng Đằng | `subtle_ambient`, `surging_vortex` | **PASSED**: Solid pure `#000000` black background bypassing RemBG. Luminous cyan/gold energy glows, semi-transparent trails, and motes fully preserved for additive blending in Godot (`blend_mode = Add`). |
+| **1** | `item_tool` | `crescent_spirit_herb_sickle` | Liềm Cắt Linh Thảo Nguyệt Nha | `pristine`, `rain_soaked`, `winter_frost`, `damaged_chipped`, `pos_ground_drop_flat`, `rot_vertical_north` | **PASSED (Item Position & Rotation Proven)**: 100% clean cutout icon. `pos_ground_drop_flat` shows sickle resting flat on ground plane with subtle micro contact shadow; `rot_vertical_north` shows vertical upright orientation. Zero diorama, zero fence posts. |
+| **2** | `item_weapon` | `azure_frost_flying_sword` | Thanh Sương Phi Kiếm | `pos_inventory_icon_45deg`, `pos_ground_drop_flat_east`, `pos_ground_drop_flat_south`, `rot_north_0deg`, `rot_west_270deg` | **PASSED (Item Position & Rotation Proven)**: Macro 45° diagonal icon; flat horizontal ground drop with contact shadow; flat south drop with perspective foreshortening; 0° North vertical straight sword; 270° West horizontal profile with top-light preservation and hanging tassel. |
+| **3** | `prop_workstation` | `bronze_trigram_pill_furnace` | Bát Quái Thanh Đồng Đan Lô | `dormant_unlit`, `active_fire`, `winter_snow`, `damaged_cracked` | **PASSED**: Authentic 3-legged tripod ding cauldron at 45° angle. Active fire visible through Bagua vents, snow caps on lid, identical tripod foot contact baseline. |
+| **4** | `prop_container` | `carved_rosewood_spirit_pill_chest` | Điêu Hoa Tử Đàn Linh Đan Hạp | `closed_locked`, `open_looted`, `broken_shattered` | **PASSED (Gap 1 Proven)**: Container lifecycle. Closed box with Daoist brass padlock; hinged lid flipped backward showing empty velvet interior; smashed fractured lid planks on ground. Base footprint and brass corners preserved across all 3 states. |
+| **5** | `structure_building` | `azure_cloud_mountain_gate` | Thanh Vân Sơn Môn Bài Lâu | `day_pristine`, `night_lit`, `winter_snow`, `damaged_breached`, `wartime_lockdown`, `ruined_rubble` | **PASSED (Gap 2 Proven)**: Complete durability range. `wartime_lockdown` renders an active glowing cyan Bagua shield dome and heavy spiked barricades; `ruined_rubble` renders a 0% HP collapsed caved-in roof and weeds on cracked foundation while keeping the baseline aligned. |
+| **6** | `fauna_beast` | `azure_crest_cloud_crane` | Thanh Đỉnh Linh Vân Hạc | `idle_standing`, `alert_aggressive`, `wounded_staggered`, `dead_carcass`, `yin_demonic_corrupted` | **PASSED (Gap 3 Proven)**: Core combat & hunting loop. `wounded_staggered` shows drooping wing and bloodied flank; `dead_carcass` lies limp on the ground with an exposed harvestable glowing cyan spirit core; `yin_demonic_corrupted` features violet demonic miasma smoke and crimson eyes. Zero diorama turf, zero plumage clipping. |
+| **7** | `flora_herb` | `blood_crystal_ginseng` | Huyết Tinh Linh Sâm | `spring_sprout`, `ripe_blooming`, `qi_overflow`, `harvested_stump`, `withered_spent` | **PASSED (Gap 4 Proven)**: Full botanical lifecycle. `spring_sprout` tender shoot; `ripe_blooming` crystal root and berries; `qi_overflow` pulsing radiant azure Qi veins; `harvested_stump` clipped flat root neck; `withered_spent` dried brown shriveled husk. |
+| **8** | `terrain_tile` | `danxia_red_crag_stone` | Đan Hà Hồng Sa Thạch Điền | `dry_temperate`, `wet_rain`, `leyline_pure`, `yin_corrupted` | **PASSED (Gap 5 Proven)**: Leyline & corruption. `leyline_pure` illuminates subterranean azure energy conduits; `yin_corrupted` scorches identical conduits with demonic black/purple miasma. Near-zero ($\le 2\text{ px}$) geometric layout drift. |
+| **9** | `vfx_particle` | `ascending_spiritual_qi_motes` | Thanh Kim Linh Quang Thăng Đằng | `subtle_ambient`, `surging_vortex` | **PASSED**: 100% transparent RGBA PNG. Pure black background automatically converted to alpha using unmultiplied color keying, eliminating dark fringes and black boxes. |
+| **10** | `vfx_particle` | `nine_heavens_tribulation_lightning` | Cửu Tiêu Thần Lôi Kiếp Điệp | `calamity_arc` | **PASSED (Gap 6 Proven)**: Heavenly breakthrough tribulation calamity. Blinding azure lightning core with delicate jagged branching plasma filaments, 100% transparent background with fine alpha preservation. |
+| **11** | `structure_temple` | `pure_yang_daoist_temple` | Thuần Dương Đạo Quán Đại Điện | `rot_south_facade` (Front), `rot_north_rear` (Back), `rot_west_flank` (Left), `rot_east_flank` (Right) | **PASSED (Full 4-Way 360° Rotations Proven)**: True 65°–70° steep overhead camera angle matching world-map storehouses and workbenches. Roof hips dominate 75%–78% of sprite height across all 4 directions. Front shows foreshortened double doors and courtyard steps; Back shows solid timber lattice with zero steps; Left (West) shows North-South ridge, triangular dougong gable, and western wall; Right (East) shows North-South ridge and eastern wall. Consistent foundation elevation, scale, and textures. |
+| **12** | `structure_cottage` | `bamboo_spirit_hermit_cottage` | Trúc Lâm Ẩn Sĩ Thảo Lư | `rot_south_facade` (Front), `rot_north_rear` (Back), `rot_west_flank` (Left), `rot_east_flank` (Right) | **PASSED (Full 4-Way 360° Rotations Proven)**: Golden thatched straw roof and bamboo ridge poles dominant from overhead (75% height) in all 4 cardinal angles. Front shows veranda porch and open tea room door; Back shows solid woven bamboo wall, rear roof clay chimney, and zero steps; Left (West) shows western thatched gable, circular bamboo window, and stilt footings; Right (East) shows eastern thatched gable and side veranda railing. |
+| **13** | `landmark_mountain` | `azure_cloud_karst_peak_spire` | Thanh Vân Thạch Phong Tiêm Nhai | `facing_south_front` (Front), `facing_north_back` (Back), `facing_west_left` (Left), `facing_east_profile` (Right) | **PASSED (Full 4-Way Overhead Landmark Proven)**: Summit crest plateau surfaces and rock column heads clearly visible looking down from high overhead; Front shows wide limestone crags and spreading pine canopy; Back shows sheer northern cliff face and descending terraces; Left (West) shows North-South rock spine with pine branch on left; Right (East) shows slender rock spine with pine branch on right. Zero diorama box, clean bare rock grounding. |
 
 #### Key Tuning Lessons & Production Rules:
-1. **Adaptive Contrast Backgrounds for White Cutouts**: Never prompt white/snow assets against `#FFFFFF` background. Grey `#D0D0D0` background allows RMBG-2.0 to preserve fine white feather tips, icicles, and white jade rims without erosion.
-2. **Bypassing RemBG for Additive VFX**: Atmospheric particles and Qi motes must be generated with `alpha: opaque` on `#000000` pitch black to maintain radiant transparency.
-3. **Material-First Phrasing for Ground Surfaces**: Diffusion models convert architectural nouns ("crag", "canyon", "pedestal") into 3D scenes. Ground surfaces must use material terminology ("uniform flat soil surface", "fine mineral silt", "broad planar pavement").
-4. **Immutable Geometry Anchors for Variants**: Keeping base materials, perspective angles, and contact pivots identical across variants guarantees seamless sprite swapping in Godot without collision jitter or visual popping.
+1. **Item Position Modes (UI Icon vs Ground Drop)**: Inventory icons require a 45° diagonal presentation with macro framing and zero ground shadow (`zero ground shadow, zero pedestal`). In contrast, world ground drops require lying flat on the floor plane in 2D orthographic top-down RPG perspective with subtle micro contact shadow underneath (`subtle micro contact shadow directly underneath only, resting flat`), anchoring the dropped item to world terrain without floating.
+2. **Item Rotation & Fixed Lighting**: Rotating 2D sprites via game engine code flips the directional lighting upside down. Pre-rendered rotation frames (`rot_north_0deg`, `rot_west_270deg`, `pos_ground_drop_flat_east`) maintain the fixed top-left (10:30 o'clock) lighting highlight and bottom shadow while allowing tassels and accessories to obey gravity naturally.
+3. **Orthographic Foreshortening**: Items pointing North or South exhibit perspective foreshortening on the vertical axis, whereas East and West orientations display full blade profile length.
+4. **Separation of Containers/Furnishings from Cauldrons**: Generic prop prompts defaulting to "tripod ding cauldron" cause chests to distort into cauldrons. The pipeline now splits Archetype 2 into `prop_workstation` (furnaces/anvils) and `prop_container` (carved rosewood joinery and Daoist caskets with brass latching).
+5. **Contact Shadow Adaptation for Carcasses & Dead States**: Standing creatures require `ground foot contact shadow only`. In contrast, dead carcasses and harvestable corpses must specify `contact shadow directly under body only` with negative clauses forbidding `standing upright, flying, walking`.
+6. **Adaptive Contrast Backgrounds for White Cutouts**: White assets (snow, white cranes, white jade) must never be prompted against `#FFFFFF`. A neutral grey `#D0D0D0` background allows RMBG-2.0 to preserve fine white feather tips, icicles, and white jade rims without erosion or jagged bite marks.
+7. **Bypassing RemBG with Automated Black-to-Alpha for VFX**: Atmospheric particles, Qi motes, and tribulation lightning are generated on `#000000` pitch black to prevent RemBG erosion, then converted via unmultiplied alpha mapping into 100% transparent RGBA PNGs.
+8. **Material-First Phrasing for Ground Surfaces**: Diffusion models convert architectural nouns ("crag", "canyon", "pedestal") into 3D scenes. Ground surfaces must use material terminology ("uniform flat soil surface", "fine mineral silt", "broad planar pavement") with 90-degree perpendicular overhead angles.
+9. **Immutable Geometry Anchors for State Progression**: Keeping base materials, perspective angles, and contact pivots identical across variants guarantees seamless sprite swapping in Godot without collision jitter or visual popping.
+10. **The Camera Angle Imperative (Steep Overhead 65°–70° vs Eye-Level Elevation Traps)**: Words like `"building facade"` or `"45-degree angle"` without explicit overhead cues cause the diffusion model to render shallow ~15°–20° architectural elevation drawings (tall flat walls, huge doors, tiny slivers of roof) or flat 0° side-view cross-sections. Top-down RPG map sprites require **steep overhead map-camera phrasing (~65°–70° downward tilt)** where the **roof surface dominates 70%–80% of the sprite**, while walls and doorways are foreshortened underneath the eaves at the bottom. Negative prompts must explicitly ban `"eye-level view, flat front elevation drawing, flat side view profile, side-scroller"`.
+11. **Landmark Mountain Spires vs. Flat Ground Dioramas**: Mountain spires, cliffs, and karst peaks in `terrain_and_geology` must never share the flat ground tile prompt template. Classifying them as `landmark_mountain` with Archetype 3b ("steep high-angle top-down RPG map perspective looking down from above, summit crest and upper rock terraces fully visible from above") prevents both the cutaway grass diorama cube and the flat eye-level landscape painting trap, yielding authentic standalone natural map landmarks.
+12. **Elevated Stilt Architecture & Foundation Anchoring**: For bamboo dwellings and hermit cottages built on wooden stilts, grounding is anchored at the bottom of the foundation stilts/stone footings. Negative prompts must explicitly forbid surrounding gardens, fences, and grass slabs so the cottage can be placed seamlessly over any map terrain layer (water, grass, dirt).
+13. **Full 4-Way Directional Rotation Sets (Front, Back, Left, Right)**: Map structures require complete 4-cardinal orientation sets for road and player approach flexibility. Each orientation requires directionally adaptive prompts: Front features South-facing entrance and steps foreshortened under eaves at bottom-center; Back features North-facing solid timber/masonry rear wall with negative prompts banning doorways and steps (`front entrance door, open doorway, entrance steps, door plaque`); Left (West) and Right (East) feature North-South ridge rotation with triangular dougong/thatch gable ends and side windows/railings while keeping consistent top-left lighting.
+
 
 

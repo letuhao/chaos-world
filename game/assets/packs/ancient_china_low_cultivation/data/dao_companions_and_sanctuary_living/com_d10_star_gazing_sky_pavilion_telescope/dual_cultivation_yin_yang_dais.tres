@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.dao_companions_and_sanctuary_living.com_d10_star_gazing_sky_pavilion_telescope.dual_cultivation_yin_yang_dais"
+display_name = "Star-Gazing Sky Pavilion & Telescope - Circular Interlocking Black & White Jade Dais"
+pinyin = "Guānxīngtái · Circular Interlocking Black & White Jade Dais"
+hanzi = "望月观星登仙台 · 太极阴阳双修白玉台"
+domain_id = &"dao_companions_and_sanctuary_living"
+category_id = &"com_d10_star_gazing_sky_pavilion_telescope"
+asset_class = &"prop_workstation"
+archetype_name = "Circular Interlocking Black & White Jade Dais"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/dao_companions_and_sanctuary_living/com_d10_star_gazing_sky_pavilion_telescope/dual_cultivation_yin_yang_dais/pristine_dormant.png"
+footprint_cells = Vector2i(3, 3)
+canvas_px = Vector2i(384, 384)
+collision_type = &"walk_surface"
+primary_material = &"carved_wood"
+secondary_material = &"polished_bronze"
+cultivation_element = &"void"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"dual_cultivate"

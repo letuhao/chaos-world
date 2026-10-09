@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.flora_and_spirit_plants.flo_02_ancient_dragon_coil_pine.fallen_deadwood_trunk"
+display_name = "Ancient Dragon-Coil Pine - Moss-Covered Fallen Log"
+pinyin = "Pánlóng Gǔsōng · Moss-Covered Fallen Log"
+hanzi = "盘龙古松 · 苔藓伏地枯木"
+domain_id = &"flora_and_spirit_plants"
+category_id = &"flo_02_ancient_dragon_coil_pine"
+asset_class = &"flora_tree"
+archetype_name = "Moss-Covered Fallen Log"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_02_ancient_dragon_coil_pine/fallen_deadwood_trunk/pristine_dormant.png"
+footprint_cells = Vector2i(2, 1)
+canvas_px = Vector2i(256, 128)
+collision_type = &"obstacle"
+primary_material = &"ancient_pine_wood"
+secondary_material = &"evergreen_needles"
+cultivation_element = &"wood"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"forage_mushrooms"

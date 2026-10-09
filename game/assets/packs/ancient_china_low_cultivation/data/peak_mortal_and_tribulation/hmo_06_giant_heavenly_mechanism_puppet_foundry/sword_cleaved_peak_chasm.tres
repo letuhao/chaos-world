@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.peak_mortal_and_tribulation.hmo_06_giant_heavenly_mechanism_puppet_foundry.sword_cleaved_peak_chasm"
+display_name = "Giant Heavenly Mechanism Puppet Foundry - Sheer Vertical Abyss Split by Giant Blade"
+pinyin = "Tiānjīgōng · Sheer Vertical Abyss Split by Giant Blade"
+hanzi = "天机机关千偶工坊 · 大能一剑断山绝壑"
+domain_id = &"peak_mortal_and_tribulation"
+category_id = &"hmo_06_giant_heavenly_mechanism_puppet_foundry"
+asset_class = &"landmark_mountain"
+archetype_name = "Sheer Vertical Abyss Split by Giant Blade"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/peak_mortal_and_tribulation/hmo_06_giant_heavenly_mechanism_puppet_foundry/sword_cleaved_peak_chasm/facing_south_front.png"
+footprint_cells = Vector2i(3, 2)
+canvas_px = Vector2i(384, 256)
+collision_type = &"obstacle"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"thunder"
+elevation_tier = 9
+mortal_realm_tier = "Tribulation Crossing (Độ Kiếp / 渡劫)"
+interactive_verb = &"comprehend_sword_edge"

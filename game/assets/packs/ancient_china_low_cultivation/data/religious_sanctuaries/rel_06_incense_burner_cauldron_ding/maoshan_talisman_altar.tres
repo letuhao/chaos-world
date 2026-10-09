@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.religious_sanctuaries.rel_06_incense_burner_cauldron_ding.maoshan_talisman_altar"
+display_name = "Incense Burner Cauldron (Ding) - Yellow Silk Talisman Ritual Altar"
+pinyin = "Qīngtóng Xiāngdǐng · Yellow Silk Talisman Ritual Altar"
+hanzi = "青铜香火宝鼎 · 黄绫道坛法桌"
+domain_id = &"religious_sanctuaries"
+category_id = &"rel_06_incense_burner_cauldron_ding"
+asset_class = &"prop_workstation"
+archetype_name = "Yellow Silk Talisman Ritual Altar"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_06_incense_burner_cauldron_ding/maoshan_talisman_altar/pristine_dormant.png"
+footprint_cells = Vector2i(2, 1)
+canvas_px = Vector2i(256, 128)
+collision_type = &"solid"
+primary_material = &"cast_bronze"
+secondary_material = &"refractory_clay"
+cultivation_element = &"fire"
+elevation_tier = 2
+mortal_realm_tier = "Foundation Establishment (Trúc Cơ / 筑基)"
+interactive_verb = &"cast_ritual"

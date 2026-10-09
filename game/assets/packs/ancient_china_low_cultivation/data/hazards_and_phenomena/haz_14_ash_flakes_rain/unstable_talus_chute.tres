@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.hazards_and_phenomena.haz_14_ash_flakes_rain.unstable_talus_chute"
+display_name = "Ash Flakes Rain - Unstable Falling Stone Chute"
+pinyin = "Jiéhuī Luòxiè · Unstable Falling Stone Chute"
+hanzi = "劫灰落屑 · 易塌滑坠乱石堆"
+domain_id = &"hazards_and_phenomena"
+category_id = &"haz_14_ash_flakes_rain"
+asset_class = &"terrain_tile"
+archetype_name = "Unstable Falling Stone Chute"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_14_ash_flakes_rain/unstable_talus_chute/dry_temperate.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"obstacle"
+primary_material = &"earthen_loam"
+secondary_material = &"mineral_silt"
+cultivation_element = &"water"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"None"

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.religious_sanctuaries.rel_08_city_god_chenghuang_temple.maoshan_talisman_altar"
+display_name = "City God (Chenghuang) Temple - Yellow Silk Talisman Ritual Altar"
+pinyin = "Chénghuángmiào · Yellow Silk Talisman Ritual Altar"
+hanzi = "阴阳司城隍庙 · 黄绫道坛法桌"
+domain_id = &"religious_sanctuaries"
+category_id = &"rel_08_city_god_chenghuang_temple"
+asset_class = &"prop_workstation"
+archetype_name = "Yellow Silk Talisman Ritual Altar"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_08_city_god_chenghuang_temple/maoshan_talisman_altar/pristine_dormant.png"
+footprint_cells = Vector2i(2, 1)
+canvas_px = Vector2i(256, 128)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"water"
+elevation_tier = 2
+mortal_realm_tier = "Foundation Establishment (Trúc Cơ / 筑基)"
+interactive_verb = &"cast_ritual"

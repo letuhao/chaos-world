@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.spirit_farming_and_sericulture.far_04_runic_warding_straw_scarecrow.sun_drying_grain_woven_mats"
+display_name = "Runic Warding Straw Scarecrow - Woven Bamboo Mats with Golden Spirit Grain"
+pinyin = "Fúcǎorén · Woven Bamboo Mats with Golden Spirit Grain"
+hanzi = "镇禽诛兽符草人 · 日晒金穗篾席晾药盘"
+domain_id = &"spirit_farming_and_sericulture"
+category_id = &"far_04_runic_warding_straw_scarecrow"
+asset_class = &"prop_workstation"
+archetype_name = "Woven Bamboo Mats with Golden Spirit Grain"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/spirit_farming_and_sericulture/far_04_runic_warding_straw_scarecrow/sun_drying_grain_woven_mats/pristine_dormant.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"walk_surface"
+primary_material = &"bamboo"
+secondary_material = &"thatched_straw"
+cultivation_element = &"wood"
+elevation_tier = 2
+mortal_realm_tier = "Foundation Establishment (Trúc Cơ / 筑基)"
+interactive_verb = &"turn_grain"

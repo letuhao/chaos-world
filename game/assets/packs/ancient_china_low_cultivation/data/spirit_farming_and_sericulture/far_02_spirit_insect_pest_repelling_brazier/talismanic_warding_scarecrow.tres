@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.spirit_farming_and_sericulture.far_02_spirit_insect_pest_repelling_brazier.talismanic_warding_scarecrow"
+display_name = "Spirit Insect Pest Repelling Brazier - Straw Effigy Bearing Inscribed Yellow Seals"
+pinyin = "Qūchónglú · Straw Effigy Bearing Inscribed Yellow Seals"
+hanzi = "驱蝗逐蛊熏烟炉 · 镇兽诛禽朱砂符草人"
+domain_id = &"spirit_farming_and_sericulture"
+category_id = &"far_02_spirit_insect_pest_repelling_brazier"
+asset_class = &"prop_workstation"
+archetype_name = "Straw Effigy Bearing Inscribed Yellow Seals"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/spirit_farming_and_sericulture/far_02_spirit_insect_pest_repelling_brazier/talismanic_warding_scarecrow/pristine_dormant.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"solid"
+primary_material = &"bamboo"
+secondary_material = &"thatched_straw"
+cultivation_element = &"wood"
+elevation_tier = 1
+mortal_realm_tier = "Qi Refining (Luyện Khí / 练气)"
+interactive_verb = &"renew_ward"

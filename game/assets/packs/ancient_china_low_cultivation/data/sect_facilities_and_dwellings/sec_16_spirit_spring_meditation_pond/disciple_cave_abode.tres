@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_16_spirit_spring_meditation_pond.disciple_cave_abode"
+display_name = "Spirit Spring Meditation Pond - Carved Cliff Dongfu Hermit Cave"
+pinyin = "Nínglíng Chí · Carved Cliff Dongfu Hermit Cave"
+hanzi = "凝灵洗髓池 · 崖壁凿刻洞府"
+domain_id = &"sect_facilities_and_dwellings"
+category_id = &"sec_16_spirit_spring_meditation_pond"
+asset_class = &"structure_building"
+archetype_name = "Carved Cliff Dongfu Hermit Cave"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_16_spirit_spring_meditation_pond/disciple_cave_abode/rot_south_facade.png"
+footprint_cells = Vector2i(3, 2)
+canvas_px = Vector2i(384, 256)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"water"
+elevation_tier = 1
+mortal_realm_tier = "Qi Refining (Luyện Khí / 练气)"
+interactive_verb = &"enter_dongfu"

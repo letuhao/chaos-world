@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.body_cultivation_and_tempering.bod_09_nine_dragon_wooden_agility_slalom_log.cliff_cleaving_strike_monolith"
+display_name = "Nine-Dragon Wooden Agility Slalom Log - Vertically Gouged Test Rock for Blade Force"
+pinyin = "Fānténgmù · Vertically Gouged Test Rock for Blade Force"
+hanzi = "九龙穿林翻腾木 · 裂山试力玄武岩靶石"
+domain_id = &"body_cultivation_and_tempering"
+category_id = &"bod_09_nine_dragon_wooden_agility_slalom_log"
+asset_class = &"landmark_mountain"
+archetype_name = "Vertically Gouged Test Rock for Blade Force"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/body_cultivation_and_tempering/bod_09_nine_dragon_wooden_agility_slalom_log/cliff_cleaving_strike_monolith/facing_south_front.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"solid"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"metal"
+elevation_tier = 8
+mortal_realm_tier = "Great Ascension (Đại Thừa / 大乘)"
+interactive_verb = &"strike_rock"

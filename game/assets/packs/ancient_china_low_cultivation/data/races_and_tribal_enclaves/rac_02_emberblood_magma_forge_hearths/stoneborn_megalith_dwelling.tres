@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.races_and_tribal_enclaves.rac_02_emberblood_magma_forge_hearths.stoneborn_megalith_dwelling"
+display_name = "Emberblood Magma Forge Hearths - Chiseled Monolithic Stone Dwelling"
+pinyin = "Yánxuèfáng · Chiseled Monolithic Stone Dwelling"
+hanzi = "炎血熔岩锻舍 · 石族一体凿刻石居"
+domain_id = &"races_and_tribal_enclaves"
+category_id = &"rac_02_emberblood_magma_forge_hearths"
+asset_class = &"structure_building"
+archetype_name = "Chiseled Monolithic Stone Dwelling"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/races_and_tribal_enclaves/rac_02_emberblood_magma_forge_hearths/stoneborn_megalith_dwelling/rot_south_facade.png"
+footprint_cells = Vector2i(3, 2)
+canvas_px = Vector2i(384, 256)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"blood"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"enter_dwelling"

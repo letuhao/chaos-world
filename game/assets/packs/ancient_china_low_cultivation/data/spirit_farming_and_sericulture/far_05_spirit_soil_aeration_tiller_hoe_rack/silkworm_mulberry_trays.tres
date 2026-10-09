@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.spirit_farming_and_sericulture.far_05_spirit_soil_aeration_tiller_hoe_rack.silkworm_mulberry_trays"
+display_name = "Spirit Soil Aeration Tiller & Hoe Rack - Tiered Bamboo Racks with Cocoon Silkworms"
+pinyin = "Língchújià · Tiered Bamboo Racks with Cocoon Silkworms"
+hanzi = "破岩除草灵锄架 · 冰蚕吐丝叠放竹屉架"
+domain_id = &"spirit_farming_and_sericulture"
+category_id = &"far_05_spirit_soil_aeration_tiller_hoe_rack"
+asset_class = &"prop_workstation"
+archetype_name = "Tiered Bamboo Racks with Cocoon Silkworms"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/spirit_farming_and_sericulture/far_05_spirit_soil_aeration_tiller_hoe_rack/silkworm_mulberry_trays/pristine_dormant.png"
+footprint_cells = Vector2i(2, 1)
+canvas_px = Vector2i(256, 128)
+collision_type = &"solid"
+primary_material = &"iron_bamboo"
+secondary_material = &"foliage"
+cultivation_element = &"wood"
+elevation_tier = 1
+mortal_realm_tier = "Qi Refining (Luyện Khí / 练气)"
+interactive_verb = &"harvest_silk"

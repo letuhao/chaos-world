@@ -1,0 +1,147 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.mature_flourishing_flo_01_thousand_year_iron_bamboo",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_01_thousand_year_iron_bamboo",
+  "asset_slug": "mature_flourishing_flo_01_thousand_year_iron_bamboo",
+  "variant_slug": "ruined_rubble",
+  "name": "Broken Shattered Rubble",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_01_thousand_year_iron_bamboo/mature_flourishing_flo_01_thousand_year_iron_bamboo/ruined_rubble.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "inspect_plant",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.458,
+        0.449
+      ],
+      [
+        0.456,
+        0.411
+      ]
+    ],
+    "frac_zero": 0.6669,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.133,
+        0.647,
+        0.564,
+        0.041,
+        0.0
+      ],
+      [
+        0.067,
+        0.666,
+        1.0,
+        0.993,
+        0.638,
+        0.021
+      ],
+      [
+        0.46,
+        0.875,
+        0.749,
+        0.463,
+        0.408,
+        0.081
+      ],
+      [
+        0.06,
+        0.267,
+        0.686,
+        0.425,
+        0.758,
+        0.376
+      ],
+      [
+        0.102,
+        0.255,
+        0.712,
+        0.514,
+        0.044,
+        0.0
+      ],
+      [
+        0.071,
+        0.386,
+        0.925,
+        0.652,
+        0.261,
+        0.0
+      ],
+      [
+        0.289,
+        0.746,
+        0.958,
+        0.918,
+        0.684,
+        0.194
+      ]
+    ],
+    "crop_offset": [
+      34,
+      18
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 181,
+    "contact_reference_px": 181.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

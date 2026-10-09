@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.water_and_springs.wat_17_ancient_sunken_stone_bridge.clear_stream_flow"
+display_name = "Ancient Sunken Stone Bridge - Crystal Clear Running Water Tile"
+pinyin = "Chénshuǐ Gǔdèng · Crystal Clear Running Water Tile"
+hanzi = "沉水古磴 · 清澈流动溪水"
+domain_id = &"water_and_springs"
+category_id = &"wat_17_ancient_sunken_stone_bridge"
+asset_class = &"terrain_tile"
+archetype_name = "Crystal Clear Running Water Tile"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_17_ancient_sunken_stone_bridge/clear_stream_flow/dry_temperate.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"walk_surface"
+primary_material = &"earthen_loam"
+secondary_material = &"mineral_silt"
+cultivation_element = &"water"
+elevation_tier = 7
+mortal_realm_tier = "Body Integration (Hợp Thể / 合体)"
+interactive_verb = &"None"

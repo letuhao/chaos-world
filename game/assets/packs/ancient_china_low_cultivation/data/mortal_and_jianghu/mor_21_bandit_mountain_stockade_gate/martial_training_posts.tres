@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.mortal_and_jianghu.mor_21_bandit_mountain_stockade_gate.martial_training_posts"
+display_name = "Bandit Mountain Stockade Gate - Plum Blossom Agility Wood Stakes"
+pinyin = "Hēifēng Zhàimén · Plum Blossom Agility Wood Stakes"
+hanzi = "聚义黑风寨门 · 梅花木桩练功场"
+domain_id = &"mortal_and_jianghu"
+category_id = &"mor_21_bandit_mountain_stockade_gate"
+asset_class = &"prop_workstation"
+archetype_name = "Plum Blossom Agility Wood Stakes"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_21_bandit_mountain_stockade_gate/martial_training_posts/pristine_dormant.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"obstacle"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"wind"
+elevation_tier = 1
+mortal_realm_tier = "Qi Refining (Luyện Khí / 练气)"
+interactive_verb = &"train_agility"

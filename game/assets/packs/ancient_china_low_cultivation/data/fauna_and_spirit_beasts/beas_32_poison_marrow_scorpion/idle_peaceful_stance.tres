@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.fauna_and_spirit_beasts.beas_32_poison_marrow_scorpion.idle_peaceful_stance"
+display_name = "Poison-Marrow Scorpion - Alert Standing Mature Beast"
+pinyin = "Chìwěi Xiē · Alert Standing Mature Beast"
+hanzi = "赤尾蝎虎 · 昂首警惕灵兽"
+domain_id = &"fauna_and_spirit_beasts"
+category_id = &"beas_32_poison_marrow_scorpion"
+asset_class = &"fauna_beast"
+archetype_name = "Alert Standing Mature Beast"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/fauna_and_spirit_beasts/beas_32_poison_marrow_scorpion/idle_peaceful_stance/idle_standing.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"solid"
+primary_material = &"thick_pelt_fur"
+secondary_material = &"ivory_fangs"
+cultivation_element = &"poison"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"observe_beast"

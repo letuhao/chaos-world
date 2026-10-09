@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.hazards_and_phenomena.haz_13_ghost_gate_wailing_gusts.miasma_cloud_swirl"
+display_name = "Ghost Gate Wailing Gusts - Lingering Toxic Miasma Swirl"
+pinyin = "Guǐmén Yōuyè · Lingering Toxic Miasma Swirl"
+hanzi = "鬼门幽咽 · 浓烈瘴气旋流"
+domain_id = &"hazards_and_phenomena"
+category_id = &"haz_13_ghost_gate_wailing_gusts"
+asset_class = &"vfx_particle"
+archetype_name = "Lingering Toxic Miasma Swirl"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_13_ghost_gate_wailing_gusts/miasma_cloud_swirl/subtle_ambient.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"none"
+primary_material = &"ethereal_spiritual_qi"
+secondary_material = &"astral_light_motes"
+cultivation_element = &"ghost"
+elevation_tier = 2
+mortal_realm_tier = "Foundation Establishment (Trúc Cơ / 筑基)"
+interactive_verb = &"None"

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_04_low_grade_pill_refining_chamber.array_formation_dais"
+display_name = "Low-Grade Pill Refining Chamber - Concentric Bagua Array Platform"
+pinyin = "Liàndānfáng · Concentric Bagua Array Platform"
+hanzi = "凡火地炎炼丹房 · 八卦阵图法台"
+domain_id = &"sect_facilities_and_dwellings"
+category_id = &"sec_04_low_grade_pill_refining_chamber"
+asset_class = &"prop_workstation"
+archetype_name = "Concentric Bagua Array Platform"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_04_low_grade_pill_refining_chamber/array_formation_dais/pristine_dormant.png"
+footprint_cells = Vector2i(3, 3)
+canvas_px = Vector2i(384, 384)
+collision_type = &"walk_surface"
+primary_material = &"carved_wood"
+secondary_material = &"polished_bronze"
+cultivation_element = &"fire"
+elevation_tier = 2
+mortal_realm_tier = "Foundation Establishment (Trúc Cơ / 筑基)"
+interactive_verb = &"activate_array"

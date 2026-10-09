@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.artifacts_and_paraphernalia.art_02_low_grade_bronze_trigram_cauldron.sealed_in_wooden_scabbard"
+display_name = "Low-Grade Bronze Trigram Cauldron - Sheathed in Lacquer Presentation Case"
+pinyin = "Bāguà Dānlú · Sheathed in Lacquer Presentation Case"
+hanzi = "纯阳八卦丹炉 · 归鞘锦盒封存品"
+domain_id = &"artifacts_and_paraphernalia"
+category_id = &"art_02_low_grade_bronze_trigram_cauldron"
+asset_class = &"item_tool"
+archetype_name = "Sheathed in Lacquer Presentation Case"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/artifacts_and_paraphernalia/art_02_low_grade_bronze_trigram_cauldron/sealed_in_wooden_scabbard/pos_inventory_icon_45deg.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"none"
+primary_material = &"cast_bronze"
+secondary_material = &"refractory_clay"
+cultivation_element = &"metal"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"unsheathe"

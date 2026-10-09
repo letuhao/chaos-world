@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.water_and_springs.wat_02_low_grade_spiritual_spring_eye.frozen_rime_pool"
+display_name = "Low-Grade Spiritual Spring Eye - Glacial Frigid Rime Pool"
+pinyin = "Wēilíng Gānquányǎn · Glacial Frigid Rime Pool"
+hanzi = "微灵甘泉眼 · 凝霜覆冰寒池"
+domain_id = &"water_and_springs"
+category_id = &"wat_02_low_grade_spiritual_spring_eye"
+asset_class = &"terrain_tile"
+archetype_name = "Glacial Frigid Rime Pool"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_02_low_grade_spiritual_spring_eye/frozen_rime_pool/dry_temperate.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"walk_surface"
+primary_material = &"earthen_loam"
+secondary_material = &"mineral_silt"
+cultivation_element = &"water"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"None"

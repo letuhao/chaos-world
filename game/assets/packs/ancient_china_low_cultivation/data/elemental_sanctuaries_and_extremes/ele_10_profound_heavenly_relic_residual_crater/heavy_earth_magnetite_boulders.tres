@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.elemental_sanctuaries_and_extremes.ele_10_profound_heavenly_relic_residual_crater.heavy_earth_magnetite_boulders"
+display_name = "Profound Heavenly Relic Residual Crater - Titanic Iron-Infused Magnetite Monoliths"
+pinyin = "Xuántiānkēng · Titanic Iron-Infused Magnetite Monoliths"
+hanzi = "玄天残宝坠落坑 · 玄黄重土元磁合抱巨岩"
+domain_id = &"elemental_sanctuaries_and_extremes"
+category_id = &"ele_10_profound_heavenly_relic_residual_crater"
+asset_class = &"landmark_mountain"
+archetype_name = "Titanic Iron-Infused Magnetite Monoliths"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/elemental_sanctuaries_and_extremes/ele_10_profound_heavenly_relic_residual_crater/heavy_earth_magnetite_boulders/facing_south_front.png"
+footprint_cells = Vector2i(3, 3)
+canvas_px = Vector2i(384, 384)
+collision_type = &"solid"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"earth"
+elevation_tier = 8
+mortal_realm_tier = "Great Ascension (Đại Thừa / 大乘)"
+interactive_verb = &"extract_magnetism"

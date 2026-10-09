@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.floating_terrains_and_sky_crags.flt_05_floating_spirit_herb_terraced_ledge.gangfeng_windbreak_palisade"
+display_name = "Floating Spirit Herb Terraced Ledge - Heavy Cedar Cloud Windbreak Palisade"
+pinyin = "Fúcuìtái · Heavy Cedar Cloud Windbreak Palisade"
+hanzi = "悬崖浮翠药台 · 九天抗风重木排障"
+domain_id = &"floating_terrains_and_sky_crags"
+category_id = &"flt_05_floating_spirit_herb_terraced_ledge"
+asset_class = &"structure_building"
+archetype_name = "Heavy Cedar Cloud Windbreak Palisade"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/floating_terrains_and_sky_crags/flt_05_floating_spirit_herb_terraced_ledge/gangfeng_windbreak_palisade/rot_south_facade.png"
+footprint_cells = Vector2i(3, 1)
+canvas_px = Vector2i(384, 128)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"wind"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"take_shelter"

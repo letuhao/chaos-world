@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.peak_mortal_and_tribulation.hmo_10_heavenly_road_ascension_staircase_dengtian.grand_sect_array_core_monolith"
+display_name = "Heavenly Road Ascension Staircase (Dengtian) - Floating Concentric Formation Heart"
+pinyin = "Tōngtiāntī · Floating Concentric Formation Heart"
+hanzi = "登仙万阶通天梯 · 护宗大阵枢纽悬浮阵心"
+domain_id = &"peak_mortal_and_tribulation"
+category_id = &"hmo_10_heavenly_road_ascension_staircase_dengtian"
+asset_class = &"prop_workstation"
+archetype_name = "Floating Concentric Formation Heart"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/peak_mortal_and_tribulation/hmo_10_heavenly_road_ascension_staircase_dengtian/grand_sect_array_core_monolith/pristine_dormant.png"
+footprint_cells = Vector2i(3, 3)
+canvas_px = Vector2i(384, 384)
+collision_type = &"solid"
+primary_material = &"carved_wood"
+secondary_material = &"polished_bronze"
+cultivation_element = &"void"
+elevation_tier = 9
+mortal_realm_tier = "Tribulation Crossing (Độ Kiếp / 渡劫)"
+interactive_verb = &"reinforce_array"

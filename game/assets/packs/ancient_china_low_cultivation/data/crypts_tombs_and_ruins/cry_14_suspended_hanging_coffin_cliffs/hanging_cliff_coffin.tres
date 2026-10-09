@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.crypts_tombs_and_ruins.cry_14_suspended_hanging_coffin_cliffs.hanging_cliff_coffin"
+display_name = "Suspended Hanging Coffin Cliffs - Cantilevered Wooden Cliff Coffin"
+pinyin = "Xuánguān · Cantilevered Wooden Cliff Coffin"
+hanzi = "悬崖悬棺木架 · 绝壁栈梁悬棺"
+domain_id = &"crypts_tombs_and_ruins"
+category_id = &"cry_14_suspended_hanging_coffin_cliffs"
+asset_class = &"structure_cottage"
+archetype_name = "Cantilevered Wooden Cliff Coffin"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/crypts_tombs_and_ruins/cry_14_suspended_hanging_coffin_cliffs/hanging_cliff_coffin/rot_south_facade.png"
+footprint_cells = Vector2i(2, 1)
+canvas_px = Vector2i(256, 128)
+collision_type = &"obstacle"
+primary_material = &"bamboo"
+secondary_material = &"thatched_straw"
+cultivation_element = &"wood"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"inspect_coffin"

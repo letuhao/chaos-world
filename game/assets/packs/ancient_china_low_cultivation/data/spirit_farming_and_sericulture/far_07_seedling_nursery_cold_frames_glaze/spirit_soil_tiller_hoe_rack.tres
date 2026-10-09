@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.spirit_farming_and_sericulture.far_07_seedling_nursery_cold_frames_glaze.spirit_soil_tiller_hoe_rack"
+display_name = "Seedling Nursery Cold Frames & Glaze - Bamboo Rack Holding Jade & Iron Hoes"
+pinyin = "Wēnchuáng · Bamboo Rack Holding Jade & Iron Hoes"
+hanzi = "暖玉灵苗育种温床 · 破岩除草灵锄农具架"
+domain_id = &"spirit_farming_and_sericulture"
+category_id = &"far_07_seedling_nursery_cold_frames_glaze"
+asset_class = &"prop_workstation"
+archetype_name = "Bamboo Rack Holding Jade & Iron Hoes"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/spirit_farming_and_sericulture/far_07_seedling_nursery_cold_frames_glaze/spirit_soil_tiller_hoe_rack/pristine_dormant.png"
+footprint_cells = Vector2i(2, 1)
+canvas_px = Vector2i(256, 128)
+collision_type = &"solid"
+primary_material = &"iron_bamboo"
+secondary_material = &"foliage"
+cultivation_element = &"wood"
+elevation_tier = 1
+mortal_realm_tier = "Qi Refining (Luyện Khí / 练气)"
+interactive_verb = &"take_tool"

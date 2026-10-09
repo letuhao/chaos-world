@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_21_foundation_establishment_trial_pit.scripture_library_tower"
+display_name = "Foundation Establishment Trial Pit - Tiered Daoist Scripture Pavilion"
+pinyin = "Pòzhàng Xuèkū · Tiered Daoist Scripture Pavilion"
+hanzi = "筑基破障血窟 · 藏经纳法高阁"
+domain_id = &"sect_facilities_and_dwellings"
+category_id = &"sec_21_foundation_establishment_trial_pit"
+asset_class = &"structure_building"
+archetype_name = "Tiered Daoist Scripture Pavilion"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_21_foundation_establishment_trial_pit/scripture_library_tower/rot_south_facade.png"
+footprint_cells = Vector2i(3, 3)
+canvas_px = Vector2i(384, 384)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"wood"
+elevation_tier = 2
+mortal_realm_tier = "Foundation Establishment (Trúc Cơ / 筑基)"
+interactive_verb = &"read_scrolls"

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.terrain_and_geology.ter_20_petrified_bone_earth.deep_crevice_fissure"
+display_name = "Petrified Bone Earth - Chasm Fissure Ground Crack"
+pinyin = "Kūgǔ Gàiyán · Chasm Fissure Ground Crack"
+hanzi = "枯骨钙岩 · 深陷地裂断痕"
+domain_id = &"terrain_and_geology"
+category_id = &"ter_20_petrified_bone_earth"
+asset_class = &"landmark_mountain"
+archetype_name = "Chasm Fissure Ground Crack"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_20_petrified_bone_earth/deep_crevice_fissure/facing_south_front.png"
+footprint_cells = Vector2i(3, 1)
+canvas_px = Vector2i(384, 128)
+collision_type = &"obstacle"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"ghost"
+elevation_tier = 2
+mortal_realm_tier = "Foundation Establishment (Trúc Cơ / 筑基)"
+interactive_verb = &"None"

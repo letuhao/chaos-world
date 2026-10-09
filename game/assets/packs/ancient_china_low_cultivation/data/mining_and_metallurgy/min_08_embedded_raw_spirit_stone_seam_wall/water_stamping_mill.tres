@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.mining_and_metallurgy.min_08_embedded_raw_spirit_stone_seam_wall.water_stamping_mill"
+display_name = "Embedded Raw Spirit Stone Seam Wall - Waterwheel Ore Crushing Stamping Mill"
+pinyin = "Língmài · Waterwheel Ore Crushing Stamping Mill"
+hanzi = "嵌石灵脉岩壁 · 水力重锤碎矿碓"
+domain_id = &"mining_and_metallurgy"
+category_id = &"min_08_embedded_raw_spirit_stone_seam_wall"
+asset_class = &"prop_workstation"
+archetype_name = "Waterwheel Ore Crushing Stamping Mill"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/mining_and_metallurgy/min_08_embedded_raw_spirit_stone_seam_wall/water_stamping_mill/pristine_dormant.png"
+footprint_cells = Vector2i(3, 2)
+canvas_px = Vector2i(384, 256)
+collision_type = &"solid"
+primary_material = &"raw_metal_ore"
+secondary_material = &"quartz_vein"
+cultivation_element = &"earth"
+elevation_tier = 2
+mortal_realm_tier = "Foundation Establishment (Trúc Cơ / 筑基)"
+interactive_verb = &"crush_ore"

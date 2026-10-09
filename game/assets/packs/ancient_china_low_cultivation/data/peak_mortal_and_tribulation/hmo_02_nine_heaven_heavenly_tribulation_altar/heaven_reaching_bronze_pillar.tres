@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.peak_mortal_and_tribulation.hmo_02_nine_heaven_heavenly_tribulation_altar.heaven_reaching_bronze_pillar"
+display_name = "Nine-Heaven Heavenly Tribulation Altar - Dragon-Coiled Celestial Bronze Pillar"
+pinyin = "Yǐnléitái · Dragon-Coiled Celestial Bronze Pillar"
+hanzi = "九重天劫引雷台 · 盘龙通天青铜神柱"
+domain_id = &"peak_mortal_and_tribulation"
+category_id = &"hmo_02_nine_heaven_heavenly_tribulation_altar"
+asset_class = &"structure_building"
+archetype_name = "Dragon-Coiled Celestial Bronze Pillar"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/peak_mortal_and_tribulation/hmo_02_nine_heaven_heavenly_tribulation_altar/heaven_reaching_bronze_pillar/rot_south_facade.png"
+footprint_cells = Vector2i(2, 3)
+canvas_px = Vector2i(256, 384)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"thunder"
+elevation_tier = 9
+mortal_realm_tier = "Tribulation Crossing (Độ Kiếp / 渡劫)"
+interactive_verb = &"channel_qi"

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.dao_companions_and_sanctuary_living.com_d08_carved_jade_wardrobe_dressing_screen.fragrant_hot_spring_bath_pool"
+display_name = "Carved Jade Wardrobe & Dressing Screen - Sunken Stone Pool Steaming with Herbal Petals"
+pinyin = "Gēngyīpíng · Sunken Stone Pool Steaming with Herbal Petals"
+hanzi = "雕花翠玉更衣屏 · 兰汤凝脂芳草温石池"
+domain_id = &"dao_companions_and_sanctuary_living"
+category_id = &"com_d08_carved_jade_wardrobe_dressing_screen"
+asset_class = &"prop_workstation"
+archetype_name = "Sunken Stone Pool Steaming with Herbal Petals"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/dao_companions_and_sanctuary_living/com_d08_carved_jade_wardrobe_dressing_screen/fragrant_hot_spring_bath_pool/pristine_dormant.png"
+footprint_cells = Vector2i(3, 2)
+canvas_px = Vector2i(384, 256)
+collision_type = &"obstacle"
+primary_material = &"carved_rosewood"
+secondary_material = &"brass_hardware"
+cultivation_element = &"wood"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"bathe_hot_spring"

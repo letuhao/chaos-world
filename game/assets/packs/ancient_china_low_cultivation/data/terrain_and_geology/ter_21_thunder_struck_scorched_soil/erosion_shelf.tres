@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.terrain_and_geology.ter_21_thunder_struck_scorched_soil.erosion_shelf"
+display_name = "Thunder-Struck Scorched Soil - Eroded Strata Terraced Shelf"
+pinyin = "Jiāoléi Jiāotǔ · Eroded Strata Terraced Shelf"
+hanzi = "焦雷焦土 · 侵蚀断层台阶"
+domain_id = &"terrain_and_geology"
+category_id = &"ter_21_thunder_struck_scorched_soil"
+asset_class = &"landmark_mountain"
+archetype_name = "Eroded Strata Terraced Shelf"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_21_thunder_struck_scorched_soil/erosion_shelf/facing_south_front.png"
+footprint_cells = Vector2i(2, 1)
+canvas_px = Vector2i(256, 128)
+collision_type = &"walk_surface"
+primary_material = &"earthen_loam"
+secondary_material = &"mineral_silt"
+cultivation_element = &"thunder"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"None"

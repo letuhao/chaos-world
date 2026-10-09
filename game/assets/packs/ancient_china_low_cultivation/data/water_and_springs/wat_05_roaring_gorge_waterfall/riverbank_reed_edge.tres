@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.water_and_springs.wat_05_roaring_gorge_waterfall.riverbank_reed_edge"
+display_name = "Roaring Gorge Waterfall - Marshy Riverbank Shoreline"
+pinyin = "Lièxiá Fēipù · Marshy Riverbank Shoreline"
+hanzi = "裂峡飞瀑 · 芦苇湿地水岸"
+domain_id = &"water_and_springs"
+category_id = &"wat_05_roaring_gorge_waterfall"
+asset_class = &"terrain_tile"
+archetype_name = "Marshy Riverbank Shoreline"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_05_roaring_gorge_waterfall/riverbank_reed_edge/dry_temperate.png"
+footprint_cells = Vector2i(2, 1)
+canvas_px = Vector2i(256, 128)
+collision_type = &"walk_surface"
+primary_material = &"earthen_loam"
+secondary_material = &"mineral_silt"
+cultivation_element = &"water"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"forage_reeds"

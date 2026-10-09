@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.elemental_sanctuaries_and_extremes.ele_05_heavy_earth_magnetite_crags_monoliths.pure_yang_lightning_pool_basin"
+display_name = "Heavy Earth Magnetite Crags & Monoliths - Natural Granite Basin Holding Liquid Sparks"
+pinyin = "Yuáncíyán · Natural Granite Basin Holding Liquid Sparks"
+hanzi = "玄黄重土元磁岩 · 纯阳引雷液化雷浆池"
+domain_id = &"elemental_sanctuaries_and_extremes"
+category_id = &"ele_05_heavy_earth_magnetite_crags_monoliths"
+asset_class = &"prop_workstation"
+archetype_name = "Natural Granite Basin Holding Liquid Sparks"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/elemental_sanctuaries_and_extremes/ele_05_heavy_earth_magnetite_crags_monoliths/pure_yang_lightning_pool_basin/pristine_dormant.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"solid"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"earth"
+elevation_tier = 7
+mortal_realm_tier = "Body Integration (Hợp Thể / 合体)"
+interactive_verb = &"gather_lightning_liquid"

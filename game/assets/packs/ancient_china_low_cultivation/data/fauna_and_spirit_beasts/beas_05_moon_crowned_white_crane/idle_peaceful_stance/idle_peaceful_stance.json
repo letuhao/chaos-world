@@ -1,0 +1,26 @@
+{
+  "asset_id": "ancient_china_low_cultivation.beas_05_moon_crowned_white_crane.idle_peaceful_stance_beas_05_moon_crowned_white_crane",
+  "variant_slug": "idle_peaceful_stance",
+  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/fauna_and_spirit_beasts/beas_05_moon_crowned_white_crane/idle_peaceful_stance_beas_05_moon_crowned_white_crane/idle_peaceful_stance.png",
+  "width": 512,
+  "height": 512,
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    512,
+    512
+  ],
+  "collision_type": "solid",
+  "matrix_data": {
+    "subgrid_rows": 4,
+    "subgrid_cols": 4,
+    "walk_surface": false,
+    "elevation_step": 0,
+    "cliff_drop": false,
+    "contact_pixels": [],
+    "source_render_seed": 9301,
+    "source_candidate": "azure_crest_cloud_crane"
+  }
+}

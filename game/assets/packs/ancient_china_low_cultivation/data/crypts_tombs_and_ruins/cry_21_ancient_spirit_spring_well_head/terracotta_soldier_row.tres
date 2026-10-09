@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.crypts_tombs_and_ruins.cry_21_ancient_spirit_spring_well_head.terracotta_soldier_row"
+display_name = "Ancient Spirit Spring Well Head - Excavated Terracotta Warrior Row"
+pinyin = "Gǔquánjǐng · Excavated Terracotta Warrior Row"
+hanzi = "枯竭灵脉古泉井 · 出土随葬俑行"
+domain_id = &"crypts_tombs_and_ruins"
+category_id = &"cry_21_ancient_spirit_spring_well_head"
+asset_class = &"prop_workstation"
+archetype_name = "Excavated Terracotta Warrior Row"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/crypts_tombs_and_ruins/cry_21_ancient_spirit_spring_well_head/terracotta_soldier_row/pristine_dormant.png"
+footprint_cells = Vector2i(2, 1)
+canvas_px = Vector2i(256, 128)
+collision_type = &"solid"
+primary_material = &"liquid_water"
+secondary_material = &"riverbed_pebbles"
+cultivation_element = &"water"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"salvage_pottery"

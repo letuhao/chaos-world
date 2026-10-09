@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.mortal_and_jianghu.mor_07_county_magistrate_yamen_court.ruined_burned_hovel"
+display_name = "County Magistrate Yamen (Court) - Burned Wreckage Timber Frame"
+pinyin = "Xiànyá Guānshǔ · Burned Wreckage Timber Frame"
+hanzi = "县衙官署 · 兵火残毁破木屋"
+domain_id = &"mortal_and_jianghu"
+category_id = &"mor_07_county_magistrate_yamen_court"
+asset_class = &"structure_cottage"
+archetype_name = "Burned Wreckage Timber Frame"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_07_county_magistrate_yamen_court/ruined_burned_hovel/rot_south_facade.png"
+footprint_cells = Vector2i(3, 2)
+canvas_px = Vector2i(384, 256)
+collision_type = &"obstacle"
+primary_material = &"bamboo"
+secondary_material = &"thatched_straw"
+cultivation_element = &"earth"
+elevation_tier = 2
+mortal_realm_tier = "Foundation Establishment (Trúc Cơ / 筑基)"
+interactive_verb = &"scavenge_debris"

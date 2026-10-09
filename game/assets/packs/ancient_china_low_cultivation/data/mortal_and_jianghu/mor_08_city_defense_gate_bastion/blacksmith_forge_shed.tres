@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.mortal_and_jianghu.mor_08_city_defense_gate_bastion.blacksmith_forge_shed"
+display_name = "City Defense Gate & Bastion - Open-Air Smithy Hearth & Anvil"
+pinyin = "Wèngchéng Ménlóu · Open-Air Smithy Hearth & Anvil"
+hanzi = "瓮城门楼 · 铁匠露天炉砧"
+domain_id = &"mortal_and_jianghu"
+category_id = &"mor_08_city_defense_gate_bastion"
+asset_class = &"prop_workstation"
+archetype_name = "Open-Air Smithy Hearth & Anvil"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_08_city_defense_gate_bastion/blacksmith_forge_shed/pristine_dormant.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"solid"
+primary_material = &"carved_wood"
+secondary_material = &"polished_bronze"
+cultivation_element = &"water"
+elevation_tier = 1
+mortal_realm_tier = "Qi Refining (Luyện Khí / 练气)"
+interactive_verb = &"forge_iron"

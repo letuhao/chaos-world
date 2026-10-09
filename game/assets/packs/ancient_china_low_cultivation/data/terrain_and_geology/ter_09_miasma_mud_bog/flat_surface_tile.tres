@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.terrain_and_geology.ter_09_miasma_mud_bog.flat_surface_tile"
+display_name = "Miasma Mud Bog - Pristine Flat Surface Tile"
+pinyin = "Zhàngqì Nízhǎo · Pristine Flat Surface Tile"
+hanzi = "瘴气泥沼 · 平整地表地砖"
+domain_id = &"terrain_and_geology"
+category_id = &"ter_09_miasma_mud_bog"
+asset_class = &"terrain_tile"
+archetype_name = "Pristine Flat Surface Tile"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_09_miasma_mud_bog/flat_surface_tile/dry_temperate.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"walk_surface"
+primary_material = &"earthen_loam"
+secondary_material = &"mineral_silt"
+cultivation_element = &"poison"
+elevation_tier = 8
+mortal_realm_tier = "Great Ascension (Đại Thừa / 大乘)"
+interactive_verb = &"None"

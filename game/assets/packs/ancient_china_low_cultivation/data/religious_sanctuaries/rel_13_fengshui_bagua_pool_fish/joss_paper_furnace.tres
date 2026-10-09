@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.religious_sanctuaries.rel_13_fengshui_bagua_pool_fish.joss_paper_furnace"
+display_name = "Fengshui Bagua Pool & Fish - Octagonal Brick Incense Incinerator"
+pinyin = "Bāguàchí · Octagonal Brick Incense Incinerator"
+hanzi = "太极阴阳八卦池 · 八棱砖砌焚帛炉"
+domain_id = &"religious_sanctuaries"
+category_id = &"rel_13_fengshui_bagua_pool_fish"
+asset_class = &"prop_workstation"
+archetype_name = "Octagonal Brick Incense Incinerator"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_13_fengshui_bagua_pool_fish/joss_paper_furnace/pristine_dormant.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"solid"
+primary_material = &"liquid_water"
+secondary_material = &"riverbed_pebbles"
+cultivation_element = &"earth"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"burn_paper"

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.spirit_farming_and_sericulture.far_01_talisman_rain_calling_irrigation_flume.talisman_rain_irrigation_flume"
+display_name = "Talisman Rain-Calling Irrigation Flume - Carved Wood Flume Channeling Pure Rain"
+pinyin = "Língyǔqú · Carved Wood Flume Channeling Pure Rain"
+hanzi = "灵雨符阵引水槽 · 灵雨符阵引水木渠"
+domain_id = &"spirit_farming_and_sericulture"
+category_id = &"far_01_talisman_rain_calling_irrigation_flume"
+asset_class = &"structure_building"
+archetype_name = "Carved Wood Flume Channeling Pure Rain"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/spirit_farming_and_sericulture/far_01_talisman_rain_calling_irrigation_flume/talisman_rain_irrigation_flume/rot_south_facade.png"
+footprint_cells = Vector2i(3, 1)
+canvas_px = Vector2i(384, 128)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"wood"
+elevation_tier = 1
+mortal_realm_tier = "Qi Refining (Luyện Khí / 练气)"
+interactive_verb = &"direct_water"

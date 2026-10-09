@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.body_cultivation_and_tempering.bod_06_iron_sand_punching_striking_pots.bone_piercing_ice_slab"
+display_name = "Iron Sand Punching & Striking Pots - Frigid Translucent Blue Ice Meditation Bed"
+pinyin = "Tiěshāgāng · Frigid Translucent Blue Ice Meditation Bed"
+hanzi = "烈火铁砂淬掌缸 · 透骨玄冰极寒淬髓床"
+domain_id = &"body_cultivation_and_tempering"
+category_id = &"bod_06_iron_sand_punching_striking_pots"
+asset_class = &"prop_workstation"
+archetype_name = "Frigid Translucent Blue Ice Meditation Bed"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/body_cultivation_and_tempering/bod_06_iron_sand_punching_striking_pots/bone_piercing_ice_slab/pristine_dormant.png"
+footprint_cells = Vector2i(2, 1)
+canvas_px = Vector2i(256, 128)
+collision_type = &"solid"
+primary_material = &"raw_metal_ore"
+secondary_material = &"quartz_vein"
+cultivation_element = &"fire"
+elevation_tier = 8
+mortal_realm_tier = "Great Ascension (Đại Thừa / 大乘)"
+interactive_verb = &"freeze_marrow"

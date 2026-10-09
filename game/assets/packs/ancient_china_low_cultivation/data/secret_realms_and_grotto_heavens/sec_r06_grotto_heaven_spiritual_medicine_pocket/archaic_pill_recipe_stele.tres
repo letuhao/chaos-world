@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.secret_realms_and_grotto_heavens.sec_r06_grotto_heaven_spiritual_medicine_pocket.archaic_pill_recipe_stele"
+display_name = "Grotto-Heaven Spiritual Medicine Pocket - Cracked Granite Tablet with Archaic Seals"
+pinyin = "Dòngtiānpǔ · Cracked Granite Tablet with Archaic Seals"
+hanzi = "洞天药圃封闭灵田 · 断残太古丹方石刻碑"
+domain_id = &"secret_realms_and_grotto_heavens"
+category_id = &"sec_r06_grotto_heaven_spiritual_medicine_pocket"
+asset_class = &"landmark_mountain"
+archetype_name = "Cracked Granite Tablet with Archaic Seals"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/secret_realms_and_grotto_heavens/sec_r06_grotto_heaven_spiritual_medicine_pocket/archaic_pill_recipe_stele/facing_south_front.png"
+footprint_cells = Vector2i(1, 2)
+canvas_px = Vector2i(128, 256)
+collision_type = &"solid"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"wood"
+elevation_tier = 6
+mortal_realm_tier = "Void Refinement (Luyện Hư / 炼虚)"
+interactive_verb = &"decipher_recipe"

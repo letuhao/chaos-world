@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_02_outer_sect_disciple_barracks.spirit_herb_nursery"
+display_name = "Outer Sect Disciple Barracks - Terraced Herb Plot with Irrigation"
+pinyin = "Wàimén Dìzǐ Shè · Terraced Herb Plot with Irrigation"
+hanzi = "外门弟子石舍 · 温玉护持灵药圃"
+domain_id = &"sect_facilities_and_dwellings"
+category_id = &"sec_02_outer_sect_disciple_barracks"
+asset_class = &"prop_workstation"
+archetype_name = "Terraced Herb Plot with Irrigation"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_02_outer_sect_disciple_barracks/spirit_herb_nursery/pristine_dormant.png"
+footprint_cells = Vector2i(3, 2)
+canvas_px = Vector2i(384, 256)
+collision_type = &"walk_surface"
+primary_material = &"spiritual_root_stalk"
+secondary_material = &"medicinal_blossom"
+cultivation_element = &"wood"
+elevation_tier = 2
+mortal_realm_tier = "Foundation Establishment (Trúc Cơ / 筑基)"
+interactive_verb = &"harvest_herbs"

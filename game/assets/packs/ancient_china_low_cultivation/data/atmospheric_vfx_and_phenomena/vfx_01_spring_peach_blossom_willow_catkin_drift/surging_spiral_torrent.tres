@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.atmospheric_vfx_and_phenomena.vfx_01_spring_peach_blossom_willow_catkin_drift.surging_spiral_torrent"
+display_name = "Spring Peach Blossom & Willow Catkin Drift - Dense Swirling Vortex of Concentrated Energy"
+pinyin = "Táohuāpiāo · Dense Swirling Vortex of Concentrated Energy"
+hanzi = "桃花柳絮随风舞 · 浓密涡流奔涌光柱"
+domain_id = &"atmospheric_vfx_and_phenomena"
+category_id = &"vfx_01_spring_peach_blossom_willow_catkin_drift"
+asset_class = &"vfx_particle"
+archetype_name = "Dense Swirling Vortex of Concentrated Energy"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/atmospheric_vfx_and_phenomena/vfx_01_spring_peach_blossom_willow_catkin_drift/surging_spiral_torrent/subtle_ambient.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"none"
+primary_material = &"liquid_water"
+secondary_material = &"riverbed_pebbles"
+cultivation_element = &"wood"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"None"

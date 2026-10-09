@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.hazards_and_phenomena.haz_10_mirage_illusion_mirage.boiling_mud_vent"
+display_name = "Mirage / Illusion Mirage - Bubbling Volcanic Mud Vent"
+pinyin = "Hǎishì Shènlóu · Bubbling Volcanic Mud Vent"
+hanzi = "海市蜃楼 · 滚沸泥浆气眼"
+domain_id = &"hazards_and_phenomena"
+category_id = &"haz_10_mirage_illusion_mirage"
+asset_class = &"prop_workstation"
+archetype_name = "Bubbling Volcanic Mud Vent"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_10_mirage_illusion_mirage/boiling_mud_vent/pristine_dormant.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"obstacle"
+primary_material = &"earthen_loam"
+secondary_material = &"mineral_silt"
+cultivation_element = &"earth"
+elevation_tier = 2
+mortal_realm_tier = "Foundation Establishment (Trúc Cơ / 筑基)"
+interactive_verb = &"inspect_hazard"

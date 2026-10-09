@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_23_spirit_silk_weaving_loom_hall.sect_boundary_stele"
+display_name = "Spirit Silk Weaving Loom Hall - Carved Mountain Boundary Monolith"
+pinyin = "Zhīyún Yǔyīfáng · Carved Mountain Boundary Monolith"
+hanzi = "织云羽衣坊 · 界定灵山界碑"
+domain_id = &"sect_facilities_and_dwellings"
+category_id = &"sec_23_spirit_silk_weaving_loom_hall"
+asset_class = &"landmark_mountain"
+archetype_name = "Carved Mountain Boundary Monolith"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_23_spirit_silk_weaving_loom_hall/sect_boundary_stele/facing_south_front.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"earth"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"read_stele"

@@ -1,0 +1,26 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mor_01_thatch_roofed_farmer_cottage.thatched_dwelling_mor_01_thatch_roofed_farmer_cottage",
+  "variant_slug": "rot_south_facade",
+  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_01_thatch_roofed_farmer_cottage/thatched_dwelling_mor_01_thatch_roofed_farmer_cottage/rot_south_facade.png",
+  "width": 512,
+  "height": 512,
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    512,
+    512
+  ],
+  "collision_type": "solid",
+  "matrix_data": {
+    "subgrid_rows": 4,
+    "subgrid_cols": 4,
+    "walk_surface": false,
+    "elevation_step": 0,
+    "cliff_drop": false,
+    "contact_pixels": [],
+    "source_render_seed": 11001,
+    "source_candidate": "bamboo_spirit_hermit_cottage"
+  }
+}

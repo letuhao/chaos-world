@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.terrain_and_geology.ter_24_copper_rust_ore_bank.quarry_cut_block"
+display_name = "Copper-Rust Ore Bank - Excavated Quarry Stone Block"
+pinyin = "Tóngxiù Kuàngjī · Excavated Quarry Stone Block"
+hanzi = "铜锈矿积 · 开采方整石料"
+domain_id = &"terrain_and_geology"
+category_id = &"ter_24_copper_rust_ore_bank"
+asset_class = &"prop_workstation"
+archetype_name = "Excavated Quarry Stone Block"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_24_copper_rust_ore_bank/quarry_cut_block/pristine_dormant.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"solid"
+primary_material = &"raw_metal_ore"
+secondary_material = &"quartz_vein"
+cultivation_element = &"metal"
+elevation_tier = 7
+mortal_realm_tier = "Body Integration (Hợp Thể / 合体)"
+interactive_verb = &"quarry_stone"

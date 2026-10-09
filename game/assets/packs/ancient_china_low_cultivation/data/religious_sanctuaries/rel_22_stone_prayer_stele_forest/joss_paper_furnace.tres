@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.religious_sanctuaries.rel_22_stone_prayer_stele_forest.joss_paper_furnace"
+display_name = "Stone Prayer Stele Forest - Octagonal Brick Incense Incinerator"
+pinyin = "Gōngdé Bēilín · Octagonal Brick Incense Incinerator"
+hanzi = "功德施主碑林 · 八棱砖砌焚帛炉"
+domain_id = &"religious_sanctuaries"
+category_id = &"rel_22_stone_prayer_stele_forest"
+asset_class = &"prop_workstation"
+archetype_name = "Octagonal Brick Incense Incinerator"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_22_stone_prayer_stele_forest/joss_paper_furnace/pristine_dormant.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"solid"
+primary_material = &"raw_metal_ore"
+secondary_material = &"quartz_vein"
+cultivation_element = &"yin"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"burn_paper"

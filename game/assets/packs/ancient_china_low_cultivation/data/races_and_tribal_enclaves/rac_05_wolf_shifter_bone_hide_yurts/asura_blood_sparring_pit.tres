@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.races_and_tribal_enclaves.rac_05_wolf_shifter_bone_hide_yurts.asura_blood_sparring_pit"
+display_name = "Wolf Shifter Bone & Hide Yurts - Sunken Asura Warrior Arena Pit"
+pinyin = "Lángzúzhàng · Sunken Asura Warrior Arena Pit"
+hanzi = "荒原狼族兽骨帐 · 修罗下沉血炼斗坑"
+domain_id = &"races_and_tribal_enclaves"
+category_id = &"rac_05_wolf_shifter_bone_hide_yurts"
+asset_class = &"prop_workstation"
+archetype_name = "Sunken Asura Warrior Arena Pit"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/races_and_tribal_enclaves/rac_05_wolf_shifter_bone_hide_yurts/asura_blood_sparring_pit/pristine_dormant.png"
+footprint_cells = Vector2i(4, 4)
+canvas_px = Vector2i(512, 512)
+collision_type = &"walk_surface"
+primary_material = &"thick_pelt_fur"
+secondary_material = &"ivory_fangs"
+cultivation_element = &"earth"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"challenge_warrior"

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.flora_and_spirit_plants.flo_13_spirit_mulberry_silkworm_bush.mature_flourishing"
+display_name = "Spirit Mulberry & Silkworm Bush - Mature Flourishing Specimen"
+pinyin = "Língsāng Guànmù · Mature Flourishing Specimen"
+hanzi = "灵桑灌木 · 成熟繁茂全株"
+domain_id = &"flora_and_spirit_plants"
+category_id = &"flo_13_spirit_mulberry_silkworm_bush"
+asset_class = &"flora_tree"
+archetype_name = "Mature Flourishing Specimen"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_13_spirit_mulberry_silkworm_bush/mature_flourishing/pristine_dormant.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"obstacle"
+primary_material = &"ancient_pine_wood"
+secondary_material = &"evergreen_needles"
+cultivation_element = &"wood"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"inspect_plant"

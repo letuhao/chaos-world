@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.underground_abyss_and_caverns.sub_02_stalactite_stalagmite_stone_pillars.ancient_subterranean_dongfu"
+display_name = "Stalactite & Stalagmite Stone Pillars - Carved Cave Hermit Dwelling Facade"
+pinyin = "Zhōngrǔzhù · Carved Cave Hermit Dwelling Facade"
+hanzi = "钟乳千柱连天林 · 九幽避世苦修石屋"
+domain_id = &"underground_abyss_and_caverns"
+category_id = &"sub_02_stalactite_stalagmite_stone_pillars"
+asset_class = &"structure_cottage"
+archetype_name = "Carved Cave Hermit Dwelling Facade"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/underground_abyss_and_caverns/sub_02_stalactite_stalagmite_stone_pillars/ancient_subterranean_dongfu/rot_south_facade.png"
+footprint_cells = Vector2i(3, 2)
+canvas_px = Vector2i(384, 256)
+collision_type = &"solid"
+primary_material = &"bamboo"
+secondary_material = &"thatched_straw"
+cultivation_element = &"earth"
+elevation_tier = 6
+mortal_realm_tier = "Void Refinement (Luyện Hư / 炼虚)"
+interactive_verb = &"enter_dongfu"

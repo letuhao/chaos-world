@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.crypts_tombs_and_ruins.cry_01_mound_tumulus_tomb_entrance.eternal_tomb_lamp"
+display_name = "Mound Tumulus Tomb Entrance - Bronze Fish-Oil Evergreen Lamp"
+pinyin = "Fùdǒu Huánglíng · Bronze Fish-Oil Evergreen Lamp"
+hanzi = "覆斗皇陵封土 · 长明鱼膏铜宫灯"
+domain_id = &"crypts_tombs_and_ruins"
+category_id = &"cry_01_mound_tumulus_tomb_entrance"
+asset_class = &"prop_workstation"
+archetype_name = "Bronze Fish-Oil Evergreen Lamp"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/crypts_tombs_and_ruins/cry_01_mound_tumulus_tomb_entrance/eternal_tomb_lamp/pristine_dormant.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"solid"
+primary_material = &"carved_wood"
+secondary_material = &"polished_bronze"
+cultivation_element = &"wind"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"take_oil"

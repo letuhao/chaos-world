@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.water_and_springs.wat_06_lotus_covered_village_pond.sunken_water_cavern"
+display_name = "Lotus-Covered Village Pond - Subterranean Submerged Sump"
+pinyin = "Cūnkǒu Hétáng · Subterranean Submerged Sump"
+hanzi = "村口荷塘 · 地下伏流溶洞口"
+domain_id = &"water_and_springs"
+category_id = &"wat_06_lotus_covered_village_pond"
+asset_class = &"landmark_mountain"
+archetype_name = "Subterranean Submerged Sump"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_06_lotus_covered_village_pond/sunken_water_cavern/facing_south_front.png"
+footprint_cells = Vector2i(3, 2)
+canvas_px = Vector2i(384, 256)
+collision_type = &"obstacle"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"water"
+elevation_tier = 7
+mortal_realm_tier = "Body Integration (Hợp Thể / 合体)"
+interactive_verb = &"enter_cave"

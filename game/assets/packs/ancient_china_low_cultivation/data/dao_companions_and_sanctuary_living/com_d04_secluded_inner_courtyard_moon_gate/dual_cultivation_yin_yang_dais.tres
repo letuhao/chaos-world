@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.dao_companions_and_sanctuary_living.com_d04_secluded_inner_courtyard_moon_gate.dual_cultivation_yin_yang_dais"
+display_name = "Secluded Inner Courtyard Moon Gate - Circular Interlocking Black & White Jade Dais"
+pinyin = "Yuèliàngmén · Circular Interlocking Black & White Jade Dais"
+hanzi = "幽闺通幽月亮门 · 太极阴阳双修白玉台"
+domain_id = &"dao_companions_and_sanctuary_living"
+category_id = &"com_d04_secluded_inner_courtyard_moon_gate"
+asset_class = &"prop_workstation"
+archetype_name = "Circular Interlocking Black & White Jade Dais"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/dao_companions_and_sanctuary_living/com_d04_secluded_inner_courtyard_moon_gate/dual_cultivation_yin_yang_dais/pristine_dormant.png"
+footprint_cells = Vector2i(3, 3)
+canvas_px = Vector2i(384, 384)
+collision_type = &"walk_surface"
+primary_material = &"carved_wood"
+secondary_material = &"polished_bronze"
+cultivation_element = &"metal"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"dual_cultivate"

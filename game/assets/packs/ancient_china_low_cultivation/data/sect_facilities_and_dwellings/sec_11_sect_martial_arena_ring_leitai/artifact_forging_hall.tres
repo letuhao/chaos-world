@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_11_sect_martial_arena_ring_leitai.artifact_forging_hall"
+display_name = "Sect Martial Arena & Ring (Leitai) - Great Weapon Foundry & Water Wheel"
+pinyin = "Yǎnwǔ Lèitái · Great Weapon Foundry & Water Wheel"
+hanzi = "演武青石擂台 · 地火引流铸剑阁"
+domain_id = &"sect_facilities_and_dwellings"
+category_id = &"sec_11_sect_martial_arena_ring_leitai"
+asset_class = &"structure_building"
+archetype_name = "Great Weapon Foundry & Water Wheel"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_11_sect_martial_arena_ring_leitai/artifact_forging_hall/rot_south_facade.png"
+footprint_cells = Vector2i(4, 3)
+canvas_px = Vector2i(512, 384)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"thunder"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"forge_treasure"

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.floating_terrains_and_sky_crags.flt_07_drifting_asteroid_belt_sky_scree.floating_celestial_island"
+display_name = "Drifting Asteroid Belt & Sky Scree - Undulating Inverted Sky Island Core"
+pinyin = "Luànliúdài · Undulating Inverted Sky Island Core"
+hanzi = "浮空漂石乱流带 · 倒悬浮空飞屿基岩"
+domain_id = &"floating_terrains_and_sky_crags"
+category_id = &"flt_07_drifting_asteroid_belt_sky_scree"
+asset_class = &"landmark_mountain"
+archetype_name = "Undulating Inverted Sky Island Core"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/floating_terrains_and_sky_crags/flt_07_drifting_asteroid_belt_sky_scree/floating_celestial_island/facing_south_front.png"
+footprint_cells = Vector2i(4, 4)
+canvas_px = Vector2i(512, 512)
+collision_type = &"solid"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"earth"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"survey_island"

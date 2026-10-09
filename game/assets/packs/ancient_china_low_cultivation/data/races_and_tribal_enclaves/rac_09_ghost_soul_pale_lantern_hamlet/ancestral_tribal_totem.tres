@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.races_and_tribal_enclaves.rac_09_ghost_soul_pale_lantern_hamlet.ancestral_tribal_totem"
+display_name = "Ghost-Soul Pale Lantern Hamlet - Carved Mythical Beast Wooden Totem"
+pinyin = "Yóuhúnzhēn · Carved Mythical Beast Wooden Totem"
+hanzi = "游魂幽冥水乡 · 部落先祖图腾巨柱"
+domain_id = &"races_and_tribal_enclaves"
+category_id = &"rac_09_ghost_soul_pale_lantern_hamlet"
+asset_class = &"landmark_mountain"
+archetype_name = "Carved Mythical Beast Wooden Totem"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/races_and_tribal_enclaves/rac_09_ghost_soul_pale_lantern_hamlet/ancestral_tribal_totem/facing_south_front.png"
+footprint_cells = Vector2i(1, 2)
+canvas_px = Vector2i(128, 256)
+collision_type = &"solid"
+primary_material = &"weathered_karst_limestone"
+secondary_material = &"crag_scree"
+cultivation_element = &"wood"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"pray_totem"

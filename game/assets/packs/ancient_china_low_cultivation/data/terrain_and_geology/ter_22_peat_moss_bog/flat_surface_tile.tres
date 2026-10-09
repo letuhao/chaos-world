@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.terrain_and_geology.ter_22_peat_moss_bog.flat_surface_tile"
+display_name = "Peat Moss Bog - Pristine Flat Surface Tile"
+pinyin = "Nítàn Cǎodiàn · Pristine Flat Surface Tile"
+hanzi = "泥炭草甸 · 平整地表地砖"
+domain_id = &"terrain_and_geology"
+category_id = &"ter_22_peat_moss_bog"
+asset_class = &"terrain_tile"
+archetype_name = "Pristine Flat Surface Tile"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_22_peat_moss_bog/flat_surface_tile/dry_temperate.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"walk_surface"
+primary_material = &"earthen_loam"
+secondary_material = &"mineral_silt"
+cultivation_element = &"thunder"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"None"

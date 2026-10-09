@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.peak_mortal_and_tribulation.hmo_05_soul_transformation_void_meditation_hall.sword_cleaved_peak_chasm"
+display_name = "Soul Transformation Void Meditation Hall - Sheer Vertical Abyss Split by Giant Blade"
+pinyin = "Wùdàodiàn · Sheer Vertical Abyss Split by Giant Blade"
+hanzi = "化神悟道悬空大殿 · 大能一剑断山绝壑"
+domain_id = &"peak_mortal_and_tribulation"
+category_id = &"hmo_05_soul_transformation_void_meditation_hall"
+asset_class = &"landmark_mountain"
+archetype_name = "Sheer Vertical Abyss Split by Giant Blade"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/peak_mortal_and_tribulation/hmo_05_soul_transformation_void_meditation_hall/sword_cleaved_peak_chasm/facing_south_front.png"
+footprint_cells = Vector2i(3, 2)
+canvas_px = Vector2i(384, 256)
+collision_type = &"obstacle"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"void"
+elevation_tier = 9
+mortal_realm_tier = "Tribulation Crossing (Độ Kiếp / 渡劫)"
+interactive_verb = &"comprehend_sword_edge"

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.cultivation_commerce_and_auctions.com_09_bounty_hunter_mercenary_guild_hall.hidden_waterway_smuggler_pier"
+display_name = "Bounty Hunter & Mercenary Guild Hall - Rickety Wooden Jetty with Moored Sampan"
+pinyin = "Shǎngjīnháng · Rickety Wooden Jetty with Moored Sampan"
+hanzi = "斩妖除魔赏金公会 · 暗河走私泊船烂木栈"
+domain_id = &"cultivation_commerce_and_auctions"
+category_id = &"com_09_bounty_hunter_mercenary_guild_hall"
+asset_class = &"structure_building"
+archetype_name = "Rickety Wooden Jetty with Moored Sampan"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/cultivation_commerce_and_auctions/com_09_bounty_hunter_mercenary_guild_hall/hidden_waterway_smuggler_pier/rot_south_facade.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"walk_surface"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"mortal"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"meet_smuggler"

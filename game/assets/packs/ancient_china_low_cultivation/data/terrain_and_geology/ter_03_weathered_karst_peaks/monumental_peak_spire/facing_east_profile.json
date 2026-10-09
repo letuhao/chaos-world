@@ -1,0 +1,26 @@
+{
+  "asset_id": "ancient_china_low_cultivation.ter_03_weathered_karst_peaks.monumental_peak_spire_ter_03_weathered_karst_peaks",
+  "variant_slug": "facing_east_profile",
+  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_03_weathered_karst_peaks/monumental_peak_spire_ter_03_weathered_karst_peaks/facing_east_profile.png",
+  "width": 768,
+  "height": 768,
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    768,
+    768
+  ],
+  "collision_type": "solid",
+  "matrix_data": {
+    "subgrid_rows": 4,
+    "subgrid_cols": 4,
+    "walk_surface": true,
+    "elevation_step": 0,
+    "cliff_drop": false,
+    "contact_pixels": [],
+    "source_render_seed": 11112,
+    "source_candidate": "azure_cloud_karst_peak_spire"
+  }
+}

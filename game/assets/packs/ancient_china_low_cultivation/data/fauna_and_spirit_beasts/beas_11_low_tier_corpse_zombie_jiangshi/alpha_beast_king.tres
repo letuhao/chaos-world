@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.fauna_and_spirit_beasts.beas_11_low_tier_corpse_zombie_jiangshi.alpha_beast_king"
+display_name = "Low-Tier Corpse Zombie (Jiangshi) - Massive Mutated Crowned Alpha King"
+pinyin = "Báijiāng · Massive Mutated Crowned Alpha King"
+hanzi = "跳跃白僵 · 巨大畸变兽王"
+domain_id = &"fauna_and_spirit_beasts"
+category_id = &"beas_11_low_tier_corpse_zombie_jiangshi"
+asset_class = &"fauna_beast"
+archetype_name = "Massive Mutated Crowned Alpha King"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/fauna_and_spirit_beasts/beas_11_low_tier_corpse_zombie_jiangshi/alpha_beast_king/idle_standing.png"
+footprint_cells = Vector2i(3, 3)
+canvas_px = Vector2i(384, 384)
+collision_type = &"solid"
+primary_material = &"thick_pelt_fur"
+secondary_material = &"ivory_fangs"
+cultivation_element = &"earth"
+elevation_tier = 2
+mortal_realm_tier = "Foundation Establishment (Trúc Cơ / 筑基)"
+interactive_verb = &"challenge_boss"

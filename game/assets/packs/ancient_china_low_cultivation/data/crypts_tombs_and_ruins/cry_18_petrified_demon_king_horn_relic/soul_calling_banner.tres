@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.crypts_tombs_and_ruins.cry_18_petrified_demon_king_horn_relic.soul_calling_banner"
+display_name = "Petrified Demon King Horn Relic - Torn Tattered Soul Summoning Flag"
+pinyin = "Duànjiǎo · Torn Tattered Soul Summoning Flag"
+hanzi = "远古妖魔断角 · 破败白绫招魂幡"
+domain_id = &"crypts_tombs_and_ruins"
+category_id = &"cry_18_petrified_demon_king_horn_relic"
+asset_class = &"prop_workstation"
+archetype_name = "Torn Tattered Soul Summoning Flag"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/crypts_tombs_and_ruins/cry_18_petrified_demon_king_horn_relic/soul_calling_banner/pristine_dormant.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"none"
+primary_material = &"carved_wood"
+secondary_material = &"polished_bronze"
+cultivation_element = &"ghost"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"read_talisman"

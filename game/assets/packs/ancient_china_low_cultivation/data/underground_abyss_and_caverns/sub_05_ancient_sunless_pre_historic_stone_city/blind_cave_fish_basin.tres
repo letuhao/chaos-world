@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.underground_abyss_and_caverns.sub_05_ancient_sunless_pre_historic_stone_city.blind_cave_fish_basin"
+display_name = "Ancient Sunless Pre-Historic Stone City - Crystal Clear Underground Pool"
+pinyin = "Dìdǐ Shíchéng · Crystal Clear Underground Pool"
+hanzi = "地底盲目石殿城 · 纯净钟乳滴水盲鱼池"
+domain_id = &"underground_abyss_and_caverns"
+category_id = &"sub_05_ancient_sunless_pre_historic_stone_city"
+asset_class = &"prop_workstation"
+archetype_name = "Crystal Clear Underground Pool"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/underground_abyss_and_caverns/sub_05_ancient_sunless_pre_historic_stone_city/blind_cave_fish_basin/pristine_dormant.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"obstacle"
+primary_material = &"liquid_water"
+secondary_material = &"riverbed_pebbles"
+cultivation_element = &"earth"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"catch_cave_fish"

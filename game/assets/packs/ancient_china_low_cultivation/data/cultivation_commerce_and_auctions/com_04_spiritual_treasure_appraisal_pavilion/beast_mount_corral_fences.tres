@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.cultivation_commerce_and_auctions.com_04_spiritual_treasure_appraisal_pavilion.beast_mount_corral_fences"
+display_name = "Spiritual Treasure Appraisal Pavilion - Heavy Timber Paddock with Tame Mounts"
+pinyin = "Jiànbǎotái · Heavy Timber Paddock with Tame Mounts"
+hanzi = "法宝灵物鉴宝台 · 重木结实灵兽围栏"
+domain_id = &"cultivation_commerce_and_auctions"
+category_id = &"com_04_spiritual_treasure_appraisal_pavilion"
+asset_class = &"prop_workstation"
+archetype_name = "Heavy Timber Paddock with Tame Mounts"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/cultivation_commerce_and_auctions/com_04_spiritual_treasure_appraisal_pavilion/beast_mount_corral_fences/pristine_dormant.png"
+footprint_cells = Vector2i(3, 2)
+canvas_px = Vector2i(384, 256)
+collision_type = &"solid"
+primary_material = &"carved_wood"
+secondary_material = &"polished_bronze"
+cultivation_element = &"mortal"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"purchase_mount"

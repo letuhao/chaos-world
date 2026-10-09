@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_08_outer_disciple_cookhouse_huotaofang.elder_seclusion_pavilion"
+display_name = "Outer Disciple Cookhouse (Huotaofang) - Tranquil Overhang Meditation Kiosk"
+pinyin = "Língshàn Huǒfáng · Tranquil Overhang Meditation Kiosk"
+hanzi = "灵膳伙房 · 长老悬壁静修亭"
+domain_id = &"sect_facilities_and_dwellings"
+category_id = &"sec_08_outer_disciple_cookhouse_huotaofang"
+asset_class = &"structure_building"
+archetype_name = "Tranquil Overhang Meditation Kiosk"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_08_outer_disciple_cookhouse_huotaofang/elder_seclusion_pavilion/rot_south_facade.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"fire"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"meditate"

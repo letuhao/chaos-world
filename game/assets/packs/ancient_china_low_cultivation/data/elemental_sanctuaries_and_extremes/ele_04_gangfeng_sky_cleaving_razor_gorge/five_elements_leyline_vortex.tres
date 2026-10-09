@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.elemental_sanctuaries_and_extremes.ele_04_gangfeng_sky_cleaving_razor_gorge.five_elements_leyline_vortex"
+display_name = "Gangfeng Sky-Cleaving Razor Gorge - Concentric Swirl of Five-Colored Qi Wells"
+pinyin = "Gāngfēngxiá · Concentric Swirl of Five-Colored Qi Wells"
+hanzi = "九天罡风如刃峡 · 五行逆乱交汇五色眼"
+domain_id = &"elemental_sanctuaries_and_extremes"
+category_id = &"ele_04_gangfeng_sky_cleaving_razor_gorge"
+asset_class = &"prop_workstation"
+archetype_name = "Concentric Swirl of Five-Colored Qi Wells"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/elemental_sanctuaries_and_extremes/ele_04_gangfeng_sky_cleaving_razor_gorge/five_elements_leyline_vortex/pristine_dormant.png"
+footprint_cells = Vector2i(3, 3)
+canvas_px = Vector2i(384, 384)
+collision_type = &"walk_surface"
+primary_material = &"raw_metal_ore"
+secondary_material = &"quartz_vein"
+cultivation_element = &"wind"
+elevation_tier = 9
+mortal_realm_tier = "Tribulation Crossing (Độ Kiếp / 渡劫)"
+interactive_verb = &"harmonize_elements"

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.floating_terrains_and_sky_crags.flt_03_sky_cascading_cloud_waterfall.ethereal_sky_gazebo"
+display_name = "Sky-Cascading Cloud Waterfall - Cantilevered White Jade Sky Gazebo"
+pinyin = "Chuítiānfēipù · Cantilevered White Jade Sky Gazebo"
+hanzi = "垂天浮岛云飞瀑 · 白玉凌虚悬空飞亭"
+domain_id = &"floating_terrains_and_sky_crags"
+category_id = &"flt_03_sky_cascading_cloud_waterfall"
+asset_class = &"structure_temple"
+archetype_name = "Cantilevered White Jade Sky Gazebo"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/floating_terrains_and_sky_crags/flt_03_sky_cascading_cloud_waterfall/ethereal_sky_gazebo/rot_south_facade.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"wind"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"view_clouds"

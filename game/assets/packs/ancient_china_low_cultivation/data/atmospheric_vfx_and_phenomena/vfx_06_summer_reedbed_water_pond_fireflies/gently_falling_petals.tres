@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.atmospheric_vfx_and_phenomena.vfx_06_summer_reedbed_water_pond_fireflies.gently_falling_petals"
+display_name = "Summer Reedbed & Water Pond Fireflies - Fluttering Organic Petals Diagonally Drifting"
+pinyin = "Yínghuǒchóng · Fluttering Organic Petals Diagonally Drifting"
+hanzi = "夏夜水泽萤火虫 · 随风斜飘漫天落瓣"
+domain_id = &"atmospheric_vfx_and_phenomena"
+category_id = &"vfx_06_summer_reedbed_water_pond_fireflies"
+asset_class = &"vfx_particle"
+archetype_name = "Fluttering Organic Petals Diagonally Drifting"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/atmospheric_vfx_and_phenomena/vfx_06_summer_reedbed_water_pond_fireflies/gently_falling_petals/subtle_ambient.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"none"
+primary_material = &"liquid_water"
+secondary_material = &"riverbed_pebbles"
+cultivation_element = &"wood"
+elevation_tier = 6
+mortal_realm_tier = "Void Refinement (Luyện Hư / 炼虚)"
+interactive_verb = &"None"

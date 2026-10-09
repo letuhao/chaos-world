@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.crypts_tombs_and_ruins.cry_14_suspended_hanging_coffin_cliffs.mercury_drainage_trench"
+display_name = "Suspended Hanging Coffin Cliffs - Tomb Floor Liquid Mercury Trough"
+pinyin = "Xuánguān · Tomb Floor Liquid Mercury Trough"
+hanzi = "悬崖悬棺木架 · 流淌水银地槽"
+domain_id = &"crypts_tombs_and_ruins"
+category_id = &"cry_14_suspended_hanging_coffin_cliffs"
+asset_class = &"terrain_tile"
+archetype_name = "Tomb Floor Liquid Mercury Trough"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/crypts_tombs_and_ruins/cry_14_suspended_hanging_coffin_cliffs/mercury_drainage_trench/dry_temperate.png"
+footprint_cells = Vector2i(2, 1)
+canvas_px = Vector2i(256, 128)
+collision_type = &"obstacle"
+primary_material = &"earthen_loam"
+secondary_material = &"mineral_silt"
+cultivation_element = &"earth"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"None"

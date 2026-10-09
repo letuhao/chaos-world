@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.cultivation_commerce_and_auctions.com_09_bounty_hunter_mercenary_guild_hall.spirit_stone_secure_vault"
+display_name = "Bounty Hunter & Mercenary Guild Hall - Heavy Reinforced Stone Vault Door & Bins"
+pinyin = "Shǎngjīnháng · Heavy Reinforced Stone Vault Door & Bins"
+hanzi = "斩妖除魔赏金公会 · 铁箍重石灵石钱庄金库"
+domain_id = &"cultivation_commerce_and_auctions"
+category_id = &"com_09_bounty_hunter_mercenary_guild_hall"
+asset_class = &"prop_container"
+archetype_name = "Heavy Reinforced Stone Vault Door & Bins"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/cultivation_commerce_and_auctions/com_09_bounty_hunter_mercenary_guild_hall/spirit_stone_secure_vault/pristine_dormant.png"
+footprint_cells = Vector2i(3, 2)
+canvas_px = Vector2i(384, 256)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"mortal"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"deposit_funds"

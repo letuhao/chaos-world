@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.artifacts_and_paraphernalia.art_15_bamboo_slip_sutra_book.broken_shattered_hilt"
+display_name = "Bamboo Slip Sutra Book - Broken Splintered Relic Fragment"
+pinyin = "Zhújiǎn · Broken Splintered Relic Fragment"
+hanzi = "阴阳竹简古籍 · 折断残破法器柄"
+domain_id = &"artifacts_and_paraphernalia"
+category_id = &"art_15_bamboo_slip_sutra_book"
+asset_class = &"item_tool"
+archetype_name = "Broken Splintered Relic Fragment"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/artifacts_and_paraphernalia/art_15_bamboo_slip_sutra_book/broken_shattered_hilt/pos_inventory_icon_45deg.png"
+footprint_cells = Vector2i(1, 1)
+canvas_px = Vector2i(128, 128)
+collision_type = &"none"
+primary_material = &"iron_bamboo"
+secondary_material = &"foliage"
+cultivation_element = &"fire"
+elevation_tier = 4
+mortal_realm_tier = "Nascent Soul (Nguyên Anh / 元婴)"
+interactive_verb = &"salvage_scrap"

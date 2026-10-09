@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.evil_sects_and_demonic.evi_07_soul_extraction_torture_pillar.soul_extraction_iron_pillar"
+display_name = "Soul Extraction & Torture Pillar - Soul Shackling Runed Iron Pillar"
+pinyin = "Sōuhúnzhù · Soul Shackling Runed Iron Pillar"
+hanzi = "搜魂剥皮刑柱 · 锁魂蚀骨玄铁烙柱"
+domain_id = &"evil_sects_and_demonic"
+category_id = &"evi_07_soul_extraction_torture_pillar"
+asset_class = &"prop_workstation"
+archetype_name = "Soul Shackling Runed Iron Pillar"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/evil_sects_and_demonic/evi_07_soul_extraction_torture_pillar/soul_extraction_iron_pillar/pristine_dormant.png"
+footprint_cells = Vector2i(1, 2)
+canvas_px = Vector2i(128, 256)
+collision_type = &"solid"
+primary_material = &"raw_metal_ore"
+secondary_material = &"quartz_vein"
+cultivation_element = &"ghost"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"shackle_soul"

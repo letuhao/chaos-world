@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.mining_and_metallurgy.min_12_stacked_smelted_ingot_storage_depot.timber_shoring_shaft_mouth"
+display_name = "Stacked Smelted Ingot Storage Depot - Timber-Shored Deep Mine Portal"
+pinyin = "Dìngkuài · Timber-Shored Deep Mine Portal"
+hanzi = "锭铁铅块堆栈 · 杉木排架深矿井口"
+domain_id = &"mining_and_metallurgy"
+category_id = &"min_12_stacked_smelted_ingot_storage_depot"
+asset_class = &"structure_building"
+archetype_name = "Timber-Shored Deep Mine Portal"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/mining_and_metallurgy/min_12_stacked_smelted_ingot_storage_depot/timber_shoring_shaft_mouth/rot_south_facade.png"
+footprint_cells = Vector2i(3, 2)
+canvas_px = Vector2i(384, 256)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"fire"
+elevation_tier = 1
+mortal_realm_tier = "Qi Refining (Luyện Khí / 练气)"
+interactive_verb = &"enter_mine"

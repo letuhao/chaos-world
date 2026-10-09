@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.flora_and_spirit_plants.flo_20_bone_dissolving_thorn_moss.elemental_mutated"
+display_name = "Bone-Dissolving Thorn Moss - Elemental Resonance Bloomed Form"
+pinyin = "Huàgǔ Cìtái · Elemental Resonance Bloomed Form"
+hanzi = "化骨刺苔 · 五行异变绽放"
+domain_id = &"flora_and_spirit_plants"
+category_id = &"flo_20_bone_dissolving_thorn_moss"
+asset_class = &"flora_herb"
+archetype_name = "Elemental Resonance Bloomed Form"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_20_bone_dissolving_thorn_moss/elemental_mutated/pristine_dormant.png"
+footprint_cells = Vector2i(2, 2)
+canvas_px = Vector2i(256, 256)
+collision_type = &"none"
+primary_material = &"spiritual_root_stalk"
+secondary_material = &"medicinal_blossom"
+cultivation_element = &"wood"
+elevation_tier = 3
+mortal_realm_tier = "Core Formation (Kết Đan / 结丹)"
+interactive_verb = &"channel_element"

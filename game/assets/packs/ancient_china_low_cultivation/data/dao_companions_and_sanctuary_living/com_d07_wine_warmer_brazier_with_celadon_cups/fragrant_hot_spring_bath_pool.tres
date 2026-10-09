@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.dao_companions_and_sanctuary_living.com_d07_wine_warmer_brazier_with_celadon_cups.fragrant_hot_spring_bath_pool"
+display_name = "Wine Warmer Brazier with Celadon Cups - Sunken Stone Pool Steaming with Herbal Petals"
+pinyin = "Wēnjiǔjǐ · Sunken Stone Pool Steaming with Herbal Petals"
+hanzi = "红泥小炉温酒几 · 兰汤凝脂芳草温石池"
+domain_id = &"dao_companions_and_sanctuary_living"
+category_id = &"com_d07_wine_warmer_brazier_with_celadon_cups"
+asset_class = &"prop_workstation"
+archetype_name = "Sunken Stone Pool Steaming with Herbal Petals"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/dao_companions_and_sanctuary_living/com_d07_wine_warmer_brazier_with_celadon_cups/fragrant_hot_spring_bath_pool/pristine_dormant.png"
+footprint_cells = Vector2i(3, 2)
+canvas_px = Vector2i(384, 256)
+collision_type = &"obstacle"
+primary_material = &"spiritual_root_stalk"
+secondary_material = &"medicinal_blossom"
+cultivation_element = &"wood"
+elevation_tier = 5
+mortal_realm_tier = "Spirit Transformation (Hóa Thần / 化神)"
+interactive_verb = &"bathe_hot_spring"

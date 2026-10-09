@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.world_events_and_calamities.cal_03_beast_corpse_slaughter_trench.breached_city_palisade_gate"
+display_name = "Beast Corpse Slaughter Trench - Smashed Fortress Gate with Claw Fractures"
+pinyin = "Jīshīkēng · Smashed Fortress Gate with Claw Fractures"
+hanzi = "万妖伏诛积尸大坑 · 狂兽冲撞碎裂城门"
+domain_id = &"world_events_and_calamities"
+category_id = &"cal_03_beast_corpse_slaughter_trench"
+asset_class = &"structure_building"
+archetype_name = "Smashed Fortress Gate with Claw Fractures"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/world_events_and_calamities/cal_03_beast_corpse_slaughter_trench/breached_city_palisade_gate/rot_south_facade.png"
+footprint_cells = Vector2i(4, 2)
+canvas_px = Vector2i(512, 256)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"blood"
+elevation_tier = 6
+mortal_realm_tier = "Void Refinement (Luyện Hư / 炼虚)"
+interactive_verb = &"scavenge_breach"

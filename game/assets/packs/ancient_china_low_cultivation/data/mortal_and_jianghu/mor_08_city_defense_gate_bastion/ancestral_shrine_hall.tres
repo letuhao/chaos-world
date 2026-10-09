@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CultivationAssetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/worldmap/cultivation_asset_def.gd" id="1_cdef"]
+
+[resource]
+script = ExtResource("1_cdef")
+id = &"ancient_china_low_cultivation.mortal_and_jianghu.mor_08_city_defense_gate_bastion.ancestral_shrine_hall"
+display_name = "City Defense Gate & Bastion - Clan Ancestral Memorial Shrine"
+pinyin = "Wèngchéng Ménlóu · Clan Ancestral Memorial Shrine"
+hanzi = "瓮城门楼 · 宗族祠堂祭厅"
+domain_id = &"mortal_and_jianghu"
+category_id = &"mor_08_city_defense_gate_bastion"
+asset_class = &"structure_building"
+archetype_name = "Clan Ancestral Memorial Shrine"
+texture_path = "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_08_city_defense_gate_bastion/ancestral_shrine_hall/rot_south_facade.png"
+footprint_cells = Vector2i(3, 3)
+canvas_px = Vector2i(384, 384)
+collision_type = &"solid"
+primary_material = &"timber_frame"
+secondary_material = &"glazed_ceramic_tile"
+cultivation_element = &"water"
+elevation_tier = 2
+mortal_realm_tier = "Foundation Establishment (Trúc Cơ / 筑基)"
+interactive_verb = &"pay_respects"
