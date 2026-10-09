@@ -1,0 +1,90 @@
+{
+  "asset_id": "ancient_china_low_cultivation.water_and_springs.wat_06_lotus_covered_village_pond.natural_spring_source",
+  "domain": "water_and_springs",
+  "sub_domain": "wat_06_lotus_covered_village_pond",
+  "asset_slug": "natural_spring_source",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_06_lotus_covered_village_pond/natural_spring_source/damaged_weathered.png",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "taste_water",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.586
+      ]
+    ],
+    "frac_zero": 0.6621,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.134,
+        0.727,
+        0.038
+      ],
+      [
+        0.591,
+        0.993,
+        0.47
+      ],
+      [
+        0.672,
+        0.936,
+        0.61
+      ]
+    ],
+    "crop_offset": [
+      18,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 77,
+    "contact_reference_px": 77.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
