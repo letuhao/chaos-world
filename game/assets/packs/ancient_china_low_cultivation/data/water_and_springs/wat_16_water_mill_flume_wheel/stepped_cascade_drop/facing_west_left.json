@@ -1,0 +1,87 @@
+{
+  "asset_id": "ancient_china_low_cultivation.water_and_springs.wat_16_water_mill_flume_wheel.stepped_cascade_drop",
+  "domain": "water_and_springs",
+  "sub_domain": "wat_16_water_mill_flume_wheel",
+  "asset_slug": "stepped_cascade_drop",
+  "variant_slug": "facing_west_left",
+  "name": "West Facing Profile",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_16_water_mill_flume_wheel/stepped_cascade_drop/facing_west_left.png",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.555,
+        0.553
+      ]
+    ],
+    "frac_zero": 0.8856,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.281,
+        0.321,
+        0.0
+      ],
+      [
+        0.623,
+        0.672,
+        0.0
+      ],
+      [
+        0.718,
+        0.832,
+        0.333
+      ]
+    ],
+    "crop_offset": [
+      94,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 58,
+    "contact_reference_px": 58.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
