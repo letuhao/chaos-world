@@ -28,6 +28,7 @@ const R_EMPTY_REALM := "empty_realm"
 const R_ALREADY_SNAPSHOTTED := "already_snapshotted"
 const R_NO_SNAPSHOT := "no_snapshot"
 const R_MEND_CAPPED := "mend_capped"
+const R_SCAR_FLOORED := "already_ruined"
 const R_BAD_AMOUNT := "bad_amount"
 
 ## No snapshot may be mended above this (BL-0951 / ADR 0939, S7): a poor foundation is a
@@ -83,6 +84,60 @@ static func mend_target(actor: Actor) -> StringName:
 			worst_value = value
 			worst = StringName(id)
 	return worst
+
+
+## One realm's snapshot as a number, or `-1.0` when the actor never left it. Avenues that
+## name their own realm (the rite, a screen) read through this rather than the record;
+## `-1.0` rather than `0.0` because zero is a REAL perfection and a reader cannot tell an
+## unanswered question from a sloppy past if both are zero (the `SoulAge.age_years`
+## convention, for the same reason).
+static func snapshot_for(actor: Actor, realm_id: StringName) -> float:
+	if actor == null or realm_id == &"":
+		return -1.0
+	var record := FoundationRecord.normalize(actor.get_module_data(FoundationRecord.SLOT))
+	if not FoundationRecord.has_snapshot(record, realm_id):
+		return -1.0
+	return FoundationRecord.snapshot_for(record, realm_id)
+
+
+## Lower one realm's snapshot by up to `amount`, floored at `0.0` (BL-0951 / ADR 0939,
+## S8): the heaven-defying rite's price for a lost gamble. A scarred past drags the
+## carried mean down, which is what makes the gamble a gamble rather than a priced
+## purchase — the avenue risks more than wealth, so it may also pay more (see the rite's
+## own bounds). Scarring a `0.0` snapshot changes nothing and is refused as already
+## ruined; every other refusal mirrors [method mend].
+static func scar(
+	actor: Actor, realm_id: StringName, amount: float, source: String = ""
+) -> Dictionary:
+	if actor == null:
+		return {"ok": false, "reason": R_NO_ACTOR}
+	if realm_id == &"":
+		return {"ok": false, "reason": R_EMPTY_REALM}
+	if not is_finite(amount) or amount <= 0.0:
+		return {"ok": false, "reason": R_BAD_AMOUNT}
+	var record := FoundationRecord.normalize(actor.get_module_data(FoundationRecord.SLOT))
+	if not FoundationRecord.has_snapshot(record, realm_id):
+		return {"ok": false, "reason": R_NO_SNAPSHOT, "realm": String(realm_id)}
+	var existing := FoundationRecord.snapshot_for(record, realm_id)
+	if existing <= 0.0:
+		return {
+			"ok": false,
+			"reason": R_SCAR_FLOORED,
+			"realm": String(realm_id),
+			"existing": existing,
+		}
+	var scarred := maxf(existing - amount, 0.0)
+	record = FoundationRecord.with_snapshot(record, realm_id, scarred)
+	actor.set_module_data(FoundationRecord.SLOT, record)
+	return {
+		"ok": true,
+		"realm": String(realm_id),
+		"before": existing,
+		"after": scarred,
+		"scarred": existing - scarred,
+		"source": source,
+		"aggregate": FoundationRecord.aggregate(record),
+	}
 
 
 ## Mend one realm's snapshot by up to `amount`, never above `MEND_CAP` (BL-0951 /

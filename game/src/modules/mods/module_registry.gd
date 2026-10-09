@@ -39,7 +39,7 @@ const BASE_DEPS := {
 	"event": ["destiny", "nation", "npc", "world"],
 	"fertility": ["bloodline", "dual_cultivation", "race", "social"],
 	"forage": ["holdings"],
-	"heavenly_tribulation": ["status"],
+	"heavenly_tribulation": ["foundation", "status"],
 	"holdings": [],
 	"items": ["destiny", "foundation", "status"],
 	"loot": ["items", "status"],

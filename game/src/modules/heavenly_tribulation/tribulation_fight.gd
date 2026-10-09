@@ -22,6 +22,18 @@ extends RefCounted
 ## a phase machine that does not converge.
 const WAVE_GUARD := 16
 
+## The heaven-defying rite's authored bounds (BL-0951 / ADR 0939, S8): a won gamble lifts
+## the named realm's snapshot by `RITE_MEND` through `FoundationApi.mend` (which still
+## caps at `MEND_CAP`), and a lost one deepens the scar by `RITE_SCAR` through
+## `FoundationApi.scar` (floored at zero). The win pays TWICE the elixir's step because
+## the gamble risks more than the elixir does: wave tolls either way, a deviation and
+## dao-heart wounds on a loss, and the scar itself. The avenue owns these numbers (goal
+## decision 4: authored defaults, tunable at content time); the module owns the ceiling,
+## and no avenue raises it.
+const RITE_MEND := 0.2
+const RITE_SCAR := 0.1
+const RITE_SOURCE := "heaven_defying_rite"
+
 # --- Which realm is owed -----------------------------------------------------
 
 
@@ -118,6 +130,68 @@ static func withdraw(actor: Actor) -> bool:
 		return false
 	Breakthrough.cancel_tribulation(actor)
 	return true
+
+
+## Defy the heavens for one realm's scarred foundation: fight a KARMIC tribulation bound
+## to `realm_id`, mending the snapshot on a win and deepening the scar on a loss
+## (BL-0951 / ADR 0939, S8). One press, one gamble: the fight runs to a verdict here,
+## bounded by `WAVE_GUARD` like every driven fight. `rng` makes the deciding roll a
+## test's choice; null uses the engine's.
+##
+## ## Why a constructed fight, not `Breakthrough.begin_tribulation`
+##
+## That verb binds the realm the actor is ABOUT to enter and refuses below the Immortal
+## gate — a rite for a mortal past could never begin through it, and routing one there
+## would teach the gate's entry point to fight the wrong fight. This constructs the
+## record directly, binds the NAMED realm, and restores whatever the slot held: the rite
+## record can never satisfy a future gate (`tribulation_ok` demands the entered realm's
+## id), and a prior proof is never destroyed by it.
+##
+## ## Why KARMIC
+##
+## Defiance is answered by heaven rather than by weather: the karmic kind prices hubris
+## at 1.1, between lightning's flat 1.0 and the elemental storm's 1.3. The sloppy record
+## this rite is taken for already rates the fight harder through the S5 foundation term,
+## so no extra difficulty is authored here.
+static func defy_heavens(
+	actor: Actor, realm_id: StringName, rng: RandomNumberGenerator = null
+) -> Dictionary:
+	if actor == null:
+		return _refused("no actor to defy the heavens")
+	if realm_id == &"":
+		return _refused("no realm named to mend")
+	# The rite is FOR a scar: nothing below the cap means nothing to win, and a gamble
+	# with no upside is a different action wearing this one's name.
+	var standing := FoundationApi.snapshot_for(actor, realm_id)
+	if standing < 0.0:
+		return _refused("the realm was never left, so it has no scar to mend")
+	if standing >= FoundationApi.MEND_CAP:
+		return _refused("the realm already stands at the mended ceiling")
+	# The slot is borrowed, not taken: an unfinished fight in it would lose its fought
+	# waves to this one, so that refuses first, and whatever was there — a decided proof
+	# or nothing — is restored afterwards.
+	var prior = actor.tribulation
+	if prior != null and not prior.is_complete():
+		return _refused("a tribulation is already in progress")
+	var fight := Tribulation.new(Tribulation.KARMIC)
+	fight.start(actor, realm_id)
+	actor.tribulation = fight
+	var verdict := fight_to_verdict(actor, rng)
+	actor.tribulation = prior
+	if not bool(verdict.get("ok", false)):
+		return verdict
+	var turn: Dictionary
+	if bool(verdict.get("survived", false)):
+		turn = FoundationApi.mend(actor, realm_id, RITE_MEND, RITE_SOURCE)
+	else:
+		turn = FoundationApi.scar(actor, realm_id, RITE_SCAR, RITE_SOURCE)
+	return {
+		"ok": true,
+		"reason": "",
+		"decided": true,
+		"survived": bool(verdict.get("survived", false)),
+		"turn": turn,
+	}
 
 
 # --- Read model ---------------------------------------------------------------

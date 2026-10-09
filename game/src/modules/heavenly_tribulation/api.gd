@@ -60,3 +60,13 @@ static func fight_to_verdict(actor: Actor) -> Dictionary:
 ## decided.
 static func withdraw(actor: Actor) -> bool:
 	return TribulationFight.withdraw(actor)
+
+
+## Defy the heavens for one realm's scarred foundation: one press, one karmic fight to
+## a verdict, mending on a win and scarring on a loss. `TribulationFight` owns the rule
+## — the borrowed slot, the restored proof, the authored bounds — and this only names
+## it, like every verb here.
+static func defy_heavens(
+	actor: Actor, realm_id: StringName, rng: RandomNumberGenerator = null
+) -> Dictionary:
+	return TribulationFight.defy_heavens(actor, realm_id, rng)
