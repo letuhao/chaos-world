@@ -46,14 +46,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_13_spirit_mulberry_silkworm_bush/withering_spent/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.334
+            0.397
           ]
         ],
-        "frac_zero": 0.7435,
+        "frac_zero": 0.6968,
         "blocks": [
           [
             false
@@ -75,30 +75,30 @@
         ],
         "sub_fill": [
           [
-            0.158,
-            0.444,
-            0.057
+            0.222,
+            0.575,
+            0.144
           ],
           [
-            0.487,
-            0.485,
-            0.444
+            0.493,
+            0.599,
+            0.517
           ],
           [
-            0.122,
-            0.59,
-            0.106
+            0.24,
+            0.578,
+            0.132
           ]
         ],
         "crop_offset": [
-          20,
-          16
+          18,
+          17
         ],
         "trunk_columns": [
           1
         ],
-        "contact_px": 46,
-        "contact_reference_px": 46.0,
+        "contact_px": 43,
+        "contact_reference_px": 43.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -126,14 +126,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_13_spirit_mulberry_silkworm_bush/withering_spent/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.427
+            0.444
           ]
         ],
-        "frac_zero": 0.7198,
+        "frac_zero": 0.6868,
         "blocks": [
           [
             false
@@ -155,42 +155,36 @@
         ],
         "sub_fill": [
           [
+            0.151,
+            0.694,
+            0.15
+          ],
+          [
+            0.564,
+            0.687,
+            0.561
+          ],
+          [
             0.212,
-            0.466,
-            0.054
-          ],
-          [
-            0.43,
-            0.565,
-            0.398
-          ],
-          [
-            0.443,
-            0.781,
-            0.123
+            0.735,
+            0.191
           ]
         ],
         "crop_offset": [
-          25,
-          17
+          17,
+          16
         ],
         "trunk_columns": [
-          0,
           1
         ],
-        "contact_px": 65,
-        "contact_reference_px": 65.0,
+        "contact_px": 37,
+        "contact_reference_px": 37.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
           "1.15": null,
           "1.35": null,
-          "1.6": [
-            0,
-            0,
-            0,
-            0
-          ]
+          "1.6": null
         },
         "block_rect": null,
         "block_rect_px": null
@@ -207,14 +201,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_13_spirit_mulberry_silkworm_bush/withering_spent/damaged_weathered.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.409
+            0.44
           ]
         ],
-        "frac_zero": 0.731,
+        "frac_zero": 0.6942,
         "blocks": [
           [
             false
@@ -236,30 +230,30 @@
         ],
         "sub_fill": [
           [
-            0.306,
-            0.655,
-            0.094
+            0.245,
+            0.651,
+            0.105
           ],
           [
-            0.374,
-            0.542,
-            0.301
+            0.512,
+            0.591,
+            0.629
           ],
           [
-            0.277,
-            0.682,
-            0.112
+            0.301,
+            0.676,
+            0.115
           ]
         ],
         "crop_offset": [
-          23,
-          17
+          20,
+          16
         ],
         "trunk_columns": [
           1
         ],
-        "contact_px": 43,
-        "contact_reference_px": 43.0,
+        "contact_px": 40,
+        "contact_reference_px": 40.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -287,14 +281,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_13_spirit_mulberry_silkworm_bush/withering_spent/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.453
+            0.457
           ]
         ],
-        "frac_zero": 0.7176,
+        "frac_zero": 0.6941,
         "blocks": [
           [
             false
@@ -316,31 +310,30 @@
         ],
         "sub_fill": [
           [
-            0.144,
-            0.365,
-            0.047
+            0.198,
+            0.741,
+            0.134
           ],
           [
-            0.453,
-            0.593,
-            0.458
+            0.496,
+            0.495,
+            0.516
           ],
           [
-            0.528,
-            0.931,
-            0.326
+            0.329,
+            0.895,
+            0.194
           ]
         ],
         "crop_offset": [
-          23,
-          16
+          19,
+          17
         ],
         "trunk_columns": [
-          0,
           1
         ],
-        "contact_px": 60,
-        "contact_reference_px": 60.0,
+        "contact_px": 66,
+        "contact_reference_px": 66.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
