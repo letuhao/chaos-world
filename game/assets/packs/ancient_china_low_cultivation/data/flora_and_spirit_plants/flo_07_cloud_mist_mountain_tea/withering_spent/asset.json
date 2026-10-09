@@ -46,14 +46,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_07_cloud_mist_mountain_tea/withering_spent/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.402
+            0.503
           ]
         ],
-        "frac_zero": 0.738,
+        "frac_zero": 0.6827,
         "blocks": [
           [
             false
@@ -75,30 +75,31 @@
         ],
         "sub_fill": [
           [
-            0.211,
-            0.602,
-            0.123
+            0.254,
+            0.702,
+            0.163
           ],
           [
-            0.446,
+            0.447,
+            0.607,
+            0.526
+          ],
+          [
             0.436,
-            0.371
-          ],
-          [
-            0.27,
-            0.689,
-            0.229
+            0.938,
+            0.328
           ]
         ],
         "crop_offset": [
-          24,
+          20,
           16
         ],
         "trunk_columns": [
+          0,
           1
         ],
-        "contact_px": 62,
-        "contact_reference_px": 62.0,
+        "contact_px": 72,
+        "contact_reference_px": 72.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -126,14 +127,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_07_cloud_mist_mountain_tea/withering_spent/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.469
+            0.519
           ]
         ],
-        "frac_zero": 0.7289,
+        "frac_zero": 0.7024,
         "blocks": [
           [
             false
@@ -155,31 +156,32 @@
         ],
         "sub_fill": [
           [
-            0.259,
-            0.525,
-            0.201
+            0.258,
+            0.694,
+            0.149
           ],
           [
-            0.519,
-            0.546,
-            0.361
+            0.459,
+            0.665,
+            0.283
           ],
           [
-            0.466,
-            0.737,
-            0.018
+            0.528,
+            0.915,
+            0.355
           ]
         ],
         "crop_offset": [
-          27,
-          17
+          23,
+          16
         ],
         "trunk_columns": [
           0,
-          1
+          1,
+          2
         ],
-        "contact_px": 55,
-        "contact_reference_px": 55.0,
+        "contact_px": 63,
+        "contact_reference_px": 63.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -207,14 +209,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_07_cloud_mist_mountain_tea/withering_spent/damaged_weathered.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.427
+            0.438
           ]
         ],
-        "frac_zero": 0.7171,
+        "frac_zero": 0.7112,
         "blocks": [
           [
             false
@@ -236,19 +238,19 @@
         ],
         "sub_fill": [
           [
-            0.376,
-            0.701,
-            0.115
+            0.117,
+            0.64,
+            0.154
           ],
           [
-            0.491,
-            0.548,
-            0.469
+            0.334,
+            0.633,
+            0.367
           ],
           [
-            0.105,
-            0.696,
-            0.182
+            0.411,
+            0.911,
+            0.234
           ]
         ],
         "crop_offset": [
@@ -256,10 +258,11 @@
           16
         ],
         "trunk_columns": [
+          0,
           1
         ],
-        "contact_px": 53,
-        "contact_reference_px": 53.0,
+        "contact_px": 68,
+        "contact_reference_px": 68.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -287,14 +290,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_07_cloud_mist_mountain_tea/withering_spent/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.56
+            0.432
           ]
         ],
-        "frac_zero": 0.6978,
+        "frac_zero": 0.7352,
         "blocks": [
           [
             false
@@ -316,32 +319,32 @@
         ],
         "sub_fill": [
           [
-            0.37,
-            0.546,
-            0.15
+            0.074,
+            0.353,
+            0.017
           ],
           [
-            0.502,
-            0.625,
-            0.206
+            0.404,
+            0.54,
+            0.27
           ],
           [
-            0.67,
-            0.911,
-            0.516
+            0.644,
+            0.927,
+            0.351
           ]
         ],
         "crop_offset": [
-          26,
-          17
+          23,
+          16
         ],
         "trunk_columns": [
           0,
           1,
           2
         ],
-        "contact_px": 66,
-        "contact_reference_px": 66.0,
+        "contact_px": 68,
+        "contact_reference_px": 68.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
