@@ -1,0 +1,130 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_04_low_grade_blood_ginseng.elemental_mutated",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_04_low_grade_blood_ginseng",
+  "asset_slug": "elemental_mutated",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_04_low_grade_blood_ginseng/elemental_mutated/active_operating.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "none",
+  "interactive_verb": "channel_element",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.454,
+        0.476
+      ],
+      [
+        0.288,
+        0.31
+      ]
+    ],
+    "frac_zero": 0.7521,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.151,
+        0.509,
+        0.153,
+        0.008
+      ],
+      [
+        0.176,
+        0.553,
+        0.748,
+        0.525,
+        0.41
+      ],
+      [
+        0.349,
+        0.858,
+        0.9,
+        0.691,
+        0.496
+      ],
+      [
+        0.168,
+        0.596,
+        0.969,
+        0.61,
+        0.278
+      ],
+      [
+        0.243,
+        0.312,
+        0.829,
+        0.321,
+        0.05
+      ],
+      [
+        0.017,
+        0.368,
+        0.996,
+        0.406,
+        0.064
+      ],
+      [
+        0.0,
+        0.006,
+        0.317,
+        0.026,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      51,
+      17
+    ],
+    "trunk_columns": [],
+    "contact_px": 13,
+    "contact_reference_px": 13.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
