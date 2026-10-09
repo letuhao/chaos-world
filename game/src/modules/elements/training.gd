@@ -41,6 +41,20 @@ extends RefCounted
 ## module edge in this tree uses.
 const _ITEMS := preload("res://src/modules/items/api.gd")
 
+## The mastery an elixir of an element's TIER is worth, keyed by tier and never by the
+## element: the family is three tiers of one item kind, and a per-element table would be
+## thirteen numbers to keep in step with a three-row one.
+##
+## Tier 1 pays four practise sittings and tier 2 nine-plus — `PRACTICE_STEP` is `25.0`
+## and an R1 sitting is exactly `25.0` at `RealmRate`'s factor of `1.0`, so `100.0` is
+## four sittings by construction — and tier 3 (ADR 0921's triad) pays twenty-four, the
+## same roughly 2.4x step per tier. The elixir does NOT ride the realm rate the way a
+## sitting does: a sitting is labour and scales with the cultivator, an elixir is a
+## RESOURCE and grants what it says, which is what makes one worth carrying to depth
+## rather than a rounding error there. A tier the table does not name reads the tier-1
+## figure rather than failing, because a missing row must not make an elixir un-drinkable.
+const ELIXIR_GAIN_BY_TIER := {1: 100.0, 2: 240.0, 3: 600.0}
+
 
 ## Whether `actor` may practise `element_id`: the element must exist in the rules and
 ## the body must carry a SPARK for it (`affinity > 0.0`).
@@ -78,20 +92,6 @@ static func practise(actor: Actor, element_id: StringName, amount: float) -> Dic
 
 
 # --- the elixir door (ADR 0917) -------------------------------------------------
-
-## The mastery an elixir of an element's TIER is worth, keyed by tier and never by the
-## element: the family is three tiers of one item kind, and a per-element table would be
-## thirteen numbers to keep in step with a three-row one.
-##
-## Tier 1 pays four practise sittings and tier 2 nine-plus — `PRACTICE_STEP` is `25.0`
-## and an R1 sitting is exactly `25.0` at `RealmRate`'s factor of `1.0`, so `100.0` is
-## four sittings by construction — and tier 3 (ADR 0921's triad) pays twenty-four, the
-## same roughly 2.4x step per tier. The elixir does NOT ride the realm rate the way a
-## sitting does: a sitting is labour and scales with the cultivator, an elixir is a
-## RESOURCE and grants what it says, which is what makes one worth carrying to depth
-## rather than a rounding error there. A tier the table does not name reads the tier-1
-## figure rather than failing, because a missing row must not make an elixir un-drinkable.
-const ELIXIR_GAIN_BY_TIER := {1: 100.0, 2: 240.0, 3: 600.0}
 
 
 ## What one elixir of `element_id` grants, from the element's authored tier.

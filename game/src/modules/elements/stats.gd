@@ -65,6 +65,14 @@ const CRIT_RESIST_PREFIX := "element_crit_resist_"
 ## the bare ids without a special case.
 const OMNI := ""
 
+## The mastery elixir a body drinks for `element` (ADR 0917): one authored item per
+## element, named by this CONVENTION rather than by a field on `ElementDef`. The defs
+## are code-built and the elixir family is uniform — every element's elixir is the same
+## kind of item — so a per-def field would restate one rule ten times. A content suite
+## pins that every element's elixir resolves, so a missing item fails loudly instead of
+## reading as "this element has no elixir".
+const MASTERY_ELIXIR_SUFFIX := "_mastery_elixir"
+
 
 ## Every element id the per-element stat families are generated over: the five base
 ## elements, the five advanced ones, the three tier-3 ones, and [constant OMNI]. Derived
@@ -101,15 +109,6 @@ static func crit_id(element: StringName) -> StringName:
 
 static func crit_resist_id(element: StringName) -> StringName:
 	return StringName(CRIT_RESIST_PREFIX + String(element))
-
-
-## The mastery elixir a body drinks for `element` (ADR 0917): one authored item per
-## element, named by this CONVENTION rather than by a field on `ElementDef`. The defs
-## are code-built and the elixir family is uniform — every element's elixir is the same
-## kind of item — so a per-def field would restate one rule ten times. A content suite
-## pins that every element's elixir resolves, so a missing item fails loudly instead of
-## reading as "this element has no elixir".
-const MASTERY_ELIXIR_SUFFIX := "_mastery_elixir"
 
 
 static func mastery_elixir_id(element: StringName) -> StringName:
