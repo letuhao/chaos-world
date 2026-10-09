@@ -1,0 +1,184 @@
+{
+  "asset_id": "ancient_china_low_cultivation.water_and_springs.wat_15_bamboo_water_pipeline.stone_basin_spring",
+  "domain": "water_and_springs",
+  "sub_domain": "wat_15_bamboo_water_pipeline",
+  "asset_slug": "stone_basin_spring",
+  "variant_slug": "ruined_rubble",
+  "name": "Broken Shattered Rubble",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_15_bamboo_water_pipeline/stone_basin_spring/ruined_rubble.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "drink_spring",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.417,
+        0.564
+      ],
+      [
+        0.786,
+        0.679
+      ]
+    ],
+    "frac_zero": 0.5312,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.05,
+        0.359,
+        0.709,
+        0.975,
+        0.861,
+        0.57,
+        0.331
+      ],
+      [
+        0.0,
+        0.033,
+        0.462,
+        0.88,
+        0.737,
+        0.143,
+        0.046
+      ],
+      [
+        0.025,
+        0.575,
+        0.822,
+        0.938,
+        0.646,
+        0.201,
+        0.0
+      ],
+      [
+        0.115,
+        0.949,
+        1.0,
+        1.0,
+        0.969,
+        0.439,
+        0.0
+      ],
+      [
+        0.506,
+        0.986,
+        1.0,
+        1.0,
+        1.0,
+        0.585,
+        0.0
+      ],
+      [
+        0.657,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.843,
+        0.0
+      ],
+      [
+        0.118,
+        0.686,
+        0.992,
+        1.0,
+        0.797,
+        0.13,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      24,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 121,
+    "contact_reference_px": 121.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

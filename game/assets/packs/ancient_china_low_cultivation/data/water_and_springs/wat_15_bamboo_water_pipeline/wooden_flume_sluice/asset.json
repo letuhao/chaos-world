@@ -1,0 +1,539 @@
+{
+  "id": "ancient_china_low_cultivation.water_and_springs.wat_15_bamboo_water_pipeline.wooden_flume_sluice",
+  "archetype": "wooden_flume_sluice_wat_15_bamboo_water_pipeline",
+  "name": "Bamboo Water Pipeline - Timber Irrigation Sluice Gate",
+  "vietnamese_name": "Huyền Không Mao Trúc Thủy Cừ - Cửa Phai Dẫn Nước Bằng Gỗ",
+  "hanzi": "悬空毛竹水渠 · 木制引水分水闸",
+  "category": "wat_15_bamboo_water_pipeline",
+  "category_code": "WAT-15",
+  "domain": "water_and_springs",
+  "sub_domain": "wat_15_bamboo_water_pipeline",
+  "asset_class": "prop_workstation",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "operate_sluice",
+  "gameplay_role": "prop_workstation entity supporting Bamboo Water Pipeline gameplay",
+  "destructible": true,
+  "material": "dense fibrous green bamboo with metallic sheen",
+  "cultivation_element": "ice",
+  "prompt_summary": "Single isolated 2D RPG game prop of bamboo water pipeline - timber irrigation sluice gate, authentic bamboo water pipeline materials, East Asian Xianxia craftsmanship, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese craftsmanship, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Water Systems & Spiritual Springs",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "pristine_dormant",
+      "name": "Pristine Dormant State",
+      "prompt_modifier": "cold clean polished state, unlit hearth, intact locks",
+      "variant_id": "pristine_dormant",
+      "variant_name": "Pristine Dormant State",
+      "description": "cold clean polished state, unlit hearth, intact locks",
+      "prompt": "Single isolated 2D RPG game prop of timber irrigation sluice gate, dense fibrous green bamboo with metallic sheen, cold clean polished state, unlit hearth, intact locks, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_15_bamboo_water_pipeline/wooden_flume_sluice/pristine_dormant.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.496,
+            0.592
+          ]
+        ],
+        "frac_zero": 0.8274,
+        "blocks": [
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 2,
+        "anchor_cell": [
+          1,
+          0
+        ],
+        "sub_grid": [
+          3,
+          3
+        ],
+        "sub_fill": [
+          [
+            0.477,
+            0.404,
+            0.532
+          ],
+          [
+            0.415,
+            0.854,
+            0.371
+          ],
+          [
+            0.341,
+            0.943,
+            0.528
+          ]
+        ],
+        "crop_offset": [
+          82,
+          18
+        ],
+        "trunk_columns": [
+          1,
+          2
+        ],
+        "contact_px": 49,
+        "contact_reference_px": 49.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            0
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          0
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          128
+        ]
+      }
+    },
+    {
+      "variant_slug": "active_operating",
+      "name": "Active Operating State",
+      "prompt_modifier": "active glowing spiritual flames, heat haze, open functioning elements",
+      "variant_id": "active_operating",
+      "variant_name": "Active Operating State",
+      "description": "active glowing spiritual flames, heat haze, open functioning elements",
+      "prompt": "Single isolated 2D RPG game prop of timber irrigation sluice gate, dense fibrous green bamboo with metallic sheen, active glowing spiritual flames, heat haze, open functioning elements, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_15_bamboo_water_pipeline/wooden_flume_sluice/active_operating.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.352,
+            0.477
+          ]
+        ],
+        "frac_zero": 0.8776,
+        "blocks": [
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 2,
+        "anchor_cell": [
+          1,
+          0
+        ],
+        "sub_grid": [
+          3,
+          3
+        ],
+        "sub_fill": [
+          [
+            0.254,
+            0.42,
+            0.482
+          ],
+          [
+            0.488,
+            0.728,
+            0.393
+          ],
+          [
+            0.171,
+            0.45,
+            0.336
+          ]
+        ],
+        "crop_offset": [
+          85,
+          16
+        ],
+        "trunk_columns": [
+          1
+        ],
+        "contact_px": 4,
+        "contact_reference_px": 4.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            0
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          0
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          128
+        ]
+      }
+    },
+    {
+      "variant_slug": "damaged_weathered",
+      "name": "Damaged Weathered State",
+      "prompt_modifier": "mossy aged patina, chipped corners, cracked surfaces",
+      "variant_id": "damaged_weathered",
+      "variant_name": "Damaged Weathered State",
+      "description": "mossy aged patina, chipped corners, cracked surfaces",
+      "prompt": "Single isolated 2D RPG game prop of timber irrigation sluice gate, dense fibrous green bamboo with metallic sheen, mossy aged patina, chipped corners, cracked surfaces, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_15_bamboo_water_pipeline/wooden_flume_sluice/damaged_weathered.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.566,
+            0.599
+          ]
+        ],
+        "frac_zero": 0.8132,
+        "blocks": [
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 2,
+        "anchor_cell": [
+          1,
+          0
+        ],
+        "sub_grid": [
+          4,
+          3
+        ],
+        "sub_fill": [
+          [
+            0.606,
+            0.463,
+            0.63,
+            0.062
+          ],
+          [
+            0.385,
+            0.929,
+            0.431,
+            0.0
+          ],
+          [
+            0.408,
+            0.951,
+            0.496,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          79,
+          16
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2
+        ],
+        "contact_px": 71,
+        "contact_reference_px": 71.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            0
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          0
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          128
+        ]
+      }
+    },
+    {
+      "variant_slug": "ruined_rubble",
+      "name": "Broken Shattered Rubble",
+      "prompt_modifier": "collapsed fractured shards, scavengeable parts",
+      "variant_id": "ruined_rubble",
+      "variant_name": "Broken Shattered Rubble",
+      "description": "collapsed fractured shards, scavengeable parts",
+      "prompt": "Single isolated 2D RPG game prop of timber irrigation sluice gate, dense fibrous green bamboo with metallic sheen, collapsed fractured shards, scavengeable parts, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_15_bamboo_water_pipeline/wooden_flume_sluice/ruined_rubble.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.538,
+            0.6
+          ]
+        ],
+        "frac_zero": 0.8367,
+        "blocks": [
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 2,
+        "anchor_cell": [
+          1,
+          0
+        ],
+        "sub_grid": [
+          3,
+          3
+        ],
+        "sub_fill": [
+          [
+            0.39,
+            0.467,
+            0.408
+          ],
+          [
+            0.502,
+            0.826,
+            0.28
+          ],
+          [
+            0.642,
+            0.894,
+            0.481
+          ]
+        ],
+        "crop_offset": [
+          88,
+          16
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2
+        ],
+        "contact_px": 66,
+        "contact_reference_px": 66.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            0
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          0
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          128
+        ]
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "WAT-15",
+    "domain": "water_and_springs",
+    "interaction": "operate_sluice",
+    "collision_behavior": "solid",
+    "element": "ice",
+    "tier": 6
+  },
+  "category_id": "wat_15_bamboo_water_pipeline",
+  "domain_id": "water_and_springs",
+  "pinyin": "Xuánkōng Máozhú Shuǐqú · Timber Irrigation Sluice Gate",
+  "archetype_name": "Timber Irrigation Sluice Gate",
+  "footprint_subcells": {
+    "w": 8,
+    "h": 4
+  },
+  "footprint_px": {
+    "w": 256,
+    "h": 128
+  },
+  "cell_span": {
+    "w": 2,
+    "h": 1
+  },
+  "collision": {
+    "type": "solid",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": true,
+    "height_layer": "ground"
+  },
+  "primary_material": "iron_bamboo",
+  "secondary_material": "foliage",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Ice affinity (Void Refinement (Luyện Hư / 炼虚))",
+  "elevation_tier": 6,
+  "mortal_realm_tier": "Void Refinement (Luyện Hư / 炼虚)",
+  "asset_slug": "wooden_flume_sluice"
+}
