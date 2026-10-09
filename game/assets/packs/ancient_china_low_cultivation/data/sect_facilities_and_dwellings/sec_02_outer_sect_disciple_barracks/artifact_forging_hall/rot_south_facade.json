@@ -1,0 +1,306 @@
+{
+  "asset_id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_02_outer_sect_disciple_barracks.artifact_forging_hall",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_02_outer_sect_disciple_barracks",
+  "asset_slug": "artifact_forging_hall",
+  "variant_slug": "rot_south_facade",
+  "name": "South Facade (Front Entrance)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_02_outer_sect_disciple_barracks/artifact_forging_hall/rot_south_facade.png",
+  "footprint_cells": [
+    4,
+    3
+  ],
+  "canvas_px": [
+    512,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "forge_treasure",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.352,
+        0.679,
+        0.658,
+        0.348
+      ],
+      [
+        0.763,
+        1.0,
+        1.0,
+        0.894
+      ],
+      [
+        0.292,
+        0.908,
+        0.895,
+        0.335
+      ]
+    ],
+    "frac_zero": 0.5662,
+    "blocks": [
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 12,
+    "anchor_cell": [
+      2,
+      2
+    ],
+    "sub_grid": [
+      12,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.021,
+        0.54,
+        0.011,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.121,
+        0.21,
+        0.192,
+        0.598,
+        0.825,
+        1.0,
+        0.803,
+        0.578,
+        0.193,
+        0.239,
+        0.06,
+        0.0
+      ],
+      [
+        0.135,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.96,
+        0.012,
+        0.0
+      ],
+      [
+        0.061,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.962,
+        0.589,
+        0.0
+      ],
+      [
+        0.167,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.997,
+        0.765,
+        0.094
+      ],
+      [
+        0.424,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.811,
+        0.062
+      ],
+      [
+        0.745,
+        0.987,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.997,
+        0.862,
+        0.0
+      ],
+      [
+        0.0,
+        0.656,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.955,
+        0.214,
+        0.0
+      ],
+      [
+        0.0,
+        0.822,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.859,
+        0.09,
+        0.0
+      ],
+      [
+        0.0,
+        0.208,
+        0.321,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.316,
+        0.234,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.103,
+        0.5,
+        0.817,
+        0.867,
+        0.776,
+        0.533,
+        0.082,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      79,
+      17
+    ],
+    "trunk_columns": [
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 173,
+    "contact_reference_px": 173.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      384
+    ]
+  }
+}
