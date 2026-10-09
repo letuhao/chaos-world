@@ -313,23 +313,30 @@ static func key_reach_of(player: Actor, _item_id: StringName) -> float:
 	return best
 
 
-## Hand `count` of `item_id` to the actor, answering the LEFTOVER that did not fit —
-## the all-or-nothing convention `LootRewards.deliver` uses, so a full bag leaves the
-## claim untouched rather than consuming it over a delivery that did not happen.
+## Hand ONE REALIZED instance of `item_id` to the actor, seeded from `seed` (ADR 0216 §4):
+## the fixture's relic is the SAME relic on every replay of that fixture, so the roll
+## belongs to the fixture, not to the bag, and it rides `ItemsApi.generate` — the one
+## realization path the game owns (ADR 0025) — rather than a bare `inventory.add(def)`.
+## Answers the dictionary seam `DomainFixtures.set_minter` reads
+## (`{leftover, reason, instance_id}`): leftover 1 means nothing was handed over —
+## an id the corpus cannot resolve, or a bag that cannot hold the piece — so the claim
+## is left untouched rather than consumed over a delivery that did not happen.
 ##
 ## `Crafting.resolve` is `items` internals that only `app/` may name, and `ItemsApi` is
 ## at its twelve-method cap so no def-resolution verb could be added to it. This adapter
 ## is the whole reason the seam is legal where it is.
-static func grant_item(player: Actor, item_id: StringName, count: int) -> int:
+static func grant_item(player: Actor, item_id: StringName, seed: int) -> Dictionary:
 	var def := Crafting.resolve(item_id)
 	if def == null:
-		# Nothing handed over, so the whole count is leftover. Reported rather than
-		# swallowed: a reward for an undefined item is a content defect.
-		return maxi(0, count)
-	var inventory := ItemsApi.inventory(player)
-	if inventory == null:
-		return maxi(0, count)
-	return maxi(0, inventory.add(def, count))
+		# Nothing handed over, and the reason is REPORTED: a reward for an undefined
+		# item is a content defect, not a full bag (ADR 0216's consequences).
+		return {"leftover": 1, "reason": "unknown_item", "instance_id": ""}
+	if ItemsApi.inventory(player) == null:
+		return {"leftover": 1, "reason": "no_inventory", "instance_id": ""}
+	var instance := ItemsApi.generate(player, def, seed)
+	if instance == null:
+		return {"leftover": 1, "reason": "inventory_full", "instance_id": ""}
+	return {"leftover": 0, "reason": "", "instance_id": String(instance.instance_id)}
 
 
 ## The whole domain read model for one screen or the headless driver (BL-0220): which

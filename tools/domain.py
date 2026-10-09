@@ -39,6 +39,43 @@ TEMPLATE_DIR = SRC_DOMAIN_ROOT / "templates"
 ROOM_DIR = SRC_DOMAIN_ROOT / "rooms"
 INHABITANT_DIR = SRC_DOMAIN_ROOT / "inhabitants"
 
+# The item corpus, for ADR 0216's resolve rule. `game/data/items`, beside everything
+# else the item loader scans — the same tree `Crafting.resolve` answers from.
+ITEM_DIR = GAME_DIR / "data" / "items"
+
+# One authored fixture's reward and key, read off the room text. Fields appear in this
+# order in every shipped room; `_audit_command` counts the fixtures it DECLARED against
+# the ones this finds, so a room whose shape drifts is reported rather than graded
+# vacuously green.
+_FIXTURE_RE = re.compile(
+    r'\{"fixture_id": &"(?P<fixture>[^"]+)".*?'
+    r'"reward_item_id": &"(?P<reward>[^"]*)".*?'
+    r'"key_item_id": &"(?P<key>[^"]*)"',
+    re.DOTALL,
+)
+
+
+def _item_ids() -> set[str]:
+    """Every authored `ItemDef` id under `game/data/items`, engine-free.
+
+    The resolve rule ADR 0216 states is "`Crafting.resolve` answers a def", and a
+    def's presence is its `id = &"..."` row in that tree — a text scan asks the same
+    question without the engine, which is the whole point of this audit.
+    """
+    if not ITEM_DIR.is_dir():
+        return set()
+    ids: set[str] = set()
+    for path in ITEM_DIR.rglob("*.tres"):
+        match = re.search(
+            r'^id = &"([^"]+)"',
+            path.read_text(encoding="utf-8", errors="replace"),
+            re.MULTILINE,
+        )
+        if match:
+            ids.add(match.group(1))
+    return ids
+
+
 # The verbs, mirrored from the GDScript `VERB_ARGS` so `--help` and the refusal below are
 # read from ONE list. A verb the engine refuses is reported by name, never skipped.
 VERBS = (
@@ -391,6 +428,32 @@ def _audit_command(fail_on: str) -> int:
             "ever contain it (ADR 0226); the pin is the fix"
         )
 
+    # ADR 0216's consequences, the rule BL-0839 closes with: a fixture `reward_item_id`
+    # the item corpus cannot resolve answers `inventory_full` forever while the fixture
+    # reads as SEALED, which is exactly how five authored rewards shipped with nothing
+    # behind them. The key is graded too — a keyed treasure whose key resolves to
+    # nothing can never be opened, only refused. Engine-free, beside the content.
+    item_ids = _item_ids()
+    for stem in sorted(rooms):
+        text = (GAME_DIR.parent / rooms[stem]).read_text(encoding="utf-8", errors="replace")
+        parsed = list(_FIXTURE_RE.finditer(text))
+        declared = text.count('"fixture_id"')
+        if len(parsed) < declared:
+            errors.append(
+                f"room '{stem}': {declared - len(parsed)} fixture(s) did not parse; the "
+                "reward rule below would grade them vacuously green"
+            )
+        for match in parsed:
+            fixture_id = match.group("fixture")
+            for field, label in (("reward", "reward_item_id"), ("key", "key_item_id")):
+                item_id = match.group(field)
+                if item_id and item_id not in item_ids:
+                    errors.append(
+                        f"room '{stem}': fixture '{fixture_id}' names {label} '{item_id}', "
+                        "which no authored ItemDef defines (ADR 0216); the fixture would "
+                        "refuse forever while reading as sealed"
+                    )
+
     for record in templates:
         template_id = record["template_id"]
         if not template_id:
@@ -425,7 +488,7 @@ def _audit_command(fail_on: str) -> int:
 
     census = (
         f"domain content: {len(templates)} template(s), {len(rooms)} room def(s), "
-        f"{len(pooled)} pooled, under {SRC_DOMAIN_ROOT}"
+        f"{len(pooled)} pooled, {len(item_ids)} item def(s), under {SRC_DOMAIN_ROOT}"
     )
     info(census)
     if fail_on != "none" and errors:

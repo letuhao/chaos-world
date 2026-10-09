@@ -308,12 +308,22 @@ func test_a_kind_outside_the_closed_set_is_refused_rather_than_ignored() -> void
 	assert_eq(fixtures.is_empty(), false, "the room under test authors a fixture to retag")
 	# Retag the shipped fixture as a kind nothing resolves.
 	(fixtures[0] as Dictionary)["kind"] = &"mystery_box"
-	var broken := DomainMap.new(Vector2i(8, 8), 1)
+	# A typed copy: `as Array[Dictionary]` on an untyped array raises at assignment
+	# (GDScript does not convert array types), which aborted this body.
+	var retagged: Array[Dictionary] = []
+	for fixture in fixtures:
+		retagged.append(fixture as Dictionary)
 	var scratch := RoomDef.from_dict(room)
-	scratch.fixtures = fixtures as Array[Dictionary]
-	broken.add_room(scratch)
-	broken.entry_room = scratch.room_id
-	DomainApi.enter(actor, broken, &"scratch")
+	scratch.fixtures = retagged
+	# A scratch COPY of the kit's whole ring, one room retagged: a lone room is refused
+	# by the map contract (`has no exit at all`), and asserting the retag against a map
+	# that cannot be entered is how this case first read `no_inventory_bridge`.
+	var entered := DomainApi.enter(actor, _map_with_replacement(scratch), &"scratch")
+	# Asserted, not assumed: a refused scratch map leaves the PREVIOUS run active and
+	# every assertion below then reads the wrong fixtures.
+	assert_eq(
+		bool(entered.get("ok", false)), true, "the scratch map is enterable: %s" % str(entered)
+	)
 
 	var result := DomainFixtures.claim(actor, scratch.room_id, UNKEYED)
 	assert_eq(result.get("ok"), false, "an unrecognised kind is refused")

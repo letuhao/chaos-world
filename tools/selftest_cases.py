@@ -48,6 +48,7 @@ from .arch import enforce
 from .common import ToolError
 from .cultivation import selftest_case as cultivation_selftest_case  # noqa: F401  same
 from .data_selftest import *  # noqa: F403  same, for the tools/data.py legs
+from .domain_selftest import *  # noqa: F403  same, for the tools/domain.py legs
 from .lore.context import character_draft, readiness_gaps, resolve_context
 from .new_adr_selftest import *  # noqa: F403  same, for the ADR number allocator
 from .selftest import case, expect, write

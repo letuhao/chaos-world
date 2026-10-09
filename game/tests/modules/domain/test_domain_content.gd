@@ -59,9 +59,11 @@ const INHABITANT_DIR := "res://src/data/domains/inhabitants"
 ##   ordering, which is generating order and deliberately not the 五行 相生 order, so the
 ##   solution cannot be guessed from the sequence the phases are usually listed in.
 ## - `treasure` — ROOM-TYPE WEIGHTED, and what gates it is the shape: a `key_item_id`
-##   names a key the player must hold (`treasure_keyed` — `ash_furnace_hoard`,
-##   `ash_heart_hoard`); an empty key with no `treasure_boss_sealed` is open to anyone
-##   who survives (`treasure_unkeyed` — `ash_camp_offering`, `tide_vault_hoard`); and
+##   names a key the player must hold (`treasure_keyed` — `ash_furnace_hoard`); an
+##   empty key with a `treasure_boss_sealed` tag is the boss standing in the way
+##   (`ash_heart_hoard`, `frost_throne_hoard`); an empty key with neither tag is open
+##   to anyone who survives (`treasure_unkeyed` — `ash_camp_offering`, `tide_vault_hoard`);
+##   and
 ##   `treasure_boss_sealed` is gated by the fight itself (`ash_heart_hoard`, the core
 ##   whose only resident is the boss). `requires_realm` is an ORDINAL on the shared
 ##   ladder, never a magnitude curve, matching `ResourceNodeDef.realm` (ADR 0097).
@@ -637,6 +639,21 @@ func test_treasure_is_weighted_by_room_type_and_says_what_gates_it() -> void:
 	assert_eq(keyed > 0, true, "at least one treasure is KEYED")
 	assert_eq(unkeyed > 0, true, "at least one treasure is UNKEYED")
 	assert_eq(boss_sealed > 0, true, "at least one treasure is SEALED BEHIND A BOSS")
+
+
+## ADR 0216: a fixture reward or key the corpus cannot resolve answers `inventory_full`
+## forever while the fixture reads as sealed; `tools domain audit` asks this engine-free.
+func test_every_fixture_reward_and_key_resolves_in_the_item_corpus() -> void:
+	var missing: Array[String] = []
+	for entry in _authored_fixtures():
+		var fixture: Dictionary = entry["fixture"]
+		var fixture_id := String(fixture.get("fixture_id", ""))
+		for field in ["reward_item_id", "key_item_id"]:
+			var item_id := String(fixture.get(field, ""))
+			if item_id != "" and Crafting.resolve(StringName(item_id)) == null:
+				missing.append("%s.%s" % [fixture_id, field])
+	var note := "every fixture reward/key resolves (ADR 0216): %s" % ", ".join(missing)
+	assert_eq(missing.is_empty(), true, note)
 
 
 ## The three kinds the requirement names all exist in the shipped kit, and each is

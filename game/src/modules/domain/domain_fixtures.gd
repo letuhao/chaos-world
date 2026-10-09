@@ -164,10 +164,13 @@ static var _granter: Callable = Callable()
 ##
 ## `keys` is `Callable(actor, item_id) -> float`, answering the `key_reach` a carried
 ## `item_id` is worth (0.0 when it is not carried). `granter` is
-## `Callable(actor, item_id, count) -> int`, answering the LEFTOVER count — the shape
-## `DomainBoot.grant_item` implements. A granter answering `{leftover, reason, instance_id}`
-## instead is ALSO read, and its named `reason` passes through, so the richer seam is a
-## refinement rather than a second vocabulary.
+## `Callable(actor, item_id, seed) -> Dictionary` answering
+## `{leftover, reason, instance_id}` — the shape `DomainBoot.grant_item` implements,
+## realizing one unit through the items facade's seeded mint (ADR 0216 §4). An INTEGER
+## leftover is still
+## read as "nothing was handed over", so the older seam degrades rather than breaking,
+## but the third argument is the fixture-derived SEED, not a count: a fixture pays ONE
+## unit (ADR 0216 §3), and the seed is what makes the relic the same relic on replay.
 ##
 ## ## WHY AN INTEGER LEFTOVER AND NOT AN ANSWER DICTIONARY
 ##
@@ -708,30 +711,24 @@ static func _realm_gate(actor: Actor, fixture: Dictionary, about: Dictionary) ->
 ## ONE unit, realized by the injected granter. `{}` never — it returns an answer
 ## dictionary, because a delivery that fails must NOT consume the claim.
 ##
-## ## THE SEAM IS `(Actor, StringName, int) -> int`, AND NOTHING ELSE
+## ## THE SEAM IS `(Actor, StringName, int) -> Dictionary | int`, AND THE INT IS THE SEED
 ##
-## This docblock once described a `-> Dictionary` seam answering `{ok, reason, leftover}`
-## — a shape NO caller in the repo implements. Both callers that exist answer an INTEGER
-## LEFTOVER (`DomainBoot.grant_item`, the suite's own kit), yet this body was calling
-## with a THIRD shape, `(actor, item_id, String(fixture_id))`, so the runtime bound a
-## `String` where both declare `count: int`, raised `Invalid type ... Cannot convert
-## argument 3 from String to int` on every delivery and returned `{}`. Every treasure then
-## reported `already_claimed` with nothing claimed: 42 assertions red. A documented seam
-## nobody implements is worse than no seam, so the DOCUMENTATION changed — the third
-## argument is [constant ONE_UNIT] and the return is the leftover integer both callers
-## already return.
-##
-## ## WHY THE INTEGER IS NOT ENOUGH, AND WHY IT IS THE ONE WE KEEP
-##
-## An integer leftover cannot say WHY nothing was handed over, so an unresolvable
-## `reward_item_id` and a full bag produce the same answer and the player is told their
-## bag is full for a bag that had nothing to do with it. A `-> Dictionary` seam was the
-## right FIX and the wrong SEAM: fixing it here, against a caller that does not exist,
-## traded a working delivery path for a permanently-failing one. The named refusals below
-## stay, and a granter that DOES answer a dictionary has its name passed through.
+## The third argument is the fixture-derived SEED (ADR 0216 §4: the roll belongs to the
+## fixture), and the dictionary answer's `instance_id` is the realized object. The
+## history, because this seam has been wrong in BOTH directions: it once documented a
+## `-> Dictionary` shape NO caller implemented while the body called with a THIRD shape
+## (`(actor, item_id, String(fixture_id))`), so every delivery raised a type error and 42
+## assertions went red; the fix that shipped made the third argument a `count`. Then
+## ADR 0216 landed and the count was always ONE_UNIT while the realization needed a seed,
+## and a count nobody varies is a seed nobody passed. So: dictionary in, `{leftover,
+## reason, instance_id}`; an INTEGER leftover is still read so an older caller degrades
+## to "nothing handed over" rather than erroring; the named `reason` passes through.
 static func _grant(actor: Actor, fixture: Dictionary, ledger_key: String) -> Dictionary:
 	var item_id := StringName(fixture.get("reward_item_id", ""))
 	var count := ONE_UNIT
+	# Deterministic across machines and replays: the ledger key names the run, the room
+	# and the fixture, so the same relic is minted for the same door every time.
+	var seed := hash(ledger_key)
 	if item_id == &"":
 		return _answer(false, ERR_NOTHING_TO_GRANT, {"item_id": "", "count": 0, "pays": ""})
 	# A formation ALSO pays LORE, the thinnest of the five currencies (ADR 0216), IN
@@ -760,11 +757,11 @@ static func _grant(actor: Actor, fixture: Dictionary, ledger_key: String) -> Dic
 	var instance_id := ""
 	var leftover := count
 	var reason := ""
-	# Both shapes accepted: the dictionary is the FIX, the integer is what ships, and
-	# reading the answer's TYPE is what keeps one call site serving two seams — a lone
-	# `as Dictionary` silently yielded `{}` for the integer case, so every caller read a
-	# default leftover of the full count.
-	var answer: Variant = _granter.call(actor, item_id, count)
+	# Both shapes accepted: the dictionary is the SHIPPED shape (realization reports an
+	# `instance_id`), the integer is the older one, and reading the answer's TYPE keeps
+	# one call site serving both — a lone `as Dictionary` silently yielded `{}` for the
+	# integer case, so every caller read a default leftover of the full count.
+	var answer: Variant = _granter.call(actor, item_id, seed)
 	if answer is Dictionary:
 		var named := answer as Dictionary
 		leftover = int(named.get("leftover", count))

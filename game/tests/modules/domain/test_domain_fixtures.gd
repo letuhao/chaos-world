@@ -154,11 +154,9 @@ func test_a_fired_trap_costs_health_by_the_authored_amount() -> void:
 	# rather than re-deriving the lever table.
 	var share := float(DomainFixtures.residual_share(actor, authored).get("amount", 0.0))
 	assert_eq(share > 0.0, true, "the fixture authors a damage_share worth spending")
+	var landed_magnitude := float(actor.statuses[0].magnitude)
 	assert_almost_eq(
-		actor.statuses[0].magnitude,
-		share,
-		"and the landed status carries it as its magnitude",
-		0.0001
+		landed_magnitude, share, "and the landed status carries it as its magnitude", 0.0001
 	)
 
 	StatusApi.tick_statuses(actor, duration)
@@ -177,7 +175,9 @@ func test_a_fired_trap_costs_health_by_the_authored_amount() -> void:
 	# mitigation: the pulse spends the effect's magnitude, and that magnitude is already
 	# the mitigated residual. Comparing against the un-mitigated `share` would fail a
 	# correctly-mitigated trap for working — which is the opposite of what this guards.
-	var floor_spend := float(actor.statuses[0].magnitude)
+	# Read from the captured magnitude, not `actor.statuses[0]`: the tick above PAYS the
+	# status and removes it (asserted at the end), so the live array is empty here.
+	var floor_spend := landed_magnitude
 	var ceil_spend := share * owed * (1.0 + escalation * float(owed) / cap)
 	assert_eq(spent > 0.0, true, "walking into a trap COSTS HEALTH — presence is not consequence")
 	assert_eq(
@@ -442,9 +442,9 @@ func test_every_authored_hazard_publishes_a_real_non_affinity_lever() -> void:
 # ── 4. the formation gate ────────────────────────────────────────────────────
 
 
-## The correct sequence completes the formation and grants `reward_item_id` x
-## `reward_count` — through the SAME granter a treasure uses, because one delivery path
-## in the game is the whole point of the injected bridge.
+## The correct sequence completes the formation and grants its `reward_item_id` — through
+## the SAME granter a treasure uses, because one delivery path in the game is the whole
+## point of the injected bridge — ONE unit (ADR 0216 §3), seeded from the fixture (§4).
 func test_the_correct_sequence_completes_and_grants_its_reward() -> void:
 	var granted: Array = []
 	_keyed(granted, &"", 0.0)
@@ -478,12 +478,14 @@ func test_the_correct_sequence_completes_and_grants_its_reward() -> void:
 		"and it is the authored item"
 	)
 	assert_eq(
-		int(granted[0]["count"]), int(authored.get("reward_count", 0)), "in the authored quantity"
+		granted[0].has("seed"),
+		true,
+		"delivered with the fixture's own seed (ADR 0216 section 4), not a count"
 	)
 	assert_eq(
 		int(last.get("count", 0)),
-		int(authored.get("reward_count", 0)),
-		"the answer reports what was paid"
+		DomainFixtures.ONE_UNIT,
+		"the answer reports ONE unit (ADR 0216 section 3)"
 	)
 
 

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Resource" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"ember_larder_sealed_ration"
+display_name = "LOC_ITEMS_EMBER_LARDER_SEALED_RATION_DISPLAY_NAME"
+category = &"consumable"
+rarity = &"uncommon"
+realm = &"spirit_condensation"
+## `ember_larder_hoard`'s reward — the sealed larder a deep cold cavern kept warm.
+## The object currency of a fixture (ADR 0216 §2): one ration, realized through
+## `ItemsApi.generate` seeded from the fixture id, never a bare definition add.
+## `restore_stamina` matches the camp ration's channel one room shallower;
+## `spirit_condensation` puts the value inside the magnitude window `data audit`
+## grades fixed consumable values against.
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"restore_stamina", "value": 8.5},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
+subcategory = &"food"
+grade = &"spirit"
+sources = Array[StringName]([&"domain:loot_ember_vault_domain"])

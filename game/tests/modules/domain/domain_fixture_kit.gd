@@ -122,6 +122,15 @@ func _room_of(fixture_id: StringName) -> StringName:
 ## non-hostile refs are dropped and the cost is RE-PROVED rather than assumed:
 ## `_map_carries_every_fixture` asserts the map still holds every authored fixture.
 func _map() -> DomainMap:
+	return _map_with_replacement()
+
+
+## [method _map], with ONE room swapped for `replacement` when it shares that room's id.
+## Extracted for the case that must enter a map holding a deliberately broken room: a
+## single-room map is refused by the contract (`has no exit at all, so a run could never
+## be left`), so a scratch map is the whole ring with one defect — the same topology the
+## kit proves enterable, one room different.
+func _map_with_replacement(replacement: RoomDef = null) -> DomainMap:
 	var map := DomainMap.new(Vector2i(64, 48), 4242)
 	var rooms := _authored_rooms()
 	for index in rooms.size():
@@ -129,6 +138,8 @@ func _map() -> DomainMap:
 		# unreachable, which is the half of the contract a fixture case would otherwise
 		# trip over for reasons unconnected to fixtures.
 		var copy := rooms[index]
+		if replacement != null and copy.room_id == replacement.room_id:
+			copy = replacement
 		copy.exits = (
 			[
 				rooms[(index - 1 + rooms.size()) % rooms.size()].room_id,
@@ -174,13 +185,14 @@ func _install(keys: Callable, granter: Callable) -> void:
 
 ## `keys` answering `reach` for `key_item_id` and nothing for anything else, plus a
 ## `granter` recording every delivery into `granted` — an Array the caller owns, which
-## a closure captures by reference.
+## a closure captures by reference. The recorded row carries the SEED the fixture
+## derived, which is the third argument's meaning (ADR 0216 §4), not a count.
 func _keyed(granted: Array, key_item_id: StringName, reach: float) -> void:
 	_install(
 		func(_actor_arg: Actor, item_id: StringName) -> float:
 			return reach if item_id == key_item_id else 0.0,
-		func(_actor_arg: Actor, item_id: StringName, count: int) -> int:
-			granted.append({"item_id": String(item_id), "count": count})
+		func(_actor_arg: Actor, item_id: StringName, seed: int) -> int:
+			granted.append({"item_id": String(item_id), "seed": seed})
 			return 0
 	)
 

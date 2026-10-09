@@ -26,6 +26,6 @@ actor_spawn_refs = Array[Dictionary]([
 	{"ref_id": &"ash_dragon", "inhabitant_id": &"flame_dragon", "role": &"boss", "count": 1}
 ])
 fixtures = Array[Dictionary]([
-	{"fixture_id": &"ash_heart_hoard", "kind": &"treasure", "tags": Array[StringName]([&"treasure_keyed", &"treasure_boss_sealed", &"deep"]), "position": Vector2i(8, 6), "bounds": Rect2i(8, 6, 3, 3), "reward_item_id": &"flame_dragon_heart_seal", "reward_count": 1, "key_item_id": &"", "requires_realm": &"core_formation", "telegraph_s": 0.0, "damage_share": 0.0, "status_id": &"", "duration_s": 0.0, "mitigation_tags": Array[StringName]([])}
+	{"fixture_id": &"ash_heart_hoard", "kind": &"treasure", "tags": Array[StringName]([&"treasure_boss_sealed", &"deep"]), "position": Vector2i(8, 6), "bounds": Rect2i(8, 6, 3, 3), "reward_item_id": &"flame_dragon_heart_seal", "reward_count": 1, "key_item_id": &"", "requires_realm": &"core_formation", "telegraph_s": 0.0, "damage_share": 0.0, "status_id": &"", "duration_s": 0.0, "mitigation_tags": Array[StringName]([])}
 ])
 environment_zones = Array[EnvironmentZoneDef]([SubResource("zone_heart")])
