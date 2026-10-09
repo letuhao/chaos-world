@@ -401,13 +401,27 @@ def get_balanced_color_clause(asset: dict, asset_name: str, material: str) -> st
         return "rich abundant color harmony: dark charcoal twisting vine boughs, pale ghostly ivory tendril barbs, deep plum-purple accents, and withered autumn bark"
     if any(w in id_str for w in ("mulberry", "spirit_mulberry")):
         return "rich abundant color harmony: rich dark purple-black mulberry fruit clusters, broad fresh silkworm mulberry leaves, and golden-brown branches"
-    if any(w in id_str for w in ("reed", "viper_grass")):
+    if any(w in id_str for w in ("bamboo", "iron_bamboo")):
+        return "rich abundant color harmony: golden-amber lacquered bamboo culms (#D4A347), polished dark bronze internode joints, deep forest-emerald leaves, and warm cinnabar-red decorative bindings, zero monochrome teal"
+    if any(w in id_str for w in ("willow", "river_willow")):
+        return "rich abundant color harmony: sunlit golden-chartreuse weeping leaf ribbons (#DDAA33), ancient hollow cinnamon-umber trunk, warm sienna bark, and delicate spring blossoms"
+    if any(w in id_str for w in ("spirit_gathering_grass", "gathering_grass", "spirit_gathering")):
+        return "rich abundant color harmony: celestial Five-Color dewdrop sparkles, golden-ochre seed tassels (#E5B842), warm terracotta root base, and fresh celadon blades"
+    if any(w in id_str for w in ("tea", "mountain_tea", "cloud_mist_tea")):
+        return "rich abundant color harmony: creamy white tea blossoms with golden honey centers, dark cinnamon-brown woody stems, warm terracotta soil, and deep olive-green tea leaves"
+    if any(w in id_str for w in ("viper_grass", "spotted_viper")):
+        return "rich abundant color harmony: vivid royal amethyst and scarlet-red viper spots (#9E1B32), bright golden seed heads, dark charcoal-umber stems, and variegated olive leaves"
+    if any(w in id_str for w in ("fern", "moon_swallowing", "moon_fern")):
+        return "rich abundant color harmony: luminous moonlight pearl-silver fronds (#E0E6ED), deep twilight indigo spore clusters, warm peat loam base, and soft silver-sage leaves"
+    if any(w in id_str for w in ("camphor", "cinnamon")):
+        return "rich abundant color harmony: rich aromatic reddish-cinnamon timber (#A0522D), golden amber resin nodules, creamy blossom sprigs, and deep glossy forest canopy"
+    if any(w in id_str for w in ("pine", "pine_nuts")):
+        return "rich abundant color harmony: weathered cinnamon-russet dragon bark (#8B4513), golden-amber resin tears (#E5A93C), and deep forest-green needle tufts, rich warm timber dominant"
+    if any(w in id_str for w in ("reed", "dragon_whisker")):
         return "rich abundant color harmony: variegated emerald and chartreuse reed blades, delicate violet-spotted stems, and warm tawny-tan dried sheath bases"
     if any(w in id_str for w in ("cypress", "weeping_cypress")):
         return "rich abundant color harmony: weeping golden-amber seed cones, fragrant cinnamon timber, and rich scale foliage"
-    if any(w in id_str for w in ("pine", "pine_nuts")):
-        return "rich abundant color harmony: rich evergreen needle clusters, translucent golden amber resin droplets, and weathered cinnamon-umber bark"
-    if any(w in id_str for w in ("poplar", "willow", "camphor")):
+    if any(w in id_str for w in ("poplar", "wind_listening")):
         return "rich abundant color harmony: shimmering silver-green and golden-tinted leaves, warm honey-brown boughs, and dark charcoal bark crevices"
 
     # Five Elements / Cultivation Element Harmonies
@@ -812,15 +826,11 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
         sub_lower = (asset.get("sub_domain") or "").lower()
         is_pine = any(w in (sub_lower + " " + name_lower) for w in ("pine", "conifer"))
         pine_neg = (
-            ""
+            "fireplace, campfire, chimney, burning log, unlit hearth, brazier, monochrome cyan wash, heavy cyan tint, dull teal filter, "
             if is_pine
             else "pine tree, pine needles, evergreen conifer, evergreen tree, dark teal needles, fireplace, campfire, chimney, burning log, unlit hearth, brazier, "
         )
-        ink_clause = (
-            "dark pine-soot ink contours"
-            if is_pine
-            else "fine dark charcoal ink lineart contours (#1C1C1E)"
-        )
+        ink_clause = "fine dark charcoal ink lineart contours (#1C1C1E)"
         pos = (
             f"Single isolated 2D top-down RPG map sprite of {asset_name.lower()}, {material}, {var_mod}, "
             "Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), "
