@@ -1,0 +1,93 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_07_cloud_mist_mountain_tea.fallen_deadwood_trunk",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_07_cloud_mist_mountain_tea",
+  "asset_slug": "fallen_deadwood_trunk",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_07_cloud_mist_mountain_tea/fallen_deadwood_trunk/active_operating.png",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "forage_mushrooms",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.5,
+        0.545
+      ]
+    ],
+    "frac_zero": 0.8344,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.173,
+        0.558,
+        0.228
+      ],
+      [
+        0.366,
+        0.702,
+        0.241
+      ],
+      [
+        0.768,
+        0.935,
+        0.546
+      ]
+    ],
+    "crop_offset": [
+      84,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 79,
+    "contact_reference_px": 79.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

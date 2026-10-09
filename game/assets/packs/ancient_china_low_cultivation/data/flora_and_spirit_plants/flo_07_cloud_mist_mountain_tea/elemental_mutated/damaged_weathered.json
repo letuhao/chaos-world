@@ -1,0 +1,146 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_07_cloud_mist_mountain_tea.elemental_mutated",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_07_cloud_mist_mountain_tea",
+  "asset_slug": "elemental_mutated",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_07_cloud_mist_mountain_tea/elemental_mutated/damaged_weathered.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "none",
+  "interactive_verb": "channel_element",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.468,
+        0.473
+      ],
+      [
+        0.405,
+        0.42
+      ]
+    ],
+    "frac_zero": 0.6952,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.126,
+        0.79,
+        0.474,
+        0.067,
+        0.0
+      ],
+      [
+        0.019,
+        0.801,
+        0.977,
+        0.965,
+        0.467,
+        0.048
+      ],
+      [
+        0.229,
+        0.667,
+        0.599,
+        0.489,
+        0.762,
+        0.469
+      ],
+      [
+        0.553,
+        0.634,
+        0.708,
+        0.415,
+        0.279,
+        0.002
+      ],
+      [
+        0.0,
+        0.105,
+        0.655,
+        0.68,
+        0.386,
+        0.05
+      ],
+      [
+        0.013,
+        0.52,
+        0.945,
+        0.846,
+        0.31,
+        0.0
+      ],
+      [
+        0.0,
+        0.541,
+        0.879,
+        0.794,
+        0.342,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      38,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3
+    ],
+    "contact_px": 99,
+    "contact_reference_px": 99.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
