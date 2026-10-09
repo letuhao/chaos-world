@@ -344,11 +344,11 @@ func test_selected_is_the_explicit_pick() -> void:
 	assert_eq(WorldSpawnApi.current(actor)["location_id"], "transcendent_realm", "ledger agrees")
 
 
-func test_selected_refuses_an_unknown_location() -> void:
-	var actor := _actor()
-	var answer := WorldSpawnApi.selected(actor, &"invented")
-	assert_eq(answer["ok"], false, "a durable id nothing backs is refused")
-	assert_eq(answer["reason"], "unknown_location", "refusal is named")
+# The unknown-location refusal is asserted in full above, in
+# `test_selected_refuses_an_unknown_location`. A second function of that name
+# (a `set_current` test renamed by 39cebcfb3) was a parse error: GDScript refuses
+# a duplicate function name, and the whole suite failed to LOAD, taking its
+# dependants with it.
 
 
 # --- internals ---------------------------------------------------------------
