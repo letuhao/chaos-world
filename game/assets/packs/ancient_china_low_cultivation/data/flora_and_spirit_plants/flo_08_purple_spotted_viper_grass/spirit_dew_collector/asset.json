@@ -46,14 +46,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_08_purple_spotted_viper_grass/spirit_dew_collector/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.46
+            0.438
           ]
         ],
-        "frac_zero": 0.728,
+        "frac_zero": 0.7128,
         "blocks": [
           [
             false
@@ -75,30 +75,32 @@
         ],
         "sub_fill": [
           [
-            0.408,
-            0.65,
-            0.21
+            0.152,
+            0.259,
+            0.018
           ],
           [
-            0.557,
-            0.634,
-            0.516
+            0.389,
+            0.523,
+            0.18
           ],
           [
-            0.191,
-            0.598,
-            0.005
+            0.731,
+            0.96,
+            0.488
           ]
         ],
         "crop_offset": [
-          25,
-          17
+          23,
+          18
         ],
         "trunk_columns": [
-          1
+          0,
+          1,
+          2
         ],
-        "contact_px": 47,
-        "contact_reference_px": 47.0,
+        "contact_px": 77,
+        "contact_reference_px": 77.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -126,14 +128,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_08_purple_spotted_viper_grass/spirit_dew_collector/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.521
+            0.458
           ]
         ],
-        "frac_zero": 0.7232,
+        "frac_zero": 0.7002,
         "blocks": [
           [
             false
@@ -155,31 +157,32 @@
         ],
         "sub_fill": [
           [
-            0.457,
-            0.643,
-            0.025
+            0.177,
+            0.281,
+            0.038
           ],
           [
-            0.483,
-            0.607,
-            0.087
+            0.421,
+            0.67,
+            0.267
           ],
           [
-            0.47,
-            0.692,
-            0.0
+            0.659,
+            0.935,
+            0.523
           ]
         ],
         "crop_offset": [
-          29,
-          16
+          20,
+          17
         ],
         "trunk_columns": [
           0,
-          1
+          1,
+          2
         ],
-        "contact_px": 56,
-        "contact_reference_px": 56.0,
+        "contact_px": 70,
+        "contact_reference_px": 70.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -207,14 +210,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_08_purple_spotted_viper_grass/spirit_dew_collector/damaged_weathered.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.406
+            0.496
           ]
         ],
-        "frac_zero": 0.7294,
+        "frac_zero": 0.698,
         "blocks": [
           [
             false
@@ -236,30 +239,32 @@
         ],
         "sub_fill": [
           [
-            0.358,
-            0.627,
-            0.158
+            0.123,
+            0.267,
+            0.035
           ],
           [
-            0.459,
-            0.55,
-            0.268
+            0.523,
+            0.674,
+            0.507
           ],
           [
-            0.226,
-            0.753,
-            0.052
+            0.664,
+            0.968,
+            0.556
           ]
         ],
         "crop_offset": [
-          21,
-          16
+          22,
+          17
         ],
         "trunk_columns": [
-          1
+          0,
+          1,
+          2
         ],
-        "contact_px": 49,
-        "contact_reference_px": 49.0,
+        "contact_px": 69,
+        "contact_reference_px": 69.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -287,14 +292,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_08_purple_spotted_viper_grass/spirit_dew_collector/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.493
+            0.52
           ]
         ],
-        "frac_zero": 0.6974,
+        "frac_zero": 0.6948,
         "blocks": [
           [
             false
@@ -316,31 +321,32 @@
         ],
         "sub_fill": [
           [
-            0.327,
-            0.568,
-            0.121
+            0.159,
+            0.234,
+            0.151
           ],
           [
-            0.482,
-            0.547,
-            0.391
+            0.448,
+            0.839,
+            0.465
           ],
           [
-            0.478,
-            0.898,
-            0.277
+            0.748,
+            0.943,
+            0.576
           ]
         ],
         "crop_offset": [
           23,
-          16
+          18
         ],
         "trunk_columns": [
           0,
-          1
+          1,
+          2
         ],
-        "contact_px": 63,
-        "contact_reference_px": 63.0,
+        "contact_px": 71,
+        "contact_reference_px": 71.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
