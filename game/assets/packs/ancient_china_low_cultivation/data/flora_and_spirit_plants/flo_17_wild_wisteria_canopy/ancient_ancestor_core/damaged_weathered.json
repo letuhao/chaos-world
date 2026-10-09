@@ -1,0 +1,276 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_17_wild_wisteria_canopy.ancient_ancestor_core",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_17_wild_wisteria_canopy",
+  "asset_slug": "ancient_ancestor_core",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_17_wild_wisteria_canopy/ancient_ancestor_core/damaged_weathered.png",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "commune_spirit",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.137,
+        0.632,
+        0.22
+      ],
+      [
+        0.423,
+        0.663,
+        0.39
+      ],
+      [
+        0.321,
+        0.959,
+        0.333
+      ]
+    ],
+    "frac_zero": 0.6162,
+    "blocks": [
+      [
+        false,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 8,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      10,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.135,
+        0.693,
+        0.855,
+        0.267,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.029,
+        0.752,
+        0.865,
+        0.796,
+        0.938,
+        0.208,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.008,
+        0.456,
+        0.653,
+        0.439,
+        0.581,
+        0.732,
+        0.811,
+        0.18,
+        0.0
+      ],
+      [
+        0.0,
+        0.162,
+        0.553,
+        0.542,
+        0.579,
+        0.503,
+        0.191,
+        0.479,
+        0.829,
+        0.398
+      ],
+      [
+        0.204,
+        0.844,
+        0.613,
+        0.108,
+        0.745,
+        0.562,
+        0.713,
+        0.46,
+        0.786,
+        0.452
+      ],
+      [
+        0.594,
+        0.513,
+        0.617,
+        0.589,
+        0.461,
+        0.84,
+        0.694,
+        0.358,
+        0.382,
+        0.02
+      ],
+      [
+        0.041,
+        0.61,
+        0.571,
+        0.495,
+        0.668,
+        0.951,
+        0.603,
+        0.595,
+        0.206,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.203,
+        0.524,
+        1.0,
+        0.979,
+        0.467,
+        0.428,
+        0.052,
+        0.0
+      ],
+      [
+        0.0,
+        0.107,
+        0.557,
+        0.906,
+        1.0,
+        0.983,
+        0.875,
+        0.509,
+        0.149,
+        0.0
+      ],
+      [
+        0.0,
+        0.486,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.502,
+        0.0
+      ],
+      [
+        0.0,
+        0.113,
+        0.58,
+        0.891,
+        0.985,
+        0.993,
+        0.933,
+        0.569,
+        0.06,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      32,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 172,
+    "contact_reference_px": 172.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      384
+    ]
+  }
+}

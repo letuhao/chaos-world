@@ -1,0 +1,88 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_17_wild_wisteria_canopy.harvested_stump",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_17_wild_wisteria_canopy",
+  "asset_slug": "harvested_stump",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_17_wild_wisteria_canopy/harvested_stump/active_operating.png",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "none",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.419
+      ]
+    ],
+    "frac_zero": 0.6992,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.334,
+        0.567,
+        0.194
+      ],
+      [
+        0.455,
+        0.507,
+        0.398
+      ],
+      [
+        0.251,
+        0.728,
+        0.117
+      ]
+    ],
+    "crop_offset": [
+      22,
+      16
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 57,
+    "contact_reference_px": 57.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
