@@ -120,36 +120,15 @@ static func sync(actor: Actor) -> Dictionary:
 
 ## The band `actor` is standing in, read against its EFFECTIVE lifespan.
 ##
-## ## The lifespan is `RealmDefaults.LIFESPAN`'s published read, never a re-derivation
+## ## Delegated, not computed
 ##
-## `race/provider.gd` contributes `RaceStats.LIFESPAN` from exactly that table, so an age
-## resolved against the published stat is compared against the same number the lineage
-## screen shows and the age-death hook compares against. Three readers of one table is
-## correct; two derivations of it would drift on the first tier retune (the ADR 0116
-## mutation, in miniature).
-##
-## ## The calendar is `TimeLadder`, and the conversion happens ONCE, here
-##
-## `AgeBandTable` takes DAYS in both arguments precisely so this is the only place years
-## become days. `TimeLadder` measures every ratio from the BASE (ADR 0173), so days-per-year
-## is `ratio_for(&"year") / ratio_for(&"day")` — derived, never typed, so a retune of either
-## row moves this with it instead of leaving a 365 lying beside it.
-##
-## ## A null actor, a zero lifespan and an unauthored calendar all answer the YOUNGEST band
-##
-## None of them is a claim about a body. `AgeBandTable.band_for` clamps a non-positive
-## lifespan to `FIRST_ASH`, so the dangerous direction — a body with no species reading as
-## the OLDEST band and being expired on its first frame — cannot occur here either.
+## The computation lives in `AgeBandTable.band_for_actor` — the one function that turns
+## an age and a lifespan into a band — because two of them is the ADR 0066 failure this
+## file used to carry beside it. Everything below the old body said still holds (the
+## lifespan is `RealmDefaults.LIFESPAN`'s published read; the calendar is `TimeLadder`
+## derived once, now in the table's static), so this is the same answer through one door.
 static func band_for(actor: Actor) -> StringName:
-	if actor == null:
-		return AgeBandTable.FIRST_ASH
-	var lifespan := _lifespan_of(actor)
-	if lifespan <= 0.0:
-		return AgeBandTable.FIRST_ASH
-	var days_per_year := days_per_year()
-	if days_per_year <= 0:
-		return AgeBandTable.FIRST_ASH
-	return _table().band_for(maxf(0.0, actor.age_years) * float(days_per_year), lifespan)
+	return AgeBandTable.band_for_actor(actor)
 
 
 ## Whole DAYS in one authored YEAR, or `0` when either magnitude is unauthored. Spelled as

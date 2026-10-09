@@ -5,6 +5,9 @@ extends RefCounted
 ## circulating qi, and train a meridian with the realm's elixir.
 
 const _ITEMS := preload("res://src/modules/items/api.gd")
+## The sitting's time price and the final band's cliff (BL-0951): every press below spends
+## the body's life through the foundation facade, like every other module edge.
+const _FOUNDATION := preload("res://src/modules/foundation/api.gd")
 
 ## What one dantian catalyst buys on an overflowing sitting: ONE quality step,
 ## past the next realm's floor.
@@ -47,10 +50,15 @@ static func cultivate(actor: Actor, amount: float) -> bool:
 	var state := actor.path(QiPath.PATH_ID)
 	if dantian == null or state == null or amount <= 0.0 or not is_finite(amount):
 		return false
+	# BL-0951: the final band has no sittings left — a refusal, and refusals cost nothing.
+	if _FOUNDATION.training_refusal(actor) != "":
+		return false
 	synchronize(actor)
 	var seed := QiRealmSeed.for_realm(state.rank_id)
 	if seed == null:
 		return false
+	# BL-0951: the sitting costs the body's life.
+	_FOUNDATION.spend_periods(actor, _FOUNDATION.TRAINING_PRESS_PERIODS)
 	# Meridian flow bonus speeds circulation; the realm RATE values one unit of
 	# work. A bounded per-realm number, not the realm's magnitude — see
 	# `core/realm_rate.gd`. Same rate, same realm, as body and mind.
@@ -182,6 +190,10 @@ static func meditate(actor: Actor, amount: float) -> bool:
 	var state := actor.path(QiPath.PATH_ID)
 	if state == null:
 		return false
+	# BL-0951: the sitting costs the body's life, and the final band has no sittings left.
+	if _FOUNDATION.training_refusal(actor) != "":
+		return false
+	_FOUNDATION.spend_periods(actor, _FOUNDATION.TRAINING_PRESS_PERIODS)
 	var gain := amount * actor.stats.derived(Stat.INSIGHT_GAIN)
 	actor.stats.set_base(Stat.COMPREHENSION, actor.stats.get_base(Stat.COMPREHENSION) + gain)
 	actor.mark_stats_dirty()
@@ -225,6 +237,9 @@ static func train_channel(actor: Actor, meridian_id: StringName) -> bool:
 	# Ahead of the seed read and ahead of any consume: a burn has its own price.
 	if channel.is_injured():
 		return recover(actor, meridian_id)
+	# BL-0951: the final band has no sittings left — a refusal, and refusals cost nothing.
+	if _FOUNDATION.training_refusal(actor) != "":
+		return false
 	var seed := QiRealmSeed.for_realm(state.rank_id)
 	# Decide before spending: a channel with nothing left to learn at this realm's
 	# cap must refuse, or the elixir is burned for no progress at all.
@@ -234,6 +249,9 @@ static func train_channel(actor: Actor, meridian_id: StringName) -> bool:
 		return false
 	if not _ITEMS.consume_item(actor, seed.training_item):
 		return false
+	# BL-0951: the sitting costs the body's life. Spent AFTER the consume, because a
+	# missing elixir is a refusal and refusals cost nothing (ADR 0044).
+	_FOUNDATION.spend_periods(actor, _FOUNDATION.TRAINING_PRESS_PERIODS)
 	_climb_one_step(actor, channel, seed)
 	synchronize(actor)
 	return true
@@ -281,6 +299,9 @@ static func deepen_past_cap(actor: Actor, meridian_id: StringName) -> bool:
 	# other state, so asking would spend the catalyst for nothing.
 	if channel.state != MeridianState.STRENGTHENED:
 		return false
+	# BL-0951: the final band has no sittings left — a refusal, and refusals cost nothing.
+	if _FOUNDATION.training_refusal(actor) != "":
+		return false
 	var seed := QiRealmSeed.for_realm(state.rank_id)
 	if seed == null or seed.meridian_catalyst == &"":
 		return false
@@ -290,6 +311,9 @@ static func deepen_past_cap(actor: Actor, meridian_id: StringName) -> bool:
 		return false
 	if not _ITEMS.consume_item(actor, seed.meridian_catalyst):
 		return false
+	# BL-0951: the sitting costs the body's life. Spent AFTER the consume, because a
+	# missing catalyst is a refusal and refusals cost nothing (ADR 0044).
+	_FOUNDATION.spend_periods(actor, _FOUNDATION.TRAINING_PRESS_PERIODS)
 	actor.meridians.refine_meridian(meridian_id, seed.channel_refinement_cap + CATALYST_DEPTH_STEP)
 	synchronize(actor)
 	return true

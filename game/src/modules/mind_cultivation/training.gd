@@ -6,6 +6,9 @@ extends RefCounted
 ## the sea's structure with its catalyst.
 
 const _ITEMS := preload("res://src/modules/items/api.gd")
+## The sitting's time price and the final band's cliff (BL-0951): every press below spends
+## the body's life through the foundation facade, like every other module edge.
+const _FOUNDATION := preload("res://src/modules/foundation/api.gd")
 
 ## Comprehension earned per unit of cultivation work, BEFORE the shared insight
 ## rate. Sized so the highest authored comprehension floor stays reachable without
@@ -63,6 +66,10 @@ static func cultivate(actor: Actor, amount: float) -> bool:
 	var seed := MindRealmSeed.for_realm(state.rank_id)
 	if seed == null:
 		return false
+	# BL-0951: the sitting costs the body's life, and the final band has no sittings left.
+	if _FOUNDATION.training_refusal(actor) != "":
+		return false
+	_FOUNDATION.spend_periods(actor, _FOUNDATION.TRAINING_PRESS_PERIODS)
 	# One unit of cultivation work is worth the realm's RATE, and only the rate. A
 	# bounded per-realm number — see `core/realm_rate.gd`. Same rate, same realm,
 	# as body and qi.
@@ -167,6 +174,10 @@ static func meditate(actor: Actor, amount: float) -> bool:
 		return false
 	if sea.turbulence <= 0.0:
 		return false
+	# BL-0951: the sitting costs the body's life, and the final band has no sittings left.
+	if _FOUNDATION.training_refusal(actor) != "":
+		return false
+	_FOUNDATION.spend_periods(actor, _FOUNDATION.TRAINING_PRESS_PERIODS)
 	sea.calm(amount)
 	actor.mark_stats_dirty()
 	return true
@@ -235,11 +246,18 @@ static func train_channel(actor: Actor, meridian_id: StringName) -> bool:
 	# Ahead of the seed read and ahead of any consume: a burn has its own price.
 	if channel.injured:
 		return recover(actor, meridian_id)
+	# BL-0951: the final band has no sittings left — a refusal, and refusals cost nothing.
+	# The injury branch above stays open: repair is healing, not training.
+	if _FOUNDATION.training_refusal(actor) != "":
+		return false
 	var seed := MindRealmSeed.for_realm(state.rank_id)
 	if seed == null or not _ITEMS.has_item(actor, seed.training_item):
 		return false
 	if not _ITEMS.consume_item(actor, seed.training_item):
 		return false
+	# BL-0951: the sitting costs the body's life. Spent AFTER the consume, because a
+	# missing elixir is a refusal and refusals cost nothing (ADR 0044).
+	_FOUNDATION.spend_periods(actor, _FOUNDATION.TRAINING_PRESS_PERIODS)
 	match channel.state:
 		MeridianState.CLOSED:
 			actor.meridians.open_meridian(meridian_id)

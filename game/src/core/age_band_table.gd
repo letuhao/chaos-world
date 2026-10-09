@@ -66,6 +66,11 @@ const FIRST_ASH := &"first_ash"
 ## absent here is a NEW band, which is the ADR 0050 answer.
 const AUTHORED_BANDS: Array[StringName] = [&"first_ash", &"greenwood", &"gilded", &"lastlight"]
 
+## The final band, named so no caller guesses its spelling. FIRST_ASH's twin: a band id a
+## reader can quote is the whole point, and a literal `&"lastlight"` in a caller is a
+## second spelling of this vocabulary waiting to drift.
+const LASTLIGHT := &"lastlight"
+
 ## One authored band per name, mapping name -> fraction of the lifespan at which it is
 ## ENTERED. The whole of the table: four names, four absolute fractions, and nothing derived
 ## from anything.
@@ -111,6 +116,55 @@ func band_for(age_days: float, lifespan_days: float) -> StringName:
 		if share >= float(row["fraction"]):
 			reached = StringName(row["band"])
 	return reached
+
+
+## The band `actor` is standing in, read against its EFFECTIVE lifespan — the one
+## computation of it, because two would be the ADR 0066 failure (a second answer to
+## "which stage of life is this body in" that a retune could move without moving the
+## other). `AgeBands.band_for` delegates to this.
+##
+## The training verbs in the cultivation paths read THIS, because `core` is the one layer
+## they may all reach: the status module is on no path's dependency list, and the facade
+## fan-in guard forbids growing one. The status projection keeps doing the WRITING
+## (installing and withdrawing the pair); this only READS.
+##
+## ## The calendar conversion lives HERE, once
+##
+## Days-per-year is derived from `TimeLadder`'s two rows (never a typed 365 —
+## `SoulAge.days_per_year`'s reason). `AgeBands`' old docblock said the conversion
+## happened once, there; it happens once, here now, and `AgeBands` delegates rather than
+## converting. A null actor, a zero lifespan and an unauthored calendar all answer the
+## YOUNGEST band — the same safe direction `AgeBands` kept, because a body with no
+## species must never read as the OLDEST band and be expired or cliffed on its first frame.
+static var _table_cache: AgeBandTable = null
+
+
+static func _loaded_table() -> AgeBandTable:
+	# Lazy, never preloaded: the `.tres` binds this script's sibling class, and a
+	# compile-time reference from a script the table's own loader reaches is the load
+	# cycle `TimeLadder._table_resource` and `AgeBands._table` are written to avoid.
+	if _table_cache == null:
+		_table_cache = load("res://src/core/age_band_table.tres") as AgeBandTable
+	return _table_cache
+
+
+static func band_for_actor(actor: Actor) -> StringName:
+	if actor == null:
+		return FIRST_ASH
+	var table := _loaded_table()
+	if table == null:
+		return FIRST_ASH
+	var year_ratio := TimeLadder.ratio_for(&"year")
+	var day_ratio := TimeLadder.ratio_for(&"day")
+	if year_ratio < 1 or day_ratio < 1:
+		return FIRST_ASH
+	# The lifespan the race module publishes for this body. Spelled as the literal id
+	# rather than as `RaceStats.LIFESPAN` because `core` may not name a module class —
+	# the same direction `RealmLifespan.RACE_DEF_COMPONENT` runs in, for the same reason.
+	var lifespan := maxf(0.0, actor.stats.derived(&"race_lifespan"))
+	if lifespan <= 0.0:
+		return FIRST_ASH
+	return table.band_for(maxf(0.0, actor.age_years) * float(year_ratio / day_ratio), lifespan)
 
 
 ## The authored bands as `{band, fraction}` rows ordered by the fraction each is entered at,

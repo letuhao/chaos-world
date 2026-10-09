@@ -166,6 +166,9 @@ static func execute(actor: Actor, rng: RandomNumberGenerator = null) -> bool:
 	var roll := randf() if rng == null else rng.randf()
 	if roll >= chance:
 		_deviate(actor, state, seed, dantian, rng)
+		# BL-0951: the attempt was decided, so a final-band actor burns its last years
+		# whether the heavens opened or not. Outside the final band this spends nothing.
+		_FOUNDATION.burn_final_attempt(actor)
 		return false
 	# BL-0951: the realm being LEFT gets its PERFECTION snapshotted — how far past this
 	# gate the actor trained, measured by the same static the tribulation's own prep
@@ -208,6 +211,11 @@ static func execute(actor: Actor, rng: RandomNumberGenerator = null) -> bool:
 	# gates on it (ADR 0018-0021).
 	WorldAnchor.commit(actor, target.index)
 	actor.mark_stats_dirty()
+	# BL-0951: the attempt was decided, so a final-band actor burns its last years.
+	# Succeed and the lengthened life may pull the body out of the final band; fail and
+	# the burn may finish what the lifespan started, through SoulAge/SoulDeath rather
+	# than any new death of its own. Outside the final band this spends nothing.
+	_FOUNDATION.burn_final_attempt(actor)
 	return true
 
 

@@ -324,6 +324,9 @@ static func resolve_attempt(actor: Actor) -> bool:
 	var chance := float(committed.preparation.get("chance", _chance(points, seed)))
 	if generator.randf() >= chance:
 		_deviate(actor, state, seed, points, generator)
+		# BL-0951: the attempt was decided, so a final-band actor burns its last years
+		# whether the heavens opened or not. Outside the final band this spends nothing.
+		_FOUNDATION.burn_final_attempt(actor)
 		_end(actor, committed, false)
 		return false
 	# The gate is the last thing that can still refuse, and a refusal must leave
@@ -365,6 +368,11 @@ static func resolve_attempt(actor: Actor) -> bool:
 	# so the fate's stat modifiers are re-projected onto a body whose realm has
 	# already advanced, not onto the one it is leaving.
 	earn_breakthrough_oath(actor)
+	# BL-0951: the attempt was decided, so a final-band actor burns its last years.
+	# Succeed and the lengthened life may pull the body out of the final band; fail and
+	# the burn may finish what the lifespan started, through SoulAge/SoulDeath rather
+	# than any new death of its own. Outside the final band this spends nothing.
+	_FOUNDATION.burn_final_attempt(actor)
 	_end(actor, committed, true)
 	return true
 

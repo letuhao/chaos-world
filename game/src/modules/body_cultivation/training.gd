@@ -2,6 +2,9 @@ class_name BodyTraining
 extends RefCounted
 
 const _ITEMS := preload("res://src/modules/items/api.gd")
+## The sitting's time price and the final band's cliff (BL-0951): every press below spends
+## the body's life through the foundation facade, like every other module edge.
+const _FOUNDATION := preload("res://src/modules/foundation/api.gd")
 
 
 static func synchronize(actor: Actor) -> void:
@@ -37,6 +40,10 @@ static func meditate(actor: Actor, amount: float) -> bool:
 	var state := actor.path(BodyPath.PATH_ID)
 	if state == null:
 		return false
+	# BL-0951: the sitting costs the body's life, and the final band has no sittings left.
+	if _FOUNDATION.training_refusal(actor) != "":
+		return false
+	_FOUNDATION.spend_periods(actor, _FOUNDATION.TRAINING_PRESS_PERIODS)
 	var insight_gain := actor.stats.derived(Stat.INSIGHT_GAIN)
 	var gain := amount * insight_gain
 	var comprehension := actor.stats.get_base(Stat.COMPREHENSION)
@@ -56,6 +63,10 @@ static func cultivate(actor: Actor, amount: float) -> bool:
 	var seed := BodyRealmSeed.for_realm(state.rank_id)
 	if seed == null:
 		return false
+	# BL-0951: the sitting costs the body's life, and the final band has no sittings left.
+	if _FOUNDATION.training_refusal(actor) != "":
+		return false
+	_FOUNDATION.spend_periods(actor, _FOUNDATION.TRAINING_PRESS_PERIODS)
 	# One unit of training work is worth the realm's RATE, and only the rate: this
 	# is a bounded per-realm number that says how much this realm's training
 	# counts, never how strong a thing from this realm is. See
@@ -172,6 +183,10 @@ static func strengthen(actor: Actor, meridian_id: StringName) -> bool:
 	# Ahead of the consume: a burn has its own price (ADR 0141).
 	if channel.is_injured():
 		return recover(actor, meridian_id)
+	# BL-0951: the final band has no sittings left — a refusal, and refusals cost nothing.
+	# The injury branch above stays open: repair is healing, not training.
+	if _FOUNDATION.training_refusal(actor) != "":
+		return false
 	if (
 		at_channel_cap(channel, seed)
 		and not needs_point_training(acupoint_set, meridian_id, seed.quality_target)
@@ -181,6 +196,9 @@ static func strengthen(actor: Actor, meridian_id: StringName) -> bool:
 	if not _ITEMS.consume_item(actor, seed.strengthening_item):
 		acupoint_set.busy = false
 		return false
+	# BL-0951: the sitting costs the body's life. Spent AFTER the consume, because a
+	# missing elixir is a refusal and refusals cost nothing (ADR 0044).
+	_FOUNDATION.spend_periods(actor, _FOUNDATION.TRAINING_PRESS_PERIODS)
 	match channel.state:
 		&"closed":
 			actor.meridians.open_meridian(meridian_id)
