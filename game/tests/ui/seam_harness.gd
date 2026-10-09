@@ -27,11 +27,11 @@ const APP_SCENE := "res://scenes/item_workbench/ItemWorkbenchApp.tscn"
 const SCREENS_DIR := "res://src/ui/screens"
 ## The stack is the container, not a screen: it is never a navigation destination.
 const STACK_SCENE := "res://src/ui/screens/screen_stack.tscn"
-## Where the composition root's file-backed persistence writes. Cleared before every
-## mount, because the runner shares one process across every suite: a save left by an
-## earlier suite is loaded by the next one's `Load`, so the hero a test sees would
-## depend on which suite ran first.
-const SAVE_PATH := "user://item_workbench_state.json"
+## Where the composition root's file-backed persistence writes. There is deliberately no
+## path constant here any more: the old `user://item_workbench_state.json` was a dead string
+## that no save code writes, and clearing it was a no-op that let each mount inherit the
+## previous one's world. `clear_save` now asks `SavePaths` for every slot's real files, so
+## the path lives in exactly one place and cannot go stale here again.
 
 ## What each missing navigation seam means, phrased once so every assertion that
 ## hits it reports the same cause and cites the backlog entry.
@@ -84,11 +84,29 @@ static func mount_new() -> SeamHarness:
 	return harness
 
 
-## Delete the composition root's save file, so a mount always starts from the shipped
+## Delete the composition root's save files, so a mount always starts from the shipped
 ## starter kit rather than from whatever a previous suite persisted.
+##
+## **Every slot, through `SavePaths`, because the old path was a dead string.** This
+## function deleted `user://item_workbench_state.json`, which no save code has written for
+## some time -- the live path is `user://save/primary.json` (`SavePaths.PRIMARY`). So the
+## delete was a no-op, the previous mount's save survived teardown, and the next mount
+## restored it. Measured with a two-mount probe: advance the world by 1000 periods, tear
+## down, remount -- the second mount read 1000 periods before doing anything. That is the
+## "period leftovers" DEF-0395 recorded as 78855 and `test_world_beat_chain` reports as
+## 26281+, and it is why the figure grew within a single run: each mount inherited the
+## last one's world.
+##
+## Named slots are cleared too, not just primary: `SaveApi.set_live_slot` is process state
+## and a suite that wrote `slot_first` would otherwise leak it the same way (DEF-0387's
+## shape, one layer down).
 static func clear_save() -> void:
-	if FileAccess.file_exists(SAVE_PATH):
-		DirAccess.remove_absolute(ProjectSettings.globalize_path(SAVE_PATH))
+	for slot in SavePaths.SLOTS:
+		var paths := SavePaths.for_slot(slot)
+		for key in paths:
+			var path := String(paths[key])
+			if FileAccess.file_exists(path):
+				DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
 
 
 func _mount() -> void:
@@ -206,6 +224,16 @@ func teardown() -> void:
 ## the store because a store-backed build is never memoized (ADR 0936).
 static func _unwire_world_stores() -> void:
 	SaveApi.install_store(WorldPolityLedger.WORLD_KEY, null)
+	# **`world_time` too, and it is the one that leaked the world's AGE.** The composition
+	# root installs its own `WorldClock` as this store (`item_workbench_app.gd:352`), and
+	# `SaveApi._stores` is a PROCESS-WIDE static. Leaving it installed meant the next mount's
+	# `publish_world` restored the PREVIOUS mount's count into the new clock, so a fresh boot
+	# in a later suite started at thousands of periods instead of zero. Measured: a
+	# `test_world_beat_chain` boot reported 26281 periods before any advance, and the figure
+	# grew within a single run as each mount inherited the last one's total. A clock is world
+	# state (ADR 0259), so it belongs in this function beside the polity store for exactly the
+	# reason DEF-0387 names.
+	SaveApi.install_store(WorldClock.WORLD_KEY, null)
 	RelationsApi.set_store(null)
 	SectApi.set_world_store(null)
 	NationApi.set_world_store(null)

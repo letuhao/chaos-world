@@ -46,14 +46,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_11_ghost_head_parasitic_vine/harvested_stump/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.36
+            0.389
           ]
         ],
-        "frac_zero": 0.785,
+        "frac_zero": 0.7206,
         "blocks": [
           [
             false
@@ -75,34 +75,41 @@
         ],
         "sub_fill": [
           [
-            0.48,
-            0.571,
-            0.044
+            0.177,
+            0.6,
+            0.157
           ],
           [
-            0.357,
-            0.341,
-            0.113
+            0.396,
+            0.645,
+            0.439
           ],
           [
-            0.205,
-            0.335,
-            0.0
+            0.129,
+            0.805,
+            0.072
           ]
         ],
         "crop_offset": [
-          29,
+          18,
           17
         ],
-        "trunk_columns": [],
-        "contact_px": 23,
-        "contact_reference_px": 23.0,
+        "trunk_columns": [
+          1
+        ],
+        "contact_px": 45,
+        "contact_reference_px": 45.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
           "1.15": null,
           "1.35": null,
-          "1.6": null
+          "1.6": [
+            0,
+            0,
+            0,
+            0
+          ]
         },
         "block_rect": null,
         "block_rect_px": null
@@ -119,14 +126,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_11_ghost_head_parasitic_vine/harvested_stump/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.456
+            0.462
           ]
         ],
-        "frac_zero": 0.746,
+        "frac_zero": 0.6963,
         "blocks": [
           [
             false
@@ -148,31 +155,30 @@
         ],
         "sub_fill": [
           [
-            0.43,
-            0.622,
-            0.045
+            0.271,
+            0.756,
+            0.161
           ],
           [
-            0.466,
-            0.525,
-            0.152
+            0.532,
+            0.656,
+            0.52
           ],
           [
-            0.352,
-            0.598,
-            0.004
+            0.236,
+            0.763,
+            0.057
           ]
         ],
         "crop_offset": [
-          28,
-          16
+          20,
+          17
         ],
         "trunk_columns": [
-          0,
           1
         ],
-        "contact_px": 50,
-        "contact_reference_px": 50.0,
+        "contact_px": 51,
+        "contact_reference_px": 51.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -200,14 +206,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_11_ghost_head_parasitic_vine/harvested_stump/damaged_weathered.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.487
+            0.441
           ]
         ],
-        "frac_zero": 0.7564,
+        "frac_zero": 0.7072,
         "blocks": [
           [
             false
@@ -229,31 +235,30 @@
         ],
         "sub_fill": [
           [
-            0.507,
-            0.531,
-            0.062
+            0.083,
+            0.534,
+            0.297
           ],
           [
-            0.384,
-            0.403,
-            0.073
+            0.434,
+            0.761,
+            0.348
           ],
           [
-            0.56,
-            0.667,
-            0.0
+            0.343,
+            0.874,
+            0.123
           ]
         ],
         "crop_offset": [
-          30,
+          20,
           17
         ],
         "trunk_columns": [
-          0,
           1
         ],
-        "contact_px": 55,
-        "contact_reference_px": 55.0,
+        "contact_px": 53,
+        "contact_reference_px": 53.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -281,14 +286,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_11_ghost_head_parasitic_vine/harvested_stump/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.499
+            0.508
           ]
         ],
-        "frac_zero": 0.7253,
+        "frac_zero": 0.6807,
         "blocks": [
           [
             false
@@ -310,31 +315,31 @@
         ],
         "sub_fill": [
           [
-            0.399,
-            0.607,
-            0.076
+            0.216,
+            0.623,
+            0.141
           ],
           [
-            0.384,
-            0.492,
-            0.26
+            0.453,
+            0.638,
+            0.374
           ],
           [
-            0.599,
-            0.827,
-            0.09
+            0.72,
+            0.905,
+            0.323
           ]
         ],
         "crop_offset": [
-          27,
+          20,
           17
         ],
         "trunk_columns": [
           0,
           1
         ],
-        "contact_px": 60,
-        "contact_reference_px": 60.0,
+        "contact_px": 78,
+        "contact_reference_px": 78.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,

@@ -382,8 +382,9 @@ func test_sect_unassigned_counts_the_authored_places() -> void:
 ## The free-price gate, and its parity with the contract: a bill of zero or
 ## less is no price at all, and the contract refuses exactly that declaration
 ## as `no_price`. `SectTuning` defaults BOTH costs to `0`, so this is the
-## refusal an unpriced tuning reaches — the applier edit (`sect/api.gd`
-## `declare_schism`, reported, not taken) reads this predicate.
+## refusal an unpriced tuning reaches — and the applier reads the same predicate
+## (`sect/api.gd` `declare_schism` refuses `NO_PRICE` before either ledger is
+## touched), pinned by `test_sect_schism.gd::test_a_free_schism_refuses_no_price`.
 func test_a_free_schism_is_refused_by_name_on_both_sides() -> void:
 	assert_eq(SectSchism.is_free_price(0), true, "zero is no price")
 	assert_eq(SectSchism.is_free_price(-3), true, "and less than zero is none either")

@@ -154,7 +154,12 @@ const PERIOD_NOT_ELAPSED := SectSuccession.R_PERIOD_NOT_ELAPSED
 ## ONE reason for all three: they are the same player-facing sentence, "that
 ## succession is finished", and a panel should not have to say which.
 const WALK_COMPLETE := SectSuccession.R_WALK_COMPLETE
-## A teacher may not teach this doctrine at all — their own fit is below its
+## A second `open` on a walk already in progress. Re-opening would reset the accrued
+## vacancy and every stage taken, so it refuses rather than lose the walk.
+const ALREADY_OPEN := SectSuccession.R_ALREADY_OPEN
+## A `wait` naming no time at all. Distinct from `period_not_elapsed`: that one is
+## the seat's own clock refusing, this one is the CALLER refusing to name a count.
+const NO_PERIODS := SectSuccession.R_NO_PERIODS  ## A teacher may not teach this doctrine at all — their own fit is below its
 ## authored `affinity_floor`. Distinct from the student's `min_purity` door: a
 ## teacher who cannot stand on the floor does not get to teach at the floor.
 const TEACHER_UNFIT := SectTeaching.R_TEACHER_UNFIT
@@ -190,6 +195,10 @@ const ALREADY_SECEDED := SectSchism.R_ALREADY_SECEDED
 ## halves of zero and charges both for the privilege — the worst possible trade, so
 ## it refuses rather than happening.
 const NOTHING_TO_SPLIT := SectSchism.R_NOTHING_TO_SPLIT
+## The whole bill is zero or less, so the split would be FREE — the strictly-positive
+## action the price exists to prevent. Read through `SectSchism.is_free_price`, never
+## a comparison here, so the rule stays one predicate.
+const NO_PRICE := SectSchism.R_NO_PRICE
 
 ## The world polity store, when one is installed. `app/` installs THE SAME instance
 ## the save owns (`SaveApi.store_for(WorldPolityLedger.WORLD_KEY)`), so the schism
@@ -531,6 +540,16 @@ static func promote(
 ## to a player — "that succession is finished" — and a panel should not have to know
 ## which of the three produced it. `no_such_walk` is different: nothing has started,
 ## which is a caller mistake rather than a finished thing.
+##
+## ## And the two refusals the pieces ask for
+##
+## A second `open` while the walk is in progress refuses `already_open`: the row is
+## the walk's memory, so re-opening would silently reset the accrued vacancy and the
+## stages taken. A `wait` refuses `no_such_walk` when nothing was opened,
+## `walk_complete` when there is nothing left to wait for, and `no_periods` when the
+## caller named no time — and its accrual is bounded at
+## `SectSuccession.MAX_WAIT_PERIODS` per call, so "wait until it comes due" is never
+## a way to skip the walk. Every refusal writes nothing at all.
 static func advance_succession(
 	actor: Actor, position_id: StringName, action: StringName = &"step", periods: int = 0
 ) -> Dictionary:
@@ -548,9 +567,18 @@ static func advance_succession(
 	var ledger := read.duplicate(true)
 	match String(action):
 		"open":
+			if SectSuccession.is_open(ledger, office.id):
+				return SectPayloads.refuse(ALREADY_OPEN, read)
 			ledger["succession"] = read["succession"].duplicate(true)
 			SectSuccession.open(ledger, office.id, periods)
 		"wait":
+			var seat := SectSuccession.walk(ledger, office.id)
+			if seat.is_empty():
+				return SectPayloads.refuse(NO_SUCH_WALK, read)
+			if bool(seat.get("complete", false)) or String(seat["side"]) != SectSuccession.VACANT:
+				return SectPayloads.refuse(WALK_COMPLETE, read)
+			if periods < 1:
+				return SectPayloads.refuse(NO_PERIODS, read)
 			SectSuccession.accrue(ledger, office.id, periods)
 		_:
 			var row := SectSuccession.walk(ledger, office.id)
@@ -719,10 +747,10 @@ static func teach(
 ## ## Refusals, in the order they are asked
 ##
 ## `no_actor`, `not_a_member`, `unknown_sect`, `unknown_half`,
-## `cannot_secede_from_itself`, `already_seceded`, `nothing_to_split`. Each writes
-## **nothing at all**, so a refused declaration leaves the actor byte-for-byte as
-## found (ADR 0084) — which is the property that makes a refusal a refusal and not a
-## cheaper version of the split.
+## `cannot_secede_from_itself`, `already_seceded`, `nothing_to_split`, `no_price`.
+## Each writes **nothing at all**, so a refused declaration leaves the actor
+## byte-for-byte as found (ADR 0084) — which is the property that makes a refusal a
+## refusal and not a cheaper version of the split.
 static func declare_schism(
 	actor: Actor, seceding_id: StringName, assigned: Array[StringName] = []
 ) -> Dictionary:
@@ -749,6 +777,15 @@ static func declare_schism(
 	# it is a punishment with no alternative stated.
 	if SectState.standing(read) < 2:
 		return SectPayloads.schism_refused(NOTHING_TO_SPLIT, read, half_id)
+	# The PRICE gate, before either ledger is touched: a whole bill of zero or less
+	# is the free split this verb exists to price, and `SectTuning` defaults both
+	# costs to zero — so a tuning that never authored a price ships exactly this
+	# refusal rather than a split nobody paid for. The bill is read whole, because a
+	# base cost of zero with an unassigned place still to pay for IS a priced split.
+	var unassigned := SectSchism.unassigned(def, assigned)
+	var price := SectSchism.price(catalog.tuning(), unassigned)
+	if SectSchism.is_free_price(price):
+		return SectPayloads.schism_refused(NO_PRICE, read, half_id)
 	# The WORLD half of the declaration, after every actor-side check and before
 	# any actor mutation: a refusal from this leg must leave BOTH ledgers byte-for-
 	# byte as found, and the actor mutation below cannot fail, so a split that is
@@ -756,8 +793,6 @@ static func declare_schism(
 	var world_refusal := _declare_world_schism(parent_id, half_id)
 	if world_refusal != "":
 		return SectPayloads.schism_refused(world_refusal, read, half_id)
-	var unassigned := SectSchism.unassigned(def, assigned)
-	var price := SectSchism.price(catalog.tuning(), unassigned)
 	var bill := SectSchism.settle(SectState.standing(read), price)
 	var ledger := read.duplicate(true)
 	(ledger["schisms"] as Dictionary)[half_id] = {

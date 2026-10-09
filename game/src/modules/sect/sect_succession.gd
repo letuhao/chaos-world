@@ -45,6 +45,15 @@ const R_NO_SUCH_WALK := "no_such_walk"
 const R_NOT_VACANT := "seat_not_vacant"
 const R_PERIOD_NOT_ELAPSED := "period_not_elapsed"
 const R_WALK_COMPLETE := "walk_complete"
+## A second immediate `open` on a seat whose walk is already in progress. The row IS
+## the walk's memory, so re-opening it would RESET the accrued vacancy and every
+## stage taken — a silent loss wearing the word "open" (the capability's
+## `already_open`, `contracts/successive.gd`).
+const R_ALREADY_OPEN := "already_open"
+## A `wait` that named no time at all. Zero or negative is a caller bug rather than a
+## quiet no-op: a settlement that moved nothing must not read as one that ran (the
+## capability's `no_periods`).
+const R_NO_PERIODS := "no_periods"
 
 
 ## The walk in progress on `position_id`, or `{}`. Read rather than re-derived so
@@ -62,30 +71,35 @@ static func is_open(ledger: Dictionary, position_id: StringName) -> bool:
 ## Open a walk by recording that `position_id` is `vacant`.
 ##
 ## `held_periods` is how many periods the seat has been empty, clamped at zero and
-## carried in the ledger so a caller that waited in one period and a caller that
-## waited in three arrive at the same answer. **No clock is read here**: periods are
-## an explicit argument from a caller that owns time (DEF-0111).
+## **capped at [constant MAX_WAIT_PERIODS]** — the same bound `wait` carries, because
+## one call must never be a way to skip the walk. It is carried in the ledger so a
+## caller that waited in one period and a caller that waited in three arrive at the
+## same answer. **No clock is read here**: periods are an explicit argument from a
+## caller that owns time (DEF-0111).
 static func open(ledger: Dictionary, position_id: StringName, held_periods: int) -> Dictionary:
 	var row := {
 		"side": VACANT,
 		"stage": 0,
-		"held_periods": maxi(0, held_periods),
+		"held_periods": clampi(held_periods, 0, MAX_WAIT_PERIODS),
 		"complete": false,
 	}
 	(ledger["succession"] as Dictionary)[String(position_id)] = row
 	return row
 
 
-## Add `periods` to the vacancy a seat has sat in. Bounded at zero — a settlement is
-## never a negative accrual — and a no-op for a seat with no walk open, because a
-## seat nobody vacated has no vacancy to age.
+## Add `periods` to the vacancy a seat has sat in, **capped at [constant
+## MAX_WAIT_PERIODS] per call** — the bound that keeps "wait until it comes due" from
+## being a way to skip the walk. Bounded at zero, and a no-op for a seat with no walk
+## open; `SectApi.advance_succession` refuses both cases by name BEFORE calling here,
+## so this primitive's no-op is a backstop rather than the answer a caller reads.
 static func accrue(ledger: Dictionary, position_id: StringName, periods: int) -> int:
-	if periods <= 0:
+	var bounded := mini(periods, MAX_WAIT_PERIODS)
+	if bounded <= 0:
 		return 0
 	var row := walk(ledger, position_id)
 	if row.is_empty() or String(row["side"]) != VACANT:
 		return 0
-	row["held_periods"] = maxi(0, int(row["held_periods"]) + periods)
+	row["held_periods"] = maxi(0, int(row["held_periods"]) + bounded)
 	(ledger["succession"] as Dictionary)[String(position_id)] = row
 	return int(row["held_periods"])
 

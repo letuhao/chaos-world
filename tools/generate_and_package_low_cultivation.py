@@ -451,7 +451,11 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
     # Retain full subject identity for multi-part titles (e.g. "Crimson Flame Lingzhi - Mature Flourishing Specimen")
     if " - " in raw_asset_name:
         parts = raw_asset_name.split(" - ")
-        asset_name = f"{parts[0].strip()} ({parts[1].strip()})" if len(parts) >= 2 else raw_asset_name.strip()
+        asset_name = (
+            f"{parts[0].strip()} ({parts[1].strip()})"
+            if len(parts) >= 2
+            else raw_asset_name.strip()
+        )
     else:
         asset_name = raw_asset_name
 
@@ -516,30 +520,48 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
             )
         elif any(w in plant_id for w in ("lingzhi", "mushroom", "fungus", "stinkhorn")):
             asset_name = (
-                asset_name.replace("Millennial Ancestor Wood Heart", "Giant Millennial Ancestor Bracket Cap")
-                .replace("Moss-Covered Fallen Log", "Decaying Log Host with Sprouting Mushroom Caps")
+                asset_name.replace(
+                    "Millennial Ancestor Wood Heart", "Giant Millennial Ancestor Bracket Cap"
+                )
+                .replace(
+                    "Moss-Covered Fallen Log", "Decaying Log Host with Sprouting Mushroom Caps"
+                )
                 .replace("Impenetrable Wild Thicket", "Cluster of Tiered Overlapping Fungal Caps")
-                .replace("Broad Leaf Collecting Spirit Dew", "Concave Spore Cap Collecting Spirit Dew")
+                .replace(
+                    "Broad Leaf Collecting Spirit Dew", "Concave Spore Cap Collecting Spirit Dew"
+                )
                 .replace("Young Budding Green Sprout", "Young Button Mushroom Cap Sprout")
             )
         elif any(w in plant_id for w in ("lotus", "water_lily")):
             asset_name = (
-                asset_name.replace("Millennial Ancestor Wood Heart", "Ancient Giant Sacred Lotus Crown")
+                asset_name.replace(
+                    "Millennial Ancestor Wood Heart", "Ancient Giant Sacred Lotus Crown"
+                )
                 .replace("Moss-Covered Fallen Log", "Submerged Lotus Rhizome with Floating Pads")
                 .replace("Impenetrable Wild Thicket", "Dense Floating Lotus Leaf Colony and Blooms")
                 .replace("Young Budding Green Sprout", "Tender Floating Lotus Bud and Sprout")
             )
         elif any(w in plant_id for w in ("ginseng", "blood_ginseng")):
             asset_name = (
-                asset_name.replace("Millennial Ancestor Wood Heart", "Millennial Ancient Humanoid Ginseng Root")
-                .replace("Moss-Covered Fallen Log", "Weathered Earth Mound with Exposed Ginseng Rootlets")
-                .replace("Impenetrable Wild Thicket", "Dense Ginseng Herbal Cluster with Red Berries")
+                asset_name.replace(
+                    "Millennial Ancestor Wood Heart", "Millennial Ancient Humanoid Ginseng Root"
+                )
+                .replace(
+                    "Moss-Covered Fallen Log", "Weathered Earth Mound with Exposed Ginseng Rootlets"
+                )
+                .replace(
+                    "Impenetrable Wild Thicket", "Dense Ginseng Herbal Cluster with Red Berries"
+                )
             )
         elif any(w in plant_id for w in ("thorn", "briar", "bramble")):
             asset_name = (
-                asset_name.replace("Millennial Ancestor Wood Heart", "Massive Ancient Calcified Thorn Core")
+                asset_name.replace(
+                    "Millennial Ancestor Wood Heart", "Massive Ancient Calcified Thorn Core"
+                )
                 .replace("Moss-Covered Fallen Log", "Tangled Dry Fallen Thorn Briar Mass")
-                .replace("Impenetrable Wild Thicket", "Impenetrable Prickly Thorn Bramble Barricade")
+                .replace(
+                    "Impenetrable Wild Thicket", "Impenetrable Prickly Thorn Bramble Barricade"
+                )
             )
 
         # Sanitize workstation modifiers for flora: replace fireplaces/hearths/locks with authentic botanical growth states
@@ -705,7 +727,16 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
         )
         if not clean_name or len(clean_name) < 3:
             clean_name = cat_id.replace("_", " ").strip()
-            for pfx in ("ter 01 ", "ter 02 ", "ter 03 ", "ter 04 ", "ter 05 ", "ter 06 ", "ter 07 ", "ter 08 "):
+            for pfx in (
+                "ter 01 ",
+                "ter 02 ",
+                "ter 03 ",
+                "ter 04 ",
+                "ter 05 ",
+                "ter 06 ",
+                "ter 07 ",
+                "ter 08 ",
+            ):
                 clean_name = clean_name.replace(pfx, "")
 
         pos = (
@@ -744,55 +775,39 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
         combined_text = f"{name_lower} {mat_lower}"
 
         # Dynamic morphology and color cues tailored to plant family
-        if any(w in combined_text for w in ("lingzhi", "mushroom", "fungus", "fungi", "spore", "toadstool")):
+        if any(
+            w in combined_text
+            for w in ("lingzhi", "mushroom", "fungus", "fungi", "spore", "toadstool")
+        ):
             foliage_spec = (
                 "woody bracket fungus, broad lacquered mushroom cap, spore gills and fungal stalk viewed foreshortened from overhead, "
                 "vermilion cinnabar lacquer cap or earthy spore ochre tones,"
             )
         elif any(w in combined_text for w in ("thorn", "briar", "bramble", "bone_dissolving")):
-            foliage_spec = (
-                "calcified ivory-bone thorns, sharp spine barbs, twisting woody creeper branches, and prickly bramble thicket viewed from overhead,"
-            )
+            foliage_spec = "calcified ivory-bone thorns, sharp spine barbs, twisting woody creeper branches, and prickly bramble thicket viewed from overhead,"
         elif any(w in combined_text for w in ("rice", "grain", "crop")):
-            foliage_spec = (
-                "ripened sacred cereal grain panicles, heavy hanging seed heads, and golden crop stalks viewed foreshortened from overhead,"
-            )
+            foliage_spec = "ripened sacred cereal grain panicles, heavy hanging seed heads, and golden crop stalks viewed foreshortened from overhead,"
         elif any(w in combined_text for w in ("lotus", "lily", "water_plant", "pond")):
-            foliage_spec = (
-                "broad rounded floating lotus leaf pads, delicate lotus blossom petals, fragrant aquatic floral crown viewed from overhead,"
-            )
+            foliage_spec = "broad rounded floating lotus leaf pads, delicate lotus blossom petals, fragrant aquatic floral crown viewed from overhead,"
         elif any(w in combined_text for w in ("ginseng", "blood_ginseng")):
-            foliage_spec = (
-                "tuberous spiritual root rhizome, medicinal root crown, branching fibrous rootlets and small herbal sprig viewed from overhead,"
-            )
-        elif any(w in combined_text for w in ("osmanthus", "peach", "blossom", "orchid", "wisteria", "flower")):
-            foliage_spec = (
-                "flowering canopy, fragrant blossom clusters, delicate floral petals and leafy twig sprigs viewed foreshortened from overhead,"
-            )
+            foliage_spec = "tuberous spiritual root rhizome, medicinal root crown, branching fibrous rootlets and small herbal sprig viewed from overhead,"
+        elif any(
+            w in combined_text
+            for w in ("osmanthus", "peach", "blossom", "orchid", "wisteria", "flower")
+        ):
+            foliage_spec = "flowering canopy, fragrant blossom clusters, delicate floral petals and leafy twig sprigs viewed foreshortened from overhead,"
         elif any(w in combined_text for w in ("bamboo", "culm", "cane")):
-            foliage_spec = (
-                "segmented bamboo culms, slender bamboo foliage and nodes viewed foreshortened from overhead,"
-            )
+            foliage_spec = "segmented bamboo culms, slender bamboo foliage and nodes viewed foreshortened from overhead,"
         elif any(w in combined_text for w in ("grass", "reed", "fern", "moss")):
-            foliage_spec = (
-                "slender vegetative stems, feathery foliage fronds and textured ground vegetation viewed foreshortened from overhead,"
-            )
+            foliage_spec = "slender vegetative stems, feathery foliage fronds and textured ground vegetation viewed foreshortened from overhead,"
         elif any(w in combined_text for w in ("pine", "conifer")):
-            foliage_spec = (
-                "gnarled evergreen needle canopy, weathered resinous bark branches, spreading evergreen crown viewed foreshortened from overhead,"
-            )
+            foliage_spec = "gnarled evergreen needle canopy, weathered resinous bark branches, spreading evergreen crown viewed foreshortened from overhead,"
         elif any(w in combined_text for w in ("cypress", "weeping_cypress")):
-            foliage_spec = (
-                "weeping drooping cypress boughs, fragrant golden timber boughs, and graceful scale foliage viewed from overhead,"
-            )
+            foliage_spec = "weeping drooping cypress boughs, fragrant golden timber boughs, and graceful scale foliage viewed from overhead,"
         elif any(w in combined_text for w in ("willow", "poplar", "tree", "wood", "grove", "bush")):
-            foliage_spec = (
-                "branching hardwood canopy, weeping leafy boughs and textured tree crown viewed foreshortened from overhead,"
-            )
+            foliage_spec = "branching hardwood canopy, weeping leafy boughs and textured tree crown viewed foreshortened from overhead,"
         else:
-            foliage_spec = (
-                "botanical canopy, branching herbal crown and leafy foliage viewed foreshortened from overhead, spread outward on ground plane,"
-            )
+            foliage_spec = "botanical canopy, branching herbal crown and leafy foliage viewed foreshortened from overhead, spread outward on ground plane,"
 
         sub_lower = (asset.get("sub_domain") or "").lower()
         is_pine = any(w in (sub_lower + " " + name_lower) for w in ("pine", "conifer"))
@@ -801,7 +816,11 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
             if is_pine
             else "pine tree, pine needles, evergreen conifer, evergreen tree, dark teal needles, fireplace, campfire, chimney, burning log, unlit hearth, brazier, "
         )
-        ink_clause = "dark pine-soot ink contours" if is_pine else "fine dark charcoal ink lineart contours (#1C1C1E)"
+        ink_clause = (
+            "dark pine-soot ink contours"
+            if is_pine
+            else "fine dark charcoal ink lineart contours (#1C1C1E)"
+        )
         pos = (
             f"Single isolated 2D top-down RPG map sprite of {asset_name.lower()}, {material}, {var_mod}, "
             "Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), "
@@ -1118,7 +1137,10 @@ def run_pipeline(
             args.seed = int(var["seed"])
         else:
             import hashlib
-            seed_hash = int(hashlib.md5(f"{asset_slug}_{var_slug}".encode("utf-8")).hexdigest()[:6], 16)
+
+            seed_hash = int(
+                hashlib.md5(f"{asset_slug}_{var_slug}".encode("utf-8")).hexdigest()[:6], 16
+            )
             args.seed = 10000 + (seed_hash % 20000)
 
         if force:

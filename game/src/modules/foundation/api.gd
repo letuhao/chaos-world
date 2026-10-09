@@ -55,6 +55,23 @@ const LASTLIGHT_ATTEMPT_PERIODS := 4380
 ## training to do, so every training verb refuses with THIS rather than with silence.
 const R_LASTLIGHT := "lastlight"
 
+## What one use of the FORBIDDEN LIFESPAN ART burns (BL-0951 / ADR 0939, S11): one year of
+## the actor's own remaining life, at the authored ladder ratios — the same span the final
+## attempt burns. The art is forbidden because its price is the cultivator's own years, the
+## one currency no other avenue spends and none of them returns.
+const FORBIDDEN_ART_PERIODS := 4380
+
+## The mend one use of the forbidden art lands (BL-0951 / ADR 0939, S11). It is the largest
+## single-avenue step — bigger than the elixir's 0.1, the secret realm's 0.15 and the rite's
+## 0.2 — because it is paid in the one thing that does not come back. The module still owns
+## the ceiling: no use lifts a snapshot above `MEND_CAP`.
+const FORBIDDEN_ART_MEND := 0.25
+
+## The forbidden art's named refusal (BL-0951 / ADR 0939, S11): a body already in the final
+## band has nothing left to trade, so the art refuses BY NAME rather than burning the last
+## of an already-spent life.
+const R_FORBIDDEN_NO_YEARS := "no_years_left_to_burn"
+
 
 ## The carried aggregate the paths gate on: the mean of every snapshot, `0.0` when the
 ## actor has left no realm yet. This is the number a path's authored `min_foundation`
@@ -256,6 +273,54 @@ static func burn_final_attempt(actor: Actor) -> float:
 	if AgeBandTable.band_for_actor(actor) != AgeBandTable.LASTLIGHT:
 		return 0.0
 	return spend_periods(actor, LASTLIGHT_ATTEMPT_PERIODS)
+
+
+## The forbidden lifespan art (BL-0951 / ADR 0939, S11): burn one year of the actor's OWN
+## life to mend a scarred past realm. This is the avenue whose only subject is the record
+## and the time currency, both of which this module owns, so it is the module's own verb —
+## there is no other module whose subject it is.
+##
+## Answers `{"ok": true, "reason": "", "realm", "mended", "years"}` on success and
+## `{"ok": false, "reason": <named>}` on every refusal, never a bare `{}`.
+##
+## ## The realm is named or defaulted
+##
+## The caller's `realm_id` if it named one, else the WEAKEST scar (`mend_target`) — the same
+## default the elixir, the site and the sacrifice use, for the same reason.
+##
+## ## Bounded, priced, refusing by name
+##
+## The gift is [method mend], which caps at `MEND_CAP`; the price is
+## `FORBIDDEN_ART_PERIODS` of life through [method spend_periods]. The band is read FIRST:
+## an actor in the final band has no years to spare and is refused by name, so the art never
+## burns the last of an already-spent life. A refusal costs nothing (ADR 0044) — nothing is
+## written until every gate has passed.
+static func forbidden_art(actor: Actor, realm_id: StringName = &"") -> Dictionary:
+	if actor == null:
+		return {"ok": false, "reason": R_NO_ACTOR}
+	if AgeBandTable.band_for_actor(actor) == AgeBandTable.LASTLIGHT:
+		return {"ok": false, "reason": R_FORBIDDEN_NO_YEARS}
+	var target := realm_id
+	if target == &"":
+		target = mend_target(actor)
+	if target == &"":
+		return {"ok": false, "reason": R_NO_SNAPSHOT}
+	var existing := snapshot_for(actor, target)
+	if existing < 0.0:
+		return {"ok": false, "reason": R_NO_SNAPSHOT, "realm": String(target)}
+	if existing >= MEND_CAP:
+		return {"ok": false, "reason": R_MEND_CAPPED, "realm": String(target)}
+	var mended := mend(actor, target, FORBIDDEN_ART_MEND, "forbidden_lifespan_art")
+	if not bool(mended.get("ok", false)):
+		return mended
+	var years := spend_periods(actor, FORBIDDEN_ART_PERIODS)
+	return {
+		"ok": true,
+		"reason": "",
+		"realm": String(target),
+		"mended": mended,
+		"years": years,
+	}
 
 
 ## Write the PERFECTION snapshot for a realm the actor is leaving. ONCE per realm: a

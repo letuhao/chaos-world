@@ -497,11 +497,9 @@ func test_the_walk_is_read_from_summary_and_a_vacancy_is_a_visible_row() -> void
 	)
 
 
-## `is_open` marks begun-not-finished: the seam a reported `already_open`
-## refusal reads (Slice 8a — the re-open reset lives in `sect/api.gd`, outside
-## this slice, so this pins the predicate the one-line edit asks, not the gate
-## itself). A finished walk is closed, which is why the contract's `wait` on one
-## refuses `walk_complete` rather than ageing a seat that is seated.
+## `is_open` marks begun-not-finished: the predicate `advance_succession`'s
+## `already_open` gate reads. A finished walk is closed, which is why the contract's
+## `wait` on one refuses `walk_complete` rather than ageing a seat that is seated.
 func test_is_open_marks_a_begun_unfinished_walk() -> void:
 	var actor := _member(&"keeper")
 	var idle := SectApi.state(actor)
@@ -514,3 +512,70 @@ func test_is_open_marks_a_begun_unfinished_walk() -> void:
 	assert_eq(
 		SectSuccession.is_open(SectApi.state(actor), STEWARD), false, "a finished walk is closed"
 	)
+
+
+## The GATE the predicate above exists for: a second `open` while the walk is in
+## progress refuses `already_open` and leaves the ledger byte-identical. Re-opening
+## would reset the accrued vacancy and every stage taken — a walk that reset itself
+## is the silent loss Slice 8a reported for `sect/api.gd`.
+func test_a_second_open_refuses_already_open_and_keeps_the_walk() -> void:
+	var actor := _member(&"reopener")
+	SectApi.advance_succession(actor, STEWARD, &"open")
+	SectApi.advance_succession(actor, STEWARD, &"wait", 1)
+	SectApi.advance_succession(actor, STEWARD, &"step")
+	var walked := SectApi.state(actor)
+	var again := SectApi.advance_succession(actor, STEWARD, &"open", 5)
+	assert_eq(String(again.get("reason", "")), SectApi.ALREADY_OPEN, "by name")
+	assert_eq(SectApi.state(actor), walked, "and writes nothing: the stage and clock survive")
+
+
+## The wait bound, on the CALL rather than on the total: one `wait` never ages a
+## vacancy by more than `MAX_WAIT_PERIODS`, so "wait until it comes due" cannot skip
+## the walk in a single call. Two calls accrue twice — the bound is per call.
+func test_a_wait_is_bounded_to_max_wait_periods_per_call() -> void:
+	var actor := _member(&"waiter")
+	SectApi.advance_succession(actor, STEWARD, &"open")
+	var bounded := SectApi.advance_succession(actor, STEWARD, &"wait", 99)
+	assert_eq(String(bounded.get("reason", "")), "", "the wait lands")
+	var row := SectSuccession.walk(SectApi.state(actor), STEWARD)
+	assert_eq(
+		int(row["held_periods"]),
+		SectSuccession.MAX_WAIT_PERIODS,
+		"clamped to the authored per-call cap"
+	)
+
+
+## A `wait` with nothing open refuses `no_such_walk` rather than reporting a
+## settlement that moved nothing.
+func test_a_wait_on_an_unopened_seat_refuses_no_such_walk() -> void:
+	var actor := _member(&"idler")
+	var idle := SectApi.state(actor)
+	var refused := SectApi.advance_succession(actor, STEWARD, &"wait", 1)
+	assert_eq(String(refused.get("reason", "")), SectApi.NO_SUCH_WALK, "nothing started")
+	assert_eq(SectApi.state(actor), idle, "and writes nothing")
+
+
+## A `wait` on a finished walk refuses `walk_complete`: there is nothing left to wait
+## FOR, and ageing a seated seat's clock would be a number with no reader.
+func test_a_wait_on_a_complete_walk_refuses_walk_complete() -> void:
+	var actor := _member(&"finisher")
+	SectApi.advance_succession(actor, STEWARD, &"open")
+	for _stage in _def().position(STEWARD).walk_length():
+		SectApi.advance_succession(actor, STEWARD, &"wait", 1)
+		SectApi.advance_succession(actor, STEWARD, &"step")
+	var finished := SectApi.state(actor)
+	var refused := SectApi.advance_succession(actor, STEWARD, &"wait", 1)
+	assert_eq(String(refused.get("reason", "")), SectApi.WALK_COMPLETE, "the walk is done")
+	assert_eq(SectApi.state(actor), finished, "and writes nothing")
+
+
+## A `wait` of no periods refuses `no_periods` rather than reading as a settlement
+## that ran — the capability's own refusal (`contracts/successive.gd`).
+func test_a_wait_of_no_periods_refuses_no_periods() -> void:
+	var actor := _member(&"careless")
+	SectApi.advance_succession(actor, STEWARD, &"open")
+	var opened := SectApi.state(actor)
+	for careless in [0, -3]:
+		var refused := SectApi.advance_succession(actor, STEWARD, &"wait", careless)
+		assert_eq(String(refused.get("reason", "")), SectApi.NO_PERIODS, "named, not a no-op")
+		assert_eq(SectApi.state(actor), opened, "and writes nothing")

@@ -513,3 +513,26 @@ func _strip_comments(text: String) -> String:
 		var hash := line.find("#")
 		out.append(line.substr(0, hash) if hash >= 0 else line)
 	return "\n".join(out)
+
+
+## The GATE the contract's free-price predicate exists for: a tuning that never
+## authored a price refuses the declaration by name, and writes nothing at all.
+## A free split is the strictly-positive action the price exists to prevent, and
+## `SectTuning` defaults BOTH costs to 0 — so an unpriced tuning ships exactly this
+## refusal rather than a split nobody paid for.
+func test_a_free_schism_refuses_no_price_and_writes_nothing() -> void:
+	var actor := _founder()
+	var before := SectApi.state(actor)
+	var tuning := _tuning()
+	var base := tuning.schism_cost
+	var per_place := tuning.schism_cost_per_unassigned
+	tuning.schism_cost = 0
+	tuning.schism_cost_per_unassigned = 0
+	var refused := SectApi.declare_schism(actor, HALF, PLACES)
+	# Restored before the assertions, so a failure below leaves the suite's shared
+	# tuning exactly as it found it and the next case is not answering for this one.
+	tuning.schism_cost = base
+	tuning.schism_cost_per_unassigned = per_place
+	assert_eq(String(refused.get("reason", "")), SectApi.NO_PRICE, "by name")
+	assert_eq(SectApi.state(actor), before, "and writes nothing")
+	assert_ne(base, 0, "the shipped tuning is priced, so the refusal above is the ZERO case")

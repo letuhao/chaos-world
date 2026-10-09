@@ -24,7 +24,7 @@ ORIGINAL_DIR = PACK_DIR / "original"
 
 def clean_slug_for(raw_slug: str, cid: str) -> str:
     if cid and raw_slug.endswith(f"_{cid}"):
-        return raw_slug[:-len(f"_{cid}")]
+        return raw_slug[: -len(f"_{cid}")]
     return raw_slug
 
 
@@ -42,11 +42,11 @@ def migrate_manifest() -> dict[str, str]:
         dom = a.get("domain_id") or a.get("domain", "")
         raw_slug = a.get("asset_slug") or a.get("id", "").split(".")[-1]
         new_slug = clean_slug_for(raw_slug, cid)
-        
+
         slug_map[(dom, cid, raw_slug)] = new_slug
         a["asset_slug"] = new_slug
         a["id"] = f"ancient_china_low_cultivation.{dom}.{cid}.{new_slug}"
-        
+
         # Update variant paths
         for v in a.get("variants", []):
             p = v.get("path")
@@ -111,7 +111,7 @@ def audit_path_lengths() -> int:
     max_len = 0
     longest_path = ""
     over_260 = []
-    
+
     for p in PACK_DIR.glob("**/*"):
         s = str(p.resolve())
         if len(s) > max_len:
@@ -135,7 +135,7 @@ def main() -> int:
     rename_tree_folders(DATA_DIR, slug_map)
     rename_tree_folders(ORIGINAL_DIR, slug_map)
     clean_old_tres_files(slug_map)
-    
+
     # Check lengths
     issues = audit_path_lengths()
     print("=" * 80)

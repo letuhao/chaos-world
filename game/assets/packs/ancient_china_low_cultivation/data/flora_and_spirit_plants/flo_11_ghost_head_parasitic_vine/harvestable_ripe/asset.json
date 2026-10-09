@@ -46,14 +46,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_11_ghost_head_parasitic_vine/harvestable_ripe/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.431
+            0.411
           ]
         ],
-        "frac_zero": 0.727,
+        "frac_zero": 0.6865,
         "blocks": [
           [
             false
@@ -75,30 +75,30 @@
         ],
         "sub_fill": [
           [
-            0.297,
-            0.729,
-            0.158
+            0.176,
+            0.724,
+            0.215
           ],
           [
-            0.535,
-            0.64,
-            0.472
+            0.391,
+            0.548,
+            0.405
           ],
           [
-            0.158,
-            0.628,
-            0.003
+            0.202,
+            0.869,
+            0.144
           ]
         ],
         "crop_offset": [
-          22,
-          17
+          16,
+          16
         ],
         "trunk_columns": [
           1
         ],
-        "contact_px": 42,
-        "contact_reference_px": 42.0,
+        "contact_px": 55,
+        "contact_reference_px": 55.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -126,14 +126,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_11_ghost_head_parasitic_vine/harvestable_ripe/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.45
+            0.456
           ]
         ],
-        "frac_zero": 0.73,
+        "frac_zero": 0.6974,
         "blocks": [
           [
             false
@@ -155,31 +155,30 @@
         ],
         "sub_fill": [
           [
-            0.316,
-            0.463,
-            0.025
+            0.301,
+            0.706,
+            0.143
           ],
           [
-            0.555,
-            0.675,
-            0.328
+            0.44,
+            0.666,
+            0.45
           ],
           [
-            0.376,
-            0.609,
-            0.065
+            0.342,
+            0.77,
+            0.088
           ]
         ],
         "crop_offset": [
-          27,
+          20,
           17
         ],
         "trunk_columns": [
-          0,
           1
         ],
-        "contact_px": 46,
-        "contact_reference_px": 46.0,
+        "contact_px": 48,
+        "contact_reference_px": 48.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -207,14 +206,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_11_ghost_head_parasitic_vine/harvestable_ripe/damaged_weathered.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.485
+            0.479
           ]
         ],
-        "frac_zero": 0.7336,
+        "frac_zero": 0.6964,
         "blocks": [
           [
             false
@@ -236,30 +235,31 @@
         ],
         "sub_fill": [
           [
-            0.391,
-            0.591,
-            0.072
+            0.254,
+            0.643,
+            0.18
           ],
           [
-            0.53,
-            0.784,
-            0.404
+            0.466,
+            0.605,
+            0.535
           ],
           [
-            0.271,
-            0.723,
-            0.043
+            0.426,
+            0.796,
+            0.127
           ]
         ],
         "crop_offset": [
-          25,
+          23,
           16
         ],
         "trunk_columns": [
+          0,
           1
         ],
-        "contact_px": 45,
-        "contact_reference_px": 45.0,
+        "contact_px": 62,
+        "contact_reference_px": 62.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -287,14 +287,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_11_ghost_head_parasitic_vine/harvestable_ripe/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.43
+            0.482
           ]
         ],
-        "frac_zero": 0.736,
+        "frac_zero": 0.6824,
         "blocks": [
           [
             false
@@ -316,30 +316,32 @@
         ],
         "sub_fill": [
           [
-            0.352,
-            0.718,
-            0.165
+            0.262,
+            0.684,
+            0.186
           ],
           [
-            0.441,
-            0.573,
-            0.364
+            0.367,
+            0.591,
+            0.346
           ],
           [
-            0.275,
-            0.597,
-            0.036
+            0.456,
+            0.933,
+            0.395
           ]
         ],
         "crop_offset": [
-          23,
+          20,
           17
         ],
         "trunk_columns": [
-          1
+          0,
+          1,
+          2
         ],
-        "contact_px": 48,
-        "contact_reference_px": 48.0,
+        "contact_px": 73,
+        "contact_reference_px": 73.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
