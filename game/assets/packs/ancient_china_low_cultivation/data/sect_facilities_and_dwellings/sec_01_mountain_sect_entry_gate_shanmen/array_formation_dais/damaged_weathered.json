@@ -1,0 +1,257 @@
+{
+  "asset_id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_01_mountain_sect_entry_gate_shanmen.array_formation_dais",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_01_mountain_sect_entry_gate_shanmen",
+  "asset_slug": "array_formation_dais",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_01_mountain_sect_entry_gate_shanmen/array_formation_dais/damaged_weathered.png",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "walk_surface",
+  "interactive_verb": "activate_array",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.235,
+        0.799,
+        0.249
+      ],
+      [
+        0.608,
+        0.778,
+        0.597
+      ],
+      [
+        0.674,
+        0.977,
+        0.704
+      ]
+    ],
+    "frac_zero": 0.4915,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.499,
+        0.518,
+        0.474,
+        0.602,
+        0.121,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.194,
+        0.989,
+        1.0,
+        1.0,
+        1.0,
+        0.569,
+        0.001,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.199,
+        0.831,
+        1.0,
+        0.961,
+        0.965,
+        0.989,
+        1.0,
+        0.462,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.191,
+        0.815,
+        0.781,
+        0.396,
+        0.152,
+        0.745,
+        0.922,
+        0.459,
+        0.001,
+        0.0
+      ],
+      [
+        0.072,
+        0.769,
+        0.906,
+        0.618,
+        0.643,
+        0.195,
+        0.455,
+        0.786,
+        0.957,
+        0.322,
+        0.0
+      ],
+      [
+        0.0,
+        0.352,
+        0.865,
+        1.0,
+        1.0,
+        1.0,
+        0.977,
+        0.843,
+        0.515,
+        0.075,
+        0.0
+      ],
+      [
+        0.047,
+        0.98,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.964,
+        0.367,
+        0.0
+      ],
+      [
+        0.492,
+        0.985,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.804,
+        0.266
+      ],
+      [
+        0.815,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.98,
+        0.336
+      ],
+      [
+        0.153,
+        0.869,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.499,
+        0.016
+      ],
+      [
+        0.0,
+        0.01,
+        0.381,
+        0.714,
+        0.932,
+        0.967,
+        0.9,
+        0.664,
+        0.308,
+        0.018,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      26,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 170,
+    "contact_reference_px": 170.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        2,
+        2,
+        2
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

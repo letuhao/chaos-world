@@ -1,0 +1,258 @@
+{
+  "asset_id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_01_mountain_sect_entry_gate_shanmen.array_formation_dais",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_01_mountain_sect_entry_gate_shanmen",
+  "asset_slug": "array_formation_dais",
+  "variant_slug": "pristine_dormant",
+  "name": "Pristine Dormant State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_01_mountain_sect_entry_gate_shanmen/array_formation_dais/pristine_dormant.png",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "walk_surface",
+  "interactive_verb": "activate_array",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.308,
+        0.815,
+        0.286
+      ],
+      [
+        0.581,
+        0.787,
+        0.566
+      ],
+      [
+        0.69,
+        0.973,
+        0.704
+      ]
+    ],
+    "frac_zero": 0.4729,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.028,
+        0.415,
+        0.317,
+        0.312,
+        0.497,
+        0.112,
+        0.002,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.007,
+        0.56,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.993,
+        0.097,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.076,
+        0.865,
+        1.0,
+        0.994,
+        1.0,
+        0.997,
+        0.988,
+        0.529,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.605,
+        0.924,
+        0.986,
+        0.761,
+        0.798,
+        0.888,
+        0.99,
+        0.861,
+        0.175,
+        0.0
+      ],
+      [
+        0.126,
+        0.795,
+        0.986,
+        0.909,
+        0.12,
+        0.214,
+        0.546,
+        0.904,
+        0.974,
+        0.556,
+        0.0
+      ],
+      [
+        0.0,
+        0.185,
+        0.708,
+        0.825,
+        0.838,
+        0.993,
+        0.835,
+        0.662,
+        0.534,
+        0.063,
+        0.0
+      ],
+      [
+        0.04,
+        0.871,
+        0.894,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        0.866,
+        0.438,
+        0.0
+      ],
+      [
+        0.181,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.794,
+        0.336
+      ],
+      [
+        0.655,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.982,
+        0.275
+      ],
+      [
+        0.333,
+        0.883,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.662,
+        0.0
+      ],
+      [
+        0.0,
+        0.121,
+        0.535,
+        0.762,
+        0.896,
+        0.948,
+        0.891,
+        0.78,
+        0.579,
+        0.034,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      21,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "contact_px": 214,
+    "contact_reference_px": 214.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        2,
+        2,
+        2
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

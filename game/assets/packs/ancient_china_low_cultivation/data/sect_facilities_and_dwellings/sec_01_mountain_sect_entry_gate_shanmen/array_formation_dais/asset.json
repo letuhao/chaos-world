@@ -1,0 +1,1066 @@
+{
+  "id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_01_mountain_sect_entry_gate_shanmen.array_formation_dais",
+  "archetype": "array_formation_dais_sec_01_mountain_sect_entry_gate_shanmen",
+  "name": "Mountain Sect Entry Gate (Shanmen) - Concentric Bagua Array Platform",
+  "vietnamese_name": "Tông Môn Sơn Môn - Đài Bát Quái Khởi Trận",
+  "hanzi": "巍峨宗门山门 · 八卦阵图法台",
+  "category": "sec_01_mountain_sect_entry_gate_shanmen",
+  "category_code": "SEC-01",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_01_mountain_sect_entry_gate_shanmen",
+  "asset_class": "prop_workstation",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "activate_array",
+  "gameplay_role": "prop_workstation entity supporting Mountain Sect Entry Gate (Shanmen) gameplay",
+  "destructible": true,
+  "material": "stratified pale karst limestone and loose mineral scree",
+  "cultivation_element": "earth",
+  "prompt_summary": "Single isolated 2D RPG game prop of mountain sect entry gate (shanmen) - concentric bagua array platform, authentic mountain sect entry gate (shanmen) materials, East Asian Xianxia craftsmanship, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese craftsmanship, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Cultivation Sect Facilities & Dwellings",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "pristine_dormant",
+      "name": "Pristine Dormant State",
+      "prompt_modifier": "cold clean polished state, unlit hearth, intact locks",
+      "variant_id": "pristine_dormant",
+      "variant_name": "Pristine Dormant State",
+      "description": "cold clean polished state, unlit hearth, intact locks",
+      "prompt": "Single isolated 2D RPG game prop of concentric bagua array platform, stratified pale karst limestone and loose mineral scree, cold clean polished state, unlit hearth, intact locks, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_01_mountain_sect_entry_gate_shanmen/array_formation_dais/pristine_dormant.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.308,
+            0.815,
+            0.286
+          ],
+          [
+            0.581,
+            0.787,
+            0.566
+          ],
+          [
+            0.69,
+            0.973,
+            0.704
+          ]
+        ],
+        "frac_zero": 0.4729,
+        "blocks": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          2
+        ],
+        "sub_grid": [
+          11,
+          11
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.028,
+            0.415,
+            0.317,
+            0.312,
+            0.497,
+            0.112,
+            0.002,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.007,
+            0.56,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.993,
+            0.097,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.076,
+            0.865,
+            1.0,
+            0.994,
+            1.0,
+            0.997,
+            0.988,
+            0.529,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.605,
+            0.924,
+            0.986,
+            0.761,
+            0.798,
+            0.888,
+            0.99,
+            0.861,
+            0.175,
+            0.0
+          ],
+          [
+            0.126,
+            0.795,
+            0.986,
+            0.909,
+            0.12,
+            0.214,
+            0.546,
+            0.904,
+            0.974,
+            0.556,
+            0.0
+          ],
+          [
+            0.0,
+            0.185,
+            0.708,
+            0.825,
+            0.838,
+            0.993,
+            0.835,
+            0.662,
+            0.534,
+            0.063,
+            0.0
+          ],
+          [
+            0.04,
+            0.871,
+            0.894,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.999,
+            0.866,
+            0.438,
+            0.0
+          ],
+          [
+            0.181,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.794,
+            0.336
+          ],
+          [
+            0.655,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.982,
+            0.275
+          ],
+          [
+            0.333,
+            0.883,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.662,
+            0.0
+          ],
+          [
+            0.0,
+            0.121,
+            0.535,
+            0.762,
+            0.896,
+            0.948,
+            0.891,
+            0.78,
+            0.579,
+            0.034,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          21,
+          17
+        ],
+        "trunk_columns": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "contact_px": 214,
+        "contact_reference_px": 214.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            2,
+            2,
+            2
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "active_operating",
+      "name": "Active Operating State",
+      "prompt_modifier": "active glowing spiritual flames, heat haze, open functioning elements",
+      "variant_id": "active_operating",
+      "variant_name": "Active Operating State",
+      "description": "active glowing spiritual flames, heat haze, open functioning elements",
+      "prompt": "Single isolated 2D RPG game prop of concentric bagua array platform, stratified pale karst limestone and loose mineral scree, active glowing spiritual flames, heat haze, open functioning elements, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_01_mountain_sect_entry_gate_shanmen/array_formation_dais/active_operating.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.185,
+            0.729,
+            0.183
+          ],
+          [
+            0.525,
+            0.811,
+            0.527
+          ],
+          [
+            0.707,
+            0.982,
+            0.737
+          ]
+        ],
+        "frac_zero": 0.5013,
+        "blocks": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          2
+        ],
+        "sub_grid": [
+          11,
+          11
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.103,
+            0.064,
+            0.069,
+            0.18,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.018,
+            0.668,
+            0.984,
+            0.973,
+            0.894,
+            0.305,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.025,
+            0.446,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.942,
+            0.128,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.144,
+            0.712,
+            0.962,
+            0.91,
+            0.888,
+            0.923,
+            0.92,
+            0.514,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.402,
+            0.848,
+            0.648,
+            0.524,
+            0.43,
+            0.675,
+            0.838,
+            0.745,
+            0.136,
+            0.0
+          ],
+          [
+            0.071,
+            0.667,
+            1.0,
+            0.93,
+            0.881,
+            0.858,
+            0.78,
+            0.875,
+            0.946,
+            0.423,
+            0.0
+          ],
+          [
+            0.0,
+            0.391,
+            0.997,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.953,
+            0.059,
+            0.0
+          ],
+          [
+            0.026,
+            0.715,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.442,
+            0.003
+          ],
+          [
+            0.502,
+            0.944,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.859,
+            0.215
+          ],
+          [
+            0.703,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.995,
+            0.734
+          ],
+          [
+            0.027,
+            0.251,
+            0.658,
+            0.797,
+            0.905,
+            0.967,
+            0.975,
+            0.843,
+            0.476,
+            0.296,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          22,
+          17
+        ],
+        "trunk_columns": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "contact_px": 207,
+        "contact_reference_px": 207.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            2,
+            2,
+            2
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "damaged_weathered",
+      "name": "Damaged Weathered State",
+      "prompt_modifier": "mossy aged patina, chipped corners, cracked surfaces",
+      "variant_id": "damaged_weathered",
+      "variant_name": "Damaged Weathered State",
+      "description": "mossy aged patina, chipped corners, cracked surfaces",
+      "prompt": "Single isolated 2D RPG game prop of concentric bagua array platform, stratified pale karst limestone and loose mineral scree, mossy aged patina, chipped corners, cracked surfaces, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_01_mountain_sect_entry_gate_shanmen/array_formation_dais/damaged_weathered.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.235,
+            0.799,
+            0.249
+          ],
+          [
+            0.608,
+            0.778,
+            0.597
+          ],
+          [
+            0.674,
+            0.977,
+            0.704
+          ]
+        ],
+        "frac_zero": 0.4915,
+        "blocks": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          2
+        ],
+        "sub_grid": [
+          11,
+          11
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.499,
+            0.518,
+            0.474,
+            0.602,
+            0.121,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.194,
+            0.989,
+            1.0,
+            1.0,
+            1.0,
+            0.569,
+            0.001,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.199,
+            0.831,
+            1.0,
+            0.961,
+            0.965,
+            0.989,
+            1.0,
+            0.462,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.191,
+            0.815,
+            0.781,
+            0.396,
+            0.152,
+            0.745,
+            0.922,
+            0.459,
+            0.001,
+            0.0
+          ],
+          [
+            0.072,
+            0.769,
+            0.906,
+            0.618,
+            0.643,
+            0.195,
+            0.455,
+            0.786,
+            0.957,
+            0.322,
+            0.0
+          ],
+          [
+            0.0,
+            0.352,
+            0.865,
+            1.0,
+            1.0,
+            1.0,
+            0.977,
+            0.843,
+            0.515,
+            0.075,
+            0.0
+          ],
+          [
+            0.047,
+            0.98,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.964,
+            0.367,
+            0.0
+          ],
+          [
+            0.492,
+            0.985,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.804,
+            0.266
+          ],
+          [
+            0.815,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.98,
+            0.336
+          ],
+          [
+            0.153,
+            0.869,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.499,
+            0.016
+          ],
+          [
+            0.0,
+            0.01,
+            0.381,
+            0.714,
+            0.932,
+            0.967,
+            0.9,
+            0.664,
+            0.308,
+            0.018,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          26,
+          17
+        ],
+        "trunk_columns": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "contact_px": 170,
+        "contact_reference_px": 170.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            2,
+            2,
+            2
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "ruined_rubble",
+      "name": "Broken Shattered Rubble",
+      "prompt_modifier": "collapsed fractured shards, scavengeable parts",
+      "variant_id": "ruined_rubble",
+      "variant_name": "Broken Shattered Rubble",
+      "description": "collapsed fractured shards, scavengeable parts",
+      "prompt": "Single isolated 2D RPG game prop of concentric bagua array platform, stratified pale karst limestone and loose mineral scree, collapsed fractured shards, scavengeable parts, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_01_mountain_sect_entry_gate_shanmen/array_formation_dais/ruined_rubble.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.387,
+            0.747,
+            0.24
+          ],
+          [
+            0.757,
+            0.801,
+            0.572
+          ],
+          [
+            0.719,
+            0.968,
+            0.711
+          ]
+        ],
+        "frac_zero": 0.4889,
+        "blocks": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          2
+        ],
+        "sub_grid": [
+          10,
+          11
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.003,
+            0.083,
+            0.534,
+            0.379,
+            0.447,
+            0.288,
+            0.005,
+            0.0,
+            0.0
+          ],
+          [
+            0.008,
+            0.15,
+            0.915,
+            1.0,
+            1.0,
+            1.0,
+            0.926,
+            0.396,
+            0.015,
+            0.0
+          ],
+          [
+            0.05,
+            0.77,
+            0.973,
+            0.923,
+            0.963,
+            0.904,
+            0.96,
+            0.886,
+            0.218,
+            0.0
+          ],
+          [
+            0.144,
+            0.561,
+            0.805,
+            0.853,
+            0.162,
+            0.501,
+            0.716,
+            0.653,
+            0.271,
+            0.0
+          ],
+          [
+            0.541,
+            0.933,
+            0.852,
+            0.963,
+            0.55,
+            0.326,
+            0.535,
+            0.878,
+            0.774,
+            0.121
+          ],
+          [
+            0.12,
+            0.702,
+            0.945,
+            1.0,
+            0.996,
+            0.919,
+            0.98,
+            0.492,
+            0.15,
+            0.0
+          ],
+          [
+            0.574,
+            0.935,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.992,
+            0.702,
+            0.023
+          ],
+          [
+            0.609,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.961,
+            0.428
+          ],
+          [
+            0.837,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.677
+          ],
+          [
+            0.381,
+            0.993,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.973,
+            0.267
+          ],
+          [
+            0.0,
+            0.104,
+            0.585,
+            0.816,
+            0.901,
+            0.875,
+            0.861,
+            0.626,
+            0.214,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          35,
+          17
+        ],
+        "trunk_columns": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "contact_px": 163,
+        "contact_reference_px": 163.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            2,
+            1,
+            2
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "SEC-01",
+    "domain": "sect_facilities_and_dwellings",
+    "interaction": "activate_array",
+    "collision_behavior": "walk_surface",
+    "element": "earth",
+    "tier": 2
+  },
+  "category_id": "sec_01_mountain_sect_entry_gate_shanmen",
+  "domain_id": "sect_facilities_and_dwellings",
+  "pinyin": "Zōngmén Shānmén · Concentric Bagua Array Platform",
+  "archetype_name": "Concentric Bagua Array Platform",
+  "footprint_subcells": {
+    "w": 12,
+    "h": 12
+  },
+  "footprint_px": {
+    "w": 384,
+    "h": 384
+  },
+  "cell_span": {
+    "w": 3,
+    "h": 3
+  },
+  "collision": {
+    "type": "walk_surface",
+    "shape": "box",
+    "solid": false,
+    "blocks_movement": false,
+    "blocks_projectiles": false,
+    "vision_block": false,
+    "height_layer": "ground"
+  },
+  "primary_material": "weathered_karst_limestone",
+  "secondary_material": "crag_scree",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Earth affinity (Foundation Establishment (Trúc Cơ / 筑基))",
+  "elevation_tier": 2,
+  "mortal_realm_tier": "Foundation Establishment (Trúc Cơ / 筑基)",
+  "asset_slug": "array_formation_dais"
+}

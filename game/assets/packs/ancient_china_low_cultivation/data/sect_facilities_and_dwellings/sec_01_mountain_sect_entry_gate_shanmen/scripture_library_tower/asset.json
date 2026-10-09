@@ -1,0 +1,1151 @@
+{
+  "id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_01_mountain_sect_entry_gate_shanmen.scripture_library_tower",
+  "archetype": "scripture_library_tower_sec_01_mountain_sect_entry_gate_shanmen",
+  "name": "Mountain Sect Entry Gate (Shanmen) - Tiered Daoist Scripture Pavilion",
+  "vietnamese_name": "Tông Môn Sơn Môn - Tàng Kinh Các Ba Tầng",
+  "hanzi": "巍峨宗门山门 · 藏经纳法高阁",
+  "category": "sec_01_mountain_sect_entry_gate_shanmen",
+  "category_code": "SEC-01",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_01_mountain_sect_entry_gate_shanmen",
+  "asset_class": "structure_building",
+  "type": "building",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "read_scrolls",
+  "gameplay_role": "structure_building entity supporting Mountain Sect Entry Gate (Shanmen) gameplay",
+  "destructible": false,
+  "material": "seasoned camphor timber framing and glazed ceramic roof tiles",
+  "cultivation_element": "earth",
+  "prompt_summary": "Single isolated 2D top-down RPG map building sprite of mountain sect entry gate (shanmen) - tiered daoist scripture pavilion, glazed dark ceramic roof tiles, steep high-angle top-down RPG map perspective (~65-70 degrees downward tilt), roof dominant overhead (75%-80% of height), foreshortened walls beneath eaves, gouache hand-painted, fine dark #263A35 ink contours, flat baseline, solid pure white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Cultivation Sect Facilities & Dwellings",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "rot_south_facade",
+      "name": "South Facade (Front Entrance)",
+      "prompt_modifier": "front entrance visible foreshortened beneath eaves, steep overhead map view",
+      "variant_id": "rot_south_facade",
+      "variant_name": "South Facade (Front Entrance)",
+      "description": "front entrance visible foreshortened beneath eaves, steep overhead map view",
+      "prompt": "Single isolated 2D top-down world-map building sprite of tiered daoist scripture pavilion, seasoned camphor timber framing and glazed ceramic roof tiles, front entrance visible foreshortened beneath eaves, steep overhead map view, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, roof ridge running East-West with broad southern roof surface broad glazed ceramic roof tiles and curved dougong eaves dominant and fully visible overhead (70%-80% of height),  foreshortened front walls and entrance visible beneath eaves at bottom-center, stone courtyard steps descending at bottom, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "thatched straw roof, straw hut, hay, rustic shack, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_01_mountain_sect_entry_gate_shanmen/scripture_library_tower/rot_south_facade.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.46,
+            0.749,
+            0.451
+          ],
+          [
+            0.771,
+            1.0,
+            0.756
+          ],
+          [
+            0.602,
+            0.973,
+            0.578
+          ]
+        ],
+        "frac_zero": 0.4544,
+        "blocks": [
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 9,
+        "anchor_cell": [
+          1,
+          2
+        ],
+        "sub_grid": [
+          10,
+          11
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.193,
+            0.187,
+            0.217,
+            0.062,
+            0.062,
+            0.335,
+            0.16,
+            0.183,
+            0.0
+          ],
+          [
+            0.0,
+            0.536,
+            0.994,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.99,
+            0.469,
+            0.0
+          ],
+          [
+            0.0,
+            0.443,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.387,
+            0.0
+          ],
+          [
+            0.093,
+            0.842,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.795,
+            0.05
+          ],
+          [
+            0.368,
+            0.996,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.99,
+            0.315
+          ],
+          [
+            0.041,
+            0.994,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.93,
+            0.033
+          ],
+          [
+            0.261,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.222
+          ],
+          [
+            0.749,
+            0.965,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.97,
+            0.736
+          ],
+          [
+            0.0,
+            0.638,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.492,
+            0.003
+          ],
+          [
+            0.0,
+            0.824,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.706,
+            0.0
+          ],
+          [
+            0.0,
+            0.38,
+            0.526,
+            0.877,
+            0.871,
+            0.881,
+            0.858,
+            0.482,
+            0.378,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          32,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "contact_px": 162,
+        "contact_reference_px": 162.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.0": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.15": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.35": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.6": [
+            0,
+            0,
+            2,
+            2
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          2,
+          2
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          384,
+          384
+        ]
+      }
+    },
+    {
+      "variant_slug": "rot_north_rear",
+      "name": "North Rear (Back Wall)",
+      "prompt_modifier": "rear roof slope dominant overhead, solid back wall beneath eaves, zero front entrance steps",
+      "variant_id": "rot_north_rear",
+      "variant_name": "North Rear (Back Wall)",
+      "description": "rear roof slope dominant overhead, solid back wall beneath eaves, zero front entrance steps",
+      "prompt": "Single isolated 2D top-down world-map building sprite of tiered daoist scripture pavilion, seasoned camphor timber framing and glazed ceramic roof tiles, rear roof slope dominant overhead, solid back wall beneath eaves, solid continuous rear wall, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, roof ridge running East-West with broad northern rear roof surface broad glazed ceramic roof tiles and curved dougong eaves dominant and fully visible overhead (70%-80% of height),  solid unbroken timber lattice back wall and stone foundation foreshortened beneath eaves at bottom, completely windowless and doorless flat rear wall flush on level ground, clean horizontal baseline, back exterior view, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "thatched straw roof, straw hut, hay, rustic shack, front entrance door, open doorway, entrance steps, stairs, portal, door plaque, front veranda, open portal, descending stairs, central doorway, porch, arched entryway, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_01_mountain_sect_entry_gate_shanmen/scripture_library_tower/rot_north_rear.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.584,
+            0.748,
+            0.568
+          ],
+          [
+            0.825,
+            1.0,
+            0.805
+          ],
+          [
+            0.64,
+            0.944,
+            0.656
+          ]
+        ],
+        "frac_zero": 0.3789,
+        "blocks": [
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 9,
+        "anchor_cell": [
+          1,
+          2
+        ],
+        "sub_grid": [
+          11,
+          11
+        ],
+        "sub_fill": [
+          [
+            0.178,
+            0.553,
+            0.277,
+            0.136,
+            0.087,
+            0.082,
+            0.089,
+            0.228,
+            0.297,
+            0.604,
+            0.0
+          ],
+          [
+            0.014,
+            0.949,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.61,
+            0.0
+          ],
+          [
+            0.0,
+            0.847,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.451,
+            0.0
+          ],
+          [
+            0.0,
+            0.883,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.494,
+            0.0
+          ],
+          [
+            0.315,
+            0.997,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.882,
+            0.005
+          ],
+          [
+            0.79,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.655
+          ],
+          [
+            0.243,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.773,
+            0.196
+          ],
+          [
+            0.386,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.955,
+            0.117
+          ],
+          [
+            0.64,
+            0.827,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.754,
+            0.673
+          ],
+          [
+            0.0,
+            0.452,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.148,
+            0.0
+          ],
+          [
+            0.0,
+            0.354,
+            0.554,
+            0.536,
+            0.821,
+            0.857,
+            0.798,
+            0.6,
+            0.684,
+            0.215,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          20,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "contact_px": 253,
+        "contact_reference_px": 253.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.0": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.15": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.35": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.6": [
+            0,
+            0,
+            2,
+            2
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          2,
+          2
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          384,
+          384
+        ]
+      }
+    },
+    {
+      "variant_slug": "rot_west_flank",
+      "name": "West Flank (Left Profile)",
+      "prompt_modifier": "ridge oriented North-South, western roof slope and gable end visible from overhead",
+      "variant_id": "rot_west_flank",
+      "variant_name": "West Flank (Left Profile)",
+      "description": "ridge oriented North-South, western roof slope and gable end visible from overhead",
+      "prompt": "Single isolated 2D top-down world-map building sprite of tiered daoist scripture pavilion, seasoned camphor timber framing and glazed ceramic roof tiles, ridge oriented North-South, western roof slope and gable end visible from overhead, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, building rotated 90 degrees with roof ridge running North-South, western roof slope and high-angle triangular dougong timber gable end dominant and fully visible overhead, western side wall foreshortened beneath eaves at bottom, side window or railing, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "thatched straw roof, straw hut, hay, rustic shack, symmetrical front entrance facade, central double doors at bottom, front steps at bottom-center, annexed side structure, attached side pavilion, extra side gate, secondary structure, side tower, courtyard wing, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_01_mountain_sect_entry_gate_shanmen/scripture_library_tower/rot_west_flank.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.391,
+            0.724,
+            0.334
+          ],
+          [
+            0.799,
+            1.0,
+            0.712
+          ],
+          [
+            0.637,
+            0.961,
+            0.597
+          ]
+        ],
+        "frac_zero": 0.5326,
+        "blocks": [
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 9,
+        "anchor_cell": [
+          1,
+          2
+        ],
+        "sub_grid": [
+          9,
+          11
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.19,
+            0.003,
+            0.012,
+            0.357,
+            0.0,
+            0.052,
+            0.146,
+            0.0
+          ],
+          [
+            0.0,
+            0.599,
+            0.903,
+            0.843,
+            0.954,
+            0.822,
+            0.965,
+            0.197,
+            0.0
+          ],
+          [
+            0.0,
+            0.446,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.039,
+            0.0
+          ],
+          [
+            0.274,
+            0.761,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.583,
+            0.016
+          ],
+          [
+            0.094,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.644,
+            0.0
+          ],
+          [
+            0.473,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.71,
+            0.0
+          ],
+          [
+            0.658,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.992,
+            0.593
+          ],
+          [
+            0.442,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.53
+          ],
+          [
+            0.526,
+            0.939,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.77,
+            0.359
+          ],
+          [
+            0.062,
+            0.869,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.438,
+            0.0
+          ],
+          [
+            0.0,
+            0.456,
+            0.545,
+            0.901,
+            0.875,
+            0.748,
+            0.58,
+            0.299,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          50,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "contact_px": 203,
+        "contact_reference_px": 203.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.0": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.15": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.35": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.6": [
+            0,
+            0,
+            2,
+            2
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          2,
+          2
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          384,
+          384
+        ]
+      }
+    },
+    {
+      "variant_slug": "rot_east_flank",
+      "name": "East Flank (Right Profile)",
+      "prompt_modifier": "ridge oriented North-South, eastern roof slope and gable end visible from overhead",
+      "variant_id": "rot_east_flank",
+      "variant_name": "East Flank (Right Profile)",
+      "description": "ridge oriented North-South, eastern roof slope and gable end visible from overhead",
+      "prompt": "Single isolated 2D top-down world-map building sprite of tiered daoist scripture pavilion, seasoned camphor timber framing and glazed ceramic roof tiles, ridge oriented North-South, eastern roof slope and gable end visible from overhead, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, building rotated 90 degrees with roof ridge running North-South, eastern roof slope and high-angle triangular dougong timber gable end dominant and fully visible overhead, eastern side wall foreshortened beneath eaves at bottom, side window or railing, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "thatched straw roof, straw hut, hay, rustic shack, symmetrical front entrance facade, central double doors at bottom, front steps at bottom-center, annexed side structure, attached side pavilion, extra side gate, secondary structure, side tower, courtyard wing, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_01_mountain_sect_entry_gate_shanmen/scripture_library_tower/rot_east_flank.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.25,
+            0.674,
+            0.266
+          ],
+          [
+            0.757,
+            1.0,
+            0.749
+          ],
+          [
+            0.374,
+            0.838,
+            0.316
+          ]
+        ],
+        "frac_zero": 0.5621,
+        "blocks": [
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 9,
+        "anchor_cell": [
+          1,
+          2
+        ],
+        "sub_grid": [
+          10,
+          11
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.42,
+            0.089,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.005,
+            0.078,
+            0.569,
+            0.995,
+            0.697,
+            0.013,
+            0.0,
+            0.0
+          ],
+          [
+            0.021,
+            0.144,
+            0.563,
+            0.955,
+            1.0,
+            1.0,
+            1.0,
+            0.691,
+            0.053,
+            0.0
+          ],
+          [
+            0.727,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.881,
+            0.526
+          ],
+          [
+            0.052,
+            0.899,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.654,
+            0.171
+          ],
+          [
+            0.675,
+            0.979,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.854,
+            0.424
+          ],
+          [
+            0.13,
+            0.922,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.682,
+            0.132
+          ],
+          [
+            0.044,
+            0.923,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.596,
+            0.0
+          ],
+          [
+            0.0,
+            0.482,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.798,
+            0.178,
+            0.0
+          ],
+          [
+            0.0,
+            0.005,
+            0.688,
+            1.0,
+            1.0,
+            0.988,
+            0.894,
+            0.36,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.056,
+            0.782,
+            0.401,
+            0.159,
+            0.076,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          36,
+          16
+        ],
+        "trunk_columns": [
+          3,
+          4
+        ],
+        "contact_px": 40,
+        "contact_reference_px": 40.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.0": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.15": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.35": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.6": [
+            0,
+            0,
+            2,
+            2
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          2,
+          2
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          384,
+          384
+        ]
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "SEC-01",
+    "domain": "sect_facilities_and_dwellings",
+    "interaction": "read_scrolls",
+    "collision_behavior": "solid",
+    "element": "earth",
+    "tier": 2
+  },
+  "category_id": "sec_01_mountain_sect_entry_gate_shanmen",
+  "domain_id": "sect_facilities_and_dwellings",
+  "pinyin": "Zōngmén Shānmén · Tiered Daoist Scripture Pavilion",
+  "archetype_name": "Tiered Daoist Scripture Pavilion",
+  "footprint_subcells": {
+    "w": 12,
+    "h": 12
+  },
+  "footprint_px": {
+    "w": 384,
+    "h": 384
+  },
+  "cell_span": {
+    "w": 3,
+    "h": 3
+  },
+  "collision": {
+    "type": "solid",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": true,
+    "height_layer": "structure"
+  },
+  "primary_material": "timber_frame",
+  "secondary_material": "glazed_ceramic_tile",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Earth affinity (Foundation Establishment (Trúc Cơ / 筑基))",
+  "elevation_tier": 2,
+  "mortal_realm_tier": "Foundation Establishment (Trúc Cơ / 筑基)",
+  "asset_slug": "scripture_library_tower"
+}
