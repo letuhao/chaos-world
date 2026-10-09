@@ -1,0 +1,154 @@
+{
+  "asset_id": "ancient_china_low_cultivation.terrain_and_geology.ter_20_petrified_bone_earth.crag_outcropping",
+  "domain": "terrain_and_geology",
+  "sub_domain": "ter_20_petrified_bone_earth",
+  "asset_slug": "crag_outcropping",
+  "variant_slug": "facing_south_front",
+  "name": "South Facing View",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_20_petrified_bone_earth/crag_outcropping/facing_south_front.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "mine_stone",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.461,
+        0.483
+      ],
+      [
+        0.78,
+        0.792
+      ]
+    ],
+    "frac_zero": 0.5454,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.73,
+        0.825,
+        0.028,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.153,
+        0.973,
+        1.0,
+        0.51,
+        0.304,
+        0.0
+      ],
+      [
+        0.04,
+        0.597,
+        1.0,
+        1.0,
+        0.737,
+        0.429,
+        0.195
+      ],
+      [
+        0.284,
+        0.906,
+        1.0,
+        1.0,
+        1.0,
+        0.543,
+        0.003
+      ],
+      [
+        0.69,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.997,
+        0.742
+      ],
+      [
+        0.528,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.817,
+        0.154
+      ],
+      [
+        0.002,
+        0.682,
+        0.955,
+        0.941,
+        0.706,
+        0.255,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      25,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 138,
+    "contact_reference_px": 138.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

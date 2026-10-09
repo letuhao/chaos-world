@@ -1,0 +1,783 @@
+{
+  "id": "ancient_china_low_cultivation.terrain_and_geology.ter_20_petrified_bone_earth.rich_resource_node",
+  "archetype": "rich_resource_node_ter_20_petrified_bone_earth",
+  "name": "Petrified Bone Earth - Mineral Ore Exposed Outcrop",
+  "vietnamese_name": "Khô Cốt Can Nham - Điểm Lộ Khoáng Sản Giàu Có",
+  "hanzi": "枯骨钙岩 · 富集矿石露头",
+  "category": "ter_20_petrified_bone_earth",
+  "category_code": "TER-20",
+  "domain": "terrain_and_geology",
+  "sub_domain": "ter_20_petrified_bone_earth",
+  "asset_class": "prop_workstation",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "mine_ore",
+  "gameplay_role": "prop_workstation entity supporting Petrified Bone Earth gameplay",
+  "destructible": true,
+  "material": "dense metallic mineral outcropping within crystalline host rock",
+  "cultivation_element": "ghost",
+  "prompt_summary": "Single isolated 2D RPG game prop of petrified bone earth - mineral ore exposed outcrop, authentic petrified bone earth materials, East Asian Xianxia craftsmanship, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese craftsmanship, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Terrains & Geological Formations",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "pristine_dormant",
+      "name": "Pristine Dormant State",
+      "prompt_modifier": "cold clean polished state, unlit hearth, intact locks",
+      "variant_id": "pristine_dormant",
+      "variant_name": "Pristine Dormant State",
+      "description": "cold clean polished state, unlit hearth, intact locks",
+      "prompt": "Single isolated 2D RPG game prop of mineral ore exposed outcrop, dense metallic mineral outcropping within crystalline host rock, cold clean polished state, unlit hearth, intact locks, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_20_petrified_bone_earth/rich_resource_node/pristine_dormant.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.325,
+            0.352
+          ],
+          [
+            0.686,
+            0.712
+          ]
+        ],
+        "frac_zero": 0.6138,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.297,
+            0.908,
+            0.112,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.668,
+            1.0,
+            0.41,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.057,
+            0.994,
+            1.0,
+            0.764,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.506,
+            1.0,
+            1.0,
+            0.995,
+            0.168,
+            0.0
+          ],
+          [
+            0.047,
+            0.956,
+            1.0,
+            1.0,
+            1.0,
+            0.665,
+            0.037
+          ],
+          [
+            0.674,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.998,
+            0.548
+          ],
+          [
+            0.012,
+            0.505,
+            0.862,
+            0.956,
+            0.736,
+            0.519,
+            0.022
+          ]
+        ],
+        "crop_offset": [
+          22,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "contact_px": 135,
+        "contact_reference_px": 135.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "active_operating",
+      "name": "Active Operating State",
+      "prompt_modifier": "active glowing spiritual flames, heat haze, open functioning elements",
+      "variant_id": "active_operating",
+      "variant_name": "Active Operating State",
+      "description": "active glowing spiritual flames, heat haze, open functioning elements",
+      "prompt": "Single isolated 2D RPG game prop of mineral ore exposed outcrop, dense metallic mineral outcropping within crystalline host rock, active glowing spiritual flames, heat haze, open functioning elements, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_20_petrified_bone_earth/rich_resource_node/active_operating.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.534,
+            0.293
+          ],
+          [
+            0.781,
+            0.708
+          ]
+        ],
+        "frac_zero": 0.5724,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.076,
+            0.905,
+            0.357,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.396,
+            1.0,
+            0.849,
+            0.35,
+            0.038,
+            0.0
+          ],
+          [
+            0.074,
+            0.797,
+            1.0,
+            1.0,
+            0.524,
+            0.037,
+            0.0
+          ],
+          [
+            0.26,
+            0.98,
+            1.0,
+            1.0,
+            1.0,
+            0.342,
+            0.0
+          ],
+          [
+            0.48,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.807,
+            0.075
+          ],
+          [
+            0.688,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.975,
+            0.331
+          ],
+          [
+            0.14,
+            0.646,
+            0.819,
+            0.824,
+            0.706,
+            0.196,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          23,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 115,
+        "contact_reference_px": 115.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "damaged_weathered",
+      "name": "Damaged Weathered State",
+      "prompt_modifier": "mossy aged patina, chipped corners, cracked surfaces",
+      "variant_id": "damaged_weathered",
+      "variant_name": "Damaged Weathered State",
+      "description": "mossy aged patina, chipped corners, cracked surfaces",
+      "prompt": "Single isolated 2D RPG game prop of mineral ore exposed outcrop, dense metallic mineral outcropping within crystalline host rock, mossy aged patina, chipped corners, cracked surfaces, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_20_petrified_bone_earth/rich_resource_node/damaged_weathered.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.348,
+            0.435
+          ],
+          [
+            0.686,
+            0.725
+          ]
+        ],
+        "frac_zero": 0.622,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.562,
+            0.92,
+            0.087,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.036,
+            0.918,
+            1.0,
+            0.293,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.318,
+            1.0,
+            1.0,
+            0.566,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.625,
+            1.0,
+            1.0,
+            0.896,
+            0.058,
+            0.0
+          ],
+          [
+            0.118,
+            0.991,
+            1.0,
+            1.0,
+            1.0,
+            0.489,
+            0.0
+          ],
+          [
+            0.732,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.877,
+            0.24
+          ],
+          [
+            0.104,
+            0.425,
+            0.926,
+            0.778,
+            0.528,
+            0.138,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          31,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 63,
+        "contact_reference_px": 63.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "ruined_rubble",
+      "name": "Broken Shattered Rubble",
+      "prompt_modifier": "collapsed fractured shards, scavengeable parts",
+      "variant_id": "ruined_rubble",
+      "variant_name": "Broken Shattered Rubble",
+      "description": "collapsed fractured shards, scavengeable parts",
+      "prompt": "Single isolated 2D RPG game prop of mineral ore exposed outcrop, dense metallic mineral outcropping within crystalline host rock, collapsed fractured shards, scavengeable parts, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_20_petrified_bone_earth/rich_resource_node/ruined_rubble.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.424,
+            0.448
+          ],
+          [
+            0.701,
+            0.722
+          ]
+        ],
+        "frac_zero": 0.5934,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.521,
+            0.904,
+            0.142,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.17,
+            0.968,
+            1.0,
+            0.477,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.588,
+            1.0,
+            1.0,
+            0.888,
+            0.016,
+            0.0
+          ],
+          [
+            0.106,
+            0.926,
+            1.0,
+            1.0,
+            1.0,
+            0.445,
+            0.0
+          ],
+          [
+            0.538,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.912,
+            0.438
+          ],
+          [
+            0.558,
+            0.989,
+            1.0,
+            1.0,
+            1.0,
+            0.815,
+            0.0
+          ],
+          [
+            0.039,
+            0.183,
+            0.748,
+            0.787,
+            0.558,
+            0.027,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          26,
+          16
+        ],
+        "trunk_columns": [
+          2,
+          3,
+          4
+        ],
+        "contact_px": 63,
+        "contact_reference_px": 63.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "TER-20",
+    "domain": "terrain_and_geology",
+    "interaction": "mine_ore",
+    "collision_behavior": "solid",
+    "element": "ghost",
+    "tier": 2
+  },
+  "category_id": "ter_20_petrified_bone_earth",
+  "domain_id": "terrain_and_geology",
+  "pinyin": "Kūgǔ Gàiyán · Mineral Ore Exposed Outcrop",
+  "archetype_name": "Mineral Ore Exposed Outcrop",
+  "footprint_subcells": {
+    "w": 8,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 256,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 2,
+    "h": 2
+  },
+  "collision": {
+    "type": "solid",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": true,
+    "height_layer": "ground"
+  },
+  "primary_material": "raw_metal_ore",
+  "secondary_material": "quartz_vein",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Ghost affinity (Foundation Establishment (Trúc Cơ / 筑基))",
+  "elevation_tier": 2,
+  "mortal_realm_tier": "Foundation Establishment (Trúc Cơ / 筑基)",
+  "asset_slug": "rich_resource_node"
+}
