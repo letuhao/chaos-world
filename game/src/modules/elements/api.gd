@@ -4,6 +4,14 @@ extends RefCounted
 ## Public facade for the `elements` module (ADR 0004).
 
 
+## ## The mastery loop's doors (ADR 0004's second half)
+##
+## The practice STEP is owned here, the way `QiCultivationApi` owns its
+## `CULTIVATE_STEP`: a caller passes a time unit and the module prices it, so no
+## screen carries a balance number of its own.
+const PRACTICE_STEP := 25.0
+
+
 static func default_rules() -> ElementRules:
 	# The module's ONE rules cache lives on `ElementDefaults`, so the path and training
 	# files reach it without naming this facade.
@@ -234,14 +242,6 @@ static func strip_realm_modifiers(actor: Actor, rules: ElementRules = null) -> v
 	if kept.size() != actor.stats._modifiers.size():
 		actor.stats._modifiers = kept
 		actor.stats.mark_dirty()
-
-
-## ## The mastery loop's doors (ADR 0004's second half)
-##
-## The practice STEP is owned here, the way `QiCultivationApi` owns its
-## `CULTIVATE_STEP`: a caller passes a time unit and the module prices it, so no
-## screen carries a balance number of its own.
-const PRACTICE_STEP := 25.0
 
 
 ## One sitting on `element_id`. BL-0938: the mastery channel is saturating AND capped, so

@@ -20,6 +20,10 @@ extends Resource
 
 const TABLE_PATH := "res://src/core/aptitude_table.tres"
 
+## The shipped table's own cache. `static var`s are declared before `@export`s
+## (gdlint's `class-definitions-order`), so it sits here rather than beside [method shipped].
+static var _shipped: AptitudeTable = null
+
 ## `gamma` in `k * share^gamma * span`: `1.0` is linear, and a value above it taxes a
 ## build that spreads its points instead of concentrating them.
 @export var share_exponent: float = 1.0
@@ -28,8 +32,6 @@ const TABLE_PATH := "res://src/core/aptitude_table.tres"
 ## One row per edge: `{channel: StringName, source: StringName, k: float, mode: String}`
 ## with mode `"contest"` or `"magnitude"`.
 @export var edge_rows: Array[Dictionary] = []
-
-static var _shipped: AptitudeTable = null
 
 var _compiled: Array[AptitudeEdge] = []
 

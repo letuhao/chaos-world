@@ -5,6 +5,13 @@ extends RefCounted
 ## can be appended here or authored as ElementDef `.tres` resources.
 
 
+## The shipped rules table, built ONCE. `ElementsApi.default_rules()` forwards here so
+## the module has one cache, and the path/training files can reach the rules without
+## naming the facade — a two-way class reference between a facade and its own module
+## files breaks compilation (the edge `ActorAffinity` documents).
+static var _rules: ElementRules = null
+
+
 static func base() -> Array[ElementDef]:
 	# The 相克 cycle is 金克木 · 木克土 · 土克水 · 水克火 · 火克金, and each entry's
 	# `overcomes` list names the element it BEATS: metal>wood, wood>earth, earth>water,
@@ -55,13 +62,6 @@ static func all() -> Array[ElementDef]:
 	out.append_array(advanced())
 	out.append_array(tier_three())
 	return out
-
-
-## The shipped rules table, built ONCE. `ElementsApi.default_rules()` forwards here so
-## the module has one cache, and the path/training files can reach the rules without
-## naming the facade — a two-way class reference between a facade and its own module
-## files breaks compilation (the edge `ActorAffinity` documents).
-static var _rules: ElementRules = null
 
 
 static func rules() -> ElementRules:

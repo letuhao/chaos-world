@@ -33,6 +33,12 @@ const MASTERY_HALF := 300.0
 ## element gates (900/1800/2700) so the mono-element traversal keeps passing.
 const CAP_BY_TIER := {1: 600.0, 2: 1200.0, 3: 2000.0, 4: 3000.0}
 
+## The authored labour curve, INJECTED by the composition root (ADR 0173's pattern: the
+## caller that owns the number hands it down). This module may not read another path's
+## seeds, so an uninstalled source answers -1.0 and advancement refuses by name rather
+## than inventing a threshold.
+static var _progress_source: Callable = Callable()
+
 
 ## The saturating mastery curve, shared by `ElementProvider`'s power and crit terms.
 ## Non-finite and non-positive mastery read `0.0` — the same fail-safe the old linear
@@ -132,13 +138,6 @@ static func usable(actor: Actor, element_id: StringName, rules: ElementRules = n
 	if entry.tier > max_tier(realm_id):
 		return false
 	return true
-
-
-## The authored labour curve, INJECTED by the composition root (ADR 0173's pattern: the
-## caller that owns the number hands it down). This module may not read another path's
-## seeds, so an uninstalled source answers -1.0 and advancement refuses by name rather
-## than inventing a threshold.
-static var _progress_source: Callable = Callable()
 
 
 static func set_progress_source(source: Callable) -> void:
