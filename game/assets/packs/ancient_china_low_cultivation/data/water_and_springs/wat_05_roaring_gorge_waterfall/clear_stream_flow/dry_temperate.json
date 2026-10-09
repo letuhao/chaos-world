@@ -1,0 +1,95 @@
+{
+  "asset_id": "ancient_china_low_cultivation.water_and_springs.wat_05_roaring_gorge_waterfall.clear_stream_flow",
+  "domain": "water_and_springs",
+  "sub_domain": "wat_05_roaring_gorge_waterfall",
+  "asset_slug": "clear_stream_flow",
+  "variant_slug": "dry_temperate",
+  "name": "Dry Normal State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_05_roaring_gorge_waterfall/clear_stream_flow/dry_temperate.png",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "alpha": "opaque",
+  "pivot": "center",
+  "collision_type": "walk_surface",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        1.0
+      ]
+    ],
+    "frac_zero": 0.0,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      4,
+      4
+    ],
+    "sub_fill": [
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    ],
+    "crop_offset": [
+      0,
+      0
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "contact_px": 128,
+    "contact_reference_px": 128.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
