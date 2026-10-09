@@ -1,0 +1,185 @@
+{
+  "asset_id": "ancient_china_low_cultivation.terrain_and_geology.ter_12_salt_flats_alkaline_crust.rich_resource_node",
+  "domain": "terrain_and_geology",
+  "sub_domain": "ter_12_salt_flats_alkaline_crust",
+  "asset_slug": "rich_resource_node",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_12_salt_flats_alkaline_crust/rich_resource_node/damaged_weathered.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "mine_ore",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.381,
+        0.345
+      ],
+      [
+        0.788,
+        0.73
+      ]
+    ],
+    "frac_zero": 0.5869,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.431,
+        0.901,
+        0.062,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.011,
+        0.848,
+        1.0,
+        0.276,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.307,
+        1.0,
+        1.0,
+        0.69,
+        0.0,
+        0.0
+      ],
+      [
+        0.036,
+        0.753,
+        1.0,
+        1.0,
+        0.967,
+        0.327,
+        0.0
+      ],
+      [
+        0.497,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.921,
+        0.378
+      ],
+      [
+        0.83,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.968,
+        0.464
+      ],
+      [
+        0.141,
+        0.704,
+        0.934,
+        0.739,
+        0.672,
+        0.368,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      22,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 90,
+    "contact_reference_px": 90.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}
