@@ -46,14 +46,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_12_mountain_camphor_cinnamon/harvested_stump/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.412
+            0.469
           ]
         ],
-        "frac_zero": 0.7653,
+        "frac_zero": 0.7106,
         "blocks": [
           [
             false
@@ -75,37 +75,42 @@
         ],
         "sub_fill": [
           [
-            0.362,
-            0.661,
-            0.163
+            0.214,
+            0.733,
+            0.182
           ],
           [
-            0.456,
-            0.35,
-            0.226
+            0.428,
+            0.552,
+            0.411
           ],
           [
-            0.473,
-            0.394,
-            0.015
+            0.58,
+            0.726,
+            0.082
           ]
         ],
         "crop_offset": [
-          27,
-          17
+          22,
+          16
         ],
         "trunk_columns": [
           0,
           1
         ],
-        "contact_px": 37,
-        "contact_reference_px": 37.0,
+        "contact_px": 52,
+        "contact_reference_px": 52.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
           "1.15": null,
           "1.35": null,
-          "1.6": null
+          "1.6": [
+            0,
+            0,
+            0,
+            0
+          ]
         },
         "block_rect": null,
         "block_rect_px": null
@@ -122,14 +127,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_12_mountain_camphor_cinnamon/harvested_stump/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.448
+            0.52
           ]
         ],
-        "frac_zero": 0.7483,
+        "frac_zero": 0.6838,
         "blocks": [
           [
             false
@@ -151,31 +156,31 @@
         ],
         "sub_fill": [
           [
-            0.408,
-            0.566,
-            0.085
+            0.243,
+            0.819,
+            0.121
           ],
           [
-            0.459,
-            0.429,
-            0.228
+            0.49,
+            0.789,
+            0.507
           ],
           [
-            0.412,
-            0.64,
-            0.0
+            0.421,
+            0.92,
+            0.147
           ]
         ],
         "crop_offset": [
-          28,
+          20,
           17
         ],
         "trunk_columns": [
           0,
           1
         ],
-        "contact_px": 51,
-        "contact_reference_px": 51.0,
+        "contact_px": 61,
+        "contact_reference_px": 61.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -203,14 +208,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_12_mountain_camphor_cinnamon/harvested_stump/damaged_weathered.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.461
+            0.492
           ]
         ],
-        "frac_zero": 0.7494,
+        "frac_zero": 0.7028,
         "blocks": [
           [
             false
@@ -232,31 +237,31 @@
         ],
         "sub_fill": [
           [
-            0.401,
-            0.62,
-            0.167
+            0.233,
+            0.708,
+            0.138
           ],
           [
-            0.296,
-            0.455,
-            0.066
+            0.427,
+            0.639,
+            0.385
           ],
           [
-            0.552,
-            0.769,
-            0.011
+            0.567,
+            0.872,
+            0.141
           ]
         ],
         "crop_offset": [
-          27,
+          22,
           17
         ],
         "trunk_columns": [
           0,
           1
         ],
-        "contact_px": 53,
-        "contact_reference_px": 53.0,
+        "contact_px": 63,
+        "contact_reference_px": 63.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -284,14 +289,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_12_mountain_camphor_cinnamon/harvested_stump/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.507
+            0.539
           ]
         ],
-        "frac_zero": 0.7125,
+        "frac_zero": 0.6772,
         "blocks": [
           [
             false
@@ -313,31 +318,32 @@
         ],
         "sub_fill": [
           [
-            0.396,
-            0.625,
-            0.065
+            0.19,
+            0.75,
+            0.158
           ],
           [
-            0.429,
-            0.449,
-            0.288
+            0.472,
+            0.662,
+            0.383
           ],
           [
-            0.629,
-            0.905,
-            0.246
+            0.722,
+            0.968,
+            0.365
           ]
         ],
         "crop_offset": [
-          24,
+          20,
           17
         ],
         "trunk_columns": [
           0,
-          1
+          1,
+          2
         ],
-        "contact_px": 64,
-        "contact_reference_px": 64.0,
+        "contact_px": 77,
+        "contact_reference_px": 77.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
