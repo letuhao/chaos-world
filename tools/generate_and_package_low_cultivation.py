@@ -1167,9 +1167,8 @@ def run_pipeline(
             failed_count += 1
             continue
 
-        # 1. Archive raw original
-        if not paths["orig_raw"].is_file():
-            shutil.copy2(generated_source, paths["orig_raw"])
+        # 1. Archive raw original (always overwrite so original/ reflects latest generation)
+        shutil.copy2(generated_source, paths["orig_raw"])
 
         # 2. Normalize runtime PNG
         asset_class = (asset.get("asset_class") or asset.get("type") or "").lower()
