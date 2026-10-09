@@ -1,0 +1,633 @@
+{
+  "id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_01_thousand_year_iron_bamboo.elemental_mutated",
+  "archetype": "elemental_mutated_flo_01_thousand_year_iron_bamboo",
+  "name": "Thousand-Year Iron Bamboo - Elemental Resonance Bloomed Form",
+  "vietnamese_name": "Thiết Tiết Thanh Trúc - Dạng Đột Biến Khí Tượng",
+  "hanzi": "铁节青竹 · 五行异变绽放",
+  "category": "flo_01_thousand_year_iron_bamboo",
+  "category_code": "FLO-01",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_01_thousand_year_iron_bamboo",
+  "asset_class": "flora_herb",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "channel_element",
+  "gameplay_role": "flora_herb entity supporting Thousand-Year Iron Bamboo gameplay",
+  "destructible": true,
+  "material": "dense fibrous green bamboo with metallic sheen",
+  "cultivation_element": "wood",
+  "prompt_summary": "Single isolated 2D RPG game prop of thousand-year iron bamboo - elemental resonance bloomed form, authentic thousand-year iron bamboo materials, East Asian Xianxia craftsmanship, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese craftsmanship, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Natural Flora & Spiritual Plants",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "pristine_dormant",
+      "name": "Pristine Dormant State",
+      "prompt_modifier": "cold clean polished state, unlit hearth, intact locks",
+      "variant_id": "pristine_dormant",
+      "variant_name": "Pristine Dormant State",
+      "description": "cold clean polished state, unlit hearth, intact locks",
+      "prompt": "Single isolated 2D top-down RPG map sprite of elemental resonance bloomed form, dense fibrous green bamboo with metallic sheen, cold clean polished state, unlit hearth, intact locks, Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), plant canopy, branching crown, bamboo culms and foliage viewed foreshortened from overhead, spread outward on ground plane, gouache hand-painted with dark #263A35 ink contours, flat grounded root base, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_01_thousand_year_iron_bamboo/elemental_mutated/pristine_dormant.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.458,
+            0.44
+          ],
+          [
+            0.447,
+            0.403
+          ]
+        ],
+        "frac_zero": 0.6537,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.025,
+            0.541,
+            0.583,
+            0.012,
+            0.0,
+            0.0
+          ],
+          [
+            0.002,
+            0.493,
+            0.979,
+            0.987,
+            0.395,
+            0.003,
+            0.0
+          ],
+          [
+            0.04,
+            0.764,
+            0.818,
+            0.752,
+            0.826,
+            0.476,
+            0.0
+          ],
+          [
+            0.546,
+            0.906,
+            0.81,
+            0.699,
+            0.529,
+            0.533,
+            0.08
+          ],
+          [
+            0.247,
+            0.349,
+            0.522,
+            0.949,
+            0.291,
+            0.021,
+            0.0
+          ],
+          [
+            0.0,
+            0.357,
+            0.826,
+            0.966,
+            0.486,
+            0.073,
+            0.0
+          ],
+          [
+            0.0,
+            0.378,
+            0.629,
+            0.759,
+            0.373,
+            0.006,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          29,
+          18
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 91,
+        "contact_reference_px": 91.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            0,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "active_operating",
+      "name": "Active Operating State",
+      "prompt_modifier": "active glowing spiritual flames, heat haze, open functioning elements",
+      "variant_id": "active_operating",
+      "variant_name": "Active Operating State",
+      "description": "active glowing spiritual flames, heat haze, open functioning elements",
+      "prompt": "Single isolated 2D top-down RPG map sprite of elemental resonance bloomed form, dense fibrous green bamboo with metallic sheen, active glowing spiritual flames, heat haze, open functioning elements, Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), plant canopy, branching crown, bamboo culms and foliage viewed foreshortened from overhead, spread outward on ground plane, gouache hand-painted with dark #263A35 ink contours, flat grounded root base, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_01_thousand_year_iron_bamboo/elemental_mutated/active_operating.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.479,
+            0.465
+          ],
+          [
+            0.442,
+            0.361
+          ]
+        ],
+        "frac_zero": 0.6835,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.061,
+            0.659,
+            0.296,
+            0.012,
+            0.0
+          ],
+          [
+            0.065,
+            0.588,
+            1.0,
+            0.828,
+            0.171,
+            0.011
+          ],
+          [
+            0.253,
+            0.918,
+            0.932,
+            0.936,
+            0.783,
+            0.252
+          ],
+          [
+            0.557,
+            0.594,
+            0.863,
+            0.572,
+            0.612,
+            0.389
+          ],
+          [
+            0.312,
+            0.649,
+            0.824,
+            0.722,
+            0.251,
+            0.002
+          ],
+          [
+            0.0,
+            0.288,
+            0.983,
+            0.837,
+            0.221,
+            0.0
+          ],
+          [
+            0.0,
+            0.102,
+            0.48,
+            0.251,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          37,
+          18
+        ],
+        "trunk_columns": [
+          2
+        ],
+        "contact_px": 22,
+        "contact_reference_px": 22.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "damaged_weathered",
+      "name": "Damaged Weathered State",
+      "prompt_modifier": "mossy aged patina, chipped corners, cracked surfaces",
+      "variant_id": "damaged_weathered",
+      "variant_name": "Damaged Weathered State",
+      "description": "mossy aged patina, chipped corners, cracked surfaces",
+      "prompt": "Single isolated 2D top-down RPG map sprite of elemental resonance bloomed form, dense fibrous green bamboo with metallic sheen, mossy aged patina, chipped corners, cracked surfaces, Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), plant canopy, branching crown, bamboo culms and foliage viewed foreshortened from overhead, spread outward on ground plane, gouache hand-painted with dark #263A35 ink contours, flat grounded root base, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_01_thousand_year_iron_bamboo/elemental_mutated/damaged_weathered.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.531,
+            0.396
+          ],
+          [
+            0.427,
+            0.405
+          ]
+        ],
+        "frac_zero": 0.6808,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.119,
+            0.643,
+            0.246,
+            0.007,
+            0.0
+          ],
+          [
+            0.018,
+            0.66,
+            0.997,
+            0.818,
+            0.219,
+            0.0
+          ],
+          [
+            0.477,
+            0.895,
+            0.734,
+            0.892,
+            0.873,
+            0.056
+          ],
+          [
+            0.323,
+            0.609,
+            0.794,
+            0.571,
+            0.323,
+            0.091
+          ],
+          [
+            0.454,
+            0.454,
+            0.78,
+            0.601,
+            0.473,
+            0.298
+          ],
+          [
+            0.026,
+            0.554,
+            0.999,
+            0.894,
+            0.283,
+            0.022
+          ],
+          [
+            0.003,
+            0.269,
+            0.58,
+            0.269,
+            0.09,
+            0.007
+          ]
+        ],
+        "crop_offset": [
+          38,
+          17
+        ],
+        "trunk_columns": [
+          2
+        ],
+        "contact_px": 17,
+        "contact_reference_px": 17.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "ruined_rubble",
+      "name": "Broken Shattered Rubble",
+      "prompt_modifier": "collapsed fractured shards, scavengeable parts",
+      "variant_id": "ruined_rubble",
+      "variant_name": "Broken Shattered Rubble",
+      "description": "collapsed fractured shards, scavengeable parts",
+      "prompt": "Single isolated 2D top-down RPG map sprite of elemental resonance bloomed form, dense fibrous green bamboo with metallic sheen, collapsed fractured shards, scavengeable parts, Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), plant canopy, branching crown, bamboo culms and foliage viewed foreshortened from overhead, spread outward on ground plane, gouache hand-painted with dark #263A35 ink contours, flat grounded root base, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_01_thousand_year_iron_bamboo/elemental_mutated/ruined_rubble.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.495,
+            0.433
+          ],
+          [
+            0.512,
+            0.532
+          ]
+        ],
+        "frac_zero": 0.6168,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.045,
+            0.653,
+            0.549,
+            0.01,
+            0.0,
+            0.0
+          ],
+          [
+            0.008,
+            0.626,
+            1.0,
+            0.971,
+            0.521,
+            0.041,
+            0.0
+          ],
+          [
+            0.065,
+            0.709,
+            0.848,
+            0.716,
+            0.823,
+            0.643,
+            0.0
+          ],
+          [
+            0.634,
+            0.817,
+            0.722,
+            0.621,
+            0.432,
+            0.485,
+            0.104
+          ],
+          [
+            0.123,
+            0.216,
+            0.666,
+            0.925,
+            0.377,
+            0.062,
+            0.0
+          ],
+          [
+            0.018,
+            0.732,
+            0.988,
+            1.0,
+            0.9,
+            0.5,
+            0.0
+          ],
+          [
+            0.025,
+            0.531,
+            0.814,
+            0.911,
+            0.749,
+            0.188,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          27,
+          18
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 110,
+        "contact_reference_px": 110.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "FLO-01",
+    "domain": "flora_and_spirit_plants",
+    "interaction": "channel_element",
+    "collision_behavior": "none",
+    "element": "wood",
+    "tier": 2
+  },
+  "category_id": "flo_01_thousand_year_iron_bamboo",
+  "domain_id": "flora_and_spirit_plants",
+  "pinyin": "Tiějié Qīngzhú · Elemental Resonance Bloomed Form",
+  "archetype_name": "Elemental Resonance Bloomed Form",
+  "footprint_subcells": {
+    "w": 8,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 256,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 2,
+    "h": 2
+  },
+  "collision": {
+    "type": "none",
+    "shape": "box",
+    "solid": false,
+    "blocks_movement": false,
+    "blocks_projectiles": false,
+    "vision_block": false,
+    "height_layer": "ground"
+  },
+  "primary_material": "iron_bamboo",
+  "secondary_material": "foliage",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Wood affinity (Foundation Establishment (Trúc Cơ / 筑基))",
+  "elevation_tier": 2,
+  "mortal_realm_tier": "Foundation Establishment (Trúc Cơ / 筑基)",
+  "asset_slug": "elemental_mutated"
+}

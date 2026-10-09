@@ -1,0 +1,286 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_01_thousand_year_iron_bamboo.ancient_ancestor_core",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_01_thousand_year_iron_bamboo",
+  "asset_slug": "ancient_ancestor_core",
+  "variant_slug": "pristine_dormant",
+  "name": "Pristine Dormant State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_01_thousand_year_iron_bamboo/ancient_ancestor_core/pristine_dormant.png",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "commune_spirit",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.173,
+        0.731,
+        0.119
+      ],
+      [
+        0.534,
+        0.747,
+        0.481
+      ],
+      [
+        0.209,
+        0.941,
+        0.39
+      ]
+    ],
+    "frac_zero": 0.5931,
+    "blocks": [
+      [
+        false,
+        true,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 7,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.087,
+        0.494,
+        0.222,
+        0.062,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.029,
+        0.7,
+        0.981,
+        0.994,
+        0.401,
+        0.029,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.067,
+        0.708,
+        1.0,
+        0.997,
+        1.0,
+        0.948,
+        0.197,
+        0.018,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.043,
+        0.791,
+        1.0,
+        0.901,
+        0.675,
+        0.926,
+        0.73,
+        0.659,
+        0.059,
+        0.0
+      ],
+      [
+        0.053,
+        0.576,
+        0.885,
+        0.858,
+        0.84,
+        0.624,
+        0.726,
+        0.863,
+        0.979,
+        0.394,
+        0.031
+      ],
+      [
+        0.478,
+        0.947,
+        0.811,
+        0.685,
+        0.898,
+        0.839,
+        0.346,
+        0.747,
+        0.539,
+        0.347,
+        0.016
+      ],
+      [
+        0.246,
+        0.617,
+        0.57,
+        0.444,
+        0.826,
+        0.992,
+        0.613,
+        0.366,
+        0.026,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.009,
+        0.307,
+        0.488,
+        0.855,
+        1.0,
+        0.664,
+        0.573,
+        0.097,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.465,
+        0.985,
+        1.0,
+        1.0,
+        0.976,
+        0.723,
+        0.582,
+        0.101,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.822,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.403,
+        0.007,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.121,
+        0.598,
+        0.912,
+        0.97,
+        0.849,
+        0.607,
+        0.135,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      31,
+      17
+    ],
+    "trunk_columns": [
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 150,
+    "contact_reference_px": 150.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      384
+    ]
+  }
+}

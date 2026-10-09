@@ -1,0 +1,139 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_01_thousand_year_iron_bamboo.elemental_mutated",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_01_thousand_year_iron_bamboo",
+  "asset_slug": "elemental_mutated",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_01_thousand_year_iron_bamboo/elemental_mutated/active_operating.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "none",
+  "interactive_verb": "channel_element",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.479,
+        0.465
+      ],
+      [
+        0.442,
+        0.361
+      ]
+    ],
+    "frac_zero": 0.6835,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.061,
+        0.659,
+        0.296,
+        0.012,
+        0.0
+      ],
+      [
+        0.065,
+        0.588,
+        1.0,
+        0.828,
+        0.171,
+        0.011
+      ],
+      [
+        0.253,
+        0.918,
+        0.932,
+        0.936,
+        0.783,
+        0.252
+      ],
+      [
+        0.557,
+        0.594,
+        0.863,
+        0.572,
+        0.612,
+        0.389
+      ],
+      [
+        0.312,
+        0.649,
+        0.824,
+        0.722,
+        0.251,
+        0.002
+      ],
+      [
+        0.0,
+        0.288,
+        0.983,
+        0.837,
+        0.221,
+        0.0
+      ],
+      [
+        0.0,
+        0.102,
+        0.48,
+        0.251,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      37,
+      18
+    ],
+    "trunk_columns": [
+      2
+    ],
+    "contact_px": 22,
+    "contact_reference_px": 22.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
