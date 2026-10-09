@@ -81,14 +81,36 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "LOC_UI_SCREENS_F62FD3B730"
 
+[node name="FightRow" type="HBoxContainer" parent="Layout"]
+layout_mode = 2
+
+[node name="BossLabel" type="Label" parent="Layout/FightRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"MetaLabel"
+text = ""
+
+[node name="StrikeButton" type="Button" parent="Layout/FightRow"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"DangerButton"
+text = "LOC_UI_SCREENS_F9AE58AA35"
+
+[node name="TakeButton" type="Button" parent="Layout/FightRow"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"PrimaryButton"
+text = "LOC_UI_SCREENS_56806A1FFD"
+
+[node name="Move" type="HBoxContainer" parent="Layout"]
+layout_mode = 2
+
 [node name="BuildButton" type="Button" parent="Layout/Move"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"PrimaryButton"
 text = "LOC_UI_SCREENS_BBD80CF7E2"
-
-[node name="Move" type="HBoxContainer" parent="Layout"]
-layout_mode = 2
 
 [node name="NorthButton" type="Button" parent="Layout/Move"]
 unique_name_in_owner = true

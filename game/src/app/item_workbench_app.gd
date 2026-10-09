@@ -1505,6 +1505,13 @@ func _bind_route_screen(route_id: StringName, screen: Control) -> void:
 			)
 			# Raising ground is its own seam with its own refusal.
 			screen.call("bind_build", Callable(VentureBoot, "build"))
+			# The fight seam: strike the live band and take what it drops,
+			# through the boot's own verbs so the screen never names the
+			# modules. Each half degrades alone when unbound (the screen
+			# darkens the row), which is why they bind here, not in the boot.
+			screen.call(
+				"bind_fight", Callable(VentureBoot, "strike"), Callable(VentureBoot, "take")
+			)
 			# Slice 3: the descent seam. The scene asks it when a node names
 			# a domain template; the actor it enters onto is this root's own,
 			# which is why the seam is installed here and not in the boot.

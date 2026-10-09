@@ -294,10 +294,10 @@ func test_debug_names_edges_pois_and_ranges() -> void:
 	screen.call("act_debug")
 	var view := screen.call("summary") as Dictionary
 	var text := String(view.get("debug_text", ""))
-	assert_eq(text.contains("edges 2"), true, "door and portal with their cells")
+	assert_eq(text.contains("edges 3"), true, "road, door and portal with their cells")
 	assert_eq(text.contains("ranges data 2 sim"), true, "with the ranges in force")
 	assert_eq(text.contains("pois "), true, "and a POI count")
-	assert_eq((view.get("passes", []) as Array).size(), 13, "across the whole pass set")
+	assert_eq((view.get("passes", []) as Array).size(), 14, "across the whole pass set")
 	var first_edge := (view.get("edges", []) as Array)[0] as Dictionary
 	assert_eq((first_edge.get("from_cell", []) as Array).size(), 2, "edges carry cells")
 
@@ -367,7 +367,6 @@ func test_raising_ground_seals_it_across_reopen() -> void:
 		return
 	screen.call("act_open")
 	screen.call("act_east")
-	var raised := _cell_of(screen.call("summary") as Dictionary)
 	assert_eq(screen.call("act_build"), true, "raising answers true")
 	screen.call("act_west")
 	assert_eq(bool(screen.call("act_east")), false, "the raised cell no longer admits")
@@ -377,7 +376,7 @@ func test_raising_ground_seals_it_across_reopen() -> void:
 		Vector2i(0, 1),
 		"reopening falls back to the entry: the resume cell is sealed by its own wall"
 	)
-	assert_eq(bool(screen.call("act_east")), false, "the raised cell no longer admits")
+	assert_eq(bool(screen.call("act_east")), false, "and stays sealed")
 
 
 func test_walking_away_dismisses_without_earning() -> void:
@@ -441,13 +440,17 @@ func test_a_broke_hero_is_refused_with_coins_untouched() -> void:
 	assert_eq(EconomyApi.purse(_harness.actor), 0, "with nothing taken")
 
 
-## Walk to a pad approach cell WITHOUT stepping on any travel cell: stops
-## adjacent, for the refusal case. Pad cells and the cave door are forbidden;
-## arrival is any approach cell of the far pad. Bounded like the door walk.
+## Walk to a cell ADJACENT to the far pad, computed off the pad itself so a
+## prop grown on one approach cell cannot fail the walk — arrival is any
+## open neighbour. Every overworld door is forbidden — the portal, the cave
+## doorway and the plains road — because a step onto one travels and a
+## travel cannot be backtracked. Bounded like the door walk.
 func _walk_to_pad(screen: Control) -> bool:
-	return _dfs_cell(
-		screen, {}, 0, [Vector2i(4, 5), Vector2i(5, 4)], [Vector2i(5, 5), Vector2i(3, 1)]
-	)
+	var pad := Vector2i(5, 5)
+	var targets: Array = []
+	for delta in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+		targets.append(pad + delta)
+	return _dfs_cell(screen, {}, 0, targets, [pad, Vector2i(3, 1), Vector2i(6, 1)])
 
 
 func _dfs_cell(
@@ -488,3 +491,98 @@ func _fund(actor: Actor, coins: int) -> void:
 	EconomyApi.attach(actor)
 	var def := Crafting.resolve(EconomyValuation.numeraire_id())
 	ItemsApi.inventory(actor).add(def, coins)
+
+
+## Descend into the demo cave with the fight seam bound by the composition
+## root's own ROUTE_VENTURE arm — this test pressing the screen's verbs IS
+## the proof the root bound them. Returns false when the walk fails, so
+## callers report rather than index blind.
+func _descend_bound(screen: Control) -> bool:
+	screen.call("act_open")
+	return _walk_to_door(screen)
+
+
+func test_the_boss_row_names_the_living_boss() -> void:
+	var screen := _venture_screen()
+	if screen == null:
+		return
+	if not _descend_bound(screen):
+		return
+	var view := screen.call("summary") as Dictionary
+	assert_eq(
+		String((view.get("band", {}) as Dictionary).get("boss_id", "")),
+		"amulet_storm_phoenix",
+		"facing the band's first boss"
+	)
+	assert_ne(String(view.get("boss_text", "")), "", "and the row says so")
+
+
+## The live band's health fraction, read off the screen's own summary. Zero
+## when nothing is in domain.
+func _band_ratio(screen: Control) -> float:
+	var view := screen.call("summary") as Dictionary
+	return float((view.get("band", {}) as Dictionary).get("health_ratio", 0.0))
+
+
+func test_striking_moves_the_band_through_the_roots_own_seam() -> void:
+	var screen := _venture_screen()
+	if screen == null:
+		return
+	if not _descend_bound(screen):
+		return
+	var before := _band_ratio(screen)
+	screen.call("act_strike")
+	assert_eq(_band_ratio(screen) < before, true, "the bound strike takes ground off the band")
+	# Trade blows until the fight decides itself. Either a fallen boss or a
+	# lost run is the seam answering — a bare starter cannot yet out-punch a
+	# tier-1 band (the balance ruling has its own ledger entry), and what is
+	# under test is that every press reaches the module and the row reports
+	# the verdict, not which side wins.
+	var decided := false
+	var rounds := 0
+	while rounds < 48:
+		rounds += 1
+		var mid := String((screen.call("summary") as Dictionary).get("boss_text", ""))
+		if mid.is_empty() or mid.contains("is down"):
+			decided = true
+			break
+		screen.call("act_strike")
+	assert_eq(decided, true, "the fight ran to a verdict through the bound seam")
+	assert_eq(
+		String((screen.call("summary") as Dictionary).get("message_text", "")).contains(
+			"No venture seam"
+		),
+		false,
+		"and never answered unbound"
+	)
+
+
+func test_taking_pays_pressing_the_button_after_a_down() -> void:
+	var screen := _venture_screen()
+	if screen == null:
+		return
+	if not _descend_bound(screen):
+		return
+	# Stage the down through the module's own overkill precedent (the domain
+	# suites fell bosses this way). A bare starter cannot out-punch a tier-1
+	# band yet — that balance ruling is its own ledger entry — so what this
+	# proves is the BUTTON: take through the root's ROUTE_VENTURE arm, into
+	# the inventory, with nothing left pending.
+	var band := LootApi.summary(_harness.actor).get("active", {}) as Dictionary
+	assert_eq(bool(band.get("in_domain", false)), true, "a band stands to be felled")
+	var felled := LootApi.strike(_harness.actor, float(band.get("vitality_max", 1.0)) * 10.0, 7)
+	assert_eq(String(felled.get("reason", "")), "defeated", "the module fells it")
+	var slots_before := ItemsApi.inventory(_harness.actor).used_slots()
+	assert_eq(screen.call("act_take"), true, "the button pays")
+	assert_eq(
+		int(
+			((screen.call("summary") as Dictionary).get("band", {}) as Dictionary).get(
+				"pending_drops", -1
+			)
+		),
+		0,
+		"with nothing left pending"
+	)
+	assert_eq(
+		ItemsApi.inventory(_harness.actor).used_slots() > slots_before, true, "and drops in the bag"
+	)

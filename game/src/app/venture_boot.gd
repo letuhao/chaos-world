@@ -283,17 +283,33 @@ static func strike(screen: Control) -> Dictionary:
 	return CombatApi.exchange(actor, hash("%d,%d" % [cell.x, cell.y]))
 
 
-## Take every claimable drop of a defeated boss. The encounter id arrives
-## from the strike that felled it; the screen holds it, this only spends it.
-## Unopened refuses by the same name.
-static func take(screen: Control, encounter_id: String) -> Dictionary:
+## Take every claimable drop of every defeated boss. Walks the band's
+## pending rewards through `pickup_all` one encounter at a time; one full
+## inventory cannot hold back the rest. Unopened refuses by the same name.
+static func take(screen: Control) -> Dictionary:
 	var scene := _scene_of(screen)
 	if scene == null:
-		return {"ok": false, "reason": "unopened"}
+		return {"ok": false, "reason": "unopened", "taken": 0, "encounters": []}
 	var actor := screen.call("actor") as Actor
 	if actor == null:
-		return {"ok": false, "status": "refused", "reason": "no_actor"}
-	return LootApi.pickup_all(actor, StringName(encounter_id))
+		return {"ok": false, "reason": "no_actor", "taken": 0, "encounters": []}
+	var taken := 0
+	var paid: Array = []
+	for reward in LootApi.summary(actor).get("rewards", []) as Array:
+		var row := reward as Dictionary
+		if int(row.get("pending_count", 0)) <= 0:
+			continue
+		var outcome := LootApi.pickup_all(actor, StringName(row.get("encounter_id", "")))
+		var got := int(outcome.get("claimed", 0))
+		if got > 0:
+			taken += got
+			paid.append(String(row.get("encounter_id", "")))
+	return {
+		"ok": taken > 0,
+		"reason": "" if taken > 0 else "nothing_pending",
+		"taken": taken,
+		"encounters": paid
+	}
 
 
 ## Show or hide the debug painting on the world under the screen. Unopened
@@ -353,10 +369,46 @@ static func read(screen: Control) -> Dictionary:
 		((summary.get("streamer", {}) as Dictionary).get("loaded", []) as Array).duplicate()
 	)
 	view["domain"] = (summary.get("domain", {}) as Dictionary).duplicate(true)
+	view["band"] = _band_view(screen)
 	# Who stands where the player stands: the elder at his doorstep, a
 	# role-only marker, or nobody. The talk verb answers the same read.
 	view["here"] = _speaker_here(scene)
 	return view
+
+
+## The live boss band as primitives: whether a band is entered, the boss
+## being faced with its vitality, and every reward's pending drops. `{}` with
+## no actor — an unbound headless probe owes no fight.
+static func _band_view(screen: Control) -> Dictionary:
+	var actor := screen.call("actor") as Actor
+	if actor == null:
+		return {}
+	var report := LootApi.summary(actor)
+	var active := report.get("active", {}) as Dictionary
+	var pending: Array = []
+	for reward in report.get("rewards", []) as Array:
+		var row := reward as Dictionary
+		if int(row.get("pending_count", 0)) > 0:
+			(
+				pending
+				. append(
+					{
+						"encounter_id": String(row.get("encounter_id", "")),
+						"boss_id": String(row.get("boss_id", "")),
+						"pending_count": int(row.get("pending_count", 0)),
+					}
+				)
+			)
+	return {
+		"in_domain": bool(report.get("in_domain", false)),
+		"boss_id": String(active.get("boss_id", "")),
+		"vitality": float(active.get("vitality", 0.0)),
+		"vitality_max": float(active.get("vitality_max", 1.0)),
+		"health_ratio": float(active.get("health_ratio", 0.0)),
+		"defeated": bool(active.get("defeated", false)),
+		"pending": pending,
+		"pending_drops": int(report.get("pending_drops", 0)),
+	}
 
 
 ## Drive a non-seamless arrival through the loading screen: mount the real

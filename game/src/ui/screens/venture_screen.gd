@@ -30,6 +30,8 @@ var _debug_call: Callable = Callable()
 var _answer_call: Callable = Callable()
 var _dismiss_call: Callable = Callable()
 var _build_call: Callable = Callable()
+var _strike_call: Callable = Callable()
+var _take_call: Callable = Callable()
 var _debug := false
 var _pending_encounter := ""
 var _pending_fates: Array = []
@@ -90,6 +92,15 @@ func bind_encounter(answer_call: Callable, dismiss_call: Callable) -> void:
 ## ground is its own question with its own refusal.
 func bind_build(build_call: Callable) -> void:
 	_build_call = build_call
+	_bind_nodes()
+	refresh()
+
+
+## Inject the fight seam. Striking and taking are one question — the boss in
+## front of the player — so they arrive together and degrade together.
+func bind_fight(strike_call: Callable, take_call: Callable) -> void:
+	_strike_call = strike_call
+	_take_call = take_call
 	_bind_nodes()
 	refresh()
 
@@ -259,6 +270,42 @@ func act_east() -> bool:
 	return _act_step(1, 0)
 
 
+## Trade one blow with the live boss. Answers what the exchange decided:
+## a defeat names the fallen boss and what waits to be taken, a loss says
+## so, and anything else reports the blow landed.
+func act_strike() -> bool:
+	_bind_nodes()
+	if not _strike_call.is_valid():
+		set_message("No venture seam is bound.", TONE_ERROR)
+		return false
+	var outcome := _strike_call.call(self) as Dictionary
+	refresh()
+	var decided := String(outcome.get("outcome", ""))
+	if decided == CombatApi.OUTCOME_BOSS_DEFEATED:
+		set_message("The boss falls — take what it dropped.", TONE_OK)
+		return true
+	if decided == CombatApi.OUTCOME_PLAYER_LOST:
+		set_message("You fall. The run is lost.", TONE_ERROR)
+		return true
+	set_message("The blow lands.", TONE_OK)
+	return true
+
+
+## Take every claimable drop of every defeated boss.
+func act_take() -> bool:
+	_bind_nodes()
+	if not _take_call.is_valid():
+		set_message("No venture seam is bound.", TONE_ERROR)
+		return false
+	var outcome := _take_call.call(self) as Dictionary
+	refresh()
+	if not bool(outcome.get("ok", false)):
+		set_message("Nothing to take: %s." % String(outcome.get("reason", "")), TONE_ERROR)
+		return false
+	set_message("Took %d drop(s)." % int(outcome.get("taken", 0)), TONE_OK)
+	return true
+
+
 func _act_step(dx: int, dy: int) -> bool:
 	_bind_nodes()
 	if not _step_call.is_valid():
@@ -302,7 +349,13 @@ func _summary() -> Dictionary:
 	view["pending_encounter"] = _pending_encounter
 	view["pending_fates"] = _pending_fates.duplicate()
 	view["encounter_text"] = _text_of(get_node_or_null("%EncounterLabel") as Label)
+	view["boss_text"] = _text_of(get_node_or_null("%BossLabel") as Label)
 	view["selected"] = _selected_node()
+	# BL-0833: the created world's own pair, provider-published and previously read by
+	# nothing — the venture/domain surface is where a world's size and stability belong.
+	# Raw primitives; the panel formats.
+	view["world_size"] = _actor.stats.derived(&"world_size")
+	view["world_stability"] = _actor.stats.derived(&"world_stability")
 	return view
 
 
@@ -365,6 +418,7 @@ func _render() -> void:
 	)
 	_set_text(_debug_label, _debug_text(view))
 	_render_encounter()
+	_render_fight(view)
 
 
 func _read_view() -> Dictionary:
@@ -393,6 +447,32 @@ func _render_encounter() -> void:
 		first.text = L.t(String(_pending_fates[0]) if _pending_fates.size() > 0 else "Fate")
 	if second != null:
 		second.text = L.t(String(_pending_fates[1]) if _pending_fates.size() > 1 else "Fate")
+
+
+## Paint the boss row: who stands, how hurt, and what waits to be taken.
+## Empty band darkens the row rather than hiding it, like the encounter row.
+func _render_fight(view: Dictionary) -> void:
+	var label := get_node_or_null("%BossLabel") as Label
+	var strike := get_node_or_null("%StrikeButton") as Button
+	var take := get_node_or_null("%TakeButton") as Button
+	var band := view.get("band", {}) as Dictionary
+	var live := bool(band.get("in_domain", false)) and _strike_call.is_valid()
+	var owed := int(band.get("pending_drops", 0)) > 0 and _take_call.is_valid()
+	_set_text(label, _boss_line(band))
+	_set_disabled(strike, not live)
+	_set_disabled(take, not owed)
+
+
+func _boss_line(band: Dictionary) -> String:
+	if band.is_empty() or not bool(band.get("in_domain", false)):
+		return ""
+	var pending := int(band.get("pending_drops", 0))
+	if pending > 0:
+		return L.t("LOC_UI_SCREENS_F733CDB736") % [String(band.get("boss_id", "")), pending]
+	return (
+		L.t("LOC_UI_SCREENS_F21D70C100")
+		% [String(band.get("boss_id", "")), int(float(band.get("health_ratio", 0.0)) * 100.0)]
+	)
 
 
 ## The debug overlay as text: node and seed, player cell, holders, loaded and
@@ -472,6 +552,8 @@ func _bind_nodes() -> void:
 	_connect_once("%FateFirstButton", "pressed", act_fate_first)
 	_connect_once("%FateSecondButton", "pressed", act_fate_second)
 	_connect_once("%DismissButton", "pressed", act_dismiss)
+	_connect_once("%StrikeButton", "pressed", act_strike)
+	_connect_once("%TakeButton", "pressed", act_take)
 	_connect_once("%BuildButton", "pressed", act_build)
 
 
