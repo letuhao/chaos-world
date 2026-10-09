@@ -46,14 +46,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_09_crimson_flame_lingzhi/tender_sapling/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.315
+            0.577
           ]
         ],
-        "frac_zero": 0.8141,
+        "frac_zero": 0.6638,
         "blocks": [
           [
             false
@@ -75,36 +75,41 @@
         ],
         "sub_fill": [
           [
-            0.216,
-            0.448,
-            0.0
+            0.593,
+            0.934,
+            0.497
           ],
           [
-            0.406,
-            0.468,
-            0.098
+            0.523,
+            0.895,
+            0.709
           ],
           [
-            0.191,
-            0.361,
-            0.0
+            0.188,
+            0.73,
+            0.067
           ]
         ],
         "crop_offset": [
-          27,
-          17
+          18,
+          16
         ],
         "trunk_columns": [
           1
         ],
-        "contact_px": 22,
-        "contact_reference_px": 22.0,
+        "contact_px": 43,
+        "contact_reference_px": 43.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
           "1.15": null,
           "1.35": null,
-          "1.6": null
+          "1.6": [
+            0,
+            0,
+            0,
+            0
+          ]
         },
         "block_rect": null,
         "block_rect_px": null
@@ -121,14 +126,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_09_crimson_flame_lingzhi/tender_sapling/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.354
+            0.659
           ]
         ],
-        "frac_zero": 0.788,
+        "frac_zero": 0.6441,
         "blocks": [
           [
             false
@@ -150,34 +155,41 @@
         ],
         "sub_fill": [
           [
-            0.326,
-            0.314,
-            0.0
+            0.585,
+            0.953,
+            0.551
           ],
           [
-            0.451,
-            0.49,
-            0.039
+            0.672,
+            0.915,
+            0.714
           ],
           [
-            0.334,
-            0.336,
-            0.0
+            0.318,
+            0.776,
+            0.277
           ]
         ],
         "crop_offset": [
-          31,
-          16
+          21,
+          18
         ],
-        "trunk_columns": [],
-        "contact_px": 33,
-        "contact_reference_px": 33.0,
+        "trunk_columns": [
+          1
+        ],
+        "contact_px": 52,
+        "contact_reference_px": 52.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
           "1.15": null,
           "1.35": null,
-          "1.6": null
+          "1.6": [
+            0,
+            0,
+            0,
+            0
+          ]
         },
         "block_rect": null,
         "block_rect_px": null
@@ -194,14 +206,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_09_crimson_flame_lingzhi/tender_sapling/damaged_weathered.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.357
+            0.632
           ]
         ],
-        "frac_zero": 0.8108,
+        "frac_zero": 0.6782,
         "blocks": [
           [
             false
@@ -223,36 +235,42 @@
         ],
         "sub_fill": [
           [
-            0.421,
-            0.424,
-            0.0
+            0.605,
+            0.879,
+            0.54
           ],
           [
-            0.455,
-            0.44,
-            0.089
+            0.541,
+            0.771,
+            0.154
           ],
           [
-            0.183,
-            0.396,
-            0.0
+            0.609,
+            0.865,
+            0.177
           ]
         ],
         "crop_offset": [
-          29,
-          17
+          23,
+          18
         ],
         "trunk_columns": [
+          0,
           1
         ],
-        "contact_px": 35,
-        "contact_reference_px": 35.0,
+        "contact_px": 64,
+        "contact_reference_px": 64.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
           "1.15": null,
           "1.35": null,
-          "1.6": null
+          "1.6": [
+            0,
+            0,
+            0,
+            0
+          ]
         },
         "block_rect": null,
         "block_rect_px": null
@@ -269,14 +287,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_09_crimson_flame_lingzhi/tender_sapling/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.393
+            0.634
           ]
         ],
-        "frac_zero": 0.8184,
+        "frac_zero": 0.657,
         "blocks": [
           [
             false
@@ -293,39 +311,47 @@
           0
         ],
         "sub_grid": [
-          2,
+          3,
           3
         ],
         "sub_fill": [
           [
-            0.436,
-            0.265
+            0.657,
+            0.909,
+            0.421
           ],
           [
-            0.375,
-            0.344
+            0.494,
+            0.797,
+            0.59
           ],
           [
-            0.524,
-            0.393
+            0.617,
+            0.747,
+            0.181
           ]
         ],
         "crop_offset": [
-          34,
-          17
+          23,
+          16
         ],
         "trunk_columns": [
           0,
           1
         ],
-        "contact_px": 38,
-        "contact_reference_px": 38.0,
+        "contact_px": 70,
+        "contact_reference_px": 70.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
           "1.15": null,
           "1.35": null,
-          "1.6": null
+          "1.6": [
+            0,
+            0,
+            0,
+            0
+          ]
         },
         "block_rect": null,
         "block_rect_px": null

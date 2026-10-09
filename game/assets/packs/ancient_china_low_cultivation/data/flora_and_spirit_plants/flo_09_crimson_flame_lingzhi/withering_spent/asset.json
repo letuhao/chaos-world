@@ -46,14 +46,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_09_crimson_flame_lingzhi/withering_spent/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.4
+            0.512
           ]
         ],
-        "frac_zero": 0.7501,
+        "frac_zero": 0.6931,
         "blocks": [
           [
             false
@@ -75,30 +75,31 @@
         ],
         "sub_fill": [
           [
-            0.236,
-            0.558,
-            0.23
+            0.549,
+            0.877,
+            0.297
           ],
           [
-            0.501,
-            0.411,
-            0.278
+            0.359,
+            0.681,
+            0.481
           ],
           [
-            0.219,
-            0.652,
-            0.173
+            0.357,
+            0.732,
+            0.121
           ]
         ],
         "crop_offset": [
-          25,
-          16
+          19,
+          18
         ],
         "trunk_columns": [
+          0,
           1
         ],
-        "contact_px": 45,
-        "contact_reference_px": 45.0,
+        "contact_px": 64,
+        "contact_reference_px": 64.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -126,14 +127,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_09_crimson_flame_lingzhi/withering_spent/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.451
+            0.511
           ]
         ],
-        "frac_zero": 0.7179,
+        "frac_zero": 0.6885,
         "blocks": [
           [
             false
@@ -155,31 +156,30 @@
         ],
         "sub_fill": [
           [
-            0.311,
-            0.558,
-            0.172
+            0.254,
+            0.775,
+            0.11
           ],
           [
-            0.43,
-            0.533,
-            0.172
+            0.668,
+            0.769,
+            0.431
           ],
           [
-            0.451,
-            0.76,
-            0.115
+            0.308,
+            0.857,
+            0.27
           ]
         ],
         "crop_offset": [
-          25,
+          19,
           16
         ],
         "trunk_columns": [
-          0,
           1
         ],
-        "contact_px": 55,
-        "contact_reference_px": 55.0,
+        "contact_px": 56,
+        "contact_reference_px": 56.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -207,14 +207,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_09_crimson_flame_lingzhi/withering_spent/damaged_weathered.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.476
+            0.601
           ]
         ],
-        "frac_zero": 0.7278,
+        "frac_zero": 0.6423,
         "blocks": [
           [
             false
@@ -236,31 +236,31 @@
         ],
         "sub_fill": [
           [
-            0.313,
-            0.746,
-            0.029
+            0.525,
+            0.921,
+            0.414
           ],
           [
-            0.529,
-            0.606,
-            0.327
+            0.511,
+            0.773,
+            0.386
           ],
           [
-            0.377,
-            0.69,
-            0.07
+            0.555,
+            0.868,
+            0.299
           ]
         ],
         "crop_offset": [
-          25,
-          16
+          19,
+          17
         ],
         "trunk_columns": [
           0,
           1
         ],
-        "contact_px": 51,
-        "contact_reference_px": 51.0,
+        "contact_px": 82,
+        "contact_reference_px": 82.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -288,14 +288,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_09_crimson_flame_lingzhi/withering_spent/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.49
+            0.565
           ]
         ],
-        "frac_zero": 0.7036,
+        "frac_zero": 0.665,
         "blocks": [
           [
             false
@@ -317,32 +317,31 @@
         ],
         "sub_fill": [
           [
-            0.246,
-            0.586,
-            0.129
+            0.359,
+            0.883,
+            0.469
           ],
           [
-            0.466,
-            0.525,
-            0.294
+            0.376,
+            0.721,
+            0.407
           ],
           [
-            0.515,
-            0.949,
-            0.397
+            0.668,
+            0.858,
+            0.209
           ]
         ],
         "crop_offset": [
-          23,
+          20,
           16
         ],
         "trunk_columns": [
           0,
-          1,
-          2
+          1
         ],
-        "contact_px": 59,
-        "contact_reference_px": 59.0,
+        "contact_px": 70,
+        "contact_reference_px": 70.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,

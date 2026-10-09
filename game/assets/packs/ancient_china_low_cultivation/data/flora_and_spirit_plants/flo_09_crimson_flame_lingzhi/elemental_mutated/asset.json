@@ -46,19 +46,19 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_09_crimson_flame_lingzhi/elemental_mutated/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.488,
-            0.489
+            0.685,
+            0.572
           ],
           [
-            0.421,
-            0.461
+            0.434,
+            0.369
           ]
         ],
-        "frac_zero": 0.6892,
+        "frac_zero": 0.6049,
         "blocks": [
           [
             false,
@@ -85,83 +85,96 @@
           1
         ],
         "sub_grid": [
-          6,
+          7,
           7
         ],
         "sub_fill": [
           [
             0.0,
-            0.325,
-            0.784,
-            0.476,
-            0.01,
+            0.535,
+            0.951,
+            0.905,
+            0.411,
+            0.1,
             0.0
           ],
           [
-            0.192,
-            0.908,
-            0.721,
-            0.87,
-            0.453,
-            0.003
-          ],
-          [
-            0.313,
-            0.554,
-            0.584,
-            0.578,
-            0.862,
-            0.287
-          ],
-          [
-            0.472,
-            0.456,
-            0.761,
-            0.326,
-            0.273,
-            0.009
-          ],
-          [
-            0.078,
-            0.188,
-            0.822,
-            0.564,
-            0.293,
-            0.022
-          ],
-          [
-            0.084,
-            0.852,
+            0.543,
+            0.975,
             1.0,
-            0.986,
-            0.675,
-            0.041
+            1.0,
+            1.0,
+            0.821,
+            0.0
           ],
           [
-            0.059,
-            0.675,
-            0.486,
-            0.317,
-            0.124,
+            0.652,
+            0.835,
+            0.973,
+            0.972,
+            0.611,
+            0.405,
+            0.044
+          ],
+          [
+            0.0,
+            0.088,
+            0.63,
+            0.766,
+            0.523,
+            0.857,
+            0.615
+          ],
+          [
+            0.351,
+            0.695,
+            0.292,
+            0.968,
+            0.512,
+            0.069,
+            0.0
+          ],
+          [
+            0.0,
+            0.318,
+            0.99,
+            0.907,
+            0.523,
+            0.132,
+            0.0
+          ],
+          [
+            0.004,
+            0.41,
+            0.655,
+            0.683,
+            0.215,
+            0.001,
             0.0
           ]
         ],
         "crop_offset": [
-          43,
+          23,
           17
         ],
         "trunk_columns": [
           1,
-          2
+          2,
+          3
         ],
-        "contact_px": 27,
-        "contact_reference_px": 27.0,
+        "contact_px": 75,
+        "contact_reference_px": 75.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
           "1.15": null,
           "1.35": null,
-          "1.6": null
+          "1.6": [
+            0,
+            1,
+            0,
+            1
+          ]
         },
         "block_rect": null,
         "block_rect_px": null
@@ -178,19 +191,19 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_09_crimson_flame_lingzhi/elemental_mutated/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.467,
-            0.486
+            0.605,
+            0.663
           ],
           [
-            0.285,
-            0.354
+            0.534,
+            0.405
           ]
         ],
-        "frac_zero": 0.7634,
+        "frac_zero": 0.5635,
         "blocks": [
           [
             false,
@@ -217,67 +230,84 @@
           1
         ],
         "sub_grid": [
-          5,
+          7,
           7
         ],
         "sub_fill": [
           [
             0.0,
-            0.281,
-            0.647,
-            0.117,
+            0.25,
+            0.861,
+            0.955,
+            0.605,
+            0.163,
             0.0
           ],
           [
-            0.099,
-            0.714,
-            0.75,
-            0.695,
-            0.499
+            0.163,
+            0.842,
+            1.0,
+            1.0,
+            1.0,
+            0.659,
+            0.0
           ],
           [
-            0.65,
-            0.808,
-            0.836,
-            0.644,
-            0.101
+            0.187,
+            0.819,
+            0.976,
+            0.85,
+            0.963,
+            0.993,
+            0.395
           ],
           [
-            0.104,
-            0.567,
-            0.727,
-            0.593,
-            0.507
+            0.424,
+            0.934,
+            0.529,
+            0.839,
+            0.576,
+            0.763,
+            0.558
           ],
           [
-            0.248,
-            0.457,
-            0.715,
-            0.314,
-            0.17
-          ],
-          [
-            0.032,
-            0.394,
-            0.878,
-            0.364,
-            0.097
+            0.574,
+            0.735,
+            0.626,
+            0.904,
+            0.744,
+            0.336,
+            0.0
           ],
           [
             0.0,
+            0.256,
+            0.978,
+            0.949,
+            0.538,
+            0.267,
+            0.0
+          ],
+          [
             0.0,
-            0.246,
-            0.0,
+            0.318,
+            0.699,
+            0.73,
+            0.254,
+            0.002,
             0.0
           ]
         ],
         "crop_offset": [
-          53,
-          19
+          20,
+          16
         ],
-        "trunk_columns": [],
-        "contact_px": 8,
-        "contact_reference_px": 8.0,
+        "trunk_columns": [
+          2,
+          3
+        ],
+        "contact_px": 51,
+        "contact_reference_px": 51.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -300,19 +330,19 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_09_crimson_flame_lingzhi/elemental_mutated/damaged_weathered.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.565,
-            0.521
+            0.624,
+            0.638
           ],
           [
-            0.492,
-            0.459
+            0.544,
+            0.467
           ]
         ],
-        "frac_zero": 0.6523,
+        "frac_zero": 0.5917,
         "blocks": [
           [
             false,
@@ -339,70 +369,77 @@
           1
         ],
         "sub_grid": [
-          6,
+          7,
           7
         ],
         "sub_fill": [
           [
             0.0,
-            0.338,
-            0.866,
-            0.489,
-            0.099,
+            0.242,
+            0.738,
+            0.733,
+            0.326,
+            0.003,
             0.0
           ],
           [
-            0.301,
-            0.975,
+            0.118,
+            0.921,
+            1.0,
+            1.0,
+            1.0,
+            0.354,
+            0.0
+          ],
+          [
+            0.333,
+            0.878,
+            0.939,
+            0.85,
+            0.908,
             0.979,
-            0.971,
-            0.562,
-            0.045
+            0.521
           ],
           [
-            0.249,
             0.629,
-            0.65,
-            0.598,
+            0.853,
+            0.797,
             0.968,
-            0.672
-          ],
-          [
-            0.688,
-            0.689,
-            0.734,
-            0.664,
-            0.212,
-            0.019
-          ],
-          [
-            0.012,
-            0.316,
-            0.824,
-            0.496,
-            0.452,
-            0.037
-          ],
-          [
-            0.005,
-            0.745,
-            0.981,
-            0.964,
-            0.408,
+            0.569,
+            0.141,
             0.0
           ],
           [
-            0.002,
-            0.624,
-            0.859,
-            0.825,
-            0.378,
+            0.053,
+            0.258,
+            0.834,
+            0.929,
+            0.354,
+            0.082,
+            0.005
+          ],
+          [
+            0.079,
+            0.78,
+            1.0,
+            0.923,
+            0.733,
+            0.1,
+            0.0
+          ],
+          [
+            0.073,
+            0.639,
+            0.868,
+            0.787,
+            0.594,
+            0.134,
             0.0
           ]
         ],
         "crop_offset": [
-          38,
-          16
+          28,
+          17
         ],
         "trunk_columns": [
           1,
@@ -410,8 +447,8 @@
           3,
           4
         ],
-        "contact_px": 102,
-        "contact_reference_px": 102.0,
+        "contact_px": 115,
+        "contact_reference_px": 115.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -439,19 +476,19 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_09_crimson_flame_lingzhi/elemental_mutated/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.44,
-            0.441
+            0.514,
+            0.722
           ],
           [
-            0.562,
-            0.537
+            0.706,
+            0.452
           ]
         ],
-        "frac_zero": 0.6712,
+        "frac_zero": 0.5594,
         "blocks": [
           [
             false,
@@ -478,79 +515,87 @@
           1
         ],
         "sub_grid": [
-          6,
+          7,
           7
         ],
         "sub_fill": [
           [
             0.0,
-            0.34,
+            0.195,
+            0.887,
+            0.95,
             0.831,
-            0.472,
-            0.056,
+            0.197,
             0.0
           ],
           [
-            0.218,
-            0.782,
-            0.515,
-            0.71,
-            0.354,
-            0.0
-          ],
-          [
-            0.217,
-            0.584,
-            0.466,
-            0.459,
-            0.843,
-            0.428
-          ],
-          [
-            0.57,
-            0.396,
-            0.775,
-            0.379,
-            0.208,
-            0.0
-          ],
-          [
-            0.074,
-            0.532,
-            0.939,
-            0.611,
-            0.271,
-            0.0
-          ],
-          [
-            0.276,
-            0.992,
+            0.175,
+            0.955,
             1.0,
+            0.971,
             1.0,
-            0.794,
-            0.0
+            0.889,
+            0.552
           ],
           [
             0.032,
-            0.693,
-            0.908,
-            0.852,
-            0.42,
+            0.363,
+            0.627,
+            0.826,
+            0.901,
+            0.983,
+            0.32
+          ],
+          [
+            0.291,
+            0.734,
+            0.492,
+            0.842,
+            0.404,
+            0.077,
+            0.0
+          ],
+          [
+            0.362,
+            0.831,
+            1.0,
+            0.97,
+            0.415,
+            0.236,
+            0.0
+          ],
+          [
+            0.313,
+            1.0,
+            1.0,
+            0.946,
+            0.832,
+            0.151,
+            0.0
+          ],
+          [
+            0.422,
+            0.805,
+            0.847,
+            0.82,
+            0.64,
+            0.16,
             0.0
           ]
         ],
         "crop_offset": [
-          41,
-          17
+          26,
+          16
         ],
         "trunk_columns": [
+          0,
           1,
           2,
           3,
           4
         ],
-        "contact_px": 111,
-        "contact_reference_px": 111.0,
+        "contact_px": 138,
+        "contact_reference_px": 138.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,

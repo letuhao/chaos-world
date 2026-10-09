@@ -368,28 +368,46 @@ def get_balanced_color_clause(asset: dict, asset_name: str, material: str) -> st
     Ensures vibrant color abundance, preventing dull monochrome or muddy washes.
     """
     elem = (asset.get("cultivation_element") or "").lower()
-    text = f"{asset_name} {material} {asset.get('sub_domain', '')}".lower()
+    sub = (asset.get("sub_domain") or "").lower()
+    name = asset_name.lower()
+    id_str = f"{name} {sub}"
 
-    # Specific subject overrides for rich abundance
-    if any(w in text for w in ("osmanthus", "dan gui")):
+    # Specific subject overrides for rich abundance - match by plant identity, NOT raw JSON material
+    if any(w in id_str for w in ("osmanthus", "dan gui")):
         return "rich abundant color harmony: radiant golden-yellow blossoms (#E5A93C), vibrant emerald foliage, warm amber resin, and deep cinnamon-brown bark"
-    if any(w in text for w in ("lingzhi", "flame_lingzhi", "crimson_flame")):
+    if any(w in id_str for w in ("lingzhi", "flame_lingzhi", "crimson_flame")):
         return "rich abundant color harmony: deep lacquered vermilion cinnabar cap (#C83C28), bright golden-ochre growth rim, dark umber stalk, and glowing ember highlights"
-    if any(w in text for w in ("lotus", "water_lily")):
+    if any(w in id_str for w in ("stinkhorn", "corpse_mushroom")):
+        return "rich abundant color harmony: pale sickly bone-ivory cap, dark rotting violet-black spots (#2A1238), sulfur ochre spore gills, and decaying umber mulch"
+    if any(w in id_str for w in ("thorn", "briar", "bramble", "bone_dissolving")):
+        return "rich abundant color harmony: pale ivory-bone white thorns covering 70% of sprite silhouette with sharp crimson-tipped barbs, dark ironwood stems, zero green pine needles"
+    if any(w in id_str for w in ("rice", "grain", "five_color")):
+        return "rich abundant color harmony: Sacred Five-Color panicles (brilliant golden yellow, vermilion ruby scarlet, amethyst violet, pearl white, and emerald jade accents), vibrant multi-tonal harvest gradient with zero evergreen foliage"
+    if any(w in id_str for w in ("demon_lotus", "sleeping_demon")):
+        return "rich abundant color harmony: mystical deep plum-purple (#4A154B), glowing crimson venation, midnight obsidian black pads, and vibrant magenta blossom highlights"
+    if any(w in id_str for w in ("ink_scent", "wenxin", "ink_herb")):
+        return "rich abundant color harmony: deep scholarly indigo (#1B3B6F), shimmering ink-black violet, delicate star-white blossoms, and warm golden stamen highlights"
+    if any(w in id_str for w in ("lotus", "water_lily")):
         return "rich abundant color harmony: pure snow-white and delicate rose-pink floral petals, bright golden stamen pistils, and lush malachite-green leaf pads"
-    if any(w in text for w in ("ginseng", "blood_ginseng")):
+    if any(w in id_str for w in ("ginseng", "blood_ginseng")):
         return "rich abundant color harmony: warm golden-ochre root rhizome, bright scarlet carmine berries, and deep forest-green herbal sprigs"
-    if any(w in text for w in ("peach", "peach_wood")):
+    if any(w in id_str for w in ("peach", "peach_wood")):
         return "rich abundant color harmony: soft blooming pink peach blossoms, golden honey centers, warm amber timber grain, and fresh celadon leaves"
-    if any(w in text for w in ("pine", "pine_nuts", "cypress")):
-        return "rich abundant color harmony: rich evergreen needle clusters, translucent golden amber resin droplets, and weathered cinnamon-umber bark"
-    if any(w in text for w in ("rice", "grain", "five_color")):
-        return "rich abundant color harmony: Sacred Five-Color panicles (golden yellow, ruby scarlet, emerald jade, twilight violet, and pearl white), brilliant harvest gradient"
-    if any(w in text for w in ("thorn", "briar", "bramble", "bone_dissolving")):
-        return "rich abundant color harmony: pale ivory-bone white thorns with crimson-tipped barbs, deep velvety malachite moss, and dark ironwood stems"
-    if any(w in text for w in ("reed", "viper_grass")):
+    if any(w in id_str for w in ("wisteria",)):
+        return "rich abundant color harmony: cascading royal violet and amethyst purple blossom racemes, warm amber timber, and crisp leaves"
+    if any(w in id_str for w in ("orchid", "blue_orchid", "seven_star")):
+        return "rich abundant color harmony: vibrant sapphire azure and amethyst purple orchid florets (#2B4C8C), bright golden stamen centers, and slender emerald leaf blades"
+    if any(w in id_str for w in ("parasitic_vine", "ghost_head", "vine")):
+        return "rich abundant color harmony: dark charcoal twisting vine boughs, pale ghostly ivory tendril barbs, deep plum-purple accents, and withered autumn bark"
+    if any(w in id_str for w in ("mulberry", "spirit_mulberry")):
+        return "rich abundant color harmony: rich dark purple-black mulberry fruit clusters, broad fresh silkworm mulberry leaves, and golden-brown branches"
+    if any(w in id_str for w in ("reed", "viper_grass")):
         return "rich abundant color harmony: variegated emerald and chartreuse reed blades, delicate violet-spotted stems, and warm tawny-tan dried sheath bases"
-    if any(w in text for w in ("poplar", "willow", "camphor")):
+    if any(w in id_str for w in ("cypress", "weeping_cypress")):
+        return "rich abundant color harmony: weeping golden-amber seed cones, fragrant cinnamon timber, and rich scale foliage"
+    if any(w in id_str for w in ("pine", "pine_nuts")):
+        return "rich abundant color harmony: rich evergreen needle clusters, translucent golden amber resin droplets, and weathered cinnamon-umber bark"
+    if any(w in id_str for w in ("poplar", "willow", "camphor")):
         return "rich abundant color harmony: shimmering silver-green and golden-tinted leaves, warm honey-brown boughs, and dark charcoal bark crevices"
 
     # Five Elements / Cultivation Element Harmonies
@@ -438,17 +456,115 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
         asset_name = raw_asset_name
 
     material = asset.get("material", "carved wood and polished bronze")
-    color_clause = get_balanced_color_clause(asset, asset_name, material)
-    var_mod = var.get("prompt_modifier") or var.get("prompt") or ""
-    # Strip any negation words in var_mod to prevent FLUX T5 positive-trigger inversion
-    var_mod = (
-        var_mod.replace("zero front entrance steps", "solid continuous rear wall")
-        .replace("zero entrance steps", "solid continuous rear wall")
-        .replace("zero ground shadow", "")
-        .replace("zero pedestal", "")
-        .strip(" ,")
-    )
     var_slug = var.get("variant_slug", "")
+
+    # Sanitize flora materials and modifiers: prevent hardcoded generic pine bark & workstation fireplace leakage
+    is_flora = any(k in asset_class for k in ("flora", "herb", "tree", "plant"))
+    if is_flora:
+        name_lower = asset_name.lower()
+        sub_lower = (asset.get("sub_domain") or "").lower()
+        plant_id = f"{name_lower} {sub_lower}"
+
+        if any(w in plant_id for w in ("stinkhorn", "corpse_mushroom")):
+            material = "pale ghostly bone-ivory mushroom cap with dark rotting violet-black spots, sulfur-ochre spore gills, and mouldering dark loam base"
+        elif any(w in plant_id for w in ("lingzhi", "mushroom", "fungus", "fungi", "spore")):
+            material = "broad thick lacquered mushroom bracket cap in deep vermilion cinnabar lacquer (#C83C28), bright golden-yellow growth rim, and woody sienna stalk"
+        elif any(w in plant_id for w in ("osmanthus", "dan gui")):
+            material = "fragrant golden-yellow blossom boughs, dense bright amber flower clusters, dark sandalwood timber, and crisp olive leaves"
+        elif any(w in plant_id for w in ("lotus", "lily", "water_plant")):
+            material = "pure snow-white and rose-pink floral lotus petals, bright golden stamen, and broad floating emerald lily pads"
+        elif any(w in plant_id for w in ("ginseng", "blood_ginseng", "root")):
+            material = "warm golden-ochre herbal root rhizome, bright scarlet carmine seed berries, and deep forest-green leaves"
+        elif any(w in plant_id for w in ("thorn", "briar", "bramble", "bone_dissolving")):
+            material = "calcified bleached ivory-bone thorns, sharp crimson-tipped spine barbs, gnarled dark charcoal ironwood branches, and dry earthy root base"
+        elif any(w in plant_id for w in ("rice", "grain", "five_color", "crop")):
+            material = "Five-Color sacred cereal grain panicles (golden yellow, ruby red, emerald jade, twilight violet, pearl white) with sunlit straw husks"
+        elif any(w in plant_id for w in ("bamboo", "iron_bamboo")):
+            material = "segmented dark iron-green bamboo culms with polished golden internode rings and slender emerald leaves"
+        elif any(w in plant_id for w in ("peach", "peach_wood")):
+            material = "blooming rose-pink peach blossoms with golden honey pistils, warm cinnamon-brown timber, and fresh spring leaves"
+        elif any(w in plant_id for w in ("orchid", "blue_orchid", "seven_star")):
+            material = "vibrant sapphire-blue and royal amethyst orchid petals, bright golden stamen pistils, and slender emerald foliage"
+        elif any(w in plant_id for w in ("parasitic_vine", "ghost_head", "vine")):
+            material = "dark twisting woody creeper vine stems, pale ivory tendril barbs, deep plum-purple accents, and withered autumn bark"
+        elif any(w in plant_id for w in ("wisteria",)):
+            material = "cascading royal violet and amethyst purple blossom racemes with dark twisting woody vine stems"
+        elif any(w in plant_id for w in ("pine", "pine_nuts")):
+            material = "weathered gnarled pine branches, dark evergreen needle tufts, golden-amber resin droplets, and cinnamon bark"
+        elif any(w in plant_id for w in ("cypress", "weeping_cypress")):
+            material = "weeping drooping cypress boughs, fragrant golden-brown timber, small amber seed cones, and dark evergreen scale foliage"
+        elif any(w in plant_id for w in ("willow", "hollow_heart_willow")):
+            material = "drooping weeping willow boughs with golden-green leaf ribbons and hollow ancient umber trunk"
+        elif any(w in plant_id for w in ("poplar", "wind_listening_poplar")):
+            material = "shimmering silver-green fluttering poplar leaves, pale white-barked trunk, and sunlit golden canopy highlights"
+        elif any(w in plant_id for w in ("reed", "dragon_whisker")):
+            material = "tall variegated emerald and golden-amber water reed stems with silken feathery seed plumes"
+        elif any(w in plant_id for w in ("demon_lotus", "sleeping_demon")):
+            material = "mystical dark plum-violet and midnight purple lotus pads, glowing crimson venation lines, deep burgundy floating blossom petals, and dark water rootlets"
+        elif any(w in plant_id for w in ("ink_scent", "wenxin", "ink_herb")):
+            material = "dark indigo-stained broad scholarly herb leaves, delicate starry white florets, golden stamen pistils, and dark rich loam base"
+        elif any(w in plant_id for w in ("mulberry", "spirit_mulberry")):
+            material = "rich dark purple-black mulberry fruit clusters, broad fresh silkworm mulberry leaves, and golden-brown branches"
+
+        # Sanitize non-tree asset titles: replace tree/timber titles with authentic botanical stages
+        if any(w in plant_id for w in ("rice", "grain", "five_color", "crop")):
+            asset_name = (
+                asset_name.replace("Millennial Ancestor Wood Heart", "Sacred Mother Root Rice Tuft")
+                .replace("Moss-Covered Fallen Log", "Harvested Bound Golden Straw Sheaf")
+                .replace("Impenetrable Wild Thicket", "Dense Five-Color Grain Paddy Cluster")
+                .replace("Mature Flourishing Specimen", "Mature Standing Crop with Heavy Panicles")
+            )
+        elif any(w in plant_id for w in ("lingzhi", "mushroom", "fungus", "stinkhorn")):
+            asset_name = (
+                asset_name.replace("Millennial Ancestor Wood Heart", "Giant Millennial Ancestor Bracket Cap")
+                .replace("Moss-Covered Fallen Log", "Decaying Log Host with Sprouting Mushroom Caps")
+                .replace("Impenetrable Wild Thicket", "Cluster of Tiered Overlapping Fungal Caps")
+                .replace("Broad Leaf Collecting Spirit Dew", "Concave Spore Cap Collecting Spirit Dew")
+                .replace("Young Budding Green Sprout", "Young Button Mushroom Cap Sprout")
+            )
+        elif any(w in plant_id for w in ("lotus", "water_lily")):
+            asset_name = (
+                asset_name.replace("Millennial Ancestor Wood Heart", "Ancient Giant Sacred Lotus Crown")
+                .replace("Moss-Covered Fallen Log", "Submerged Lotus Rhizome with Floating Pads")
+                .replace("Impenetrable Wild Thicket", "Dense Floating Lotus Leaf Colony and Blooms")
+                .replace("Young Budding Green Sprout", "Tender Floating Lotus Bud and Sprout")
+            )
+        elif any(w in plant_id for w in ("ginseng", "blood_ginseng")):
+            asset_name = (
+                asset_name.replace("Millennial Ancestor Wood Heart", "Millennial Ancient Humanoid Ginseng Root")
+                .replace("Moss-Covered Fallen Log", "Weathered Earth Mound with Exposed Ginseng Rootlets")
+                .replace("Impenetrable Wild Thicket", "Dense Ginseng Herbal Cluster with Red Berries")
+            )
+        elif any(w in plant_id for w in ("thorn", "briar", "bramble")):
+            asset_name = (
+                asset_name.replace("Millennial Ancestor Wood Heart", "Massive Ancient Calcified Thorn Core")
+                .replace("Moss-Covered Fallen Log", "Tangled Dry Fallen Thorn Briar Mass")
+                .replace("Impenetrable Wild Thicket", "Impenetrable Prickly Thorn Bramble Barricade")
+            )
+
+        # Sanitize workstation modifiers for flora: replace fireplaces/hearths/locks with authentic botanical growth states
+        if "active_operating" in var_slug:
+            var_mod = "peak flourishing seasonal bloom, dense clusters of vibrant blossoms and fruiting bodies, maximum healthy color saturation"
+        elif "pristine_dormant" in var_slug:
+            var_mod = "serene dormant resting state, delicate winter buds, clean balanced structure, tranquil natural harmony"
+        elif "damaged_weathered" in var_slug:
+            var_mod = "weather-beaten dry autumn state, wind-swept furrowed bark, dry golden-brown fallen leaves, cracked gnarled branches"
+        elif "ruined_rubble" in var_slug:
+            var_mod = "fallen ancient deadwood, fractured dry hollow wood, weathered organic stump with decaying bark"
+        else:
+            var_mod = var.get("prompt_modifier") or var.get("prompt") or ""
+    else:
+        var_mod = var.get("prompt_modifier") or var.get("prompt") or ""
+        # Strip any negation words in var_mod to prevent FLUX T5 positive-trigger inversion
+        var_mod = (
+            var_mod.replace("zero front entrance steps", "solid continuous rear wall")
+            .replace("zero entrance steps", "solid continuous rear wall")
+            .replace("zero ground shadow", "")
+            .replace("zero pedestal", "")
+            .strip(" ,")
+        )
+
+    color_clause = get_balanced_color_clause(asset, asset_name, material)
 
     # Adaptive background contrast keying: prevent white/snow assets from being clipped by RMBG-2.0
     is_pale = (
@@ -633,11 +749,19 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
                 "woody bracket fungus, broad lacquered mushroom cap, spore gills and fungal stalk viewed foreshortened from overhead, "
                 "vermilion cinnabar lacquer cap or earthy spore ochre tones,"
             )
+        elif any(w in combined_text for w in ("thorn", "briar", "bramble", "bone_dissolving")):
+            foliage_spec = (
+                "calcified ivory-bone thorns, sharp spine barbs, twisting woody creeper branches, and prickly bramble thicket viewed from overhead,"
+            )
+        elif any(w in combined_text for w in ("rice", "grain", "crop")):
+            foliage_spec = (
+                "ripened sacred cereal grain panicles, heavy hanging seed heads, and golden crop stalks viewed foreshortened from overhead,"
+            )
         elif any(w in combined_text for w in ("lotus", "lily", "water_plant", "pond")):
             foliage_spec = (
                 "broad rounded floating lotus leaf pads, delicate lotus blossom petals, fragrant aquatic floral crown viewed from overhead,"
             )
-        elif any(w in combined_text for w in ("ginseng", "root", "tuber", "rhizome")):
+        elif any(w in combined_text for w in ("ginseng", "blood_ginseng")):
             foliage_spec = (
                 "tuberous spiritual root rhizome, medicinal root crown, branching fibrous rootlets and small herbal sprig viewed from overhead,"
             )
@@ -645,21 +769,21 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
             foliage_spec = (
                 "flowering canopy, fragrant blossom clusters, delicate floral petals and leafy twig sprigs viewed foreshortened from overhead,"
             )
-        elif any(w in combined_text for w in ("vine", "creeper", "bramble", "briar", "thorn")):
-            foliage_spec = (
-                "twisting woody creeper vines, prickly thorny brambles, clinging tangled stems and curled tendrils viewed from overhead,"
-            )
         elif any(w in combined_text for w in ("bamboo", "culm", "cane")):
             foliage_spec = (
                 "segmented bamboo culms, slender bamboo foliage and nodes viewed foreshortened from overhead,"
             )
-        elif any(w in combined_text for w in ("rice", "grain", "crop", "grass", "reed", "fern", "moss")):
+        elif any(w in combined_text for w in ("grass", "reed", "fern", "moss")):
             foliage_spec = (
                 "slender vegetative stems, feathery foliage fronds and textured ground vegetation viewed foreshortened from overhead,"
             )
-        elif any(w in combined_text for w in ("pine", "cypress", "conifer")):
+        elif any(w in combined_text for w in ("pine", "conifer")):
             foliage_spec = (
                 "gnarled evergreen needle canopy, weathered resinous bark branches, spreading evergreen crown viewed foreshortened from overhead,"
+            )
+        elif any(w in combined_text for w in ("cypress", "weeping_cypress")):
+            foliage_spec = (
+                "weeping drooping cypress boughs, fragrant golden timber boughs, and graceful scale foliage viewed from overhead,"
             )
         elif any(w in combined_text for w in ("willow", "poplar", "tree", "wood", "grove", "bush")):
             foliage_spec = (
@@ -670,18 +794,26 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
                 "botanical canopy, branching herbal crown and leafy foliage viewed foreshortened from overhead, spread outward on ground plane,"
             )
 
+        sub_lower = (asset.get("sub_domain") or "").lower()
+        is_pine = any(w in (sub_lower + " " + name_lower) for w in ("pine", "conifer"))
+        pine_neg = (
+            ""
+            if is_pine
+            else "pine tree, pine needles, evergreen conifer, evergreen tree, dark teal needles, fireplace, campfire, chimney, burning log, unlit hearth, brazier, "
+        )
+        ink_clause = "dark pine-soot ink contours" if is_pine else "fine dark charcoal ink lineart contours (#1C1C1E)"
         pos = (
             f"Single isolated 2D top-down RPG map sprite of {asset_name.lower()}, {material}, {var_mod}, "
             "Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), "
             f"{foliage_spec} {color_clause}, "
-            "gouache hand-painted with dark #1C1C1E pine-soot ink contours, flat grounded root base, short attached micro contact shadow only, "
+            f"gouache hand-painted with {ink_clause}, flat grounded root base, short attached micro contact shadow only, "
             "isolated on solid plain white background."
         )
         neg = (
             "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, "
             "diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, "
             "surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, "
-            f"tall upright crystals, decorative swirls, floating cloud swirls, {ANTI_DRIFT_CLAUSE}"
+            f"tall upright crystals, decorative swirls, floating cloud swirls, {pine_neg}{ANTI_DRIFT_CLAUSE}"
         )
         return pos, neg
 
