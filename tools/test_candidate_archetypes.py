@@ -38,7 +38,7 @@ CANDIDATES = [
         "sub_domain": "harvesting_tools",
         "asset_class": "item_tool",
         "type": "item_icon",
-        "material": "forged cold iron crescent blade with polished dark rosewood handle",
+        "material": "forged cold iron crescent blade with polished dark rosewood handle, warm golden brass ferrule, zero cyan tint",
         "footprint_cells": [1, 1],
         "canvas_px": [128, 128],
         "pivot": "center",
@@ -51,37 +51,37 @@ CANDIDATES = [
             {
                 "variant_slug": "pristine",
                 "name": "Pristine Sharp Crescent Sickle",
-                "prompt_modifier": "immaculate polished cold iron blade, razor sharp edge, clean dark rosewood grip wrapped in black silk cord",
+                "prompt_modifier": "immaculate polished cold iron blade, razor sharp edge, clean dark rosewood grip wrapped in black silk cord, warm brass ferrule, zero cyan tint",
                 "seed_offset": 101,
             },
             {
                 "variant_slug": "rain_soaked",
                 "name": "Rain-Soaked Crescent Sickle",
-                "prompt_modifier": "wet glistening metallic surface with micro water droplets on blade, darkened damp rosewood grip",
+                "prompt_modifier": "wet glistening metallic surface with micro water droplets on blade, darkened damp rosewood grip, zero cyan tint",
                 "seed_offset": 102,
             },
             {
                 "variant_slug": "winter_frost",
                 "name": "Winter Frosted Crescent Sickle",
-                "prompt_modifier": "delicate rim of white crystalline rime ice along cutting edge, pale frosted wood grain",
+                "prompt_modifier": "subtle rim of white frost crystals along cutting edge, dark rosewood handle, zero cyan tint",
                 "seed_offset": 103,
             },
             {
                 "variant_slug": "damaged_chipped",
                 "name": "Damaged Chipped Crescent Sickle",
-                "prompt_modifier": "notched jagged blade edge with small chipped cracks, splintered pommel, frayed binding twine",
+                "prompt_modifier": "notched jagged blade edge with small chipped cracks, splintered pommel, frayed binding twine, zero cyan tint",
                 "seed_offset": 104,
             },
             {
                 "variant_slug": "pos_ground_drop_flat",
                 "name": "Ground Drop Flat Reaping Sickle",
-                "prompt_modifier": "world loot drop presentation, sickle lying flat horizontally on ground plane in 2D orthographic top-down RPG perspective, subtle micro contact shadow beneath wooden handle and curved blade, resting flat",
+                "prompt_modifier": "world loot drop presentation, sickle lying flat horizontally on ground plane in 2D orthographic top-down RPG perspective, subtle micro contact shadow beneath wooden handle and curved blade, resting flat, zero cyan tint",
                 "seed_offset": 105,
             },
             {
                 "variant_slug": "rot_vertical_north",
                 "name": "Vertical Upright Sickle",
-                "prompt_modifier": "vertical straight orientation with handle pointing downward and curved crescent hook facing upward at the top, centered alignment",
+                "prompt_modifier": "vertical straight orientation with handle pointing downward and curved crescent hook facing upward at the top, centered alignment, zero cyan tint",
                 "seed_offset": 106,
             },
         ],
@@ -446,13 +446,13 @@ CANDIDATES = [
     {
         "id": "ancient_china_low_cultivation.artifacts_and_paraphernalia.azure_frost_flying_sword",
         "asset_slug": "azure_frost_flying_sword",
-        "name": "Azure Frost Flying Sword",
-        "vietnamese_name": "Thanh Sương Phi Kiếm",
+        "name": "Iron Pine Straight Flying Sword",
+        "vietnamese_name": "Thiết Tùng Trực Phi Kiếm",
         "domain": "artifacts_and_paraphernalia",
         "sub_domain": "flying_swords",
         "asset_class": "item_weapon",
         "type": "item_icon",
-        "material": "forged millennium cold iron straight blade with azure frost talismanic fuller, dark sandalwood hilt wrapped in black silk cord, carved jade pommel tassel",
+        "material": "forged cold iron steel straight blade with folded Damascus steel grain, polished golden bronze crossguard fittings (#D4A347), wrapped dark rosewood hilt",
         "footprint_cells": [1, 1],
         "canvas_px": [128, 128],
         "pivot": "center",
@@ -465,31 +465,31 @@ CANDIDATES = [
             {
                 "variant_slug": "pos_inventory_icon_45deg",
                 "name": "Inventory Icon 45-Degree Diagonal Sword",
-                "prompt_modifier": "macro inventory icon presentation, tilted diagonally at 45 degrees, hilt and jade tassel at bottom-left, sharp pointed blade tip pointing toward top-right, clean square framing",
+                "prompt_modifier": "macro inventory icon presentation, tilted diagonally at 45 degrees, polished steel blade with folded Damascus grain, warm golden bronze guard, dark rosewood hilt at bottom-left, sharp pointed blade tip pointing toward top-right, clean square framing, zero cyan tint",
                 "seed_offset": 1001,
             },
             {
                 "variant_slug": "pos_ground_drop_flat_east",
                 "name": "Ground Drop Flat East Sword",
-                "prompt_modifier": "world loot drop presentation, lying flat horizontally pointing East (90 degrees to the right), 2D orthographic top-down RPG perspective, resting flat, subtle micro contact shadow beneath hilt and blade",
+                "prompt_modifier": "world loot drop presentation, lying flat horizontally pointing East (90 degrees to the right), 2D orthographic top-down RPG perspective, resting flat, polished steel blade, bronze guard, subtle micro contact shadow beneath hilt and blade, zero cyan tint",
                 "seed_offset": 1002,
             },
             {
                 "variant_slug": "pos_ground_drop_flat_south",
                 "name": "Ground Drop Flat South Sword",
-                "prompt_modifier": "world loot drop presentation, lying flat pointing South (180 degrees downward toward camera), 2D orthographic top-down perspective with foreshortened blade, resting flat, subtle micro contact shadow beneath",
+                "prompt_modifier": "world loot drop presentation, lying flat pointing South (180 degrees downward toward camera), 2D orthographic top-down perspective with foreshortened blade, polished steel blade, bronze guard, resting flat, subtle micro contact shadow beneath, zero cyan tint",
                 "seed_offset": 1003,
             },
             {
                 "variant_slug": "rot_north_0deg",
                 "name": "Upright Vertical North Sword",
-                "prompt_modifier": "vertical straight sword orientation pointing straight North (0 degrees upward), hilt at bottom, pointed blade tip pointing vertically up, centered symmetrical alignment",
+                "prompt_modifier": "vertical straight sword orientation pointing straight North (0 degrees upward), hilt at bottom, pointed blade tip pointing vertically up, centered symmetrical alignment, polished steel blade, bronze guard, zero cyan tint",
                 "seed_offset": 1004,
             },
             {
                 "variant_slug": "rot_west_270deg",
                 "name": "Horizontal West Pointing Sword",
-                "prompt_modifier": "horizontal straight sword orientation pointing West (270 degrees to the left), hilt on right, pointed blade tip pointing horizontally to the left, centered profile",
+                "prompt_modifier": "horizontal straight sword orientation pointing West (270 degrees to the left), hilt on right, pointed blade tip pointing horizontally to the left, centered profile, polished steel blade, bronze guard, zero cyan tint",
                 "seed_offset": 1005,
             },
         ],
@@ -731,6 +731,7 @@ def run_candidate_test(
     candidate_slug: str | None = None,
     variant_slug: str | None = None,
     base_seed: int = 8800,
+    force: bool = False,
 ) -> int:
     targets = [c for c in CANDIDATES if not candidate_slug or c["asset_slug"] == candidate_slug]
     if not targets:
@@ -774,6 +775,14 @@ def run_candidate_test(
                 args.size = 1024
 
             out_subfolder = f"candidate_tests/{c_slug}"
+
+            if force:
+                out_dir = REPO_ROOT / "build" / out_subfolder
+                if out_dir.exists():
+                    for old_tmp in out_dir.glob(f"*{seed}*"):
+                        old_tmp.unlink(missing_ok=True)
+                for old_tmp in (OUTPUT_DIR / c_slug).glob(f"*{seed}*"):
+                    old_tmp.unlink(missing_ok=True)
 
             t0 = time.time()
             success = False
@@ -915,6 +924,10 @@ def main(argv: list[str] | None = None) -> int:
         "--audit", action="store_true", help="Audit all generated candidate variants"
     )
 
+    parser.add_argument(
+        "--force", action="store_true", help="Force overwrite existing renders"
+    )
+
     args = parser.parse_args(argv)
 
     if args.list:
@@ -932,6 +945,7 @@ def main(argv: list[str] | None = None) -> int:
         candidate_slug=args.candidate,
         variant_slug=args.variant,
         base_seed=args.seed,
+        force=args.force,
     )
 
 
