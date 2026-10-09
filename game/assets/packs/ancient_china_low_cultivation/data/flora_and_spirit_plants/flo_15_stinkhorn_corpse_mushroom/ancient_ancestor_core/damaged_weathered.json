@@ -1,0 +1,275 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_15_stinkhorn_corpse_mushroom.ancient_ancestor_core",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_15_stinkhorn_corpse_mushroom",
+  "asset_slug": "ancient_ancestor_core",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_15_stinkhorn_corpse_mushroom/ancient_ancestor_core/damaged_weathered.png",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "commune_spirit",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.128,
+        0.646,
+        0.249
+      ],
+      [
+        0.39,
+        0.686,
+        0.352
+      ],
+      [
+        0.385,
+        0.946,
+        0.405
+      ]
+    ],
+    "frac_zero": 0.6095,
+    "blocks": [
+      [
+        false,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 8,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      10,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.139,
+        0.63,
+        0.793,
+        0.268,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.017,
+        0.762,
+        0.92,
+        0.792,
+        0.93,
+        0.357,
+        0.003,
+        0.0
+      ],
+      [
+        0.0,
+        0.006,
+        0.498,
+        0.755,
+        0.408,
+        0.579,
+        0.809,
+        0.752,
+        0.233,
+        0.0
+      ],
+      [
+        0.0,
+        0.158,
+        0.466,
+        0.534,
+        0.616,
+        0.578,
+        0.425,
+        0.593,
+        0.867,
+        0.334
+      ],
+      [
+        0.312,
+        0.935,
+        0.563,
+        0.31,
+        0.208,
+        0.48,
+        0.729,
+        0.352,
+        0.645,
+        0.487
+      ],
+      [
+        0.538,
+        0.398,
+        0.813,
+        0.636,
+        0.662,
+        0.847,
+        0.633,
+        0.554,
+        0.213,
+        0.0
+      ],
+      [
+        0.0,
+        0.024,
+        0.288,
+        0.495,
+        0.988,
+        0.94,
+        0.458,
+        0.569,
+        0.127,
+        0.0
+      ],
+      [
+        0.0,
+        0.005,
+        0.765,
+        0.818,
+        1.0,
+        1.0,
+        0.926,
+        0.388,
+        0.251,
+        0.003
+      ],
+      [
+        0.0,
+        0.153,
+        0.914,
+        0.996,
+        1.0,
+        1.0,
+        0.998,
+        0.893,
+        0.277,
+        0.331
+      ],
+      [
+        0.0,
+        0.477,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        0.476,
+        0.0
+      ],
+      [
+        0.0,
+        0.033,
+        0.491,
+        0.881,
+        0.921,
+        0.652,
+        0.641,
+        0.285,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      32,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 116,
+    "contact_reference_px": 116.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      384
+    ]
+  }
+}
