@@ -388,6 +388,20 @@ func advance_periods(count: int) -> Dictionary:
 		moved += int(chunk)
 		if not bool(report.get("ok", false)):
 			return report
+	# **The fold is re-read over the WHOLE paid span, not left at the last chunk's.**
+	#
+	# `_advance` publishes `_crossed = TimeLadder.magnitudes_crossed(periods)` for the span
+	# IT was handed, which is correct for one advance and wrong for a planned skip: the
+	# loop above runs up to `MAX_CHUNKS` advances, so the published fold was the LAST
+	# chunk's division (a 4380-period retreat published `{period: 68, day: 5, ...}`) while
+	# every other reader -- `retreat()`'s own report, `item_workbench_play.gd:141` -- folded
+	# over the PAID span. Two answers to "how long was this" is the defect; the chunk SIZES
+	# are an implementation detail of staying inside the budget and must not be observable
+	# as the span's own division.
+	#
+	# `magnitudes_crossed` is a pure function of the span, so re-folding here is exact and
+	# costs one O(magnitudes) pass -- it cannot grow with the span however long it is.
+	_crossed = TimeLadder.magnitudes_crossed(moved)
 	return _report(true, "").merged({"declared": count, "chunks": plan.size(), "moved": moved})
 
 
