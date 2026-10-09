@@ -3,6 +3,10 @@ extends TestCase
 ## ADR 0008: boss and domain content defs load and cross-reference.
 ## ADR 0019/0045/0046/0047: world resource defs load with expected fields.
 
+const DOMAIN_DIR := "res://data/domains"
+const BOSS_DIR := "res://data/bosses"
+const ENCOUNTER_DIR := "res://data/loot/encounters"
+
 
 func test_boss_def_loads() -> void:
 	var boss := load("res://data/bosses/flame_dragon.tres")
@@ -409,10 +413,6 @@ func test_world_catalogs_cross_reference() -> void:
 
 
 # ── the legacy domain records are the id catalog, and it is ONE universe ─────
-
-const DOMAIN_DIR := "res://data/domains"
-const BOSS_DIR := "res://data/bosses"
-const ENCOUNTER_DIR := "res://data/loot/encounters"
 
 
 ## BL-0474's decision in executable form. The 160 legacy `DomainDef` records are the

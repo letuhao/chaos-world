@@ -222,6 +222,12 @@ const KEY_TO_TIER := &"to_tier"
 const KEY_CAPACITY := &"capacity"
 const KEY_CLARITY_NOW := &"clarity"
 
+## The illusion-resistance conversion, as a DOCUMENTED constant rather than a re-tuned cap.
+## The full derivation — the unit error this fixes, the measured `4.2e-4`, and why a floor
+## would have papered over it — stays beside [method _illusion_resistance_of], which is the
+## math that reads this.
+const ILLUSION_MAGNITUDE_SCALE := 100.0
+
 static var _shipped: CombatTuning = null
 
 ## The tuning this mechanism reads, when a caller binds one. Null means "the per-attack
@@ -679,12 +685,12 @@ func _defense_of(
 ## defended kind in the game against the one defender the game explicitly offers for it,
 ## which is what `0.00042203465127` was.
 ##
+## The constant is declared with the ids above, where gdlint's definition order puts it.
 ## It is a named constant rather than an inline literal because a second copy of this
 ## number is how the unit error would come back, and because it is the ONE thing a balance
 ## pass would legitimately want to turn: the question "is an illusion build worth as much
 ## against `OBSCURE` as a clarity build's `mental_defense`" has to have an answer in one
-## place.
-const ILLUSION_MAGNITUDE_SCALE := 100.0
+## place ([constant ILLUSION_MAGNITUDE_SCALE]).
 
 
 ## ADR 0200's mitigation curve, the same shape `QiDamage` and `BodyDamage` use:
