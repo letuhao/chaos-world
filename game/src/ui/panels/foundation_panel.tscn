@@ -23,3 +23,7 @@ autowrap_mode = 2
 [node name="WallLabel" type="Label" parent="Rows"]
 unique_name_in_owner = true
 autowrap_mode = 2
+
+[node name="MendingLabel" type="Label" parent="Rows"]
+unique_name_in_owner = true
+autowrap_mode = 2

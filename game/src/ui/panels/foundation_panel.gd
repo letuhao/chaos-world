@@ -17,6 +17,7 @@ var _carried_label: Label = null
 var _karmic_label: Label = null
 var _rows_label: Label = null
 var _wall_label: Label = null
+var _mending_label: Label = null
 var _state: Dictionary = {}
 var _wall: Dictionary = {}
 
@@ -64,6 +65,7 @@ func _bind_nodes() -> void:
 	_karmic_label = get_node_or_null("%KarmicLabel") as Label
 	_rows_label = get_node_or_null("%RowsLabel") as Label
 	_wall_label = get_node_or_null("%WallLabel") as Label
+	_mending_label = get_node_or_null("%MendingLabel") as Label
 
 
 func _render() -> void:
@@ -76,6 +78,7 @@ func _render() -> void:
 		_karmic_label.text = ""
 		_rows_label.text = ""
 		_wall_label.text = ""
+		_mending_label.text = ""
 		return
 	_carried_label.text = (
 		L.t("LOC_UI_PANELS_BB0593A26D")
@@ -118,6 +121,12 @@ func _render() -> void:
 			L.t("LOC_UI_PANELS_222CE37713")
 			% [int(float(wall["foundation"]) * 100.0), int(float(wall["min_foundation"]) * 100.0)]
 		)
+	# The mending WEB, named so a player learns the avenues exist. Each one is INVOKED where
+	# it lives — the elixir in the inventory, the rite at the tribulation, the secret realm in
+	# a domain, a master's sacrifice through a mentor, the forbidden art and karmic virtue
+	# through their own screens, a dual-cultivation aid with a partner — and this readout is
+	# the one place that says so.
+	_mending_label.text = L.t("LOC_UI_PANELS_07CE746EC8")
 
 
 func _rows() -> Array:
