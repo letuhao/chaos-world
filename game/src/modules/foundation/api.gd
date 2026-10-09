@@ -26,6 +26,16 @@ extends RefCounted
 const R_NO_ACTOR := "no_actor"
 const R_EMPTY_REALM := "empty_realm"
 const R_ALREADY_SNAPSHOTTED := "already_snapshotted"
+const R_NO_SNAPSHOT := "no_snapshot"
+const R_MEND_CAPPED := "mend_capped"
+const R_BAD_AMOUNT := "bad_amount"
+
+## No snapshot may be mended above this (BL-0951 / ADR 0939, S7): a poor foundation is a
+## scar, never erased. 0.5 clears the authored floors through R13 and never R14+, so
+## mending carries a run through the middle game while the deep ladder stays closed to
+## whoever never trained. The avenue owns the STEP (its authored amount); the module owns
+## this ceiling, and no avenue raises it.
+const MEND_CAP := 0.5
 
 ## A training press costs TIME, and time is periods (BL-0951 / ADR 0939, S6). One press is
 ## one day of the body's life at the authored ladder ratios (12 periods to the day) — the
@@ -54,6 +64,69 @@ static func foundation(actor: Actor) -> float:
 	return FoundationRecord.aggregate(
 		FoundationRecord.normalize(actor.get_module_data(FoundationRecord.SLOT))
 	)
+
+
+## The realm whose snapshot a mend should land on: the WEAKEST scar — the lowest snapshot
+## strictly below `MEND_CAP` — or `&""` when there is none (BL-0951 / ADR 0939, S7). The
+## item route mends through this because it names no realm: lifting the worst scar raises
+## the carried mean the fastest, so the default is also the optimal play, and a targeted
+## mend (a later avenue or screen) still calls [method mend] with its own realm.
+static func mend_target(actor: Actor) -> StringName:
+	if actor == null:
+		return &""
+	var record := FoundationRecord.normalize(actor.get_module_data(FoundationRecord.SLOT))
+	var worst := &""
+	var worst_value := MEND_CAP
+	for id in (record.get("snapshots", {}) as Dictionary).keys():
+		var value := float((record["snapshots"] as Dictionary)[id])
+		if value < worst_value:
+			worst_value = value
+			worst = StringName(id)
+	return worst
+
+
+## Mend one realm's snapshot by up to `amount`, never above `MEND_CAP` (BL-0951 /
+## ADR 0939, S7). The avenue owns the STEP — its authored amount, priced by whatever the
+## avenue costs — and this owns the ceiling: a sloppy past can be lifted toward 0.5 and
+## never to perfection. `source` names the avenue that paid (the item id, the rite, the
+## realm) and travels in the answer, so a later per-avenue accounting has something to
+## key on.
+##
+## Named refusals, never a silent no-op: no actor, an empty realm, an unusable amount, a
+## realm with no snapshot to mend, and a snapshot already at the cap are all different
+## states and read differently.
+static func mend(
+	actor: Actor, realm_id: StringName, amount: float, source: String = ""
+) -> Dictionary:
+	if actor == null:
+		return {"ok": false, "reason": R_NO_ACTOR}
+	if realm_id == &"":
+		return {"ok": false, "reason": R_EMPTY_REALM}
+	if not is_finite(amount) or amount <= 0.0:
+		return {"ok": false, "reason": R_BAD_AMOUNT}
+	var record := FoundationRecord.normalize(actor.get_module_data(FoundationRecord.SLOT))
+	if not FoundationRecord.has_snapshot(record, realm_id):
+		return {"ok": false, "reason": R_NO_SNAPSHOT, "realm": String(realm_id)}
+	var existing := FoundationRecord.snapshot_for(record, realm_id)
+	if existing >= MEND_CAP:
+		return {
+			"ok": false,
+			"reason": R_MEND_CAPPED,
+			"realm": String(realm_id),
+			"existing": existing,
+		}
+	var lifted := minf(existing + amount, MEND_CAP)
+	record = FoundationRecord.with_snapshot(record, realm_id, lifted)
+	actor.set_module_data(FoundationRecord.SLOT, record)
+	return {
+		"ok": true,
+		"realm": String(realm_id),
+		"before": existing,
+		"after": lifted,
+		"mended": lifted - existing,
+		"source": source,
+		"aggregate": FoundationRecord.aggregate(record),
+	}
 
 
 ## The foundation a tribulation is fought at: the carried aggregate, or `1.0` when the

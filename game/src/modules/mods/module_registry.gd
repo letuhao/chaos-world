@@ -41,7 +41,7 @@ const BASE_DEPS := {
 	"forage": ["holdings"],
 	"heavenly_tribulation": ["status"],
 	"holdings": [],
-	"items": ["destiny", "status"],
+	"items": ["destiny", "foundation", "status"],
 	"loot": ["items", "status"],
 	"market": ["economy", "items"],
 	"mind_cultivation": ["destiny", "foundation", "items", "race"],

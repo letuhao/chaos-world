@@ -37,6 +37,12 @@ extends Resource
 ## it. See `ItemUse.CLEANSE_LEVER_FIELD` for why it is a named field rather than a key
 ## dug out of `fixed_modifiers`, and ADR 0107 for the deferral it discharged.
 @export var cleanse_lever: StringName = &""
+## How much foundation this consumable mends when spent, or `0.0` when it mends none
+## (BL-0951 / ADR 0939, S7). A named field rather than a key dug out of
+## `fixed_modifiers` for the same reason `cleanse_lever` is: the amount is the avenue's
+## authored bound, and `FoundationApi.mend` — the verb that spends it — enforces the
+## realm cap. Empty on every authored item but the miracle elixir.
+@export var foundation_mend: float = 0.0
 ## The fate this item grants when it is EQUIPPED, or `&""` when it grants none
 ## (ADR 0135). Earned exactly once: `DestinyApi.earn_fate` is already once-only, so
 ## equipping and unequipping a unique a hundred times holds the fate once and needs no

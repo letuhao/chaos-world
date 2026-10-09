@@ -132,6 +132,27 @@ static func _apply_consumed(actor: Actor, def: ItemDef, instance: ItemInstance) 
 	var cleansed: Dictionary = {}
 	if def.cleanse_lever != &"":
 		cleansed = StatusApi.cleanse(actor, def.cleanse_lever)
+	# ## The foundation mend, and why it is a LIFT and not a restoration
+	#
+	# `def.foundation_mend` is 0.0 on every other authored item, so this branch is
+	# inert for the whole corpus until a pill names an amount. When it is named, the
+	# spend is `FoundationApi.mend` on the WEAKEST scar (`mend_target`): one amount in,
+	# the foundation module's own realm cap out, and nothing here interprets what a
+	# snapshot means. That is the cleanse lever's shape exactly — this module says
+	# WHICH item, and `foundation` decides what the mend lifts.
+	#
+	# A mend that lifts nothing is NOT `ok`, for the same BL-0110 reason a cleanse that
+	# removed nothing is not: the verb would decrement the stack and the actor would be
+	# identical afterwards. The caller reads `mended` here and nothing else.
+	var mended: Dictionary = {}
+	if def.foundation_mend > 0.0:
+		var target := FoundationApi.mend_target(actor)
+		if target != &"":
+			var lift := FoundationApi.mend(
+				actor, target, float(def.foundation_mend), String(def.id)
+			)
+			if bool(lift.get("ok", false)):
+				mended = lift
 	# A consumable's stat targets are cultivation seed, not a permanent buff: they
 	# are REPORTED, never applied as a permanent modifier (ADR 0001). So a
 	# consumable whose only content is a base attribute restores nothing and applies
@@ -143,12 +164,15 @@ static func _apply_consumed(actor: Actor, def: ItemDef, instance: ItemInstance) 
 	# the verb would decrement the stack and the actor would be identical afterwards.
 	# The reason names WHICH lever was spent and how many statuses it answered, so a
 	# caller can tell "you were not afflicted" from "that lever answers nothing on you".
-	if cleansed.get("count", 0) == 0 and applied.is_empty():
+	# A mend that lifted nothing joins the same gate: an elixir spent on a record with
+	# no scar below the cap must refuse rather than vanish.
+	if cleansed.get("count", 0) == 0 and applied.is_empty() and mended.is_empty():
 		return {
 			"ok": false,
 			"reason": REASON_NO_EFFECT,
 			"stat_gains": stat_gains,
 			"cleansed": cleansed,
+			"mended": mended,
 		}
 	actor.mark_stats_dirty()
 	return {
@@ -156,6 +180,7 @@ static func _apply_consumed(actor: Actor, def: ItemDef, instance: ItemInstance) 
 		"restores": applied,
 		"stat_gains": stat_gains,
 		"cleansed": cleansed,
+		"mended": mended,
 	}
 
 
