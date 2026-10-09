@@ -57,7 +57,6 @@ const ZONE := &"zone"
 const STUN := &"stun"
 const SLOW := &"slow"
 
-const SUMMON := &"summon"
 const TRANSFORM := &"transform"
 
 ## All types, canonically ordered. Used by the diversity validator and by a
