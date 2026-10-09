@@ -1,0 +1,87 @@
+{
+  "asset_id": "ancient_china_low_cultivation.water_and_springs.wat_07_hot_spring_bathing_grotto.stepped_cascade_drop",
+  "domain": "water_and_springs",
+  "sub_domain": "wat_07_hot_spring_bathing_grotto",
+  "asset_slug": "stepped_cascade_drop",
+  "variant_slug": "facing_east_profile",
+  "name": "East Facing Profile",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_07_hot_spring_bathing_grotto/stepped_cascade_drop/facing_east_profile.png",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.507,
+        0.55
+      ]
+    ],
+    "frac_zero": 0.8666,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.022,
+        0.64,
+        0.0
+      ],
+      [
+        0.595,
+        0.963,
+        0.239
+      ],
+      [
+        0.644,
+        0.892,
+        0.254
+      ]
+    ],
+    "crop_offset": [
+      87,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 60,
+    "contact_reference_px": 60.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
