@@ -123,5 +123,8 @@ func test_an_undeclared_key_is_dropped_rather_than_refused() -> void:
 	assert_eq(
 		bool(normalized.has("a_system_chose_its_own_key")),
 		false,
-		"a key the contract does not publish is dropped silently - this is the hazard the published list exists to prevent"
+		(
+			"a key the contract does not publish is dropped silently - this is the hazard"
+			+ " the published list exists to prevent"
+		)
 	)

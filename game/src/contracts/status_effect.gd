@@ -42,6 +42,22 @@ enum Stacking {
 	COEXIST,  ## a NEW independent instance; never matches an existing one (ADR 0902, P3).
 }
 
+## Every kind a persisted int may name. The enum is CLOSED, so this is the whole set,
+## and it is a const rather than a pattern list inside `_enum_or_default` so that the
+## membership test stays inside the line budget while still covering every case: adding a
+## kind to the enum means adding it here, which is exactly the edit that must not be
+## forgotten when an old save has to keep loading.
+const ALL_KINDS: Array = [
+	Kind.DOT,
+	Kind.STAT_MODIFIER,
+	Kind.CONTROL,
+	Kind.AMPLIFIER,
+	Kind.BURST,
+	Kind.COUNTER,
+	Kind.METER,
+	Kind.CONTAGION,
+]
+
 ## The ops a status may carry into a `StatModifier`. `Stat.Op` is REFERENCED here,
 ## never re-declared: a second enum is a second place to get FLAT-on-a-rate wrong
 ## (ADR 0068). `MULT` is banned because N instances would compound to 1024x and
@@ -214,7 +230,6 @@ static func _enum_or_default(value: Variant, fallback: int) -> int:
 	var index := int(value)
 	if index < 0:
 		return fallback
-	match index:
-		Kind.DOT, Kind.STAT_MODIFIER, Kind.CONTROL, Kind.AMPLIFIER, Kind.BURST, Kind.COUNTER, Kind.METER, Kind.CONTAGION:
-			return index
+	if ALL_KINDS.has(index):
+		return index
 	return fallback

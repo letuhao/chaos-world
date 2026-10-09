@@ -85,7 +85,7 @@ static func demolish(actor: Actor, building_id: StringName) -> bool:
 
 
 ## Assign a duty to a building (placeholder for future duty system).
-static func assign_duty(actor: Actor, building_id: StringName, duty_id: StringName) -> bool:
+static func assign_duty(actor: Actor, building_id: StringName, _duty_id: StringName) -> bool:
 	if actor == null:
 		return false
 	# Duty assignment is a placeholder for future implementation.

@@ -4,7 +4,8 @@ extends RefCounted
 ## The authored clan content tree, loaded once and cached.
 ##
 ## Clan definitions live in `res://data/packs/clan/organizations/` and are ordinary
-## `.tres` resources carrying a `script_class`, loaded the same way `RaceCatalog` loads its tree: a text
+## `.tres` resources carrying a `script_class`, loaded the same way `RaceCatalog` loads its
+## tree: a text
 ## scan for `script_class=` so a `.tres` belonging to some other resource type in the
 ## same directory is skipped rather than mis-cast.
 

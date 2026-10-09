@@ -1,6 +1,7 @@
 extends TestCase
 
-## The authored content under `res://data/packs/nation/organizations/` must load, and the module must
+## The authored content under `res://data/packs/nation/organizations/` must load, and the module
+## must
 ## bind to it. This is the suite that would go red first if a `.tres` named a
 ## script that does not exist, an office id was duplicated, or a polity shipped a
 ## board with nothing left vacant.

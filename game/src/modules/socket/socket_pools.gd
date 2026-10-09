@@ -237,7 +237,7 @@ static func _weighted_reforge(
 ## before this ran: it appends to `out` while reading `ids`, never a container it
 ## is growing.
 static func _weighted_from(
-	ids: Array[StringName], used: Array[StringName], floor: Dictionary
+	ids: Array[StringName], used: Array[StringName], _floor: Dictionary
 ) -> Array[Dictionary]:
 	var catalog := OptionCatalog.instance()
 	var taken := {}

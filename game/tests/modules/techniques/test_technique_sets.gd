@@ -23,7 +23,7 @@ class _SetResolver:
 
 	var calls: int = 0
 
-	func resolve(attacker: Actor, target: Actor, def: TechniqueDef) -> Dictionary:
+	func resolve(_attacker: Actor, _target: Actor, _def: TechniqueDef) -> Dictionary:
 		calls += 1
 		return {"amount": 10.0}
 

@@ -243,7 +243,7 @@ static func summary(actor: Actor) -> Dictionary:
 	}
 
 
-static func tick(actor: Actor, delta: float) -> int:
+static func tick(actor: Actor, _delta: float) -> int:
 	var state := relationship_state(actor)
 	if state == null:
 		return 0

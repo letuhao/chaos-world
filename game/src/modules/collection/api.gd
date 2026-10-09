@@ -76,7 +76,7 @@ static func summary(actor: Actor) -> Dictionary:
 ## Record a collection event and return the new state. Events are logged to the
 ## actor's destiny history through `DestinyApi.record` with a collection counter.
 static func record_event(
-	actor: Actor, event_type: StringName, partner_id: StringName = &""
+	actor: Actor, _event_type: StringName, _partner_id: StringName = &""
 ) -> Dictionary:
 	if actor == null:
 		return {}
@@ -296,7 +296,7 @@ static func _lineage_rows(purity: Dictionary) -> Array[Dictionary]:
 static func _tiers(
 	actor: Actor,
 	partners: Array[Dictionary],
-	bond_classes: Array[StringName],
+	_bond_classes: Array[StringName],
 	pillars: Array[Dictionary],
 	heterosis: Dictionary
 ) -> Array[Dictionary]:

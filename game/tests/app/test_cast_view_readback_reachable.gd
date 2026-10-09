@@ -33,7 +33,8 @@ extends TestCase
 ## the constraint is gone — but the SHAPE is kept deliberately, because a type reached by name
 ## is a better seam than a thirteenth verb regardless of how many verbs a facade may publish.
 ## It is reached as a named type the facade publishes as the CONSTANT `CAST_VIEW`, exactly as
-## `TechniqueCasting` and `TechniqueDelivery` are reached — `game/src/ui/screens/technique_loadout.gd:121`
+## `TechniqueCasting` and `TechniqueDelivery` are reached —
+## `game/src/ui/screens/technique_loadout.gd:121`
 ## `_readback_type()` and `:595` `_snapshot_of()` / `:606` `_turn_of()`. `act_cast` takes
 ## the snapshot immediately before `activate` and the readback immediately after
 ## (`:380-382`), which is the only place that can see both sides of the call. The app

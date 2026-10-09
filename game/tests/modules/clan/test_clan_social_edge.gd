@@ -111,7 +111,8 @@ func test_the_facade_reaches_social_through_a_single_named_reference() -> void:
 ## held by the registry, not by a scan.
 ##
 ## Scoped to module paths rather than to every `res://` because `clan_catalog.gd` reads
-## the authored content tree: `CLANS_ROOT` is `res://data/packs/clan/organizations`, spelled inside a
+## the authored content tree: `CLANS_ROOT` is `res://data/packs/clan/organizations`, spelled
+## inside a
 ## backtick in the docstring above it and therefore matched by `RES_PATTERN` twice. That
 ## is a CONTENT path, not a dependency edge, and a scan that counted it was measuring the
 ## docstring rather than the graph.

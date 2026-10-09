@@ -10,7 +10,8 @@ extends RefCounted
 ##
 ## `install` writes `catalog._clans` and flips `catalog._loaded` directly, and
 ## `teardown` nulls the static `ClanCatalog.shared`. There is no public seam for
-## either: the catalog is a lazily-loaded singleton over `res://data/packs/clan/organizations/`, and a
+## either: the catalog is a lazily-loaded singleton over `res://data/packs/clan/organizations/`,
+## and a
 ## test that wants a *different* tree cannot get one through its published surface.
 ## This is the same deliberate reach the sibling `RaceFixtureCatalog` makes into
 ## `RaceCatalog._races`/`_loaded`/`shared`, and it is confined to this one file —

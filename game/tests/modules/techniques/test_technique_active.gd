@@ -153,7 +153,10 @@ func test_the_facade_publishes_no_activation_verb() -> void:
 	assert_eq(
 		published.has("technique_state"),
 		false,
-		"'technique_state' is gone — it had no caller, and publishing it would have been an interface spent on nothing"
+		(
+			"'technique_state' is gone — it had no caller, and publishing it would have been"
+			+ " an interface spent on nothing"
+		)
 	)
 
 

@@ -84,7 +84,10 @@ func test_a_newborn_body_draws_the_authored_default_kit() -> void:
 	assert_eq(
 		inv.has_instance(DEFAULT_WEAPON),
 		true,
-		"the sword is minted as an INSTANCE — what the bag row builder lists and equip_shape_reason matches"
+		(
+			"the sword is minted as an INSTANCE — what the bag row builder lists"
+			+ " and equip_shape_reason matches"
+		)
 	)
 	assert_eq(inv.has_instance(DEFAULT_ARMOR), true, "and so is the helm")
 	assert_eq(inv.count(DEFAULT_CONSUMABLE), 3, "the consumable lands as a stack of three")

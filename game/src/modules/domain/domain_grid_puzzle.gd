@@ -389,7 +389,7 @@ static func _resolve_move(board: Dictionary, direction: StringName) -> Dictionar
 ## A refusal carries the two tiles that produced it, because "the push failed" is a
 ## question a player answers by looking at where they stand and where the piece is.
 static func _refused(
-	reason: String, here: Array, into: Array, delta: Vector2i, board: Dictionary
+	reason: String, here: Array, into: Array, delta: Vector2i, _board: Dictionary
 ) -> Dictionary:
 	return {
 		"ok": false,

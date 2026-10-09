@@ -4,7 +4,8 @@ extends TestCase
 ##
 ## The FIELD and its ONE consumer shipped first (`InstitutionPositionDef.standing_percent_stats`
 ## and `InstitutionProjection.grant`, ADR 0084) and the CONTENT did not: all three `.tres` files
-## under `res://data/packs/guilds/organizations` authored an EMPTY allowlist on every office, so the recognition
+## under `res://data/packs/guilds/organizations` authored an EMPTY allowlist on every office, so
+## the recognition
 ## a guild confers was authored-but-unreachable — a player who founded The Lantern Exchange
 ## received a seat, a duty and a treasury and NOT one point of recognition.
 ##

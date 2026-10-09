@@ -417,7 +417,8 @@ func test_two_minor_npcs_in_one_room_get_distinct_names_and_repeat_identically()
 ##   - `presence_here["alive"]` is `NpcReadModel.alive` once per live body, and `alive`
 ##     COMPOSES a minor persona on every call. The composition IS the read's result — the
 ##     row carries a name, a manner and an opinion, and a row somebody built is the
-##     INTERACTION read's job. `test_the_compose_counter_moves_exactly_when_a_minor_is_interacted_with`
+## INTERACTION read's job.
+## `test_the_compose_counter_moves_exactly_when_a_minor_is_interacted_with`
 ##     pins that, and two dozen lines up
 ##     `test_two_minor_npcs_in_one_room_get_distinct_names_and_repeat_identically` pins it
 ##     again: reading the same room twice composes the same people.

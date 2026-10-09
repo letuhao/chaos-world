@@ -19,7 +19,7 @@ const JADE := {
 }
 
 
-func _def(grade: StringName, rarity: StringName = &"common", rolled: int = 0) -> ItemDef:
+func _def(grade: StringName, rarity: StringName = &"common", _rolled: int = 0) -> ItemDef:
 	var def := ItemDef.new()
 	def.id = StringName("yield_probe_%s_%s" % [grade, rarity])
 	def.category = ItemCategory.EQUIPMENT

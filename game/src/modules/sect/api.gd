@@ -159,7 +159,8 @@ const WALK_COMPLETE := SectSuccession.R_WALK_COMPLETE
 const ALREADY_OPEN := SectSuccession.R_ALREADY_OPEN
 ## A `wait` naming no time at all. Distinct from `period_not_elapsed`: that one is
 ## the seat's own clock refusing, this one is the CALLER refusing to name a count.
-const NO_PERIODS := SectSuccession.R_NO_PERIODS  ## A teacher may not teach this doctrine at all — their own fit is below its
+const NO_PERIODS := SectSuccession.R_NO_PERIODS
+## A teacher may not teach this doctrine at all — their own fit is below its
 ## authored `affinity_floor`. Distinct from the student's `min_purity` door: a
 ## teacher who cannot stand on the floor does not get to teach at the floor.
 const TEACHER_UNFIT := SectTeaching.R_TEACHER_UNFIT

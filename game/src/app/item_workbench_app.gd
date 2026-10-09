@@ -888,7 +888,8 @@ func _rebind_live_body(body: Actor) -> void:
 		_live_screen().setup(body)
 
 
-## Open character creation, and answer whether it opened. **Opens the nav route the table already names**, so there is one door rather than two
+## Open character creation, and answer whether it opened. **Opens the nav route the table
+## already names**, so there is one door rather than two
 ## (ADR 0130). Boot calls this when no hero exists, which is why it is public with a production
 ## caller: `test_screen_reachability` fails a public mount nothing in `src/` calls, and
 ## `_ready` is that caller.

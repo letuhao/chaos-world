@@ -131,7 +131,7 @@ static func _clan_level_at_least(actor: Actor, requirement: Dictionary) -> Dicti
 	)
 
 
-static func _has_materials(actor: Actor, requirement: Dictionary) -> Dictionary:
+static func _has_materials(_actor: Actor, requirement: Dictionary) -> Dictionary:
 	var amount = requirement.get("amount", null)
 	if not (amount is float or amount is int):
 		return _refuse("malformed", "A has_materials gate needs a numeric `amount`.")
@@ -141,7 +141,7 @@ static func _has_materials(actor: Actor, requirement: Dictionary) -> Dictionary:
 	return _pass()
 
 
-static func _has_contribution(actor: Actor, requirement: Dictionary) -> Dictionary:
+static func _has_contribution(_actor: Actor, requirement: Dictionary) -> Dictionary:
 	var amount = requirement.get("amount", null)
 	if not (amount is float or amount is int):
 		return _refuse("malformed", "A has_contribution gate needs a numeric `amount`.")

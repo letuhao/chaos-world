@@ -746,7 +746,8 @@ static func counter_snapshot(actor: Actor) -> Dictionary:
 ## (`StatusApply.record`'s flattened entry) — `CombatBoot.resolve_hit` is the caller.
 ## A def that authors a counter under its payload advances here:
 ##
-##     payload.counter = {every_hits: int, reset_on_burst: bool, space: "instance"|"grant", scope: name}
+## payload.counter = {every_hits: int, reset_on_burst: bool, space: "instance"|"grant", scope:
+## name}
 ##
 ## and a def that authors none is a no-op — every shipped def today, so the funnel
 ## call is byte-identical for the shipped content and the wiring is what makes a
