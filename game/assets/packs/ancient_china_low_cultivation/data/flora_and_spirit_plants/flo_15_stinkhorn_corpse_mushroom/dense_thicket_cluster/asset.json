@@ -46,19 +46,19 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_15_stinkhorn_corpse_mushroom/dense_thicket_cluster/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.416,
-            0.444
+            0.695,
+            0.732
           ],
           [
-            0.614,
-            0.489
+            0.601,
+            0.627
           ]
         ],
-        "frac_zero": 0.6112,
+        "frac_zero": 0.4863,
         "blocks": [
           [
             false,
@@ -91,79 +91,79 @@
         "sub_fill": [
           [
             0.0,
-            0.062,
-            0.671,
-            0.789,
-            0.122,
-            0.0,
+            0.434,
+            0.91,
+            0.949,
+            0.748,
+            0.418,
             0.0
           ],
           [
-            0.0,
-            0.525,
-            0.681,
-            0.655,
-            0.671,
-            0.155,
-            0.0
+            0.316,
+            0.905,
+            1.0,
+            1.0,
+            1.0,
+            0.978,
+            0.299
           ],
           [
-            0.245,
-            0.445,
-            0.622,
-            0.533,
-            0.564,
-            0.851,
-            0.398
+            0.31,
+            0.917,
+            1.0,
+            1.0,
+            1.0,
+            0.907,
+            0.274
           ],
           [
-            0.601,
-            0.794,
-            0.631,
-            0.749,
-            0.373,
-            0.306,
-            0.0
-          ],
-          [
-            0.039,
-            0.415,
-            0.99,
-            0.628,
-            0.718,
-            0.138,
-            0.0
-          ],
-          [
-            0.274,
+            0.519,
             0.972,
+            0.956,
             1.0,
             1.0,
-            0.941,
+            0.99,
+            0.727
+          ],
+          [
+            0.441,
+            0.787,
+            0.731,
+            1.0,
+            0.792,
+            0.649,
+            0.335
+          ],
+          [
+            0.04,
+            0.353,
+            1.0,
+            1.0,
+            0.987,
             0.484,
             0.0
           ],
           [
-            0.061,
-            0.627,
-            0.885,
-            0.889,
-            0.272,
             0.0,
+            0.12,
+            0.9,
+            0.943,
+            0.673,
+            0.121,
             0.0
           ]
         ],
         "crop_offset": [
-          28,
-          17
+          18,
+          16
         ],
         "trunk_columns": [
-          1,
           2,
-          3
+          3,
+          4
         ],
-        "contact_px": 97,
-        "contact_reference_px": 97.0,
+        "contact_px": 92,
+        "contact_reference_px": 92.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -191,19 +191,19 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_15_stinkhorn_corpse_mushroom/dense_thicket_cluster/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.329,
-            0.409
+            0.61,
+            0.609
           ],
           [
-            0.625,
-            0.573
+            0.622,
+            0.706
           ]
         ],
-        "frac_zero": 0.6113,
+        "frac_zero": 0.5684,
         "blocks": [
           [
             false,
@@ -236,89 +236,88 @@
         "sub_fill": [
           [
             0.0,
-            0.02,
-            0.582,
-            0.765,
-            0.131,
+            0.0,
+            0.712,
+            0.441,
+            0.077,
             0.0,
             0.0
           ],
           [
+            0.15,
+            0.811,
+            0.996,
+            1.0,
+            0.938,
+            0.422,
+            0.0
+          ],
+          [
+            0.742,
+            1.0,
+            1.0,
+            1.0,
+            0.947,
+            0.235,
+            0.0
+          ],
+          [
+            0.31,
+            0.906,
+            1.0,
+            1.0,
+            1.0,
+            0.858,
+            0.25
+          ],
+          [
+            0.457,
+            0.986,
+            1.0,
+            1.0,
+            0.954,
+            0.379,
+            0.0
+          ],
+          [
+            0.076,
+            0.826,
+            1.0,
+            1.0,
+            0.861,
+            0.222,
+            0.0
+          ],
+          [
             0.0,
-            0.471,
-            0.574,
-            0.549,
-            0.745,
-            0.06,
-            0.0
-          ],
-          [
-            0.112,
-            0.358,
-            0.428,
-            0.62,
-            0.354,
-            0.656,
-            0.247
-          ],
-          [
-            0.458,
-            0.772,
-            0.479,
-            0.797,
-            0.428,
-            0.429,
-            0.142
-          ],
-          [
-            0.11,
-            0.593,
-            0.98,
-            0.964,
-            0.629,
-            0.202,
-            0.0
-          ],
-          [
-            0.306,
-            0.91,
-            1.0,
-            1.0,
-            0.99,
-            0.677,
-            0.04
-          ],
-          [
-            0.088,
-            0.609,
-            0.841,
-            0.896,
-            0.619,
-            0.181,
+            0.182,
+            0.718,
+            0.942,
+            0.552,
+            0.083,
             0.0
           ]
         ],
         "crop_offset": [
-          26,
+          31,
           17
         ],
         "trunk_columns": [
-          1,
           2,
           3,
           4
         ],
-        "contact_px": 102,
-        "contact_reference_px": 102.0,
+        "contact_px": 91,
+        "contact_reference_px": 91.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
           "1.15": null,
           "1.35": null,
           "1.6": [
-            0,
             1,
-            0,
+            1,
+            1,
             1
           ]
         },
@@ -337,19 +336,19 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_15_stinkhorn_corpse_mushroom/dense_thicket_cluster/damaged_weathered.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.407,
-            0.44
+            0.65,
+            0.368
           ],
           [
-            0.612,
-            0.625
+            0.749,
+            0.697
           ]
         ],
-        "frac_zero": 0.5997,
+        "frac_zero": 0.5434,
         "blocks": [
           [
             false,
@@ -381,71 +380,71 @@
         ],
         "sub_fill": [
           [
+            0.014,
+            0.785,
+            0.692,
+            0.034,
             0.0,
-            0.017,
-            0.613,
-            0.824,
-            0.166,
             0.0,
             0.0
           ],
           [
-            0.015,
-            0.525,
-            0.71,
-            0.63,
-            0.72,
-            0.091,
-            0.0
+            0.149,
+            1.0,
+            0.995,
+            0.746,
+            0.564,
+            0.037,
+            0.002
           ],
           [
-            0.14,
-            0.458,
-            0.744,
-            0.538,
-            0.42,
-            0.67,
-            0.259
+            0.137,
+            1.0,
+            1.0,
+            1.0,
+            0.981,
+            0.369,
+            0.054
           ],
           [
-            0.551,
-            0.471,
-            0.681,
-            0.838,
-            0.515,
-            0.321,
-            0.036
+            0.161,
+            0.954,
+            1.0,
+            0.992,
+            0.683,
+            0.294,
+            0.044
           ],
           [
-            0.021,
-            0.702,
-            0.83,
-            0.99,
-            0.771,
-            0.153,
-            0.0
-          ],
-          [
-            0.382,
-            0.99,
+            0.228,
+            0.933,
             1.0,
             1.0,
             0.992,
-            0.598,
-            0.0
+            0.562,
+            0.033
           ],
           [
-            0.096,
-            0.619,
-            0.933,
-            0.99,
+            0.642,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.983,
+            0.16
+          ],
+          [
+            0.159,
+            0.694,
+            0.904,
+            0.997,
             0.724,
-            0.19,
+            0.336,
             0.0
           ]
         ],
         "crop_offset": [
-          28,
+          23,
           17
         ],
         "trunk_columns": [
@@ -454,8 +453,8 @@
           3,
           4
         ],
-        "contact_px": 118,
-        "contact_reference_px": 118.0,
+        "contact_px": 140,
+        "contact_reference_px": 140.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -483,19 +482,19 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_15_stinkhorn_corpse_mushroom/dense_thicket_cluster/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.494,
-            0.432
+            0.64,
+            0.65
           ],
           [
-            0.704,
-            0.658
+            0.778,
+            0.748
           ]
         ],
-        "frac_zero": 0.5776,
+        "frac_zero": 0.4828,
         "blocks": [
           [
             false,
@@ -527,71 +526,71 @@
         ],
         "sub_fill": [
           [
-            0.0,
-            0.215,
-            0.866,
-            0.598,
-            0.019,
-            0.0,
+            0.001,
+            0.467,
+            0.926,
+            0.846,
+            0.604,
+            0.06,
             0.0
           ],
           [
-            0.179,
-            0.743,
-            0.607,
-            0.757,
-            0.524,
-            0.013,
-            0.0
-          ],
-          [
-            0.502,
-            0.569,
-            0.655,
-            0.518,
-            0.688,
-            0.696,
-            0.125
-          ],
-          [
-            0.404,
-            0.541,
-            0.454,
-            0.747,
-            0.431,
-            0.227,
-            0.0
-          ],
-          [
-            0.496,
-            0.801,
-            0.985,
-            0.887,
-            0.781,
-            0.427,
-            0.0
-          ],
-          [
-            0.525,
+            0.421,
             1.0,
             1.0,
             1.0,
             1.0,
-            0.454,
+            0.813,
             0.0
           ],
           [
-            0.236,
-            0.836,
-            0.974,
-            0.952,
-            0.711,
-            0.134,
+            0.061,
+            0.576,
+            0.939,
+            0.919,
+            0.812,
+            0.883,
+            0.02
+          ],
+          [
+            0.128,
+            0.94,
+            0.984,
+            0.969,
+            1.0,
+            0.593,
+            0.027
+          ],
+          [
+            0.586,
+            0.912,
+            1.0,
+            1.0,
+            1.0,
+            0.705,
+            0.15
+          ],
+          [
+            0.76,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.994,
+            0.613
+          ],
+          [
+            0.085,
+            0.709,
+            0.881,
+            0.938,
+            0.752,
+            0.298,
             0.0
           ]
         ],
         "crop_offset": [
-          32,
+          23,
           17
         ],
         "trunk_columns": [
@@ -600,8 +599,8 @@
           3,
           4
         ],
-        "contact_px": 138,
-        "contact_reference_px": 138.0,
+        "contact_px": 133,
+        "contact_reference_px": 133.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,

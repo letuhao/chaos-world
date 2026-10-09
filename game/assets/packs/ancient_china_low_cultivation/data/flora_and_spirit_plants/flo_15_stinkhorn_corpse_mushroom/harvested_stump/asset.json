@@ -46,14 +46,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_15_stinkhorn_corpse_mushroom/harvested_stump/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.33
+            0.568
           ]
         ],
-        "frac_zero": 0.7827,
+        "frac_zero": 0.6786,
         "blocks": [
           [
             false
@@ -75,34 +75,41 @@
         ],
         "sub_fill": [
           [
-            0.373,
-            0.603,
-            0.128
+            0.472,
+            0.948,
+            0.614
           ],
           [
-            0.376,
-            0.455,
-            0.151
+            0.419,
+            0.763,
+            0.38
           ],
           [
-            0.083,
-            0.307,
-            0.0
+            0.293,
+            0.82,
+            0.222
           ]
         ],
         "crop_offset": [
-          26,
-          17
+          22,
+          16
         ],
-        "trunk_columns": [],
-        "contact_px": 17,
-        "contact_reference_px": 17.0,
+        "trunk_columns": [
+          1
+        ],
+        "contact_px": 52,
+        "contact_reference_px": 52.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
           "1.15": null,
           "1.35": null,
-          "1.6": null
+          "1.6": [
+            0,
+            0,
+            0,
+            0
+          ]
         },
         "block_rect": null,
         "block_rect_px": null
@@ -119,14 +126,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_15_stinkhorn_corpse_mushroom/harvested_stump/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.498
+            0.628
           ]
         ],
-        "frac_zero": 0.7375,
+        "frac_zero": 0.6803,
         "blocks": [
           [
             false
@@ -148,31 +155,31 @@
         ],
         "sub_fill": [
           [
-            0.514,
-            0.609,
-            0.224
+            0.534,
+            0.775,
+            0.44
           ],
           [
-            0.384,
-            0.549,
-            0.01
+            0.59,
+            0.93,
+            0.629
           ],
           [
-            0.451,
-            0.724,
-            0.0
+            0.395,
+            0.837,
+            0.185
           ]
         ],
         "crop_offset": [
-          29,
-          17
+          24,
+          16
         ],
         "trunk_columns": [
           0,
           1
         ],
-        "contact_px": 54,
-        "contact_reference_px": 54.0,
+        "contact_px": 53,
+        "contact_reference_px": 53.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -200,14 +207,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_15_stinkhorn_corpse_mushroom/harvested_stump/damaged_weathered.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.455
+            0.669
           ]
         ],
-        "frac_zero": 0.7676,
+        "frac_zero": 0.6193,
         "blocks": [
           [
             false
@@ -229,30 +236,32 @@
         ],
         "sub_fill": [
           [
-            0.465,
-            0.6,
-            0.174
+            0.61,
+            0.645,
+            0.277
           ],
           [
-            0.421,
-            0.533,
-            0.045
+            0.691,
+            0.83,
+            0.5
           ],
           [
-            0.291,
-            0.655,
-            0.022
+            0.695,
+            0.953,
+            0.658
           ]
         ],
         "crop_offset": [
-          28,
-          17
+          21,
+          16
         ],
         "trunk_columns": [
-          1
+          0,
+          1,
+          2
         ],
-        "contact_px": 51,
-        "contact_reference_px": 51.0,
+        "contact_px": 79,
+        "contact_reference_px": 79.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -280,14 +289,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_15_stinkhorn_corpse_mushroom/harvested_stump/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.53
+            0.603
           ]
         ],
-        "frac_zero": 0.7042,
+        "frac_zero": 0.6487,
         "blocks": [
           [
             false
@@ -309,31 +318,32 @@
         ],
         "sub_fill": [
           [
-            0.407,
-            0.597,
-            0.068
+            0.084,
+            0.751,
+            0.466
           ],
           [
-            0.454,
-            0.495,
-            0.293
+            0.652,
+            0.813,
+            0.55
           ],
           [
-            0.692,
-            0.875,
-            0.27
+            0.613,
+            0.882,
+            0.564
           ]
         ],
         "crop_offset": [
-          26,
-          17
+          19,
+          16
         ],
         "trunk_columns": [
           0,
-          1
+          1,
+          2
         ],
-        "contact_px": 65,
-        "contact_reference_px": 65.0,
+        "contact_px": 81,
+        "contact_reference_px": 81.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
