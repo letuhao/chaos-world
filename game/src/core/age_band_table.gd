@@ -71,6 +71,12 @@ const AUTHORED_BANDS: Array[StringName] = [&"first_ash", &"greenwood", &"gilded"
 ## second spelling of this vocabulary waiting to drift.
 const LASTLIGHT := &"lastlight"
 
+## The loaded `.tres`, cached for the process. A `static var` is declared with the
+## `const`s and BEFORE the `@export`s (gdlint's `class-definitions-order`), and it sat
+## after `band_for` instead — which is also what split that method from its own docblock.
+static var _table_cache: AgeBandTable = null
+
+
 ## One authored band per name, mapping name -> fraction of the lifespan at which it is
 ## ENTERED. The whole of the table: four names, four absolute fractions, and nothing derived
 ## from anything.
@@ -118,6 +124,15 @@ func band_for(age_days: float, lifespan_days: float) -> StringName:
 	return reached
 
 
+static func _loaded_table() -> AgeBandTable:
+	# Lazy, never preloaded: the `.tres` binds this script's sibling class, and a
+	# compile-time reference from a script the table's own loader reaches is the load
+	# cycle `TimeLadder._table_resource` and `AgeBands._table` are written to avoid.
+	if _table_cache == null:
+		_table_cache = load("res://src/core/age_band_table.tres") as AgeBandTable
+	return _table_cache
+
+
 ## The band `actor` is standing in, read against its EFFECTIVE lifespan — the one
 ## computation of it, because two would be the ADR 0066 failure (a second answer to
 ## "which stage of life is this body in" that a retune could move without moving the
@@ -136,18 +151,6 @@ func band_for(age_days: float, lifespan_days: float) -> StringName:
 ## converting. A null actor, a zero lifespan and an unauthored calendar all answer the
 ## YOUNGEST band — the same safe direction `AgeBands` kept, because a body with no
 ## species must never read as the OLDEST band and be expired or cliffed on its first frame.
-static var _table_cache: AgeBandTable = null
-
-
-static func _loaded_table() -> AgeBandTable:
-	# Lazy, never preloaded: the `.tres` binds this script's sibling class, and a
-	# compile-time reference from a script the table's own loader reaches is the load
-	# cycle `TimeLadder._table_resource` and `AgeBands._table` are written to avoid.
-	if _table_cache == null:
-		_table_cache = load("res://src/core/age_band_table.tres") as AgeBandTable
-	return _table_cache
-
-
 static func band_for_actor(actor: Actor) -> StringName:
 	if actor == null:
 		return FIRST_ASH

@@ -22,13 +22,17 @@ extends Resource
 
 const TABLE_PATH := "res://src/core/aptitude_grants.tres"
 
+## The shipped table's own cache. A `static var` belongs with `const`s and before
+## `@export`s (gdlint's `class-definitions-order`), so it is declared here rather than
+## beside [method shipped].
+static var _shipped: AptitudeGrant = null
+
+
 ## One row per major: `{path: StringName, posture: StringName, per_realm: float}`.
 @export var rows: Array[Dictionary] = []
 ## What ONE learned technique adds, into the DOMINANT posture's four aptitudes (split
 ## evenly). `0.0` means techniques grant nothing.
 @export var technique_points: float = 0.0
-
-static var _shipped: AptitudeGrant = null
 
 
 ## The shipped table, loaded once. `null` only when the resource cannot load, which the
