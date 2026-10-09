@@ -12,6 +12,22 @@ extends RefCounted
 ## than silently dropping an npc the player can see.
 const MAX_PRESENCE_READ := 16
 
+## The most opinions `alive` renders on a tracked npc: one is what a panel draws on a row
+## and the full set is a screen. Deliberately a cap of ONE, so the row stays a row.
+const MAX_ALIVE_OPINIONS := 1
+
+## The `social` facade, preloaded and reached for exactly one verb. `npc` declares
+## `social` in `tools/arch/registry.json`, so this is a declared edge, and reading the bond
+## class anywhere else would mean keeping a second copy of the ladder.
+const SOCIAL_FACADE := preload("res://src/modules/social/api.gd")
+
+## The body a TRANSIENT npc wears. Named constants rather than an empty row: an empty row
+## reads as "this npc has nothing to say", and "she does not look up" is a reaction the
+## player can act on. `minor` composes one from the place instead.
+const GENERIC_TELL_VERB := &"does_not_look_up"
+const GENERIC_TELL_BODY := "LOC_NPC_FD2963A2D3"
+const GENERIC_TELL_CONSEQUENCE := &"ignores"
+
 
 ## The read model for one npc: tier, stage, presence and identity as primitives.
 ##
@@ -280,23 +296,6 @@ static func alive(
 	out["gate_reason"] = String(gate.get("gate_reason", ""))
 	out["warmth"] = int(gate.get("warmth", NpcGates.WARMTH_NEUTRAL))
 	return out
-
-
-## The most opinions `alive` renders on a tracked npc: one is what a panel draws on a row
-## and the full set is a screen. Deliberately a cap of ONE, so the row stays a row.
-const MAX_ALIVE_OPINIONS := 1
-
-## The `social` facade, preloaded and reached for exactly one verb. `npc` declares
-## `social` in `tools/arch/registry.json`, so this is a declared edge, and reading the bond
-## class anywhere else would mean keeping a second copy of the ladder.
-const SOCIAL_FACADE := preload("res://src/modules/social/api.gd")
-
-## The body a TRANSIENT npc wears. Named constants rather than an empty row: an empty row
-## reads as "this npc has nothing to say", and "she does not look up" is a reaction the
-## player can act on. `minor` composes one from the place instead.
-const GENERIC_TELL_VERB := &"does_not_look_up"
-const GENERIC_TELL_BODY := "LOC_NPC_FD2963A2D3"
-const GENERIC_TELL_CONSEQUENCE := &"ignores"
 
 
 static func _one_opinion(authored: Dictionary) -> Dictionary:

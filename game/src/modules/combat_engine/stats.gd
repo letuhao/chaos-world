@@ -155,28 +155,6 @@ const LEECH_RESIST_PREFIX := "leech_resist."
 const POOLS: Array[StringName] = [&"health", &"qi", &"stamina"]
 
 
-## The offence half of the leech pair for `pool`.
-static func lifesteal_id(pool: StringName) -> StringName:
-	return StringName(LIFESTEAL_PREFIX + String(pool))
-
-
-## The defence half: the answer to the same pool's drain.
-static func leech_resist_id(pool: StringName) -> StringName:
-	return StringName(LEECH_RESIST_PREFIX + String(pool))
-
-
-## Both halves of every pool, offence first per pool. DERIVED from [constant POOLS], so a
-## fourth pool joins by existing — the shape `ElementStats.crit_ids` uses. `ALL_IDS` and
-## `RATE_IDS` cannot call this (a `const` cannot), which is why the shape test pins the
-## literal lists against it instead.
-static func leech_ids() -> Array[StringName]:
-	var out: Array[StringName] = []
-	for pool in POOLS:
-		out.append(lifesteal_id(pool))
-		out.append(leech_resist_id(pool))
-	return out
-
-
 ## ## ADR 0877. The CONTEST pairs, and why this is a derivation rather than a comment
 ##
 ## Every trigger contest this module owns is a flat delta over `rate_scale`
@@ -305,6 +283,28 @@ const DEFAULTS: Dictionary = {
 	SHIELD_PEN: 0.0,
 	SHIELD_REGEN: 0.0,
 }
+
+
+## The offence half of the leech pair for `pool`.
+static func lifesteal_id(pool: StringName) -> StringName:
+	return StringName(LIFESTEAL_PREFIX + String(pool))
+
+
+## The defence half: the answer to the same pool's drain.
+static func leech_resist_id(pool: StringName) -> StringName:
+	return StringName(LEECH_RESIST_PREFIX + String(pool))
+
+
+## Both halves of every pool, offence first per pool. DERIVED from [constant POOLS], so a
+## fourth pool joins by existing — the shape `ElementStats.crit_ids` uses. `ALL_IDS` and
+## `RATE_IDS` cannot call this (a `const` cannot), which is why the shape test pins the
+## literal lists against it instead.
+static func leech_ids() -> Array[StringName]:
+	var out: Array[StringName] = []
+	for pool in POOLS:
+		out.append(lifesteal_id(pool))
+		out.append(leech_resist_id(pool))
+	return out
 
 
 ## The neutral reading of `id`: its `RATE_DEFAULTS` entry if it is rate-shaped, its
