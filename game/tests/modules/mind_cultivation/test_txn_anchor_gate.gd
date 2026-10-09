@@ -32,6 +32,11 @@ const CULTIVATE_CAP := 128
 ## the bottom needs three to reach `strengthened`, plus one that confirms it.
 const CLIMB_CAP := 8
 
+## The anchor-gate probe the reachability case drives. A `const` is declared with the
+## other `const`s (gdlint's `class-definitions-order`), so it sits here rather than beside
+## the helper that reads it.
+const Probe := preload("res://tests/modules/mind_cultivation/mind_gate_probe.gd")
+
 
 ## Every stage the policy can name. Built per call rather than in a `const` so a
 ## stage added to `MindAnchor` without coverage here shows up as a missing case
@@ -44,9 +49,6 @@ func _stages() -> Array[StringName]:
 		MindAnchor.STAGE_INNER_ANCHOR,
 		MindAnchor.STAGE_MICRO_WORLD,
 	]
-
-
-const Probe := preload("res://tests/modules/mind_cultivation/mind_gate_probe.gd")
 
 
 func _bare() -> Actor:

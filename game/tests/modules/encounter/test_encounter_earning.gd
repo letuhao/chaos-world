@@ -14,6 +14,24 @@ const FATE_A := &"t_fate_a"
 const FATE_B := &"t_fate_b"
 const FATE_C := &"t_fate_c"
 
+## Every verb a facade must never grow, as a SUBSTRING.
+const FORBIDDEN_VERBS := [
+	"purchase",
+	"buy",
+	"remove",
+	"revoke",
+	"forget",
+	"unequip",
+	"equip",
+	"clear",
+	"drop",
+	"consume",
+	"spend",
+	"discard",
+	"reset",
+	"undo",
+]
+
 
 func setup() -> void:
 	(
@@ -71,25 +89,6 @@ func test_the_facade_exposes_no_purchase_or_removal_verb_at_all() -> void:
 			assert_eq(
 				name.contains(verb), false, "no public verb contains '%s' ('%s')" % [verb, name]
 			)
-
-
-## Every verb a facade must never grow, as a SUBSTRING.
-const FORBIDDEN_VERBS := [
-	"purchase",
-	"buy",
-	"remove",
-	"revoke",
-	"forget",
-	"unequip",
-	"equip",
-	"clear",
-	"drop",
-	"consume",
-	"spend",
-	"discard",
-	"reset",
-	"undo",
-]
 
 
 func _public_methods() -> Array[String]:
