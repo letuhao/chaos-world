@@ -1,0 +1,646 @@
+{
+  "id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_19_sweet_osmanthus_grove.elemental_mutated",
+  "archetype": "elemental_mutated_flo_19_sweet_osmanthus_grove",
+  "name": "Sweet Osmanthus Grove - Elemental Resonance Bloomed Form",
+  "vietnamese_name": "Đan Quế Phương Lâm - Dạng Đột Biến Khí Tượng",
+  "hanzi": "丹桂芳林 · 五行异变绽放",
+  "category": "flo_19_sweet_osmanthus_grove",
+  "category_code": "FLO-19",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_19_sweet_osmanthus_grove",
+  "asset_class": "flora_herb",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "channel_element",
+  "gameplay_role": "flora_herb entity supporting Sweet Osmanthus Grove gameplay",
+  "destructible": true,
+  "material": "succulent spiritual herb stalk with dew-tipped leaves",
+  "cultivation_element": "wood",
+  "prompt_summary": "Single isolated 2D RPG game prop of sweet osmanthus grove - elemental resonance bloomed form, authentic sweet osmanthus grove materials, East Asian Xianxia craftsmanship, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese craftsmanship, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Natural Flora & Spiritual Plants",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "pristine_dormant",
+      "name": "Pristine Dormant State",
+      "prompt_modifier": "cold clean polished state, unlit hearth, intact locks",
+      "variant_id": "pristine_dormant",
+      "variant_name": "Pristine Dormant State",
+      "description": "cold clean polished state, unlit hearth, intact locks",
+      "prompt": "Single isolated 2D top-down RPG map sprite of elemental resonance bloomed form, succulent spiritual herb stalk with dew-tipped leaves, cold clean polished state, unlit hearth, intact locks, Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), plant canopy, branching crown, bamboo culms and foliage viewed foreshortened from overhead, spread outward on ground plane, gouache hand-painted with dark #263A35 ink contours, flat grounded root base, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_19_sweet_osmanthus_grove/elemental_mutated/pristine_dormant.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.428,
+            0.435
+          ],
+          [
+            0.34,
+            0.291
+          ]
+        ],
+        "frac_zero": 0.6933,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.035,
+            0.456,
+            0.716,
+            0.207,
+            0.0,
+            0.0
+          ],
+          [
+            0.004,
+            0.399,
+            0.992,
+            1.0,
+            0.832,
+            0.205,
+            0.0
+          ],
+          [
+            0.102,
+            0.834,
+            0.931,
+            0.889,
+            0.729,
+            0.348,
+            0.0
+          ],
+          [
+            0.36,
+            0.567,
+            0.264,
+            0.474,
+            0.428,
+            0.715,
+            0.195
+          ],
+          [
+            0.551,
+            0.662,
+            0.317,
+            0.396,
+            0.396,
+            0.683,
+            0.348
+          ],
+          [
+            0.011,
+            0.106,
+            0.34,
+            0.477,
+            0.042,
+            0.053,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.465,
+            0.611,
+            0.06,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          24,
+          17
+        ],
+        "trunk_columns": [
+          2,
+          3
+        ],
+        "contact_px": 60,
+        "contact_reference_px": 60.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "active_operating",
+      "name": "Active Operating State",
+      "prompt_modifier": "active glowing spiritual flames, heat haze, open functioning elements",
+      "variant_id": "active_operating",
+      "variant_name": "Active Operating State",
+      "description": "active glowing spiritual flames, heat haze, open functioning elements",
+      "prompt": "Single isolated 2D top-down RPG map sprite of elemental resonance bloomed form, succulent spiritual herb stalk with dew-tipped leaves, active glowing spiritual flames, heat haze, open functioning elements, Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), plant canopy, branching crown, bamboo culms and foliage viewed foreshortened from overhead, spread outward on ground plane, gouache hand-painted with dark #263A35 ink contours, flat grounded root base, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_19_sweet_osmanthus_grove/elemental_mutated/active_operating.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.538,
+            0.491
+          ],
+          [
+            0.433,
+            0.352
+          ]
+        ],
+        "frac_zero": 0.65,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.243,
+            0.667,
+            0.616,
+            0.107,
+            0.0,
+            0.0
+          ],
+          [
+            0.142,
+            0.736,
+            0.991,
+            1.0,
+            0.829,
+            0.136,
+            0.0
+          ],
+          [
+            0.377,
+            0.936,
+            0.85,
+            0.873,
+            0.713,
+            0.134,
+            0.0
+          ],
+          [
+            0.507,
+            0.567,
+            0.335,
+            0.409,
+            0.865,
+            0.76,
+            0.104
+          ],
+          [
+            0.606,
+            0.613,
+            0.559,
+            0.385,
+            0.554,
+            0.265,
+            0.0
+          ],
+          [
+            0.0,
+            0.25,
+            0.666,
+            0.533,
+            0.318,
+            0.033,
+            0.0
+          ],
+          [
+            0.0,
+            0.2,
+            0.868,
+            0.621,
+            0.028,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          31,
+          17
+        ],
+        "trunk_columns": [
+          2,
+          3
+        ],
+        "contact_px": 75,
+        "contact_reference_px": 75.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            0,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "damaged_weathered",
+      "name": "Damaged Weathered State",
+      "prompt_modifier": "mossy aged patina, chipped corners, cracked surfaces",
+      "variant_id": "damaged_weathered",
+      "variant_name": "Damaged Weathered State",
+      "description": "mossy aged patina, chipped corners, cracked surfaces",
+      "prompt": "Single isolated 2D top-down RPG map sprite of elemental resonance bloomed form, succulent spiritual herb stalk with dew-tipped leaves, mossy aged patina, chipped corners, cracked surfaces, Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), plant canopy, branching crown, bamboo culms and foliage viewed foreshortened from overhead, spread outward on ground plane, gouache hand-painted with dark #263A35 ink contours, flat grounded root base, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_19_sweet_osmanthus_grove/elemental_mutated/damaged_weathered.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.401,
+            0.424
+          ],
+          [
+            0.37,
+            0.418
+          ]
+        ],
+        "frac_zero": 0.683,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.381,
+            0.497,
+            0.155,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.394,
+            0.96,
+            0.994,
+            0.598,
+            0.085,
+            0.0
+          ],
+          [
+            0.077,
+            0.453,
+            0.818,
+            0.982,
+            0.919,
+            0.255,
+            0.0
+          ],
+          [
+            0.469,
+            0.865,
+            0.401,
+            0.504,
+            0.394,
+            0.428,
+            0.0
+          ],
+          [
+            0.045,
+            0.261,
+            0.535,
+            0.334,
+            0.562,
+            0.607,
+            0.219
+          ],
+          [
+            0.0,
+            0.149,
+            0.646,
+            0.854,
+            0.321,
+            0.011,
+            0.0
+          ],
+          [
+            0.0,
+            0.3,
+            0.915,
+            0.905,
+            0.628,
+            0.04,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          26,
+          17
+        ],
+        "trunk_columns": [
+          2,
+          3,
+          4
+        ],
+        "contact_px": 99,
+        "contact_reference_px": 99.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "ruined_rubble",
+      "name": "Broken Shattered Rubble",
+      "prompt_modifier": "collapsed fractured shards, scavengeable parts",
+      "variant_id": "ruined_rubble",
+      "variant_name": "Broken Shattered Rubble",
+      "description": "collapsed fractured shards, scavengeable parts",
+      "prompt": "Single isolated 2D top-down RPG map sprite of elemental resonance bloomed form, succulent spiritual herb stalk with dew-tipped leaves, collapsed fractured shards, scavengeable parts, Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), plant canopy, branching crown, bamboo culms and foliage viewed foreshortened from overhead, spread outward on ground plane, gouache hand-painted with dark #263A35 ink contours, flat grounded root base, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_19_sweet_osmanthus_grove/elemental_mutated/ruined_rubble.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.441,
+            0.447
+          ],
+          [
+            0.484,
+            0.445
+          ]
+        ],
+        "frac_zero": 0.6641,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.191,
+            0.612,
+            0.562,
+            0.052,
+            0.0
+          ],
+          [
+            0.069,
+            0.661,
+            0.988,
+            0.967,
+            0.658,
+            0.002
+          ],
+          [
+            0.12,
+            0.612,
+            0.807,
+            0.766,
+            0.547,
+            0.244
+          ],
+          [
+            0.502,
+            0.606,
+            0.419,
+            0.33,
+            0.801,
+            0.53
+          ],
+          [
+            0.15,
+            0.458,
+            0.481,
+            0.373,
+            0.246,
+            0.021
+          ],
+          [
+            0.0,
+            0.621,
+            1.0,
+            0.973,
+            0.608,
+            0.0
+          ],
+          [
+            0.0,
+            0.568,
+            0.916,
+            0.876,
+            0.623,
+            0.038
+          ]
+        ],
+        "crop_offset": [
+          32,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 100,
+        "contact_reference_px": 100.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "FLO-19",
+    "domain": "flora_and_spirit_plants",
+    "interaction": "channel_element",
+    "collision_behavior": "none",
+    "element": "wood",
+    "tier": 2
+  },
+  "category_id": "flo_19_sweet_osmanthus_grove",
+  "domain_id": "flora_and_spirit_plants",
+  "pinyin": "Dānguì Fānglín · Elemental Resonance Bloomed Form",
+  "archetype_name": "Elemental Resonance Bloomed Form",
+  "footprint_subcells": {
+    "w": 8,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 256,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 2,
+    "h": 2
+  },
+  "collision": {
+    "type": "none",
+    "shape": "box",
+    "solid": false,
+    "blocks_movement": false,
+    "blocks_projectiles": false,
+    "vision_block": false,
+    "height_layer": "ground"
+  },
+  "primary_material": "spiritual_root_stalk",
+  "secondary_material": "medicinal_blossom",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Wood affinity (Foundation Establishment (Trúc Cơ / 筑基))",
+  "elevation_tier": 2,
+  "mortal_realm_tier": "Foundation Establishment (Trúc Cơ / 筑基)",
+  "asset_slug": "elemental_mutated"
+}

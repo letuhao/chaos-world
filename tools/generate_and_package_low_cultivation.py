@@ -75,9 +75,9 @@ DATA_DIR = PACK_DIR / "data"
 GAME_DIR = REPO_ROOT / "game"
 
 STYLE_PROMPT_CLAUSE = (
-    "2D orthographic top-down (~45 degrees), gouache hand-painted, ink contour lines (#263A35), "
-    "spiritual misty palette (celadon jade #7A9A8B, spirit spring azure #4A7A8C, "
-    "vermilion cinnabar #A8382B, weathered pine #5A4838, loess ochre #B88648, incense ash #4A4A52). "
+    "2D orthographic top-down (~45 degrees), gouache hand-painted, pine-soot ink contour lines (#1C1C1E), "
+    "balanced East Asian Xianxia mineral palette (loess ochre #B88648, vermilion cinnabar #A8382B, "
+    "weathered pine #5A4838, celadon jade #7A9A8B, spirit spring azure #4A7A8C, incense ash #4A4A52). "
     "Isolated on solid pure white background, crisp silhouette."
 )
 
@@ -355,7 +355,8 @@ def get_asset_paths(
 ANTI_DRIFT_CLAUSE = (
     "Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, "
     "western gothic castle, medieval stone fortress, European church, witch cauldron, "
-    "laboratory glassware, modern objects, anime mech, sci-fi wires"
+    "laboratory glassware, modern objects, anime mech, sci-fi wires, "
+    "monochrome cyan wash, heavy cyan tint, dull teal filter, blue-green cast, unnatural cyan glow"
 )
 
 
@@ -367,10 +368,10 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
     asset_class = (asset.get("asset_class") or asset.get("type") or "prop_workstation").lower()
 
     raw_asset_name = asset.get("name") or asset.get("id", "cultivation_asset")
-    # Clean up multi-part titles like "Domain - Specific Building" for concise prompting
+    # Retain full subject identity for multi-part titles (e.g. "Crimson Flame Lingzhi - Mature Flourishing Specimen")
     if " - " in raw_asset_name:
         parts = raw_asset_name.split(" - ")
-        asset_name = parts[-1].strip()
+        asset_name = f"{parts[0].strip()} ({parts[1].strip()})" if len(parts) >= 2 else raw_asset_name.strip()
     else:
         asset_name = raw_asset_name
 
@@ -436,7 +437,7 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
             f"Single isolated 2D game asset of {asset_name.lower()}, {material}, {var_mod}, "
             "Ancient Chinese Xianxia cultivation mortal realm aesthetic, double-edged Chinese straight sword or authentic Daoist implement, "
             "bold readable silhouette, clean grouped value planes, chunky stylized proportions for 2D icon clarity, "
-            f"fine dark #263A35 ink contours, gouache hand-painted, {shadow_clause} centered on {adaptive_bg}."
+            f"fine dark #1C1C1E ink contours, gouache hand-painted, {shadow_clause} centered on {adaptive_bg}."
         )
         return pos, item_neg
 
@@ -478,7 +479,7 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
             f"Ancient Chinese Xianxia landscape style, {landmark_pos} "
             "sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, "
             "crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, "
-            "gouache hand-painted with dark #263A35 ink contours, isolated on solid plain white background."
+            "gouache hand-painted with dark #1C1C1E ink contours, isolated on solid plain white background."
         )
         neg = (
             "diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, "
@@ -559,11 +560,58 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
 
     # Archetype 4: Flora, Spirit Herbs & Sacred Trees
     if any(k in asset_class for k in ("flora", "herb", "tree", "plant")):
+        name_lower = asset_name.lower()
+        mat_lower = material.lower()
+        combined_text = f"{name_lower} {mat_lower}"
+
+        # Dynamic morphology and color cues tailored to plant family
+        if any(w in combined_text for w in ("lingzhi", "mushroom", "fungus", "fungi", "spore", "toadstool")):
+            foliage_spec = (
+                "woody bracket fungus, broad lacquered mushroom cap, spore gills and fungal stalk viewed foreshortened from overhead, "
+                "vermilion cinnabar lacquer cap or earthy spore ochre tones,"
+            )
+        elif any(w in combined_text for w in ("lotus", "lily", "water_plant", "pond")):
+            foliage_spec = (
+                "broad rounded floating lotus leaf pads, delicate lotus blossom petals, fragrant aquatic floral crown viewed from overhead,"
+            )
+        elif any(w in combined_text for w in ("ginseng", "root", "tuber", "rhizome")):
+            foliage_spec = (
+                "tuberous spiritual root rhizome, medicinal root crown, branching fibrous rootlets and small herbal sprig viewed from overhead,"
+            )
+        elif any(w in combined_text for w in ("osmanthus", "peach", "blossom", "orchid", "wisteria", "flower")):
+            foliage_spec = (
+                "flowering canopy, fragrant blossom clusters, delicate floral petals and leafy twig sprigs viewed foreshortened from overhead,"
+            )
+        elif any(w in combined_text for w in ("vine", "creeper", "bramble", "briar", "thorn")):
+            foliage_spec = (
+                "twisting woody creeper vines, prickly thorny brambles, clinging tangled stems and curled tendrils viewed from overhead,"
+            )
+        elif any(w in combined_text for w in ("bamboo", "culm", "cane")):
+            foliage_spec = (
+                "segmented bamboo culms, slender bamboo foliage and nodes viewed foreshortened from overhead,"
+            )
+        elif any(w in combined_text for w in ("rice", "grain", "crop", "grass", "reed", "fern", "moss")):
+            foliage_spec = (
+                "slender vegetative stems, feathery foliage fronds and textured ground vegetation viewed foreshortened from overhead,"
+            )
+        elif any(w in combined_text for w in ("pine", "cypress", "conifer")):
+            foliage_spec = (
+                "gnarled evergreen needle canopy, weathered resinous bark branches, spreading evergreen crown viewed foreshortened from overhead,"
+            )
+        elif any(w in combined_text for w in ("willow", "poplar", "tree", "wood", "grove", "bush")):
+            foliage_spec = (
+                "branching hardwood canopy, weeping leafy boughs and textured tree crown viewed foreshortened from overhead,"
+            )
+        else:
+            foliage_spec = (
+                "botanical canopy, branching herbal crown and leafy foliage viewed foreshortened from overhead, spread outward on ground plane,"
+            )
+
         pos = (
             f"Single isolated 2D top-down RPG map sprite of {asset_name.lower()}, {material}, {var_mod}, "
             "Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), "
-            "plant canopy, branching crown, bamboo culms and foliage viewed foreshortened from overhead, spread outward on ground plane, "
-            "gouache hand-painted with dark #263A35 ink contours, flat grounded root base, short attached micro contact shadow only, "
+            f"{foliage_spec} "
+            "gouache hand-painted with dark #1C1C1E pine-soot ink contours, flat grounded root base, short attached micro contact shadow only, "
             "isolated on solid plain white background."
         )
         neg = (
@@ -685,7 +733,7 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
         pos = (
             f"Single isolated 2D top-down world-map building sprite of {asset_name.lower()}, {material}, {var_mod}, "
             f"Ancient Chinese Tang-Song Xianxia architectural style, {persp_pos} "
-            "gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, "
+            "gouache hand-painted with dark #1C1C1E ink contours, flat grounded baseline, short attached micro contact shadow only, "
             "isolated on solid plain white background."
         )
         neg = (
@@ -718,7 +766,7 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
         pos = (
             f"Single isolated 2D RPG game prop of {asset_name.lower()}, {material}, {var_mod}, "
             "Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese traditional carved rosewood joinery or Daoist storage implement, "
-            "gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, "
+            "gouache hand-painted with crisp dark #1C1C1E ink contours, flat zero-cast-shadow baseline, "
             "micro ambient contact occlusion directly under base only, isolated on solid plain white background."
         )
         neg = (
@@ -732,7 +780,7 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
     pos = (
         f"Single isolated 2D RPG game prop of {asset_name.lower()}, {material}, {var_mod}, "
         "Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, "
-        "gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, "
+        "gouache hand-painted with crisp dark #1C1C1E ink contours, flat zero-cast-shadow baseline, "
         "micro ambient contact occlusion directly under feet only, isolated on solid plain white background."
     )
     neg = (
