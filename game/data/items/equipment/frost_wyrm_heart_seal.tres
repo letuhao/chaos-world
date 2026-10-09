@@ -9,12 +9,12 @@ display_name = "LOC_ITEMS_FROST_WYRM_HEART_SEAL_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"core_formation"
-## `frost_throne_hoard`'s reward, and the frost half of `flame_dragon_heart_seal`'s
-## pair — the thing the throne's wyrm was GUARDING (ADR 0218: a boss's prize is its
-## `LootTier` table; the core room's hoard is for what stood over it). `rare` at
-## `core_formation` matches the hoard's own `requires_realm` ceiling: the deepest
-## object this room earns, unwearable before the room is survivable. One realized
-## instance through `ItemsApi.generate` seeded from the fixture id (ADR 0216 §4).
+; `frost_throne_hoard`'s reward, and the frost half of `flame_dragon_heart_seal`'s
+; pair — the thing the throne's wyrm was GUARDING (ADR 0218: a boss's prize is its
+; `LootTier` table; the core room's hoard is for what stood over it). `rare` at
+; `core_formation` matches the hoard's own `requires_realm` ceiling: the deepest
+; object this room earns, unwearable before the room is survivable. One realized
+; instance through `ItemsApi.generate` seeded from the fixture id (ADR 0216 §4).
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"core_max_health", "value": 18.0},
 	{"option_id": &"core_max_qi", "value": 12.0},

@@ -9,11 +9,11 @@ display_name = "LOC_ITEMS_VOID_SHRINE_ABYSSAL_OFFERING_DISPLAY_NAME"
 category = &"equipment"
 rarity = &"rare"
 realm = &"spirit_condensation"
-## `void_shrine_offering`'s reward: a sunken shrine's relic, open to anyone who
-## survives the walk down (UNKEYED, no realm gate — the water is the gate). `rare`
-## at `spirit_condensation` keeps it one rung under the ash-heart's legendary while
-## still being the shrine's own specific object (ADR 0216 §2), realized through
-## `ItemsApi.generate` seeded from the fixture id (§4).
+; `void_shrine_offering`'s reward: a sunken shrine's relic, open to anyone who
+; survives the walk down (UNKEYED, no realm gate — the water is the gate). `rare`
+; at `spirit_condensation` keeps it one rung under the ash-heart's legendary while
+; still being the shrine's own specific object (ADR 0216 §2), realized through
+; `ItemsApi.generate` seeded from the fixture id (§4).
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"core_max_qi", "value": 20.0},
 	{"option_id": &"core_max_health", "value": 10.0},

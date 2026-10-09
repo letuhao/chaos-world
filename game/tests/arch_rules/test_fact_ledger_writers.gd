@@ -76,14 +76,26 @@ const SRC_ROOT := "res://src"
 ##     not a producer. Writing it is what makes the fact answerable, which is what
 ##     `WorldFact` requires of a row: it is KNOWN to exist, and it has no fate reading it
 ##     yet. Omitting it is exactly the silent under-count this file exists to stop.
-## ## THE COUNT IS EIGHT AND THE PROSE IN `core/world_fact.gd` AND
+##   - `starter_kit.gd` is the ninth: `grant` records `starter_kit_drawn` against the
+##     actor once, AFTER the delivery, so a refusal to fill the bag cannot mark the draw
+##     as done (BL-0904). It declares the id as a same-file `const FACT := &"starter_kit_drawn"`
+##     and passes that name to the call, which is the shape `code_owned_supply` already
+##     resolves - `gate_reach report` counts it at `src/app/starter_kit.gd:53 (1, code
+##     const)`. Like the three module producers it is KNOWN but NOT in
+##     `CODE_OWNED_WRITERS`: that list's contract is a const spelled exactly `FACT_ID`,
+##     and this one is spelled `FACT`. It is listed rather than refused for the same
+##     reason as the others - it IS a producer, and a name missing from this list is not
+##     an oversight to fix by adding a name but a producer the census cannot see.
+## ## THE COUNT IS NINE AND THE PROSE IN `core/world_fact.gd` AND
 ## ## `destiny_projection.gd` HAD SAID SIX. Both were wrong the same way: ADR 0130's
-## ## soul-death fact and this birth fact both shipped after the enumeration was written,
+## ## soul-death fact and the birth fact both shipped after the enumeration was written,
 ## ## and each landed in a `KNOWN_WRITERS` entry without its row being appended above.
-## ## The hazard is not a stale number in a docstring - it is that the TEST and the PROSE
-## ## were asserting two different producer sets, so a reader who believed the prose would
-## ## have believed two shipped producers did not exist. The enumeration is pinned here and
-## ## nowhere else on purpose: one list, asserted, is the only shape that cannot drift.
+## ## `starter_kit.gd` was the third to land that way and the ninth writer, which is what
+## ## this assertion caught. The hazard is not a stale number in a docstring - it is that
+## ## the TEST and the PROSE were asserting two different producer sets, so a reader who
+## ## believed the prose would have believed two shipped producers did not exist. The
+## ## enumeration is pinned here and nowhere else on purpose: one list, asserted, is the
+## ## only shape that cannot drift.
 ## A name NOT in this list is not an oversight to fix by adding a name: it is a
 ## producer the census cannot see until it is taught to read it, in the same change.
 const KNOWN_WRITERS: Array[String] = [
@@ -91,6 +103,7 @@ const KNOWN_WRITERS: Array[String] = [
 	"res://src/app/character_creation_flow.gd",
 	"res://src/app/item_workbench_app.gd",
 	"res://src/app/soul_death.gd",
+	"res://src/app/starter_kit.gd",
 	"res://src/modules/clan/clan_facts.gd",
 	"res://src/modules/combat/combat_facts.gd",
 	"res://src/modules/event/event_beat_writer.gd",

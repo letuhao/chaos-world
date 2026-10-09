@@ -9,11 +9,11 @@ display_name = "LOC_ITEMS_FROST_LABORATORY_SEAL_KEY_DISPLAY_NAME"
 category = &"key"
 rarity = &"common"
 realm = &"foundation"
-## `frost_lab_seal`'s reward: the formation's own key, paid when the seal's sequence
-## is struck correctly (ADR 0216 §4, one realized instance). `key_reach` is the same
-## measure `DomainBoot.key_reach_of` reads for every keyed hoard, so the day a frost
-## gate authors `key_item_id: frost_laboratory_seal_key`, the gate is satisfiable by
-## construction rather than by a second definition of "holds the key".
+; `frost_lab_seal`'s reward: the formation's own key, paid when the seal's sequence
+; is struck correctly (ADR 0216 §4, one realized instance). `key_reach` is the same
+; measure `DomainBoot.key_reach_of` reads for every keyed hoard, so the day a frost
+; gate authors `key_item_id: frost_laboratory_seal_key`, the gate is satisfiable by
+; construction rather than by a second definition of "holds the key".
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"key_reach", "value": 3},
 	{"option_id": &"trade_value", "value": 5},
