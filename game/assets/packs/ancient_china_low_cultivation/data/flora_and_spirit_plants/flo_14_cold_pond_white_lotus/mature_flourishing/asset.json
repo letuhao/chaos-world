@@ -46,19 +46,19 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_14_cold_pond_white_lotus/mature_flourishing/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.38,
-            0.437
+            0.586,
+            0.469
           ],
           [
-            0.486,
-            0.482
+            0.634,
+            0.643
           ]
         ],
-        "frac_zero": 0.6336,
+        "frac_zero": 0.5603,
         "blocks": [
           [
             false,
@@ -90,88 +90,88 @@
         ],
         "sub_fill": [
           [
-            0.0,
-            0.014,
-            0.528,
-            0.829,
-            0.204,
-            0.0,
+            0.245,
+            0.789,
+            0.943,
+            0.436,
+            0.476,
+            0.04,
             0.0
           ],
           [
-            0.0,
-            0.354,
-            0.596,
-            0.536,
-            0.77,
-            0.213,
+            0.662,
+            0.878,
+            0.67,
+            0.207,
+            0.656,
+            0.254,
             0.0
           ],
           [
-            0.071,
-            0.661,
-            0.613,
-            0.51,
-            0.521,
-            0.607,
-            0.103
+            0.033,
+            0.241,
+            0.611,
+            0.979,
+            0.775,
+            0.961,
+            0.763
           ],
           [
-            0.688,
-            0.703,
-            0.452,
-            0.692,
-            0.561,
-            0.625,
-            0.393
+            0.515,
+            0.701,
+            0.917,
+            1.0,
+            0.828,
+            0.359,
+            0.115
           ],
           [
-            0.1,
-            0.455,
-            0.553,
-            0.804,
-            0.337,
-            0.188,
+            0.253,
+            0.626,
+            1.0,
+            0.998,
+            0.92,
+            0.741,
+            0.219
+          ],
+          [
+            0.18,
+            1.0,
+            1.0,
+            1.0,
+            0.945,
+            0.954,
+            0.281
+          ],
+          [
+            0.001,
+            0.344,
+            0.713,
+            0.951,
+            0.237,
+            0.007,
             0.0
-          ],
-          [
-            0.013,
-            0.685,
-            0.976,
-            0.976,
-            0.972,
-            0.437,
-            0.076
-          ],
-          [
-            0.006,
-            0.731,
-            0.561,
-            0.172,
-            0.705,
-            0.435,
-            0.005
           ]
         ],
         "crop_offset": [
-          25,
+          22,
           16
         ],
         "trunk_columns": [
-          1,
-          2
+          2,
+          3
         ],
-        "contact_px": 47,
-        "contact_reference_px": 47.0,
+        "contact_px": 76,
+        "contact_reference_px": 76.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
           "1.15": null,
           "1.35": null,
           "1.6": [
+            0,
             1,
-            1,
-            1,
+            0,
             1
           ]
         },
@@ -190,158 +190,19 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_14_cold_pond_white_lotus/mature_flourishing/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.355,
-            0.41
+            0.529,
+            0.506
           ],
           [
-            0.581,
-            0.64
+            0.657,
+            0.654
           ]
         ],
-        "frac_zero": 0.638,
-        "blocks": [
-          [
-            false,
-            false
-          ],
-          [
-            false,
-            false
-          ]
-        ],
-        "walk_surface": [
-          [
-            false,
-            false
-          ],
-          [
-            false,
-            false
-          ]
-        ],
-        "block_cell_count": 0,
-        "anchor_cell": [
-          1,
-          1
-        ],
-        "sub_grid": [
-          6,
-          7
-        ],
-        "sub_fill": [
-          [
-            0.0,
-            0.054,
-            0.729,
-            0.692,
-            0.025,
-            0.0
-          ],
-          [
-            0.004,
-            0.556,
-            0.597,
-            0.635,
-            0.515,
-            0.023
-          ],
-          [
-            0.178,
-            0.414,
-            0.587,
-            0.365,
-            0.78,
-            0.465
-          ],
-          [
-            0.345,
-            0.425,
-            0.422,
-            0.444,
-            0.426,
-            0.384
-          ],
-          [
-            0.09,
-            0.793,
-            0.856,
-            0.808,
-            0.393,
-            0.105
-          ],
-          [
-            0.354,
-            0.874,
-            1.0,
-            1.0,
-            0.963,
-            0.565
-          ],
-          [
-            0.192,
-            0.736,
-            0.938,
-            0.883,
-            0.668,
-            0.184
-          ]
-        ],
-        "crop_offset": [
-          35,
-          17
-        ],
-        "trunk_columns": [
-          1,
-          2,
-          3,
-          4
-        ],
-        "contact_px": 122,
-        "contact_reference_px": 122.0,
-        "blocked_by_scale": {
-          "0.85": null,
-          "1.0": null,
-          "1.15": null,
-          "1.35": null,
-          "1.6": [
-            0,
-            1,
-            1,
-            1
-          ]
-        },
-        "block_rect": null,
-        "block_rect_px": null
-      }
-    },
-    {
-      "variant_slug": "damaged_weathered",
-      "name": "Damaged Weathered State",
-      "prompt_modifier": "mossy aged patina, chipped corners, cracked surfaces",
-      "variant_id": "damaged_weathered",
-      "variant_name": "Damaged Weathered State",
-      "description": "mossy aged patina, chipped corners, cracked surfaces",
-      "prompt": "Single isolated 2D top-down RPG map sprite of mature flourishing specimen, weathered gnarled pine bark and resinous timber, mossy aged patina, chipped corners, cracked surfaces, Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), plant canopy, branching crown, bamboo culms and foliage viewed foreshortened from overhead, spread outward on ground plane, gouache hand-painted with dark #263A35 ink contours, flat grounded root base, short attached micro contact shadow only, isolated on solid plain white background.",
-      "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
-      "status": "generated",
-      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_14_cold_pond_white_lotus/mature_flourishing/damaged_weathered.png",
-      "generated_on": "2026-10-09",
-      "matrix_data": {
-        "coverage": [
-          [
-            0.348,
-            0.466
-          ],
-          [
-            0.547,
-            0.542
-          ]
-        ],
-        "frac_zero": 0.6391,
+        "frac_zero": 0.5685,
         "blocks": [
           [
             false,
@@ -373,72 +234,72 @@
         ],
         "sub_fill": [
           [
-            0.0,
-            0.025,
-            0.672,
-            0.769,
-            0.099,
+            0.2,
+            0.845,
+            0.746,
+            0.188,
+            0.432,
             0.0,
             0.0
           ],
           [
-            0.007,
-            0.522,
-            0.587,
-            0.676,
-            0.625,
-            0.025,
-            0.0
+            0.193,
+            0.487,
+            0.298,
+            0.38,
+            0.774,
+            0.475,
+            0.023
           ],
           [
-            0.054,
-            0.378,
-            0.524,
-            0.646,
-            0.646,
-            0.66,
-            0.198
-          ],
-          [
-            0.637,
-            0.47,
-            0.657,
-            0.581,
-            0.617,
-            0.331,
-            0.021
-          ],
-          [
-            0.091,
-            0.342,
-            0.571,
-            0.875,
             0.352,
-            0.03,
-            0.0
-          ],
-          [
-            0.228,
-            0.911,
-            1.0,
-            1.0,
-            0.975,
-            0.326,
-            0.0
-          ],
-          [
-            0.057,
+            0.635,
+            0.883,
+            0.963,
             0.684,
-            0.917,
-            0.926,
-            0.732,
-            0.078,
+            0.728,
+            0.381
+          ],
+          [
+            0.38,
+            0.834,
+            1.0,
+            0.887,
+            0.801,
+            0.816,
+            0.432
+          ],
+          [
+            0.556,
+            0.724,
+            1.0,
+            0.928,
+            0.985,
+            0.321,
+            0.0
+          ],
+          [
+            0.088,
+            0.873,
+            1.0,
+            1.0,
+            1.0,
+            0.693,
+            0.031
+          ],
+          [
+            0.021,
+            0.36,
+            0.75,
+            0.731,
+            0.549,
+            0.177,
             0.0
           ]
         ],
         "crop_offset": [
-          30,
-          17
+          26,
+          16
         ],
         "trunk_columns": [
           1,
@@ -446,8 +307,154 @@
           3,
           4
         ],
-        "contact_px": 131,
-        "contact_reference_px": 131.0,
+        "contact_px": 78,
+        "contact_reference_px": 78.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            0,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "damaged_weathered",
+      "name": "Damaged Weathered State",
+      "prompt_modifier": "mossy aged patina, chipped corners, cracked surfaces",
+      "variant_id": "damaged_weathered",
+      "variant_name": "Damaged Weathered State",
+      "description": "mossy aged patina, chipped corners, cracked surfaces",
+      "prompt": "Single isolated 2D top-down RPG map sprite of mature flourishing specimen, weathered gnarled pine bark and resinous timber, mossy aged patina, chipped corners, cracked surfaces, Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), plant canopy, branching crown, bamboo culms and foliage viewed foreshortened from overhead, spread outward on ground plane, gouache hand-painted with dark #263A35 ink contours, flat grounded root base, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_14_cold_pond_white_lotus/mature_flourishing/damaged_weathered.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.644,
+            0.5
+          ],
+          [
+            0.745,
+            0.633
+          ]
+        ],
+        "frac_zero": 0.5309,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.246,
+            0.904,
+            0.871,
+            0.354,
+            0.471,
+            0.0,
+            0.0
+          ],
+          [
+            0.772,
+            0.868,
+            0.704,
+            0.446,
+            0.626,
+            0.312,
+            0.0
+          ],
+          [
+            0.181,
+            0.354,
+            0.888,
+            0.994,
+            0.879,
+            0.896,
+            0.575
+          ],
+          [
+            0.518,
+            0.637,
+            0.898,
+            0.884,
+            0.649,
+            0.474,
+            0.034
+          ],
+          [
+            0.608,
+            1.0,
+            0.854,
+            0.828,
+            0.992,
+            0.36,
+            0.017
+          ],
+          [
+            0.283,
+            0.982,
+            1.0,
+            1.0,
+            1.0,
+            0.477,
+            0.0
+          ],
+          [
+            0.137,
+            0.746,
+            0.952,
+            0.962,
+            0.776,
+            0.218,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          26,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 132,
+        "contact_reference_px": 132.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -475,19 +482,19 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_14_cold_pond_white_lotus/mature_flourishing/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.402,
-            0.44
+            0.496,
+            0.592
           ],
           [
-            0.616,
-            0.643
+            0.792,
+            0.733
           ]
         ],
-        "frac_zero": 0.6021,
+        "frac_zero": 0.505,
         "blocks": [
           [
             false,
@@ -519,81 +526,82 @@
         ],
         "sub_fill": [
           [
-            0.0,
-            0.062,
-            0.676,
-            0.789,
-            0.111,
-            0.0,
+            0.03,
+            0.515,
+            0.822,
+            0.415,
+            0.453,
+            0.415,
             0.0
           ],
           [
-            0.0,
-            0.495,
-            0.65,
-            0.59,
-            0.635,
-            0.144,
-            0.0
+            0.078,
+            0.476,
+            0.497,
+            0.348,
+            0.926,
+            0.657,
+            0.182
           ],
           [
-            0.492,
-            0.528,
-            0.531,
-            0.594,
-            0.545,
-            0.384,
-            0.0
+            0.371,
+            0.463,
+            0.86,
+            1.0,
+            1.0,
+            0.68,
+            0.237
           ],
           [
-            0.361,
-            0.551,
-            0.287,
-            0.723,
-            0.578,
-            0.64,
-            0.225
+            0.357,
+            0.573,
+            1.0,
+            1.0,
+            1.0,
+            0.517,
+            0.452
           ],
           [
-            0.067,
-            0.66,
-            0.958,
-            0.823,
-            0.496,
-            0.305,
-            0.0
-          ],
-          [
-            0.456,
+            0.558,
             1.0,
             1.0,
             1.0,
             1.0,
-            0.708,
-            0.0
+            0.863,
+            0.208
           ],
           [
-            0.132,
-            0.716,
-            0.947,
-            0.961,
-            0.791,
-            0.26,
+            0.605,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.999,
+            0.359
+          ],
+          [
+            0.117,
+            0.705,
+            0.966,
+            0.989,
+            0.832,
+            0.398,
             0.0
           ]
         ],
         "crop_offset": [
-          29,
+          22,
           17
         ],
         "trunk_columns": [
           1,
           2,
           3,
-          4
+          4,
+          5
         ],
-        "contact_px": 135,
-        "contact_reference_px": 135.0,
+        "contact_px": 140,
+        "contact_reference_px": 140.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,

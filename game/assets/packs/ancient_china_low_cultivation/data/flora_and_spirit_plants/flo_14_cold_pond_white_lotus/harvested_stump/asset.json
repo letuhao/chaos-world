@@ -46,14 +46,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_14_cold_pond_white_lotus/harvested_stump/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.44
+            0.559
           ]
         ],
-        "frac_zero": 0.7396,
+        "frac_zero": 0.6643,
         "blocks": [
           [
             false
@@ -75,30 +75,31 @@
         ],
         "sub_fill": [
           [
-            0.321,
-            0.72,
-            0.248
+            0.423,
+            0.572,
+            0.606
           ],
           [
-            0.479,
-            0.407,
-            0.371
+            0.609,
+            0.854,
+            0.489
           ],
           [
-            0.344,
-            0.666,
-            0.014
+            0.245,
+            0.815,
+            0.38
           ]
         ],
         "crop_offset": [
-          26,
-          17
+          19,
+          16
         ],
         "trunk_columns": [
-          1
+          1,
+          2
         ],
-        "contact_px": 48,
-        "contact_reference_px": 48.0,
+        "contact_px": 59,
+        "contact_reference_px": 59.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -126,14 +127,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_14_cold_pond_white_lotus/harvested_stump/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.454
+            0.536
           ]
         ],
-        "frac_zero": 0.7357,
+        "frac_zero": 0.7111,
         "blocks": [
           [
             false
@@ -155,31 +156,31 @@
         ],
         "sub_fill": [
           [
-            0.58,
-            0.523,
-            0.07
+            0.37,
+            0.706,
+            0.086
           ],
           [
-            0.47,
-            0.362,
-            0.113
+            0.627,
+            0.793,
+            0.616
           ],
           [
-            0.364,
-            0.697,
-            0.093
+            0.375,
+            0.745,
+            0.225
           ]
         ],
         "crop_offset": [
-          26,
-          17
+          22,
+          16
         ],
         "trunk_columns": [
           0,
           1
         ],
-        "contact_px": 49,
-        "contact_reference_px": 49.0,
+        "contact_px": 40,
+        "contact_reference_px": 40.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -207,14 +208,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_14_cold_pond_white_lotus/harvested_stump/damaged_weathered.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.505
+            0.569
           ]
         ],
-        "frac_zero": 0.744,
+        "frac_zero": 0.6653,
         "blocks": [
           [
             false
@@ -236,31 +237,31 @@
         ],
         "sub_fill": [
           [
-            0.497,
-            0.558,
-            0.192
+            0.243,
+            0.725,
+            0.664
           ],
           [
-            0.512,
-            0.435,
-            0.138
+            0.663,
+            0.782,
+            0.281
           ],
           [
-            0.536,
-            0.751,
-            0.018
+            0.382,
+            0.938,
+            0.34
           ]
         ],
         "crop_offset": [
-          28,
-          17
+          20,
+          16
         ],
         "trunk_columns": [
           0,
           1
         ],
-        "contact_px": 53,
-        "contact_reference_px": 53.0,
+        "contact_px": 61,
+        "contact_reference_px": 61.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -288,14 +289,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_14_cold_pond_white_lotus/harvested_stump/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.53
+            0.655
           ]
         ],
-        "frac_zero": 0.7049,
+        "frac_zero": 0.6199,
         "blocks": [
           [
             false
@@ -317,32 +318,32 @@
         ],
         "sub_fill": [
           [
-            0.361,
-            0.667,
-            0.198
+            0.413,
+            0.642,
+            0.399
           ],
           [
-            0.371,
-            0.507,
-            0.302
+            0.686,
+            0.934,
+            0.584
           ],
           [
-            0.634,
-            0.904,
-            0.43
+            0.675,
+            0.934,
+            0.536
           ]
         ],
         "crop_offset": [
-          26,
-          17
+          20,
+          16
         ],
         "trunk_columns": [
           0,
           1,
           2
         ],
-        "contact_px": 62,
-        "contact_reference_px": 62.0,
+        "contact_px": 76,
+        "contact_reference_px": 76.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,

@@ -46,39 +46,39 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_14_cold_pond_white_lotus/ancient_ancestor_core/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.135,
-            0.629,
-            0.237
+            0.595,
+            0.449,
+            0.435
           ],
           [
-            0.37,
-            0.678,
-            0.386
+            0.615,
+            0.994,
+            0.544
           ],
           [
-            0.131,
-            0.697,
-            0.288
+            0.617,
+            0.975,
+            0.545
           ]
         ],
-        "frac_zero": 0.6564,
+        "frac_zero": 0.4677,
         "blocks": [
           [
-            false,
-            true,
-            true
-          ],
-          [
             true,
             true,
             true
           ],
           [
-            false,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
             true,
             true
           ]
@@ -100,7 +100,7 @@
             false
           ]
         ],
-        "block_cell_count": 7,
+        "block_cell_count": 9,
         "anchor_cell": [
           1,
           2
@@ -111,156 +111,163 @@
         ],
         "sub_fill": [
           [
-            0.0,
-            0.0,
-            0.0,
-            0.138,
-            0.651,
-            0.835,
-            0.311,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            0.004,
-            0.771,
-            0.888,
-            0.905,
-            0.955,
-            0.336,
+            0.009,
+            0.66,
+            0.786,
+            0.933,
+            0.562,
             0.003,
+            0.025,
+            0.726,
+            0.143,
             0.0,
             0.0
           ],
           [
-            0.0,
-            0.072,
-            0.782,
-            0.746,
-            0.405,
-            0.59,
-            0.614,
-            0.511,
-            0.249,
+            0.846,
+            1.0,
+            1.0,
+            0.959,
+            0.431,
+            0.356,
+            0.499,
+            0.999,
+            0.281,
             0.0,
             0.0
           ],
           [
-            0.016,
-            0.285,
-            0.316,
-            0.132,
-            0.687,
-            0.273,
-            0.474,
-            0.677,
-            0.926,
-            0.585,
-            0.109
-          ],
-          [
-            0.482,
-            0.949,
-            0.647,
-            0.338,
-            0.462,
-            0.759,
-            0.508,
-            0.466,
-            0.496,
-            0.517,
-            0.25
-          ],
-          [
-            0.335,
-            0.364,
-            0.616,
-            0.253,
-            0.593,
+            0.42,
             0.719,
-            0.756,
-            0.169,
-            0.538,
-            0.05,
-            0.0
+            0.749,
+            0.274,
+            0.204,
+            0.413,
+            0.154,
+            0.586,
+            0.625,
+            0.349,
+            0.039
           ],
           [
             0.0,
-            0.0,
-            0.237,
-            0.498,
-            0.934,
+            0.118,
+            0.189,
+            0.692,
+            0.994,
+            0.969,
+            0.854,
+            0.586,
             1.0,
-            0.646,
-            0.328,
+            1.0,
+            0.766
+          ],
+          [
+            0.397,
+            0.776,
+            0.457,
+            0.867,
+            1.0,
+            1.0,
+            0.983,
+            0.942,
+            0.45,
+            0.42,
+            0.176
+          ],
+          [
+            0.0,
+            0.279,
+            0.849,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.71,
+            0.288,
+            0.404,
+            0.005
+          ],
+          [
+            0.502,
+            0.999,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.965,
+            0.987,
+            0.608,
+            0.42,
+            0.005
+          ],
+          [
+            0.795,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.894,
+            0.023
+          ],
+          [
+            0.517,
+            0.977,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.911,
+            0.086
+          ],
+          [
+            0.0,
+            0.147,
+            0.985,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
             0.682,
-            0.038,
+            0.102,
             0.0
           ],
           [
             0.0,
-            0.029,
-            0.395,
-            0.859,
-            1.0,
-            1.0,
-            0.895,
-            0.5,
-            0.313,
-            0.049,
-            0.0
-          ],
-          [
-            0.0,
-            0.038,
-            0.132,
-            1.0,
-            1.0,
-            1.0,
-            0.851,
-            0.922,
-            0.852,
-            0.199,
-            0.0
-          ],
-          [
-            0.0,
-            0.137,
-            0.149,
-            0.796,
-            0.85,
-            0.698,
-            0.33,
-            0.308,
-            0.21,
-            0.131,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            0.0,
-            0.249,
-            0.255,
-            0.136,
-            0.0,
-            0.0,
-            0.0,
+            0.009,
+            0.479,
+            0.825,
+            0.962,
+            0.964,
+            0.816,
+            0.461,
+            0.016,
             0.0,
             0.0
           ]
         ],
         "crop_offset": [
-          30,
+          22,
           17
         ],
-        "trunk_columns": [],
-        "contact_px": 17,
-        "contact_reference_px": 17.0,
+        "trunk_columns": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "contact_px": 158,
+        "contact_reference_px": 158.0,
         "blocked_by_scale": {
           "0.85": [
             0,
@@ -318,29 +325,29 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_14_cold_pond_white_lotus/ancient_ancestor_core/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.137,
-            0.661,
-            0.26
+            0.314,
+            0.539,
+            0.377
           ],
           [
-            0.376,
-            0.669,
-            0.421
+            0.678,
+            0.969,
+            0.614
           ],
           [
-            0.423,
-            0.978,
-            0.457
+            0.448,
+            0.972,
+            0.543
           ]
         ],
-        "frac_zero": 0.6009,
+        "frac_zero": 0.4822,
         "blocks": [
           [
-            false,
+            true,
             true,
             true
           ],
@@ -372,151 +379,162 @@
             false
           ]
         ],
-        "block_cell_count": 8,
+        "block_cell_count": 9,
         "anchor_cell": [
           1,
           2
         ],
         "sub_grid": [
-          10,
+          11,
           11
         ],
         "sub_fill": [
           [
             0.0,
             0.0,
-            0.0,
-            0.079,
-            0.613,
-            0.81,
-            0.302,
-            0.0,
+            0.067,
+            0.331,
+            0.56,
+            0.423,
+            0.318,
+            0.781,
+            0.017,
             0.0,
             0.0
           ],
           [
-            0.0,
             0.0,
             0.055,
-            0.739,
-            0.942,
-            0.807,
-            0.958,
-            0.299,
+            0.784,
+            1.0,
+            0.919,
+            0.158,
+            0.461,
+            0.857,
+            0.201,
             0.0,
             0.0
           ],
           [
             0.0,
-            0.025,
-            0.466,
-            0.629,
-            0.341,
-            0.611,
-            0.854,
-            0.695,
-            0.092,
-            0.0
+            0.014,
+            0.527,
+            0.714,
+            0.292,
+            0.623,
+            0.393,
+            0.519,
+            0.661,
+            0.312,
+            0.03
           ],
           [
-            0.0,
-            0.154,
-            0.514,
-            0.43,
-            0.689,
-            0.424,
-            0.559,
-            0.632,
-            0.841,
-            0.254
-          ],
-          [
-            0.147,
-            0.686,
-            0.471,
-            0.337,
-            0.469,
-            0.827,
-            0.344,
-            0.609,
-            0.729,
-            0.49
-          ],
-          [
-            0.574,
+            0.212,
             0.678,
-            0.569,
-            0.774,
-            0.466,
-            0.74,
-            0.438,
-            0.594,
-            0.325,
-            0.0
+            0.991,
+            0.991,
+            0.731,
+            0.946,
+            0.6,
+            0.755,
+            1.0,
+            1.0,
+            0.714
           ],
           [
-            0.013,
-            0.081,
-            0.635,
-            0.744,
-            0.96,
-            0.96,
-            0.434,
-            0.655,
-            0.213,
-            0.0
+            0.015,
+            0.258,
+            0.952,
+            0.83,
+            1.0,
+            1.0,
+            0.978,
+            0.535,
+            0.617,
+            0.85,
+            0.584
           ],
           [
-            0.0,
-            0.132,
-            0.313,
+            0.563,
+            1.0,
+            1.0,
+            0.94,
             0.967,
             1.0,
+            0.97,
+            0.844,
+            0.291,
+            0.148,
+            0.0
+          ],
+          [
+            0.799,
+            0.975,
+            0.656,
+            0.729,
+            0.987,
+            1.0,
+            1.0,
+            1.0,
+            0.962,
+            0.987,
+            0.337
+          ],
+          [
+            0.003,
+            0.275,
+            0.552,
             0.979,
-            0.954,
-            0.586,
-            0.156,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.992,
+            0.539,
+            0.015
+          ],
+          [
+            0.0,
+            0.63,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.985,
+            0.247
+          ],
+          [
+            0.0,
+            0.294,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.908,
+            0.186,
             0.0
           ],
           [
             0.0,
-            0.442,
-            0.952,
-            1.0,
-            1.0,
-            1.0,
-            1.0,
-            0.85,
-            0.448,
-            0.001
-          ],
-          [
+            0.003,
+            0.381,
+            0.629,
+            0.852,
+            0.914,
+            0.971,
+            0.673,
+            0.124,
             0.0,
-            0.793,
-            1.0,
-            1.0,
-            1.0,
-            1.0,
-            1.0,
-            1.0,
-            0.698,
-            0.012
-          ],
-          [
-            0.0,
-            0.1,
-            0.557,
-            0.797,
-            0.942,
-            1.0,
-            0.68,
-            0.272,
-            0.013,
             0.0
           ]
         ],
         "crop_offset": [
-          36,
+          18,
           17
         ],
         "trunk_columns": [
@@ -524,10 +542,11 @@
           3,
           4,
           5,
-          6
+          6,
+          7
         ],
-        "contact_px": 146,
-        "contact_reference_px": 146.0,
+        "contact_px": 170,
+        "contact_reference_px": 170.0,
         "blocked_by_scale": {
           "0.85": [
             0,
@@ -585,29 +604,29 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_14_cold_pond_white_lotus/ancient_ancestor_core/damaged_weathered.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.112,
-            0.624,
-            0.216
+            0.65,
+            0.628,
+            0.261
           ],
           [
-            0.385,
-            0.64,
-            0.348
+            0.502,
+            0.941,
+            0.664
           ],
           [
-            0.39,
-            0.963,
-            0.445
+            0.627,
+            0.957,
+            0.559
           ]
         ],
-        "frac_zero": 0.6108,
+        "frac_zero": 0.4789,
         "blocks": [
           [
-            false,
+            true,
             true,
             true
           ],
@@ -639,7 +658,7 @@
             false
           ]
         ],
-        "block_cell_count": 8,
+        "block_cell_count": 9,
         "anchor_cell": [
           1,
           2
@@ -651,151 +670,151 @@
         "sub_fill": [
           [
             0.0,
-            0.0,
-            0.0,
-            0.04,
-            0.56,
-            0.831,
-            0.266,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            0.004,
-            0.585,
-            0.883,
-            0.74,
-            0.87,
-            0.254,
-            0.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            0.27,
-            0.695,
-            0.304,
-            0.581,
-            0.716,
-            0.777,
-            0.128,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.071,
-            0.547,
-            0.434,
-            0.765,
-            0.641,
-            0.459,
-            0.435,
-            0.906,
-            0.444,
-            0.0
-          ],
-          [
-            0.263,
-            0.923,
-            0.611,
-            0.293,
+            0.451,
+            0.61,
+            0.885,
             0.747,
-            0.654,
-            0.504,
-            0.251,
-            0.7,
-            0.493,
-            0.062
-          ],
-          [
-            0.565,
-            0.572,
-            0.646,
-            0.396,
-            0.278,
-            0.663,
-            0.742,
-            0.526,
-            0.275,
-            0.009,
-            0.0
-          ],
-          [
-            0.0,
-            0.129,
-            0.419,
-            0.35,
-            0.604,
-            0.989,
-            0.739,
-            0.576,
-            0.166,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.183,
-            0.314,
-            0.591,
-            1.0,
-            1.0,
-            0.716,
-            0.278,
             0.239,
+            0.309,
+            0.258,
+            0.0,
             0.0,
             0.0
           ],
           [
-            0.0,
-            0.101,
-            0.792,
+            0.44,
             1.0,
             1.0,
             1.0,
-            0.985,
-            0.944,
-            0.268,
-            0.0,
+            0.854,
+            0.263,
+            0.739,
+            0.493,
+            0.081,
+            0.049,
             0.0
           ],
           [
-            0.0,
-            0.616,
+            0.852,
             1.0,
             1.0,
+            0.876,
+            0.406,
+            0.623,
+            0.329,
+            0.607,
+            0.171,
+            0.061,
+            0.016
+          ],
+          [
+            0.109,
+            0.351,
+            0.242,
+            0.623,
+            1.0,
+            0.975,
+            0.922,
+            0.679,
+            0.452,
+            0.282,
+            0.016
+          ],
+          [
+            0.196,
+            0.614,
+            0.432,
+            0.981,
             1.0,
             1.0,
-            1.0,
-            1.0,
-            0.845,
-            0.087,
+            0.96,
+            0.804,
+            0.829,
+            0.061,
             0.0
           ],
           [
-            0.0,
-            0.174,
-            0.634,
-            0.873,
+            0.205,
+            0.206,
+            0.549,
+            0.887,
+            0.987,
+            1.0,
+            0.951,
+            0.896,
+            0.728,
+            0.662,
+            0.234
+          ],
+          [
+            0.021,
+            0.754,
+            0.997,
+            0.907,
+            0.671,
+            0.968,
+            1.0,
+            0.999,
+            0.824,
+            0.365,
+            0.036
+          ],
+          [
+            0.652,
+            1.0,
+            1.0,
+            0.752,
+            0.823,
+            1.0,
             0.948,
-            0.868,
+            0.977,
+            1.0,
+            0.88,
+            0.0
+          ],
+          [
+            0.244,
+            0.847,
+            1.0,
+            0.994,
+            1.0,
+            1.0,
+            0.938,
+            0.961,
+            0.614,
+            0.16,
+            0.0
+          ],
+          [
+            0.0,
+            0.731,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.833,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.139,
+            0.66,
+            0.89,
+            0.969,
             0.953,
-            0.705,
-            0.232,
+            0.91,
+            0.605,
+            0.146,
             0.0,
             0.0
           ]
         ],
         "crop_offset": [
-          31,
-          17
+          29,
+          16
         ],
         "trunk_columns": [
           2,
@@ -805,8 +824,8 @@
           6,
           7
         ],
-        "contact_px": 193,
-        "contact_reference_px": 193.0,
+        "contact_px": 182,
+        "contact_reference_px": 182.0,
         "blocked_by_scale": {
           "0.85": [
             0,
@@ -864,29 +883,29 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_14_cold_pond_white_lotus/ancient_ancestor_core/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.116,
-            0.617,
-            0.289
+            0.423,
+            0.659,
+            0.417
           ],
           [
-            0.525,
-            0.777,
-            0.385
+            0.697,
+            0.99,
+            0.706
           ],
           [
-            0.58,
-            0.969,
-            0.619
+            0.674,
+            0.984,
+            0.6
           ]
         ],
-        "frac_zero": 0.573,
+        "frac_zero": 0.4372,
         "blocks": [
           [
-            false,
+            true,
             true,
             true
           ],
@@ -918,151 +937,162 @@
             false
           ]
         ],
-        "block_cell_count": 8,
+        "block_cell_count": 9,
         "anchor_cell": [
           1,
           2
         ],
         "sub_grid": [
-          10,
+          11,
           11
         ],
         "sub_fill": [
           [
             0.0,
             0.0,
-            0.0,
-            0.204,
-            0.804,
-            0.705,
-            0.158,
-            0.0,
-            0.0,
+            0.295,
+            0.081,
+            0.306,
+            0.762,
+            0.866,
+            0.587,
+            0.312,
+            0.002,
             0.0
           ],
           [
-            0.0,
-            0.0,
-            0.042,
-            0.915,
-            0.857,
-            0.789,
-            0.785,
-            0.25,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.026,
-            0.767,
-            0.647,
-            0.447,
-            0.62,
-            0.685,
-            0.482,
-            0.118,
-            0.0
-          ],
-          [
-            0.046,
-            0.493,
-            0.394,
-            0.333,
-            0.808,
-            0.281,
-            0.299,
-            0.771,
-            0.868,
-            0.45
-          ],
-          [
-            0.575,
-            0.725,
-            0.557,
-            0.524,
-            0.521,
-            0.912,
-            0.32,
-            0.393,
-            0.406,
-            0.158
-          ],
-          [
-            0.292,
-            0.539,
-            0.775,
-            0.391,
-            0.671,
-            0.992,
-            0.595,
-            0.25,
-            0.594,
-            0.098
-          ],
-          [
-            0.003,
-            0.153,
-            0.959,
-            0.94,
-            1.0,
-            0.938,
-            0.463,
-            0.25,
-            0.622,
-            0.138
-          ],
-          [
-            0.055,
+            0.016,
+            0.656,
             0.523,
-            0.995,
+            0.396,
+            0.334,
+            0.903,
             1.0,
             1.0,
             1.0,
-            0.974,
-            0.677,
-            0.221,
-            0.025
+            0.207,
+            0.0
           ],
           [
-            0.253,
-            0.947,
-            1.0,
-            1.0,
-            1.0,
-            1.0,
-            1.0,
-            1.0,
+            0.154,
+            0.88,
+            0.675,
+            0.937,
+            0.53,
+            0.599,
+            0.598,
+            0.607,
+            0.299,
+            0.033,
+            0.0
+          ],
+          [
+            0.072,
             0.872,
-            0.179
+            0.955,
+            0.562,
+            0.97,
+            0.998,
+            0.822,
+            0.841,
+            0.951,
+            0.626,
+            0.116
           ],
           [
-            0.093,
-            0.901,
+            0.076,
+            0.639,
+            1.0,
+            0.972,
+            1.0,
+            1.0,
+            0.973,
+            0.808,
+            0.983,
+            0.995,
+            0.763
+          ],
+          [
+            0.286,
+            0.743,
+            1.0,
+            0.982,
+            1.0,
+            1.0,
+            1.0,
+            0.886,
+            0.346,
+            0.356,
+            0.0
+          ],
+          [
+            0.128,
+            0.949,
             1.0,
             1.0,
             1.0,
             1.0,
             1.0,
             1.0,
-            0.632,
-            0.01
+            0.98,
+            0.363,
+            0.009
+          ],
+          [
+            0.494,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.87,
+            0.055
+          ],
+          [
+            0.547,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.885,
+            0.0
+          ],
+          [
+            0.107,
+            0.826,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.96,
+            0.312,
+            0.0
           ],
           [
             0.0,
-            0.178,
-            0.704,
-            0.951,
-            0.837,
-            0.848,
-            0.926,
-            0.391,
-            0.001,
+            0.076,
+            0.518,
+            0.88,
+            0.918,
+            1.0,
+            0.929,
+            0.445,
+            0.09,
+            0.0,
             0.0
           ]
         ],
         "crop_offset": [
-          39,
+          24,
           17
         ],
         "trunk_columns": [
@@ -1073,8 +1103,8 @@
           6,
           7
         ],
-        "contact_px": 170,
-        "contact_reference_px": 170.0,
+        "contact_px": 148,
+        "contact_reference_px": 148.0,
         "blocked_by_scale": {
           "0.85": [
             0,
