@@ -1,0 +1,154 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_09_crimson_flame_lingzhi.mature_flourishing",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_09_crimson_flame_lingzhi",
+  "asset_slug": "mature_flourishing",
+  "variant_slug": "pristine_dormant",
+  "name": "Pristine Dormant State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_09_crimson_flame_lingzhi/mature_flourishing/pristine_dormant.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "inspect_plant",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.369,
+        0.469
+      ],
+      [
+        0.498,
+        0.477
+      ]
+    ],
+    "frac_zero": 0.634,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.019,
+        0.541,
+        0.826,
+        0.214,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.362,
+        0.748,
+        0.604,
+        0.826,
+        0.146,
+        0.0
+      ],
+      [
+        0.043,
+        0.592,
+        0.637,
+        0.479,
+        0.656,
+        0.691,
+        0.196
+      ],
+      [
+        0.629,
+        0.545,
+        0.446,
+        0.681,
+        0.595,
+        0.532,
+        0.236
+      ],
+      [
+        0.168,
+        0.256,
+        0.481,
+        0.818,
+        0.366,
+        0.123,
+        0.0
+      ],
+      [
+        0.001,
+        0.69,
+        1.0,
+        0.932,
+        0.664,
+        0.378,
+        0.026
+      ],
+      [
+        0.054,
+        0.697,
+        0.901,
+        0.821,
+        0.487,
+        0.342,
+        0.009
+      ]
+    ],
+    "crop_offset": [
+      26,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 86,
+    "contact_reference_px": 86.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

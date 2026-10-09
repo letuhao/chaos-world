@@ -1,0 +1,88 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_09_crimson_flame_lingzhi.harvestable_ripe",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_09_crimson_flame_lingzhi",
+  "asset_slug": "harvestable_ripe",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_09_crimson_flame_lingzhi/harvestable_ripe/active_operating.png",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "none",
+  "interactive_verb": "gather_herb",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.458
+      ]
+    ],
+    "frac_zero": 0.726,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.43,
+        0.589,
+        0.146
+      ],
+      [
+        0.514,
+        0.599,
+        0.438
+      ],
+      [
+        0.266,
+        0.691,
+        0.005
+      ]
+    ],
+    "crop_offset": [
+      24,
+      20
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 43,
+    "contact_reference_px": 43.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

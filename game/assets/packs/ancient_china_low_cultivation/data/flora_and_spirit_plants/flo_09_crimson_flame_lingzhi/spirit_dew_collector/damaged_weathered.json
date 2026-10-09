@@ -1,0 +1,88 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_09_crimson_flame_lingzhi.spirit_dew_collector",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_09_crimson_flame_lingzhi",
+  "asset_slug": "spirit_dew_collector",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_09_crimson_flame_lingzhi/spirit_dew_collector/damaged_weathered.png",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "none",
+  "interactive_verb": "collect_dew",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.477
+      ]
+    ],
+    "frac_zero": 0.7108,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.41,
+        0.703,
+        0.168
+      ],
+      [
+        0.55,
+        0.602,
+        0.41
+      ],
+      [
+        0.278,
+        0.706,
+        0.072
+      ]
+    ],
+    "crop_offset": [
+      23,
+      16
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 47,
+    "contact_reference_px": 47.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,155 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_09_crimson_flame_lingzhi.dense_thicket_cluster",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_09_crimson_flame_lingzhi",
+  "asset_slug": "dense_thicket_cluster",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_09_crimson_flame_lingzhi/dense_thicket_cluster/damaged_weathered.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "cut_thicket",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.374,
+        0.466
+      ],
+      [
+        0.616,
+        0.602
+      ]
+    ],
+    "frac_zero": 0.5952,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.467,
+        0.865,
+        0.297,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.394,
+        0.691,
+        0.613,
+        0.714,
+        0.176,
+        0.0
+      ],
+      [
+        0.166,
+        0.543,
+        0.621,
+        0.657,
+        0.52,
+        0.796,
+        0.372
+      ],
+      [
+        0.527,
+        0.486,
+        0.484,
+        0.863,
+        0.588,
+        0.115,
+        0.034
+      ],
+      [
+        0.015,
+        0.68,
+        0.848,
+        0.96,
+        0.494,
+        0.355,
+        0.0
+      ],
+      [
+        0.288,
+        0.958,
+        1.0,
+        1.0,
+        0.997,
+        0.636,
+        0.0
+      ],
+      [
+        0.158,
+        0.743,
+        0.933,
+        0.994,
+        0.836,
+        0.375,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      26,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 145,
+    "contact_reference_px": 145.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
