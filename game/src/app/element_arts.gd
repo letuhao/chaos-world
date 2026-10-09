@@ -75,6 +75,22 @@ static func install() -> void:
 		)
 
 
+## Drop the sources `install()` registered. A MATCHED PAIR, and the reason is measured.
+##
+## `ElementAttunement._registered` is a `static var`, and every row in it is an
+## `AffinitySource` carrying TWO LAMBDAS (its `check` and its `consume`). A process that
+## registers on boot and never clears therefore leaves callables alive past teardown:
+## Godot reports them as leaked ObjectDB instances with resources still in use, and the
+## order it then frees them in is what produced the access violation this pair fixes -
+## adding the registrations to an otherwise clean boot was 5 crashes in 5 runs, and
+## removing them was 0 in 5.
+##
+## The registry is DEFINITIONS, not per-body state, so clearing it at exit costs nothing:
+## `install()` is idempotent and re-registers the same rows on the next boot.
+static func uninstall() -> void:
+	_ELEMENTS.clear_registered_sources()
+
+
 ## The learner the app installs: learn the technique, then apply the art's opening
 ## grant when the technique is one.
 ##

@@ -758,6 +758,35 @@ func _bind_technique_seams() -> void:
 	TechniqueCasting.set_resolver(Callable(self, "_resolve_technique_hit"))
 
 
+## Drop the process-wide seams this root installs, so a static that holds them never
+## outlives the process that owns it.
+##
+## ## Why this exists, and the measurement behind it (BL-0942)
+##
+## `ElementArts.install()` registers affinity sources into `ElementAttunement._registered`,
+## a `static var`, and every source carries two lambdas. Registering them on boot and never
+## clearing them left callables alive past teardown - Godot reports "ObjectDB instances were
+## leaked at exit" and "resources still in use at exit" - and the order it then freed them in
+## produced an exit ACCESS VIOLATION. Measured by bisect, five runs per step, adding one thing
+## at a time to an otherwise clean boot: `_bind_technique_seams` took it from 0 of 5 crashes
+## to 5 of 5, and inside it `ElementArts.install()` alone was the arm; keeping the element
+## defs while dropping the registrations was 0 of 5 again.
+##
+## This is the MATCHED PAIR to that install, and it is called from [_exit_tree] rather than
+## from a screen: definitions, not per-body state, so a live process keeps them and a dying
+## one gives them back while its statics can still be freed in order.
+func _unbind_technique_seams() -> void:
+	ElementArts.uninstall()
+
+
+## The complement of `_ready`: give back what the boot installed proces-wide. Godot frees a
+## `static var`'s contents after it tears the tree down, which is what made the callables in
+## `ElementAttunement._registered` a use-after-free; releasing them here puts them back in
+## a lifetime the engine can still order.
+func _exit_tree() -> void:
+	_unbind_technique_seams()
+
+
 ## The damage resolver `TechniqueCasting.activate` is handed, for the same reason
 ## the delivery seam above exists and for the same edge it cannot draw itself.
 ##
